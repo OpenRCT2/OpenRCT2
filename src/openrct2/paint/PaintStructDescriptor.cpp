@@ -209,7 +209,7 @@ std::vector<size_t> PaintStructKeyInserter::GetParams(const PaintStructDescripto
                                 key.VehicleKey[0].Pitch, key.VehicleKey[0].SpriteDirection };
 }
 
-//don't put the track sequence for the image id 
+// don't put the track sequence for the image id
 std::vector<size_t> ImageIdKeyInserter::GetParams(const PaintStructDescriptorKey& key) const
 {
     return std::vector<size_t>{ key.Direction, key.Element, key.VehicleKey[0].NumPeeps, key.VehicleKey[0].Pitch,

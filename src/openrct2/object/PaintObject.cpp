@@ -3,6 +3,7 @@
 #include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Json.hpp"
+#include "../entity/EntityRegistry.h"
 #include "../paint/Paint.h"
 #include "../paint/Supports.h"
 #include "../ride/Ride.h"
@@ -10,7 +11,6 @@
 #include "../ride/TrackPaint.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
-#include "../entity/EntityRegistry.h"
 
 struct PaintStructKeyJson
 {
@@ -71,6 +71,259 @@ void PaintStructKeyJson::FromJson(const json_t& paintStruct)
         auto vehicleNumPeeps = paintStruct["vehicleNumPeeps"];
         if (vehicleNumPeeps.is_number())
             VehicleNumPeeps[0] = vehicleNumPeeps;
+    }
+}
+
+class PaintStructKeyGenerator
+{
+public:
+    PaintStructKeyGenerator(const std::vector<PaintStructKeyJson>& keysJson);
+    std::vector<PaintStructDescriptorKey> GenerateKeys(const PaintStructKeyJson& keyJson) const;
+
+private:
+    enum class KeyType
+    {
+        Element,
+        Direction,
+        TrackSequence,
+        VehicleSpriteDirection,
+        VehiclePitch,
+        VehicleNumPeeps
+    };
+
+    std::vector<uint32_t> _elements;
+    std::vector<uint32_t> _directions;
+    std::vector<uint32_t> _trackSequences;
+
+    using VehicleParam = std::array<std::vector<uint32_t>, OpenRCT2::Limits::MaxTrainsPerRide + 1>;
+    VehicleParam _vehicleSpriteDirections;
+    VehicleParam _vehiclePitches;
+    VehicleParam _vehicleNumPeeps;
+
+    void PushElement(std::vector<uint32_t>& vector, const std::optional<uint32_t>& value);
+    void GenerateKeyField(
+        std::vector<uint32_t>& vector, const std::optional<uint32_t>& value, const std::vector<uint32_t>& refVector) const;
+
+    void SetKeyField(
+        KeyType keyType,
+        const PaintStructKeyJson& keyJson, const std::vector<PaintStructKeyJson>& oldKeys, const std::optional<uint32_t>& value,
+        const std::vector<uint32_t>& values, std::vector<PaintStructKeyJson>& newKeys) const;
+    void SetKeyField(
+        KeyType keyType, uint32_t vehicleIndex, const PaintStructKeyJson& keyJson, const std::vector<PaintStructKeyJson>& oldKeys,
+        const std::optional<uint32_t>& value, const std::vector<uint32_t>& values,
+        std::vector<PaintStructKeyJson>& newKeys) const;
+};
+
+PaintStructKeyGenerator::PaintStructKeyGenerator(const std::vector<PaintStructKeyJson>& keysJson)
+{
+    for (const auto& key : keysJson)
+    {
+        PushElement(_elements, key.Element);
+        PushElement(_directions, key.Direction);
+        PushElement(_trackSequences, key.TrackSequence);
+        for (size_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
+        {
+            PushElement(_vehicleSpriteDirections[index], key.VehicleSpriteDirection[index]);
+            PushElement(_vehiclePitches[index], key.VehiclePitch[index]);
+            PushElement(_vehicleNumPeeps[index], key.VehicleNumPeeps[index]);
+        }
+    }
+}
+
+std::vector<PaintStructDescriptorKey> PaintStructKeyGenerator::GenerateKeys(const PaintStructKeyJson& keyJson) const
+{
+    std::vector<uint32_t> elements;
+    std::vector<uint32_t> directions;
+    std::vector<uint32_t> trackSequences;
+
+    VehicleParam vehicleSpriteDirections;
+    VehicleParam vehiclePitches;
+    VehicleParam vehicleNumPeeps;
+
+    GenerateKeyField(elements, keyJson.Element, _elements);
+    GenerateKeyField(directions, keyJson.Direction, _directions);
+    GenerateKeyField(trackSequences, keyJson.TrackSequence, _trackSequences);
+
+    for (size_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
+    {
+        GenerateKeyField(
+            vehicleSpriteDirections[index], keyJson.VehicleSpriteDirection[index], _vehicleSpriteDirections[index]);
+        GenerateKeyField(vehiclePitches[index], keyJson.VehiclePitch[index], _vehiclePitches[index]);
+        GenerateKeyField(vehicleNumPeeps[index], keyJson.VehicleNumPeeps[index], _vehicleNumPeeps[index]);
+    }
+
+    std::vector<PaintStructKeyJson> oldKeys, newKeys;
+    newKeys.push_back(keyJson);
+
+    oldKeys = newKeys;
+    SetKeyField(KeyType::Element, keyJson, oldKeys, keyJson.Element, elements, newKeys);
+
+    oldKeys = newKeys;
+    SetKeyField(KeyType::Direction, keyJson, oldKeys, keyJson.Direction, directions, newKeys);
+
+    oldKeys = newKeys;
+    SetKeyField(KeyType::TrackSequence, keyJson, oldKeys, keyJson.TrackSequence, trackSequences, newKeys);
+
+    for (uint32_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
+    {
+        oldKeys = newKeys;
+        SetKeyField(
+            KeyType::VehicleNumPeeps, index, keyJson, oldKeys, keyJson.VehicleNumPeeps[index], vehicleNumPeeps[index], newKeys);
+
+        oldKeys = newKeys;
+        SetKeyField(
+            KeyType::VehiclePitch, index, keyJson, oldKeys, keyJson.VehiclePitch[index], vehiclePitches[index], newKeys);
+
+        oldKeys = newKeys;
+        SetKeyField(
+            KeyType::VehicleSpriteDirection, index, keyJson, oldKeys, keyJson.VehicleSpriteDirection[index], vehicleSpriteDirections[index], newKeys);
+    }
+
+    //now, every key in newkeys should have all optionals completed, lets convert that to actual keys
+    std::vector<PaintStructDescriptorKey> result;
+    for (const auto& keyJ : newKeys)
+    {
+        PaintStructDescriptorKey key;
+        key.Element = keyJ.Element.value();
+        key.Direction = keyJ.Direction.value();
+        key.TrackSequence = keyJ.TrackSequence.value();
+
+        for (size_t index = 0; index < OpenRCT2::Limits::MaxTrainsPerRide + 1; index++)
+        {
+            key.VehicleKey[index].NumPeeps = keyJ.VehicleNumPeeps[index].value();
+            key.VehicleKey[index].Pitch = keyJ.VehiclePitch[index].value();
+            key.VehicleKey[index].SpriteDirection = keyJ.VehicleSpriteDirection[index].value();
+        }
+        result.push_back(key);
+    }
+
+    return result;
+}
+
+void PaintStructKeyGenerator::SetKeyField(
+    KeyType keyType,
+    const PaintStructKeyJson& keyJson, const std::vector<PaintStructKeyJson>& oldKeys, const std::optional<uint32_t>& value,
+    const std::vector<uint32_t>& values, std::vector<PaintStructKeyJson>& newKeys) const
+{
+    newKeys = std::vector<PaintStructKeyJson>();
+
+    for (const auto& key : oldKeys)
+    {
+        if (value.has_value())
+        {
+            auto newKey = key;
+            switch (keyType)
+            {
+                case KeyType::Element:
+                    newKey.Element = value.value();
+                    break;
+                case KeyType::Direction:
+                    newKey.Direction = value.value();
+                    break;
+                case KeyType::TrackSequence:
+                    newKey.TrackSequence = value.value();
+                    break;
+            }
+            newKeys.push_back(newKey);
+        }
+        else
+        {
+            for (const auto& val : values)
+            {
+                auto newKey = key;
+                switch (keyType)
+                {
+                    case KeyType::Element:
+                        newKey.Element = val;
+                        break;
+                    case KeyType::Direction:
+                        newKey.Direction = val;
+                        break;
+                    case KeyType::TrackSequence:
+                        newKey.TrackSequence = val;
+                        break;
+                }
+                newKeys.push_back(newKey);
+            }
+        }
+    }
+}
+
+void PaintStructKeyGenerator::SetKeyField(
+    KeyType keyType, uint32_t vehicleIndex, const PaintStructKeyJson& keyJson, const std::vector<PaintStructKeyJson>& oldKeys,
+    const std::optional<uint32_t>& value, const std::vector<uint32_t>& values, std::vector<PaintStructKeyJson>& newKeys) const
+{
+    newKeys = std::vector<PaintStructKeyJson>();
+
+    for (const auto& key : oldKeys)
+    {
+        if (value.has_value())
+        {
+            auto newKey = key;
+            switch (keyType)
+            {
+                case KeyType::VehicleNumPeeps:
+                    newKey.VehicleNumPeeps[vehicleIndex] = value.value();
+                    break;
+                case KeyType::VehiclePitch:
+                    newKey.VehiclePitch[vehicleIndex] = value.value();
+                    break;
+                case KeyType::VehicleSpriteDirection:
+                    newKey.VehicleSpriteDirection[vehicleIndex] = value.value();
+                    break;
+            }
+            newKeys.push_back(newKey);
+        }
+        else
+        {
+            for (const auto& val : values)
+            {
+                auto newKey = key;
+                switch (keyType)
+                {
+                    case KeyType::VehicleNumPeeps:
+                        newKey.VehicleNumPeeps[vehicleIndex] = val;
+                        break;
+                    case KeyType::VehiclePitch:
+                        newKey.VehiclePitch[vehicleIndex] = val;
+                        break;
+                    case KeyType::VehicleSpriteDirection:
+                        newKey.VehicleSpriteDirection[vehicleIndex] = val;
+                        break;
+                }
+                newKeys.push_back(newKey);
+            }
+        }
+    }
+}
+
+void PaintStructKeyGenerator::PushElement(std::vector<uint32_t>& vector, const std::optional<uint32_t>& value)
+{
+    if (value.has_value())
+    {
+        if (!vector.empty())
+        {
+            auto it = std::find(vector.begin(), vector.end(), value.value());
+            if (it == vector.end())
+                vector.push_back(value.value());
+        }
+        else
+        {
+            vector.push_back(value.value());
+        }
+    }
+}
+
+void PaintStructKeyGenerator::GenerateKeyField(
+    std::vector<uint32_t>& vector, const std::optional<uint32_t>& value, const std::vector<uint32_t>& refVector) const
+{
+    if (value.has_value())
+        vector.push_back(value.value());
+    else if (refVector.empty())
+        vector.push_back(0);
+    else
+    {
+        vector = refVector;
     }
 }
 
@@ -212,7 +465,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 {
                     std::vector<PaintStructKeyJson> keysJson;
                     std::vector<std::vector<uint32_t>> imageIdTables;
-                    for (const auto& entry: entries)
+                    for (const auto& entry : entries)
                     {
                         PaintStructDescriptorKey key;
                         PaintStructKeyJson keyJson;
@@ -229,35 +482,17 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                             offset.Entries.Add(key, imageId);
                     }
 
+                    auto keyGen = PaintStructKeyGenerator(keysJson);
                     for (size_t index = 0; index < keysJson.size(); index++)
                     {
                         const auto& keyJson = keysJson[index];
-
-                        // to do: make a key generation from the optionals
-                        // this is temporary for this commit
-                        PaintStructDescriptorKey key;
-
-                        if (keyJson.Direction.has_value())
-                            key.Direction = keyJson.Direction.value();
-
-                        if (keyJson.Element.has_value())
-                            key.Element = keyJson.Element.value();
-
-                        if (keyJson.TrackSequence.has_value())
-                            key.TrackSequence = keyJson.TrackSequence.value();
-
-                        if (keyJson.VehicleNumPeeps[0].has_value())
-                            key.VehicleKey[0].NumPeeps = keyJson.VehicleNumPeeps[0].value();
-
-                        if (keyJson.VehiclePitch[0].has_value())
-                            key.VehicleKey[0].Pitch = keyJson.VehiclePitch[0].value();
-
-                        if (keyJson.VehicleSpriteDirection[0].has_value())
-                            key.VehicleKey[0].SpriteDirection = keyJson.VehicleSpriteDirection[0].value();
-
-                        const auto& imageIdTable = imageIdTables[index];
-                        for (const auto& imageId : imageIdTable)
-                            offset.Entries.Add(key, imageId);
+                        auto keys = keyGen.GenerateKeys(keyJson);
+                        for (const auto& key : keys)
+                        {
+                            const auto& imageIdTable = imageIdTables[index];
+                            for (const auto& imageId : imageIdTable)
+                                offset.Entries.Add(key, imageId);
+                        }
                     }
                 }
                 _imageIdOffsetMapping[offset.Id] = offset;
@@ -492,44 +727,24 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     }
                 }
 
-                //we need to check if the key exists
+                // we need to check if the key exists
                 //_keys.push_back(key);
                 keysJson.push_back(keyJson);
                 _paintStructs.push_back(paint);
-
-                //auto ptr = std::make_shared<PaintStructDescriptor>(paint);
-                //_paintStructsTree.Add(key, ptr);
             }
 
+            auto keyGen = PaintStructKeyGenerator(keysJson);
             for (size_t index = 0; index < keysJson.size(); index++)
             {
                 const auto& keyJson = keysJson[index];
+                auto keys = keyGen.GenerateKeys(keyJson);
 
-                //to do: make a key generation from the optionals
-                //this is temporary for this commit
-                PaintStructDescriptorKey key;
-
-                if (keyJson.Direction.has_value())
-                    key.Direction = keyJson.Direction.value();
-
-                if (keyJson.Element.has_value())
-                    key.Element = keyJson.Element.value();
-
-                if (keyJson.TrackSequence.has_value())
-                    key.TrackSequence = keyJson.TrackSequence.value();
-
-                if (keyJson.VehicleNumPeeps[0].has_value())
-                    key.VehicleKey[0].NumPeeps = keyJson.VehicleNumPeeps[0].value();
-
-                if (keyJson.VehiclePitch[0].has_value())
-                    key.VehicleKey[0].Pitch = keyJson.VehiclePitch[0].value();
-
-                if (keyJson.VehicleSpriteDirection[0].has_value())
-                    key.VehicleKey[0].SpriteDirection = keyJson.VehicleSpriteDirection[0].value();
-
-                const auto& paintStruct = _paintStructs[index];
-                auto ptr = std::make_shared<PaintStructDescriptor>(paintStruct);
-                _paintStructsTree.Add(key, ptr);
+                for (const auto& key : keys)
+                {
+                    const auto& paintStruct = _paintStructs[index];
+                    auto ptr = std::make_shared<PaintStructDescriptor>(paintStruct);
+                    _paintStructsTree.Add(key, ptr);
+                }
             }
         }
     }
@@ -551,8 +766,8 @@ void PaintObject::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement) const
 {
-    //for (const auto& paintStruct : _paintStructs)
-        //paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
+    // for (const auto& paintStruct : _paintStructs)
+    // paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
 
     PaintStructDescriptorKey key;
     key.Direction = direction;
@@ -563,8 +778,8 @@ void PaintObject::Paint(
         trackSequence = it->second[direction][trackSequence];
     key.TrackSequence = trackSequence;
 
-    //check the first vehicle in the list
-    //to-do: add vehicle state variables in the key for every vehicle index in the list
+    // check the first vehicle in the list
+    // to-do: add vehicle state variables in the key for every vehicle index in the list
     Vehicle* vehicle = nullptr;
     if (!_vehicleIndices.empty())
     {
@@ -578,7 +793,7 @@ void PaintObject::Paint(
         }
     }
 
-    //to-do: in the future, add a key val for every vehicle index, not just the first in the list
+    // to-do: in the future, add a key val for every vehicle index, not just the first in the list
     if (vehicle != nullptr)
     {
         key.VehicleKey[0].NumPeeps = vehicle->num_peeps;
