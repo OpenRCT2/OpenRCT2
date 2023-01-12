@@ -641,6 +641,14 @@ public:
             }
             else
             {
+                if (!_gErrorSceneryGroupObjectEntryDescriptors.empty())
+                {
+                    for (auto descriptor : _gErrorSceneryGroupObjectEntryDescriptors)
+                    {
+                        log_error("Could not find: %s", std::string(descriptor.GetName()).c_str());
+                    }
+                }
+
                 ContextShowError(
                     errorMessage, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, Formatter::Common());
             }

@@ -26,6 +26,7 @@ enum EDITOR_INPUT_FLAGS
 };
 
 extern std::optional<StringId> _gSceneryGroupPartialSelectError;
+extern std::vector<ObjectEntryDescriptor> _gErrorSceneryGroupObjectEntryDescriptors;
 extern std::vector<uint8_t> _objectSelectionFlags;
 extern int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 

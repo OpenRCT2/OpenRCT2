@@ -34,6 +34,7 @@
 #include <vector>
 
 std::optional<StringId> _gSceneryGroupPartialSelectError;
+std::vector<ObjectEntryDescriptor> _gErrorSceneryGroupObjectEntryDescriptors;
 std::vector<uint8_t> _objectSelectionFlags;
 int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
@@ -504,6 +505,11 @@ void finish_object_selection()
 ResultWithMessage window_editor_object_selection_select_object(
     uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item)
 {
+    if (isMasterObject == 0)
+    {
+        _gErrorSceneryGroupObjectEntryDescriptors.clear();
+    }
+
     if (item == nullptr)
     {
         return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND);
@@ -578,10 +584,12 @@ ResultWithMessage window_editor_object_selection_select_object(
     {
         for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
         {
+            ObjectEntryDescriptor x;
             const auto selectionResult = window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry);
             if (!selectionResult.Successful)
             {
                 _gSceneryGroupPartialSelectError = selectionResult.Message;
+                _gErrorSceneryGroupObjectEntryDescriptors.push_back(sgEntry);
             }
         }
     }
