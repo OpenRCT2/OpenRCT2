@@ -63,9 +63,10 @@ public:
     /**
      * @brief Retrieves the changelog contents.
      */
-    const std::string GetChangelogText()
+    const std::string GetText(PATHID pathId)
     {
-        auto path = GetChangelogPath();
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto path = env->GetFilePath(pathId);
         auto fs = std::ifstream(fs::u8path(path), std::ios::in);
         if (!fs.is_open())
         {
@@ -94,11 +95,21 @@ public:
                 return true;
 
             case WV_CHANGELOG:
-                if (!ReadChangelogFile())
+                if (!ReadFile(PATHID::CHANGELOG))
                 {
                     return false;
                 }
                 _personality = WV_CHANGELOG;
+                widgets[WIDX_TITLE].text = STR_CHANGELOG_TITLE;
+                return true;
+
+            case WV_CONTRIBUTORS:
+                if (!ReadFile(PATHID::CONTRIBUTORS))
+                {
+                    return false;
+                }
+                _personality = WV_CONTRIBUTORS;
+                widgets[WIDX_TITLE].text = STR_CONTRIBUTORS_WINDOW;
                 return true;
 
             default:
@@ -228,7 +239,7 @@ private:
             _changelogLines.emplace_back(version_info);
             _changelogLines.emplace_back("");
 
-            ProcessChangelogText(_newVersionInfo->changelog);
+            ProcessText(_newVersionInfo->changelog);
         }
         else
         {
@@ -251,25 +262,25 @@ private:
      * @brief Attempts to read the changelog file, returns true on success
      *
      */
-    bool ReadChangelogFile()
+    bool ReadFile(PATHID pathId)
     {
-        std::string _changelogText;
+        std::string _text;
         try
         {
-            _changelogText = GetChangelogText();
+            _text = GetText(pathId);
         }
         catch (const std::bad_alloc&)
         {
-            log_error("Unable to allocate memory for changelog.txt");
+            log_error("Unable to allocate memory for text file");
             return false;
         }
         catch (const std::exception&)
         {
-            log_error("Unable to read changelog.txt");
+            log_error("Unable to read text file");
             return false;
         }
 
-        ProcessChangelogText(_changelogText);
+        ProcessText(_text);
         return true;
     }
 
@@ -279,7 +290,7 @@ private:
      *
      * @param text
      */
-    void ProcessChangelogText(const std::string& text)
+    void ProcessText(const std::string& text)
     {
         std::string::size_type pos = 0;
         std::string::size_type prev = 0;

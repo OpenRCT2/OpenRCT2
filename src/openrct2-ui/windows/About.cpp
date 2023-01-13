@@ -6,16 +6,12 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-
 #include <SDL_clipboard.h>
-#include <fstream>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/Version.h>
-#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -35,7 +31,6 @@ enum
 {
     WINDOW_ABOUT_PAGE_OPENRCT2,
     WINDOW_ABOUT_PAGE_RCT2,
-    WINDOW_ABOUT_PAGE_CONTRIBUTORS,
 };
 
 enum WindowAboutWidgetIdx {
@@ -45,7 +40,6 @@ enum WindowAboutWidgetIdx {
     WIDX_PAGE_BACKGROUND,
     WIDX_TAB_ABOUT_OPENRCT2,
     WIDX_TAB_ABOUT_RCT2,
-    WIDX_TAB_ABOUT_CONTRIBUTORS,
 
     WIDX_PAGE_START,
 
@@ -59,14 +53,16 @@ enum WindowAboutWidgetIdx {
     WIDX_JOIN_DISCORD,
     WIDX_CONTRIBUTORS,
     WIDX_COPYRIGHT,
+    WIDX_SPECIAL_THANKS,
+    WIDX_COMPANY_NAMES,
+    WIDX_CONTRIBUTORS_BUTTON,
 };
 
 #define WIDGETS_MAIN \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::Frame,  WindowColour::Secondary               ), /* page background */       \
     MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
-    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),  /* about RCT2 button */ \
-    MakeRemapWidget({185,       17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* Contributors button */
+    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */ \
 
 static Widget _windowAboutOpenRCT2Widgets[] = {
     WIDGETS_MAIN,
@@ -74,13 +70,14 @@ static Widget _windowAboutOpenRCT2Widgets[] = {
     MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
     MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // Build version
     MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
-    MakeWidget({168, 115 + 24}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
-    MakeWidget({168, 115 + 48}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
-    MakeWidget({168, 115 + 72}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
+    MakeWidget({168, 115 + 20}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
+    MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
+    MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
     MakeWidget({10, 250},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_2), // More info
     MakeWidget({10, 300},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_3), // Copyright
     MakeWidget({10, 350},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_1), // Special Thanks
     MakeWidget({10, 375},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_2), // Company names
+    MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
     WIDGETS_END,
 };
 
@@ -89,36 +86,12 @@ static Widget _windowAboutRCT2Widgets[] = {
     WIDGETS_END,
 };
 
-static Widget _windowAboutContributorsWidgets[] = {
-    WIDGETS_MAIN,
-    MakeWidget({10,  60}, {WW - 20, 282}, WindowWidgetType::Scroll,      WindowColour::Secondary, SCROLL_BOTH                  ), // scroll area
-    WIDGETS_END,
-};
-
 static Widget *_windowAboutPageWidgets[] = {
     _windowAboutOpenRCT2Widgets,
     _windowAboutRCT2Widgets,
-    _windowAboutContributorsWidgets,
 };
 
 // clang-format on
-
-static std::string GetContributorsPath()
-{
-    auto env = GetContext()->GetPlatformEnvironment();
-    return env->GetFilePath(PATHID::CONTRIBUTORS);
-}
-
-static const std::string GetContributorsText()
-{
-    auto path = GetContributorsPath();
-    auto fs = std::ifstream(fs::u8path(path), std::ios::in);
-    if (!fs.is_open())
-    {
-        throw std::runtime_error("Unable to open " + path);
-    }
-    return std::string((std::istreambuf_iterator<char>(fs)), std::istreambuf_iterator<char>());
-}
 
 class AboutWindow final : public Window
 {
@@ -140,7 +113,6 @@ public:
                 break;
             case WIDX_TAB_ABOUT_OPENRCT2:
             case WIDX_TAB_ABOUT_RCT2:
-            case WIDX_TAB_ABOUT_CONTRIBUTORS:
                 SetPage(widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
                 break;
             case WIDX_JOIN_DISCORD:
@@ -155,6 +127,9 @@ public:
             case WIDX_COPY_BUILD_INFO:
                 SDL_SetClipboardText(gVersionInfoFull);
                 break;
+            case WIDX_CONTRIBUTORS_BUTTON:
+                ContextOpenWindowView(WV_CONTRIBUTORS);
+                break;
         }
     }
 
@@ -164,12 +139,10 @@ public:
 
         const auto& aboutOpenRCT2 = widgets[WIDX_TAB_ABOUT_OPENRCT2];
         const auto& aboutRCT2 = widgets[WIDX_TAB_ABOUT_RCT2];
-        const auto& aboutContributors = widgets[WIDX_TAB_ABOUT_CONTRIBUTORS];
 
         int32_t y = windowPos.y + aboutOpenRCT2.midY() - 3;
         ScreenCoordsXY aboutOpenRCT2Coords(windowPos.x + aboutOpenRCT2.left + 45, y);
         ScreenCoordsXY aboutRCT2Coords(windowPos.x + aboutRCT2.left + 45, y);
-        ScreenCoordsXY aboutContributorsCoords(windowPos.x + aboutContributors.left + 45, y);
 
         // Draw tab names
         {
@@ -184,13 +157,6 @@ public:
             DrawTextWrapped(
                 &dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
         }
-        {
-            auto ft = Formatter();
-            ft.Add<StringId>(STR_TAB_CONTRIBUTORS);
-            DrawTextWrapped(
-                &dpi, aboutContributorsCoords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
-        }
 
         if (page == WINDOW_ABOUT_PAGE_OPENRCT2)
         {
@@ -199,10 +165,6 @@ public:
         else if (page == WINDOW_ABOUT_PAGE_RCT2)
         {
             DrawRCT2Info(dpi);
-        }
-        else if (page == WINDOW_ABOUT_PAGE_CONTRIBUTORS)
-        {
-            DrawContributorsInfo(dpi);
         }
     }
 
@@ -224,9 +186,6 @@ private:
                 break;
             case WINDOW_ABOUT_PAGE_RCT2:
                 pressed_widgets |= (1uLL << WIDX_TAB_ABOUT_RCT2);
-                break;
-            case WINDOW_ABOUT_PAGE_CONTRIBUTORS:
-                pressed_widgets |= (1uLL << WIDX_TAB_ABOUT_CONTRIBUTORS);
                 break;
         }
 
@@ -300,20 +259,6 @@ private:
 
         // Licence
     }
-
-    void DrawContributorsInfo(rct_drawpixelinfo& dpi)
-    {
-        int32_t yPage = windowPos.y + widgets[WIDX_PAGE_BACKGROUND].top + 5;
-
-        auto screenCoords = ScreenCoordsXY{ windowPos.x + 15, yPage };
-
-        int32_t lineHeight = font_get_line_height(FontStyle::Medium);
-
-        auto text = GetContributorsText();
-
-        screenCoords.y += lineHeight;
-        gfx_draw_string(&dpi, screenCoords, text.c_str(), { colours[0] });
-    };
 };
 
 /**
