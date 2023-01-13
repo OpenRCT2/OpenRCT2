@@ -85,6 +85,18 @@ struct HeightSupportsTable
     std::map<uint8_t, uint32_t> Segments;
 };
 
+struct BoundBoxEntryValue
+{
+    CoordsXYZ Coords;
+    BoundBoxXYZ Boundbox;
+};
+
+struct BoundBoxEntry
+{
+    std::string Id;
+    std::unordered_map<uint32_t, BoundBoxEntryValue> Values;
+};
+
 using PaintStructEdgesTable = std::vector<edge_t>;
 struct PaintStructDescriptor
 {
@@ -137,8 +149,7 @@ struct PaintStructDescriptor
     const ImageIdOffset* ImageIdOffset;
     uint32_t ImageIdOffsetIndex;
 
-    CoordsXYZ Offset;
-    BoundBoxXYZ BoundBox;
+    const BoundBoxEntry* BoundBoxTable;
     const HeightSupportsTable* HeightSupports;
 
     //to-do : in the future, send a list of vehicle pointers so we can get the peep tshirt colours from every vehicle...
@@ -178,8 +189,7 @@ struct PaintStructJson
     std::string ImageIdOffsetId;
     uint32_t ImageIdOffsetIndex;
 
-    CoordsXYZ Offset;
-    BoundBoxXYZ BoundBox;
+    std::string BoundBoxId;
     std::string HeightSupportsId;
     void FromJson(const json_t& paintStruct);
 

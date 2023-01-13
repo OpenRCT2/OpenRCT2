@@ -17,6 +17,7 @@ PaintStructDescriptor::PaintStructDescriptor()
     , ImageIdOffset(nullptr)
     , HeightSupports(nullptr)
     , ImageId(PaintStructDescriptor::ImageIdBase::Car0)
+    , BoundBoxTable(nullptr)
 {
 }
 
@@ -179,14 +180,22 @@ void PaintStructDescriptor::Paint(
                 if (offset != nullptr)
                     imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
 
-                auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
-                auto newBoundBox = BoundBox;
-                newBoundBox.offset.z += height;
+                if (BoundBoxTable != nullptr)
+                {
+                    auto it = BoundBoxTable->Values.find(trackSequence);
+                    if (it != BoundBoxTable->Values.end())
+                    {
+                        auto Offset = it->second.Coords;
+                        auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
+                        auto newBoundBox = it->second.Boundbox;
+                        newBoundBox.offset.z += height;
 
-                if (type == PaintType::AddImageAsParent)
-                    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
-                else if (type == PaintType::AddImageAsChild)
-                    PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                        if (type == PaintType::AddImageAsParent)
+                            PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                        else if (type == PaintType::AddImageAsChild)
+                            PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                    }
+                }
             }
         }
 
@@ -335,67 +344,9 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         }
     }
 
-    if (paintStruct.contains("offset_x"))
+    if (paintStruct.contains("boundBoxId"))
     {
-        auto offsetX = paintStruct["offset_x"];
-        if (offsetX.is_number())
-            Offset.x = offsetX;
-    }
-
-    if (paintStruct.contains("offset_y"))
-    {
-        auto offsetY = paintStruct["offset_y"];
-        if (offsetY.is_number())
-            Offset.y = offsetY;
-    }
-
-    if (paintStruct.contains("offset_z"))
-    {
-        auto offsetZ = paintStruct["offset_z"];
-        if (offsetZ.is_number())
-            Offset.z = offsetZ;
-    }
-
-    if (paintStruct.contains("bb_offset_x"))
-    {
-        auto bbOffsetX = paintStruct["bb_offset_x"];
-        if (bbOffsetX.is_number())
-            BoundBox.offset.x = bbOffsetX;
-    }
-
-    if (paintStruct.contains("bb_offset_y"))
-    {
-        auto bbOffsetY = paintStruct["bb_offset_y"];
-        if (bbOffsetY.is_number())
-            BoundBox.offset.y = bbOffsetY;
-    }
-
-    if (paintStruct.contains("bb_offset_z"))
-    {
-        auto bbOffsetZ = paintStruct["bb_offset_z"];
-        if (bbOffsetZ.is_number())
-            BoundBox.offset.z = bbOffsetZ;
-    }
-
-    if (paintStruct.contains("bb_length_x"))
-    {
-        auto bbLengthX = paintStruct["bb_length_x"];
-        if (bbLengthX.is_number())
-            BoundBox.length.x = bbLengthX;
-    }
-
-    if (paintStruct.contains("bb_length_y"))
-    {
-        auto bbLengthY = paintStruct["bb_length_y"];
-        if (bbLengthY.is_number())
-            BoundBox.length.y = bbLengthY;
-    }
-
-    if (paintStruct.contains("bb_length_z"))
-    {
-        auto bbLengthZ = paintStruct["bb_length_z"];
-        if (bbLengthZ.is_number())
-            BoundBox.length.z = bbLengthZ;
+        BoundBoxId = paintStruct["boundBoxId"];
     }
 
     if (paintStruct.contains("supportsHeightId"))
@@ -500,8 +451,10 @@ PaintStructDescriptor PaintStructJson::Value() const
         result.ImageIdOffset = it1->second.get();
 
     result.ImageIdOffsetIndex = ImageIdOffsetIndex;
-    result.Offset = Offset;
-    result.BoundBox = BoundBox;
+
+    auto it3 = _object._boundBoxMapping.find(BoundBoxId);
+    if (it3 != _object._boundBoxMapping.end())
+        result.BoundBoxTable = &it3->second;
 
     auto it2 = _object._heightMapping.find(HeightSupportsId);
     if (it2 != _object._heightMapping.end())
