@@ -793,7 +793,7 @@ public:
 
     void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
-        if (widgetIndex != WIDX_FILTER_TEXT_BOX || text.empty())
+        if (widgetIndex != WIDX_FILTER_TEXT_BOX)
             return;
 
         std::string tempText = text.data();
