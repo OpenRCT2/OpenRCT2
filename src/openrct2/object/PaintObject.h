@@ -56,5 +56,14 @@ public:
 
 constexpr const uint8_t* PaintObject::GetTrackSequenceMapping(const uint32_t direction, const track_type_t trackElement) const
 {
-    return track_map_3x3[direction];
+    switch (trackElement)
+    {
+        case TrackElemType::FlatTrack3x3:
+            return track_map_3x3[direction];
+        case TrackElemType::FlatTrack4x4:
+            return track_map_4x4[direction];
+        default:
+            return nullptr;
+    }
+    
 }

@@ -180,7 +180,7 @@ struct PaintStructDescriptor
     PaintStructDescriptor();
 
 private:
-    constexpr const uint8_t GetEdges(uint8_t trackSequence) const;
+    constexpr const uint8_t GetEdges(track_type_t element, uint8_t trackSequence) const;
 };
 
 class PaintObject;

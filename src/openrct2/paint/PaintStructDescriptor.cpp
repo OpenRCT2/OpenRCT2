@@ -57,7 +57,7 @@ void PaintStructDescriptor::Paint(
         }
     }
 
-    uint8_t edges = GetEdges(trackSequence);
+    uint8_t edges = GetEdges(trackElement.GetTrackType(), trackSequence);
 
     if (Floor.has_value())
     {
@@ -454,7 +454,16 @@ PaintStructDescriptor PaintStructJson::Value() const
     return result;
 }
 
-constexpr const uint8_t PaintStructDescriptor::GetEdges(uint8_t trackSequence) const
+constexpr const uint8_t PaintStructDescriptor::GetEdges(track_type_t element, uint8_t trackSequence) const
 {
-    return edges_3x3[trackSequence];
+    switch (element)
+    {
+        case TrackElemType::FlatTrack4x4:
+            return edges_4x4[trackSequence];
+        case TrackElemType::FlatTrack3x3:
+            return edges_3x3[trackSequence];
+        default:
+            return 0;
+    }
+    
 }
