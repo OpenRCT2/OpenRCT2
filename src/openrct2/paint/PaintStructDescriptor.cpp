@@ -394,6 +394,11 @@ void PaintStructKey::FromJson(const json_t& paintStruct)
         if (vehicleNumPeeps.is_number())
             VehicleNumPeeps[0] = vehicleNumPeeps;
     }
+
+    if (paintStruct.contains("sessionCurrentRotation"))
+    {
+        SessionCurrentRotation = paintStruct["sessionCurrentRotation"];
+    }
 }
 
 void ImageIdOffsetJson::FromJson(const json_t& imageIdOffset)

@@ -262,19 +262,20 @@ void PaintObject::Paint(
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
         {
             vehicle = GetEntity<Vehicle>(ride.vehicles[_vehicleIndices[0]]);
-
-            session.InteractionType = ViewportInteractionItem::Entity;
-            session.CurrentlyDrawnEntity = vehicle;
         }
     }
 
     // to-do: in the future, add a key val for every vehicle index, not just the first in the list
     if (vehicle != nullptr)
     {
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnEntity = vehicle;
         key.VehicleNumPeeps[0] = vehicle->num_peeps;
         key.VehiclePitch[0] = vehicle->Pitch;
         key.VehicleSpriteDirection[0] = vehicle->sprite_direction;
     }
+
+    key.SessionCurrentRotation = session.CurrentRotation;
 
     auto paintStructs = _paintStructsTree->Get(key);
     if (paintStructs != nullptr)

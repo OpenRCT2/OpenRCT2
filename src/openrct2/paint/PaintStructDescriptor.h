@@ -53,6 +53,7 @@ struct PaintStructKey
     std::optional<uint32_t> Element;
     std::optional<uint32_t> Direction;
     std::optional<uint32_t> TrackSequence;
+    std::optional<uint32_t> SessionCurrentRotation;
     VehicleParam VehicleSpriteDirection;
     VehicleParam VehiclePitch;
     VehicleParam VehicleNumPeeps;
@@ -62,7 +63,7 @@ struct PaintStructKey
     void Set(uint32_t location, uint32_t value);
     PaintStructDescriptorKey GetKey() const;
 
-    static constexpr const size_t NumArgs = 6;
+    static constexpr const size_t NumArgs = 7;
 
 private:
     std::array<std::optional<uint32_t>*, NumArgs> _fields;
@@ -74,6 +75,7 @@ private:
         _fields[3] = &VehicleNumPeeps[0];
         _fields[4] = &VehiclePitch[0];
         _fields[5] = &VehicleSpriteDirection[0];
+        _fields[6] = &SessionCurrentRotation;
     }
 };
 
