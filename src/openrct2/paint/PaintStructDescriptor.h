@@ -105,13 +105,13 @@ struct BoundBoxEntry
     std::unordered_map<uint32_t, BoundBoxEntryValue> Values;
 };
 
+using ImageIdTree = TreeContainer<PaintStructKey, uint32_t>;
 struct ImageIdOffset
 {
     std::string Id;
-    TreeContainer<PaintStructKey, uint32_t> Entries;
+    std::shared_ptr<ImageIdTree> Entries;
 
-    ImageIdOffset(const std::vector<PaintStructKey>& keys)
-        : Entries(keys)
+    ImageIdOffset()
     {
     }
 };

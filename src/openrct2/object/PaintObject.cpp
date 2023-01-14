@@ -240,6 +240,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         }
 
         std::vector<ImageIdOffsetJson> offsetsJson;
+        using ImageIdKeyValue = std::pair<PaintStructKey, uint32_t>;
         auto imageIdOffsets = root["imageIdOffsets"];
         if (imageIdOffsets.is_array())
         {
@@ -248,6 +249,19 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 ImageIdOffsetJson offsetJson;
                 offsetJson.FromJson(imageIdOffset);
                 offsetsJson.push_back(offsetJson);
+
+                std::vector<ImageIdKeyValue> keyValues;
+                for (size_t index = 0; index < offsetJson.Keys.size(); index++)
+                {
+                    const auto& key = offsetJson.Keys[index];
+                    const auto& values = offsetJson.Values[index];
+                    for (const auto& value : values)
+                        keyValues.push_back(ImageIdKeyValue(key, value));
+                }
+                ImageIdOffset offset;
+                offset.Id = offsetJson.Id;
+                offset.Entries = std::make_shared<ImageIdTree>(keyValues);
+                _imageIdOffsetMapping[offset.Id] = offset;
             }
         }
 
@@ -264,54 +278,24 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         }
 
         auto paintStructs = root["paintStructs"];
-        std::vector<PaintStructKey> keysJson;
-        std::vector<PaintStructJson> paintsJson;
+
+        using PaintKeyValue = std::pair<PaintStructKey, std::shared_ptr<PaintStructDescriptor>>;
+        std::vector<PaintKeyValue> paintKeyValues;
         if (paintStructs.is_array())
         {
             for (const auto& paintStruct : paintStructs)
             {
                 PaintStructJson paintJson(*this);
                 paintJson.FromJson(paintStruct);
-                paintJson.Key.FromJson(paintStruct);
-                paintsJson.push_back(paintJson);
+
+                PaintStructKey key;
+                key.FromJson(paintStruct);
+
+                paintKeyValues.push_back(PaintKeyValue(key, std::make_shared<PaintStructDescriptor>(paintJson.Value())));
+                
             }
         }
-
-        //generate the trees
-        for (const auto& paintStructJson : paintsJson)
-            keysJson.push_back(paintStructJson.Key);
-
-        _paintStructsTree = std::make_unique<PaintStructTree>(keysJson);
-        keysJson.clear();
-
-        for (const auto& offsetJson : offsetsJson)
-            keysJson.insert(keysJson.end(), offsetJson.Keys.begin(), offsetJson.Keys.end());
-
-        for (const auto& offsetJson : offsetsJson)
-        {
-            ImageIdOffset offset(keysJson);
-            offset.Id = offsetJson.Id;
-
-            for (size_t index = 0; index < offsetJson.Keys.size(); index++)
-            {
-                const auto& key = offsetJson.Keys[index];
-                const auto& values = offsetJson.Values[index];
-
-                for (const auto& value : values)
-                {
-                    offset.Entries.Add(key, value);
-                }
-            }
-            _imageIdOffsetMapping[offset.Id] = std::make_shared<ImageIdOffset>(offset);
-        }
-
-        for (const auto& paintStructJson : paintsJson)
-        {
-            const auto& key = paintStructJson.Key;
-            auto value = paintStructJson.Value();
-            auto ptr = std::make_shared<PaintStructDescriptor>(value);
-            _paintStructsTree->Add(key, ptr);
-        }
+        _paintStructsTree = std::make_unique<PaintStructTree>(paintKeyValues);
     }
     catch (JsonException& e)
     {

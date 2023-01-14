@@ -180,24 +180,27 @@ void PaintStructDescriptor::Paint(
 
             if (ImageIdOffset != nullptr)
             {
-                auto offset = ImageIdOffset->Entries.Get(key);
-                if (offset != nullptr)
-                    imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
-
-                if (BoundBoxTable != nullptr)
+                if (ImageIdOffset->Entries != nullptr)
                 {
-                    auto it = BoundBoxTable->Values.find(trackSequence);
-                    if (it != BoundBoxTable->Values.end())
-                    {
-                        auto Offset = it->second.Coords;
-                        auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
-                        auto newBoundBox = it->second.Boundbox;
-                        newBoundBox.offset.z += height;
+                    auto offset = ImageIdOffset->Entries->Get(key);
+                    if (offset != nullptr)
+                        imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
 
-                        if (type == PaintType::AddImageAsParent)
-                            PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
-                        else if (type == PaintType::AddImageAsChild)
-                            PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                    if (BoundBoxTable != nullptr)
+                    {
+                        auto it = BoundBoxTable->Values.find(trackSequence);
+                        if (it != BoundBoxTable->Values.end())
+                        {
+                            auto Offset = it->second.Coords;
+                            auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
+                            auto newBoundBox = it->second.Boundbox;
+                            newBoundBox.offset.z += height;
+
+                            if (type == PaintType::AddImageAsParent)
+                                PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                            else if (type == PaintType::AddImageAsChild)
+                                PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                        }
                     }
                 }
             }
@@ -452,7 +455,7 @@ PaintStructDescriptor PaintStructJson::Value() const
 
     auto it1 = _object._imageIdOffsetMapping.find(ImageIdOffsetId);
     if (it1 != _object._imageIdOffsetMapping.end())
-        result.ImageIdOffset = it1->second.get();
+        result.ImageIdOffset = &it1->second;
 
     result.ImageIdOffsetIndex = ImageIdOffsetIndex;
 

@@ -7,9 +7,8 @@
 template<class KeyType> class KeyGenerator
 {
 public:
-    KeyGenerator(const std::vector<KeyType>& keyDescs)
+    KeyGenerator()
     {
-        Initialize(keyDescs);
     }
     void Initialize(const std::vector<KeyType>& keyDescs);
 

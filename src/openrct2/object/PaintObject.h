@@ -32,7 +32,7 @@ private:
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
     std::map<std::string, HeightSupportsTable> _heightMapping;
-    std::map<std::string, std::shared_ptr<ImageIdOffset>> _imageIdOffsetMapping;
+    std::map<std::string, ImageIdOffset> _imageIdOffsetMapping;
     std::map<std::string, BoundBoxEntry> _boundBoxMapping;
 
     std::vector<uint32_t> _vehicleIndices;
