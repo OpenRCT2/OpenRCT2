@@ -201,7 +201,7 @@ namespace RCT2
           "rct2.footpath_railings.concrete" },
         { "PATHDIRT", "rct1.footpath_surface.dirt", "rct1aa.footpath_surface.queue_yellow",
           "rct2.footpath_railings.bamboo_brown" },
-        { "PATHSPCE", "rct1aa.footpath_surface.tarmac_red", "rct1.footpath_surface.queue_red",
+        { "PATHSPCE", "rct1aa.footpath_surface.tarmac_red", "rct1aa.footpath_surface.queue_red",
           "rct1ll.footpath_railings.space" },
         { "TARMACB ", "rct1aa.footpath_surface.tarmac_brown", "rct1aa.footpath_surface.queue_yellow",
           "rct2.footpath_railings.concrete" },
@@ -212,7 +212,7 @@ namespace RCT2
           "rct2.footpath_railings.concrete" },
         { "PATHCRZY", "rct1aa.footpath_surface.tiles_grey", "rct1.footpath_surface.queue_blue",
           "rct2.footpath_railings.concrete" },
-        { "PATHCRZY", "rct1ll.footpath_surface.tiles_red", "rct1.footpath_surface.queue_red",
+        { "PATHCRZY", "rct1ll.footpath_surface.tiles_red", "rct1aa.footpath_surface.queue_red",
           "rct2.footpath_railings.concrete" },
         { "PATHCRZY", "rct1ll.footpath_surface.tiles_green", "rct1aa.footpath_surface.queue_green",
           "rct2.footpath_railings.concrete" },
@@ -226,6 +226,14 @@ namespace RCT2
           "openrct2.footpath_railings.invisible" },
         { "JAINVSFP", "openrct2.footpath_surface.invisible", "openrct2.footpath_surface.queue_invisible",
           "openrct2.footpath_railings.invisible" },
+
+        // Some test objects were temporarily released to the public
+        { "#RCT1PTS", "rct1aa.footpath_surface.tiles_grey", "rct1.footpath_surface.queue_blue", "rct2.footpath_railings.wood" },
+        { "#RCT1PTG", "rct1ll.footpath_surface.tiles_green", "rct1aa.footpath_surface.queue_green",
+          "rct2.footpath_railings.wood" },
+        { "#RCT1PTR", "rct1ll.footpath_surface.tiles_red", "rct1aa.footpath_surface.queue_red", "rct2.footpath_railings.wood" },
+        { "#RCT1PTB", "rct1.footpath_surface.tiles_brown", "rct1aa.footpath_surface.queue_yellow",
+          "rct2.footpath_railings.wood" },
     };
 
     const FootpathMapping* GetFootpathSurfaceId(const ObjectEntryDescriptor& desc, bool ideallyLoaded, bool isQueue)

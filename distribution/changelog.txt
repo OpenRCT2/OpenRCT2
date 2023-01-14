@@ -18,6 +18,7 @@
 - Fix: [#19026] Park loan is clamped to a 32-bit integer.
 - Fix: [#19112] Clearing the last character in the Object Selection filter does not properly reset it.
 - Fix: [#19114] [Plugin] GameActionResult does not comply to API specification.
+- Fix: [#19136] SV6 saves with experimental RCT1 paths not imported correctly.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
