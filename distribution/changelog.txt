@@ -9,6 +9,7 @@
 - Improved: [#18826] [Plugin] Added all actions and their documentation to plugin API.
 - Improved: [#18945] Languages can now fall back to other languages than English.
 - Improved: [#18970] Trying to load a non-park save will now display a context error.
+- Improved: [#18975] Add lift sprites for 60 steep hills on the wooden roller coaster.
 - Improved: [#19044] Added special thanks to RMC and Wiegand to the About page.
 - Change: [#19018] Renamed actions to fit the naming scheme.
 - Fix: [#18467] “Selected only” Object Selection filter is active in Track Designs Manager, and cannot be toggled.

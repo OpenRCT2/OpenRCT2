@@ -606,6 +606,13 @@ static void wooden_rc_track_60_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
+    static constexpr const uint32_t imageIdsChained[4][2] = {
+        { SPR_G2_WOODEN_RC_60_SWNE_CHAINED, SPR_WOODEN_RC_60_DEG_RAILS_SW_NE },
+        { SPR_G2_WOODEN_RC_60_SWNE_CHAINED_BACK, SPR_WOODEN_RC_60_DEG_RAILS_NW_SE },
+        { SPR_G2_WOODEN_RC_60_SENW_CHAINED_BACK, SPR_WOODEN_RC_60_DEG_RAILS_NE_SW },
+        { SPR_G2_WOODEN_RC_60_SENW_CHAINED, SPR_WOODEN_RC_60_DEG_RAILS_SE_NW },
+    };
+
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WOODEN_RC_60_DEG_SW_NE, SPR_WOODEN_RC_60_DEG_RAILS_SW_NE },
         { SPR_WOODEN_RC_60_DEG_NW_SE, SPR_WOODEN_RC_60_DEG_RAILS_NW_SE },
@@ -613,16 +620,36 @@ static void wooden_rc_track_60_deg_up(
         { SPR_WOODEN_RC_60_DEG_SE_NW, SPR_WOODEN_RC_60_DEG_RAILS_SE_NW },
     };
 
-    if (direction == 0 || direction == 3)
+    if (trackElement.HasChain())
     {
-        wooden_rc_track_paint<isClassic>(
-            session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+        if (direction == 0 || direction == 3)
+        {
+            wooden_rc_track_paint<isClassic>(
+                session, imageIdsChained[direction][0], imageIdsChained[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3,
+                height);
+        }
+        else
+        {
+            session.WoodenSupportsPrependTo = wooden_rc_track_paint<isClassic>(
+                session, imageIdsChained[direction][0], imageIdsChained[direction][1], direction, 0, 0, 2, 24, 93, height, 28,
+                4, height - 16);
+        }
     }
     else
     {
-        session.WoodenSupportsPrependTo = wooden_rc_track_paint<isClassic>(
-            session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 93, height, 28, 4, height - 16);
+        if (direction == 0 || direction == 3)
+        {
+            wooden_rc_track_paint<isClassic>(
+                session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+        }
+        else
+        {
+            session.WoodenSupportsPrependTo = wooden_rc_track_paint<isClassic>(
+                session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 93, height, 28, 4,
+                height - 16);
+        }
     }
+
     WoodenASupportsPaintSetup(session, direction & 1, 21 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
@@ -730,6 +757,33 @@ static void wooden_rc_track_25_deg_up_to_60_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
+    static constexpr const uint32_t imageIdsChained[4][4] = {
+        {
+            SPR_G2_WOODEN_RC_25_60_SWNE_CHAINED,
+            SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_SW_NE,
+            0,
+            0,
+        },
+        {
+            SPR_WOODEN_RC_25_DEG_TO_60_DEG_NW_SE,
+            SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_NW_SE,
+            SPR_G2_WOODEN_RC_25_60_SENW_CHAINED_BACK,
+            SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_FRONT_NW_SE,
+        },
+        {
+            SPR_WOODEN_RC_25_DEG_TO_60_DEG_NE_SW,
+            SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_NE_SW,
+            SPR_G2_WOODEN_RC_25_60_SWNE_CHAINED_BACK,
+            SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_FRONT_NE_SW,
+        },
+        {
+            SPR_G2_WOODEN_RC_25_60_SENW_CHAINED,
+            SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_SE_NW,
+            0,
+            0,
+        },
+    };
+
     static constexpr const uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_SW_NE,
@@ -756,19 +810,40 @@ static void wooden_rc_track_25_deg_up_to_60_deg_up(
             0,
         },
     };
-
-    if (direction == 0 || direction == 3)
+    if (trackElement.HasChain())
     {
-        wooden_rc_track_paint<isClassic>(
-            session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+        if (direction == 0 || direction == 3)
+        {
+            wooden_rc_track_paint<isClassic>(
+                session, imageIdsChained[direction][0], imageIdsChained[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3,
+                height);
+        }
+        else
+        {
+            session.WoodenSupportsPrependTo = wooden_rc_track_paint<isClassic>(
+                session, imageIdsChained[direction][0], imageIdsChained[direction][1], direction, 0, 0, 2, 24, 43, height, 28,
+                4, height + 2);
+            wooden_rc_track_paint<isClassic>(
+                session, imageIdsChained[direction][2], imageIdsChained[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4,
+                height);
+        }
     }
     else
     {
-        session.WoodenSupportsPrependTo = wooden_rc_track_paint<isClassic>(
-            session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 43, height, 28, 4, height + 2);
-        wooden_rc_track_paint<isClassic>(
-            session, imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4, height);
+        if (direction == 0 || direction == 3)
+        {
+            wooden_rc_track_paint<isClassic>(
+                session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+        }
+        else
+        {
+            session.WoodenSupportsPrependTo = wooden_rc_track_paint<isClassic>(
+                session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 43, height, 28, 4, height + 2);
+            wooden_rc_track_paint<isClassic>(
+                session, imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4, height);
+        }
     }
+
     WoodenASupportsPaintSetup(session, direction & 1, 13 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
@@ -790,6 +865,33 @@ static void wooden_rc_track_60_deg_up_to_25_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
+    static constexpr const uint32_t imageIdsChained[4][4] = {
+        {
+            SPR_G2_WOODEN_RC_60_25_SWNE_CHAINED,
+            SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SW_NE,
+            0,
+            0,
+        },
+        {
+            SPR_WOODEN_RC_60_DEG_TO_25_DEG_NW_SE,
+            SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NW_SE,
+            SPR_G2_WOODEN_RC_60_25_SWNE_CHAINED_BACK,
+            SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NW_SE,
+        },
+        {
+            SPR_WOODEN_RC_60_DEG_TO_25_DEG_NE_SW,
+            SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NE_SW,
+            SPR_G2_WOODEN_RC_60_25_SENW_CHAINED_BACK,
+            SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NE_SW,
+        },
+        {
+            SPR_G2_WOODEN_RC_60_25_SENW_CHAINED,
+            SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SE_NW,
+            0,
+            0,
+        },
+    };
+
     static constexpr const uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_SW_NE,
@@ -817,18 +919,41 @@ static void wooden_rc_track_60_deg_up_to_25_deg_up(
         },
     };
 
-    if (direction == 0 || direction == 3)
+    if (trackElement.HasChain())
     {
-        wooden_rc_track_paint<isClassic>(
-            session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+        if (direction == 0 || direction == 3)
+        {
+            wooden_rc_track_paint<isClassic>(
+                session, imageIdsChained[direction][0], imageIdsChained[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3,
+                height);
+        }
+        else
+        {
+            session.WoodenSupportsPrependTo = wooden_rc_track_paint<isClassic>(
+                session, imageIdsChained[direction][0], imageIdsChained[direction][1], direction, 0, 0, 24, 1, 61, height, 4,
+                28, height - 16);
+            wooden_rc_track_paint<isClassic>(
+                session, imageIdsChained[direction][2], imageIdsChained[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4,
+                height);
+        }
     }
     else
     {
-        session.WoodenSupportsPrependTo = wooden_rc_track_paint<isClassic>(
-            session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 24, 1, 61, height, 4, 28, height - 16);
-        wooden_rc_track_paint<isClassic>(
-            session, imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4, height);
+        if (direction == 0 || direction == 3)
+        {
+            wooden_rc_track_paint<isClassic>(
+                session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+        }
+        else
+        {
+            session.WoodenSupportsPrependTo = wooden_rc_track_paint<isClassic>(
+                session, imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 24, 1, 61, height, 4, 28,
+                height - 16);
+            wooden_rc_track_paint<isClassic>(
+                session, imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4, height);
+        }
     }
+
     WoodenASupportsPaintSetup(session, direction & 1, 17 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     if (direction == 0 || direction == 3)
