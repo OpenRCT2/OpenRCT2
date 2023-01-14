@@ -28,14 +28,14 @@ class PaintObject final : public Object
 {
 private:
     std::unique_ptr<PaintStructTree> _paintStructsTree;
-
-    std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
     std::map<std::string, HeightSupportsTable> _heightMapping;
     std::map<std::string, ImageIdOffset> _imageIdOffsetMapping;
     std::map<std::string, BoundBoxEntry> _boundBoxMapping;
 
     std::vector<uint32_t> _vehicleIndices;
+
+    constexpr const uint8_t* GetTrackSequenceMapping(const uint32_t direction, const track_type_t trackElement) const;
 
 public:
     PaintObject();
@@ -54,3 +54,8 @@ public:
 
     friend struct PaintStructJson;
 };
+
+constexpr const uint8_t* PaintObject::GetTrackSequenceMapping(const uint32_t direction, const track_type_t trackElement) const
+{
+    return track_map_3x3[direction];
+}

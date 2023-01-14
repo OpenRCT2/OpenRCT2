@@ -20,41 +20,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     try
     {
-        if (root.contains("trackSequenceTables"))
-        {
-            auto trackSequenceTables = root["trackSequenceTables"];
-            if (trackSequenceTables.is_array())
-            {
-                for (const auto& trackSequenceTable : trackSequenceTables)
-                {
-                    PaintStructSequenceMapping table;
-                    auto sequences = trackSequenceTable["sequences"];
-                    if (sequences.is_array())
-                    {
-                        size_t index = 0;
-                        for (const auto& sequence : sequences)
-                        {
-                            if (sequence.is_array())
-                            {
-                                for (const auto& value : sequence)
-                                {
-                                    if (value.is_number())
-                                        table[index].push_back(value);
-                                }
-                            }
-                            index++;
-                        }
-                    }
-
-                    const auto& trackElement = trackSequenceTable["trackElement"];
-                    track_type_t element = 0;
-                    if (trackElement == "flat_track_3x3")
-                        element = TrackElemType::FlatTrack3x3;
-                    _sequenceMappings[element] = table;
-                }
-            }
-        }
-
         if (root.contains("edgesTables"))
         {
             auto edgesTables = root["edgesTables"];
@@ -322,9 +287,9 @@ void PaintObject::Paint(
     key.Direction = direction;
     key.Element = trackElement.GetTrackType();
 
-    auto it = _sequenceMappings.find(key.Element.value());
-    if (it != _sequenceMappings.end())
-        trackSequence = it->second[direction][trackSequence];
+    auto trackSequenceMapping = GetTrackSequenceMapping(direction, key.Element.value());
+    if (trackSequenceMapping != nullptr)
+        trackSequence = trackSequenceMapping[trackSequence];
     key.TrackSequence = trackSequence;
 
     // check the first vehicle in the list
