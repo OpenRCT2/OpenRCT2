@@ -13,7 +13,6 @@ PaintStructDescriptor::PaintStructDescriptor()
     , SecondaryColour(Colour::VehicleTrim)
     , SecondaryColourIndex(0)
     , ImageIdOffsetIndex(0)
-    , Edges(nullptr)
     , ImageIdOffset(nullptr)
     , HeightSupports(nullptr)
     , ImageId(PaintStructDescriptor::ImageIdBase::Car0)
@@ -58,21 +57,7 @@ void PaintStructDescriptor::Paint(
         }
     }
 
-    // transform the track sequence with the track mapping if there is one
-    /*if (Key.TrackSequenceMapping != nullptr)
-    {
-        const auto& sequenceMapping = *Key.TrackSequenceMapping;
-        const auto& mapping = sequenceMapping[direction];
-        if (trackSequence < mapping.size())
-            trackSequence = mapping[trackSequence];
-    }*/
-
-    uint8_t edges = 0;
-    if (Edges != nullptr)
-    {
-        if (trackSequence < Edges->size())
-            edges = (*Edges)[trackSequence];
-    }
+    uint8_t edges = GetEdges(trackSequence);
 
     if (Floor.has_value())
     {
@@ -439,11 +424,6 @@ PaintStructDescriptor PaintStructJson::Value() const
     PaintStructDescriptor result;
     result.Supports = Supports;
     result.Floor = Floor;
-
-    auto it0 = _object._edgeMappings.find(EdgesId);
-    if (it0 != _object._edgeMappings.end())
-        result.Edges = &it0->second;
-
     result.Fences = Fences;
     result.PaintCode = PaintType;
     result.ImageIdScheme = ImageIdScheme;
@@ -467,4 +447,9 @@ PaintStructDescriptor PaintStructJson::Value() const
     if (it2 != _object._heightMapping.end())
         result.HeightSupports = &it2->second;
     return result;
+}
+
+constexpr const uint8_t PaintStructDescriptor::GetEdges(uint8_t trackSequence) const
+{
+    return edges_3x3[trackSequence];
 }

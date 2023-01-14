@@ -20,45 +20,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     try
     {
-        if (root.contains("edgesTables"))
-        {
-            auto edgesTables = root["edgesTables"];
-            if (edgesTables.is_array())
-            {
-                for (const auto& edgeTable : edgesTables)
-                {
-                    PaintStructEdgesTable table;
-
-                    auto edges = edgeTable["edges"];
-                    if (edges.is_array())
-                    {
-                        for (const auto& edge : edges)
-                        {
-                            uint32_t result = 0;
-                            if (edge.is_array())
-                            {
-                                for (const auto& side : edge)
-                                {
-                                    if (side == "ne")
-                                        result |= EDGE_NE;
-                                    else if (side == "se")
-                                        result |= EDGE_SE;
-                                    else if (side == "sw")
-                                        result |= EDGE_SW;
-                                    else if (side == "nw")
-                                        result |= EDGE_NW;
-                                }
-                            }
-                            table.push_back(static_cast<edge_t>(result));
-                        }
-                    }
-
-                    auto id = edgeTable["id"];
-                    _edgeMappings[id] = table;
-                }
-            }
-        }
-
         if (root.contains("heightSupportsTables"))
         {
             auto heightTables = root["heightSupportsTables"];

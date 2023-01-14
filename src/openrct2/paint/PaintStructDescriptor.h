@@ -155,7 +155,6 @@ struct PaintStructDescriptor
 
     std::optional<SupportsType> Supports;
     std::optional<FloorType> Floor;
-    const PaintStructEdgesTable* Edges;
     std::optional<FenceType> Fences;
     std::optional<PaintType> PaintCode;
     std::optional<Scheme> ImageIdScheme;
@@ -177,6 +176,9 @@ struct PaintStructDescriptor
         const TrackElement& trackElement, const PaintStructKey& key, const Vehicle* vehicle) const;
 
     PaintStructDescriptor();
+
+private:
+    constexpr const uint8_t GetEdges(uint8_t trackSequence) const;
 };
 
 class PaintObject;
