@@ -7,10 +7,11 @@
 template<class KeyType> class KeyGenerator
 {
 public:
-    KeyGenerator()
+    KeyGenerator(const std::vector<KeyType>& keyDescs)
     {
+        Initialize(keyDescs);
     }
-    void Initialize(std::vector<KeyType>& keyDescs);
+    void Initialize(const std::vector<KeyType>& keyDescs);
 
     std::vector<uint32_t> GetParams(const KeyType& key) const;
     std::vector<KeyType> GenerateKeys(const KeyType& key) const;
@@ -20,7 +21,7 @@ private:
 };
 
 template<class KeyType>
-void KeyGenerator<KeyType>::Initialize(std::vector<KeyType>& keys)
+void KeyGenerator<KeyType>::Initialize(const std::vector<KeyType>& keys)
 {
     for (auto& vector : _elements)
         vector.clear();

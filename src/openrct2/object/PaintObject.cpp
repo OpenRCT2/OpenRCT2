@@ -13,7 +13,6 @@
 #include "ObjectRepository.h"
 
 PaintObject::PaintObject()
-    : _paintStructsTree(_keyGen)
 {
 }
 
@@ -282,17 +281,15 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         for (const auto& paintStructJson : paintsJson)
             keysJson.push_back(paintStructJson.Key);
 
-        _keyGen.Initialize(keysJson);
+        _paintStructsTree = std::make_unique<PaintStructTree>(keysJson);
         keysJson.clear();
 
         for (const auto& offsetJson : offsetsJson)
             keysJson.insert(keysJson.end(), offsetJson.Keys.begin(), offsetJson.Keys.end());
 
-        _imageIdGen.Initialize(keysJson);
-
         for (const auto& offsetJson : offsetsJson)
         {
-            ImageIdOffset offset(_imageIdGen);
+            ImageIdOffset offset(keysJson);
             offset.Id = offsetJson.Id;
 
             for (size_t index = 0; index < offsetJson.Keys.size(); index++)
@@ -313,7 +310,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             const auto& key = paintStructJson.Key;
             auto value = paintStructJson.Value();
             auto ptr = std::make_shared<PaintStructDescriptor>(value);
-            _paintStructsTree.Add(key, ptr);
+            _paintStructsTree->Add(key, ptr);
         }
     }
     catch (JsonException& e)
@@ -369,7 +366,7 @@ void PaintObject::Paint(
         key.VehicleSpriteDirection[0] = vehicle->sprite_direction;
     }
 
-    auto paintStructs = _paintStructsTree.Get(key);
+    auto paintStructs = _paintStructsTree->Get(key);
     if (paintStructs != nullptr)
     {
         for (const auto& paintStruct : *paintStructs)

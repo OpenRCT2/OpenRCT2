@@ -21,13 +21,13 @@
 #include <optional>
 #include <vector>
 
+using PaintStructTree = TreeContainer<PaintStructKey, std::shared_ptr<PaintStructDescriptor>>;
+
 struct TrackElement;
 class PaintObject final : public Object
 {
 private:
-    KeyGenerator<PaintStructKey> _keyGen, _imageIdGen;
-    TreeContainer<PaintStructKey, std::shared_ptr<PaintStructDescriptor>, KeyGenerator<PaintStructKey>>
-        _paintStructsTree;
+    std::unique_ptr<PaintStructTree> _paintStructsTree;
 
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
@@ -36,6 +36,7 @@ private:
     std::map<std::string, BoundBoxEntry> _boundBoxMapping;
 
     std::vector<uint32_t> _vehicleIndices;
+
 public:
     PaintObject();
 

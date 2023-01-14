@@ -77,17 +77,6 @@ private:
     }
 };
 
-struct ImageIdOffset
-{
-    std::string Id;
-    TreeContainer<PaintStructKey, uint32_t, KeyGenerator<PaintStructKey>> Entries;
-
-    ImageIdOffset(const KeyGenerator<PaintStructKey>& keyGenerator)
-        : Entries(keyGenerator)
-    {
-    }
-};
-
 struct ImageIdOffsetJson
 {
     std::string Id;
@@ -114,6 +103,17 @@ struct BoundBoxEntry
 {
     std::string Id;
     std::unordered_map<uint32_t, BoundBoxEntryValue> Values;
+};
+
+struct ImageIdOffset
+{
+    std::string Id;
+    TreeContainer<PaintStructKey, uint32_t> Entries;
+
+    ImageIdOffset(const std::vector<PaintStructKey>& keys)
+        : Entries(keys)
+    {
+    }
 };
 
 using PaintStructEdgesTable = std::vector<edge_t>;
