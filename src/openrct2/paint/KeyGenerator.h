@@ -4,26 +4,23 @@
 #include <optional>
 #include <vector>
 
-template<class KeyType, class KeyTypeDesc> class KeyGenerator
+template<class KeyType> class KeyGenerator
 {
 public:
     KeyGenerator()
     {
     }
-    void Initialize(std::vector<KeyTypeDesc>& keyDescs);
+    void Initialize(std::vector<KeyType>& keyDescs);
 
-    std::vector<std::vector<uint32_t>> GetParams(const KeyTypeDesc& key) const;
     std::vector<uint32_t> GetParams(const KeyType& key) const;
-
+    std::vector<KeyType> GenerateKeys(const KeyType& key) const;
 private:
-    std::vector<KeyType> GenerateKeys(const KeyTypeDesc& key) const;
-
-    using ElementsType = std::array<std::vector<uint32_t>, KeyTypeDesc::NumArgs>;
+    using ElementsType = std::array<std::vector<uint32_t>, KeyType::NumArgs>;
     ElementsType _elements;
 };
 
-template<class KeyType, class KeyTypeDesc>
-void KeyGenerator<KeyType, KeyTypeDesc>::Initialize(std::vector<KeyTypeDesc>& keys)
+template<class KeyType>
+void KeyGenerator<KeyType>::Initialize(std::vector<KeyType>& keys)
 {
     for (auto& vector : _elements)
         vector.clear();
@@ -52,8 +49,8 @@ void KeyGenerator<KeyType, KeyTypeDesc>::Initialize(std::vector<KeyTypeDesc>& ke
     }
 }
 
-template<class KeyType, class KeyTypeDesc>
-std::vector<KeyType> KeyGenerator<KeyType, KeyTypeDesc>::GenerateKeys(const KeyTypeDesc& keyDesc) const
+template<class KeyType>
+std::vector<KeyType> KeyGenerator<KeyType>::GenerateKeys(const KeyType& keyDesc) const
 {
     ElementsType elementValues;
     for (uint32_t index = 0; index < _elements.size(); index++)
@@ -71,7 +68,7 @@ std::vector<KeyType> KeyGenerator<KeyType, KeyTypeDesc>::GenerateKeys(const KeyT
             values = vector;
     }
 
-    std::vector<KeyTypeDesc> oldKeys, newKeys;
+    std::vector<KeyType> oldKeys, newKeys;
     newKeys.push_back(keyDesc);
 
     for (uint32_t index = 0; index < _elements.size(); index++)
@@ -101,37 +98,25 @@ std::vector<KeyType> KeyGenerator<KeyType, KeyTypeDesc>::GenerateKeys(const KeyT
             }
         }
     }
-
-    std::vector<KeyType> result;
-    for (auto& newKey : newKeys)
-    {
-        result.push_back(newKey.GetKey());
-    }
-    return result;
+    return newKeys;
 }
 
-template<class KeyType, class KeyTypeDesc>
-std::vector<uint32_t> KeyGenerator<KeyType, KeyTypeDesc>::GetParams(const KeyType& key) const
+template<class KeyType>
+std::vector<uint32_t> KeyGenerator<KeyType>::GetParams(const KeyType& keyDesc) const
 {
-    std::vector<uint32_t> result;
-    for (uint32_t index = 0; index < KeyTypeDesc::NumArgs; index++)
+    std::vector<uint32_t> params;
+    for (uint32_t index = 0; index < KeyType::NumArgs; index++)
     {
         if (_elements[index].size() != 0)
         {
-            uint32_t param = key.Get(index);
-            result.push_back(param);
+            if (keyDesc.Get(index).has_value())
+            {
+                uint32_t param = keyDesc.Get(index).value();
+                params.push_back(param);
+            }
+            else
+                params.push_back(0);
         }
     }
-    return result;
-}
-
-template<class KeyType, class KeyTypeDesc>
-std::vector<std::vector<uint32_t>> KeyGenerator<KeyType, KeyTypeDesc>::GetParams(const KeyTypeDesc& keyDesc) const
-{
-    std::vector<std::vector<uint32_t>> result;
-    auto keys = GenerateKeys(keyDesc);
-
-    for (const auto& key : keys)
-        result.push_back(GetParams(key));
-    return result;
+    return params;
 }

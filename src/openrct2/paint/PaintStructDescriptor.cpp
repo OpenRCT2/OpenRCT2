@@ -26,48 +26,19 @@ bool operator==(const VehicleKey& lhs, const VehicleKey& rhs)
     return lhs.SpriteDirection == rhs.SpriteDirection && lhs.Pitch == rhs.Pitch && lhs.NumPeeps == rhs.NumPeeps;
 }
 
-bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptorKey& rhs)
-{
-    return lhs.Element == rhs.Element && lhs.Direction == rhs.Direction && lhs.TrackSequence == rhs.TrackSequence
-        && lhs.VehicleKey == rhs.VehicleKey;
-}
-
-uint32_t PaintStructDescriptorKey::Get(uint32_t location) const
+const std::optional<uint32_t>& PaintStructKey::Get(uint32_t location) const
 {
     return *_fields[location];
 }
 
-
-void PaintStructDescriptorKey::Set(uint32_t location, uint32_t value)
+void PaintStructKey::Set(uint32_t location, uint32_t value)
 {
     *_fields[location] = value;
-}
-
-const std::optional<uint32_t>& PaintStructKeyJson::Get(uint32_t location) const
-{
-    return *_fields[location];
-}
-
-void PaintStructKeyJson::Set(uint32_t location, uint32_t value)
-{
-    *_fields[location] = value;
-}
-
-PaintStructDescriptorKey PaintStructKeyJson::GetKey() const
-{
-    PaintStructDescriptorKey result;
-    result.Element = _fields[0]->value();
-    result.Direction = _fields[1]->value();
-    result.TrackSequence = _fields[2]->value();
-    result.VehicleKey[0].NumPeeps = _fields[3]->value();
-    result.VehicleKey[0].Pitch = _fields[4]->value();
-    result.VehicleKey[0].SpriteDirection = _fields[5]->value();
-    return result;
 }
 
 void PaintStructDescriptor::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, const PaintStructDescriptorKey& key, const Vehicle* vehicle) const
+    const TrackElement& trackElement, const PaintStructKey& key, const Vehicle* vehicle) const
 {
     // if (!Key.MatchWithKeys(trackElement.GetTrackType(), direction, trackSequence, vehicle))
     // return;
@@ -388,7 +359,7 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
     }
 }
 
-void PaintStructKeyJson::FromJson(const json_t& paintStruct)
+void PaintStructKey::FromJson(const json_t& paintStruct)
 {
     if (paintStruct.contains("trackElement"))
     {
@@ -446,7 +417,7 @@ void ImageIdOffsetJson::FromJson(const json_t& imageIdOffset)
     {
         for (const auto& entry : entries)
         {
-            PaintStructKeyJson keyJson;
+            PaintStructKey keyJson;
             keyJson.FromJson(entry);
             Keys.push_back(keyJson);
 

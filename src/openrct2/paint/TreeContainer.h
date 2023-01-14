@@ -3,12 +3,12 @@
 #include <unordered_map>
 #include <vector>
 
-template<class KeyType, class KeyTypeDesc, class ValueType, class KeyInserter> class Node
+template<class KeyType, class ValueType, class KeyInserter> class Node
 {
 public:
     Node(){};
     void Insert(uint32_t index);
-    template<class KeyType, class KeyTypeDesc, class ValueType, class KeyInserter> friend class TreeContainer;
+    template<class KeyType, class ValueType, class KeyInserter> friend class TreeContainer;
 
 protected:
     std::vector<ValueType> _values;
@@ -16,8 +16,8 @@ protected:
 };
 
 struct PaintStructDescriptorKey;
-template<class KeyType, class KeyTypeDesc, class ValueType, class KeyInserter>
-class TreeContainer : public Node<KeyType, KeyTypeDesc, ValueType, KeyInserter>
+template<class KeyType, class ValueType, class KeyInserter>
+class TreeContainer : public Node<KeyType, ValueType, KeyInserter>
 {
 public:
     TreeContainer(const KeyInserter& keyInserter)
@@ -25,7 +25,7 @@ public:
     {
     }
 
-    void Add(const KeyTypeDesc& location, const ValueType& value);
+    void Add(const KeyType& location, const ValueType& value);
 
     const std::vector<ValueType>* Get(const KeyType& location) const;
 
@@ -36,17 +36,17 @@ private:
     const KeyInserter& _keyInserter;
 };
 
-template<class KeyType, class KeyTypeDesc, class ValueType, class KeyInserter>
-void Node<KeyType, KeyTypeDesc, ValueType, KeyInserter>::Insert(uint32_t index)
+template<class KeyType, class ValueType, class KeyInserter>
+void Node<KeyType, ValueType, KeyInserter>::Insert(uint32_t index)
 {
-    _children[index] = Node<KeyType, KeyTypeDesc, ValueType, KeyInserter>();
+    _children[index] = Node<KeyType, ValueType, KeyInserter>();
 }
 
-template<class KeyType, class KeyTypeDesc, class ValueType, class KeyInserter>
-const std::vector<ValueType>* TreeContainer<KeyType, KeyTypeDesc, ValueType, KeyInserter>::Get(
+template<class KeyType, class ValueType, class KeyInserter>
+const std::vector<ValueType>* TreeContainer<KeyType, ValueType, KeyInserter>::Get(
     const std::vector<uint32_t>& location) const
 {
-    const Node<KeyType, KeyTypeDesc, ValueType, KeyInserter>* nextNode = this;
+    const Node<KeyType, ValueType, KeyInserter>* nextNode = this;
     for (const auto& loc : location)
     {
         const auto it = nextNode->_children.find(loc);
@@ -58,10 +58,10 @@ const std::vector<ValueType>* TreeContainer<KeyType, KeyTypeDesc, ValueType, Key
     return &nextNode->_values;
 }
 
-template<class KeyType, class KeyTypeDesc, class ValueType, class KeyInserter>
-void TreeContainer<KeyType, KeyTypeDesc, ValueType, KeyInserter>::Add(const std::vector<uint32_t>& location, const ValueType& value)
+template<class KeyType, class ValueType, class KeyInserter>
+void TreeContainer<KeyType, ValueType, KeyInserter>::Add(const std::vector<uint32_t>& location, const ValueType& value)
 {
-    Node<KeyType, KeyTypeDesc, ValueType, KeyInserter>* nextNode = this;
+    Node<KeyType, ValueType, KeyInserter>* nextNode = this;
     for (const auto& loc : location)
     {
         auto it = nextNode->_children.find(loc);
@@ -72,16 +72,20 @@ void TreeContainer<KeyType, KeyTypeDesc, ValueType, KeyInserter>::Add(const std:
     nextNode->_values.push_back(value);
 }
 
-template<class KeyType, class KeyTypeDesc, class ValueType, class KeyInserter>
-void TreeContainer<KeyType, KeyTypeDesc, ValueType, KeyInserter>::Add(const KeyTypeDesc& location, const ValueType& value)
+template<class KeyType, class ValueType, class KeyInserter>
+void TreeContainer<KeyType, ValueType, KeyInserter>::Add(const KeyType& location, const ValueType& value)
 {
-    auto keys = _keyInserter.GetParams(location);
+    auto keys = _keyInserter.GenerateKeys(location);
     for (const auto& key : keys)
-        Add(key, value);
+    {
+        auto params = _keyInserter.GetParams(key);
+        Add(params, value);
+    }
 }
 
-template<class KeyType, class KeyTypeDesc, class ValueType, class KeyInserter>
-const std::vector<ValueType>* TreeContainer<KeyType, KeyTypeDesc, ValueType, KeyInserter>::Get(const KeyType& location) const
+template<class KeyType, class ValueType, class KeyInserter>
+const std::vector<ValueType>* TreeContainer<KeyType, ValueType, KeyInserter>::Get(
+    const KeyType& location) const
 {
     return Get(_keyInserter.GetParams(location));
 }

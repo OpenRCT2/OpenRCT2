@@ -265,7 +265,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
         }
 
         auto paintStructs = root["paintStructs"];
-        std::vector<PaintStructKeyJson> keysJson;
+        std::vector<PaintStructKey> keysJson;
         std::vector<PaintStructJson> paintsJson;
         if (paintStructs.is_array())
         {
@@ -337,11 +337,11 @@ void PaintObject::Paint(
     // for (const auto& paintStruct : _paintStructs)
     // paintStruct.Paint(session, ride, trackSequence, direction, height, trackElement);
 
-    PaintStructDescriptorKey key;
+    PaintStructKey key;
     key.Direction = direction;
     key.Element = trackElement.GetTrackType();
 
-    auto it = _sequenceMappings.find(key.Element);
+    auto it = _sequenceMappings.find(key.Element.value());
     if (it != _sequenceMappings.end())
         trackSequence = it->second[direction][trackSequence];
     key.TrackSequence = trackSequence;
@@ -364,9 +364,9 @@ void PaintObject::Paint(
     // to-do: in the future, add a key val for every vehicle index, not just the first in the list
     if (vehicle != nullptr)
     {
-        key.VehicleKey[0].NumPeeps = vehicle->num_peeps;
-        key.VehicleKey[0].Pitch = vehicle->Pitch;
-        key.VehicleKey[0].SpriteDirection = vehicle->sprite_direction;
+        key.VehicleNumPeeps[0] = vehicle->num_peeps;
+        key.VehiclePitch[0] = vehicle->Pitch;
+        key.VehicleSpriteDirection[0] = vehicle->sprite_direction;
     }
 
     auto paintStructs = _paintStructsTree.Get(key);
