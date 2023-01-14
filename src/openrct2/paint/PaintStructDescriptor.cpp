@@ -32,6 +32,39 @@ bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptor
         && lhs.VehicleKey == rhs.VehicleKey;
 }
 
+uint32_t PaintStructDescriptorKey::Get(uint32_t location) const
+{
+    return *_fields[location];
+}
+
+
+void PaintStructDescriptorKey::Set(uint32_t location, uint32_t value)
+{
+    *_fields[location] = value;
+}
+
+const std::optional<uint32_t>& PaintStructKeyJson::Get(uint32_t location) const
+{
+    return *_fields[location];
+}
+
+void PaintStructKeyJson::Set(uint32_t location, uint32_t value)
+{
+    *_fields[location] = value;
+}
+
+PaintStructDescriptorKey PaintStructKeyJson::GetKey() const
+{
+    PaintStructDescriptorKey result;
+    result.Element = _fields[0]->value();
+    result.Direction = _fields[1]->value();
+    result.TrackSequence = _fields[2]->value();
+    result.VehicleKey[0].NumPeeps = _fields[3]->value();
+    result.VehicleKey[0].Pitch = _fields[4]->value();
+    result.VehicleKey[0].SpriteDirection = _fields[5]->value();
+    return result;
+}
+
 void PaintStructDescriptor::Paint(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, const PaintStructDescriptorKey& key, const Vehicle* vehicle) const
@@ -461,39 +494,3 @@ PaintStructDescriptor PaintStructJson::Value() const
         result.HeightSupports = &it2->second;
     return result;
 }
-
-
-PaintStructKeyBuilder::PaintStructKeyBuilder(PaintStructKeyJson& keyJson)
-{
-    _params[0] = &keyJson.Element;
-    _params[1] = &keyJson.Direction;
-    _params[2] = &keyJson.TrackSequence;
-    _params[3] = &keyJson.VehicleNumPeeps[0];
-    _params[4] = &keyJson.VehiclePitch[0];
-    _params[5] = &keyJson.VehicleSpriteDirection[0];
-}
-
-PaintStructDescriptorKey PaintStructKeyBuilder::GetKey() const
-{
-    PaintStructDescriptorKey result;
-    result.Element = _params[0]->value();
-    result.Direction = _params[1]->value();
-    result.TrackSequence = _params[2]->value();
-    result.VehicleKey[0].NumPeeps = _params[3]->value();
-    result.VehicleKey[0].Pitch = _params[4]->value();
-    result.VehicleKey[0].SpriteDirection = _params[5]->value();
-    return result;
-}
-
-const std::optional<uint32_t> PaintStructKeyBuilder::Get(uint32_t location) const
-{
-    if (location >= _params.size())
-        return std::optional<uint32_t>();
-    return *_params[location];
-}
-
-void PaintStructKeyBuilder::Set(uint32_t location, uint32_t value)
-{
-    *_params[location] = value;
-}
-

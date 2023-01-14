@@ -2,8 +2,8 @@
 
 #include "../Limits.h"
 #include "../ride/TrackData.h"
-#include "TreeContainer.h"
 #include "KeyGenerator.h"
+#include "TreeContainer.h"
 
 #include <array>
 #include <optional>
@@ -31,23 +31,66 @@ bool operator==(const VehicleKey& lhs, const VehicleKey& rhs);
 
 struct PaintStructDescriptorKey
 {
-    constexpr PaintStructDescriptorKey()
+    PaintStructDescriptorKey()
         : Element(0)
         , Direction(0)
         , TrackSequence(0)
     {
+        SetFields();
+    }
+
+    PaintStructDescriptorKey(const PaintStructDescriptorKey& other)
+        : Element(other.Element)
+        , Direction(other.Direction)
+        , TrackSequence(other.TrackSequence)
+        , VehicleKey(other.VehicleKey)
+    {
+        SetFields();
     }
 
     uint32_t Element;
     uint32_t Direction;
     uint32_t TrackSequence;
     std::array<VehicleKey, OpenRCT2::Limits::MaxTrainsPerRide + 1> VehicleKey;
+
+    uint32_t Get(uint32_t location) const;
+    void Set(uint32_t location, uint32_t value);
+
+    static constexpr const size_t NumArgs = 6;
+private:
+    std::array<uint32_t*, NumArgs> _fields;
+
+    void SetFields()
+    {
+        _fields[0] = &Element;
+        _fields[1] = &Direction;
+        _fields[2] = &TrackSequence;
+        _fields[3] = &VehicleKey[0].NumPeeps;
+        _fields[4] = &VehicleKey[0].Pitch;
+        _fields[5] = &VehicleKey[0].SpriteDirection;
+    }
 };
 
 bool operator==(const PaintStructDescriptorKey& lhs, const PaintStructDescriptorKey& rhs);
 
 struct PaintStructKeyJson
 {
+    PaintStructKeyJson()
+    {
+        SetFields();
+    }
+
+    PaintStructKeyJson(const PaintStructKeyJson& other)
+        : Element(other.Element)
+        , Direction(other.Direction)
+        , TrackSequence(other.TrackSequence)
+        , VehicleSpriteDirection(other.VehicleSpriteDirection)
+        , VehiclePitch(other.VehiclePitch)
+        , VehicleNumPeeps(other.VehicleNumPeeps)
+    {
+        SetFields();
+    }
+
     using VehicleParam = std::array<std::optional<uint32_t>, OpenRCT2::Limits::MaxTrainsPerRide + 1>;
     std::optional<uint32_t> Element;
     std::optional<uint32_t> Direction;
@@ -55,48 +98,35 @@ struct PaintStructKeyJson
     VehicleParam VehicleSpriteDirection;
     VehicleParam VehiclePitch;
     VehicleParam VehicleNumPeeps;
-
     void FromJson(const json_t& element);
-};
 
-class PaintStructKeyBuilder
-{
-public:
-    PaintStructKeyBuilder(PaintStructKeyJson& keyJson);
-
-    constexpr const static size_t NumArgs = 6;
-    const std::optional<uint32_t> Get(uint32_t location) const;
+    const std::optional<uint32_t>& Get(uint32_t location) const;
     void Set(uint32_t location, uint32_t value);
-
     PaintStructDescriptorKey GetKey() const;
 
-    static constexpr const uint32_t Get(const PaintStructDescriptorKey& key, uint32_t location);
+    static constexpr const size_t NumArgs = 6;
 
 private:
-    std::array<std::optional<uint32_t>*, NumArgs> _params;
+    std::array<std::optional<uint32_t>*, NumArgs> _fields;
+    void SetFields()
+    {
+        _fields[0] = &Element;
+        _fields[1] = &Direction;
+        _fields[2] = &TrackSequence;
+        _fields[3] = &VehicleNumPeeps[0];
+        _fields[4] = &VehiclePitch[0];
+        _fields[5] = &VehicleSpriteDirection[0];
+    }
 };
-
-constexpr const uint32_t PaintStructKeyBuilder::Get(const PaintStructDescriptorKey& key, uint32_t location)
-{
-    const std::array<uint32_t, NumArgs> args{ key.Element,
-                                              key.Direction,
-                                              key.TrackSequence,
-                                              key.VehicleKey[0].NumPeeps,
-                                              key.VehicleKey[0].Pitch,
-                                              key.VehicleKey[0].SpriteDirection };
-
-    return args[location];
-}
 
 struct ImageIdOffset
 {
     std::string Id;
     TreeContainer<
-        PaintStructDescriptorKey, PaintStructKeyJson, uint32_t,
-        KeyGenerator<PaintStructDescriptorKey, PaintStructKeyJson, PaintStructKeyBuilder>>
+        PaintStructDescriptorKey, PaintStructKeyJson, uint32_t, KeyGenerator<PaintStructDescriptorKey, PaintStructKeyJson>>
         Entries;
 
-    ImageIdOffset(const KeyGenerator<PaintStructDescriptorKey, PaintStructKeyJson, PaintStructKeyBuilder>& keyGenerator)
+    ImageIdOffset(const KeyGenerator<PaintStructDescriptorKey, PaintStructKeyJson>& keyGenerator)
         : Entries(keyGenerator)
     {
     }
