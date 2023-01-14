@@ -461,3 +461,39 @@ PaintStructDescriptor PaintStructJson::Value() const
         result.HeightSupports = &it2->second;
     return result;
 }
+
+
+PaintStructKeyBuilder::PaintStructKeyBuilder(PaintStructKeyJson& keyJson)
+{
+    _params[0] = &keyJson.Element;
+    _params[1] = &keyJson.Direction;
+    _params[2] = &keyJson.TrackSequence;
+    _params[3] = &keyJson.VehicleNumPeeps[0];
+    _params[4] = &keyJson.VehiclePitch[0];
+    _params[5] = &keyJson.VehicleSpriteDirection[0];
+}
+
+PaintStructDescriptorKey PaintStructKeyBuilder::GetKey() const
+{
+    PaintStructDescriptorKey result;
+    result.Element = _params[0]->value();
+    result.Direction = _params[1]->value();
+    result.TrackSequence = _params[2]->value();
+    result.VehicleKey[0].NumPeeps = _params[3]->value();
+    result.VehicleKey[0].Pitch = _params[4]->value();
+    result.VehicleKey[0].SpriteDirection = _params[5]->value();
+    return result;
+}
+
+const std::optional<uint32_t> PaintStructKeyBuilder::Get(uint32_t location) const
+{
+    if (location >= _params.size())
+        return std::optional<uint32_t>();
+    return *_params[location];
+}
+
+void PaintStructKeyBuilder::Set(uint32_t location, uint32_t value)
+{
+    *_params[location] = value;
+}
+

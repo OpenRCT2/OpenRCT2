@@ -5,7 +5,6 @@
 #include "../core/Json.hpp"
 #include "../entity/EntityRegistry.h"
 #include "../paint/Paint.h"
-#include "../paint/PaintStructKeyGenerator.h"
 #include "../paint/Supports.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"

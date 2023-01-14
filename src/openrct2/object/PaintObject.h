@@ -10,24 +10,26 @@
 #pragma once
 
 #include "../paint/Boundbox.h"
+#include "../paint/PaintStructDescriptor.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../ride/Track.h"
-#include "../paint/PaintStructDescriptor.h"
-#include "../paint/PaintStructKeyGenerator.h"
 #include "Object.h"
 
 #include <array>
-#include <optional>
-#include <vector>
 #include <map>
 #include <memory>
+#include <optional>
+#include <vector>
 
 struct TrackElement;
 class PaintObject final : public Object
 {
 private:
-    PaintStructKeyGenerator _keyGen, _imageIdGen;
-    TreeContainer<PaintStructDescriptorKey, PaintStructKeyJson, std::shared_ptr<PaintStructDescriptor>, PaintStructKeyGenerator> _paintStructsTree;
+    KeyGenerator<PaintStructDescriptorKey, PaintStructKeyJson, PaintStructKeyBuilder> _keyGen, _imageIdGen;
+    TreeContainer<
+        PaintStructDescriptorKey, PaintStructKeyJson, std::shared_ptr<PaintStructDescriptor>,
+        KeyGenerator<PaintStructDescriptorKey, PaintStructKeyJson, PaintStructKeyBuilder>>
+        _paintStructsTree;
 
     std::map<track_type_t, PaintStructSequenceMapping> _sequenceMappings;
     std::map<std::string, PaintStructEdgesTable> _edgeMappings;
@@ -37,6 +39,7 @@ private:
 
     std::vector<uint32_t> _vehicleIndices;
     std::vector<PaintStructDescriptorKey> _keys;
+
 public:
     PaintObject();
 
