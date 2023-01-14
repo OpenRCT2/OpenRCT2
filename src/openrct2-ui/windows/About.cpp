@@ -53,13 +53,16 @@ enum WindowAboutWidgetIdx {
     WIDX_JOIN_DISCORD,
     WIDX_CONTRIBUTORS,
     WIDX_COPYRIGHT,
+    WIDX_SPECIAL_THANKS,
+    WIDX_COMPANY_NAMES,
+    WIDX_CONTRIBUTORS_BUTTON,
 };
 
 #define WIDGETS_MAIN \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::Frame,  WindowColour::Secondary               ), /* page background */       \
     MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
-    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */
+    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */ \
 
 static Widget _windowAboutOpenRCT2Widgets[] = {
     WIDGETS_MAIN,
@@ -67,13 +70,14 @@ static Widget _windowAboutOpenRCT2Widgets[] = {
     MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
     MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // Build version
     MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
-    MakeWidget({168, 115 + 24}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
-    MakeWidget({168, 115 + 48}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
-    MakeWidget({168, 115 + 72}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
-    MakeWidget({10, 250},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_2), // Contributors
+    MakeWidget({168, 115 + 20}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
+    MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
+    MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
+    MakeWidget({10, 250},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_2), // More info
     MakeWidget({10, 300},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_3), // Copyright
     MakeWidget({10, 350},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_1), // Special Thanks
     MakeWidget({10, 375},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_2), // Company names
+    MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
     WIDGETS_END,
 };
 
@@ -122,6 +126,9 @@ public:
                 break;
             case WIDX_COPY_BUILD_INFO:
                 SDL_SetClipboardText(gVersionInfoFull);
+                break;
+            case WIDX_CONTRIBUTORS_BUTTON:
+                ContextOpenWindowView(WV_CONTRIBUTORS);
                 break;
         }
     }
@@ -172,7 +179,16 @@ private:
         pressed_widgets = 0;
         widgets = _windowAboutPageWidgets[p];
 
-        pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1uLL << WIDX_TAB_ABOUT_RCT2) : (1uLL << WIDX_TAB_ABOUT_OPENRCT2);
+        switch (p)
+        {
+            case WINDOW_ABOUT_PAGE_OPENRCT2:
+                pressed_widgets |= (1uLL << WIDX_TAB_ABOUT_OPENRCT2);
+                break;
+            case WINDOW_ABOUT_PAGE_RCT2:
+                pressed_widgets |= (1uLL << WIDX_TAB_ABOUT_RCT2);
+                break;
+        }
+
         WindowInitScrollWidgets(*this);
         Invalidate();
     }
