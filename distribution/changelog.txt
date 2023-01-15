@@ -18,6 +18,7 @@
 - Fix: [#18905] Ride Construction window theme is not applied correctly.
 - Fix: [#18911] Mini Golf station does not draw correctly from all angles.
 - Fix: [#18971] New Game does not prompt for save before quitting.
+- Fix: [#19025] Park loan behaves inconsistently with non-round and out-of-bounds values.
 - Fix: [#19026] Park loan is clamped to a 32-bit integer.
 - Fix: [#19091] [Plugin] Remote plugins in multiplayer servers do not unload properly.
 - Fix: [#19112] Clearing the last character in the Object Selection filter does not properly reset it.
