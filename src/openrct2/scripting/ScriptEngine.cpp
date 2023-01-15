@@ -1019,8 +1019,13 @@ void ScriptEngine::RemoveNetworkPlugins()
     auto it = _plugins.begin();
     while (it != _plugins.end())
     {
-        if (!(*it)->HasPath())
+        auto plugin = (*it);
+        if (!plugin->HasPath())
         {
+            StopPlugin(plugin);
+            UnloadPlugin(plugin);
+            LogPluginInfo(plugin, "Unregistered network plugin");
+
             it = _plugins.erase(it);
         }
         else
@@ -1030,16 +1035,16 @@ void ScriptEngine::RemoveNetworkPlugins()
     }
 }
 
-GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(std::string_view id, std::string_view args, bool isExecute)
+GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAction& customAction, bool isExecute)
 {
-    std::string actionz = std::string(id);
+    std::string actionz = customAction.GetId();
     auto kvp = _customActions.find(actionz);
     if (kvp != _customActions.end())
     {
-        const auto& customAction = kvp->second;
+        const auto& customActionInfo = kvp->second;
 
         // Deserialise the JSON args
-        std::string argsz(args);
+        std::string argsz = customAction.GetJson();
 
         auto dukArgs = DuktapeTryParseJson(_context, argsz);
         if (!dukArgs)
@@ -1050,15 +1055,33 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(std::string_vie
             return action;
         }
 
+        std::vector<DukValue> pluginCallArgs;
+        if (GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
+        {
+            pluginCallArgs = { *dukArgs };
+        }
+        else
+        {
+            DukObject obj(_context);
+            obj.Set("action", actionz);
+            obj.Set("args", *dukArgs);
+            obj.Set("player", customAction.GetPlayer());
+            obj.Set("type", EnumValue(customAction.GetType()));
+
+            auto flags = customAction.GetActionFlags();
+            obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+            pluginCallArgs = { obj.Take() };
+        }
+
         // Ready to call plugin handler
         DukValue dukResult;
         if (!isExecute)
         {
-            dukResult = ExecutePluginCall(customAction.Owner, customAction.Query, { *dukArgs }, false);
+            dukResult = ExecutePluginCall(customActionInfo.Owner, customActionInfo.Query, pluginCallArgs, false);
         }
         else
         {
-            dukResult = ExecutePluginCall(customAction.Owner, customAction.Execute, { *dukArgs }, true);
+            dukResult = ExecutePluginCall(customActionInfo.Owner, customActionInfo.Execute, pluginCallArgs, true);
         }
         return DukToGameActionResult(dukResult);
     }
@@ -1469,7 +1492,13 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
     auto jsonz = duk_json_encode(ctx, -1);
     auto json = std::string(jsonz);
     duk_pop(ctx);
-    return std::make_unique<CustomAction>(actionid, json);
+    auto customAction = std::make_unique<CustomAction>(actionid, json);
+
+    if (customAction->GetPlayer() == -1 && network_get_mode() != NETWORK_MODE_NONE)
+    {
+        customAction->SetPlayer(network_get_current_player_id());
+    }
+    return customAction;
 }
 
 void ScriptEngine::InitSharedStorage()

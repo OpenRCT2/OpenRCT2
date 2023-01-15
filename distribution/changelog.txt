@@ -13,11 +13,13 @@
 - Improved: [#18975] Add lift sprites for 60 steep hills on the wooden roller coaster.
 - Improved: [#19044] Added special thanks to RMC and Wiegand to the About page.
 - Change: [#19018] Renamed actions to fit the naming scheme.
+- Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
 - Fix: [#18467] “Selected only” Object Selection filter is active in Track Designs Manager, and cannot be toggled.
 - Fix: [#18905] Ride Construction window theme is not applied correctly.
 - Fix: [#18911] Mini Golf station does not draw correctly from all angles.
 - Fix: [#18971] New Game does not prompt for save before quitting.
 - Fix: [#19026] Park loan is clamped to a 32-bit integer.
+- Fix: [#19091] [Plugin] Remote plugins in multiplayer servers do not unload properly.
 - Fix: [#19112] Clearing the last character in the Object Selection filter does not properly reset it.
 - Fix: [#19114] [Plugin] GameActionResult does not comply to API specification.
 - Fix: [#19136] SV6 saves with experimental RCT1 paths not imported correctly.
