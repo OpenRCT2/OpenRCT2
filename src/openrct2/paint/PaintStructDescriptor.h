@@ -163,7 +163,7 @@ struct PaintStructDescriptor
     ImageIdBase ImageId;
     Colour PrimaryColour;
     uint32_t PrimaryColourIndex;
-    Colour SecondaryColour;
+    std::optional<Colour> SecondaryColour;
     uint32_t SecondaryColourIndex;
 
     const ImageIdOffset* ImageIdOffset;
@@ -206,7 +206,7 @@ struct PaintStructJson
     PaintStructDescriptor::ImageIdBase ImageIdBase;
     PaintStructDescriptor::Colour PrimaryColour;
     uint32_t PrimaryColourIndex;
-    PaintStructDescriptor::Colour SecondaryColour;
+    std::optional<PaintStructDescriptor::Colour> SecondaryColour;
     uint32_t SecondaryColourIndex;
 
     std::string ImageIdOffsetId;

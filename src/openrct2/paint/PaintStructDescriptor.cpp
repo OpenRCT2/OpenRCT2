@@ -2,10 +2,10 @@
 
 #include "../core/Json.hpp"
 #include "../entity/EntityRegistry.h"
+#include "../object/PaintObject.h"
 #include "../paint/Supports.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
-#include "../object/PaintObject.h"
 
 PaintStructDescriptor::PaintStructDescriptor()
     : PrimaryColour(Colour::VehicleBody)
@@ -118,22 +118,31 @@ void PaintStructDescriptor::Paint(
                     break;
             }
 
-            switch (SecondaryColour)
+            ::ImageId imageTemplate;
+            if (SecondaryColour.has_value())
             {
-                case Colour::VehicleBody:
-                    secondaryColour = ride.vehicle_colours[SecondaryColourIndex].Body;
-                    break;
-                case Colour::VehicleTrim:
-                    secondaryColour = ride.vehicle_colours[SecondaryColourIndex].Trim;
-                    break;
-                case Colour::PeepTShirt:
-                    if (vehicle != nullptr)
-                    {
-                        secondaryColour = vehicle->peep_tshirt_colours[SecondaryColourIndex];
-                    }
-                    break;
+                switch (SecondaryColour.value())
+                {
+                    case Colour::VehicleBody:
+                        secondaryColour = ride.vehicle_colours[SecondaryColourIndex].Body;
+                        break;
+                    case Colour::VehicleTrim:
+                        secondaryColour = ride.vehicle_colours[SecondaryColourIndex].Trim;
+                        break;
+                    case Colour::PeepTShirt:
+                        if (vehicle != nullptr)
+                        {
+                            secondaryColour = vehicle->peep_tshirt_colours[SecondaryColourIndex];
+                        }
+                        break;
+                }
+                imageTemplate = ::ImageId(0, primaryColour, secondaryColour);
             }
-            ::ImageId imageTemplate = ::ImageId(0, primaryColour, secondaryColour);
+            else
+            {
+                imageTemplate = ::ImageId(0, primaryColour);
+            }
+            
 
             if (ImageIdScheme.has_value())
             {
@@ -465,5 +474,4 @@ constexpr const uint8_t PaintStructDescriptor::GetEdges(track_type_t element, ui
         default:
             return 0;
     }
-    
 }
