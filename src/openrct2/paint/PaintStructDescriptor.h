@@ -45,6 +45,7 @@ struct PaintStructKey
         , VehicleSpriteDirection(other.VehicleSpriteDirection)
         , VehiclePitch(other.VehiclePitch)
         , VehicleNumPeeps(other.VehicleNumPeeps)
+        , SessionCurrentRotation(other.SessionCurrentRotation)
     {
         SetFields();
     }

@@ -130,6 +130,7 @@ void PaintStructDescriptor::Paint(
                         secondaryColour = ride.vehicle_colours[SecondaryColourIndex].Trim;
                         break;
                     case Colour::PeepTShirt:
+
                         if (vehicle != nullptr)
                         {
                             secondaryColour = vehicle->peep_tshirt_colours[SecondaryColourIndex];
@@ -178,7 +179,11 @@ void PaintStructDescriptor::Paint(
                 {
                     auto offset = ImageIdOffset->Entries->Get(key);
                     if (offset != nullptr)
-                        imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
+                    {
+                        if (offset->size() > ImageIdOffsetIndex)
+                            imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
+                    }
+                        
 
                     if (BoundBoxTable != nullptr)
                     {
@@ -363,6 +368,8 @@ void PaintStructKey::FromJson(const json_t& paintStruct)
         auto trackElement = paintStruct["trackElement"];
         if (trackElement == "flat_track_3x3")
             Element = TrackElemType::FlatTrack3x3;
+        else if (trackElement == "flat_track_4x4")
+            Element = TrackElemType::FlatTrack4x4;
     }
 
     if (paintStruct.contains("trackSequence"))

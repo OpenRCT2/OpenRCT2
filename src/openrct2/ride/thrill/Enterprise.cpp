@@ -13,6 +13,7 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
+#include "../../core/Console.hpp"
 #include "../Ride.h"
 #include "../RideEntry.h"
 #include "../Track.h"
@@ -66,6 +67,10 @@ static void PaintEnterpriseStructure(
     uint32_t imageOffset = trackElement.GetDirectionWithOffset(session.CurrentRotation);
     if (vehicle != nullptr)
     {
+        Console::WriteLine("vehiclePitch = %d", vehicle->Pitch);
+        Console::WriteLine("vehicleSpriteDirection = %d", vehicle->sprite_direction);
+        Console::WriteLine("sessionCurrentRotation = %d", session.CurrentRotation);
+        Console::WriteLine("vehicleNumPeeps = %d", vehicle->num_peeps);
         imageOffset = (vehicle->Pitch << 2) + (((vehicle->sprite_direction >> 3) + session.CurrentRotation) % 4);
     }
 
