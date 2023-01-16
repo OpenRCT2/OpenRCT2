@@ -280,7 +280,7 @@ static int32_t ChatHistoryDrawString(
 
     int32_t numLines;
     GfxWrapString(bufferPtr, width, FontStyle::Medium, &numLines);
-    auto lineHeight = font_get_line_height(FontStyle::Medium);
+    auto lineHeight = FontGetLineHeight(FontStyle::Medium);
 
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
     if (expectedY < 50)
@@ -308,7 +308,7 @@ int32_t ChatStringWrappedGetHeight(void* args, int32_t width)
 
     int32_t numLines;
     GfxWrapString(bufferPtr, width, FontStyle::Medium, &numLines);
-    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
+    int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
     int32_t lineY = 0;
     for (int32_t line = 0; line <= numLines; ++line)

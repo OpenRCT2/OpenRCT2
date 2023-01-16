@@ -21,7 +21,7 @@ void FootpathRailingsObject::Load()
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
     {
-        PreviewImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+        PreviewImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
         BridgeImageId = PreviewImageId + 37;
         RailingsImageId = PreviewImageId + 1;
     }
@@ -39,7 +39,7 @@ void FootpathRailingsObject::Load()
 void FootpathRailingsObject::Unload()
 {
     language_free_object_string(NameStringId);
-    gfx_object_free_images(PreviewImageId, GetImageTable().GetCount());
+    GfxObjectFreeImages(PreviewImageId, GetImageTable().GetCount());
 
     NameStringId = 0;
     PreviewImageId = 0;

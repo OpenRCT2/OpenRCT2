@@ -55,9 +55,9 @@ constexpr bool operator!=(const ImageList& lhs, const ImageList& rhs)
     return !(lhs == rhs);
 }
 
-uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count);
-void gfx_object_free_images(uint32_t baseImageId, uint32_t count);
-void gfx_object_check_all_images_freed();
+uint32_t GfxObjectAllocateImages(const rct_g1_element* images, uint32_t count);
+void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count);
+void GfxObjectCheckAllImagesFreed();
 size_t ImageListGetUsedCount();
 size_t ImageListGetMaximum();
 const std::list<ImageList>& GetAvailableAllocationRanges();

@@ -682,13 +682,13 @@ private:
         {
             case WIDX_UNCAP_FPS_CHECKBOX:
                 gConfigGeneral.UncapFPS ^= 1;
-                drawing_engine_set_vsync(gConfigGeneral.UseVSync);
+                DrawingEngineSetVSync(gConfigGeneral.UseVSync);
                 ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_USE_VSYNC_CHECKBOX:
                 gConfigGeneral.UseVSync ^= 1;
-                drawing_engine_set_vsync(gConfigGeneral.UseVSync);
+                DrawingEngineSetVSync(gConfigGeneral.UseVSync);
                 ConfigSaveDefault();
                 Invalidate();
                 break;
@@ -845,7 +845,7 @@ private:
                     DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
 
                     gConfigGeneral.DrawingEngine = dstEngine;
-                    bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
+                    bool recreate_window = DrawingEngineRequiresNewWindow(srcEngine, dstEngine);
                     RefreshVideo(recreate_window);
                     ConfigSaveDefault();
                     Invalidate();
@@ -2013,7 +2013,7 @@ private:
 
         // Apply vertical alignment if appropriate.
         int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
-        int32_t lineHeight = font_get_line_height(FontStyle::Medium);
+        int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
         uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
         ScreenCoordsXY screenCoords = { windowPos.x + pathWidget.left + 1,
                                         windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };

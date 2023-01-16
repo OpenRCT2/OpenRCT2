@@ -74,7 +74,7 @@ namespace OpenRCT2::Scripting
                 GfxSetG1Element(index, &empty);
             }
         }
-        gfx_object_free_images(range.BaseId, range.Count);
+        GfxObjectFreeImages(range.BaseId, range.Count);
     }
 
     std::optional<ImageList> AllocateCustomImages(const std::shared_ptr<Plugin>& plugin, uint32_t count)
@@ -82,7 +82,7 @@ namespace OpenRCT2::Scripting
         std::vector<rct_g1_element> images;
         images.resize(count);
 
-        auto base = gfx_object_allocate_images(images.data(), count);
+        auto base = GfxObjectAllocateImages(images.data(), count);
         if (base == ImageIndexUndefined)
         {
             return {};
@@ -397,7 +397,7 @@ namespace OpenRCT2::Scripting
             el.flags |= G1_FLAG_RLE_COMPRESSION;
         }
         GfxSetG1Element(id, &el);
-        drawing_engine_invalidate_image(id);
+        DrawingEngineInvalidateImage(id);
     }
 
     void DukSetPixelData(duk_context* ctx, ImageIndex id, const DukValue& dukPixelData)
@@ -464,7 +464,7 @@ namespace OpenRCT2::Scripting
             GfxSetG1Element(id, &newg1);
         }
 
-        drawing_engine_invalidate_image(id);
+        DrawingEngineInvalidateImage(id);
     }
 
 } // namespace OpenRCT2::Scripting

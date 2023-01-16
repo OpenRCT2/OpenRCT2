@@ -70,7 +70,7 @@ static inline uint32_t rctc_to_rct2_index(uint32_t image)
 }
 // clang-format on
 
-static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, rct_g1_element* elements)
+static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, rct_g1_element* elements)
 {
     auto g1Elements32 = std::make_unique<rct_g1_element_32bit[]>(count);
     stream->Read(g1Elements32.get(), count * sizeof(rct_g1_element_32bit));
@@ -213,7 +213,7 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
         // Read element headers
         bool is_rctc = _g1.header.num_entries == SPR_RCTC_G1_END;
         _g1.elements.resize(_g1.header.num_entries);
-        read_and_convert_gxdat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
+        ReadAndConvertGxDat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
         gTinyFontAntiAliased = is_rctc;
 
         // Read element data
@@ -277,7 +277,7 @@ bool GfxLoadG2()
 
         // Read element headers
         _g2.elements.resize(_g2.header.num_entries);
-        read_and_convert_gxdat(&fs, _g2.header.num_entries, false, _g2.elements.data());
+        ReadAndConvertGxDat(&fs, _g2.header.num_entries, false, _g2.elements.data());
 
         // Read element data
         _g2.data = fs.ReadArray<uint8_t>(_g2.header.total_size);
@@ -350,7 +350,7 @@ bool GfxLoadCsg()
 
         // Read element headers
         _csg.elements.resize(_csg.header.num_entries);
-        read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, false, _csg.elements.data());
+        ReadAndConvertGxDat(&fileHeader, _csg.header.num_entries, false, _csg.elements.data());
 
         // Read element data
         _csg.data = fileData.ReadArray<uint8_t>(_csg.header.total_size);
@@ -389,7 +389,7 @@ std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
 
         // Read element headers
         gx.elements.resize(gx.header.num_entries);
-        read_and_convert_gxdat(&istream, gx.header.num_entries, false, gx.elements.data());
+        ReadAndConvertGxDat(&istream, gx.header.num_entries, false, gx.elements.data());
 
         // Read element data
         gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
@@ -403,7 +403,7 @@ std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
     return std::nullopt;
 }
 
-static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
+static std::optional<PaletteMap> FASTCALL GfxDrawSpriteGetPalette(ImageId imageId)
 {
     if (!imageId.HasSecondary())
     {
@@ -448,7 +448,7 @@ void FASTCALL GfxDrawSpriteSoftware(rct_drawpixelinfo* dpi, const ImageId imageI
 {
     if (imageId.HasValue())
     {
-        auto palette = gfx_draw_sprite_get_palette(imageId);
+        auto palette = GfxDrawSpriteGetPalette(imageId);
         if (!palette)
         {
             palette = PaletteMap::GetDefault();

@@ -286,12 +286,12 @@ static void screen_intro_draw_logo(rct_drawpixelinfo* dpi)
     int32_t imageWidth = 640;
     int32_t imageX = (screenWidth - imageWidth) / 2;
 
-    drawing_engine_invalidate_image(SPR_INTRO_LOGO_00);
-    drawing_engine_invalidate_image(SPR_INTRO_LOGO_10);
-    drawing_engine_invalidate_image(SPR_INTRO_LOGO_20);
-    drawing_engine_invalidate_image(SPR_INTRO_LOGO_01);
-    drawing_engine_invalidate_image(SPR_INTRO_LOGO_11);
-    drawing_engine_invalidate_image(SPR_INTRO_LOGO_21);
+    DrawingEngineInvalidateImage(SPR_INTRO_LOGO_00);
+    DrawingEngineInvalidateImage(SPR_INTRO_LOGO_10);
+    DrawingEngineInvalidateImage(SPR_INTRO_LOGO_20);
+    DrawingEngineInvalidateImage(SPR_INTRO_LOGO_01);
+    DrawingEngineInvalidateImage(SPR_INTRO_LOGO_11);
+    DrawingEngineInvalidateImage(SPR_INTRO_LOGO_21);
 
     GfxClear(dpi, BACKROUND_COLOUR_LOGO);
     GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_00), { imageX + 0, 0 });

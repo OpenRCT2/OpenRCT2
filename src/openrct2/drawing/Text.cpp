@@ -36,7 +36,7 @@ public:
 
         MaxWidth = GfxWrapString(Buffer, width, paint.FontStyle, &LineCount);
         LineCount += 1;
-        LineHeight = font_get_line_height(paint.FontStyle);
+        LineHeight = FontGetLineHeight(paint.FontStyle);
     }
 
     void Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
@@ -100,7 +100,7 @@ static void DrawText(
             break;
     }
 
-    TtfDrawString(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
+    TTFDrawString(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
 
     if (paint.UnderlineText == TextUnderline::On)
     {

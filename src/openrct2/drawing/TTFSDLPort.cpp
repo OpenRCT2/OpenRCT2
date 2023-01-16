@@ -1325,7 +1325,7 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
         if (error)
         {
             TTF_SetFTError("Couldn't find glyph", error);
-            ttf_free_surface(textbuf);
+            TTFFreeSurface(textbuf);
             return NULL;
         }
         glyph = font->current;
@@ -1458,7 +1458,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
         if (error)
         {
             TTF_SetFTError("Couldn't find glyph", error);
-            ttf_free_surface(textbuf);
+            TTFFreeSurface(textbuf);
             return NULL;
         }
 

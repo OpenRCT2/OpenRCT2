@@ -165,7 +165,7 @@ public:
 
             if (gConfigGeneral.EnableLightFx)
             {
-                auto& lightPalette = lightfx_get_palette();
+                auto& lightPalette = LightFXGetPalette();
                 for (int32_t i = 0; i < 256; i++)
                 {
                     const auto& src = lightPalette[i];
@@ -210,7 +210,7 @@ private:
             int32_t pitch;
             if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
-                lightfx_render_to_texture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+                LightFXRenderToTexture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
                 SDL_UnlockTexture(_screenTexture);
             }
         }

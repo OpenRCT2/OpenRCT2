@@ -194,7 +194,7 @@ namespace OpenRCT2
                 _objectManager->UnloadAll();
             }
 
-            gfx_object_check_all_images_freed();
+            GfxObjectCheckAllImagesFreed();
             GfxUnloadCsg();
             GfxUnloadG2();
             GfxUnloadG1();
@@ -470,7 +470,7 @@ namespace OpenRCT2
                 {
                     return false;
                 }
-                lightfx_init();
+                LightFXInit();
             }
 
             input_reset_place_obj_modifier();
@@ -513,7 +513,7 @@ namespace OpenRCT2
                     // Fallback to software
                     gConfigGeneral.DrawingEngine = DrawingEngine::Software;
                     ConfigSaveDefault();
-                    drawing_engine_init();
+                    DrawingEngineInit();
                 }
             }
             else
@@ -541,7 +541,7 @@ namespace OpenRCT2
                         // Fallback to software
                         gConfigGeneral.DrawingEngine = DrawingEngine::Software;
                         ConfigSaveDefault();
-                        drawing_engine_init();
+                        DrawingEngineInit();
                     }
                 }
             }
@@ -853,7 +853,7 @@ namespace OpenRCT2
             }
             GfxLoadG2();
             GfxLoadCsg();
-            font_sprite_initialise_characters();
+            FontSpriteInitialiseCharacters();
             return true;
         }
 

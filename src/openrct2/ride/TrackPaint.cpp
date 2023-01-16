@@ -2204,7 +2204,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             }
         }
 
-        if (lightfx_is_available())
+        if (LightFXIsAvailable())
         {
             uint8_t zOffset = 16;
             const auto& rtd = ride->GetRideTypeDescriptor();

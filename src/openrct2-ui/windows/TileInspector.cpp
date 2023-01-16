@@ -1539,7 +1539,7 @@ public:
         {
             auto& listWidget = widgets[WIDX_LIST];
             auto centrePos = ScreenCoordsXY{ listWidget.width() / 2,
-                                             (listWidget.height() - font_get_line_height(FontStyle::Medium)) / 2 };
+                                             (listWidget.height() - FontGetLineHeight(FontStyle::Medium)) / 2 };
             auto ft = Formatter{};
             auto textPaint = TextPaint{ colours[1], TextAlignment::CENTRE };
             DrawTextWrapped(&dpi, centrePos, listWidth, STR_TILE_INSPECTOR_SELECT_TILE_HINT, ft, textPaint);

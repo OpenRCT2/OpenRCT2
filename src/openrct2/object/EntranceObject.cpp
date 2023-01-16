@@ -30,13 +30,13 @@ void EntranceObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image_id = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image_id = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void EntranceObject::Unload()
 {
     language_free_object_string(_legacyType.string_idx);
-    gfx_object_free_images(_legacyType.image_id, GetImageTable().GetCount());
+    GfxObjectFreeImages(_legacyType.image_id, GetImageTable().GetCount());
 
     _legacyType.string_idx = 0;
     _legacyType.image_id = 0;

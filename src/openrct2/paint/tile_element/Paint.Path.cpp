@@ -934,7 +934,7 @@ static void PaintLampLightEffects(PaintSession& session, const PathElement& path
 {
     PROFILED_FUNCTION();
 
-    if (lightfx_is_available())
+    if (LightFXIsAvailable())
     {
         if (pathEl.HasAddition() && !(pathEl.IsBroken()))
         {
@@ -943,19 +943,19 @@ static void PaintLampLightEffects(PaintSession& session, const PathElement& path
             {
                 if (!(pathEl.GetEdges() & EDGE_NE))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SE))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SW))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_NW))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
                 }
             }
         }

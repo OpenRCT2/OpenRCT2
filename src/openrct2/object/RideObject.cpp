@@ -206,7 +206,7 @@ void RideObject::Load()
     _legacyType.naming.Name = language_allocate_object_string(GetName());
     _legacyType.naming.Description = language_allocate_object_string(GetDescription());
     _legacyType.capacity = language_allocate_object_string(GetCapacity());
-    _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.images_offset = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
     int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
@@ -275,7 +275,7 @@ void RideObject::Unload()
     language_free_object_string(_legacyType.naming.Name);
     language_free_object_string(_legacyType.naming.Description);
     language_free_object_string(_legacyType.capacity);
-    gfx_object_free_images(_legacyType.images_offset, GetImageTable().GetCount());
+    GfxObjectFreeImages(_legacyType.images_offset, GetImageTable().GetCount());
 
     _legacyType.naming.Name = 0;
     _legacyType.naming.Description = 0;

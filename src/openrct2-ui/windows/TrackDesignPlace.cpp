@@ -299,7 +299,7 @@ public:
             g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
             g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
             GfxSetG1Element(SPR_TEMP, &g1temp);
-            drawing_engine_invalidate_image(SPR_TEMP);
+            DrawingEngineInvalidateImage(SPR_TEMP);
             GfxDrawSprite(&clippedDpi, ImageId(SPR_TEMP, NOT_TRANSLUCENT(this->colours[0])), { 0, 0 });
         }
 

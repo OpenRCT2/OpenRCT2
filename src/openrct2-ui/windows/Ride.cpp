@@ -2905,7 +2905,7 @@ static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Intensity Factor
     if (rideEntry->intensity_multiplier != 0)
     {
-        int32_t lineHeight = font_get_line_height(FontStyle::Medium);
+        int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
         if (lineHeight != 10)
             screenCoords.x += 150;
         else

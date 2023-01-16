@@ -2775,7 +2775,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    if (lightfx_is_available())
+    if (LightFXIsAvailable())
     {
         if (Is<Staff>())
         {
@@ -2798,7 +2798,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
                     return;
             }
 
-            LightfxAdd3DLight(*this, 0, loc, LightType::Spot1);
+            LightFXAdd3DLight(*this, 0, loc, LightType::Spot1);
         }
     }
 

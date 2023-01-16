@@ -805,9 +805,9 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
         uint8_t g = colours[1];
         uint8_t b = colours[0];
 
-        if (lightfx_is_available())
+        if (LightFXIsAvailable())
         {
-            lightfx_apply_palette_filter(i, &r, &g, &b);
+            LightFXApplyPaletteFilter(i, &r, &g, &b);
         }
         else
         {
@@ -835,7 +835,7 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
 
     if (!gOpenRCT2Headless)
     {
-        drawing_engine_set_palette(gPalette);
+        DrawingEngineSetPalette(gPalette);
     }
 }
 
@@ -847,12 +847,12 @@ void RefreshVideo(bool recreateWindow)
     }
     else
     {
-        drawing_engine_dispose();
-        drawing_engine_init();
-        drawing_engine_resize();
+        DrawingEngineDispose();
+        DrawingEngineInit();
+        DrawingEngineResize();
     }
 
-    drawing_engine_set_palette(gPalette);
+    DrawingEngineSetPalette(gPalette);
     GfxInvalidateScreen();
 }
 

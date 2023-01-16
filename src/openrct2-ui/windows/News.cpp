@@ -50,7 +50,7 @@ private:
     int32_t _pressedNewsItemIndex{}, _pressedButtonIndex{}, _suspendUpdateTicks{};
     static int32_t CalculateItemHeight()
     {
-        return 4 * font_get_line_height(FontStyle::Small) + 2;
+        return 4 * FontGetLineHeight(FontStyle::Small) + 2;
     }
 
 public:
@@ -173,7 +173,7 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
-        int32_t lineHeight = font_get_line_height(FontStyle::Small);
+        int32_t lineHeight = FontGetLineHeight(FontStyle::Small);
         int32_t itemHeight = CalculateItemHeight();
         int32_t y = 0;
         int32_t i = 0;

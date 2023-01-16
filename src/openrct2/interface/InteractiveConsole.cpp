@@ -1172,7 +1172,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
             gConfigFonts.EnableHinting = (int_val[0] != 0);
             ConfigSaveDefault();
             console.Execute("get enable_hinting");
-            ttf_toggle_hinting();
+            TTFToggleHinting();
         }
 #endif
         else if (invalidArgs)

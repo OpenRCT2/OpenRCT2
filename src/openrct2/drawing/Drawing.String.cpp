@@ -40,7 +40,7 @@ enum : uint32_t
     TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
-static int32_t ttf_get_string_width(std::string_view text, FontStyle fontStyle, bool noFormatting);
+static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, bool noFormatting);
 
 /**
  *
@@ -84,12 +84,12 @@ int32_t GfxGetStringWidthNewLined(std::string_view text, FontStyle fontStyle)
  */
 int32_t GfxGetStringWidth(std::string_view text, FontStyle fontStyle)
 {
-    return ttf_get_string_width(text, fontStyle, false);
+    return TTFGetStringWidth(text, fontStyle, false);
 }
 
 int32_t GfxGetStringWidthNoFormatting(std::string_view text, FontStyle fontStyle)
 {
-    return ttf_get_string_width(text, fontStyle, true);
+    return TTFGetStringWidth(text, fontStyle, true);
 }
 
 /**
@@ -282,7 +282,7 @@ void GfxDrawStringLeftCentred(
 /**
  * Changes the palette so that the next character changes colour
  */
-static void colour_char(uint8_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
+static void ColourCharacter(uint8_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
 {
     int32_t colour32 = 0;
     const rct_g1_element* g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
@@ -307,7 +307,7 @@ static void colour_char(uint8_t colour, const uint16_t* current_font_flags, uint
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-static void colour_char_window(uint8_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
+static void ColourCharacterWindow(uint8_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
 {
     int32_t eax;
 
@@ -355,7 +355,7 @@ void DrawStringCentredRaw(
         }
         text = const_cast<char*>(ch + 1);
 
-        screenCoords.y += font_get_line_height(fontStyle);
+        screenCoords.y += FontGetLineHeight(fontStyle);
     }
 }
 
@@ -441,7 +441,7 @@ void DrawNewsTicker(
     format_string(buffer, 256, format, args);
 
     GfxWrapString(buffer, width, FontStyle::Small, &numLines);
-    lineHeight = font_get_line_height(FontStyle::Small);
+    lineHeight = FontGetLineHeight(FontStyle::Small);
 
     int32_t numCharactersDrawn = 0;
     int32_t numCharactersToDraw = ticks;
@@ -501,10 +501,10 @@ struct text_draw_info
     const int8_t* y_offset;
 };
 
-static void ttf_draw_character_sprite(rct_drawpixelinfo* dpi, int32_t codepoint, text_draw_info* info)
+static void TTFDrawCharacterSprite(rct_drawpixelinfo* dpi, int32_t codepoint, text_draw_info* info)
 {
-    int32_t characterWidth = font_sprite_get_codepoint_width(info->FontStyle, codepoint);
-    auto sprite = font_sprite_get_codepoint_sprite(info->FontStyle, codepoint);
+    int32_t characterWidth = FontSpriteGetCodepointWidth(info->FontStyle, codepoint);
+    auto sprite = FontSpriteGetCodepointSprite(info->FontStyle, codepoint);
 
     if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
     {
@@ -521,38 +521,38 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo* dpi, int32_t codepoint,
     info->x += characterWidth;
 }
 
-static void ttf_draw_string_raw_sprite(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
+static void TTFDrawStringRawSprite(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
     CodepointView codepoints(text);
     for (auto codepoint : codepoints)
     {
-        ttf_draw_character_sprite(dpi, codepoint, info);
+        TTFDrawCharacterSprite(dpi, codepoint, info);
     }
 }
 
 #ifndef NO_TTF
 
 static int _ttfGlId = 0;
-static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
+static void TTFDrawStringRawTTF(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
-    if (!ttf_initialise())
+    if (!TTFInitialise())
         return;
 
-    TTFFontDescriptor* fontDesc = ttf_get_font_from_sprite_base(info->FontStyle);
+    TTFFontDescriptor* fontDesc = TTFGetFontFromSpriteBase(info->FontStyle);
     if (fontDesc->font == nullptr)
     {
-        ttf_draw_string_raw_sprite(dpi, text, info);
+        TTFDrawStringRawSprite(dpi, text, info);
         return;
     }
 
     if (info->flags & TEXT_DRAW_FLAG_NO_DRAW)
     {
-        info->x += ttf_getwidth_cache_get_or_add(fontDesc->font, text);
+        info->x += TTFGetWidthCacheGetOrAdd(fontDesc->font, text);
         return;
     }
 
     uint8_t colour = info->palette[1];
-    TTFSurface* surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
+    TTFSurface* surface = TTFSurfaceCacheGetOrAdd(fontDesc->font, text);
     if (surface == nullptr)
         return;
 
@@ -709,7 +709,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, std::string_view tex
 
 #endif // NO_TTF
 
-static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::token& token, text_draw_info* info)
+static void TTFProcessFormatCode(rct_drawpixelinfo* dpi, const FmtString::token& token, text_draw_info* info)
 {
     switch (token.kind)
     {
@@ -718,11 +718,11 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
             break;
         case FormatToken::Newline:
             info->x = info->startX;
-            info->y += font_get_line_height(info->FontStyle);
+            info->y += FontGetLineHeight(info->FontStyle);
             break;
         case FormatToken::NewlineSmall:
             info->x = info->startX;
-            info->y += font_get_line_height_small(info->FontStyle);
+            info->y += FontGetLineHeightSmall(info->FontStyle);
             break;
         case FormatToken::FontTiny:
             info->FontStyle = FontStyle::Tiny;
@@ -742,19 +742,19 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
         case FormatToken::ColourWindow1:
         {
             uint16_t flags = info->flags;
-            colour_char_window(gCurrentWindowColours[0], &flags, info->palette);
+            ColourCharacterWindow(gCurrentWindowColours[0], &flags, info->palette);
             break;
         }
         case FormatToken::ColourWindow2:
         {
             uint16_t flags = info->flags;
-            colour_char_window(gCurrentWindowColours[1], &flags, info->palette);
+            ColourCharacterWindow(gCurrentWindowColours[1], &flags, info->palette);
             break;
         }
         case FormatToken::ColourWindow3:
         {
             uint16_t flags = info->flags;
-            colour_char_window(gCurrentWindowColours[2], &flags, info->palette);
+            ColourCharacterWindow(gCurrentWindowColours[2], &flags, info->palette);
             break;
         }
         case FormatToken::InlineSprite:
@@ -776,7 +776,7 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
             {
                 uint16_t flags = info->flags;
                 auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
-                colour_char(static_cast<uint8_t>(colourIndex), &flags, info->palette);
+                ColourCharacter(static_cast<uint8_t>(colourIndex), &flags, info->palette);
             }
             break;
     }
@@ -813,7 +813,7 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
 }
 #endif // NO_TTF
 
-static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
+static void TTFProcessStringLiteral(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
 #ifndef NO_TTF
     bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
@@ -823,7 +823,7 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
 
     if (!isTTF)
     {
-        ttf_draw_string_raw_sprite(dpi, text, info);
+        TTFDrawStringRawSprite(dpi, text, info);
     }
 #ifndef NO_TTF
     else
@@ -846,7 +846,7 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
 #        pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #    endif
                     auto len = it.GetIndex() - ttfRunIndex.value();
-                    ttf_draw_string_raw_ttf(dpi, text.substr(ttfRunIndex.value(), len), info);
+                    TTFDrawStringRawTTF(dpi, text.substr(ttfRunIndex.value(), len), info);
 #    ifdef __MINGW32__
 #        pragma GCC diagnostic pop
 #    endif
@@ -854,7 +854,7 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
                 }
 
                 // Draw the sprite font glyph
-                ttf_draw_character_sprite(dpi, codepoint, info);
+                TTFDrawCharacterSprite(dpi, codepoint, info);
             }
             else
             {
@@ -869,24 +869,24 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
         {
             // Final TTF run
             auto len = text.size() - *ttfRunIndex;
-            ttf_draw_string_raw_ttf(dpi, text.substr(ttfRunIndex.value(), len), info);
+            TTFDrawStringRawTTF(dpi, text.substr(ttfRunIndex.value(), len), info);
         }
     }
 #endif // NO_TTF
 }
 
-static void ttf_process_string_codepoint(rct_drawpixelinfo* dpi, codepoint_t codepoint, text_draw_info* info)
+static void TTFProcessStringCodepoint(rct_drawpixelinfo* dpi, codepoint_t codepoint, text_draw_info* info)
 {
     char buffer[8]{};
     utf8_write_codepoint(buffer, codepoint);
-    ttf_process_string_literal(dpi, buffer, info);
+    TTFProcessStringLiteral(dpi, buffer, info);
 }
 
-static void ttf_process_string(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
+static void TTFProcessString(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
     if (info->flags & TEXT_DRAW_FLAG_NO_FORMATTING)
     {
-        ttf_process_string_literal(dpi, text, info);
+        TTFProcessStringLiteral(dpi, text, info);
         info->maxX = std::max(info->maxX, info->x);
         info->maxY = std::max(info->maxY, info->y);
     }
@@ -897,16 +897,16 @@ static void ttf_process_string(rct_drawpixelinfo* dpi, std::string_view text, te
         {
             if (token.IsLiteral())
             {
-                ttf_process_string_literal(dpi, token.text, info);
+                TTFProcessStringLiteral(dpi, token.text, info);
             }
             else if (token.IsCodepoint())
             {
                 auto codepoint = token.GetCodepoint();
-                ttf_process_string_codepoint(dpi, codepoint, info);
+                TTFProcessStringCodepoint(dpi, codepoint, info);
             }
             else
             {
-                ttf_process_format_code(dpi, token, info);
+                TTFProcessFormatCode(dpi, token, info);
             }
             info->maxX = std::max(info->maxX, info->x);
             info->maxY = std::max(info->maxY, info->y);
@@ -914,7 +914,7 @@ static void ttf_process_string(rct_drawpixelinfo* dpi, std::string_view text, te
     }
 }
 
-static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
+static void TTFProcessInitialColour(int32_t colour, text_draw_info* info)
 {
     if (colour != TEXT_COLOUR_254 && colour != TEXT_COLOUR_255)
     {
@@ -929,7 +929,7 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
             if (!(info->flags & TEXT_DRAW_FLAG_INSET))
             {
                 uint16_t flags = info->flags;
-                colour_char_window(colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));
+                ColourCharacterWindow(colour, &flags, reinterpret_cast<uint8_t*>(&info->palette));
             }
         }
         else
@@ -969,7 +969,7 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
     }
 }
 
-void TtfDrawString(
+void TTFDrawString(
     rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness)
 {
@@ -1004,14 +1004,14 @@ void TtfDrawString(
     }
 
     std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
-    ttf_process_initial_colour(colour, &info);
-    ttf_process_string(dpi, text, &info);
+    TTFProcessInitialColour(colour, &info);
+    TTFProcessString(dpi, text, &info);
     std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
 
     dpi->lastStringPos = { info.x, info.y };
 }
 
-static int32_t ttf_get_string_width(std::string_view text, FontStyle fontStyle, bool noFormatting)
+static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, bool noFormatting)
 {
     text_draw_info info;
     info.FontStyle = fontStyle;
@@ -1034,7 +1034,7 @@ static int32_t ttf_get_string_width(std::string_view text, FontStyle fontStyle, 
         info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
     }
 
-    ttf_process_string(nullptr, text, &info);
+    TTFProcessString(nullptr, text, &info);
 
     return info.maxX;
 }
@@ -1064,8 +1064,8 @@ void GfxDrawStringWithYOffsets(
     }
 
     std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
-    ttf_process_initial_colour(colour, &info);
-    ttf_process_string(dpi, text, &info);
+    TTFProcessInitialColour(colour, &info);
+    TTFProcessString(dpi, text, &info);
     std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
 
     dpi->lastStringPos = { info.x, info.y };

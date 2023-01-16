@@ -616,7 +616,7 @@ public:
 
     void CloseWindow() override
     {
-        drawing_engine_dispose();
+        DrawingEngineDispose();
         if (_window != nullptr)
         {
             SDL_DestroyWindow(_window);
@@ -758,7 +758,7 @@ private:
         _platformUiContext->SetWindowIcon(_window);
 
         // Initialise the surface, palette and draw buffer
-        drawing_engine_init();
+        DrawingEngineInit();
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
@@ -778,7 +778,7 @@ private:
         _width = static_cast<int32_t>(width / gConfigGeneral.WindowScale);
         _height = static_cast<int32_t>(height / gConfigGeneral.WindowScale);
 
-        drawing_engine_resize();
+        DrawingEngineResize();
 
         uint32_t flags = SDL_GetWindowFlags(_window);
         if ((flags & SDL_WINDOW_MINIMIZED) == 0)

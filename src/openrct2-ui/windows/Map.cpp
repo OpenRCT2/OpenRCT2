@@ -714,7 +714,7 @@ public:
         g1temp.x_offset = -8;
         g1temp.y_offset = -8;
         GfxSetG1Element(SPR_TEMP, &g1temp);
-        drawing_engine_invalidate_image(SPR_TEMP);
+        DrawingEngineInvalidateImage(SPR_TEMP);
         GfxDrawSprite(&dpi, ImageId(SPR_TEMP), { 0, 0 });
 
         if (selected_tab == PAGE_PEEPS)
