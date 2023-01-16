@@ -455,7 +455,7 @@ public:
             return;
         }
 
-        gfx_clear(&dpi, ColourMapA[colours[1]].mid_light);
+        GfxClear(&dpi, ColourMapA[colours[1]].mid_light);
 
         ScreenCoordsXY coords{ 1, 1 };
         RideSelection* listItem = _windowNewRideListItems;
@@ -466,7 +466,7 @@ public:
             if (new_ride.SelectedRide == *listItem)
                 buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
             if (new_ride.HighlightedRide == *listItem || buttonFlags != 0)
-                gfx_fill_rect_inset(
+                GfxFillRectInset(
                     &dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
                     INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
 

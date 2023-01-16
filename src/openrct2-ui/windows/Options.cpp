@@ -791,7 +791,7 @@ private:
             case WIDX_SCALE_UP:
                 gConfigGeneral.WindowScale += 0.25f;
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 ContextTriggerResize();
                 ContextUpdateCursorScale();
                 break;
@@ -799,7 +799,7 @@ private:
                 gConfigGeneral.WindowScale -= 0.25f;
                 gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 ContextTriggerResize();
                 ContextUpdateCursorScale();
                 break;
@@ -824,7 +824,7 @@ private:
                         ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
 
                     ConfigSaveDefault();
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
             }
             break;
@@ -835,7 +835,7 @@ private:
 
                     gConfigGeneral.FullscreenMode = static_cast<uint8_t>(dropdownIndex);
                     ConfigSaveDefault();
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
                 break;
             case WIDX_DRAWING_ENGINE_DROPDOWN:
@@ -927,13 +927,13 @@ private:
             case WIDX_TILE_SMOOTHING_CHECKBOX:
                 gConfigGeneral.LandscapeSmoothing ^= 1;
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_GRIDLINES_CHECKBOX:
             {
                 gConfigGeneral.AlwaysShowGridlines ^= 1;
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 rct_window* mainWindow = window_get_main();
                 if (mainWindow != nullptr)
                 {
@@ -975,7 +975,7 @@ private:
                 gConfigGeneral.RenderWeatherGloom = gConfigGeneral.RenderWeatherEffects;
                 ConfigSaveDefault();
                 Invalidate();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
                 gConfigGeneral.ShowGuestPurchases ^= 1;
@@ -1195,7 +1195,7 @@ private:
                     gConfigGeneral.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex);
                 }
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_DISTANCE_DROPDOWN:
                 gConfigGeneral.MeasurementFormat = static_cast<MeasurementFormat>(dropdownIndex);
@@ -1207,7 +1207,7 @@ private:
                 {
                     gConfigGeneral.TemperatureFormat = static_cast<TemperatureUnit>(dropdownIndex);
                     ConfigSaveDefault();
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
                 break;
             case WIDX_LANGUAGE_DROPDOWN:
@@ -1231,7 +1231,7 @@ private:
                     {
                         gConfigGeneral.Language = dropdownIndex + 1;
                         ConfigSaveDefault();
-                        gfx_invalidate_screen();
+                        GfxInvalidateScreen();
                     }
                 }
             }
@@ -1241,7 +1241,7 @@ private:
                 {
                     gConfigGeneral.DateFormat = static_cast<uint8_t>(dropdownIndex);
                     ConfigSaveDefault();
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
                 break;
         }
@@ -1871,7 +1871,7 @@ private:
             case WIDX_DEBUGGING_TOOLS:
                 gConfigGeneral.DebuggingTools ^= 1;
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
                 gConfigGeneral.SavePluginData ^= 1;
@@ -2114,7 +2114,7 @@ private:
     void UpdateHeightMarkers()
     {
         ConfigSaveDefault();
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     uint8_t GetScrollPercentage(const Widget& widget, const rct_scroll& scroll)

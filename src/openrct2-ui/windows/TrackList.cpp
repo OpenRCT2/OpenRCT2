@@ -474,7 +474,7 @@ public:
         }
 
         auto screenPos = windowPos + ScreenCoordsXY{ tdWidget.left + 1, tdWidget.top + 1 };
-        gfx_fill_rect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
+        GfxFillRect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
 
         if (_loadedTrackDesignIndex != trackIndex)
         {
@@ -669,7 +669,7 @@ public:
     void OnScrollDraw(const int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         uint8_t paletteIndex = ColourMapA[colours[0]].mid_light;
-        gfx_clear(&dpi, paletteIndex);
+        GfxClear(&dpi, paletteIndex);
 
         auto screenCoords = ScreenCoordsXY{ 0, 0 };
         size_t listIndex = 0;
@@ -689,7 +689,7 @@ public:
             if (listIndex == static_cast<size_t>(selected_list_item))
             {
                 // Highlight
-                gfx_filter_rect(
+                GfxFilterRect(
                     &dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
                     FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
@@ -714,7 +714,7 @@ public:
                 if (listIndex == static_cast<size_t>(selected_list_item))
                 {
                     // Highlight
-                    gfx_filter_rect(
+                    GfxFilterRect(
                         &dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
                         FilterPaletteID::PaletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;

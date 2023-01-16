@@ -699,7 +699,7 @@ private:
         DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
         // Graph border
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi,
             { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
               screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
@@ -715,7 +715,7 @@ private:
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 20;
@@ -772,7 +772,7 @@ private:
         DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
         // Graph border
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi,
             { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
               screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
@@ -788,7 +788,7 @@ private:
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 20;

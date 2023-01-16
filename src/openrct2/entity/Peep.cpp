@@ -2630,7 +2630,7 @@ void peep_update_names(bool realNames)
 
     auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
     ContextBroadcastIntent(&intent);
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void increment_guests_in_park()

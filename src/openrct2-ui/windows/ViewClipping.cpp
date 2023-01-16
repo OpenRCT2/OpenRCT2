@@ -123,7 +123,7 @@ public:
                 _previousClipSelectionB = gClipSelectionB;
                 gClipSelectionA = { 0, 0 };
                 gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_CLIP_CLEAR:
                 if (IsActive())
@@ -133,7 +133,7 @@ public:
                 }
                 gClipSelectionA = { 0, 0 };
                 gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
         }
     }
@@ -249,7 +249,7 @@ public:
         gClipSelectionB = gMapSelectPositionB;
         _toolActive = false;
         tool_cancel();
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void OnPrepareDraw() override

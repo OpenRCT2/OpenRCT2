@@ -371,7 +371,7 @@ public:
         {
             // Darken every even row
             if (i % 2 == 0)
-                gfx_fill_rect(
+                GfxFillRect(
                     &dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 },
                       screenCoords + ScreenCoordsXY{ row_width, (TABLE_CELL_HEIGHT - 2) } },
@@ -425,7 +425,7 @@ public:
             DrawTextBasic(
                 &dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
 
-            gfx_fill_rect(
+            GfxFillRect(
                 &dpi,
                 { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
                 PALETTE_INDEX_10);
@@ -541,7 +541,7 @@ public:
         {
             // Darken every even row
             if (i % 2 == 0)
-                gfx_fill_rect(
+                GfxFillRect(
                     &dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
                     ColourMapA[colours[1]].lighter | 0x1000000);
@@ -551,7 +551,7 @@ public:
         }
 
         // Horizontal rule below expenditure / income table
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
@@ -616,7 +616,7 @@ public:
             ft);
 
         // Graph
-        gfx_fill_rect_inset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -646,7 +646,7 @@ public:
             DrawTextBasic(
                 &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
@@ -673,7 +673,7 @@ public:
         DrawTextBasic(&dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
         // Graph
-        gfx_fill_rect_inset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -703,7 +703,7 @@ public:
             DrawTextBasic(
                 &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
@@ -732,7 +732,7 @@ public:
             gCurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
 
         // Graph
-        gfx_fill_rect_inset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -762,7 +762,7 @@ public:
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 39;

@@ -2344,7 +2344,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         Formatter ft;
         ft.Add<const char*>(e.what());
         ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
 
         auto ctx = OpenRCT2::GetContext();
         auto uictx = ctx->GetUiContext();
@@ -2367,7 +2367,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         }
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
     {

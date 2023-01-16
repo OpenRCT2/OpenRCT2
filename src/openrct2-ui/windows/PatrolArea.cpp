@@ -191,7 +191,7 @@ public:
     {
         hide_gridlines();
         ClearPatrolAreaToRender();
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -240,7 +240,7 @@ private:
         if (PatrolAreaToolIsActive())
         {
             SetPatrolAreaToRender(_staffId);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
         }
         else
         {
@@ -249,7 +249,7 @@ private:
                 show_gridlines();
                 input_set_flag(INPUT_FLAG_6, true);
                 SetPatrolAreaToRender(_staffId);
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
         }
     }

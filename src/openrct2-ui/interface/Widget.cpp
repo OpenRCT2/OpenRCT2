@@ -133,7 +133,7 @@ static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     uint8_t colour = w.colours[widget.colour];
 
     // Draw the frame
-    gfx_fill_rect_inset(dpi, { leftTop, { r, b } }, colour, press);
+    GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, press);
 
     // Check if the window can be resized
     if (!(w.flags & WF_RESIZABLE))
@@ -164,7 +164,7 @@ static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
     uint8_t colour = w.colours[widget.colour];
 
     // Draw the panel
-    gfx_fill_rect_inset(dpi, { leftTop, { r, b } }, colour, 0);
+    GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, 0);
 
     // Check if the window can be resized
     if (!(w.flags & WF_RESIZABLE))
@@ -199,12 +199,12 @@ static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
     if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
     {
         // Draw border with no fill
-        gfx_fill_rect_inset(dpi, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
+        GfxFillRectInset(dpi, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
         return;
     }
 
     // Draw the border with fill
-    gfx_fill_rect_inset(dpi, rect, colour, press);
+    GfxFillRectInset(dpi, rect, colour, press);
 
     WidgetDrawImage(dpi, w, widgetIndex);
 }
@@ -286,12 +286,12 @@ static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIn
         if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
         {
             // Draw border with no fill
-            gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
+            GfxFillRectInset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
             return;
         }
 
         // Draw the border with fill
-        gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET);
+        GfxFillRectInset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET);
     }
 
     // Draw image
@@ -316,7 +316,7 @@ static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
 
     // Border
     uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
-    gfx_fill_rect_inset(dpi, rect, colour, press);
+    GfxFillRectInset(dpi, rect, colour, press);
 
     // Button caption
     if (widget.type != WindowWidgetType::TableHeader)
@@ -440,7 +440,7 @@ static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     // Get the colour
     uint8_t colour = w.colours[widget.colour];
 
-    gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_F_60);
+    GfxFillRectInset(dpi, rect, colour, INSET_RECT_F_60);
     WidgetText(dpi, w, widgetIndex);
 }
 
@@ -505,24 +505,24 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
     uint8_t colour = w.colours[widget.colour] & 0x7F;
 
     // Border left of text
-    gfx_fill_rect(dpi, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
 
     // Border right of text
-    gfx_fill_rect(dpi, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
 
     // Border right
-    gfx_fill_rect(dpi, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
 
     // Border bottom
-    gfx_fill_rect(dpi, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
 
     // Border left
-    gfx_fill_rect(dpi, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
 }
 
 /**
@@ -545,14 +545,14 @@ static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     if (w.flags & WF_10)
         press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
 
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, press);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
 
     // Black caption bars look slightly green, this fixes that
     if (colour == 0)
-        gfx_fill_rect(
+        GfxFillRect(
             dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } }, ColourMapA[colour].dark);
     else
-        gfx_filter_rect(
+        GfxFilterRect(
             dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
             FilterPaletteID::PaletteDarken3);
 
@@ -598,7 +598,7 @@ static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
     uint8_t colour = w.colours[widget.colour];
 
     // Draw the button
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, press);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
 
     if (widget.text == STR_NONE)
         return;
@@ -629,7 +629,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
     colour_t colour = w.colours[widget.colour];
 
     // checkbox
-    gfx_fill_rect_inset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
+    GfxFillRectInset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
 
     if (WidgetIsDisabled(w, widgetIndex))
     {
@@ -671,7 +671,7 @@ static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
     uint8_t colour = w.colours[widget.colour];
 
     // Draw the border
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
     // Inflate by -1
     topLeft.x++;
@@ -729,18 +729,18 @@ static void WidgetHScrollbarDraw(
 {
     colour &= 0x7F;
     // Trough
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, 0x1000000 | ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 2 }, { r - SCROLLBAR_WIDTH, t + 2 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 3 }, { r - SCROLLBAR_WIDTH, t + 3 } }, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 7 }, { r - SCROLLBAR_WIDTH, t + 7 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 8 }, { r - SCROLLBAR_WIDTH, t + 8 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, 0x1000000 | ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 2 }, { r - SCROLLBAR_WIDTH, t + 2 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 3 }, { r - SCROLLBAR_WIDTH, t + 3 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 7 }, { r - SCROLLBAR_WIDTH, t + 7 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 8 }, { r - SCROLLBAR_WIDTH, t + 8 } }, ColourMapA[colour].lighter);
 
     // Left button
     {
         uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
+        GfxFillRectInset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
         gfx_draw_string(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
     }
 
@@ -750,14 +750,14 @@ static void WidgetHScrollbarDraw(
         int16_t right = std::min(r - SCROLLBAR_WIDTH, l + scroll.h_thumb_right - 1);
         uint8_t flags = (scroll.flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, { { left, t }, { right, b } }, colour, flags);
+        GfxFillRectInset(dpi, { { left, t }, { right, b } }, colour, flags);
     }
 
     // Right button
     {
         uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
+        GfxFillRectInset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
         gfx_draw_string(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
     }
 }
@@ -767,28 +767,28 @@ static void WidgetVScrollbarDraw(
 {
     colour &= 0x7F;
     // Trough
-    gfx_fill_rect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, 0x1000000 | ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 2, t + SCROLLBAR_WIDTH }, { l + 2, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 3, t + SCROLLBAR_WIDTH }, { l + 3, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, { { l + 7, t + SCROLLBAR_WIDTH }, { l + 7, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 8, t + SCROLLBAR_WIDTH }, { l + 8, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, 0x1000000 | ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 2, t + SCROLLBAR_WIDTH }, { l + 2, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 3, t + SCROLLBAR_WIDTH }, { l + 3, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + 7, t + SCROLLBAR_WIDTH }, { l + 7, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 8, t + SCROLLBAR_WIDTH }, { l + 8, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
 
     // Up button
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi, { { l, t }, { r, t + (SCROLLBAR_WIDTH - 1) } }, colour,
         ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
     gfx_draw_string(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
 
     // Thumb
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi,
         { { l, std::max(t + SCROLLBAR_WIDTH, t + scroll.v_thumb_top - 1) },
           { r, std::min(b - SCROLLBAR_WIDTH, t + scroll.v_thumb_bottom - 1) } },
         colour, ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Down button
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi, { { l, b - (SCROLLBAR_WIDTH - 1) }, { r, b } }, colour,
         ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
     gfx_draw_string(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
@@ -1138,8 +1138,8 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     bool active = w.classification == gCurrentTextBox.window.classification && w.number == gCurrentTextBox.window.number
         && widgetIndex == gCurrentTextBox.widget_index;
 
-    // gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
+    // GfxFillRectInset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
     // Figure out where the text should be positioned vertically.
     topLeft.y = w.windowPos.y + widget.textTop();
@@ -1185,7 +1185,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     {
         colour = ColourMapA[w.colours[1]].mid_light;
         auto y = topLeft.y + (widget.height() - 1);
-        gfx_fill_rect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
+        GfxFillRect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
     }
 }
 

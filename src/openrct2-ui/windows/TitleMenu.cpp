@@ -271,7 +271,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        gfx_filter_rect(&dpi, _filterRect, FilterPaletteID::Palette51);
+        GfxFilterRect(&dpi, _filterRect, FilterPaletteID::Palette51);
         DrawWidgets(dpi);
     }
 };

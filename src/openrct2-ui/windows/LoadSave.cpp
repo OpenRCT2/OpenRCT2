@@ -273,7 +273,7 @@ static void Select(const char* path)
             {
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 window_close_by_class(WindowClass::Loadsave);
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             else
             {
@@ -293,7 +293,7 @@ static void Select(const char* path)
                 gFirstTimeSaving = false;
 
                 window_close_by_class(WindowClass::Loadsave);
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
 
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
@@ -309,7 +309,7 @@ static void Select(const char* path)
             if (Editor::LoadLandscape(pathBuffer))
             {
                 gCurrentLoadedPath = pathBuffer;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
             else
@@ -327,7 +327,7 @@ static void Select(const char* path)
             {
                 gCurrentLoadedPath = pathBuffer;
                 window_close_by_class(WindowClass::Loadsave);
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
             else
@@ -976,7 +976,7 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
         const int32_t listWidth = widgets[WIDX_SCROLL].width();
         const int32_t dateAnchor = widgets[WIDX_SORT_DATE].left + maxDateWidth + DATE_TIME_GAP;
@@ -996,7 +996,7 @@ public:
             if (i == selected_list_item)
             {
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                gfx_filter_rect(&dpi, { 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(&dpi, { 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
             }
             // display a marker next to the currently loaded game file
             if (_listItems[i].loaded)

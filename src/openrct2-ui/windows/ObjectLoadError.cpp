@@ -502,7 +502,7 @@ public:
     void OnScrollDraw(const int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
         const int32_t listWidth = widgets[WIDX_SCROLL].width();
 
@@ -520,11 +520,11 @@ public:
                                                 { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
             // If hovering over item, change the color and fill the backdrop.
             if (i == selected_list_item)
-                gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].darker);
+                GfxFillRect(&dpi, screenRect, ColourMapA[colours[1]].darker);
             else if (i == _highlightedIndex)
-                gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].mid_dark);
+                GfxFillRect(&dpi, screenRect, ColourMapA[colours[1]].mid_dark);
             else if ((i & 1) != 0) // odd / even check
-                gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].light);
+                GfxFillRect(&dpi, screenRect, ColourMapA[colours[1]].light);
 
             // Draw the actual object entry's name...
             screenCoords.x = NAME_COL_LEFT - 3;

@@ -57,8 +57,8 @@ void Painter::Paint(IDrawingEngine& de)
             DrawOpenRCT2(dpi, { 0, _uiContext->GetHeight() - 20 });
         }
 
-        gfx_draw_pickedup_peep(dpi);
-        gfx_invalidate_pickedup_peep();
+        GfxDrawPickedUpPeep(dpi);
+        GfxInvalidatePickedUpPeep();
 
         de.PaintWeather();
     }
@@ -97,7 +97,7 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
         gfx_draw_string(dpi, screenCoords, buffer, { COLOUR_SATURATED_RED });
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
+    GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
 }
 
 void Painter::PaintFPS(rct_drawpixelinfo* dpi)
@@ -115,7 +115,7 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
     gfx_draw_string(dpi, screenCoords, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi->lastStringPos.x + 16, 16 } });
+    GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi->lastStringPos.x + 16, 16 } });
 }
 
 void Painter::MeasureFPS()

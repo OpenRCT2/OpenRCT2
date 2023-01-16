@@ -695,7 +695,7 @@ public:
         bool ridePage = (GetSelectedObjectType() == ObjectType::Ride);
 
         uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
-        gfx_clear(&dpi, paletteIndex);
+        GfxClear(&dpi, paletteIndex);
 
         screenCoords.y = 0;
         for (size_t i = 0; i < _listItems.size(); i++)
@@ -705,8 +705,7 @@ public:
             {
                 // Draw checkbox
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                    gfx_fill_rect_inset(
-                        &dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(&dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                 // Highlight background
                 auto highlighted = i == static_cast<size_t>(selected_list_item)
@@ -714,7 +713,7 @@ public:
                 if (highlighted)
                 {
                     auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
-                    gfx_filter_rect(&dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(&dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
                 }
 
                 // Draw checkmark
@@ -1003,7 +1002,7 @@ public:
 
         // Preview background
         const auto& previewWidget = widgets[WIDX_PREVIEW];
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi,
             { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
               windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
@@ -1056,7 +1055,7 @@ public:
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
             _width = previewWidget.width() - 1;
             int32_t _height = previewWidget.height() - 1;
-            if (clip_drawpixelinfo(&clipDPI, &dpi, screenPos, _width, _height))
+            if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, _width, _height))
             {
                 _loadedObject->DrawPreview(&clipDPI, _width, _height);
             }
@@ -1607,7 +1606,7 @@ void EditorLoadSelectedObjects()
     if (_numSelectedObjectsForType[EnumValue(ObjectType::Water)] == 0)
     {
         // Reloads the default cyan water palette if no palette was selected.
-        load_palette();
+        LoadPalette();
     }
     if (showFallbackWarning)
         ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());

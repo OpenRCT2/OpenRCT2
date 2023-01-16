@@ -169,7 +169,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
     scrolling_text_invalidate();
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     return res;
 }

@@ -54,7 +54,7 @@ void intro_update()
             gIntroState = IntroState::PublisherBegin;
             [[fallthrough]];
         case IntroState::PublisherBegin:
-            load_palette();
+            LoadPalette();
 
             // Set the Y for the Infogrames logo
             _introStateCounter = -580;
@@ -160,7 +160,7 @@ void intro_update()
             break;
         case IntroState::Finish:
             gIntroState = IntroState::None;
-            load_palette();
+            LoadPalette();
             OpenRCT2::Audio::PlayTitleMusic();
             break;
         default:
@@ -178,13 +178,13 @@ void intro_draw(rct_drawpixelinfo* dpi)
         case IntroState::Disclaimer2:
             break;
         case IntroState::PublisherBegin:
-            gfx_clear(dpi, BACKROUND_COLOUR_DARK);
+            GfxClear(dpi, BACKROUND_COLOUR_DARK);
             break;
         case IntroState::PublisherScroll:
-            gfx_clear(dpi, BACKROUND_COLOUR_DARK);
+            GfxClear(dpi, BACKROUND_COLOUR_DARK);
 
             // Draw a white rectangle for the logo background (gives a bit of white margin)
-            gfx_fill_rect(
+            GfxFillRect(
                 dpi,
                 { { (screenWidth / 2) - 320 + 50, _introStateCounter + 50 },
                   { (screenWidth / 2) - 320 + 50 + 540, _introStateCounter + 50 + 425 } },
@@ -197,11 +197,11 @@ void intro_draw(rct_drawpixelinfo* dpi)
             gfx_draw_sprite(dpi, ImageId(SPR_INTRO_INFOGRAMES_11), { (screenWidth / 2) - 320 + 319, _introStateCounter + 319 });
             break;
         case IntroState::DeveloperBegin:
-            gfx_clear(dpi, BACKROUND_COLOUR_DARK);
-            gfx_transpose_palette(PALETTE_G1_IDX_DEVELOPER, 255);
+            GfxClear(dpi, BACKROUND_COLOUR_DARK);
+            GfxTransposePalette(PALETTE_G1_IDX_DEVELOPER, 255);
             break;
         case IntroState::DeveloperScroll:
-            gfx_clear(dpi, BACKROUND_COLOUR_DARK);
+            GfxClear(dpi, BACKROUND_COLOUR_DARK);
 
             // Draw Chris Sawyer logo
             gfx_draw_sprite(dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_00), { (screenWidth / 2) - 320 + 70, _introStateCounter });
@@ -210,11 +210,11 @@ void intro_draw(rct_drawpixelinfo* dpi)
         case IntroState::LogoFadeIn:
             if (_introStateCounter <= 0xFF00)
             {
-                gfx_transpose_palette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
+                GfxTransposePalette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
             }
             else
             {
-                gfx_transpose_palette(PALETTE_G1_IDX_LOGO, 255);
+                GfxTransposePalette(PALETTE_G1_IDX_LOGO, 255);
             }
             screen_intro_draw_logo(dpi);
             break;
@@ -224,16 +224,16 @@ void intro_draw(rct_drawpixelinfo* dpi)
         case IntroState::LogoFadeOut:
             if (_introStateCounter >= 0)
             {
-                gfx_transpose_palette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
+                GfxTransposePalette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
             }
             else
             {
-                gfx_transpose_palette(PALETTE_G1_IDX_LOGO, 0);
+                GfxTransposePalette(PALETTE_G1_IDX_LOGO, 0);
             }
             screen_intro_draw_logo(dpi);
             break;
         case IntroState::Clear:
-            gfx_clear(dpi, BACKROUND_COLOUR_DARK);
+            GfxClear(dpi, BACKROUND_COLOUR_DARK);
             break;
         default:
             break;
@@ -293,7 +293,7 @@ static void screen_intro_draw_logo(rct_drawpixelinfo* dpi)
     drawing_engine_invalidate_image(SPR_INTRO_LOGO_11);
     drawing_engine_invalidate_image(SPR_INTRO_LOGO_21);
 
-    gfx_clear(dpi, BACKROUND_COLOUR_LOGO);
+    GfxClear(dpi, BACKROUND_COLOUR_LOGO);
     gfx_draw_sprite(dpi, ImageId(SPR_INTRO_LOGO_00), { imageX + 0, 0 });
     gfx_draw_sprite(dpi, ImageId(SPR_INTRO_LOGO_10), { imageX + 220, 0 });
     gfx_draw_sprite(dpi, ImageId(SPR_INTRO_LOGO_20), { imageX + 440, 0 });

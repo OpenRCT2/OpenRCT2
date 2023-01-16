@@ -62,34 +62,34 @@ public:
         ScreenCoordsXY leftBottom{ leftTop.x, rightBottom.y };
         ScreenCoordsXY rightTop{ rightBottom.x, leftTop.y };
 
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
             FilterPaletteID::Palette45);
-        gfx_filter_rect(&dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
+        GfxFilterRect(&dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
 
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 0, 2 }, leftBottom - ScreenCoordsXY{ 0, 2 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 0, 2 }, rightBottom - ScreenCoordsXY{ 0, 2 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 2, 0 }, rightBottom - ScreenCoordsXY{ 2, 0 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 2, 0 }, rightTop - ScreenCoordsXY{ 2, 0 } },
             FilterPaletteID::PaletteDarken3);
 
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 1, 1 }, rightTop + ScreenCoordsXY{ 1, 1 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ rightTop + ScreenCoordsXY{ -1, 1 }, rightTop + ScreenCoordsXY{ -1, 1 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 1, -1 }, leftBottom + ScreenCoordsXY{ 1, -1 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ rightBottom - ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
             FilterPaletteID::PaletteDarken3);
 

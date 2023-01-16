@@ -42,7 +42,7 @@ void WaterObject::Load()
     _legacyType.palette_index_1 = _legacyType.image_id + 1;
     _legacyType.palette_index_2 = _legacyType.image_id + 4;
 
-    load_palette();
+    LoadPalette();
 }
 
 void WaterObject::Unload()

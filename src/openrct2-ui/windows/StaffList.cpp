@@ -143,7 +143,7 @@ public:
                 {
                     show_gridlines();
                     SetPatrolAreaToRender(GetSelectedStaffType());
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
                 break;
             case WIDX_STAFF_LIST_MAP:
@@ -370,7 +370,7 @@ public:
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // How much space do we have for the name and action columns? (Discount scroll area and icons.)
@@ -399,7 +399,7 @@ public:
 
                 if (i == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(&dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
                     format = (_quickFireMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
@@ -473,7 +473,7 @@ public:
             hide_gridlines();
             tool_cancel();
             ClearPatrolAreaToRender();
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
         }
     }
 
@@ -565,7 +565,7 @@ private:
         auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
         const auto& widget = widgets[widgetIndex];
         rct_drawpixelinfo clippedDpi;
-        if (clip_drawpixelinfo(
+        if (ClipDrawPixelInfo(
                 &clippedDpi, &dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
                 widget.right - widget.left - 1, widget.bottom - widget.top - 1))
         {

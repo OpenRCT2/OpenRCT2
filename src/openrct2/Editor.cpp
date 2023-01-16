@@ -113,7 +113,7 @@ namespace Editor
         viewport_init_all();
         rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
-        load_palette();
+        LoadPalette();
         gScreenAge = 0;
         gScenarioName = language_get_string(STR_MY_NEW_SCENARIO);
     }
@@ -172,7 +172,7 @@ namespace Editor
         viewport_init_all();
         rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
-        load_palette();
+        LoadPalette();
     }
 
     /**
@@ -193,7 +193,7 @@ namespace Editor
         viewport_init_all();
         rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
-        load_palette();
+        LoadPalette();
     }
 
     /**
@@ -423,7 +423,7 @@ namespace Editor
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
 
         gWindowUpdateTicks = 0;
-        load_palette();
+        LoadPalette();
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
     }

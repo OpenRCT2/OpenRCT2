@@ -150,7 +150,7 @@ private:
     {
         window_close_all();
         gEditorStep = EditorStep::ObjectSelection;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpBackToLandscapeEditor() const
@@ -160,7 +160,7 @@ private:
         ScenerySetDefaultPlacementConfiguration();
         gEditorStep = EditorStep::LandscapeEditor;
         ContextOpenWindow(WindowClass::Map);
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpBackToInventionListSetUp() const
@@ -168,7 +168,7 @@ private:
         window_close_all();
         ContextOpenWindow(WindowClass::EditorInventionList);
         gEditorStep = EditorStep::InventionsListSetUp;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpBackToOptionsSelection() const
@@ -176,7 +176,7 @@ private:
         window_close_all();
         ContextOpenWindow(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     bool CheckObjectSelection() const
@@ -230,7 +230,7 @@ private:
             ContextShowError(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, errorString, {});
         }
 
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpForwardToOptionsSelection() const
@@ -238,7 +238,7 @@ private:
         window_close_all();
         ContextOpenWindow(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpForwardToObjectiveSelection() const
@@ -246,7 +246,7 @@ private:
         window_close_all();
         ContextOpenWindow(WindowClass::EditorObjectiveOptions);
         gEditorStep = EditorStep::ObjectiveSelection;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpForwardToSaveScenario() const
@@ -255,7 +255,7 @@ private:
         if (!savePrepareResult.Successful)
         {
             ContextShowError(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             return;
         }
 
@@ -283,7 +283,7 @@ private:
         auto previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
         auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
-        gfx_filter_rect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
     void DrawLeftButton(rct_drawpixelinfo& dpi)
@@ -292,7 +292,7 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
         const auto bottomRight = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].right - 1, widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
-        gfx_fill_rect_inset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         gfx_draw_sprite(
             &dpi, ImageId(SPR_PREVIOUS),
@@ -321,7 +321,7 @@ private:
         auto nextWidget = widgets[WIDX_NEXT_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
         auto rightBottom = windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-        gfx_filter_rect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
     void DrawRightButton(rct_drawpixelinfo& dpi)
@@ -329,7 +329,7 @@ private:
         const auto topLeft = windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
         const auto bottomRight = windowPos
             + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 1, widgets[WIDX_NEXT_IMAGE].bottom - 1 };
-        gfx_fill_rect_inset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         gfx_draw_sprite(
             &dpi, ImageId(SPR_NEXT),

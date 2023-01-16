@@ -82,7 +82,7 @@ GameActions::Result RideSetNameAction::Execute() const
     }
 
     scrolling_text_invalidate();
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     // Refresh windows that display ride name
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();

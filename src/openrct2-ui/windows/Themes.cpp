@@ -276,22 +276,22 @@ public:
             if (width < min_width)
             {
                 width = min_width;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (height < min_height)
             {
                 height = min_height;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (width > max_width)
             {
                 width = max_width;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (height > max_height)
             {
                 height = max_height;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
         }
         else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
@@ -304,22 +304,22 @@ public:
             if (width < min_width)
             {
                 width = min_width;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (height < min_height)
             {
                 height = min_height;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (width > max_width)
             {
                 width = max_width;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (height > max_height)
             {
                 height = max_height;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
         }
         else
@@ -766,9 +766,9 @@ public:
             return;
 
         if ((colours[1] & 0x80) == 0)
-            // gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
+            // GfxFillRect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
             // ColourMapA[colours[1]].mid_light);
-            gfx_clear(&dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(&dpi, ColourMapA[colours[1]].mid_light);
         screenCoords.y = 0;
         for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
         {
@@ -791,16 +791,16 @@ public:
                     {
                         translucent_window_palette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
-                        gfx_filter_rect(&dpi, { leftTop, rightBottom }, windowPalette.highlight);
-                        gfx_filter_rect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
+                        GfxFilterRect(&dpi, { leftTop, rightBottom }, windowPalette.highlight);
+                        GfxFilterRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                     }
                     else
                     {
                         colour = ColourMapA[colours[1]].mid_dark;
-                        gfx_fill_rect(&dpi, { leftTop, rightBottom }, colour);
+                        GfxFillRect(&dpi, { leftTop, rightBottom }, colour);
 
                         colour = ColourMapA[colours[1]].lightest;
-                        gfx_fill_rect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
+                        GfxFillRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
                     }
                 }
 
@@ -818,7 +818,7 @@ public:
 
                     ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
                     ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
-                    gfx_fill_rect_inset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
                         gfx_draw_string(

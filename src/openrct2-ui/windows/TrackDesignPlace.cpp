@@ -292,7 +292,7 @@ public:
 
         // Draw mini tile preview
         rct_drawpixelinfo clippedDpi;
-        if (clip_drawpixelinfo(&clippedDpi, &dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
+        if (ClipDrawPixelInfo(&clippedDpi, &dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
         {
             rct_g1_element g1temp = {};
             g1temp.offset = _miniPreview.data();

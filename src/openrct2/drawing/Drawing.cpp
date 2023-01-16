@@ -554,33 +554,33 @@ ImageCatalogue ImageId::GetCatalogue() const
     return ImageCatalogue::UNKNOWN;
 }
 
-void (*mask_fn)(
+void (*MaskFn)(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
     = nullptr;
 
-void mask_init()
+void MaskInit()
 {
     if (avx2_available())
     {
         log_verbose("registering AVX2 mask function");
-        mask_fn = mask_avx2;
+        MaskFn = MaskAvx2;
     }
     else if (sse41_available())
     {
         log_verbose("registering SSE4.1 mask function");
-        mask_fn = mask_sse4_1;
+        MaskFn = MaskSse4_1;
     }
     else
     {
         log_verbose("registering scalar mask function");
-        mask_fn = mask_scalar;
+        MaskFn = MaskScalar;
     }
 }
 
-void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
+void GfxFilterPixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
-    gfx_filter_rect(dpi, { coords, coords }, palette);
+    GfxFilterRect(dpi, { coords, coords }, palette);
 }
 
 /**
@@ -589,7 +589,7 @@ void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, Filt
  * a1 (ebx)
  * product (cl)
  */
-void gfx_transpose_palette(int32_t pal, uint8_t product)
+void GfxTransposePalette(int32_t pal, uint8_t product)
 {
     const rct_g1_element* g1 = gfx_get_g1_element(pal);
     if (g1 != nullptr)
@@ -615,7 +615,7 @@ void gfx_transpose_palette(int32_t pal, uint8_t product)
  *
  *  rct2: 0x006837E3
  */
-void load_palette()
+void LoadPalette()
 {
     if (gOpenRCT2NoGraphics)
     {
@@ -649,16 +649,16 @@ void load_palette()
         }
     }
     UpdatePalette(gGamePalette, 10, 236);
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 /**
  *
  *  rct2: 0x006ED7E5
  */
-void gfx_invalidate_screen()
+void GfxInvalidateScreen()
 {
-    gfx_set_dirty_blocks({ { 0, 0 }, { ContextGetWidth(), ContextGetHeight() } });
+    GfxSetDirtyBlocks({ { 0, 0 }, { ContextGetWidth(), ContextGetHeight() } });
 }
 
 /*
@@ -670,7 +670,7 @@ void gfx_invalidate_screen()
  * height (dx)
  * drawpixelinfo (edi)
  */
-bool clip_drawpixelinfo(
+bool ClipDrawPixelInfo(
     rct_drawpixelinfo* dst, rct_drawpixelinfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
     int32_t right = coords.x + width;
@@ -720,7 +720,7 @@ bool clip_drawpixelinfo(
     return false;
 }
 
-void gfx_invalidate_pickedup_peep()
+void GfxInvalidatePickedUpPeep()
 {
     auto imageId = gPickupPeepImage;
     if (imageId.HasValue())
@@ -732,12 +732,12 @@ void gfx_invalidate_pickedup_peep()
             int32_t top = gPickupPeepY + g1->y_offset;
             int32_t right = left + g1->width;
             int32_t bottom = top + g1->height;
-            gfx_set_dirty_blocks({ { left, top }, { right, bottom } });
+            GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
         }
     }
 }
 
-void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi)
+void GfxDrawPickedUpPeep(rct_drawpixelinfo* dpi)
 {
     if (gPickupPeepImage.HasValue())
     {
@@ -853,7 +853,7 @@ void RefreshVideo(bool recreateWindow)
     }
 
     drawing_engine_set_palette(gPalette);
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void ToggleWindowedMode()

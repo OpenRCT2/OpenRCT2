@@ -141,18 +141,18 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         ScreenCoordsXY topLeft{ _chatLeft, _chatTop };
         ScreenCoordsXY bottomRight{ _chatRight, _chatBottom };
         ScreenCoordsXY bottomLeft{ _chatLeft, _chatBottom };
-        gfx_set_dirty_blocks(
+        GfxSetDirtyBlocks(
             { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }); // Background area + Textbox
-        gfx_filter_rect(
+        GfxFilterRect(
             dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
             FilterPaletteID::Palette51); // Opaque grey background
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
             INSET_RECT_FLAG_FILL_NONE);
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             dpi, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
             chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET);
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             dpi, { bottomLeft + ScreenCoordsXY{ 1, -inputLineHeight - 5 }, bottomRight + ScreenCoordsXY{ -1, 4 } },
             chatBackgroundColor,
             INSET_RECT_FLAG_BORDER_INSET); // Textbox
@@ -173,7 +173,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         lineBuffer.assign(chat_history_get(i));
         auto lineCh = lineBuffer.c_str();
         stringHeight = chat_history_draw_string(dpi, lineCh, screenCoords, _chatWidth - 10) + 5;
-        gfx_set_dirty_blocks(
+        GfxSetDirtyBlocks(
             { { screenCoords - ScreenCoordsXY{ 0, stringHeight } }, { screenCoords + ScreenCoordsXY{ _chatWidth, 20 } } });
 
         if ((screenCoords.y - stringHeight) < 50)
@@ -195,7 +195,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         ft.Add<const char*>(lineCh);
         inputLineHeight = DrawTextWrapped(
             dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { TEXT_COLOUR_255 });
-        gfx_set_dirty_blocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
+        GfxSetDirtyBlocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
         if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer, FontStyle::Medium) < (_chatWidth - 10))
@@ -204,7 +204,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
             int32_t caretX = screenCoords.x + gfx_get_string_width(lineBuffer, FontStyle::Medium);
             int32_t caretY = screenCoords.y + 14;
 
-            gfx_fill_rect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
+            GfxFillRect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
         }
     }
 }

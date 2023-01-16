@@ -547,8 +547,8 @@ void widget_invalidate(rct_window& w, WidgetIndex widgetIndex)
     if (widget.left == -2)
         return;
 
-    gfx_set_dirty_blocks({ { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
-                           { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
+    GfxSetDirtyBlocks({ { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
+                        { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
 }
 
 template<typename TPred> static void widget_invalidate_by_condition(TPred pred)
@@ -1732,7 +1732,7 @@ void window_resize_gui(int32_t width, int32_t height)
         optionsWind->windowPos.x = width - 80;
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 /**

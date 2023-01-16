@@ -555,7 +555,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
 static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
-    gfx_clear(dpi, paletteIndex);
+    GfxClear(dpi, paletteIndex);
 
     StringId highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
     StringId unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
@@ -593,7 +593,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                 bool isHighlighted = w->highlighted_scenario == scenario;
                 if (isHighlighted)
                 {
-                    gfx_filter_rect(dpi, { 0, y, w->width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, y, w->width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
                 }
 
                 bool isCompleted = scenario->highscore != nullptr;
@@ -668,21 +668,21 @@ static void DrawCategoryHeading(
     int32_t lineY = y + 4;
     auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY };
     auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-    gfx_draw_line(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+    GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
     auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
     auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-    gfx_draw_line(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+    GfxDrawLine(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
 
     // Draw dark horizontal rule
     lineY++;
     auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY };
     auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-    gfx_draw_line(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+    GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
 
     auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
     auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-    gfx_draw_line(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+    GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
 }
 
 static void InitialiseListItems(rct_window* w)

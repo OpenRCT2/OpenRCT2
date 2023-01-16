@@ -4549,7 +4549,7 @@ void ride_update_vehicle_colours(const Ride& ride)
 {
     if (ride.type == RIDE_TYPE_SPACE_RINGS || ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
     {
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)

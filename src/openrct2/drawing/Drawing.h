@@ -474,31 +474,31 @@ extern int32_t gPickupPeepY;
 
 extern bool gTinyFontAntiAliased;
 
-bool clip_drawpixelinfo(
+bool ClipDrawPixelInfo(
     rct_drawpixelinfo* dst, rct_drawpixelinfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
-void gfx_set_dirty_blocks(const ScreenRect& rect);
-void gfx_invalidate_screen();
+void GfxSetDirtyBlocks(const ScreenRect& rect);
+void GfxInvalidateScreen();
 
 // palette
-void gfx_transpose_palette(int32_t pal, uint8_t product);
-void load_palette();
+void GfxTransposePalette(int32_t pal, uint8_t product);
+void LoadPalette();
 
 // other
-void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex);
-void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
-void gfx_invalidate_pickedup_peep();
-void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi);
+void GfxClear(rct_drawpixelinfo* dpi, uint8_t paletteIndex);
+void GfxFilterPixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
+void GfxInvalidatePickedUpPeep();
+void GfxDrawPickedUpPeep(rct_drawpixelinfo* dpi);
 
 // line
-void gfx_draw_line(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour);
-void gfx_draw_line_software(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour);
-void gfx_draw_dashed_line(
+void GfxDrawLine(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour);
+void GfxDrawLineSoftware(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour);
+void GfxDrawDashedLine(
     rct_drawpixelinfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
 
 // rect
-void gfx_fill_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour);
-void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
-void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
+void GfxFillRect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour);
+void GfxFillRectInset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
+void GfxFilterRect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
 bool gfx_load_g1(const OpenRCT2::IPlatformEnvironment& env);
@@ -513,7 +513,7 @@ void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1);
 std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
 bool is_csg_loaded();
 void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
-void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
+void FASTCALL GfxBmpSpriteToBuffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_rle_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId image_id, const ScreenCoordsXY& coords);
 void FASTCALL
@@ -565,18 +565,18 @@ ImageId scrolling_text_setup(
 
 size_t g1_calculate_data_size(const rct_g1_element* g1);
 
-void mask_scalar(
+void MaskScalar(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
-void mask_sse4_1(
+void MaskSse4_1(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
-void mask_avx2(
+void MaskAvx2(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
-void mask_init();
+void MaskInit();
 
-extern void (*mask_fn)(
+extern void (*MaskFn)(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 

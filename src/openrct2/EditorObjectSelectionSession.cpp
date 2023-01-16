@@ -448,7 +448,7 @@ static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
     auto newPaletteEntry = ObjectEntryDescriptor(*item);
     if (objectManager.GetLoadedObject(newPaletteEntry) != nullptr || objectManager.LoadObject(newPaletteEntry) != nullptr)
     {
-        load_palette();
+        LoadPalette();
     }
     else
     {
@@ -486,14 +486,14 @@ void finish_object_selection()
         set_every_ride_type_invented();
         set_every_ride_entry_invented();
         gEditorStep = EditorStep::RollercoasterDesigner;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
     else
     {
         set_all_scenery_items_invented();
         ScenerySetDefaultPlacementConfiguration();
         gEditorStep = EditorStep::LandscapeEditor;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 }
 

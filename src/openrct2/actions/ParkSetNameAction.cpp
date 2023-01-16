@@ -60,7 +60,7 @@ GameActions::Result ParkSetNameAction::Execute() const
     {
         park.Name = _name;
         scrolling_text_invalidate();
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
     return GameActions::Result();
 }

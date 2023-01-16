@@ -154,7 +154,7 @@ public:
         Widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
         auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
         int32_t colour = ColourMapA[colours[0]].darkest;
-        gfx_fill_rect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
+        GfxFillRect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
         rct_g1_element g1temp = {};
         g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);

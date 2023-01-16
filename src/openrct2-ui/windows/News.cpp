@@ -190,7 +190,7 @@ public:
             }
 
             // Background
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
                 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
@@ -221,7 +221,7 @@ public:
                         press = INSET_RECT_FLAG_BORDER_INSET;
                     }
                 }
-                gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxFillRectInset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
 
                 switch (newsItem.Type)
                 {
@@ -232,7 +232,7 @@ public:
                     case News::ItemType::PeepOnRide:
                     {
                         rct_drawpixelinfo cliped_dpi;
-                        if (!clip_drawpixelinfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                        if (!ClipDrawPixelInfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                         {
                             break;
                         }
@@ -298,7 +298,7 @@ public:
                     if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
                         press = 0x20;
                 }
-                gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxFillRectInset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
                 gfx_draw_sprite(&dpi, ImageId(SPR_LOCATE), screenCoords);
             }
 
