@@ -10,6 +10,7 @@
 #include "Text.h"
 
 #include "../localisation/Formatter.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "Drawing.h"
 
@@ -120,7 +121,7 @@ static void DrawText(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, StringId format, const void* args)
 {
     utf8 buffer[512];
-    format_string(buffer, sizeof(buffer), format, args);
+    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, args);
     DrawText(dpi, coords, paint, buffer);
 }
 
@@ -149,7 +150,7 @@ void DrawTextEllipsised(
     TextPaint textPaint)
 {
     utf8 buffer[512];
-    format_string(buffer, sizeof(buffer), format, ft.Data());
+    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
     GfxClipString(buffer, width, textPaint.FontStyle);
 
     DrawText(dpi, coords, textPaint, buffer);

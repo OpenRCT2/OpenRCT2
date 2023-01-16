@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/localisation/Formatting.h"
+
 #include <array>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -1850,17 +1852,17 @@ private:
             ft.Add<int32_t>(peep->NextLoc.x);
             ft.Add<int32_t>(peep->NextLoc.y);
             ft.Add<int32_t>(peep->NextLoc.z);
-            format_string(buffer, sizeof(buffer), STR_PEEP_DEBUG_NEXT, ft.Data());
+            OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), STR_PEEP_DEBUG_NEXT, ft.Data());
             if (peep->GetNextIsSurface())
             {
-                format_string(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
+                OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
                 safe_strcat(buffer, buffer2, sizeof(buffer));
             }
             if (peep->GetNextIsSloped())
             {
                 auto ft2 = Formatter();
                 ft2.Add<int32_t>(peep->GetNextDirection());
-                format_string(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
+                OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
                 safe_strcat(buffer, buffer2, sizeof(buffer));
             }
             GfxDrawString(&dpi, screenCoords, buffer, {});

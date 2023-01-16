@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../interface/Theme.h"
+#include "openrct2/localisation/Formatting.h"
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -659,7 +660,7 @@ static void DrawCategoryHeading(
     // Get string dimensions
     utf8 buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
-    format_string(bufferPtr, sizeof(buffer), stringId, nullptr);
+    OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
     int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;

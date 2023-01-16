@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/localisation/Formatting.h"
+
 #include <algorithm>
 #include <bitset>
 #include <iterator>
@@ -352,7 +354,7 @@ void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uin
     max_string_width = 0;
     for (size_t i = 0; i < num_items; i++)
     {
-        format_string(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
+        OpenRCT2::FormatStringLegacy(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
         string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
         max_string_width = std::max(string_width, max_string_width);
     }

@@ -154,7 +154,7 @@ static void ScrollingTextFormat(utf8* dst, size_t size, rct_draw_scroll_text* sc
     }
     else
     {
-        format_string(dst, size, scrollText->string_id, scrollText->string_args);
+        OpenRCT2::FormatStringLegacy(dst, size, scrollText->string_id, scrollText->string_args);
     }
 }
 

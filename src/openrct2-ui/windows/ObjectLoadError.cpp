@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/localisation/Formatting.h"
+
 #include <mutex>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -121,7 +123,8 @@ private:
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
                     ft.Add<char*>(_downloadStatusInfo.Name.c_str());
-                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, ft.Data());
+                    OpenRCT2::FormatStringLegacy(
+                        str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, ft.Data());
                 }
                 else
                 {
@@ -129,7 +132,7 @@ private:
                     ft.Add<char*>(_downloadStatusInfo.Source.c_str());
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
-                    format_string(
+                    OpenRCT2::FormatStringLegacy(
                         str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, ft.Data());
                 }
 

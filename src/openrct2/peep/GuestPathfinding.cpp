@@ -2317,7 +2317,7 @@ void PathfindLoggingEnable([[maybe_unused]] Peep& peep)
 {
 #    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
     /* Determine if the pathfinding debugging is wanted for this peep. */
-    format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep.name_string_idx, &(peep.Id));
+    OpenRCT2::FormatStringLegacy(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep.name_string_idx, &(peep.Id));
 
     /* For guests, use the existing PEEP_FLAGS_TRACKING flag to
      * determine for which guest(s) the pathfinding debugging will

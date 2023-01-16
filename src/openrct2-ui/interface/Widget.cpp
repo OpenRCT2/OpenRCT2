@@ -10,6 +10,7 @@
 #include "Widget.h"
 
 #include "Window.h"
+#include "openrct2/localisation/Formatting.h"
 
 #include <algorithm>
 #include <cmath>
@@ -487,7 +488,7 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
             colour |= COLOUR_FLAG_INSET;
 
         utf8 buffer[512] = { 0 };
-        format_string(buffer, sizeof(buffer), stringId, formatArgs);
+        OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), stringId, formatArgs);
         auto ft = Formatter();
         ft.Add<utf8*>(buffer);
         DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });

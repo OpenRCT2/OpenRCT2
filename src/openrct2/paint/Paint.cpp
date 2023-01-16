@@ -14,6 +14,7 @@
 #include "../core/Guard.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
@@ -907,7 +908,7 @@ void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, PaintStringStruct* ps)
     do
     {
         char buffer[256]{};
-        format_string(buffer, sizeof(buffer), ps->string_id, &ps->args);
+        OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), ps->string_id, &ps->args);
 
         // Use sprite font unless the currency contains characters unsupported by the sprite font
         auto forceSpriteFont = false;

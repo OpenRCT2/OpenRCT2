@@ -16,6 +16,7 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/EntranceObject.h"
 #include "../../object/ObjectManager.h"
@@ -67,7 +68,7 @@ static void PaintRideEntranceExitScrollingText(
     }
     else
     {
-        format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
+        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
@@ -238,7 +239,7 @@ static void PaintParkEntranceScrollingText(
     }
     else
     {
-        format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
+        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);

@@ -20,6 +20,7 @@
 #include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/FootpathObject.h"
 #include "../../object/FootpathRailingsObject.h"
@@ -463,7 +464,8 @@ static void PathPaintFencesAndQueueBanners(
             }
             else
             {
-                format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
+                OpenRCT2::FormatStringLegacy(
+                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
 
             uint16_t stringWidth = GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Tiny);

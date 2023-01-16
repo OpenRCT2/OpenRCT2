@@ -72,6 +72,7 @@
 
 #ifndef NO_TTF
 #    include "../drawing/TTF.h"
+#    include "../localisation/Formatting.h"
 #endif
 
 using arguments_t = std::vector<std::string>;
@@ -169,7 +170,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                     {
                         char mode_name[128] = { 0 };
                         StringId mode_string_id = RideModeNames[i];
-                        format_string(mode_name, 128, mode_string_id, nullptr);
+                        OpenRCT2::FormatStringLegacy(mode_name, 128, mode_string_id, nullptr);
                         console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
                 }
@@ -476,7 +477,7 @@ static int32_t ConsoleCommandStaff(InteractiveConsole& console, const arguments_
                 {
                     char costume_name[128] = { 0 };
                     StringId costume = StaffCostumeNames[i];
-                    format_string(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
+                    OpenRCT2::FormatStringLegacy(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
                     // That's a terrible hack here. Costume names include inline sprites
                     // that don't work well with the console, so manually skip past them.
                     console.WriteFormatLine("        costume %i: %s", i, costume_name + 7);

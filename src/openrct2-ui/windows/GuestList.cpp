@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/localisation/Formatting.h"
+
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -630,7 +632,7 @@ public:
 
                 Formatter ft;
                 peep->FormatNameTo(ft);
-                format_string(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
+                OpenRCT2::FormatStringLegacy(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
             }
 
             std::sort(_guestList.begin(), _guestList.end(), GetGuestCompareFunc());
@@ -784,7 +786,7 @@ private:
 
             Formatter ft;
             peep.FormatNameTo(ft);
-            format_string(name, sizeof(name), STR_STRINGID, ft.Data());
+            OpenRCT2::FormatStringLegacy(name, sizeof(name), STR_STRINGID, ft.Data());
             if (!String::Contains(name, _filterName.c_str(), true))
             {
                 return false;

@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/localisation/Formatting.h"
+
 #include <algorithm>
 #include <fstream>
 #include <openrct2-ui/interface/Widget.h>
@@ -234,7 +236,7 @@ private:
             char version_info[256];
 
             const char* version_info_ptr = _newVersionInfo->name.c_str();
-            format_string(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
+            OpenRCT2::FormatStringLegacy(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
 
             _changelogLines.emplace_back(version_info);
             _changelogLines.emplace_back("");

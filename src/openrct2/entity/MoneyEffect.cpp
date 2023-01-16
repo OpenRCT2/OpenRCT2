@@ -13,6 +13,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../paint/Paint.h"
@@ -59,7 +60,7 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool verti
     {
         auto [stringId, newValue] = moneyEffect->GetStringId();
         char buffer[128];
-        format_string(buffer, 128, stringId, &newValue);
+        OpenRCT2::FormatStringLegacy(buffer, 128, stringId, &newValue);
         offsetX = -(GfxGetStringWidth(buffer, FontStyle::Medium) / 2);
     }
     moneyEffect->OffsetX = offsetX;
