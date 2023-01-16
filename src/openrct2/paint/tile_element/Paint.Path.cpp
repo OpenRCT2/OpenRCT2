@@ -458,7 +458,7 @@ static void PathPaintFencesAndQueueBanners(
             }
             if (gConfigGeneral.UpperCaseBanners)
             {
-                format_string_to_upper(
+                FormatStringToUpper(
                     gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
             else

@@ -123,7 +123,7 @@ std::string Object::GetOverrideString(uint8_t index) const
     const utf8* result = nullptr;
     if (stringId != STR_NONE)
     {
-        result = language_get_string(stringId);
+        result = LanguageGetString(stringId);
     }
     return String::ToStd(result);
 }

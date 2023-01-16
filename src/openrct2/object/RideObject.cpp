@@ -203,9 +203,9 @@ void RideObject::Load()
     _legacyType.obj = this;
 
     GetStringTable().Sort();
-    _legacyType.naming.Name = language_allocate_object_string(GetName());
-    _legacyType.naming.Description = language_allocate_object_string(GetDescription());
-    _legacyType.capacity = language_allocate_object_string(GetCapacity());
+    _legacyType.naming.Name = LanguageAllocateObjectString(GetName());
+    _legacyType.naming.Description = LanguageAllocateObjectString(GetDescription());
+    _legacyType.capacity = LanguageAllocateObjectString(GetCapacity());
     _legacyType.images_offset = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
@@ -272,9 +272,9 @@ void RideObject::Load()
 
 void RideObject::Unload()
 {
-    language_free_object_string(_legacyType.naming.Name);
-    language_free_object_string(_legacyType.naming.Description);
-    language_free_object_string(_legacyType.capacity);
+    LanguageFreeObjectString(_legacyType.naming.Name);
+    LanguageFreeObjectString(_legacyType.naming.Description);
+    LanguageFreeObjectString(_legacyType.capacity);
     GfxObjectFreeImages(_legacyType.images_offset, GetImageTable().GetCount());
 
     _legacyType.naming.Name = 0;

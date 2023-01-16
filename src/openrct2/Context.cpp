@@ -1183,7 +1183,7 @@ namespace OpenRCT2
                 gPaletteEffectFrame += gCurrentDeltaTime;
             }
 
-            date_update_real_time_of_day();
+            DateUpdateRealTimeOfDay();
 
             if (gIntroState != IntroState::None)
             {

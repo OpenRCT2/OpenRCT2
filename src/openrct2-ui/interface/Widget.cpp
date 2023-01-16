@@ -1163,7 +1163,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
 
     GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
 
-    size_t string_length = get_string_size(wrapped_string) - 1;
+    size_t string_length = GetStringSize(wrapped_string) - 1;
 
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };

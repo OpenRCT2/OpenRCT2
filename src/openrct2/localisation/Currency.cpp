@@ -36,7 +36,7 @@ currency_descriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
 };
 // clang-format on
 
-void currency_load_custom_currency_config()
+void CurrencyLoadCustomCurrencyConfig()
 {
     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = gConfigGeneral.CustomCurrencyRate;
     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.CustomCurrencyAffix;

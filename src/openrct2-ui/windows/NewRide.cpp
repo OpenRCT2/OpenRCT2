@@ -589,7 +589,7 @@ private:
             }
 
             // Append vehicle name
-            auto vehicleName = language_get_string(currentRideEntry->naming.Name);
+            auto vehicleName = LanguageGetString(currentRideEntry->naming.Name);
             _vehicleAvailability += vehicleName;
 
             isFirst = false;

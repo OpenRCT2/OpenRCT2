@@ -37,7 +37,7 @@ void WaterObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* str
 void WaterObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.string_idx = language_allocate_object_string(GetName());
+    _legacyType.string_idx = LanguageAllocateObjectString(GetName());
     _legacyType.image_id = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.palette_index_1 = _legacyType.image_id + 1;
     _legacyType.palette_index_2 = _legacyType.image_id + 4;
@@ -48,7 +48,7 @@ void WaterObject::Load()
 void WaterObject::Unload()
 {
     GfxObjectFreeImages(_legacyType.image_id, GetImageTable().GetCount());
-    language_free_object_string(_legacyType.string_idx);
+    LanguageFreeObjectString(_legacyType.string_idx);
 
     _legacyType.string_idx = 0;
     _legacyType.image_id = 0;

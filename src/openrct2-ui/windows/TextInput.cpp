@@ -242,7 +242,7 @@ public:
             screenCoords.x = windowPos.x + 12;
             GfxDrawStringNoFormatting(&dpi, screenCoords, wrap_pointer, { colours[1], FontStyle::Medium });
 
-            size_t string_length = get_string_size(wrap_pointer) - 1;
+            size_t string_length = GetStringSize(wrap_pointer) - 1;
 
             if (!cur_drawn && (gTextInput->SelectionStart <= char_count + string_length))
             {
@@ -258,8 +258,8 @@ public:
                     // Make a 1 utf8-character wide string for measuring the width
                     // of the currently selected character.
                     utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
-                    uint32_t codepoint = utf8_get_next(_buffer.data() + gTextInput->SelectionStart, nullptr);
-                    utf8_write_codepoint(tmp, codepoint);
+                    uint32_t codepoint = UTF8GetNext(_buffer.data() + gTextInput->SelectionStart, nullptr);
+                    UTF8WriteCodepoint(tmp, codepoint);
                     textWidth = std::max(GfxGetStringWidthNoFormatting(tmp, FontStyle::Medium) - 2, 4);
                 }
 

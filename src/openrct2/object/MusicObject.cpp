@@ -33,7 +33,7 @@ constexpr size_t DEFAULT_BYTES_PER_TICK = 1378;
 void MusicObject::Load()
 {
     GetStringTable().Sort();
-    NameStringId = language_allocate_object_string(GetName());
+    NameStringId = LanguageAllocateObjectString(GetName());
 
     // Start with base images
     _loadedSampleTable.LoadFrom(_sampleTable, 0, _sampleTable.GetCount());
@@ -79,7 +79,7 @@ void MusicObject::Load()
 
 void MusicObject::Unload()
 {
-    language_free_object_string(NameStringId);
+    LanguageFreeObjectString(NameStringId);
     NameStringId = 0;
 }
 

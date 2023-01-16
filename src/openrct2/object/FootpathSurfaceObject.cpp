@@ -17,7 +17,7 @@
 void FootpathSurfaceObject::Load()
 {
     GetStringTable().Sort();
-    NameStringId = language_allocate_object_string(GetName());
+    NameStringId = LanguageAllocateObjectString(GetName());
 
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
@@ -34,7 +34,7 @@ void FootpathSurfaceObject::Load()
 
 void FootpathSurfaceObject::Unload()
 {
-    language_free_object_string(NameStringId);
+    LanguageFreeObjectString(NameStringId);
     GfxObjectFreeImages(PreviewImageId, GetImageTable().GetCount());
 
     NameStringId = 0;

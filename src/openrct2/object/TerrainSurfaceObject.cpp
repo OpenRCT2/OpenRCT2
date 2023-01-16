@@ -24,7 +24,7 @@
 void TerrainSurfaceObject::Load()
 {
     GetStringTable().Sort();
-    NameStringId = language_allocate_object_string(GetName());
+    NameStringId = LanguageAllocateObjectString(GetName());
     IconImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     if ((Flags & SMOOTH_WITH_SELF) || (Flags & SMOOTH_WITH_OTHER))
     {
@@ -40,7 +40,7 @@ void TerrainSurfaceObject::Load()
 
 void TerrainSurfaceObject::Unload()
 {
-    language_free_object_string(NameStringId);
+    LanguageFreeObjectString(NameStringId);
     GfxObjectFreeImages(IconImageId, GetImageTable().GetCount());
 
     NameStringId = 0;

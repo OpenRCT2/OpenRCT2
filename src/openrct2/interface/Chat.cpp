@@ -292,7 +292,7 @@ static int32_t ChatHistoryDrawString(
     for (int32_t line = 0; line <= numLines; ++line)
     {
         GfxDrawString(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { TEXT_COLOUR_254 });
-        bufferPtr = get_string_end(bufferPtr) + 1;
+        bufferPtr = GetStringEnd(bufferPtr) + 1;
         lineY += lineHeight;
     }
     return lineY - screenCoords.y;
@@ -313,7 +313,7 @@ int32_t ChatStringWrappedGetHeight(void* args, int32_t width)
     int32_t lineY = 0;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        bufferPtr = get_string_end(bufferPtr) + 1;
+        bufferPtr = GetStringEnd(bufferPtr) + 1;
         lineY += lineHeight;
     }
 

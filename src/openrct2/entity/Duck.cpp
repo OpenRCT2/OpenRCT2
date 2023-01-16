@@ -171,7 +171,7 @@ void Duck::UpdateSwim()
     }
     else
     {
-        int32_t currentMonth = date_get_month(gDateMonthsElapsed);
+        int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
         if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
         {
             state = DuckState::FlyAway;

@@ -198,7 +198,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<StringId>(DateDayNames[newsItem.Day - 1]);
-                ft.Add<StringId>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
+                ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.MonthYear)]);
                 DrawTextBasic(&dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::Small });
             }
             // Item text

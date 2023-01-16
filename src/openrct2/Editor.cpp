@@ -115,7 +115,7 @@ namespace Editor
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
         gScreenAge = 0;
-        gScenarioName = language_get_string(STR_MY_NEW_SCENARIO);
+        gScenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
     }
 
     /**

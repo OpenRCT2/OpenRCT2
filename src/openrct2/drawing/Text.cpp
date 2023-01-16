@@ -60,7 +60,7 @@ public:
         {
             DrawText(dpi, lineCoords, tempPaint, buffer);
             tempPaint.Colour = TEXT_COLOUR_254;
-            buffer = get_string_end(buffer) + 1;
+            buffer = GetStringEnd(buffer) + 1;
             lineCoords.y += LineHeight;
         }
     }

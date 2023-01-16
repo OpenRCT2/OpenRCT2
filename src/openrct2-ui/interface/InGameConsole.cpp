@@ -79,7 +79,7 @@ void InGameConsole::Input(ConsoleInput input)
                 std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
             }
             _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
-            _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
+            _consoleTextInputSession->Length = UTF8Length(_consoleTextInputSession->Buffer);
             _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
             break;
         case ConsoleInput::HistoryNext:
@@ -88,7 +88,7 @@ void InGameConsole::Input(ConsoleInput input)
                 _consoleHistoryIndex++;
                 std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
                 _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
-                _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
+                _consoleTextInputSession->Length = UTF8Length(_consoleTextInputSession->Buffer);
                 _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
             }
             else

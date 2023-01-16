@@ -236,7 +236,7 @@ namespace TitleSequenceManager
         if (item.PredefinedIndex != PREDEFINED_INDEX_CUSTOM)
         {
             StringId stringId = PredefinedSequences[item.PredefinedIndex].StringId;
-            item.Name = language_get_string(stringId);
+            item.Name = LanguageGetString(stringId);
         }
         else if (IsNameReserved(item.Name))
         {

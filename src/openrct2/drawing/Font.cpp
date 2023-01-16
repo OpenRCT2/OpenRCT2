@@ -355,7 +355,7 @@ bool FontSupportsStringSprite(const utf8* text)
     const utf8* src = text;
 
     uint32_t codepoint;
-    while ((codepoint = utf8_get_next(src, &src)) != 0)
+    while ((codepoint = UTF8GetNext(src, &src)) != 0)
     {
         bool supported = false;
 
@@ -388,7 +388,7 @@ bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle)
     }
 
     uint32_t codepoint;
-    while ((codepoint = utf8_get_next(src, &src)) != 0)
+    while ((codepoint = UTF8GetNext(src, &src)) != 0)
     {
         bool supported = TTFProvidesGlyph(font, codepoint);
         if (!supported)

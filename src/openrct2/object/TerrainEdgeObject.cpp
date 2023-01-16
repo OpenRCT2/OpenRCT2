@@ -21,7 +21,7 @@
 void TerrainEdgeObject::Load()
 {
     GetStringTable().Sort();
-    NameStringId = language_allocate_object_string(GetName());
+    NameStringId = LanguageAllocateObjectString(GetName());
     IconImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 
     // First image is icon followed by edge images
@@ -30,7 +30,7 @@ void TerrainEdgeObject::Load()
 
 void TerrainEdgeObject::Unload()
 {
-    language_free_object_string(NameStringId);
+    LanguageFreeObjectString(NameStringId);
     GfxObjectFreeImages(IconImageId, GetImageTable().GetCount());
 
     NameStringId = 0;

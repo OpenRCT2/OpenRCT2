@@ -361,12 +361,12 @@ std::string format_string(StringId format, const void* args)
  * format (ax)
  * args (ecx)
  */
-void format_string_to_upper(utf8* dest, size_t size, StringId format, const void* args)
+void FormatStringToUpper(utf8* dest, size_t size, StringId format, const void* args)
 {
 #ifdef DEBUG
     if (gDebugStringFormatting)
     {
-        printf("format_string_to_upper(%hu)\n", format);
+        printf("FormatStringToUpper(%hu)\n", format);
     }
 #endif
 
@@ -390,7 +390,7 @@ void format_string_to_upper(utf8* dest, size_t size, StringId format, const void
     dest[upperString.size()] = '\0';
 }
 
-void format_readable_size(char* buf, size_t bufSize, uint64_t sizeBytes)
+void FormatReadableSize(char* buf, size_t bufSize, uint64_t sizeBytes)
 {
     constexpr uint32_t SizeTable[] = {
         STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE, STR_SIZE_TERABYTE,
@@ -410,10 +410,10 @@ void format_readable_size(char* buf, size_t bufSize, uint64_t sizeBytes)
     snprintf(buf, bufSize, "%.03f %s", size, sizeType);
 }
 
-void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytes)
+void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytes)
 {
     char sizeText[128] = {};
-    format_readable_size(sizeText, sizeof(sizeText), sizeBytes);
+    FormatReadableSize(sizeText, sizeof(sizeText), sizeBytes);
 
     const char* args[1] = {
         sizeText,
@@ -421,9 +421,9 @@ void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytes)
     format_string(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
 }
 
-money64 string_to_money(const char* string_to_monetise)
+money64 StringToMoney(const char* string_to_monetise)
 {
-    const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
+    const char* decimal_char = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
     const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
     char processedString[128] = {};
 
@@ -510,7 +510,7 @@ money64 string_to_money(const char* string_to_monetise)
  * @param forceDecimals Show decimals, even if the amount does not have them. Will be ignored if the current exchange
  *                          rate is too big to have decimals.
  */
-void money_to_string(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals)
+void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals)
 {
     if (amount == MONEY64_UNDEFINED)
     {
@@ -530,7 +530,7 @@ void money_to_string(money64 amount, char* buffer_to_put_value_to, size_t buffer
     // If whole and decimal exist
     if ((whole > 0 && decimal > 0) || (amountIsInteger && forceDecimals && currencyDesc.rate < 100))
     {
-        const char* decimalChar = language_get_string(STR_LOCALE_DECIMAL_POINT);
+        const char* decimalChar = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
         auto precedingZero = (decimal < 10) ? "0" : "";
         snprintf(buffer_to_put_value_to, buffer_len, "%s%llu%s%s%llu", sign, whole, decimalChar, precedingZero, decimal);
     }
@@ -542,7 +542,7 @@ void money_to_string(money64 amount, char* buffer_to_put_value_to, size_t buffer
     // If decimal exists, but not whole
     else if (whole == 0 && decimal > 0)
     {
-        const char* decimalChar = language_get_string(STR_LOCALE_DECIMAL_POINT);
+        const char* decimalChar = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
         snprintf(buffer_to_put_value_to, buffer_len, "%s0%s%llu", sign, decimalChar, decimal);
     }
     else

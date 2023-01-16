@@ -172,7 +172,7 @@ void save_game_as();
 void save_game_cmd(u8string_view name = {});
 void save_game_with_name(u8string_view name);
 void game_autosave();
-void rct2_to_utf8_self(char* buffer, size_t length);
+void RCT2StringToUTF8Self(char* buffer, size_t length);
 void game_fix_save_vars();
 void start_silent_record();
 bool stop_silent_record();

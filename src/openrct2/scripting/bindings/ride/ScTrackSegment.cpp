@@ -48,7 +48,7 @@ int32_t ScTrackSegment::type_get() const
 std::string ScTrackSegment::description_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return language_get_string(ted.Description);
+    return LanguageGetString(ted.Description);
 }
 
 int32_t ScTrackSegment::beginZ_get() const

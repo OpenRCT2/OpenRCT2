@@ -232,7 +232,7 @@ namespace RCT2
 
             // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
             auto loadMaybeUTF8 = [](std::string_view str) -> std::string {
-                return !IsLikelyUTF8(str) ? rct2_to_utf8(str, RCT2LanguageId::EnglishUK) : std::string(str);
+                return !IsLikelyUTF8(str) ? RCT2StringToUTF8(str, RCT2LanguageId::EnglishUK) : std::string(str);
             };
 
             if (_s6.header.type == S6_TYPE_SCENARIO)
@@ -527,9 +527,9 @@ namespace RCT2
         void ConvertScenarioStringsToUTF8()
         {
             // Scenario details
-            gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
-            gScenarioName = rct2_to_utf8(gScenarioName, RCT2LanguageId::EnglishUK);
-            gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2LanguageId::EnglishUK);
+            gScenarioCompletedBy = RCT2StringToUTF8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
+            gScenarioName = RCT2StringToUTF8(gScenarioName, RCT2LanguageId::EnglishUK);
+            gScenarioDetails = RCT2StringToUTF8(gScenarioDetails, RCT2LanguageId::EnglishUK);
         }
 
         void FixLandOwnership() const
@@ -1831,7 +1831,7 @@ namespace RCT2
             const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(
                 originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
-            auto asUtf8 = rct2_to_utf8(originalStringView, RCT2LanguageId::EnglishUK);
+            auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
         }

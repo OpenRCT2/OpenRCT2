@@ -140,13 +140,13 @@ namespace OpenRCT2::Audio
         {
             if (device.empty())
             {
-                device = language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+                device = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
             }
         }
 
 #ifndef __linux__
         // The first device is always system default on Windows and macOS
-        std::string defaultDevice = language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+        std::string defaultDevice = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
         devices.insert(devices.begin(), defaultDevice);
 #endif
 
