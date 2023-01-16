@@ -548,7 +548,7 @@ void widget_invalidate(rct_window& w, WidgetIndex widgetIndex)
         return;
 
     GfxSetDirtyBlocks({ { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
-                           { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
+                        { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
 }
 
 template<typename TPred> static void widget_invalidate_by_condition(TPred pred)

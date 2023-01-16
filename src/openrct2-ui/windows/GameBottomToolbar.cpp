@@ -469,8 +469,7 @@ static void WindowGameBottomToolbarDrawParkRating(
     {
         if (bar_width > 2)
         {
-            GfxFillRectInset(
-                dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
+            GfxFillRectInset(dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
         }
     }
 

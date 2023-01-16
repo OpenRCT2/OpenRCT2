@@ -705,8 +705,7 @@ public:
             {
                 // Draw checkbox
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                    GfxFillRectInset(
-                        &dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(&dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                 // Highlight background
                 auto highlighted = i == static_cast<size_t>(selected_list_item)

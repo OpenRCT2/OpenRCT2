@@ -166,8 +166,7 @@ public:
                 else
                 {
                     GfxFillRect(&dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
-                    GfxFillRect(
-                        &dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
+                    GfxFillRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
                 }
             }
             else
