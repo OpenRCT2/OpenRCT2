@@ -1145,7 +1145,7 @@ void MapInvalidateMapSelectionTiles()
 
 static void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
 {
-    uint32_t rotation = get_current_rotation();
+    uint32_t rotation = GetCurrentRotation();
     const std::array corners{
         CoordsXY{ _range.GetLeft(), _range.GetTop() },
         CoordsXY{ _range.GetRight(), _range.GetTop() },
@@ -1193,7 +1193,7 @@ void MapInvalidateSelectionRect()
     bottom += 32;
     top -= 32 + 2080;
 
-    viewports_invalidate({ { left, top }, { right, bottom } });
+    ViewportsInvalidate({ { left, top }, { right, bottom } });
 }
 
 static size_t CountElementsOnTile(const CoordsXY& loc)
@@ -1844,14 +1844,14 @@ static void MapInvalidateTileUnderZoom(int32_t x, int32_t y, int32_t z0, int32_t
 
     x += 16;
     y += 16;
-    auto screenCoord = Translate3DTo2D(get_current_rotation(), { x, y });
+    auto screenCoord = Translate3DTo2D(GetCurrentRotation(), { x, y });
 
     x1 = screenCoord.x - 32;
     y1 = screenCoord.y - 32 - z1;
     x2 = screenCoord.x + 32;
     y2 = screenCoord.y + 32 - z0;
 
-    viewports_invalidate({ { x1, y1 }, { x2, y2 } }, maxZoom);
+    ViewportsInvalidate({ { x1, y1 }, { x2, y2 } }, maxZoom);
 }
 
 /**
@@ -1912,7 +1912,7 @@ void MapInvalidateRegion(const CoordsXY& mins, const CoordsXY& maxs)
     bottom += 32;
     top -= 32 + 2080;
 
-    viewports_invalidate({ { left, top }, { right, bottom } });
+    ViewportsInvalidate({ { left, top }, { right, bottom } });
 }
 
 int32_t MapGetTileSide(const CoordsXY& mapPos)

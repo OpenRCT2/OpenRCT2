@@ -297,7 +297,7 @@ void lightfx_prepare_light_list()
                 auto* w = WindowGetMain();
                 if (w != nullptr)
                 {
-                    // based on get_map_coordinates_from_pos_window
+                    // based on GetMapCoordinatesFromPosWindow
                     rct_drawpixelinfo dpi;
                     dpi.x = entry->ViewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv;
                     dpi.y = entry->ViewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv;
@@ -308,8 +308,7 @@ void lightfx_prepare_light_list()
                     PaintSession* session = PaintSessionAlloc(&dpi, w->viewport->flags);
                     PaintSessionGenerate(*session);
                     PaintSessionArrange(*session);
-                    auto info = set_interaction_info_from_paint_session(
-                        session, w->viewport->flags, ViewportInteractionItemAll);
+                    auto info = SetInteractionInfoFromPaintSession(session, w->viewport->flags, ViewportInteractionItemAll);
                     PaintSessionFree(session);
 
                     //  log_warning("[%i, %i]", dpi->x, dpi->y);
@@ -438,7 +437,7 @@ void lightfx_update_viewport_settings()
         rct_viewport* viewport = WindowGetViewport(mainWindow);
         _current_view_x_back = viewport->viewPos.x;
         _current_view_y_back = viewport->viewPos.y;
-        _current_view_rotation_back = get_current_rotation();
+        _current_view_rotation_back = GetCurrentRotation();
         _current_view_zoom_back = viewport->zoom;
     }
 }
@@ -647,7 +646,7 @@ static void LightfxAdd3DLight(
             continue;
 
         entry->Position = loc;
-        entry->ViewCoords = Translate3DTo2DWithZ(get_current_rotation(), loc);
+        entry->ViewCoords = Translate3DTo2DWithZ(GetCurrentRotation(), loc);
         entry->Type = lightType;
         entry->LightIntensity = 0xFF;
         entry->LightHash = lightHash;
@@ -661,7 +660,7 @@ static void LightfxAdd3DLight(
     LightListEntry* entry = &_LightListBack[LightListCurrentCountBack++];
 
     entry->Position = loc;
-    entry->ViewCoords = Translate3DTo2DWithZ(get_current_rotation(), loc);
+    entry->ViewCoords = Translate3DTo2DWithZ(GetCurrentRotation(), loc);
     entry->Type = lightType;
     entry->LightIntensity = 0xFF;
     entry->LightHash = lightHash;
@@ -792,7 +791,7 @@ void LightfxAddLightsMagicVehicle(const Vehicle* vehicle)
 
 void LightFxAddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset)
 {
-    uint8_t relativeRotation = (4 - get_current_rotation()) % 4;
+    uint8_t relativeRotation = (4 - GetCurrentRotation()) % 4;
     CoordsXY lanternOffset1 = CoordsXY(0, 16).Rotate(relativeRotation);
     CoordsXY lanternOffset2 = CoordsXY(16, 0).Rotate(relativeRotation);
     lightfx_add_3d_light_magic_from_drawing_tile(
@@ -811,14 +810,14 @@ void LightFxAddKioskLights(const CoordsXY& mapPosition, const int32_t height, co
 
 void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset)
 {
-    if (direction == (4 - get_current_rotation()) % 4) // Back Right Facing Stall
+    if (direction == (4 - GetCurrentRotation()) % 4) // Back Right Facing Stall
     {
         CoordsXY spotOffset1 = CoordsXY(-32, 8).Rotate(direction);
         CoordsXY spotOffset2 = CoordsXY(-32, 4).Rotate(direction);
         lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
         lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot2);
     }
-    else if (direction == (7 - get_current_rotation()) % 4) // Back left Facing Stall
+    else if (direction == (7 - GetCurrentRotation()) % 4) // Back left Facing Stall
     {
         CoordsXY spotOffset1 = CoordsXY(-32, -8).Rotate(direction);
         CoordsXY spotOffset2 = CoordsXY(-32, -4).Rotate(direction);

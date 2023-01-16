@@ -1220,7 +1220,7 @@ void UpdateSpiralSlide(Ride& ride)
         }
     }
 
-    const uint8_t current_rotation = get_current_rotation();
+    const uint8_t current_rotation = GetCurrentRotation();
     // Invalidate something related to station start
     for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {

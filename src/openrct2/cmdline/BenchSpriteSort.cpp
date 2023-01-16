@@ -122,7 +122,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         dpi.bits = static_cast<uint8_t*>(malloc(dpi.width * dpi.height));
 
         log_info("Obtaining sprite data...");
-        viewport_render(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } }, &sessions);
+        ViewportRender(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } }, &sessions);
 
         free(dpi.bits);
         drawing_engine_dispose();
@@ -131,7 +131,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
     return sessions;
 }
 
-// This function is based on benchgfx_render_screenshots
+// This function is based on BenchgfxRenderScreenshots
 static void BM_paint_session_arrange(benchmark::State& state, const std::vector<RecordedPaintSession> inputSessions)
 {
     auto sessions = inputSessions;

@@ -60,9 +60,9 @@ money32 PlaceProvisionalTrackPiece(
 
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-        viewport_set_visibility(3);
+        ViewportSetVisibility(3);
         if (_currentTrackSlopeEnd != 0)
-            viewport_set_visibility(2);
+            ViewportSetVisibility(2);
 
         // Invalidate previous track piece (we may not be changing height!)
         VirtualFloorInvalidate();
@@ -102,9 +102,9 @@ money32 PlaceProvisionalTrackPiece(
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
 
     const auto resultData = res.GetData<TrackPlaceActionResult>();
-    viewport_set_visibility((resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
+    ViewportSetVisibility((resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
     if (_currentTrackSlopeEnd != 0)
-        viewport_set_visibility(2);
+        ViewportSetVisibility(2);
 
     // Invalidate previous track piece (we may not be changing height!)
     VirtualFloorInvalidate();

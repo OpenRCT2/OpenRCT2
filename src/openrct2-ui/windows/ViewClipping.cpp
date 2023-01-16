@@ -199,7 +199,7 @@ public:
         }
 
         int32_t direction;
-        auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+        auto mapCoords = ScreenPosToMapPos(screenCoords, &direction);
         if (mapCoords.has_value())
         {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -213,7 +213,7 @@ public:
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         int32_t direction;
-        auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+        auto mapCoords = ScreenPosToMapPos(screenCoords, &direction);
         if (mapCoords.has_value())
         {
             _dragging = true;
@@ -229,7 +229,7 @@ public:
         }
 
         int32_t direction;
-        auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+        auto mapCoords = ScreenPosToMapPos(screenCoords, &direction);
         if (mapCoords)
         {
             MapInvalidateSelectionRect();

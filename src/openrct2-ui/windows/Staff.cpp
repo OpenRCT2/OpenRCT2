@@ -658,7 +658,7 @@ private:
 
         gPickupPeepImage = ImageId();
 
-        auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionItemAll);
+        auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
         if (info.SpriteType == ViewportInteractionItem::None)
             return;
 
@@ -1167,7 +1167,7 @@ private:
                 int32_t viewportWidth = viewWidget.width() - 1;
                 int32_t viewportHeight = viewWidget.height() - 1;
 
-                viewport_create(this, screenPos, viewportWidth, viewportHeight, focus.value());
+                ViewportCreate(this, screenPos, viewportWidth, viewportHeight, focus.value());
                 flags |= WF_NO_SCROLLING;
                 Invalidate();
             }

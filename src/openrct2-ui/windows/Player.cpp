@@ -292,9 +292,9 @@ void WindowPlayerOverviewUpdate(rct_window* w)
     bool scroll = true;
 
     // Use this spare window field for rotation check
-    if (w->var_4AE != get_current_rotation())
+    if (w->var_4AE != GetCurrentRotation())
     {
-        w->var_4AE = get_current_rotation();
+        w->var_4AE = GetCurrentRotation();
         scroll = false;
     }
     WindowPlayerUpdateViewport(w, scroll);
@@ -521,7 +521,7 @@ static void WindowPlayerSetPage(rct_window* w, int32_t page)
         if (w->viewport == nullptr)
         {
             const auto focus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
-            viewport_create(w, w->windowPos, w->width, w->height, focus);
+            ViewportCreate(w, w->windowPos, w->width, w->height, focus);
             w->flags |= WF_NO_SCROLLING;
             WindowEventInvalidateCall(w);
             WindowPlayerUpdateViewport(w, false);

@@ -173,7 +173,7 @@ namespace OpenRCT2::Audio
             volumeDown = 10;
         }
 
-        uint8_t rotation = get_current_rotation();
+        uint8_t rotation = GetCurrentRotation();
         auto pos2 = Translate3DTo2DWithZ(rotation, location);
 
         rct_viewport* viewport = nullptr;

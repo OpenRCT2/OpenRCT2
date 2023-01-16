@@ -130,7 +130,7 @@ void TitleScreen::Load()
 #endif
     OpenRCT2::Audio::StopAll();
     GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
-    viewport_init_all();
+    ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
     CreateWindows();
     TitleInitialise();
@@ -159,7 +159,7 @@ void TitleScreen::Tick()
 {
     gInUpdateCode = true;
 
-    screenshot_check();
+    ScreenshotCheck();
     title_handle_keyboard_input();
 
     if (game_is_not_paused())

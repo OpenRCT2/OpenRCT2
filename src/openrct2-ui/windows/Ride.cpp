@@ -1584,7 +1584,7 @@ static void WindowRideInitViewport(rct_window* w)
         int32_t width = view_widget.width() - 1;
         int32_t height = view_widget.height() - 1;
 
-        viewport_create(w, screenPos, width, height, w->focus.value());
+        ViewportCreate(w, screenPos, width, height, w->focus.value());
 
         w->flags |= WF_NO_SCROLLING;
         w->Invalidate();
@@ -4248,7 +4248,7 @@ static int32_t WindowRideHasTrackColour(const Ride& ride, int32_t trackColour)
 static void WindowRideSetTrackColourScheme(rct_window* w, const ScreenCoordsXY& screenPos)
 {
     auto newColourScheme = static_cast<uint8_t>(w->ride_colour);
-    auto info = get_map_coordinates_from_pos(screenPos, EnumsToFlags(ViewportInteractionItem::Ride));
+    auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::Ride));
 
     if (info.SpriteType != ViewportInteractionItem::Ride)
         return;
@@ -5514,7 +5514,7 @@ static void WindowRideMeasurementsTooldown(rct_window* w, WidgetIndex widgetInde
     constexpr auto flags = EnumsToFlags(
         ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
         ViewportInteractionItem::LargeScenery);
-    auto info = get_map_coordinates_from_pos(screenCoords, flags);
+    auto info = GetMapCoordinatesFromPos(screenCoords, flags);
     switch (info.SpriteType)
     {
         case ViewportInteractionItem::Scenery:
@@ -5539,7 +5539,7 @@ static void WindowRideMeasurementsTooldrag(rct_window* w, WidgetIndex widgetInde
     auto flags = EnumsToFlags(
         ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
         ViewportInteractionItem::LargeScenery);
-    auto info = get_map_coordinates_from_pos(screenCoords, flags);
+    auto info = GetMapCoordinatesFromPos(screenCoords, flags);
     switch (info.SpriteType)
     {
         case ViewportInteractionItem::Scenery:

@@ -579,7 +579,7 @@ public:
                     case WIDX_SURFACE_CHECK_CORNER_E:
                     case WIDX_SURFACE_CHECK_CORNER_S:
                     case WIDX_SURFACE_CHECK_CORNER_W:
-                        SurfaceToggleCorner(((widgetIndex - WIDX_SURFACE_CHECK_CORNER_N) + 2 - get_current_rotation()) & 3);
+                        SurfaceToggleCorner(((widgetIndex - WIDX_SURFACE_CHECK_CORNER_N) + 2 - GetCurrentRotation()) & 3);
                         break;
 
                     case WIDX_SURFACE_CHECK_DIAGONAL:
@@ -606,7 +606,7 @@ public:
                         // 0 = east/right, 1 = south/bottom, 2 = west/left, 3 = north/top
                         const int32_t eswn = (widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2;
                         // Transform to world orientation
-                        const int32_t index = (eswn - get_current_rotation()) & 3;
+                        const int32_t index = (eswn - GetCurrentRotation()) & 3;
                         PathToggleEdge(
                             windowTileInspectorSelectedIndex,
                             index + 4); // The corners are stored in the 4 most significant bits, hence the + 4
@@ -621,7 +621,7 @@ public:
                         // 0 = NE, 1 = SE, 2 = SW, 3 = NW
                         const int32_t neseswnw = (widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2;
                         // Transform to world orientation
-                        const int32_t index = (neseswnw - get_current_rotation()) & 3;
+                        const int32_t index = (neseswnw - GetCurrentRotation()) & 3;
                         PathToggleEdge(windowTileInspectorSelectedIndex, index);
                         break;
                     }
@@ -931,14 +931,14 @@ public:
         bool mouseOnViewport = false;
         if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z))
         {
-            auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags);
+            auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionFlags);
             clickedElement = info.Element;
             mapCoords = info.Loc;
         }
         // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
         if (clickedElement == nullptr)
         {
-            auto mouseCoords = screen_pos_to_map_pos(screenCoords, nullptr);
+            auto mouseCoords = ScreenPosToMapPos(screenCoords, nullptr);
             if (mouseCoords.has_value())
             {
                 mouseOnViewport = true;
@@ -1729,7 +1729,7 @@ private:
         TileElement* clickedElement = nullptr;
         if (ctrlIsHeldDown)
         {
-            auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags);
+            auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionFlags);
             clickedElement = info.Element;
             mapCoords = info.Loc;
         }
@@ -1737,7 +1737,7 @@ private:
         // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
         if (clickedElement == nullptr)
         {
-            auto mouseCoords = screen_pos_to_map_pos(screenCoords, nullptr);
+            auto mouseCoords = ScreenPosToMapPos(screenCoords, nullptr);
             if (!mouseCoords.has_value())
                 return;
 
@@ -1933,7 +1933,7 @@ private:
         // quarterIndex is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
         openrct2_assert(quarterIndex >= 0 && quarterIndex < 4, "quarterIndex out of range");
         auto modifyTile = TileModifyAction(
-            _toolMap, TileModifyType::ScenerySetQuarterLocation, elementIndex, (quarterIndex - get_current_rotation()) & 3);
+            _toolMap, TileModifyType::ScenerySetQuarterLocation, elementIndex, (quarterIndex - GetCurrentRotation()) & 3);
         GameActions::Execute(&modifyTile);
     }
 
@@ -1941,8 +1941,7 @@ private:
     void ToggleQuadrantCollosion(int32_t elementIndex, const int32_t quadrantIndex)
     {
         auto modifyTile = TileModifyAction(
-            _toolMap, TileModifyType::ScenerySetQuarterCollision, elementIndex,
-            (quadrantIndex + 2 - get_current_rotation()) & 3);
+            _toolMap, TileModifyType::ScenerySetQuarterCollision, elementIndex, (quadrantIndex + 2 - GetCurrentRotation()) & 3);
         GameActions::Execute(&modifyTile);
     }
 
@@ -1950,7 +1949,7 @@ private:
     {
         openrct2_assert(edgeIndex >= 0 && edgeIndex < 4, "edgeIndex out of range");
         // Make edgeIndex abstract
-        edgeIndex = (edgeIndex - get_current_rotation()) & 3;
+        edgeIndex = (edgeIndex - GetCurrentRotation()) & 3;
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::BannerToggleBlockingEdge, elementIndex, edgeIndex);
         GameActions::Execute(&modifyTile);
     }
@@ -2104,16 +2103,16 @@ private:
                 widgets[WIDX_SURFACE_CHECK_DIAGONAL].bottom = widgets[WIDX_SURFACE_CHECK_DIAGONAL].top + 13;
                 SetCheckboxValue(
                     WIDX_SURFACE_CHECK_CORNER_N,
-                    tileElement->AsSurface()->GetSlope() & (1 << ((2 - get_current_rotation()) & 3)));
+                    tileElement->AsSurface()->GetSlope() & (1 << ((2 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
                     WIDX_SURFACE_CHECK_CORNER_E,
-                    tileElement->AsSurface()->GetSlope() & (1 << ((3 - get_current_rotation()) & 3)));
+                    tileElement->AsSurface()->GetSlope() & (1 << ((3 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
                     WIDX_SURFACE_CHECK_CORNER_S,
-                    tileElement->AsSurface()->GetSlope() & (1 << ((0 - get_current_rotation()) & 3)));
+                    tileElement->AsSurface()->GetSlope() & (1 << ((0 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
                     WIDX_SURFACE_CHECK_CORNER_W,
-                    tileElement->AsSurface()->GetSlope() & (1 << ((1 - get_current_rotation()) & 3)));
+                    tileElement->AsSurface()->GetSlope() & (1 << ((1 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
                     WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
                 break;
@@ -2148,21 +2147,21 @@ private:
                 SetCheckboxValue(WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
                 SetCheckboxValue(WIDX_PATH_CHECK_BROKEN, tileElement->AsPath()->IsBroken());
                 SetCheckboxValue(
-                    WIDX_PATH_CHECK_EDGE_NE, tileElement->AsPath()->GetEdges() & (1 << ((0 - get_current_rotation()) & 3)));
+                    WIDX_PATH_CHECK_EDGE_NE, tileElement->AsPath()->GetEdges() & (1 << ((0 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
-                    WIDX_PATH_CHECK_EDGE_SE, tileElement->AsPath()->GetEdges() & (1 << ((1 - get_current_rotation()) & 3)));
+                    WIDX_PATH_CHECK_EDGE_SE, tileElement->AsPath()->GetEdges() & (1 << ((1 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
-                    WIDX_PATH_CHECK_EDGE_SW, tileElement->AsPath()->GetEdges() & (1 << ((2 - get_current_rotation()) & 3)));
+                    WIDX_PATH_CHECK_EDGE_SW, tileElement->AsPath()->GetEdges() & (1 << ((2 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
-                    WIDX_PATH_CHECK_EDGE_NW, tileElement->AsPath()->GetEdges() & (1 << ((3 - get_current_rotation()) & 3)));
+                    WIDX_PATH_CHECK_EDGE_NW, tileElement->AsPath()->GetEdges() & (1 << ((3 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
-                    WIDX_PATH_CHECK_EDGE_E, tileElement->AsPath()->GetCorners() & (1 << ((0 - get_current_rotation()) & 3)));
+                    WIDX_PATH_CHECK_EDGE_E, tileElement->AsPath()->GetCorners() & (1 << ((0 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
-                    WIDX_PATH_CHECK_EDGE_S, tileElement->AsPath()->GetCorners() & (1 << ((1 - get_current_rotation()) & 3)));
+                    WIDX_PATH_CHECK_EDGE_S, tileElement->AsPath()->GetCorners() & (1 << ((1 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
-                    WIDX_PATH_CHECK_EDGE_W, tileElement->AsPath()->GetCorners() & (1 << ((2 - get_current_rotation()) & 3)));
+                    WIDX_PATH_CHECK_EDGE_W, tileElement->AsPath()->GetCorners() & (1 << ((2 - GetCurrentRotation()) & 3)));
                 SetCheckboxValue(
-                    WIDX_PATH_CHECK_EDGE_N, tileElement->AsPath()->GetCorners() & (1 << ((3 - get_current_rotation()) & 3)));
+                    WIDX_PATH_CHECK_EDGE_N, tileElement->AsPath()->GetCorners() & (1 << ((3 - GetCurrentRotation()) & 3)));
                 break;
 
             case TileElementType::Track:
@@ -2209,10 +2208,10 @@ private:
                 widgets[WIDX_SCENERY_CHECK_QUARTER_W].top = GBBT(propertiesAnchor, 1) - 5 + 7 * 1;
                 widgets[WIDX_SCENERY_CHECK_QUARTER_W].bottom = widgets[WIDX_SCENERY_CHECK_QUARTER_W].top + 13;
                 // This gets the relative rotation, by subtracting the camera's rotation, and wrapping it between 0-3 inclusive
-                bool N = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((0 - get_current_rotation()) & 3);
-                bool E = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((1 - get_current_rotation()) & 3);
-                bool S = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((2 - get_current_rotation()) & 3);
-                bool W = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((3 - get_current_rotation()) & 3);
+                bool N = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((0 - GetCurrentRotation()) & 3);
+                bool E = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((1 - GetCurrentRotation()) & 3);
+                bool S = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((2 - GetCurrentRotation()) & 3);
+                bool W = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((3 - GetCurrentRotation()) & 3);
                 SetCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_N, N);
                 SetCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_E, E);
                 SetCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_S, S);
@@ -2228,10 +2227,10 @@ private:
                 widgets[WIDX_SCENERY_CHECK_COLLISION_W].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 1;
                 widgets[WIDX_SCENERY_CHECK_COLLISION_W].bottom = widgets[WIDX_SCENERY_CHECK_COLLISION_W].top + 13;
                 auto occupiedQuadrants = tileElement->GetOccupiedQuadrants();
-                N = (occupiedQuadrants & (1 << ((2 - get_current_rotation()) & 3))) != 0;
-                E = (occupiedQuadrants & (1 << ((3 - get_current_rotation()) & 3))) != 0;
-                S = (occupiedQuadrants & (1 << ((0 - get_current_rotation()) & 3))) != 0;
-                W = (occupiedQuadrants & (1 << ((1 - get_current_rotation()) & 3))) != 0;
+                N = (occupiedQuadrants & (1 << ((2 - GetCurrentRotation()) & 3))) != 0;
+                E = (occupiedQuadrants & (1 << ((3 - GetCurrentRotation()) & 3))) != 0;
+                S = (occupiedQuadrants & (1 << ((0 - GetCurrentRotation()) & 3))) != 0;
+                W = (occupiedQuadrants & (1 << ((1 - GetCurrentRotation()) & 3))) != 0;
                 SetCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_N, N);
                 SetCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_E, E);
                 SetCheckboxValue(WIDX_SCENERY_CHECK_COLLISION_S, S);
@@ -2320,16 +2319,16 @@ private:
                 widgets[WIDX_BANNER_CHECK_BLOCK_NW].bottom = GBBB(propertiesAnchor, 1);
                 SetCheckboxValue(
                     WIDX_BANNER_CHECK_BLOCK_NE,
-                    (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((0 - get_current_rotation()) & 3))));
+                    (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((0 - GetCurrentRotation()) & 3))));
                 SetCheckboxValue(
                     WIDX_BANNER_CHECK_BLOCK_SE,
-                    (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((1 - get_current_rotation()) & 3))));
+                    (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((1 - GetCurrentRotation()) & 3))));
                 SetCheckboxValue(
                     WIDX_BANNER_CHECK_BLOCK_SW,
-                    (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((2 - get_current_rotation()) & 3))));
+                    (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((2 - GetCurrentRotation()) & 3))));
                 SetCheckboxValue(
                     WIDX_BANNER_CHECK_BLOCK_NW,
-                    (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((3 - get_current_rotation()) & 3))));
+                    (tileElement->AsBanner()->GetAllowedEdges() & (1 << ((3 - GetCurrentRotation()) & 3))));
                 break;
 
             default:

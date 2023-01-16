@@ -30,7 +30,7 @@ namespace OpenRCT2::Title
             w->SetLocation({ loc, z });
             gScreenFlags = oldScreenFlags;
 
-            viewport_update_position(w);
+            ViewportUpdatePosition(w);
         }
 
         return 0;

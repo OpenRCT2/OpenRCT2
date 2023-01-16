@@ -76,7 +76,7 @@ public:
         widgets = window_viewport_widgets;
 
         // Create viewport
-        viewport_create(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
+        ViewportCreate(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
         if (viewport == nullptr)
         {
             Close();
@@ -142,7 +142,7 @@ public:
                 auto* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                 {
-                    auto info = get_map_coordinates_from_pos(
+                    auto info = GetMapCoordinatesFromPos(
                         { windowPos.x + (width / 2), windowPos.y + (height / 2) }, ViewportInteractionItemAll);
                     WindowScrollToLocation(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                 }

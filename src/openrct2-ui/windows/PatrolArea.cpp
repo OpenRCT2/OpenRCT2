@@ -189,7 +189,7 @@ public:
 
     void OnToolAbort(WidgetIndex widgetIndex) override
     {
-        hide_gridlines();
+        HideGridlines();
         ClearPatrolAreaToRender();
         GfxInvalidateScreen();
     }
@@ -246,7 +246,7 @@ private:
         {
             if (!ToolSet(*this, 0, Tool::WalkDown))
             {
-                show_gridlines();
+                ShowGridlines();
                 input_set_flag(INPUT_FLAG_6, true);
                 SetPatrolAreaToRender(_staffId);
                 GfxInvalidateScreen();

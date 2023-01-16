@@ -1619,7 +1619,7 @@ static void scrolling_text_set_bitmap_for_ttf(
                     else if (use_hinting && src_pixel > fontDesc->hinting_threshold)
                     {
                         // Simulate font hinting by shading the background colour instead.
-                        *dst = blendColours(colour, *dst);
+                        *dst = BlendColours(colour, *dst);
                     }
 
                     // Jump to next row

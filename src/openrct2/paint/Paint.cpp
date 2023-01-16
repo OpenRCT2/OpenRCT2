@@ -199,7 +199,7 @@ static PaintStruct* CreateNormalPaintStruct(
 
 template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& session)
 {
-    // Optimised modified version of viewport_coord_to_map_coord
+    // Optimised modified version of ViewportPosToMapPos
     ScreenCoordsXY screenCoord = { floor2(session.DPI.x, 32), floor2((session.DPI.y - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
@@ -245,7 +245,7 @@ template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& sessio
  */
 void PaintSessionGenerate(PaintSession& session)
 {
-    session.CurrentRotation = get_current_rotation();
+    session.CurrentRotation = GetCurrentRotation();
     switch (DirectionFlipXAxis(session.CurrentRotation))
     {
         case 0:
@@ -567,7 +567,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t vi
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->sprite_type)];
-    const uint8_t rotation = get_current_rotation();
+    const uint8_t rotation = GetCurrentRotation();
 
     const CoordsXYZ frontTop = {
         ps->bounds.x_end,

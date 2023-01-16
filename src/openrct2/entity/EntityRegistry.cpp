@@ -476,7 +476,7 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
 {
-    auto screenCoords = Translate3DTo2DWithZ(get_current_rotation(), entityPos);
+    auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), entityPos);
 
     entity->SpriteRect = ScreenRect(
         screenCoords - ScreenCoordsXY{ entity->sprite_width, entity->sprite_height_negative },

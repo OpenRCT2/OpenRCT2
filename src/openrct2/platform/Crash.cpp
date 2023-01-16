@@ -214,7 +214,7 @@ static bool OnCrash(
     // Discovering which of the approaches got implemented is left as an excercise for the reader.
     if (OpenRCT2::GetContext()->GetDrawingEngineType() != DrawingEngine::OpenGL)
     {
-        std::string screenshotPath = screenshot_dump();
+        std::string screenshotPath = ScreenshotDump();
         if (!screenshotPath.empty())
         {
             auto screenshotPathW = String::ToWideChar(screenshotPath.c_str());

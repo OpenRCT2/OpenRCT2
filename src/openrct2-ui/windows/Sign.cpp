@@ -131,7 +131,7 @@ public:
 
         // Create viewport
         Widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
@@ -303,7 +303,7 @@ public:
 
         // Create viewport
         Widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
         if (viewport != nullptr)

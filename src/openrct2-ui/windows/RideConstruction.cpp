@@ -213,7 +213,7 @@ public:
         InitScrollWidgets();
 
         WindowPushOthersRight(*this);
-        show_gridlines();
+        ShowGridlines();
 
         _currentTrackPrice = MONEY32_UNDEFINED;
         _currentBrakeSpeed2 = 8;
@@ -243,7 +243,7 @@ public:
     void OnClose() override
     {
         ride_construction_invalidate_current_track();
-        viewport_set_visibility(0);
+        ViewportSetVisibility(0);
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -255,7 +255,7 @@ public:
         if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
             ToolCancel();
 
-        hide_gridlines();
+        HideGridlines();
 
         // If we demolish a currentRide all windows will be closed including the construction window,
         // the currentRide at this point is already gone.
@@ -2275,14 +2275,14 @@ private:
         const auto resultData = res.GetData<TrackPlaceActionResult>();
         if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            viewport_set_visibility(1);
+            ViewportSetVisibility(1);
         }
 
         const bool helixSelected = (_currentTrackCurve & RideConstructionSpecialPieceSelected)
             && TrackTypeIsHelix(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
         if (helixSelected || (_currentTrackSlopeEnd != TRACK_SLOPE_NONE))
         {
-            viewport_set_visibility(2);
+            ViewportSetVisibility(2);
         }
     }
 
@@ -2620,7 +2620,7 @@ private:
         int16_t previewZOffset = ted.Definition.preview_z_offset;
         mapCoords.z -= previewZOffset;
 
-        const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(get_current_rotation(), mapCoords);
+        const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
 
         dpi->x += rotatedScreenCoords.x - widgetWidth / 2;
         dpi->y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
@@ -2930,7 +2930,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
         {
-            auto info = get_map_coordinates_from_pos(screenCoords, 0xFCCA);
+            auto info = GetMapCoordinatesFromPos(screenCoords, 0xFCCA);
             if (info.SpriteType != ViewportInteractionItem::None)
             {
                 _trackPlaceCtrlZ = info.Element->GetBaseZ();
@@ -3002,7 +3002,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
     else
     {
         auto mapZ = _trackPlaceCtrlZ;
-        auto mapXYCoords = screen_get_map_xy_with_z(screenCoords, mapZ);
+        auto mapXYCoords = ScreenGetMapXYWithZ(screenCoords, mapZ);
         if (mapXYCoords.has_value())
         {
             mapCoords = mapXYCoords.value();

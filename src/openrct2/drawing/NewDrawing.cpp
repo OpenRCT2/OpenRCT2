@@ -275,7 +275,7 @@ void FASTCALL GfxDrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, co
     }
 }
 
-std::string screenshot_dump()
+std::string ScreenshotDump()
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)

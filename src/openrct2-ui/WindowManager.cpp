@@ -609,7 +609,7 @@ public:
             mainWindow->savedViewPos.y -= viewport->view_height >> 1;
 
             // Make sure the viewport has correct coordinates set.
-            viewport_update_position(mainWindow);
+            ViewportUpdatePosition(mainWindow);
 
             mainWindow->Invalidate();
         }

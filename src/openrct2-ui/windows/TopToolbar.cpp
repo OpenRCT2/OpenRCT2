@@ -419,9 +419,9 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
             OpenRCT2::Audio::ToggleAllSounds();
             break;
         case WIDX_CHAT:
-            if (chat_available())
+            if (ChatAvailable())
             {
-                chat_toggle();
+                ChatToggle();
             }
             else
             {
@@ -602,7 +602,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                     gScreenshotCountdown = 10;
                     break;
                 case DDIDX_GIANT_SCREENSHOT:
-                    screenshot_giant();
+                    ScreenshotGiant();
                     break;
                 case DDIDX_FILE_BUG_ON_GITHUB:
                 {
@@ -840,7 +840,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
             SPR_G2_MAP_EAST,
         };
 
-        uint32_t mapImageId = _imageIdByRotation[get_current_rotation()];
+        uint32_t mapImageId = _imageIdByRotation[GetCurrentRotation()];
         window_top_toolbar_widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::PaletteNull);
     }
 
@@ -1009,7 +1009,7 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, WidgetIndex 
     auto flags = EnumsToFlags(
         ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
         ViewportInteractionItem::Banner);
-    auto info = get_map_coordinates_from_pos(windowPos, flags);
+    auto info = GetMapCoordinatesFromPos(windowPos, flags);
     switch (info.SpriteType)
     {
         case ViewportInteractionItem::Scenery:
@@ -1086,7 +1086,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
     auto flags = EnumsToFlags(
         ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
         ViewportInteractionItem::Banner, ViewportInteractionItem::FootpathItem);
-    auto info = get_map_coordinates_from_pos(windowPos, flags);
+    auto info = GetMapCoordinatesFromPos(windowPos, flags);
     switch (info.SpriteType)
     {
         case ViewportInteractionItem::Scenery:
@@ -1099,7 +1099,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
                 WindowScenerySetSelectedItem(
                     { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
                     sceneryElement->GetSecondaryColour(), std::nullopt,
-                    sceneryElement->GetDirectionWithOffset(get_current_rotation()));
+                    sceneryElement->GetDirectionWithOffset(GetCurrentRotation()));
             }
             break;
         }
@@ -1124,7 +1124,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
                 WindowScenerySetSelectedItem(
                     { SCENERY_TYPE_LARGE, entryIndex }, info.Element->AsLargeScenery()->GetPrimaryColour(),
                     info.Element->AsLargeScenery()->GetSecondaryColour(), std::nullopt,
-                    (get_current_rotation() + info.Element->GetDirection()) & 3);
+                    (GetCurrentRotation() + info.Element->GetDirection()) & 3);
             }
             break;
         }
@@ -1175,7 +1175,7 @@ static void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, Scre
                 constexpr auto flags = EnumsToFlags(
                     ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
                     ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery);
-                auto info = get_map_coordinates_from_pos(screenPos, flags);
+                auto info = GetMapCoordinatesFromPos(screenPos, flags);
 
                 if (info.SpriteType != ViewportInteractionItem::None)
                 {
@@ -1269,7 +1269,7 @@ static void Sub6E1F34SmallScenery(
         // If CTRL not pressed
         if (!gSceneryCtrlPressed)
         {
-            auto gridCoords = screen_get_map_xy_quadrant(screenPos, &quadrant);
+            auto gridCoords = ScreenGetMapXYQuadrant(screenPos, &quadrant);
             if (!gridCoords.has_value())
             {
                 gridPos.SetNull();
@@ -1302,7 +1302,7 @@ static void Sub6E1F34SmallScenery(
         {
             int16_t z = gSceneryCtrlPressZ;
 
-            auto mapCoords = screen_get_map_xy_quadrant_with_z(screenPos, z, &quadrant);
+            auto mapCoords = ScreenGetMapXYQuadrantWithZ(screenPos, z, &quadrant);
             if (!mapCoords.has_value())
             {
                 gridPos.SetNull();
@@ -1331,7 +1331,7 @@ static void Sub6E1F34SmallScenery(
             rotation = util_rand() & 0xFF;
         }
 
-        rotation -= get_current_rotation();
+        rotation -= GetCurrentRotation();
         rotation &= 0x3;
 
         if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
@@ -1350,7 +1350,7 @@ static void Sub6E1F34SmallScenery(
     {
         constexpr auto flags = EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water);
 
-        auto info = get_map_coordinates_from_pos(screenPos, flags);
+        auto info = GetMapCoordinatesFromPos(screenPos, flags);
         gridPos = info.Loc;
 
         if (info.SpriteType == ViewportInteractionItem::None)
@@ -1384,7 +1384,7 @@ static void Sub6E1F34SmallScenery(
     else
     {
         int16_t z = gSceneryCtrlPressZ;
-        auto coords = screen_get_map_xy_with_z(screenPos, z);
+        auto coords = ScreenGetMapXYWithZ(screenPos, z);
         if (coords.has_value())
         {
             gridPos = *coords;
@@ -1415,7 +1415,7 @@ static void Sub6E1F34SmallScenery(
         rotation = util_rand() & 0xFF;
     }
 
-    rotation -= get_current_rotation();
+    rotation -= GetCurrentRotation();
     rotation &= 0x3;
 
     if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
@@ -1443,7 +1443,7 @@ static void Sub6E1F34PathItem(
 
     // Path bits
     constexpr auto flags = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
-    auto info = get_map_coordinates_from_pos(screenPos, flags);
+    auto info = GetMapCoordinatesFromPos(screenPos, flags);
     gridPos = info.Loc;
 
     if (info.SpriteType == ViewportInteractionItem::None)
@@ -1487,7 +1487,7 @@ static void Sub6E1F34Wall(
     // If CTRL not pressed
     if (!gSceneryCtrlPressed)
     {
-        auto gridCoords = screen_get_map_xy_side(screenPos, &edge);
+        auto gridCoords = ScreenGetMapXYSide(screenPos, &edge);
         if (!gridCoords.has_value())
         {
             gridPos.SetNull();
@@ -1519,7 +1519,7 @@ static void Sub6E1F34Wall(
     else
     {
         int16_t z = gSceneryCtrlPressZ;
-        auto mapCoords = screen_get_map_xy_side_with_z(screenPos, z, &edge);
+        auto mapCoords = ScreenGetMapXYSideWithZ(screenPos, z, &edge);
         if (!mapCoords.has_value())
         {
             gridPos.SetNull();
@@ -1610,7 +1610,7 @@ static void Sub6E1F34LargeScenery(
     else
     {
         int16_t z = gSceneryCtrlPressZ;
-        auto coords = screen_get_map_xy_with_z(screenPos, z);
+        auto coords = ScreenGetMapXYWithZ(screenPos, z);
         if (coords.has_value())
         {
             gridPos = *coords;
@@ -1637,7 +1637,7 @@ static void Sub6E1F34LargeScenery(
     gridPos = gridPos.ToTileStart();
 
     Direction rotation = gWindowSceneryRotation;
-    rotation -= get_current_rotation();
+    rotation -= GetCurrentRotation();
     rotation &= 0x3;
 
     if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
@@ -1665,7 +1665,7 @@ static void Sub6E1F34Banner(
 
     // Banner
     constexpr auto flags = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
-    auto info = get_map_coordinates_from_pos(screenPos, flags);
+    auto info = GetMapCoordinatesFromPos(screenPos, flags);
     gridPos = info.Loc;
 
     if (info.SpriteType == ViewportInteractionItem::None)
@@ -1675,7 +1675,7 @@ static void Sub6E1F34Banner(
     }
 
     uint8_t rotation = gWindowSceneryRotation;
-    rotation -= get_current_rotation();
+    rotation -= GetCurrentRotation();
     rotation &= 0x3;
 
     auto z = info.Element->GetBaseZ();
@@ -2005,7 +2005,7 @@ static uint8_t TopToolbarToolUpdateLandPaint(const ScreenCoordsXY& screenPos)
     MapInvalidateSelectionRect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    auto mapTile = screen_get_map_xy(screenPos, nullptr);
+    auto mapTile = ScreenGetMapXY(screenPos, nullptr);
 
     if (!mapTile.has_value())
     {
@@ -2123,8 +2123,8 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
     {
         int32_t selectionType;
         // Get selection type and map coordinates from mouse x,y position
-        screen_pos_to_map_pos(screenPos, &selectionType);
-        mapTile = screen_get_map_xy_side(screenPos, &side);
+        ScreenPosToMapPos(screenPos, &selectionType);
+        mapTile = ScreenGetMapXYSide(screenPos, &side);
 
         if (!mapTile.has_value())
         {
@@ -2201,7 +2201,7 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
     }
 
     // Get map coordinates and the side of the tile that is being hovered over
-    mapTile = screen_get_map_xy_side(screenPos, &side);
+    mapTile = ScreenGetMapXYSide(screenPos, &side);
 
     if (!mapTile.has_value())
     {
@@ -2360,7 +2360,7 @@ static void TopToolbarToolUpdateWater(const ScreenCoordsXY& screenPos)
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    auto info = get_map_coordinates_from_pos(
+    auto info = GetMapCoordinatesFromPos(
         screenPos, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
 
     if (info.SpriteType == ViewportInteractionItem::None)
@@ -2480,12 +2480,12 @@ static money64 TryPlaceGhostSmallScenery(
     if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
-        viewport_set_visibility(4);
+        ViewportSetVisibility(4);
     }
     else
     {
         // Set underground off
-        viewport_set_visibility(5);
+        ViewportSetVisibility(5);
     }
 
     gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
@@ -2561,12 +2561,12 @@ static money64 TryPlaceGhostLargeScenery(
     if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
-        viewport_set_visibility(4);
+        ViewportSetVisibility(4);
     }
     else
     {
         // Set underground off
-        viewport_set_visibility(5);
+        ViewportSetVisibility(5);
     }
 
     gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
@@ -3262,7 +3262,7 @@ static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex)
         case WIDX_LAND:
         case WIDX_WATER:
         case WIDX_CLEAR_SCENERY:
-            hide_gridlines();
+            HideGridlines();
             break;
 #ifdef ENABLE_SCRIPTING
         default:
@@ -3809,7 +3809,7 @@ static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
     else
     {
         _landToolBlocked = false;
-        show_gridlines();
+        ShowGridlines();
         ToolSet(*topToolbar, widgetIndex, Tool::DigDown);
         input_set_flag(INPUT_FLAG_6, true);
         ContextOpenWindow(WindowClass::Land);
@@ -3829,7 +3829,7 @@ static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetI
     }
     else
     {
-        show_gridlines();
+        ShowGridlines();
         ToolSet(*topToolbar, widgetIndex, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
         ContextOpenWindow(WindowClass::ClearScenery);
@@ -3850,7 +3850,7 @@ static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
     else
     {
         _landToolBlocked = false;
-        show_gridlines();
+        ShowGridlines();
         ToolSet(*topToolbar, widgetIndex, Tool::WaterDown);
         input_set_flag(INPUT_FLAG_6, true);
         ContextOpenWindow(WindowClass::Water);

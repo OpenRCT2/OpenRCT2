@@ -66,24 +66,24 @@ public:
 
         gLandToolSize = 1;
 
-        show_gridlines();
+        ShowGridlines();
         ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
         input_set_flag(INPUT_FLAG_6, true);
 
-        show_land_rights();
+        ShowLandRights();
 
         if (gLandRemainingConstructionSales == 0)
         {
-            show_construction_rights();
+            ShowConstructionRights();
         }
     }
 
     void OnClose() override
     {
-        hide_gridlines();
+        HideGridlines();
         if (gLandRemainingConstructionSales == 0)
         {
-            hide_construction_rights();
+            HideConstructionRights();
         }
 
         // If the tool wasn't changed, turn tool off
@@ -106,7 +106,7 @@ public:
                 {
                     ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
-                    show_land_rights();
+                    ShowLandRights();
                     Invalidate();
                 }
                 break;
@@ -115,7 +115,7 @@ public:
                 {
                     ToolSet(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
-                    show_construction_rights();
+                    ShowConstructionRights();
                     Invalidate();
                 }
                 break;
@@ -240,7 +240,7 @@ public:
         MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-        auto mapTile = screen_get_map_xy(screenCoords, nullptr);
+        auto mapTile = ScreenGetMapXY(screenCoords, nullptr);
 
         if (!mapTile.has_value())
         {
@@ -321,11 +321,11 @@ public:
     {
         if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
         {
-            hide_land_rights();
+            HideLandRights();
         }
         else
         {
-            hide_construction_rights();
+            HideConstructionRights();
         }
     }
 

@@ -111,7 +111,7 @@ void GameState::Tick()
     uint32_t numUpdates = 1;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
-    screenshot_check();
+    ScreenshotCheck();
     game_handle_keyboard_input();
 
     if (game_is_not_paused() && gPreviewingTitleSequenceInGame)
@@ -363,7 +363,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     editor_open_windows_for_current_step();
 
     // Update windows
-    // window_dispatch_update_all();
+    // WindowDispatchUpdateAll();
 
     // Start autosave timer after update
     if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
