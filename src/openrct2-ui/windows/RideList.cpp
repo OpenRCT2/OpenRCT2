@@ -610,7 +610,7 @@ public:
                     break;
                 case INFORMATION_TYPE_AGE:
                 {
-                    const auto age = date_get_year(ridePtr->GetAge());
+                    const auto age = DateGetYear(ridePtr->GetAge());
                     switch (age)
                     {
                         case 0:

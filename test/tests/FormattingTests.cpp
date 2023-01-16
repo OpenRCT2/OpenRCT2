@@ -78,7 +78,7 @@ protected:
         _context = CreateContext();
         ASSERT_TRUE(_context->Initialise());
 
-        language_open(LANGUAGE_ENGLISH_UK);
+        LanguageOpen(LANGUAGE_ENGLISH_UK);
     }
 
     static void TearDownTestCase()

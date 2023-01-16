@@ -253,8 +253,8 @@ private:
                 // This is caused by a bug that was in OpenRCT2 for 3 years.
                 if (!IsLikelyUTF8(info.name) && !IsLikelyUTF8(info.details))
                 {
-                    rct2_to_utf8_self(info.name, sizeof(info.name));
-                    rct2_to_utf8_self(info.details, sizeof(info.details));
+                    RCT2StringToUTF8Self(info.name, sizeof(info.name));
+                    RCT2StringToUTF8Self(info.details, sizeof(info.details));
                 }
 
                 *entry = CreateNewScenarioEntry(path, timestamp, &info);
@@ -680,7 +680,7 @@ private:
                             if (scBasic.CompanyValue > highscore->company_value)
                             {
                                 SafeFree(highscore->name);
-                                std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
+                                std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                                 highscore->name = String::Duplicate(name.c_str());
                                 highscore->company_value = scBasic.CompanyValue;
                                 highscore->timestamp = DATETIME64_MIN;
@@ -692,7 +692,7 @@ private:
                     {
                         scenario_highscore_entry* highscore = InsertHighscore();
                         highscore->fileName = String::Duplicate(scBasic.Path);
-                        std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
+                        std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                         highscore->name = String::Duplicate(name.c_str());
                         highscore->company_value = scBasic.CompanyValue;
                         highscore->timestamp = DATETIME64_MIN;

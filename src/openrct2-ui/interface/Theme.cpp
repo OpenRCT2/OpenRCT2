@@ -682,7 +682,7 @@ const utf8* ThemeManagerGetAvailableThemeConfigName(size_t index)
 const utf8* ThemeManagerGetAvailableThemeName(size_t index)
 {
     if (index < ThemeManager::NumPredefinedThemes)
-        return language_get_string(PredefinedThemes[index].Name);
+        return LanguageGetString(PredefinedThemes[index].Name);
     return ThemeManager::AvailableThemes[index].Name.c_str();
 }
 

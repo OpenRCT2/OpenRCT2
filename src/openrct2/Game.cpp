@@ -330,11 +330,11 @@ static void load_landscape()
     ContextOpenIntent(&intent);
 }
 
-void rct2_to_utf8_self(char* buffer, size_t length)
+void RCT2StringToUTF8Self(char* buffer, size_t length)
 {
     if (length > 0)
     {
-        auto temp = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
+        auto temp = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
         safe_strcpy(buffer, temp.data(), length);
     }
 }

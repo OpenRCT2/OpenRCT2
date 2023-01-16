@@ -300,7 +300,7 @@ void Park::Initialise()
     award_reset();
 
     gScenarioName.clear();
-    gScenarioDetails = String::ToStd(language_get_string(STR_NO_DETAILS_YET));
+    gScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
 }
 
 void Park::Update(const Date& date)

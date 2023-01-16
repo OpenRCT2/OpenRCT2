@@ -54,7 +54,7 @@ static void PaintBannerScrollingText(
     char text[256];
     if (gConfigGeneral.UpperCaseBanners)
     {
-        format_string_to_upper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
+        FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     else
     {

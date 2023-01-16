@@ -750,7 +750,7 @@ public:
                     width_limit /= 2;
                     // Draw ride type
                     StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
-                    safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
+                    safe_strcpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
                     auto ft = Formatter();
                     ft.Add<const char*>(gCommonStringFormatBuffer);
                     DrawTextEllipsised(
@@ -1212,7 +1212,7 @@ private:
                     if (!sells.empty())
                         sells += ", ";
 
-                    sells += language_get_string(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
+                    sells += LanguageGetString(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
                 }
                 auto ft = Formatter();
                 ft.Add<const char*>(sells.c_str());
@@ -1336,7 +1336,7 @@ private:
     {
         if (item.Type == ObjectType::Ride)
         {
-            auto rideTypeName = language_get_string(GetRideTypeStringId(&item));
+            auto rideTypeName = LanguageGetString(GetRideTypeStringId(&item));
             if (String::Contains(rideTypeName, filter, true))
                 return true;
         }
@@ -1534,8 +1534,8 @@ static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListIte
 
 static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListItem& b)
 {
-    auto rideTypeA = language_get_string(GetRideTypeStringId(a.repositoryItem));
-    auto rideTypeB = language_get_string(GetRideTypeStringId(b.repositoryItem));
+    auto rideTypeA = LanguageGetString(GetRideTypeStringId(a.repositoryItem));
+    auto rideTypeB = LanguageGetString(GetRideTypeStringId(b.repositoryItem));
     int32_t result = String::Compare(rideTypeA, rideTypeB);
     return result != 0 ? result < 0 : VisibleListSortRideName(a, b);
 }

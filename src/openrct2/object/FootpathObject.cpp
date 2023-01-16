@@ -37,7 +37,7 @@ void FootpathObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* 
 void FootpathObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.string_idx = language_allocate_object_string(GetName());
+    _legacyType.string_idx = LanguageAllocateObjectString(GetName());
     _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.bridge_image = _legacyType.image + 109;
 
@@ -62,7 +62,7 @@ void FootpathObject::Load()
 
 void FootpathObject::Unload()
 {
-    language_free_object_string(_legacyType.string_idx);
+    LanguageFreeObjectString(_legacyType.string_idx);
     GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.string_idx = 0;

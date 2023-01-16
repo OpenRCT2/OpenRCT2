@@ -6508,7 +6508,7 @@ static void WindowRideIncomeMouseup(rct_window* w, WidgetIndex widgetIndex)
             auto ride = get_ride(w->rideId);
             if (ride != nullptr)
             {
-                money_to_string(static_cast<money64>(ride->price[0]), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                MoneyToString(static_cast<money64>(ride->price[0]), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
                 WindowTextInputRawOpen(
                     w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
                     MONEY_STRING_MAXLENGTH);
@@ -6522,7 +6522,7 @@ static void WindowRideIncomeMouseup(rct_window* w, WidgetIndex widgetIndex)
         {
             auto price64 = WindowRideIncomeGetSecondaryPrice(w);
 
-            money_to_string(price64, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+            MoneyToString(price64, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
             WindowTextInputRawOpen(
                 w, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText, MONEY_STRING_MAXLENGTH);
         }
@@ -6588,7 +6588,7 @@ static void WindowRideIncomeTextinput(rct_window* w, WidgetIndex widgetIndex, ch
     if ((widgetIndex != WIDX_PRIMARY_PRICE && widgetIndex != WIDX_SECONDARY_PRICE) || text == nullptr)
         return;
 
-    money64 price = string_to_money(text);
+    money64 price = StringToMoney(text);
     if (price == MONEY64_UNDEFINED)
     {
         return;
@@ -7069,7 +7069,7 @@ static void WindowRideCustomerPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Age
     // If the ride has a build date that is in the future, show it as built this year.
-    int16_t age = std::max(date_get_year(ride->GetAge()), 0);
+    int16_t age = std::max(DateGetYear(ride->GetAge()), 0);
     stringId = age == 0 ? STR_BUILT_THIS_YEAR : age == 1 ? STR_BUILT_LAST_YEAR : STR_BUILT_YEARS_AGO;
     ft = Formatter();
     ft.Add<int16_t>(age);

@@ -269,11 +269,11 @@ char* safe_strcpy(char* destination, const char* source, size_t size)
     const char* sourceLimit = source + size - 1;
     const char* ch = source;
     uint32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0)
+    while ((codepoint = UTF8GetNext(ch, &ch)) != 0)
     {
         if (ch <= sourceLimit)
         {
-            destination = utf8_write_codepoint(destination, codepoint);
+            destination = UTF8WriteCodepoint(destination, codepoint);
         }
         else
         {

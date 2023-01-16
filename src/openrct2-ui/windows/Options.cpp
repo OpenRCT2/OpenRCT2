@@ -1215,11 +1215,11 @@ private:
                 auto fallbackLanguage = LocalisationService_GetCurrentLanguage();
                 if (dropdownIndex != LocalisationService_GetCurrentLanguage() - 1)
                 {
-                    if (!language_open(dropdownIndex + 1))
+                    if (!LanguageOpen(dropdownIndex + 1))
                     {
                         // Failed to open language file, try to recover by falling
                         // back to previously used language
-                        if (language_open(fallbackLanguage))
+                        if (LanguageOpen(fallbackLanguage))
                         {
                             // It worked, so we can say it with error message in-game
                             ContextShowError(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
@@ -1891,7 +1891,7 @@ private:
             case WIDX_PATH_TO_RCT1_BUTTON:
             {
                 auto rct1path = OpenRCT2::GetContext()->GetUiContext()->ShowDirectoryDialog(
-                    language_get_string(STR_PATH_TO_RCT1_BROWSER));
+                    LanguageGetString(STR_PATH_TO_RCT1_BROWSER));
                 if (!rct1path.empty())
                 {
                     // Check if this directory actually contains RCT1

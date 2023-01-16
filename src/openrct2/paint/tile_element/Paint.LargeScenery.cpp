@@ -224,7 +224,7 @@ static void PaintLargeScenery3DText(
         for (auto codepoint : CodepointView(displayText))
         {
             char line[8]{};
-            utf8_write_codepoint(line, codepoint);
+            UTF8WriteCodepoint(line, codepoint);
             PaintLargeScenery3DTextLine(
                 session, sceneryEntry, *text, line, imageTemplate, direction, offsetY - displayTextHeight);
 
@@ -313,7 +313,7 @@ static void PaintLargeSceneryScrollingText(
     char text[256];
     if (gConfigGeneral.UpperCaseBanners)
     {
-        format_string_to_upper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
+        FormatStringToUpper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
     else
     {

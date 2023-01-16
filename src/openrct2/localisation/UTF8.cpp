@@ -12,7 +12,7 @@
 #include <cstring>
 #include <wchar.h>
 
-uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr)
+uint32_t UTF8GetNext(const utf8* char_ptr, const utf8** nextchar_ptr)
 {
     int32_t result;
     int32_t numBytes;
@@ -54,16 +54,16 @@ uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr)
  * Inserts the given codepoint at the given address, shifting all characters after along.
  * @returns the size of the inserted codepoint.
  */
-int32_t utf8_insert_codepoint(utf8* dst, uint32_t codepoint)
+int32_t UTF8InsertCodepoint(utf8* dst, uint32_t codepoint)
 {
-    int32_t shift = utf8_get_codepoint_length(codepoint);
-    utf8* endPoint = get_string_end(dst);
+    int32_t shift = UTF8GetCodepointLength(codepoint);
+    utf8* endPoint = GetStringEnd(dst);
     memmove(dst + shift, dst, endPoint - dst + 1);
-    utf8_write_codepoint(dst, codepoint);
+    UTF8WriteCodepoint(dst, codepoint);
     return shift;
 }
 
-bool utf8_is_codepoint_start(const utf8* text)
+bool UTF8IsCodepointStart(const utf8* text)
 {
     if ((text[0] & 0x80) == 0)
         return true;
@@ -72,7 +72,7 @@ bool utf8_is_codepoint_start(const utf8* text)
     return false;
 }
 
-int32_t utf8_get_codepoint_length(char32_t codepoint)
+int32_t UTF8GetCodepointLength(char32_t codepoint)
 {
     if (codepoint <= 0x7F)
     {
@@ -93,12 +93,12 @@ int32_t utf8_get_codepoint_length(char32_t codepoint)
  * Gets the number of characters / codepoints in a UTF-8 string (not necessarily 1:1 with bytes and not including null
  * terminator).
  */
-int32_t utf8_length(const utf8* text)
+int32_t UTF8Length(const utf8* text)
 {
     const utf8* ch = text;
 
     int32_t count = 0;
-    while (utf8_get_next(ch, &ch) != 0)
+    while (UTF8GetNext(ch, &ch) != 0)
     {
         count++;
     }
@@ -108,7 +108,7 @@ int32_t utf8_length(const utf8* text)
 /**
  * Returns a pointer to the null terminator of the given UTF-8 string.
  */
-utf8* get_string_end(const utf8* text)
+utf8* GetStringEnd(const utf8* text)
 {
     return const_cast<char*>(std::strchr(text, 0));
 }
@@ -116,7 +116,7 @@ utf8* get_string_end(const utf8* text)
 /**
  * Return the number of bytes (including the null terminator) in the given UTF-8 string.
  */
-size_t get_string_size(const utf8* text)
+size_t GetStringSize(const utf8* text)
 {
-    return get_string_end(text) - text + 1;
+    return GetStringEnd(text) - text + 1;
 }

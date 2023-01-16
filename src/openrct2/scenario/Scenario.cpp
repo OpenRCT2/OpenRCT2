@@ -120,19 +120,19 @@ void scenario_reset()
         ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gScenarioName.c_str());
 
         StringId localisedStringIds[3];
-        if (language_get_localised_scenario_strings(normalisedName, localisedStringIds))
+        if (LanguageGetLocalisedScenarioStrings(normalisedName, localisedStringIds))
         {
             if (localisedStringIds[0] != STR_NONE)
             {
-                gScenarioName = language_get_string(localisedStringIds[0]);
+                gScenarioName = LanguageGetString(localisedStringIds[0]);
             }
             if (localisedStringIds[1] != STR_NONE)
             {
-                park.Name = language_get_string(localisedStringIds[1]);
+                park.Name = LanguageGetString(localisedStringIds[1]);
             }
             if (localisedStringIds[2] != STR_NONE)
             {
-                gScenarioDetails = language_get_string(localisedStringIds[2]);
+                gScenarioDetails = LanguageGetString(localisedStringIds[2]);
             }
         }
     }
@@ -157,7 +157,7 @@ void scenario_reset()
     finance_reset_history();
     award_reset();
     reset_all_ride_build_dates();
-    date_reset();
+    DateReset();
     Duck::RemoveAll();
     ParkCalculateSize();
     MapCountRemainingLandRights();
@@ -325,7 +325,7 @@ static void scenario_day_update()
 
 static void scenario_week_update()
 {
-    int32_t month = date_get_month(gDateMonthsElapsed);
+    int32_t month = DateGetMonth(gDateMonthsElapsed);
 
     finance_pay_wages();
     finance_pay_research();
@@ -408,19 +408,19 @@ void scenario_update()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        if (date_is_day_start(gDateMonthTicks))
+        if (DateIsDayStart(gDateMonthTicks))
         {
             scenario_day_update();
         }
-        if (date_is_week_start(gDateMonthTicks))
+        if (DateIsWeekStart(gDateMonthTicks))
         {
             scenario_week_update();
         }
-        if (date_is_fortnight_start(gDateMonthTicks))
+        if (DateIsFortnightStart(gDateMonthTicks))
         {
             scenario_fortnight_update();
         }
-        if (date_is_month_start(gDateMonthTicks))
+        if (DateIsMonthStart(gDateMonthTicks))
         {
             scenario_month_update();
         }

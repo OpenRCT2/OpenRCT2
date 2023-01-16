@@ -70,7 +70,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     ride_init_all();
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
-    date_reset();
+    DateReset();
     ClimateReset(ClimateType::CoolAndWet);
     News::InitQueue();
 
@@ -313,7 +313,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     auto day = _date.GetDay();
 #endif
 
-    date_update();
+    DateUpdate();
     _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
     report_time(LogicTimePart::Date);
 

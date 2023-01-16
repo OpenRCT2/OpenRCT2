@@ -114,7 +114,7 @@ static void research_calculate_expected_date()
         int32_t dayQuotient = expectedDay / 0x10000;
         int32_t dayRemainder = expectedDay % 0x10000;
 
-        int32_t expectedMonth = date_get_month(gDateMonthsElapsed + dayQuotient + (daysRemaining >> 16));
+        int32_t expectedMonth = DateGetMonth(gDateMonthsElapsed + dayQuotient + (daysRemaining >> 16));
         expectedDay = (dayRemainder * days_in_month[expectedMonth]) >> 16;
 
         gResearchExpectedDay = expectedDay;

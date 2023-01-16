@@ -154,7 +154,7 @@ int32_t GfxClipString(utf8* text, int32_t width, FontStyle fontStyle)
             }
 
             char cb[8]{};
-            utf8_write_codepoint(cb, codepoint);
+            UTF8WriteCodepoint(cb, codepoint);
             buffer.append(cb);
         }
     }
@@ -195,7 +195,7 @@ int32_t GfxWrapString(utf8* text, int32_t width, FontStyle fontStyle, int32_t* o
             for (auto codepoint : codepoints)
             {
                 char cb[8]{};
-                utf8_write_codepoint(cb, codepoint);
+                UTF8WriteCodepoint(cb, codepoint);
                 buffer.append(cb);
 
                 auto lineWidth = GfxGetStringWidth(&buffer[currentLineIndex], fontStyle);
@@ -349,7 +349,7 @@ void DrawStringCentredRaw(
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
 
-        while ((utf8_get_next(ch, &nextCh)) != 0)
+        while ((UTF8GetNext(ch, &nextCh)) != 0)
         {
             ch = nextCh;
         }
@@ -482,7 +482,7 @@ void DrawNewsTicker(
             break;
         }
 
-        buffer = get_string_end(buffer) + 1;
+        buffer = GetStringEnd(buffer) + 1;
         lineY += lineHeight;
     }
 }
@@ -878,7 +878,7 @@ static void TTFProcessStringLiteral(rct_drawpixelinfo* dpi, std::string_view tex
 static void TTFProcessStringCodepoint(rct_drawpixelinfo* dpi, codepoint_t codepoint, text_draw_info* info)
 {
     char buffer[8]{};
-    utf8_write_codepoint(buffer, codepoint);
+    UTF8WriteCodepoint(buffer, codepoint);
     TTFProcessStringLiteral(dpi, buffer, info);
 }
 

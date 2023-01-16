@@ -1299,7 +1299,7 @@ static void ride_inspection_update(Ride& ride)
 
 static int32_t get_age_penalty(const Ride& ride)
 {
-    auto years = date_get_year(ride.GetAge());
+    auto years = DateGetYear(ride.GetAge());
     switch (years)
     {
         case 0:

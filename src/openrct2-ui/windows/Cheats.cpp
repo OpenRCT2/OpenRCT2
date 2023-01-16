@@ -588,7 +588,7 @@ public:
     {
         if (page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER)
         {
-            auto val = string_to_money(std::string(text).c_str());
+            auto val = StringToMoney(std::string(text).c_str());
             if (val != MONEY64_UNDEFINED)
             {
                 _moneySpinnerValue = val;
@@ -774,7 +774,7 @@ private:
                 CheatsSet(CheatType::NoMoney, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                 break;
             case WIDX_MONEY_SPINNER:
-                money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
+                MoneyToString(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
                 WindowTextInputRawOpen(
                     this, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneySpinnerText,
                     MONEY_STRING_MAXLENGTH);

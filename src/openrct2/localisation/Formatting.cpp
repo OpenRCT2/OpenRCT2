@@ -270,13 +270,13 @@ namespace OpenRCT2
 
     static std::string_view GetDigitSeparator()
     {
-        auto sz = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
+        auto sz = LanguageGetString(STR_LOCALE_THOUSANDS_SEPARATOR);
         return sz != nullptr ? sz : std::string_view();
     }
 
     static std::string_view GetDecimalSeparator()
     {
-        auto sz = language_get_string(STR_LOCALE_DECIMAL_POINT);
+        auto sz = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
         return sz != nullptr ? sz : std::string_view();
     }
 
@@ -579,15 +579,15 @@ namespace OpenRCT2
             case FormatToken::MonthYear:
                 if constexpr (std::is_integral<T>())
                 {
-                    auto month = date_get_month(arg);
-                    auto year = date_get_year(arg) + 1;
+                    auto month = DateGetMonth(arg);
+                    auto year = DateGetYear(arg) + 1;
                     FormatMonthYear(ss, month, year);
                 }
                 break;
             case FormatToken::Month:
                 if constexpr (std::is_integral<T>())
                 {
-                    auto szMonth = language_get_string(DateGameMonthNames[date_get_month(arg)]);
+                    auto szMonth = LanguageGetString(DateGameMonthNames[DateGetMonth(arg)]);
                     if (szMonth != nullptr)
                     {
                         ss << szMonth;
@@ -629,7 +629,7 @@ namespace OpenRCT2
 
     FmtString GetFmtStringById(StringId id)
     {
-        auto fmtc = language_get_string(id);
+        auto fmtc = LanguageGetString(id);
         return FmtString(fmtc);
     }
 

@@ -1094,7 +1094,7 @@ private:
         else
         {
             ft.Add<uint16_t>(gScenarioObjective.NumGuests);
-            ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.Year));
+            ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gScenarioObjective.Year));
             if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
                 ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
             else

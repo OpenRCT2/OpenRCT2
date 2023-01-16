@@ -150,7 +150,7 @@ static void ScrollingTextFormat(utf8* dst, size_t size, rct_draw_scroll_text* sc
 {
     if (gConfigGeneral.UpperCaseBanners)
     {
-        format_string_to_upper(dst, size, scrollText->string_id, scrollText->string_args);
+        FormatStringToUpper(dst, size, scrollText->string_id, scrollText->string_args);
     }
     else
     {

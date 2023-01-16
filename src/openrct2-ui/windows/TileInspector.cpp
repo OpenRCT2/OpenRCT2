@@ -1591,55 +1591,55 @@ public:
             switch (type)
             {
                 case TileElementType::Surface:
-                    typeName = language_get_string(STR_TILE_INSPECTOR_SURFACE);
+                    typeName = LanguageGetString(STR_TILE_INSPECTOR_SURFACE);
                     break;
 
                 case TileElementType::Path:
-                    typeName = tileElement->AsPath()->IsQueue() ? language_get_string(STR_QUEUE_LINE_MAP_TIP)
-                                                                : language_get_string(STR_FOOTPATH_MAP_TIP);
+                    typeName = tileElement->AsPath()->IsQueue() ? LanguageGetString(STR_QUEUE_LINE_MAP_TIP)
+                                                                : LanguageGetString(STR_FOOTPATH_MAP_TIP);
                     break;
 
                 case TileElementType::Track:
-                    typeName = language_get_string(STR_RIDE_COMPONENT_TRACK_CAPITALISED);
+                    typeName = LanguageGetString(STR_RIDE_COMPONENT_TRACK_CAPITALISED);
                     break;
 
                 case TileElementType::SmallScenery:
                 {
                     const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                     snprintf(
-                        buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_OBJECT_SELECTION_SMALL_SCENERY),
-                        sceneryEntry != nullptr ? language_get_string(sceneryEntry->name) : "");
+                        buffer, sizeof(buffer), "%s (%s)", LanguageGetString(STR_OBJECT_SELECTION_SMALL_SCENERY),
+                        sceneryEntry != nullptr ? LanguageGetString(sceneryEntry->name) : "");
                     typeName = buffer;
                     break;
                 }
 
                 case TileElementType::Entrance:
-                    typeName = language_get_string(STR_RIDE_CONSTRUCTION_ENTRANCE);
+                    typeName = LanguageGetString(STR_RIDE_CONSTRUCTION_ENTRANCE);
                     break;
 
                 case TileElementType::Wall:
                 {
                     const auto* entry = tileElement->AsWall()->GetEntry();
                     snprintf(
-                        buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_TILE_INSPECTOR_WALL),
-                        entry != nullptr ? language_get_string(entry->name) : "");
+                        buffer, sizeof(buffer), "%s (%s)", LanguageGetString(STR_TILE_INSPECTOR_WALL),
+                        entry != nullptr ? LanguageGetString(entry->name) : "");
                     typeName = buffer;
                     break;
                 }
 
                 case TileElementType::LargeScenery:
-                    typeName = language_get_string(STR_OBJECT_SELECTION_LARGE_SCENERY);
+                    typeName = LanguageGetString(STR_OBJECT_SELECTION_LARGE_SCENERY);
                     break;
 
                 case TileElementType::Banner:
                     snprintf(
-                        buffer, sizeof(buffer), "%s (%u)", language_get_string(STR_BANNER_WINDOW_TITLE),
+                        buffer, sizeof(buffer), "%s (%u)", LanguageGetString(STR_BANNER_WINDOW_TITLE),
                         tileElement->AsBanner()->GetIndex().ToUnderlying());
                     typeName = buffer;
                     break;
 
                 default:
-                    snprintf(buffer, sizeof(buffer), "%s (%d)", language_get_string(STR_UNKNOWN_OBJECT_TYPE), EnumValue(type));
+                    snprintf(buffer, sizeof(buffer), "%s (%d)", LanguageGetString(STR_UNKNOWN_OBJECT_TYPE), EnumValue(type));
                     typeName = buffer;
             }
 

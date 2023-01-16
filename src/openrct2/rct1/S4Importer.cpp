@@ -230,7 +230,7 @@ namespace RCT1
                 dst->objective_arg_3 = GetBuildTheBestRideId();
             }
 
-            auto name = rct2_to_utf8(_s4.scenario_name, RCT2LanguageId::EnglishUK);
+            auto name = RCT2StringToUTF8(_s4.scenario_name, RCT2LanguageId::EnglishUK);
             std::string details;
 
             // TryGetById won't set this property if the scenario is not recognised,
@@ -243,15 +243,15 @@ namespace RCT1
             String::Set(dst->internal_name, sizeof(dst->internal_name), desc.title);
 
             StringId localisedStringIds[3];
-            if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
+            if (LanguageGetLocalisedScenarioStrings(desc.title, localisedStringIds))
             {
                 if (localisedStringIds[0] != STR_NONE)
                 {
-                    name = String::ToStd(language_get_string(localisedStringIds[0]));
+                    name = String::ToStd(LanguageGetString(localisedStringIds[0]));
                 }
                 if (localisedStringIds[2] != STR_NONE)
                 {
-                    details = String::ToStd(language_get_string(localisedStringIds[2]));
+                    details = String::ToStd(LanguageGetString(localisedStringIds[2]));
                 }
             }
 
@@ -2305,15 +2305,15 @@ namespace RCT1
                 if (ScenarioSources::TryGetById(scNumber, &sourceDesc))
                 {
                     StringId localisedStringIds[3];
-                    if (language_get_localised_scenario_strings(sourceDesc.title, localisedStringIds))
+                    if (LanguageGetLocalisedScenarioStrings(sourceDesc.title, localisedStringIds))
                     {
                         if (localisedStringIds[0] != STR_NONE)
                         {
-                            name = String::ToStd(language_get_string(localisedStringIds[0]));
+                            name = String::ToStd(LanguageGetString(localisedStringIds[0]));
                         }
                         if (localisedStringIds[2] != STR_NONE)
                         {
-                            details = String::ToStd(language_get_string(localisedStringIds[2]));
+                            details = String::ToStd(LanguageGetString(localisedStringIds[2]));
                         }
                     }
                 }
@@ -2475,7 +2475,7 @@ namespace RCT1
             const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(
                 originalString, RCT2::GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
-            auto asUtf8 = rct2_to_utf8(originalStringView, RCT2LanguageId::EnglishUK);
+            auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
         }

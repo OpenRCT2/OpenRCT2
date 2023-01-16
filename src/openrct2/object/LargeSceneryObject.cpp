@@ -108,7 +108,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 void LargeSceneryObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
+    _legacyType.name = LanguageAllocateObjectString(GetName());
     _baseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.image = _baseImageId;
 
@@ -131,7 +131,7 @@ void LargeSceneryObject::Load()
 
 void LargeSceneryObject::Unload()
 {
-    language_free_object_string(_legacyType.name);
+    LanguageFreeObjectString(_legacyType.name);
     GfxObjectFreeImages(_baseImageId, GetImageTable().GetCount());
 
     _legacyType.name = 0;

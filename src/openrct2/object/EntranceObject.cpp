@@ -29,13 +29,13 @@ void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* 
 void EntranceObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.string_idx = language_allocate_object_string(GetName());
+    _legacyType.string_idx = LanguageAllocateObjectString(GetName());
     _legacyType.image_id = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void EntranceObject::Unload()
 {
-    language_free_object_string(_legacyType.string_idx);
+    LanguageFreeObjectString(_legacyType.string_idx);
     GfxObjectFreeImages(_legacyType.image_id, GetImageTable().GetCount());
 
     _legacyType.string_idx = 0;

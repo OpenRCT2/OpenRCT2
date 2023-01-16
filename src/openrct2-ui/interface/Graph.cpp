@@ -17,7 +17,7 @@ namespace Graph
 {
     static void DrawMonths(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
-        int32_t currentMonth = date_get_month(gDateMonthsElapsed);
+        int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
         int32_t currentDay = gDateMonthTicks;
         int32_t yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
         auto screenCoords = origCoords;
@@ -27,7 +27,7 @@ namespace Graph
             {
                 // Draw month text
                 auto ft = Formatter();
-                ft.Add<uint32_t>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
+                ft.Add<uint32_t>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
                     dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });
@@ -154,7 +154,7 @@ namespace Graph
     {
         int32_t i, yearOver32, currentMonth, currentDay;
 
-        currentMonth = date_get_month(gDateMonthsElapsed);
+        currentMonth = DateGetMonth(gDateMonthsElapsed);
         currentDay = gDateMonthTicks;
         yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
         auto screenCoords = origCoords;
@@ -164,7 +164,7 @@ namespace Graph
             {
                 // Draw month text
                 auto ft = Formatter();
-                ft.Add<StringId>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
+                ft.Add<StringId>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
                     dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });

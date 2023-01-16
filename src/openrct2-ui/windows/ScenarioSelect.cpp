@@ -527,7 +527,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     else
     {
         ft.Add<int16_t>(scenario->objective_arg_3);
-        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
+        ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, scenario->objective_arg_1));
         if (scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             ft.Add<uint16_t>(scenario->objective_arg_2);
         else

@@ -1029,7 +1029,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
 
             if (invalidArgs)
             {
-                console.WriteLine(language_get_string(STR_INVALID_CLIMATE_ID));
+                console.WriteLine(LanguageGetString(STR_INVALID_CLIMATE_ID));
             }
             else
             {
@@ -1484,7 +1484,7 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
         }
     }
 
-    date_set(year, month, day);
+    DateSet(year, month, day);
     WindowInvalidateByClass(WindowClass::BottomToolbar);
 
     return 1;

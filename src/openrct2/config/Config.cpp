@@ -736,9 +736,9 @@ namespace Config
     {
         FileDialogDesc desc{};
         desc.Type = FileDialogType::Open;
-        desc.Title = language_get_string(STR_SELECT_GOG_INSTALLER);
-        desc.Filters.emplace_back(language_get_string(STR_GOG_INSTALLER), "*.exe");
-        desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
+        desc.Title = LanguageGetString(STR_SELECT_GOG_INSTALLER);
+        desc.Filters.emplace_back(LanguageGetString(STR_GOG_INSTALLER), "*.exe");
+        desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
         desc.InitialDirectory = userHomePath;
@@ -788,7 +788,7 @@ bool ConfigOpen(u8string_view path)
     auto result = Config::ReadFile(path);
     if (result)
     {
-        currency_load_custom_currency_config();
+        CurrencyLoadCustomCurrencyConfig();
     }
     return result;
 }
@@ -837,8 +837,8 @@ bool ConfigFindOrBrowseInstallDirectory()
             while (true)
             {
                 uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES, nullptr));
-                std::string gog = language_get_string(STR_OWN_ON_GOG);
-                std::string hdd = language_get_string(STR_INSTALLED_ON_HDD);
+                std::string gog = LanguageGetString(STR_OWN_ON_GOG);
+                std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
 
                 std::vector<std::string> options;
                 std::string chosenOption;
@@ -848,7 +848,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     options.push_back(hdd);
                     options.push_back(gog);
                     int optionIndex = uiContext->ShowMenuDialog(
-                        options, language_get_string(STR_OPENRCT2_SETUP), language_get_string(STR_WHICH_APPLIES_BEST));
+                        options, LanguageGetString(STR_OPENRCT2_SETUP), LanguageGetString(STR_WHICH_APPLIES_BEST));
                     if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
                     {
                         // graceful fallback if app errors or user exits out of window
@@ -867,7 +867,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                 std::string installPath;
                 if (chosenOption == hdd)
                 {
-                    installPath = uiContext->ShowDirectoryDialog(language_get_string(STR_PICK_RCT2_DIR));
+                    installPath = uiContext->ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR));
                 }
                 else if (chosenOption == gog)
                 {
@@ -884,7 +884,7 @@ bool ConfigFindOrBrowseInstallDirectory()
 
                     while (true)
                     {
-                        uiContext->ShowMessageBox(language_get_string(STR_PLEASE_SELECT_GOG_INSTALLER));
+                        uiContext->ShowMessageBox(LanguageGetString(STR_PLEASE_SELECT_GOG_INSTALLER));
                         utf8 gogPath[4096];
                         if (!Config::SelectGogInstaller(gogPath))
                         {
@@ -892,12 +892,12 @@ bool ConfigFindOrBrowseInstallDirectory()
                             return false;
                         }
 
-                        uiContext->ShowMessageBox(language_get_string(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
+                        uiContext->ShowMessageBox(LanguageGetString(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
 
                         if (Config::ExtractGogInstaller(gogPath, dest))
                             break;
 
-                        uiContext->ShowMessageBox(language_get_string(STR_NOT_THE_GOG_INSTALLER));
+                        uiContext->ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
                     }
 
                     installPath = Path::Combine(dest, u8"app");

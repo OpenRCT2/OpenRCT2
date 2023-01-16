@@ -203,7 +203,7 @@ static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const Widget
             ft.Add<int16_t>(gParkRating);
             break;
         case WIDX_DATE:
-            month = date_get_month(gDateMonthsElapsed);
+            month = DateGetMonth(gDateMonthsElapsed);
             day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
             ft.Add<StringId>(DateDayNames[day]);
@@ -496,8 +496,8 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
                                         window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->windowPos.y + 2 };
 
     // Date
-    int32_t year = date_get_year(gDateMonthsElapsed) + 1;
-    int32_t month = date_get_month(gDateMonthsElapsed);
+    int32_t year = DateGetYear(gDateMonthsElapsed) + 1;
+    int32_t month = DateGetMonth(gDateMonthsElapsed);
     int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
     colour_t colour

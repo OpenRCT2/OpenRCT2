@@ -55,13 +55,13 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
 void WallObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
+    _legacyType.name = LanguageAllocateObjectString(GetName());
     _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void WallObject::Unload()
 {
-    language_free_object_string(_legacyType.name);
+    LanguageFreeObjectString(_legacyType.name);
     GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.name = 0;

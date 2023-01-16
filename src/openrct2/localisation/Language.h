@@ -94,22 +94,22 @@ constexpr const char* BlackRightArrowString = u8"{BLACK}▶";
 constexpr const char* CheckBoxMarkString = u8"✓";
 constexpr const char* EyeString = u8"👁";
 
-uint8_t language_get_id_from_locale(const char* locale);
-const char* language_get_string(StringId id);
-bool language_open(int32_t id);
+uint8_t LanguageGetIDFromLocale(const char* locale);
+const char* LanguageGetString(StringId id);
+bool LanguageOpen(int32_t id);
 
-uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr);
-int32_t utf8_insert_codepoint(utf8* dst, uint32_t codepoint);
-bool utf8_is_codepoint_start(const utf8* text);
-int32_t utf8_get_codepoint_length(char32_t codepoint);
-int32_t utf8_length(const utf8* text);
+uint32_t UTF8GetNext(const utf8* char_ptr, const utf8** nextchar_ptr);
+int32_t UTF8InsertCodepoint(utf8* dst, uint32_t codepoint);
+bool UTF8IsCodepointStart(const utf8* text);
+int32_t UTF8GetCodepointLength(char32_t codepoint);
+int32_t UTF8Length(const utf8* text);
 
-std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId);
-bool language_get_localised_scenario_strings(const utf8* scenarioFilename, StringId* outStringIds);
-void language_free_object_string(StringId stringId);
-StringId language_allocate_object_string(const std::string& target);
+std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId);
+bool LanguageGetLocalisedScenarioStrings(const utf8* scenarioFilename, StringId* outStringIds);
+void LanguageFreeObjectString(StringId stringId);
+StringId LanguageAllocateObjectString(const std::string& target);
 
-constexpr utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
+constexpr utf8* UTF8WriteCodepoint(utf8* dst, uint32_t codepoint)
 {
     if (codepoint <= 0x7F)
     {

@@ -16,7 +16,7 @@
 void FootpathRailingsObject::Load()
 {
     GetStringTable().Sort();
-    NameStringId = language_allocate_object_string(GetName());
+    NameStringId = LanguageAllocateObjectString(GetName());
 
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
@@ -38,7 +38,7 @@ void FootpathRailingsObject::Load()
 
 void FootpathRailingsObject::Unload()
 {
-    language_free_object_string(NameStringId);
+    LanguageFreeObjectString(NameStringId);
     GfxObjectFreeImages(PreviewImageId, GetImageTable().GetCount());
 
     NameStringId = 0;
