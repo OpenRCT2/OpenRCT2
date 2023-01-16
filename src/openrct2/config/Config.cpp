@@ -827,7 +827,7 @@ bool ConfigFindOrBrowseInstallDirectory()
         auto uiContext = GetContext()->GetUiContext();
         if (!uiContext->HasFilePicker())
         {
-            uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES_MANUAL, nullptr));
+            uiContext->ShowMessageBox(FormatStringID(STR_NEEDS_RCT2_FILES_MANUAL, nullptr));
             return false;
         }
 
@@ -836,7 +836,7 @@ bool ConfigFindOrBrowseInstallDirectory()
             const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
             while (true)
             {
-                uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES, nullptr));
+                uiContext->ShowMessageBox(FormatStringID(STR_NEEDS_RCT2_FILES, nullptr));
                 std::string gog = LanguageGetString(STR_OWN_ON_GOG);
                 std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
 
@@ -875,7 +875,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     std::string dummy;
                     if (!Platform::FindApp("innoextract", &dummy))
                     {
-                        uiContext->ShowMessageBox(format_string(STR_INSTALL_INNOEXTRACT, nullptr));
+                        uiContext->ShowMessageBox(FormatStringID(STR_INSTALL_INNOEXTRACT, nullptr));
                         return false;
                     }
 
@@ -913,7 +913,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     return true;
                 }
 
-                uiContext->ShowMessageBox(format_string(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
+                uiContext->ShowMessageBox(FormatStringID(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
             }
         }
         catch (const std::exception& ex)

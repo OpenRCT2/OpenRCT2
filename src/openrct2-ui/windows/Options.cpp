@@ -1161,7 +1161,7 @@ private:
                 for (size_t i = 0; i < 4; i++)
                 {
                     gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[i].Args = DateFormatStringIds[i];
+                    gDropdownItems[i].Args = DateFormatStringIDs[i];
                 }
                 ShowDropdown(widget, 4);
                 Dropdown::SetChecked(gConfigGeneral.DateFormat, true);
@@ -1275,7 +1275,7 @@ private:
         }
 
         // Date format
-        widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.DateFormat];
+        widgets[WIDX_DATE_FORMAT].text = DateFormatStringIDs[gConfigGeneral.DateFormat];
 
         // Temperature: celsius/fahrenheit
         widgets[WIDX_TEMPERATURE].text = gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit ? STR_FAHRENHEIT

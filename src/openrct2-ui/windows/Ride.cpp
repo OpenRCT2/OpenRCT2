@@ -5080,7 +5080,7 @@ static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
     auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicObjectIndex));
 
     auto name = musicObj->NameStringId;
-    return format_string(name, {});
+    return FormatStringID(name, {});
 }
 
 /**

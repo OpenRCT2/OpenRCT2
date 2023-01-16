@@ -405,7 +405,7 @@ void WindowTextInputOpen(
     rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     StringId existing_text, uintptr_t existing_args, int32_t maxLength)
 {
-    auto existingText = format_string(existing_text, &existing_args);
+    auto existingText = FormatStringID(existing_text, &existing_args);
     WindowTextInputRawOpen(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
 }
 

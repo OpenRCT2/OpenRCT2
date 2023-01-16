@@ -18,7 +18,7 @@
 
 #include <string>
 
-std::string format_string(StringId format, const void* args);
+std::string FormatStringID(StringId format, const void* args);
 void format_string(char* dest, size_t size, StringId format, const void* args);
 void FormatStringToUpper(char* dest, size_t size, StringId format, const void* args);
 void generate_string_file();

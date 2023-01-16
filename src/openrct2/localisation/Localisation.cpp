@@ -328,7 +328,7 @@ const StringId DateGameShortMonthNames[MONTH_COUNT] = {
 };
 // clang-format on
 
-std::string format_string(StringId format, const void* args)
+std::string FormatStringID(StringId format, const void* args)
 {
     std::string buffer(256, 0);
     size_t len{};

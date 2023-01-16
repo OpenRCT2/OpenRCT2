@@ -39,7 +39,7 @@ std::string Banner::GetText() const
 {
     Formatter ft;
     FormatTextTo(ft);
-    return format_string(STR_STRINGID, ft.Data());
+    return FormatStringID(STR_STRINGID, ft.Data());
 }
 
 void Banner::FormatTextTo(Formatter& ft, bool addColour) const

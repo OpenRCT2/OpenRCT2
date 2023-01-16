@@ -284,22 +284,22 @@ namespace OpenRCT2
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 
-    template<typename... TArgs> static void FormatStringId(FormatBuffer& ss, StringId id, TArgs&&... argN)
+    template<typename... TArgs> static void FormatStringID(FormatBuffer& ss, StringId id, TArgs&&... argN)
     {
         auto fmt = GetFmtStringById(id);
         FormatString(ss, fmt, argN...);
     }
 
-    template<typename... TArgs> std::string FormatStringId(StringId id, TArgs&&... argN)
+    template<typename... TArgs> std::string FormatStringID(StringId id, TArgs&&... argN)
     {
         auto fmt = GetFmtStringById(id);
         return FormatString(fmt, argN...);
     }
 
-    template<typename... TArgs> size_t FormatStringId(char* buffer, size_t bufferLen, StringId id, TArgs&&... argN)
+    template<typename... TArgs> size_t FormatStringID(char* buffer, size_t bufferLen, StringId id, TArgs&&... argN)
     {
         auto& ss = GetThreadFormatStream();
-        FormatStringId(ss, id, argN...);
+        FormatStringID(ss, id, argN...);
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 

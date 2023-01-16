@@ -462,7 +462,7 @@ static u8string OpenSystemFileBrowser(bool isSave)
             if (buffer.empty())
             {
                 // Use localised "Unnamed Park" if park name was empty.
-                buffer = format_string(STR_UNNAMED_PARK, nullptr);
+                buffer = FormatStringID(STR_UNNAMED_PARK, nullptr);
             }
             path = Path::Combine(path, buffer);
         }

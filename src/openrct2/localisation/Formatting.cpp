@@ -449,12 +449,12 @@ namespace OpenRCT2
         if (minutes == 0)
         {
             auto fmt = Formats[0][seconds == 1 ? 0 : 1];
-            FormatStringId(ss, fmt, seconds);
+            FormatStringID(ss, fmt, seconds);
         }
         else
         {
             auto fmt = Formats[minutes == 1 ? 1 : 2][seconds == 1 ? 0 : 1];
-            FormatStringId(ss, fmt, minutes, seconds);
+            FormatStringID(ss, fmt, minutes, seconds);
         }
     }
 
@@ -471,12 +471,12 @@ namespace OpenRCT2
         if (hours == 0)
         {
             auto fmt = Formats[0][minutes == 1 ? 0 : 1];
-            FormatStringId(ss, fmt, minutes);
+            FormatStringID(ss, fmt, minutes);
         }
         else
         {
             auto fmt = Formats[hours == 1 ? 1 : 2][minutes == 1 ? 0 : 1];
-            FormatStringId(ss, fmt, hours, minutes);
+            FormatStringID(ss, fmt, hours, minutes);
         }
     }
 
@@ -537,13 +537,13 @@ namespace OpenRCT2
                     {
                         default:
                         case MeasurementFormat::Imperial:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_MILES_PER_HOUR, arg);
+                            FormatStringID(ss, STR_UNIT_SUFFIX_MILES_PER_HOUR, arg);
                             break;
                         case MeasurementFormat::Metric:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR, mph_to_kmph(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR, mph_to_kmph(arg));
                             break;
                         case MeasurementFormat::SI:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_METRES_PER_SECOND, mph_to_dmps(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES_PER_SECOND, mph_to_dmps(arg));
                             break;
                     }
                 }
@@ -567,11 +567,11 @@ namespace OpenRCT2
                     {
                         default:
                         case MeasurementFormat::Imperial:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_FEET, metres_to_feet(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_FEET, metres_to_feet(arg));
                             break;
                         case MeasurementFormat::Metric:
                         case MeasurementFormat::SI:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_METRES, arg);
+                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES, arg);
                             break;
                     }
                 }

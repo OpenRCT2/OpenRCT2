@@ -44,7 +44,7 @@ struct openrct2_timeofday
 };
 
 extern const int16_t days_in_month[MONTH_COUNT];
-extern const StringId DateFormatStringIds[];
+extern const StringId DateFormatStringIDs[];
 extern const StringId DateFormatStringFormatIds[];
 
 extern uint16_t gDateMonthTicks;

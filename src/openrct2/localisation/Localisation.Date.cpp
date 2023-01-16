@@ -24,7 +24,7 @@ const int16_t days_in_month[MONTH_COUNT] = {
     31, 30, 31, 30, 31, 31, 30, 31,
 };
 
-const StringId DateFormatStringIds[] = {
+const StringId DateFormatStringIDs[] = {
     STR_DATE_FORMAT_DAY_MONTH_YEAR,
     STR_DATE_FORMAT_MONTH_DAY_YEAR,
     STR_DATE_FORMAT_YEAR_MONTH_DAY,

@@ -3089,7 +3089,7 @@ void NetworkBase::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connec
         case SERVER_EVENT_PLAYER_JOINED:
         {
             auto playerName = packet.ReadString();
-            auto message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, playerName);
+            auto message = FormatStringID(STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, playerName);
             ChatAddHistory(message);
             break;
         }
@@ -3100,11 +3100,11 @@ void NetworkBase::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connec
             std::string message;
             if (reason.empty())
             {
-                message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, playerName);
+                message = FormatStringID(STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, playerName);
             }
             else
             {
-                message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, playerName, reason);
+                message = FormatStringID(STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, playerName, reason);
             }
             ChatAddHistory(message);
             break;
