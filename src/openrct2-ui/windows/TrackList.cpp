@@ -280,8 +280,7 @@ public:
                 }
                 break;
             case WIDX_FILTER_STRING:
-                WindowStartTextbox(
-                    *this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this out
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this out
                 break;
             case WIDX_FILTER_CLEAR:
                 // Keep the highlighted item selected

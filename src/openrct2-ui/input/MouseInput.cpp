@@ -398,8 +398,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                     {
                         if ((_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
                         {
-                            w = WindowFindByNumber(
-                                gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+                            w = WindowFindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                             if (w != nullptr)
                             {
                                 WindowEventToolUpCall(w, gCurrentToolWidget.widget_index, screenCoords);
@@ -987,8 +986,7 @@ static void InputWidgetOverFlatbuttonInvalidate()
         WindowEventInvalidateCall(w);
         if (w->widgets[gHoverWidget.widget_index].type == WindowWidgetType::FlatBtn)
         {
-            WidgetInvalidateByNumber(
-                gHoverWidget.window_classification, gHoverWidget.window_number, gHoverWidget.widget_index);
+            WidgetInvalidateByNumber(gHoverWidget.window_classification, gHoverWidget.window_number, gHoverWidget.widget_index);
         }
     }
 }

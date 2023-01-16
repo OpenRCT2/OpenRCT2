@@ -1918,8 +1918,7 @@ rct_window* WindowGuestOpen(Peep* peep)
         return WindowStaffOpen(peep);
     }
 
-    auto* window = static_cast<GuestWindow*>(
-        WindowBringToFrontByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
+    auto* window = static_cast<GuestWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
     if (window == nullptr)
     {
         int32_t windowWidth = 192;

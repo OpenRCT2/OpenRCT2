@@ -464,15 +464,13 @@ void ride_restore_provisional_track_piece()
         RideId rideIndex;
         int32_t direction, type, liftHillAndAlternativeState;
         CoordsXYZ trackPos;
-        if (WindowRideConstructionUpdateState(
-                &type, &direction, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr))
+        if (WindowRideConstructionUpdateState(&type, &direction, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr))
         {
             ride_construction_remove_ghosts();
         }
         else
         {
-            _currentTrackPrice = PlaceProvisionalTrackPiece(
-                rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
+            _currentTrackPrice = PlaceProvisionalTrackPiece(rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
             window_ride_construction_update_active_elements();
         }
     }

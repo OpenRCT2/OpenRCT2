@@ -446,8 +446,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
 
     if (!(input_test_flag(INPUT_FLAG_6)) || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
     {
-        if (WindowFindByClass(WindowClass::RideConstruction) == nullptr
-            && WindowFindByClass(WindowClass::Footpath) == nullptr)
+        if (WindowFindByClass(WindowClass::RideConstruction) == nullptr && WindowFindByClass(WindowClass::Footpath) == nullptr)
         {
             info.SpriteType = ViewportInteractionItem::None;
             return info;
