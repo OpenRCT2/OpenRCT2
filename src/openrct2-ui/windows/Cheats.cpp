@@ -662,7 +662,7 @@ private:
             uint32_t sprite_idx = SPR_TAB_FINANCES_SUMMARY_0;
             if (page == WINDOW_CHEATS_PAGE_MONEY)
                 sprite_idx += (frame_no / 2) % 8;
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
         }
 
@@ -672,14 +672,14 @@ private:
             uint32_t sprite_idx = SPR_TAB_GUESTS_0;
             if (page == WINDOW_CHEATS_PAGE_GUESTS)
                 sprite_idx += (frame_no / 3) % 8;
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
         }
 
         // Misc tab
         if (!IsWidgetDisabled(WIDX_TAB_3))
         {
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
         }
 
@@ -689,7 +689,7 @@ private:
             uint32_t sprite_idx = SPR_TAB_RIDE_0;
             if (page == WINDOW_CHEATS_PAGE_RIDES)
                 sprite_idx += (frame_no / 4) % 16;
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
         }
     }

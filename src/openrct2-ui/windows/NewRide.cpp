@@ -386,7 +386,7 @@ public:
 
         const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
         auto string = ls.GetString(STR_GROUP_BY_TRACK_TYPE);
-        auto strWidth = gfx_get_string_width(string, FontStyle::Medium);
+        auto strWidth = GfxGetStringWidth(string, FontStyle::Medium);
         auto localizedGroupByTrackTypeWidth = strWidth + 14;
         widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
     }
@@ -473,7 +473,7 @@ public:
             // Draw ride image with feathered border
             auto mask = ImageId(SPR_NEW_RIDE_MASK);
             auto rideImage = ImageId(GetRideImage(*listItem));
-            gfx_draw_sprite_raw_masked(&dpi, coords + ScreenCoordsXY{ 2, 2 }, mask, rideImage);
+            GfxDrawSpriteRawMasked(&dpi, coords + ScreenCoordsXY{ 2, 2 }, mask, rideImage);
 
             // Next position
             coords.x += 116;
@@ -890,7 +890,7 @@ private:
 
             spriteIndex += tab == THRILL_TAB ? ThrillRidesTabAnimationSequence[frame] : frame;
 
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(spriteIndex, colours[1]),
                 windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }

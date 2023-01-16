@@ -200,7 +200,7 @@ static bool SpriteImageExport(const rct_g1_element& spriteElement, u8string_view
 
     DrawSpriteArgs args(
         ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
-    gfx_sprite_to_buffer(dpi, args);
+    GfxSpriteToBuffer(dpi, args);
 
     auto const pixels8 = dpi.bits;
     auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;

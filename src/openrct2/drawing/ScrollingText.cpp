@@ -58,7 +58,7 @@ static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_
     for (int32_t i = 0; i < count; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        gfx_draw_sprite_software(&dpi, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
+        GfxDrawSpriteSoftware(&dpi, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -98,11 +98,11 @@ static void ScrollingTextInitialiseScrollingText()
         g1.offset[16] = 0;
         g1.offset[17] = 0;
 
-        gfx_set_g1_element(imageId, &g1);
+        GfxSetG1Element(imageId, &g1);
     }
 }
 
-void scrolling_text_initialise_bitmaps()
+void ScrollingTextInitialiseBitmaps()
 {
     ScrollingTextInitialiseCharacterBitmaps(SPR_CHAR_START, 0, FONT_SPRITE_GLYPH_COUNT, gTinyFontAntiAliased);
     ScrollingTextInitialiseCharacterBitmaps(SPR_G2_CHAR_BEGIN, FONT_SPRITE_GLYPH_COUNT, SPR_G2_GLYPH_COUNT, false);
@@ -1424,7 +1424,7 @@ static constexpr const int16_t* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
 };
 // clang-format on
 
-void scrolling_text_invalidate()
+void ScrollingTextInvalidate()
 {
     for (auto& scrollText : _drawScrollTextList)
     {
@@ -1433,7 +1433,7 @@ void scrolling_text_invalidate()
     }
 }
 
-ImageId scrolling_text_setup(
+ImageId ScrollingTextSetup(
     PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
@@ -1530,7 +1530,7 @@ static void scrolling_text_set_bitmap_for_sprite(
             }
             else if (FormatTokenIsColour(token.kind))
             {
-                auto g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
+                auto g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
                 if (g1 != nullptr)
                 {
                     auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
@@ -1564,7 +1564,7 @@ static void scrolling_text_set_bitmap_for_ttf(
         }
         else if (FormatTokenIsColour(token.kind))
         {
-            auto g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
+            auto g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
             if (g1 != nullptr)
             {
                 auto colourIndex = FormatTokenGetTextColourIndex(token.kind);

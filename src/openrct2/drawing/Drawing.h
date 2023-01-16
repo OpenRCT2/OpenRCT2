@@ -501,69 +501,69 @@ void GfxFillRectInset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t co
 void GfxFilterRect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
-bool gfx_load_g1(const OpenRCT2::IPlatformEnvironment& env);
-bool gfx_load_g2();
-bool gfx_load_csg();
-void gfx_unload_g1();
-void gfx_unload_g2();
-void gfx_unload_csg();
-const rct_g1_element* gfx_get_g1_element(const ImageId imageId);
-const rct_g1_element* gfx_get_g1_element(ImageIndex image_id);
-void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1);
+bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);
+bool GfxLoadG2();
+bool GfxLoadCsg();
+void GfxUnloadG1();
+void GfxUnloadG2();
+void GfxUnloadCsg();
+const rct_g1_element* GfxGetG1Element(const ImageId imageId);
+const rct_g1_element* GfxGetG1Element(ImageIndex image_id);
+void GfxSetG1Element(ImageIndex imageId, const rct_g1_element* g1);
 std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
-bool is_csg_loaded();
-void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
+bool IsCsgLoaded();
+void FASTCALL GfxSpriteToBuffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL GfxBmpSpriteToBuffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
-void FASTCALL gfx_rle_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId image_id, const ScreenCoordsXY& coords);
+void FASTCALL GfxRleSpriteToBuffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
+void FASTCALL GfxDrawSprite(rct_drawpixelinfo* dpi, const ImageId image_id, const ScreenCoordsXY& coords);
 void FASTCALL
-    gfx_draw_glyph(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
-void FASTCALL gfx_draw_sprite_raw_masked(
+    GfxDrawGlyph(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+void FASTCALL GfxDrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
+void FASTCALL GfxDrawSpriteRawMasked(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage);
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
-void FASTCALL gfx_draw_sprite_palette_set_software(
+void FASTCALL GfxDrawSpriteSoftware(rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
+void FASTCALL GfxDrawSpritePaletteSetSoftware(
     rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
-void FASTCALL gfx_draw_sprite_raw_masked_software(
+void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
 
 // string
-void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
-void gfx_draw_string_no_formatting(
+void GfxDrawString(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
+void GfxDrawStringNoFormatting(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint);
 
-void gfx_draw_string_left_centred(
+void GfxDrawStringLeftCentred(
     rct_drawpixelinfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords);
-void draw_string_centred_raw(
+void DrawStringCentredRaw(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontStyle fontStyle);
 void DrawNewsTicker(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, void* args,
     int32_t ticks);
-void gfx_draw_string_with_y_offsets(
+void GfxDrawStringWithYOffsets(
     rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont, FontStyle fontStyle);
 
-int32_t gfx_wrap_string(char* buffer, int32_t width, FontStyle fontStyle, int32_t* num_lines);
-int32_t gfx_get_string_width(std::string_view text, FontStyle fontStyle);
-int32_t gfx_get_string_width_new_lined(std::string_view text, FontStyle fontStyle);
-int32_t gfx_get_string_width_no_formatting(std::string_view text, FontStyle fontStyle);
-int32_t string_get_height_raw(std::string_view text, FontStyle fontStyle);
-int32_t gfx_clip_string(char* buffer, int32_t width, FontStyle fontStyle);
-void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontStyle fontStyle);
-void ttf_draw_string(
+int32_t GfxWrapString(char* buffer, int32_t width, FontStyle fontStyle, int32_t* num_lines);
+int32_t GfxGetStringWidth(std::string_view text, FontStyle fontStyle);
+int32_t GfxGetStringWidthNewLined(std::string_view text, FontStyle fontStyle);
+int32_t GfxGetStringWidthNoFormatting(std::string_view text, FontStyle fontStyle);
+int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle);
+int32_t GfxClipString(char* buffer, int32_t width, FontStyle fontStyle);
+void ShortenPath(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontStyle fontStyle);
+void TtfDrawString(
     rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness);
 
 // scrolling text
-void scrolling_text_initialise_bitmaps();
-void scrolling_text_invalidate();
+void ScrollingTextInitialiseBitmaps();
+void ScrollingTextInvalidate();
 
 class Formatter;
 
-ImageId scrolling_text_setup(
+ImageId ScrollingTextSetup(
     struct PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour);
 
-size_t g1_calculate_data_size(const rct_g1_element* g1);
+size_t G1CalculateDataSize(const rct_g1_element* g1);
 
 void MaskScalar(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,

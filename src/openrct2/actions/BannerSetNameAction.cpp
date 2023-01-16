@@ -68,7 +68,7 @@ GameActions::Result BannerSetNameAction::Execute() const
     intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
     ContextBroadcastIntent(&intent);
 
-    scrolling_text_invalidate();
+    ScrollingTextInvalidate();
     GfxInvalidateScreen();
 
     return GameActions::Result();

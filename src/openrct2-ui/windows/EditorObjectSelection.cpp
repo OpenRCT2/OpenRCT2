@@ -725,7 +725,7 @@ public:
                     if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                         colour2 |= COLOUR_FLAG_INSET;
 
-                    gfx_draw_string(
+                    GfxDrawString(
                         &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
                         { static_cast<colour_t>(colour2), FontStyle::Medium, darkness });
                 }
@@ -966,7 +966,7 @@ public:
             {
                 auto image = ImageId(ObjectSelectionPages[i].Image);
                 auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                gfx_draw_sprite(&dpi, image, screenPos);
+                GfxDrawSprite(&dpi, image, screenPos);
             }
         }
 
@@ -996,7 +996,7 @@ public:
                 spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
                 auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                gfx_draw_sprite(&dpi, ImageId(spriteIndex, colours[1]), screenPos);
+                GfxDrawSprite(&dpi, ImageId(spriteIndex, colours[1]), screenPos);
             }
         }
 

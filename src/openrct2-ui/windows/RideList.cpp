@@ -747,21 +747,21 @@ private:
         sprite_idx = SPR_TAB_RIDE_0;
         if (page == PAGE_RIDES)
             sprite_idx += frame_no / 4;
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
 
         // Shops and stalls tab
         sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
         if (page == PAGE_SHOPS_AND_STALLS)
             sprite_idx += frame_no / 4;
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
 
         // Information kiosks and facilities tab
         sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
         if (page == PAGE_KIOSKS_AND_FACILITIES)
             sprite_idx += (frame_no / 4) % 8;
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
     }
 

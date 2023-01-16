@@ -39,7 +39,7 @@ void colours_init_maps()
     // Get colour maps from g1
     for (int32_t i = 0; i < COLOUR_COUNT; i++)
     {
-        const rct_g1_element* g1 = gfx_get_g1_element(SPR_PALETTE_2_START + i);
+        const rct_g1_element* g1 = GfxGetG1Element(SPR_PALETTE_2_START + i);
         if (g1 != nullptr)
         {
             ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];

@@ -240,7 +240,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
     if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
         spriteIndex += (w->frame_no / 4) % 16;
 
-    gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
+    GfxDrawSprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
     if (!WidgetIsDisabled(*w, WIDX_TAB_2))
@@ -250,7 +250,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
         if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
             spriteIndex += (w->frame_no / 4) % 16;
 
-        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 }
 
@@ -1079,7 +1079,7 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
             {
                 auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
-                gfx_draw_string(
+                GfxDrawString(
                     dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
                     { static_cast<colour_t>(w->colours[1] & 0x7F), FontStyle::Medium, darkness });
             }

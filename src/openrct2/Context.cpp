@@ -195,9 +195,9 @@ namespace OpenRCT2
             }
 
             gfx_object_check_all_images_freed();
-            gfx_unload_csg();
-            gfx_unload_g2();
-            gfx_unload_g1();
+            GfxUnloadCsg();
+            GfxUnloadG2();
+            GfxUnloadG1();
             Audio::Close();
 
             Instance = nullptr;
@@ -847,12 +847,12 @@ namespace OpenRCT2
 
         bool LoadBaseGraphics()
         {
-            if (!gfx_load_g1(*_env))
+            if (!GfxLoadG1(*_env))
             {
                 return false;
             }
-            gfx_load_g2();
-            gfx_load_csg();
+            GfxLoadG2();
+            GfxLoadCsg();
             font_sprite_initialise_characters();
             return true;
         }

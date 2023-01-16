@@ -8916,7 +8916,7 @@ static void corkscrew_rc_track_booster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (!is_csg_loaded())
+    if (!IsCsgLoaded())
     {
         corkscrew_rc_track_brakes(session, ride, trackSequence, direction, height, trackElement);
         return;

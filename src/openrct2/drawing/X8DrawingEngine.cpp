@@ -710,13 +710,13 @@ void X8DrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const S
 
 void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, int32_t x, int32_t y)
 {
-    gfx_draw_sprite_software(dpi, imageId, { x, y });
+    GfxDrawSpriteSoftware(dpi, imageId, { x, y });
 }
 
 void X8DrawingContext::DrawSpriteRawMasked(
     rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
-    gfx_draw_sprite_raw_masked_software(dpi, { x, y }, maskImage, colourImage);
+    GfxDrawSpriteRawMaskedSoftware(dpi, { x, y }, maskImage, colourImage);
 }
 
 void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
@@ -726,11 +726,11 @@ void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId ima
     palette[0] = 0;
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
-    gfx_draw_sprite_palette_set_software(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
+    GfxDrawSpritePaletteSetSoftware(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
 }
 
 void X8DrawingContext::DrawGlyph(
     rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
-    gfx_draw_sprite_palette_set_software(dpi, image, { x, y }, paletteMap);
+    GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
 }

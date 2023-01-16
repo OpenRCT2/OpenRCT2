@@ -534,7 +534,7 @@ public:
             auto name = entry.GetName();
             char buffer[256];
             String::Set(buffer, sizeof(buffer), name.data(), name.size());
-            gfx_draw_string(&dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
+            GfxDrawString(&dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
 
             if (entry.Generation == ObjectGeneration::DAT)
             {

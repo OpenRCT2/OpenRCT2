@@ -1179,7 +1179,7 @@ private:
             {
                 auto imageOffset = tabIndex == _activeTabIndex ? 1 : 0;
                 auto imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
-                gfx_draw_sprite(&dpi, imageId, offset + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
+                GfxDrawSprite(&dpi, imageId, offset + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
         }
     }
@@ -1190,8 +1190,8 @@ private:
         {
             auto bannerEntry = GetBannerEntry(scenerySelection.EntryIndex);
             auto imageId = ImageId(bannerEntry->image + gWindowSceneryRotation * 2, gWindowSceneryPrimaryColour);
-            gfx_draw_sprite(&dpi, imageId, { 33, 40 });
-            gfx_draw_sprite(&dpi, imageId.WithIndexOffset(1), { 33, 40 });
+            GfxDrawSprite(&dpi, imageId, { 33, 40 });
+            GfxDrawSprite(&dpi, imageId.WithIndexOffset(1), { 33, 40 });
         }
         else if (scenerySelection.SceneryType == SCENERY_TYPE_LARGE)
         {
@@ -1203,7 +1203,7 @@ private:
                 imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
             if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
                 imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
-            gfx_draw_sprite(&dpi, imageId, { 33, 0 });
+            GfxDrawSprite(&dpi, imageId, { 33, 0 });
         }
         else if (scenerySelection.SceneryType == SCENERY_TYPE_WALL)
         {
@@ -1217,10 +1217,10 @@ private:
                 {
                     imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
                 }
-                gfx_draw_sprite(&dpi, imageId, { 47, spriteTop });
+                GfxDrawSprite(&dpi, imageId, { 47, spriteTop });
 
                 auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(gWindowSceneryPrimaryColour);
-                gfx_draw_sprite(&dpi, glassImageId, { 47, spriteTop });
+                GfxDrawSprite(&dpi, glassImageId, { 47, spriteTop });
             }
             else
             {
@@ -1233,11 +1233,11 @@ private:
                         imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
                     }
                 }
-                gfx_draw_sprite(&dpi, imageId, { 47, spriteTop });
+                GfxDrawSprite(&dpi, imageId, { 47, spriteTop });
 
                 if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
                 {
-                    gfx_draw_sprite(&dpi, imageId.WithIndexOffset(1), { 47, spriteTop });
+                    GfxDrawSprite(&dpi, imageId.WithIndexOffset(1), { 47, spriteTop });
                 }
             }
         }
@@ -1245,7 +1245,7 @@ private:
         {
             auto* pathBitEntry = GetFootpathItemEntry(scenerySelection.EntryIndex);
             auto imageId = ImageId(pathBitEntry->image);
-            gfx_draw_sprite(&dpi, imageId, { 11, 16 });
+            GfxDrawSprite(&dpi, imageId, { 11, 16 });
         }
         else
         {
@@ -1270,19 +1270,19 @@ private:
                 spriteTop -= 12;
             }
 
-            gfx_draw_sprite(&dpi, imageId, { 32, spriteTop });
+            GfxDrawSprite(&dpi, imageId, { 32, spriteTop });
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
             {
                 imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation)
                               .WithTransparency(gWindowSceneryPrimaryColour);
-                gfx_draw_sprite(&dpi, imageId, { 32, spriteTop });
+                GfxDrawSprite(&dpi, imageId, { 32, spriteTop });
             }
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
             {
                 imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation);
-                gfx_draw_sprite(&dpi, imageId, { 32, spriteTop });
+                GfxDrawSprite(&dpi, imageId, { 32, spriteTop });
             }
         }
     }

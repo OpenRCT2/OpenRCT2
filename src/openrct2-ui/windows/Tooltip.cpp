@@ -99,7 +99,7 @@ public:
         // Text
         left = windowPos.x + ((width + 1) / 2) - 1;
         top = windowPos.y + 1;
-        draw_string_centred_raw(&dpi, { left, top }, _tooltipNumLines, _tooltipText, FontStyle::Small);
+        DrawStringCentredRaw(&dpi, { left, top }, _tooltipNumLines, _tooltipText, FontStyle::Small);
     }
 
 private:
@@ -113,11 +113,11 @@ private:
         formattedMessage.args.Add<const char*>(tempBuffer);
         format_string(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
 
-        auto textWidth = gfx_get_string_width_new_lined(_tooltipText, FontStyle::Small);
+        auto textWidth = GfxGetStringWidthNewLined(_tooltipText, FontStyle::Small);
         textWidth = std::min(textWidth, 196);
 
         int32_t numLines;
-        textWidth = gfx_wrap_string(_tooltipText, textWidth + 1, FontStyle::Small, &numLines);
+        textWidth = GfxWrapString(_tooltipText, textWidth + 1, FontStyle::Small, &numLines);
         _tooltipNumLines = numLines;
         return textWidth;
     }

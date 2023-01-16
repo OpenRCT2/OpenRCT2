@@ -1006,8 +1006,8 @@ public:
         ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
 
         // Draw coordinates
-        gfx_draw_string(&dpi, screenCoords + ScreenCoordsXY(5, 24), "X:", { colours[1] });
-        gfx_draw_string(&dpi, screenCoords + ScreenCoordsXY(74, 24), "Y:", { colours[1] });
+        GfxDrawString(&dpi, screenCoords + ScreenCoordsXY(5, 24), "X:", { colours[1] });
+        GfxDrawString(&dpi, screenCoords + ScreenCoordsXY(74, 24), "Y:", { colours[1] });
         if (_tileSelected)
         {
             auto tileCoords = TileCoordsXY{ _toolMap };
@@ -1022,8 +1022,8 @@ public:
         }
         else
         {
-            gfx_draw_string(&dpi, screenCoords + ScreenCoordsXY(43 - 7, 24), "-", { colours[1] });
-            gfx_draw_string(&dpi, screenCoords + ScreenCoordsXY(113 - 7, 24), "-", { colours[1] });
+            GfxDrawString(&dpi, screenCoords + ScreenCoordsXY(43 - 7, 24), "-", { colours[1] });
+            GfxDrawString(&dpi, screenCoords + ScreenCoordsXY(113 - 7, 24), "-", { colours[1] });
         }
 
         if (windowTileInspectorSelectedIndex != -1)

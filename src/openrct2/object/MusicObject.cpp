@@ -89,7 +89,7 @@ void MusicObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t hei
     int32_t x = width / 2;
     int32_t y = height / 2;
     if (_hasPreview)
-        gfx_draw_sprite(dpi, ImageId(_previewImageId), { 0, 0 });
+        GfxDrawSprite(dpi, ImageId(_previewImageId), { 0, 0 });
     else
         DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }

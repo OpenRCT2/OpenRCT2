@@ -150,7 +150,7 @@ void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
     if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
         image = image.WithTertiary(COLOUR_DARK_BROWN);
 
-    gfx_draw_sprite(dpi, image, screenCoords);
+    GfxDrawSprite(dpi, image, screenCoords);
 }
 
 std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)

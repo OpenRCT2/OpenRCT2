@@ -595,7 +595,7 @@ private:
         {
             window_draw_viewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-                gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
         }
 
         // Draw park closed / open label
@@ -1161,7 +1161,7 @@ private:
 
         for (const auto& award : GetAwards())
         {
-            gfx_draw_sprite(&dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
+            GfxDrawSprite(&dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
             DrawTextWrapped(&dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
 
             screenCoords.y += 32;
@@ -1218,7 +1218,7 @@ private:
         // Entrance tab
         if (!WidgetIsDisabled(*this, WIDX_TAB_1))
         {
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_TAB_PARK_ENTRANCE),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
         }
@@ -1229,11 +1229,11 @@ private:
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_RATING)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
-            gfx_draw_sprite(
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_RATING_HIGH),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left + 7, widgets[WIDX_TAB_2].top + 1 });
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_RATING_LOW),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left + 16, widgets[WIDX_TAB_2].top + 12 });
         }
@@ -1244,13 +1244,13 @@ private:
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_GUESTS)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
             ImageId peepImage(GetPeepAnimation(PeepSpriteType::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
             if (page == WINDOW_PARK_PAGE_GUESTS)
                 peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, peepImage, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].midX(), widgets[WIDX_TAB_3].bottom - 9 });
         }
 
@@ -1260,7 +1260,7 @@ private:
             ImageId spriteIdx(SPR_TAB_ADMISSION_0);
             if (page == WINDOW_PARK_PAGE_PRICE)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 2) % 8);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
         }
 
         // Statistics tab
@@ -1269,7 +1269,7 @@ private:
             ImageId spriteIdx(SPR_TAB_STATS_0);
             if (page == WINDOW_PARK_PAGE_STATS)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 7);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
         }
 
         // Objective tab
@@ -1278,13 +1278,13 @@ private:
             ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
             if (page == WINDOW_PARK_PAGE_OBJECTIVE)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 16);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
         }
 
         // Awards tab
         if (!WidgetIsDisabled(*this, WIDX_TAB_7))
         {
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_TAB_AWARDS), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_7].left, widgets[WIDX_TAB_7].top });
         }
     }

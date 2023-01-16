@@ -150,7 +150,7 @@ void InGameConsole::RefreshCaret(size_t position)
     _selectionStart = position;
     char tempString[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(tempString, &_consoleCurrentLine, _selectionStart);
-    _caretScreenPosX = gfx_get_string_width_no_formatting(tempString, InGameConsoleGetFontStyle());
+    _caretScreenPosX = GfxGetStringWidthNoFormatting(tempString, InGameConsoleGetFontStyle());
 }
 
 void InGameConsole::Scroll(int32_t linesToScroll)
@@ -318,7 +318,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = _colourFormatStr + _consoleLines[index];
-        gfx_draw_string(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
+        GfxDrawString(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
         screenCoords.y += lineHeight;
     }
 
@@ -326,7 +326,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // Draw current line
     lineBuffer = _colourFormatStr + _consoleCurrentLine;
-    gfx_draw_string_no_formatting(dpi, screenCoords, lineBuffer.c_str(), { TEXT_COLOUR_255, InGameConsoleGetFontStyle() });
+    GfxDrawStringNoFormatting(dpi, screenCoords, lineBuffer.c_str(), { TEXT_COLOUR_255, InGameConsoleGetFontStyle() });
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)

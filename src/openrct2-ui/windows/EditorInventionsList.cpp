@@ -351,7 +351,7 @@ public:
 
         // Tab image
         auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top };
-        gfx_draw_sprite(&dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
+        GfxDrawSprite(&dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
 
         // Pre-researched items label
         screenPos = windowPos

@@ -69,11 +69,11 @@ static void PaintRideEntranceExitScrollingText(
     {
         format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
-    auto stringWidth = gfx_get_string_width(text, FontStyle::Tiny);
+    auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
-        session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
+        session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
         { 0, 0, height + stationObj.Height }, { { 2, 2, height + stationObj.Height }, { 28, 28, 51 } });
 }
 
@@ -241,9 +241,9 @@ static void PaintParkEntranceScrollingText(
         format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
 
-    auto stringWidth = gfx_get_string_width(text, FontStyle::Tiny);
+    auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
-    auto imageIndex = scrolling_text_setup(
+    auto imageIndex = ScrollingTextSetup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
     auto textHeight = height + entrance.GetTextHeight();
     PaintAddImageAsChild(session, imageIndex, { 0, 0, textHeight }, { { 2, 2, textHeight }, { 28, 28, 47 } });

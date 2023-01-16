@@ -181,9 +181,9 @@ static void PaintWallScrollingText(
         format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
 
-    auto stringWidth = gfx_get_string_width(signString, FontStyle::Tiny);
+    auto stringWidth = GfxGetStringWidth(signString, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
-    auto imageId = scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, textPaletteIndex);
+    auto imageId = ScrollingTextSetup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 8 }, { boundsOffset, { 1, 1, 13 } });
 }
 
