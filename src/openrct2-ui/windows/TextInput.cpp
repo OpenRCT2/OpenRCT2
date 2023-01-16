@@ -225,7 +225,7 @@ public:
         // +13 for cursor when max length.
         gfx_wrap_string(wrapped_string, WW - (24 + 13), FontStyle::Medium, &no_lines);
 
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
             colours[1], INSET_RECT_F_60);
 
@@ -267,7 +267,7 @@ public:
                 {
                     uint8_t colour = ColourMapA[colours[1]].mid_light;
                     // TODO: palette index addition
-                    gfx_fill_rect(
+                    GfxFillRect(
                         &dpi, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);
                 }
 
@@ -322,10 +322,10 @@ private:
         int width = compositionWidth;
         int height = 10;
 
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
             PALETTE_INDEX_12);
-        gfx_fill_rect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
+        GfxFillRect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
         gfx_draw_string(&dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
     }
 

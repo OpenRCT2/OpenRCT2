@@ -33,7 +33,7 @@ namespace Graph
                     { FontStyle::Small, TextAlignment::CENTRE });
 
                 // Draw month mark
-                gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
+                GfxFillRect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
             }
 
             yearOver32 = (yearOver32 + 1) % 32;
@@ -57,11 +57,11 @@ namespace Graph
                     auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
                     auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
                     auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
-                    gfx_draw_line(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
-                    gfx_draw_line(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
+                    GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
+                    GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
                 }
                 if (i == 0)
-                    gfx_fill_rect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+                    GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
 
                 lastCoords = coords;
             }
@@ -83,10 +83,10 @@ namespace Graph
                 {
                     auto leftTop = lastCoords;
                     auto rightBottom = coords;
-                    gfx_draw_line(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
+                    GfxDrawLine(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
                 }
                 if (i == 0)
-                    gfx_fill_rect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
+                    GfxFillRect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
 
                 lastCoords = coords;
             }
@@ -170,7 +170,7 @@ namespace Graph
                     { FontStyle::Small, TextAlignment::CENTRE });
 
                 // Draw month mark
-                gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
+                GfxFillRect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
             }
 
             yearOver32 = (yearOver32 + 1) % 32;
@@ -196,11 +196,11 @@ namespace Graph
                     auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
                     auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
                     auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
-                    gfx_draw_line(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
-                    gfx_draw_line(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
+                    GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
+                    GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
                 }
                 if (i == 0)
-                    gfx_fill_rect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+                    GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
 
                 lastCoords = coords;
             }
@@ -224,10 +224,10 @@ namespace Graph
                 {
                     auto leftTop = lastCoords;
                     auto rightBottom = coords;
-                    gfx_draw_line(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
+                    GfxDrawLine(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
                 }
                 if (i == 0)
-                    gfx_fill_rect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
+                    GfxFillRect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
 
                 lastCoords = coords;
             }
@@ -253,12 +253,12 @@ namespace Graph
         {
             return;
         }
-        gfx_draw_dashed_line(dpi, { { info.coords.x, chartFrame.GetTop() }, info.coords }, DefaultDashedLength, 0);
-        gfx_draw_dashed_line(dpi, { { chartFrame.GetLeft() - 10, info.coords.y }, info.coords }, DefaultDashedLength, 0);
+        GfxDrawDashedLine(dpi, { { info.coords.x, chartFrame.GetTop() }, info.coords }, DefaultDashedLength, 0);
+        GfxDrawDashedLine(dpi, { { chartFrame.GetLeft() - 10, info.coords.y }, info.coords }, DefaultDashedLength, 0);
 
         if (cursorPosition.y > info.coords.y)
         {
-            gfx_draw_dashed_line(dpi, { info.coords, { info.coords.x, cursorPosition.y } }, DefaultDashedLength, 0);
+            GfxDrawDashedLine(dpi, { info.coords, { info.coords.x, cursorPosition.y } }, DefaultDashedLength, 0);
         }
 
         auto ft = Formatter();
@@ -266,9 +266,9 @@ namespace Graph
         DrawTextBasic(
             dpi, info.coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, ft, { TextAlignment::CENTRE });
 
-        gfx_fill_rect(
+        GfxFillRect(
             dpi, { { info.coords - ScreenCoordsXY{ 2, 2 } }, info.coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
-        gfx_fill_rect(
+        GfxFillRect(
             dpi, { { info.coords - ScreenCoordsXY{ 1, 1 } }, { info.coords + ScreenCoordsXY{ 1, 1 } } }, PALETTE_INDEX_21);
     }
 

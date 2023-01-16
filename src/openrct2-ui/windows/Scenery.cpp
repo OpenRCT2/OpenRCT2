@@ -1289,7 +1289,7 @@ private:
 
     void ContentScrollDraw(rct_drawpixelinfo& dpi)
     {
-        gfx_clear(&dpi, ColourMapA[colours[1]].mid_light);
+        GfxClear(&dpi, ColourMapA[colours[1]].mid_light);
 
         auto numColumns = GetNumColumns();
         auto tabIndex = _activeTabIndex;
@@ -1309,7 +1309,7 @@ private:
             {
                 if (_selectedScenery == currentSceneryGlobal)
                 {
-                    gfx_fill_rect_inset(
+                    GfxFillRectInset(
                         &dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                         colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                 }
@@ -1318,20 +1318,20 @@ private:
             {
                 if (tabSelectedScenery == currentSceneryGlobal)
                 {
-                    gfx_fill_rect_inset(
+                    GfxFillRectInset(
                         &dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                         colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
                 }
                 else if (_selectedScenery == currentSceneryGlobal)
                 {
-                    gfx_fill_rect_inset(
+                    GfxFillRectInset(
                         &dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                         colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                 }
             }
 
             rct_drawpixelinfo clipdpi;
-            if (clip_drawpixelinfo(
+            if (ClipDrawPixelInfo(
                     &clipdpi, &dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
             {
                 DrawSceneryItem(clipdpi, currentSceneryGlobal);

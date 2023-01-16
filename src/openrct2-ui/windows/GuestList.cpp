@@ -587,7 +587,7 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
         switch (_selectedTab)
         {
@@ -668,7 +668,7 @@ private:
                 StringId format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -738,7 +738,7 @@ private:
                 StringId format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(&dpi, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 

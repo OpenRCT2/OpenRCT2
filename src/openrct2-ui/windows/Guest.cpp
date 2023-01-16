@@ -526,7 +526,7 @@ private:
             widgHeight++;
 
         rct_drawpixelinfo clipDpi;
-        if (!clip_drawpixelinfo(&clipDpi, &dpi, screenCoords, widgWidth, widgHeight))
+        if (!ClipDrawPixelInfo(&clipDpi, &dpi, screenCoords, widgWidth, widgHeight))
         {
             return;
         }
@@ -782,7 +782,7 @@ private:
         int32_t top = marqueeWidget.top + windowPos.y;
         int32_t marqHeight = marqueeWidget.height();
         rct_drawpixelinfo dpiMarquee;
-        if (!clip_drawpixelinfo(&dpiMarquee, &dpi, { left, top }, marqWidth, marqHeight))
+        if (!ClipDrawPixelInfo(&dpiMarquee, &dpi, { left, top }, marqWidth, marqHeight))
         {
             return;
         }
@@ -1039,7 +1039,7 @@ private:
             coords.y += 1;
         }
 
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, colours[1], INSET_RECT_F_30);
 
         if (!blinkFlag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
@@ -1050,7 +1050,7 @@ private:
             if (value <= 2)
                 return;
 
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { coords + ScreenCoordsXY{ 63, 2 }, coords + ScreenCoordsXY{ 63 + value - 1, 8 } }, colour, 0);
         }
     }
@@ -1155,7 +1155,7 @@ private:
         }
 
         screenCoords.y += LIST_ROW_HEIGHT + 9;
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
@@ -1353,7 +1353,7 @@ private:
     void OnScrollDrawRides(int32_t scrollIndex, rct_drawpixelinfo& dpi)
     {
         auto colour = ColourMapA[colours[1]].mid_light;
-        gfx_fill_rect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
+        GfxFillRect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
         for (int32_t listIndex = 0; listIndex < no_list_items; listIndex++)
         {
@@ -1361,7 +1361,7 @@ private:
             StringId stringId = STR_BLACK_STRING;
             if (listIndex == selected_list_item)
             {
-                gfx_filter_rect(&dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(&dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
 
@@ -1441,7 +1441,7 @@ private:
             screenCoords.y += LIST_ROW_HEIGHT * 2;
         }
 
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 

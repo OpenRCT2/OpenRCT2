@@ -491,7 +491,7 @@ void game_load_init()
 
     gWindowUpdateTicks = 0;
 
-    load_palette();
+    LoadPalette();
 
     if (!gOpenRCT2Headless)
     {

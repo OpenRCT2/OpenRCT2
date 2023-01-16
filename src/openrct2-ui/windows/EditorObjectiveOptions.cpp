@@ -1051,7 +1051,7 @@ static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, rct_drawpixeli
 static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t colour = ColourMapA[w->colours[1]].mid_light;
-    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
+    GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
 
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
@@ -1061,14 +1061,14 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
             continue;
 
         // Checkbox
-        gfx_fill_rect_inset(dpi, { { 2, y }, { 11, y + 10 } }, w->colours[1], INSET_RECT_F_E0);
+        GfxFillRectInset(dpi, { { 2, y }, { 11, y + 10 } }, w->colours[1], INSET_RECT_F_E0);
 
         // Highlighted
         auto stringId = STR_BLACK_STRING;
         if (i == w->selected_list_item)
         {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, { 0, y, w->width, y + 11 }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(dpi, { 0, y, w->width, y + 11 }, FilterPaletteID::PaletteDarken1);
         }
 
         // Checkbox mark

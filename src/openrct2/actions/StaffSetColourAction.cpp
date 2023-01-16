@@ -70,6 +70,6 @@ GameActions::Result StaffSetColourAction::Execute() const
         }
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     return GameActions::Result();
 }

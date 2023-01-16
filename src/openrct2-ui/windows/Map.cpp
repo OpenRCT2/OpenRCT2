@@ -705,7 +705,7 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
-        gfx_clear(&dpi, PALETTE_INDEX_10);
+        GfxClear(&dpi, PALETTE_INDEX_10);
 
         rct_g1_element g1temp = {};
         g1temp.offset = _mapImageData.data();
@@ -893,7 +893,7 @@ public:
 
                 for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                 {
-                    gfx_fill_rect(
+                    GfxFillRect(
                         &dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                         RideKeyColours[i]);
                     DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
@@ -1194,7 +1194,7 @@ private:
             }
         }
 
-        gfx_fill_rect(dpi, { leftTop, rightBottom }, colour);
+        GfxFillRect(dpi, { leftTop, rightBottom }, colour);
     }
 
     static uint8_t GetGuestFlashColour()
@@ -1232,13 +1232,13 @@ private:
 
                 MapCoordsXY c = TransformToMapCoords({ vehicle->x, vehicle->y });
 
-                gfx_fill_rect(dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
+                GfxFillRect(dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
             }
         }
     }
 
     /**
-     * The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
+     * The call to GfxFillRect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
      * but it doesn't look like it's ever necessary here so the call was removed.
      */
     void PaintHudRectangle(rct_drawpixelinfo* dpi)
@@ -1259,20 +1259,20 @@ private:
         auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
         // top horizontal lines
-        gfx_fill_rect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
-        gfx_fill_rect(dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PALETTE_INDEX_56);
 
         // left vertical lines
-        gfx_fill_rect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
-        gfx_fill_rect(dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PALETTE_INDEX_56);
 
         // bottom horizontal lines
-        gfx_fill_rect(dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
-        gfx_fill_rect(dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PALETTE_INDEX_56);
 
         // right vertical lines
-        gfx_fill_rect(dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
-        gfx_fill_rect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
     }
 
     void DrawTabImages(rct_drawpixelinfo* dpi)

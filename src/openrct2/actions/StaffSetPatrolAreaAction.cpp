@@ -94,7 +94,7 @@ GameActions::Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const
                 break;
             case StaffSetPatrolAreaMode::ClearAll:
                 staff->ClearPatrolArea();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
         }
         UpdateConsolidatedPatrolAreas();

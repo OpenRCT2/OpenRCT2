@@ -621,7 +621,7 @@ void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
     WidgetIndex widgetIndex;
 
     if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
-        gfx_filter_rect(
+        GfxFilterRect(
             dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
 
     // todo: some code missing here? Between 006EB18C and 006EB260
@@ -650,7 +650,7 @@ void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
 
     if (w.flags & WF_WHITE_BORDER_MASK)
     {
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, COLOUR_WHITE,
             INSET_RECT_FLAG_FILL_NONE);
     }
@@ -672,7 +672,7 @@ static void WindowInvalidatePressedImageButton(const rct_window& w)
             continue;
 
         if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
-            gfx_set_dirty_blocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
+            GfxSetDirtyBlocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
     }
 }
 

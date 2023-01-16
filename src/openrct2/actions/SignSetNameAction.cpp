@@ -88,6 +88,6 @@ GameActions::Result SignSetNameAction::Execute() const
     }
 
     scrolling_text_invalidate();
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     return GameActions::Result();
 }

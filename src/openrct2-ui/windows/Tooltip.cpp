@@ -81,20 +81,20 @@ public:
         int32_t bottom = windowPos.y + height - 1;
 
         // Background
-        gfx_filter_rect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
-        gfx_filter_rect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
+        GfxFilterRect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
+        GfxFilterRect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
 
         // Sides
-        gfx_filter_rect(&dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(&dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(&dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(&dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(&dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(&dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(&dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(&dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
 
         // Corners
-        gfx_filter_pixel(&dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_pixel(&dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_pixel(&dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_pixel(&dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(&dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(&dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(&dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(&dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
 
         // Text
         left = windowPos.x + ((width + 1) / 2) - 1;

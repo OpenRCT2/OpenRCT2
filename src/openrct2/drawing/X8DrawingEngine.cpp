@@ -705,7 +705,7 @@ void X8DrawingContext::FilterRect(
 
 void X8DrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line)
 {
-    gfx_draw_line_software(dpi, line, colour);
+    GfxDrawLineSoftware(dpi, line, colour);
 }
 
 void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, int32_t x, int32_t y)

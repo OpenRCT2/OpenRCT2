@@ -25,7 +25,7 @@ void rct_window::ScrollToViewport()
 
 void rct_window::Invalidate()
 {
-    gfx_set_dirty_blocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
+    GfxSetDirtyBlocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
 }
 
 void rct_window::RemoveViewport()

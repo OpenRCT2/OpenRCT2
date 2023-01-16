@@ -69,27 +69,27 @@ public:
         {
             case WIDX_TOGGLE_SHOW_WIDE_PATHS:
                 gPaintWidePathsAsGhost = !gPaintWidePathsAsGhost;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
 
             case WIDX_TOGGLE_SHOW_BLOCKED_TILES:
                 gPaintBlockedTiles = !gPaintBlockedTiles;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
 
             case WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS:
                 gShowSupportSegmentHeights = !gShowSupportSegmentHeights;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
 
             case WIDX_TOGGLE_SHOW_BOUND_BOXES:
                 gPaintBoundingBoxes = !gPaintBoundingBoxes;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
 
             case WIDX_TOGGLE_SHOW_DIRTY_VISUALS:
                 gShowDirtyVisuals = !gShowDirtyVisuals;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
         }
     }

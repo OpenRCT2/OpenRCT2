@@ -298,7 +298,7 @@ public:
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // TODO: the line below is a workaround for what is presumably a bug with dpi->width
@@ -500,8 +500,8 @@ private:
     void DrawSeparator(rct_drawpixelinfo& dpi, int32_t y, int32_t scrollWidth)
     {
         const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
-        gfx_fill_rect(&dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
-        gfx_fill_rect(&dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
+        GfxFillRect(&dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
+        GfxFillRect(&dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
     }
 
     void DrawItem(
@@ -511,7 +511,7 @@ private:
         if (isHighlighted)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(&dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(&dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
         }
 
         auto bindingOffset = (scrollWidth * 2) / 3;

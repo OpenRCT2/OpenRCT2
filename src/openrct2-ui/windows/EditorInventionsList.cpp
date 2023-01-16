@@ -266,7 +266,7 @@ public:
     {
         // Draw background
         uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
-        gfx_clear(&dpi, paletteIndex);
+        GfxClear(&dpi, paletteIndex);
 
         int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
         int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
@@ -295,7 +295,7 @@ public:
                     bottom = itemY;
                 }
 
-                gfx_filter_rect(&dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(&dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
             }
 
             if (dragItem != nullptr && researchItem == *dragItem)
@@ -365,7 +365,7 @@ public:
 
         // Preview background
         auto& bkWidget = widgets[WIDX_PREVIEW];
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi,
             { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
               windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },
@@ -395,7 +395,7 @@ public:
             screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
             const auto clipWidth = bkWidget.width() - 1;
             const auto clipHeight = bkWidget.height() - 1;
-            if (clip_drawpixelinfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
+            if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
             {
                 object->DrawPreview(&clipDPI, clipWidth, clipHeight);
             }

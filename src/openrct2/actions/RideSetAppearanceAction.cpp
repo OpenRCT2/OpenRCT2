@@ -102,15 +102,15 @@ GameActions::Result RideSetAppearanceAction::Execute() const
     {
         case RideSetAppearanceType::TrackColourMain:
             ride->track_colour[_index].main = _value;
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::TrackColourAdditional:
             ride->track_colour[_index].additional = _value;
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::TrackColourSupports:
             ride->track_colour[_index].supports = _value;
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::VehicleColourBody:
             ride->vehicle_colours[_index].Body = _value;
@@ -136,7 +136,7 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             break;
         case RideSetAppearanceType::EntranceStyle:
             ride->entrance_style = _value;
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::SellingItemColourIsRandom:
             ride->SetLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));

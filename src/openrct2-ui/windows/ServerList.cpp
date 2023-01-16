@@ -397,7 +397,7 @@ static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi)
 static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
-    gfx_clear(dpi, paletteIndex);
+    GfxClear(dpi, paletteIndex);
 
     auto& listWidget = w->widgets[WIDX_LIST];
     int32_t width = listWidget.width();
@@ -415,7 +415,7 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         // Draw hover highlight
         if (highlighted)
         {
-            gfx_filter_rect(dpi, { 0, screenCoords.y, width, screenCoords.y + ITEM_HEIGHT }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(dpi, { 0, screenCoords.y, width, screenCoords.y + ITEM_HEIGHT }, FilterPaletteID::PaletteDarken1);
             _version = serverDetails.Version;
         }
 

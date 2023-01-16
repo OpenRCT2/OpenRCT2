@@ -402,7 +402,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
     WindowMultiplayerDrawTabImages(w, dpi);
 
     rct_drawpixelinfo clippedDPI;
-    if (clip_drawpixelinfo(&clippedDPI, dpi, w->windowPos, w->width, w->height))
+    if (ClipDrawPixelInfo(&clippedDPI, dpi, w->windowPos, w->width, w->height))
     {
         dpi = &clippedDPI;
 
@@ -598,7 +598,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             colour_t colour = COLOUR_BLACK;
             if (listPosition == w->selected_list_item)
             {
-                gfx_filter_rect(
+                GfxFilterRect(
                     dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
                     FilterPaletteID::PaletteDarken1);
                 _buffer += network_get_player_name(player);
@@ -872,7 +872,7 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenPos.y += 20;
 
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
@@ -895,14 +895,14 @@ static void WindowMultiplayerGroupsScrollpaint(rct_window* w, rct_drawpixelinfo*
     auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
     auto dpiCoords = ScreenCoordsXY{ dpi->x, dpi->y };
-    gfx_fill_rect(
+    GfxFillRect(
         dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
 
     for (int32_t i = 0; i < network_get_num_actions(); i++)
     {
         if (i == w->selected_list_item)
         {
-            gfx_filter_rect(
+            GfxFilterRect(
                 dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
         }
         if (screenCoords.y > dpi->y + dpi->height)

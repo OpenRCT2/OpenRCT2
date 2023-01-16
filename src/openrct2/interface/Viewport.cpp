@@ -844,7 +844,7 @@ void viewport_render(
 #ifdef DEBUG_SHOW_DIRTY_BOX
     // FIXME g_viewport_list doesn't exist anymore
     if (viewport != g_viewport_list)
-        gfx_fill_rect_inset(dpi, { dirtyBoxTopLeft, dirtyBoxTopRight }, 0x2, INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { dirtyBoxTopLeft, dirtyBoxTopRight }, 0x2, INSET_RECT_F_30);
 #endif
 }
 
@@ -935,7 +935,7 @@ static void viewport_paint_column(PaintSession& session)
         {
             colour = COLOUR_BLACK;
         }
-        gfx_clear(&session.DPI, colour);
+        GfxClear(&session.DPI, colour);
     }
 
     PaintDrawStructs(session);
@@ -1107,7 +1107,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
         auto y = dpi->y;
         auto w = zoomLevel.ApplyInversedTo(dpi->width) - 1;
         auto h = zoomLevel.ApplyInversedTo(dpi->height) - 1;
-        gfx_filter_rect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
+        GfxFilterRect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
     }
 }
 
@@ -1975,7 +1975,7 @@ void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenR
         bottomRight = { viewport->zoom.ApplyInversedTo(bottomRight.x), viewport->zoom.ApplyInversedTo(bottomRight.y) };
         bottomRight += viewport->pos;
 
-        gfx_set_dirty_blocks({ topLeft, bottomRight });
+        GfxSetDirtyBlocks({ topLeft, bottomRight });
     }
 }
 

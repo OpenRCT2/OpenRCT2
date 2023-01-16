@@ -378,7 +378,7 @@ void CheatSetAction::SetGrassLength(int32_t length) const
         }
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::WaterPlants() const
@@ -394,7 +394,7 @@ void CheatSetAction::WaterPlants() const
         }
     } while (TileElementIteratorNext(&it));
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::FixVandalism() const
@@ -413,7 +413,7 @@ void CheatSetAction::FixVandalism() const
         it.element->AsPath()->SetIsBroken(false);
     } while (TileElementIteratorNext(&it));
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::RemoveLitter() const
@@ -440,7 +440,7 @@ void CheatSetAction::RemoveLitter() const
 
     } while (TileElementIteratorNext(&it));
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::FixBrokenRides() const
@@ -674,7 +674,7 @@ void CheatSetAction::RemoveAllGuests() const
     }
 
     window_invalidate_by_class(WindowClass::Ride);
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::SetStaffSpeed(uint8_t value) const

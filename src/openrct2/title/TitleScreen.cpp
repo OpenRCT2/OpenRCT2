@@ -321,7 +321,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
                         gConfigInterface.CurrentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                     return true;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;
@@ -446,7 +446,7 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
 
     // Invalidate screen area
     int16_t width = static_cast<int16_t>(gfx_get_string_width(buffer, FontStyle::Medium));
-    gfx_set_dirty_blocks(
+    GfxSetDirtyBlocks(
         { screenCoords, screenCoords + ScreenCoordsXY{ width, 30 } }); // 30 is an arbitrary height to catch both strings
 
     // Write platform information

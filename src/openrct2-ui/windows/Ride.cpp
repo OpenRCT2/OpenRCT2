@@ -937,7 +937,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
         screenCoords += w->windowPos;
 
         rct_drawpixelinfo clipDPI;
-        if (!clip_drawpixelinfo(&clipDPI, dpi, screenCoords, width, height))
+        if (!ClipDrawPixelInfo(&clipDPI, dpi, screenCoords, width, height))
         {
             return;
         }
@@ -2952,7 +2952,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
     rct_ride_entry* rideEntry = ride->GetRideEntry();
 
     // Background
-    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, PALETTE_INDEX_12);
+    GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, PALETTE_INDEX_12);
 
     Widget* widget = &window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
     int32_t startX = std::max(2, (widget->width() - ((ride->NumTrains - 1) * 36)) / 2 - 25);
@@ -3712,7 +3712,7 @@ static void WindowRideOperatingPaint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     // Horizontal rule between mode settings and depart settings
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi,
         { w->windowPos + ScreenCoordsXY{ window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].left + 4, 103 },
           w->windowPos + ScreenCoordsXY{ window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].right - 5, 104 } },
@@ -3767,7 +3767,7 @@ static void WindowRideLocateMechanic(rct_window* w)
 static void WindowRideMaintenanceDrawBar(
     rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t value, int32_t colour)
 {
-    gfx_fill_rect_inset(dpi, { coords, coords + ScreenCoordsXY{ 149, 8 } }, w->colours[1], INSET_RECT_F_30);
+    GfxFillRectInset(dpi, { coords, coords + ScreenCoordsXY{ 149, 8 } }, w->colours[1], INSET_RECT_F_30);
     if (colour & BAR_BLINK)
     {
         colour &= ~BAR_BLINK;
@@ -3778,7 +3778,7 @@ static void WindowRideMaintenanceDrawBar(
     value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
     if (value > 2)
     {
-        gfx_fill_rect_inset(dpi, { coords + ScreenCoordsXY{ 2, 1 }, coords + ScreenCoordsXY{ value + 1, 7 } }, colour, 0);
+        GfxFillRectInset(dpi, { coords + ScreenCoordsXY{ 2, 1 }, coords + ScreenCoordsXY{ value + 1, 7 } }, colour, 0);
     }
 }
 
@@ -4873,7 +4873,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Track / shop item preview
     const auto& trackPreviewWidget = window_ride_colour_widgets[WIDX_TRACK_PREVIEW];
     if (trackPreviewWidget.type != WindowWidgetType::Empty)
-        gfx_fill_rect(
+        GfxFillRect(
             dpi,
             { { w->windowPos + ScreenCoordsXY{ trackPreviewWidget.left + 1, trackPreviewWidget.top + 1 } },
               { w->windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
@@ -4943,12 +4943,12 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
     const auto& entrancePreviewWidget = w->widgets[WIDX_ENTRANCE_PREVIEW];
     if (entrancePreviewWidget.type != WindowWidgetType::Empty)
     {
-        if (clip_drawpixelinfo(
+        if (ClipDrawPixelInfo(
                 &clippedDpi, dpi,
                 w->windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
                 entrancePreviewWidget.width(), entrancePreviewWidget.height()))
         {
-            gfx_clear(&clippedDpi, PALETTE_INDEX_12);
+            GfxClear(&clippedDpi, PALETTE_INDEX_12);
 
             auto stationObj = ride->GetStationObject();
             if (stationObj != nullptr && stationObj->BaseImageId != ImageIndexUndefined)
@@ -4992,7 +4992,7 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     auto vehicleColour = ride_get_vehicle_colour(*ride, w->vehicleIndex);
 
     // Background colour
-    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, PALETTE_INDEX_12);
+    GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, PALETTE_INDEX_12);
 
     // ?
     auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
@@ -5273,7 +5273,7 @@ static void CancelScenerySelection()
         main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     tool_cancel();
 }
 
@@ -5305,7 +5305,7 @@ static void SetupScenerySelection(rct_window* w)
         w_main->viewport->flags |= (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 /**
@@ -5344,7 +5344,7 @@ static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* pat
     {
         track_repository_scan();
     }
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 };
 
 /**
@@ -5635,7 +5635,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
         widgetCoords.x = w->windowPos.x + 4;
         widgetCoords.y = w->windowPos.y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             dpi, { widgetCoords, { w->windowPos.x + 312, widgetCoords.y + 1 } }, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
     }
     else
@@ -5684,7 +5684,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
             screenCoords.y += 2 * LIST_ROW_HEIGHT;
 
             // Horizontal rule
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 303, -5 } }, w->colours[1],
                 INSET_RECT_FLAG_BORDER_INSET);
 
@@ -6120,7 +6120,7 @@ static void WindowRideGraphsPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    gfx_clear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
+    GfxClear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
     auto widget = &window_ride_graphs_widgets[WIDX_GRAPH];
     auto ride = get_ride(w->rideId);
@@ -6151,11 +6151,11 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         {
             auto coord1 = ScreenCoordsXY{ x, dpi->y };
             auto coord2 = ScreenCoordsXY{ x, dpi->y + dpi->height - 1 };
-            gfx_fill_rect(dpi, { coord1, coord2 }, lightColour);
-            gfx_fill_rect(dpi, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
-            gfx_fill_rect(dpi, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
-            gfx_fill_rect(dpi, { coord1 + ScreenCoordsXY{ 48, 0 }, coord2 + ScreenCoordsXY{ 48, 0 } }, darkColour);
-            gfx_fill_rect(dpi, { coord1 + ScreenCoordsXY{ 64, 0 }, coord2 + ScreenCoordsXY{ 64, 0 } }, darkColour);
+            GfxFillRect(dpi, { coord1, coord2 }, lightColour);
+            GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
+            GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
+            GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 48, 0 }, coord2 + ScreenCoordsXY{ 48, 0 } }, darkColour);
+            GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 64, 0 }, coord2 + ScreenCoordsXY{ 64, 0 } }, darkColour);
         }
         time += 5;
     }
@@ -6177,7 +6177,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     {
         // Minor / major line
         int32_t colour = yUnit == 0 ? lightColour : darkColour;
-        gfx_fill_rect(dpi, { { dpi->x, y }, { dpi->x + dpi->width - 1, y } }, colour);
+        GfxFillRect(dpi, { { dpi->x, y }, { dpi->x + dpi->width - 1, y } }, colour);
 
         int16_t scaled_yUnit = yUnit;
         // Scale modifier
@@ -6260,7 +6260,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         const bool previousMeasurement = x > measurement->current_item;
 
         // Draw the current line in grey.
-        gfx_fill_rect(
+        GfxFillRect(
             dpi, { { x, firstPoint }, { x, secondPoint } }, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
 
         // Draw red over extreme values (if supported by graph type).
@@ -6273,7 +6273,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             {
                 const auto redLineTop = ScreenCoordsXY{ x, std::max(firstPoint, intensityThresholdNegative) };
                 const auto redLineBottom = ScreenCoordsXY{ x, std::max(secondPoint, intensityThresholdNegative) };
-                gfx_fill_rect(dpi, { redLineTop, redLineBottom }, redLineColour);
+                GfxFillRect(dpi, { redLineTop, redLineBottom }, redLineColour);
             }
 
             // Line exceeds positive threshold (at top of graph).
@@ -6281,7 +6281,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             {
                 const auto redLineTop = ScreenCoordsXY{ x, std::min(firstPoint, intensityThresholdPositive) };
                 const auto redLineBottom = ScreenCoordsXY{ x, std::min(secondPoint, intensityThresholdPositive) };
-                gfx_fill_rect(dpi, { redLineTop, redLineBottom }, redLineColour);
+                GfxFillRect(dpi, { redLineTop, redLineBottom }, redLineColour);
             }
         }
     }

@@ -192,7 +192,7 @@ public:
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         auto assetPackManager = GetContext()->GetAssetPackManager();
@@ -240,12 +240,12 @@ private:
         auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
         if (isSelected)
         {
-            gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+            GfxFillRect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
         else if (isHighlighted)
         {
-            gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+            GfxFillRect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
         }
 
         DrawTextEllipsised(&dpi, { 16, y + 1 }, listWidth, stringId, ft);
@@ -256,7 +256,7 @@ private:
 
     void PaintCheckbox(rct_drawpixelinfo& dpi, const ScreenRect& rect, bool checked)
     {
-        gfx_fill_rect_inset(&dpi, rect, colours[1], INSET_RECT_F_E0);
+        GfxFillRectInset(&dpi, rect, colours[1], INSET_RECT_F_E0);
         if (checked)
         {
             auto checkmark = Formatter();

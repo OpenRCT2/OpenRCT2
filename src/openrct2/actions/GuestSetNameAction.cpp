@@ -94,7 +94,7 @@ GameActions::Result GuestSetNameAction::Execute() const
     // Easter egg functions are for guests only
     guest->HandleEasterEggName();
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
     ContextBroadcastIntent(&intent);

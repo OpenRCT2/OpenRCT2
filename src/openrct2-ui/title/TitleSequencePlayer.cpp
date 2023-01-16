@@ -384,7 +384,7 @@ namespace OpenRCT2::Title
             ContextBroadcastIntent(&intent);
             ScenerySetDefaultPlacementConfiguration();
             News::InitQueue();
-            load_palette();
+            LoadPalette();
             gScreenAge = 0;
             gGamePaused = false;
             gGameSpeed = 1;

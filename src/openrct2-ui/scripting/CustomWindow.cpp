@@ -553,7 +553,7 @@ namespace OpenRCT2::Ui::Windows
                 if (onDraw.is_function())
                 {
                     rct_drawpixelinfo widgetDpi;
-                    if (clip_drawpixelinfo(
+                    if (ClipDrawPixelInfo(
                             &widgetDpi, &dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
                             widget.height()))
                     {

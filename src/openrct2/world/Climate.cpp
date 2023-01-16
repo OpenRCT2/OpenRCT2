@@ -163,7 +163,7 @@ void ClimateUpdate()
                 {
                     gClimateCurrent.WeatherGloom = ClimateStepWeatherLevel(
                         gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
             }
             else
@@ -211,7 +211,7 @@ void ClimateForceWeather(WeatherType weather)
     ClimateUpdate();
 
     // In case of change in gloom level force a complete redraw
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void ClimateUpdateSound()

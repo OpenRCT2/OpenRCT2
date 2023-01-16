@@ -24,7 +24,7 @@
  * colour (ebp)
  * flags (si)
  */
-void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags)
+void GfxFillRectInset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags)
 {
     const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
     const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
@@ -45,32 +45,32 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {
-            gfx_filter_rect(dpi, rect, palette.base);
+            GfxFilterRect(dpi, rect, palette.base);
         }
         else if (flags & INSET_RECT_FLAG_BORDER_INSET)
         {
             // Draw outline of box
-            gfx_filter_rect(dpi, { leftTop, leftBottom }, palette.highlight);
-            gfx_filter_rect(dpi, { leftTop, rightTop }, palette.highlight);
-            gfx_filter_rect(dpi, { rightTop, rightBottom }, palette.shadow);
-            gfx_filter_rect(dpi, { leftBottom, rightBottom }, palette.shadow);
+            GfxFilterRect(dpi, { leftTop, leftBottom }, palette.highlight);
+            GfxFilterRect(dpi, { leftTop, rightTop }, palette.highlight);
+            GfxFilterRect(dpi, { rightTop, rightBottom }, palette.shadow);
+            GfxFilterRect(dpi, { leftBottom, rightBottom }, palette.shadow);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
-                gfx_filter_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, palette.base);
+                GfxFilterRect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, palette.base);
             }
         }
         else
         {
             // Draw outline of box
-            gfx_filter_rect(dpi, { leftTop, leftBottom }, palette.shadow);
-            gfx_filter_rect(dpi, { leftTop, rightTop }, palette.shadow);
-            gfx_filter_rect(dpi, { rightTop, rightBottom }, palette.highlight);
-            gfx_filter_rect(dpi, { leftBottom, rightBottom }, palette.highlight);
+            GfxFilterRect(dpi, { leftTop, leftBottom }, palette.shadow);
+            GfxFilterRect(dpi, { leftTop, rightTop }, palette.shadow);
+            GfxFilterRect(dpi, { rightTop, rightBottom }, palette.highlight);
+            GfxFilterRect(dpi, { leftBottom, rightBottom }, palette.highlight);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
-                gfx_filter_rect(
+                GfxFilterRect(
                     dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, { rightBottom - ScreenCoordsXY{ 1, 1 } } }, palette.base);
             }
         }
@@ -93,15 +93,15 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {
-            gfx_fill_rect(dpi, rect, fill);
+            GfxFillRect(dpi, rect, fill);
         }
         else if (flags & INSET_RECT_FLAG_BORDER_INSET)
         {
             // Draw outline of box
-            gfx_fill_rect(dpi, { leftTop, leftBottom }, shadow);
-            gfx_fill_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop }, shadow);
-            gfx_fill_rect(dpi, { rightTop + ScreenCoordsXY{ 0, 1 }, rightBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
-            gfx_fill_rect(dpi, { leftBottom + ScreenCoordsXY{ 1, 0 }, rightBottom }, hilight);
+            GfxFillRect(dpi, { leftTop, leftBottom }, shadow);
+            GfxFillRect(dpi, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop }, shadow);
+            GfxFillRect(dpi, { rightTop + ScreenCoordsXY{ 0, 1 }, rightBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
+            GfxFillRect(dpi, { leftBottom + ScreenCoordsXY{ 1, 0 }, rightBottom }, hilight);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
@@ -116,16 +116,16 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t
                         fill = ColourMapA[colour].lighter;
                     }
                 }
-                gfx_fill_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
+                GfxFillRect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
             }
         }
         else
         {
             // Draw outline of box
-            gfx_fill_rect(dpi, { leftTop, leftBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
-            gfx_fill_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop - ScreenCoordsXY{ 1, 0 } }, hilight);
-            gfx_fill_rect(dpi, { rightTop, rightBottom - ScreenCoordsXY{ 0, 1 } }, shadow);
-            gfx_fill_rect(dpi, { leftBottom, rightBottom }, shadow);
+            GfxFillRect(dpi, { leftTop, leftBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
+            GfxFillRect(dpi, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop - ScreenCoordsXY{ 1, 0 } }, hilight);
+            GfxFillRect(dpi, { rightTop, rightBottom - ScreenCoordsXY{ 0, 1 } }, shadow);
+            GfxFillRect(dpi, { leftBottom, rightBottom }, shadow);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
@@ -133,7 +133,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t
                 {
                     fill = ColourMapA[COLOUR_BLACK].light;
                 }
-                gfx_fill_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
+                GfxFillRect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
             }
         }
     }

@@ -84,7 +84,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
     ContextBroadcastIntent(&intent);
 
-    load_palette();
+    LoadPalette();
 
     CheatsReset();
     ClearRestrictedScenery();

@@ -156,7 +156,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
     }
 }
 
-void mask_scalar(
+void MaskScalar(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
@@ -628,7 +628,7 @@ void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs&
     }
     else if (!(args.SourceImage.flags & G1_FLAG_1))
     {
-        gfx_bmp_sprite_to_buffer(dpi, args);
+        GfxBmpSpriteToBuffer(dpi, args);
     }
 }
 
@@ -689,7 +689,7 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
     int32_t colourWrap = imgColour->width - width;
     int32_t dstWrap = ((dpi->width + dpi->pitch) - width);
 
-    mask_fn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
+    MaskFn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
 const rct_g1_element* gfx_get_g1_element(const ImageId imageId)

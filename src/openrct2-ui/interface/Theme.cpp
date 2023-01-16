@@ -569,7 +569,7 @@ namespace ThemeManager
         CurrentTheme = theme;
         CurrentThemePath.clear();
 
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     static void LoadTheme(const std::string& path)

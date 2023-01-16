@@ -69,7 +69,7 @@ GameActions::Result BannerSetNameAction::Execute() const
     ContextBroadcastIntent(&intent);
 
     scrolling_text_invalidate();
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     return GameActions::Result();
 }

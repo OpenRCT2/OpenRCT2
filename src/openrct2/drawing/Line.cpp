@@ -72,7 +72,7 @@ static void gfx_draw_line_on_buffer(rct_drawpixelinfo* dpi, char colour, const S
  * colour (ebp)
  */
 
-void gfx_draw_line_software(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
+void GfxDrawLineSoftware(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
 {
     int32_t x1 = line.GetX1();
     int32_t x2 = line.GetX2();

@@ -78,7 +78,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSprite(rct_drawpixeli
  *  rct2: 0x0067A690
  * @param imageId Only flags are used.
  */
-void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxBmpSpriteToBuffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
 {
     auto imageId = args.Image;
 

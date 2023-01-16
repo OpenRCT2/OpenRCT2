@@ -787,7 +787,7 @@ private:
             window_relocate_windows(_width, _height);
         }
 
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
 
         // Check if the window has been resized in windowed mode and update the config file accordingly
         int32_t nonWindowFlags =

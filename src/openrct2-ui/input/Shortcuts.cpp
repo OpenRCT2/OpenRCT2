@@ -181,7 +181,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
             }
         }
     }
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 static void ShortcutAdjustLand()
@@ -475,7 +475,7 @@ static void ShortcutScaleUp()
 {
     gConfigGeneral.WindowScale += 0.25f;
     ConfigSaveDefault();
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
 }
@@ -485,7 +485,7 @@ static void ShortcutScaleDown()
     gConfigGeneral.WindowScale -= 0.25f;
     gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
     ConfigSaveDefault();
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
 }
@@ -732,7 +732,7 @@ static void ShortcutToggleTransparentWater()
 
     gConfigGeneral.TransparentWater ^= 1;
     ConfigSaveDefault();
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 #pragma endregion

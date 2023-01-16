@@ -495,7 +495,7 @@ static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.wall = _wallTexture;
 
             MapGenGenerateBlank(&mapgenSettings);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case WIDX_MAP_SIZE_Y:
             _resizeDirection = ResizeDirection::Y;
@@ -789,7 +789,7 @@ static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.simplex_octaves = 6;
 
             MapGenGenerate(&mapgenSettings);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case WIDX_RANDOM_TERRAIN:
             _randomTerrain = !_randomTerrain;
@@ -873,7 +873,7 @@ static void WindowMapgenSimplexMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.simplex_octaves = _simplex_octaves;
 
             MapGenGenerate(&mapgenSettings);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
     }
 }
@@ -1166,7 +1166,7 @@ static void WindowMapgenHeightmapGenerateMap()
     mapgenSettings.simplex_low = _heightmapLow;
     mapgenSettings.simplex_high = _heightmapHigh;
     MapGenGenerateFromHeightmap(&mapgenSettings);
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* path)

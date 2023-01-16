@@ -226,7 +226,7 @@ GameActions::Result RideSetSettingAction::Execute() const
         case RideSetSetting::RideType:
             ride->type = _value;
             ride->UpdateRideTypeForAllPieces();
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
     }
 

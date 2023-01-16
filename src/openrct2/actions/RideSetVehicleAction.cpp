@@ -204,7 +204,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
     intent.putExtra(INTENT_EXTRA_RIDE_ID, _rideIndex.ToUnderlying());
     ContextBroadcastIntent(&intent);
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     return res;
 }
 

@@ -47,7 +47,7 @@ namespace Platform
 
             InitTicks();
             bitcount_init();
-            mask_init();
+            MaskInit();
         }
     }
 

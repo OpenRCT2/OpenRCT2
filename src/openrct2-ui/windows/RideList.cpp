@@ -526,7 +526,7 @@ public:
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colours[1]].mid_light);
 
         auto y = 0;
@@ -536,7 +536,7 @@ public:
             if (i == static_cast<size_t>(selected_list_item))
             {
                 // Background highlight
-                gfx_filter_rect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
                 format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
             }
 

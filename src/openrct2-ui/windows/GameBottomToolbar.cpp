@@ -355,18 +355,18 @@ static void WindowGameBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw panel grey backgrounds
     auto leftTop = w->windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
     auto rightBottom = w->windowPos + ScreenCoordsXY{ leftWidget.right, leftWidget.bottom };
-    gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+    GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
 
     leftTop = w->windowPos + ScreenCoordsXY{ rightWidget.left, rightWidget.top };
     rightBottom = w->windowPos + ScreenCoordsXY{ rightWidget.right, rightWidget.bottom };
-    gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+    GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
 
     if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
         leftTop = w->windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
         rightBottom = w->windowPos + ScreenCoordsXY{ middleWidget.right, middleWidget.bottom };
-        gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
     WindowDrawWidgets(*w, dpi);
@@ -393,7 +393,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
                           window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1 };
     // Draw green inset rectangle on panel
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = font_get_line_height(FontStyle::Medium);
@@ -463,13 +463,13 @@ static void WindowGameBottomToolbarDrawParkRating(
     int16_t bar_width;
 
     bar_width = (factor * 114) / 255;
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, w->colours[1], INSET_RECT_F_30);
     if (!(colour & BAR_BLINK) || game_is_paused() || (gCurrentRealTimeTicks & 8))
     {
         if (bar_width > 2)
         {
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
         }
     }
@@ -488,7 +488,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
                           window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1 };
     // Draw green inset rectangle on panel
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
 
     auto screenCoords = ScreenCoordsXY{ (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left
                                          + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
@@ -561,7 +561,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
     newsItem = News::GetItem(0);
 
     // Current news item
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi,
         { w->windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
           w->windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
@@ -588,7 +588,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
                 break;
 
             rct_drawpixelinfo cliped_dpi;
-            if (!clip_drawpixelinfo(&cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+            if (!ClipDrawPixelInfo(&cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
             {
                 break;
             }
@@ -656,7 +656,7 @@ static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo* dpi, rct_w
 {
     Widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi,
         { w->windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
           w->windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },

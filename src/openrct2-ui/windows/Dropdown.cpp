@@ -160,13 +160,13 @@ public:
                 if (colours[0] & COLOUR_FLAG_TRANSLUCENT)
                 {
                     translucent_window_palette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
-                    gfx_filter_rect(&dpi, { leftTop, rightBottom }, palette.highlight);
-                    gfx_filter_rect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
+                    GfxFilterRect(&dpi, { leftTop, rightBottom }, palette.highlight);
+                    GfxFilterRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                 }
                 else
                 {
-                    gfx_fill_rect(&dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
-                    gfx_fill_rect(
+                    GfxFillRect(&dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
+                    GfxFillRect(
                         &dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
                 }
             }
@@ -176,7 +176,7 @@ public:
                 {
                     // Darken the cell's background slightly when highlighted
                     const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                    gfx_filter_rect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
+                    GfxFilterRect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                 }
 
                 StringId item = gDropdownItems[i].Format;

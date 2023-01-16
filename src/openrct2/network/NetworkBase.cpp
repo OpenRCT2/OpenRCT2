@@ -209,7 +209,7 @@ void NetworkBase::Close()
         scriptEngine.RemoveNetworkPlugins();
 #    endif
 
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
 
         _requireClose = false;
     }

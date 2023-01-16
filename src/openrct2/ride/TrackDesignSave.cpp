@@ -118,7 +118,7 @@ void track_design_save_select_nearby_scenery(RideId rideIndex)
         }
     } while (TileElementIteratorNext(&it));
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 /**
@@ -128,7 +128,7 @@ void track_design_save_select_nearby_scenery(RideId rideIndex)
 void track_design_save_reset_scenery()
 {
     track_design_save_init();
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 bool track_design_save_contains_tile_element(const TileElement* tileElement)

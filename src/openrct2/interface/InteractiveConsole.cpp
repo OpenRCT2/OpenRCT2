@@ -1067,7 +1067,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
             gConfigGeneral.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
             ConfigSaveDefault();
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             ContextTriggerResize();
             ContextUpdateCursorScale();
             console.Execute("get window_scale");
@@ -1184,7 +1184,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             console.WriteLineError("Invalid variable.");
         }
 
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
     else
     {
@@ -1264,7 +1264,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         ContextBroadcastIntent(&intent);
 
         gWindowUpdateTicks = 0;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
         console.WriteLine("Object file loaded.");
     }
 
@@ -1405,7 +1405,7 @@ static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused
         }
     } while (TileElementIteratorNext(&it));
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     console.WriteFormatLine("Park fences have been removed.");
     return 0;
