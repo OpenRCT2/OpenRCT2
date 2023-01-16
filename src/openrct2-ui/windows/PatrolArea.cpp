@@ -247,7 +247,7 @@ private:
             if (!ToolSet(*this, 0, Tool::WalkDown))
             {
                 ShowGridlines();
-                input_set_flag(INPUT_FLAG_6, true);
+                InputSetFlag(INPUT_FLAG_6, true);
                 SetPatrolAreaToRender(_staffId);
                 GfxInvalidateScreen();
             }
@@ -264,7 +264,7 @@ private:
 
     bool PatrolAreaToolIsActive()
     {
-        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
         if (gCurrentToolWidget.window_classification != WindowClass::PatrolArea)
             return false;

@@ -38,10 +38,10 @@ std::vector<uint8_t> _objectSelectionFlags;
 int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
 
-static void setup_in_use_selection_flags();
-static void setup_track_designer_objects();
-static void setup_track_manager_objects();
-static void window_editor_object_selection_select_default_objects();
+static void SetupInUseSelectionFlags();
+static void SetupTrackDesignerObjects();
+static void SetupTrackManagerObjects();
+static void WindowEditorObjectSelectionSelectDefaultObjects();
 static void SelectDesignerObjects();
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
 
@@ -53,7 +53,7 @@ static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
 static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, StringId message)
 {
     if (!isMasterObject)
-        reset_selected_object_count_and_size();
+        ResetSelectedObjectCountAndSize();
 
     return { false, message };
 }
@@ -62,7 +62,7 @@ static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, Str
  *
  *  rct2: 0x006ABCD1
  */
-static void setup_track_manager_objects()
+static void SetupTrackManagerObjects()
 {
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
@@ -90,7 +90,7 @@ static void setup_track_manager_objects()
  *
  *  rct2: 0x006ABC1E
  */
-static void setup_track_designer_objects()
+static void SetupTrackDesignerObjects()
 {
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
@@ -122,7 +122,7 @@ static void setup_track_designer_objects()
  *
  *  rct2: 0x006AA82B
  */
-void setup_in_use_selection_flags()
+void SetupInUseSelectionFlags()
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
 
@@ -298,34 +298,34 @@ void sub_6AB211()
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
-        setup_track_designer_objects();
+        SetupTrackDesignerObjects();
     }
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        setup_track_manager_objects();
+        SetupTrackManagerObjects();
     }
 
-    setup_in_use_selection_flags();
-    reset_selected_object_count_and_size();
+    SetupInUseSelectionFlags();
+    ResetSelectedObjectCountAndSize();
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
         // To prevent it breaking in scenario mode.
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         {
-            window_editor_object_selection_select_default_objects();
+            WindowEditorObjectSelectionSelectDefaultObjects();
         }
     }
 
-    reset_selected_object_count_and_size();
+    ResetSelectedObjectCountAndSize();
 }
 
 /**
  *
  *  rct2: 0x006AB316
  */
-void editor_object_flags_free()
+void EditorObjectFlagsFree()
 {
     _objectSelectionFlags.clear();
     _objectSelectionFlags.shrink_to_fit();
@@ -335,7 +335,7 @@ void editor_object_flags_free()
  *
  *  rct2: 0x00685791
  */
-static void remove_selected_objects_from_research(const ObjectEntryDescriptor& descriptor)
+static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descriptor)
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objManager.GetLoadedObject(descriptor);
@@ -376,7 +376,7 @@ static void remove_selected_objects_from_research(const ObjectEntryDescriptor& d
  *
  *  rct2: 0x006ABB66
  */
-void unload_unselected_objects()
+void UnloadUnselectedObjects()
 {
     auto numItems = static_cast<int32_t>(object_repository_get_items_count());
     const auto* items = object_repository_get_items();
@@ -389,7 +389,7 @@ void unload_unselected_objects()
             auto descriptor = ObjectEntryDescriptor(items[i]);
             if (!IsIntransientObjectType(items[i].Type))
             {
-                remove_selected_objects_from_research(descriptor);
+                RemoveSelectedObjectsFromResearch(descriptor);
                 objectsToUnload.push_back(descriptor);
             }
         }
@@ -401,13 +401,13 @@ void unload_unselected_objects()
  *
  *  rct2: 0x006AA805
  */
-static void window_editor_object_selection_select_default_objects()
+static void WindowEditorObjectSelectionSelectDefaultObjects()
 {
     if (_numSelectedObjectsForType[0] == 0)
     {
         for (auto defaultSelectedObject : DefaultSelectedObjects)
         {
-            window_editor_object_selection_select_object(
+            WindowEditorObjectSelectionSelectObject(
                 0,
                 INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
                     | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
@@ -422,7 +422,7 @@ static void SelectDesignerObjects()
     {
         for (auto designerSelectedObject : DesignerSelectedObjects)
         {
-            window_editor_object_selection_select_object(
+            WindowEditorObjectSelectionSelectObject(
                 0,
                 INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
                     | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
@@ -460,7 +460,7 @@ static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
  *
  *  rct2: 0x006AA770
  */
-void reset_selected_object_count_and_size()
+void ResetSelectedObjectCountAndSize()
 {
     for (auto& objectType : _numSelectedObjectsForType)
     {
@@ -479,7 +479,7 @@ void reset_selected_object_count_and_size()
     }
 }
 
-void finish_object_selection()
+void FinishObjectSelection()
 {
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
@@ -501,7 +501,7 @@ void finish_object_selection()
  *
  *  rct2: 0x006AB54F
  */
-ResultWithMessage window_editor_object_selection_select_object(
+ResultWithMessage WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item)
 {
     if (item == nullptr)
@@ -544,7 +544,7 @@ ResultWithMessage window_editor_object_selection_select_object(
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
-                window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry);
+                WindowEditorObjectSelectionSelectObject(++isMasterObject, flags, sgEntry);
             }
         }
 
@@ -578,7 +578,7 @@ ResultWithMessage window_editor_object_selection_select_object(
     {
         for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
         {
-            const auto selectionResult = window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry);
+            const auto selectionResult = WindowEditorObjectSelectionSelectObject(++isMasterObject, flags, sgEntry);
             if (!selectionResult.Successful)
             {
                 _gSceneryGroupPartialSelectError = selectionResult.Message;
@@ -611,15 +611,15 @@ ResultWithMessage window_editor_object_selection_select_object(
     return { true };
 }
 
-ResultWithMessage window_editor_object_selection_select_object(
+ResultWithMessage WindowEditorObjectSelectionSelectObject(
     uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& descriptor)
 {
     auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
     const auto* item = objectRepository.FindObject(descriptor);
-    return window_editor_object_selection_select_object(isMasterObject, flags, item);
+    return WindowEditorObjectSelectionSelectObject(isMasterObject, flags, item);
 }
 
-bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)
+bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType)
 {
     auto numObjects = std::min(object_repository_get_items_count(), _objectSelectionFlags.size());
     const ObjectRepositoryItem* items = object_repository_get_items();
@@ -635,7 +635,7 @@ bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)
     return false;
 }
 
-bool editor_check_object_group_at_least_one_surface_selected(bool queue)
+bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue)
 {
     auto numObjects = std::min(object_repository_get_items_count(), _objectSelectionFlags.size());
     const auto* items = object_repository_get_items();
@@ -652,10 +652,10 @@ bool editor_check_object_group_at_least_one_surface_selected(bool queue)
     return false;
 }
 
-int32_t editor_remove_unused_objects()
+int32_t EditorRemoveUnusedObjects()
 {
     sub_6AB211();
-    setup_in_use_selection_flags();
+    SetupInUseSelectionFlags();
 
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
@@ -682,8 +682,8 @@ int32_t editor_remove_unused_objects()
             }
         }
     }
-    unload_unselected_objects();
-    editor_object_flags_free();
+    UnloadUnselectedObjects();
+    EditorObjectFlagsFree();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
     ContextBroadcastIntent(&intent);

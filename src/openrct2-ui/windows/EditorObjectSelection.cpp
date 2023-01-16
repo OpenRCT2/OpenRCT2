@@ -265,7 +265,7 @@ public:
         InitWidgets();
 
         sub_6AB211();
-        reset_selected_object_count_and_size();
+        ResetSelectedObjectCountAndSize();
 
         widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
@@ -293,9 +293,9 @@ public:
      */
     void OnClose() override
     {
-        unload_unselected_objects();
+        UnloadUnselectedObjects();
         EditorLoadSelectedObjects();
-        editor_object_flags_free();
+        EditorObjectFlagsFree();
 
         if (_loadedObject != nullptr)
             _loadedObject->Unload();
@@ -356,12 +356,12 @@ public:
                 WindowClose(*this);
                 if (gScreenFlags & SCREEN_FLAGS_EDITOR)
                 {
-                    finish_object_selection();
+                    FinishObjectSelection();
                 }
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                 {
-                    game_notify_map_change();
-                    game_unload_scripts();
+                    GameNotifyMapChange();
+                    GameUnloadScripts();
                     title_load();
                 }
                 break;
@@ -594,7 +594,7 @@ public:
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            const auto objectSelectResult = window_editor_object_selection_select_object(
+            const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(
                 0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem);
             if (!objectSelectResult.Successful)
                 return;
@@ -614,7 +614,7 @@ public:
             inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
         _gSceneryGroupPartialSelectError = std::nullopt;
-        const auto objectSelectResult = window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem);
+        const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(0, inputFlags, listItem->repositoryItem);
         if (!objectSelectResult.Successful)
         {
             StringId error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT

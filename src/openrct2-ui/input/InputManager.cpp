@@ -122,7 +122,7 @@ void InputManager::HandleViewScrolling()
     // Mouse edge scrolling
     if (gConfigGeneral.EdgeScrolling)
     {
-        if (input_get_state() != InputState::Normal)
+        if (InputGetState() != InputState::Normal)
             return;
 
         if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))

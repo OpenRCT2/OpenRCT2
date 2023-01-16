@@ -71,8 +71,8 @@ void WindowMapTooltipUpdateVisibility()
 
     // Check for cursor movement
     _cursorHoldDuration++;
-    if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (input_test_flag(INPUT_FLAG_5))
-        || input_get_state() == InputState::ViewportRight)
+    if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (InputTestFlag(INPUT_FLAG_5))
+        || InputGetState() == InputState::ViewportRight)
         _cursorHoldDuration = 0;
 
     _lastCursor = cursor;

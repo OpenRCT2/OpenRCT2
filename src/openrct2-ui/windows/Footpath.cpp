@@ -173,7 +173,7 @@ public:
         ToolCancel();
         _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
         ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
-        input_set_flag(INPUT_FLAG_6, true);
+        InputSetFlag(INPUT_FLAG_6, true);
         _footpathErrorOccured = false;
         WindowFootpathSetEnabledAndPressedWidgets();
     }
@@ -204,7 +204,7 @@ public:
         // Check tool
         if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND)
         {
-            if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             {
                 Close();
             }
@@ -219,7 +219,7 @@ public:
         }
         else if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL)
         {
-            if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             {
                 Close();
             }
@@ -297,7 +297,7 @@ public:
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                 _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
                 ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
-                input_set_flag(INPUT_FLAG_6, true);
+                InputSetFlag(INPUT_FLAG_6, true);
                 _footpathErrorOccured = false;
                 WindowFootpathSetEnabledAndPressedWidgets();
                 break;
@@ -314,7 +314,7 @@ public:
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                 _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
                 ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::Crosshair);
-                input_set_flag(INPUT_FLAG_6, true);
+                InputSetFlag(INPUT_FLAG_6, true);
                 _footpathErrorOccured = false;
                 WindowFootpathSetEnabledAndPressedWidgets();
                 break;
@@ -1381,7 +1381,7 @@ public:
     void KeyboardShortcutDemolishCurrent()
     {
         if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
-            || (!gCheatsBuildInPauseMode && game_is_paused()))
+            || (!gCheatsBuildInPauseMode && GameIsPaused()))
         {
             return;
         }

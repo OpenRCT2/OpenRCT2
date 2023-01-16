@@ -191,7 +191,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
         {
             // Peep, looking at scenery
-            if (!(gCurrentTicks & 0x3FF) && game_is_not_paused())
+            if (!(gCurrentTicks & 0x3FF) && GameIsNotPaused())
             {
                 int32_t direction = tileElement->GetDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
@@ -330,7 +330,7 @@ static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
         {
             MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
-            if (game_is_paused())
+            if (GameIsPaused())
             {
                 return false;
             }
@@ -497,7 +497,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
         if (wallEntry == nullptr || !(wallEntry->flags & WALL_SCENERY_IS_DOOR))
             continue;
 
-        if (game_is_paused())
+        if (GameIsPaused())
         {
             return false;
         }

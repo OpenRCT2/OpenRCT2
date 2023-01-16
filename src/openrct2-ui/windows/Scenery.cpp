@@ -354,7 +354,7 @@ public:
                     _hoverCounter++;
                     if (_hoverCounter < 8)
                     {
-                        if (input_get_state() != InputState::ScrollLeft)
+                        if (InputGetState() != InputState::ScrollLeft)
                         {
                             min_height = WINDOW_SCENERY_MIN_HEIGHT;
                             max_height = WINDOW_SCENERY_MIN_HEIGHT;
@@ -379,7 +379,7 @@ public:
         else
         {
             _hoverCounter = 0;
-            if (input_get_state() != InputState::ScrollLeft)
+            if (InputGetState() != InputState::ScrollLeft)
             {
                 min_height = WINDOW_SCENERY_MIN_HEIGHT;
                 max_height = WINDOW_SCENERY_MIN_HEIGHT;

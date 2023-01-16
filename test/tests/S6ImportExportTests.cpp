@@ -63,7 +63,7 @@ static void GameInit(bool retainSpatialIndices)
     if (!retainSpatialIndices)
         ResetEntitySpatialIndices();
 
-    reset_all_sprite_quadrant_placements();
+    ResetAllSpriteQuadrantPlacements();
     ScenerySetDefaultPlacementConfiguration();
     LoadPalette();
     EntityTweener::Get().Reset();

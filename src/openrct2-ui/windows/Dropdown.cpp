@@ -132,7 +132,7 @@ public:
         ResetDropdownFlags();
         gDropdownIsColour = false;
         gDropdownDefaultIndex = -1;
-        input_set_state(InputState::DropdownActive);
+        InputSetState(InputState::DropdownActive);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -376,9 +376,9 @@ void WindowDropdownShowTextCustomWidth(
     const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items,
     int32_t width)
 {
-    input_set_flag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & Dropdown::Flag::StayOpen)
-        input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
+        InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     WindowDropdownClose();
 
@@ -408,9 +408,9 @@ void WindowDropdownShowImage(
     int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
     int32_t itemHeight, int32_t numColumns)
 {
-    input_set_flag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & Dropdown::Flag::StayOpen)
-        input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
+        InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     // Close existing dropdown
     WindowDropdownClose();

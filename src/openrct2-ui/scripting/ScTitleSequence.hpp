@@ -267,7 +267,7 @@ namespace OpenRCT2::Scripting
                         if (isScenario)
                             scenario_begin();
                         else
-                            game_load_init();
+                            GameLoadInit();
                         gLoadKeepWindowsOpen = old;
                     }
                     catch (const std::exception&)

@@ -57,10 +57,10 @@ static Widget window_title_menu_widgets[] = {
 
 static void WindowTitleMenuScenarioselectCallback(const utf8* path)
 {
-    game_notify_map_change();
+    GameNotifyMapChange();
     OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);
-    game_load_scripts();
-    game_notify_map_changed();
+    GameLoadScripts();
+    GameNotifyMapChanged();
 }
 
 static void InvokeCustomToolboxMenuItem(size_t index)

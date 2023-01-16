@@ -327,7 +327,7 @@ static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& viewport, rct_drawpixelinfo& dpi)
 {
     // Ensure sprites appear regardless of rotation
-    reset_all_sprite_quadrant_placements();
+    ResetAllSpriteQuadrantPlacements();
 
     std::unique_ptr<X8DrawingEngine> tempDrawingEngine;
     if (drawingEngine == nullptr)

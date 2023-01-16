@@ -388,7 +388,7 @@ private:
 
     bool IsActive()
     {
-        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
         if (gCurrentToolWidget.window_classification != WindowClass::ViewClipping)
             return false;

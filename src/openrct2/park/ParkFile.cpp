@@ -2426,7 +2426,7 @@ public:
     {
         _parkFile->Import();
         research_determine_first_of_type();
-        game_fix_save_vars();
+        GameFixSaveVars();
     }
 
     bool GetDetails(scenario_index_entry* dst) override

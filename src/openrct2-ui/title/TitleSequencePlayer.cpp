@@ -132,7 +132,7 @@ namespace OpenRCT2::Title
                         auto parkHandle = TitleSequenceGetParkHandle(*_sequence, saveIndex);
                         if (parkHandle != nullptr)
                         {
-                            game_notify_map_change();
+                            GameNotifyMapChange();
                             loadSuccess = LoadParkFromStream(parkHandle->Stream.get(), parkHandle->HintPath);
                         }
                         if (!loadSuccess)
@@ -146,7 +146,7 @@ namespace OpenRCT2::Title
                             throw std::out_of_range("Failed to load park; index out of range.");
                         }
 
-                        game_notify_map_changed();
+                        GameNotifyMapChanged();
                     }
                     else if (std::holds_alternative<LoadScenarioCommand>(currentCommand))
                     {
@@ -155,7 +155,7 @@ namespace OpenRCT2::Title
                         auto scenario = GetScenarioRepository()->GetByInternalName(scenarioName);
                         if (scenario != nullptr)
                         {
-                            game_notify_map_change();
+                            GameNotifyMapChange();
                             loadSuccess = LoadParkFromFile(scenario->path);
                         }
 
@@ -165,7 +165,7 @@ namespace OpenRCT2::Title
                             throw std::domain_error(message);
                         }
 
-                        game_notify_map_changed();
+                        GameNotifyMapChanged();
                     }
 
                     IncrementPosition();
@@ -379,7 +379,7 @@ namespace OpenRCT2::Title
             auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
             windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
             ResetEntitySpatialIndices();
-            reset_all_sprite_quadrant_placements();
+            ResetAllSpriteQuadrantPlacements();
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
             ScenerySetDefaultPlacementConfiguration();

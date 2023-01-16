@@ -42,7 +42,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     }
 
     const auto sourcePath = Path::GetAbsolute(rawSourcePath);
-    auto sourceFileType = get_file_extension_type(sourcePath.c_str());
+    auto sourceFileType = GetFileExtensionType(sourcePath.c_str());
 
     // Get the destination path
     const utf8* rawDestinationPath;
@@ -53,7 +53,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     }
 
     const auto destinationPath = Path::GetAbsolute(rawDestinationPath);
-    auto destinationFileType = get_file_extension_type(destinationPath.c_str());
+    auto destinationFileType = GetFileExtensionType(destinationPath.c_str());
 
     // Validate target type
     if (destinationFileType != FileExtension::PARK)

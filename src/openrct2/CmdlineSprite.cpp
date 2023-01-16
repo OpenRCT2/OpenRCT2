@@ -263,7 +263,7 @@ static std::string PopStr(std::ostringstream& oss)
     return str;
 }
 
-int32_t cmdline_for_sprite(const char** argv, int32_t argc)
+int32_t CmdLineForSprite(const char** argv, int32_t argc)
 {
     gOpenRCT2Headless = true;
     if (argc == 0)

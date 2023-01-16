@@ -390,12 +390,12 @@ private:
             _pausedBeforeOverlay = gGamePaused & GAME_PAUSED_NORMAL;
             if (!_pausedBeforeOverlay)
             {
-                pause_toggle();
+                PauseToggle();
             }
         }
         else if (_overlayActive && !newOverlayActive && !_pausedBeforeOverlay)
         {
-            pause_toggle();
+            PauseToggle();
         }
 
         _overlayActive = newOverlayActive;

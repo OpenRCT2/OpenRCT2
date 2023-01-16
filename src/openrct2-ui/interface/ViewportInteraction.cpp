@@ -199,7 +199,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 }
                 case EntityType::Balloon:
                 {
-                    if (game_is_not_paused())
+                    if (GameIsNotPaused())
                     {
                         auto balloonPress = BalloonPressAction(entity->sprite_index);
                         GameActions::Execute(&balloonPress);
@@ -208,7 +208,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 break;
                 case EntityType::Duck:
                 {
-                    if (game_is_not_paused())
+                    if (GameIsNotPaused())
                     {
                         auto duck = entity->As<Duck>();
                         if (duck != nullptr)
@@ -444,7 +444,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             break;
     }
 
-    if (!(input_test_flag(INPUT_FLAG_6)) || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_6)) || !(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
     {
         if (WindowFindByClass(WindowClass::RideConstruction) == nullptr && WindowFindByClass(WindowClass::Footpath) == nullptr)
         {

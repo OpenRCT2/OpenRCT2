@@ -194,7 +194,7 @@ static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* 
     return success;
 }
 
-FileExtension get_file_extension_type(u8string_view path)
+FileExtension GetFileExtensionType(u8string_view path)
 {
     auto extension = Path::GetExtension(path);
     if (String::Equals(extension, ".dat", true) || String::Equals(extension, ".pob", true))

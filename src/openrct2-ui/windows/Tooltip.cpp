@@ -65,12 +65,12 @@ public:
     void OnOpen() override
     {
         widgets = window_tooltip_widgets;
-        reset_tooltip_not_shown();
+        ResetTooltipNotShown();
     }
 
     void OnUpdate() override
     {
-        reset_tooltip_not_shown();
+        ResetTooltipNotShown();
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -128,8 +128,8 @@ void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
     gTooltipCursor = screenCoords;
     gTooltipTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
-    input_set_state(InputState::Normal);
-    input_set_flag(INPUT_FLAG_4, false);
+    InputSetState(InputState::Normal);
+    InputSetFlag(INPUT_FLAG_4, false);
 }
 
 void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)

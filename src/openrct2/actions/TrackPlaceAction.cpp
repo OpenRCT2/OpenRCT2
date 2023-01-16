@@ -120,7 +120,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if (!(GetActionFlags() & GameActions::Flags::AllowWhilePaused))
     {
-        if (game_is_paused() && !gCheatsBuildInPauseMode)
+        if (GameIsPaused() && !gCheatsBuildInPauseMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,

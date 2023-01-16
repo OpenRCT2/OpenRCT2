@@ -912,7 +912,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     }
 
     RideConstructionInvalidateCurrentTrack();
-    if (_rideConstructionState != RideConstructionState::EntranceExit || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+    if (_rideConstructionState != RideConstructionState::EntranceExit || !(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         || gCurrentToolWidget.window_classification != WindowClass::RideConstruction)
     {
         // Replace entrance / exit
@@ -923,7 +923,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         gRideEntranceExitPlaceType = entranceType;
         gRideEntranceExitPlaceRideIndex = rideIndex;
         gRideEntranceExitPlaceStationIndex = stationIndex;
-        input_set_flag(INPUT_FLAG_6, true);
+        InputSetFlag(INPUT_FLAG_6, true);
         if (_rideConstructionState != RideConstructionState::EntranceExit)
         {
             gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
@@ -1109,7 +1109,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     w = ride_create_or_find_construction_window(ride.id);
 
     ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
-    input_set_flag(INPUT_FLAG_6, true);
+    InputSetFlag(INPUT_FLAG_6, true);
 
     _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
     _currentTrackSlopeEnd = 0;

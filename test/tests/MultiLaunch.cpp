@@ -42,7 +42,7 @@ TEST(MultiLaunchTest, all)
         ASSERT_TRUE(initialised);
 
         GetContext()->LoadParkFromFile(path);
-        game_load_init();
+        GameLoadInit();
 
         // Check ride count to check load was successful
         ASSERT_EQ(RideGetCount(), 134);

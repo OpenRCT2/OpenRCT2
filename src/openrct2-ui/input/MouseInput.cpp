@@ -375,7 +375,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                         break;
                     }
 
-                    if (!input_test_flag(INPUT_FLAG_4))
+                    if (!InputTestFlag(INPUT_FLAG_4))
                         break;
 
                     if (w->classification != _dragWidget.window_classification || w->number != _dragWidget.window_number
@@ -1044,7 +1044,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, W
                 w = WindowFindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                 if (w != nullptr)
                 {
-                    input_set_flag(INPUT_FLAG_4, true);
+                    InputSetFlag(INPUT_FLAG_4, true);
                     WindowEventToolDownCall(w, gCurrentToolWidget.widget_index, screenCoords);
                 }
             }
@@ -1190,7 +1190,7 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
 
         if (w == nullptr)
             ToolCancel();
-        else if (input_get_state() != InputState::ViewportRight)
+        else if (InputGetState() != InputState::ViewportRight)
             WindowEventToolUpdateCall(w, gCurrentToolWidget.widget_index, screenCoords);
     }
 }
@@ -1488,7 +1488,7 @@ static void InputUpdateTooltip(rct_window* w, WidgetIndex widgetIndex, const Scr
     }
     else
     {
-        reset_tooltip_not_shown();
+        ResetTooltipNotShown();
 
         if (w == nullptr || gTooltipWidget.window_classification != w->classification
             || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex

@@ -473,7 +473,7 @@ namespace OpenRCT2
                 LightFXInit();
             }
 
-            input_reset_place_obj_modifier();
+            InputResetPlaceObjModifier();
             ViewportInitAll();
 
             _gameState = std::make_unique<GameState>();
@@ -645,13 +645,13 @@ namespace OpenRCT2
                 // so reload the title screen if that happens.
                 loadTitleScreenFirstOnFail = true;
 
-                game_unload_scripts();
+                GameUnloadScripts();
                 _objectManager->LoadObjects(result.RequiredObjects);
                 parkImporter->Import();
                 gScenarioSavePath = path;
                 gCurrentLoadedPath = path;
                 gFirstTimeSaving = true;
-                game_fix_save_vars();
+                GameFixSaveVars();
                 MapAnimationAutoCreate();
                 EntityTweener::Get().Reset();
                 gScreenAge = 0;
@@ -668,7 +668,7 @@ namespace OpenRCT2
                         _network.Close();
                     }
 #endif
-                    game_load_init();
+                    GameLoadInit();
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_SERVER)
                     {
@@ -703,7 +703,7 @@ namespace OpenRCT2
 #ifdef USE_BREAKPAD
                 if (_network.GetMode() == NETWORK_MODE_NONE)
                 {
-                    start_silent_record();
+                    StartSilentRecord();
                 }
 #endif
                 if (result.SemiCompatibleVersion)
@@ -865,7 +865,7 @@ namespace OpenRCT2
             if (!_versionCheckFuture.valid())
             {
                 _versionCheckFuture = std::async(std::launch::async, [this] {
-                    _newVersionInfo = get_latest_version();
+                    _newVersionInfo = GetLatestVersion();
                     if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
                     {
                         _hasNewVersionInfo = true;
@@ -969,8 +969,8 @@ namespace OpenRCT2
                     else
 #endif // DISABLE_NETWORK
                     {
-                        game_load_scripts();
-                        game_notify_map_changed();
+                        GameLoadScripts();
+                        GameNotifyMapChanged();
                     }
                     break;
                 }
@@ -1178,7 +1178,7 @@ namespace OpenRCT2
             // this to be 40Hz (25 ms). Refactor this once the UI is decoupled.
             gCurrentDeltaTime = static_cast<uint32_t>(GAME_UPDATE_TIME_MS * 1000.0f);
 
-            if (game_is_not_paused())
+            if (GameIsNotPaused())
             {
                 gPaletteEffectFrame += gCurrentDeltaTime;
             }
@@ -1187,7 +1187,7 @@ namespace OpenRCT2
 
             if (gIntroState != IntroState::None)
             {
-                intro_update();
+                IntroUpdate();
             }
             else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
             {
@@ -1377,12 +1377,12 @@ bool ContextLoadParkFromStream(void* stream)
     return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
 }
 
-void openrct2_write_full_version_info(utf8* buffer, size_t bufferSize)
+void OpenRCT2WriteFullVersionInfo(utf8* buffer, size_t bufferSize)
 {
     String::Set(buffer, bufferSize, gVersionInfoFull);
 }
 
-void openrct2_finish()
+void OpenRCT2Finish()
 {
     GetContext()->Finish();
 }

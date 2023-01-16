@@ -482,7 +482,7 @@ static u8string OpenSystemFileBrowser(bool isSave)
     {
         // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom
         // extension, meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
-        if (isSave && get_file_extension_type(outPath) != fileType)
+        if (isSave && GetFileExtensionType(outPath) != fileType)
             outPath = Path::WithExtension(outPath, extension);
     }
 

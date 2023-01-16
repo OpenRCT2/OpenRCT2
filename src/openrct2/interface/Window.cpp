@@ -962,7 +962,7 @@ void WindowRotateCamera(rct_window& w, int32_t direction)
     w.Invalidate();
 
     call_event_viewport_rotate_on_all_windows();
-    reset_all_sprite_quadrant_placements();
+    ResetAllSpriteQuadrantPlacements();
 }
 
 void WindowViewportGetMapCoordsByCursor(
@@ -1362,7 +1362,7 @@ void WindowSetResize(rct_window& w, int32_t minWidth, int32_t minHeight, int32_t
  */
 bool ToolSet(const rct_window& w, WidgetIndex widgetIndex, Tool tool)
 {
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+    if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
     {
         if (w.classification == gCurrentToolWidget.window_classification && w.number == gCurrentToolWidget.window_number
             && widgetIndex == gCurrentToolWidget.widget_index)
@@ -1374,9 +1374,9 @@ bool ToolSet(const rct_window& w, WidgetIndex widgetIndex, Tool tool)
         ToolCancel();
     }
 
-    input_set_flag(INPUT_FLAG_TOOL_ACTIVE, true);
-    input_set_flag(INPUT_FLAG_4, false);
-    input_set_flag(INPUT_FLAG_6, false);
+    InputSetFlag(INPUT_FLAG_TOOL_ACTIVE, true);
+    InputSetFlag(INPUT_FLAG_4, false);
+    InputSetFlag(INPUT_FLAG_6, false);
     gCurrentToolId = tool;
     gCurrentToolWidget.window_classification = w.classification;
     gCurrentToolWidget.window_number = w.number;
@@ -1390,9 +1390,9 @@ bool ToolSet(const rct_window& w, WidgetIndex widgetIndex, Tool tool)
  */
 void ToolCancel()
 {
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+    if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
     {
-        input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
+        InputSetFlag(INPUT_FLAG_TOOL_ACTIVE, false);
 
         MapInvalidateSelectionRect();
         MapInvalidateMapSelectionTiles();

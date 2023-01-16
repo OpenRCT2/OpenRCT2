@@ -3970,7 +3970,7 @@ ResultWithMessage Ride::Open(bool isApplying)
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
     if (WindowClass::RideConstruction == gCurrentToolWidget.window_classification
-        && id.ToUnderlying() == gCurrentToolWidget.window_number && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        && id.ToUnderlying() == gCurrentToolWidget.window_number && (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
     {
         WindowCloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
     }
