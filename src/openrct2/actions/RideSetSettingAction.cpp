@@ -64,7 +64,7 @@ GameActions::Result RideSetSettingAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
             }
 
-            if (!ride_is_mode_valid(*ride) && !gCheatsShowAllOperatingModes)
+            if (!RideIsModeValid(*ride) && !gCheatsShowAllOperatingModes)
             {
                 log_warning("Invalid ride mode: %u", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
@@ -87,7 +87,7 @@ GameActions::Result RideSetSettingAction::Query() const
             }
             break;
         case RideSetSetting::Operation:
-            if (!ride_is_valid_operation_option(*ride))
+            if (!RideIsValidOperationOption(*ride))
             {
                 log_warning("Invalid operation option value: %u", _value);
                 return GameActions::Result(
@@ -115,7 +115,7 @@ GameActions::Result RideSetSettingAction::Query() const
             break;
         }
         case RideSetSetting::LiftHillSpeed:
-            if (!ride_is_valid_lift_hill_speed(*ride))
+            if (!RideIsValidLiftHillSpeed(*ride))
             {
                 log_warning("Invalid lift hill speed: %u", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
@@ -129,7 +129,7 @@ GameActions::Result RideSetSettingAction::Query() const
                     STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL);
             }
 
-            if (!ride_is_valid_num_circuits())
+            if (!RideIsValidNumCircuits())
             {
                 log_warning("Invalid number of circuits: %u", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
@@ -240,26 +240,26 @@ GameActions::Result RideSetSettingAction::Execute() const
     return res;
 }
 
-bool RideSetSettingAction::ride_is_mode_valid(const Ride& ride) const
+bool RideSetSettingAction::RideIsModeValid(const Ride& ride) const
 {
     return ride.GetRideTypeDescriptor().RideModes & (1uLL << _value);
 }
 
-bool RideSetSettingAction::ride_is_valid_lift_hill_speed(const Ride& ride) const
+bool RideSetSettingAction::RideIsValidLiftHillSpeed(const Ride& ride) const
 {
     int32_t minSpeed = gCheatsUnlockOperatingLimits ? 0 : ride.GetRideTypeDescriptor().LiftData.minimum_speed;
     int32_t maxSpeed = gCheatsUnlockOperatingLimits ? 255 : ride.GetRideTypeDescriptor().LiftData.maximum_speed;
     return _value >= minSpeed && _value <= maxSpeed;
 }
 
-bool RideSetSettingAction::ride_is_valid_num_circuits() const
+bool RideSetSettingAction::RideIsValidNumCircuits() const
 {
     int32_t minNumCircuits = 1;
     int32_t maxNumCircuits = gCheatsUnlockOperatingLimits ? 255 : OpenRCT2::Limits::MaxCircuitsPerRide;
     return _value >= minNumCircuits && _value <= maxNumCircuits;
 }
 
-bool RideSetSettingAction::ride_is_valid_operation_option(const Ride& ride) const
+bool RideSetSettingAction::RideIsValidOperationOption(const Ride& ride) const
 {
     const auto& operatingSettings = ride.GetRideTypeDescriptor().OperatingSettings;
     uint8_t minValue = operatingSettings.MinValue;

@@ -103,7 +103,7 @@ GameActions::Result FootpathPlaceAction::Query() const
     }
 
     FootpathProvisionalRemove();
-    auto tileElement = map_get_footpath_element_slope(_loc, _slope);
+    auto tileElement = MapGetFootpathElementSlope(_loc, _slope);
     if (tileElement == nullptr)
     {
         return ElementInsertQuery(std::move(res));
@@ -144,7 +144,7 @@ GameActions::Result FootpathPlaceAction::Execute() const
         }
     }
 
-    auto tileElement = map_get_footpath_element_slope(_loc, _slope);
+    auto tileElement = MapGetFootpathElementSlope(_loc, _slope);
     if (tileElement == nullptr)
     {
         return ElementInsertExecute(std::move(res));
@@ -508,7 +508,7 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
     MapInvalidateTileFull(_loc);
 }
 
-PathElement* FootpathPlaceAction::map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const
+PathElement* FootpathPlaceAction::MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const
 {
     const bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
     const auto slopeDirection = slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;

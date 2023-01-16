@@ -42,7 +42,7 @@ private:
     GameActions::Result ElementInsertExecute(GameActions::Result res) const;
     void AutomaticallySetPeepSpawn() const;
     void RemoveIntersectingWalls(PathElement* pathElement) const;
-    PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const;
+    PathElement* MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const;
     bool IsSameAsPathElement(const PathElement* pathElement) const;
     bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
 };
