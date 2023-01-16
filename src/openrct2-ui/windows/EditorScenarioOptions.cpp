@@ -371,7 +371,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
@@ -399,7 +399,7 @@ private:
 
     void FinancialResize()
     {
-        window_set_resize(*this, 280, 149, 280, 149);
+        WindowSetResize(*this, 280, 149, 280, 149);
     }
 
     void ShowClimateDropdown()
@@ -531,8 +531,8 @@ private:
 
         if (gScreenFlags == SCREEN_FLAGS_PLAYING)
         {
-            window_invalidate_by_class(WindowClass::Finances);
-            window_invalidate_by_class(WindowClass::BottomToolbar);
+            WindowInvalidateByClass(WindowClass::Finances);
+            WindowInvalidateByClass(WindowClass::BottomToolbar);
         }
     }
 
@@ -540,7 +540,7 @@ private:
     {
         frame_no++;
         FinancialPrepareDraw();
-        widget_invalidate(*this, WIDX_TAB_1);
+        WidgetInvalidate(*this, WIDX_TAB_1);
     }
 
     void FinancialPrepareDraw()
@@ -652,7 +652,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
@@ -680,7 +680,7 @@ private:
 
     void GuestsResize()
     {
-        window_set_resize(*this, 380, 149, 380, 149);
+        WindowSetResize(*this, 380, 149, 380, 149);
     }
 
     void GuestsMouseDown(WidgetIndex widgetIndex)
@@ -798,7 +798,7 @@ private:
     {
         frame_no++;
         GuestsPrepareDraw();
-        widget_invalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_2);
     }
 
     void GuestsPrepareDraw()
@@ -898,7 +898,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
@@ -951,7 +951,7 @@ private:
 
     void ParkResize()
     {
-        window_set_resize(*this, 400, 200, 400, 200);
+        WindowSetResize(*this, 400, 200, 400, 200);
     }
 
     void ParkMouseDown(WidgetIndex widgetIndex)
@@ -1097,7 +1097,7 @@ private:
     {
         frame_no++;
         ParkPrepareDraw();
-        widget_invalidate(*this, WIDX_TAB_3);
+        WidgetInvalidate(*this, WIDX_TAB_3);
     }
 
     void ParkPrepareDraw()

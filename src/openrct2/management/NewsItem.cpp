@@ -189,7 +189,7 @@ void News::ItemQueues::ArchiveCurrent()
     Archived.push_back(Current());
 
     // Invalidate the news window
-    window_invalidate_by_class(WindowClass::RecentNews);
+    WindowInvalidateByClass(WindowClass::RecentNews);
 
     // Dequeue the current news item, shift news up
     Recent.pop_front();
@@ -449,7 +449,7 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
         if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
             newsItem.SetFlags(News::ItemFlags::HasButton);
-            window_invalidate_by_class(WindowClass::RecentNews);
+            WindowInvalidateByClass(WindowClass::RecentNews);
         }
     });
 }

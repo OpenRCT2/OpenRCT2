@@ -260,7 +260,7 @@ public:
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        window_close_by_class(WindowClass::NewCampaign);
+                        WindowCloseByClass(WindowClass::NewCampaign);
                     }
                 });
                 GameActions::Execute(&gameAction);
@@ -373,13 +373,13 @@ public:
 
 rct_window* WindowNewCampaignOpen(int16_t campaignType)
 {
-    auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WindowClass::NewCampaign));
+    auto w = static_cast<NewCampaignWindow*>(WindowBringToFrontByClass(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         if (w->campaign.campaign_type == campaignType)
             return w;
 
-        window_close(*w);
+        WindowClose(*w);
     }
 
     w = WindowCreate<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
@@ -392,7 +392,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
 
 void WindowCampaignRefreshRides()
 {
-    auto w = static_cast<NewCampaignWindow*>(window_find_by_class(WindowClass::NewCampaign));
+    auto w = static_cast<NewCampaignWindow*>(WindowFindByClass(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         w->RefreshRides();

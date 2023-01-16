@@ -236,7 +236,7 @@ GameActions::Result RideSetSettingAction::Execute() const
         auto location = ride->overall_view.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
-    window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
+    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
     return res;
 }
 

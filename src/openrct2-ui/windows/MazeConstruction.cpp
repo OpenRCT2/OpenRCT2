@@ -115,7 +115,7 @@ public:
 
         // In order to cancel the yellow arrow correctly the
         // selection tool should be cancelled.
-        tool_cancel();
+        ToolCancel();
 
         hide_gridlines();
 
@@ -185,7 +185,7 @@ public:
         {
             if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
             {
-                widget_invalidate(*this, i);
+                WidgetInvalidate(*this, i);
             }
         }
         disabled_widgets = disabledWidgets;
@@ -244,7 +244,7 @@ public:
                 if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
                     && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
                 {
-                    tool_cancel();
+                    ToolCancel();
                 }
                 break;
             default:
@@ -258,11 +258,11 @@ public:
         switch (widgetIndex)
         {
             case WIDX_MAZE_DIRECTION_GROUPBOX:
-                ride_construction_toolupdate_construct(screenCoords);
+                RideConstructionToolupdateConstruct(screenCoords);
                 break;
             case WIDX_MAZE_ENTRANCE:
             case WIDX_MAZE_EXIT:
-                ride_construction_toolupdate_entrance_exit(screenCoords);
+                RideConstructionToolupdateEntranceExit(screenCoords);
                 break;
         }
     }
@@ -272,7 +272,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_MAZE_DIRECTION_GROUPBOX:
-                ride_construction_tooldown_construct(screenCoords);
+                RideConstructionTooldownConstruct(screenCoords);
                 break;
             case WIDX_MAZE_ENTRANCE:
             case WIDX_MAZE_EXIT:
@@ -305,7 +305,7 @@ public:
 private:
     void WindowMazeConstructionEntranceMouseup(WidgetIndex widgetIndex)
     {
-        if (tool_set(*this, widgetIndex, Tool::Crosshair))
+        if (ToolSet(*this, widgetIndex, Tool::Crosshair))
             return;
 
         gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
@@ -328,7 +328,7 @@ private:
     {
         if (_rideConstructionState == RideConstructionState::EntranceExit)
         {
-            tool_cancel();
+            ToolCancel();
         }
         _rideConstructionState = rideConstructionState;
         WindowMazeConstructionUpdatePressedWidgets();
@@ -365,14 +365,14 @@ private:
             auto currentRide = get_ride(rideIndex);
             if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(*currentRide).Successful)
             {
-                tool_cancel();
+                ToolCancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
-                    window_close_by_class(WindowClass::RideConstruction);
+                    WindowCloseByClass(WindowClass::RideConstruction);
             }
             else
             {
                 gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                window_invalidate_by_class(WindowClass::RideConstruction);
+                WindowInvalidateByClass(WindowClass::RideConstruction);
                 gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     ? WIDX_MAZE_ENTRANCE
                     : WIDX_MAZE_EXIT;
@@ -438,7 +438,7 @@ void WindowMazeConstructionUpdatePressedWidgets()
 {
     rct_window* w;
 
-    w = window_find_by_class(WindowClass::RideConstruction);
+    w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr)
         return;
 

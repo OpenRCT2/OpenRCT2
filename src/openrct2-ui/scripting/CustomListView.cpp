@@ -255,7 +255,7 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(*ParentWindow);
+        WindowUpdateScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -272,7 +272,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(*ParentWindow);
+        WindowUpdateScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -283,7 +283,7 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialisi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(*ParentWindow);
+        WindowUpdateScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }

@@ -79,9 +79,9 @@ public:
     {
         widgets = window_track_place_widgets;
         WindowInitScrollWidgets(*this);
-        tool_set(*this, WIDX_PRICE, Tool::Crosshair);
+        ToolSet(*this, WIDX_PRICE, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
-        window_push_others_right(*this);
+        WindowPushOthersRight(*this);
         show_gridlines();
         _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
         _placementCost = MONEY32_UNDEFINED;
@@ -200,7 +200,7 @@ public:
         if (cost != _placementCost)
         {
             _placementCost = cost;
-            widget_invalidate(*this, WIDX_PRICE);
+            WidgetInvalidate(*this, WIDX_PRICE);
         }
 
         TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), *GetOrAllocateRide(PreviewRideId), trackLoc);
@@ -233,7 +233,7 @@ public:
                     auto getRide = get_ride(rideId);
                     if (getRide != nullptr)
                     {
-                        window_close_by_class(WindowClass::Error);
+                        WindowCloseByClass(WindowClass::Error);
                         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
 
                         _currentRideIndex = rideId;
@@ -242,14 +242,14 @@ public:
                             auto intent = Intent(WindowClass::Ride);
                             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                             ContextOpenIntent(&intent);
-                            auto wnd = window_find_by_class(WindowClass::TrackDesignPlace);
-                            window_close(*wnd);
+                            auto wnd = WindowFindByClass(WindowClass::TrackDesignPlace);
+                            WindowClose(*wnd);
                         }
                         else
                         {
                             ride_initialise_construction_window(*getRide);
-                            auto wnd = window_find_by_class(WindowClass::RideConstruction);
-                            window_event_mouse_up_call(wnd, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                            auto wnd = WindowFindByClass(WindowClass::RideConstruction);
+                            WindowEventMouseUpCall(wnd, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                         }
                     }
                 }
@@ -621,7 +621,7 @@ rct_window* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
         return nullptr;
     }
 
-    window_close_construction_windows();
+    WindowCloseConstructionWindows();
 
     auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
     if (window != nullptr)
@@ -633,7 +633,7 @@ rct_window* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
 
 void TrackPlaceClearProvisionalTemporarily()
 {
-    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WindowClass::TrackDesignPlace));
+    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(WindowFindByClass(WindowClass::TrackDesignPlace));
     if (trackPlaceWnd != nullptr)
     {
         trackPlaceWnd->ClearProvisionalTemporarily();
@@ -642,7 +642,7 @@ void TrackPlaceClearProvisionalTemporarily()
 
 void TrackPlaceRestoreProvisional()
 {
-    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WindowClass::TrackDesignPlace));
+    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(WindowFindByClass(WindowClass::TrackDesignPlace));
     if (trackPlaceWnd != nullptr)
     {
         trackPlaceWnd->RestoreProvisional();

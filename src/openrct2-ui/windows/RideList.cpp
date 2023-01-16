@@ -217,7 +217,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_SORT:
                 list_information_type = _windowRideListInformationType;
@@ -360,7 +360,7 @@ public:
     void OnUpdate() override
     {
         frame_no = (frame_no + 1) % 64;
-        widget_invalidate(*this, WIDX_TAB_1 + page);
+        WidgetInvalidate(*this, WIDX_TAB_1 + page);
         if (_windowRideListInformationType != INFORMATION_TYPE_STATUS)
             Invalidate();
     }
@@ -957,7 +957,7 @@ private:
 rct_window* WindowRideListOpen()
 {
     // Check if window is already open
-    auto* window = window_bring_to_front_by_class(WindowClass::RideList);
+    auto* window = WindowBringToFrontByClass(WindowClass::RideList);
     if (window == nullptr)
     {
         window = WindowCreate<RideListWindow>(WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);

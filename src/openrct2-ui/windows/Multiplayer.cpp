@@ -232,7 +232,7 @@ static ScreenCoordsXY _windowInformationSize;
 rct_window* WindowMultiplayerOpen()
 {
     // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class(WindowClass::Multiplayer);
+    rct_window* window = WindowBringToFrontByClass(WindowClass::Multiplayer);
     if (window == nullptr)
     {
         window = WindowCreateAutoPos(
@@ -258,8 +258,8 @@ static void WindowMultiplayerSetPage(rct_window* w, int32_t page)
     w->widgets = window_multiplayer_page_widgets[page];
     w->widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
 
-    window_event_resize_call(w);
-    window_event_invalidate_call(w);
+    WindowEventResizeCall(w);
+    WindowEventInvalidateCall(w);
     WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
@@ -313,7 +313,7 @@ static void WindowMultiplayerInformationMouseup(rct_window* w, WidgetIndex widge
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB1:
         case WIDX_TAB2:
@@ -380,20 +380,20 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
 static void WindowMultiplayerInformationResize(rct_window* w)
 {
     auto size = WindowMultiplayerInformationGetSize();
-    window_set_resize(*w, size.x, size.y, size.x, size.y);
+    WindowSetResize(*w, size.x, size.y, size.x, size.y);
 }
 
 static void WindowMultiplayerInformationUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
 static void WindowMultiplayerInformationInvalidate(rct_window* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
-    window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
+    WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 }
 
 static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -468,7 +468,7 @@ static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetInd
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB1:
         case WIDX_TAB2:
@@ -484,7 +484,7 @@ static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetInd
 
 static void WindowMultiplayerPlayersResize(rct_window* w)
 {
-    window_set_resize(*w, 420, 124, 500, 450);
+    WindowSetResize(*w, 420, 124, 500, 450);
 
     w->no_list_items = (IsServerPlayerInvisible() ? network_get_num_visible_players() : network_get_num_players());
     w->list_item_positions[0] = 0;
@@ -498,7 +498,7 @@ static void WindowMultiplayerPlayersResize(rct_window* w)
 static void WindowMultiplayerPlayersUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
 static void WindowMultiplayerPlayersScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
@@ -555,7 +555,7 @@ static void WindowMultiplayerPlayersInvalidate(rct_window* w)
     WindowMultiplayerAnchorBorderWidgets(w);
     window_multiplayer_players_widgets[WIDX_LIST].right = w->width - 4;
     window_multiplayer_players_widgets[WIDX_LIST].bottom = w->height - 0x0F;
-    window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
+    WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 }
 
 static void WindowMultiplayerPlayersPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -682,7 +682,7 @@ static void WindowMultiplayerGroupsMouseup(rct_window* w, WidgetIndex widgetInde
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB1:
         case WIDX_TAB2:
@@ -715,7 +715,7 @@ static void WindowMultiplayerGroupsMouseup(rct_window* w, WidgetIndex widgetInde
 
 static void WindowMultiplayerGroupsResize(rct_window* w)
 {
-    window_set_resize(*w, 320, 200, 320, 500);
+    WindowSetResize(*w, 320, 200, 320, 500);
 
     w->no_list_items = network_get_num_actions();
     w->list_item_positions[0] = 0;
@@ -764,7 +764,7 @@ static void WindowMultiplayerGroupsDropdown(rct_window* w, WidgetIndex widgetInd
 static void WindowMultiplayerGroupsUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
 static void WindowMultiplayerGroupsScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
@@ -834,7 +834,7 @@ static void WindowMultiplayerGroupsInvalidate(rct_window* w)
     WindowMultiplayerAnchorBorderWidgets(w);
     window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].right = w->width - 4;
     window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].bottom = w->height - 0x0F;
-    window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
+    WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 
     // select other group if one is removed
     while (network_get_group_index(_selectedGroup) == -1 && _selectedGroup > 0)
@@ -940,7 +940,7 @@ static void WindowMultiplayerOptionsMouseup(rct_window* w, WidgetIndex widgetInd
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB1:
         case WIDX_TAB2:
@@ -968,20 +968,20 @@ static void WindowMultiplayerOptionsMouseup(rct_window* w, WidgetIndex widgetInd
 
 static void WindowMultiplayerOptionsResize(rct_window* w)
 {
-    window_set_resize(*w, 300, 100, 300, 100);
+    WindowSetResize(*w, 300, 100, 300, 100);
 }
 
 static void WindowMultiplayerOptionsUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
 static void WindowMultiplayerOptionsInvalidate(rct_window* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
-    window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
+    WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 
     if (network_get_mode() == NETWORK_MODE_CLIENT)
     {

@@ -177,7 +177,7 @@ namespace OpenRCT2::Audio
         auto pos2 = Translate3DTo2DWithZ(rotation, location);
 
         rct_viewport* viewport = nullptr;
-        while ((viewport = window_get_previous_viewport(viewport)) != nullptr)
+        while ((viewport = WindowGetPreviousViewport(viewport)) != nullptr)
         {
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
@@ -406,7 +406,7 @@ namespace OpenRCT2::Audio
             Pause();
         }
 
-        window_invalidate_by_class(WindowClass::Options);
+        WindowInvalidateByClass(WindowClass::Options);
     }
 
     void Pause()

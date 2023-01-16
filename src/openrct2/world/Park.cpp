@@ -323,7 +323,7 @@ void Park::Update(const Date& date)
         _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
         _guestGenerationProbability = CalculateGuestGenerationProbability();
 
-        window_invalidate_by_class(WindowClass::Finances);
+        WindowInvalidateByClass(WindowClass::Finances);
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         ContextBroadcastIntent(&intent);
     }
@@ -332,7 +332,7 @@ void Park::Update(const Date& date)
     if (gCurrentTicks % 4096 == 0)
     {
         gParkSize = CalculateParkSize();
-        window_invalidate_by_class(WindowClass::ParkInformation);
+        WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
     GenerateGuests();
@@ -357,7 +357,7 @@ uint32_t Park::CalculateParkSize() const
     if (tiles != gParkSize)
     {
         gParkSize = tiles;
-        window_invalidate_by_class(WindowClass::ParkInformation);
+        WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
     return tiles;
@@ -774,8 +774,8 @@ void Park::UpdateHistories()
     // Invalidate relevant windows
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
     ContextBroadcastIntent(&intent);
-    window_invalidate_by_class(WindowClass::ParkInformation);
-    window_invalidate_by_class(WindowClass::Finances);
+    WindowInvalidateByClass(WindowClass::ParkInformation);
+    WindowInvalidateByClass(WindowClass::Finances);
 }
 
 int32_t ParkIsOpen()
@@ -789,7 +789,7 @@ uint32_t ParkCalculateSize()
     if (tiles != gParkSize)
     {
         gParkSize = tiles;
-        window_invalidate_by_class(WindowClass::ParkInformation);
+        WindowInvalidateByClass(WindowClass::ParkInformation);
     }
     return tiles;
 }

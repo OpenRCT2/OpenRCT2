@@ -148,14 +148,14 @@ public:
 private:
     void JumpBackToObjectSelection() const
     {
-        window_close_all();
+        WindowCloseAll();
         gEditorStep = EditorStep::ObjectSelection;
         GfxInvalidateScreen();
     }
 
     void JumpBackToLandscapeEditor() const
     {
-        window_close_all();
+        WindowCloseAll();
         set_all_scenery_items_invented();
         ScenerySetDefaultPlacementConfiguration();
         gEditorStep = EditorStep::LandscapeEditor;
@@ -165,7 +165,7 @@ private:
 
     void JumpBackToInventionListSetUp() const
     {
-        window_close_all();
+        WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorInventionList);
         gEditorStep = EditorStep::InventionsListSetUp;
         GfxInvalidateScreen();
@@ -173,7 +173,7 @@ private:
 
     void JumpBackToOptionsSelection() const
     {
-        window_close_all();
+        WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
         GfxInvalidateScreen();
@@ -186,16 +186,16 @@ private:
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
         {
-            window_close_by_class(WindowClass::EditorObjectSelection);
+            WindowCloseByClass(WindowClass::EditorObjectSelection);
             return true;
         }
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-        w = window_find_by_class(WindowClass::EditorObjectSelection);
+        w = WindowFindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {
             // Click tab with missing object
-            window_event_mouse_up_call(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
+            WindowEventMouseUpCall(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
         }
         return false;
     }
@@ -221,7 +221,7 @@ private:
         auto [checksPassed, errorString] = Editor::CheckPark();
         if (checksPassed)
         {
-            window_close_all();
+            WindowCloseAll();
             ContextOpenWindow(WindowClass::EditorInventionList);
             gEditorStep = EditorStep::InventionsListSetUp;
         }
@@ -235,7 +235,7 @@ private:
 
     void JumpForwardToOptionsSelection() const
     {
-        window_close_all();
+        WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
         GfxInvalidateScreen();
@@ -243,7 +243,7 @@ private:
 
     void JumpForwardToObjectiveSelection() const
     {
-        window_close_all();
+        WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorObjectiveOptions);
         gEditorStep = EditorStep::ObjectiveSelection;
         GfxInvalidateScreen();
@@ -259,7 +259,7 @@ private:
             return;
         }
 
-        window_close_all();
+        WindowCloseAll();
         auto intent = Intent(WindowClass::Loadsave);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
         intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);

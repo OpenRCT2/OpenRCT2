@@ -446,8 +446,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
 
     if (!(input_test_flag(INPUT_FLAG_6)) || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
     {
-        if (window_find_by_class(WindowClass::RideConstruction) == nullptr
-            && window_find_by_class(WindowClass::Footpath) == nullptr)
+        if (WindowFindByClass(WindowClass::RideConstruction) == nullptr && WindowFindByClass(WindowClass::Footpath) == nullptr)
         {
             info.SpriteType = ViewportInteractionItem::None;
             return info;
@@ -618,7 +617,7 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
 
     auto z = tileElement->GetBaseZ();
 
-    w = window_find_by_class(WindowClass::Footpath);
+    w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
         FootpathProvisionalUpdate();
 
@@ -737,7 +736,7 @@ PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t 
 
 static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
-    auto* w = window_find_from_point(screenCoords);
+    auto* w = WindowFindFromPoint(screenCoords);
     if (w == nullptr)
         return nullptr;
 
@@ -761,7 +760,7 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
  */
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords)
 {
-    rct_window* window = window_find_from_point(screenCoords);
+    rct_window* window = WindowFindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY ret{};

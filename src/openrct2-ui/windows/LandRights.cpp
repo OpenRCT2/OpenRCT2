@@ -60,14 +60,14 @@ public:
         widgets = window_land_rights_widgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
         _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
         pressed_widgets = (1uLL << WIDX_BUY_LAND_RIGHTS);
 
         gLandToolSize = 1;
 
         show_gridlines();
-        tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+        ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
         input_set_flag(INPUT_FLAG_6, true);
 
         show_land_rights();
@@ -88,7 +88,7 @@ public:
 
         // If the tool wasn't changed, turn tool off
         if (LandRightsToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -104,7 +104,7 @@ public:
             case WIDX_BUY_LAND_RIGHTS:
                 if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
                 {
-                    tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+                    ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
                     show_land_rights();
                     Invalidate();
@@ -113,7 +113,7 @@ public:
             case WIDX_BUY_CONSTRUCTION_RIGHTS:
                 if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
                 {
-                    tool_set(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
+                    ToolSet(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
                     show_construction_rights();
                     Invalidate();
@@ -247,7 +247,7 @@ public:
             if (_landRightsCost != MONEY32_UNDEFINED)
             {
                 _landRightsCost = MONEY32_UNDEFINED;
-                window_invalidate_by_class(WindowClass::ClearScenery);
+                WindowInvalidateByClass(WindowClass::ClearScenery);
             }
             return;
         }

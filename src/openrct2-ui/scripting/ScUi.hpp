@@ -110,7 +110,7 @@ namespace OpenRCT2::Scripting
 
         void cancel()
         {
-            tool_cancel();
+            ToolCancel();
         }
     };
 
@@ -188,18 +188,18 @@ namespace OpenRCT2::Scripting
             {
                 if (id.type() == DukValue::Type::NUMBER)
                 {
-                    window_close_by_number(cls, id.as_int());
+                    WindowCloseByNumber(cls, id.as_int());
                 }
                 else
                 {
-                    window_close_by_class(cls);
+                    WindowCloseByClass(cls);
                 }
             }
         }
 
         void closeAllWindows()
         {
-            window_close_all();
+            WindowCloseAll();
         }
 
         std::shared_ptr<ScWindow> getWindow(DukValue a) const

@@ -157,10 +157,10 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
     // Close windows related to the demolished ride
-    window_close_by_number(WindowClass::RideConstruction, rideId.ToUnderlying());
-    window_close_by_number(WindowClass::Ride, rideId.ToUnderlying());
-    window_close_by_number(WindowClass::DemolishRidePrompt, rideId.ToUnderlying());
-    window_close_by_class(WindowClass::NewCampaign);
+    WindowCloseByNumber(WindowClass::RideConstruction, rideId.ToUnderlying());
+    WindowCloseByNumber(WindowClass::Ride, rideId.ToUnderlying());
+    WindowCloseByNumber(WindowClass::DemolishRidePrompt, rideId.ToUnderlying());
+    WindowCloseByClass(WindowClass::NewCampaign);
 
     // Refresh windows that display the ride name
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
@@ -284,7 +284,7 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride& ride) const
         res.Position = { location, TileElementHeight(location) };
     }
 
-    window_close_by_number(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());
+    WindowCloseByNumber(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());
 
     return res;
 }

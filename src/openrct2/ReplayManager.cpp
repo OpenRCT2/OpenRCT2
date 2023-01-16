@@ -853,9 +853,9 @@ namespace OpenRCT2
                 // Focus camera on event.
                 if (isPositionValid && !result.Position.IsNull())
                 {
-                    auto* mainWindow = window_get_main();
+                    auto* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
-                        window_scroll_to_location(*mainWindow, result.Position);
+                        WindowScrollToLocation(*mainWindow, result.Position);
                 }
 
                 replayQueue.erase(replayQueue.begin());

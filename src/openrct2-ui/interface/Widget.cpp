@@ -659,7 +659,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
 static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
 {
     // Get the widget
-    int32_t scrollIndex = window_get_scroll_data_index(w, widgetIndex);
+    int32_t scrollIndex = WindowGetScrollDataIndex(w, widgetIndex);
     const auto& widget = w.widgets[widgetIndex];
     const auto& scroll = w.scrolls[scrollIndex];
 
@@ -721,7 +721,7 @@ static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
 
     // Draw the scroll contents
     if (scroll_dpi.width > 0 && scroll_dpi.height > 0)
-        window_event_scroll_paint_call(&w, &scroll_dpi, scrollIndex);
+        WindowEventScrollPaintCall(&w, &scroll_dpi, scrollIndex);
 }
 
 static void WidgetHScrollbarDraw(

@@ -358,7 +358,7 @@ void ride_update_favourited_stat()
         }
     }
 
-    window_invalidate_by_class(WindowClass::RideList);
+    WindowInvalidateByClass(WindowClass::RideList);
 }
 
 /**
@@ -741,7 +741,7 @@ bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         return false;
 
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == id)
     {
         ride_construction_invalidate_current_track();
@@ -958,7 +958,7 @@ void Ride::UpdateAll()
         return;
     }
 
-    window_update_viewport_ride_music();
+    WindowUpdateViewportRideMusic();
 
     // Update rides
     for (auto& ride : GetRideManager())
@@ -2665,7 +2665,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
         return { false };
 
     RideId rideIndex = input.element->AsTrack()->GetRideIndex();
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
 
@@ -2729,7 +2729,7 @@ static bool ride_check_track_contains_inversions(const CoordsXYE& input, CoordsX
             return true;
     }
 
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         ride_construction_invalidate_current_track();
@@ -2789,7 +2789,7 @@ static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* 
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         return true;
 
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         ride_construction_invalidate_current_track();
@@ -2830,7 +2830,7 @@ static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* 
  */
 static int32_t ride_check_station_length(const CoordsXYE& input, CoordsXYE* output)
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
         && _currentRideIndex == input.element->AsTrack()->GetRideIndex())
     {
@@ -2892,7 +2892,7 @@ static bool ride_check_start_and_end_is_station(const CoordsXYE& input)
     if (ride == nullptr)
         return false;
 
-    auto w = window_find_by_class(WindowClass::RideConstruction);
+    auto w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         ride_construction_invalidate_current_track();
@@ -3780,7 +3780,7 @@ static ResultWithMessage ride_create_cable_lift(RideId rideIndex, bool isApplyin
  */
 void Ride::ConstructMissingEntranceOrExit() const
 {
-    auto* w = window_get_main();
+    auto* w = WindowGetMain();
     if (w == nullptr)
         return;
 
@@ -3815,7 +3815,7 @@ void Ride::ConstructMissingEntranceOrExit() const
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
         auto location = incompleteStation->GetStart();
-        window_scroll_to_location(*w, location);
+        WindowScrollToLocation(*w, location);
 
         CoordsXYE trackElement;
         ride_try_get_origin_element(*this, &trackElement);
@@ -3826,9 +3826,9 @@ void Ride::ConstructMissingEntranceOrExit() const
             return;
         }
 
-        w = window_find_by_class(WindowClass::RideConstruction);
+        w = WindowFindByClass(WindowClass::RideConstruction);
         if (w != nullptr)
-            window_event_mouse_up_call(w, entranceOrExit);
+            WindowEventMouseUpCall(w, entranceOrExit);
     }
 }
 
@@ -3841,10 +3841,10 @@ static void ride_scroll_to_track_error(const CoordsXYE& trackElement)
     if (trackElement.element == nullptr)
         return;
 
-    auto* w = window_get_main();
+    auto* w = WindowGetMain();
     if (w != nullptr)
     {
-        window_scroll_to_location(*w, { trackElement, trackElement.element->GetBaseZ() });
+        WindowScrollToLocation(*w, { trackElement, trackElement.element->GetBaseZ() });
         ride_modify(trackElement);
     }
 }
@@ -3884,7 +3884,7 @@ ResultWithMessage Ride::Test(bool isApplying)
         return { false };
     }
 
-    window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
+    WindowCloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
 
     StationIndex stationIndex = {};
     auto message = ChangeStatusDoStationChecks(stationIndex);
@@ -3972,7 +3972,7 @@ ResultWithMessage Ride::Open(bool isApplying)
     if (WindowClass::RideConstruction == gCurrentToolWidget.window_classification
         && id.ToUnderlying() == gCurrentToolWidget.window_number && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
     {
-        window_close_by_number(WindowClass::RideConstruction, id.ToUnderlying());
+        WindowCloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
     }
 
     StationIndex stationIndex = {};
@@ -4506,7 +4506,7 @@ void invalidate_test_results(Ride& ride)
             }
         }
     }
-    window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
+    WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 /**
@@ -4836,7 +4836,7 @@ static int32_t ride_get_track_length(const Ride& ride)
 
     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
 
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
     {
         ride_construction_invalidate_current_track();
@@ -5020,7 +5020,7 @@ void Ride::UpdateMaxVehicles()
     {
         num_cars_per_train = numCarsPerTrain;
         NumTrains = numTrains;
-        window_invalidate_by_number(WindowClass::Ride, id.ToUnderlying());
+        WindowInvalidateByNumber(WindowClass::Ride, id.ToUnderlying());
     }
 }
 
@@ -5078,7 +5078,7 @@ void Ride::Crash(uint8_t vehicleIndex)
         intent.putExtra(INTENT_EXTRA_VEHICLE, vehicle);
         rct_window* w = ContextOpenIntent(&intent);
 
-        rct_viewport* viewport = window_get_viewport(w);
+        rct_viewport* viewport = WindowGetViewport(w);
         if (w != nullptr && viewport != nullptr)
         {
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;

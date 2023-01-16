@@ -326,8 +326,8 @@ public:
     {
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
-            window_update_textbox_caret();
-            widget_invalidate(*this, WIDX_FILTER_TEXT_BOX);
+            WindowUpdateTextboxCaret();
+            WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
         }
 
         for (WidgetIndex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
@@ -339,7 +339,7 @@ public:
             if (frame_no >= window_editor_object_selection_animation_loops[i - WIDX_FILTER_RIDE_TAB_TRANSPORT])
                 frame_no = 0;
 
-            widget_invalidate(*this, i);
+            WidgetInvalidate(*this, i);
             break;
         }
     }
@@ -353,7 +353,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 if (gScreenFlags & SCREEN_FLAGS_EDITOR)
                 {
                     finish_object_selection();
@@ -416,7 +416,7 @@ public:
                 break;
             }
             case WIDX_FILTER_TEXT_BOX:
-                window_start_textbox(*this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
                 std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
@@ -461,7 +461,7 @@ public:
 
     void OnResize() override
     {
-        window_set_resize(*this, WW, WH, 1200, 1000);
+        WindowSetResize(*this, WW, WH, 1200, 1000);
     }
 
     void OnMouseDown(WidgetIndex widgetIndex) override
@@ -576,7 +576,7 @@ public:
     {
         // Used for in-game object selection cheat to prevent crashing the game
         // when windows attempt to draw objects that don't exist any more
-        window_close_all_except_class(WindowClass::EditorObjectSelection);
+        WindowCloseAllExceptClass(WindowClass::EditorObjectSelection);
 
         int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
         if (selected_object == -1)
@@ -600,7 +600,7 @@ public:
                 return;
 
             // Close any other open windows such as options/colour schemes to prevent a crash.
-            window_close_all();
+            WindowCloseAll();
             // window_close(*w);
 
             // This function calls window_track_list_open

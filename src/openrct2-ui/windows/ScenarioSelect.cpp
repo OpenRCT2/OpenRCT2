@@ -158,10 +158,10 @@ rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titl
     if (_titleEditor != titleEditor)
     {
         _titleEditor = titleEditor;
-        window_close_by_class(WindowClass::ScenarioSelect);
+        WindowCloseByClass(WindowClass::ScenarioSelect);
     }
 
-    auto window = window_bring_to_front_by_class(WindowClass::ScenarioSelect);
+    auto window = WindowBringToFrontByClass(WindowClass::ScenarioSelect);
     if (window != nullptr)
         return window;
 
@@ -264,7 +264,7 @@ static void WindowScenarioselectMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     if (widgetIndex == WIDX_CLOSE)
     {
-        window_close(*w);
+        WindowClose(*w);
     }
 }
 
@@ -278,8 +278,8 @@ static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex
         ConfigSaveDefault();
         InitialiseListItems(w);
         w->Invalidate();
-        window_event_resize_call(w);
-        window_event_invalidate_call(w);
+        WindowEventResizeCall(w);
+        WindowEventInvalidateCall(w);
         WindowInitScrollWidgets(*w);
         w->Invalidate();
     }
@@ -344,7 +344,7 @@ static void WindowScenarioselectScrollmousedown(rct_window* w, int32_t scrollInd
                     _callback(listItem.scenario.scenario->path);
                     if (_titleEditor)
                     {
-                        window_close(*w);
+                        WindowClose(*w);
                     }
                 }
                 break;

@@ -358,7 +358,7 @@ public:
         if (frame_no >= window_themes_tab_animation_loops[_selected_tab])
             frame_no = 0;
 
-        widget_invalidate(*this, WIDX_THEMES_SETTINGS_TAB + _selected_tab);
+        WidgetInvalidate(*this, WIDX_THEMES_SETTINGS_TAB + _selected_tab);
     }
 
     void OnPrepareDraw() override
@@ -371,7 +371,7 @@ public:
 
         pressed_widgets = pressedWidgets | (1 << widgetIndex);
 
-        if (window_find_by_class(WindowClass::Dropdown) == nullptr)
+        if (WindowFindByClass(WindowClass::Dropdown) == nullptr)
         {
             _colour_index_1 = -1;
             _colour_index_2 = -1;
@@ -494,7 +494,7 @@ public:
                 _selected_tab = static_cast<uint8_t>(newSelectedTab);
                 scrolls[0].v_top = 0;
                 frame_no = 0;
-                window_event_resize_call(this);
+                WindowEventResizeCall(this);
                 Invalidate();
                 break;
             case WIDX_THEMES_PRESETS_DROPDOWN:
@@ -523,7 +523,7 @@ public:
                 {
                     ThemeSetFlags(ThemeGetFlags() ^ UITHEME_FLAG_USE_LIGHTS_RIDE);
                     ThemeSave();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
             case WIDX_THEMES_RCT1_PARK_LIGHTS:
@@ -535,7 +535,7 @@ public:
                 {
                     ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_LIGHTS_PARK));
                     ThemeSave();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
             case WIDX_THEMES_RCT1_SCENARIO_FONT:
@@ -547,7 +547,7 @@ public:
                 {
                     ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT));
                     ThemeSave();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
             case WIDX_THEMES_RCT1_BOTTOM_TOOLBAR:
@@ -559,7 +559,7 @@ public:
                 {
                     ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
                     ThemeSave();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
         }
     }
@@ -620,7 +620,7 @@ public:
                     colour = (colour & COLOUR_FLAG_TRANSLUCENT) | selectedIndex;
                     ThemeSetColour(wc, _colour_index_2, colour);
                     ColourSchemeUpdateAll();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                     _colour_index_1 = -1;
                     _colour_index_2 = -1;
                 }
@@ -727,7 +727,7 @@ public:
                         uint8_t colour = ThemeGetColour(wc, _colour_index_2);
                         WindowDropdownShowColour(
                             this, &(window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]), colours[1], colour);
-                        widget_invalidate(*this, WIDX_THEMES_LIST);
+                        WidgetInvalidate(*this, WIDX_THEMES_LIST);
                     }
                 }
                 else if (
@@ -751,7 +751,7 @@ public:
                         }
                         ThemeSetColour(wc, _colour_index_2, colour);
                         ColourSchemeUpdateAll();
-                        window_invalidate_all();
+                        WindowInvalidateAll();
                     }
                 }
             }
@@ -887,7 +887,7 @@ rct_window* WindowThemesOpen()
     rct_window* window;
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WindowClass::Themes);
+    window = WindowBringToFrontByClass(WindowClass::Themes);
     if (window != nullptr)
         return window;
 

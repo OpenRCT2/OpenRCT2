@@ -185,7 +185,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             _network.Close();
 #endif
-            window_close_all();
+            WindowCloseAll();
 
             // Unload objects after closing all windows, this is to overcome windows like
             // the object selection window which loads objects when closed.
@@ -546,7 +546,7 @@ namespace OpenRCT2
                 }
             }
 
-            window_check_all_valid_zoom();
+            WindowCheckAllValidZoom();
         }
 
         void DisposeDrawingEngine() final override
@@ -1114,7 +1114,7 @@ namespace OpenRCT2
                 Tick();
 
                 // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
-                window_update_all();
+                WindowUpdateAll();
 
                 _ticksAccumulator -= GAME_UPDATE_TIME_MS;
             }
@@ -1143,7 +1143,7 @@ namespace OpenRCT2
                 Tick();
 
                 // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
-                window_update_all();
+                WindowUpdateAll();
 
                 _ticksAccumulator -= GAME_UPDATE_TIME_MS;
 

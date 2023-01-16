@@ -176,9 +176,9 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetInde
                 if (!subjectLoc.has_value())
                     break;
 
-                rct_window* mainWindow = window_get_main();
+                rct_window* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
-                    window_scroll_to_location(*mainWindow, subjectLoc.value());
+                    WindowScrollToLocation(*mainWindow, subjectLoc.value());
             }
             break;
         case WIDX_RIGHT_OUTSET:
@@ -338,7 +338,7 @@ void WindowGameBottomToolbarInvalidateNewsItem()
 {
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        widget_invalidate_by_class(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
+        WidgetInvalidateByClass(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
     }
 }
 
@@ -733,30 +733,30 @@ static void WindowGameBottomToolbarInvalidateDirtyWidgets(rct_window* w)
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
-        widget_invalidate(*w, WIDX_LEFT_INSET);
+        WidgetInvalidate(*w, WIDX_LEFT_INSET);
     }
 
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
-        widget_invalidate(*w, WIDX_RIGHT_INSET);
+        WidgetInvalidate(*w, WIDX_RIGHT_INSET);
     }
 
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-        widget_invalidate(*w, WIDX_LEFT_INSET);
+        WidgetInvalidate(*w, WIDX_LEFT_INSET);
     }
 
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
-        widget_invalidate(*w, WIDX_RIGHT_INSET);
+        WidgetInvalidate(*w, WIDX_RIGHT_INSET);
     }
 
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
-        widget_invalidate(*w, WIDX_LEFT_INSET);
+        WidgetInvalidate(*w, WIDX_LEFT_INSET);
     }
 }

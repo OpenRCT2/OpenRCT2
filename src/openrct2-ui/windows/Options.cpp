@@ -622,7 +622,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_TAB_DISPLAY:
             case WIDX_TAB_RENDERING:
@@ -934,7 +934,7 @@ private:
                 gConfigGeneral.AlwaysShowGridlines ^= 1;
                 ConfigSaveDefault();
                 GfxInvalidateScreen();
-                rct_window* mainWindow = window_get_main();
+                rct_window* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                 {
                     if (gConfigGeneral.AlwaysShowGridlines)
@@ -1304,7 +1304,7 @@ private:
                     OpenRCT2::Audio::Pause();
                 else
                     OpenRCT2::Audio::Resume();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 ConfigSaveDefault();
                 Invalidate();
                 break;
@@ -1552,43 +1552,43 @@ private:
                 gConfigInterface.ToolbarShowFinances ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_RESEARCH:
                 gConfigInterface.ToolbarShowResearch ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHEATS:
                 gConfigInterface.ToolbarShowCheats ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_NEWS:
                 gConfigInterface.ToolbarShowNews ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_MUTE:
                 gConfigInterface.ToolbarShowMute ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHAT:
                 gConfigInterface.ToolbarShowChat ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_ZOOM:
                 gConfigInterface.ToolbarShowZoom ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_INVERT_DRAG:
                 gConfigGeneral.InvertViewportDrag ^= 1;
@@ -1682,7 +1682,7 @@ private:
             case WIDX_SCENARIO_UNLOCKING:
                 gConfigGeneral.ScenarioUnlockingEnabled ^= 1;
                 ConfigSaveDefault();
-                window_close_by_class(WindowClass::ScenarioSelect);
+                WindowCloseByClass(WindowClass::ScenarioSelect);
                 break;
             case WIDX_AUTO_OPEN_SHOPS:
                 gConfigGeneral.AutoOpenShops = !gConfigGeneral.AutoOpenShops;
@@ -1801,7 +1801,7 @@ private:
                     gConfigInterface.ScenarioselectLastTab = 0;
                     ConfigSaveDefault();
                     Invalidate();
-                    window_close_by_class(WindowClass::ScenarioSelect);
+                    WindowCloseByClass(WindowClass::ScenarioSelect);
                 }
                 break;
         }
@@ -2047,8 +2047,8 @@ private:
         widgets = window_options_page_widgets[page];
 
         Invalidate();
-        window_event_resize_call(this);
-        window_event_invalidate_call(this);
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
         InitScrollWidgets();
         Invalidate();
     }

@@ -196,7 +196,7 @@ public:
         if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                tool_cancel();
+                ToolCancel();
         }
     }
 
@@ -419,7 +419,7 @@ private:
         }
         maxWidth = std::max(minWidth, maxWidth);
 
-        window_set_resize(*this, minWidth, minHeight, maxWidth, maxHeight);
+        WindowSetResize(*this, minWidth, minHeight, maxWidth, maxHeight);
     }
 
     void OnPrepareDrawCommon()
@@ -442,7 +442,7 @@ private:
 
         ResizeFrameWithPage();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
     }
 
     void DisableWidgets()
@@ -481,7 +481,7 @@ private:
         if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (number == gCurrentToolWidget.window_number && classification == gCurrentToolWidget.window_classification)
-                tool_cancel();
+                ToolCancel();
         }
         int32_t listen = 0;
         if (newPage == WINDOW_GUEST_OVERVIEW && page == WINDOW_GUEST_OVERVIEW && viewport != nullptr)
@@ -581,7 +581,7 @@ private:
         DisableWidgets();
         OnPrepareDraw();
 
-        widget_invalidate(*this, WIDX_MARQUEE);
+        WidgetInvalidate(*this, WIDX_MARQUEE);
 
         OnResizeCommon();
 
@@ -624,10 +624,10 @@ private:
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = window_find_by_number(WindowClass::Peep, peepnum);
+                    rct_window* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
-                        tool_set(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
+                        ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
                     }
                 });
                 GameActions::Execute(&pickupAction);
@@ -691,8 +691,8 @@ private:
 
     void GuestFollow()
     {
-        rct_window* main = window_get_main();
-        window_follow_sprite(*main, EntityId::FromUnderlying(number));
+        rct_window* main = WindowGetMain();
+        WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
     void OnViewportRotateOverview()
@@ -751,7 +751,7 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
                 GfxDrawSprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
@@ -854,8 +854,8 @@ private:
         newAnimationFrame %= 24;
         _guestAnimationFrame = newAnimationFrame;
 
-        widget_invalidate(*this, WIDX_TAB_1);
-        widget_invalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_1);
+        WidgetInvalidate(*this, WIDX_TAB_2);
 
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -865,7 +865,7 @@ private:
         if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
         {
             peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
-            widget_invalidate(*this, WIDX_ACTION_LBL);
+            WidgetInvalidate(*this, WIDX_ACTION_LBL);
         }
 
         _marqueePosition += 2;
@@ -964,7 +964,7 @@ private:
         pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
                 return;
-            tool_cancel();
+            ToolCancel();
             gPickupPeepImage = ImageId();
         });
         GameActions::Execute(&pickupAction);
@@ -1225,8 +1225,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(*this, WIDX_TAB_2);
-        widget_invalidate(*this, WIDX_TAB_3);
+        WidgetInvalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_3);
 
         const auto guest = GetGuest();
         if (guest == nullptr)
@@ -1400,8 +1400,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(*this, WIDX_TAB_2);
-        widget_invalidate(*this, WIDX_TAB_4);
+        WidgetInvalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_4);
     }
 
     void OnDrawFinance(rct_drawpixelinfo& dpi)
@@ -1538,8 +1538,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(*this, WIDX_TAB_2);
-        widget_invalidate(*this, WIDX_TAB_5);
+        WidgetInvalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_5);
 
         auto peep = GetGuest();
         if (peep == nullptr)
@@ -1613,8 +1613,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(*this, WIDX_TAB_2);
-        widget_invalidate(*this, WIDX_TAB_6);
+        WidgetInvalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_6);
 
         auto peep = GetGuest();
         if (peep == nullptr)
@@ -1918,8 +1918,7 @@ rct_window* WindowGuestOpen(Peep* peep)
         return WindowStaffOpen(peep);
     }
 
-    auto* window = static_cast<GuestWindow*>(
-        window_bring_to_front_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
+    auto* window = static_cast<GuestWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
     if (window == nullptr)
     {
         int32_t windowWidth = 192;

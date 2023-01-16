@@ -48,7 +48,7 @@ public:
         widgets = window_water_widgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         gLandToolSize = 1;
         gWaterToolRaiseCost = MONEY64_UNDEFINED;
@@ -60,7 +60,7 @@ public:
         // If the tool wasn't changed, turn tool off
         if (WaterToolIsActive())
         {
-            tool_cancel();
+            ToolCancel();
         }
     }
 

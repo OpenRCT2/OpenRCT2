@@ -306,7 +306,7 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
     ride_ratings_calculate(state, *ride);
     ride_ratings_calculate_value(*ride);
 
-    window_invalidate_by_number(WindowClass::Ride, state.CurrentRide.ToUnderlying());
+    WindowInvalidateByNumber(WindowClass::Ride, state.CurrentRide.ToUnderlying());
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 

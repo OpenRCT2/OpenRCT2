@@ -384,7 +384,7 @@ private:
         {
             selected_list_item = index;
         }
-        widget_invalidate(*this, WIDX_SCROLL);
+        WidgetInvalidate(*this, WIDX_SCROLL);
     }
 
 public:
@@ -409,7 +409,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 return;
             case WIDX_COPY_CURRENT:
                 if (selected_list_item > -1 && selected_list_item < no_list_items)
@@ -437,7 +437,7 @@ public:
         if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
         {
             _highlightedIndex = -1;
-            widget_invalidate(*this, WIDX_SCROLL);
+            WidgetInvalidate(*this, WIDX_SCROLL);
         }
 
 #ifndef DISABLE_HTTP
@@ -480,7 +480,7 @@ public:
         else
             _highlightedIndex = selectedItem;
 
-        widget_invalidate(*this, WIDX_SCROLL);
+        WidgetInvalidate(*this, WIDX_SCROLL);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -564,7 +564,7 @@ public:
 rct_window* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
     // Check if window is already open
-    auto* window = window_bring_to_front_by_class(WindowClass::ObjectLoadError);
+    auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);
     if (window == nullptr)
     {
         window = WindowCreate<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);

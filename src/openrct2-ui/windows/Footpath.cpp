@@ -167,12 +167,12 @@ public:
         widgets = window_footpath_widgets;
 
         WindowInitScrollWidgets(*this);
-        window_push_others_right(*this);
+        WindowPushOthersRight(*this);
         show_gridlines();
 
-        tool_cancel();
+        ToolCancel();
         _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-        tool_set(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
+        ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
         input_set_flag(INPUT_FLAG_6, true);
         _footpathErrorOccured = false;
         WindowFootpathSetEnabledAndPressedWidgets();
@@ -184,13 +184,13 @@ public:
         viewport_set_visibility(0);
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-        window_invalidate_by_class(WindowClass::TopToolbar);
+        WindowInvalidateByClass(WindowClass::TopToolbar);
         hide_gridlines();
     }
 
     void OnUpdate() override
     {
-        widget_invalidate(*this, WIDX_CONSTRUCT);
+        WidgetInvalidate(*this, WIDX_CONSTRUCT);
         WindowFootpathUpdateProvisionalPathForBridgeMode();
 
         // #2502: The camera might have changed rotation, so we need to update which directional buttons are pressed
@@ -291,12 +291,12 @@ public:
                 }
 
                 _windowFootpathCost = MONEY32_UNDEFINED;
-                tool_cancel();
+                ToolCancel();
                 FootpathProvisionalUpdate();
                 MapInvalidateMapSelectionTiles();
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                 _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-                tool_set(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
+                ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
                 input_set_flag(INPUT_FLAG_6, true);
                 _footpathErrorOccured = false;
                 WindowFootpathSetEnabledAndPressedWidgets();
@@ -308,12 +308,12 @@ public:
                 }
 
                 _windowFootpathCost = MONEY32_UNDEFINED;
-                tool_cancel();
+                ToolCancel();
                 FootpathProvisionalUpdate();
                 MapInvalidateMapSelectionTiles();
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                 _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
-                tool_set(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::Crosshair);
+                ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::Crosshair);
                 input_set_flag(INPUT_FLAG_6, true);
                 _footpathErrorOccured = false;
                 WindowFootpathSetEnabledAndPressedWidgets();
@@ -540,7 +540,7 @@ private:
             auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
             _windowFootpathCost = FootpathProvisionalSet(type, railings, footpathLoc, slope, pathConstructFlags);
-            widget_invalidate(*this, WIDX_CONSTRUCT);
+            WidgetInvalidate(*this, WIDX_CONSTRUCT);
         }
 
         auto curTime = Platform::GetTicks();
@@ -841,7 +841,7 @@ private:
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             _windowFootpathCost = FootpathProvisionalSet(
                 pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
-            window_invalidate_by_class(WindowClass::Footpath);
+            WindowInvalidateByClass(WindowClass::Footpath);
         }
     }
 
@@ -1004,7 +1004,7 @@ private:
             }
         }
 
-        tool_cancel();
+        ToolCancel();
         gFootpathConstructFromPosition = { mapCoords, z };
         _footpathConstructDirection = direction;
         gProvisionalFootpath.Flags = 0;
@@ -1422,9 +1422,9 @@ void WindowFootpathResetSelectedPath()
     gFootpathSelection = {};
 }
 
-void window_footpath_keyboard_shortcut_turn_left()
+void WindowFootpathKeyboardShortcutTurnLeft()
 {
-    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    rct_window* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1435,9 +1435,9 @@ void window_footpath_keyboard_shortcut_turn_left()
     }
 }
 
-void window_footpath_keyboard_shortcut_turn_right()
+void WindowFootpathKeyboardShortcutTurnRight()
 {
-    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    rct_window* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1448,9 +1448,9 @@ void window_footpath_keyboard_shortcut_turn_right()
     }
 }
 
-void window_footpath_keyboard_shortcut_slope_down()
+void WindowFootpathKeyboardShortcutSlopeDown()
 {
-    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    rct_window* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1461,9 +1461,9 @@ void window_footpath_keyboard_shortcut_slope_down()
     }
 }
 
-void window_footpath_keyboard_shortcut_slope_up()
+void WindowFootpathKeyboardShortcutSlopeUp()
 {
-    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    rct_window* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1474,9 +1474,9 @@ void window_footpath_keyboard_shortcut_slope_up()
     }
 }
 
-void window_footpath_keyboard_shortcut_demolish_current()
+void WindowFootpathKeyboardShortcutDemolishCurrent()
 {
-    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    rct_window* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1487,9 +1487,9 @@ void window_footpath_keyboard_shortcut_demolish_current()
     }
 }
 
-void window_footpath_keyboard_shortcut_build_current()
+void WindowFootpathKeyboardShortcutBuildCurrent()
 {
-    rct_window* w = window_find_by_class(WindowClass::Footpath);
+    rct_window* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);

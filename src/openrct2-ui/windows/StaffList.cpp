@@ -139,7 +139,7 @@ public:
                 break;
             }
             case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
-                if (!tool_set(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
+                if (!ToolSet(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
                 {
                     show_gridlines();
                     SetPatrolAreaToRender(GetSelectedStaffType());
@@ -184,7 +184,7 @@ public:
             InvalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
 
             // Enable highlighting of these staff members in map window
-            if (window_find_by_class(WindowClass::Map) != nullptr)
+            if (WindowFindByClass(WindowClass::Map) != nullptr)
             {
                 gWindowMapFlashingFlags |= MapFlashingFlags::StaffListOpen;
                 for (auto peep : EntityList<Staff>())
@@ -453,9 +453,9 @@ public:
             auto closestStaffMember = GetClosestStaffMemberTo(screenCoords);
             if (closestStaffMember != nullptr)
             {
-                tool_cancel();
+                ToolCancel();
                 auto* staffWindow = WindowStaffOpen(closestStaffMember);
-                window_event_dropdown_call(staffWindow, WC_PEEP__WIDX_PATROL, 0);
+                WindowEventDropdownCall(staffWindow, WC_PEEP__WIDX_PATROL, 0);
             }
             else
             {
@@ -471,7 +471,7 @@ public:
         if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
         {
             hide_gridlines();
-            tool_cancel();
+            ToolCancel();
             ClearPatrolAreaToRender();
             GfxInvalidateScreen();
         }
@@ -581,7 +581,7 @@ private:
         {
             if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
             {
-                tool_cancel();
+                ToolCancel();
             }
         }
     }
@@ -710,7 +710,7 @@ rct_window* WindowStaffListOpen()
 
 void WindowStaffListRefresh()
 {
-    auto* window = window_find_by_class(WindowClass::StaffList);
+    auto* window = WindowFindByClass(WindowClass::StaffList);
     if (window != nullptr)
     {
         static_cast<StaffListWindow*>(window)->RefreshList();

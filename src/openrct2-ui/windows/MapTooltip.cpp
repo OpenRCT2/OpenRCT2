@@ -61,7 +61,7 @@ void WindowMapTooltipUpdateVisibility()
     if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // The map tooltip is drawn by the bottom toolbar
-        window_invalidate_by_class(WindowClass::BottomToolbar);
+        WindowInvalidateByClass(WindowClass::BottomToolbar);
         return;
     }
 
@@ -84,9 +84,9 @@ void WindowMapTooltipUpdateVisibility()
     if (_cursorHoldDuration < 25 || stringId == STR_NONE
         || InputTestPlaceObjectModifier(
             static_cast<PLACE_OBJECT_MODIFIER>(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
-        || window_find_by_class(WindowClass::Error) != nullptr)
+        || WindowFindByClass(WindowClass::Error) != nullptr)
     {
-        window_close_by_class(WindowClass::MapTooltip);
+        WindowCloseByClass(WindowClass::MapTooltip);
     }
     else
     {
@@ -107,7 +107,7 @@ static void WindowMapTooltipOpen()
     const CursorState* state = ContextGetCursorState();
     ScreenCoordsXY pos = { state->position.x - (width / 2), state->position.y + 15 };
 
-    w = window_find_by_class(WindowClass::MapTooltip);
+    w = WindowFindByClass(WindowClass::MapTooltip);
     if (w == nullptr)
     {
         w = WindowCreate(

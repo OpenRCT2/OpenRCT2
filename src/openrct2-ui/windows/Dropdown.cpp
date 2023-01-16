@@ -425,7 +425,7 @@ void WindowDropdownShowImage(
 
 void WindowDropdownClose()
 {
-    window_close_by_class(WindowClass::Dropdown);
+    WindowCloseByClass(WindowClass::Dropdown);
 }
 
 /**

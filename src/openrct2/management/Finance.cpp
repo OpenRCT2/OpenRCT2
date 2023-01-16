@@ -280,7 +280,7 @@ void finance_update_daily_profit()
     gWeeklyProfitAverageDividend += gCurrentProfit;
     gWeeklyProfitAverageDivisor += 1;
 
-    window_invalidate_by_class(WindowClass::Finances);
+    WindowInvalidateByClass(WindowClass::Finances);
 }
 
 money64 finance_get_initial_cash()
@@ -336,7 +336,7 @@ void finance_shift_expenditure_table()
         gExpenditureTable[0][i] = 0;
     }
 
-    window_invalidate_by_class(WindowClass::Finances);
+    WindowInvalidateByClass(WindowClass::Finances);
 }
 
 /**

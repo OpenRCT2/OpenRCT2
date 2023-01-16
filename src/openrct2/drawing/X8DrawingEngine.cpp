@@ -203,12 +203,12 @@ void X8DrawingEngine::EndDraw()
 
 void X8DrawingEngine::PaintWindows()
 {
-    window_reset_visibilities();
+    WindowResetVisibilities();
 
     // Redraw dirty regions before updating the viewports, otherwise
     // when viewports get panned, they copy dirty pixels
     DrawAllDirtyBlocks();
-    window_update_all_viewports();
+    WindowUpdateAllViewports();
     DrawAllDirtyBlocks();
 }
 
@@ -437,7 +437,7 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, 
 
     // Draw region
     OnDrawDirtyBlock(x, y, columns, rows);
-    window_draw_all(&_bitsDPI, left, top, right, bottom);
+    WindowDrawAll(&_bitsDPI, left, top, right, bottom);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

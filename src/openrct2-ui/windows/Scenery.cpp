@@ -160,8 +160,8 @@ public:
             _activeTabIndex = 0;
         }
 
-        window_move_position(*this, { ContextGetWidth() - GetRequiredWidth(), 0x1D });
-        window_push_others_below(*this);
+        WindowMovePosition(*this, { ContextGetWidth() - GetRequiredWidth(), 0x1D });
+        WindowPushOthersBelow(*this);
     }
 
     void OnClose() override
@@ -171,10 +171,10 @@ public:
         viewport_set_visibility(0);
 
         if (gWindowSceneryScatterEnabled)
-            window_close_by_class(WindowClass::SceneryScatter);
+            WindowCloseByClass(WindowClass::SceneryScatter);
 
-        if (scenery_tool_is_active())
-            tool_cancel();
+        if (SceneryToolIsActive())
+            ToolCancel();
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -194,14 +194,14 @@ public:
                 gWindowSceneryPaintEnabled ^= 1;
                 gWindowSceneryEyedropperEnabled = false;
                 if (gWindowSceneryScatterEnabled)
-                    window_close_by_class(WindowClass::SceneryScatter);
+                    WindowCloseByClass(WindowClass::SceneryScatter);
                 Invalidate();
                 break;
             case WIDX_SCENERY_EYEDROPPER_BUTTON:
                 gWindowSceneryPaintEnabled = 0;
                 gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
                 if (gWindowSceneryScatterEnabled)
-                    window_close_by_class(WindowClass::SceneryScatter);
+                    WindowCloseByClass(WindowClass::SceneryScatter);
                 SceneryRemoveGhostToolPlacement();
                 Invalidate();
                 break;
@@ -209,7 +209,7 @@ public:
                 gWindowSceneryPaintEnabled = 0;
                 gWindowSceneryEyedropperEnabled = false;
                 if (gWindowSceneryScatterEnabled)
-                    window_close_by_class(WindowClass::SceneryScatter);
+                    WindowCloseByClass(WindowClass::SceneryScatter);
                 else if (
                     network_get_mode() != NETWORK_MODE_CLIENT
                     || network_can_perform_command(network_get_current_player_group_index(), -2))
@@ -247,7 +247,7 @@ public:
             height = min_height;
             Invalidate();
             // HACK: For some reason invalidate has not been called
-            window_event_invalidate_call(this);
+            WindowEventInvalidateCall(this);
             ContentUpdateScroll();
         }
 
@@ -257,7 +257,7 @@ public:
             height = max_height;
             Invalidate();
             // HACK: For some reason invalidate has not been called
-            window_event_invalidate_call(this);
+            WindowEventInvalidateCall(this);
             ContentUpdateScroll();
         }
     }
@@ -314,7 +314,7 @@ public:
         {
             // Find out what scenery the cursor is over
             const CursorState* state = ContextGetCursorState();
-            WidgetIndex widgetIndex = window_find_widget_from_point(*this, state->position);
+            WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*this, state->position);
             if (widgetIndex == WIDX_SCENERY_LIST)
             {
                 ScreenCoordsXY scrollPos = {};
@@ -341,14 +341,14 @@ public:
     void OnUpdate() override
     {
         const CursorState* state = ContextGetCursorState();
-        rct_window* other = window_find_from_point(state->position);
+        rct_window* other = WindowFindFromPoint(state->position);
         if (other == this)
         {
             ScreenCoordsXY window = state->position - ScreenCoordsXY{ windowPos.x - 26, windowPos.y };
 
             if (window.y < 44 || window.x <= width)
             {
-                WidgetIndex widgetIndex = window_find_widget_from_point(*this, state->position);
+                WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*this, state->position);
                 if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL)
                 {
                     _hoverCounter++;
@@ -388,7 +388,7 @@ public:
 
         Invalidate();
 
-        if (!scenery_tool_is_active())
+        if (!SceneryToolIsActive())
         {
             Close();
             return;
@@ -828,7 +828,7 @@ public:
 
         SortTabs();
         PrepareWidgets();
-        window_invalidate_by_class(WindowClass::Scenery);
+        WindowInvalidateByClass(WindowClass::Scenery);
     }
 
     int32_t GetRequiredWidth() const
@@ -1349,7 +1349,7 @@ private:
 
 rct_window* WindowSceneryOpen()
 {
-    auto* w = static_cast<SceneryWindow*>(window_bring_to_front_by_class(WindowClass::Scenery));
+    auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
     if (w == nullptr)
     {
         w = WindowCreate<SceneryWindow>(WindowClass::Scenery);
@@ -1361,7 +1361,7 @@ void WindowScenerySetSelectedItem(
     const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
     const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
 {
-    auto* w = static_cast<SceneryWindow*>(window_bring_to_front_by_class(WindowClass::Scenery));
+    auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
     if (w != nullptr)
     {
         w->SetSelectedItem(scenery, primary, secondary, tertiary, rotation);
@@ -1371,7 +1371,7 @@ void WindowScenerySetSelectedItem(
 void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
 {
     // Should this bring to front?
-    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WindowClass::Scenery));
+    auto* w = static_cast<SceneryWindow*>(WindowFindByClass(WindowClass::Scenery));
     if (w != nullptr)
     {
         return w->SetSelectedTab(sceneryGroupIndex);
@@ -1397,7 +1397,7 @@ void WindowScenerySetDefaultPlacementConfiguration()
 
 const ScenerySelection WindowSceneryGetTabSelection()
 {
-    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WindowClass::Scenery));
+    auto* w = static_cast<SceneryWindow*>(WindowFindByClass(WindowClass::Scenery));
     if (w != nullptr)
     {
         return w->GetTabSelection();
@@ -1410,7 +1410,7 @@ const ScenerySelection WindowSceneryGetTabSelection()
 
 void WindowSceneryInit()
 {
-    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WindowClass::Scenery));
+    auto* w = static_cast<SceneryWindow*>(WindowFindByClass(WindowClass::Scenery));
     if (w != nullptr)
     {
         w->Init();

@@ -18,7 +18,7 @@ namespace OpenRCT2::Title
 {
     int16_t SetLocationCommand::operator()(int16_t timer)
     {
-        rct_window* w = window_get_main();
+        rct_window* w = WindowGetMain();
         if (w != nullptr)
         {
             auto loc = TileCoordsXY(Location.X, Location.Y).ToCoordsXY().ToTileCentre();

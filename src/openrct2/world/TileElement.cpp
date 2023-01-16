@@ -81,7 +81,7 @@ void TileElement::RemoveBannerEntry()
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
-        window_close_by_number(WindowClass::Banner, bannerIndex.ToUnderlying());
+        WindowCloseByNumber(WindowClass::Banner, bannerIndex.ToUnderlying());
         DeleteBanner(banner->id);
     }
 }

@@ -307,7 +307,7 @@ public:
         if (frame_no >= TabAnimationLoops[_currentTab])
             frame_no = 0;
 
-        widget_invalidate(*this, WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
+        WidgetInvalidate(*this, WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
 
         if (new_ride.SelectedRide.Type != RIDE_TYPE_NULL && new_ride.selected_ride_countdown-- == 0)
         {
@@ -324,7 +324,7 @@ public:
             if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST))
             {
                 new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
-                widget_invalidate(*this, WIDX_RIDE_LIST);
+                WidgetInvalidate(*this, WIDX_RIDE_LIST);
             }
         }
     }
@@ -522,7 +522,7 @@ private:
         }
 
         Close();
-        window_close_construction_windows();
+        WindowCloseConstructionWindows();
 
         auto count = GetNumTrackDesigns(item);
         if (count > 0)
@@ -811,7 +811,7 @@ private:
         // Get maximum scroll height
         int32_t scrollWidth = 0;
         int32_t scrollHeight = 0;
-        window_get_scroll_size(this, 0, &scrollWidth, &scrollHeight);
+        WindowGetScrollSize(this, 0, &scrollWidth, &scrollHeight);
         const Widget& listWidget = widgets[WIDX_RIDE_LIST];
         const int32_t listWidgetHeight = listWidget.bottom - listWidget.top - 1;
 
@@ -950,14 +950,14 @@ rct_window* WindowNewRideOpen()
 {
     rct_window* window;
 
-    window = window_bring_to_front_by_class(WindowClass::ConstructRide);
+    window = WindowBringToFrontByClass(WindowClass::ConstructRide);
     if (window)
     {
         return window;
     }
 
-    window_close_by_class(WindowClass::TrackDesignList);
-    window_close_by_class(WindowClass::TrackDesignPlace);
+    WindowCloseByClass(WindowClass::TrackDesignList);
+    WindowCloseByClass(WindowClass::TrackDesignPlace);
 
     window = WindowCreate<NewRideWindow>(WindowClass::ConstructRide, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);
     return window;
@@ -976,7 +976,7 @@ rct_window* WindowNewRideOpenResearch()
  */
 void WindowNewRideFocus(RideSelection rideItem)
 {
-    auto w = static_cast<NewRideWindow*>(window_find_by_class(WindowClass::ConstructRide));
+    auto w = static_cast<NewRideWindow*>(WindowFindByClass(WindowClass::ConstructRide));
     if (!w)
     {
         return;

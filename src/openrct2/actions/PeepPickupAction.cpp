@@ -200,5 +200,5 @@ void PeepPickupAction::CancelConcurrentPickups(Peep* pickedPeep) const
     // By assigning the peep to null before calling tool_cancel we can avoid
     // resetting the peep to the initial position.
     network_set_pickup_peep(currentPlayerId, nullptr);
-    tool_cancel();
+    ToolCancel();
 }

@@ -956,7 +956,7 @@ private:
 
 rct_window* WindowGuestListOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::GuestList);
+    auto* window = WindowBringToFrontByClass(WindowClass::GuestList);
     if (window == nullptr)
     {
         window = WindowCreate<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
@@ -979,7 +979,7 @@ rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t inde
 
 void WindowGuestListRefreshList()
 {
-    auto* w = window_find_by_class(WindowClass::GuestList);
+    auto* w = WindowFindByClass(WindowClass::GuestList);
     if (w != nullptr)
     {
         static_cast<GuestListWindow*>(w)->RefreshList();

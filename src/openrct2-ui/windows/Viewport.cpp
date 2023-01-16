@@ -59,7 +59,7 @@ private:
     void GetFreeViewportNumber()
     {
         number = 1;
-        window_visit_each([&](rct_window* w) {
+        WindowVisitEach([&](rct_window* w) {
             if (w != nullptr && w != this && w->classification == WindowClass::Viewport)
             {
                 if (w->number >= number)
@@ -84,7 +84,7 @@ public:
             return;
         }
 
-        auto* mainWindow = window_get_main();
+        auto* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             rct_viewport* mainViewport = mainWindow->viewport;
@@ -103,7 +103,7 @@ public:
 
     void OnUpdate() override
     {
-        auto* mainWindow = window_get_main();
+        auto* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
 
@@ -139,12 +139,12 @@ public:
                 }
                 break;
             case WIDX_LOCATE:
-                auto* mainWindow = window_get_main();
+                auto* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                 {
                     auto info = get_map_coordinates_from_pos(
                         { windowPos.x + (width / 2), windowPos.y + (height / 2) }, ViewportInteractionItemAll);
-                    window_scroll_to_location(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
+                    WindowScrollToLocation(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                 }
                 break;
         }
@@ -156,7 +156,7 @@ public:
 
         // Draw viewport
         if (viewport != nullptr)
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
     }
 
     void OnResize() override
@@ -170,7 +170,7 @@ public:
         min_width = WW;
         min_height = WH;
 
-        window_set_resize(*this, min_width, min_height, max_width, max_height);
+        WindowSetResize(*this, min_width, min_height, max_width, max_height);
     }
 
     void OnPrepareDraw() override

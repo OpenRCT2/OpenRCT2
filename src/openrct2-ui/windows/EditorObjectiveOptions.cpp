@@ -198,7 +198,7 @@ rct_window* WindowEditorObjectiveOptionsOpen()
 {
     rct_window* w;
 
-    w = window_bring_to_front_by_class(WindowClass::EditorObjectiveOptions);
+    w = WindowBringToFrontByClass(WindowClass::EditorObjectiveOptions);
     if (w != nullptr)
         return w;
 
@@ -273,8 +273,8 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
     w->widgets = window_editor_objective_options_widgets[page];
     w->Invalidate();
     WindowEditorObjectiveOptionsUpdateDisabledWidgets(w);
-    window_event_resize_call(w);
-    window_event_invalidate_call(w);
+    WindowEventResizeCall(w);
+    WindowEventInvalidateCall(w);
     WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
@@ -334,7 +334,7 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, WidgetIndex w
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -366,7 +366,7 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, WidgetIndex w
  */
 static void WindowEditorObjectiveOptionsMainResize(rct_window* w)
 {
-    window_set_resize(*w, 450, 229, 450, 229);
+    WindowSetResize(*w, 450, 229, 450, 229);
 }
 
 static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
@@ -649,8 +649,8 @@ static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
     uint8_t objectiveType;
 
     w->frame_no++;
-    window_event_invalidate_call(w);
-    widget_invalidate(*w, WIDX_TAB_1);
+    WindowEventInvalidateCall(w);
+    WidgetInvalidate(*w, WIDX_TAB_1);
 
     parkFlags = gParkFlags;
     objectiveType = gScenarioObjective.Type;
@@ -911,7 +911,7 @@ static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, WidgetIndex 
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -926,7 +926,7 @@ static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, WidgetIndex 
  */
 static void WindowEditorObjectiveOptionsRidesResize(rct_window* w)
 {
-    window_set_resize(*w, 380, 224, 380, 224);
+    WindowSetResize(*w, 380, 224, 380, 224);
 }
 
 /**
@@ -936,9 +936,9 @@ static void WindowEditorObjectiveOptionsRidesResize(rct_window* w)
 static void WindowEditorObjectiveOptionsRidesUpdate(rct_window* w)
 {
     w->frame_no++;
-    window_event_invalidate_call(w);
-    window_event_resize_call(w);
-    widget_invalidate(*w, WIDX_TAB_2);
+    WindowEventInvalidateCall(w);
+    WindowEventResizeCall(w);
+    WidgetInvalidate(*w, WIDX_TAB_2);
 
     auto numItems = 0;
     for (auto& ride : GetRideManager())

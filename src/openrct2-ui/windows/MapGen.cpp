@@ -421,7 +421,7 @@ static void WindowMapgenChangeMapSize(int32_t sizeOffset)
 
 rct_window* WindowMapgenOpen()
 {
-    rct_window* w = window_bring_to_front_by_class(WindowClass::Mapgen);
+    rct_window* w = WindowBringToFrontByClass(WindowClass::Mapgen);
     if (w != nullptr)
     {
         return w;
@@ -455,7 +455,7 @@ static void WindowMapgenSharedMouseup(rct_window* w, WidgetIndex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -620,7 +620,7 @@ static void WindowMapgenBaseUpdate(rct_window* w)
     // Tab animation
     if (++w->frame_no >= TabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(*w, WIDX_TAB_1);
+    WidgetInvalidate(*w, WIDX_TAB_1);
 }
 
 static void WindowMapgenTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
@@ -809,7 +809,7 @@ static void WindowMapgenRandomUpdate(rct_window* w)
     // Tab animation
     if (++w->frame_no >= TabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(*w, WIDX_TAB_2);
+    WidgetInvalidate(*w, WIDX_TAB_2);
 }
 
 static void WindowMapgenRandomInvalidate(rct_window* w)
@@ -1007,7 +1007,7 @@ static void WindowMapgenSimplexUpdate(rct_window* w)
     // Tab animation
     if (++w->frame_no >= TabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(*w, WIDX_TAB_3);
+    WidgetInvalidate(*w, WIDX_TAB_3);
 }
 
 static void WindowMapgenSimplexInvalidate(rct_window* w)
@@ -1120,37 +1120,37 @@ static void WindowMapgenHeightmapMousedown(rct_window* w, WidgetIndex widgetInde
     {
         case WIDX_HEIGHTMAP_STRENGTH_UP:
             _heightmapSmoothStrength = std::min(_heightmapSmoothStrength + 1, MAX_SMOOTH_ITERATIONS);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
             break;
         case WIDX_HEIGHTMAP_STRENGTH_DOWN:
             _heightmapSmoothStrength = std::max(_heightmapSmoothStrength - 1, 1);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
             break;
         case WIDX_HEIGHTMAP_LOW_UP:
             _heightmapLow = std::min(_heightmapLow + 1, 142 - 1);
             _heightmapHigh = std::max(_heightmapHigh, _heightmapLow + 1);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_LOW);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_LOW);
             break;
         case WIDX_HEIGHTMAP_LOW_DOWN:
             _heightmapLow = std::max(_heightmapLow - 1, 2);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_LOW);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_LOW);
             break;
         case WIDX_HEIGHTMAP_HIGH_UP:
             _heightmapHigh = std::min(_heightmapHigh + 1, 142);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_HIGH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_HIGH);
             break;
         case WIDX_HEIGHTMAP_HIGH_DOWN:
             _heightmapHigh = std::max(_heightmapHigh - 1, 2 + 1);
             _heightmapLow = std::min(_heightmapLow, _heightmapHigh - 1);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_HIGH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_HIGH);
             break;
         case WIDX_HEIGHTMAP_WATER_LEVEL_UP:
             _waterLevel = std::min(_waterLevel + MINIMUM_WATER_HEIGHT, MINIMUM_WATER_HEIGHT + MAXIMUM_WATER_HEIGHT);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_WATER_LEVEL);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_WATER_LEVEL);
             break;
         case WIDX_HEIGHTMAP_WATER_LEVEL_DOWN:
             _waterLevel = std::max(_waterLevel - MINIMUM_WATER_HEIGHT, 0);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_WATER_LEVEL);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_WATER_LEVEL);
             break;
     }
 }
@@ -1216,18 +1216,18 @@ static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex)
             WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
             WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
             WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
             break;
         case WIDX_HEIGHTMAP_NORMALIZE:
             _heightmapNormalize = !_heightmapNormalize;
             WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_NORMALIZE);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_NORMALIZE);
             break;
         case WIDX_HEIGHTMAP_SMOOTH_TILES:
             _heightmapSmoothTiles = !_heightmapSmoothTiles;
             WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_SMOOTH_TILES);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_SMOOTH_TILES);
             break;
     }
 

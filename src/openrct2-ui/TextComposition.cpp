@@ -93,7 +93,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 Memory::Free(newText);
 
                 console.RefreshCaret(_session.SelectionStart);
-                window_update_textbox();
+                WindowUpdateTextbox();
             }
             break;
         case SDL_KEYDOWN:
@@ -126,7 +126,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
             {
                 Clear();
                 console.RefreshCaret(_session.SelectionStart);
-                window_update_textbox();
+                WindowUpdateTextbox();
             }
 
             switch (key)
@@ -141,7 +141,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         Delete();
 
                         console.RefreshCaret(_session.SelectionStart);
-                        window_update_textbox();
+                        WindowUpdateTextbox();
                     }
                     break;
                 case SDLK_HOME:
@@ -160,11 +160,11 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     _session.SelectionStart = startOffset;
                     Delete();
                     console.RefreshCaret(_session.SelectionStart);
-                    window_update_textbox();
+                    WindowUpdateTextbox();
                     break;
                 }
                 case SDLK_RETURN:
-                    window_cancel_textbox();
+                    WindowCancelTextbox();
                     break;
                 case SDLK_LEFT:
                     CursorLeft();
@@ -187,7 +187,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         utf8* text = SDL_GetClipboardText();
                         Insert(text);
                         SDL_free(text);
-                        window_update_textbox();
+                        WindowUpdateTextbox();
                     }
                     break;
             }

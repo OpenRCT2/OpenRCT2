@@ -294,7 +294,7 @@ void lightfx_prepare_light_list()
 
                 ViewportInteractionItem interactionType = ViewportInteractionItem::None;
 
-                auto* w = window_get_main();
+                auto* w = WindowGetMain();
                 if (w != nullptr)
                 {
                     // based on get_map_coordinates_from_pos_window
@@ -432,10 +432,10 @@ void lightfx_swap_buffers()
 
 void lightfx_update_viewport_settings()
 {
-    rct_window* mainWindow = window_get_main();
+    rct_window* mainWindow = WindowGetMain();
     if (mainWindow != nullptr)
     {
-        rct_viewport* viewport = window_get_viewport(mainWindow);
+        rct_viewport* viewport = WindowGetViewport(mainWindow);
         _current_view_x_back = viewport->viewPos.x;
         _current_view_y_back = viewport->viewPos.y;
         _current_view_rotation_back = get_current_rotation();

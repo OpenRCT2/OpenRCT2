@@ -871,7 +871,7 @@ StringId ThemeDescGetName(WindowClass wc)
 
 void ColourSchemeUpdateAll()
 {
-    window_visit_each([](rct_window* w) { ColourSchemeUpdate(w); });
+    WindowVisitEach([](rct_window* w) { ColourSchemeUpdate(w); });
 }
 
 void ColourSchemeUpdate(rct_window* window)

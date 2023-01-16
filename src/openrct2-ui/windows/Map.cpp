@@ -174,7 +174,7 @@ public:
         if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == classification
             && gCurrentToolWidget.window_number == number)
         {
-            tool_cancel();
+            ToolCancel();
         }
     }
 
@@ -196,7 +196,7 @@ public:
                 break;
             case WIDX_SET_LAND_RIGHTS:
                 Invalidate();
-                if (tool_set(*this, widgetIndex, Tool::UpArrow))
+                if (ToolSet(*this, widgetIndex, Tool::UpArrow))
                     break;
                 _activeTool = 2;
                 // Prevent mountain tool size.
@@ -239,7 +239,7 @@ public:
                 break;
             case WIDX_BUILD_PARK_ENTRANCE:
                 Invalidate();
-                if (tool_set(*this, widgetIndex, Tool::UpArrow))
+                if (ToolSet(*this, widgetIndex, Tool::UpArrow))
                     break;
 
                 gParkEntranceGhostExists = false;
@@ -253,7 +253,7 @@ public:
                 gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
                 break;
             case WIDX_PEOPLE_STARTING_POSITION:
-                if (tool_set(*this, widgetIndex, Tool::UpArrow))
+                if (ToolSet(*this, widgetIndex, Tool::UpArrow))
                     break;
 
                 show_gridlines();
@@ -650,10 +650,10 @@ public:
         auto mapCoords = CoordsXY{ std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1), std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1) };
         auto mapZ = TileElementHeight(mapCoords);
 
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            window_scroll_to_location(*mainWindow, { mapCoords, mapZ });
+            WindowScrollToLocation(*mainWindow, { mapCoords, mapZ });
         }
 
         if (LandToolIsActive())
@@ -928,7 +928,7 @@ private:
 
     void CentreMapOnViewPoint()
     {
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         int16_t ax, bx, cx, dx;
         int16_t bp, di;
 
@@ -1243,7 +1243,7 @@ private:
      */
     void PaintHudRectangle(rct_drawpixelinfo* dpi)
     {
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
 
@@ -1461,7 +1461,7 @@ void WindowMapReset()
     rct_window* w;
 
     // Check if window is even opened
-    w = window_bring_to_front_by_class(WindowClass::Map);
+    w = WindowBringToFrontByClass(WindowClass::Map);
     if (w == nullptr)
     {
         return;

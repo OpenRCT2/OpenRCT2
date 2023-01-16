@@ -57,7 +57,7 @@ public:
         widgets = PatrolAreaWidgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
         gLandToolSize = 4;
     }
 
@@ -65,7 +65,7 @@ public:
     {
         // If the tool wasn't changed, turn tool off
         if (PatrolAreaToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -244,7 +244,7 @@ private:
         }
         else
         {
-            if (!tool_set(*this, 0, Tool::WalkDown))
+            if (!ToolSet(*this, 0, Tool::WalkDown))
             {
                 show_gridlines();
                 input_set_flag(INPUT_FLAG_6, true);
@@ -274,7 +274,7 @@ private:
     bool IsStaffWindowOpen()
     {
         // If staff window for this patrol area was closed, tool is no longer active
-        auto staffWindow = window_find_by_number(WindowClass::Peep, _staffId);
+        auto staffWindow = WindowFindByNumber(WindowClass::Peep, _staffId);
         return staffWindow != nullptr;
     }
 
@@ -298,6 +298,6 @@ rct_window* WindowPatrolAreaOpen(EntityId staffId)
 
 EntityId WindowPatrolAreaGetCurrentStaffId()
 {
-    auto current = reinterpret_cast<PatrolAreaWindow*>(window_find_by_class(WindowClass::PatrolArea));
+    auto current = reinterpret_cast<PatrolAreaWindow*>(WindowFindByClass(WindowClass::PatrolArea));
     return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
 }
