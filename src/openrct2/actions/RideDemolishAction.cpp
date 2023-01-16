@@ -168,7 +168,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
-    scrolling_text_invalidate();
+    ScrollingTextInvalidate();
     GfxInvalidateScreen();
 
     return res;

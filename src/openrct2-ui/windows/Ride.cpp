@@ -875,7 +875,7 @@ static void WindowRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_
         }
 
         const auto& widget = w->widgets[widgetIndex];
-        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.left, widget.top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.left, widget.top });
     }
 }
 
@@ -912,7 +912,7 @@ static void WindowRideDrawTabMain(rct_drawpixelinfo* dpi, rct_window* w)
             }
 
             const auto& widget = w->widgets[widgetIndex];
-            gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.left, widget.top });
+            GfxDrawSprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.left, widget.top });
         }
     }
 }
@@ -984,7 +984,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
         imageIndex *= carEntry->base_num_frames;
         imageIndex += carEntry->base_image_id;
         auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
-        gfx_draw_sprite(&clipDPI, imageId, screenCoords);
+        GfxDrawSprite(&clipDPI, imageId, screenCoords);
     }
 }
 
@@ -1005,7 +1005,7 @@ static void WindowRideDrawTabCustomer(rct_drawpixelinfo* dpi, rct_window* w)
 
         spriteIndex += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),
             w->windowPos + ScreenCoordsXY{ widget.midX(), widget.bottom - 6 });
     }
@@ -2571,7 +2571,7 @@ static void WindowRideMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         window_draw_viewport(dpi, *w);
         if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-            gfx_draw_sprite(dpi, ImageId(SPR_HEARING_VIEWPORT), w->windowPos + ScreenCoordsXY{ 2, 2 });
+            GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), w->windowPos + ScreenCoordsXY{ 2, 2 });
     }
 
     // View dropdown
@@ -3018,7 +3018,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 
         VehicleDrawInfo* current = nextSpriteToDraw;
         while (--current >= trainCarImages)
-            gfx_draw_sprite(dpi, current->imageId, { current->x, current->y });
+            GfxDrawSprite(dpi, current->imageId, { current->x, current->y });
 
         startX += 36;
     }
@@ -4112,7 +4112,7 @@ static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi)
     Widget* widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
     auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
-    gfx_draw_sprite(dpi, image, screenCoords);
+    GfxDrawSprite(dpi, image, screenCoords);
 
     // Inspection label
     widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
@@ -4891,7 +4891,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
         const auto& rtd = ride->GetRideTypeDescriptor();
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         {
-            gfx_draw_sprite(dpi, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
+            GfxDrawSprite(dpi, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
         }
         else
         {
@@ -4899,14 +4899,14 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
             int32_t spriteIndex = typeDescriptor.ColourPreview.Track;
             if (spriteIndex != 0)
             {
-                gfx_draw_sprite(dpi, ImageId(spriteIndex, trackColour.main, trackColour.additional), screenCoords);
+                GfxDrawSprite(dpi, ImageId(spriteIndex, trackColour.main, trackColour.additional), screenCoords);
             }
 
             // Supports
             spriteIndex = typeDescriptor.ColourPreview.Supports;
             if (spriteIndex != 0)
             {
-                gfx_draw_sprite(dpi, ImageId(spriteIndex, trackColour.supports), screenCoords);
+                GfxDrawSprite(dpi, ImageId(spriteIndex, trackColour.supports), screenCoords);
             }
         }
     }
@@ -4930,11 +4930,11 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 }
             }
 
-            gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColour), screenCoords);
+            GfxDrawSprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColour), screenCoords);
         }
         else
         {
-            gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, ride->track_colour[0].main), screenCoords);
+            GfxDrawSprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, ride->track_colour[0].main), screenCoords);
         }
     }
 
@@ -4956,16 +4956,16 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 auto imageId = ImageId(stationObj->BaseImageId, trackColour.main, trackColour.additional);
 
                 // Back
-                gfx_draw_sprite(&clippedDpi, imageId, { 34, 20 });
+                GfxDrawSprite(&clippedDpi, imageId, { 34, 20 });
 
                 // Front
-                gfx_draw_sprite(&clippedDpi, imageId.WithIndexOffset(4), { 34, 20 });
+                GfxDrawSprite(&clippedDpi, imageId.WithIndexOffset(4), { 34, 20 });
 
                 // Glass
                 if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
                 {
                     auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparency(trackColour.main);
-                    gfx_draw_sprite(&clippedDpi, glassImageId, { 34, 20 });
+                    GfxDrawSprite(&clippedDpi, glassImageId, { 34, 20 });
                 }
             }
         }
@@ -5013,7 +5013,7 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     imageIndex *= carEntry->base_num_frames;
     imageIndex += carEntry->base_image_id;
     auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
-    gfx_draw_sprite(dpi, imageId, screenCoords);
+    GfxDrawSprite(dpi, imageId, screenCoords);
 }
 
 #pragma endregion

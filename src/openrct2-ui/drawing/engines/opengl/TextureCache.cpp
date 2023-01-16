@@ -219,8 +219,8 @@ void TextureCache::GeneratePaletteTexture()
         auto g1Index = GetPaletteG1Index(i);
         if (g1Index.has_value())
         {
-            auto element = gfx_get_g1_element(g1Index.value());
-            gfx_draw_sprite_software(&dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+            auto element = GfxGetG1Element(g1Index.value());
+            GfxDrawSpriteSoftware(&dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
         }
     }
 
@@ -349,25 +349,25 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
 
 rct_drawpixelinfo TextureCache::GetImageAsDPI(const ImageId imageId)
 {
-    auto g1Element = gfx_get_g1_element(imageId);
+    auto g1Element = GfxGetG1Element(imageId);
     int32_t width = g1Element->width;
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
-    gfx_draw_sprite_software(&dpi, imageId, { -g1Element->x_offset, -g1Element->y_offset });
+    GfxDrawSpriteSoftware(&dpi, imageId, { -g1Element->x_offset, -g1Element->y_offset });
     return dpi;
 }
 
 rct_drawpixelinfo TextureCache::GetGlyphAsDPI(const ImageId imageId, const PaletteMap& palette)
 {
-    auto g1Element = gfx_get_g1_element(imageId);
+    auto g1Element = GfxGetG1Element(imageId);
     int32_t width = g1Element->width;
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
 
     const auto glyphCoords = ScreenCoordsXY{ -g1Element->x_offset, -g1Element->y_offset };
-    gfx_draw_sprite_palette_set_software(&dpi, imageId, glyphCoords, palette);
+    GfxDrawSpritePaletteSetSoftware(&dpi, imageId, glyphCoords, palette);
     return dpi;
 }
 

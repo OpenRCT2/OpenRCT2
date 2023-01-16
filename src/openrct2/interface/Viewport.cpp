@@ -1659,7 +1659,7 @@ static bool is_sprite_interacted_with_palette_set(
 {
     PROFILED_FUNCTION();
 
-    const rct_g1_element* g1 = gfx_get_g1_element(imageId);
+    const rct_g1_element* g1 = GfxGetG1Element(imageId);
     if (g1 == nullptr)
     {
         return false;

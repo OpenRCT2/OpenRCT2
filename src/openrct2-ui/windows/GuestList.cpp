@@ -643,13 +643,13 @@ private:
         // Tab 1 image
         auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
         i += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
-        gfx_draw_sprite(
+        GfxDrawSprite(
             &dpi, ImageId(i, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN),
             windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });
 
         // Tab 2 image
         i = (_selectedTab == TabId::Summarised ? _tabAnimationIndex / 4 : 0);
-        gfx_draw_sprite(
+        GfxDrawSprite(
             &dpi, ImageId(SPR_TAB_GUESTS_0 + i),
             windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
     }
@@ -686,11 +686,11 @@ private:
                 {
                     case GuestViewType::Actions:
                         // Guest face
-                        gfx_draw_sprite(&dpi, ImageId(get_peep_face_sprite_small(peep)), { 118, y + 1 });
+                        GfxDrawSprite(&dpi, ImageId(get_peep_face_sprite_small(peep)), { 118, y + 1 });
 
                         // Tracking icon
                         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
-                            gfx_draw_sprite(&dpi, ImageId(STR_ENTER_SELECTION_SIZE), { 112, y + 1 });
+                            GfxDrawSprite(&dpi, ImageId(STR_ENTER_SELECTION_SIZE), { 112, y + 1 });
 
                         // Action
                         ft = Formatter();
@@ -745,7 +745,7 @@ private:
                 // Draw guest faces
                 for (uint32_t j = 0; j < std::size(group.Faces) && j < group.NumGuests; j++)
                 {
-                    gfx_draw_sprite(
+                    GfxDrawSprite(
                         &dpi, ImageId(group.Faces[j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY),
                         { static_cast<int32_t>(j) * 8, y + 12 });
                 }

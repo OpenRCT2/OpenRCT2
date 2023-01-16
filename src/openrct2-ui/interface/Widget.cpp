@@ -143,7 +143,7 @@ static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-    gfx_draw_sprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
+    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
 }
 
 /**
@@ -174,7 +174,7 @@ static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-    gfx_draw_sprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
+    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
 }
 
 /**
@@ -255,7 +255,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex wid
     auto image = widget.image.WithIndex(newIndex).WithPrimary(colour);
 
     // Draw disabled image
-    gfx_draw_sprite(dpi, image, leftTop);
+    GfxDrawSprite(dpi, image, leftTop);
 }
 
 /**
@@ -491,7 +491,7 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
         auto ft = Formatter();
         ft.Add<utf8*>(buffer);
         DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
-        textRight = l + gfx_get_string_width(buffer, FontStyle::Medium) + 1;
+        textRight = l + GfxGetStringWidth(buffer, FontStyle::Medium) + 1;
     }
 
     // Border
@@ -639,7 +639,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
     // fill it when checkbox is pressed
     if (WidgetIsPressed(w, widgetIndex))
     {
-        gfx_draw_string(
+        GfxDrawString(
             dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
             { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) });
     }
@@ -649,7 +649,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
         return;
 
     auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
-    gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, { midLeft + ScreenCoordsXY{ 14, 0 } });
+    GfxDrawStringLeftCentred(dpi, stringId, formatArgs, colour, { midLeft + ScreenCoordsXY{ 14, 0 } });
 }
 
 /**
@@ -741,7 +741,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         GfxFillRectInset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
-        gfx_draw_string(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
+        GfxDrawString(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
     }
 
     // Thumb
@@ -758,7 +758,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         GfxFillRectInset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
-        gfx_draw_string(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
+        GfxDrawString(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
     }
 }
 
@@ -778,7 +778,7 @@ static void WidgetVScrollbarDraw(
     GfxFillRectInset(
         dpi, { { l, t }, { r, t + (SCROLLBAR_WIDTH - 1) } }, colour,
         ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
+    GfxDrawString(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
 
     // Thumb
     GfxFillRectInset(
@@ -791,7 +791,7 @@ static void WidgetVScrollbarDraw(
     GfxFillRectInset(
         dpi, { { l, b - (SCROLLBAR_WIDTH - 1) }, { r, b } }, colour,
         ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
+    GfxDrawString(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
 }
 
 /**
@@ -824,12 +824,12 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
         // Draw greyed out (light border bottom right shadow)
         colour = w.colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-        gfx_draw_sprite_solid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
+        GfxDrawSpriteSolid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
 
         // Draw greyed out (dark)
         colour = w.colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-        gfx_draw_sprite_solid(dpi, image, screenCoords, colour);
+        GfxDrawSpriteSolid(dpi, image, screenCoords, colour);
     }
     else
     {
@@ -843,7 +843,7 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
         else
             image = image.WithPrimary(colour);
 
-        gfx_draw_sprite(dpi, image, screenCoords);
+        GfxDrawSprite(dpi, image, screenCoords);
     }
 }
 
@@ -1149,9 +1149,8 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
         if (widget.text != 0)
         {
             safe_strcpy(wrapped_string, widget.string, 512);
-            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &no_lines);
-            gfx_draw_string_no_formatting(
-                dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
+            GfxWrapString(wrapped_string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &no_lines);
+            GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
         }
         return;
     }
@@ -1160,16 +1159,16 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
-    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &no_lines);
+    GfxWrapString(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &no_lines);
 
-    gfx_draw_string_no_formatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
+    GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
 
     size_t string_length = get_string_size(wrapped_string) - 1;
 
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
-    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string, FontStyle::Medium) + 3;
+    int32_t cur_x = topLeft.x + GfxGetStringWidthNoFormatting(temp_string, FontStyle::Medium) + 3;
 
     int32_t width = 6;
     if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
@@ -1178,7 +1177,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
         // of the character that the cursor is under.
         temp_string[1] = '\0';
         temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
-        width = std::max(gfx_get_string_width_no_formatting(temp_string, FontStyle::Medium) - 2, 4);
+        width = std::max(GfxGetStringWidthNoFormatting(temp_string, FontStyle::Medium) - 2, 4);
     }
 
     if (gTextBoxFrameNo <= 15)

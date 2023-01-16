@@ -186,7 +186,7 @@ public:
                                            : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
                     if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                         image = image.WithIndexOffset(1);
-                    gfx_draw_sprite(&dpi, image, screenCoords);
+                    GfxDrawSprite(&dpi, image, screenCoords);
                 }
                 else
                 {
@@ -353,7 +353,7 @@ void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uin
     for (size_t i = 0; i < num_items; i++)
     {
         format_string(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
-        string_width = gfx_get_string_width(buffer, FontStyle::Medium);
+        string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
         max_string_width = std::max(string_width, max_string_width);
     }
 

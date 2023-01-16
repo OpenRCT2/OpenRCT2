@@ -152,7 +152,7 @@ public:
         const auto& widget = widgets[WIDX_HIDE_STAFF];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
         auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
-        gfx_draw_sprite(&dpi, image, screenCoords);
+        GfxDrawSprite(&dpi, image, screenCoords);
     }
 
 private:

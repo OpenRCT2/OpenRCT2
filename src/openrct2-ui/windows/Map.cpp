@@ -713,9 +713,9 @@ public:
         g1temp.height = MAP_WINDOW_MAP_SIZE;
         g1temp.x_offset = -8;
         g1temp.y_offset = -8;
-        gfx_set_g1_element(SPR_TEMP, &g1temp);
+        GfxSetG1Element(SPR_TEMP, &g1temp);
         drawing_engine_invalidate_image(SPR_TEMP);
-        gfx_draw_sprite(&dpi, ImageId(SPR_TEMP), { 0, 0 });
+        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), { 0, 0 });
 
         if (selected_tab == PAGE_PEEPS)
         {
@@ -875,7 +875,7 @@ public:
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
                                   widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-            gfx_draw_sprite(&dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
+            GfxDrawSprite(&dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -1282,7 +1282,7 @@ private:
         if (selected_tab == PAGE_PEEPS)
             guestTabImage += list_information_type / 4;
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(guestTabImage),
             windowPos + ScreenCoordsXY{ widgets[WIDX_PEOPLE_TAB].left, widgets[WIDX_PEOPLE_TAB].top });
 
@@ -1291,7 +1291,7 @@ private:
         if (selected_tab == PAGE_RIDES)
             rideTabImage += list_information_type / 4;
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(rideTabImage),
             windowPos + ScreenCoordsXY{ widgets[WIDX_RIDES_TAB].left, widgets[WIDX_RIDES_TAB].top });
     }

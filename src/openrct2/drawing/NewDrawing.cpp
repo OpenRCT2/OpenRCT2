@@ -233,7 +233,7 @@ void GfxDrawDashedLine(
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords)
+void FASTCALL GfxDrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -244,7 +244,7 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId imageId, con
 }
 
 void FASTCALL
-    gfx_draw_glyph(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    GfxDrawGlyph(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -254,7 +254,7 @@ void FASTCALL
     }
 }
 
-void FASTCALL gfx_draw_sprite_raw_masked(
+void FASTCALL GfxDrawSpriteRawMasked(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
 {
     auto drawingEngine = dpi->DrawingEngine;
@@ -265,7 +265,7 @@ void FASTCALL gfx_draw_sprite_raw_masked(
     }
 }
 
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
+void FASTCALL GfxDrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)

@@ -196,7 +196,7 @@ public:
             if (screenCoords.y + lineHeight < dpi.y || screenCoords.y >= dpi.y + dpi.height)
                 continue;
 
-            gfx_draw_string(&dpi, screenCoords, line.c_str(), { colours[0] });
+            GfxDrawString(&dpi, screenCoords, line.c_str(), { colours[0] });
         }
     }
 
@@ -306,7 +306,7 @@ private:
         _changelogLongestLineWidth = 0;
         for (const auto& line : _changelogLines)
         {
-            int32_t linewidth = gfx_get_string_width(line.c_str(), FontStyle::Medium);
+            int32_t linewidth = GfxGetStringWidth(line.c_str(), FontStyle::Medium);
             _changelogLongestLineWidth = std::max(linewidth, _changelogLongestLineWidth);
         }
     }

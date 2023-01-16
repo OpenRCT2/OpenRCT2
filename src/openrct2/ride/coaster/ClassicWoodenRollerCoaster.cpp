@@ -1862,7 +1862,7 @@ static void classic_wooden_rc_track_diag_25_deg_down_to_right_bank(
 // As such, all non-banked pieces are simply drawn as regular wooden roller coaster pieces with a different paint scheme.
 TRACK_PAINT_FUNCTION get_track_paint_function_classic_wooden_rc(int32_t trackType)
 {
-    if (!is_csg_loaded())
+    if (!IsCsgLoaded())
     {
         return get_track_paint_function_classic_wooden_rc_fallback(trackType);
     }

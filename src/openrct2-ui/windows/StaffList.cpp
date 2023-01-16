@@ -414,7 +414,7 @@ public:
                 // True if a patrol path is set for the worker
                 if (peep->HasPatrolArea())
                 {
-                    gfx_draw_sprite(&dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
+                    GfxDrawSprite(&dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                 }
 
                 auto staffOrderIcon_x = nameColumnSize + 20;
@@ -427,7 +427,7 @@ public:
                     {
                         if (staffOrders & 1)
                         {
-                            gfx_draw_sprite(&dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
+                            GfxDrawSprite(&dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
                         }
                         staffOrders = staffOrders >> 1;
                         staffOrderIcon_x += 9;
@@ -437,7 +437,7 @@ public:
                 }
                 else
                 {
-                    gfx_draw_sprite(&dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
+                    GfxDrawSprite(&dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
                 }
             }
 
@@ -556,7 +556,7 @@ private:
         const auto& widget = widgets[widgetIndex];
         auto imageId = (_selectedTab == tabIndex ? (_tabAnimationIndex & ~3) : 0);
         imageId += GetPeepAnimation(type).base_image + 1;
-        gfx_draw_sprite(
+        GfxDrawSprite(
             &dpi, ImageId(imageId, colour), windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
     }
 
@@ -571,7 +571,7 @@ private:
         {
             auto imageId = (_selectedTab == 3 ? (_tabAnimationIndex & ~3) : 0);
             imageId += GetPeepAnimation(type).base_image + 1;
-            gfx_draw_sprite(&clippedDpi, ImageId(imageId), { 15, 23 });
+            GfxDrawSprite(&clippedDpi, ImageId(imageId), { 15, 23 });
         }
     }
 

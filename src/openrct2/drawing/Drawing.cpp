@@ -591,7 +591,7 @@ void GfxFilterPixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, Filter
  */
 void GfxTransposePalette(int32_t pal, uint8_t product)
 {
-    const rct_g1_element* g1 = gfx_get_g1_element(pal);
+    const rct_g1_element* g1 = GfxGetG1Element(pal);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -632,7 +632,7 @@ void LoadPalette()
         palette = water_type->image_id;
     }
 
-    const rct_g1_element* g1 = gfx_get_g1_element(palette);
+    const rct_g1_element* g1 = GfxGetG1Element(palette);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -725,7 +725,7 @@ void GfxInvalidatePickedUpPeep()
     auto imageId = gPickupPeepImage;
     if (imageId.HasValue())
     {
-        auto* g1 = gfx_get_g1_element(imageId);
+        auto* g1 = GfxGetG1Element(imageId);
         if (g1 != nullptr)
         {
             int32_t left = gPickupPeepX + g1->x_offset;
@@ -741,7 +741,7 @@ void GfxDrawPickedUpPeep(rct_drawpixelinfo* dpi)
 {
     if (gPickupPeepImage.HasValue())
     {
-        gfx_draw_sprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
+        GfxDrawSprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
     }
 }
 
@@ -759,7 +759,7 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     auto g1Index = GetPaletteG1Index(paletteId);
     if (g1Index.has_value())
     {
-        auto g1 = gfx_get_g1_element(g1Index.value());
+        auto g1 = GfxGetG1Element(g1Index.value());
         if (g1 != nullptr)
         {
             return PaletteMap(g1->offset, g1->height, g1->width);

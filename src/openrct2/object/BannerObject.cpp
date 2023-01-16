@@ -81,8 +81,8 @@ void BannerObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t he
     auto image0 = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
     auto image1 = ImageId(_legacyType.image + 1, COLOUR_BORDEAUX_RED);
 
-    gfx_draw_sprite(dpi, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
-    gfx_draw_sprite(dpi, image1, screenCoords + ScreenCoordsXY{ -12, 8 });
+    GfxDrawSprite(dpi, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
+    GfxDrawSprite(dpi, image1, screenCoords + ScreenCoordsXY{ -12, 8 });
 }
 
 void BannerObject::ReadJson(IReadObjectContext* context, json_t& root)

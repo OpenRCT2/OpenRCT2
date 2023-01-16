@@ -866,7 +866,7 @@ namespace OpenRCT2::Ui::Windows
                         auto imageOffset = frame % tab.imageFrameCount;
                         image = image.WithIndex(image.GetIndex() + imageOffset);
                     }
-                    gfx_draw_sprite(&dpi, image, leftTop);
+                    GfxDrawSprite(&dpi, image, leftTop);
                 }
                 tabIndex++;
             }

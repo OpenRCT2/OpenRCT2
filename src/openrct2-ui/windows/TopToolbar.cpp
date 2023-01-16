@@ -885,7 +885,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
         imgId = SPR_TOOLBAR_STAFF;
         if (WidgetIsPressed(*w, WIDX_STAFF))
             imgId++;
-        gfx_draw_sprite(dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
+        GfxDrawSprite(dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
     }
 
     // Draw fast forward button
@@ -895,15 +895,15 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                       w->windowPos.y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0 };
         if (WidgetIsPressed(*w, WIDX_FASTFORWARD))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
+        GfxDrawSprite(dpi, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
 
         for (int32_t i = 0; i < gGameSpeed && gGameSpeed <= 4; i++)
         {
-            gfx_draw_sprite(dpi, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
+            GfxDrawSprite(dpi, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
         }
         for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
         {
-            gfx_draw_sprite(dpi, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
+            GfxDrawSprite(dpi, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
         }
     }
 
@@ -915,7 +915,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                               window_top_toolbar_widgets[WIDX_CHEATS].top - 1 };
         if (WidgetIsPressed(*w, WIDX_CHEATS))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
 
         // Draw an overlay if clearance checks are disabled
         if (gCheatsDisableClearanceChecks)
@@ -933,7 +933,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHAT].left, window_top_toolbar_widgets[WIDX_CHAT].top - 2 };
         if (WidgetIsPressed(*w, WIDX_CHAT))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_G2_CHAT), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_G2_CHAT), screenPos);
     }
 
     // Draw debug button
@@ -943,7 +943,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_DEBUG].left, window_top_toolbar_widgets[WIDX_DEBUG].top - 1 };
         if (WidgetIsPressed(*w, WIDX_DEBUG))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_TAB_GEARS_0), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_TAB_GEARS_0), screenPos);
     }
 
     // Draw research button
@@ -954,7 +954,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                               window_top_toolbar_widgets[WIDX_RESEARCH].top };
         if (WidgetIsPressed(*w, WIDX_RESEARCH))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
     }
 
     // Draw finances button
@@ -965,7 +965,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                               window_top_toolbar_widgets[WIDX_FINANCES].top + 1 };
         if (WidgetIsPressed(*w, WIDX_FINANCES))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenPos);
     }
 
     // Draw news button
@@ -975,7 +975,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NEWS].left + 3, window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
         if (WidgetIsPressed(*w, WIDX_NEWS))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_G2_TAB_NEWS), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_G2_TAB_NEWS), screenPos);
     }
 
     // Draw network button
@@ -989,7 +989,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
         // Draw (de)sync icon.
         imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
-        gfx_draw_sprite(dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
+        GfxDrawSprite(dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
         // Draw number of players.
         auto ft = Formatter();
@@ -3691,7 +3691,7 @@ static void TopToolbarInitViewMenu(rct_window* w, Widget* widget)
     gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
 
     // Opaque water relies on RCT1 sprites.
-    if (!is_csg_loaded())
+    if (!IsCsgLoaded())
     {
         Dropdown::SetDisabled(DDIDX_TRANSPARENT_WATER, true);
     }

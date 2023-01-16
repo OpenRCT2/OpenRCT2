@@ -81,7 +81,7 @@ GameActions::Result RideSetNameAction::Execute() const
         ride->custom_name = _name;
     }
 
-    scrolling_text_invalidate();
+    ScrollingTextInvalidate();
     GfxInvalidateScreen();
 
     // Refresh windows that display ride name

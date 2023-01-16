@@ -437,7 +437,7 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         {
             snprintf(players, sizeof(players), "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
         }
-        const int16_t numPlayersStringWidth = gfx_get_string_width(players, FontStyle::Medium);
+        const int16_t numPlayersStringWidth = GfxGetStringWidth(players, FontStyle::Medium);
 
         // How much space we have for the server info depends on the size of everything rendered after.
         const int16_t spaceAvailableForInfo = width - numPlayersStringWidth - SCROLLBAR_WIDTH - 35;
@@ -470,20 +470,20 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             bool correctVersion = serverDetails.Version == network_get_version();
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
-        gfx_draw_sprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
+        GfxDrawSprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
         right -= 4;
 
         // Draw lock icon
         right -= 8;
         if (serverDetails.RequiresPassword)
         {
-            gfx_draw_sprite(dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
+            GfxDrawSprite(dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
         }
         right -= 6;
 
         // Draw number of players
         screenCoords.x = right - numPlayersStringWidth;
-        gfx_draw_string(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { w->colours[1] });
+        GfxDrawString(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { w->colours[1] });
 
         screenCoords.y += ITEM_HEIGHT;
     }

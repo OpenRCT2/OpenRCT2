@@ -159,7 +159,7 @@ void update_palette_effects()
         {
             palette = water_type->image_id;
         }
-        const rct_g1_element* g1 = gfx_get_g1_element(palette);
+        const rct_g1_element* g1 = GfxGetG1Element(palette);
         if (g1 != nullptr)
         {
             int32_t xoffset = g1->x_offset;
@@ -187,7 +187,7 @@ void update_palette_effects()
                 palette = water_type->image_id;
             }
 
-            const rct_g1_element* g1 = gfx_get_g1_element(palette);
+            const rct_g1_element* g1 = GfxGetG1Element(palette);
             if (g1 != nullptr)
             {
                 int32_t xoffset = g1->x_offset;
@@ -223,7 +223,7 @@ void update_palette_effects()
         {
             waterId = water_type->palette_index_1;
         }
-        const rct_g1_element* g1 = gfx_get_g1_element(shade + waterId);
+        const rct_g1_element* g1 = GfxGetG1Element(shade + waterId);
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
@@ -248,7 +248,7 @@ void update_palette_effects()
         {
             waterId = water_type->palette_index_2;
         }
-        g1 = gfx_get_g1_element(shade + waterId);
+        g1 = GfxGetG1Element(shade + waterId);
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
@@ -270,7 +270,7 @@ void update_palette_effects()
 
         j = (static_cast<uint16_t>(gPaletteEffectFrame * -960) * 3) >> 16;
         waterId = SPR_GAME_PALETTE_4;
-        g1 = gfx_get_g1_element(shade + waterId);
+        g1 = GfxGetG1Element(shade + waterId);
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];

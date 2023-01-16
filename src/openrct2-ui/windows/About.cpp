@@ -201,7 +201,7 @@ private:
         // Draw logo on placeholder widget
         ScreenCoordsXY logoCoords = windowPos
             + ScreenCoordsXY(widgets[WIDX_OPENRCT2_LOGO].left, widgets[WIDX_OPENRCT2_LOGO].top);
-        gfx_draw_sprite(&dpi, ImageId(SPR_G2_LOGO), logoCoords);
+        GfxDrawSprite(&dpi, ImageId(SPR_G2_LOGO), logoCoords);
         // Version info
         utf8 buffer[256];
         utf8* ch = buffer;
@@ -255,7 +255,7 @@ private:
         DrawTextBasic(&dpi, screenCoords, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, {}, { TextAlignment::CENTRE });
 
         // Images
-        gfx_draw_sprite(&dpi, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), { windowPos.x + 92, yPage + 24 });
+        GfxDrawSprite(&dpi, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), { windowPos.x + 92, yPage + 24 });
 
         // Licence
     }

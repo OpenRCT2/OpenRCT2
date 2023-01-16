@@ -203,7 +203,7 @@ uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count
     uint32_t imageId = baseImageId;
     for (uint32_t i = 0; i < count; i++)
     {
-        gfx_set_g1_element(imageId, &images[i]);
+        GfxSetG1Element(imageId, &images[i]);
         drawing_engine_invalidate_image(imageId);
         imageId++;
     }
@@ -221,7 +221,7 @@ void gfx_object_free_images(uint32_t baseImageId, uint32_t count)
         {
             uint32_t imageId = baseImageId + i;
             rct_g1_element g1 = {};
-            gfx_set_g1_element(imageId, &g1);
+            GfxSetG1Element(imageId, &g1);
             drawing_engine_invalidate_image(imageId);
         }
 

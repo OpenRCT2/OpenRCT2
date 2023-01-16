@@ -1011,7 +1011,7 @@ public:
                 spriteIndex += (frame % _windowFinancesTabAnimationFrames[this->page]);
             }
 
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
     }

@@ -607,7 +607,7 @@ static void WindowResearchDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, in
             spriteIndex += frame;
         }
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(spriteIndex),
             w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }

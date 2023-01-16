@@ -691,16 +691,16 @@ static void WindowMapgenDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi
         // Draw greyed out (light border bottom right shadow)
         auto colour = w->colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-        gfx_draw_sprite_solid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
+        GfxDrawSpriteSolid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
 
         // Draw greyed out (dark)
         colour = w->colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-        gfx_draw_sprite_solid(dpi, image, pos, colour);
+        GfxDrawSpriteSolid(dpi, image, pos, colour);
     }
     else
     {
-        gfx_draw_sprite(dpi, image, pos);
+        GfxDrawSprite(dpi, image, pos);
     }
 }
 
@@ -1369,7 +1369,7 @@ static void WindowMapgenDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int3
             spriteIndex += (frame % TabAnimationFrames[w->page]);
         }
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(spriteIndex),
             w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }

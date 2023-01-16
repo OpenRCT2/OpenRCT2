@@ -60,7 +60,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
     for (int32_t i = 0; i < numImages; ++i)
     {
-        gfx_draw_sprite_software(&dpi, ImageId(carEntry.base_image_id + i), { 0, 0 });
+        GfxDrawSpriteSoftware(&dpi, ImageId(carEntry.base_image_id + i), { 0, 0 });
     }
     int32_t spriteWidth = -1;
     for (int32_t i = 99; i != 0; --i)

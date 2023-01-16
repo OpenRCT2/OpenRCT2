@@ -814,14 +814,14 @@ public:
                     const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
                     auto image = ImageId(
                         isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour & ~COLOUR_FLAG_TRANSLUCENT);
-                    gfx_draw_sprite(&dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
+                    GfxDrawSprite(&dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
 
                     ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
                     ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
                     GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
-                        gfx_draw_string(
+                        GfxDrawString(
                             &dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
                             { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, TextDarkness::Dark });
                     }
@@ -874,7 +874,7 @@ public:
             int32_t sprite_idx = window_themes_tab_sprites[i];
             if (_selected_tab == i)
                 sprite_idx += frame_no / window_themes_tab_animation_divisor[_selected_tab];
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 dpi, ImageId(sprite_idx),
                 windowPos
                     + ScreenCoordsXY{ widgets[WIDX_THEMES_SETTINGS_TAB + i].left, widgets[WIDX_THEMES_SETTINGS_TAB + i].top });

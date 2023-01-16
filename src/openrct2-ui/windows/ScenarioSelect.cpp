@@ -485,7 +485,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         utf8 path[MAX_PATH];
 
-        shorten_path(path, sizeof(path), scenario->path, w->width - 6 - TabWidth, FontStyle::Medium);
+        ShortenPath(path, sizeof(path), scenario->path, w->width - 6 - TabWidth, FontStyle::Medium);
 
         const utf8* pathPtr = path;
         auto ft = Formatter();
@@ -618,7 +618,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                 if (isCompleted)
                 {
                     // Draw completion tick
-                    gfx_draw_sprite(
+                    GfxDrawSprite(
                         dpi, ImageId(SPR_MENU_CHECKMARK),
                         { window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
 
@@ -660,7 +660,7 @@ static void DrawCategoryHeading(
     utf8 buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
     format_string(bufferPtr, sizeof(buffer), stringId, nullptr);
-    int32_t categoryStringHalfWidth = (gfx_get_string_width(bufferPtr, FontStyle::Medium) / 2) + 4;
+    int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;
 

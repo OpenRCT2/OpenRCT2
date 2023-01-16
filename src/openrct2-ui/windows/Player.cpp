@@ -336,7 +336,7 @@ void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
-    gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { w->colours[2] });
+    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { w->colours[2] });
 
     // Draw last action
     screenCoords = w->windowPos + ScreenCoordsXY{ w->width / 2, w->height - 13 };
@@ -547,7 +547,7 @@ static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     {
         widget = &w->widgets[WIDX_TAB_1];
         auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-        gfx_draw_sprite(dpi, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
+        GfxDrawSprite(dpi, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
     }
 
     // Tab 2
@@ -562,7 +562,7 @@ static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
             imageId += (w->frame_no / 2) & 7;
         }
 
-        gfx_draw_sprite(dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 }
 

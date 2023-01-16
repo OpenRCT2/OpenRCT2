@@ -963,7 +963,7 @@ private:
                 gConfigGeneral.UpperCaseBanners ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                scrolling_text_invalidate();
+                ScrollingTextInvalidate();
                 break;
             case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
                 gConfigGeneral.DisableLightningEffect ^= 1;
@@ -2095,7 +2095,7 @@ private:
             }
 
             // Draw normal, enabled sprite.
-            gfx_draw_sprite(dpi, ImageId(spriteIndex), screenCoords);
+            GfxDrawSprite(dpi, ImageId(spriteIndex), screenCoords);
         }
         else
         {
@@ -2103,11 +2103,11 @@ private:
             uint8_t window_colour = NOT_TRANSLUCENT(colours[widget->colour]);
 
             // Draw greyed out (light border bottom right shadow)
-            gfx_draw_sprite_solid(
+            GfxDrawSpriteSolid(
                 dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
 
             // Draw greyed out (dark)
-            gfx_draw_sprite_solid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
+            GfxDrawSpriteSolid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
         }
     }
 

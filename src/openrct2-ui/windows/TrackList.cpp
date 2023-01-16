@@ -465,7 +465,7 @@ public:
         {
             utf8 pathBuffer[MAX_PATH];
             const utf8* pathPtr = pathBuffer;
-            shorten_path(pathBuffer, sizeof(pathBuffer), path.c_str(), width, FontStyle::Medium);
+            ShortenPath(pathBuffer, sizeof(pathBuffer), path.c_str(), width, FontStyle::Medium);
             auto ft = Formatter();
             ft.Add<utf8*>(pathPtr);
             DrawTextBasic(
@@ -501,9 +501,9 @@ public:
         g1temp.width = 370;
         g1temp.height = 217;
         g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
-        gfx_set_g1_element(SPR_TEMP, &g1temp);
+        GfxSetG1Element(SPR_TEMP, &g1temp);
         drawing_engine_invalidate_image(SPR_TEMP);
-        gfx_draw_sprite(&dpi, ImageId(SPR_TEMP), trackPreview);
+        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), trackPreview);
 
         screenPos.y = windowPos.y + tdWidget.bottom - 12;
 

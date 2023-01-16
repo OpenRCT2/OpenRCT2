@@ -63,7 +63,7 @@ namespace OpenRCT2::Scripting
         for (ImageIndex i = 0; i < range.Count; i++)
         {
             auto index = range.BaseId + i;
-            auto g1 = gfx_get_g1_element(index);
+            auto g1 = GfxGetG1Element(index);
             if (g1 != nullptr)
             {
                 // Free pixel data
@@ -71,7 +71,7 @@ namespace OpenRCT2::Scripting
 
                 // Replace slot with empty element
                 rct_g1_element empty{};
-                gfx_set_g1_element(index, &empty);
+                GfxSetG1Element(index, &empty);
             }
         }
         gfx_object_free_images(range.BaseId, range.Count);
@@ -143,7 +143,7 @@ namespace OpenRCT2::Scripting
 
     DukValue DukGetImageInfo(duk_context* ctx, ImageIndex id)
     {
-        auto* g1 = gfx_get_g1_element(id);
+        auto* g1 = GfxGetG1Element(id);
         if (g1 == nullptr)
         {
             return ToDuk(ctx, undefined);
@@ -182,12 +182,12 @@ namespace OpenRCT2::Scripting
 
     DukValue DukGetImagePixelData(duk_context* ctx, ImageIndex id)
     {
-        auto* g1 = gfx_get_g1_element(id);
+        auto* g1 = GfxGetG1Element(id);
         if (g1 == nullptr)
         {
             return ToDuk(ctx, undefined);
         }
-        auto dataSize = g1_calculate_data_size(g1);
+        auto dataSize = G1CalculateDataSize(g1);
         auto* type = GetPixelDataTypeForG1(*g1);
 
         // Copy the G1 data to a JS buffer wrapped in a Uint8Array
@@ -377,7 +377,7 @@ namespace OpenRCT2::Scripting
     {
         // Setup the g1 element
         rct_g1_element el{};
-        auto* lastel = gfx_get_g1_element(id);
+        auto* lastel = GfxGetG1Element(id);
         if (lastel != nullptr)
         {
             el = *lastel;
@@ -396,7 +396,7 @@ namespace OpenRCT2::Scripting
         {
             el.flags |= G1_FLAG_RLE_COMPRESSION;
         }
-        gfx_set_g1_element(id, &el);
+        GfxSetG1Element(id, &el);
         drawing_engine_invalidate_image(id);
     }
 
@@ -426,7 +426,7 @@ namespace OpenRCT2::Scripting
         dpi.height = size.height;
 
         auto createNewImage = false;
-        auto g1 = gfx_get_g1_element(id);
+        auto g1 = GfxGetG1Element(id);
         if (g1 == nullptr || g1->width != size.width || g1->height != size.height || (g1->flags & G1_FLAG_RLE_COMPRESSION))
         {
             createNewImage = true;
@@ -439,7 +439,7 @@ namespace OpenRCT2::Scripting
             std::memset(dpi.bits, 0, bufferSize);
 
             // Draw the original image if we are creating a new one
-            gfx_draw_sprite(&dpi, ImageId(id), { 0, 0 });
+            GfxDrawSprite(&dpi, ImageId(id), { 0, 0 });
         }
         else
         {
@@ -461,7 +461,7 @@ namespace OpenRCT2::Scripting
             newg1.width = size.width;
             newg1.height = size.height;
             newg1.flags = 0;
-            gfx_set_g1_element(id, &newg1);
+            GfxSetG1Element(id, &newg1);
         }
 
         drawing_engine_invalidate_image(id);

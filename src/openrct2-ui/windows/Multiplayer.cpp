@@ -344,7 +344,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
         u8string buffer = network_get_server_name();
-        gfx_wrap_string(buffer.data(), width, FontStyle::Medium, &numLines);
+        GfxWrapString(buffer.data(), width, FontStyle::Medium, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -353,7 +353,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     if (!descString.empty())
     {
         u8string buffer = descString;
-        gfx_wrap_string(buffer.data(), width, FontStyle::Medium, &numLines);
+        GfxWrapString(buffer.data(), width, FontStyle::Medium, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -617,8 +617,8 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 _buffer += network_get_player_name(player);
             }
             screenCoords.x = 0;
-            gfx_clip_string(_buffer.data(), 230, FontStyle::Medium);
-            gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
+            GfxClipString(_buffer.data(), 230, FontStyle::Medium);
+            GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
 
             // Draw group name
             _buffer.resize(0);
@@ -628,8 +628,8 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 _buffer += "{BLACK}";
                 screenCoords.x = 173;
                 _buffer += network_get_group_name(group);
-                gfx_clip_string(_buffer.data(), 80, FontStyle::Medium);
-                gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
+                GfxClipString(_buffer.data(), 80, FontStyle::Medium);
+                GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
             }
 
             // Draw last action
@@ -666,7 +666,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             _buffer += pingBuffer;
 
             screenCoords.x = 356;
-            gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
+            GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
         listPosition++;
@@ -918,7 +918,7 @@ static void WindowMultiplayerGroupsScrollpaint(rct_window* w, rct_drawpixelinfo*
                 if (network_can_perform_action(groupindex, static_cast<NetworkPermission>(i)))
                 {
                     screenCoords.x = 0;
-                    gfx_draw_string(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
+                    GfxDrawString(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
                 }
             }
 
@@ -1017,7 +1017,7 @@ static void WindowMultiplayerDrawTabImage(rct_window* w, rct_drawpixelinfo* dpi,
             }
         }
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(spriteIndex),
             w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }

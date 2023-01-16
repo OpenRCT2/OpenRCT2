@@ -34,7 +34,7 @@ public:
         Buffer = source;
         Paint = paint;
 
-        MaxWidth = gfx_wrap_string(Buffer, width, paint.FontStyle, &LineCount);
+        MaxWidth = GfxWrapString(Buffer, width, paint.FontStyle, &LineCount);
         LineCount += 1;
         LineHeight = font_get_line_height(paint.FontStyle);
     }
@@ -84,8 +84,8 @@ public:
 static void DrawText(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
 {
-    int32_t width = noFormatting ? gfx_get_string_width_no_formatting(text, paint.FontStyle)
-                                 : gfx_get_string_width(text, paint.FontStyle);
+    int32_t width = noFormatting ? GfxGetStringWidthNoFormatting(text, paint.FontStyle)
+                                 : GfxGetStringWidth(text, paint.FontStyle);
 
     auto alignedCoords = coords;
     switch (paint.Alignment)
@@ -100,7 +100,7 @@ static void DrawText(
             break;
     }
 
-    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
+    TtfDrawString(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
 
     if (paint.UnderlineText == TextUnderline::On)
     {
@@ -150,17 +150,17 @@ void DrawTextEllipsised(
 {
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, ft.Data());
-    gfx_clip_string(buffer, width, textPaint.FontStyle);
+    GfxClipString(buffer, width, textPaint.FontStyle);
 
     DrawText(dpi, coords, textPaint, buffer);
 }
 
-void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
+void GfxDrawString(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
     DrawText(dpi, coords, textPaint, buffer);
 }
 
-void gfx_draw_string_no_formatting(
+void GfxDrawStringNoFormatting(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
     DrawText(dpi, coords, textPaint, buffer, true);

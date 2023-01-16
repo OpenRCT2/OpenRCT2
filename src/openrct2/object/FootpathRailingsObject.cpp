@@ -61,20 +61,20 @@ void FootpathRailingsObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, 
         for (int i = 0; i < 2; i++)
         {
             auto h = i * 16;
-            gfx_draw_sprite(dpi, img, { x - 8, y + 8 + h });
-            gfx_draw_sprite(dpi, img, { x + 8, y + 16 + h });
+            GfxDrawSprite(dpi, img, { x - 8, y + 8 + h });
+            GfxDrawSprite(dpi, img, { x + 8, y + 16 + h });
         }
 
-        gfx_draw_sprite(dpi, helper.WithIndex(BridgeImageId + 5), { x, y - 17 });
-        gfx_draw_sprite(dpi, ImageId(RailingsImageId + 1), { x + 4, y - 14 });
-        gfx_draw_sprite(dpi, ImageId(RailingsImageId + 1), { x + 27, y - 2 });
+        GfxDrawSprite(dpi, helper.WithIndex(BridgeImageId + 5), { x, y - 17 });
+        GfxDrawSprite(dpi, ImageId(RailingsImageId + 1), { x + 4, y - 14 });
+        GfxDrawSprite(dpi, ImageId(RailingsImageId + 1), { x + 27, y - 2 });
     }
     else
     {
-        gfx_draw_sprite(dpi, helper.WithIndex(BridgeImageId + 22), { x + 0, y + 16 });
-        gfx_draw_sprite(dpi, helper.WithIndex(BridgeImageId + 49), { x, y - 17 });
-        gfx_draw_sprite(dpi, ImageId(RailingsImageId + 1), { x + 4, y - 14 });
-        gfx_draw_sprite(dpi, ImageId(RailingsImageId + 1), { x + 27, y - 3 });
+        GfxDrawSprite(dpi, helper.WithIndex(BridgeImageId + 22), { x + 0, y + 16 });
+        GfxDrawSprite(dpi, helper.WithIndex(BridgeImageId + 49), { x, y - 17 });
+        GfxDrawSprite(dpi, ImageId(RailingsImageId + 1), { x + 4, y - 14 });
+        GfxDrawSprite(dpi, ImageId(RailingsImageId + 1), { x + 27, y - 3 });
     }
 }
 

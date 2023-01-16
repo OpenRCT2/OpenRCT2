@@ -81,16 +81,16 @@ void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t heig
         imageId = imageId.WithSecondary(COLOUR_YELLOW);
     }
 
-    gfx_draw_sprite(dpi, imageId, screenCoords);
+    GfxDrawSprite(dpi, imageId, screenCoords);
 
     if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
     {
         auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
-        gfx_draw_sprite(dpi, glassImageId, screenCoords);
+        GfxDrawSprite(dpi, glassImageId, screenCoords);
     }
     else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
     {
-        gfx_draw_sprite(dpi, imageId.WithIndexOffset(1), screenCoords);
+        GfxDrawSprite(dpi, imageId.WithIndexOffset(1), screenCoords);
     }
 }
 
