@@ -83,8 +83,8 @@ namespace WindowCloseFlags
     static constexpr uint32_t CloseSingle = (1 << 1);
 } // namespace WindowCloseFlags
 
-static void window_draw_core(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-static void window_draw_single(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawCore(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawSingle(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::list<std::shared_ptr<rct_window>>::iterator WindowGetIterator(const rct_window* w)
 {
@@ -117,7 +117,7 @@ void WindowUpdateAllViewports()
     WindowVisitEach([&](rct_window* w) {
         if (w->viewport != nullptr && WindowIsVisible(*w))
         {
-            viewport_update_position(w);
+            ViewportUpdatePosition(w);
         }
     });
 }
@@ -128,7 +128,7 @@ void WindowUpdateAllViewports()
  */
 void WindowUpdateAll()
 {
-    // window_update_all_viewports();
+    // WindowUpdateAllViewports();
 
     // 1000 tick update
     gWindowUpdateTicks += gCurrentDeltaTime;
@@ -155,7 +155,7 @@ void WindowUpdateAll()
     windowManager->UpdateMouseWheel();
 }
 
-static void window_close_surplus(int32_t cap, WindowClass avoid_classification)
+static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
 {
     // find the amount of windows that are currently open
     auto count = static_cast<int32_t>(g_window_list.size());
@@ -195,7 +195,7 @@ void WindowSetWindowLimit(int32_t value)
     // windows if one sets a limit lower than the number of windows open
     if (val < prev)
     {
-        window_close_surplus(val, WindowClass::Options);
+        WindowCloseSurplus(val, WindowClass::Options);
     }
 }
 
@@ -228,7 +228,7 @@ void WindowClose(rct_window& w)
         g_window_list.erase(itWindow);
 }
 
-template<typename TPred> static void window_close_by_condition(TPred pred, uint32_t flags = WindowCloseFlags::None)
+template<typename TPred> static void WindowCloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
 {
     bool listUpdated;
     do
@@ -286,7 +286,7 @@ template<typename TPred> static void window_close_by_condition(TPred pred, uint3
  */
 void WindowCloseByClass(WindowClass cls)
 {
-    window_close_by_condition([&](rct_window* w) -> bool { return w->classification == cls; });
+    WindowCloseByCondition([&](rct_window* w) -> bool { return w->classification == cls; });
 }
 
 /**
@@ -297,7 +297,7 @@ void WindowCloseByClass(WindowClass cls)
  */
 void WindowCloseByNumber(WindowClass cls, rct_windownumber number)
 {
-    window_close_by_condition([cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
+    WindowCloseByCondition([cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
 }
 
 // TODO: Refactor this to use variant once the new window class is done.
@@ -365,7 +365,7 @@ void WindowCloseTop()
     }
 
     auto pred = [](rct_window* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); };
-    window_close_by_condition(pred, WindowCloseFlags::CloseSingle | WindowCloseFlags::IterateReverse);
+    WindowCloseByCondition(pred, WindowCloseFlags::CloseSingle | WindowCloseFlags::IterateReverse);
 }
 
 /**
@@ -376,14 +376,14 @@ void WindowCloseTop()
 void WindowCloseAll()
 {
     WindowCloseByClass(WindowClass::Dropdown);
-    window_close_by_condition([](rct_window* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
+    WindowCloseByCondition([](rct_window* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
 }
 
 void WindowCloseAllExceptClass(WindowClass cls)
 {
     WindowCloseByClass(WindowClass::Dropdown);
 
-    window_close_by_condition([cls](rct_window* w) -> bool {
+    WindowCloseByCondition([cls](rct_window* w) -> bool {
         return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
     });
 }
@@ -393,7 +393,7 @@ void WindowCloseAllExceptClass(WindowClass cls)
  */
 void WindowCloseAllExceptFlags(uint16_t flags)
 {
-    window_close_by_condition([flags](rct_window* w) -> bool { return !(w->flags & flags); });
+    WindowCloseByCondition([flags](rct_window* w) -> bool { return !(w->flags & flags); });
 }
 
 /**
@@ -404,7 +404,7 @@ void WindowCloseAllExceptFlags(uint16_t flags)
 void WindowCloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls)
 {
     WindowCloseByClass(WindowClass::Dropdown);
-    window_close_by_condition([cls, number](rct_window* w) -> bool {
+    WindowCloseByCondition([cls, number](rct_window* w) -> bool {
         return (!(w->number == number && w->classification == cls) && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)));
     });
 }
@@ -486,7 +486,7 @@ WidgetIndex WindowFindWidgetFromPoint(rct_window& w, const ScreenCoordsXY& scree
  *
  * @param window The window to invalidate (esi).
  */
-template<typename TPred> static void window_invalidate_by_condition(TPred pred)
+template<typename TPred> static void WindowInvalidateByCondition(TPred pred)
 {
     WindowVisitEach([pred](rct_window* w) {
         if (pred(w))
@@ -503,7 +503,7 @@ template<typename TPred> static void window_invalidate_by_condition(TPred pred)
  */
 void WindowInvalidateByClass(WindowClass cls)
 {
-    window_invalidate_by_condition([cls](rct_window* w) -> bool { return w->classification == cls; });
+    WindowInvalidateByCondition([cls](rct_window* w) -> bool { return w->classification == cls; });
 }
 
 /**
@@ -512,7 +512,7 @@ void WindowInvalidateByClass(WindowClass cls)
  */
 void WindowInvalidateByNumber(WindowClass cls, rct_windownumber number)
 {
-    window_invalidate_by_condition(
+    WindowInvalidateByCondition(
         [cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
 }
 
@@ -852,7 +852,7 @@ void WindowScrollToLocation(rct_window& w, const CoordsXYZ& coords)
             }
         }
 
-        auto screenCoords = Translate3DTo2DWithZ(get_current_rotation(), coords);
+        auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), coords);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
@@ -931,7 +931,7 @@ void WindowRotateCamera(rct_window& w, int32_t direction)
 
     // has something to do with checking if middle of the viewport is obstructed
     rct_viewport* other;
-    auto mapXYCoords = screen_get_map_xy(windowPos, &other);
+    auto mapXYCoords = ScreenGetMapXY(windowPos, &other);
     CoordsXYZ coords{};
 
     // other != viewport probably triggers on viewports in ride or guest window?
@@ -940,7 +940,7 @@ void WindowRotateCamera(rct_window& w, int32_t direction)
     {
         auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
 
-        coords = viewport_adjust_for_map_height(viewPos);
+        coords = ViewportAdjustForMapHeight(viewPos);
     }
     else
     {
@@ -949,7 +949,7 @@ void WindowRotateCamera(rct_window& w, int32_t direction)
         coords.z = TileElementHeight(coords);
     }
 
-    gCurrentRotation = (get_current_rotation() + direction) & 3;
+    gCurrentRotation = (GetCurrentRotation() + direction) & 3;
 
     auto centreLoc = centre_2d_coordinates(coords, viewport);
 
@@ -973,8 +973,8 @@ void WindowViewportGetMapCoordsByCursor(
 
     // Compute map coordinate by mouse position.
     auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
-    auto coordsXYZ = viewport_adjust_for_map_height(viewportPos);
-    auto mapCoords = viewport_coord_to_map_coord(viewportPos, coordsXYZ.z);
+    auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos);
+    auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z);
     *map_x = mapCoords.x;
     *map_y = mapCoords.y;
 
@@ -1151,26 +1151,26 @@ void WindowDraw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top
         if (topwindow->windowPos.x > left)
         {
             // Split draw at topwindow.left
-            window_draw_core(dpi, w, left, top, topwindow->windowPos.x, bottom);
-            window_draw_core(dpi, w, topwindow->windowPos.x, top, right, bottom);
+            WindowDrawCore(dpi, w, left, top, topwindow->windowPos.x, bottom);
+            WindowDrawCore(dpi, w, topwindow->windowPos.x, top, right, bottom);
         }
         else if (topwindow->windowPos.x + topwindow->width < right)
         {
             // Split draw at topwindow.right
-            window_draw_core(dpi, w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
-            window_draw_core(dpi, w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
+            WindowDrawCore(dpi, w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
+            WindowDrawCore(dpi, w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
         }
         else if (topwindow->windowPos.y > top)
         {
             // Split draw at topwindow.top
-            window_draw_core(dpi, w, left, top, right, topwindow->windowPos.y);
-            window_draw_core(dpi, w, left, topwindow->windowPos.y, right, bottom);
+            WindowDrawCore(dpi, w, left, top, right, topwindow->windowPos.y);
+            WindowDrawCore(dpi, w, left, topwindow->windowPos.y, right, bottom);
         }
         else if (topwindow->windowPos.y + topwindow->height < bottom)
         {
             // Split draw at topwindow.bottom
-            window_draw_core(dpi, w, left, top, right, topwindow->windowPos.y + topwindow->height);
-            window_draw_core(dpi, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
+            WindowDrawCore(dpi, w, left, top, right, topwindow->windowPos.y + topwindow->height);
+            WindowDrawCore(dpi, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
         }
 
         // Drawing for this region should be done now, exit
@@ -1178,13 +1178,13 @@ void WindowDraw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top
     }
 
     // No windows overlap
-    window_draw_core(dpi, w, left, top, right, bottom);
+    WindowDrawCore(dpi, w, left, top, right, bottom);
 }
 
 /**
  * Draws the given window and any other overlapping transparent windows.
  */
-static void window_draw_core(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void WindowDrawCore(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Clamp region
     left = std::max<int32_t>(left, w.windowPos.x);
@@ -1202,12 +1202,12 @@ static void window_draw_core(rct_drawpixelinfo* dpi, rct_window& w, int32_t left
         auto* v = (*it).get();
         if ((&w == v || (v->flags & WF_TRANSPARENT)) && WindowIsVisible(*v))
         {
-            window_draw_single(dpi, *v, left, top, right, bottom);
+            WindowDrawSingle(dpi, *v, left, top, right, bottom);
         }
     }
 }
 
-static void window_draw_single(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void WindowDrawSingle(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Copy dpi so we can crop it
     rct_drawpixelinfo copy = *dpi;
@@ -1277,7 +1277,7 @@ static void window_draw_single(rct_drawpixelinfo* dpi, rct_window& w, int32_t le
  */
 void WindowDrawViewport(rct_drawpixelinfo* dpi, rct_window& w)
 {
-    viewport_render(dpi, w.viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
+    ViewportRender(dpi, w.viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
 }
 
 void WindowSetPosition(rct_window& w, const ScreenCoordsXY& screenCoords)

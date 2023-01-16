@@ -158,11 +158,11 @@ money32 FootpathProvisionalSet(
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            viewport_set_visibility(1);
+            ViewportSetVisibility(1);
         }
         else
         {
-            viewport_set_visibility(3);
+            ViewportSetVisibility(3);
         }
     }
 
@@ -249,11 +249,11 @@ CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32
         return position;
     }
     auto viewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Footpath));
+    auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Footpath));
     if (info.SpriteType != ViewportInteractionItem::Footpath
         || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
     {
-        info = get_map_coordinates_from_pos_window(
+        info = GetMapCoordinatesFromPosWindow(
             window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
         if (info.SpriteType == ViewportInteractionItem::None)
         {
@@ -285,7 +285,7 @@ CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32
         {
             z = TileElementHeight(position);
         }
-        position = viewport_coord_to_map_coord(start_vp_pos, z);
+        position = ViewportPosToMapPos(start_vp_pos, z);
         position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
         position.y = std::clamp(position.y, minPosition.y, maxPosition.y);
     }
@@ -347,7 +347,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         return ret;
     }
     auto viewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
+    auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
     *tileElement = info.Element;
     if (info.SpriteType == ViewportInteractionItem::Ride
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
@@ -365,7 +365,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         }
     }
 
-    info = get_map_coordinates_from_pos_window(
+    info = GetMapCoordinatesFromPosWindow(
         window, screenCoords,
         EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath, ViewportInteractionItem::Ride));
     if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TileElementType::Entrance)

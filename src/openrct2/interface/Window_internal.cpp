@@ -33,7 +33,7 @@ void rct_window::RemoveViewport()
     if (viewport == nullptr)
         return;
 
-    viewport_remove(viewport);
+    ViewportRemove(viewport);
     viewport = nullptr;
 }
 

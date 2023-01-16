@@ -20,7 +20,7 @@ using namespace OpenRCT2;
 int main(int argc, const char** argv)
 {
     int32_t rc = EXIT_SUCCESS;
-    int runGame = cmdline_run(argv, argc);
+    int runGame = CmdlineRun(argv, argc);
     Platform::CoreInit();
     if (runGame == EXITCODE_CONTINUE)
     {

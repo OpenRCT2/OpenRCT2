@@ -1974,7 +1974,7 @@ void NetworkBase::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& c
         format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, &(has_disconnected_args[0]));
     }
 
-    chat_history_add(text);
+    ChatAddHistory(text);
     Peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
     if (pickup_peep != nullptr)
     {
@@ -2270,7 +2270,7 @@ void NetworkBase::Server_Client_Joined(std::string_view name, const std::string&
         char text[256];
         const char* player_name = static_cast<const char*>(player->Name.c_str());
         format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
-        chat_history_add(text);
+        ChatAddHistory(text);
 
         auto& context = GetContext();
         auto& objManager = context.GetObjectManager();
@@ -2770,7 +2770,7 @@ void NetworkBase::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connect
     auto text = packet.ReadString();
     if (!text.empty())
     {
-        chat_history_add(std::string(text));
+        ChatAddHistory(std::string(text));
     }
 }
 
@@ -2836,7 +2836,7 @@ void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacke
     }
 
     const char* formatted = FormatChat(connection.Player, text.c_str());
-    chat_history_add(formatted);
+    ChatAddHistory(formatted);
     Server_Send_CHAT(formatted);
 }
 
@@ -3090,7 +3090,7 @@ void NetworkBase::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connec
         {
             auto playerName = packet.ReadString();
             auto message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, playerName);
-            chat_history_add(message);
+            ChatAddHistory(message);
             break;
         }
         case SERVER_EVENT_PLAYER_DISCONNECTED:
@@ -3106,7 +3106,7 @@ void NetworkBase::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connec
             {
                 message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, playerName, reason);
             }
-            chat_history_add(message);
+            ChatAddHistory(message);
             break;
         }
     }
@@ -3424,7 +3424,7 @@ void network_chat_show_connected_message()
     NetworkPlayer server;
     server.Name = "Server";
     const char* formatted = NetworkBase::FormatChat(&server, buffer);
-    chat_history_add(formatted);
+    ChatAddHistory(formatted);
 }
 
 // Display server greeting if one exists
@@ -3436,7 +3436,7 @@ void network_chat_show_server_greeting()
         thread_local std::string greeting_formatted;
         greeting_formatted.assign("{OUTLINE}{GREEN}");
         greeting_formatted += greeting;
-        chat_history_add(greeting_formatted);
+        ChatAddHistory(greeting_formatted);
     }
 }
 
@@ -3800,7 +3800,7 @@ void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
                     || std::find(playerIds.begin(), playerIds.end(), network.GetPlayerID()) != playerIds.end())
                 {
                     // Server is one of the recipients
-                    chat_history_add(formatted);
+                    ChatAddHistory(formatted);
                 }
                 network.Server_Send_CHAT(formatted, playerIds);
             }

@@ -185,7 +185,7 @@ namespace OpenRCT2::Scripting
         if (dukHandler.is_function())
         {
             auto ctx = dukHandler.context();
-            auto info = get_map_coordinates_from_pos(screenCoords, Filter);
+            auto info = GetMapCoordinatesFromPos(screenCoords, Filter);
 
             DukObject obj(dukHandler.context());
             obj.Set("isDown", MouseDown);

@@ -78,7 +78,7 @@ static bool WriteDpiToFile(std::string_view path, const rct_drawpixelinfo* dpi, 
  *
  *  rct2: 0x006E3AEC
  */
-void screenshot_check()
+void ScreenshotCheck()
 {
     if (gScreenshotCountdown != 0)
     {
@@ -86,7 +86,7 @@ void screenshot_check()
         if (gScreenshotCountdown == 0)
         {
             // update_weather_animation();
-            std::string screenshotPath = screenshot_dump();
+            std::string screenshotPath = ScreenshotDump();
 
             if (!screenshotPath.empty())
             {
@@ -102,18 +102,18 @@ void screenshot_check()
     }
 }
 
-static std::string screenshot_get_park_name()
+static std::string ScreenshotGetParkName()
 {
     return GetContext()->GetGameState()->GetPark().Name;
 }
 
-static std::string screenshot_get_directory()
+static std::string ScreenshotGetDirectory()
 {
     auto env = GetContext()->GetPlatformEnvironment();
     return env->GetDirectoryPath(DIRBASE::USER, DIRID::SCREENSHOT);
 }
 
-static std::pair<rct2_date, rct2_time> screenshot_get_date_time()
+static std::pair<rct2_date, rct2_time> ScreenshotGetDateTime()
 {
     auto date = Platform::GetDateLocal();
     auto time = Platform::GetTimeLocal();
@@ -121,9 +121,9 @@ static std::pair<rct2_date, rct2_time> screenshot_get_date_time()
     return { date, time };
 }
 
-static std::string screenshot_get_formatted_date_time()
+static std::string ScreenshotGetFormattedDateTime()
 {
-    auto [date, time] = screenshot_get_date_time();
+    auto [date, time] = ScreenshotGetDateTime();
     char formatted[64];
     snprintf(
         formatted, sizeof(formatted), "%4d-%02d-%02d %02d-%02d-%02d", date.year, date.month, date.day, time.hour, time.minute,
@@ -131,17 +131,17 @@ static std::string screenshot_get_formatted_date_time()
     return formatted;
 }
 
-static std::optional<std::string> screenshot_get_next_path()
+static std::optional<std::string> ScreenshotGetNextPath()
 {
-    auto screenshotDirectory = screenshot_get_directory();
+    auto screenshotDirectory = ScreenshotGetDirectory();
     if (!Platform::EnsureDirectoryExists(screenshotDirectory.c_str()))
     {
         log_error("Unable to save screenshots in OpenRCT2 screenshot directory.");
         return std::nullopt;
     }
 
-    auto parkName = screenshot_get_park_name();
-    auto dateTime = screenshot_get_formatted_date_time();
+    auto parkName = ScreenshotGetParkName();
+    auto dateTime = ScreenshotGetFormattedDateTime();
     auto name = parkName + " " + dateTime;
 
     // Generate a path with a `tries` number
@@ -164,10 +164,10 @@ static std::optional<std::string> screenshot_get_next_path()
     return std::nullopt;
 };
 
-std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
+std::string ScreenshotDumpPNG(rct_drawpixelinfo* dpi)
 {
     // Get a free screenshot path
-    auto path = screenshot_get_next_path();
+    auto path = ScreenshotGetNextPath();
 
     if (!path.has_value())
     {
@@ -182,9 +182,9 @@ std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
     return "";
 }
 
-std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pixels)
+std::string ScreenshotDumpPNG32bpp(int32_t width, int32_t height, const void* pixels)
 {
-    auto path = screenshot_get_next_path();
+    auto path = ScreenshotGetNextPath();
 
     if (!path.has_value())
     {
@@ -336,21 +336,21 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& vi
         drawingEngine = tempDrawingEngine.get();
     }
     dpi.DrawingEngine = drawingEngine;
-    viewport_render(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } });
+    ViewportRender(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } });
 }
 
-void screenshot_giant()
+void ScreenshotGiant()
 {
     rct_drawpixelinfo dpi{};
     try
     {
-        auto path = screenshot_get_next_path();
+        auto path = ScreenshotGetNextPath();
         if (!path.has_value())
         {
             throw std::runtime_error("Giant screenshot failed, unable to find a suitable destination path.");
         }
 
-        const auto rotation = get_current_rotation();
+        const auto rotation = GetCurrentRotation();
         auto zoom = ZoomLevel{ 0 };
         auto* mainWindow = WindowGetMain();
         const auto* vp = WindowGetViewport(mainWindow);
@@ -399,7 +399,7 @@ template<typename FN> static inline double MeasureFunctionTime(const FN& fn)
     return std::chrono::duration<double>(endTime - startTime).count();
 }
 
-static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<IContext>& context, uint32_t iterationCount)
+static void BenchgfxRenderScreenshots(const char* inputPath, std::unique_ptr<IContext>& context, uint32_t iterationCount)
 {
     if (!context->LoadParkFromFile(inputPath))
     {
@@ -482,7 +482,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
         ReleaseDPI(dpi);
 }
 
-int32_t cmdline_for_gfxbench(const char** argv, int32_t argc)
+int32_t CmdlineForGfxbench(const char** argv, int32_t argc)
 {
     if (argc != 1 && argc != 2)
     {
@@ -506,7 +506,7 @@ int32_t cmdline_for_gfxbench(const char** argv, int32_t argc)
     {
         drawing_engine_init();
 
-        benchgfx_render_screenshots(inputPath, context, iterationCount);
+        BenchgfxRenderScreenshots(inputPath, context, iterationCount);
 
         drawing_engine_dispose();
     }
@@ -562,7 +562,7 @@ static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewpor
     }
 }
 
-int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
+int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
 {
     // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
     for (int32_t i = 0; i < argc; i++)
@@ -724,7 +724,7 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
     if (filename.empty())
     {
         // Automatic filename
-        auto path = screenshot_get_next_path();
+        auto path = ScreenshotGetNextPath();
         if (!path)
         {
             throw std::runtime_error("Unable to generate a filename for capture.");
@@ -732,7 +732,7 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
         return *path;
     }
 
-    auto screenshotDirectory = fs::u8path(screenshot_get_directory());
+    auto screenshotDirectory = fs::u8path(ScreenshotGetDirectory());
     auto screenshotPath = fs::absolute(screenshotDirectory / filename);
 
     // Check the filename isn't attempting to leave the screenshot directory for security

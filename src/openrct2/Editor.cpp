@@ -110,7 +110,7 @@ namespace Editor
         gEditorStep = EditorStep::ObjectSelection;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
-        viewport_init_all();
+        ViewportInitAll();
         rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
@@ -148,7 +148,7 @@ namespace Editor
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
-        viewport_init_all();
+        ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
         gScreenAge = 0;
@@ -169,7 +169,7 @@ namespace Editor
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
-        viewport_init_all();
+        ViewportInitAll();
         rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
@@ -190,7 +190,7 @@ namespace Editor
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
-        viewport_init_all();
+        ViewportInitAll();
         rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
@@ -245,7 +245,7 @@ namespace Editor
         gEditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        viewport_init_all();
+        ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
     }

@@ -601,7 +601,7 @@ public:
 
             // Close any other open windows such as options/colour schemes to prevent a crash.
             WindowCloseAll();
-            // window_close(*w);
+            // WindowClose(*w);
 
             // This function calls window_track_list_open
             ManageTracks();

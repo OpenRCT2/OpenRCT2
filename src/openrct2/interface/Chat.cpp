@@ -40,59 +40,59 @@ static int32_t _chatWidth;
 static int32_t _chatHeight;
 static TextInputSession* _chatTextInputSession;
 
-static const char* chat_history_get(uint32_t index);
-static uint32_t chat_history_get_time(uint32_t index);
-static void chat_clear_input();
-static int32_t chat_history_draw_string(
+static const char* ChatGetHistory(uint32_t index);
+static uint32_t ChatHistoryGetTime(uint32_t index);
+static void ChatClearInput();
+static int32_t ChatHistoryDrawString(
     rct_drawpixelinfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
 
-bool chat_available()
+bool ChatAvailable()
 {
     return network_get_mode() != NETWORK_MODE_NONE && network_get_status() == NETWORK_STATUS_CONNECTED
         && network_get_authstatus() == NetworkAuth::Ok;
 }
 
-void chat_open()
+void ChatOpen()
 {
     gChatOpen = true;
     _chatTextInputSession = ContextStartTextInput(_chatCurrentLine, sizeof(_chatCurrentLine));
 }
 
-void chat_close()
+void ChatClose()
 {
     gChatOpen = false;
     ContextStopTextInput();
 }
 
-void chat_toggle()
+void ChatToggle()
 {
     if (gChatOpen)
     {
-        chat_close();
+        ChatClose();
     }
     else
     {
-        chat_open();
+        ChatOpen();
     }
 }
 
-void chat_init()
+void ChatInit()
 {
     std::memset(_chatHistory, 0x00, sizeof(_chatHistory));
     std::memset(_chatHistoryTime, 0x00, sizeof(_chatHistoryTime));
 }
 
-void chat_update()
+void ChatUpdate()
 {
     // Flash the caret
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
 }
 
-void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
+void ChatDraw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 {
     thread_local std::string lineBuffer;
 
-    if (!chat_available())
+    if (!ChatAvailable())
     {
         gChatOpen = false;
         return;
@@ -110,19 +110,19 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     // Draw chat window
     if (gChatOpen)
     {
-        inputLineHeight = chat_string_wrapped_get_height(static_cast<void*>(&inputLine), _chatWidth - 10);
+        inputLineHeight = ChatStringWrappedGetHeight(static_cast<void*>(&inputLine), _chatWidth - 10);
         _chatTop -= inputLineHeight;
 
         for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++)
         {
-            if (chat_history_get(i)[0] == '\0')
+            if (ChatGetHistory(i)[0] == '\0')
             {
                 continue;
             }
 
-            lineBuffer.assign(chat_history_get(i));
+            lineBuffer.assign(ChatGetHistory(i));
             auto lineCh = lineBuffer.c_str();
-            int32_t lineHeight = chat_string_wrapped_get_height(static_cast<void*>(&lineCh), _chatWidth - 10);
+            int32_t lineHeight = ChatStringWrappedGetHeight(static_cast<void*>(&lineCh), _chatWidth - 10);
             _chatTop -= (lineHeight + 5);
         }
 
@@ -164,15 +164,15 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     // Draw chat history
     for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++, screenCoords.y -= stringHeight)
     {
-        uint32_t expireTime = chat_history_get_time(i) + 10000;
+        uint32_t expireTime = ChatHistoryGetTime(i) + 10000;
         if (!gChatOpen && Platform::GetTicks() > expireTime)
         {
             break;
         }
 
-        lineBuffer.assign(chat_history_get(i));
+        lineBuffer.assign(ChatGetHistory(i));
         auto lineCh = lineBuffer.c_str();
-        stringHeight = chat_history_draw_string(dpi, lineCh, screenCoords, _chatWidth - 10) + 5;
+        stringHeight = ChatHistoryDrawString(dpi, lineCh, screenCoords, _chatWidth - 10) + 5;
         GfxSetDirtyBlocks(
             { { screenCoords - ScreenCoordsXY{ 0, stringHeight } }, { screenCoords + ScreenCoordsXY{ _chatWidth, 20 } } });
 
@@ -209,7 +209,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     }
 }
 
-void chat_history_add(std::string_view s)
+void ChatAddHistory(std::string_view s)
 {
     // Format a timestamp
     time_t timer{};
@@ -234,7 +234,7 @@ void chat_history_add(std::string_view s)
     CreateAudioChannel(SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
 
-void chat_input(ChatInput input)
+void ChatInput(enum ChatInput input)
 {
     switch (input)
     {
@@ -243,35 +243,35 @@ void chat_input(ChatInput input)
             {
                 network_send_chat(_chatCurrentLine);
             }
-            chat_clear_input();
-            chat_close();
+            ChatClearInput();
+            ChatClose();
             break;
         case ChatInput::Close:
-            chat_close();
+            ChatClose();
             break;
         default:
             break;
     }
 }
 
-static const char* chat_history_get(uint32_t index)
+static const char* ChatGetHistory(uint32_t index)
 {
     return _chatHistory[(_chatHistoryIndex + CHAT_HISTORY_SIZE - index - 1) % CHAT_HISTORY_SIZE];
 }
 
-static uint32_t chat_history_get_time(uint32_t index)
+static uint32_t ChatHistoryGetTime(uint32_t index)
 {
     return _chatHistoryTime[(_chatHistoryIndex + CHAT_HISTORY_SIZE - index - 1) % CHAT_HISTORY_SIZE];
 }
 
-static void chat_clear_input()
+static void ChatClearInput()
 {
     _chatCurrentLine[0] = 0;
 }
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-static int32_t chat_history_draw_string(
+static int32_t ChatHistoryDrawString(
     rct_drawpixelinfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
     char buffer[CommonTextBufferSize];
@@ -300,7 +300,7 @@ static int32_t chat_history_draw_string(
 
 // Wrap string without drawing, useful to get the height of a wrapped string.
 // Almost the same as gfx_draw_string_left_wrapped
-int32_t chat_string_wrapped_get_height(void* args, int32_t width)
+int32_t ChatStringWrappedGetHeight(void* args, int32_t width)
 {
     char buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;

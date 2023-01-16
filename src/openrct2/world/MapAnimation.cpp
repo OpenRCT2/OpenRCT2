@@ -145,7 +145,7 @@ static bool MapAnimationInvalidateQueueBanner(const CoordsXYZ& loc)
         if (!tileElement->AsPath()->HasQueueBanner())
             continue;
 
-        int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + get_current_rotation()) & 3;
+        int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + GetCurrentRotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
         {
             MapInvalidateTileZoom1({ loc, loc.z + 16, loc.z + 30 });

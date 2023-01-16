@@ -691,11 +691,11 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, std::string_view tex
                     {
                         // As outlines are black, these texts should always use a darker shade
                         // of the foreground colour for font hinting.
-                        *dst = blendColours(colour, PALETTE_INDEX_0);
+                        *dst = BlendColours(colour, PALETTE_INDEX_0);
                     }
                     else
                     {
-                        *dst = blendColours(colour, *dst);
+                        *dst = BlendColours(colour, *dst);
                     }
                 }
             }

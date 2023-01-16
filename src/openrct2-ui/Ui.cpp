@@ -43,7 +43,7 @@ int main(int argc, const char** argv)
 {
     std::unique_ptr<IContext> context;
     int32_t rc = EXIT_SUCCESS;
-    int runGame = cmdline_run(argv, argc);
+    int runGame = CmdlineRun(argv, argc);
     Platform::CoreInit();
     RegisterBitmapReader();
     if (runGame == EXITCODE_CONTINUE)

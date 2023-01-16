@@ -642,7 +642,7 @@ private:
             if (viewport == nullptr)
             {
                 Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
-                viewport_create(
+                ViewportCreate(
                     this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                     viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
                 flags |= WF_NO_SCROLLING;

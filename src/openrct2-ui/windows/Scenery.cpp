@@ -137,7 +137,7 @@ public:
 
         InitScrollWidgets();
         ContentUpdateScroll();
-        show_gridlines();
+        ShowGridlines();
         gWindowSceneryRotation = 3;
         gSceneryCtrlPressed = false;
         gSceneryShiftPressed = false;
@@ -167,8 +167,8 @@ public:
     void OnClose() override
     {
         SceneryRemoveGhostToolPlacement();
-        hide_gridlines();
-        viewport_set_visibility(0);
+        HideGridlines();
+        ViewportSetVisibility(0);
 
         if (gWindowSceneryScatterEnabled)
             WindowCloseByClass(WindowClass::SceneryScatter);

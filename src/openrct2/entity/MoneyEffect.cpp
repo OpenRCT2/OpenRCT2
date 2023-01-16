@@ -88,7 +88,7 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
             return;
 
         rct_viewport* mainViewport = WindowGetViewport(mainWindow);
-        auto mapPositionXY = screen_get_map_xy(
+        auto mapPositionXY = ScreenGetMapXY(
             { mainViewport->pos.x + (mainViewport->width / 2), mainViewport->pos.y + (mainViewport->height / 2) }, nullptr);
         if (!mapPositionXY.has_value())
             return;
@@ -126,8 +126,8 @@ void MoneyEffect::Update()
     {
         newZ += 1;
     }
-    newY += _moneyEffectMoveOffset[get_current_rotation()].y;
-    newX += _moneyEffectMoveOffset[get_current_rotation()].x;
+    newY += _moneyEffectMoveOffset[GetCurrentRotation()].y;
+    newX += _moneyEffectMoveOffset[GetCurrentRotation()].x;
 
     MoveTo({ newX, newY, newZ });
 

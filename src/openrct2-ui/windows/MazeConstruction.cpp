@@ -101,13 +101,13 @@ public:
         widgets = window_maze_construction_widgets;
         WindowInitScrollWidgets(*this);
         rideId = _currentRideIndex;
-        show_gridlines();
+        ShowGridlines();
     }
 
     void OnClose() override
     {
         ride_construction_invalidate_current_track();
-        viewport_set_visibility(0);
+        ViewportSetVisibility(0);
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -117,7 +117,7 @@ public:
         // selection tool should be cancelled.
         ToolCancel();
 
-        hide_gridlines();
+        HideGridlines();
 
         auto currentRide = get_ride(_currentRideIndex);
         if (currentRide != nullptr)
@@ -155,7 +155,7 @@ public:
             case WIDX_MAZE_DIRECTION_NE:
             case WIDX_MAZE_DIRECTION_SE:
             case WIDX_MAZE_DIRECTION_SW:
-                WindowMazeConstructionConstruct(((widgetIndex - WIDX_MAZE_DIRECTION_NW) - get_current_rotation()) & 3);
+                WindowMazeConstructionConstruct(((widgetIndex - WIDX_MAZE_DIRECTION_NW) - GetCurrentRotation()) & 3);
                 break;
         }
     }

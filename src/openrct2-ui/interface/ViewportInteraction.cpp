@@ -70,7 +70,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
-    info = get_map_coordinates_from_pos(
+    info = GetMapCoordinatesFromPos(
         screenCoords,
         EnumsToFlags(ViewportInteractionItem::Entity, ViewportInteractionItem::Ride, ViewportInteractionItem::ParkEntrance));
     auto tileElement = info.SpriteType != ViewportInteractionItem::Entity ? info.Element : nullptr;
@@ -257,7 +257,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
 
     constexpr auto flags = static_cast<int32_t>(
         ~EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
-    info = get_map_coordinates_from_pos(screenCoords, flags);
+    info = GetMapCoordinatesFromPos(screenCoords, flags);
     auto tileElement = info.Element;
 
     switch (info.SpriteType)
@@ -768,7 +768,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
         return ret;
     }
     auto viewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(
+    auto info = GetMapCoordinatesFromPosWindow(
         window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
     auto initialPos = info.Loc;
 
@@ -794,7 +794,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
         {
             z = TileElementHeight(mapPos);
         }
-        mapPos = viewport_coord_to_map_coord(initialVPPos, z);
+        mapPos = ViewportPosToMapPos(initialVPPos, z);
         mapPos.x = std::clamp(mapPos.x, initialPos.x, initialPos.x + 31);
         mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
     }

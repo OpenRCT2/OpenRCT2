@@ -382,7 +382,7 @@ namespace OpenRCT2::RideAudio
     {
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
         {
-            auto rotatedCoords = Translate3DTo2DWithZ(get_current_rotation(), rideCoords);
+            auto rotatedCoords = Translate3DTo2DWithZ(GetCurrentRotation(), rideCoords);
             auto viewport = g_music_tracking_viewport;
             auto viewWidth = viewport->view_width;
             auto viewWidth2 = viewWidth * 2;

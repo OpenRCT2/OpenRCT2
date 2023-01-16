@@ -78,7 +78,7 @@ private:
     void CreateViewport()
     {
         Widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
             (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, Focus(_bannerViewPos));
 

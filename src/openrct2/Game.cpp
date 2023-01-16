@@ -466,7 +466,7 @@ void game_load_init()
     OpenRCT2::Audio::StopAll();
     if (!gLoadKeepWindowsOpen)
     {
-        viewport_init_all();
+        ViewportInitAll();
         game_create_windows();
     }
     else
@@ -848,7 +848,7 @@ bool stop_silent_record()
 
 void PrepareMapForSave()
 {
-    viewport_set_saved_view();
+    ViewportSetSavedView();
 
 #ifdef ENABLE_SCRIPTING
     auto& scriptEngine = GetContext()->GetScriptEngine();

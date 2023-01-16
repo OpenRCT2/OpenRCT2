@@ -1090,7 +1090,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         int32_t dx = surfaceHeight + 3;
 
         int32_t image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16);
-        image_id += get_height_marker_offset();
+        image_id += GetHeightMarkerOffset();
         image_id -= gMapBaseZ;
 
         PaintAddImageAsParent(session, ImageId(image_id, COLOUR_OLIVE_GREEN), { 16, 16, surfaceHeight }, { 1, 1, 0 });

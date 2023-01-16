@@ -211,7 +211,7 @@ struct rct_colour_map
 
 extern rct_colour_map ColourMapA[COLOUR_COUNT];
 
-void colours_init_maps();
+void ColoursInitMaps();
 
 namespace Colour
 {
@@ -219,5 +219,5 @@ namespace Colour
 }
 
 #ifndef NO_TTF
-uint8_t blendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
+uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
 #endif

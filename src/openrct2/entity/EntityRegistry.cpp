@@ -292,7 +292,7 @@ static void AddToFreeList(EntityId index)
 static void RemoveFromEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
-    auto ptr = binary_find(std::begin(list), std::end(list), entity->sprite_index);
+    auto ptr = BinaryFind(std::begin(list), std::end(list), entity->sprite_index);
     if (ptr != std::end(list))
     {
         list.erase(ptr);
@@ -365,7 +365,7 @@ EntityBase* CreateEntity(EntityType type)
 
 EntityBase* CreateEntityAt(const EntityId index, const EntityType type)
 {
-    auto id = binary_find(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
+    auto id = BinaryFind(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
     if (id == std::rend(_freeIdList))
     {
         return nullptr;
@@ -422,7 +422,7 @@ static void EntitySpatialRemove(EntityBase* entity)
 {
     size_t currentIndex = GetSpatialIndexOffset({ entity->x, entity->y });
     auto& spatialVector = gEntitySpatialIndex[currentIndex];
-    auto index = binary_find(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
+    auto index = BinaryFind(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
     if (index != std::end(spatialVector))
     {
         spatialVector.erase(index, index + 1);
@@ -476,7 +476,7 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
 {
-    auto screenCoords = Translate3DTo2DWithZ(get_current_rotation(), entityPos);
+    auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), entityPos);
 
     entity->SpriteRect = ScreenRect(
         screenCoords - ScreenCoordsXY{ entity->sprite_width, entity->sprite_height_negative },

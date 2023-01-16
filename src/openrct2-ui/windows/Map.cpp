@@ -154,7 +154,7 @@ public:
 
         InitScrollWidgets();
 
-        _rotation = get_current_rotation();
+        _rotation = GetCurrentRotation();
 
         InitMap();
         gWindowSceneryRotation = 0;
@@ -201,9 +201,9 @@ public:
                 _activeTool = 2;
                 // Prevent mountain tool size.
                 _landRightsToolSize = std::max<uint16_t>(MINIMUM_TOOL_SIZE, _landRightsToolSize);
-                show_gridlines();
-                show_land_rights();
-                show_construction_rights();
+                ShowGridlines();
+                ShowLandRights();
+                ShowConstructionRights();
                 break;
             case WIDX_LAND_OWNED_CHECKBOX:
                 _activeTool ^= 2;
@@ -245,9 +245,9 @@ public:
                 gParkEntranceGhostExists = false;
                 input_set_flag(INPUT_FLAG_6, true);
 
-                show_gridlines();
-                show_land_rights();
-                show_construction_rights();
+                ShowGridlines();
+                ShowLandRights();
+                ShowConstructionRights();
                 break;
             case WIDX_ROTATE_90:
                 gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
@@ -256,9 +256,9 @@ public:
                 if (ToolSet(*this, widgetIndex, Tool::UpArrow))
                     break;
 
-                show_gridlines();
-                show_land_rights();
-                show_construction_rights();
+                ShowGridlines();
+                ShowLandRights();
+                ShowConstructionRights();
                 break;
             case WIDX_LAND_TOOL:
                 InputLandSize();
@@ -323,9 +323,9 @@ public:
 
     void OnUpdate() override
     {
-        if (get_current_rotation() != _rotation)
+        if (GetCurrentRotation() != _rotation)
         {
-            _rotation = get_current_rotation();
+            _rotation = GetCurrentRotation();
             InitMap();
             CentreMapOnViewPoint();
         }
@@ -405,22 +405,22 @@ public:
         {
             case WIDX_SET_LAND_RIGHTS:
                 Invalidate();
-                hide_gridlines();
-                hide_land_rights();
-                hide_construction_rights();
+                HideGridlines();
+                HideLandRights();
+                HideConstructionRights();
                 break;
             case WIDX_BUILD_PARK_ENTRANCE:
                 ParkEntranceRemoveGhost();
                 Invalidate();
-                hide_gridlines();
-                hide_land_rights();
-                hide_construction_rights();
+                HideGridlines();
+                HideLandRights();
+                HideConstructionRights();
                 break;
             case WIDX_PEOPLE_STARTING_POSITION:
                 Invalidate();
-                hide_gridlines();
-                hide_land_rights();
-                hide_construction_rights();
+                HideGridlines();
+                HideLandRights();
+                HideConstructionRights();
                 break;
         }
     }
@@ -429,7 +429,7 @@ public:
     {
         MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-        auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
+        auto mapCoords = ScreenGetMapXY(screenCoords, nullptr);
         if (!mapCoords.has_value())
             return;
 
@@ -478,7 +478,7 @@ public:
                 }
             }
         }
-        parkEntranceMapPosition.direction = (gWindowSceneryRotation - get_current_rotation()) & 3;
+        parkEntranceMapPosition.direction = (gWindowSceneryRotation - GetCurrentRotation()) & 3;
         return parkEntranceMapPosition;
     }
 
@@ -935,7 +935,7 @@ private:
         if (mainWindow == nullptr || mainWindow->viewport == nullptr)
             return;
 
-        auto offset = MiniMapOffsets[get_current_rotation()];
+        auto offset = MiniMapOffsets[GetCurrentRotation()];
 
         // calculate centre view point of viewport and transform it to minimap coordinates
 
@@ -1001,7 +1001,7 @@ private:
         int32_t pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
         auto destinationPosition = ScreenCoordsXY{ pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE };
         auto destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
-        switch (get_current_rotation())
+        switch (GetCurrentRotation())
         {
             case 0:
                 x = _currentLine * COORDS_XY_STEP;
@@ -1251,7 +1251,7 @@ private:
         if (mainViewport == nullptr)
             return;
 
-        auto offset = MiniMapOffsets[get_current_rotation()];
+        auto offset = MiniMapOffsets[GetCurrentRotation()];
         auto leftTop = ScreenCoordsXY{ (mainViewport->viewPos.x >> 5) + offset.x, (mainViewport->viewPos.y >> 4) + offset.y };
         auto rightBottom = ScreenCoordsXY{ ((mainViewport->viewPos.x + mainViewport->view_width) >> 5) + offset.x,
                                            ((mainViewport->viewPos.y + mainViewport->view_height) >> 4) + offset.y };
@@ -1345,7 +1345,7 @@ private:
         screenCoords.y = ((screenCoords.y + 8)) / 2;
         auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).ToCoordsXY();
 
-        switch (get_current_rotation())
+        switch (GetCurrentRotation())
         {
             case 0:
                 return location;
@@ -1364,7 +1364,7 @@ private:
     {
         int32_t x = c.x, y = c.y;
 
-        switch (get_current_rotation())
+        switch (GetCurrentRotation())
         {
             case 3:
                 std::swap(x, y);

@@ -461,7 +461,7 @@ namespace OpenRCT2
                 gGameSoundsOff = !gConfigSound.MasterSoundEnabled;
             }
 
-            chat_init();
+            ChatInit();
             CopyOriginalUserFilesOver();
 
             if (!gOpenRCT2NoGraphics)
@@ -474,7 +474,7 @@ namespace OpenRCT2
             }
 
             input_reset_place_obj_modifier();
-            viewport_init_all();
+            ViewportInitAll();
 
             _gameState = std::make_unique<GameState>();
             _gameState->InitAll(DEFAULT_MAP_SIZE);
@@ -1205,7 +1205,7 @@ namespace OpenRCT2
             }
 #endif
 
-            chat_update();
+            ChatUpdate();
 #ifdef ENABLE_SCRIPTING
             _scriptEngine.Tick();
 #endif

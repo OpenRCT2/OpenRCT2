@@ -268,7 +268,7 @@ void InputManager::ProcessChat(const InputEvent& e)
         }
         if (input != ChatInput::None)
         {
-            chat_input(input);
+            ChatInput(input);
         }
     }
 }

@@ -1159,7 +1159,7 @@ static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
             Select(_window_overwrite_prompt_path);
 
             // As the LoadSaveWindow::Select function can change the order of the
-            // windows we can't use window_close(w).
+            // windows we can't use WindowClose(w).
             WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
             break;
         }

@@ -82,21 +82,21 @@ public:
         ToolSet(*this, WIDX_PRICE, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
         WindowPushOthersRight(*this);
-        show_gridlines();
+        ShowGridlines();
         _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
         _placementCost = MONEY32_UNDEFINED;
         _placementLoc.SetNull();
-        _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
+        _currentTrackPieceDirection = (2 - GetCurrentRotation()) & 3;
     }
 
     void OnClose() override
     {
         ClearProvisional();
-        viewport_set_visibility(0);
+        ViewportSetVisibility(0);
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        hide_gridlines();
+        HideGridlines();
         _miniPreview.clear();
         _miniPreview.shrink_to_fit();
         _trackDesign = nullptr;
@@ -430,7 +430,7 @@ private:
 
     void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
     {
-        const uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+        const uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
 
         CoordsXY curTrackStart = origin;
         uint8_t curTrackRotation = rotation;
@@ -537,7 +537,7 @@ private:
 
     void DrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
     {
-        uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+        uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
         for (const auto& mazeElement : td6->maze_elements)
         {
             auto rotatedMazeCoords = origin + TileCoordsXY{ mazeElement.x, mazeElement.y }.ToCoordsXY().Rotate(rotation);

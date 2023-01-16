@@ -703,7 +703,7 @@ private:
             return;
         }
 
-        viewport_update_smart_guest_follow(this, peep);
+        ViewportUpdateSmartFollowGuest(this, peep);
         bool reCreateViewport = false;
         uint16_t origViewportFlags{};
         if (viewport != nullptr)
@@ -726,7 +726,7 @@ private:
             int32_t widgWidth = viewWidget.width() - 1;
             int32_t widgHeight = viewWidget.height() - 1;
 
-            viewport_create(this, screenPos, widgWidth, widgHeight, focus.value());
+            ViewportCreate(this, screenPos, widgWidth, widgHeight, focus.value());
             if (viewport != nullptr && reCreateViewport)
             {
                 viewport->flags = origViewportFlags;
@@ -923,7 +923,7 @@ private:
 
         gPickupPeepImage = ImageId();
 
-        auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionItemAll);
+        auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
         if (info.SpriteType == ViewportInteractionItem::None)
             return;
 

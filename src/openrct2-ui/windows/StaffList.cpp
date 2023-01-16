@@ -141,7 +141,7 @@ public:
             case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
                 if (!ToolSet(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
                 {
-                    show_gridlines();
+                    ShowGridlines();
                     SetPatrolAreaToRender(GetSelectedStaffType());
                     GfxInvalidateScreen();
                 }
@@ -470,7 +470,7 @@ public:
     {
         if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
         {
-            hide_gridlines();
+            HideGridlines();
             ToolCancel();
             ClearPatrolAreaToRender();
             GfxInvalidateScreen();
