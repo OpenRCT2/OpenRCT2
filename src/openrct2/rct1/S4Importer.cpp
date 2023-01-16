@@ -816,7 +816,7 @@ namespace RCT1
             }
 
             // Ride name
-            if (is_user_string_id(src->name))
+            if (IsUserStringID(src->name))
             {
                 dst->custom_name = GetUserString(src->name);
             }
@@ -1286,7 +1286,7 @@ namespace RCT1
             dst->sprite_direction = src->sprite_direction;
 
             // Peep name
-            if (is_user_string_id(src->name_string_idx))
+            if (IsUserStringID(src->name_string_idx))
             {
                 dst->SetName(GetUserString(src->name_string_idx));
             }
@@ -2106,7 +2106,7 @@ namespace RCT1
         void ImportParkName()
         {
             std::string parkName = std::string(_s4.scenario_name);
-            if (is_user_string_id(static_cast<StringId>(_s4.park_name_string_index)))
+            if (IsUserStringID(static_cast<StringId>(_s4.park_name_string_index)))
             {
                 std::string userString = GetUserString(_s4.park_name_string_index);
                 if (!userString.empty())
@@ -2398,7 +2398,7 @@ namespace RCT1
                 dst->flags |= BANNER_FLAG_NO_ENTRY;
             }
 
-            if (is_user_string_id(src->string_idx))
+            if (IsUserStringID(src->string_idx))
             {
                 dst->text = GetUserString(src->string_idx);
             }
