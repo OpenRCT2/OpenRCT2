@@ -142,7 +142,7 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
     GfxWrapString(buffer.data(), width + 1, FontStyle::Medium, &numLines);
 
     width = width + 3;
-    int32_t height = (numLines + 1) * font_get_line_height(FontStyle::Medium) + 4;
+    int32_t height = (numLines + 1) * FontGetLineHeight(FontStyle::Medium) + 4;
     int32_t screenWidth = ContextGetWidth();
     int32_t screenHeight = ContextGetHeight();
     const CursorState* state = ContextGetCursorState();

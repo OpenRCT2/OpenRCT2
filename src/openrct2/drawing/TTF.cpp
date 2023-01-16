@@ -59,14 +59,14 @@ static int32_t _ttfGetWidthCacheMissCount = 0;
 
 static std::mutex _mutex;
 
-static TTF_Font* ttf_open_font(const utf8* fontPath, int32_t ptSize);
-static void ttf_close_font(TTF_Font* font);
-static void ttf_surface_cache_dispose(ttf_cache_entry* entry);
-static void ttf_surface_cache_dispose_all();
-static void ttf_getwidth_cache_dispose_all();
-static bool ttf_get_size(TTF_Font* font, std::string_view text, int32_t* outWidth, int32_t* outHeight);
-static void ttf_toggle_hinting(bool);
-static TTFSurface* ttf_render(TTF_Font* font, std::string_view text);
+static TTF_Font* TtfOpenFont(const utf8* fontPath, int32_t ptSize);
+static void TtfCloseFont(TTF_Font* font);
+static void TtfSurfaceCacheDispose(ttf_cache_entry* entry);
+static void TtfSurfaceCacheDisposeAll();
+static void TtfGetWidthCacheDisposeAll();
+static bool TtfGetSize(TTF_Font* font, std::string_view text, int32_t* outWidth, int32_t* outHeight);
+static void TtfToggleHinting(bool);
+static TTFSurface* TtfRender(TTF_Font* font, std::string_view text);
 
 template<typename T> class FontLockHelper
 {
@@ -88,7 +88,7 @@ public:
     }
 };
 
-static void ttf_toggle_hinting(bool)
+static void TtfToggleHinting(bool)
 {
     if (!LocalisationService_UseTrueTypeFont())
     {
@@ -104,11 +104,11 @@ static void ttf_toggle_hinting(bool)
 
     if (_ttfSurfaceCacheCount)
     {
-        ttf_surface_cache_dispose_all();
+        TtfSurfaceCacheDisposeAll();
     }
 }
 
-bool ttf_initialise()
+bool TtfInitialise()
 {
     FontLockHelper<std::mutex> lock(_mutex);
 
@@ -132,7 +132,7 @@ bool ttf_initialise()
             return false;
         }
 
-        fontDesc->font = ttf_open_font(fontPath.c_str(), fontDesc->ptSize);
+        fontDesc->font = TtfOpenFont(fontPath.c_str(), fontDesc->ptSize);
         if (fontDesc->font == nullptr)
         {
             log_verbose("Unable to load '%s'", fontPath.c_str());
@@ -140,29 +140,29 @@ bool ttf_initialise()
         }
     }
 
-    ttf_toggle_hinting(true);
+    TtfToggleHinting(true);
 
     _ttfInitialised = true;
 
     return true;
 }
 
-void ttf_dispose()
+void TtfDispose()
 {
     FontLockHelper<std::mutex> lock(_mutex);
 
     if (!_ttfInitialised)
         return;
 
-    ttf_surface_cache_dispose_all();
-    ttf_getwidth_cache_dispose_all();
+    TtfSurfaceCacheDisposeAll();
+    TtfGetWidthCacheDisposeAll();
 
     for (int32_t i = 0; i < FontStyleCount; i++)
     {
         TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
         if (fontDesc->font != nullptr)
         {
-            ttf_close_font(fontDesc->font);
+            TtfCloseFont(fontDesc->font);
             fontDesc->font = nullptr;
         }
     }
@@ -172,17 +172,17 @@ void ttf_dispose()
     _ttfInitialised = false;
 }
 
-static TTF_Font* ttf_open_font(const utf8* fontPath, int32_t ptSize)
+static TTF_Font* TtfOpenFont(const utf8* fontPath, int32_t ptSize)
 {
     return TTF_OpenFont(fontPath, ptSize);
 }
 
-static void ttf_close_font(TTF_Font* font)
+static void TtfCloseFont(TTF_Font* font)
 {
     TTF_CloseFont(font);
 }
 
-static uint32_t ttf_surface_cache_hash(TTF_Font* font, std::string_view text)
+static uint32_t TtfSurfaceCacheHash(TTF_Font* font, std::string_view text)
 {
     uint32_t hash = static_cast<uint32_t>(((reinterpret_cast<uintptr_t>(font) * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
     for (auto c : text)
@@ -192,11 +192,11 @@ static uint32_t ttf_surface_cache_hash(TTF_Font* font, std::string_view text)
     return hash;
 }
 
-static void ttf_surface_cache_dispose(ttf_cache_entry* entry)
+static void TtfSurfaceCacheDispose(ttf_cache_entry* entry)
 {
     if (entry->surface != nullptr)
     {
-        ttf_free_surface(entry->surface);
+        TtfFreeSurface(entry->surface);
         free(entry->text);
 
         entry->surface = nullptr;
@@ -205,26 +205,26 @@ static void ttf_surface_cache_dispose(ttf_cache_entry* entry)
     }
 }
 
-static void ttf_surface_cache_dispose_all()
+static void TtfSurfaceCacheDisposeAll()
 {
     for (int32_t i = 0; i < TTF_SURFACE_CACHE_SIZE; i++)
     {
-        ttf_surface_cache_dispose(&_ttfSurfaceCache[i]);
+        TtfSurfaceCacheDispose(&_ttfSurfaceCache[i]);
         _ttfSurfaceCacheCount--;
     }
 }
 
-void ttf_toggle_hinting()
+void TtfToggleHinting()
 {
     FontLockHelper<std::mutex> lock(_mutex);
-    ttf_toggle_hinting(true);
+    TtfToggleHinting(true);
 }
 
-TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, std::string_view text)
+TTFSurface* TtfSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
 {
     ttf_cache_entry* entry;
 
-    uint32_t hash = ttf_surface_cache_hash(font, text);
+    uint32_t hash = TtfSurfaceCacheHash(font, text);
     int32_t index = hash % TTF_SURFACE_CACHE_SIZE;
 
     FontLockHelper<std::mutex> lock(_mutex);
@@ -256,9 +256,9 @@ TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, std::string_view text)
 
     // Cache miss, replace entry with new surface
     entry = &_ttfSurfaceCache[index];
-    ttf_surface_cache_dispose(entry);
+    TtfSurfaceCacheDispose(entry);
 
-    TTFSurface* surface = ttf_render(font, text);
+    TTFSurface* surface = TtfRender(font, text);
     if (surface == nullptr)
     {
         return nullptr;
@@ -275,7 +275,7 @@ TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, std::string_view text)
     return entry->surface;
 }
 
-static void ttf_getwidth_cache_dispose(ttf_getwidth_cache_entry* entry)
+static void TtfGetWidthCacheDispose(ttf_getwidth_cache_entry* entry)
 {
     if (entry->text != nullptr)
     {
@@ -287,20 +287,20 @@ static void ttf_getwidth_cache_dispose(ttf_getwidth_cache_entry* entry)
     }
 }
 
-static void ttf_getwidth_cache_dispose_all()
+static void TtfGetWidthCacheDisposeAll()
 {
     for (int32_t i = 0; i < TTF_GETWIDTH_CACHE_SIZE; i++)
     {
-        ttf_getwidth_cache_dispose(&_ttfGetWidthCache[i]);
+        TtfGetWidthCacheDispose(&_ttfGetWidthCache[i]);
         _ttfGetWidthCacheCount--;
     }
 }
 
-uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, std::string_view text)
+uint32_t TtfGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
 {
     ttf_getwidth_cache_entry* entry;
 
-    uint32_t hash = ttf_surface_cache_hash(font, text);
+    uint32_t hash = TtfSurfaceCacheHash(font, text);
     int32_t index = hash % TTF_GETWIDTH_CACHE_SIZE;
 
     FontLockHelper<std::mutex> lock(_mutex);
@@ -332,10 +332,10 @@ uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, std::string_view text)
 
     // Cache miss, replace entry with new width
     entry = &_ttfGetWidthCache[index];
-    ttf_getwidth_cache_dispose(entry);
+    TtfGetWidthCacheDispose(entry);
 
     int32_t width, height;
-    ttf_get_size(font, text, &width, &height);
+    TtfGetSize(font, text, &width, &height);
 
     _ttfGetWidthCacheMissCount++;
 
@@ -347,25 +347,25 @@ uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, std::string_view text)
     return entry->width;
 }
 
-TTFFontDescriptor* ttf_get_font_from_sprite_base(FontStyle fontStyle)
+TTFFontDescriptor* TtfGetFontFromSpriteBase(FontStyle fontStyle)
 {
     FontLockHelper<std::mutex> lock(_mutex);
     return &gCurrentTTFFontSet->size[EnumValue(fontStyle)];
 }
 
-bool ttf_provides_glyph(const TTF_Font* font, codepoint_t codepoint)
+bool TtfProvidesGlyph(const TTF_Font* font, codepoint_t codepoint)
 {
     return TTF_GlyphIsProvided(font, codepoint);
 }
 
-static bool ttf_get_size(TTF_Font* font, std::string_view text, int32_t* outWidth, int32_t* outHeight)
+static bool TtfGetSize(TTF_Font* font, std::string_view text, int32_t* outWidth, int32_t* outHeight)
 {
     thread_local std::string buffer;
     buffer.assign(text);
     return TTF_SizeUTF8(font, buffer.c_str(), outWidth, outHeight);
 }
 
-static TTFSurface* ttf_render(TTF_Font* font, std::string_view text)
+static TTFSurface* TtfRender(TTF_Font* font, std::string_view text)
 {
     thread_local std::string buffer;
     buffer.assign(text);
@@ -377,7 +377,7 @@ static TTFSurface* ttf_render(TTF_Font* font, std::string_view text)
     return TTF_RenderUTF8_Solid(font, buffer.c_str(), 0x000000FF);
 }
 
-void ttf_free_surface(TTFSurface* surface)
+void TtfFreeSurface(TTFSurface* surface)
 {
     free(const_cast<void*>(surface->pixels));
     free(surface);
@@ -387,12 +387,12 @@ void ttf_free_surface(TTFSurface* surface)
 
 #    include "TTF.h"
 
-bool ttf_initialise()
+bool TtfInitialise()
 {
     return false;
 }
 
-void ttf_dispose()
+void TtfDispose()
 {
 }
 

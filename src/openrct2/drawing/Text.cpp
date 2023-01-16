@@ -36,7 +36,7 @@ public:
 
         MaxWidth = GfxWrapString(Buffer, width, paint.FontStyle, &LineCount);
         LineCount += 1;
-        LineHeight = font_get_line_height(paint.FontStyle);
+        LineHeight = FontGetLineHeight(paint.FontStyle);
     }
 
     void Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)

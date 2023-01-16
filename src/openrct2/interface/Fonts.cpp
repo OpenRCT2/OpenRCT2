@@ -107,7 +107,7 @@ TTFFontSetDescriptor TTFFontMicroHei = { {
 
 static void LoadSpriteFont(LocalisationService& localisationService)
 {
-    ttf_dispose();
+    TtfDispose();
     localisationService.UseTrueTypeFont(false);
 #ifndef NO_TTF
     gCurrentTTFFontSet = nullptr;
@@ -120,8 +120,8 @@ static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescrip
     localisationService.UseTrueTypeFont(true);
     gCurrentTTFFontSet = font;
 
-    ttf_dispose();
-    bool fontInitialised = ttf_initialise();
+    TtfDispose();
+    bool fontInitialised = TtfInitialise();
     return fontInitialised;
 }
 
@@ -136,11 +136,11 @@ static bool LoadCustomConfigFont(LocalisationService& localisationService)
           gConfigFonts.OffsetY, gConfigFonts.HeightMedium, gConfigFonts.HintingThreshold, nullptr },
     } };
 
-    ttf_dispose();
+    TtfDispose();
     localisationService.UseTrueTypeFont(true);
     gCurrentTTFFontSet = &TTFFontCustom;
 
-    bool fontInitialised = ttf_initialise();
+    bool fontInitialised = TtfInitialise();
     return fontInitialised;
 }
 #endif // NO_TTF

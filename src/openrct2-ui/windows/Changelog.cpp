@@ -187,7 +187,7 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
-        const int32_t lineHeight = font_get_line_height(FontStyle::Medium);
+        const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
         ScreenCoordsXY screenCoords(3, 3 - lineHeight);
         for (const auto& line : _changelogLines)
@@ -204,7 +204,7 @@ public:
     {
         return ScreenSize(
             _changelogLongestLineWidth + 4,
-            static_cast<int32_t>(_changelogLines.size()) * font_get_line_height(FontStyle::Medium));
+            static_cast<int32_t>(_changelogLines.size()) * FontGetLineHeight(FontStyle::Medium));
     }
 
     // TODO: This probably should be a utility function defined elsewhere for reusability

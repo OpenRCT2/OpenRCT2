@@ -33,7 +33,7 @@ static FontStyle InGameConsoleGetFontStyle()
 
 static int32_t InGameConsoleGetLineHeight()
 {
-    return font_get_line_height(InGameConsoleGetFontStyle());
+    return FontGetLineHeight(InGameConsoleGetFontStyle());
 }
 
 InGameConsole::InGameConsole()

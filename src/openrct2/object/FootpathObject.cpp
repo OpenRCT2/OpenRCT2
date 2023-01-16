@@ -38,7 +38,7 @@ void FootpathObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.bridge_image = _legacyType.image + 109;
 
     _pathSurfaceDescriptor.Name = _legacyType.string_idx;
@@ -63,7 +63,7 @@ void FootpathObject::Load()
 void FootpathObject::Unload()
 {
     language_free_object_string(_legacyType.string_idx);
-    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
+    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.string_idx = 0;
     _legacyType.image = 0;

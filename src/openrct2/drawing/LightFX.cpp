@@ -85,7 +85,7 @@ static ZoomLevel _current_view_zoom_back_delay{ 0 };
 
 static GamePalette gPalette_light;
 
-static uint8_t calc_light_intensity_lantern(int32_t x, int32_t y)
+static uint8_t CalcLightIntensityLantern(int32_t x, int32_t y)
 {
     double distance = static_cast<double>(x * x + y * y);
 
@@ -96,7 +96,7 @@ static uint8_t calc_light_intensity_lantern(int32_t x, int32_t y)
     return static_cast<uint8_t>(std::min(255.0, light * 255.0));
 }
 
-static uint8_t calc_light_intensity_spot(int32_t x, int32_t y)
+static uint8_t CalcLightIntensitySpot(int32_t x, int32_t y)
 {
     double distance = static_cast<double>(x * x + y * y);
 
@@ -107,7 +107,7 @@ static uint8_t calc_light_intensity_spot(int32_t x, int32_t y)
     return static_cast<uint8_t>(std::min(255.0, light * 255.0)) >> 4;
 }
 
-static void calc_rescale_light_half(uint8_t* target, uint8_t* source, uint32_t targetWidth, uint32_t targetHeight)
+static void CalcRescaleLightHalf(uint8_t* target, uint8_t* source, uint32_t targetWidth, uint32_t targetHeight)
 {
     uint8_t* parcerRead = source;
     uint8_t* parcerWrite = target;
@@ -124,22 +124,22 @@ static void calc_rescale_light_half(uint8_t* target, uint8_t* source, uint32_t t
     }
 }
 
-void lightfx_set_available(bool available)
+void LightfxSetAvailable(bool available)
 {
     _lightfxAvailable = available;
 }
 
-bool lightfx_is_available()
+bool LightfxIsAvailable()
 {
     return _lightfxAvailable && gConfigGeneral.EnableLightFx != 0;
 }
 
-bool lightfx_for_vehicles_is_available()
+bool LightfxForVehiclesIsAvailable()
 {
-    return lightfx_is_available() && gConfigGeneral.EnableLightFxForVehicles != 0;
+    return LightfxIsAvailable() && gConfigGeneral.EnableLightFxForVehicles != 0;
 }
 
-void lightfx_init()
+void LightfxInit()
 {
     _LightListBack = _LightListA;
     _LightListFront = _LightListB;
@@ -155,7 +155,7 @@ void lightfx_init()
     {
         for (int32_t x = 0; x < 256; x++)
         {
-            *parcer = calc_light_intensity_lantern(x - 128, y - 128);
+            *parcer = CalcLightIntensityLantern(x - 128, y - 128);
             parcer++;
         }
     }
@@ -166,28 +166,28 @@ void lightfx_init()
     {
         for (int32_t x = 0; x < 256; x++)
         {
-            *parcer = calc_light_intensity_spot(x - 128, y - 128);
+            *parcer = CalcLightIntensitySpot(x - 128, y - 128);
             parcer++;
         }
     }
 
-    calc_rescale_light_half(_bakedLightTexture_lantern_2, _bakedLightTexture_lantern_3, 128, 128);
-    calc_rescale_light_half(_bakedLightTexture_lantern_1, _bakedLightTexture_lantern_2, 64, 64);
-    calc_rescale_light_half(_bakedLightTexture_lantern_0, _bakedLightTexture_lantern_1, 32, 32);
+    CalcRescaleLightHalf(_bakedLightTexture_lantern_2, _bakedLightTexture_lantern_3, 128, 128);
+    CalcRescaleLightHalf(_bakedLightTexture_lantern_1, _bakedLightTexture_lantern_2, 64, 64);
+    CalcRescaleLightHalf(_bakedLightTexture_lantern_0, _bakedLightTexture_lantern_1, 32, 32);
 
-    calc_rescale_light_half(_bakedLightTexture_spot_2, _bakedLightTexture_spot_3, 128, 128);
-    calc_rescale_light_half(_bakedLightTexture_spot_1, _bakedLightTexture_spot_2, 64, 64);
-    calc_rescale_light_half(_bakedLightTexture_spot_0, _bakedLightTexture_spot_1, 32, 32);
+    CalcRescaleLightHalf(_bakedLightTexture_spot_2, _bakedLightTexture_spot_3, 128, 128);
+    CalcRescaleLightHalf(_bakedLightTexture_spot_1, _bakedLightTexture_spot_2, 64, 64);
+    CalcRescaleLightHalf(_bakedLightTexture_spot_0, _bakedLightTexture_spot_1, 32, 32);
 }
 
-void lightfx_update_buffers(rct_drawpixelinfo* info)
+void LightfxUpdateBuffers(rct_drawpixelinfo* info)
 {
     _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info->width * info->height);
     _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info->width * info->height);
     _pixelInfo = *info;
 }
 
-void lightfx_prepare_light_list()
+void LightfxPrepareLightList()
 {
     for (uint32_t light = 0; light < LightListCurrentCountFront; light++)
     {
@@ -401,7 +401,7 @@ void lightfx_prepare_light_list()
     }
 }
 
-void lightfx_swap_buffers()
+void LightfxSwapBuffers()
 {
     void* tmp = _light_rendered_buffer_back;
     _light_rendered_buffer_back = _light_rendered_buffer_front;
@@ -429,7 +429,7 @@ void lightfx_swap_buffers()
     _current_view_zoom_back_delay = _current_view_zoom_back;
 }
 
-void lightfx_update_viewport_settings()
+void LightfxUpdateViewportSettings()
 {
     rct_window* mainWindow = WindowGetMain();
     if (mainWindow != nullptr)
@@ -442,7 +442,7 @@ void lightfx_update_viewport_settings()
     }
 }
 
-void lightfx_render_lights_to_frontbuffer()
+void LightfxRenderLightsToFrontBuffer()
 {
     if (_light_rendered_buffer_front == nullptr)
     {
@@ -614,12 +614,12 @@ void lightfx_render_lights_to_frontbuffer()
     }
 }
 
-void* lightfx_get_front_buffer()
+void* LightfxGetFrontBuffer()
 {
     return _light_rendered_buffer_front;
 }
 
-const GamePalette& lightfx_get_palette()
+const GamePalette& LightfxGetPalette()
 {
     return gPalette_light;
 }
@@ -681,7 +681,7 @@ void LightfxAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsX
     LightfxAdd3DLight(entity.sprite_index.ToUnderlying(), LightFXQualifier::Entity, id, loc, lightType);
 }
 
-void lightfx_add_3d_light_magic_from_drawing_tile(
+void LightfxAdd3DLightMagicFromDrawingTile(
     const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType)
 {
     int16_t x = mapPosition.x + offsetX + 16;
@@ -690,7 +690,7 @@ void lightfx_add_3d_light_magic_from_drawing_tile(
     LightfxAdd3DLight({ x, y, offsetZ }, lightType);
 }
 
-uint32_t lightfx_get_light_polution()
+uint32_t LightfxGetLightPolution()
 {
     return _lightPolution_front;
 }
@@ -794,18 +794,18 @@ void LightFxAddKioskLights(const CoordsXY& mapPosition, const int32_t height, co
     uint8_t relativeRotation = (4 - GetCurrentRotation()) % 4;
     CoordsXY lanternOffset1 = CoordsXY(0, 16).Rotate(relativeRotation);
     CoordsXY lanternOffset2 = CoordsXY(16, 0).Rotate(relativeRotation);
-    lightfx_add_3d_light_magic_from_drawing_tile(
+    LightfxAdd3DLightMagicFromDrawingTile(
         mapPosition, lanternOffset1.x, lanternOffset1.y, height + zOffset, LightType::Lantern3);
-    lightfx_add_3d_light_magic_from_drawing_tile(
+    LightfxAdd3DLightMagicFromDrawingTile(
         mapPosition, lanternOffset2.x, lanternOffset2.y, height + zOffset, LightType::Lantern3);
-    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, 32, height, LightType::Spot1);
-    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, 8, height, LightType::Spot1);
-    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, 8, height, LightType::Spot1);
-    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 8, -32, height, LightType::Spot1);
-    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, 32, height, LightType::Spot1);
-    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, 32, -8, height, LightType::Spot1);
-    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -32, -8, height, LightType::Spot1);
-    lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, -8, -32, height, LightType::Spot1);
+    LightfxAdd3DLightMagicFromDrawingTile(mapPosition, 8, 32, height, LightType::Spot1);
+    LightfxAdd3DLightMagicFromDrawingTile(mapPosition, 32, 8, height, LightType::Spot1);
+    LightfxAdd3DLightMagicFromDrawingTile(mapPosition, -32, 8, height, LightType::Spot1);
+    LightfxAdd3DLightMagicFromDrawingTile(mapPosition, 8, -32, height, LightType::Spot1);
+    LightfxAdd3DLightMagicFromDrawingTile(mapPosition, -8, 32, height, LightType::Spot1);
+    LightfxAdd3DLightMagicFromDrawingTile(mapPosition, 32, -8, height, LightType::Spot1);
+    LightfxAdd3DLightMagicFromDrawingTile(mapPosition, -32, -8, height, LightType::Spot1);
+    LightfxAdd3DLightMagicFromDrawingTile(mapPosition, -8, -32, height, LightType::Spot1);
 }
 
 void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset)
@@ -814,29 +814,29 @@ void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, 
     {
         CoordsXY spotOffset1 = CoordsXY(-32, 8).Rotate(direction);
         CoordsXY spotOffset2 = CoordsXY(-32, 4).Rotate(direction);
-        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
-        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot2);
+        LightfxAdd3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
+        LightfxAdd3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot2);
     }
     else if (direction == (7 - GetCurrentRotation()) % 4) // Back left Facing Stall
     {
         CoordsXY spotOffset1 = CoordsXY(-32, -8).Rotate(direction);
         CoordsXY spotOffset2 = CoordsXY(-32, -4).Rotate(direction);
-        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
-        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot2);
+        LightfxAdd3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
+        LightfxAdd3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot2);
     }
     else // Forward Facing Stall
     {
         CoordsXY spotOffset1 = CoordsXY(-32, 8).Rotate(direction);
         CoordsXY spotOffset2 = CoordsXY(-32, -8).Rotate(direction);
         CoordsXY lanternOffset = CoordsXY(-16, 0).Rotate(direction);
-        lightfx_add_3d_light_magic_from_drawing_tile(
+        LightfxAdd3DLightMagicFromDrawingTile(
             mapPosition, lanternOffset.x, lanternOffset.y, height + zOffset, LightType::Lantern3);
-        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
-        lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot1);
+        LightfxAdd3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::Spot1);
+        LightfxAdd3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::Spot1);
     }
 }
 
-void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
+void LightfxApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 {
     float night = static_cast<float>(pow(gDayNightCycle, 1.5));
 
@@ -919,7 +919,7 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     reduceColourLit *= night / static_cast<float>(std::pow(std::max(1.01f, 0.4f + lightAvg), 2.0));
 
     float targetLightPollution = reduceColourLit
-        * std::max(0.0f, 0.0f + 0.000001f * static_cast<float>(lightfx_get_light_polution()));
+        * std::max(0.0f, 0.0f + 0.000001f * static_cast<float>(LightfxGetLightPolution()));
     lightPolution -= (lightPolution - targetLightPollution) * 0.001f;
 
     //  lightPollution /= 1.0f + fogginess * 1.0f;
@@ -1007,7 +1007,7 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     }
 }
 
-static uint8_t mix_light(uint32_t a, uint32_t b, uint32_t intensity)
+static uint8_t MixLight(uint32_t a, uint32_t b, uint32_t intensity)
 {
     intensity = intensity * 6;
     uint32_t bMul = (b * intensity) >> 8;
@@ -1016,16 +1016,16 @@ static uint8_t mix_light(uint32_t a, uint32_t b, uint32_t intensity)
     return result;
 }
 
-void lightfx_render_to_texture(
+void LightfxRenderToTexture(
     void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height, const uint32_t* palette,
     const uint32_t* lightPalette)
 {
-    lightfx_update_viewport_settings();
-    lightfx_swap_buffers();
-    lightfx_prepare_light_list();
-    lightfx_render_lights_to_frontbuffer();
+    LightfxUpdateViewportSettings();
+    LightfxSwapBuffers();
+    LightfxPrepareLightList();
+    LightfxRenderLightsToFrontBuffer();
 
-    uint8_t* lightBits = static_cast<uint8_t*>(lightfx_get_front_buffer());
+    uint8_t* lightBits = static_cast<uint8_t*>(LightfxGetFrontBuffer());
     if (lightBits == nullptr)
     {
         return;
@@ -1049,10 +1049,10 @@ void lightfx_render_to_texture(
             }
             else
             {
-                colour |= mix_light((darkColour >> 0) & 0xFF, (lightColour >> 0) & 0xFF, lightIntensity);
-                colour |= mix_light((darkColour >> 8) & 0xFF, (lightColour >> 8) & 0xFF, lightIntensity) << 8;
-                colour |= mix_light((darkColour >> 16) & 0xFF, (lightColour >> 16) & 0xFF, lightIntensity) << 16;
-                colour |= mix_light((darkColour >> 24) & 0xFF, (lightColour >> 24) & 0xFF, lightIntensity) << 24;
+                colour |= MixLight((darkColour >> 0) & 0xFF, (lightColour >> 0) & 0xFF, lightIntensity);
+                colour |= MixLight((darkColour >> 8) & 0xFF, (lightColour >> 8) & 0xFF, lightIntensity) << 8;
+                colour |= MixLight((darkColour >> 16) & 0xFF, (lightColour >> 16) & 0xFF, lightIntensity) << 16;
+                colour |= MixLight((darkColour >> 24) & 0xFF, (lightColour >> 24) & 0xFF, lightIntensity) << 24;
             }
             *dst++ = colour;
         }

@@ -402,7 +402,7 @@ namespace OpenRCT2
         // Currency symbol
         auto symbol = currencyDesc->symbol_unicode;
         auto affix = currencyDesc->affix_unicode;
-        if (!font_supports_string(symbol, FontStyle::Medium))
+        if (!FontSupportsString(symbol, FontStyle::Medium))
         {
             symbol = currencyDesc->symbol_ascii;
             affix = currencyDesc->affix_ascii;

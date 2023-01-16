@@ -504,11 +504,11 @@ int32_t CmdlineForGfxbench(const char** argv, int32_t argc)
     std::unique_ptr<IContext> context(CreateContext());
     if (context->Initialise())
     {
-        drawing_engine_init();
+        DrawingEngineInit();
 
         BenchgfxRenderScreenshots(inputPath, context, iterationCount);
 
-        drawing_engine_dispose();
+        DrawingEngineDispose();
     }
 
     return 1;
@@ -602,7 +602,7 @@ int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions*
             throw std::runtime_error("Failed to initialize context.");
         }
 
-        drawing_engine_init();
+        DrawingEngineInit();
 
         if (!context->LoadParkFromFile(inputPath))
         {
@@ -699,7 +699,7 @@ int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions*
     }
     ReleaseDPI(dpi);
 
-    drawing_engine_dispose();
+    DrawingEngineDispose();
 
     return exitCode;
 }

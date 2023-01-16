@@ -39,7 +39,7 @@ public:
     {
         int32_t textWidth = FormatTextForTooltip(message);
         width = textWidth + 3;
-        height = ((_tooltipNumLines + 1) * font_get_line_height(FontStyle::Small)) + 4;
+        height = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small)) + 4;
 
         window_tooltip_widgets[WIDX_BACKGROUND].right = width;
         window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;

@@ -74,7 +74,7 @@ void MusicObject::Load()
     }
 
     _hasPreview = !!GetImageTable().GetCount();
-    _previewImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _previewImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void MusicObject::Unload()

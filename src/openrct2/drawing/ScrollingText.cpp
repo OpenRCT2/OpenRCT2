@@ -42,9 +42,9 @@ static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8
 static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
 
-static void scrolling_text_set_bitmap_for_sprite(
+static void ScrollingTextSetBitmapForSprite(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
-static void scrolling_text_set_bitmap_for_ttf(
+static void ScrollingTextSetBitmapForTtf(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
 
 static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
@@ -109,9 +109,9 @@ void ScrollingTextInitialiseBitmaps()
     ScrollingTextInitialiseScrollingText();
 }
 
-static uint8_t* font_sprite_get_codepoint_bitmap(int32_t codepoint)
+static uint8_t* FontSpriteGetCodepointBitmap(int32_t codepoint)
 {
-    auto offset = font_sprite_get_codepoint_offset(codepoint);
+    auto offset = FontSpriteGetCodepointOffset(codepoint);
     if (offset >= FONT_SPRITE_GLYPH_COUNT)
     {
         return _characterBitmaps[offset - (SPR_G2_CHAR_BEGIN - SPR_CHAR_START) + FONT_SPRITE_GLYPH_COUNT];
@@ -120,7 +120,7 @@ static uint8_t* font_sprite_get_codepoint_bitmap(int32_t codepoint)
     return _characterBitmaps[offset];
 }
 
-static int32_t scrolling_text_get_matching_or_oldest(
+static int32_t ScrollingTextGetMatchingOrOldest(
     StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     uint32_t oldestId = 0xFFFFFFFF;
@@ -146,7 +146,7 @@ static int32_t scrolling_text_get_matching_or_oldest(
     return scrollIndex;
 }
 
-static void scrolling_text_format(utf8* dst, size_t size, rct_draw_scroll_text* scrollText)
+static void ScrollingTextFormat(utf8* dst, size_t size, rct_draw_scroll_text* scrollText)
 {
     if (gConfigGeneral.UpperCaseBanners)
     {
@@ -1447,7 +1447,7 @@ ImageId ScrollingTextSetup(
 
     _drawSCrollNextIndex++;
     ft.Rewind();
-    int32_t scrollIndex = scrolling_text_get_matching_or_oldest(stringId, ft, scroll, scrollingMode, colour);
+    int32_t scrollIndex = ScrollingTextGetMatchingOrOldest(stringId, ft, scroll, scrollingMode, colour);
     if (scrollIndex >= SPR_SCROLLING_TEXT_START)
         return ImageId(scrollIndex);
 
@@ -1462,26 +1462,26 @@ ImageId ScrollingTextSetup(
 
     // Create the string to draw
     utf8 scrollString[256];
-    scrolling_text_format(scrollString, 256, scrollText);
+    ScrollingTextFormat(scrollString, 256, scrollText);
 
     const int16_t* scrollingModePositions = _scrollPositions[scrollingMode];
 
     std::fill_n(scrollText->bitmap, 320 * 8, 0x00);
     if (LocalisationService_UseTrueTypeFont())
     {
-        scrolling_text_set_bitmap_for_ttf(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
+        ScrollingTextSetBitmapForTtf(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
     }
     else
     {
-        scrolling_text_set_bitmap_for_sprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
+        ScrollingTextSetBitmapForSprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
     }
 
     uint32_t imageId = SPR_SCROLLING_TEXT_START + scrollIndex;
-    drawing_engine_invalidate_image(imageId);
+    DrawingEngineInvalidateImage(imageId);
     return ImageId(imageId);
 }
 
-static void scrolling_text_set_bitmap_for_sprite(
+static void ScrollingTextSetBitmapForSprite(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
     auto characterColour = colour;
@@ -1497,8 +1497,8 @@ static void scrolling_text_set_bitmap_for_sprite(
                 CodepointView codepoints(token.text);
                 for (auto codepoint : codepoints)
                 {
-                    auto characterWidth = font_sprite_get_codepoint_width(FontStyle::Tiny, codepoint);
-                    auto characterBitmap = font_sprite_get_codepoint_bitmap(codepoint);
+                    auto characterWidth = FontSpriteGetCodepointWidth(FontStyle::Tiny, codepoint);
+                    auto characterBitmap = FontSpriteGetCodepointBitmap(codepoint);
                     for (; characterWidth != 0; characterWidth--, characterBitmap++)
                     {
                         // Skip any non-displayed columns
@@ -1541,14 +1541,14 @@ static void scrolling_text_set_bitmap_for_sprite(
     }
 }
 
-static void scrolling_text_set_bitmap_for_ttf(
+static void ScrollingTextSetBitmapForTtf(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
 #ifndef NO_TTF
-    auto fontDesc = ttf_get_font_from_sprite_base(FontStyle::Tiny);
+    auto fontDesc = TtfGetFontFromSpriteBase(FontStyle::Tiny);
     if (fontDesc->font == nullptr)
     {
-        scrolling_text_set_bitmap_for_sprite(text, scroll, bitmap, scrollPositionOffsets, colour);
+        ScrollingTextSetBitmapForSprite(text, scroll, bitmap, scrollPositionOffsets, colour);
         return;
     }
 
@@ -1573,7 +1573,7 @@ static void scrolling_text_set_bitmap_for_ttf(
         }
     }
 
-    auto surface = ttf_surface_cache_get_or_add(fontDesc->font, ttfBuffer.c_str());
+    auto surface = TtfSurfaceCacheGetOrAdd(fontDesc->font, ttfBuffer.c_str());
     if (surface == nullptr)
     {
         return;

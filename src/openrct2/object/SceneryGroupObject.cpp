@@ -57,14 +57,14 @@ void SceneryGroupObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.SceneryEntries.clear();
 }
 
 void SceneryGroupObject::Unload()
 {
     language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
+    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _legacyType.image = 0;

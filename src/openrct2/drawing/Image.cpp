@@ -186,7 +186,7 @@ static void FreeImageList(uint32_t baseImageId, uint32_t count)
     _freeLists.push_back({ baseImageId, count });
 }
 
-uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count)
+uint32_t GfxObjectAllocateImages(const rct_g1_element* images, uint32_t count)
 {
     if (count == 0 || gOpenRCT2NoGraphics)
     {
@@ -204,14 +204,14 @@ uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count
     for (uint32_t i = 0; i < count; i++)
     {
         GfxSetG1Element(imageId, &images[i]);
-        drawing_engine_invalidate_image(imageId);
+        DrawingEngineInvalidateImage(imageId);
         imageId++;
     }
 
     return baseImageId;
 }
 
-void gfx_object_free_images(uint32_t baseImageId, uint32_t count)
+void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count)
 {
     if (baseImageId != 0 && baseImageId != INVALID_IMAGE_ID)
     {
@@ -222,14 +222,14 @@ void gfx_object_free_images(uint32_t baseImageId, uint32_t count)
             uint32_t imageId = baseImageId + i;
             rct_g1_element g1 = {};
             GfxSetG1Element(imageId, &g1);
-            drawing_engine_invalidate_image(imageId);
+            DrawingEngineInvalidateImage(imageId);
         }
 
         FreeImageList(baseImageId, count);
     }
 }
 
-void gfx_object_check_all_images_freed()
+void GfxObjectCheckAllImagesFreed()
 {
     if (_allocatedImageCount != 0)
     {

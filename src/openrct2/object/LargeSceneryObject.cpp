@@ -109,7 +109,7 @@ void LargeSceneryObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = language_allocate_object_string(GetName());
-    _baseImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _baseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.image = _baseImageId;
 
     _legacyType.tiles = _tiles.data();
@@ -132,7 +132,7 @@ void LargeSceneryObject::Load()
 void LargeSceneryObject::Unload()
 {
     language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_baseImageId, GetImageTable().GetCount());
+    GfxObjectFreeImages(_baseImageId, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _baseImageId = _legacyType.image = 0;

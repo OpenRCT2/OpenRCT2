@@ -1034,7 +1034,7 @@ private:
     void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, rct_drawpixelinfo& dpi, int32_t colour, bool blinkFlag)
     {
         auto coords = origCoords;
-        if (font_get_line_height(FontStyle::Medium) > 10)
+        if (FontGetLineHeight(FontStyle::Medium) > 10)
         {
             coords.y += 1;
         }

@@ -364,7 +364,7 @@ static void ViewportRedrawAfterShift(
         if (abs(coords.x) < viewport->width && abs(coords.y) < viewport->height)
         {
             // update whole block ?
-            drawing_engine_copy_rect(viewport->pos.x, viewport->pos.y, viewport->width, viewport->height, coords.x, coords.y);
+            DrawingEngineCopyRect(viewport->pos.x, viewport->pos.y, viewport->width, viewport->height, coords.x, coords.y);
 
             if (coords.x > 0)
             {
@@ -478,9 +478,9 @@ static void ViewportMove(const ScreenCoordsXY& coords, rct_window* w, rct_viewpo
         if (top >= bottom)
             return;
 
-        if (drawing_engine_has_dirty_optimisations())
+        if (DrawingEngineHasDirtyOptimisations())
         {
-            rct_drawpixelinfo* dpi = drawing_engine_get_dpi();
+            rct_drawpixelinfo* dpi = DrawingEngineGetDpi();
             WindowDrawAll(dpi, left, top, right, bottom);
             return;
         }
@@ -530,9 +530,9 @@ static void ViewportMove(const ScreenCoordsXY& coords, rct_window* w, rct_viewpo
         return;
     }
 
-    if (drawing_engine_has_dirty_optimisations())
+    if (DrawingEngineHasDirtyOptimisations())
     {
-        rct_drawpixelinfo* dpi = drawing_engine_get_dpi();
+        rct_drawpixelinfo* dpi = DrawingEngineGetDpi();
         ViewportShiftPixels(dpi, w, viewport, x_diff, y_diff);
     }
 

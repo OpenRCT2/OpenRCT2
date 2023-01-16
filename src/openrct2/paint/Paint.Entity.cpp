@@ -117,7 +117,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         {
             case EntityType::Vehicle:
                 spr->As<Vehicle>()->Paint(session, image_direction);
-                if (lightfx_for_vehicles_is_available())
+                if (LightfxForVehiclesIsAvailable())
                 {
                     LightfxAddLightsMagicVehicle(spr->As<Vehicle>());
                 }

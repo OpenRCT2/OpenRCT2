@@ -51,13 +51,13 @@ static IDrawingEngine* GetDrawingEngine()
     return result;
 }
 
-bool drawing_engine_requires_new_window(DrawingEngine srcEngine, DrawingEngine dstEngine)
+bool DrawingEngineRequiresNewWindow(DrawingEngine srcEngine, DrawingEngine dstEngine)
 {
     bool openGL = srcEngine == DrawingEngine::OpenGL || dstEngine == DrawingEngine::OpenGL;
     return Platform::RequireNewWindow(openGL);
 }
 
-void drawing_engine_init()
+void DrawingEngineInit()
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -66,7 +66,7 @@ void drawing_engine_init()
     }
 }
 
-void drawing_engine_resize()
+void DrawingEngineResize()
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -80,7 +80,7 @@ void drawing_engine_resize()
     }
 }
 
-void drawing_engine_set_palette(const GamePalette& colours)
+void DrawingEngineSetPalette(const GamePalette& colours)
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -93,7 +93,7 @@ void drawing_engine_set_palette(const GamePalette& colours)
     }
 }
 
-void drawing_engine_copy_rect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
+void DrawingEngineCopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -106,7 +106,7 @@ void drawing_engine_copy_rect(int32_t x, int32_t y, int32_t width, int32_t heigh
     }
 }
 
-void drawing_engine_dispose()
+void DrawingEngineDispose()
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -115,14 +115,14 @@ void drawing_engine_dispose()
     }
 }
 
-rct_drawpixelinfo* drawing_engine_get_dpi()
+rct_drawpixelinfo* DrawingEngineGetDpi()
 {
     auto context = GetContext();
     auto drawingEngine = context->GetDrawingEngine();
     return drawingEngine->GetDrawingPixelInfo();
 }
 
-bool drawing_engine_has_dirty_optimisations()
+bool DrawingEngineHasDirtyOptimisations()
 {
     bool result = false;
     auto drawingEngine = GetDrawingEngine();
@@ -133,7 +133,7 @@ bool drawing_engine_has_dirty_optimisations()
     return result;
 }
 
-void drawing_engine_invalidate_image(uint32_t image)
+void DrawingEngineInvalidateImage(uint32_t image)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -142,7 +142,7 @@ void drawing_engine_invalidate_image(uint32_t image)
     }
 }
 
-void drawing_engine_set_vsync(bool vsync)
+void DrawingEngineSetVSync(bool vsync)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)

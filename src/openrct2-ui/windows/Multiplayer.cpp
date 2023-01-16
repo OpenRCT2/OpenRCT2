@@ -334,7 +334,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
         return _windowInformationSize;
     }
 
-    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
+    int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
     // Base dimensions.
     const int32_t width = 450;

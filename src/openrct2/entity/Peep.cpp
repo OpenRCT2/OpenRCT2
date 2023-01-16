@@ -2775,7 +2775,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    if (lightfx_is_available())
+    if (LightfxIsAvailable())
     {
         if (Is<Staff>())
         {

@@ -162,7 +162,7 @@ public:
         g1temp.height = 217;
         g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
         GfxSetG1Element(SPR_TEMP, &g1temp);
-        drawing_engine_invalidate_image(SPR_TEMP);
+        DrawingEngineInvalidateImage(SPR_TEMP);
         GfxDrawSprite(&dpi, ImageId(SPR_TEMP), screenPos);
 
         screenPos = windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };

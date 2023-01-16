@@ -77,7 +77,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
     log_info("Starting...");
     if (context->Initialise())
     {
-        drawing_engine_init();
+        DrawingEngineInit();
         if (!context->LoadParkFromFile(std::string(parkFileName)))
         {
             log_error("Failed to load park!");
@@ -125,7 +125,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         ViewportRender(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } }, &sessions);
 
         free(dpi.bits);
-        drawing_engine_dispose();
+        DrawingEngineDispose();
     }
     log_info("Got %u paint sessions.", std::size(sessions));
     return sessions;

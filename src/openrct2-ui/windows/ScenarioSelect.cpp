@@ -291,10 +291,10 @@ static int32_t GetScenarioListItemSize()
         return 24;
 
     // Scenario title
-    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
+    int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
     // 'Completed by' line
-    lineHeight += font_get_line_height(FontStyle::Small);
+    lineHeight += FontGetLineHeight(FontStyle::Small);
 
     return lineHeight;
 }
@@ -566,7 +566,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
     // Scenario title
-    int32_t scenarioTitleHeight = font_get_line_height(FontStyle::Medium);
+    int32_t scenarioTitleHeight = FontGetLineHeight(FontStyle::Medium);
 
     int32_t y = 0;
     for (const auto& listItem : _listItems)
