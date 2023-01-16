@@ -65,4 +65,4 @@ extern PromptMode gSavePromptMode;
 void openrct2_write_full_version_info(utf8* buffer, size_t bufferSize);
 void openrct2_finish();
 
-int32_t cmdline_run(const char** argv, int32_t argc);
+int32_t CmdlineRun(const char** argv, int32_t argc);
