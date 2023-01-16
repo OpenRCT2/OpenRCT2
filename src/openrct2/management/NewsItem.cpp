@@ -19,6 +19,7 @@
 #include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
 #include "../profiling/Profiling.h"
@@ -310,7 +311,7 @@ News::Item* News::AddItemToQueue(News::ItemType type, StringId string_id, uint32
     utf8 buffer[256];
 
     // overflows possible?
-    format_string(buffer, 256, string_id, formatter.Data());
+    OpenRCT2::FormatStringLegacy(buffer, 256, string_id, formatter.Data());
     return News::AddItemToQueue(type, buffer, assoc);
 }
 

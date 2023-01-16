@@ -23,6 +23,7 @@
 #include "../entity/Particle.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -581,7 +582,7 @@ int32_t Guest::GetEasterEggNameId() const
 
     Formatter ft;
     FormatNameTo(ft);
-    format_string(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
+    FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
         if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
@@ -728,7 +729,7 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
 
     Formatter ft;
     FormatNameTo(ft);
-    format_string(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
+    FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
 }

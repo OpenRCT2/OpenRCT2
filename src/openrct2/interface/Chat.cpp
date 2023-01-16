@@ -304,7 +304,7 @@ int32_t ChatStringWrappedGetHeight(void* args, int32_t width)
 {
     char buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
-    format_string(bufferPtr, 256, STR_STRING, args);
+    FormatStringLegacy(bufferPtr, 256, STR_STRING, args);
 
     int32_t numLines;
     GfxWrapString(bufferPtr, width, FontStyle::Medium, &numLines);

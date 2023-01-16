@@ -561,7 +561,7 @@ void NetworkBase::UpdateClient()
                     {
                         _lastConnectStatus = SocketStatus::Resolving;
                         char str_resolving[256];
-                        format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
+                        FormatStringLegacy(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
 
                         auto intent = Intent(WindowClass::NetworkStatus);
                         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
@@ -576,7 +576,7 @@ void NetworkBase::UpdateClient()
                     {
                         _lastConnectStatus = SocketStatus::Connecting;
                         char str_connecting[256];
-                        format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
+                        FormatStringLegacy(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
 
                         auto intent = Intent(WindowClass::NetworkStatus);
                         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
@@ -593,7 +593,7 @@ void NetworkBase::UpdateClient()
                     _serverConnection->ResetLastPacketTime();
                     Client_Send_TOKEN();
                     char str_authenticating[256];
-                    format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
+                    FormatStringLegacy(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
 
                     auto intent = Intent(WindowClass::NetworkStatus);
                     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
@@ -633,11 +633,11 @@ void NetworkBase::UpdateClient()
                     if (_serverConnection->GetLastDisconnectReason())
                     {
                         const char* disconnect_reason = _serverConnection->GetLastDisconnectReason();
-                        format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
+                        FormatStringLegacy(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
                     }
                     else
                     {
-                        format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, nullptr);
+                        FormatStringLegacy(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, nullptr);
                     }
 
                     auto intent = Intent(WindowClass::NetworkStatus);
@@ -790,7 +790,7 @@ bool NetworkBase::CheckDesynchronizaton()
         _serverState.desyncTick = gCurrentTicks;
 
         char str_desync[256];
-        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
+        FormatStringLegacy(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
 
         auto intent = Intent(WindowClass::NetworkStatus);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
@@ -828,7 +828,7 @@ void NetworkBase::KickPlayer(int32_t playerId)
             // Disconnect the client gracefully
             client_connection->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
             char str_disconnect_msg[256];
-            format_string(str_disconnect_msg, 256, STR_MULTIPLAYER_KICKED_REASON, nullptr);
+            FormatStringLegacy(str_disconnect_msg, 256, STR_MULTIPLAYER_KICKED_REASON, nullptr);
             Server_Send_SETDISCONNECTMSG(*client_connection, str_disconnect_msg);
             client_connection->Disconnect();
             break;
@@ -1133,11 +1133,11 @@ void NetworkBase::BeginServerLog()
     utf8 logMessage[256];
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, nullptr);
+        FormatStringLegacy(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, nullptr);
     }
     else if (GetMode() == NETWORK_MODE_SERVER)
     {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, nullptr);
+        FormatStringLegacy(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, nullptr);
     }
     else
     {
@@ -1161,11 +1161,11 @@ void NetworkBase::CloseServerLog()
     char logMessage[256];
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, nullptr);
+        FormatStringLegacy(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, nullptr);
     }
     else if (GetMode() == NETWORK_MODE_SERVER)
     {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
+        FormatStringLegacy(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
     }
     else
     {
@@ -1967,11 +1967,11 @@ void NetworkBase::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& c
     };
     if (has_disconnected_args[1] != nullptr)
     {
-        format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
+        FormatStringLegacy(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
     }
     else
     {
-        format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, &(has_disconnected_args[0]));
+        FormatStringLegacy(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, &(has_disconnected_args[0]));
     }
 
     ChatAddHistory(text);
@@ -2269,7 +2269,7 @@ void NetworkBase::Server_Client_Joined(std::string_view name, const std::string&
     {
         char text[256];
         const char* player_name = static_cast<const char*>(player->Name.c_str());
-        format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
+        FormatStringLegacy(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
         ChatAddHistory(text);
 
         auto& context = GetContext();
@@ -2281,7 +2281,7 @@ void NetworkBase::Server_Client_Joined(std::string_view name, const std::string&
         // Log player joining event
         std::string playerNameHash = player->Name + " (" + keyhash + ")";
         player_name = static_cast<const char*>(playerNameHash.c_str());
-        format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
+        FormatStringLegacy(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
         AppendServerLog(text);
 
         ProcessPlayerJoinedPluginHooks(player->Id);
@@ -2320,7 +2320,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
             index + 1,
             totalObjects,
         };
-        format_string(objectListMsg, 256, STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST, &args);
+        FormatStringLegacy(objectListMsg, 256, STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST, &args);
 
         auto intent = Intent(WindowClass::NetworkStatus);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
@@ -2458,7 +2458,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
                 ft.Add<char*>(uniqueFileName);
 
                 char str_desync[1024];
-                format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, ft.Data());
+                FormatStringLegacy(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, ft.Data());
 
                 auto intent = Intent(WindowClass::NetworkStatus);
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
@@ -2666,7 +2666,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         (offset + chunksize) / 1024,
         size / 1024,
     };
-    format_string(str_downloading_map, 256, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
+    FormatStringLegacy(str_downloading_map, 256, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
 
     auto intent = Intent(WindowClass::NetworkStatus);
     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_downloading_map });
@@ -3419,7 +3419,7 @@ void network_chat_show_connected_message()
     const char* sptr = s.c_str();
 
     utf8 buffer[256];
-    format_string(buffer, sizeof(buffer), STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &sptr);
+    FormatStringLegacy(buffer, sizeof(buffer), STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &sptr);
 
     NetworkPlayer server;
     server.Name = "Server";
@@ -3493,7 +3493,7 @@ GameActions::Result network_set_player_group(
             new_player_group->GetName().c_str(),
             game_command_player->Name.c_str(),
         };
-        format_string(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
+        FormatStringLegacy(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
         network_append_server_log(log_msg);
     }
     return GameActions::Result();

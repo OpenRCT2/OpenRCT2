@@ -16,6 +16,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/ride/RideData.h>
@@ -659,7 +660,7 @@ static void DrawCategoryHeading(
     // Get string dimensions
     utf8 buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
-    format_string(bufferPtr, sizeof(buffer), stringId, nullptr);
+    OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
     int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;

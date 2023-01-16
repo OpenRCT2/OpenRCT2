@@ -274,7 +274,7 @@ void GfxDrawStringLeftCentred(
 {
     char buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
-    format_string(bufferPtr, sizeof(buffer), format, args);
+    FormatStringLegacy(bufferPtr, sizeof(buffer), format, args);
     int32_t height = StringGetHeightRaw(bufferPtr, FontStyle::Medium);
     GfxDrawString(dpi, coords - ScreenCoordsXY{ 0, (height / 2) }, bufferPtr, { colour });
 }
@@ -438,7 +438,7 @@ void DrawNewsTicker(
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
 
     GfxDrawString(dpi, screenCoords, "", { colour });
-    format_string(buffer, 256, format, args);
+    FormatStringLegacy(buffer, 256, format, args);
 
     GfxWrapString(buffer, width, FontStyle::Small, &numLines);
     lineHeight = FontGetLineHeight(FontStyle::Small);

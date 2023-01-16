@@ -13,6 +13,7 @@
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
@@ -58,7 +59,7 @@ static void PaintBannerScrollingText(
     }
     else
     {
-        format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
+        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);

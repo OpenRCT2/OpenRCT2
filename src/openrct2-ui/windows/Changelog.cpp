@@ -18,6 +18,7 @@
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
@@ -234,7 +235,7 @@ private:
             char version_info[256];
 
             const char* version_info_ptr = _newVersionInfo->name.c_str();
-            format_string(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
+            FormatStringLegacy(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
 
             _changelogLines.emplace_back(version_info);
             _changelogLines.emplace_back("");

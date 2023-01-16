@@ -832,8 +832,3 @@ namespace OpenRCT2
     }
 
 } // namespace OpenRCT2
-
-void format_string(utf8* dest, size_t size, StringId format, const void* args)
-{
-    OpenRCT2::FormatStringLegacy(dest, size, format, args);
-}
