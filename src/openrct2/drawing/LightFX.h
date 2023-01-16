@@ -42,28 +42,28 @@ constexpr LightType SetLightTypeSize(LightType type, uint8_t size)
     return static_cast<LightType>(((static_cast<uint8_t>(type) & ~0x3) | size));
 }
 
-void LightfxSetAvailable(bool available);
-bool LightfxIsAvailable();
-bool LightfxForVehiclesIsAvailable();
+void LightFXSetAvailable(bool available);
+bool LightFXIsAvailable();
+bool LightFXForVehiclesIsAvailable();
 
-void LightfxInit();
+void LightFXInit();
 
-void LightfxUpdateBuffers(rct_drawpixelinfo*);
+void LightFXUpdateBuffers(rct_drawpixelinfo*);
 
-void LightfxPrepareLightList();
-void LightfxSwapBuffers();
-void LightfxRenderLightsToFrontBuffer();
-void LightfxUpdateViewportSettings();
+void LightFXPrepareLightList();
+void LightFXSwapBuffers();
+void LightFXRenderLightsToFrontBuffer();
+void LightFXUpdateViewportSettings();
 
-void* LightfxGetFrontBuffer();
-const GamePalette& LightfxGetPalette();
+void* LightFXGetFrontBuffer();
+const GamePalette& LightFXGetPalette();
 
-void LightfxAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType);
+void LightFXAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType);
 
-void LightfxAdd3DLightMagicFromDrawingTile(
+void LightFXAdd3DLightMagicFromDrawingTile(
     const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType);
 
-void LightfxAddLightsMagicVehicle(const Vehicle* vehicle);
+void LightFXAddLightsMagicVehicle(const Vehicle* vehicle);
 void LightFxAddLightsMagicVehicle_ObservationTower(const Vehicle* vehicle);
 void LightFxAddLightsMagicVehicle_MineTrainCoaster(const Vehicle* vehicle);
 void LightFxAddLightsMagicVehicle_ChairLift(const Vehicle* vehicle);
@@ -74,9 +74,9 @@ void LightFxAddLightsMagicVehicle_MiniatureRailway(const Vehicle* vehicle);
 void LightFxAddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset);
 void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset);
 
-uint32_t LightfxGetLightPolution();
+uint32_t LightFXGetLightPolution();
 
-void LightfxApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b);
-void LightfxRenderToTexture(
+void LightFXApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b);
+void LightFXRenderToTexture(
     void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height, const uint32_t* palette,
     const uint32_t* lightPalette);

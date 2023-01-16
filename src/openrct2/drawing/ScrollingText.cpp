@@ -44,7 +44,7 @@ static std::mutex _scrollingTextMutex;
 
 static void ScrollingTextSetBitmapForSprite(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
-static void ScrollingTextSetBitmapForTtf(
+static void ScrollingTextSetBitmapForTTF(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
 
 static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
@@ -1469,7 +1469,7 @@ ImageId ScrollingTextSetup(
     std::fill_n(scrollText->bitmap, 320 * 8, 0x00);
     if (LocalisationService_UseTrueTypeFont())
     {
-        ScrollingTextSetBitmapForTtf(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
+        ScrollingTextSetBitmapForTTF(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
     }
     else
     {
@@ -1541,11 +1541,11 @@ static void ScrollingTextSetBitmapForSprite(
     }
 }
 
-static void ScrollingTextSetBitmapForTtf(
+static void ScrollingTextSetBitmapForTTF(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
 #ifndef NO_TTF
-    auto fontDesc = TtfGetFontFromSpriteBase(FontStyle::Tiny);
+    auto fontDesc = TTFGetFontFromSpriteBase(FontStyle::Tiny);
     if (fontDesc->font == nullptr)
     {
         ScrollingTextSetBitmapForSprite(text, scroll, bitmap, scrollPositionOffsets, colour);
@@ -1573,7 +1573,7 @@ static void ScrollingTextSetBitmapForTtf(
         }
     }
 
-    auto surface = TtfSurfaceCacheGetOrAdd(fontDesc->font, ttfBuffer.c_str());
+    auto surface = TTFSurfaceCacheGetOrAdd(fontDesc->font, ttfBuffer.c_str());
     if (surface == nullptr)
     {
         return;

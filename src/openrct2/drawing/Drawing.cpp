@@ -805,9 +805,9 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
         uint8_t g = colours[1];
         uint8_t b = colours[0];
 
-        if (LightfxIsAvailable())
+        if (LightFXIsAvailable())
         {
-            LightfxApplyPaletteFilter(i, &r, &g, &b);
+            LightFXApplyPaletteFilter(i, &r, &g, &b);
         }
         else
         {

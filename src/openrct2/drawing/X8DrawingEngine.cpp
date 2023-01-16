@@ -122,7 +122,7 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
 {
     _drawingContext = new X8DrawingContext(this);
     _bitsDPI.DrawingEngine = this;
-    LightfxSetAvailable(true);
+    LightFXSetAvailable(true);
     _lastLightFXenabled = (gConfigGeneral.EnableLightFx != 0);
 }
 
@@ -338,9 +338,9 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
 
     ConfigureDirtyGrid();
 
-    if (LightfxIsAvailable())
+    if (LightFXIsAvailable())
     {
-        LightfxUpdateBuffers(dpi);
+        LightFXUpdateBuffers(dpi);
     }
 }
 

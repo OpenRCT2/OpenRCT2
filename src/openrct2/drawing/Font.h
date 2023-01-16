@@ -59,5 +59,5 @@ ImageId FontSpriteGetCodepointSprite(FontStyle fontStyle, int32_t codepoint);
 int32_t FontGetLineHeight(FontStyle fontStyle);
 int32_t FontGetLineHeightSmall(FontStyle fontStyle);
 bool FontSupportsStringSprite(const utf8* text);
-bool FontSupportsStringTtf(const utf8* text, FontStyle fontStyle);
+bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle);
 bool FontSupportsString(const utf8* text, FontStyle fontStyle);

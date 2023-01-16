@@ -13,8 +13,8 @@
 
 #include <string_view>
 
-bool TtfInitialise();
-void TtfDispose();
+bool TTFInitialise();
+void TTFDispose();
 
 #ifndef NO_TTF
 
@@ -26,12 +26,12 @@ struct TTFSurface
     int32_t pitch;
 };
 
-TTFFontDescriptor* TtfGetFontFromSpriteBase(FontStyle fontStyle);
-void TtfToggleHinting();
-TTFSurface* TtfSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text);
-uint32_t TtfGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text);
-bool TtfProvidesGlyph(const TTF_Font* font, codepoint_t codepoint);
-void TtfFreeSurface(TTFSurface* surface);
+TTFFontDescriptor* TTFGetFontFromSpriteBase(FontStyle fontStyle);
+void TTFToggleHinting();
+TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text);
+uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text);
+bool TTFProvidesGlyph(const TTF_Font* font, codepoint_t codepoint);
+void TTFFreeSurface(TTFSurface* surface);
 
 // TTF_SDLPORT
 int TTF_Init(void);

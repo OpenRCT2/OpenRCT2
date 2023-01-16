@@ -377,7 +377,7 @@ bool FontSupportsStringSprite(const utf8* text)
     return true;
 }
 
-bool FontSupportsStringTtf(const utf8* text, FontStyle fontStyle)
+bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle)
 {
 #ifndef NO_TTF
     const utf8* src = text;
@@ -390,7 +390,7 @@ bool FontSupportsStringTtf(const utf8* text, FontStyle fontStyle)
     uint32_t codepoint;
     while ((codepoint = utf8_get_next(src, &src)) != 0)
     {
-        bool supported = TtfProvidesGlyph(font, codepoint);
+        bool supported = TTFProvidesGlyph(font, codepoint);
         if (!supported)
         {
             return false;
@@ -406,7 +406,7 @@ bool FontSupportsString(const utf8* text, FontStyle fontStyle)
 {
     if (LocalisationService_UseTrueTypeFont())
     {
-        return FontSupportsStringTtf(text, fontStyle);
+        return FontSupportsStringTTF(text, fontStyle);
     }
 
     return FontSupportsStringSprite(text);

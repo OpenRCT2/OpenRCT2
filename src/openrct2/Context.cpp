@@ -470,7 +470,7 @@ namespace OpenRCT2
                 {
                     return false;
                 }
-                LightfxInit();
+                LightFXInit();
             }
 
             input_reset_place_obj_modifier();
