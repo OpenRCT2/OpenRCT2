@@ -423,7 +423,7 @@ int32_t Park::CalculateParkRating() const
         for (auto& ride : GetRideManager())
         {
             totalRideUptime += 100 - ride.downtime;
-            if (ride_has_ratings(ride))
+            if (RideHasRatings(ride))
             {
                 totalRideExcitement += ride.excitement / 8;
                 totalRideIntensity += ride.intensity / 8;
@@ -501,7 +501,7 @@ money64 Park::CalculateRideValue(const Ride& ride) const
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
         result = ToMoney64FromGBP(ride.value)
-            * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
+            * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;
 }

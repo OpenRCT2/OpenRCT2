@@ -2174,7 +2174,7 @@ void track_paint_util_left_corkscrew_up_supports(PaintSession& session, Directio
 void PaintTrack(PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
     RideId rideIndex = trackElement.GetRideIndex();
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
         log_error("Attempted to paint invalid ride: %d", rideIndex);

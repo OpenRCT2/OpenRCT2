@@ -347,7 +347,7 @@ static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenD
                 if (loc.z != tileElement->base_height)
                     continue;
                 RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
-                auto ride = get_ride(rideIndex);
+                auto ride = GetRide(rideIndex);
                 if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
                 {
                     *outRideIndex = rideIndex;
@@ -765,7 +765,7 @@ static void peep_pathfind_heuristic_search(
                 /* For peeps heading for a shop, the goal is the shop
                  * tile. */
                 rideIndex = tileElement->AsTrack()->GetRideIndex();
-                auto ride = get_ride(rideIndex);
+                auto ride = GetRide(rideIndex);
                 if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
                     continue;
 
@@ -2156,7 +2156,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 
     // Peep is heading for a ride.
     RideId rideIndex = peep.GuestHeadingToRideId;
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr || ride->status != RideStatus::Open)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

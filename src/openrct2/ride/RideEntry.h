@@ -100,4 +100,4 @@ struct rct_ride_entry
     }
 };
 
-RideNaming get_ride_naming(const ride_type_t rideType, const rct_ride_entry& rideEntry);
+RideNaming GetRideNaming(const ride_type_t rideType, const rct_ride_entry& rideEntry);

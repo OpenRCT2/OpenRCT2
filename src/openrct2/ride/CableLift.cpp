@@ -21,7 +21,7 @@
 
 #include <algorithm>
 
-Vehicle* cable_lift_segment_create(
+Vehicle* CableLiftSegmentCreate(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
     Vehicle* current = CreateEntity<Vehicle>();
@@ -252,7 +252,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
 
-            if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
+            if (!TrackBlockGetNext(&input, &output, &outputZ, &outputDirection))
                 return false;
 
             if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(output.element->AsTrack()->GetTrackType()))
@@ -312,7 +312,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             auto input = CoordsXYE{ TrackLocation, trackElement };
             track_begin_end output;
 
-            if (!track_block_get_previous(input, &output))
+            if (!TrackBlockGetPrevious(input, &output))
                 return false;
 
             if (TrackPitchAndRollStart(trackType) != TrackPitchAndRollEnd(output.begin_element->AsTrack()->GetTrackType()))

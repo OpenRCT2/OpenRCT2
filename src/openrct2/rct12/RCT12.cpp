@@ -221,7 +221,7 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (track_type_is_station(trackType) || trackType == TrackElemType::TowerBase)
+    if (TrackTypeIsStation(trackType) || trackType == TrackElemType::TowerBase)
     {
         return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
@@ -254,7 +254,7 @@ uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 
 bool RCT12TrackElement::HasGreenLight() const
 {
-    if (track_type_is_station(trackType))
+    if (TrackTypeIsStation(trackType))
     {
         return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
     }

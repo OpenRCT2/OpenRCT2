@@ -45,7 +45,7 @@ TEST(MultiLaunchTest, all)
         game_load_init();
 
         // Check ride count to check load was successful
-        ASSERT_EQ(ride_get_count(), 134);
+        ASSERT_EQ(RideGetCount(), 134);
         auto gs = context->GetGameState();
         ASSERT_NE(gs, nullptr);
         auto& date = gs->GetDate();
@@ -59,7 +59,7 @@ TEST(MultiLaunchTest, all)
         ASSERT_EQ(date.GetMonthTicks(), 7862 + updatesToTest);
 
         // Check ride count again
-        ASSERT_EQ(ride_get_count(), 134);
+        ASSERT_EQ(RideGetCount(), 134);
     }
     SUCCEED();
 }

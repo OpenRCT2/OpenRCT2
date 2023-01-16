@@ -45,7 +45,7 @@ static void PaintRideEntranceExitScrollingText(
     if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
         return;
 
-    auto ride = get_ride(entranceEl.GetRideIndex());
+    auto ride = GetRide(entranceEl.GetRideIndex());
     if (ride == nullptr)
         return;
 
@@ -117,7 +117,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         return;
     }
 
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
         return;

@@ -351,7 +351,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 
     auto isGhost = false;
     ImageId imageTemplate;
-    if (gTrackDesignSaveMode && !track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&tileElement)))
+    if (gTrackDesignSaveMode && !TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
         isGhost = true;

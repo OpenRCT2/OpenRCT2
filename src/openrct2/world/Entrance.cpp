@@ -114,7 +114,7 @@ void RideEntranceExitRemoveGhost()
 money32 RideEntranceExitPlaceGhost(
     const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
 {
-    ride_construction_remove_ghosts();
+    RideConstructionRemoveGhosts();
     money32 result = RideEntranceExitPlaceGhost(ride.id, entranceExitCoords, direction, placeType, stationNum);
 
     if (result != MONEY32_UNDEFINED)

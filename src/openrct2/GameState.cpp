@@ -67,7 +67,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     _park->Initialise();
     finance_init();
     BannerInit();
-    ride_init_all();
+    RideInitAll();
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
     DateReset();
@@ -332,7 +332,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::Peep);
     MapRestoreProvisionalElements();
     report_time(LogicTimePart::MapRestoreProvisionalElements);
-    vehicle_update_all();
+    VehicleUpdateAll();
     report_time(LogicTimePart::Vehicle);
     UpdateAllMiscEntities();
     report_time(LogicTimePart::Misc);
@@ -347,16 +347,16 @@ void GameState::UpdateLogic(LogicTimings* timings)
 
     research_update();
     report_time(LogicTimePart::Research);
-    ride_ratings_update_all();
+    RideRatingsUpdateAll();
     report_time(LogicTimePart::RideRatings);
-    ride_measurements_update();
+    RideMeasurementsUpdate();
     report_time(LogicTimePart::RideMeasurments);
     News::UpdateCurrentItem();
     report_time(LogicTimePart::News);
 
     MapAnimationInvalidateAll();
     report_time(LogicTimePart::MapAnimation);
-    vehicle_sounds_update();
+    VehicleSoundsUpdate();
     peep_update_crowd_noise();
     ClimateUpdateSound();
     report_time(LogicTimePart::Sounds);

@@ -177,7 +177,7 @@ static constexpr const uint32_t river_rapids_track_pieces_25_deg_down_to_flat[][
  *
  *  rct2: 0x006D5889
  */
-void vehicle_visual_river_rapids(
+void VehicleVisualRiverRapids(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
@@ -263,7 +263,7 @@ void vehicle_visual_river_rapids(
         }
     }
 
-    vehicle_visual_splash_effect(session, z, vehicle, carEntry);
+    VehicleVisualSplashEffect(session, z, vehicle, carEntry);
 }
 #endif
 

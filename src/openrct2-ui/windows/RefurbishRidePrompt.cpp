@@ -47,7 +47,7 @@ public:
     void SetRide(const Ride& currentRide)
     {
         rideId = currentRide.id;
-        _demolishRideCost = -ride_get_refund_price(currentRide);
+        _demolishRideCost = -RideGetRefundPrice(currentRide);
     }
 
     void OnOpen() override
@@ -77,7 +77,7 @@ public:
     {
         WindowDrawWidgets(*this, &dpi);
 
-        auto currentRide = get_ride(rideId);
+        auto currentRide = GetRide(rideId);
         if (currentRide != nullptr)
         {
             auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY : STR_REFURBISH_RIDE_ID_MONEY;

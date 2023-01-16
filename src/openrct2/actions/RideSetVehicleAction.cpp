@@ -66,7 +66,7 @@ GameActions::Result RideSetVehicleAction::Query() const
     }
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
@@ -123,7 +123,7 @@ GameActions::Result RideSetVehicleAction::Query() const
 GameActions::Result RideSetVehicleAction::Execute() const
 {
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
@@ -133,7 +133,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
     switch (_type)
     {
         case RideSetVehicleType::NumTrains:
-            ride_clear_for_construction(*ride);
+            RideClearForConstruction(*ride);
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
@@ -141,11 +141,11 @@ GameActions::Result RideSetVehicleAction::Execute() const
             break;
         case RideSetVehicleType::NumCarsPerTrain:
         {
-            ride_clear_for_construction(*ride);
+            RideClearForConstruction(*ride);
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
-            invalidate_test_results(*ride);
+            InvalidateTestResults(*ride);
             auto rideEntry = get_ride_entry(ride->subtype);
             if (rideEntry == nullptr)
             {
@@ -163,11 +163,11 @@ GameActions::Result RideSetVehicleAction::Execute() const
         }
         case RideSetVehicleType::RideEntry:
         {
-            ride_clear_for_construction(*ride);
+            RideClearForConstruction(*ride);
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
-            invalidate_test_results(*ride);
+            InvalidateTestResults(*ride);
             ride->subtype = _value;
             auto rideEntry = get_ride_entry(ride->subtype);
             if (rideEntry == nullptr)
@@ -176,7 +176,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
-            ride_set_vehicle_colours_to_random_preset(*ride, _colour);
+            RideSetVehicleColoursToRandomPreset(*ride, _colour);
             if (!gCheatsDisableTrainLengthLimit)
             {
                 ride->proposed_num_cars_per_train = std::clamp(

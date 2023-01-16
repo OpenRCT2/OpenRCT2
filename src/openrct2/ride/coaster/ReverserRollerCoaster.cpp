@@ -26,7 +26,7 @@
  *
  *  rct2: 0x006D4453
  */
-void vehicle_visual_reverser(
+void VehicleVisualReverser(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
@@ -41,7 +41,7 @@ void vehicle_visual_reverser(
     z = (v1->z + v2->z) / 2;
     session.SpritePosition.x = x;
     session.SpritePosition.y = y;
-    vehicle_visual_default(session, imageDirection, z, vehicle, carEntry);
+    VehicleVisualDefault(session, imageDirection, z, vehicle, carEntry);
 }
 #endif
 

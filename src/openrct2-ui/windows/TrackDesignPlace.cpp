@@ -230,14 +230,14 @@ public:
                 if (result->Error == GameActions::Status::Ok)
                 {
                     rideId = result->GetData<RideId>();
-                    auto getRide = get_ride(rideId);
+                    auto getRide = GetRide(rideId);
                     if (getRide != nullptr)
                     {
                         WindowCloseByClass(WindowClass::Error);
                         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
 
                         _currentRideIndex = rideId;
-                        if (track_design_are_entrance_and_exit_placed())
+                        if (TrackDesignAreEntranceAndExitPlaced())
                         {
                             auto intent = Intent(WindowClass::Ride);
                             intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
@@ -247,7 +247,7 @@ public:
                         }
                         else
                         {
-                            ride_initialise_construction_window(*getRide);
+                            RideInitialiseConstructionWindow(*getRide);
                             auto wnd = WindowFindByClass(WindowClass::RideConstruction);
                             WindowEventMouseUpCall(wnd, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                         }
@@ -316,7 +316,7 @@ public:
     {
         if (_hasPlacementGhost)
         {
-            auto provRide = get_ride(_placementGhostRideId);
+            auto provRide = GetRide(_placementGhostRideId);
             if (provRide != nullptr)
             {
                 TrackDesignPreviewRemoveGhosts(_trackDesign.get(), *provRide, _placementGhostLoc);
@@ -392,7 +392,7 @@ private:
     {
         if (_hasPlacementGhost)
         {
-            auto newRide = get_ride(_placementGhostRideId);
+            auto newRide = GetRide(_placementGhostRideId);
             if (newRide != nullptr)
             {
                 TrackDesignPreviewRemoveGhosts(_trackDesign.get(), *newRide, _placementGhostLoc);

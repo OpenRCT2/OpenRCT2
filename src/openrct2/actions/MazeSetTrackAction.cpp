@@ -90,7 +90,7 @@ GameActions::Result MazeSetTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        auto* ride = get_ride(_rideIndex);
+        auto* ride = GetRide(_rideIndex);
         const auto& rtd = ride->GetRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
@@ -131,7 +131,7 @@ GameActions::Result MazeSetTrackAction::Query() const
             return res;
         }
 
-        auto ride = get_ride(_rideIndex);
+        auto ride = GetRide(_rideIndex);
         if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
         {
             res.Error = GameActions::Status::NoClearance;
@@ -155,7 +155,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         res.Error = GameActions::Status::InvalidParameters;

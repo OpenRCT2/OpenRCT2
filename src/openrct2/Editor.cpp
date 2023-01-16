@@ -297,7 +297,7 @@ namespace Editor
         MapRemoveAllRides();
         UnlinkAllRideBanners();
 
-        ride_init_all();
+        RideInitAll();
 
         //
         for (auto* guest : EntityList<Guest>())

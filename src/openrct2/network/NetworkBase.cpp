@@ -2702,7 +2702,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
             network_chat_show_connected_message();
 
             // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
-            fix_invalid_vehicle_sprite_sizes();
+            FixInvalidVehicleSpriteSizes();
 
             // NOTE: Game actions are normally processed before processing the player list.
             // Given that during map load game actions are buffered we have to process the

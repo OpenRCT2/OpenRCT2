@@ -615,7 +615,7 @@ Direction Staff::MechanicDirectionSurface() const
 {
     Direction direction = scenario_rand() & 3;
 
-    auto ride = get_ride(CurrentRide);
+    auto ride = GetRide(CurrentRide);
     if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection) && (scenario_rand() & 1))
     {
         auto location = ride->GetStation(CurrentRideStation).Exit;
@@ -694,7 +694,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
     pathDirections |= (1 << direction);
 
     // Mechanic is heading to ride (either broken down or for inspection).
-    auto ride = get_ride(CurrentRide);
+    auto ride = GetRide(CurrentRide);
     if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection))
     {
         /* Find location of the exit for the target ride station
@@ -873,7 +873,7 @@ bool Staff::IsMechanicHeadingToFixRideBlockingPath()
     if (trackElement == nullptr)
         return false;
 
-    auto ride = get_ride(trackElement->GetRideIndex());
+    auto ride = GetRide(trackElement->GetRideIndex());
     if (ride == nullptr)
         return false;
 
@@ -1298,7 +1298,7 @@ void Staff::UpdateSweeping()
  */
 void Staff::UpdateHeadingToInspect()
 {
-    auto ride = get_ride(CurrentRide);
+    auto ride = GetRide(CurrentRide);
     if (ride == nullptr)
     {
         SetState(PeepState::Falling);
@@ -1402,7 +1402,7 @@ void Staff::UpdateHeadingToInspect()
  */
 void Staff::UpdateAnswering()
 {
-    auto ride = get_ride(CurrentRide);
+    auto ride = GetRide(CurrentRide);
     if (ride == nullptr || ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING)
     {
         SetState(PeepState::Falling);
@@ -1930,7 +1930,7 @@ static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
  */
 void Staff::UpdateFixing(int32_t steps)
 {
-    auto ride = get_ride(CurrentRide);
+    auto ride = GetRide(CurrentRide);
     if (ride == nullptr)
     {
         SetState(PeepState::Falling);
@@ -2054,7 +2054,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        Vehicle* vehicle = ride_get_broken_vehicle(ride);
+        Vehicle* vehicle = RideGetBrokenVehicle(ride);
         if (vehicle == nullptr)
         {
             return true;
@@ -2068,7 +2068,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride)
             }
 
             auto trackType = vehicle->GetTrackType();
-            if (track_type_is_station(trackType))
+            if (TrackTypeIsStation(trackType))
             {
                 break;
             }
@@ -2129,7 +2129,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
         return false;
     }
 
-    Vehicle* vehicle = ride_get_broken_vehicle(ride);
+    Vehicle* vehicle = RideGetBrokenVehicle(ride);
     if (vehicle == nullptr)
     {
         return true;
@@ -2170,7 +2170,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
         return false;
     }
 
-    Vehicle* vehicle = ride_get_broken_vehicle(ride);
+    Vehicle* vehicle = RideGetBrokenVehicle(ride);
     if (vehicle == nullptr)
     {
         return true;
@@ -2307,7 +2307,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 
         Direction stationDirection = 0;
         track_begin_end trackBeginEnd;
-        while (track_block_get_previous(input, &trackBeginEnd))
+        while (TrackBlockGetPrevious(input, &trackBeginEnd))
         {
             if (trackBeginEnd.begin_element->AsTrack()->IsStation())
             {
@@ -2500,7 +2500,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
         return false;
     }
 
-    ride_fix_breakdown(ride, steps);
+    RideFixBreakdown(ride, steps);
     ride.mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
     return true;
 }
@@ -2556,7 +2556,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride)
  */
 void Staff::UpdateRideInspected(RideId rideIndex)
 {
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;

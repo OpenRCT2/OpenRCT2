@@ -439,7 +439,7 @@ static void PathPaintFencesAndQueueBanners(
 
         direction--;
         // If text shown
-        auto ride = get_ride(pathElement.GetRideIndex());
+        auto ride = GetRide(pathElement.GetRideIndex());
         if (direction < 2 && ride != nullptr && !imageTemplate.IsRemap())
         {
             uint16_t scrollingMode = pathPaintInfo.ScrollingMode;
@@ -980,7 +980,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
             return;
         }
 
-        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&tileElement)))
+        if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
         {
             imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
         }

@@ -41,7 +41,7 @@ static uint32_t SubmarineVehicleGetBaseImageId(const Vehicle* vehicle, const Car
  *
  *  rct2: 0x006D44D5
  */
-void vehicle_visual_submarine(
+void VehicleVisualSubmarine(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {

@@ -241,7 +241,7 @@ namespace OpenRCT2::TileInspector
                     tileElement->SetDirection(newRotation);
 
                     // Update ride's known entrance/exit rotation
-                    auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                    auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
                     if (ride != nullptr)
                     {
                         auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
@@ -478,7 +478,7 @@ namespace OpenRCT2::TileInspector
                 if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
                     // Update the ride's known entrance or exit height
-                    auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                    auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
                     if (ride != nullptr)
                     {
                         auto entranceIndex = tileElement->AsEntrance()->GetStationIndex();
@@ -683,7 +683,7 @@ namespace OpenRCT2::TileInspector
         if (entranceElement == nullptr || entranceElement->GetType() != TileElementType::Entrance)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
-        auto ride = get_ride(entranceElement->AsEntrance()->GetRideIndex());
+        auto ride = GetRide(entranceElement->AsEntrance()->GetRideIndex());
         if (ride == nullptr)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
@@ -775,7 +775,7 @@ namespace OpenRCT2::TileInspector
             int16_t originZ = trackElement->GetBaseZ();
             uint8_t rotation = trackElement->GetDirection();
             auto rideIndex = trackElement->AsTrack()->GetRideIndex();
-            auto ride = get_ride(rideIndex);
+            auto ride = GetRide(rideIndex);
             if (ride == nullptr)
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
@@ -859,7 +859,7 @@ namespace OpenRCT2::TileInspector
             int16_t originZ = trackElement->GetBaseZ();
             uint8_t rotation = trackElement->GetDirection();
             auto rideIndex = trackElement->AsTrack()->GetRideIndex();
-            auto ride = get_ride(rideIndex);
+            auto ride = GetRide(rideIndex);
             if (ride == nullptr)
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 

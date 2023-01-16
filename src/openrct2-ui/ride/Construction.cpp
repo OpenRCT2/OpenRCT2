@@ -20,9 +20,9 @@
  */
 void ride_construct_new(RideSelection listItem)
 {
-    int32_t rideEntryIndex = ride_get_entry_index(listItem.Type, listItem.EntryIndex);
-    int32_t colour1 = ride_get_random_colour_preset_index(listItem.Type);
-    int32_t colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
+    int32_t rideEntryIndex = RideGetEntryIndex(listItem.Type, listItem.EntryIndex);
+    int32_t colour1 = RideGetRandomColourPresetIndex(listItem.Type);
+    int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
 
     auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2, gLastEntranceStyle);
 
@@ -30,7 +30,7 @@ void ride_construct_new(RideSelection listItem)
         if (result->Error != GameActions::Status::Ok)
             return;
         const auto rideIndex = result->GetData<RideId>();
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         RideConstructionStart(*ride);
     });
 

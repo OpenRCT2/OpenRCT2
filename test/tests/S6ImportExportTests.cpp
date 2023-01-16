@@ -68,7 +68,7 @@ static void GameInit(bool retainSpatialIndices)
     LoadPalette();
     EntityTweener::Get().Reset();
     MapAnimationAutoCreate();
-    fix_invalid_vehicle_sprite_sizes();
+    FixInvalidVehicleSpriteSizes();
 
     gGameSpeed = 1;
 }

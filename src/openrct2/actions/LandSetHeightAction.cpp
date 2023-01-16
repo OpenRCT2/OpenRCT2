@@ -274,7 +274,7 @@ StringId LandSetHeightAction::CheckRideSupports() const
     {
         RideId rideIndex = trackElement->GetRideIndex();
 
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             continue;
 

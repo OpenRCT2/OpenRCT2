@@ -159,7 +159,7 @@ static bool award_is_deserved_best_rollercoasters([[maybe_unused]] int32_t activ
             continue;
         }
 
-        if (!ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
         {
             continue;
         }
@@ -415,7 +415,7 @@ static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
     auto disappointingRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride_has_ratings(ride) && ride.popularity != 0xFF)
+        if (RideHasRatings(ride) && ride.popularity != 0xFF)
         {
             countedRides++;
             if (ride.popularity <= 6)
@@ -446,7 +446,7 @@ static bool award_is_deserved_best_water_rides([[maybe_unused]] int32_t activeAw
             continue;
         }
 
-        if (!ride_entry_has_category(*rideEntry, RIDE_CATEGORY_WATER))
+        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_WATER))
         {
             continue;
         }
@@ -553,7 +553,7 @@ static bool award_is_deserved_best_gentle_rides([[maybe_unused]] int32_t activeA
             continue;
         }
 
-        if (!ride_entry_has_category(*rideEntry, RIDE_CATEGORY_GENTLE))
+        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_GENTLE))
         {
             continue;
         }

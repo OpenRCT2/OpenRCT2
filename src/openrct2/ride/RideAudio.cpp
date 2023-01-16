@@ -168,7 +168,7 @@ namespace OpenRCT2::RideAudio
     void DefaultStartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        auto ride = get_ride(instance.RideId);
+        auto ride = GetRide(instance.RideId);
         auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
         if (musicObj != nullptr)
         {
@@ -206,7 +206,7 @@ namespace OpenRCT2::RideAudio
     static void StartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
         // Create new music channel
-        auto ride = get_ride(instance.RideId);
+        auto ride = GetRide(instance.RideId);
         const auto& rtd = ride->GetRideTypeDescriptor();
         rtd.StartRideMusic(instance);
     }

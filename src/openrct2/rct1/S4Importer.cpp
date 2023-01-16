@@ -194,7 +194,7 @@ namespace RCT1
             FixUrbanPark();
             CountBlockSections();
             SetDefaultNames();
-            determine_ride_entrance_and_exit_locations();
+            DetermineRideEntranceAndExitLocations();
 
             research_determine_first_of_type();
 
@@ -1172,7 +1172,7 @@ namespace RCT1
             {
                 if (src.ride_index != RCT12_RIDE_ID_NULL)
                 {
-                    auto ride = get_ride(RCT12RideIdToOpenRCT2RideId(src.ride_index));
+                    auto ride = GetRide(RCT12RideIdToOpenRCT2RideId(src.ride_index));
                     if (ride != nullptr)
                     {
                         ride->measurement = std::make_unique<RideMeasurement>();
@@ -1651,7 +1651,7 @@ namespace RCT1
                 {
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
-                    const auto* ride = get_ride(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    const auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
 
                     dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
@@ -2534,7 +2534,7 @@ namespace RCT1
                 }
 
                 // Now, swap the entrance and exit.
-                auto ride = get_ride(merryGoRoundId);
+                auto ride = GetRide(merryGoRoundId);
                 if (ride != nullptr)
                 {
                     auto& station = ride->GetStation();
@@ -2592,7 +2592,7 @@ namespace RCT1
                             }
 
                             RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
-                            auto ride = get_ride(rideIndex);
+                            auto ride = GetRide(rideIndex);
                             if (ride != nullptr)
                             {
                                 ride->num_block_brakes++;
@@ -2707,7 +2707,7 @@ namespace RCT1
     {
         auto* dst = CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
-        const auto* ride = get_ride(RideId::FromUnderlying(src->ride));
+        const auto* ride = GetRide(RideId::FromUnderlying(src->ride));
         if (ride == nullptr)
             return;
 

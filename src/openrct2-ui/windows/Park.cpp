@@ -920,7 +920,7 @@ private:
         WidgetInvalidate(*this, WIDX_TAB_5);
 
         // Invalidate ride count if changed
-        const auto rideCount = ride_get_count();
+        const auto rideCount = RideGetCount();
         if (_numberOfRides != rideCount)
         {
             _numberOfRides = rideCount;

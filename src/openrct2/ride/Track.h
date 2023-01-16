@@ -612,25 +612,25 @@ struct track_circuit_iterator
 PitchAndRoll TrackPitchAndRollStart(track_type_t trackType);
 PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType);
 
-int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
+int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b);
 
-void track_circuit_iterator_begin(track_circuit_iterator* it, CoordsXYE first);
-bool track_circuit_iterator_previous(track_circuit_iterator* it);
-bool track_circuit_iterator_next(track_circuit_iterator* it);
-bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const track_circuit_iterator* secondIt);
+void TrackCircuitIteratorBegin(track_circuit_iterator* it, CoordsXYE first);
+bool TrackCircuitIteratorPrevious(track_circuit_iterator* it);
+bool TrackCircuitIteratorNext(track_circuit_iterator* it);
+bool TrackCircuitIteratorsMatch(const track_circuit_iterator* firstIt, const track_circuit_iterator* secondIt);
 
-void track_get_back(const CoordsXYE& input, CoordsXYE* output);
-void track_get_front(const CoordsXYE& input, CoordsXYE* output);
+void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
+void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
-bool track_element_is_covered(track_type_t trackElementType);
-bool track_type_is_station(track_type_t trackType);
+bool TrackElementIsCovered(track_type_t trackElementType);
+bool TrackTypeIsStation(track_type_t trackType);
 
-roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank);
-roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank);
-roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement);
+roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank);
+roll_type_t TrackGetActualBank2(int32_t rideType, bool isInverted, roll_type_t bank);
+roll_type_t TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement);
 
-ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
-ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
+ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
+ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
 bool TrackTypeIsHelix(track_type_t trackType);

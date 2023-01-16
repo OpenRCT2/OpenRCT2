@@ -1183,7 +1183,7 @@ public:
                 {
                     auto trackElement = tileElement->AsTrack();
                     RideId id = trackElement->GetRideIndex();
-                    auto rideTile = get_ride(id);
+                    auto rideTile = GetRide(id);
 
                     // Ride ID
                     auto ft = Formatter();

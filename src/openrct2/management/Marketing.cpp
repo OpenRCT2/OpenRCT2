@@ -59,7 +59,7 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
         {
-            auto ride = get_ride(campaign->RideId);
+            auto ride = GetRide(campaign->RideId);
             if (ride == nullptr || ride->price[0] < 0.30_GBP)
                 probability /= 8;
             break;
@@ -77,7 +77,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
         // This sets the string parameters for the marketing types that have an argument.
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
-            auto ride = get_ride(campaign.RideId);
+            auto ride = GetRide(campaign.RideId);
             if (ride != nullptr)
             {
                 ride->FormatNameTo(ft);

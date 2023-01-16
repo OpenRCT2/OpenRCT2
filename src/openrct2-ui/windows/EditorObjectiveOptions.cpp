@@ -979,7 +979,7 @@ static void WindowEditorObjectiveOptionsRidesScrollmousedown(
         return;
 
     const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
-    auto ride = get_ride(rideId);
+    auto ride = GetRide(rideId);
     if (ride != nullptr)
     {
         ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
@@ -1073,7 +1073,7 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
 
         // Checkbox mark
         const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
-        auto ride = get_ride(rideId);
+        auto ride = GetRide(rideId);
         if (ride != nullptr)
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)

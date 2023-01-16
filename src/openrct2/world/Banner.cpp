@@ -63,7 +63,7 @@ void Banner::FormatTextTo(Formatter& ft) const
     }
     else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
-        auto ride = get_ride(ride_index);
+        auto ride = GetRide(ride_index);
         if (ride != nullptr)
         {
             ride->FormatNameTo(ft);
@@ -99,7 +99,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
             continue;
 
         RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             continue;
 

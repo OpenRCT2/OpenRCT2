@@ -99,7 +99,7 @@ static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t in
  * processed will be overwritten.
  * Only purpose of this function currently is for testing.
  */
-void ride_ratings_update_ride(const Ride& ride)
+void RideRatingsUpdateRide(const Ride& ride)
 {
     RideRatingUpdateState state;
     if (ride.status != RideStatus::Closed)
@@ -117,7 +117,7 @@ void ride_ratings_update_ride(const Ride& ride)
  *
  *  rct2: 0x006B5A2A
  */
-void ride_ratings_update_all()
+void RideRatingsUpdateAll()
 {
     PROFILED_FUNCTION();
 
@@ -180,13 +180,13 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
     // It is possible that the current ride being calculated has
     // been removed or due to import invalid. For both, reset
     // ratings and start check at the start
-    if (get_ride(state.CurrentRide) == nullptr)
+    if (GetRide(state.CurrentRide) == nullptr)
     {
         state.CurrentRide = {};
     }
 
     auto nextRideId = GetNextRideToUpdate(state.CurrentRide);
-    auto nextRide = get_ride(nextRideId);
+    auto nextRide = GetRide(nextRideId);
     if (nextRide != nullptr && nextRide->status != RideStatus::Closed
         && !(nextRide->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
@@ -220,7 +220,7 @@ static void ride_ratings_update_state_1(RideRatingUpdateState& state)
 static void ride_ratings_update_state_2(RideRatingUpdateState& state)
 {
     const RideId rideIndex = state.CurrentRide;
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr || ride->status == RideStatus::Closed || ride->type >= RIDE_TYPE_COUNT)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -268,7 +268,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
 
             CoordsXYE trackElement = { state.Proximity, tileElement };
             CoordsXYE nextTrackElement;
-            if (!track_block_get_next(&trackElement, &nextTrackElement, nullptr, nullptr))
+            if (!TrackBlockGetNext(&trackElement, &nextTrackElement, nullptr, nullptr))
             {
                 state.State = RIDE_RATINGS_STATE_4;
                 return;
@@ -296,7 +296,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
  */
 static void ride_ratings_update_state_3(RideRatingUpdateState& state)
 {
-    auto ride = get_ride(state.CurrentRide);
+    auto ride = GetRide(state.CurrentRide);
     if (ride == nullptr || ride->status == RideStatus::Closed)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -326,7 +326,7 @@ static void ride_ratings_update_state_4(RideRatingUpdateState& state)
  */
 static void ride_ratings_update_state_5(RideRatingUpdateState& state)
 {
-    auto ride = get_ride(state.CurrentRide);
+    auto ride = GetRide(state.CurrentRide);
     if (ride == nullptr || ride->status == RideStatus::Closed)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -362,7 +362,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
             ride_ratings_score_close_proximity(state, tileElement);
 
             track_begin_end trackBeginEnd;
-            if (!track_block_get_previous({ state.Proximity, tileElement }, &trackBeginEnd))
+            if (!TrackBlockGetPrevious({ state.Proximity, tileElement }, &trackBeginEnd))
             {
                 state.State = RIDE_RATINGS_STATE_CALCULATE;
                 return;
@@ -391,7 +391,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
  */
 static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
 {
-    auto ride = get_ride(state.CurrentRide);
+    auto ride = GetRide(state.CurrentRide);
     if (ride == nullptr || ride->status == RideStatus::Closed)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -744,7 +744,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
 
 static void ride_ratings_calculate(RideRatingUpdateState& state, Ride& ride)
 {
-    auto calcFunc = ride_ratings_get_calculate_func(ride.type);
+    auto calcFunc = RideRatingsGetCalculateFunc(ride.type);
     if (calcFunc != nullptr)
     {
         calcFunc(ride, state);
@@ -829,7 +829,7 @@ static void ride_ratings_calculate_value(Ride& ride)
     };
 #endif
 
-    if (!ride_has_ratings(ride))
+    if (!RideHasRatings(ride))
     {
         return;
     }
@@ -1148,9 +1148,9 @@ static ShelteredEights get_num_of_sheltered_eighths(const Ride& ride)
 
 static RatingTuple get_flat_turns_rating(const Ride& ride)
 {
-    int32_t num3PlusTurns = get_turn_count_3_elements(ride, 0);
-    int32_t num2Turns = get_turn_count_2_elements(ride, 0);
-    int32_t num1Turns = get_turn_count_1_element(ride, 0);
+    int32_t num3PlusTurns = GetTurnCount3Elements(ride, 0);
+    int32_t num2Turns = GetTurnCount2Elements(ride, 0);
+    int32_t num1Turns = GetTurnCount1Element(ride, 0);
 
     RatingTuple rating;
     rating.Excitement = (num3PlusTurns * 0x28000) >> 16;
@@ -1174,9 +1174,9 @@ static RatingTuple get_flat_turns_rating(const Ride& ride)
  */
 static RatingTuple get_banked_turns_rating(const Ride& ride)
 {
-    int32_t num3PlusTurns = get_turn_count_3_elements(ride, 1);
-    int32_t num2Turns = get_turn_count_2_elements(ride, 1);
-    int32_t num1Turns = get_turn_count_1_element(ride, 1);
+    int32_t num3PlusTurns = GetTurnCount3Elements(ride, 1);
+    int32_t num2Turns = GetTurnCount2Elements(ride, 1);
+    int32_t num1Turns = GetTurnCount1Element(ride, 1);
 
     RatingTuple rating;
     rating.Excitement = (num3PlusTurns * 0x3C000) >> 16;
@@ -1202,10 +1202,10 @@ static RatingTuple get_sloped_turns_rating(const Ride& ride)
 {
     RatingTuple rating;
 
-    int32_t num4PlusTurns = get_turn_count_4_plus_elements(ride, 2);
-    int32_t num3Turns = get_turn_count_3_elements(ride, 2);
-    int32_t num2Turns = get_turn_count_2_elements(ride, 2);
-    int32_t num1Turns = get_turn_count_1_element(ride, 2);
+    int32_t num4PlusTurns = GetTurnCount4PlusElements(ride, 2);
+    int32_t num3Turns = GetTurnCount3Elements(ride, 2);
+    int32_t num2Turns = GetTurnCount2Elements(ride, 2);
+    int32_t num1Turns = GetTurnCount1Element(ride, 2);
 
     rating.Excitement = (std::min(num4PlusTurns, 4) * 0x78000) >> 16;
     rating.Excitement += (std::min(num3Turns, 6) * 273066) >> 16;
@@ -1279,7 +1279,7 @@ static RatingTuple GetSpecialTrackElementsRating(uint8_t type, const Ride& ride)
     const auto& rtd = ride.GetRideTypeDescriptor();
     rtd.SpecialElementRatingAdjustment(ride, excitement, intensity, nausea);
 
-    uint8_t helixSections = ride_get_helix_sections(ride);
+    uint8_t helixSections = RideGetHelixSections(ride);
 
     int32_t helixesUpTo9 = std::min<int32_t>(helixSections, 9);
     excitement += (helixesUpTo9 * 254862) >> 16;
@@ -1451,7 +1451,7 @@ static RatingTuple ride_ratings_get_drop_ratings(const Ride& ride)
  */
 static int32_t ride_ratings_get_scenery_score(const Ride& ride)
 {
-    auto stationIndex = ride_get_first_valid_station_start(ride);
+    auto stationIndex = RideGetFirstValidStationStart(ride);
     CoordsXY location;
 
     if (stationIndex.IsNull())
@@ -1533,7 +1533,7 @@ static void ride_ratings_apply_length(RatingTuple* ratings, const Ride& ride, in
 
 static void ride_ratings_apply_synchronisation(RatingTuple* ratings, const Ride& ride, int32_t excitement, int32_t intensity)
 {
-    if ((ride.depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) && ride_has_adjacent_station(ride))
+    if ((ride.depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) && RideHasAdjacentStation(ride))
     {
         ride_ratings_add(ratings, excitement, intensity, 0);
     }
@@ -4580,7 +4580,7 @@ void ride_ratings_calculate_classic_wooden_roller_coaster(Ride& ride, RideRating
 
 #pragma region Ride rating calculation function table
 
-ride_ratings_calculation ride_ratings_get_calculate_func(ride_type_t rideType)
+ride_ratings_calculation RideRatingsGetCalculateFunc(ride_type_t rideType)
 {
     return GetRideTypeDescriptor(rideType).RatingsCalculationFunction;
 }

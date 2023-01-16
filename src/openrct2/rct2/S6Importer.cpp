@@ -501,7 +501,7 @@ namespace RCT2
             // Fix and set dynamic variables
             MapStripGhostFlagFromElements();
             ConvertScenarioStringsToUTF8();
-            determine_ride_entrance_and_exit_locations();
+            DetermineRideEntranceAndExitLocations();
 
             park.Name = GetUserString(_s6.park_name);
 
@@ -1102,7 +1102,7 @@ namespace RCT2
                 if (src.ride_index != RCT12_RIDE_ID_NULL)
                 {
                     const auto rideId = RideId::FromUnderlying(src.ride_index);
-                    auto ride = get_ride(rideId);
+                    auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
                         ride->measurement = std::make_unique<RideMeasurement>();

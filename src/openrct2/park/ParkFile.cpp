@@ -1060,7 +1060,7 @@ namespace OpenRCT2
                             continue;
 
                         auto* trackElement = tileElement->AsTrack();
-                        const auto* ride = get_ride(trackElement->GetRideIndex());
+                        const auto* ride = GetRide(trackElement->GetRideIndex());
                         if (ride != nullptr)
                         {
                             trackElement->SetRideType(ride->type);
@@ -1156,7 +1156,7 @@ namespace OpenRCT2
                 std::vector<RideId> rideIds;
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    ride_init_all();
+                    RideInitAll();
                 }
                 else
                 {

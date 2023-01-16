@@ -42,7 +42,7 @@ void RideSetSettingAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result RideSetSettingAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid ride: #%u.", _rideIndex.ToUnderlying());
@@ -152,7 +152,7 @@ GameActions::Result RideSetSettingAction::Query() const
 
 GameActions::Result RideSetSettingAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid ride: #%u.", _rideIndex.ToUnderlying());
@@ -162,8 +162,8 @@ GameActions::Result RideSetSettingAction::Execute() const
     switch (_setting)
     {
         case RideSetSetting::Mode:
-            invalidate_test_results(*ride);
-            ride_clear_for_construction(*ride);
+            InvalidateTestResults(*ride);
+            RideClearForConstruction(*ride);
             ride->RemovePeeps();
 
             ride->mode = static_cast<RideMode>(_value);
@@ -182,7 +182,7 @@ GameActions::Result RideSetSettingAction::Execute() const
             ride->min_waiting_time = std::min(_value, ride->min_waiting_time);
             break;
         case RideSetSetting::Operation:
-            invalidate_test_results(*ride);
+            InvalidateTestResults(*ride);
             ride->operation_option = _value;
             break;
         case RideSetSetting::InspectionInterval:
@@ -212,14 +212,14 @@ GameActions::Result RideSetSettingAction::Execute() const
             if (_value != ride->lift_hill_speed)
             {
                 ride->lift_hill_speed = _value;
-                invalidate_test_results(*ride);
+                InvalidateTestResults(*ride);
             }
             break;
         case RideSetSetting::NumCircuits:
             if (_value != ride->num_circuits)
             {
                 ride->num_circuits = _value;
-                invalidate_test_results(*ride);
+                InvalidateTestResults(*ride);
             }
 
             break;

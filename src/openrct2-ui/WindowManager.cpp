@@ -192,9 +192,9 @@ public:
             case WD_NEW_CAMPAIGN:
                 return WindowNewCampaignOpen(id);
             case WD_DEMOLISH_RIDE:
-                return WindowRideDemolishPromptOpen(*get_ride(RideId::FromUnderlying(id)));
+                return WindowRideDemolishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
             case WD_REFURBISH_RIDE:
-                return WindowRideRefurbishPromptOpen(*get_ride(RideId::FromUnderlying(id)));
+                return WindowRideRefurbishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
             case WD_SIGN:
                 return WindowSignOpen(id);
             case WD_SIGN_SMALL:
@@ -270,7 +270,7 @@ public:
             case WindowClass::Ride:
             {
                 const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
-                auto ride = get_ride(rideId);
+                auto ride = GetRide(rideId);
                 return ride == nullptr ? nullptr : WindowRideMainOpen(*ride);
             }
             case WindowClass::TrackDesignPlace:
@@ -408,7 +408,7 @@ public:
                 }
                 else
                 {
-                    ride_construction_invalidate_current_track();
+                    RideConstructionInvalidateCurrentTrack();
                     _currentRideIndex = RideId::FromUnderlying(rideIndex);
                 }
                 break;

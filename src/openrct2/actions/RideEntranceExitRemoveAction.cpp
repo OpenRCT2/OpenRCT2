@@ -66,7 +66,7 @@ static TileElement* FindEntranceElement(
 
 GameActions::Result RideEntranceExitRemoveAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
@@ -109,7 +109,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
 
 GameActions::Result RideEntranceExitRemoveAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
@@ -119,9 +119,9 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
     if (!isGhost)
     {
-        ride_clear_for_construction(*ride);
+        RideClearForConstruction(*ride);
         ride->RemovePeeps();
-        invalidate_test_results(*ride);
+        InvalidateTestResults(*ride);
     }
 
     auto* entranceElement = FindEntranceElement(

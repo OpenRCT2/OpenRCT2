@@ -238,14 +238,14 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels);
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving
 ///////////////////////////////////////////////////////////////////////////////
-void track_design_save_init();
-void track_design_save_reset_scenery();
-bool track_design_save_contains_tile_element(const TileElement* tileElement);
-void track_design_save_select_nearby_scenery(RideId rideIndex);
-void track_design_save_select_tile_element(
+void TrackDesignSaveInit();
+void TrackDesignSaveResetScenery();
+bool TrackDesignSaveContainsTileElement(const TileElement* tileElement);
+void TrackDesignSaveSelectNearbyScenery(RideId rideIndex);
+void TrackDesignSaveSelectTileElement(
     ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect);
 
-bool track_design_are_entrance_and_exit_placed();
+bool TrackDesignAreEntranceAndExitPlaced();
 
 extern std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 extern std::vector<const TileElement*> _trackSavedTileElements;

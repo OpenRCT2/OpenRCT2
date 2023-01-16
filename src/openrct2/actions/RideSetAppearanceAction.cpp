@@ -50,7 +50,7 @@ void RideSetAppearanceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result RideSetAppearanceAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
@@ -91,7 +91,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
 
 GameActions::Result RideSetAppearanceAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
@@ -114,15 +114,15 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             break;
         case RideSetAppearanceType::VehicleColourBody:
             ride->vehicle_colours[_index].Body = _value;
-            ride_update_vehicle_colours(*ride);
+            RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourTrim:
             ride->vehicle_colours[_index].Trim = _value;
-            ride_update_vehicle_colours(*ride);
+            RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourTernary:
             ride->vehicle_colours[_index].Tertiary = _value;
-            ride_update_vehicle_colours(*ride);
+            RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourScheme:
             ride->colour_scheme_type &= ~(
@@ -132,7 +132,7 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             {
                 ride->vehicle_colours[i] = ride->vehicle_colours[0];
             }
-            ride_update_vehicle_colours(*ride);
+            RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::EntranceStyle:
             ride->entrance_style = _value;

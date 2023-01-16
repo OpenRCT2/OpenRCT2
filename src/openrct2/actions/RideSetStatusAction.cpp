@@ -57,7 +57,7 @@ GameActions::Result RideSetStatusAction::Query() const
 {
     GameActions::Result res = GameActions::Result();
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
@@ -121,7 +121,7 @@ GameActions::Result RideSetStatusAction::Execute() const
     GameActions::Result res = GameActions::Result();
     res.Expenditure = ExpenditureType::RideRunningCosts;
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
@@ -150,7 +150,7 @@ GameActions::Result RideSetStatusAction::Execute() const
                 if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
                 {
                     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-                    ride_clear_for_construction(*ride);
+                    RideClearForConstruction(*ride);
                     ride->RemovePeeps();
                 }
             }
@@ -164,7 +164,7 @@ GameActions::Result RideSetStatusAction::Execute() const
         case RideStatus::Simulating:
         {
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-            ride_clear_for_construction(*ride);
+            RideClearForConstruction(*ride);
             ride->RemovePeeps();
 
             const auto modeSwitchResult = ride->Simulate(true);
@@ -195,7 +195,7 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             if (ride->status == RideStatus::Simulating)
             {
-                ride_clear_for_construction(*ride);
+                RideClearForConstruction(*ride);
                 ride->RemovePeeps();
             }
 

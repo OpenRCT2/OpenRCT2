@@ -146,7 +146,7 @@ DukValue ScTrackSegment::elements_get() const
 
 uint16_t ScTrackSegment::getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const
 {
-    return vehicle_get_move_info_size(static_cast<VehicleTrackSubposition>(trackSubposition), _type, direction);
+    return VehicleGetMoveInfoSize(static_cast<VehicleTrackSubposition>(trackSubposition), _type, direction);
 }
 
 std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, uint8_t direction) const
