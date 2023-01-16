@@ -135,7 +135,7 @@ public:
             auto parentWindow = GetParentWindow();
             if (parentWindow == nullptr)
             {
-                window_close(*this);
+                WindowClose(*this);
                 return;
             }
         }
@@ -156,12 +156,12 @@ public:
             case WIDX_CLOSE:
                 ContextStopTextInput();
                 ExecuteCallback(false);
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_OKAY:
                 ContextStopTextInput();
                 ExecuteCallback(true);
-                window_close(*this);
+                WindowClose(*this);
         }
     }
 
@@ -171,7 +171,7 @@ public:
         int32_t newHeight = CalculateWindowHeight(_buffer.data());
         if (newHeight != height)
         {
-            window_set_resize(*this, WW, newHeight, WW, newHeight);
+            WindowSetResize(*this, WW, newHeight, WW, newHeight);
         }
 
         widgets[WIDX_OKAY].top = newHeight - 22;
@@ -300,7 +300,7 @@ public:
     {
         ContextStopTextInput();
         ExecuteCallback(true);
-        window_close(*this);
+        WindowClose(*this);
     }
 
     static int32_t CalculateWindowHeight(std::string_view text)
@@ -337,7 +337,7 @@ private:
             if (w != nullptr)
             {
                 auto value = hasValue ? _buffer.data() : nullptr;
-                window_event_textinput_call(w, _parentWidget.widget_index, value);
+                WindowEventTextinputCall(w, _parentWidget.widget_index, value);
             }
         }
         else
@@ -366,7 +366,7 @@ private:
 
     rct_window* GetParentWindow() const
     {
-        return HasParentWindow() ? window_find_by_number(_parentWidget.window.classification, _parentWidget.window.number)
+        return HasParentWindow() ? WindowFindByNumber(_parentWidget.window.classification, _parentWidget.window.number)
                                  : nullptr;
     }
 };
@@ -375,7 +375,7 @@ void WindowTextInputRawOpen(
     rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     const_utf8string existing_text, int32_t maxLength)
 {
-    window_close_by_class(WindowClass::Textinput);
+    WindowCloseByClass(WindowClass::Textinput);
 
     auto height = TextInputWindow::CalculateWindowHeight(existing_text);
     auto w = WindowCreate<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
@@ -425,7 +425,7 @@ void WindowTextInputKey(rct_window* w, uint32_t keycode)
     }
 
     // The window can be potentially closed within a callback, we need to check if its still alive.
-    w = window_find_by_number(wndClass, wndNumber);
+    w = WindowFindByNumber(wndClass, wndNumber);
     if (w != nullptr)
         w->Invalidate();
 }

@@ -105,7 +105,7 @@ GameActions::Result RideSetPriceAction::Execute() const
             if (shopItem == ShopItem::None)
             {
                 ride->price[0] = _price;
-                window_invalidate_by_class(WindowClass::Ride);
+                WindowInvalidateByClass(WindowClass::Ride);
                 return res;
             }
         }
@@ -113,7 +113,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         if (!shop_item_has_common_price(shopItem))
         {
             ride->price[0] = _price;
-            window_invalidate_by_class(WindowClass::Ride);
+            WindowInvalidateByClass(WindowClass::Ride);
             return res;
         }
     }
@@ -126,7 +126,7 @@ GameActions::Result RideSetPriceAction::Execute() const
             if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
             {
                 ride->price[1] = _price;
-                window_invalidate_by_class(WindowClass::Ride);
+                WindowInvalidateByClass(WindowClass::Ride);
                 return res;
             }
         }
@@ -134,7 +134,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         if (!shop_item_has_common_price(shopItem))
         {
             ride->price[1] = _price;
-            window_invalidate_by_class(WindowClass::Ride);
+            WindowInvalidateByClass(WindowClass::Ride);
             return res;
         }
     }
@@ -183,7 +183,7 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
         }
         if (invalidate)
         {
-            window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
+            WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
         }
     }
 }

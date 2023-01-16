@@ -106,7 +106,7 @@ public:
             OpenRCT2::Audio::StopAll();
         }
 
-        window_invalidate_by_class(WindowClass::TopToolbar);
+        WindowInvalidateByClass(WindowClass::TopToolbar);
 
         StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
         if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -130,7 +130,7 @@ public:
             OpenRCT2::Audio::Resume();
         }
 
-        window_invalidate_by_class(WindowClass::TopToolbar);
+        WindowInvalidateByClass(WindowClass::TopToolbar);
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -218,10 +218,10 @@ rct_window* WindowSavePromptOpen()
     }
 
     // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class(WindowClass::SavePrompt);
+    rct_window* window = WindowBringToFrontByClass(WindowClass::SavePrompt);
     if (window != nullptr)
     {
-        window_close(*window);
+        WindowClose(*window);
     }
 
     if (EnumValue(prompt_mode) >= std::size(window_save_prompt_labels))

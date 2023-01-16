@@ -110,7 +110,7 @@ namespace OpenRCT2::Scripting
         {
             if (ActiveCustomTool->Owner == owner)
             {
-                tool_cancel();
+                ToolCancel();
             }
         }
 
@@ -261,14 +261,14 @@ namespace OpenRCT2::Scripting
                 customTool.onUp = dukValue["onUp"];
                 customTool.onFinish = dukValue["onFinish"];
 
-                auto toolbarWindow = window_find_by_class(WindowClass::TopToolbar);
+                auto toolbarWindow = WindowFindByClass(WindowClass::TopToolbar);
                 if (toolbarWindow != nullptr)
                 {
                     // Use a widget that does not exist on top toolbar but also make sure it isn't -1 as that
                     // prevents abort from being called.
                     WidgetIndex widgetIndex = -2;
-                    tool_cancel();
-                    tool_set(*toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
+                    ToolCancel();
+                    ToolSet(*toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
                     ActiveCustomTool = std::move(customTool);
                     ActiveCustomTool->Start();
                 }

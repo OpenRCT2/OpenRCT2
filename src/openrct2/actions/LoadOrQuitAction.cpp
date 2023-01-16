@@ -51,7 +51,7 @@ GameActions::Result LoadOrQuitAction::Execute() const
             ContextOpenWindow(WindowClass::SavePrompt);
             break;
         case LoadOrQuitModes::CloseSavePrompt:
-            window_close_by_class(WindowClass::SavePrompt);
+            WindowCloseByClass(WindowClass::SavePrompt);
             break;
         default:
             game_load_or_quit_no_save_prompt();

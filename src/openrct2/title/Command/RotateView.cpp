@@ -15,12 +15,12 @@ namespace OpenRCT2::Title
 {
     int16_t RotateViewCommand::operator()(int16_t timer)
     {
-        rct_window* w = window_get_main();
+        rct_window* w = WindowGetMain();
         if (w != nullptr)
         {
             for (uint_fast8_t i = 0; i < Rotations; i++)
             {
-                window_rotate_camera(*w, 1);
+                WindowRotateCamera(*w, 1);
             }
         }
 

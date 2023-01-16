@@ -272,7 +272,7 @@ static void Select(const char* path)
             if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
             {
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                window_close_by_class(WindowClass::Loadsave);
+                WindowCloseByClass(WindowClass::Loadsave);
                 GfxInvalidateScreen();
             }
             else
@@ -292,7 +292,7 @@ static void Select(const char* path)
                 gIsAutosaveLoaded = false;
                 gFirstTimeSaving = false;
 
-                window_close_by_class(WindowClass::Loadsave);
+                WindowCloseByClass(WindowClass::Loadsave);
                 GfxInvalidateScreen();
 
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
@@ -326,7 +326,7 @@ static void Select(const char* path)
             if (scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2))
             {
                 gCurrentLoadedPath = pathBuffer;
-                window_close_by_class(WindowClass::Loadsave);
+                WindowCloseByClass(WindowClass::Loadsave);
                 GfxInvalidateScreen();
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
@@ -349,7 +349,7 @@ static void Select(const char* path)
 
             if (success)
             {
-                window_close_by_class(WindowClass::Loadsave);
+                WindowCloseByClass(WindowClass::Loadsave);
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 title_load();
             }
@@ -368,7 +368,7 @@ static void Select(const char* path)
             auto intent = Intent(WindowClass::InstallTrack);
             intent.putExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
             ContextOpenIntent(&intent);
-            window_close_by_class(WindowClass::Loadsave);
+            WindowCloseByClass(WindowClass::Loadsave);
             InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             break;
         }
@@ -386,7 +386,7 @@ static void Select(const char* path)
 
             if (success)
             {
-                window_close_by_class(WindowClass::Loadsave);
+                WindowCloseByClass(WindowClass::Loadsave);
                 WindowRideMeasurementsDesignCancel();
                 InvokeCallback(MODAL_RESULT_OK, path);
             }
@@ -399,7 +399,7 @@ static void Select(const char* path)
         }
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP):
-            window_close_by_class(WindowClass::Loadsave);
+            WindowCloseByClass(WindowClass::Loadsave);
             InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             break;
     }
@@ -703,7 +703,7 @@ public:
     void OnClose() override
     {
         _listItems.clear();
-        window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
+        WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
     }
 
     void OnResize() override
@@ -1057,7 +1057,7 @@ rct_window* WindowLoadsaveOpen(
 
     const u8string path = GetDir(type);
 
-    auto* w = static_cast<LoadSaveWindow*>(window_bring_to_front_by_class(WindowClass::Loadsave));
+    auto* w = static_cast<LoadSaveWindow*>(WindowBringToFrontByClass(WindowClass::Loadsave));
     if (w == nullptr)
     {
         w = WindowCreate<LoadSaveWindow>(
@@ -1133,7 +1133,7 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
 {
     rct_window* w;
 
-    window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
+    WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
     w = WindowCreateCentred(
         OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WindowClass::LoadsaveOverwritePrompt, WF_STICK_TO_FRONT);
@@ -1160,13 +1160,13 @@ static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
 
             // As the LoadSaveWindow::Select function can change the order of the
             // windows we can't use window_close(w).
-            window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
+            WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
             break;
         }
 
         case WIDX_OVERWRITE_CANCEL:
         case WIDX_OVERWRITE_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
     }
 }

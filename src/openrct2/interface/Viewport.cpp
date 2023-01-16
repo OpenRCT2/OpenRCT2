@@ -91,7 +91,7 @@ void viewport_init_all()
         colours_init_maps();
     }
 
-    window_init_all();
+    WindowInitAll();
 
     // ?
     input_reset_flags();
@@ -101,7 +101,7 @@ void viewport_init_all()
     reset_tooltip_not_shown();
     gMapSelectFlags = 0;
     ClearPatrolAreaToRender();
-    textinput_cancel();
+    TextinputCancel();
 }
 
 /**
@@ -291,7 +291,7 @@ static void viewport_redraw_after_shift(
             || viewport->pos.y + viewport->height <= window->windowPos.y
             || viewport->pos.y >= window->windowPos.y + window->height)
         {
-            auto itWindowPos = window_get_iterator(window);
+            auto itWindowPos = WindowGetIterator(window);
             auto itNextWindow = itWindowPos != g_window_list.end() ? std::next(itWindowPos) : g_window_list.end();
             viewport_redraw_after_shift(
                 dpi, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), viewport, coords);
@@ -370,14 +370,14 @@ static void viewport_redraw_after_shift(
             {
                 // draw left
                 auto _right = viewport->pos.x + coords.x;
-                window_draw_all(dpi, left, top, _right, bottom);
+                WindowDrawAll(dpi, left, top, _right, bottom);
                 left += coords.x;
             }
             else if (coords.x < 0)
             {
                 // draw right
                 auto _left = viewport->pos.x + viewport->width + coords.x;
-                window_draw_all(dpi, _left, top, right, bottom);
+                WindowDrawAll(dpi, _left, top, right, bottom);
                 right += coords.x;
             }
 
@@ -385,19 +385,19 @@ static void viewport_redraw_after_shift(
             {
                 // draw top
                 bottom = viewport->pos.y + coords.y;
-                window_draw_all(dpi, left, top, right, bottom);
+                WindowDrawAll(dpi, left, top, right, bottom);
             }
             else if (coords.y < 0)
             {
                 // draw bottom
                 top = viewport->pos.y + viewport->height + coords.y;
-                window_draw_all(dpi, left, top, right, bottom);
+                WindowDrawAll(dpi, left, top, right, bottom);
             }
         }
         else
         {
             // redraw whole viewport
-            window_draw_all(dpi, left, top, right, bottom);
+            WindowDrawAll(dpi, left, top, right, bottom);
         }
     }
 }
@@ -405,7 +405,7 @@ static void viewport_redraw_after_shift(
 static void viewport_shift_pixels(
     rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x_diff, int32_t y_diff)
 {
-    auto it = window_get_iterator(window);
+    auto it = WindowGetIterator(window);
     for (; it != g_window_list.end(); it++)
     {
         auto w = it->get();
@@ -444,7 +444,7 @@ static void viewport_shift_pixels(
         if (top >= bottom)
             continue;
 
-        window_draw_all(dpi, left, top, right, bottom);
+        WindowDrawAll(dpi, left, top, right, bottom);
     }
 
     viewport_redraw_after_shift(dpi, window, viewport, { x_diff, y_diff });
@@ -481,7 +481,7 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
         if (drawing_engine_has_dirty_optimisations())
         {
             rct_drawpixelinfo* dpi = drawing_engine_get_dpi();
-            window_draw_all(dpi, left, top, right, bottom);
+            WindowDrawAll(dpi, left, top, right, bottom);
             return;
         }
     }
@@ -569,7 +569,7 @@ static void viewport_set_underground_flag(int32_t underground, rct_window* windo
  */
 void viewport_update_position(rct_window* window)
 {
-    window_event_resize_call(window);
+    WindowEventResizeCall(window);
 
     rct_viewport* viewport = window->viewport;
     if (viewport == nullptr)
@@ -1190,7 +1190,7 @@ void show_gridlines()
 {
     if (gShowGridLinesRefCount == 0)
     {
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES))
@@ -1214,7 +1214,7 @@ void hide_gridlines()
 
     if (gShowGridLinesRefCount == 0)
     {
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (!gConfigGeneral.AlwaysShowGridlines)
@@ -1234,7 +1234,7 @@ void show_land_rights()
 {
     if (gShowLandRightsRefCount == 0)
     {
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP))
@@ -1258,7 +1258,7 @@ void hide_land_rights()
 
     if (gShowLandRightsRefCount == 0)
     {
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)
@@ -1278,7 +1278,7 @@ void show_construction_rights()
 {
     if (gShowConstructionRightsRefCount == 0)
     {
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS))
@@ -1302,7 +1302,7 @@ void hide_construction_rights()
 
     if (gShowConstructionRightsRefCount == 0)
     {
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)
@@ -1320,7 +1320,7 @@ void hide_construction_rights()
  */
 void viewport_set_visibility(uint8_t mode)
 {
-    rct_window* window = window_get_main();
+    rct_window* window = WindowGetMain();
 
     if (window != nullptr)
     {
@@ -1892,7 +1892,7 @@ InteractionInfo set_interaction_info_from_paint_session(PaintSession* session, u
  */
 InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t flags)
 {
-    rct_window* window = window_find_from_point(screenCoords);
+    rct_window* window = WindowFindFromPoint(screenCoords);
     return get_map_coordinates_from_pos_window(window, screenCoords, flags);
 }
 
@@ -1949,7 +1949,7 @@ void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenR
         if (owner != nullptr && owner->classification != WindowClass::MainWindow)
         {
             // note, window_is_visible will update viewport->visibility, so this should have a low hit count
-            if (!window_is_visible(*owner))
+            if (!WindowIsVisible(*owner))
             {
                 return;
             }
@@ -1981,7 +1981,7 @@ void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenR
 
 static rct_viewport* viewport_find_from_point(const ScreenCoordsXY& screenCoords)
 {
-    rct_window* w = window_find_from_point(screenCoords);
+    rct_window* w = WindowFindFromPoint(screenCoords);
     if (w == nullptr)
         return nullptr;
 
@@ -2010,7 +2010,7 @@ static rct_viewport* viewport_find_from_point(const ScreenCoordsXY& screenCoords
 std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rct_viewport** viewport)
 {
     // This will get the tile location but we will need the more accuracy
-    rct_window* window = window_find_from_point(screenCoords);
+    rct_window* window = WindowFindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         return std::nullopt;
@@ -2157,7 +2157,7 @@ int32_t get_height_marker_offset()
 
 void viewport_set_saved_view()
 {
-    rct_window* w = window_get_main();
+    rct_window* w = WindowGetMain();
     if (w != nullptr)
     {
         rct_viewport* viewport = w->viewport;

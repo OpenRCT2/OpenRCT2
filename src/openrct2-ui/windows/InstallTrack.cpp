@@ -85,7 +85,7 @@ public:
         track_list.track_list_being_updated = false;
 
         WindowInitScrollWidgets(*this);
-        window_push_others_right(*this);
+        WindowPushOthersRight(*this);
     }
 
     void OnClose() override
@@ -130,7 +130,7 @@ public:
 
         _trackName = std::string(text);
 
-        window_event_mouse_up_call(this, WIDX_INSTALL);
+        WindowEventMouseUpCall(this, WIDX_INSTALL);
     }
 
     void OnPrepareDraw() override
@@ -422,8 +422,8 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
         return nullptr;
     }
 
-    window_close_by_class(WindowClass::EditorObjectSelection);
-    window_close_construction_windows();
+    WindowCloseByClass(WindowClass::EditorObjectSelection);
+    WindowCloseConstructionWindows();
 
     gTrackDesignSceneryToggle = false;
     _currentTrackPieceDirection = 2;

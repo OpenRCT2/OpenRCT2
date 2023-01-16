@@ -548,7 +548,7 @@ public:
                         if (abs(gesturePixels) > tolerance)
                         {
                             _gestureRadius = 0;
-                            main_window_zoom(gesturePixels > 0, true);
+                            MainWindowZoom(gesturePixels > 0, true);
                         }
                     }
                     break;
@@ -783,8 +783,8 @@ private:
         uint32_t flags = SDL_GetWindowFlags(_window);
         if ((flags & SDL_WINDOW_MINIMIZED) == 0)
         {
-            window_resize_gui(_width, _height);
-            window_relocate_windows(_width, _height);
+            WindowResizeGui(_width, _height);
+            WindowRelocateWindows(_width, _height);
         }
 
         GfxInvalidateScreen();
@@ -891,7 +891,7 @@ private:
         int16_t bottom, DrawWeatherFunc drawFunc)
     {
         rct_window* w{};
-        auto itStart = window_get_iterator(original_w);
+        auto itStart = WindowGetIterator(original_w);
         for (auto it = std::next(itStart);; it++)
         {
             if (it == g_window_list.end())

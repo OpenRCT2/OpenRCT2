@@ -86,10 +86,10 @@ void TitleScreen::StopPreviewingSequence()
 {
     if (_previewingSequence)
     {
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            window_unfollow_sprite(*mainWindow);
+            WindowUnfollowSprite(*mainWindow);
         }
         _previewingSequence = false;
         _currentSequence = title_get_config_sequence();
@@ -183,7 +183,7 @@ void TitleScreen::Tick()
     input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
     ContextUpdateMapTooltip();
-    window_dispatch_update_all();
+    WindowDispatchUpdateAll();
 
     gSavedAge++;
 
@@ -205,7 +205,7 @@ void TitleScreen::ChangePresetSequence(size_t preset)
 
     if (!_previewingSequence)
         _currentSequence = preset;
-    window_invalidate_all();
+    WindowInvalidateAll();
 }
 
 /**
@@ -218,7 +218,7 @@ void TitleScreen::CreateWindows()
     ContextOpenWindow(WindowClass::TitleExit);
     ContextOpenWindow(WindowClass::TitleOptions);
     ContextOpenWindow(WindowClass::TitleLogo);
-    window_resize_gui(ContextGetWidth(), ContextGetHeight());
+    WindowResizeGui(ContextGetWidth(), ContextGetHeight());
     _hideVersionInfo = false;
 }
 

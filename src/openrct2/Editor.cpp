@@ -124,7 +124,7 @@ namespace Editor
      */
     void ConvertSaveToScenario()
     {
-        tool_cancel();
+        ToolCancel();
         auto intent = Intent(WindowClass::Loadsave);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
         intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(ConvertSaveToScenarioCallback));
@@ -221,7 +221,7 @@ namespace Editor
     {
         // #4996: Make sure the object selection window closes here to prevent unload objects
         //        after we have loaded a new park.
-        window_close_all();
+        WindowCloseAll();
 
         auto extension = get_file_extension_type(path);
         switch (extension)
@@ -362,12 +362,12 @@ namespace Editor
         switch (gEditorStep)
         {
             case EditorStep::ObjectSelection:
-                if (window_find_by_class(WindowClass::EditorObjectSelection) != nullptr)
+                if (WindowFindByClass(WindowClass::EditorObjectSelection) != nullptr)
                 {
                     return;
                 }
 
-                if (window_find_by_class(WindowClass::InstallTrack) != nullptr)
+                if (WindowFindByClass(WindowClass::InstallTrack) != nullptr)
                 {
                     return;
                 }
@@ -380,7 +380,7 @@ namespace Editor
                 ContextOpenWindow(WindowClass::EditorObjectSelection);
                 break;
             case EditorStep::InventionsListSetUp:
-                if (window_find_by_class(WindowClass::EditorInventionList) != nullptr)
+                if (WindowFindByClass(WindowClass::EditorInventionList) != nullptr)
                 {
                     return;
                 }
@@ -388,7 +388,7 @@ namespace Editor
                 ContextOpenWindow(WindowClass::EditorInventionList);
                 break;
             case EditorStep::OptionsSelection:
-                if (window_find_by_class(WindowClass::EditorScenarioOptions) != nullptr)
+                if (WindowFindByClass(WindowClass::EditorScenarioOptions) != nullptr)
                 {
                     return;
                 }
@@ -396,7 +396,7 @@ namespace Editor
                 ContextOpenWindow(WindowClass::EditorScenarioOptions);
                 break;
             case EditorStep::ObjectiveSelection:
-                if (window_find_by_class(WindowClass::EditorObjectiveOptions) != nullptr)
+                if (WindowFindByClass(WindowClass::EditorObjectiveOptions) != nullptr)
                 {
                     return;
                 }

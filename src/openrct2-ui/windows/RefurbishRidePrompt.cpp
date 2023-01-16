@@ -96,11 +96,11 @@ rct_window* WindowRideRefurbishPromptOpen(const Ride& ride)
     rct_window* w;
     RefurbishRidePromptWindow* newWindow;
 
-    w = window_find_by_class(WindowClass::DemolishRidePrompt);
+    w = WindowFindByClass(WindowClass::DemolishRidePrompt);
     if (w != nullptr)
     {
         auto windowPos = w->windowPos;
-        window_close(*w);
+        WindowClose(*w);
         newWindow = WindowCreate<RefurbishRidePromptWindow>(WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
     }
     else

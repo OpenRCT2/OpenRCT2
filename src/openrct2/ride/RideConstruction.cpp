@@ -123,7 +123,7 @@ static rct_window* ride_create_or_find_construction_window(RideId rideIndex)
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
     intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
     windowManager->BroadcastIntent(intent);
-    return window_find_by_class(WindowClass::RideConstruction);
+    return WindowFindByClass(WindowClass::RideConstruction);
 }
 
 /**
@@ -137,9 +137,9 @@ void RideConstructionStart(Ride& ride)
     {
         ride.FindTrackGap(trackElement, &trackElement);
 
-        rct_window* w = window_get_main();
+        rct_window* w = WindowGetMain();
         if (w != nullptr && ride_modify(trackElement))
-            window_scroll_to_location(*w, { trackElement, trackElement.element->GetBaseZ() });
+            WindowScrollToLocation(*w, { trackElement, trackElement.element->GetBaseZ() });
     }
     else
     {
@@ -238,9 +238,9 @@ void ride_clear_for_construction(Ride& ride)
     ride.RemoveVehicles();
     ride_clear_blocked_tiles(ride);
 
-    auto w = window_find_by_number(WindowClass::Ride, ride.id.ToUnderlying());
+    auto w = WindowFindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
     if (w != nullptr)
-        window_event_resize_call(w);
+        WindowEventResizeCall(w);
 }
 
 /**
@@ -464,14 +464,14 @@ void ride_restore_provisional_track_piece()
         RideId rideIndex;
         int32_t direction, type, liftHillAndAlternativeState;
         CoordsXYZ trackPos;
-        if (window_ride_construction_update_state(
+        if (WindowRideConstructionUpdateState(
                 &type, &direction, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr))
         {
             ride_construction_remove_ghosts();
         }
         else
         {
-            _currentTrackPrice = place_provisional_track_piece(
+            _currentTrackPrice = PlaceProvisionalTrackPiece(
                 rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
             window_ride_construction_update_active_elements();
         }
@@ -779,7 +779,7 @@ void ride_select_next_section()
             newCoords->x = outputElement.x;
             newCoords->y = outputElement.y;
             tileElement = outputElement.element;
-            if (!scenery_tool_is_active())
+            if (!SceneryToolIsActive())
             {
                 // Set next element's height.
                 VirtualFloorSetHeight(tileElement->GetBaseZ());
@@ -846,7 +846,7 @@ void ride_select_previous_section()
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            if (!scenery_tool_is_active())
+            if (!SceneryToolIsActive())
             {
                 // Set previous element's height.
                 VirtualFloorSetHeight(trackBeginEnd.begin_element->GetBaseZ());
@@ -902,13 +902,13 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     auto stationIndex = entranceElement->GetStationIndex();
 
     // Get or create construction window for ride
-    auto constructionWindow = window_find_by_class(WindowClass::RideConstruction);
+    auto constructionWindow = WindowFindByClass(WindowClass::RideConstruction);
     if (constructionWindow == nullptr)
     {
         if (!ride_initialise_construction_window(*ride))
             return false;
 
-        constructionWindow = window_find_by_class(WindowClass::RideConstruction);
+        constructionWindow = WindowFindByClass(WindowClass::RideConstruction);
         if (constructionWindow == nullptr)
             return false;
     }
@@ -918,7 +918,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         || gCurrentToolWidget.window_classification != WindowClass::RideConstruction)
     {
         // Replace entrance / exit
-        tool_set(
+        ToolSet(
             *constructionWindow,
             entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT,
             Tool::Crosshair);
@@ -945,13 +945,13 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
             gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                           : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
             gRideEntranceExitPlaceType = entranceType;
-            window_invalidate_by_class(WindowClass::RideConstruction);
+            WindowInvalidateByClass(WindowClass::RideConstruction);
         });
 
         GameActions::Execute(&rideEntranceExitRemove);
     }
 
-    window_invalidate_by_class(WindowClass::RideConstruction);
+    WindowInvalidateByClass(WindowClass::RideConstruction);
     return true;
 }
 
@@ -1100,7 +1100,7 @@ int32_t ride_initialise_construction_window(Ride& ride)
 {
     rct_window* w;
 
-    tool_cancel();
+    ToolCancel();
 
     if (!ride_check_if_construction_allowed(ride))
         return 0;
@@ -1110,7 +1110,7 @@ int32_t ride_initialise_construction_window(Ride& ride)
 
     w = ride_create_or_find_construction_window(ride.id);
 
-    tool_set(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
+    ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
     input_set_flag(INPUT_FLAG_6, true);
 
     _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;

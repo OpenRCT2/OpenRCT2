@@ -492,7 +492,7 @@ public:
         WindowInitScrollWidgets(*this);
         _tileSelected = false;
 
-        tool_set(*this, WIDX_BACKGROUND, Tool::Crosshair);
+        ToolSet(*this, WIDX_BACKGROUND, Tool::Crosshair);
     }
 
     void OnUpdate() override
@@ -512,7 +512,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                tool_cancel();
+                ToolCancel();
                 Close();
                 return;
 
@@ -2340,7 +2340,7 @@ private:
 
 rct_window* WindowTileInspectorOpen()
 {
-    rct_window* window = window_bring_to_front_by_class(WindowClass::TileInspector);
+    rct_window* window = WindowBringToFrontByClass(WindowClass::TileInspector);
     if (window == nullptr)
         window = WindowCreate<TileInspector>(WindowClass::TileInspector, ScreenCoordsXY(0, 29), WW, WH, WF_RESIZABLE);
     return window;
@@ -2348,7 +2348,7 @@ rct_window* WindowTileInspectorOpen()
 
 void WindowTileInspectorClearClipboard()
 {
-    auto* window = window_find_by_class(WindowClass::TileInspector);
+    auto* window = WindowFindByClass(WindowClass::TileInspector);
     if (window != nullptr)
         static_cast<TileInspector*>(window)->ClearClipboard();
 }

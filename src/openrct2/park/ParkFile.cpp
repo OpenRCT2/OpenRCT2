@@ -2311,7 +2311,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
     gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
     if (!gIsAutosave)
     {
-        window_close_construction_windows();
+        WindowCloseConstructionWindows();
     }
 
     PrepareMapForSave();

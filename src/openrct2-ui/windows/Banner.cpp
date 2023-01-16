@@ -206,7 +206,7 @@ public:
                 break;
             case WIDX_BANNER_NO_ENTRY:
             {
-                textinput_cancel();
+                TextinputCancel();
                 auto bannerSetStyle = BannerSetStyleAction(
                     BannerSetStyleType::NoEntry, GetBannerIndex(), banner->flags ^ BANNER_FLAG_NO_ENTRY);
                 GameActions::Execute(&bannerSetStyle);
@@ -260,7 +260,7 @@ public:
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
         }
     }
 
@@ -300,7 +300,7 @@ public:
  */
 rct_window* WindowBannerOpen(rct_windownumber number)
 {
-    auto w = static_cast<BannerWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
+    auto w = static_cast<BannerWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;

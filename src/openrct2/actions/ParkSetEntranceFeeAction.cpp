@@ -55,6 +55,6 @@ GameActions::Result ParkSetEntranceFeeAction::Query() const
 GameActions::Result ParkSetEntranceFeeAction::Execute() const
 {
     gParkEntranceFee = _fee;
-    window_invalidate_by_class(WindowClass::ParkInformation);
+    WindowInvalidateByClass(WindowClass::ParkInformation);
     return GameActions::Result();
 }

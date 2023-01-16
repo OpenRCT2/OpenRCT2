@@ -120,7 +120,7 @@ namespace OpenRCT2::Scripting
         if (gParkEntranceFee != value)
         {
             gParkEntranceFee = value;
-            window_invalidate_by_class(WindowClass::ParkInformation);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
@@ -207,7 +207,7 @@ namespace OpenRCT2::Scripting
         if (gTotalAdmissions != value)
         {
             gTotalAdmissions = value;
-            window_invalidate_by_class(WindowClass::ParkInformation);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
@@ -222,7 +222,7 @@ namespace OpenRCT2::Scripting
         if (gTotalIncomeFromAdmissions != value)
         {
             gTotalIncomeFromAdmissions = value;
-            window_invalidate_by_class(WindowClass::ParkInformation);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
 

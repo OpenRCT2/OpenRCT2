@@ -224,7 +224,7 @@ public:
             selected_list_item = 1;
         }
         gTrackDesignSceneryToggle = false;
-        window_push_others_right(*this);
+        WindowPushOthersRight(*this);
         _currentTrackPieceDirection = 2;
         _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
@@ -249,8 +249,8 @@ public:
         // try to load the track manager again, and an infinite loop will result.
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0)
         {
-            window_close_by_number(WindowClass::ManageTrackDesign, number);
-            window_close_by_number(WindowClass::TrackDeletePrompt, number);
+            WindowCloseByNumber(WindowClass::ManageTrackDesign, number);
+            WindowCloseByNumber(WindowClass::TrackDeletePrompt, number);
             Editor::LoadTrackManager();
         }
     }
@@ -280,7 +280,7 @@ public:
                 }
                 break;
             case WIDX_FILTER_STRING:
-                window_start_textbox(
+                WindowStartTextbox(
                     *this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this out
                 break;
             case WIDX_FILTER_CLEAR:
@@ -421,8 +421,8 @@ public:
     {
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
-            window_update_textbox_caret();
-            widget_invalidate(*this, WIDX_FILTER_STRING); // TODO Check this
+            WindowUpdateTextboxCaret();
+            WidgetInvalidate(*this, WIDX_FILTER_STRING); // TODO Check this
         }
 
         if (track_list.reload_track_designs)
@@ -746,7 +746,7 @@ public:
 
 rct_window* WindowTrackListOpen(const RideSelection item)
 {
-    window_close_construction_windows();
+    WindowCloseConstructionWindows();
     ScreenCoordsXY screenPos{};
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {

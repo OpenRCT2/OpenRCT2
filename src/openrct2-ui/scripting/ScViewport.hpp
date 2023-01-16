@@ -122,7 +122,7 @@ namespace OpenRCT2::Scripting
                 {
                     while (get_current_rotation() != value)
                     {
-                        window_rotate_camera(*w, 1);
+                        WindowRotateCamera(*w, 1);
                     }
                 }
             }
@@ -143,7 +143,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 auto i8Value = static_cast<int8_t>(value);
-                window_zoom_set(*w, ZoomLevel{ i8Value }, false);
+                WindowZoomSet(*w, ZoomLevel{ i8Value }, false);
             }
         }
 
@@ -220,7 +220,7 @@ namespace OpenRCT2::Scripting
                 auto coords = GetCoordsFromObject(position);
                 if (coords)
                 {
-                    window_scroll_to_location(*w, *coords);
+                    WindowScrollToLocation(*w, *coords);
                 }
             }
         }
@@ -245,9 +245,9 @@ namespace OpenRCT2::Scripting
         rct_window* GetWindow() const
         {
             if (_class == WindowClass::MainWindow)
-                return window_get_main();
+                return WindowGetMain();
 
-            return window_find_by_number(_class, _number);
+            return WindowFindByNumber(_class, _number);
         }
 
         rct_viewport* GetViewport() const

@@ -67,7 +67,7 @@ public:
 
 rct_window* WindowTitleLogoOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::TitleLogo);
+    auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
     if (window == nullptr)
     {
         window = WindowCreate<TitleLogoWindow>(

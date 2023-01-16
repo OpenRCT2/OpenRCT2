@@ -240,7 +240,7 @@ void GameState::Tick()
         scenario_autosave_check();
     }
 
-    window_dispatch_update_all();
+    WindowDispatchUpdateAll();
 
     if (didRunSingleFrame && game_is_not_paused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {

@@ -210,7 +210,7 @@ public:
         if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && classification == gCurrentToolWidget.window_classification
             && number == gCurrentToolWidget.window_number)
         {
-            tool_cancel();
+            ToolCancel();
         }
     }
 
@@ -437,7 +437,7 @@ private:
     void OnResizeEntrance()
     {
         flags |= WF_RESIZABLE;
-        window_set_resize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
+        WindowSetResize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
         InitViewport();
     }
 
@@ -487,7 +487,7 @@ private:
     void OnUpdateEntrance()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_1);
+        WidgetInvalidate(*this, WIDX_TAB_1);
     }
 
     void OnTextInputEntrance(WidgetIndex widgetIndex, std::string_view text)
@@ -533,7 +533,7 @@ private:
         else
             widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
 
         // Anchor entrance page specific widgets
@@ -593,7 +593,7 @@ private:
         // Draw viewport
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
                 gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
         }
@@ -632,7 +632,7 @@ private:
         }
 
         // Call invalidate event
-        window_event_invalidate_call(this);
+        WindowEventInvalidateCall(this);
 
         focus = newFocus;
 
@@ -660,13 +660,13 @@ private:
 #pragma region Rating page
     void OnResizeRating()
     {
-        window_set_resize(*this, 255, 182, 255, 182);
+        WindowSetResize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateRating()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_2);
     }
 
     void OnPrepareDrawRating()
@@ -681,7 +681,7 @@ private:
         SetPressedTab();
         PrepareWindowTitleText();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -732,14 +732,14 @@ private:
 #pragma region Guests page
     void OnResizeGuests()
     {
-        window_set_resize(*this, 255, 182, 255, 182);
+        WindowSetResize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateGuests()
     {
         frame_no++;
         _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
-        widget_invalidate(*this, WIDX_TAB_3);
+        WidgetInvalidate(*this, WIDX_TAB_3);
     }
 
     void OnPrepareDrawGuests()
@@ -754,7 +754,7 @@ private:
         SetPressedTab();
         PrepareWindowTitleText();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -818,7 +818,7 @@ private:
 #pragma region Price page
     void OnResizePrice()
     {
-        window_set_resize(*this, 230, 124, 230, 124);
+        WindowSetResize(*this, 230, 124, 230, 124);
     }
 
     void OnMouseDownPrice(WidgetIndex widgetIndex)
@@ -845,7 +845,7 @@ private:
     void OnUpdatePrice()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_4);
+        WidgetInvalidate(*this, WIDX_TAB_4);
     }
 
     void OnPrepareDrawPrice()
@@ -884,7 +884,7 @@ private:
             widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Button;
         }
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -911,20 +911,20 @@ private:
 #pragma region Stats page
     void OnResizeStats()
     {
-        window_set_resize(*this, 230, 119, 230, 119);
+        WindowSetResize(*this, 230, 119, 230, 119);
     }
 
     void OnUpdateStats()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_5);
+        WidgetInvalidate(*this, WIDX_TAB_5);
 
         // Invalidate ride count if changed
         const auto rideCount = ride_get_count();
         if (_numberOfRides != rideCount)
         {
             _numberOfRides = rideCount;
-            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
+            WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
         }
 
         // Invalidate number of staff if changed
@@ -932,7 +932,7 @@ private:
         if (_numberOfStaff != staffCount)
         {
             _numberOfStaff = staffCount;
-            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
+            WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
         }
     }
 
@@ -948,7 +948,7 @@ private:
         SetPressedTab();
         PrepareWindowTitleText();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -1020,16 +1020,16 @@ private:
     {
 #ifndef NO_TTF
         if (gCurrentTTFFontSet != nullptr)
-            window_set_resize(*this, 230, 270, 230, 270);
+            WindowSetResize(*this, 230, 270, 230, 270);
         else
 #endif
-            window_set_resize(*this, 230, 226, 230, 226);
+            WindowSetResize(*this, 230, 226, 230, 226);
     }
 
     void OnUpdateObjective()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_6);
+        WidgetInvalidate(*this, WIDX_TAB_6);
     }
 
     void OnTextInputObjective(WidgetIndex widgetIndex, std::string_view text)
@@ -1057,7 +1057,7 @@ private:
         else
             widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -1126,13 +1126,13 @@ private:
 #pragma region Awards page
     void OnResizeAwards()
     {
-        window_set_resize(*this, 230, 182, 230, 182);
+        WindowSetResize(*this, 230, 182, 230, 182);
     }
 
     void OnUpdateAwards()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_7);
+        WidgetInvalidate(*this, WIDX_TAB_7);
     }
 
     void OnPrepareDrawAwards()
@@ -1147,7 +1147,7 @@ private:
         SetPressedTab();
         PrepareWindowTitleText();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -1177,7 +1177,7 @@ private:
     {
         if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
             if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                tool_cancel();
+                ToolCancel();
 
         // Set listen only to viewport
         bool listen = false;
@@ -1194,9 +1194,9 @@ private:
         SetDisabledTabs();
         Invalidate();
 
-        window_event_resize_call(this);
-        window_event_invalidate_call(this);
-        window_event_update_call(this);
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
+        WindowEventUpdateCall(this);
         if (listen && viewport != nullptr)
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
     }

@@ -285,7 +285,7 @@ public:
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
         }
     }
 
@@ -318,7 +318,7 @@ public:
  */
 rct_window* WindowSignOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
+    auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;
@@ -341,7 +341,7 @@ rct_window* WindowSignOpen(rct_windownumber number)
  */
 rct_window* WindowSignSmallOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
+    auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;

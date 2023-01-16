@@ -142,7 +142,7 @@ rct_window* WindowNetworkStatusOpen(const std::string& text, close_callback onCl
 // force close
 void WindowNetworkStatusClose()
 {
-    auto window = window_find_by_class(WindowClass::NetworkStatus);
+    auto window = WindowFindByClass(WindowClass::NetworkStatus);
     if (window == nullptr)
     {
         return;

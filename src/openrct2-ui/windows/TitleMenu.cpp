@@ -125,42 +125,42 @@ public:
         switch (widgetIndex)
         {
             case WIDX_START_NEW_GAME:
-                windowToOpen = window_find_by_class(WindowClass::ScenarioSelect);
+                windowToOpen = WindowFindByClass(WindowClass::ScenarioSelect);
                 if (windowToOpen != nullptr)
                 {
-                    window_bring_to_front(*windowToOpen);
+                    WindowBringToFront(*windowToOpen);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::Loadsave);
-                    window_close_by_class(WindowClass::ServerList);
+                    WindowCloseByClass(WindowClass::Loadsave);
+                    WindowCloseByClass(WindowClass::ServerList);
                     WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback, false);
                 }
                 break;
             case WIDX_CONTINUE_SAVED_GAME:
-                windowToOpen = window_find_by_class(WindowClass::Loadsave);
+                windowToOpen = WindowFindByClass(WindowClass::Loadsave);
                 if (windowToOpen != nullptr)
                 {
-                    window_bring_to_front(*windowToOpen);
+                    WindowBringToFront(*windowToOpen);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::ScenarioSelect);
-                    window_close_by_class(WindowClass::ServerList);
+                    WindowCloseByClass(WindowClass::ScenarioSelect);
+                    WindowCloseByClass(WindowClass::ServerList);
                     auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
                     GameActions::Execute(&loadOrQuitAction);
                 }
                 break;
             case WIDX_MULTIPLAYER:
-                windowToOpen = window_find_by_class(WindowClass::ServerList);
+                windowToOpen = WindowFindByClass(WindowClass::ServerList);
                 if (windowToOpen != nullptr)
                 {
-                    window_bring_to_front(*windowToOpen);
+                    WindowBringToFront(*windowToOpen);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::ScenarioSelect);
-                    window_close_by_class(WindowClass::Loadsave);
+                    WindowCloseByClass(WindowClass::ScenarioSelect);
+                    WindowCloseByClass(WindowClass::Loadsave);
                     ContextOpenWindow(WindowClass::ServerList);
                 }
                 break;

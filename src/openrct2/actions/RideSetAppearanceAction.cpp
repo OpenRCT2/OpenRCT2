@@ -142,7 +142,7 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             ride->SetLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
             break;
     }
-    window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
+    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
 
     auto res = GameActions::Result();
     if (!ride->overall_view.IsNull())

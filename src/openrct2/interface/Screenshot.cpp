@@ -298,8 +298,8 @@ static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
         },
     };
 
-    auto* const mainWindow = window_get_main();
-    const auto* const mainViewport = window_get_viewport(mainWindow);
+    auto* const mainWindow = WindowGetMain();
+    const auto* const mainViewport = WindowGetViewport(mainWindow);
     const bool useViewClipping = (mainViewport != nullptr && mainViewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
 
     // Calculate the viewport bounds
@@ -352,8 +352,8 @@ void screenshot_giant()
 
         const auto rotation = get_current_rotation();
         auto zoom = ZoomLevel{ 0 };
-        auto* mainWindow = window_get_main();
-        const auto* vp = window_get_viewport(mainWindow);
+        auto* mainWindow = WindowGetMain();
+        const auto* vp = WindowGetViewport(mainWindow);
         if (mainWindow != nullptr && vp != nullptr)
         {
             zoom = vp->zoom;

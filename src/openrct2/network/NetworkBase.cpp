@@ -644,7 +644,7 @@ void NetworkBase::UpdateClient()
                     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
                     ContextOpenIntent(&intent);
                 }
-                window_close_by_class(WindowClass::Multiplayer);
+                WindowCloseByClass(WindowClass::Multiplayer);
                 Close();
             }
             else
@@ -3023,7 +3023,7 @@ void NetworkBase::Server_Handle_PING(NetworkConnection& connection, [[maybe_unus
     if (connection.Player != nullptr)
     {
         connection.Player->Ping = ping;
-        window_invalidate_by_number(WindowClass::Player, connection.Player->Id);
+        WindowInvalidateByNumber(WindowClass::Player, connection.Player->Id);
     }
 }
 
@@ -3042,7 +3042,7 @@ void NetworkBase::Client_Handle_PINGLIST([[maybe_unused]] NetworkConnection& con
             player->Ping = ping;
         }
     }
-    window_invalidate_by_class(WindowClass::Player);
+    WindowInvalidateByClass(WindowClass::Player);
 }
 
 void NetworkBase::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet)
@@ -3482,7 +3482,7 @@ GameActions::Result network_set_player_group(
             userManager.Save();
         }
 
-        window_invalidate_by_number(WindowClass::Player, playerId);
+        WindowInvalidateByNumber(WindowClass::Player, playerId);
 
         // Log set player group event
         NetworkPlayer* game_command_player = network.GetPlayerByID(actionPlayerId);

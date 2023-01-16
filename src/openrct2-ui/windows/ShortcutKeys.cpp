@@ -78,7 +78,7 @@ public:
         auto registeredShortcut = shortcutManager.GetShortcut(shortcutId);
         if (registeredShortcut != nullptr)
         {
-            window_close_by_class(WindowClass::ChangeKeyboardShortcut);
+            WindowCloseByClass(WindowClass::ChangeKeyboardShortcut);
             auto w = WindowCreate<ChangeShortcutWindow>(
                 WindowClass::ChangeKeyboardShortcut, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
             if (w != nullptr)
@@ -195,7 +195,7 @@ public:
 
     void OnResize() override
     {
-        window_set_resize(*this, min_width, min_height, max_width, max_height);
+        WindowSetResize(*this, min_width, min_height, max_width, max_height);
     }
 
     void OnUpdate() override
@@ -239,7 +239,7 @@ public:
         widgets[WIDX_SCROLL].bottom = height - 19;
         widgets[WIDX_RESET].top = height - 16;
         widgets[WIDX_RESET].bottom = height - 5;
-        window_align_tabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
+        WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
 
         // Set selected tab
         for (size_t i = 0; i < _tabs.size(); i++)
@@ -540,7 +540,7 @@ private:
 
 void ChangeShortcutWindow::NotifyShortcutKeysWindow()
 {
-    auto w = window_find_by_class(WindowClass::KeyboardShortcutList);
+    auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
     if (w != nullptr)
     {
         static_cast<ShortcutKeysWindow*>(w)->RefreshBindings();
@@ -549,7 +549,7 @@ void ChangeShortcutWindow::NotifyShortcutKeysWindow()
 
 rct_window* WindowShortcutKeysOpen()
 {
-    auto w = window_bring_to_front_by_class(WindowClass::KeyboardShortcutList);
+    auto w = WindowBringToFrontByClass(WindowClass::KeyboardShortcutList);
     if (w == nullptr)
     {
         w = WindowCreate<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, WW, WH, WF_RESIZABLE);

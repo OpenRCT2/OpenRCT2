@@ -66,7 +66,7 @@ GameActions::Result RideFreezeRatingAction::Execute() const
 
     ride->lifecycle_flags |= RIDE_LIFECYCLE_FIXED_RATINGS;
 
-    window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
+    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
 
     auto res = GameActions::Result();
     return res;

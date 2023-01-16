@@ -134,7 +134,7 @@ void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 
 void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
 {
-    auto* w = window_find_by_class(WindowClass::Error);
+    auto* w = WindowFindByClass(WindowClass::Error);
     if (w != nullptr)
         return;
 
@@ -151,7 +151,7 @@ void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const 
         return;
 
     auto widget = &widgetWindow->widgets[widgetIndex];
-    window_event_invalidate_call(widgetWindow);
+    WindowEventInvalidateCall(widgetWindow);
 
     OpenRCT2String result;
     if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
@@ -177,7 +177,7 @@ void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const 
         gTooltipWidget.window_classification = widgetWindow->classification;
         gTooltipWidget.window_number = widgetWindow->number;
         gTooltipWidget.widget_index = widgetIndex;
-        result = window_event_tooltip_call(widgetWindow, widgetIndex, stringId);
+        result = WindowEventTooltipCall(widgetWindow, widgetIndex, stringId);
         if (result.str == STR_NONE)
             return;
     }
@@ -187,7 +187,7 @@ void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const 
 
 void WindowTooltipClose()
 {
-    window_close_by_class(WindowClass::Tooltip);
+    WindowCloseByClass(WindowClass::Tooltip);
     gTooltipTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
 }

@@ -159,7 +159,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
             ride->race_winner = EntityId::GetNull();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
+            WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         case RideStatus::Simulating:
         {
@@ -182,7 +182,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
+            WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         }
         case RideStatus::Testing:
@@ -201,10 +201,10 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
             //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
-            rct_window* constructionWindow = window_find_by_number(WindowClass::RideConstruction, _rideIndex.ToUnderlying());
+            rct_window* constructionWindow = WindowFindByNumber(WindowClass::RideConstruction, _rideIndex.ToUnderlying());
             if (constructionWindow != nullptr)
             {
-                window_close(*constructionWindow);
+                WindowClose(*constructionWindow);
             }
 
             if (_status == RideStatus::Testing)
@@ -234,7 +234,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
+            WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         }
         default:

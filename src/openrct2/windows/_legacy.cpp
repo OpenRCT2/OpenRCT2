@@ -39,7 +39,7 @@ RideConstructionState _rideConstructionState2;
  *
  *  rct2: 0x006CA162
  */
-money32 place_provisional_track_piece(
+money32 PlaceProvisionalTrackPiece(
     RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, const CoordsXYZ& trackPos)
 {
     auto ride = get_ride(rideIndex);
@@ -67,7 +67,7 @@ money32 place_provisional_track_piece(
         // Invalidate previous track piece (we may not be changing height!)
         VirtualFloorInvalidate();
 
-        if (!scenery_tool_is_active())
+        if (!SceneryToolIsActive())
         {
             // Set new virtual floor height.
             VirtualFloorSetHeight(trackPos.z);
@@ -109,7 +109,7 @@ money32 place_provisional_track_piece(
     // Invalidate previous track piece (we may not be changing height!)
     VirtualFloorInvalidate();
 
-    if (!scenery_tool_is_active())
+    if (!SceneryToolIsActive())
     {
         // Set height to where the next track piece would begin
         VirtualFloorSetHeight(trackPos.z - z_begin + z_end);
@@ -235,7 +235,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
  * @param[out] _properties (edirs16)
  * @return (CF)
  */
-bool window_ride_construction_update_state(
+bool WindowRideConstructionUpdateState(
     int32_t* _trackType, int32_t* _trackDirection, RideId* _rideIndex, int32_t* _liftHillAndInvertedState, CoordsXYZ* _trackPos,
     int32_t* _properties)
 {
@@ -405,7 +405,7 @@ void window_ride_construction_update_active_elements()
  *
  *  rct2: 0x0066DB3D
  */
-bool scenery_tool_is_active()
+bool SceneryToolIsActive()
 {
     auto toolWindowClassification = gCurrentToolWidget.window_classification;
     WidgetIndex toolWidgetIndex = gCurrentToolWidget.widget_index;

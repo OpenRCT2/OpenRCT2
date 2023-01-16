@@ -62,7 +62,7 @@ public:
 
         int32_t w = 0, h = 0;
         Widget* widget = &widgets[WIDX_SCROLL];
-        window_get_scroll_size(this, 0, &w, &h);
+        WindowGetScrollSize(this, 0, &w, &h);
         scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
         WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
     }
@@ -112,9 +112,9 @@ public:
         {
             static rct_window* _mainWindow;
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
-            if (subjectLoc.has_value() && (_mainWindow = window_get_main()) != nullptr)
+            if (subjectLoc.has_value() && (_mainWindow = WindowGetMain()) != nullptr)
             {
-                window_scroll_to_location(*_mainWindow, subjectLoc.value());
+                WindowScrollToLocation(*_mainWindow, subjectLoc.value());
             }
         }
     }

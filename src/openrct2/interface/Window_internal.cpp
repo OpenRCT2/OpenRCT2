@@ -7,7 +7,7 @@
 
 void rct_window::SetLocation(const CoordsXYZ& coords)
 {
-    window_scroll_to_location(*this, coords);
+    WindowScrollToLocation(*this, coords);
     flags &= ~WF_SCROLLING_TO_LOCATION;
 }
 
@@ -18,9 +18,9 @@ void rct_window::ScrollToViewport()
 
     CoordsXYZ newCoords = focus.value().GetPos();
 
-    auto mainWindow = window_get_main();
+    auto mainWindow = WindowGetMain();
     if (mainWindow != nullptr)
-        window_scroll_to_location(*mainWindow, newCoords);
+        WindowScrollToLocation(*mainWindow, newCoords);
 }
 
 void rct_window::Invalidate()

@@ -673,10 +673,10 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "location")
         {
-            rct_window* w = window_get_main();
+            rct_window* w = WindowGetMain();
             if (w != nullptr)
             {
-                rct_viewport* viewport = window_get_viewport(w);
+                rct_viewport* viewport = WindowGetViewport(w);
                 auto info = get_map_coordinates_from_pos(
                     { viewport->view_width / 2, viewport->view_height / 2 }, EnumsToFlags(ViewportInteractionItem::Terrain));
 
@@ -1052,7 +1052,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "location" && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
         {
-            rct_window* w = window_get_main();
+            rct_window* w = WindowGetMain();
             if (w != nullptr)
             {
                 auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
@@ -1074,7 +1074,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "window_limit" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            window_set_window_limit(int_val[0]);
+            WindowSetWindowLimit(int_val[0]);
             console.Execute("get window_limit");
         }
         else if (argv[0] == "render_weather_effects" && invalidArguments(&invalidArgs, int_valid[0]))
@@ -1146,7 +1146,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "current_rotation" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             uint8_t currentRotation = get_current_rotation();
-            rct_window* mainWindow = window_get_main();
+            rct_window* mainWindow = WindowGetMain();
             int32_t newRotation = int_val[0];
             if (newRotation < 0 || newRotation > 3)
             {
@@ -1154,7 +1154,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             }
             else if (newRotation != currentRotation && mainWindow != nullptr)
             {
-                window_rotate_camera(*mainWindow, newRotation - currentRotation);
+                WindowRotateCamera(*mainWindow, newRotation - currentRotation);
             }
             console.Execute("get current_rotation");
         }
@@ -1328,7 +1328,7 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
             else
             {
                 // Only this window should be open for safety reasons
-                window_close_all();
+                WindowCloseAll();
                 ContextOpenWindow(WindowClass::EditorObjectSelection);
             }
         }
@@ -1485,7 +1485,7 @@ static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe
     }
 
     date_set(year, month, day);
-    window_invalidate_by_class(WindowClass::BottomToolbar);
+    WindowInvalidateByClass(WindowClass::BottomToolbar);
 
     return 1;
 }

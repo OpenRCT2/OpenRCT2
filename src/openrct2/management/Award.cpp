@@ -617,7 +617,7 @@ void award_update_all()
     if (res != std::end(_currentAwards))
     {
         _currentAwards.erase(res, std::end(_currentAwards));
-        window_invalidate_by_class(WindowClass::ParkInformation);
+        WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
     // Only add new awards if park is open
@@ -649,7 +649,7 @@ void award_update_all()
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});
                 }
-                window_invalidate_by_class(WindowClass::ParkInformation);
+                WindowInvalidateByClass(WindowClass::ParkInformation);
             }
         }
     }

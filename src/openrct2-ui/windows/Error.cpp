@@ -109,7 +109,7 @@ public:
 
 rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
 {
-    window_close_by_class(WindowClass::Error);
+    WindowCloseByClass(WindowClass::Error);
 
     std::string buffer = "{BLACK}";
     buffer.append(title);

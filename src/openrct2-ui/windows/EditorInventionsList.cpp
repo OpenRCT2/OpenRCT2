@@ -209,7 +209,7 @@ public:
     {
         frame_no++;
         OnPrepareDraw();
-        widget_invalidate(*this, WIDX_TAB_1);
+        WidgetInvalidate(*this, WIDX_TAB_1);
 
         if (WindowEditorInventionsListDragGetItem() != nullptr)
             return;
@@ -476,7 +476,7 @@ public:
         if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
             && windowPos.y + height > screenCoords.y)
         {
-            WidgetIndex widgetIndex = window_find_widget_from_point(*this, screenCoords);
+            WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*this, screenCoords);
             auto& widget = widgets[widgetIndex];
             if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
             {
@@ -596,7 +596,7 @@ public:
 
     CursorID OnCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
     {
-        auto* inventionListWindow = static_cast<InventionListWindow*>(window_find_by_class(WindowClass::EditorInventionList));
+        auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
         if (inventionListWindow != nullptr)
         {
             auto res = inventionListWindow->GetResearchItemAt(screenCoords);
@@ -613,7 +613,7 @@ public:
 
     void OnMoved(const ScreenCoordsXY& screenCoords) override
     {
-        auto* inventionListWindow = static_cast<InventionListWindow*>(window_find_by_class(WindowClass::EditorInventionList));
+        auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
         if (inventionListWindow == nullptr)
         {
             Close();
@@ -632,7 +632,7 @@ public:
             inventionListWindow->MoveResearchItem(_draggedItem, res->research, res->isInvented);
         }
 
-        window_invalidate_by_class(WindowClass::EditorInventionList);
+        WindowInvalidateByClass(WindowClass::EditorInventionList);
         Close();
     }
 
@@ -667,7 +667,7 @@ public:
 static void WindowEditorInventionsListDragOpen(
     ResearchItem* researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
 {
-    window_close_by_class(WindowClass::EditorInventionListDrag);
+    WindowCloseByClass(WindowClass::EditorInventionListDrag);
     auto* wnd = WindowCreate<InventionDragWindow>(
         WindowClass::EditorInventionListDrag, 10, 14, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     if (wnd != nullptr)
@@ -678,7 +678,7 @@ static void WindowEditorInventionsListDragOpen(
 
 static const ResearchItem* WindowEditorInventionsListDragGetItem()
 {
-    auto* wnd = static_cast<InventionDragWindow*>(window_find_by_class(WindowClass::EditorInventionListDrag));
+    auto* wnd = static_cast<InventionDragWindow*>(WindowFindByClass(WindowClass::EditorInventionListDrag));
     if (wnd == nullptr)
     {
         return nullptr;

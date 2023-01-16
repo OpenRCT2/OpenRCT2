@@ -55,7 +55,7 @@ public:
  */
 rct_window* WindowTitleOptionsOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::TitleOptions);
+    auto* window = WindowBringToFrontByClass(WindowClass::TitleOptions);
     if (window == nullptr)
     {
         window = WindowCreate<TitleOptionsWindow>(

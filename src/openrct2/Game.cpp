@@ -97,7 +97,7 @@ using namespace OpenRCT2;
 void game_reset_speed()
 {
     gGameSpeed = 1;
-    window_invalidate_by_class(WindowClass::TopToolbar);
+    WindowInvalidateByClass(WindowClass::TopToolbar);
 }
 
 void game_increase_game_speed()
@@ -105,7 +105,7 @@ void game_increase_game_speed()
     gGameSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
     if (gGameSpeed == 5)
         gGameSpeed = 8;
-    window_invalidate_by_class(WindowClass::TopToolbar);
+    WindowInvalidateByClass(WindowClass::TopToolbar);
 }
 
 void game_reduce_game_speed()
@@ -113,7 +113,7 @@ void game_reduce_game_speed()
     gGameSpeed = std::max(1, gGameSpeed - 1);
     if (gGameSpeed == 7)
         gGameSpeed = 4;
-    window_invalidate_by_class(WindowClass::TopToolbar);
+    WindowInvalidateByClass(WindowClass::TopToolbar);
 }
 
 /**
@@ -125,7 +125,7 @@ void game_create_windows()
     ContextOpenWindow(WindowClass::MainWindow);
     ContextOpenWindow(WindowClass::TopToolbar);
     ContextOpenWindow(WindowClass::BottomToolbar);
-    window_resize_gui(ContextGetWidth(), ContextGetHeight());
+    WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 }
 
 enum
@@ -302,7 +302,7 @@ void update_palette_effects()
 void pause_toggle()
 {
     gGamePaused ^= GAME_PAUSED_NORMAL;
-    window_invalidate_by_class(WindowClass::TopToolbar);
+    WindowInvalidateByClass(WindowClass::TopToolbar);
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
         OpenRCT2::Audio::StopAll();
@@ -471,8 +471,8 @@ void game_load_init()
     }
     else
     {
-        auto* mainWindow = window_get_main();
-        window_unfollow_sprite(*mainWindow);
+        auto* mainWindow = WindowGetMain();
+        WindowUnfollowSprite(*mainWindow);
     }
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
@@ -497,7 +497,7 @@ void game_load_init()
     {
         intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
         ContextBroadcastIntent(&intent);
-        window_update_all();
+        WindowUpdateAll();
     }
 
     OpenRCT2::Audio::StopTitleMusic();
@@ -727,7 +727,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
     {
         game_notify_map_change();
         game_unload_scripts();
-        window_close_by_class(WindowClass::EditorObjectSelection);
+        WindowCloseByClass(WindowClass::EditorObjectSelection);
         GetContext()->LoadParkFromFile(path);
         game_load_scripts();
         game_notify_map_changed();
@@ -738,7 +738,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
 
 static void NewGameWindowCallback(const utf8* path)
 {
-    window_close_by_class(WindowClass::EditorObjectSelection);
+    WindowCloseByClass(WindowClass::EditorObjectSelection);
     game_notify_map_change();
     GetContext()->LoadParkFromFile(path, false, true);
     game_load_scripts();
@@ -757,7 +757,7 @@ void game_load_or_quit_no_save_prompt()
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
-            tool_cancel();
+            ToolCancel();
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
                 load_landscape();
@@ -775,7 +775,7 @@ void game_load_or_quit_no_save_prompt()
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
-            tool_cancel();
+            ToolCancel();
             if (input_test_flag(INPUT_FLAG_5))
             {
                 input_set_flag(INPUT_FLAG_5, false);
@@ -791,7 +791,7 @@ void game_load_or_quit_no_save_prompt()
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
-            tool_cancel();
+            ToolCancel();
             auto intent = Intent(WindowClass::ScenarioSelect);
             intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(NewGameWindowCallback));
             ContextOpenIntent(&intent);

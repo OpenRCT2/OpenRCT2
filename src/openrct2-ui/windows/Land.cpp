@@ -72,7 +72,7 @@ public:
         widgets = window_land_widgets;
         hold_down_widgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         gLandToolSize = 1;
         gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
@@ -89,7 +89,7 @@ public:
     {
         // If the tool wasn't changed, turn tool off
         if (LandToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override

@@ -179,9 +179,9 @@ static int32_t RideGetAlternativeType(const Ride& ride)
 /* move to ride.c */
 static void CloseRideWindowForConstruction(RideId rideId)
 {
-    rct_window* w = window_find_by_number(WindowClass::Ride, rideId.ToUnderlying());
+    rct_window* w = WindowFindByNumber(WindowClass::Ride, rideId.ToUnderlying());
     if (w != nullptr && w->page == 1)
-        window_close(*w);
+        WindowClose(*w);
 }
 
 static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActions::Result* result);
@@ -212,7 +212,7 @@ public:
 
         InitScrollWidgets();
 
-        window_push_others_right(*this);
+        WindowPushOthersRight(*this);
         show_gridlines();
 
         _currentTrackPrice = MONEY32_UNDEFINED;
@@ -253,7 +253,7 @@ public:
         // selection tool should be cancelled. Don't do a tool cancel if
         // another window has already taken control of tool.
         if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-            tool_cancel();
+            ToolCancel();
 
         hide_gridlines();
 
@@ -802,7 +802,7 @@ public:
         if (_rideConstructionState == RideConstructionState::Front)
         {
             disabledWidgets |= (1uLL << WIDX_NEXT_SECTION);
-            if (window_ride_construction_update_state(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
+            if (WindowRideConstructionUpdateState(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
             {
                 disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
             }
@@ -810,7 +810,7 @@ public:
         else if (_rideConstructionState == RideConstructionState::Back)
         {
             disabledWidgets |= (1uLL << WIDX_PREVIOUS_SECTION);
-            if (window_ride_construction_update_state(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
+            if (WindowRideConstructionUpdateState(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
             {
                 disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
             }
@@ -854,7 +854,7 @@ public:
         {
             if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
             {
-                widget_invalidate(*this, i);
+                WidgetInvalidate(*this, i);
             }
         }
         disabled_widgets = disabledWidgets;
@@ -882,7 +882,7 @@ public:
             case TrackElemType::Whirlpool | RideConstructionSpecialPieceSelected:
             case TrackElemType::Rapids | RideConstructionSpecialPieceSelected:
             case TrackElemType::Waterfall | RideConstructionSpecialPieceSelected:
-                widget_invalidate(*this, WIDX_CONSTRUCT);
+                WidgetInvalidate(*this, WIDX_CONSTRUCT);
                 break;
         }
 
@@ -912,7 +912,7 @@ public:
                 if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
                     && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
                 {
-                    tool_cancel();
+                    ToolCancel();
                 }
                 break;
             default:
@@ -1403,11 +1403,11 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CONSTRUCT:
-                ride_construction_toolupdate_construct(screenCoords);
+                RideConstructionToolupdateConstruct(screenCoords);
                 break;
             case WIDX_ENTRANCE:
             case WIDX_EXIT:
-                ride_construction_toolupdate_entrance_exit(screenCoords);
+                RideConstructionToolupdateEntranceExit(screenCoords);
                 break;
         }
     }
@@ -1417,7 +1417,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CONSTRUCT:
-                ride_construction_tooldown_construct(screenCoords);
+                RideConstructionTooldownConstruct(screenCoords);
                 break;
             case WIDX_ENTRANCE:
             case WIDX_EXIT:
@@ -1497,7 +1497,7 @@ public:
 
         RideId rideIndex;
         int32_t trackType, trackDirection, liftHillAndInvertedState;
-        if (window_ride_construction_update_state(
+        if (WindowRideConstructionUpdateState(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndInvertedState, nullptr, nullptr))
             return;
 
@@ -2167,7 +2167,7 @@ public:
                 gMapSelectionTiles.clear();
                 return;
             default:
-                if (window_ride_construction_update_state(&trackType, &trackDirection, nullptr, nullptr, &trackPos, nullptr))
+                if (WindowRideConstructionUpdateState(&trackType, &trackDirection, nullptr, nullptr, &trackPos, nullptr))
                 {
                     trackDirection = _currentTrackPieceDirection;
                     trackType = 0;
@@ -2187,7 +2187,7 @@ public:
     {
         // If the scenery tool is active, we do not display our tiles as it
         // will conflict with larger scenery objects selecting tiles
-        if (scenery_tool_is_active())
+        if (SceneryToolIsActive())
         {
             return;
         }
@@ -2224,7 +2224,7 @@ private:
         _trackPlaceCost = MONEY32_UNDEFINED;
         _trackPlaceErrorMessage = STR_NONE;
         ride_construction_invalidate_current_track();
-        if (window_ride_construction_update_state(
+        if (WindowRideConstructionUpdateState(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, &properties))
         {
             window_ride_construction_update_active_elements();
@@ -2409,7 +2409,7 @@ private:
 
     void EntranceClick()
     {
-        if (tool_set(*this, WIDX_ENTRANCE, Tool::Crosshair))
+        if (ToolSet(*this, WIDX_ENTRANCE, Tool::Crosshair))
         {
             auto currentRide = get_ride(_currentRideIndex);
             if (currentRide != nullptr && !ride_try_get_origin_element(*currentRide, nullptr))
@@ -2435,7 +2435,7 @@ private:
 
     void ExitClick()
     {
-        if (tool_set(*this, WIDX_EXIT, Tool::Crosshair))
+        if (ToolSet(*this, WIDX_EXIT, Tool::Crosshair))
         {
             auto currentRide = get_ride(_currentRideIndex);
             if (!ride_try_get_origin_element(*currentRide, nullptr))
@@ -2571,16 +2571,16 @@ private:
             auto currentRide = get_ride(gRideEntranceExitPlaceRideIndex);
             if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(*currentRide).Successful)
             {
-                tool_cancel();
+                ToolCancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
                 {
-                    window_close_by_class(WindowClass::RideConstruction);
+                    WindowCloseByClass(WindowClass::RideConstruction);
                 }
             }
             else
             {
                 gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                window_invalidate_by_class(WindowClass::RideConstruction);
+                WindowInvalidateByClass(WindowClass::RideConstruction);
                 gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                     : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
@@ -2792,16 +2792,16 @@ static void CloseConstructWindowOnCompletion(const Ride& ride)
 {
     if (_rideConstructionState == RideConstructionState::State0)
     {
-        auto w = window_find_by_class(WindowClass::RideConstruction);
+        auto w = WindowFindByClass(WindowClass::RideConstruction);
         if (w != nullptr)
         {
             if (ride_are_all_possible_entrances_and_exits_built(ride).Successful)
             {
-                window_close(*w);
+                WindowClose(*w);
             }
             else
             {
-                window_event_mouse_up_call(w, WIDX_ENTRANCE);
+                WindowEventMouseUpCall(w, WIDX_ENTRANCE);
             }
         }
     }
@@ -2809,7 +2809,7 @@ static void CloseConstructWindowOnCompletion(const Ride& ride)
 
 static void window_ride_construction_do_entrance_exit_check()
 {
-    auto w = window_find_by_class(WindowClass::RideConstruction);
+    auto w = WindowFindByClass(WindowClass::RideConstruction);
     auto ride = get_ride(_currentRideIndex);
     if (w == nullptr || ride == nullptr)
     {
@@ -2818,12 +2818,12 @@ static void window_ride_construction_do_entrance_exit_check()
 
     if (_rideConstructionState == RideConstructionState::State0)
     {
-        w = window_find_by_class(WindowClass::RideConstruction);
+        w = WindowFindByClass(WindowClass::RideConstruction);
         if (w != nullptr)
         {
             if (!ride_are_all_possible_entrances_and_exits_built(*ride).Successful)
             {
-                window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                WindowEventMouseUpCall(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             }
         }
     }
@@ -2869,7 +2869,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
         window_ride_construction_update_active_elements();
     }
 
-    window_close_by_class(WindowClass::Error);
+    WindowCloseByClass(WindowClass::Error);
     if (ride != nullptr)
         CloseConstructWindowOnCompletion(*ride);
 }
@@ -2913,7 +2913,7 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
         window_ride_construction_update_active_elements();
     }
 
-    window_close_by_class(WindowClass::Error);
+    WindowCloseByClass(WindowClass::Error);
     if (ride != nullptr)
         CloseConstructWindowOnCompletion(*ride);
 }
@@ -2963,7 +2963,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
 
             _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
-            auto* mainWnd = window_get_main();
+            auto* mainWnd = WindowGetMain();
             if (mainWnd != nullptr && mainWnd->viewport != nullptr)
             {
                 _trackPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_trackPlaceShiftZ);
@@ -3038,7 +3038,7 @@ void WindowRideConstructionUpdateActiveElementsImpl()
         return;
     }
 
-    auto window = static_cast<RideConstructionWindow*>(window_find_by_class(WindowClass::RideConstruction));
+    auto window = static_cast<RideConstructionWindow*>(WindowFindByClass(WindowClass::RideConstruction));
     if (!window)
     {
         return;
@@ -3115,14 +3115,14 @@ void UpdateGhostTrackAndArrow()
             // place ghost piece
             if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
             {
-                if (window_ride_construction_update_state(
+                if (WindowRideConstructionUpdateState(
                         &type, &direction, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr))
                 {
                     ride_construction_remove_ghosts();
                 }
                 else
                 {
-                    _currentTrackPrice = place_provisional_track_piece(
+                    _currentTrackPrice = PlaceProvisionalTrackPiece(
                         rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
                     window_ride_construction_update_active_elements();
                 }
@@ -3209,7 +3209,7 @@ void UpdateGhostTrackAndArrow()
  *
  *  rct2: 0x006CC6A8
  */
-void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
+void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
 {
     int32_t z;
     const rct_preview_track* trackBlock;
@@ -3240,7 +3240,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
     RideId rideIndex;
     int32_t trackType, trackDirection, liftHillAndAlternativeState;
-    if (window_ride_construction_update_state(
+    if (WindowRideConstructionUpdateState(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr))
     {
         ride_construction_invalidate_current_track();
@@ -3257,7 +3257,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     const auto& rtd = ride->GetRideTypeDescriptor();
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
-        auto window = static_cast<RideConstructionWindow*>(window_find_by_class(WindowClass::RideConstruction));
+        auto window = static_cast<RideConstructionWindow*>(WindowFindByClass(WindowClass::RideConstruction));
         if (!window)
         {
             return;
@@ -3318,9 +3318,9 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         for (int zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
         {
             CoordsXYZ trackPos{};
-            window_ride_construction_update_state(
+            WindowRideConstructionUpdateState(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
-            _currentTrackPrice = place_provisional_track_piece(
+            _currentTrackPrice = PlaceProvisionalTrackPiece(
                 rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
             if (_currentTrackPrice != MONEY32_UNDEFINED)
                 break;
@@ -3341,9 +3341,9 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     for (int zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
     {
         CoordsXYZ trackPos{};
-        window_ride_construction_update_state(
+        WindowRideConstructionUpdateState(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
-        _currentTrackPrice = place_provisional_track_piece(
+        _currentTrackPrice = PlaceProvisionalTrackPiece(
             rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
         mapCoords = trackPos;
         z = trackPos.z;
@@ -3414,9 +3414,9 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
                     _currentTrackPieceDirection = i;
 
                     CoordsXYZ trackPos{};
-                    window_ride_construction_update_state(
+                    WindowRideConstructionUpdateState(
                         &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
-                    place_provisional_track_piece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
+                    PlaceProvisionalTrackPiece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
                     gMapSelectArrowDirection = _currentTrackPieceDirection;
                     break;
                 }
@@ -3432,7 +3432,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
  *
  *  rct2: 0x006CD354
  */
-void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords)
+void RideConstructionToolupdateEntranceExit(const ScreenCoordsXY& screenCoords)
 {
     MapInvalidateSelectionRect();
     MapInvalidateMapSelectionTiles();
@@ -3473,7 +3473,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
  *
  *  rct2: 0x006CCA73
  */
-void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
+void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
 {
     const CursorState* state = ContextGetCursorState();
 
@@ -3485,7 +3485,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     CoordsXYZ mapCoords{};
     int32_t trackType, z, highestZ;
 
-    if (window_ride_construction_update_state(&trackType, nullptr, nullptr, nullptr, nullptr, nullptr))
+    if (WindowRideConstructionUpdateState(&trackType, nullptr, nullptr, nullptr, nullptr, nullptr))
         return;
 
     z = mapCoords.z;
@@ -3519,7 +3519,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     if (z == 0)
         z = MapGetHighestZ(mapCoords);
 
-    tool_cancel();
+    ToolCancel();
 
     auto ride = get_ride(_currentRideIndex);
     if (ride == nullptr)
@@ -3563,7 +3563,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             _currentTrackSelectionFlags = 0;
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
             ContextBroadcastIntent(&intent);
-            w = window_find_by_class(WindowClass::RideConstruction);
+            w = WindowFindByClass(WindowClass::RideConstruction);
             if (w == nullptr)
                 break;
 
@@ -3596,10 +3596,10 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                     || zAttempts == (numAttempts - 1) || z < 0)
                 {
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
-                    w = window_find_by_class(WindowClass::RideConstruction);
+                    w = WindowFindByClass(WindowClass::RideConstruction);
                     if (w != nullptr)
                     {
-                        tool_set(*w, WIDX_CONSTRUCT, Tool::Crosshair);
+                        ToolSet(*w, WIDX_CONSTRUCT, Tool::Crosshair);
                         input_set_flag(INPUT_FLAG_6, true);
                         _trackPlaceCtrlState = false;
                         _trackPlaceShiftState = false;
@@ -3612,7 +3612,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             }
             else
             {
-                window_close_by_class(WindowClass::Error);
+                WindowCloseByClass(WindowClass::Error);
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, _currentTrackBegin);
                 break;
             }
@@ -3628,12 +3628,12 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
         _currentTrackBegin.z = z;
         _currentTrackSelectionFlags = 0;
         window_ride_construction_update_active_elements();
-        w = window_find_by_class(WindowClass::RideConstruction);
+        w = WindowFindByClass(WindowClass::RideConstruction);
         if (w == nullptr)
             break;
 
         gDisableErrorWindowSound = true;
-        window_event_mouse_up_call(w, WIDX_CONSTRUCT);
+        WindowEventMouseUpCall(w, WIDX_CONSTRUCT);
         gDisableErrorWindowSound = false;
 
         if (_trackPlaceCost == MONEY32_UNDEFINED)
@@ -3679,9 +3679,9 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     }
 }
 
-void window_ride_construction_keyboard_shortcut_turn_left()
+void WindowRideConstructionKeyboardShortcutTurnLeft()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -3693,20 +3693,20 @@ void window_ride_construction_keyboard_shortcut_turn_left()
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
             }
             break;
         case TRACK_CURVE_LEFT:
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3716,19 +3716,19 @@ void window_ride_construction_keyboard_shortcut_turn_left()
         case TRACK_CURVE_LEFT_LARGE:
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3739,23 +3739,23 @@ void window_ride_construction_keyboard_shortcut_turn_left()
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3765,29 +3765,29 @@ void window_ride_construction_keyboard_shortcut_turn_left()
         case TRACK_CURVE_RIGHT_LARGE:
             if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3798,33 +3798,33 @@ void window_ride_construction_keyboard_shortcut_turn_left()
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3834,39 +3834,39 @@ void window_ride_construction_keyboard_shortcut_turn_left()
         case TRACK_CURVE_RIGHT_SMALL:
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3877,43 +3877,43 @@ void window_ride_construction_keyboard_shortcut_turn_left()
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3925,9 +3925,9 @@ void window_ride_construction_keyboard_shortcut_turn_left()
     }
 }
 
-void window_ride_construction_keyboard_shortcut_turn_right()
+void WindowRideConstructionKeyboardShortcutTurnRight()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -3939,20 +3939,20 @@ void window_ride_construction_keyboard_shortcut_turn_right()
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             break;
         case TRACK_CURVE_RIGHT:
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3962,19 +3962,19 @@ void window_ride_construction_keyboard_shortcut_turn_right()
         case TRACK_CURVE_RIGHT_LARGE:
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -3985,23 +3985,23 @@ void window_ride_construction_keyboard_shortcut_turn_right()
             if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -4011,29 +4011,29 @@ void window_ride_construction_keyboard_shortcut_turn_right()
         case TRACK_CURVE_LEFT_LARGE:
             if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -4044,33 +4044,33 @@ void window_ride_construction_keyboard_shortcut_turn_right()
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -4080,39 +4080,39 @@ void window_ride_construction_keyboard_shortcut_turn_right()
         case TRACK_CURVE_LEFT_SMALL:
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -4123,43 +4123,43 @@ void window_ride_construction_keyboard_shortcut_turn_right()
             if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL)
                 && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_SMALL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE)
                 && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEFT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_LEFT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_STRAIGHT);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
                 && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_LARGE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_LARGE);
             }
             else if (!WidgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_SMALL);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
                 && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_RIGHT_CURVE_VERY_SMALL);
+                WindowEventMouseDownCall(w, WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             else
             {
@@ -4171,9 +4171,9 @@ void window_ride_construction_keyboard_shortcut_turn_right()
     }
 }
 
-void window_ride_construction_keyboard_shortcut_use_track_default()
+void WindowRideConstructionKeyboardShortcutUseTrackDefault()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4181,29 +4181,29 @@ void window_ride_construction_keyboard_shortcut_use_track_default()
 
     if (!WidgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WindowWidgetType::Empty)
     {
-        window_event_mouse_down_call(w, WIDX_STRAIGHT);
+        WindowEventMouseDownCall(w, WIDX_STRAIGHT);
     }
 
     if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
     {
-        window_event_mouse_down_call(w, WIDX_LEVEL);
+        WindowEventMouseDownCall(w, WIDX_LEVEL);
     }
 
     if (!WidgetIsDisabled(*w, WIDX_CHAIN_LIFT) && w->widgets[WIDX_CHAIN_LIFT].type != WindowWidgetType::Empty
         && _currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
     {
-        window_event_mouse_down_call(w, WIDX_CHAIN_LIFT);
+        WindowEventMouseDownCall(w, WIDX_CHAIN_LIFT);
     }
 
     if (!WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WindowWidgetType::Empty)
     {
-        window_event_mouse_down_call(w, WIDX_BANK_STRAIGHT);
+        WindowEventMouseDownCall(w, WIDX_BANK_STRAIGHT);
     }
 }
 
-void window_ride_construction_keyboard_shortcut_slope_down()
+void WindowRideConstructionKeyboardShortcutSlopeDown()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4216,20 +4216,20 @@ void window_ride_construction_keyboard_shortcut_slope_down()
                 && w->widgets[WIDX_SLOPE_UP_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
                 && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
             }
             break;
         case TRACK_SLOPE_DOWN_25:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
             }
             break;
         case TRACK_SLOPE_NONE:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN);
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
@@ -4241,7 +4241,7 @@ void window_ride_construction_keyboard_shortcut_slope_down()
                 !WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
             }
             else
             {
@@ -4251,17 +4251,17 @@ void window_ride_construction_keyboard_shortcut_slope_down()
         case TRACK_SLOPE_UP_25:
             if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEVEL);
+                WindowEventMouseDownCall(w, WIDX_LEVEL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
             }
             else
             {
@@ -4271,15 +4271,15 @@ void window_ride_construction_keyboard_shortcut_slope_down()
         case TRACK_SLOPE_UP_60:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEVEL);
+                WindowEventMouseDownCall(w, WIDX_LEVEL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN);
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
@@ -4291,7 +4291,7 @@ void window_ride_construction_keyboard_shortcut_slope_down()
                 !WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
             }
             else
             {
@@ -4303,7 +4303,7 @@ void window_ride_construction_keyboard_shortcut_slope_down()
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
             }
             break;
         default:
@@ -4311,9 +4311,9 @@ void window_ride_construction_keyboard_shortcut_slope_down()
     }
 }
 
-void window_ride_construction_keyboard_shortcut_slope_up()
+void WindowRideConstructionKeyboardShortcutSlopeUp()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4326,19 +4326,19 @@ void window_ride_construction_keyboard_shortcut_slope_up()
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
             }
             break;
         case TRACK_SLOPE_UP_25:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
             }
             break;
         case TRACK_SLOPE_NONE:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP);
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
@@ -4349,7 +4349,7 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             else if (
                 !WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
             }
             else
             {
@@ -4359,16 +4359,16 @@ void window_ride_construction_keyboard_shortcut_slope_up()
         case TRACK_SLOPE_DOWN_25:
             if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEVEL);
+                WindowEventMouseDownCall(w, WIDX_LEVEL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP);
             }
             else if (
                 !WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
             }
             else
             {
@@ -4378,15 +4378,15 @@ void window_ride_construction_keyboard_shortcut_slope_up()
         case TRACK_SLOPE_DOWN_60:
             if (!WidgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN);
             }
             else if (!WidgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_LEVEL);
+                WindowEventMouseDownCall(w, WIDX_LEVEL);
             }
             else if (!WidgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP);
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
@@ -4397,7 +4397,7 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             else if (
                 !WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_UP_STEEP);
             }
             else
             {
@@ -4409,7 +4409,7 @@ void window_ride_construction_keyboard_shortcut_slope_up()
                 && w->widgets[WIDX_SLOPE_UP_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+                WindowEventMouseDownCall(w, WIDX_SLOPE_DOWN_STEEP);
             }
             break;
         default:
@@ -4417,20 +4417,20 @@ void window_ride_construction_keyboard_shortcut_slope_up()
     }
 }
 
-void window_ride_construction_keyboard_shortcut_chain_lift_toggle()
+void WindowRideConstructionKeyboardShortcutChainLiftToggle()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CHAIN_LIFT) || w->widgets[WIDX_CHAIN_LIFT].type == WindowWidgetType::Empty)
     {
         return;
     }
 
-    window_event_mouse_down_call(w, WIDX_CHAIN_LIFT);
+    WindowEventMouseDownCall(w, WIDX_CHAIN_LIFT);
 }
 
-void window_ride_construction_keyboard_shortcut_bank_left()
+void WindowRideConstructionKeyboardShortcutBankLeft()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
         || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
     {
@@ -4442,17 +4442,17 @@ void window_ride_construction_keyboard_shortcut_bank_left()
         case TRACK_BANK_NONE:
             if (!WidgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_BANK_LEFT);
+                WindowEventMouseDownCall(w, WIDX_BANK_LEFT);
             }
             break;
         case TRACK_BANK_RIGHT:
             if (!WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_BANK_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_BANK_STRAIGHT);
             }
             else if (!WidgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_BANK_LEFT);
+                WindowEventMouseDownCall(w, WIDX_BANK_LEFT);
             }
             else
             {
@@ -4464,9 +4464,9 @@ void window_ride_construction_keyboard_shortcut_bank_left()
     }
 }
 
-void window_ride_construction_keyboard_shortcut_bank_right()
+void WindowRideConstructionKeyboardShortcutBankRight()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
         || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
     {
@@ -4478,17 +4478,17 @@ void window_ride_construction_keyboard_shortcut_bank_right()
         case TRACK_BANK_NONE:
             if (!WidgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_BANK_RIGHT);
+                WindowEventMouseDownCall(w, WIDX_BANK_RIGHT);
             }
             break;
         case TRACK_BANK_LEFT:
             if (!WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_BANK_STRAIGHT);
+                WindowEventMouseDownCall(w, WIDX_BANK_STRAIGHT);
             }
             else if (!WidgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WindowWidgetType::Empty)
             {
-                window_event_mouse_down_call(w, WIDX_BANK_RIGHT);
+                WindowEventMouseDownCall(w, WIDX_BANK_RIGHT);
             }
             else
             {
@@ -4500,50 +4500,50 @@ void window_ride_construction_keyboard_shortcut_bank_right()
     }
 }
 
-void window_ride_construction_keyboard_shortcut_previous_track()
+void WindowRideConstructionKeyboardShortcutPreviousTrack()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_PREVIOUS_SECTION)
         || w->widgets[WIDX_PREVIOUS_SECTION].type == WindowWidgetType::Empty)
     {
         return;
     }
 
-    window_event_mouse_up_call(w, WIDX_PREVIOUS_SECTION);
+    WindowEventMouseUpCall(w, WIDX_PREVIOUS_SECTION);
 }
 
-void window_ride_construction_keyboard_shortcut_next_track()
+void WindowRideConstructionKeyboardShortcutNextTrack()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_NEXT_SECTION)
         || w->widgets[WIDX_NEXT_SECTION].type == WindowWidgetType::Empty)
     {
         return;
     }
 
-    window_event_mouse_up_call(w, WIDX_NEXT_SECTION);
+    WindowEventMouseUpCall(w, WIDX_NEXT_SECTION);
 }
 
-void window_ride_construction_keyboard_shortcut_build_current()
+void WindowRideConstructionKeyboardShortcutBuildCurrent()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
     {
         return;
     }
 
-    window_event_mouse_up_call(w, WIDX_CONSTRUCT);
+    WindowEventMouseUpCall(w, WIDX_CONSTRUCT);
 }
 
-void window_ride_construction_keyboard_shortcut_demolish_current()
+void WindowRideConstructionKeyboardShortcutDemolishCurrent()
 {
-    rct_window* w = window_find_by_class(WindowClass::RideConstruction);
+    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_DEMOLISH) || w->widgets[WIDX_DEMOLISH].type == WindowWidgetType::Empty)
     {
         return;
     }
 
-    window_event_mouse_up_call(w, WIDX_DEMOLISH);
+    WindowEventMouseUpCall(w, WIDX_DEMOLISH);
 }
 
 static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type)

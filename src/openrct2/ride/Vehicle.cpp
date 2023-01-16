@@ -738,7 +738,7 @@ bool Vehicle::SoundCanPlay() const
     auto left = g_music_tracking_viewport->viewPos.x;
     auto bottom = g_music_tracking_viewport->viewPos.y;
 
-    if (window_get_classification(*gWindowAudioExclusive) == WindowClass::MainWindow)
+    if (WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
     {
         left -= quarter_w;
         bottom -= quarter_h;
@@ -750,7 +750,7 @@ bool Vehicle::SoundCanPlay() const
     auto right = g_music_tracking_viewport->view_width + left;
     auto top = g_music_tracking_viewport->view_height + bottom;
 
-    if (window_get_classification(*gWindowAudioExclusive) == WindowClass::MainWindow)
+    if (WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
     {
         right += quarter_w + quarter_w;
         top += quarter_h + quarter_h;
@@ -883,13 +883,13 @@ static void vehicle_sounds_update_window_setup()
 {
     g_music_tracking_viewport = nullptr;
 
-    rct_window* window = window_get_listening();
+    rct_window* window = WindowGetListening();
     if (window == nullptr)
     {
         return;
     }
 
-    rct_viewport* viewport = window_get_viewport(window);
+    rct_viewport* viewport = WindowGetViewport(window);
     if (viewport == nullptr)
     {
         return;
@@ -1459,7 +1459,7 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
-        window_invalidate_by_number(WindowClass::Ride, ride.ToUnderlying());
+        WindowInvalidateByNumber(WindowClass::Ride, ride.ToUnderlying());
         return;
     }
 
@@ -2952,7 +2952,7 @@ static void test_finish(Ride& ride)
 
     totalTime = std::max(totalTime, 1u);
     ride.average_speed = ride.average_speed / totalTime;
-    window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
+    WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::UpdateTestFinish()
@@ -3002,7 +3002,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     }
     ride.total_air_time = 0;
     ride.current_test_station = curStation;
-    window_invalidate_by_number(WindowClass::Ride, ride.id.ToUnderlying());
+    WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::TestReset()

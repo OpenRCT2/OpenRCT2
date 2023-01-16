@@ -461,8 +461,8 @@ public:
             width = WW_OTHER_TABS;
             height = WH_OTHER_TABS;
         }
-        window_event_resize_call(this);
-        window_event_invalidate_call(this);
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
 
         WindowInitScrollWidgets(*this);
 

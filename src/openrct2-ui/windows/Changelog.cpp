@@ -314,7 +314,7 @@ private:
 
 rct_window* WindowChangelogOpen(int personality)
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::Changelog);
+    auto* window = WindowBringToFrontByClass(WindowClass::Changelog);
     if (window == nullptr)
     {
         // Create a new centred window

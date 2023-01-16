@@ -103,7 +103,7 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     staff->UpdateCurrentActionSpriteType();
     staff->Invalidate();
 
-    window_invalidate_by_number(WindowClass::Peep, _spriteIndex);
+    WindowInvalidateByNumber(WindowClass::Peep, _spriteIndex);
     auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
     ContextBroadcastIntent(&intent);
 
