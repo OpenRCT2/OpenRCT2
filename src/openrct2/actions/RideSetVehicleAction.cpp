@@ -90,7 +90,7 @@ GameActions::Result RideSetVehicleAction::Query() const
             break;
         case RideSetVehicleType::RideEntry:
         {
-            if (!ride_is_vehicle_type_valid(*ride))
+            if (!RideIsVehicleTypeValid(*ride))
             {
                 log_error("Invalid vehicle type. type = %d", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
@@ -208,7 +208,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
     return res;
 }
 
-bool RideSetVehicleAction::ride_is_vehicle_type_valid(const Ride& ride) const
+bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
 {
     bool selectionShouldBeExpanded;
     int32_t rideTypeIterator, rideTypeIteratorMax;

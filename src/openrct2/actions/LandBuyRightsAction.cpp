@@ -92,7 +92,7 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
         {
             if (!LocationValid({ x, y }))
                 continue;
-            auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
+            auto result = MapBuyLandRightsForTile({ x, y }, isExecuting);
             if (result.Error == GameActions::Status::Ok)
             {
                 res.Cost += result.Cost;
@@ -106,7 +106,7 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
     return res;
 }
 
-GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
+GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY& loc, bool isExecuting) const
 {
     if (_setting >= LandBuyRightSetting::Count)
     {

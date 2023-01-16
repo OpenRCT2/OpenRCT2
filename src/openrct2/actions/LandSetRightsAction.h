@@ -43,5 +43,5 @@ public:
 
 private:
     GameActions::Result QueryExecute(bool isExecuting) const;
-    GameActions::Result map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const;
+    GameActions::Result MapBuyLandRightsForTile(const CoordsXY& loc, bool isExecuting) const;
 };
