@@ -301,20 +301,20 @@ std::string ShortcutInput::ToString(bool localised) const
         switch (Button)
         {
             case 0:
-                result += localised ? FormatStringId(STR_SHORTCUT_MOUSE_LEFT, Button + 1) : "LMB";
+                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_LEFT, Button + 1) : "LMB";
                 break;
             case 1:
-                result += localised ? FormatStringId(STR_SHORTCUT_MOUSE_RIGHT, Button + 1) : "RMB";
+                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_RIGHT, Button + 1) : "RMB";
                 break;
             default:
-                result += localised ? FormatStringId(STR_SHORTCUT_MOUSE_NUMBER, Button + 1)
+                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_NUMBER, Button + 1)
                                     : "MOUSE " + std::to_string(Button + 1);
                 break;
         }
     }
     else if (Kind == InputDeviceKind::JoyButton)
     {
-        result += localised ? FormatStringId(STR_SHORTCUT_JOY_NUMBER, Button + 1) : "JOY " + std::to_string(Button + 1);
+        result += localised ? FormatStringID(STR_SHORTCUT_JOY_NUMBER, Button + 1) : "JOY " + std::to_string(Button + 1);
     }
     else if (Kind == InputDeviceKind::JoyHat)
     {

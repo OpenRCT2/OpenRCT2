@@ -163,7 +163,7 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
 
 rct_window* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
 {
-    auto titlez = format_string(title, args.Data());
-    auto messagez = format_string(message, args.Data());
+    auto titlez = FormatStringID(title, args.Data());
+    auto messagez = FormatStringID(message, args.Data());
     return WindowErrorOpen(titlez, messagez);
 }

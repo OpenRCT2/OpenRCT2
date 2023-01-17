@@ -462,7 +462,7 @@ uint8_t RCT12BannerElement::GetAllowedEdges() const
     return AllowedEdges & 0b00001111;
 }
 
-bool is_user_string_id(StringId stringId)
+bool IsUserStringID(StringId stringId)
 {
     return stringId >= 0x8000 && stringId < 0x9000;
 }

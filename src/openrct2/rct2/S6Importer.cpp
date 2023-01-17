@@ -794,7 +794,7 @@ namespace RCT2
             dst->status = static_cast<RideStatus>(src->status);
 
             dst->default_name_number = src->name_arguments_number;
-            if (is_user_string_id(src->name))
+            if (IsUserStringID(src->name))
             {
                 dst->custom_name = GetUserString(src->name);
             }
@@ -1160,7 +1160,7 @@ namespace RCT2
             dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->type);
             dst->flags = src->flags;
 
-            if (!(src->flags & BANNER_FLAG_LINKED_TO_RIDE) && is_user_string_id(src->string_idx))
+            if (!(src->flags & BANNER_FLAG_LINKED_TO_RIDE) && IsUserStringID(src->string_idx))
             {
                 dst->text = GetUserString(src->string_idx);
             }
@@ -1686,7 +1686,7 @@ namespace RCT2
             };
 
             ImportEntityCommonProperties(static_cast<EntityBase*>(dst), src);
-            if (is_user_string_id(src->name_string_idx))
+            if (IsUserStringID(src->name_string_idx))
             {
                 dst->SetName(GetUserString(src->name_string_idx));
             }

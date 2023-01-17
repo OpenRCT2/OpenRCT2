@@ -252,7 +252,7 @@ money64 Park::GetCompanyValue() const
 
 void Park::Initialise()
 {
-    Name = format_string(STR_UNNAMED_PARK, nullptr);
+    Name = FormatStringID(STR_UNNAMED_PARK, nullptr);
     PluginStorage = {};
     gStaffHandymanColour = COLOUR_BRIGHT_RED;
     gStaffMechanicColour = COLOUR_LIGHT_BLUE;
