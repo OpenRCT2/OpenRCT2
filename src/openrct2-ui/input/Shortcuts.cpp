@@ -36,7 +36,7 @@
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/windows/tile_inspector.h>
+#include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
