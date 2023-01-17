@@ -45,7 +45,7 @@ static void PaintEnterpriseRiders(
 static void PaintEnterpriseStructure(
     PaintSession& session, const Ride& ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TrackElement& trackElement)
 {
-    const auto* rideEntry = get_ride_entry(ride.subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
         return;
 

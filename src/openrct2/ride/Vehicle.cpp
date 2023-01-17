@@ -9121,7 +9121,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 
 rct_ride_entry* Vehicle::GetRideEntry() const
 {
-    return get_ride_entry(ride_subtype);
+    return GetRideEntryByIndex(ride_subtype);
 }
 
 CarEntry* Vehicle::Entry() const

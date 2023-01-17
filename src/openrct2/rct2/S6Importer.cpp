@@ -730,7 +730,7 @@ namespace RCT2
                     continue;
 
                 auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
-                auto* rideEntry = get_ride_entry(subtype);
+                auto* rideEntry = GetRideEntryByIndex(subtype);
                 // If the ride is tracked, we don’t need to check the vehicle any more.
                 if (!GetRideTypeDescriptor(src->type).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                 {
@@ -766,7 +766,7 @@ namespace RCT2
             auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
             if (RCT2RideTypeNeedsConversion(src->type))
             {
-                auto* rideEntry = get_ride_entry(subtype);
+                auto* rideEntry = GetRideEntryByIndex(subtype);
                 if (rideEntry != nullptr)
                 {
                     rideType = RCT2RideTypeToOpenRCT2RideType(src->type, *rideEntry);

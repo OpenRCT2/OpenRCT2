@@ -119,7 +119,7 @@ static void PaintTopSpinVehicle(
     PaintSession& session, int32_t al, int32_t cl, const Ride& ride, uint8_t direction, int32_t height,
     const TrackElement& tileElement)
 {
-    const auto* rideEntry = get_ride_entry(ride.subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
         return;
 

@@ -61,7 +61,7 @@ static constexpr const uint32_t SwingingInverterShipFrameSprites[] = {
 static void PaintSwingingInverterShipStructure(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
         return;
 

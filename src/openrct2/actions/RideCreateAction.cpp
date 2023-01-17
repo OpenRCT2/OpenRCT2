@@ -97,7 +97,7 @@ GameActions::Result RideCreateAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
@@ -124,7 +124,7 @@ GameActions::Result RideCreateAction::Execute() const
     auto rideIndex = GetNextFreeRideId();
 
     auto ride = GetOrAllocateRide(rideIndex);
-    rideEntry = get_ride_entry(rideEntryIndex);
+    rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
         LOG_WARNING("Invalid request for ride %u", rideIndex);

@@ -346,7 +346,7 @@ static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descr
         {
             case ObjectType::Ride:
             {
-                auto rideEntry = get_ride_entry(entryIndex);
+                auto rideEntry = GetRideEntryByIndex(entryIndex);
                 for (auto rideType : rideEntry->ride_type)
                 {
                     ResearchItem tmp = {};

@@ -196,7 +196,7 @@ Ride* GetRide(RideId index)
     return nullptr;
 }
 
-rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
+rct_ride_entry* GetRideEntryByIndex(ObjectEntryIndex index)
 {
     rct_ride_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -228,7 +228,7 @@ std::string_view GetRideEntryName(ObjectEntryIndex index)
 
 rct_ride_entry* Ride::GetRideEntry() const
 {
-    return get_ride_entry(subtype);
+    return GetRideEntryByIndex(subtype);
 }
 
 int32_t RideGetCount()
@@ -2148,7 +2148,7 @@ static bool RideTypeVehicleColourExists(ObjectEntryIndex subType, const VehicleC
 
 int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType)
 {
-    const auto* rideEntry = get_ride_entry(subType);
+    const auto* rideEntry = GetRideEntryByIndex(subType);
     if (rideEntry == nullptr)
         return 0;
 
@@ -2185,7 +2185,7 @@ int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType)
  */
 void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index)
 {
-    rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
     vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
 
     if (presetList->count != 0 && presetList->count != 255)
@@ -4162,7 +4162,7 @@ void Ride::SetColourPreset(uint8_t index)
     // Stalls save their default colour in the vehicle settings (since they share a common ride type)
     if (!IsRide())
     {
-        auto rideEntry = get_ride_entry(subtype);
+        auto rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry != nullptr && rideEntry->vehicle_preset_list->count > 0)
         {
             auto list = rideEntry->vehicle_preset_list->list[0];
@@ -4582,7 +4582,7 @@ void RideUpdateVehicleColours(const Ride& ride)
 
 uint8_t RideEntryGetVehicleAtPosition(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position)
 {
-    rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (position == 0 && rideEntry->FrontCar != 255)
     {
         return rideEntry->FrontCar;
@@ -4877,7 +4877,7 @@ void Ride::UpdateMaxVehicles()
     if (subtype == OBJECT_ENTRY_INDEX_NULL)
         return;
 
-    rct_ride_entry* rideEntry = get_ride_entry(subtype);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(subtype);
     if (rideEntry == nullptr)
     {
         return;
@@ -5344,7 +5344,7 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
             subType = rideEntries[0];
             for (auto rideEntryIndex : rideEntries)
             {
-                auto rideEntry = get_ride_entry(rideEntryIndex);
+                auto rideEntry = GetRideEntryByIndex(rideEntryIndex);
                 if (rideEntry == nullptr)
                 {
                     return OBJECT_ENTRY_INDEX_NULL;
@@ -5760,7 +5760,7 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
 
     if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
     {
-        rct_ride_entry* rideEntry = get_ride_entry(subtype);
+        rct_ride_entry* rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
             if (ride_check_track_contains_inversions(trackElement, &problematicTrackElement))

@@ -847,7 +847,7 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
         newResearchItem.category = static_cast<ResearchCategory>(category);
         if (newResearchItem.type == Research::EntryType::Ride)
         {
-            auto* rideEntry = get_ride_entry(newResearchItem.entryIndex);
+            auto* rideEntry = GetRideEntryByIndex(newResearchItem.entryIndex);
             newResearchItem.baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(baseRideType, *rideEntry)
                                                                 : baseRideType;
         }

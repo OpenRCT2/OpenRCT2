@@ -1002,7 +1002,7 @@ struct RideManager
 RideManager GetRideManager();
 RideId GetNextFreeRideId();
 Ride* GetOrAllocateRide(RideId index);
-rct_ride_entry* get_ride_entry(ObjectEntryIndex index);
+rct_ride_entry* GetRideEntryByIndex(ObjectEntryIndex index);
 std::string_view GetRideEntryName(ObjectEntryIndex index);
 
 extern money16 gTotalRideValueForMoney;

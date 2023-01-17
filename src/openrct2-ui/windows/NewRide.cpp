@@ -574,7 +574,7 @@ private:
         auto isFirst = true;
         for (auto rideEntryIndex : rideEntries)
         {
-            auto currentRideEntry = get_ride_entry(rideEntryIndex);
+            auto currentRideEntry = GetRideEntryByIndex(rideEntryIndex);
 
             // Skip if vehicle type is not invented yet
             if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
@@ -643,7 +643,7 @@ private:
                 continue;
 
             // Ride entries
-            rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
+            rct_ride_entry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
             // Skip if the vehicle isn't the preferred vehicle for this generic track type
             if (!gConfigInterface.ListRideVehiclesSeparately
@@ -824,7 +824,7 @@ private:
 
     void DrawRideInformation(rct_drawpixelinfo& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
     {
-        rct_ride_entry* rideEntry = get_ride_entry(item.EntryIndex);
+        rct_ride_entry* rideEntry = GetRideEntryByIndex(item.EntryIndex);
         RideNaming rideNaming = GetRideNaming(item.Type, *rideEntry);
         auto ft = Formatter();
 
@@ -982,7 +982,7 @@ void WindowNewRideFocus(RideSelection rideItem)
         return;
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(rideItem.EntryIndex);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(rideItem.EntryIndex);
     if (rideEntry == nullptr)
         return;
 

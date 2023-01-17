@@ -2737,7 +2737,7 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
 
         for (auto rideEntryIndex : rideEntries)
         {
-            const auto* currentRideEntry = get_ride_entry(rideEntryIndex);
+            const auto* currentRideEntry = GetRideEntryByIndex(rideEntryIndex);
             if (currentRideEntry == nullptr)
                 continue;
 

@@ -1234,7 +1234,7 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry* rideEntry;
 
-            rideEntry = get_ride_entry(groupIndex);
+            rideEntry = GetRideEntryByIndex(groupIndex);
 
             for (int32_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
