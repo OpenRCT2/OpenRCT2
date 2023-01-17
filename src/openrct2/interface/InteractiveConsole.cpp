@@ -1205,7 +1205,7 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
             name[i++] = *ch;
         }
 
-        const ObjectRepositoryItem* ori = object_repository_find_object_by_name(name);
+        const ObjectRepositoryItem* ori = ObjectRepositoryFindObjectByName(name);
         if (ori == nullptr)
         {
             console.WriteLineError("Could not find the object.");
@@ -1213,20 +1213,20 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
         }
 
         const rct_object_entry* entry = &ori->ObjectEntry;
-        const auto* loadedObject = object_manager_get_loaded_object(ObjectEntryDescriptor(*ori));
+        const auto* loadedObject = ObjectManagerGetLoadedObject(ObjectEntryDescriptor(*ori));
         if (loadedObject != nullptr)
         {
             console.WriteLineError("Object is already in scenario.");
             return 1;
         }
 
-        loadedObject = object_manager_load_object(entry);
+        loadedObject = ObjectManagerLoadObject(entry);
         if (loadedObject == nullptr)
         {
             console.WriteLineError("Unable to load object.");
             return 1;
         }
-        auto groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
 
         ObjectType objectType = entry->GetType();
         if (objectType == ObjectType::Ride)
@@ -1300,7 +1300,7 @@ static int32_t ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_u
         int32_t entryGroupIndex = 0;
         for (; entryGroupIndex < object_entry_group_counts[EnumValue(objectType)]; entryGroupIndex++)
         {
-            if (object_entry_get_object(objectType, entryGroupIndex) == nullptr)
+            if (ObjectEntryGetObject(objectType, entryGroupIndex) == nullptr)
             {
                 break;
             }

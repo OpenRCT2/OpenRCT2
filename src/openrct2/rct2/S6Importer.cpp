@@ -1027,7 +1027,7 @@ namespace RCT2
             // This stall was not colourable in RCT2.
             if (dst->type == RIDE_TYPE_FOOD_STALL)
             {
-                auto object = object_entry_get_object(ObjectType::Ride, dst->subtype);
+                auto object = ObjectEntryGetObject(ObjectType::Ride, dst->subtype);
                 if (object != nullptr && object->GetIdentifier() == "rct2.ride.icecr1")
                 {
                     dst->track_colour[0].main = COLOUR_LIGHT_BLUE;

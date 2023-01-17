@@ -323,7 +323,7 @@ private:
             }
         }
 
-        scenario_translate(&entry);
+        ScenarioTranslate(&entry);
         return entry;
     }
 };

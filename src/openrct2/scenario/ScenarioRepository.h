@@ -96,4 +96,4 @@ void ScenarioRepositoryScan();
 [[nodiscard]] size_t ScenarioRepositoryGetCount();
 [[nodiscard]] const scenario_index_entry* ScenarioRepositoryGetByIndex(size_t index);
 [[nodiscard]] bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name);
-void scenario_translate(scenario_index_entry* scenarioEntry);
+void ScenarioTranslate(scenario_index_entry* scenarioEntry);

@@ -335,7 +335,7 @@ static void ScenarioWeekUpdate()
     RideCheckAllReachable();
     RideUpdateFavouritedStat();
 
-    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
+    auto water_type = static_cast<rct_water_type*>(ObjectEntryGetChunk(ObjectType::Water, 0));
 
     if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
     {

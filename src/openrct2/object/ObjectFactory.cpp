@@ -269,7 +269,7 @@ namespace ObjectFactory
                 result->SetDescriptor(ObjectEntryDescriptor(entry));
 
                 utf8 objectName[DAT_NAME_LENGTH + 1] = { 0 };
-                object_entry_get_name_fixed(objectName, sizeof(objectName), &entry);
+                ObjectEntryGetNameFixed(objectName, sizeof(objectName), &entry);
                 LOG_VERBOSE("  entry: { 0x%08X, \"%s\", 0x%08X }", entry.flags, objectName, entry.checksum);
 
                 auto chunk = chunkReader.ReadChunk();
@@ -304,7 +304,7 @@ namespace ObjectFactory
             result->SetDescriptor(ObjectEntryDescriptor(*entry));
 
             utf8 objectName[DAT_NAME_LENGTH + 1];
-            object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
+            ObjectEntryGetNameFixed(objectName, sizeof(objectName), entry);
 
             auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
             auto chunkStream = OpenRCT2::MemoryStream(data, dataSize);

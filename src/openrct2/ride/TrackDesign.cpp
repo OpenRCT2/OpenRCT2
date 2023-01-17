@@ -96,7 +96,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
 {
     type = ride.type;
 
-    auto object = object_entry_get_object(ObjectType::Ride, ride.subtype);
+    auto object = ObjectEntryGetObject(ObjectType::Ride, ride.subtype);
     if (object != nullptr)
     {
         auto entry = object->GetObjectEntry();

@@ -219,7 +219,7 @@ namespace RCT2
             if (RCT2RideTypeNeedsConversion(td->type))
             {
                 std::scoped_lock<std::mutex> lock(_objectLookupMutex);
-                auto rawObject = object_repository_load_object(&td->vehicle_object.Entry);
+                auto rawObject = ObjectRepositoryLoadObject(&td->vehicle_object.Entry);
                 if (rawObject != nullptr)
                 {
                     const auto* rideEntry = static_cast<const rct_ride_entry*>(

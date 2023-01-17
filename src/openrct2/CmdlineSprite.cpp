@@ -408,7 +408,7 @@ int32_t CmdLineForSprite(const char** argv, int32_t argc)
         auto context = OpenRCT2::CreateContext();
         context->Initialise();
 
-        const ObjectRepositoryItem* ori = object_repository_find_object_by_name(datName);
+        const ObjectRepositoryItem* ori = ObjectRepositoryFindObjectByName(datName);
         if (ori == nullptr)
         {
             fprintf(stderr, "Could not find the object.\n");
@@ -416,13 +416,13 @@ int32_t CmdLineForSprite(const char** argv, int32_t argc)
         }
 
         const rct_object_entry* entry = &ori->ObjectEntry;
-        const auto* loadedObject = object_manager_load_object(entry);
+        const auto* loadedObject = ObjectManagerLoadObject(entry);
         if (loadedObject == nullptr)
         {
             fprintf(stderr, "Unable to load object.\n");
             return -1;
         }
-        auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
         ObjectType objectType = entry->GetType();
 
         auto& objManager = context->GetObjectManager();

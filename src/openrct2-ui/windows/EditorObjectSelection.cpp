@@ -1119,12 +1119,12 @@ private:
 
     void VisibleListRefresh()
     {
-        int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
+        int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
 
         VisibleListDispose();
         selected_list_item = -1;
 
-        const ObjectRepositoryItem* items = object_repository_get_items();
+        const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
         for (int32_t i = 0; i < numObjects; i++)
         {
             uint8_t selectionFlags = _objectSelectionFlags[i];
@@ -1268,7 +1268,7 @@ private:
         screenPos.y += LIST_ROW_HEIGHT;
 
         // Draw object source
-        auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
+        auto stringId = ObjectManagerGetSourceGameString(listItem->repositoryItem->GetFirstSourceGame());
         DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         screenPos.y += LIST_ROW_HEIGHT;
 
@@ -1431,8 +1431,8 @@ private:
             const auto& selectionFlags = _objectSelectionFlags;
             std::fill(std::begin(_filter_object_counts), std::end(_filter_object_counts), 0);
 
-            size_t numObjects = object_repository_get_items_count();
-            const ObjectRepositoryItem* items = object_repository_get_items();
+            size_t numObjects = ObjectRepositoryGetItemsCount();
+            const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
             for (size_t i = 0; i < numObjects; i++)
             {
                 const ObjectRepositoryItem* item = &items[i];
@@ -1502,7 +1502,7 @@ private:
         gEditorStep = EditorStep::DesignsManager;
 
         int32_t entry_index = 0;
-        for (; object_entry_get_chunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
+        for (; ObjectEntryGetChunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
             ;
 
         rct_ride_entry* ride_entry = GetRideEntryByIndex(entry_index);
@@ -1562,8 +1562,8 @@ static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
 void EditorLoadSelectedObjects()
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    int32_t numItems = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
     bool showFallbackWarning = false;
     for (int32_t i = 0; i < numItems; i++)
     {
@@ -1583,7 +1583,7 @@ void EditorLoadSelectedObjects()
                 {
                     // Defaults selected items to researched (if in-game)
                     auto objectType = loadedObject->GetObjectType();
-                    auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+                    auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
                     if (objectType == ObjectType::Ride)
                     {
                         rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);

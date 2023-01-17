@@ -164,7 +164,7 @@ namespace Editor
         gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
         gScreenAge = 0;
 
-        object_manager_unload_all_objects();
+        ObjectManagerUnloadAllObjects();
         ObjectListLoad();
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
@@ -185,7 +185,7 @@ namespace Editor
         gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
         gScreenAge = 0;
 
-        object_manager_unload_all_objects();
+        ObjectManagerUnloadAllObjects();
         ObjectListLoad();
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
@@ -374,7 +374,7 @@ namespace Editor
 
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                 {
-                    object_manager_unload_all_objects();
+                    ObjectManagerUnloadAllObjects();
                 }
 
                 ContextOpenWindow(WindowClass::EditorObjectSelection);
