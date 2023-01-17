@@ -48,7 +48,7 @@ GameActions::Result SignSetNameAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
+        LOG_WARNING("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
     return GameActions::Result();
@@ -59,7 +59,7 @@ GameActions::Result SignSetNameAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
+        LOG_WARNING("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
 

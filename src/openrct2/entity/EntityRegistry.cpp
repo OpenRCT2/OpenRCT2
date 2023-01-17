@@ -429,7 +429,7 @@ static void EntitySpatialRemove(EntityBase* entity)
     }
     else
     {
-        log_warning("Bad sprite spatial index. Rebuilding the spatial index...");
+        LOG_WARNING("Bad sprite spatial index. Rebuilding the spatial index...");
         ResetEntitySpatialIndices();
     }
 }

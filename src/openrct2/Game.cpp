@@ -374,23 +374,23 @@ void GameFixSaveVars()
             Ride* ride = GetRide(rideIdx);
             if (ride == nullptr)
             {
-                log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->sprite_index);
+                LOG_WARNING("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->sprite_index);
                 peep->CurrentRide = RideId::GetNull();
                 continue;
             }
             auto curName = peep->GetName();
-            log_warning(
+            LOG_WARNING(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(),
                 srcStation.ToUnderlying(), rideIdx);
             auto station = RideGetFirstValidStationExit(*ride);
             if (station.IsNull())
             {
-                log_warning("Couldn't find station, removing peep %u", peep->sprite_index);
+                LOG_WARNING("Couldn't find station, removing peep %u", peep->sprite_index);
                 peepsToRemove.push_back(peep);
             }
             else
             {
-                log_warning("Amending ride station to %u.", station);
+                LOG_WARNING("Amending ride station to %u.", station);
                 peep->CurrentRideStation = station;
             }
         }
@@ -417,11 +417,11 @@ void GameFixSaveVars()
 
             if (surfaceElement == nullptr)
             {
-                log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
+                LOG_ERROR("Null map element at x = %d and y = %d. Fixing...", x, y);
                 surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
                 if (surfaceElement == nullptr)
                 {
-                    log_error("Unable to fix: Map element limit reached.");
+                    LOG_ERROR("Unable to fix: Map element limit reached.");
                     return;
                 }
             }
@@ -594,10 +594,10 @@ void SaveGameCmd(u8string_view name /* = {} */)
 
 void SaveGameWithName(u8string_view name)
 {
-    log_verbose("Saving to %s", u8string(name).c_str());
+    LOG_VERBOSE("Saving to %s", u8string(name).c_str());
     if (scenario_save(name, gConfigGeneral.SavePluginData ? 1 : 0))
     {
-        log_verbose("Saved to %s", u8string(name).c_str());
+        LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
         gIsAutosaveLoaded = false;
         gScreenAge = 0;
@@ -675,7 +675,7 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
     {
         if (!File::Delete(autosaveFiles[i]))
         {
-            log_warning("Failed to delete autosave file: %s", autosaveFiles[i].data());
+            LOG_WARNING("Failed to delete autosave file: %s", autosaveFiles[i].data());
         }
     }
 }

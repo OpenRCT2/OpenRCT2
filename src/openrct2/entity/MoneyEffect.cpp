@@ -79,7 +79,7 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
         // coordinates as every client will have different ones.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            log_warning("Attempted to create money effect without a valid location in multiplayer");
+            LOG_WARNING("Attempted to create money effect without a valid location in multiplayer");
             return;
         }
 

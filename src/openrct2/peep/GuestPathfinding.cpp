@@ -714,7 +714,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Return from %d,%d,%d; At start", counter, loc.x >> 5, loc.y >> 5, loc.z);
+            LOG_INFO("[%03d] Return from %d,%d,%d; At start", counter, loc.x >> 5, loc.y >> 5, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         return;
@@ -733,7 +733,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Return from %d,%d,%d; Left patrol area", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO("[%03d] Return from %d,%d,%d; Left patrol area", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             return;
@@ -879,7 +879,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info(
+            LOG_INFO(
                 "[%03d] Checking map element at %d,%d,%d; Type: %s", counter, loc.x >> 5, loc.y >> 5, loc.z,
                 pathSearchToString(searchResult));
         }
@@ -921,7 +921,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info(
+                LOG_INFO(
                     "[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
                     new_score);
             }
@@ -939,7 +939,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; Not a path", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO("[%03d] Search path ends at %d,%d,%d; Not a path", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -981,7 +981,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info(
+                LOG_INFO(
                     "[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
                     new_score);
             }
@@ -998,7 +998,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info(
+            LOG_INFO(
                 "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
                 edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
         }
@@ -1016,7 +1016,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO("[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -1051,7 +1051,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info(
+                LOG_INFO(
                     "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", counter, loc.x >> 5, loc.y >> 5,
                     loc.z, new_score);
             }
@@ -1125,7 +1125,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     if (gPathFindDebug)
                     {
-                        log_info("[%03d] Search path ends at %d,%d,%d; Loop", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                        LOG_INFO("[%03d] Search path ends at %d,%d,%d; Loop", counter, loc.x >> 5, loc.y >> 5, loc.z);
                     }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     continue;
@@ -1157,7 +1157,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     if (gPathFindDebug)
                     {
-                        log_info(
+                        LOG_INFO(
                             "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, loc.x >> 5, loc.y >> 5,
                             loc.z, new_score);
                     }
@@ -1192,17 +1192,17 @@ static void peep_pathfind_heuristic_search(
                 if (searchResult == PATH_SEARCH_JUNCTION)
                 {
                     if (thin_junction)
-                        log_info(
+                        LOG_INFO(
                             "[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, loc.x >> 5, loc.y >> 5, loc.z,
                             next_test_edge);
                     else
-                        log_info(
+                        LOG_INFO(
                             "[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, loc.x >> 5, loc.y >> 5, loc.z,
                             next_test_edge);
                 }
                 else
                 {
-                    log_info(
+                    LOG_INFO(
                         "[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, loc.x >> 5, loc.y >> 5, loc.z,
                         next_test_edge);
                 }
@@ -1223,7 +1223,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info(
+                LOG_INFO(
                     "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z, next_test_edge,
                     *endScore);
             }
@@ -1239,7 +1239,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, loc.x >> 5, loc.y >> 5, loc.z);
+            LOG_INFO("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, loc.x >> 5, loc.y >> 5, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
     }
@@ -1248,7 +1248,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Returning from %d,%d,%d; All map elements checked", counter, loc.x >> 5, loc.y >> 5, loc.z);
+            LOG_INFO("[%03d] Returning from %d,%d,%d; All map elements checked", counter, loc.x >> 5, loc.y >> 5, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
     }
@@ -1279,7 +1279,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (_pathFindDebug)
     {
-        log_verbose(
+        LOG_VERBOSE(
             "Choose direction for %s for goal %d,%d,%d from %d,%d,%d", _pathFindDebugPeepName, goal.x, goal.y, goal.z, loc.x,
             loc.y, loc.z);
     }
@@ -1372,7 +1372,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (_pathFindDebug)
                 {
-                    log_verbose(
+                    LOG_VERBOSE(
                         "Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s", loc.x, loc.y, loc.z,
                         (edges & 1) ? "0" : "-", (edges & 2) ? "1" : "-", (edges & 4) ? "2" : "-", (edges & 8) ? "3" : "-");
                 }
@@ -1394,7 +1394,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                     if (_pathFindDebug)
                     {
-                        log_verbose("All edges tried for %d,%d,%d - resetting to all untried", loc.x, loc.y, loc.z);
+                        LOG_VERBOSE("All edges tried for %d,%d,%d - resetting to all untried", loc.x, loc.y, loc.z);
                     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 }
@@ -1417,7 +1417,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_verbose("New goal; clearing pf_history.");
+            LOG_VERBOSE("New goal; clearing pf_history.");
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     }
@@ -1442,7 +1442,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 
         if (_pathFindDebug)
         {
-            log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, loc.x, loc.y, loc.z);
+            LOG_VERBOSE("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, loc.x, loc.y, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -1516,7 +1516,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_verbose("Pathfind searching in direction: %d from %d,%d,%d", test_edge, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_VERBOSE("Pathfind searching in direction: %d from %d,%d,%d", test_edge, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -1527,12 +1527,12 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
             if (_pathFindDebug)
             {
-                log_verbose(
+                LOG_VERBOSE(
                     "Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", test_edge, score, endSteps,
                     endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
                 for (uint8_t listIdx = 0; listIdx < endJunctions; listIdx++)
                 {
-                    log_info(
+                    LOG_INFO(
                         "Junction#%d %d,%d,%d Direction %d", listIdx + 1, endJunctionList[listIdx].x,
                         endJunctionList[listIdx].y, endJunctionList[listIdx].z, endDirectionList[listIdx]);
                 }
@@ -1568,7 +1568,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
             if (_pathFindDebug)
             {
-                log_verbose("Pathfind heuristic search failed.");
+                LOG_VERBOSE("Pathfind heuristic search failed.");
             }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
             return INVALID_DIRECTION;
@@ -1576,14 +1576,14 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_verbose("Pathfind best edge %d with score %d steps %d", chosen_edge, best_score, best_sub);
+            LOG_VERBOSE("Pathfind best edge %d with score %d steps %d", chosen_edge, best_score, best_sub);
             for (uint8_t listIdx = 0; listIdx < bestJunctions; listIdx++)
             {
-                log_verbose(
+                LOG_VERBOSE(
                     "Junction#%d %d,%d,%d Direction %d", listIdx + 1, bestJunctionList[listIdx].x, bestJunctionList[listIdx].y,
                     bestJunctionList[listIdx].z, bestDirectionList[listIdx]);
             }
-            log_verbose("End at %d,%d,%d", bestXYZ.x, bestXYZ.y, bestXYZ.z);
+            LOG_VERBOSE("End at %d,%d,%d", bestXYZ.x, bestXYZ.y, bestXYZ.z);
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     }
@@ -1603,7 +1603,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (_pathFindDebug)
                 {
-                    log_verbose(
+                    LOG_VERBOSE(
                         "Updating existing pf_history (in index: %u) for %d,%d,%d without entry edge %d & exit edge %d.", i,
                         loc.x, loc.y, loc.z, DirectionReverse(peep.PeepDirection), chosen_edge);
                 }
@@ -1625,7 +1625,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_verbose(
+            LOG_VERBOSE(
                 "Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, loc.x, loc.y,
                 loc.z, DirectionReverse(peep.PeepDirection), chosen_edge);
         }
@@ -1977,7 +1977,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
     PathfindLoggingEnable(peep);
     if (_pathFindDebug)
     {
-        log_info("Starting CalculateNextDestination for %s", _pathFindDebugPeepName);
+        LOG_INFO("Starting CalculateNextDestination for %s", _pathFindDebugPeepName);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -2047,7 +2047,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_info(
+            LOG_INFO(
                 "Completed CalculateNextDestination for %s - taking only direction available: %d.", _pathFindDebugPeepName,
                 direction);
         }
@@ -2065,7 +2065,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_info("Completed CalculateNextDestination for %s - peep is outside the park.", _pathFindDebugPeepName);
+            LOG_INFO("Completed CalculateNextDestination for %s - peep is outside the park.", _pathFindDebugPeepName);
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2135,7 +2135,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_info("Completed CalculateNextDestination for %s - peep is leaving the park.", _pathFindDebugPeepName);
+            LOG_INFO("Completed CalculateNextDestination for %s - peep is leaving the park.", _pathFindDebugPeepName);
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2147,7 +2147,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_info("Completed CalculateNextDestination for %s - peep is aimless.", _pathFindDebugPeepName);
+            LOG_INFO("Completed CalculateNextDestination for %s - peep is aimless.", _pathFindDebugPeepName);
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2162,7 +2162,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_info(
+            LOG_INFO(
                 "Completed CalculateNextDestination for %s - peep is heading to closed ride == aimless.",
                 _pathFindDebugPeepName);
         }
@@ -2250,7 +2250,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_info(
+            LOG_INFO(
                 "Completed CalculateNextDestination for %s - failed to choose a direction == aimless.", _pathFindDebugPeepName);
         }
         PathfindLoggingDisable();
@@ -2261,7 +2261,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (_pathFindDebug)
     {
-        log_info("Completed CalculateNextDestination for %s - direction chosen: %d.", _pathFindDebugPeepName, direction);
+        LOG_INFO("Completed CalculateNextDestination for %s - direction chosen: %d.", _pathFindDebugPeepName, direction);
     }
     PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2304,7 +2304,7 @@ void Peep::ResetPathfindGoal()
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (_pathFindDebug)
     {
-        log_info("Resetting PathfindGoal for %s", _pathFindDebugPeepName);
+        LOG_INFO("Resetting PathfindGoal for %s", _pathFindDebugPeepName);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 

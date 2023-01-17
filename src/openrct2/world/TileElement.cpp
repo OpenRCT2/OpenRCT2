@@ -70,7 +70,7 @@ void TileElement::SetBannerIndex(BannerIndex bannerIndex)
             AsBanner()->SetIndex(bannerIndex);
             break;
         default:
-            log_error("Tried to set banner index on unsuitable tile element!");
+            LOG_ERROR("Tried to set banner index on unsuitable tile element!");
             Guard::Assert(false);
     }
 }
@@ -151,7 +151,7 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
             return QuarterTile{ static_cast<uint8_t>(rotVal1 | rotVal2) };
         }
         default:
-            log_error("Tried to rotate QuarterTile invalid amount.");
+            LOG_ERROR("Tried to rotate QuarterTile invalid amount.");
             return QuarterTile{ 0 };
     }
 }

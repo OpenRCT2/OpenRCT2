@@ -452,7 +452,7 @@ static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
     }
     else
     {
-        log_error("Failed to load selected palette %s", std::string(newPaletteEntry.GetName()).c_str());
+        LOG_ERROR("Failed to load selected palette %s", std::string(newPaletteEntry.GetName()).c_str());
     }
 }
 

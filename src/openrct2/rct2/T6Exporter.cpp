@@ -43,7 +43,7 @@ namespace RCT2
         }
         catch (const std::exception& e)
         {
-            log_error("Unable to save track design: %s", e.what());
+            LOG_ERROR("Unable to save track design: %s", e.what());
             return false;
         }
     }

@@ -143,7 +143,7 @@ namespace RCT2
             auto chunkReader = SawyerChunkReader(stream);
             chunkReader.ReadChunk(&_s6.header, sizeof(_s6.header));
 
-            log_verbose("saved game classic_flag = 0x%02x", _s6.header.classic_flag);
+            LOG_VERBOSE("saved game classic_flag = 0x%02x", _s6.header.classic_flag);
             if (isScenario)
             {
                 if (_s6.header.type != S6_TYPE_SCENARIO)
@@ -485,7 +485,7 @@ namespace RCT2
                 else
                 {
                     // In case where news item type is broken, consider all remaining news items invalid.
-                    log_error("Invalid news type 0x%x for news item %d, ignoring remaining news items", src->Type, i);
+                    LOG_ERROR("Invalid news type 0x%x for news item %d, ignoring remaining news items", src->Type, i);
                     // Still need to set the correct type to properly terminate the queue
                     dst->Type = News::ItemType::Null;
                     break;
@@ -775,7 +775,7 @@ namespace RCT2
 
             if (rideType >= RIDE_TYPE_COUNT)
             {
-                log_error("Invalid ride type for a ride in this save.");
+                LOG_ERROR("Invalid ride type for a ride in this save.");
                 throw UnsupportedRideTypeException(rideType);
             }
             dst->type = rideType;

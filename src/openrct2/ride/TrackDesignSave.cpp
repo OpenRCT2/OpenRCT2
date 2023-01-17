@@ -477,7 +477,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
 {
     if (tileElement == nullptr)
     {
-        log_warning("Null tile element");
+        LOG_WARNING("Null tile element");
         return;
     }
 

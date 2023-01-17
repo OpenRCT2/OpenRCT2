@@ -59,7 +59,7 @@ void MapAnimationCreate(int32_t type, const CoordsXYZ& loc)
         }
         else
         {
-            log_error("Exceeded the maximum number of animations");
+            LOG_ERROR("Exceeded the maximum number of animations");
         }
     }
 }

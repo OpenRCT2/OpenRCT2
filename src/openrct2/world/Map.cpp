@@ -333,7 +333,7 @@ TileElement* MapGetFirstElementAt(const TileCoordsXY& tilePos)
 {
     if (!IsTileLocationValid(tilePos))
     {
-        log_verbose("Trying to access element outside of range");
+        LOG_VERBOSE("Trying to access element outside of range");
         return nullptr;
     }
     return _tileIndex.GetFirstElementAt(tilePos);
@@ -391,7 +391,7 @@ void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements)
 {
     if (!MapIsLocationValid(tilePos.ToCoordsXY()))
     {
-        log_error("Trying to access element outside of range");
+        LOG_ERROR("Trying to access element outside of range");
         return;
     }
     _tileIndex.SetTile(tilePos, elements);
@@ -1211,7 +1211,7 @@ static TileElement* AllocateTileElements(size_t numElementsOnTile, size_t numNew
 {
     if (!MapCheckFreeElementsAndReorganise(numElementsOnTile, numNewElements))
     {
-        log_error("Cannot insert new element");
+        LOG_ERROR("Cannot insert new element");
         return nullptr;
     }
 

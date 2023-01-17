@@ -6236,7 +6236,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
                 intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
                 break;
             default:
-                log_error("Wrong graph type %d", listType);
+                LOG_ERROR("Wrong graph type %d", listType);
                 firstPoint = secondPoint = 0;
                 break;
         }

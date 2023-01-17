@@ -639,7 +639,7 @@ namespace Config
      */
     static u8string FindRCT1Path()
     {
-        log_verbose("config_find_rct1_path(...)");
+        LOG_VERBOSE("config_find_rct1_path(...)");
 
         static constexpr u8string_view searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
@@ -684,7 +684,7 @@ namespace Config
      */
     static u8string FindRCT2Path()
     {
-        log_verbose("config_find_rct2_path(...)");
+        LOG_VERBOSE("config_find_rct2_path(...)");
 
         static constexpr u8string_view searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
@@ -753,14 +753,14 @@ namespace Config
 
         if (!Platform::FindApp("innoextract", &path))
         {
-            log_error("Please install innoextract to extract files from GOG.");
+            LOG_ERROR("Please install innoextract to extract files from GOG.");
             return false;
         }
         int32_t exit_status = Platform::Execute(
             String::StdFormat(
                 "%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath.c_str(), targetPath.c_str()),
             &output);
-        log_info("Exit status %d", exit_status);
+        LOG_INFO("Exit status %d", exit_status);
         return exit_status == 0;
     }
 } // namespace Config

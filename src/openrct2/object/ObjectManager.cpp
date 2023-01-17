@@ -83,7 +83,7 @@ public:
 #ifdef DEBUG
             if (index != OBJECT_ENTRY_INDEX_NULL)
             {
-                log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
+                LOG_WARNING("Object index %u exceeds maximum for type %d.", index, objectType);
             }
 #endif
             return nullptr;
@@ -456,7 +456,7 @@ private:
             }
         }
 
-        log_verbose("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
+        LOG_VERBOSE("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
     }
 
     template<typename T> void UpdateSceneryGroupIndexes(ObjectType type)
@@ -661,7 +661,7 @@ private:
             list[otl.Index] = otl.LoadedObject;
         }
 
-        log_verbose("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
+        LOG_VERBOSE("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
     }
 
     Object* GetOrLoadObject(const ObjectRepositoryItem* ori)

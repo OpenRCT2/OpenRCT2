@@ -98,7 +98,7 @@ GameActions::Result FootpathPlaceAction::Query() const
 
     if (_direction != INVALID_DIRECTION && !DirectionValid(_direction))
     {
-        log_error("Direction invalid. direction = %u", _direction);
+        LOG_ERROR("Direction invalid. direction = %u", _direction);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
     }
 
@@ -495,7 +495,7 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
         auto tileElement = MapGetFootpathElement(CoordsXYZ(_loc, z));
         if (tileElement == nullptr)
         {
-            log_error("Something went wrong. Could not refind footpath.");
+            LOG_ERROR("Something went wrong. Could not refind footpath.");
             return;
         }
         pathElement = tileElement->AsPath();

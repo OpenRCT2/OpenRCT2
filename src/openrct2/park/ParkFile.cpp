@@ -2301,11 +2301,11 @@ int32_t scenario_save(u8string_view path, int32_t flags)
 {
     if (flags & S6_SAVE_FLAG_SCENARIO)
     {
-        log_verbose("saving scenario");
+        LOG_VERBOSE("saving scenario");
     }
     else
     {
-        log_verbose("saving game");
+        LOG_VERBOSE("saving game");
     }
 
     gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
@@ -2339,7 +2339,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
     }
     catch (const std::exception& e)
     {
-        log_error(e.what());
+        LOG_ERROR(e.what());
 
         Formatter ft;
         ft.Add<const char*>(e.what());

@@ -117,7 +117,7 @@ bool TTFInitialise()
 
     if (TTF_Init() != 0)
     {
-        log_error("Couldn't initialise FreeType engine");
+        LOG_ERROR("Couldn't initialise FreeType engine");
         return false;
     }
 
@@ -128,14 +128,14 @@ bool TTFInitialise()
         auto fontPath = Platform::GetFontPath(*fontDesc);
         if (fontPath.empty())
         {
-            log_verbose("Unable to load font '%s'", fontDesc->font_name);
+            LOG_VERBOSE("Unable to load font '%s'", fontDesc->font_name);
             return false;
         }
 
         fontDesc->font = TTFOpenFont(fontPath.c_str(), fontDesc->ptSize);
         if (fontDesc->font == nullptr)
         {
-            log_verbose("Unable to load '%s'", fontPath.c_str());
+            LOG_VERBOSE("Unable to load '%s'", fontPath.c_str());
             return false;
         }
     }

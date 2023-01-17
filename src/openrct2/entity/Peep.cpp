@@ -2665,7 +2665,7 @@ void decrement_guests_in_park()
     }
     else
     {
-        log_error("Attempt to decrement guests in park below zero.");
+        LOG_ERROR("Attempt to decrement guests in park below zero.");
     }
 }
 
@@ -2677,7 +2677,7 @@ void decrement_guests_heading_for_park()
     }
     else
     {
-        log_error("Attempt to decrement guests heading for park below zero.");
+        LOG_ERROR("Attempt to decrement guests heading for park below zero.");
     }
 }
 

@@ -221,7 +221,7 @@ namespace OpenRCT2::Ui
                 SDL_VERSION(&wmInfo.version);
                 if (SDL_GetWindowWMInfo(window, &wmInfo) != SDL_TRUE)
                 {
-                    log_error("SDL_GetWindowWMInfo failed %s", SDL_GetError());
+                    LOG_ERROR("SDL_GetWindowWMInfo failed %s", SDL_GetError());
                     exit(-1);
                 }
 

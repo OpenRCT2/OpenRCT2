@@ -51,12 +51,12 @@ namespace Imaging
 
     static void PngWarning(png_structp, const char* b)
     {
-        log_warning(b);
+        LOG_WARNING(b);
     }
 
     static void PngError(png_structp, const char* b)
     {
-        log_error(b);
+        LOG_ERROR(b);
     }
 
     static Image ReadPng(std::istream& istream, bool expandTo32)

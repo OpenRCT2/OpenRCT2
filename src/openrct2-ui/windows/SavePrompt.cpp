@@ -226,7 +226,7 @@ rct_window* WindowSavePromptOpen()
 
     if (EnumValue(prompt_mode) >= std::size(window_save_prompt_labels))
     {
-        log_warning("Invalid save prompt mode %u", prompt_mode);
+        LOG_WARNING("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
 

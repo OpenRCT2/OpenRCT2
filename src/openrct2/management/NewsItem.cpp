@@ -44,7 +44,7 @@ bool News::IsValidIndex(int32_t index)
 {
     if (index >= News::MaxItems)
     {
-        log_error("Tried to get news item past MAX_NEWS.");
+        LOG_ERROR("Tried to get news item past MAX_NEWS.");
         return false;
     }
     return true;

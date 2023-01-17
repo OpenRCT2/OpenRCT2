@@ -728,7 +728,7 @@ bool MapGenLoadHeightmap(const utf8* path)
                 ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
                 break;
             default:
-                log_error("Unable to load height map image: %s", e.what());
+                LOG_ERROR("Unable to load height map image: %s", e.what());
                 break;
         }
         return false;

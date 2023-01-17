@@ -372,7 +372,7 @@ private:
         auto destPath = env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::TRACK);
         if (!Platform::EnsureDirectoryExists(destPath.c_str()))
         {
-            log_error("Unable to create directory '%s'", destPath.c_str());
+            LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
             ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
             return;
         }
@@ -381,7 +381,7 @@ private:
 
         if (File::Exists(destPath))
         {
-            log_info("%s already exists, prompting user for a different track design name", destPath.c_str());
+            LOG_INFO("%s already exists, prompting user for a different track design name", destPath.c_str());
             ContextShowError(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
             WindowTextInputRawOpen(
                 this, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN, STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME,
@@ -413,12 +413,12 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
     object_manager_unload_all_objects();
     if (trackDesign->type == RIDE_TYPE_NULL)
     {
-        log_error("Failed to load track (ride type null): %s", path);
+        LOG_ERROR("Failed to load track (ride type null): %s", path);
         return nullptr;
     }
     if (object_manager_load_object(&trackDesign->vehicle_object.Entry) == nullptr)
     {
-        log_error("Failed to load track (vehicle load fail): %s", path);
+        LOG_ERROR("Failed to load track (vehicle load fail): %s", path);
         return nullptr;
     }
 

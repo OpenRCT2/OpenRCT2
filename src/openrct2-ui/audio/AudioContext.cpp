@@ -90,7 +90,7 @@ namespace OpenRCT2::Audio
             }
             catch (const std::exception& e)
             {
-                log_verbose("Unable to create audio source: %s", e.what());
+                LOG_VERBOSE("Unable to create audio source: %s", e.what());
                 return nullptr;
             }
         }
@@ -119,7 +119,7 @@ namespace OpenRCT2::Audio
             }
             catch (const std::exception& e)
             {
-                log_verbose("Unable to create audio source: %s", e.what());
+                LOG_VERBOSE("Unable to create audio source: %s", e.what());
                 return nullptr;
             }
         }

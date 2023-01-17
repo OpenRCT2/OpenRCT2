@@ -984,7 +984,7 @@ void WindowViewportGetMapCoordsByCursor(
     auto centreLoc = centre_2d_coordinates({ mapCoords.x, mapCoords.y, z }, w.viewport);
     if (!centreLoc)
     {
-        log_error("Invalid location.");
+        LOG_ERROR("Invalid location.");
         return;
     }
 
@@ -1005,7 +1005,7 @@ void WindowViewportCentreTileAroundCursor(rct_window& w, int32_t map_x, int32_t 
 
     if (!centreLoc.has_value())
     {
-        log_error("Invalid location.");
+        LOG_ERROR("Invalid location.");
         return;
     }
 

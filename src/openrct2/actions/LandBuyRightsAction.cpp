@@ -110,14 +110,14 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
 {
     if (_setting >= LandBuyRightSetting::Count)
     {
-        log_warning("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
+        LOG_WARNING("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
         return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
     }
 
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
     {
-        log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
+        LOG_ERROR("Could not find surface. x = %d, y = %d", loc.x, loc.y);
         return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_NONE);
     }
 
@@ -167,7 +167,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
             return res;
 
         default:
-            log_warning("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
+            LOG_WARNING("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
             return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
     }
 }

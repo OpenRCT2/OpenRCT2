@@ -848,7 +848,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     const auto* mainWindow = WindowGetMain();
     if (mainWindow == nullptr || mainWindow->viewport == nullptr)
     {
-        log_error("mainWindow or mainWindow->viewport is null!");
+        LOG_ERROR("mainWindow or mainWindow->viewport is null!");
         return;
     }
 

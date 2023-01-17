@@ -306,7 +306,7 @@ public:
         }
         else
         {
-            log_verbose("Adding object: [%s]", objectName);
+            LOG_VERBOSE("Adding object: [%s]", objectName);
             auto path = GetPathForNewObject(ObjectGeneration::DAT, objectName);
             try
             {
@@ -322,7 +322,7 @@ public:
 
     void AddObjectFromFile(ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) override
     {
-        log_verbose("Adding object: [%s]", std::string(objectName).c_str());
+        LOG_VERBOSE("Adding object: [%s]", std::string(objectName).c_str());
         auto path = GetPathForNewObject(generation, objectName);
         try
         {
@@ -477,7 +477,7 @@ private:
             {
                 char objectName[9];
                 object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
-                log_verbose("[%s] Incorrect checksum, adding salt bytes...", objectName);
+                LOG_VERBOSE("[%s] Incorrect checksum, adding salt bytes...", objectName);
 
                 // Calculate the value of extra bytes that can be appended to the data so that the
                 // data is then valid for the object's checksum

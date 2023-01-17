@@ -214,7 +214,7 @@ std::string_view GetRideEntryName(ObjectEntryIndex index)
 {
     if (index >= object_entry_group_counts[EnumValue(ObjectType::Ride)])
     {
-        log_error("invalid index %d for ride type", index);
+        LOG_ERROR("invalid index %d for ride type", index);
         return {};
     }
 
@@ -3880,7 +3880,7 @@ ResultWithMessage Ride::Test(bool isApplying)
 {
     if (type == RIDE_TYPE_NULL)
     {
-        log_warning("Invalid ride type for ride %u", id.ToUnderlying());
+        LOG_WARNING("Invalid ride type for ride %u", id.ToUnderlying());
         return { false };
     }
 
@@ -3927,7 +3927,7 @@ ResultWithMessage Ride::Simulate(bool isApplying)
     CoordsXYE trackElement, problematicTrackElement = {};
     if (type == RIDE_TYPE_NULL)
     {
-        log_warning("Invalid ride type for ride %u", id.ToUnderlying());
+        LOG_WARNING("Invalid ride type for ride %u", id.ToUnderlying());
         return { false };
     }
 
@@ -5388,7 +5388,7 @@ const MusicObject* Ride::GetMusicObject() const
 // If none exists at that height, newer and higher placed ones take precedence.
 void DetermineRideEntranceAndExitLocations()
 {
-    log_verbose("Inspecting ride entrance / exit locations");
+    LOG_VERBOSE("Inspecting ride entrance / exit locations");
 
     for (auto& ride : GetRideManager())
     {
@@ -5482,7 +5482,7 @@ void DetermineRideEntranceAndExitLocations()
                                                      static_cast<uint8_t>(entranceElement->GetDirection()) };
                                 alreadyFoundEntrance = true;
 
-                                log_verbose(
+                                LOG_VERBOSE(
                                     "Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.", ride.id,
                                     stationIndex, x, y, entranceElement->base_height);
                             }
@@ -5501,7 +5501,7 @@ void DetermineRideEntranceAndExitLocations()
                                                  static_cast<uint8_t>(entranceElement->GetDirection()) };
                                 alreadyFoundExit = true;
 
-                                log_verbose(
+                                LOG_VERBOSE(
                                     "Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", ride.id,
                                     stationIndex, x, y, entranceElement->base_height);
                             }
@@ -5513,12 +5513,12 @@ void DetermineRideEntranceAndExitLocations()
             if (fixEntrance && !alreadyFoundEntrance)
             {
                 station.Entrance.SetNull();
-                log_verbose("Cleared disconnected entrance of ride %d, station %d.", ride.id, stationIndex);
+                LOG_VERBOSE("Cleared disconnected entrance of ride %d, station %d.", ride.id, stationIndex);
             }
             if (fixExit && !alreadyFoundExit)
             {
                 station.Exit.SetNull();
-                log_verbose("Cleared disconnected exit of ride %d, station %d.", ride.id, stationIndex);
+                LOG_VERBOSE("Cleared disconnected exit of ride %d, station %d.", ride.id, stationIndex);
             }
         }
     }

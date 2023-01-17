@@ -629,9 +629,9 @@ std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path)
     }
     catch (const std::exception& e)
     {
-        log_error("Unable to load track design: %s", e.what());
+        LOG_ERROR("Unable to load track design: %s", e.what());
     }
-    log_verbose("track_design_open(\"%s\")", path);
+    LOG_VERBOSE("track_design_open(\"%s\")", path);
     return nullptr;
 }
 

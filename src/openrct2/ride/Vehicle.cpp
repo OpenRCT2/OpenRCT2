@@ -3512,7 +3512,7 @@ void Vehicle::UpdateCollisionSetup()
     auto nextTrain = GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
-        log_error("Corrupted vehicle list for ride!");
+        LOG_ERROR("Corrupted vehicle list for ride!");
     }
     else
     {
@@ -3593,7 +3593,7 @@ void Vehicle::UpdateCrashSetup()
     auto nextTrain = GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
-        log_error("Corrupted vehicle list for ride!");
+        LOG_ERROR("Corrupted vehicle list for ride!");
     }
     else
     {
@@ -7760,7 +7760,7 @@ loc_6DAEB9:
                     if (otherVeh == nullptr)
                     {
                         // This can never happen as prev_vehicle_on_ride will always be set to a vehicle
-                        log_error("Failed to get next vehicle during update!");
+                        LOG_ERROR("Failed to get next vehicle during update!");
                         return true;
                     }
                     auto head = otherVeh->TrainHead();
@@ -8334,7 +8334,7 @@ loc_6DC743:
                 track_progress++;
                 break;
             case MiniGolfState::Unk1: // loc_6DC7ED
-                log_error("Unused move info...");
+                LOG_ERROR("Unused move info...");
                 assert(false);
                 var_D3 = static_cast<uint8_t>(moveInfo->z);
                 track_progress++;
@@ -8386,7 +8386,7 @@ loc_6DC743:
                 track_progress++;
                 break;
             default:
-                log_error("Invalid move info...");
+                LOG_ERROR("Invalid move info...");
                 assert(false);
                 break;
         }
@@ -9321,7 +9321,7 @@ Vehicle* Vehicle::GetCar(size_t carIndex) const
         car = GetEntity<Vehicle>(car->next_vehicle_on_train);
         if (car == nullptr)
         {
-            log_error("Tried to get non-existent car from index!");
+            LOG_ERROR("Tried to get non-existent car from index!");
             return nullptr;
         }
     }

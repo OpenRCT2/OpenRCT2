@@ -250,7 +250,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 MapInvalidateTileFull(previousSegment.ToTileStart());
                 if (tileElement == nullptr)
                 {
-                    log_error("No surface found");
+                    LOG_ERROR("No surface found");
                     res.Error = GameActions::Status::Unknown;
                     res.ErrorMessage = STR_NONE;
                     return res;

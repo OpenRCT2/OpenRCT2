@@ -2448,12 +2448,8 @@ private:
             gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
             gRideEntranceExitPlaceRideIndex = _currentRideIndex;
             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-<<<<<<< HEAD
-            input_set_flag(INPUT_FLAG_6, true);
+            InputSetFlag(INPUT_FLAG_6, true);
             RideConstructionInvalidateCurrentTrack();
-            == == == = InputSetFlag(INPUT_FLAG_6, true);
-            ride_construction_invalidate_current_track();
->>>>>>> 4ff949542 (Rename snake_case functions in openrct2/src folder)
             if (_rideConstructionState != RideConstructionState::EntranceExit)
             {
                 gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;

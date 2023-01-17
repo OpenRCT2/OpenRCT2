@@ -1161,7 +1161,7 @@ private:
                     sortFunc = VisibleListSortRideName;
                     break;
                 default:
-                    log_warning("Wrong sort type %d, leaving list as-is.", _listSortType);
+                    LOG_WARNING("Wrong sort type %d, leaving list as-is.", _listSortType);
                     break;
             }
             if (sortFunc != nullptr)
@@ -1577,7 +1577,7 @@ void EditorLoadSelectedObjects()
                 loadedObject = objManager.LoadObject(descriptor);
                 if (loadedObject == nullptr)
                 {
-                    log_error("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
+                    LOG_ERROR("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
                 {

@@ -245,7 +245,7 @@ GameActions::Result CheatSetAction::Execute() const
             break;
         default:
         {
-            log_error("Unabled cheat: %d", _cheatType.id);
+            LOG_ERROR("Unabled cheat: %d", _cheatType.id);
             GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
         }
         break;

@@ -88,7 +88,7 @@ static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* res
     catch (const std::exception& e)
     {
         success = false;
-        log_verbose(e.what());
+        LOG_VERBOSE(e.what());
     }
     stream->SetPosition(originalPosition);
     return success;
@@ -116,7 +116,7 @@ static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
     catch (const std::exception& e)
     {
         // Exceptions are likely to occur if file is not S6 format
-        log_verbose(e.what());
+        LOG_VERBOSE(e.what());
     }
     stream->SetPosition(originalPosition);
     return success;

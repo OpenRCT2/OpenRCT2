@@ -100,7 +100,7 @@ public:
         int32_t result = SDL_GetRendererInfo(_sdlRenderer, &rendererInfo);
         if (result < 0)
         {
-            log_warning("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
+            LOG_WARNING("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
             return;
         }
         uint32_t pixelFormat = SDL_PIXELFORMAT_UNKNOWN;

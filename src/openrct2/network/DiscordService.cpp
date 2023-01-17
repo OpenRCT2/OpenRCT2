@@ -34,7 +34,7 @@ namespace
 
 static void OnReady([[maybe_unused]] const DiscordUser* request)
 {
-    log_verbose("DiscordService::OnReady()");
+    LOG_VERBOSE("DiscordService::OnReady()");
 }
 
 static void OnDisconnected(int errorCode, const char* message)

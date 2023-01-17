@@ -307,7 +307,7 @@ int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint)
 
         if (glyphIndex >= static_cast<int32_t>(std::size(_additionalSpriteFontCharacterWidth[baseFontIndex])))
         {
-            log_warning("Invalid glyph index %u", glyphIndex);
+            LOG_WARNING("Invalid glyph index %u", glyphIndex);
             glyphIndex = 0;
         }
         return _additionalSpriteFontCharacterWidth[baseFontIndex][glyphIndex];
@@ -315,7 +315,7 @@ int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint)
 
     if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(FONT_SPRITE_GLYPH_COUNT))
     {
-        log_warning("Invalid glyph index %u", glyphIndex);
+        LOG_WARNING("Invalid glyph index %u", glyphIndex);
         glyphIndex = 0;
     }
     return _spriteFontCharacterWidths[baseFontIndex][glyphIndex];

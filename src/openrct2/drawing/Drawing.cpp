@@ -563,17 +563,17 @@ void MaskInit()
 {
     if (avx2_available())
     {
-        log_verbose("registering AVX2 mask function");
+        LOG_VERBOSE("registering AVX2 mask function");
         MaskFn = MaskAvx2;
     }
     else if (sse41_available())
     {
-        log_verbose("registering SSE4.1 mask function");
+        LOG_VERBOSE("registering SSE4.1 mask function");
         MaskFn = MaskSse4_1;
     }
     else
     {
-        log_verbose("registering scalar mask function");
+        LOG_VERBOSE("registering scalar mask function");
         MaskFn = MaskScalar;
     }
 }

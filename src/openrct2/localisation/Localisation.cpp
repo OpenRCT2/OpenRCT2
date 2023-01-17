@@ -383,7 +383,7 @@ void FormatStringToUpper(utf8* dest, size_t size, StringId format, const void* a
     {
         upperString.resize(size - 1);
         dest[size - 1] = '\0';
-        log_warning("Truncating formatted string \"%s\" to %d bytes.", dest, size);
+        LOG_WARNING("Truncating formatted string \"%s\" to %d bytes.", dest, size);
     }
 
     upperString.copy(dest, upperString.size());

@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui
 
         void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
-            log_verbose(message.c_str());
+            LOG_VERBOSE(message.c_str());
 
             std::string executablePath;
             DIALOG_TYPE dtype = GetDialogApp(&executablePath);

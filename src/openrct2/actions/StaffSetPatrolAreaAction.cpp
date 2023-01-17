@@ -60,7 +60,7 @@ GameActions::Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
-        log_error("Invalid entity ID: %u", _spriteId.ToUnderlying());
+        LOG_ERROR("Invalid entity ID: %u", _spriteId.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 

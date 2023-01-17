@@ -281,7 +281,7 @@ namespace OpenRCT2::Title
 
         bool LoadParkFromFile(const utf8* path)
         {
-            log_verbose("TitleSequencePlayer::LoadParkFromFile(%s)", path);
+            LOG_VERBOSE("TitleSequencePlayer::LoadParkFromFile(%s)", path);
             bool success = false;
             try
             {
@@ -318,7 +318,7 @@ namespace OpenRCT2::Title
          */
         bool LoadParkFromStream(OpenRCT2::IStream* stream, const std::string& hintPath)
         {
-            log_verbose("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
+            LOG_VERBOSE("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
             bool success = false;
             try
             {

@@ -429,7 +429,7 @@ namespace ScenarioSources
         {
             if (nameLength >= 4 && (name[3] == '1' || name[3] == '2'))
             {
-                log_verbose("Stripping RCT/1/2 from name: %s", name);
+                LOG_VERBOSE("Stripping RCT/1/2 from name: %s", name);
                 String::Set(buffer, bufferSize, name + 4);
             }
             else
@@ -447,7 +447,7 @@ namespace ScenarioSources
         {
             if (String::Equals(alias.Alternative, name))
             {
-                log_verbose("Found alias: %s; will treat as: %s", name, alias.Original);
+                LOG_VERBOSE("Found alias: %s; will treat as: %s", name, alias.Original);
                 String::Set(buffer, bufferSize, alias.Original);
             }
         }

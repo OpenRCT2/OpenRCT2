@@ -36,7 +36,7 @@ GameActions::Result ScenarioSetSettingAction::Query() const
 {
     if (_setting >= ScenarioSetSetting::Count)
     {
-        log_error("Invalid setting: %u", _setting);
+        LOG_ERROR("Invalid setting: %u", _setting);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -247,7 +247,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             gAllowEarlyCompletionInNetworkPlay = _value;
             break;
         default:
-            log_error("Invalid setting: %u", _setting);
+            LOG_ERROR("Invalid setting: %u", _setting);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     WindowInvalidateByClass(WindowClass::EditorScenarioOptions);

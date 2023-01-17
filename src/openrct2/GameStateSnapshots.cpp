@@ -97,7 +97,7 @@ struct GameStateSnapshot_t
         // can fail gracefully when fields added/removed
         if (!EntitiesSizeCheck<Vehicle, Guest, Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle>(ds))
         {
-            log_error("Entity index corrupted!");
+            LOG_ERROR("Entity index corrupted!");
             return;
         }
         ds << numSavedSprites;
@@ -115,7 +115,7 @@ struct GameStateSnapshot_t
             EntitySnapshot* entity = getEntity(spriteIdx);
             if (entity == nullptr)
             {
-                log_error("Entity index corrupted!");
+                LOG_ERROR("Entity index corrupted!");
                 return;
             }
             auto& sprite = *entity;
@@ -186,7 +186,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         snapshot.SerialiseSprites(
             [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, MAX_ENTITIES, true);
 
-        // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
+        // LOG_INFO("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
 
     virtual const GameStateSnapshot_t* GetLinkedSnapshot(uint32_t tick) const override final

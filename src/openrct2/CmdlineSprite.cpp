@@ -603,7 +603,7 @@ int32_t CmdLineForSprite(const char** argv, int32_t argc)
 
         if (!spriteFile.Save(spriteFilePath))
         {
-            log_error("Could not save sprite file, cancelling.");
+            LOG_ERROR("Could not save sprite file, cancelling.");
             return -1;
         }
 

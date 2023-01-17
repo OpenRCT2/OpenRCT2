@@ -62,14 +62,14 @@ GameActions::Result RideSetVehicleAction::Query() const
 {
     if (_type >= RideSetVehicleType::Count)
     {
-        log_warning("Invalid type. type = %d", _type);
+        LOG_WARNING("Invalid type. type = %d", _type);
     }
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
 
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -92,13 +92,13 @@ GameActions::Result RideSetVehicleAction::Query() const
         {
             if (!RideIsVehicleTypeValid(*ride))
             {
-                log_error("Invalid vehicle type. type = %d", _value);
+                LOG_ERROR("Invalid vehicle type. type = %d", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             auto rideEntry = get_ride_entry(_value);
             if (rideEntry == nullptr)
             {
-                log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
@@ -106,14 +106,14 @@ GameActions::Result RideSetVehicleAction::Query() const
             vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
             if (_colour >= presetList->count && _colour != 255 && _colour != 0)
             {
-                log_error("Unknown vehicle colour preset. colour = %d", _colour);
+                LOG_ERROR("Unknown vehicle colour preset. colour = %d", _colour);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             break;
         }
 
         default:
-            log_error("Unknown vehicle command. type = %d", _type);
+            LOG_ERROR("Unknown vehicle command. type = %d", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -126,7 +126,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -149,7 +149,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             auto rideEntry = get_ride_entry(ride->subtype);
             if (rideEntry == nullptr)
             {
-                log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             uint8_t clampValue = _value;
@@ -172,7 +172,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             auto rideEntry = get_ride_entry(ride->subtype);
             if (rideEntry == nullptr)
             {
-                log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
@@ -186,7 +186,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
         }
 
         default:
-            log_error("Unknown vehicle command. type = %d", _type);
+            LOG_ERROR("Unknown vehicle command. type = %d", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 

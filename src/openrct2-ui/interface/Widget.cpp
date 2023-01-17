@@ -51,7 +51,7 @@ void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
     const auto* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
     {
-        log_error("Tried drawing an out-of-bounds widget index!");
+        LOG_ERROR("Tried drawing an out-of-bounds widget index!");
         return;
     }
 
@@ -1051,7 +1051,7 @@ Widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
         index++;
     }
 
-    log_error("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
+    LOG_ERROR("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
 
     return nullptr;
 }

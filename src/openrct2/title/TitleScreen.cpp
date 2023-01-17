@@ -114,7 +114,7 @@ void TitleScreen::SetHideVersionInfo(bool value)
 
 void TitleScreen::Load()
 {
-    log_verbose("TitleScreen::Load()");
+    LOG_VERBOSE("TitleScreen::Load()");
 
     if (GameIsPaused())
     {
@@ -152,7 +152,7 @@ void TitleScreen::Load()
         _sequencePlayer->Update();
     }
 
-    log_verbose("TitleScreen::Load() finished");
+    LOG_VERBOSE("TitleScreen::Load() finished");
 }
 
 void TitleScreen::Tick()

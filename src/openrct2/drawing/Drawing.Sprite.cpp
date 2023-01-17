@@ -196,14 +196,14 @@ bool gTinyFontAntiAliased = false;
  */
 bool GfxLoadG1(const IPlatformEnvironment& env)
 {
-    log_verbose("GfxLoadG1(...)");
+    LOG_VERBOSE("GfxLoadG1(...)");
     try
     {
         auto path = env.FindFile(DIRBASE::RCT2, DIRID::DATA, u8"g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
         _g1.header = fs.ReadValue<rct_g1_header>();
 
-        log_verbose("g1.dat, number of entries: %u", _g1.header.num_entries);
+        LOG_VERBOSE("g1.dat, number of entries: %u", _g1.header.num_entries);
 
         if (_g1.header.num_entries < SPR_G1_END)
         {
@@ -231,7 +231,7 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
         _g1.elements.clear();
         _g1.elements.shrink_to_fit();
 
-        log_fatal("Unable to load g1 graphics");
+        LOG_FATAL("Unable to load g1 graphics");
         if (!gOpenRCT2Headless)
         {
             auto uiContext = GetContext()->GetUiContext();
@@ -264,7 +264,7 @@ void GfxUnloadCsg()
 
 bool GfxLoadG2()
 {
-    log_verbose("GfxLoadG2()");
+    LOG_VERBOSE("GfxLoadG2()");
 
     auto env = GetContext()->GetPlatformEnvironment();
 
@@ -287,7 +287,7 @@ bool GfxLoadG2()
             std::string errorMessage = "Mismatched g2.dat size.\nExpected: " + std::to_string(G2_SPRITE_COUNT) + "\nActual: "
                 + std::to_string(_g2.header.num_entries) + "\ng2.dat may be installed improperly.\nPath to g2.dat: " + path;
 
-            log_error(errorMessage.c_str());
+            LOG_ERROR(errorMessage.c_str());
 
             if (!gOpenRCT2Headless)
             {
@@ -310,7 +310,7 @@ bool GfxLoadG2()
         _g2.elements.clear();
         _g2.elements.shrink_to_fit();
 
-        log_fatal("Unable to load g2 graphics");
+        LOG_FATAL("Unable to load g2 graphics");
         if (!gOpenRCT2Headless)
         {
             auto uiContext = GetContext()->GetUiContext();
@@ -322,11 +322,11 @@ bool GfxLoadG2()
 
 bool GfxLoadCsg()
 {
-    log_verbose("GfxLoadCsg()");
+    LOG_VERBOSE("GfxLoadCsg()");
 
     if (gConfigGeneral.RCT1Path.empty())
     {
-        log_verbose("  unable to load CSG, RCT1 path not set");
+        LOG_VERBOSE("  unable to load CSG, RCT1 path not set");
         return false;
     }
 
@@ -344,7 +344,7 @@ bool GfxLoadCsg()
 
         if (!CsgIsUsable(_csg))
         {
-            log_warning("Cannot load CSG1.DAT, it has too few entries. Only CSG1.DAT from Loopy Landscapes will work.");
+            LOG_WARNING("Cannot load CSG1.DAT, it has too few entries. Only CSG1.DAT from Loopy Landscapes will work.");
             return false;
         }
 
@@ -373,7 +373,7 @@ bool GfxLoadCsg()
         _csg.elements.clear();
         _csg.elements.shrink_to_fit();
 
-        log_error("Unable to load csg graphics");
+        LOG_ERROR("Unable to load csg graphics");
         return false;
     }
 }
@@ -398,7 +398,7 @@ std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
     }
     catch (const std::exception&)
     {
-        log_verbose("Unable to load rct_gx graphics");
+        LOG_VERBOSE("Unable to load rct_gx graphics");
     }
     return std::nullopt;
 }
@@ -727,7 +727,7 @@ const rct_g1_element* GfxGetG1Element(ImageIndex image_id)
             return &_g2.elements[idx];
         }
 
-        log_warning("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
+        LOG_WARNING("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
     }
     else if (offset < SPR_CSG_END)
     {
@@ -739,7 +739,7 @@ const rct_g1_element* GfxGetG1Element(ImageIndex image_id)
                 return &_csg.elements[idx];
             }
 
-            log_warning("Invalid entry in csg.dat requested, idx = %u.", idx);
+            LOG_WARNING("Invalid entry in csg.dat requested, idx = %u.", idx);
         }
     }
     else if (offset < SPR_SCROLLING_TEXT_END)

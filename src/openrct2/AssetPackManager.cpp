@@ -127,7 +127,7 @@ void AssetPackManager::ClearAssetPacks()
 void AssetPackManager::AddAssetPack(const fs::path& path)
 {
     auto szPath = path.u8string();
-    log_verbose("Scanning asset pack: %s", szPath.c_str());
+    LOG_VERBOSE("Scanning asset pack: %s", szPath.c_str());
     try
     {
         auto ap = std::make_unique<AssetPack>(path);

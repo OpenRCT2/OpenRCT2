@@ -404,7 +404,7 @@ bool UITheme::WriteToFile(const std::string& path) const
     }
     catch (const std::exception& ex)
     {
-        log_error("Unable to save %s: %s", path.c_str(), ex.what());
+        LOG_ERROR("Unable to save %s: %s", path.c_str(), ex.what());
         result = false;
     }
 
@@ -475,7 +475,7 @@ UITheme* UITheme::FromFile(const std::string& path)
     }
     catch (const std::exception&)
     {
-        log_error("Unable to read theme: %s", path.c_str());
+        LOG_ERROR("Unable to read theme: %s", path.c_str());
         result = nullptr;
     }
     return result;
