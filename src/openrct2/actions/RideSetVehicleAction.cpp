@@ -250,7 +250,7 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
         {
             if (rideEntryIndex == _value)
             {
-                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                 {
                     return false;
                 }

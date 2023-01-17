@@ -196,7 +196,7 @@ namespace RCT1
             SetDefaultNames();
             DetermineRideEntranceAndExitLocations();
 
-            research_determine_first_of_type();
+            ResearchDetermineFirstOfType();
 
             CheatsReset();
             ClearRestrictedScenery();
@@ -1867,7 +1867,7 @@ namespace RCT1
             // All available objects must be loaded before this method is called as it
             // requires them to correctly insert objects into the research list
 
-            research_reset_items();
+            ResearchResetItems();
 
             size_t researchListCount;
             const RCT1::ResearchItem* researchList = GetResearchList(&researchListCount);
@@ -1879,7 +1879,7 @@ namespace RCT1
             // The first six scenery groups are always available
             for (uint8_t i = 0; i < 6; i++)
             {
-                research_insert_scenery_group_entry(i, true);
+                ResearchInsertSceneryGroupEntry(i, true);
             }
 
             bool researched = true;
@@ -1911,7 +1911,7 @@ namespace RCT1
                         if (sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_IGNORE
                             && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
                         {
-                            research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
+                            ResearchInsertSceneryGroupEntry(sceneryGroupEntryIndex, researched);
                         }
                         break;
                     }
@@ -1968,7 +1968,7 @@ namespace RCT1
                             if (!_researchRideEntryUsed[ownRideEntryIndex])
                             {
                                 _researchRideEntryUsed[ownRideEntryIndex] = true;
-                                research_insert_ride_entry(ownRideEntryIndex, researched);
+                                ResearchInsertRideEntry(ownRideEntryIndex, researched);
                             }
                         }
 
@@ -2029,7 +2029,7 @@ namespace RCT1
 
             // This will mark items as researched/unresearched according to the research list.
             // This needs to be called before importing progress, as it will reset it.
-            research_reset_current_item();
+            ResearchResetCurrentItem();
 
             // Research history
             gResearchProgress = _s4.research_progress;
@@ -2099,7 +2099,7 @@ namespace RCT1
             if (!_researchRideEntryUsed[rideEntryIndex])
             {
                 _researchRideEntryUsed[rideEntryIndex] = true;
-                research_insert_ride_entry(rideEntryIndex, researched);
+                ResearchInsertRideEntry(rideEntryIndex, researched);
             }
         }
 

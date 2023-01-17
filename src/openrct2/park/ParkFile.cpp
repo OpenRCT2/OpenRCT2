@@ -2425,7 +2425,7 @@ public:
     void Import() override
     {
         _parkFile->Import();
-        research_determine_first_of_type();
+        ResearchDetermineFirstOfType();
         GameFixSaveVars();
     }
 

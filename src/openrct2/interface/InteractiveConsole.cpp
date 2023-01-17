@@ -1243,20 +1243,20 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
                 if (rideType != RIDE_TYPE_NULL)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
-                    research_insert_ride_entry(rideType, groupIndex, category, true);
+                    ResearchInsertRideEntry(rideType, groupIndex, category, true);
                 }
             }
 
             gSilentResearch = true;
-            research_reset_current_item();
+            ResearchResetCurrentItem();
             gSilentResearch = false;
         }
         else if (objectType == ObjectType::SceneryGroup)
         {
-            research_insert_scenery_group_entry(groupIndex, true);
+            ResearchInsertSceneryGroupEntry(groupIndex, true);
 
             gSilentResearch = true;
-            research_reset_current_item();
+            ResearchResetCurrentItem();
             gSilentResearch = false;
         }
         ScenerySetDefaultPlacementConfiguration();

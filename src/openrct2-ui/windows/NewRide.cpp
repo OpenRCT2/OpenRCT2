@@ -577,7 +577,7 @@ private:
             auto currentRideEntry = GetRideEntryByIndex(rideEntryIndex);
 
             // Skip if vehicle type is not invented yet
-            if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+            if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
             {
                 continue;
             }
@@ -639,7 +639,7 @@ private:
         for (auto rideEntryIndex : rideEntries)
         {
             // Skip if vehicle type is not invented yet
-            if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+            if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                 continue;
 
             // Ride entries

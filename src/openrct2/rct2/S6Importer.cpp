@@ -508,7 +508,7 @@ namespace RCT2
             FixLandOwnership();
             FixAyersRockScenario();
 
-            research_determine_first_of_type();
+            ResearchDetermineFirstOfType();
             UpdateConsolidatedPatrolAreas();
 
             CheatsReset();

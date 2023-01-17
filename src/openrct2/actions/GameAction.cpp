@@ -210,7 +210,7 @@ namespace GameActions
 
         if (result.Error == GameActions::Status::Ok)
         {
-            if (!finance_check_affordability(result.Cost, action->GetFlags()))
+            if (!FinanceCheckAffordability(result.Cost, action->GetFlags()))
             {
                 result.Error = GameActions::Status::InsufficientFunds;
                 result.ErrorTitle = STR_CANT_DO_THIS;
@@ -369,9 +369,9 @@ namespace GameActions
                 return result;
 
             // Update money balance
-            if (result.Error == GameActions::Status::Ok && finance_check_money_required(flags) && result.Cost != 0)
+            if (result.Error == GameActions::Status::Ok && FinanceCheckMoneyRequired(flags) && result.Cost != 0)
             {
-                finance_payment(result.Cost, result.Expenditure);
+                FinancePayment(result.Cost, result.Expenditure);
                 MoneyEffect::Create(result.Cost, result.Position);
             }
 

@@ -104,7 +104,7 @@ void ScenarioReset()
     Random::Rct2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
     gScenarioRand.seed(s);
 
-    research_reset_current_item();
+    ResearchResetCurrentItem();
     ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
@@ -154,8 +154,8 @@ void ScenarioReset()
     gScenarioCompletedBy = "?";
 
     park.ResetHistories();
-    finance_reset_history();
-    award_reset();
+    FinanceResetHistory();
+    AwardReset();
     ResetAllRideBuildDates();
     DateReset();
     Duck::RemoveAll();
@@ -298,7 +298,7 @@ void ScenarioAutosaveCheck()
 
 static void ScenarioDayUpdate()
 {
-    finance_update_daily_profit();
+    FinanceUpdateDailyProfit();
     PeepUpdateDaysInQueue();
     switch (gScenarioObjective.Type)
     {
@@ -327,10 +327,10 @@ static void ScenarioWeekUpdate()
 {
     int32_t month = DateGetMonth(gDateMonthsElapsed);
 
-    finance_pay_wages();
-    finance_pay_research();
-    finance_pay_interest();
-    marketing_update();
+    FinancePayWages();
+    FinancePayResearch();
+    FinancePayInterest();
+    MarketingUpdate();
     PeepProblemWarningsUpdate();
     RideCheckAllReachable();
     RideUpdateFavouritedStat();
@@ -350,15 +350,15 @@ static void ScenarioWeekUpdate()
 
 static void ScenarioFortnightUpdate()
 {
-    finance_pay_ride_upkeep();
+    FinancePayRideUpkeep();
 }
 
 static void ScenarioMonthUpdate()
 {
-    finance_shift_expenditure_table();
+    FinanceShiftExpenditureTable();
     ScenarioCheckObjective();
     ScenarioCheckEntranceFeeTooHigh();
-    award_update_all();
+    AwardUpdateAll();
 }
 
 static void ScenarioUpdateDayNightCycle()

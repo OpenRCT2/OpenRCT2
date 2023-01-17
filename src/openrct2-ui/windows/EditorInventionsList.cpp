@@ -157,13 +157,13 @@ public:
 
     void OnClose() override
     {
-        research_remove_flags();
+        ResearchRemoveFlags();
 
         // When used in-game (as a cheat)
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
         {
             gSilentResearch = true;
-            research_reset_current_item();
+            ResearchResetCurrentItem();
             gSilentResearch = false;
         }
     }
@@ -176,16 +176,16 @@ public:
                 Close();
                 break;
             case WIDX_RANDOM_SHUFFLE:
-                research_items_shuffle();
+                ResearchItemsShuffle();
                 Invalidate();
                 break;
             case WIDX_MOVE_ITEMS_TO_TOP:
-                research_items_make_all_researched();
+                ResearchItemsMakeAllResearched();
                 InitScrollWidgets();
                 Invalidate();
                 break;
             case WIDX_MOVE_ITEMS_TO_BOTTOM:
-                research_items_make_all_unresearched();
+                ResearchItemsMakeAllUnresearched();
                 InitScrollWidgets();
                 Invalidate();
                 break;

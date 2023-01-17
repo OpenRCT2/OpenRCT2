@@ -1684,7 +1684,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        finance_payment(GetShopItemDescriptor(shopItem).Cost, expenditure);
+        FinancePayment(GetShopItemDescriptor(shopItem).Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
@@ -2296,7 +2296,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
     WindowInvalidateByNumber(WindowClass::Peep, sprite_index);
 
-    finance_payment(-amount, expenditure);
+    FinancePayment(-amount, expenditure);
 
     if (gConfigGeneral.ShowGuestPurchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {

@@ -746,7 +746,7 @@ public:
         for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - 1; scenerySetIndex++)
         {
             const auto* sceneryGroupEntry = GetSceneryGroupEntry(scenerySetIndex);
-            if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
+            if (sceneryGroupEntry != nullptr && SceneryGroupIsInvented(scenerySetIndex))
             {
                 SceneryTabInfo tabInfo;
                 tabInfo.SceneryGroupIndex = scenerySetIndex;

@@ -2063,7 +2063,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
-        else if (!ride_entry_is_invented(entry_index) && !gCheatsIgnoreResearchStatus)
+        else if (!RideEntryIsInvented(entry_index) && !gCheatsIgnoreResearchStatus)
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
