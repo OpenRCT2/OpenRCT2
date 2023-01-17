@@ -334,7 +334,7 @@ namespace OpenRCT2
             }
             _initialised = true;
 
-            crash_init();
+            CrashInit();
 
             if (String::Equals(gConfigGeneral.LastRunVersion, OPENRCT2_VERSION))
             {
@@ -564,12 +564,12 @@ namespace OpenRCT2
                 CrashAdditionalFileRegistration(const std::string& path)
                 {
                     // Register the file for crash upload if it asserts while loading.
-                    crash_register_additional_file("load_park", path);
+                    CrashRegisterAdditionalFile("load_park", path);
                 }
                 ~CrashAdditionalFileRegistration()
                 {
                     // Deregister park file in case it was processed without hitting an assert.
-                    crash_unregister_additional_file("load_park");
+                    CrashUnregisterAdditionalFile("load_park");
                 }
             } crash_additional_file_registration(path);
 

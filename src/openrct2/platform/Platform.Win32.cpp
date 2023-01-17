@@ -367,7 +367,7 @@ namespace Platform
         return _dllModule;
     }
 
-    static std::wstring get_progIdName(std::string_view extension)
+    static std::wstring GetProdIDName(std::string_view extension)
     {
         auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
         auto progIdNameW = String::ToWideChar(progIdName);
@@ -390,7 +390,7 @@ namespace Platform
         auto fileTypeTextW = String::ToWideChar(fileTypeText);
         auto commandTextW = String::ToWideChar(commandText);
         auto commandArgsW = String::ToWideChar(commandArgs);
-        auto progIdNameW = get_progIdName(extension);
+        auto progIdNameW = GetProdIDName(extension);
 
         HKEY hKey = nullptr;
         HKEY hRootKey = nullptr;
@@ -473,7 +473,7 @@ namespace Platform
             RegDeleteTreeW(hRootKey, String::ToWideChar(extension).c_str());
 
             // [hRootKey\OpenRCT2.ext]
-            auto progIdName = get_progIdName(extension);
+            auto progIdName = GetProdIDName(extension);
             RegDeleteTreeW(hRootKey, progIdName.c_str());
 
             RegCloseKey(hRootKey);

@@ -328,7 +328,7 @@ constexpr const wchar_t* PipeName = L"openrct2-bpad";
 
 #endif // USE_BREAKPAD
 
-CExceptionHandler crash_init()
+CExceptionHandler CrashInit()
 {
 #ifdef USE_BREAKPAD
     // Path must exist and be RW!
@@ -340,14 +340,14 @@ CExceptionHandler crash_init()
 #endif // USE_BREAKPAD
 }
 
-void crash_register_additional_file(const std::string& key, const std::string& path)
+void CrashRegisterAdditionalFile(const std::string& key, const std::string& path)
 {
 #ifdef USE_BREAKPAD
     _uploadFiles[String::ToWideChar(key.c_str())] = String::ToWideChar(path.c_str());
 #endif // USE_BREAKPAD
 }
 
-void crash_unregister_additional_file(const std::string& key)
+void CrashUnregisterAdditionalFile(const std::string& key)
 {
 #ifdef USE_BREAKPAD
     auto it = _uploadFiles.find(String::ToWideChar(key.c_str()));
