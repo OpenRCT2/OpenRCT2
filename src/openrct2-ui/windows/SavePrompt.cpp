@@ -159,15 +159,15 @@ public:
                 if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
                 {
                     intent = std::make_unique<Intent>(WindowClass::Loadsave);
-                    intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                    intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
+                    intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                    intent->PutExtra(INTENT_EXTRA_PATH, gScenarioName);
                 }
                 else
                 {
                     intent = CreateSaveGameAsIntent();
                 }
                 Close();
-                intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
+                intent->PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
                 ContextOpenIntent(intent.get());
                 break;
             }

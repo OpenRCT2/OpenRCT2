@@ -356,7 +356,7 @@ public:
                     if (peep != nullptr)
                     {
                         auto intent = Intent(WindowClass::Peep);
-                        intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                        intent.PutExtra(INTENT_EXTRA_PEEP, peep);
                         ContextOpenIntent(&intent);
                     }
                 }
@@ -530,7 +530,7 @@ private:
             // Open window for new staff.
             auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
             auto intent = Intent(WindowClass::Peep);
-            intent.putExtra(INTENT_EXTRA_PEEP, staff);
+            intent.PutExtra(INTENT_EXTRA_PEEP, staff);
             ContextOpenIntent(&intent);
         });
 

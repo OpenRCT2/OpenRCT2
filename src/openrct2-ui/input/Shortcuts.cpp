@@ -36,7 +36,7 @@
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/windows/tile_inspector.h>
+#include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
@@ -152,11 +152,11 @@ static void ShortcutRemoveTopBottomToolbarToggle()
             WindowClose(*WindowFindByClass(WindowClass::TitleOptions));
             WindowClose(*WindowFindByClass(WindowClass::TitleMenu));
             WindowClose(*WindowFindByClass(WindowClass::TitleExit));
-            title_set_hide_version_info(true);
+            TitleSetHideVersionInfo(true);
         }
         else
         {
-            title_create_windows();
+            TitleCreateWindows();
         }
     }
     else
@@ -429,8 +429,8 @@ static void ShortcutQuickSaveGame()
     else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
         auto intent = Intent(WindowClass::Loadsave);
-        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-        intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
+        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+        intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
         ContextOpenIntent(&intent);
     }
 }

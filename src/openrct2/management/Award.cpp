@@ -637,7 +637,7 @@ void award_update_all()
             AwardType awardType;
             do
             {
-                awardType = static_cast<AwardType>((((scenario_rand() & 0xFF) * EnumValue(AwardType::Count)) >> 8) & 0xFF);
+                awardType = static_cast<AwardType>((((ScenarioRand() & 0xFF) * EnumValue(AwardType::Count)) >> 8) & 0xFF);
             } while (activeAwardTypes & (1 << EnumValue(awardType)));
 
             // Check if award is deserved

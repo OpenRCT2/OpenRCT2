@@ -534,7 +534,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         OpenRCT2::Audio::SoundId::Cough3,
         OpenRCT2::Audio::SoundId::Cough4,
     };
-    auto soundId = coughs[scenario_rand() & 3];
+    auto soundId = coughs[ScenarioRand() & 3];
     OpenRCT2::Audio::Play3D(soundId, curLoc);
 
     return { { x, y } };
@@ -1654,7 +1654,7 @@ void peep_set_map_tooltip(Peep* peep)
     }
 
     auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-    intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+    intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
     ContextBroadcastIntent(&intent);
 }
 
@@ -2023,7 +2023,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
         // If there has been 2 vandalised tiles in the last 6
         if (vandalisedTiles & 0x3E && (vandalThoughtTimeout == 0))
         {
-            if ((scenario_rand() & 0xFFFF) <= 10922)
+            if ((ScenarioRand() & 0xFFFF) <= 10922)
             {
                 guest->InsertNewThought(PeepThoughtType::Vandalism);
                 guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
@@ -2032,7 +2032,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
         }
     }
 
-    if (vandalThoughtTimeout && (scenario_rand() & 0xFFFF) <= 4369)
+    if (vandalThoughtTimeout && (ScenarioRand() & 0xFFFF) <= 4369)
     {
         vandalThoughtTimeout--;
     }
@@ -2069,7 +2069,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
         }
     }
 
-    if (crowded >= 10 && guest->State == PeepState::Walking && (scenario_rand() & 0xFFFF) <= 21845)
+    if (crowded >= 10 && guest->State == PeepState::Walking && (ScenarioRand() & 0xFFFF) <= 21845)
     {
         guest->InsertNewThought(PeepThoughtType::Crowded);
         guest->HappinessTarget = std::max(0, guest->HappinessTarget - 14);
@@ -2082,7 +2082,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
     uint8_t disgusting_count = ((guest->DisgustingCount & 0xF) << 2) | sick_count;
     guest->DisgustingCount = disgusting_count | disgusting_time;
 
-    if (disgusting_time & 0xC0 && (scenario_rand() & 0xFFFF) <= 4369)
+    if (disgusting_time & 0xC0 && (ScenarioRand() & 0xFFFF) <= 4369)
     {
         // Reduce the disgusting time
         guest->DisgustingCount -= 0x40;
@@ -2095,7 +2095,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
             total_sick += (disgusting_count >> (2 * time)) & 0x3;
         }
 
-        if (total_sick >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
+        if (total_sick >= 3 && (ScenarioRand() & 0xFFFF) <= 10922)
         {
             guest->InsertNewThought(PeepThoughtType::PathDisgusting);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
@@ -2108,7 +2108,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
     litter_count = ((guest->LitterCount & 0xF) << 2) | litter_count;
     guest->LitterCount = litter_count | litter_time;
 
-    if (litter_time & 0xC0 && (scenario_rand() & 0xFFFF) <= 4369)
+    if (litter_time & 0xC0 && (ScenarioRand() & 0xFFFF) <= 4369)
     {
         // Reduce the litter time
         guest->LitterCount -= 0x40;
@@ -2121,7 +2121,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
             total_litter += (litter_count >> (2 * time)) & 0x3;
         }
 
-        if (total_litter >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
+        if (total_litter >= 3 && (ScenarioRand() & 0xFFFF) <= 10922)
         {
             guest->InsertNewThought(PeepThoughtType::BadLitter);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);

@@ -334,7 +334,7 @@ namespace OpenRCT2
             }
             _initialised = true;
 
-            crash_init();
+            CrashInit();
 
             if (String::Equals(gConfigGeneral.LastRunVersion, OPENRCT2_VERSION))
             {
@@ -564,12 +564,12 @@ namespace OpenRCT2
                 CrashAdditionalFileRegistration(const std::string& path)
                 {
                     // Register the file for crash upload if it asserts while loading.
-                    crash_register_additional_file("load_park", path);
+                    CrashRegisterAdditionalFile("load_park", path);
                 }
                 ~CrashAdditionalFileRegistration()
                 {
                     // Deregister park file in case it was processed without hitting an assert.
-                    crash_unregister_additional_file("load_park");
+                    CrashUnregisterAdditionalFile("load_park");
                 }
             } crash_additional_file_registration(path);
 
@@ -598,7 +598,7 @@ namespace OpenRCT2
                 Console::Error::WriteLine(e.what());
                 if (loadTitleScreenOnFail)
                 {
-                    title_load();
+                    TitleLoad();
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->ShowError(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE, {});
@@ -678,7 +678,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    scenario_begin();
+                    ScenarioBegin();
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_SERVER)
                     {
@@ -730,14 +730,14 @@ namespace OpenRCT2
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
-                    title_load();
+                    TitleLoad();
                 }
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
                 auto intent = Intent(WindowClass::ObjectLoadError);
-                intent.putExtra(INTENT_EXTRA_PATH, path);
-                intent.putExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
-                intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
+                intent.PutExtra(INTENT_EXTRA_PATH, path);
+                intent.PutExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
+                intent.PutExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
 
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->OpenIntent(&intent);
@@ -749,7 +749,7 @@ namespace OpenRCT2
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
-                    title_load();
+                    TitleLoad();
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
@@ -760,7 +760,7 @@ namespace OpenRCT2
 
                 if (loadTitleScreenFirstOnFail)
                 {
-                    title_load();
+                    TitleLoad();
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 Formatter ft;
@@ -791,7 +791,7 @@ namespace OpenRCT2
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
-                    title_load();
+                    TitleLoad();
                 }
                 Console::Error::WriteLine(e.what());
             }
@@ -894,10 +894,10 @@ namespace OpenRCT2
             {
                 case StartupAction::Intro:
                     gIntroState = IntroState::PublisherBegin;
-                    title_load();
+                    TitleLoad();
                     break;
                 case StartupAction::Title:
-                    title_load();
+                    TitleLoad();
                     break;
                 case StartupAction::Open:
                 {
@@ -910,7 +910,7 @@ namespace OpenRCT2
                         auto data = DownloadPark(gOpenRCT2StartupActionPath);
                         if (data.empty())
                         {
-                            title_load();
+                            TitleLoad();
                             break;
                         }
 
@@ -918,7 +918,7 @@ namespace OpenRCT2
                         if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            title_load();
+                            TitleLoad();
                             break;
                         }
 #endif
@@ -936,7 +936,7 @@ namespace OpenRCT2
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                             Console::Error::WriteLine("%s", ex.what());
-                            title_load();
+                            TitleLoad();
                             break;
                         }
                     }
@@ -981,7 +981,7 @@ namespace OpenRCT2
                     }
                     else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        title_load();
+                        TitleLoad();
                     }
                     break;
                 default:

@@ -94,7 +94,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
     if (isExecuting)
     {
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, index);
+        intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, index);
         ContextBroadcastIntent(&intent);
 
         banner->colour = _primaryColour;

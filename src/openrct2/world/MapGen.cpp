@@ -312,7 +312,7 @@ static void MapGenPlaceTrees()
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
         auto* sceneryEntry = GetSmallSceneryEntry(i);
-        auto entry = object_entry_get_object(ObjectType::SmallScenery, i);
+        auto entry = ObjectEntryGetObject(ObjectType::SmallScenery, i);
 
         if (sceneryEntry == nullptr)
             continue;

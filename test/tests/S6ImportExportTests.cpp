@@ -122,7 +122,7 @@ static void RecordGameStateSnapshot(std::unique_ptr<IContext>& context, MemorySt
 
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
-    snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
+    snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
     DataSerialiser snapShotDs(true, snapshotStream);
     snapshots->SerialiseSnapshot(snapshot, snapShotDs);
 }

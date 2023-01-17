@@ -86,7 +86,7 @@ static PeepSpawn* GetRandomPeepSpawn()
 {
     if (!gPeepSpawns.empty())
     {
-        return &gPeepSpawns[scenario_rand() % gPeepSpawns.size()];
+        return &gPeepSpawns[ScenarioRand() % gPeepSpawns.size()];
     }
 
     return nullptr;
@@ -669,7 +669,7 @@ uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
 void Park::GenerateGuests()
 {
     // Generate a new guest for some probability
-    if (static_cast<int32_t>(scenario_rand() & 0xFFFF) < _guestGenerationProbability)
+    if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < _guestGenerationProbability)
     {
         bool difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
         if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
@@ -683,7 +683,7 @@ void Park::GenerateGuests()
     {
         // Random chance of guest generation
         auto probability = marketing_get_campaign_guest_generation_probability(campaign.Type);
-        auto random = scenario_rand_max(std::numeric_limits<uint16_t>::max());
+        auto random = ScenarioRandMax(std::numeric_limits<uint16_t>::max());
         if (random < probability)
         {
             GenerateGuestFromCampaign(campaign.Type);

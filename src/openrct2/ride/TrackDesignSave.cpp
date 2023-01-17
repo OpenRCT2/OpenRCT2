@@ -243,7 +243,7 @@ static void track_design_save_push_tile_element_desc(
 static TrackDesignAddStatus track_design_save_add_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     auto entryIndex = sceneryElement->GetEntryIndex();
-    auto obj = object_entry_get_object(ObjectType::SmallScenery, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr && track_design_is_supported_object(obj))
     {
         uint8_t flags = 0;
@@ -315,7 +315,7 @@ static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& 
 static TrackDesignAddStatus track_design_save_add_wall(const CoordsXY& loc, WallElement* wallElement)
 {
     auto entryIndex = wallElement->GetEntryIndex();
-    auto obj = object_entry_get_object(ObjectType::Walls, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr && track_design_is_supported_object(obj))
     {
         uint8_t flags = 0;
@@ -461,7 +461,7 @@ static void track_design_save_pop_tile_element_desc(const ObjectEntryDescriptor&
 static void track_design_save_remove_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     auto entryIndex = sceneryElement->GetEntryIndex();
-    auto obj = object_entry_get_object(ObjectType::SmallScenery, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr)
     {
         uint8_t flags = 0;
@@ -526,7 +526,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
 static void track_design_save_remove_wall(const CoordsXY& loc, WallElement* wallElement)
 {
     auto entryIndex = wallElement->GetEntryIndex();
-    auto obj = object_entry_get_object(ObjectType::Walls, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr)
     {
         uint8_t flags = 0;

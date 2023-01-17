@@ -3495,9 +3495,9 @@ void Vehicle::UpdateCollisionSetup()
         }
 
         train->IsCrashedVehicle = true;
-        train->animationState = scenario_rand() & 0xFFFF;
+        train->animationState = ScenarioRand() & 0xFFFF;
 
-        train->animation_frame = scenario_rand() & 0x7;
+        train->animation_frame = ScenarioRand() & 0x7;
         train->sprite_width = 13;
         train->sprite_height_negative = 45;
         train->sprite_height_positive = 5;
@@ -3581,9 +3581,9 @@ void Vehicle::UpdateCrashSetup()
         trainVehicle->crash_x = trainX;
         trainVehicle->crash_y = trainY;
         trainVehicle->crash_z = trainZ;
-        trainVehicle->crash_x += (scenario_rand() & 0xF) - 8;
-        trainVehicle->crash_y += (scenario_rand() & 0xF) - 8;
-        trainVehicle->crash_z += (scenario_rand() & 0xF) - 8;
+        trainVehicle->crash_x += (ScenarioRand() & 0xF) - 8;
+        trainVehicle->crash_y += (ScenarioRand() & 0xF) - 8;
+        trainVehicle->crash_z += (ScenarioRand() & 0xF) - 8;
 
         trainVehicle->TrackLocation = { 0, 0, 0 };
     }
@@ -4554,11 +4554,11 @@ void Vehicle::UpdateBoatLocation()
 
     sub_state = 0;
     uint8_t curDirection = ((sprite_direction + 19) >> 3) & 3;
-    uint8_t randDirection = scenario_rand() & 3;
+    uint8_t randDirection = ScenarioRand() & 3;
 
     if (lost_time_out > 1920)
     {
-        if (scenario_rand() & 1)
+        if (ScenarioRand() & 1)
         {
             CoordsXY destLocation = (returnPosition.ToCoordsXY() - CoordsDirectionDelta[returnDirection]).ToTileCentre();
 
@@ -5373,10 +5373,10 @@ void Vehicle::UpdateCrash()
             if (curVehicle->crash_z <= 96)
             {
                 curVehicle->crash_z++;
-                if ((scenario_rand() & 0xFFFF) <= 0x1555)
+                if ((ScenarioRand() & 0xFFFF) <= 0x1555)
                 {
-                    int32_t xOffset = (scenario_rand() & 2) - 1;
-                    int32_t yOffset = (scenario_rand() & 2) - 1;
+                    int32_t xOffset = (ScenarioRand() & 2) - 1;
+                    int32_t yOffset = (ScenarioRand() & 2) - 1;
 
                     ExplosionCloud::Create(curPos + CoordsXYZ{ xOffset, yOffset, 0 });
                 }
@@ -5489,7 +5489,7 @@ void Vehicle::UpdateSound()
                     break;
                 }
 
-                if ((scenario_rand() & 0xFFFF) <= 0x5555)
+                if ((ScenarioRand() & 0xFFFF) <= 0x5555)
                 {
                     scream_sound_id = OpenRCT2::Audio::SoundId::TrainWhistle;
                     screamSound.volume = 255;
@@ -5511,7 +5511,7 @@ void Vehicle::UpdateSound()
                     break;
                 }
 
-                if ((scenario_rand() & 0xFFFF) <= 0x5555)
+                if ((ScenarioRand() & 0xFFFF) <= 0x5555)
                 {
                     scream_sound_id = OpenRCT2::Audio::SoundId::Tram;
                     screamSound.volume = 255;
@@ -5614,7 +5614,7 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
 
     if (scream_sound_id == OpenRCT2::Audio::SoundId::Null)
     {
-        auto r = scenario_rand();
+        auto r = ScenarioRand();
         if (totalNumPeeps >= static_cast<int32_t>(r % 16))
         {
             switch (carEntry->sound_range)
@@ -5696,7 +5696,7 @@ void Vehicle::SetMapToolbar() const
         ft.Add<uint16_t>(vehicleIndex + 1);
         curRide->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-        intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
         ContextBroadcastIntent(&intent);
     }
 }
@@ -5786,7 +5786,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             sprite_direction &= 0x1E;
             Invalidate();
         }
-        else if ((scenario_rand() & 0xFFFF) <= 2849)
+        else if ((ScenarioRand() & 0xFFFF) <= 2849)
         {
             if (var_35 & (1 << 6))
                 sprite_direction -= 2;
@@ -5860,7 +5860,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             Vehicle* collideVehicle = GetEntity<Vehicle>(collideSprite.value());
             if (collideVehicle != nullptr)
             {
-                var_34 = (scenario_rand() & 1) ? 1 : -1;
+                var_34 = (ScenarioRand() & 1) ? 1 : -1;
 
                 if (oldVelocity >= 131072)
                 {
@@ -5870,7 +5870,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             }
             else
             {
-                var_34 = (scenario_rand() & 1) ? 6 : -6;
+                var_34 = (ScenarioRand() & 1) ? 6 : -6;
 
                 if (oldVelocity >= 131072)
                 {
@@ -6939,7 +6939,7 @@ void Vehicle::UpdateGoKartAttemptSwitchLanes()
     {
         probability = 0x0A3D;
     }
-    if ((scenario_rand() & 0xFFFF) <= probability)
+    if ((ScenarioRand() & 0xFFFF) <= probability)
     {
         // This changes "riding left" to "moving to right lane" and "riding right" to "moving to left lane".
         TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) + 2u) };
@@ -8319,7 +8319,7 @@ loc_6DC743:
                 }
                 else
                 {
-                    uint16_t rand16 = scenario_rand() & 0xFFFF;
+                    uint16_t rand16 = ScenarioRand() & 0xFFFF;
                     VehicleTrackSubposition nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathC14;
                     if (rand16 <= 0xA000)
                     {
@@ -9158,7 +9158,7 @@ int32_t Vehicle::NumPeepsUntilTrainTail() const
 void Vehicle::InvalidateWindow()
 {
     auto intent = Intent(INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW);
-    intent.putExtra(INTENT_EXTRA_VEHICLE, this);
+    intent.PutExtra(INTENT_EXTRA_VEHICLE, this);
     ContextBroadcastIntent(&intent);
 }
 

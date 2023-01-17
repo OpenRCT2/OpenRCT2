@@ -242,7 +242,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     if (count > 0)
     {
         // Place staff at a random guest
-        uint32_t rand = scenario_rand_max(count);
+        uint32_t rand = ScenarioRandMax(count);
         Guest* chosenGuest = nullptr;
 
         for (auto guest : EntityList<Guest>())
@@ -278,7 +278,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
         // No walking guests; pick random park entrance
         if (!gParkEntrances.empty())
         {
-            auto rand = scenario_rand_max(static_cast<uint32_t>(gParkEntrances.size()));
+            auto rand = ScenarioRandMax(static_cast<uint32_t>(gParkEntrances.size()));
             const auto& entrance = gParkEntrances[rand];
             auto dir = entrance.direction;
             newLocation = entrance;

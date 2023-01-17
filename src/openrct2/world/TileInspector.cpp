@@ -21,7 +21,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../windows/Intent.h"
-#include "../windows/tile_inspector.h"
+#include "../windows/TileInspectorGlobals.h"
 #include "Banner.h"
 #include "Footpath.h"
 #include "LargeScenery.h"

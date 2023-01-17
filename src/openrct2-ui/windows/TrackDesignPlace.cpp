@@ -127,8 +127,8 @@ public:
                 Close();
 
                 auto intent = Intent(WindowClass::TrackDesignList);
-                intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
-                intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
+                intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
+                intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
                 ContextOpenIntent(&intent);
                 break;
         }
@@ -240,7 +240,7 @@ public:
                         if (TrackDesignAreEntranceAndExitPlaced())
                         {
                             auto intent = Intent(WindowClass::Ride);
-                            intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
+                            intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                             ContextOpenIntent(&intent);
                             auto wnd = WindowFindByClass(WindowClass::TrackDesignPlace);
                             WindowClose(*wnd);

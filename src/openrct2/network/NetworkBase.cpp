@@ -564,8 +564,8 @@ void NetworkBase::UpdateClient()
                         format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
 
                         auto intent = Intent(WindowClass::NetworkStatus);
-                        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
-                        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
+                        intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
+                        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                         ContextOpenIntent(&intent);
                     }
                     break;
@@ -579,8 +579,8 @@ void NetworkBase::UpdateClient()
                         format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
 
                         auto intent = Intent(WindowClass::NetworkStatus);
-                        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
-                        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
+                        intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
+                        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                         ContextOpenIntent(&intent);
 
                         server_connect_time = Platform::GetTicks();
@@ -596,8 +596,8 @@ void NetworkBase::UpdateClient()
                     format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
 
                     auto intent = Intent(WindowClass::NetworkStatus);
-                    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
-                    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
+                    intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
+                    intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                     ContextOpenIntent(&intent);
                     break;
                 }
@@ -641,7 +641,7 @@ void NetworkBase::UpdateClient()
                     }
 
                     auto intent = Intent(WindowClass::NetworkStatus);
-                    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
+                    intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
                     ContextOpenIntent(&intent);
                 }
                 WindowCloseByClass(WindowClass::Multiplayer);
@@ -784,7 +784,7 @@ bool NetworkBase::CheckDesynchronizaton()
 {
     // Check synchronisation
     if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerState::Desynced
-        && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
+        && !CheckSRAND(gCurrentTicks, ScenarioRandState().s0))
     {
         _serverState.state = NetworkServerState::Desynced;
         _serverState.desyncTick = gCurrentTicks;
@@ -793,7 +793,7 @@ bool NetworkBase::CheckDesynchronizaton()
         format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
 
         auto intent = Intent(WindowClass::NetworkStatus);
-        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
+        intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
         ContextOpenIntent(&intent);
 
         if (!gConfigNetwork.StayConnected)
@@ -1497,7 +1497,7 @@ void NetworkBase::Server_Send_GAME_ACTION(const GameAction* action)
 void NetworkBase::Server_Send_TICK()
 {
     NetworkPacket packet(NetworkCommand::Tick);
-    packet << gCurrentTicks << scenario_rand_state().s0;
+    packet << gCurrentTicks << ScenarioRandState().s0;
     uint32_t flags = 0;
     // Simple counter which limits how often a sprite checksum gets sent.
     // This can get somewhat expensive, so we don't want to push it every tick in release,
@@ -2323,8 +2323,8 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         format_string(objectListMsg, 256, STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST, &args);
 
         auto intent = Intent(WindowClass::NetworkStatus);
-        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
-        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
+        intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
+        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
         ContextOpenIntent(&intent);
 
         uint8_t objectType{};
@@ -2461,7 +2461,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
                 format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, ft.Data());
 
                 auto intent = Intent(WindowClass::NetworkStatus);
-                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
+                intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
                 ContextOpenIntent(&intent);
             }
         }
@@ -2669,8 +2669,8 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
     format_string(str_downloading_map, 256, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
 
     auto intent = Intent(WindowClass::NetworkStatus);
-    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_downloading_map });
-    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
+    intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_downloading_map });
+    intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
     ContextOpenIntent(&intent);
 
     std::memcpy(&chunk_buffer[offset], const_cast<void*>(static_cast<const void*>(packet.Read(chunksize))), chunksize);

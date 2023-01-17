@@ -528,8 +528,8 @@ private:
         if (count > 0)
         {
             auto intent = Intent(WindowClass::TrackDesignList);
-            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
-            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
+            intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
+            intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
             ContextOpenIntent(&intent);
             return;
         }

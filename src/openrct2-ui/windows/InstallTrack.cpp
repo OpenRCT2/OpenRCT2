@@ -197,10 +197,10 @@ public:
         {
             auto ft = Formatter();
 
-            const auto* objectEntry = object_manager_load_object(&td6->vehicle_object.Entry);
+            const auto* objectEntry = ObjectManagerLoadObject(&td6->vehicle_object.Entry);
             if (objectEntry != nullptr)
             {
-                auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
+                auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(objectEntry);
                 auto rideName = GetRideNaming(td6->type, *GetRideEntryByIndex(groupIndex));
                 ft.Add<StringId>(rideName.Name);
             }
@@ -410,13 +410,13 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
         return nullptr;
     }
 
-    object_manager_unload_all_objects();
+    ObjectManagerUnloadAllObjects();
     if (trackDesign->type == RIDE_TYPE_NULL)
     {
         LOG_ERROR("Failed to load track (ride type null): %s", path);
         return nullptr;
     }
-    if (object_manager_load_object(&trackDesign->vehicle_object.Entry) == nullptr)
+    if (ObjectManagerLoadObject(&trackDesign->vehicle_object.Entry) == nullptr)
     {
         LOG_ERROR("Failed to load track (vehicle load fail): %s", path);
         return nullptr;

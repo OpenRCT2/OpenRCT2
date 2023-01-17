@@ -181,7 +181,7 @@ rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
     _disableLocking = disableLocking;
 
     // Load scenario list
-    scenario_repository_scan();
+    ScenarioRepositoryScan();
 
     window = WindowCreateCentred(
         WW, WH, &window_scenarioselect_events, WindowClass::ScenarioSelect, WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));
@@ -203,10 +203,10 @@ rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
 static void WindowScenarioselectInitTabs(rct_window* w)
 {
     int32_t showPages = 0;
-    size_t numScenarios = scenario_repository_get_count();
+    size_t numScenarios = ScenarioRepositoryGetCount();
     for (size_t i = 0; i < numScenarios; i++)
     {
-        const scenario_index_entry* scenario = scenario_repository_get_by_index(i);
+        const scenario_index_entry* scenario = ScenarioRepositoryGetByIndex(i);
         if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             if (_titleEditor && scenario->source_game == ScenarioSource::Other)
@@ -687,7 +687,7 @@ static void DrawCategoryHeading(
 
 static void InitialiseListItems(rct_window* w)
 {
-    size_t numScenarios = scenario_repository_get_count();
+    size_t numScenarios = ScenarioRepositoryGetCount();
     _listItems.clear();
 
     // Mega park unlock
@@ -699,7 +699,7 @@ static void InitialiseListItems(rct_window* w)
     uint8_t currentHeading = UINT8_MAX;
     for (size_t i = 0; i < numScenarios; i++)
     {
-        const scenario_index_entry* scenario = scenario_repository_get_by_index(i);
+        const scenario_index_entry* scenario = ScenarioRepositoryGetByIndex(i);
 
         if (!IsScenarioVisible(w, scenario))
             continue;

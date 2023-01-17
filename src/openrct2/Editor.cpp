@@ -126,8 +126,8 @@ namespace Editor
     {
         ToolCancel();
         auto intent = Intent(WindowClass::Loadsave);
-        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-        intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(ConvertSaveToScenarioCallback));
+        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+        intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(ConvertSaveToScenarioCallback));
         ContextOpenIntent(&intent);
     }
 
@@ -143,7 +143,7 @@ namespace Editor
             return;
         }
 
-        scenario_reset();
+        ScenarioReset();
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;
@@ -164,7 +164,7 @@ namespace Editor
         gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
         gScreenAge = 0;
 
-        object_manager_unload_all_objects();
+        ObjectManagerUnloadAllObjects();
         ObjectListLoad();
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
@@ -185,7 +185,7 @@ namespace Editor
         gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
         gScreenAge = 0;
 
-        object_manager_unload_all_objects();
+        ObjectManagerUnloadAllObjects();
         ObjectListLoad();
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
@@ -374,7 +374,7 @@ namespace Editor
 
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                 {
-                    object_manager_unload_all_objects();
+                    ObjectManagerUnloadAllObjects();
                 }
 
                 ContextOpenWindow(WindowClass::EditorObjectSelection);

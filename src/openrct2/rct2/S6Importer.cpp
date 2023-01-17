@@ -251,7 +251,7 @@ namespace RCT2
             gDateMonthTicks = _s6.current_day;
             gCurrentTicks = _s6.game_ticks_1;
 
-            scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
+            ScenarioRandSeed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
             DetermineFlatRideStatus();
             ImportTileElements();
@@ -1027,7 +1027,7 @@ namespace RCT2
             // This stall was not colourable in RCT2.
             if (dst->type == RIDE_TYPE_FOOD_STALL)
             {
-                auto object = object_entry_get_object(ObjectType::Ride, dst->subtype);
+                auto object = ObjectEntryGetObject(ObjectType::Ride, dst->subtype);
                 if (object != nullptr && object->GetIdentifier() == "rct2.ride.icecr1")
                 {
                     dst->track_colour[0].main = COLOUR_LIGHT_BLUE;

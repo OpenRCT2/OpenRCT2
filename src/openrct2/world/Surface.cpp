@@ -160,7 +160,7 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
                 if (GrassLength & 8)
                 {
                     // Random growth rate (length nibble)
-                    GrassLength |= scenario_rand() & 0x70;
+                    GrassLength |= ScenarioRand() & 0x70;
                 }
                 else
                 {

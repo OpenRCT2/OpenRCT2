@@ -384,12 +384,12 @@ public:
         if (researchItem->type == Research::EntryType::Ride)
             objectEntryType = ObjectType::Ride;
 
-        auto chunk = object_entry_get_chunk(objectEntryType, researchItem->entryIndex);
+        auto chunk = ObjectEntryGetChunk(objectEntryType, researchItem->entryIndex);
         if (chunk == nullptr)
             return;
 
         // Draw preview
-        const auto* object = object_entry_get_object(objectEntryType, researchItem->entryIndex);
+        const auto* object = ObjectEntryGetObject(objectEntryType, researchItem->entryIndex);
         if (object != nullptr)
         {
             rct_drawpixelinfo clipDPI;

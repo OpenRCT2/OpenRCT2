@@ -411,7 +411,7 @@ public:
         else
         {
             auto intent = Intent(WindowClass::Ride);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
+            intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
             ContextOpenIntent(&intent);
         }
     }

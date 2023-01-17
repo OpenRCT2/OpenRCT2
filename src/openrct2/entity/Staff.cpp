@@ -416,7 +416,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
             return INVALID_DIRECTION;
     }
 
-    uint8_t chosenDirection = scenario_rand() & 0x3;
+    uint8_t chosenDirection = ScenarioRand() & 0x3;
     for (uint8_t i = 0; i < 4; ++i, ++chosenDirection)
     {
         chosenDirection &= 0x3;
@@ -452,7 +452,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
  */
 Direction Staff::HandymanDirectionRandSurface(uint8_t validDirections) const
 {
-    Direction newDirection = scenario_rand() % NumOrthogonalDirections;
+    Direction newDirection = ScenarioRand() % NumOrthogonalDirections;
     for (int32_t i = 0; i < NumOrthogonalDirections; ++i, ++newDirection)
     {
         newDirection %= NumOrthogonalDirections;
@@ -523,7 +523,7 @@ bool Staff::DoHandymanPathFinding()
                     /// When in a queue path make the probability of following litter much lower (10% instead of 90%)
                     /// as handymen often get stuck when there is litter on a normal path next to a queue they are in
                     uint32_t chooseRandomProbability = connectedQueue ? 0xE666 : 0x1999;
-                    if ((scenario_rand() & 0xFFFF) >= chooseRandomProbability)
+                    if ((ScenarioRand() & 0xFFFF) >= chooseRandomProbability)
                     {
                         chooseRandom = false;
                         newDirection = litterDirection;
@@ -542,7 +542,7 @@ bool Staff::DoHandymanPathFinding()
                 {
                     do
                     {
-                        newDirection = scenario_rand() & 3;
+                        newDirection = ScenarioRand() & 3;
                     } while ((pathDirections & (1 << newDirection)) == 0);
                 }
             }
@@ -564,7 +564,7 @@ bool Staff::DoHandymanPathFinding()
     SetDestination(chosenTile + CoordsXY{ 16, 16 }, 3);
     if (State == PeepState::Queuing)
     {
-        DestinationTolerance = (scenario_rand() & 7) + 2;
+        DestinationTolerance = (ScenarioRand() & 7) + 2;
     }
     return false;
 }
@@ -579,7 +579,7 @@ Direction Staff::DirectionSurface(Direction initialDirection) const
         {
             case 1:
                 direction++;
-                if (scenario_rand() & 1)
+                if (ScenarioRand() & 1)
                 {
                     direction -= 2;
                 }
@@ -613,10 +613,10 @@ Direction Staff::DirectionSurface(Direction initialDirection) const
  */
 Direction Staff::MechanicDirectionSurface() const
 {
-    Direction direction = scenario_rand() & 3;
+    Direction direction = ScenarioRand() & 3;
 
     auto ride = GetRide(CurrentRide);
-    if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection) && (scenario_rand() & 1))
+    if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection) && (ScenarioRand() & 1))
     {
         auto location = ride->GetStation(CurrentRideStation).Exit;
         if (location.IsNull())
@@ -636,14 +636,14 @@ Direction Staff::MechanicDirectionSurface() const
  */
 Direction Staff::MechanicDirectionPathRand(uint8_t pathDirections) const
 {
-    if (scenario_rand() & 1)
+    if (ScenarioRand() & 1)
     {
         if (pathDirections & (1 << PeepDirection))
             return PeepDirection;
     }
 
     // Modified from original to spam scenario_rand less
-    uint8_t direction = scenario_rand() & 3;
+    uint8_t direction = ScenarioRand() & 3;
     for (int32_t i = 0; i < 4; ++i, ++direction)
     {
         direction &= 3;
@@ -778,7 +778,7 @@ bool Staff::DoMechanicPathFinding()
     }
 
     PeepDirection = newDirection;
-    auto tolerance = (scenario_rand() & 7) + 2;
+    auto tolerance = (ScenarioRand() & 7) + 2;
     SetDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
     return false;
@@ -798,7 +798,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
 
     if (pathDirections == 0)
     {
-        return DirectionSurface(scenario_rand() & 3);
+        return DirectionSurface(ScenarioRand() & 3);
     }
 
     pathDirections &= ~(1 << DirectionReverse(PeepDirection));
@@ -814,7 +814,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
         return direction;
     }
 
-    direction = scenario_rand() & 3;
+    direction = ScenarioRand() & 3;
     for (uint8_t i = 0; i < NumOrthogonalDirections; ++i, direction = DirectionNext(direction))
     {
         if (pathDirections & (1 << direction))
@@ -836,7 +836,7 @@ bool Staff::DoMiscPathFinding()
     Direction newDirection = INVALID_DIRECTION;
     if (GetNextIsSurface())
     {
-        newDirection = DirectionSurface(scenario_rand() & 3);
+        newDirection = DirectionSurface(ScenarioRand() & 3);
     }
     else
     {
@@ -851,12 +851,12 @@ bool Staff::DoMiscPathFinding()
 
     while (!MapIsLocationValid(chosenTile))
     {
-        newDirection = DirectionSurface(scenario_rand() & 3);
+        newDirection = DirectionSurface(ScenarioRand() & 3);
         chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
     }
 
     PeepDirection = newDirection;
-    auto tolerance = (scenario_rand() & 7) + 2;
+    auto tolerance = (ScenarioRand() & 7) + 2;
     SetDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
     return false;
@@ -922,9 +922,9 @@ void Staff::EntertainerUpdateNearbyPeeps() const
  */
 bool Staff::DoEntertainerPathFinding()
 {
-    if (((scenario_rand() & 0xFFFF) <= 0x4000) && IsActionInterruptable())
+    if (((ScenarioRand() & 0xFFFF) <= 0x4000) && IsActionInterruptable())
     {
-        Action = (scenario_rand() & 1) ? PeepActionType::Wave2 : PeepActionType::Joy;
+        Action = (ScenarioRand() & 1) ? PeepActionType::Wave2 : PeepActionType::Joy;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
 
@@ -1520,7 +1520,7 @@ bool Staff::UpdatePatrollingFindWatering()
     if (!(StaffOrders & STAFF_ORDERS_WATER_FLOWERS))
         return false;
 
-    uint8_t chosen_position = scenario_rand() & 7;
+    uint8_t chosen_position = ScenarioRand() & 7;
     for (int32_t i = 0; i < 8; ++i, ++chosen_position)
     {
         chosen_position &= 7;
@@ -2109,7 +2109,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
     {
         sprite_direction = PeepDirection << 3;
 
-        Action = (scenario_rand() & 1) ? PeepActionType::StaffFix2 : PeepActionType::StaffFix;
+        Action = (ScenarioRand() & 1) ? PeepActionType::StaffFix2 : PeepActionType::StaffFix;
         ActionSpriteImageOffset = 0;
         ActionFrame = 0;
         UpdateCurrentActionSpriteType();
@@ -2560,7 +2560,7 @@ void Staff::UpdateRideInspected(RideId rideIndex)
     if (ride != nullptr)
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
-        ride->reliability += ((100 - ride->reliability_percentage) / 4) * (scenario_rand() & 0xFF);
+        ride->reliability += ((100 - ride->reliability_percentage) / 4) * (ScenarioRand() & 0xFF);
         ride->last_inspection = 0;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN
             | RIDE_INVALIDATE_RIDE_LIST;

@@ -185,7 +185,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 case EntityType::Vehicle:
                 {
                     auto intent = Intent(WD_VEHICLE);
-                    intent.putExtra(INTENT_EXTRA_VEHICLE, entity);
+                    intent.PutExtra(INTENT_EXTRA_VEHICLE, entity);
                     ContextOpenIntent(&intent);
                     break;
                 }
@@ -193,7 +193,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 case EntityType::Staff:
                 {
                     auto intent = Intent(WindowClass::Peep);
-                    intent.putExtra(INTENT_EXTRA_PEEP, entity);
+                    intent.PutExtra(INTENT_EXTRA_PEEP, entity);
                     ContextOpenIntent(&intent);
                     break;
                 }
@@ -226,7 +226,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
         case ViewportInteractionItem::Ride:
         {
             auto intent = Intent(WD_TRACK);
-            intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
+            intent.PutExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
             ContextOpenIntent(&intent);
             return true;
         }

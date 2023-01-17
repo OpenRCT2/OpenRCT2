@@ -64,8 +64,8 @@ static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, Str
  */
 static void SetupTrackManagerObjects()
 {
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
     for (int32_t i = 0; i < numObjects; i++)
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
@@ -92,8 +92,8 @@ static void SetupTrackManagerObjects()
  */
 static void SetupTrackDesignerObjects()
 {
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
     SelectDesignerObjects();
     for (int32_t i = 0; i < numObjects; i++)
     {
@@ -257,8 +257,8 @@ void SetupInUseSelectionFlags()
         }
     }
 
-    auto numObjects = object_repository_get_items_count();
-    const auto* items = object_repository_get_items();
+    auto numObjects = ObjectRepositoryGetItemsCount();
+    const auto* items = ObjectRepositoryGetItems();
     for (size_t i = 0; i < numObjects; i++)
     {
         auto* selectionFlags = &_objectSelectionFlags[i];
@@ -280,7 +280,7 @@ void SetupInUseSelectionFlags()
  */
 void sub_6AB211()
 {
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
+    int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
     _objectSelectionFlags = std::vector<uint8_t>(numObjects);
 
     for (uint8_t objectType = 0; objectType < EnumValue(ObjectType::Count); objectType++)
@@ -289,7 +289,7 @@ void sub_6AB211()
         _numAvailableObjectsForType[objectType] = 0;
     }
 
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
     for (int32_t i = 0; i < numObjects; i++)
     {
         ObjectType objectType = items[i].Type;
@@ -378,8 +378,8 @@ static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descr
  */
 void UnloadUnselectedObjects()
 {
-    auto numItems = static_cast<int32_t>(object_repository_get_items_count());
-    const auto* items = object_repository_get_items();
+    auto numItems = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
+    const auto* items = ObjectRepositoryGetItems();
     std::vector<ObjectEntryDescriptor> objectsToUnload;
 
     for (int32_t i = 0; i < numItems; i++)
@@ -394,7 +394,7 @@ void UnloadUnselectedObjects()
             }
         }
     }
-    object_manager_unload_objects(objectsToUnload);
+    ObjectManagerUnloadObjects(objectsToUnload);
 }
 
 /**
@@ -467,8 +467,8 @@ void ResetSelectedObjectCountAndSize()
         objectType = 0;
     }
 
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
     for (int32_t i = 0; i < numObjects; i++)
     {
         ObjectType objectType = items[i].Type;
@@ -509,10 +509,10 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND);
     }
 
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
+    int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
     // Get repository item index
     int32_t index = -1;
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
     for (int32_t i = 0; i < numObjects; i++)
     {
         if (&items[i] == item)
@@ -594,7 +594,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
     if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
     {
         char objectName[64];
-        object_create_identifier_name(objectName, 64, &item->ObjectEntry);
+        ObjectCreateIdentifierName(objectName, 64, &item->ObjectEntry);
         auto ft = Formatter::Common();
         ft.Add<const char*>(objectName);
         return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
@@ -621,8 +621,8 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
 
 bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType)
 {
-    auto numObjects = std::min(object_repository_get_items_count(), _objectSelectionFlags.size());
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    auto numObjects = std::min(ObjectRepositoryGetItemsCount(), _objectSelectionFlags.size());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
 
     for (size_t i = 0; i < numObjects; i++)
     {
@@ -637,8 +637,8 @@ bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType)
 
 bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue)
 {
-    auto numObjects = std::min(object_repository_get_items_count(), _objectSelectionFlags.size());
-    const auto* items = object_repository_get_items();
+    auto numObjects = std::min(ObjectRepositoryGetItemsCount(), _objectSelectionFlags.size());
+    const auto* items = ObjectRepositoryGetItems();
     for (size_t i = 0; i < numObjects; i++)
     {
         const auto& ori = items[i];
@@ -657,8 +657,8 @@ int32_t EditorRemoveUnusedObjects()
     sub_6AB211();
     SetupInUseSelectionFlags();
 
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
 
     int32_t numUnselectedObjects = 0;
     for (int32_t i = 0; i < numObjects; i++)

@@ -134,8 +134,8 @@ private:
                 }
 
                 auto intent = Intent(WindowClass::NetworkStatus);
-                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
-                intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
+                intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
+                intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
                 ContextOpenIntent(&intent);
             }
         }
@@ -539,7 +539,7 @@ public:
             if (entry.Generation == ObjectGeneration::DAT)
             {
                 // ... source game ...
-                const auto sourceStringId = object_manager_get_source_game_string(entry.Entry.GetSourceGame());
+                const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
                 DrawTextBasic(&dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
             }
 

@@ -1288,7 +1288,7 @@ private:
             return;
 
         auto intent = Intent(WindowClass::Ride);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
+        intent.PutExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
         ContextOpenIntent(&intent);
     }
 

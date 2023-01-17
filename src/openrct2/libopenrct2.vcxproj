@@ -531,7 +531,7 @@
     <ClInclude Include="util\Util.h" />
     <ClInclude Include="Version.h" />
     <ClInclude Include="windows\Intent.h" />
-    <ClInclude Include="windows\tile_inspector.h" />
+    <ClInclude Include="windows\TileInspectorGlobals.h" />
     <ClInclude Include="world\tile_element\TileElementType.h" />
     <ClInclude Include="world\Banner.h" />
     <ClInclude Include="world\Climate.h" />

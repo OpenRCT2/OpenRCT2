@@ -133,7 +133,7 @@ public:
         size_t index = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
-            get_type_entry_index(index, nullptr, &result);
+            ObjectGetTypeEntryIndex(index, nullptr, &result);
         }
         return result;
     }
@@ -735,45 +735,45 @@ std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRep
     return std::make_unique<ObjectManager>(objectRepository);
 }
 
-Object* object_manager_get_loaded_object(const ObjectEntryDescriptor& entry)
+Object* ObjectManagerGetLoadedObject(const ObjectEntryDescriptor& entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.GetLoadedObject(entry);
     return loadedObject;
 }
 
-ObjectEntryIndex object_manager_get_loaded_object_entry_index(const Object* loadedObject)
+ObjectEntryIndex ObjectManagerGetLoadedObjectEntryIndex(const Object* loadedObject)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     auto entryIndex = objectManager.GetLoadedObjectEntryIndex(loadedObject);
     return entryIndex;
 }
 
-ObjectEntryIndex object_manager_get_loaded_object_entry_index(const ObjectEntryDescriptor& entry)
+ObjectEntryIndex ObjectManagerGetLoadedObjectEntryIndex(const ObjectEntryDescriptor& entry)
 {
-    return object_manager_get_loaded_object_entry_index(object_manager_get_loaded_object(entry));
+    return ObjectManagerGetLoadedObjectEntryIndex(ObjectManagerGetLoadedObject(entry));
 }
 
-Object* object_manager_load_object(const rct_object_entry* entry)
+Object* ObjectManagerLoadObject(const rct_object_entry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.LoadObject(entry);
     return loadedObject;
 }
 
-void object_manager_unload_objects(const std::vector<ObjectEntryDescriptor>& entries)
+void ObjectManagerUnloadObjects(const std::vector<ObjectEntryDescriptor>& entries)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager.UnloadObjects(entries);
 }
 
-void object_manager_unload_all_objects()
+void ObjectManagerUnloadAllObjects()
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager.UnloadAllTransient();
 }
 
-StringId object_manager_get_source_game_string(const ObjectSourceGame sourceGame)
+StringId ObjectManagerGetSourceGameString(const ObjectSourceGame sourceGame)
 {
     return ObjectManager::GetObjectSourceGameString(sourceGame);
 }

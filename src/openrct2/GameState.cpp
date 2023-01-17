@@ -237,7 +237,7 @@ void GameState::Tick()
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
-        scenario_autosave_check();
+        ScenarioAutosaveCheck();
     }
 
     WindowDispatchUpdateAll();
@@ -317,7 +317,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
     report_time(LogicTimePart::Date);
 
-    scenario_update();
+    ScenarioUpdate();
     report_time(LogicTimePart::Scenario);
     ClimateUpdate();
     report_time(LogicTimePart::Climate);
@@ -406,5 +406,5 @@ void GameState::CreateStateSnapshot()
 
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
-    snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
+    snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
 }

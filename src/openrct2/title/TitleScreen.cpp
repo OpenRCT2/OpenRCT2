@@ -73,7 +73,7 @@ bool TitleScreen::PreviewSequence(size_t value)
     }
     else
     {
-        _currentSequence = title_get_config_sequence();
+        _currentSequence = TitleGetConfigSequence();
         if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         {
             TryLoadSequence();
@@ -92,7 +92,7 @@ void TitleScreen::StopPreviewingSequence()
             WindowUnfollowSprite(*mainWindow);
         }
         _previewingSequence = false;
-        _currentSequence = title_get_config_sequence();
+        _currentSequence = TitleGetConfigSequence();
         gPreviewingTitleSequenceInGame = false;
     }
 }
@@ -200,7 +200,7 @@ void TitleScreen::ChangePresetSequence(size_t preset)
         return;
     }
 
-    const utf8* configId = title_sequence_manager_get_config_id(preset);
+    const utf8* configId = TitleSequenceManagerGetConfigID(preset);
     gConfigInterface.CurrentTitleSequencePreset = configId;
 
     if (!_previewingSequence)
@@ -232,19 +232,19 @@ void TitleScreen::TitleInitialise()
     {
         bool RCT1Installed = false, RCT1AAInstalled = false, RCT1LLInstalled = false;
         int RCT1Count = 0;
-        size_t scenarioCount = scenario_repository_get_count();
+        size_t scenarioCount = ScenarioRepositoryGetCount();
 
         for (size_t s = 0; s < scenarioCount; s++)
         {
-            if (scenario_repository_get_by_index(s)->source_game == ScenarioSource::RCT1)
+            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1)
             {
                 RCT1Count++;
             }
-            if (scenario_repository_get_by_index(s)->source_game == ScenarioSource::RCT1_AA)
+            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1_AA)
             {
                 RCT1AAInstalled = true;
             }
-            if (scenario_repository_get_by_index(s)->source_game == ScenarioSource::RCT1_LL)
+            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1_LL)
             {
                 RCT1LLInstalled = true;
             }
@@ -267,7 +267,7 @@ void TitleScreen::TitleInitialise()
         {
             size_t total = TitleSequenceManager::GetCount();
             random = util_rand() % static_cast<int32_t>(total);
-            const utf8* scName = title_sequence_manager_get_name(random);
+            const utf8* scName = TitleSequenceManagerGetName(random);
             safeSequence = true;
             if (scName == RCT1String)
             {
@@ -284,10 +284,10 @@ void TitleScreen::TitleInitialise()
         }
         ChangePresetSequence(random);
     }
-    size_t seqId = title_get_config_sequence();
+    size_t seqId = TitleGetConfigSequence();
     if (seqId == SIZE_MAX)
     {
-        seqId = title_sequence_manager_get_index_for_config_id("*OPENRCT2");
+        seqId = TitleSequenceManagerGetIndexForConfigID("*OPENRCT2");
         if (seqId == SIZE_MAX)
         {
             seqId = 0;
@@ -317,7 +317,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
                     if (targetSequence != _currentSequence && !loadPreview)
                     {
                         // Forcefully change the preset to a preset that works.
-                        const utf8* configId = title_sequence_manager_get_config_id(targetSequence);
+                        const utf8* configId = TitleSequenceManagerGetConfigID(targetSequence);
                         gConfigInterface.CurrentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
@@ -341,7 +341,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
     return true;
 }
 
-void title_load()
+void TitleLoad()
 {
     if (_singleton != nullptr)
     {
@@ -349,7 +349,7 @@ void title_load()
     }
 }
 
-void title_create_windows()
+void TitleCreateWindows()
 {
     if (_singleton != nullptr)
     {
@@ -357,7 +357,7 @@ void title_create_windows()
     }
 }
 
-void* title_get_sequence_player()
+void* TitleGetSequencePlayer()
 {
     void* result = nullptr;
     if (_singleton != nullptr)
@@ -367,7 +367,7 @@ void* title_get_sequence_player()
     return result;
 }
 
-void title_sequence_change_preset(size_t preset)
+void TitleSequenceChangePreset(size_t preset)
 {
     if (_singleton != nullptr)
     {
@@ -375,7 +375,7 @@ void title_sequence_change_preset(size_t preset)
     }
 }
 
-bool title_should_hide_version_info()
+bool TitleShouldHideVersionInfo()
 {
     bool result = false;
     if (_singleton != nullptr)
@@ -385,7 +385,7 @@ bool title_should_hide_version_info()
     return result;
 }
 
-void title_set_hide_version_info(bool value)
+void TitleSetHideVersionInfo(bool value)
 {
     if (_singleton != nullptr)
     {
@@ -393,12 +393,12 @@ void title_set_hide_version_info(bool value)
     }
 }
 
-size_t title_get_config_sequence()
+size_t TitleGetConfigSequence()
 {
-    return title_sequence_manager_get_index_for_config_id(gConfigInterface.CurrentTitleSequencePreset.c_str());
+    return TitleSequenceManagerGetIndexForConfigID(gConfigInterface.CurrentTitleSequencePreset.c_str());
 }
 
-size_t title_get_current_sequence()
+size_t TitleGetCurrentSequence()
 {
     size_t result = 0;
     if (_singleton != nullptr)
@@ -408,7 +408,7 @@ size_t title_get_current_sequence()
     return result;
 }
 
-bool title_preview_sequence(size_t value)
+bool TitlePreviewSequence(size_t value)
 {
     if (_singleton != nullptr)
     {
@@ -417,7 +417,7 @@ bool title_preview_sequence(size_t value)
     return false;
 }
 
-void title_stop_previewing_sequence()
+void TitleStopPreviewingSequence()
 {
     if (_singleton != nullptr)
     {
@@ -425,7 +425,7 @@ void title_stop_previewing_sequence()
     }
 }
 
-bool title_is_previewing_sequence()
+bool TitleIsPreviewingSequence()
 {
     if (_singleton != nullptr)
     {

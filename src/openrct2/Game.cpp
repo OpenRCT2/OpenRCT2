@@ -148,7 +148,7 @@ enum
  */
 void UpdatePaletteEffects()
 {
-    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
+    auto water_type = static_cast<rct_water_type*>(ObjectEntryGetChunk(ObjectType::Water, 0));
 
     if (gClimateLightningFlash == 1)
     {
@@ -326,7 +326,7 @@ bool GameIsNotPaused()
 static void LoadLandscape()
 {
     auto intent = Intent(WindowClass::Loadsave);
-    intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
+    intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
     ContextOpenIntent(&intent);
 }
 
@@ -595,7 +595,7 @@ void SaveGameCmd(u8string_view name /* = {} */)
 void SaveGameWithName(u8string_view name)
 {
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
-    if (scenario_save(name, gConfigGeneral.SavePluginData ? 1 : 0))
+    if (ScenarioSave(name, gConfigGeneral.SavePluginData ? 1 : 0))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -609,8 +609,8 @@ std::unique_ptr<Intent> CreateSaveGameAsIntent()
     auto name = Path::GetFileNameWithoutExtension(gScenarioSavePath);
 
     auto intent = std::make_unique<Intent>(WindowClass::Loadsave);
-    intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
-    intent->putExtra(INTENT_EXTRA_PATH, name);
+    intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
+    intent->PutExtra(INTENT_EXTRA_PATH, name);
 
     return intent;
 }
@@ -717,7 +717,7 @@ void GameAutosave()
         File::Copy(path, backupPath, true);
     }
 
-    if (!scenario_save(path, saveFlags))
+    if (!ScenarioSave(path, saveFlags))
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 
@@ -765,8 +765,8 @@ void GameLoadOrQuitNoSavePrompt()
             else
             {
                 auto intent = Intent(WindowClass::Loadsave);
-                intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-                intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(GameLoadOrQuitNoSavePromptCallback));
+                intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+                intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(GameLoadOrQuitNoSavePromptCallback));
                 ContextOpenIntent(&intent);
             }
             break;
@@ -784,7 +784,7 @@ void GameLoadOrQuitNoSavePrompt()
             gFirstTimeSaving = true;
             GameNotifyMapChange();
             GameUnloadScripts();
-            title_load();
+            TitleLoad();
             break;
         }
         case PromptMode::SaveBeforeNewGame:
@@ -793,7 +793,7 @@ void GameLoadOrQuitNoSavePrompt()
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
             auto intent = Intent(WindowClass::ScenarioSelect);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(NewGameWindowCallback));
+            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(NewGameWindowCallback));
             ContextOpenIntent(&intent);
             break;
         }

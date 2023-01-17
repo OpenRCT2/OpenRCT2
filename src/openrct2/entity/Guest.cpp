@@ -562,7 +562,7 @@ void Guest::UpdateEasterEggInteractions()
 
     if (PeepFlags & PEEP_FLAGS_JOY)
     {
-        if ((scenario_rand() & 0xFFFF) <= 1456)
+        if ((ScenarioRand() & 0xFFFF) <= 1456)
         {
             if (IsActionInterruptable())
             {
@@ -765,7 +765,7 @@ void Guest::loc_68F9F3()
 
     if (State == PeepState::Walking && NauseaTarget >= 128)
     {
-        if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
+        if ((ScenarioRand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
         {
             if (IsActionInterruptable())
             {
@@ -901,7 +901,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
          * is executed to once every four calls. */
         if (PeepFlags & PEEP_FLAGS_CROWDED)
         {
-            PeepThoughtType thought_type = crowded_thoughts[scenario_rand() & 0xF];
+            PeepThoughtType thought_type = crowded_thoughts[ScenarioRand() & 0xF];
             if (thought_type != PeepThoughtType::None)
             {
                 InsertNewThought(thought_type);
@@ -1022,7 +1022,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192u : 2184u))
+        if ((ScenarioRand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192u : 2184u))
         {
             PickRideToGoOn();
         }
@@ -1081,7 +1081,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
                 if (num_thoughts != 0)
                 {
-                    PeepThoughtType chosen_thought = possible_thoughts[scenario_rand() % num_thoughts];
+                    PeepThoughtType chosen_thought = possible_thoughts[ScenarioRand() % num_thoughts];
 
                     InsertNewThought(chosen_thought);
 
@@ -1297,7 +1297,7 @@ void Guest::UpdateSitting()
 
         if (HasFoodOrDrink())
         {
-            if ((scenario_rand() & 0xFFFF) > 1310)
+            if ((ScenarioRand() & 0xFFFF) > 1310)
             {
                 TryGetUpFromSitting();
                 return;
@@ -1309,7 +1309,7 @@ void Guest::UpdateSitting()
             return;
         }
 
-        int32_t rand = scenario_rand();
+        int32_t rand = ScenarioRand();
         if ((rand & 0xFFFF) > 131)
         {
             TryGetUpFromSitting();
@@ -1521,7 +1521,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
 
     if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && GetShopItemDescriptor(shopItem).IsSouvenir() && !hasVoucher)
     {
-        if (((scenario_rand() & 0x7F) + 0x73) > Happiness || GuestNumRides < 3)
+        if (((ScenarioRand() & 0x7F) + 0x73) > Happiness || GuestNumRides < 3)
             return false;
     }
 
@@ -1561,7 +1561,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
                     if (Happiness >= 180)
                         itemValue /= 2;
                 }
-                if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
+                if (itemValue > (static_cast<money16>(ScenarioRand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
                     InsertNewThought(GetShopItemDescriptor(shopItem).TooMuchThought, ride.id);
@@ -1576,7 +1576,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
 
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
-                if (itemValue >= static_cast<money32>(scenario_rand() & 0x07))
+                if (itemValue >= static_cast<money32>(ScenarioRand() & 0x07))
                 {
                     // "This x is a really good value"
                     InsertNewThought(GetShopItemDescriptor(shopItem).GoodValueThought, ride.id);
@@ -1616,16 +1616,16 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
     const auto hasRandomShopColour = ride.HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = hasRandomShopColour ? scenario_rand_max(COLOUR_COUNT - 1) : ride.track_colour[0].main;
+        TshirtColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_COUNT - 1) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? scenario_rand_max(COLOUR_COUNT - 1) : ride.track_colour[0].main;
+        HatColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_COUNT - 1) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = hasRandomShopColour ? scenario_rand_max(COLOUR_COUNT - 1) : ride.track_colour[0].main;
+        BalloonColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_COUNT - 1) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = hasRandomShopColour ? scenario_rand_max(COLOUR_COUNT - 1) : ride.track_colour[0].main;
+        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_COUNT - 1) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
@@ -1781,7 +1781,7 @@ void Guest::OnExitRide(Ride& ride)
             OpenRCT2::Audio::SoundId::Laugh2,
             OpenRCT2::Audio::SoundId::Laugh3,
         };
-        int32_t laughType = scenario_rand() & 7;
+        int32_t laughType = ScenarioRand() & 7;
         if (laughType < 3)
         {
             OpenRCT2::Audio::Play3D(laughs[laughType], GetLocation());
@@ -2121,7 +2121,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             // there's a 90% chance that the peep will ignore it.
             if (!RideHasRatings(ride) && ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES))
             {
-                if ((scenario_rand() & 0xFFFF) > 0x1999U)
+                if ((ScenarioRand() & 0xFFFF) > 0x1999U)
                 {
                     ChoseNotToGoOnRide(ride, peepAtRide, false);
                     return false;
@@ -2353,7 +2353,7 @@ bool Guest::ShouldRideWhileRaining(const Ride& ride)
 
     // Peeps with umbrellas will go on rides where they can use their umbrella on it (like the Maze) 50% of the time
     if (HasItem(ShopItem::Umbrella) && ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA)
-        && (scenario_rand() & 2) == 0)
+        && (ScenarioRand() & 2) == 0)
     {
         return true;
     }
@@ -2434,10 +2434,10 @@ static void peep_ride_is_too_intense(Guest* peep, Ride& ride, bool peepAtRide)
  */
 static Vehicle* peep_choose_car_from_ride(Peep* peep, const Ride& ride, std::vector<uint8_t>& car_array)
 {
-    uint8_t chosen_car = scenario_rand();
+    uint8_t chosen_car = ScenarioRand();
     if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES) && ((chosen_car & 0xC) != 0xC))
     {
-        chosen_car = (scenario_rand() & 1) ? 0 : static_cast<uint8_t>(car_array.size()) - 1;
+        chosen_car = (ScenarioRand() & 1) ? 0 : static_cast<uint8_t>(car_array.size()) - 1;
     }
     else
     {
@@ -2863,7 +2863,7 @@ static bool peep_should_go_on_ride_again(Guest* peep, const Ride& ride)
     if (peep->Toilet > 170)
         return false;
 
-    uint8_t r = (scenario_rand() & 0xFF);
+    uint8_t r = (ScenarioRand() & 0xFF);
     if (r <= 128)
     {
         if (peep->GuestNumRides > 7)
@@ -2882,7 +2882,7 @@ static bool peep_should_preferred_intensity_increase(Guest* peep)
     if (peep->Happiness < 200)
         return false;
 
-    return (scenario_rand() & 0xFF) >= static_cast<uint8_t>(peep->Intensity);
+    return (ScenarioRand() & 0xFF) >= static_cast<uint8_t>(peep->Intensity);
 }
 
 static bool peep_really_liked_ride(Guest* peep, const Ride& ride)
@@ -3077,7 +3077,7 @@ static void peep_decide_whether_to_leave_park(Guest* peep)
     }
 
     // Approx 95% chance of staying in the park
-    if ((scenario_rand() & 0xFFFF) > 3276)
+    if ((ScenarioRand() & 0xFFFF) > 3276)
     {
         return;
     }
@@ -3296,7 +3296,7 @@ static bool peep_should_use_cash_machine(Guest* peep, RideId rideIndex)
         return false;
     if (peep->CashInPocket > 20.00_GBP)
         return false;
-    if (115 + (scenario_rand() % 128) > peep->Happiness)
+    if (115 + (ScenarioRand() % 128) > peep->Happiness)
         return false;
     if (peep->Energy < 80)
         return false;
@@ -3515,7 +3515,7 @@ void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entran
     entrance_loc.y += CoordsDirectionDelta[entrance_loc.direction].y;
 
     uint8_t direction = entrance_loc.direction * 4 + 11;
-    if (scenario_rand() & 0x40)
+    if (ScenarioRand() & 0x40)
     {
         direction += 4;
         peep->MazeLastEdge += 2;
@@ -4593,7 +4593,7 @@ void Guest::UpdateRideApproachSpiralSlide()
         {
             if (ride->mode == RideMode::SingleRidePerAdmission)
                 lastRide = true;
-            if (static_cast<uint8_t>(CurrentCar - 1) > (scenario_rand() & 0xF))
+            if (static_cast<uint8_t>(CurrentCar - 1) > (ScenarioRand() & 0xF))
                 lastRide = true;
         }
 
@@ -4823,7 +4823,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (IsActionInterruptable())
     {
-        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining() && (scenario_rand() & 0xFFFF) <= 2427)
+        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining() && (ScenarioRand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::Jump;
             ActionFrame = 0;
@@ -4865,7 +4865,7 @@ void Guest::UpdateRideMazePathfinding()
         hedges[openCount++] = mazeReverseLastEdge;
     }
 
-    uint8_t chosenEdge = hedges[scenario_rand() % openCount];
+    uint8_t chosenEdge = hedges[ScenarioRand() % openCount];
     assert(chosenEdge != 0xFF);
 
     targetLoc = GetDestination() + CoordsDirectionDelta[chosenEdge] / 2;
@@ -5218,7 +5218,7 @@ void Guest::UpdateWalking()
 
     if (!IsOnLevelCrossing())
     {
-        if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
+        if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
         {
             Action = PeepActionType::Wave2;
             ActionFrame = 0;
@@ -5227,7 +5227,7 @@ void Guest::UpdateWalking()
             UpdateCurrentActionSpriteType();
         }
 
-        if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
+        if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
         {
             Action = PeepActionType::TakePhoto;
             ActionFrame = 0;
@@ -5236,7 +5236,7 @@ void Guest::UpdateWalking()
             UpdateCurrentActionSpriteType();
         }
 
-        if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptable() && (0xFFFF & scenario_rand()) < 936)
+        if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
         {
             Action = PeepActionType::DrawPicture;
             ActionFrame = 0;
@@ -5250,7 +5250,7 @@ void Guest::UpdateWalking()
     {
         if (!GetNextIsSurface())
         {
-            if ((0xFFFF & scenario_rand()) <= 4096)
+            if ((0xFFFF & ScenarioRand()) <= 4096)
             {
                 static constexpr const Litter::Type litter_types[] = {
                     Litter::Type::EmptyCan,
@@ -5258,11 +5258,11 @@ void Guest::UpdateWalking()
                     Litter::Type::BurgerBox,
                     Litter::Type::EmptyCup,
                 };
-                auto litterType = litter_types[scenario_rand() & 0x3];
+                auto litterType = litter_types[ScenarioRand() & 0x3];
                 const auto loc = GetLocation();
-                int32_t litterX = loc.x + (scenario_rand() & 0x7) - 3;
-                int32_t litterY = loc.y + (scenario_rand() & 0x7) - 3;
-                Direction litterDirection = (scenario_rand() & 0x3);
+                int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
+                int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
+                Direction litterDirection = (ScenarioRand() & 0x3);
 
                 Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
             }
@@ -5271,7 +5271,7 @@ void Guest::UpdateWalking()
     else if (HasEmptyContainer())
     {
         if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index.ToUnderlying() & 0x1FF) == (gCurrentTicks & 0x1FF))
-            && ((0xFFFF & scenario_rand()) <= 4096))
+            && ((0xFFFF & ScenarioRand()) <= 4096))
         {
             int32_t container = bitscanforward(GetEmptyContainerFlags());
             auto litterType = Litter::Type::Vomit;
@@ -5287,9 +5287,9 @@ void Guest::UpdateWalking()
             UpdateSpriteType();
 
             const auto loc = GetLocation();
-            int32_t litterX = loc.x + (scenario_rand() & 0x7) - 3;
-            int32_t litterY = loc.y + (scenario_rand() & 0x7) - 3;
-            Direction litterDirection = (scenario_rand() & 0x3);
+            int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
+            int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
+            Direction litterDirection = (ScenarioRand() & 0x3);
 
             Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
         }
@@ -5353,7 +5353,7 @@ void Guest::UpdateWalking()
 
     uint16_t chance = HasFoodOrDrink() ? 13107 : 2849;
 
-    if ((scenario_rand() & 0xFFFF) > chance)
+    if ((ScenarioRand() & 0xFFFF) > chance)
         return;
 
     if (GetNextIsSurface() || GetNextIsSloped())
@@ -5397,7 +5397,7 @@ void Guest::UpdateWalking()
     if (edges == 0)
         return;
 
-    uint8_t chosen_edge = scenario_rand() & 0x3;
+    uint8_t chosen_edge = ScenarioRand() & 0x3;
 
     for (; !(edges & (1 << chosen_edge));)
         chosen_edge = (chosen_edge + 1) & 3;
@@ -5425,7 +5425,7 @@ void Guest::UpdateWalking()
     if (!positions_free)
         return;
 
-    uint8_t chosen_position = scenario_rand() & 0x3;
+    uint8_t chosen_position = ScenarioRand() & 0x3;
 
     for (; !(positions_free & (1 << chosen_position));)
         chosen_position = (chosen_position + 1) & 3;
@@ -5468,7 +5468,7 @@ void Guest::UpdateWaitingAtCrossing()
 
     if (HasFoodOrDrink())
     {
-        if ((scenario_rand() & 0xFFFF) <= 1310)
+        if ((ScenarioRand() & 0xFFFF) <= 1310)
         {
             Action = PeepActionType::EatFood;
             ActionFrame = 0;
@@ -5480,7 +5480,7 @@ void Guest::UpdateWaitingAtCrossing()
         return;
     }
 
-    if ((scenario_rand() & 0xFFFF) <= 64)
+    if ((ScenarioRand() & 0xFFFF) <= 64)
     {
         Action = PeepActionType::Wave2;
         ActionFrame = 0;
@@ -5544,7 +5544,7 @@ void Guest::UpdateQueuing()
         return;
     if (SpriteType == PeepSpriteType::Normal)
     {
-        if (TimeInQueue >= 2000 && (0xFFFF & scenario_rand()) <= 119)
+        if (TimeInQueue >= 2000 && (0xFFFF & ScenarioRand()) <= 119)
         {
             // Eat Food/Look at watch
             Action = PeepActionType::EatFood;
@@ -5552,7 +5552,7 @@ void Guest::UpdateQueuing()
             ActionSpriteImageOffset = 0;
             UpdateCurrentActionSpriteType();
         }
-        if (TimeInQueue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
+        if (TimeInQueue >= 3500 && (0xFFFF & ScenarioRand()) <= 93)
         {
             // Create the I have been waiting in line ages thought
             InsertNewThought(PeepThoughtType::QueuingAges, CurrentRide);
@@ -5600,7 +5600,7 @@ void Guest::UpdateQueuing()
     if (TimeInQueue < 4300)
         return;
 
-    if (Happiness <= 65 && (0xFFFF & scenario_rand()) < 2184)
+    if (Happiness <= 65 && (0xFFFF & ScenarioRand()) < 2184)
     {
         // Give up queueing for the ride
         sprite_direction ^= (1 << 4);
@@ -5722,7 +5722,7 @@ void Guest::UpdateWatching()
         {
             if (HasFoodOrDrink())
             {
-                if ((scenario_rand() & 0xFFFF) <= 1310)
+                if ((ScenarioRand() & 0xFFFF) <= 1310)
                 {
                     Action = PeepActionType::EatFood;
                     ActionFrame = 0;
@@ -5732,7 +5732,7 @@ void Guest::UpdateWatching()
                 }
             }
 
-            if ((scenario_rand() & 0xFFFF) <= 655)
+            if ((ScenarioRand() & 0xFFFF) <= 655)
             {
                 Action = PeepActionType::TakePhoto;
                 ActionFrame = 0;
@@ -5743,7 +5743,7 @@ void Guest::UpdateWatching()
 
             if ((StandingFlags & 1))
             {
-                if ((scenario_rand() & 0xFFFF) <= 655)
+                if ((ScenarioRand() & 0xFFFF) <= 655)
                 {
                     Action = PeepActionType::Wave;
                     ActionFrame = 0;
@@ -5849,7 +5849,7 @@ void Guest::UpdateUsingBin()
                     // OpenRCT2 modification: This previously used
                     // the tick count as a simple random function
                     // switched to scenario_rand as it is more reliable
-                    if ((scenario_rand() & 7) == 0)
+                    if ((ScenarioRand() & 7) == 0)
                         spaceLeftInBin--;
                     RemoveItem(item);
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -5859,10 +5859,10 @@ void Guest::UpdateUsingBin()
 
                 auto litterType = Litter::Type(GetShopItemDescriptor(item).Type);
 
-                int32_t litterX = x + (scenario_rand() & 7) - 3;
-                int32_t litterY = y + (scenario_rand() & 7) - 3;
+                int32_t litterX = x + (ScenarioRand() & 7) - 3;
+                int32_t litterY = y + (ScenarioRand() & 7) - 3;
 
-                Litter::Create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
+                Litter::Create({ litterX, litterY, z, static_cast<Direction>(ScenarioRand() & 3) }, litterType);
                 RemoveItem(item);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -5956,7 +5956,7 @@ bool Guest::UpdateWalkingFindBench()
     int32_t edges = pathElement->GetEdges() ^ 0xF;
     if (edges == 0)
         return false;
-    uint8_t chosen_edge = scenario_rand() & 0x3;
+    uint8_t chosen_edge = ScenarioRand() & 0x3;
 
     for (; !(edges & (1 << chosen_edge));)
         chosen_edge = (chosen_edge + 1) & 0x3;
@@ -5984,7 +5984,7 @@ bool Guest::UpdateWalkingFindBench()
     free_edge ^= 0x3;
     if (!free_edge)
     {
-        if (scenario_rand() & 0x8000000)
+        if (ScenarioRand() & 0x8000000)
             free_edge = 1;
     }
 
@@ -6045,7 +6045,7 @@ bool Guest::UpdateWalkingFindBin()
     if (edges == 0)
         return false;
 
-    uint8_t chosen_edge = scenario_rand() & 0x3;
+    uint8_t chosen_edge = ScenarioRand() & 0x3;
 
     // Note: Bin quantity is inverted 0 = full, 3 = empty
     uint8_t bin_quantities = pathElement->GetAdditionStatus();
@@ -6127,7 +6127,7 @@ static void peep_update_walking_break_scenery(Guest* peep)
         if ((peep->LitterCount & 0xC0) != 0xC0 && (peep->DisgustingCount & 0xC0) != 0xC0)
             return;
 
-        if ((scenario_rand() & 0xFFFF) > 3276)
+        if ((ScenarioRand() & 0xFFFF) > 3276)
             return;
     }
 
@@ -6217,14 +6217,14 @@ static bool peep_should_watch_ride(TileElement* tileElement)
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT))
     {
-        if ((scenario_rand() & 0xFFFF) > 0x3333)
+        if ((ScenarioRand() & 0xFFFF) > 0x3333)
         {
             return false;
         }
     }
     else if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT))
     {
-        if ((scenario_rand() & 0xFFFF) > 0x1000)
+        if ((ScenarioRand() & 0xFFFF) > 0x1000)
         {
             return false;
         }
@@ -6726,12 +6726,12 @@ static item_pref_t item_order_preference[] = {
  */
 void Guest::UpdateSpriteType()
 {
-    if (SpriteType == PeepSpriteType::Balloon && (scenario_rand() & 0xFFFF) <= 327)
+    if (SpriteType == PeepSpriteType::Balloon && (ScenarioRand() & 0xFFFF) <= 327)
     {
         bool isBalloonPopped = false;
         if (x != LOCATION_NULL)
         {
-            if ((scenario_rand() & 0xFFFF) <= 13107)
+            if ((ScenarioRand() & 0xFFFF) <= 13107)
             {
                 isBalloonPopped = true;
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
@@ -7020,14 +7020,14 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     peep->MoveTo(coords);
     peep->sprite_direction = 0;
-    peep->Mass = (scenario_rand() & 0x1F) + 45;
+    peep->Mass = (ScenarioRand() & 0x1F) + 45;
     peep->PathCheckOptimisation = 0;
     peep->InteractionRideIndex = RideId::GetNull();
     peep->PreviousRide = RideId::GetNull();
     std::get<0>(peep->Thoughts).type = PeepThoughtType::None;
     peep->WindowInvalidateFlags = 0;
 
-    uint8_t intensityHighest = (scenario_rand() & 0x7) + 3;
+    uint8_t intensityHighest = (ScenarioRand() & 0x7) + 3;
     uint8_t intensityLowest = std::min(intensityHighest, static_cast<uint8_t>(7)) - 3;
 
     if (intensityHighest >= 7)
@@ -7056,7 +7056,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     peep->Intensity = IntensityRange(intensityLowest, intensityHighest);
 
-    uint8_t nauseaTolerance = scenario_rand() & 0x7;
+    uint8_t nauseaTolerance = ScenarioRand() & 0x7;
     if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
     {
         nauseaTolerance += 4;
@@ -7073,7 +7073,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     if (gGuestInitialHappiness == 0)
         peep->Happiness = 128;
     /* Initial value will vary by -15..16 */
-    int8_t happinessDelta = (scenario_rand() & 0x1F) - 15;
+    int8_t happinessDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->Happiness = std::clamp(peep->Happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
     peep->HappinessTarget = peep->Happiness;
@@ -7085,7 +7085,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
      * to any value 0..255. */
     peep->Hunger = gGuestInitialHunger;
     /* Initial value will vary by -15..16 */
-    int8_t hungerDelta = (scenario_rand() & 0x1F) - 15;
+    int8_t hungerDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->Hunger = std::clamp(peep->Hunger + hungerDelta, 0, PEEP_MAX_HUNGER);
 
@@ -7094,7 +7094,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
      * to any value 0..255. */
     peep->Thirst = gGuestInitialThirst;
     /* Initial value will vary by -15..16 */
-    int8_t thirstDelta = (scenario_rand() & 0x1F) - 15;
+    int8_t thirstDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->Thirst = std::clamp(peep->Thirst + thirstDelta, 0, PEEP_MAX_THIRST);
 
@@ -7105,7 +7105,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->Id = gNextGuestNumber++;
     peep->Name = nullptr;
 
-    money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
+    money32 cash = (ScenarioRand() & 0x3) * 100 - 100 + gGuestInitialCash;
     if (cash < 0)
         cash = 0;
 
@@ -7145,15 +7145,15 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->Angriness = 0;
     peep->TimeLost = 0;
 
-    uint8_t tshirtColour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
+    uint8_t tshirtColour = static_cast<uint8_t>(ScenarioRand() % std::size(tshirt_colours));
     peep->TshirtColour = tshirt_colours[tshirtColour];
 
-    uint8_t trousersColour = static_cast<uint8_t>(scenario_rand() % std::size(trouser_colours));
+    uint8_t trousersColour = static_cast<uint8_t>(ScenarioRand() % std::size(trouser_colours));
     peep->TrousersColour = trouser_colours[trousersColour];
 
     /* Minimum energy is capped at 32 and maximum at 128, so this initialises
      * a peep with approx 34%-100% energy. (65 - 32) / (128 - 32) ≈ 34% */
-    uint8_t energy = (scenario_rand() % 64) + 65;
+    uint8_t energy = (ScenarioRand() % 64) + 65;
     peep->Energy = energy;
     peep->EnergyTarget = energy;
 
