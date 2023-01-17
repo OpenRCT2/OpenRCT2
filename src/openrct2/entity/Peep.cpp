@@ -26,6 +26,7 @@
 #include "../entity/EntityTweener.h"
 #include "../interface/Window.h"
 #include "../localisation/Formatter.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -2602,12 +2603,12 @@ int32_t peep_compare(const EntityId sprite_index_a, const EntityId sprite_index_
     char nameA[256]{};
     Formatter ft;
     peep_a->FormatNameTo(ft);
-    format_string(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
+    OpenRCT2::FormatStringLegacy(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
 
     char nameB[256]{};
     ft.Rewind();
     peep_b->FormatNameTo(ft);
-    format_string(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
+    OpenRCT2::FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
     return strlogicalcmp(nameA, nameB);
 }
 

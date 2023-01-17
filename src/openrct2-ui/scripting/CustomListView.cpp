@@ -17,6 +17,7 @@
 #    include <numeric>
 #    include <openrct2/Context.h>
 #    include <openrct2/localisation/Formatter.h>
+#    include <openrct2/localisation/Formatting.h>
 #    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/util/Util.h>
 
@@ -714,7 +715,7 @@ void CustomListView::PaintSeperator(
         DrawTextBasic(dpi, { centreX, pos.y }, STR_STRING, ft, { baseColour, TextAlignment::CENTRE });
 
         // Get string dimensions
-        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
+        FormatStringLegacy(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
         int32_t categoryStringHalfWidth = (GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Medium) / 2) + 4;
         int32_t strLeft = centreX - categoryStringHalfWidth;
         int32_t strRight = centreX + categoryStringHalfWidth;

@@ -19,6 +19,7 @@
 #include "../core/Guard.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../platform/Platform.h"
@@ -1992,7 +1993,7 @@ void WindowStartTextbox(
     // Enter in the text input buffer any existing
     // text.
     if (existing_text != STR_NONE)
-        format_string(gTextBoxInput, TEXT_INPUT_SIZE, existing_text, &existing_args);
+        OpenRCT2::FormatStringLegacy(gTextBoxInput, TEXT_INPUT_SIZE, existing_text, &existing_args);
 
     // In order to prevent strings that exceed the maxLength
     // from crashing the game.

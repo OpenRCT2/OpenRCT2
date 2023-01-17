@@ -18,6 +18,7 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
@@ -630,7 +631,7 @@ public:
 
                 Formatter ft;
                 peep->FormatNameTo(ft);
-                format_string(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
+                OpenRCT2::FormatStringLegacy(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
             }
 
             std::sort(_guestList.begin(), _guestList.end(), GetGuestCompareFunc());
@@ -784,7 +785,7 @@ private:
 
             Formatter ft;
             peep.FormatNameTo(ft);
-            format_string(name, sizeof(name), STR_STRINGID, ft.Data());
+            OpenRCT2::FormatStringLegacy(name, sizeof(name), STR_STRINGID, ft.Data());
             if (!String::Contains(name, _filterName.c_str(), true))
             {
                 return false;

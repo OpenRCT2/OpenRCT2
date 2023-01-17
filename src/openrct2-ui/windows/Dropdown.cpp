@@ -17,6 +17,7 @@
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
@@ -352,7 +353,7 @@ void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uin
     max_string_width = 0;
     for (size_t i = 0; i < num_items; i++)
     {
-        format_string(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
+        FormatStringLegacy(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
         string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
         max_string_width = std::max(string_width, max_string_width);
     }

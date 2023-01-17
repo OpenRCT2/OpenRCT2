@@ -33,6 +33,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -4112,7 +4113,7 @@ bool Ride::NameExists(std::string_view name, RideId excludeRideId)
         {
             Formatter ft;
             ride.FormatNameTo(ft);
-            format_string(buffer, 256, STR_STRINGID, ft.Data());
+            FormatStringLegacy(buffer, 256, STR_STRINGID, ft.Data());
             if (name == buffer && RideHasAnyTrackElements(ride))
             {
                 return true;
@@ -4207,7 +4208,7 @@ void Ride::SetNameToDefault()
         default_name_number++;
         Formatter ft;
         FormatNameTo(ft);
-        format_string(rideNameBuffer, 256, STR_STRINGID, ft.Data());
+        FormatStringLegacy(rideNameBuffer, 256, STR_STRINGID, ft.Data());
     } while (Ride::NameExists(rideNameBuffer, id));
 }
 
@@ -5549,7 +5550,7 @@ std::string Ride::GetName() const
 {
     Formatter ft;
     FormatNameTo(ft);
-    return FormatStringID(STR_STRINGID, ft.Data());
+    return FormatStringID(STR_STRINGID, reinterpret_cast<const void*>(ft.Data()));
 }
 
 void Ride::FormatNameTo(Formatter& ft) const

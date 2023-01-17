@@ -27,6 +27,7 @@
 #include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "Date.h"
+#include "Formatting.h"
 #include "Localisation.h"
 
 #include <algorithm>
@@ -334,7 +335,7 @@ std::string FormatStringID(StringId format, const void* args)
     size_t len{};
     for (;;)
     {
-        format_string(buffer.data(), buffer.size(), format, args);
+        OpenRCT2::FormatStringLegacy(buffer.data(), buffer.size(), format, args);
         len = buffer.find('\0');
         if (len == std::string::npos)
         {
@@ -375,7 +376,7 @@ void FormatStringToUpper(utf8* dest, size_t size, StringId format, const void* a
         return;
     }
 
-    format_string(dest, size, format, args);
+    OpenRCT2::FormatStringLegacy(dest, size, format, args);
 
     std::string upperString = String::ToUpper(dest);
 
@@ -405,7 +406,7 @@ void FormatReadableSize(char* buf, size_t bufSize, uint64_t sizeBytes)
     }
 
     char sizeType[128] = {};
-    format_string(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
+    OpenRCT2::FormatStringLegacy(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
 
     snprintf(buf, bufSize, "%.03f %s", size, sizeType);
 }
@@ -418,7 +419,7 @@ void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytes)
     const char* args[1] = {
         sizeText,
     };
-    format_string(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
+    OpenRCT2::FormatStringLegacy(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
 }
 
 money64 StringToMoney(const char* string_to_monetise)

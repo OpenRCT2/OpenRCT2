@@ -15,6 +15,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/Track.h"
@@ -178,7 +179,7 @@ static void PaintWallScrollingText(
     }
     else
     {
-        format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
+        OpenRCT2::FormatStringLegacy(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
 
     auto stringWidth = GfxGetStringWidth(signString, FontStyle::Tiny);

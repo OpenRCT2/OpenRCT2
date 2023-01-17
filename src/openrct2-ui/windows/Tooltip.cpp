@@ -14,6 +14,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 
 // clang-format off
@@ -107,11 +108,11 @@ private:
     int32_t FormatTextForTooltip(const OpenRCT2String& message)
     {
         utf8 tempBuffer[CommonTextBufferSize];
-        format_string(tempBuffer, sizeof(tempBuffer), message.str, message.args.Data());
+        OpenRCT2::FormatStringLegacy(tempBuffer, sizeof(tempBuffer), message.str, message.args.Data());
 
         OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
         formattedMessage.args.Add<const char*>(tempBuffer);
-        format_string(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
+        OpenRCT2::FormatStringLegacy(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
 
         auto textWidth = GfxGetStringWidthNewLined(_tooltipText, FontStyle::Small);
         textWidth = std::min(textWidth, 196);

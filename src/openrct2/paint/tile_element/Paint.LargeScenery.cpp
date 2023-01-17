@@ -15,6 +15,7 @@
 #include "../../core/String.hpp"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/LargeSceneryObject.h"
 #include "../../profiling/Profiling.h"
@@ -212,7 +213,7 @@ static void PaintLargeScenery3DText(
     char signString[256];
     auto ft = Formatter();
     banner->FormatTextTo(ft);
-    format_string(signString, sizeof(signString), STR_STRINGID, ft.Data());
+    OpenRCT2::FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
 
     auto offsetY = text->offset[(direction & 1)].y * 2;
     if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
@@ -317,7 +318,7 @@ static void PaintLargeSceneryScrollingText(
     }
     else
     {
-        format_string(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
+        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
 
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
