@@ -105,7 +105,8 @@ static void DrawResearchItem(
     if (researchItem.type == Research::EntryType::Ride
         && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        const StringId rideTypeName = GetRideNaming(researchItem.baseRideType, *GetRideEntryByIndex(researchItem.entryIndex)).Name;
+        const StringId rideTypeName = GetRideNaming(researchItem.baseRideType, *GetRideEntryByIndex(researchItem.entryIndex))
+                                          .Name;
 
         // Draw group name
         auto ft = Formatter();
@@ -413,7 +414,8 @@ public:
             && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             drawString = STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-            StringId rideTypeName = GetRideNaming(researchItem->baseRideType, *GetRideEntryByIndex(researchItem->entryIndex)).Name;
+            StringId rideTypeName = GetRideNaming(researchItem->baseRideType, *GetRideEntryByIndex(researchItem->entryIndex))
+                                        .Name;
             ft.Add<StringId>(rideTypeName);
             ft.Add<StringId>(stringId);
         }
