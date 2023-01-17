@@ -31,7 +31,7 @@ enum
 };
 
 /** rct2: 0x008B0E40 */
-static void paint_boat_hire_track_flat(
+static void PaintBoatHireTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -61,7 +61,7 @@ static void paint_boat_hire_track_flat(
 }
 
 /** rct2: 0x008B0E50 */
-static void paint_boat_hire_station(
+static void PaintBoatHireStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -85,7 +85,7 @@ static void paint_boat_hire_station(
 }
 
 /** rct2: 0x008B0E80 */
-static void paint_boat_hire_track_left_quarter_turn_1_tile(
+static void PaintBoatHireTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -129,11 +129,11 @@ static void paint_boat_hire_track_left_quarter_turn_1_tile(
 }
 
 /** rct2: 0x008B0E90 */
-static void paint_boat_hire_track_right_quarter_turn_1_tile(
+static void PaintBoatHireTrackRightQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_boat_hire_track_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintBoatHireTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 /**
@@ -144,17 +144,17 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return paint_boat_hire_track_flat;
+            return PaintBoatHireTrackFlat;
 
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_boat_hire_station;
+            return PaintBoatHireStation;
 
         case TrackElemType::LeftQuarterTurn1Tile:
-            return paint_boat_hire_track_left_quarter_turn_1_tile;
+            return PaintBoatHireTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
-            return paint_boat_hire_track_right_quarter_turn_1_tile;
+            return PaintBoatHireTrackRightQuarterTurn1Tile;
     }
 
     return nullptr;

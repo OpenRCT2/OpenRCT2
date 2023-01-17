@@ -352,129 +352,129 @@ static constexpr const uint32_t SplashBoats25DegDownToFlatFrontImageId[4] = {
 
 static constexpr const SpriteBb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
     {
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 27, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 },  { 32, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_3, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_5, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 34, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_6, { 0, 0, 0 }, { 2, 0, 0 },  { 32, 32, 2 },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 }, { 32, 27, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_3, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_5, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 34, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_6, { 0, 0, 0 }, { 2, 0, 0 }, { 32, 32, 2 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_0, { 0, 0, 0 }, { 2, 0, 0 },   { 27, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 },   { 16, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_3, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_5, { 0, 0, 0 }, { 0, 0, 0 },   { 32, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_6, { 0, 0, 0 }, { 0, 2, 0 },   { 32, 27, 2 },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_0, { 0, 0, 0 }, { 2, 0, 0 }, { 27, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_3, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_5, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NW_NE_SEQ_6, { 0, 0, 0 }, { 0, 2, 0 }, { 32, 27, 2 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_3, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_5, { 0, 0, 0 }, { 0, 0, 0 },  { 16, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_6, { 0, 0, 0 }, { 2, 0, 0 },  { 27, 32, 2 },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 }, { 32, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_3, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_5, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_NE_SE_SEQ_6, { 0, 0, 0 }, { 2, 0, 0 }, { 27, 32, 2 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_0, { 0, 0, 0 }, { 2, 0, 0 },  { 32, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_2, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_3, { 0, 0, 0 }, { 0, 0, 0 },  { 16, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_5, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_6, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 32, 2 },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_0, { 0, 0, 0 }, { 2, 0, 0 }, { 32, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_2, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_3, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_5, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SE_SW_SEQ_6, { 0, 0, 0 }, { 0, 2, 0 }, { 32, 32, 2 } },
     },
 };
 
 static constexpr const SpriteBb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
     {
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 27, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 },  { 32, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_3, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_5, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 34, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_6, { 0, 0, 0 }, { 2, 0, 27 },  { 32, 32, 0 },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 }, { 32, 27, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_3, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_5, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 34, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_6, { 0, 0, 0 }, { 2, 0, 27 }, { 32, 32, 0 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_0, { 0, 0, 0 }, { 2, 0, 27 },   { 27, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 },   { 16, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_3, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_5, { 0, 0, 0 }, { 0, 0, 27 },   { 32, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_6, { 0, 0, 0 }, { 0, 2, 27 },   { 32, 27, 0 },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_0, { 0, 0, 0 }, { 2, 0, 27 }, { 27, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_3, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_5, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NW_NE_SEQ_6, { 0, 0, 0 }, { 0, 2, 27 }, { 32, 27, 0 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_3, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_5, { 0, 0, 0 }, { 0, 0, 27 },  { 16, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_6, { 0, 0, 0 }, { 2, 0, 27 },  { 27, 32, 0 },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 }, { 32, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_3, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_5, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_NE_SE_SEQ_6, { 0, 0, 0 }, { 2, 0, 27 }, { 27, 32, 0 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_0, { 0, 0, 0 }, { 2, 0, 27 },  { 32, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_2, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_3, { 0, 0, 0 }, { 0, 0, 27 },  { 16, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_5, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_6, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 32, 0 },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_0, { 0, 0, 0 }, { 2, 0, 27 }, { 32, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_2, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_3, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_5, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SE_SW_SEQ_6, { 0, 0, 0 }, { 0, 2, 27 }, { 32, 32, 0 } },
     },
 };
 
 static constexpr const SpriteBb RiverRaftsRightQuarterTurn5_Top[4][5] = {
     {
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_3, { 0, 0, 0 }, { 0, 0, 0 },  { 16, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_5, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_6, { 0, 0, 0 }, { 2, 0, 0 },  { 32, 32, 2 },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 }, { 32, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_3, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_5, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_6, { 0, 0, 0 }, { 2, 0, 0 }, { 32, 32, 2 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_0, { 0, 0, 0 }, { 2, 0, 0 },  { 32, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_2, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 34, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_3, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_5, { 0, 0, 0 }, { 0, 0, 0 },  { 32, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_6, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 27, 2 },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_0, { 0, 0, 0 }, { 2, 0, 0 }, { 32, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_2, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 34, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_3, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_5, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NW_SW_SEQ_6, { 0, 0, 0 }, { 0, 2, 0 }, { 32, 27, 2 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },   { 32, 27, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 },   { 32, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_3, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_5, { 0, 0, 0 }, { 0, 0, 0 },   { 16, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_6, { 0, 0, 0 }, { 2, 0, 0 },   { 27, 32, 2 },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 }, { 32, 27, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_3, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_5, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_NE_NW_SEQ_6, { 0, 0, 0 }, { 2, 0, 0 }, { 27, 32, 2 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_0, { 0, 0, 0 }, { 2, 0, 0 },  { 27, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 },  { 16, 32, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_3, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_5, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_6, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 32, 2 },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_0, { 0, 0, 0 }, { 2, 0, 0 }, { 27, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_3, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_5, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SE_NE_SEQ_6, { 0, 0, 0 }, { 0, 2, 0 }, { 32, 32, 2 } },
     },
 };
 
 static constexpr const SpriteBb RiverRaftsRightQuarterTurn5_Side[4][5] = {
     {
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_3, { 0, 0, 0 }, { 0, 0, 27 },  { 16, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_5, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_6, { 0, 0, 0 }, { 2, 0, 27 },  { 32, 32, 0 },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 }, { 32, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_3, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_5, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_6, { 0, 0, 0 }, { 2, 0, 27 }, { 32, 32, 0 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_0, { 0, 0, 0 }, { 2, 0, 27 },  { 32, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_2, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 34, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_3, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_5, { 0, 0, 0 }, { 0, 0, 27 },  { 32, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_6, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 27, 0 },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_0, { 0, 0, 0 }, { 2, 0, 27 }, { 32, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_2, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 34, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_3, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_5, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_6, { 0, 0, 0 }, { 0, 2, 27 }, { 32, 27, 0 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },   { 32, 27, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 },   { 32, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_3, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_5, { 0, 0, 0 }, { 0, 0, 27 },   { 16, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_6, { 0, 0, 0 }, { 2, 0, 27 },   { 27, 32, 0 },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 }, { 32, 27, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_3, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_5, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_6, { 0, 0, 0 }, { 2, 0, 27 }, { 27, 32, 0 } },
     },
     {
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_0, { 0, 0, 0 }, { 2, 0, 27 },  { 27, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 },  { 16, 32, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_3, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_5, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 },
-        SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_6, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 32, 0 },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_0, { 0, 0, 0 }, { 2, 0, 27 }, { 27, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_3, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_5, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
+        { SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_6, { 0, 0, 0 }, { 0, 2, 27 }, { 32, 32, 0 } },
     },
 };
 
-static void paint_splash_boats_track_25_deg_up(
+static void PaintSplashBoatsTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -498,7 +498,7 @@ static void paint_splash_boats_track_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void paint_splash_boats_track_60_deg_up(
+static void PaintSplashBoatsTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -523,7 +523,7 @@ static void paint_splash_boats_track_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-static void paint_splash_boats_track_flat_to_25_deg_up(
+static void PaintSplashBoatsTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -547,7 +547,7 @@ static void paint_splash_boats_track_flat_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_up_to_flat(
+static void PaintSplashBoatsTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -571,7 +571,7 @@ static void paint_splash_boats_track_25_deg_up_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_up_to_60_deg_up(
+static void PaintSplashBoatsTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -596,7 +596,7 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-static void paint_splash_boats_track_60_deg_up_to_25_deg_up(
+static void PaintSplashBoatsTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -621,7 +621,7 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_down(
+static void PaintSplashBoatsTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -647,14 +647,14 @@ static void paint_splash_boats_track_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void paint_splash_boats_track_60_deg_down(
+static void PaintSplashBoatsTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_splash_boats_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    PaintSplashBoatsTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void paint_splash_boats_track_flat_to_25_deg_down(
+static void PaintSplashBoatsTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -680,21 +680,21 @@ static void paint_splash_boats_track_flat_to_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_down_to_60_deg_down(
+static void PaintSplashBoatsTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_splash_boats_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    PaintSplashBoatsTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void paint_splash_boats_track_60_deg_down_to_25_deg_down(
+static void PaintSplashBoatsTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_splash_boats_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    PaintSplashBoatsTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void paint_splash_boats_track_25_deg_down_to_flat(
+static void PaintSplashBoatsTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -722,7 +722,7 @@ static void paint_splash_boats_track_25_deg_down_to_flat(
 
 /** Start of elements originally from River Rafts */
 /** rct2: 0x0089B170 */
-static void paint_splash_boats_track_flat(
+static void PaintSplashBoatsTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -765,7 +765,7 @@ static void paint_splash_boats_track_flat(
 }
 
 /** rct2: 0x0089B1A0 */
-static void paint_splash_boats_station(
+static void PaintSplashBoatsStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -799,7 +799,7 @@ static void paint_splash_boats_station(
 }
 
 /** rct2: 0x0089B1D0 */
-static void paint_splash_boats_track_left_quarter_turn_5_tiles(
+static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -878,7 +878,7 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(
 }
 
 /** rct2: 0x0089B1D0 */
-static void paint_splash_boats_track_right_quarter_turn_5_tiles(
+static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -957,7 +957,7 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(
 }
 
 /** rct2: 0x0089B180 */
-static void paint_splash_boats_track_s_bend_left(
+static void PaintSplashBoatsTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1057,7 +1057,7 @@ static void paint_splash_boats_track_s_bend_left(
 }
 
 /** rct2: 0x0089B190 */
-static void paint_splash_boats_track_s_bend_right(
+static void PaintSplashBoatsTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1156,7 +1156,7 @@ static void paint_splash_boats_track_s_bend_right(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_splash_boats_track_on_ride_photo(
+static void PaintSplashBoatsTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1180,7 +1180,7 @@ static void paint_splash_boats_track_on_ride_photo(
             break;
     }
 
-    paint_splash_boats_track_flat(session, ride, trackSequence, direction, height, trackElement);
+    PaintSplashBoatsTrackFlat(session, ride, trackSequence, direction, height, trackElement);
 
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -1193,49 +1193,49 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::Up25:
-            return paint_splash_boats_track_25_deg_up;
+            return PaintSplashBoatsTrack25DegUp;
         case TrackElemType::Up60:
-            return paint_splash_boats_track_60_deg_up;
+            return PaintSplashBoatsTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return paint_splash_boats_track_flat_to_25_deg_up;
+            return PaintSplashBoatsTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return paint_splash_boats_track_25_deg_up_to_60_deg_up;
+            return PaintSplashBoatsTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return paint_splash_boats_track_60_deg_up_to_25_deg_up;
+            return PaintSplashBoatsTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return paint_splash_boats_track_25_deg_up_to_flat;
+            return PaintSplashBoatsTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return paint_splash_boats_track_25_deg_down;
+            return PaintSplashBoatsTrack25DegDown;
         case TrackElemType::Down60:
-            return paint_splash_boats_track_60_deg_down;
+            return PaintSplashBoatsTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return paint_splash_boats_track_flat_to_25_deg_down;
+            return PaintSplashBoatsTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return paint_splash_boats_track_25_deg_down_to_60_deg_down;
+            return PaintSplashBoatsTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return paint_splash_boats_track_60_deg_down_to_25_deg_down;
+            return PaintSplashBoatsTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return paint_splash_boats_track_25_deg_down_to_flat;
+            return PaintSplashBoatsTrack25DegDownToFlat;
 
         // Originally taken from River Rafts
         case TrackElemType::Flat:
-            return paint_splash_boats_track_flat;
+            return PaintSplashBoatsTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_splash_boats_station;
+            return PaintSplashBoatsStation;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return paint_splash_boats_track_left_quarter_turn_5_tiles;
+            return PaintSplashBoatsTrackLeftQuarterTurn5Tiles;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return paint_splash_boats_track_right_quarter_turn_5_tiles;
+            return PaintSplashBoatsTrackRightQuarterTurn5Tiles;
         case TrackElemType::SBendLeft:
-            return paint_splash_boats_track_s_bend_left;
+            return PaintSplashBoatsTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return paint_splash_boats_track_s_bend_right;
+            return PaintSplashBoatsTrackSBendRight;
 
         // Added by OpenRCT2
         case TrackElemType::OnRidePhoto:
-            return paint_splash_boats_track_on_ride_photo;
+            return PaintSplashBoatsTrackOnRidePhoto;
     }
 
     return nullptr;

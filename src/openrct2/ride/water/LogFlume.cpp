@@ -161,7 +161,7 @@ static constexpr const uint32_t LogFlumeTrackFlatImageIds[4][2] = {
     { SPR_LOG_FLUME_FLAT_SE_NW, SPR_LOG_FLUME_FLAT_FRONT_SE_NW },
 };
 
-static void paint_log_flume_track_flat(
+static void PaintLogFlumeTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -182,7 +182,7 @@ static void paint_log_flume_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_log_flume_track_station(
+static void PaintLogFlumeTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -219,7 +219,7 @@ static void paint_log_flume_track_station(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_log_flume_track_25_deg_up(
+static void PaintLogFlumeTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -254,7 +254,7 @@ static void paint_log_flume_track_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void paint_log_flume_track_flat_to_25_deg_up(
+static void PaintLogFlumeTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -289,7 +289,7 @@ static void paint_log_flume_track_flat_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-static void paint_log_flume_track_25_deg_up_to_flat(
+static void PaintLogFlumeTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -324,7 +324,7 @@ static void paint_log_flume_track_25_deg_up_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-static void paint_log_flume_track_25_deg_down(
+static void PaintLogFlumeTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -359,7 +359,7 @@ static void paint_log_flume_track_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void paint_log_flume_track_flat_to_25_deg_down(
+static void PaintLogFlumeTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -394,7 +394,7 @@ static void paint_log_flume_track_flat_to_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-static void paint_log_flume_track_25_deg_down_to_flat(
+static void PaintLogFlumeTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -429,7 +429,7 @@ static void paint_log_flume_track_25_deg_down_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-static void paint_log_flume_track_s_bend_left(
+static void PaintLogFlumeTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -534,7 +534,7 @@ static void paint_log_flume_track_s_bend_left(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_log_flume_track_s_bend_right(
+static void PaintLogFlumeTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -637,7 +637,7 @@ static void paint_log_flume_track_s_bend_right(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_log_flume_track_left_quarter_turn_3_tiles(
+static void PaintLogFlumeTrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -716,7 +716,7 @@ static void paint_log_flume_track_left_quarter_turn_3_tiles(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_log_flume_track_right_quarter_turn_3_tiles(
+static void PaintLogFlumeTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -795,7 +795,7 @@ static void paint_log_flume_track_right_quarter_turn_3_tiles(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_log_flume_track_on_ride_photo(
+static void PaintLogFlumeTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -825,7 +825,7 @@ static void paint_log_flume_track_on_ride_photo(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-static void paint_log_flume_track_reverser(
+static void PaintLogFlumeTrackReverser(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -852,7 +852,7 @@ static void paint_log_flume_track_reverser(
 
 // Steep Additions added by OpenRCT2
 
-static void log_flume_track_25_down_60(
+static void LogFlumeTrack25Down60(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -892,7 +892,7 @@ static void log_flume_track_25_down_60(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void log_flume_track_60_down(
+static void LogFlumeTrack60Down(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -932,7 +932,7 @@ static void log_flume_track_60_down(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void log_flume_track_60_down_25(
+static void LogFlumeTrack60Down25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -977,44 +977,44 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLogFlume(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return paint_log_flume_track_flat;
+            return PaintLogFlumeTrackFlat;
 
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_log_flume_track_station;
+            return PaintLogFlumeTrackStation;
         case TrackElemType::Up25:
-            return paint_log_flume_track_25_deg_up;
+            return PaintLogFlumeTrack25DegUp;
         case TrackElemType::FlatToUp25:
-            return paint_log_flume_track_flat_to_25_deg_up;
+            return PaintLogFlumeTrackFlatTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return paint_log_flume_track_25_deg_up_to_flat;
+            return PaintLogFlumeTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return paint_log_flume_track_25_deg_down;
+            return PaintLogFlumeTrack25DegDown;
         case TrackElemType::FlatToDown25:
-            return paint_log_flume_track_flat_to_25_deg_down;
+            return PaintLogFlumeTrackFlatTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return paint_log_flume_track_25_deg_down_to_flat;
+            return PaintLogFlumeTrack25DegDownToFlat;
         case TrackElemType::SBendLeft:
-            return paint_log_flume_track_s_bend_left;
+            return PaintLogFlumeTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return paint_log_flume_track_s_bend_right;
+            return PaintLogFlumeTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return paint_log_flume_track_left_quarter_turn_3_tiles;
+            return PaintLogFlumeTrackLeftQuarterTurn3Tiles;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return paint_log_flume_track_right_quarter_turn_3_tiles;
+            return PaintLogFlumeTrackRightQuarterTurn3Tiles;
         case TrackElemType::OnRidePhoto:
-            return paint_log_flume_track_on_ride_photo;
+            return PaintLogFlumeTrackOnRidePhoto;
         case TrackElemType::LogFlumeReverser:
-            return paint_log_flume_track_reverser;
+            return PaintLogFlumeTrackReverser;
 
             // Added by OpenRCT2
         case TrackElemType::Down25ToDown60:
-            return log_flume_track_25_down_60;
+            return LogFlumeTrack25Down60;
         case TrackElemType::Down60:
-            return log_flume_track_60_down;
+            return LogFlumeTrack60Down;
         case TrackElemType::Down60ToDown25:
-            return log_flume_track_60_down_25;
+            return LogFlumeTrack60Down25;
     }
 
     return nullptr;
