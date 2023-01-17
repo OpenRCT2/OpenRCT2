@@ -3283,10 +3283,10 @@ void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
                 }
             }
         }
-        // loc_6CC8BF:
+        // Loc6CC8BF:
         // z = MapGetHighestZ(x >> 5, y >> 5);
     }
-    // loc_6CC91B:
+    // Loc6CC91B:
     const auto& ted = GetTrackElementDescriptor(trackType);
     trackBlock = ted.Block;
     int32_t bx = 0;

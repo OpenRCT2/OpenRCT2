@@ -1810,7 +1810,7 @@ struct SoundIdVolume
     uint8_t volume;
 };
 
-static SoundIdVolume sub_6D7AC0(
+static SoundIdVolume Sub6D7AC0(
     OpenRCT2::Audio::SoundId currentSoundId, uint8_t currentVolume, OpenRCT2::Audio::SoundId targetSoundId,
     uint8_t targetVolume)
 {
@@ -4280,7 +4280,7 @@ void Vehicle::UpdateMotionBoatHire()
 
         for (;;)
         {
-            // loc_6DA7A5
+            // Loc6DA7A5
             var_35++;
             auto loc = BoatLocation.ToTileCentre();
             CoordsXY loc2 = loc;
@@ -4292,7 +4292,7 @@ void Vehicle::UpdateMotionBoatHire()
                 loc2.y -= y;
                 if (loc2.y < 0)
                 {
-                    // loc_6DA81A:
+                    // Loc6DA81A:
                     loc2.y = -loc2.y;
                     bl = 24;
                     if (loc2.y <= loc2.x * 4)
@@ -4322,7 +4322,7 @@ void Vehicle::UpdateMotionBoatHire()
                 loc2.y -= y;
                 if (loc2.y < 0)
                 {
-                    // loc_6DA83D:
+                    // Loc6DA83D:
                     loc2.x = -loc2.x;
                     loc2.y = -loc2.y;
                     bl = 24;
@@ -4350,7 +4350,7 @@ void Vehicle::UpdateMotionBoatHire()
                 }
             }
 
-            // loc_6DA861:
+            // Loc6DA861:
             var_34 = bl;
             loc2.x += loc2.y;
             if (loc2.x <= 12)
@@ -4404,27 +4404,27 @@ void Vehicle::UpdateMotionBoatHire()
             {
                 if (!vehicle_boat_is_location_accessible({ loc2, TrackLocation.z }))
                 {
-                    // loc_6DA939:
+                    // Loc6DA939:
                     auto curRide = GetRide();
                     if (curRide == nullptr)
                         return;
 
-                    bool do_loc_6DAA97 = false;
+                    bool do_Loc6DAA97 = false;
                     if (sub_state != 1)
                     {
-                        do_loc_6DAA97 = true;
+                        do_Loc6DAA97 = true;
                     }
                     else
                     {
                         auto flooredTileLoc = TileCoordsXY(flooredLocation);
                         if (curRide->boat_hire_return_position != flooredTileLoc)
                         {
-                            do_loc_6DAA97 = true;
+                            do_Loc6DAA97 = true;
                         }
                     }
 
-                    // loc_6DAA97:
-                    if (do_loc_6DAA97)
+                    // Loc6DAA97:
+                    if (do_Loc6DAA97)
                     {
                         remaining_distance = 0;
                         if (sprite_direction == var_34)
@@ -4454,7 +4454,7 @@ void Vehicle::UpdateMotionBoatHire()
                     }
                     else
                     {
-                        // loc_6DA9A2:
+                        // Loc6DA9A2:
                         uint16_t tilePart = loc2.x % COORDS_XY_STEP;
                         if (tilePart == COORDS_XY_HALF_TILE)
                         {
@@ -4472,7 +4472,7 @@ void Vehicle::UpdateMotionBoatHire()
                         }
                     }
 
-                    // loc_6DA9D1:
+                    // Loc6DA9D1:
                     remaining_distance = 0;
                     if (!UpdateMotionCollisionDetection({ loc2, z }, nullptr))
                     {
@@ -4497,7 +4497,7 @@ void Vehicle::UpdateMotionBoatHire()
         MoveTo(_vehicleCurPosition);
     }
 
-    // loc_6DAAC9:
+    // Loc6DAAC9:
     {
         int32_t edx = velocity >> 8;
         edx = (edx * edx);
@@ -5541,12 +5541,12 @@ void Vehicle::UpdateSound()
     }
 
     // Friction sound
-    auto soundIdVolume = sub_6D7AC0(sound1_id, sound1_volume, frictionSound.id, frictionSound.volume);
+    auto soundIdVolume = Sub6D7AC0(sound1_id, sound1_volume, frictionSound.id, frictionSound.volume);
     sound1_id = soundIdVolume.id;
     sound1_volume = soundIdVolume.volume;
 
     // Scream sound
-    soundIdVolume = sub_6D7AC0(sound2_id, sound2_volume, screamSound.id, screamSound.volume);
+    soundIdVolume = Sub6D7AC0(sound2_id, sound2_volume, screamSound.id, screamSound.volume);
     sound2_id = soundIdVolume.id;
     sound2_volume = soundIdVolume.volume;
 
@@ -6269,7 +6269,7 @@ int32_t Vehicle::GetSwingAmount() const
         case TrackElemType::LeftQuarterHelixLargeDown:
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-            // loc_6D67E1
+            // Loc6D67E1
             return 14;
 
         case TrackElemType::RightQuarterTurn5Tiles:
@@ -6285,12 +6285,12 @@ int32_t Vehicle::GetSwingAmount() const
         case TrackElemType::RightQuarterHelixLargeDown:
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
-            // loc_6D6804
+            // Loc6D6804
             return -14;
 
         case TrackElemType::SBendLeft:
         case TrackElemType::SBendLeftCovered:
-            // loc_6D67EF
+            // Loc6D67EF
             if (track_progress < 48)
             {
                 return 14;
@@ -6299,7 +6299,7 @@ int32_t Vehicle::GetSwingAmount() const
 
         case TrackElemType::SBendRight:
         case TrackElemType::SBendRightCovered:
-            // loc_6D67CC
+            // Loc6D67CC
             if (track_progress < 48)
             {
                 return -14;
@@ -6318,7 +6318,7 @@ int32_t Vehicle::GetSwingAmount() const
         case TrackElemType::LeftCurvedLiftHill:
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-            // loc_6D67BE
+            // Loc6D67BE
             return 13;
 
         case TrackElemType::RightQuarterTurn3Tiles:
@@ -6333,33 +6333,33 @@ int32_t Vehicle::GetSwingAmount() const
         case TrackElemType::RightCurvedLiftHill:
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
         case TrackElemType::RightBankedQuarterTurn3TileDown25:
-            // loc_6D67B0
+            // Loc6D67B0
             return -13;
 
         case TrackElemType::LeftQuarterTurn1Tile:
         case TrackElemType::LeftQuarterTurn1TileUp60:
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            // loc_6D67A2
+            // Loc6D67A2
             return 12;
 
         case TrackElemType::RightQuarterTurn1Tile:
         case TrackElemType::RightQuarterTurn1TileUp60:
         case TrackElemType::RightQuarterTurn1TileDown60:
-            // loc_6D6794
+            // Loc6D6794
             return -12;
 
         case TrackElemType::LeftEighthToDiag:
         case TrackElemType::LeftEighthToOrthogonal:
         case TrackElemType::LeftEighthBankToDiag:
         case TrackElemType::LeftEighthBankToOrthogonal:
-            // loc_6D67D3
+            // Loc6D67D3
             return 15;
 
         case TrackElemType::RightEighthToDiag:
         case TrackElemType::RightEighthToOrthogonal:
         case TrackElemType::RightEighthBankToDiag:
         case TrackElemType::RightEighthBankToOrthogonal:
-            // loc_6D67F6
+            // Loc6D67F6
             return -15;
     }
     return 0;
@@ -6655,7 +6655,7 @@ void Vehicle::UpdateAdditionalAnimation()
     }
     switch (carEntry->animation)
     {
-        case CAR_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
+        case CAR_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // Loc6D652B
             animationState += _vehicleVelocityF64E08;
             targetFrame = (animationState >> 20) & 3;
             if (animation_frame != targetFrame)
@@ -6694,7 +6694,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_SWAN: // loc_6D6424
+        case CAR_ENTRY_ANIMATION_SWAN: // Loc6D6424
             animationState += _vehicleVelocityF64E08;
             targetFrame = (animationState >> 18) & 2;
             if (animation_frame != targetFrame)
@@ -6703,7 +6703,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_CANOES: // loc_6D6482
+        case CAR_ENTRY_ANIMATION_CANOES: // Loc6D6482
             animationState += _vehicleVelocityF64E08;
             eax = ((animationState >> 13) & 0xFF) * 6;
             targetFrame = (eax >> 8) & 0xFF;
@@ -6713,7 +6713,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
+        case CAR_ENTRY_ANIMATION_ROW_BOATS: // Loc6D64F7
             animationState += _vehicleVelocityF64E08;
             eax = ((animationState >> 13) & 0xFF) * 7;
             targetFrame = (eax >> 8) & 0xFF;
@@ -6723,7 +6723,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
+        case CAR_ENTRY_ANIMATION_WATER_TRICYCLES: // Loc6D6453
             animationState += _vehicleVelocityF64E08;
             targetFrame = (animationState >> 19) & 1;
             if (animation_frame != targetFrame)
@@ -6732,7 +6732,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_OBSERVATION_TOWER: // loc_6D65C3
+        case CAR_ENTRY_ANIMATION_OBSERVATION_TOWER: // Loc6D65C3
             if (animationState <= 0xCCCC)
             {
                 animationState += 0x3333;
@@ -6745,7 +6745,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
+        case CAR_ENTRY_ANIMATION_HELICARS: // Loc6D63F5
             animationState += _vehicleVelocityF64E08;
             targetFrame = (animationState >> 18) & 3;
             if (animation_frame != targetFrame)
@@ -6754,7 +6754,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
+        case CAR_ENTRY_ANIMATION_MONORAIL_CYCLES: // Loc6D64B6
             if (num_peeps != 0)
             {
                 animationState += _vehicleVelocityF64E08;
@@ -6767,7 +6767,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 }
             }
             break;
-        case CAR_ENTRY_ANIMATION_MULTI_DIM_COASTER: // loc_6D65E1
+        case CAR_ENTRY_ANIMATION_MULTI_DIM_COASTER: // Loc6D65E1
             if (seat_rotation != target_seat_rotation)
             {
                 if (animationState <= 0xCCCC)
@@ -7538,7 +7538,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
         }
     }
 
-    // loc_6DB500
+    // Loc6DB500
     // Update VEHICLE_UPDATE_FLAG_ON_LIFT_HILL
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
     if (tileElement->AsTrack()->HasChain())
@@ -7576,7 +7576,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
 bool Vehicle::UpdateTrackMotionForwards(CarEntry* carEntry, const Ride& curRide, const rct_ride_entry& rideEntry)
 {
     EntityId otherVehicleIndex = EntityId::GetNull();
-loc_6DAEB9:
+Loc6DAEB9:
     auto trackType = GetTrackType();
     if (trackType == TrackElemType::HeartLineTransferUp || trackType == TrackElemType::HeartLineTransferDown)
     {
@@ -7689,7 +7689,7 @@ loc_6DAEB9:
     track_progress = newTrackProgress;
     UpdateHandleWaterSplash();
 
-    // loc_6DB706
+    // Loc6DB706
     const auto moveInfo = GetMoveInfo();
     trackType = GetTrackType();
     uint8_t moveInfovehicleSpriteType;
@@ -7728,7 +7728,7 @@ loc_6DAEB9:
             nextVehiclePosition.y = y + moveInfo2->y;
         }
 
-        // loc_6DB8A5
+        // Loc6DB8A5
         remaining_distance -= SubpositionTranslationDistances[remainingDistanceFlags];
         _vehicleCurPosition = nextVehiclePosition;
         sprite_direction = moveInfo->direction;
@@ -7794,7 +7794,7 @@ loc_6DAEB9:
         }
     }
 
-    // loc_6DB928
+    // Loc6DB928
     if (remaining_distance < 0x368A)
     {
         return true;
@@ -7802,7 +7802,7 @@ loc_6DAEB9:
 
     acceleration += AccelerationFromPitch[moveInfovehicleSpriteType];
     _vehicleUnkF64E10++;
-    goto loc_6DAEB9;
+    goto Loc6DAEB9;
 }
 
 static PitchAndRoll PitchAndRollEnd(const Ride& curRide, bool useInvertedSprites, uint16_t trackType, TileElement* tileElement)
@@ -7826,7 +7826,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
 
     bool nextTileBackwards = true;
     int32_t direction = 0;
-    // loc_6DBB08:;
+    // Loc6DBB08:;
     auto trackPos = CoordsXYZ{ TrackLocation.x, TrackLocation.y, 0 };
 
     switch (TrackSubposition)
@@ -7851,7 +7851,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
 
     if (nextTileBackwards)
     {
-        // loc_6DBB7E:;
+        // Loc6DBB7E:;
         track_begin_end trackBeginEnd;
         if (!TrackBlockGetPrevious({ trackPos, tileElement }, &trackBeginEnd))
         {
@@ -7886,7 +7886,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
     }
     else
     {
-        // loc_6DBB4F:;
+        // Loc6DBB4F:;
         CoordsXYE input;
         CoordsXYE output;
         int32_t outputZ{};
@@ -7902,7 +7902,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
         trackPos = { output, outputZ };
     }
 
-    // loc_6DBC3B:
+    // Loc6DBC3B:
     TrackLocation = trackPos;
 
     if (TrackSubposition >= VehicleTrackSubposition::ChairliftGoingOut
@@ -8019,7 +8019,7 @@ bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, const Ride& curRide
             }
         }
 
-        // loc_6DBD42
+        // Loc6DBD42
         track_progress = newTrackProgress;
         uint8_t moveInfoVehicleSpriteType;
         {
@@ -8103,7 +8103,7 @@ bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, const Ride& curRide
             }
         }
 
-        // loc_6DBE3F
+        // Loc6DBE3F
         if (remaining_distance >= 0)
         {
             return true;
@@ -8143,24 +8143,24 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const rct_ri
     _vehicleCurPosition.z = z;
     Invalidate();
     if (remaining_distance < 0)
-        goto loc_6DCA9A;
+        goto Loc6DCA9A;
 
-loc_6DC462:
+Loc6DC462:
     if (var_D3 == 0)
     {
-        goto loc_6DC476;
+        goto Loc6DC476;
     }
     var_D3--;
-    goto loc_6DC985;
+    goto Loc6DC985;
 
-loc_6DC476:
+Loc6DC476:
     if (mini_golf_flags & MiniGolfFlag::Flag2)
     {
         uint8_t nextFrame = animation_frame + 1;
         if (nextFrame < MiniGolfPeepAnimationLengths[EnumValue(mini_golf_current_animation)])
         {
             animation_frame = nextFrame;
-            goto loc_6DC985;
+            goto Loc6DC985;
         }
         mini_golf_flags &= ~MiniGolfFlag::Flag2;
     }
@@ -8175,11 +8175,11 @@ loc_6DC476:
         }
         if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag0) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
-            goto loc_6DC985;
+            goto Loc6DC985;
         }
         if (vEDI->var_D3 != 0)
         {
-            goto loc_6DC985;
+            goto Loc6DC985;
         }
         vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag0;
         mini_golf_flags &= ~MiniGolfFlag::Flag0;
@@ -8195,11 +8195,11 @@ loc_6DC476:
         }
         if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag1) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
-            goto loc_6DC985;
+            goto Loc6DC985;
         }
         if (vEDI->var_D3 != 0)
         {
-            goto loc_6DC985;
+            goto Loc6DC985;
         }
         vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag1;
         mini_golf_flags &= ~MiniGolfFlag::Flag1;
@@ -8222,7 +8222,7 @@ loc_6DC476:
                 continue;
             if (vEDI->TrackLocation != TrackLocation)
                 continue;
-            goto loc_6DC985;
+            goto Loc6DC985;
         }
 
         mini_golf_flags |= MiniGolfFlag::Flag4;
@@ -8235,7 +8235,7 @@ loc_6DC476:
         if (track_progress + 1 < trackTotalProgress)
         {
             track_progress += 1;
-            goto loc_6DC743;
+            goto Loc6DC743;
         }
     }
 
@@ -8247,7 +8247,7 @@ loc_6DC476:
         CoordsXYE input = { TrackLocation, tileElement };
         if (!TrackBlockGetNext(&input, &output, &outZ, &outDirection))
         {
-            goto loc_6DC9BC;
+            goto Loc6DC9BC;
         }
         tileElement = output.element;
         trackPos = { output.x, output.y, outZ };
@@ -8257,7 +8257,7 @@ loc_6DC476:
     if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
         != TrackPitchAndRollEnd(GetTrackType()))
     {
-        goto loc_6DC9BC;
+        goto Loc6DC9BC;
     }
 
     {
@@ -8293,7 +8293,7 @@ loc_6DC476:
     brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     track_progress = 0;
 
-loc_6DC743:
+Loc6DC743:
     if (!IsHead())
     {
         animation_frame++;
@@ -8312,7 +8312,7 @@ loc_6DC743:
         }
         switch (MiniGolfState(moveInfo->y))
         {
-            case MiniGolfState::Unk0: // loc_6DC7B4
+            case MiniGolfState::Unk0: // Loc6DC7B4
                 if (!IsHead())
                 {
                     mini_golf_flags |= MiniGolfFlag::Flag3;
@@ -8333,21 +8333,21 @@ loc_6DC743:
                 }
                 track_progress++;
                 break;
-            case MiniGolfState::Unk1: // loc_6DC7ED
+            case MiniGolfState::Unk1: // Loc6DC7ED
                 LOG_ERROR("Unused move info...");
                 assert(false);
                 var_D3 = static_cast<uint8_t>(moveInfo->z);
                 track_progress++;
                 break;
-            case MiniGolfState::Unk2: // loc_6DC800
+            case MiniGolfState::Unk2: // Loc6DC800
                 mini_golf_flags |= MiniGolfFlag::Flag0;
                 track_progress++;
                 break;
-            case MiniGolfState::Unk3: // loc_6DC810
+            case MiniGolfState::Unk3: // Loc6DC810
                 mini_golf_flags |= MiniGolfFlag::Flag1;
                 track_progress++;
                 break;
-            case MiniGolfState::Unk4: // loc_6DC820
+            case MiniGolfState::Unk4: // Loc6DC820
             {
                 auto animation = MiniGolfAnimation(moveInfo->z);
                 // When the ride is closed occasionally the peep is removed
@@ -8376,11 +8376,11 @@ loc_6DC743:
                 track_progress++;
                 break;
             }
-            case MiniGolfState::Unk5: // loc_6DC87A
+            case MiniGolfState::Unk5: // Loc6DC87A
                 mini_golf_flags |= MiniGolfFlag::Flag2;
                 track_progress++;
                 break;
-            case MiniGolfState::Unk6: // loc_6DC88A
+            case MiniGolfState::Unk6: // Loc6DC88A
                 mini_golf_flags &= ~MiniGolfFlag::Flag4;
                 mini_golf_flags |= MiniGolfFlag::Flag5;
                 track_progress++;
@@ -8392,7 +8392,7 @@ loc_6DC743:
         }
     }
 
-    // loc_6DC8A1
+    // Loc6DC8A1
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
                  TrackLocation.z + moveInfo->z + GetRideTypeDescriptor(curRide.type).Heights.VehicleZOffset };
 
@@ -8425,35 +8425,35 @@ loc_6DC743:
             UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex);
         }
     }
-    goto loc_6DC99A;
+    goto Loc6DC99A;
 
-loc_6DC985:
+Loc6DC985:
     remaining_distance -= 0x368A;
     if (remaining_distance < 0)
     {
         remaining_distance = 0;
     }
 
-loc_6DC99A:
+Loc6DC99A:
     if (remaining_distance < 0x368A)
     {
-        goto loc_6DCDE4;
+        goto Loc6DCDE4;
     }
     acceleration = AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
-    goto loc_6DC462;
+    goto Loc6DC462;
 
-loc_6DC9BC:
+Loc6DC9BC:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
     _vehicleVelocityF64E0C -= remaining_distance + 1;
     remaining_distance = -1;
-    goto loc_6DCD2B;
+    goto Loc6DCD2B;
 
-loc_6DCA9A:
+Loc6DCA9A:
     if (track_progress != 0)
     {
         track_progress -= 1;
-        goto loc_6DCC2C;
+        goto Loc6DCC2C;
     }
 
     tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
@@ -8461,7 +8461,7 @@ loc_6DCA9A:
         track_begin_end trackBeginEnd;
         if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
         {
-            goto loc_6DC9BC;
+            goto Loc6DC9BC;
         }
         trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         direction = trackBeginEnd.begin_direction;
@@ -8471,7 +8471,7 @@ loc_6DCA9A:
     if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
         != TrackPitchAndRollEnd(GetTrackType()))
     {
-        goto loc_6DCD4A;
+        goto Loc6DCD4A;
     }
 
     {
@@ -8507,7 +8507,7 @@ loc_6DCA9A:
     // There are two bytes before the move info list
     track_progress = GetTrackProgress();
 
-loc_6DCC2C:
+Loc6DCC2C:
     moveInfo = GetMoveInfo();
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
                  TrackLocation.z + moveInfo->z + GetRideTypeDescriptor(curRide.type).Heights.VehicleZOffset };
@@ -8540,27 +8540,27 @@ loc_6DCC2C:
             otherVehicleIndex = EntityId::FromUnderlying(var_44); // Possibly wrong?.
             if (UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex))
             {
-                goto loc_6DCD6B;
+                goto Loc6DCD6B;
             }
         }
     }
 
-loc_6DCD2B:
+Loc6DCD2B:
     if (remaining_distance >= 0)
     {
-        goto loc_6DCDE4;
+        goto Loc6DCDE4;
     }
     acceleration += AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
-    goto loc_6DCA9A;
+    goto Loc6DCA9A;
 
-loc_6DCD4A:
+Loc6DCD4A:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
     remaining_distance = 0x368A;
-    goto loc_6DC99A;
+    goto Loc6DC99A;
 
-loc_6DCD6B:
+Loc6DCD6B:
     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
     remaining_distance = 0x368A;
     {
@@ -8581,9 +8581,9 @@ loc_6DCD6B:
         vEBP->velocity = vEDI->velocity >> 1;
     }
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
-    goto loc_6DC99A;
+    goto Loc6DC99A;
 
-loc_6DCDE4:
+Loc6DCDE4:
     MoveTo(_vehicleCurPosition);
 
     Loc6DCE02(curRide);
@@ -8946,7 +8946,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         carEntry = car->Entry();
         if (carEntry == nullptr)
         {
-            goto loc_6DBF3E;
+            goto Loc6DBF3E;
         }
 
         // Swinging cars
@@ -8999,7 +8999,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             if (car->remaining_distance < 0x368A)
             {
                 // Location found
-                goto loc_6DBF3E;
+                goto Loc6DBF3E;
             }
             if (car->UpdateTrackMotionForwards(carEntry, *curRide, *rideEntry))
             {
@@ -9014,13 +9014,13 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             _vehicleUnkF64E10++;
             continue;
         }
-        // loc_6DBF20
+        // Loc6DBF20
         car->MoveTo(_vehicleCurPosition);
 
-    loc_6DBF3E:
+    Loc6DBF3E:
         car->Sub6DBF3E();
 
-        // loc_6DC0F7
+        // Loc6DC0F7
         if (car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
@@ -9044,7 +9044,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             spriteId = car->prev_vehicle_on_ride;
         }
     }
-    // loc_6DC144
+    // Loc6DC144
     vehicle = gCurrentVehicle;
 
     carEntry = vehicle->Entry();

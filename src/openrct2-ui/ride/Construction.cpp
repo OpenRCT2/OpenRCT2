@@ -18,7 +18,7 @@
  *
  *  rct2: 0x006B4800
  */
-void ride_construct_new(RideSelection listItem)
+void RideConstructNew(RideSelection listItem)
 {
     int32_t rideEntryIndex = RideGetEntryIndex(listItem.Type, listItem.EntryIndex);
     int32_t colour1 = RideGetRandomColourPresetIndex(listItem.Type);

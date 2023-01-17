@@ -752,7 +752,7 @@ static bool FootpathDisconnectQueueFromPath(const CoordsXY& footpathPos, TileEle
  *  rct2: 0x006A6D7E
  */
 
-static void loc_6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, bool query)
+static void Loc6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, bool query)
 {
     if ((initialTileElement)->GetType() == TileElementType::Path)
     {
@@ -764,7 +764,7 @@ static void loc_6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction
     }
 }
 
-static void loc_6A6F1F(
+static void Loc6A6F1F(
     const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* tileElement, TileElement* initialTileElement,
     const CoordsXY& targetPos, int32_t flags, bool query, rct_neighbour_list* neighbourList)
 {
@@ -814,10 +814,10 @@ static void loc_6A6F1F(
         FootpathInterruptPeeps({ targetPos, tileElement->GetBaseZ() });
     }
     MapInvalidateElement(targetPos, tileElement);
-    loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+    Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
 }
 
-static void loc_6A6D7E(
+static void Loc6A6D7E(
     const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, int32_t flags, bool query,
     rct_neighbour_list* neighbourList)
 {
@@ -828,7 +828,7 @@ static void loc_6A6D7E(
         {
             FootpathNeighbourListPush(neighbourList, 7, direction, RideId::GetNull(), StationIndex::GetNull());
         }
-        loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+        Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
     }
     else
     {
@@ -844,7 +844,7 @@ static void loc_6A6D7E(
                     {
                         if (!tileElement->AsPath()->IsSloped() || tileElement->AsPath()->GetSlopeDirection() == direction)
                         {
-                            loc_6A6F1F(
+                            Loc6A6F1F(
                                 initialTileElementPos, direction, tileElement, initialTileElement, targetPos, flags, query,
                                 neighbourList);
                         }
@@ -855,7 +855,7 @@ static void loc_6A6D7E(
                         if (tileElement->AsPath()->IsSloped()
                             && tileElement->AsPath()->GetSlopeDirection() == DirectionReverse(direction))
                         {
-                            loc_6A6F1F(
+                            Loc6A6F1F(
                                 initialTileElementPos, direction, tileElement, initialTileElement, targetPos, flags, query,
                                 neighbourList);
                         }
@@ -894,7 +894,7 @@ static void loc_6A6D7E(
                             FootpathNeighbourListPush(
                                 neighbourList, 1, direction, tileElement->AsTrack()->GetRideIndex(), StationIndex::GetNull());
                         }
-                        loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+                        Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
                         return;
                     }
                     break;
@@ -917,7 +917,7 @@ static void loc_6A6D7E(
                                     FootpathQueueChainPush(tileElement->AsEntrance()->GetRideIndex());
                                 }
                             }
-                            loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+                            Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
                             return;
                         }
                     }
@@ -930,9 +930,9 @@ static void loc_6A6D7E(
     }
 }
 
-// TODO: Change this into a simple check that validates if the direction should be fully checked with loc_6A6D7E and move the
-// calling of loc_6A6D7E into the parent function.
-static void loc_6A6C85(
+// TODO: Change this into a simple check that validates if the direction should be fully checked with Loc6A6D7E and move the
+// calling of Loc6A6D7E into the parent function.
+static void Loc6A6C85(
     const CoordsXYE& tileElementPos, int32_t direction, int32_t flags, bool query, rct_neighbour_list* neighbourList)
 {
     if (query
@@ -992,7 +992,7 @@ static void loc_6A6C85(
         }
     }
 
-    loc_6A6D7E(pos, direction, tileElementPos.element, flags, query, neighbourList);
+    Loc6A6D7E(pos, direction, tileElementPos.element, flags, query, neighbourList);
 }
 
 /**
@@ -1011,7 +1011,7 @@ void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement,
     FootpathUpdateQueueEntranceBanner(footpathPos, tileElement);
     for (Direction direction : ALL_DIRECTIONS)
     {
-        loc_6A6C85({ footpathPos, tileElement }, direction, flags, true, &neighbourList);
+        Loc6A6C85({ footpathPos, tileElement }, direction, flags, true, &neighbourList);
     }
 
     FoopathNeighbourListSort(&neighbourList);
@@ -1047,7 +1047,7 @@ void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement,
 
     while (FootpathNeighbourListPop(&neighbourList, &neighbour))
     {
-        loc_6A6C85({ footpathPos, tileElement }, neighbour.direction, flags, false, nullptr);
+        Loc6A6C85({ footpathPos, tileElement }, neighbour.direction, flags, false, nullptr);
     }
 
     if (tileElement->GetType() == TileElementType::Path)
@@ -1860,7 +1860,7 @@ void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos)
 
         auto height = tileElement->GetBaseZ();
 
-        // pathList is a list of elements, set by sub_6A8ACF adjacent to x,y
+        // pathList is a list of elements, set by Sub6A8ACF adjacent to x,y
         // Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
         std::array<TileElement*, 8> pathList;
         for (std::size_t direction = 0; direction < pathList.size(); ++direction)

@@ -264,7 +264,7 @@ public:
     {
         InitWidgets();
 
-        sub_6AB211();
+        Sub6AB211();
         ResetSelectedObjectCountAndSize();
 
         widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;

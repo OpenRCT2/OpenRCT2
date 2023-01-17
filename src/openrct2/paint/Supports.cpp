@@ -77,7 +77,7 @@ static constexpr const uint8_t _97AF32[] = {
 };
 
 /** rct2: 0x0097B052, 0x0097B053 */
-static constexpr const CoordsXY loc_97B052[] = {
+static constexpr const CoordsXY Loc97B052[] = {
     { -15,  -1 },
     {   0,  -2 },
     {  -2,  -1 },
@@ -845,8 +845,8 @@ bool MetalASupportsPaintSetup(
 
         int8_t xOffset = SupportBoundBoxes[segment].x;
         int8_t yOffset = SupportBoundBoxes[segment].y;
-        xOffset += loc_97B052[ebp].x;
-        yOffset += loc_97B052[ebp].y;
+        xOffset += Loc97B052[ebp].x;
+        yOffset += Loc97B052[ebp].y;
 
         int16_t boundBoxLengthX = _97B062[ebp].x;
         int16_t boundBoxLengthY = _97B062[ebp].y;
@@ -1051,7 +1051,7 @@ bool MetalBSupportsPaintSetup(
 
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]),
-            { SupportBoundBoxes[originalSegment] + loc_97B052[ebp], baseHeight }, { _97B062[ebp], 1 });
+            { SupportBoundBoxes[originalSegment] + Loc97B052[ebp], baseHeight }, { _97B062[ebp], 1 });
     }
 
     int32_t si = baseHeight;
@@ -1437,7 +1437,7 @@ bool PathBSupportsPaintSetup(
         baseHeight += z;
     }
 
-    // loc_6A34D8
+    // Loc6A34D8
     supportSegments[segment].height = 0xFFFF;
     supportSegments[segment].slope = 0x20;
 

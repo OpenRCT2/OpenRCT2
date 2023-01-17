@@ -1238,7 +1238,7 @@ private:
     }
 
     /**
-     * The call to GfxFillRect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
+     * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
      * but it doesn't look like it's ever necessary here so the call was removed.
      */
     void PaintHudRectangle(rct_drawpixelinfo* dpi)

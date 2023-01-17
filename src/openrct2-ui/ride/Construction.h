@@ -11,4 +11,4 @@
 
 #include <openrct2/ride/RideTypes.h>
 
-void ride_construct_new(RideSelection listItem);
+void RideConstructNew(RideSelection listItem);

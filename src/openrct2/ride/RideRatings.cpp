@@ -890,7 +890,7 @@ static void RideRatingsCalculateValue(Ride& ride)
 
 /**
  * I think this function computes ride upkeep? Though it is weird that the
- *  rct2: sub_65E621
+ *  rct2: Sub65E621
  * inputs
  * - edi: ride ptr
  */

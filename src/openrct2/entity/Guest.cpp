@@ -439,7 +439,7 @@ static void peep_update_hunger(Guest* peep);
 static void peep_decide_whether_to_leave_park(Guest* peep);
 static void peep_leave_park(Guest* peep);
 static void PeepHeadForNearestRideWithFlags(Guest* peep, bool considerOnlyCloseRides, int64_t rideTypeFlags);
-bool loc_690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
+bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 template<> bool EntityBase::Is<Guest>() const
 {
@@ -733,7 +733,7 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
     return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
 }
 
-void Guest::loc_68F9F3()
+void Guest::Loc68F9F3()
 {
     // Idle peep happiness tends towards 127 (50%).
     if (HappinessTarget >= 128)
@@ -778,7 +778,7 @@ void Guest::loc_68F9F3()
     }
 }
 
-void Guest::loc_68FA89()
+void Guest::Loc68FA89()
 {
     // 68FA89
     if (TimeToConsume == 0 && HasFoodOrDrink())
@@ -1015,8 +1015,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     HappinessTarget = std::max(HappinessTarget - 128, 0);
                     peep_leave_park(this);
                     peep_update_hunger(this);
-                    loc_68F9F3();
-                    loc_68FA89();
+                    Loc68F9F3();
+                    Loc68FA89();
                     return;
                 }
             }
@@ -1206,10 +1206,10 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 break;
         }
 
-        loc_68F9F3();
+        Loc68F9F3();
     }
 
-    loc_68FA89();
+    Loc68FA89();
 }
 
 /**
@@ -6237,7 +6237,7 @@ static bool peep_should_watch_ride(TileElement* tileElement)
     return true;
 }
 
-bool loc_690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
+bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
 {
     auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
     if (ride == nullptr)
@@ -6381,7 +6381,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         {
             if (peep_should_watch_ride(tileElement))
             {
-                return loc_690FD0(peep, rideToView, rideSeatToView, tileElement);
+                return Loc690FD0(peep, rideToView, rideSeatToView, tileElement);
             }
         }
 
@@ -6498,7 +6498,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         {
             if (peep_should_watch_ride(tileElement))
             {
-                return loc_690FD0(peep, rideToView, rideSeatToView, tileElement);
+                return Loc690FD0(peep, rideToView, rideSeatToView, tileElement);
             }
         }
 
@@ -6614,7 +6614,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
         {
             if (peep_should_watch_ride(tileElement))
             {
-                return loc_690FD0(peep, rideToView, rideSeatToView, tileElement);
+                return Loc690FD0(peep, rideToView, rideSeatToView, tileElement);
             }
         }
 
