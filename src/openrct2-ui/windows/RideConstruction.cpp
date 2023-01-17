@@ -168,7 +168,7 @@ static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_450,     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_495,
 };
 
-static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type);
+static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type);
 
 static int32_t RideGetAlternativeType(const Ride& ride)
 {
@@ -2389,8 +2389,7 @@ private:
                 auto currentRide = GetRide(_currentRideIndex);
                 if (currentRide != nullptr)
                 {
-                    window_ride_construction_mouseup_demolish_next_piece(
-                        { *newCoords, static_cast<Direction>(direction) }, type);
+                    WindowRideConstructionMouseUpDemolishNextPiece({ *newCoords, static_cast<Direction>(direction) }, type);
                 }
             }
         });
@@ -2806,7 +2805,7 @@ static void CloseConstructWindowOnCompletion(const Ride& ride)
     }
 }
 
-static void window_ride_construction_do_entrance_exit_check()
+static void WindowRideConstructionDoEntranceExitCheck()
 {
     auto w = WindowFindByClass(WindowClass::RideConstruction);
     auto ride = GetRide(_currentRideIndex);
@@ -2864,7 +2863,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
             _rideConstructionState = RideConstructionState::State0;
         }
 
-        window_ride_construction_do_entrance_exit_check();
+        WindowRideConstructionDoEntranceExitCheck();
         WindowRideConstructionUpdateActiveElements();
     }
 
@@ -4545,7 +4544,7 @@ void WindowRideConstructionKeyboardShortcutDemolishCurrent()
     WindowEventMouseUpCall(w, WIDX_DEMOLISH);
 }
 
-static void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piecePos, int32_t type)
+static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type)
 {
     if (_gotoStartPlacementMode)
     {
