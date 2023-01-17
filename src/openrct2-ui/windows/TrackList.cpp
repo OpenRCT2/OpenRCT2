@@ -114,7 +114,7 @@ private:
             if (listIndex == 0)
             {
                 Close();
-                ride_construct_new(_window_track_list_item);
+                RideConstructNew(_window_track_list_item);
                 return;
             }
             listIndex--;

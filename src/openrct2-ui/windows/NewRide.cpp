@@ -534,7 +534,7 @@ private:
             return;
         }
 
-        ride_construct_new(item);
+        RideConstructNew(item);
     }
 
     int32_t GetNumTrackDesigns(RideSelection item)
