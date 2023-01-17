@@ -1364,7 +1364,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
                 if (w2 == nullptr)
                 {
                     auto intent = Intent(WindowClass::Peep);
-                    intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                    intent.PutExtra(INTENT_EXTRA_PEEP, peep);
                     ContextOpenIntent(&intent);
                     openedPeepWindow = 1;
 
@@ -3754,7 +3754,7 @@ static void WindowRideLocateMechanic(rct_window* w)
     else
     {
         auto intent = Intent(WindowClass::Peep);
-        intent.putExtra(INTENT_EXTRA_PEEP, mechanic);
+        intent.PutExtra(INTENT_EXTRA_PEEP, mechanic);
         ContextOpenIntent(&intent);
     }
 }
@@ -5377,10 +5377,10 @@ static void WindowRideMeasurementsDesignSave(rct_window* w)
 
     auto trackName = ride->GetName();
     auto intent = Intent(WindowClass::Loadsave);
-    intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
-    intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
-    intent.putExtra(INTENT_EXTRA_PATH, trackName);
-    intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(&TrackDesignCallback));
+    intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
+    intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
+    intent.PutExtra(INTENT_EXTRA_PATH, trackName);
+    intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(&TrackDesignCallback));
 
     ContextOpenIntent(&intent);
 }
@@ -6854,24 +6854,24 @@ static void WindowRideCustomerMouseup(rct_window* w, WidgetIndex widgetIndex)
         case WIDX_SHOW_GUESTS_THOUGHTS:
         {
             auto intent = Intent(WindowClass::GuestList);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingAboutRide));
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
+            intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingAboutRide));
+            intent.PutExtra(INTENT_EXTRA_RIDE_ID, w->number);
             ContextOpenIntent(&intent);
             break;
         }
         case WIDX_SHOW_GUESTS_ON_RIDE:
         {
             auto intent = Intent(WindowClass::GuestList);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsOnRide));
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
+            intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsOnRide));
+            intent.PutExtra(INTENT_EXTRA_RIDE_ID, w->number);
             ContextOpenIntent(&intent);
             break;
         }
         case WIDX_SHOW_GUESTS_QUEUING:
         {
             auto intent = Intent(WindowClass::GuestList);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsInQueue));
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
+            intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsInQueue));
+            intent.PutExtra(INTENT_EXTRA_RIDE_ID, w->number);
             ContextOpenIntent(&intent);
             break;
         }

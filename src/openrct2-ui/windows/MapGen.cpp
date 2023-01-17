@@ -1205,8 +1205,8 @@ static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex)
         case WIDX_HEIGHTMAP_SELECT:
         {
             auto intent = Intent(WindowClass::Loadsave);
-            intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowMapgenHeightmapLoadsaveCallback));
+            intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
+            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowMapgenHeightmapLoadsaveCallback));
             ContextOpenIntent(&intent);
             return;
         }

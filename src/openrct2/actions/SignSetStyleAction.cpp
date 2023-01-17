@@ -113,7 +113,7 @@ GameActions::Result SignSetStyleAction::Execute() const
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-    intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
+    intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
     ContextBroadcastIntent(&intent);
 
     return GameActions::Result();

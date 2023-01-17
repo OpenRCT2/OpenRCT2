@@ -366,7 +366,7 @@ static void Select(const char* path)
         {
             SetAndSaveConfigPath(gConfigGeneral.LastSaveTrackDirectory, pathBuffer);
             auto intent = Intent(WindowClass::InstallTrack);
-            intent.putExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
+            intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
             ContextOpenIntent(&intent);
             WindowCloseByClass(WindowClass::Loadsave);
             InvokeCallback(MODAL_RESULT_OK, pathBuffer);

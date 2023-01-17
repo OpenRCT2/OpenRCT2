@@ -366,7 +366,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         case News::ItemType::Ride:
         {
             auto intent = Intent(WindowClass::Ride);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
+            intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
             ContextOpenIntent(&intent);
             break;
         }
@@ -377,7 +377,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             if (peep != nullptr)
             {
                 auto intent = Intent(WindowClass::Peep);
-                intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                intent.PutExtra(INTENT_EXTRA_PEEP, peep);
                 ContextOpenIntent(&intent);
             }
             break;
@@ -394,22 +394,22 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             if (item.type == Research::EntryType::Ride)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
-                intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
-                intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entryIndex);
+                intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
+                intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entryIndex);
                 ContextOpenIntent(&intent);
                 break;
             }
 
             auto intent = Intent(INTENT_ACTION_NEW_SCENERY);
-            intent.putExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX, item.entryIndex);
+            intent.PutExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX, item.entryIndex);
             ContextOpenIntent(&intent);
             break;
         }
         case News::ItemType::Peeps:
         {
             auto intent = Intent(WindowClass::GuestList);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
+            intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
+            intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
             ContextOpenIntent(&intent);
             break;
         }

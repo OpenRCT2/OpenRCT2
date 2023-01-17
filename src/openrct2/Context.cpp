@@ -735,9 +735,9 @@ namespace OpenRCT2
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
                 auto intent = Intent(WindowClass::ObjectLoadError);
-                intent.putExtra(INTENT_EXTRA_PATH, path);
-                intent.putExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
-                intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
+                intent.PutExtra(INTENT_EXTRA_PATH, path);
+                intent.PutExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
+                intent.PutExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
 
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->OpenIntent(&intent);

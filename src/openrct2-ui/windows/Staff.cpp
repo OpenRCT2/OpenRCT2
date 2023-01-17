@@ -381,7 +381,7 @@ private:
             case WIDX_FIRE:
             {
                 auto intent = Intent(WindowClass::FirePrompt);
-                intent.putExtra(INTENT_EXTRA_PEEP, staff);
+                intent.PutExtra(INTENT_EXTRA_PEEP, staff);
                 ContextOpenIntent(&intent);
                 break;
             }

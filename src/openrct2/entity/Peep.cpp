@@ -1654,7 +1654,7 @@ void peep_set_map_tooltip(Peep* peep)
     }
 
     auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-    intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+    intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
     ContextBroadcastIntent(&intent);
 }
 

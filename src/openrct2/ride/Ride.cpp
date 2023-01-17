@@ -2368,7 +2368,7 @@ static void ride_track_set_map_tooltip(TileElement* tileElement)
         ride->FormatNameTo(ft);
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-        intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
         ContextBroadcastIntent(&intent);
     }
 }
@@ -2384,7 +2384,7 @@ static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
         ride->FormatNameTo(ft);
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-        intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
         ContextBroadcastIntent(&intent);
     }
 }
@@ -2408,7 +2408,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
         ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-        intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
         ContextBroadcastIntent(&intent);
     }
 }
@@ -2455,7 +2455,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
             }
             ft.Add<uint16_t>(queueLength);
             auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-            intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+            intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
             ContextBroadcastIntent(&intent);
         }
         else
@@ -2475,7 +2475,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
 
             ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
             auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-            intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+            intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
             ContextBroadcastIntent(&intent);
         }
     }
@@ -5075,7 +5075,7 @@ void Ride::Crash(uint8_t vehicleIndex)
     {
         // Open ride window for crashed vehicle
         auto intent = Intent(WD_VEHICLE);
-        intent.putExtra(INTENT_EXTRA_VEHICLE, vehicle);
+        intent.PutExtra(INTENT_EXTRA_VEHICLE, vehicle);
         rct_window* w = ContextOpenIntent(&intent);
 
         rct_viewport* viewport = WindowGetViewport(w);

@@ -137,7 +137,7 @@ private:
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
             auto intent = Intent(WindowClass::ManageTrackDesign);
-            intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
+            intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
             ContextOpenIntent(&intent);
         }
         else
@@ -149,7 +149,7 @@ private:
             }
 
             auto intent = Intent(WindowClass::TrackDesignPlace);
-            intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
+            intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
             ContextOpenIntent(&intent);
         }
     }

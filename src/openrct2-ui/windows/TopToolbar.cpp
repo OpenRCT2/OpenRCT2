@@ -582,8 +582,8 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
                     {
                         auto intent = Intent(WindowClass::Loadsave);
-                        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                        intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
+                        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                        intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
                         ContextOpenIntent(&intent);
                     }
                     else

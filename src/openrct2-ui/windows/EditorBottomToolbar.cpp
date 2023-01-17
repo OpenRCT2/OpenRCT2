@@ -261,8 +261,8 @@ private:
 
         WindowCloseAll();
         auto intent = Intent(WindowClass::Loadsave);
-        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
-        intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
+        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
+        intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
         ContextOpenIntent(&intent);
     }
 

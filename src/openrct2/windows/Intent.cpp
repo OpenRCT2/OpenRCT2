@@ -28,7 +28,7 @@ Intent::Intent(IntentAction intentAction)
 {
 }
 
-Intent* Intent::putExtra(uint32_t key, uint32_t value)
+Intent* Intent::PutExtra(uint32_t key, uint32_t value)
 {
     IntentData data = {};
     data.intVal.unsignedInt = value;
@@ -39,7 +39,7 @@ Intent* Intent::putExtra(uint32_t key, uint32_t value)
     return this;
 }
 
-Intent* Intent::putExtra(uint32_t key, void* value)
+Intent* Intent::PutExtra(uint32_t key, void* value)
 {
     IntentData data = {};
     data.pointerVal = value;
@@ -50,7 +50,7 @@ Intent* Intent::putExtra(uint32_t key, void* value)
     return this;
 }
 
-Intent* Intent::putExtra(uint32_t key, int32_t value)
+Intent* Intent::PutExtra(uint32_t key, int32_t value)
 {
     IntentData data = {};
     data.intVal.signedInt = value;
@@ -61,7 +61,7 @@ Intent* Intent::putExtra(uint32_t key, int32_t value)
     return this;
 }
 
-Intent* Intent::putExtra(uint32_t key, std::string value)
+Intent* Intent::PutExtra(uint32_t key, std::string value)
 {
     IntentData data = {};
     data.stringVal = std::move(value);
@@ -72,7 +72,7 @@ Intent* Intent::putExtra(uint32_t key, std::string value)
     return this;
 }
 
-Intent* Intent::putExtra(uint32_t key, close_callback value)
+Intent* Intent::PutExtra(uint32_t key, close_callback value)
 {
     IntentData data = {};
     data.closeCallbackVal = value;

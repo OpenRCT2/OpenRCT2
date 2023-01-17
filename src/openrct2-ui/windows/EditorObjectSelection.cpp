@@ -411,7 +411,7 @@ public:
                 Invalidate();
 
                 auto intent = Intent(WindowClass::Loadsave);
-                intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
+                intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
                 ContextOpenIntent(&intent);
                 break;
             }
@@ -1509,8 +1509,8 @@ private:
         auto rideType = ride_entry->GetFirstNonNullRideType();
 
         auto intent = Intent(WindowClass::TrackDesignList);
-        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
-        intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
+        intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
+        intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
         ContextOpenIntent(&intent);
     }
 };

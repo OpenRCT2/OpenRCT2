@@ -5696,7 +5696,7 @@ void Vehicle::SetMapToolbar() const
         ft.Add<uint16_t>(vehicleIndex + 1);
         curRide->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-        intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
         ContextBroadcastIntent(&intent);
     }
 }
@@ -9158,7 +9158,7 @@ int32_t Vehicle::NumPeepsUntilTrainTail() const
 void Vehicle::InvalidateWindow()
 {
     auto intent = Intent(INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW);
-    intent.putExtra(INTENT_EXTRA_VEHICLE, this);
+    intent.PutExtra(INTENT_EXTRA_VEHICLE, this);
     ContextBroadcastIntent(&intent);
 }
 
