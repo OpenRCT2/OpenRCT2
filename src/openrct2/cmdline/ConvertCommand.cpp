@@ -109,7 +109,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     if (sourceFileType == FileExtension::SC4 || sourceFileType == FileExtension::SC6)
     {
         // We are converting a scenario, so reset the park
-        scenario_begin();
+        ScenarioBegin();
     }
 
     try

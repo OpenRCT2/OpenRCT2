@@ -595,7 +595,7 @@ void SaveGameCmd(u8string_view name /* = {} */)
 void SaveGameWithName(u8string_view name)
 {
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
-    if (scenario_save(name, gConfigGeneral.SavePluginData ? 1 : 0))
+    if (ScenarioSave(name, gConfigGeneral.SavePluginData ? 1 : 0))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -717,7 +717,7 @@ void GameAutosave()
         File::Copy(path, backupPath, true);
     }
 
-    if (!scenario_save(path, saveFlags))
+    if (!ScenarioSave(path, saveFlags))
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 

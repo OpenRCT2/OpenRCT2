@@ -784,7 +784,7 @@ bool NetworkBase::CheckDesynchronizaton()
 {
     // Check synchronisation
     if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerState::Desynced
-        && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
+        && !CheckSRAND(gCurrentTicks, ScenarioRandState().s0))
     {
         _serverState.state = NetworkServerState::Desynced;
         _serverState.desyncTick = gCurrentTicks;
@@ -1497,7 +1497,7 @@ void NetworkBase::Server_Send_GAME_ACTION(const GameAction* action)
 void NetworkBase::Server_Send_TICK()
 {
     NetworkPacket packet(NetworkCommand::Tick);
-    packet << gCurrentTicks << scenario_rand_state().s0;
+    packet << gCurrentTicks << ScenarioRandState().s0;
     uint32_t flags = 0;
     // Simple counter which limits how often a sprite checksum gets sent.
     // This can get somewhat expensive, so we don't want to push it every tick in release,

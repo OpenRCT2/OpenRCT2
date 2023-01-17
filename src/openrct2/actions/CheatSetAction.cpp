@@ -194,7 +194,7 @@ GameActions::Result CheatSetAction::Execute() const
             Set10MinuteInspection();
             break;
         case CheatType::WinScenario:
-            scenario_success();
+            ScenarioSuccess();
             break;
         case CheatType::ForceWeather:
             // Todo - make sure this is safe
@@ -616,12 +616,12 @@ void CheatSetAction::GiveObjectToGuests(int32_t object) const
                 break;
             case OBJECT_BALLOON:
                 peep->GiveItem(ShopItem::Balloon);
-                peep->BalloonColour = scenario_rand_max(COLOUR_COUNT - 1);
+                peep->BalloonColour = ScenarioRandMax(COLOUR_COUNT - 1);
                 peep->UpdateSpriteType();
                 break;
             case OBJECT_UMBRELLA:
                 peep->GiveItem(ShopItem::Umbrella);
-                peep->UmbrellaColour = scenario_rand_max(COLOUR_COUNT - 1);
+                peep->UmbrellaColour = ScenarioRandMax(COLOUR_COUNT - 1);
                 peep->UpdateSpriteType();
                 break;
         }
@@ -745,7 +745,7 @@ void CheatSetAction::CreateDucks(int count) const
         // 100 attempts at finding some water to create a few ducks at
         for (int32_t attempts = 0; attempts < 100; attempts++)
         {
-            if (scenario_create_ducks())
+            if (ScenarioCreateDucks())
                 break;
         }
     }

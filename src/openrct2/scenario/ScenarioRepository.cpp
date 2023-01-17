@@ -55,7 +55,7 @@ static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
     return 1;
 }
 
-static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
+static int32_t ScenarioIndexEntryCompareByCategory(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
 {
     // Order by category
     if (entryA.category != entryB.category)
@@ -78,7 +78,7 @@ static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry
     }
 }
 
-static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
+static int32_t ScenarioIndexEntryCompareByIndex(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
 {
     // Order by source game
     if (entryA.source_game != entryB.source_game)
@@ -95,7 +95,7 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& e
             {
                 if (entryA.category == entryB.category)
                 {
-                    return scenario_index_entry_CompareByCategory(entryA, entryB);
+                    return ScenarioIndexEntryCompareByCategory(entryA, entryB);
                 }
 
                 return ScenarioCategoryCompare(entryA.category, entryB.category);
@@ -111,11 +111,11 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& e
             return entryA.source_index - entryB.source_index;
 
         case ScenarioSource::Real:
-            return scenario_index_entry_CompareByCategory(entryA, entryB);
+            return ScenarioIndexEntryCompareByCategory(entryA, entryB);
     }
 }
 
-static void scenario_highscore_free(scenario_highscore_entry* highscore)
+static void ScenarioHighscoreFree(scenario_highscore_entry* highscore)
 {
     SafeFree(highscore->fileName);
     SafeFree(highscore->name);
@@ -582,14 +582,14 @@ private:
         {
             std::sort(
                 _scenarios.begin(), _scenarios.end(), [](const scenario_index_entry& a, const scenario_index_entry& b) -> bool {
-                    return scenario_index_entry_CompareByIndex(a, b) < 0;
+                    return ScenarioIndexEntryCompareByIndex(a, b) < 0;
                 });
         }
         else
         {
             std::sort(
                 _scenarios.begin(), _scenarios.end(), [](const scenario_index_entry& a, const scenario_index_entry& b) -> bool {
-                    return scenario_index_entry_CompareByCategory(a, b) < 0;
+                    return ScenarioIndexEntryCompareByCategory(a, b) < 0;
                 });
         }
     }
@@ -715,7 +715,7 @@ private:
     {
         for (auto highscore : _highscores)
         {
-            scenario_highscore_free(highscore);
+            ScenarioHighscoreFree(highscore);
         }
         _highscores.clear();
     }
@@ -774,25 +774,25 @@ IScenarioRepository* GetScenarioRepository()
     return GetContext()->GetScenarioRepository();
 }
 
-void scenario_repository_scan()
+void ScenarioRepositoryScan()
 {
     IScenarioRepository* repo = GetScenarioRepository();
     repo->Scan(LocalisationService_GetCurrentLanguage());
 }
 
-size_t scenario_repository_get_count()
+size_t ScenarioRepositoryGetCount()
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->GetCount();
 }
 
-const scenario_index_entry* scenario_repository_get_by_index(size_t index)
+const scenario_index_entry* ScenarioRepositoryGetByIndex(size_t index)
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->GetByIndex(index);
 }
 
-bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name)
+bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name)
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);

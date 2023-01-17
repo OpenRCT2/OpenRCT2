@@ -45,7 +45,7 @@ public:
     void SetUp() override
     {
         // Use a consistent random seed in every test
-        scenario_rand_seed(0x12345678, 0x87654321);
+        ScenarioRandSeed(0x12345678, 0x87654321);
     }
 
     static void TearDownTestCase()

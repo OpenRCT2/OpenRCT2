@@ -285,7 +285,7 @@ static void Select(const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
-            if (scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 1 : 0))
+            if (ScenarioSave(pathBuffer, gConfigGeneral.SavePluginData ? 1 : 0))
             {
                 gScenarioSavePath = pathBuffer;
                 gCurrentLoadedPath = pathBuffer;
@@ -323,7 +323,7 @@ static void Select(const char* path)
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveLandscapeDirectory, pathBuffer);
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-            if (scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2))
+            if (ScenarioSave(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2))
             {
                 gCurrentLoadedPath = pathBuffer;
                 WindowCloseByClass(WindowClass::Loadsave);
@@ -344,7 +344,7 @@ static void Select(const char* path)
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
             gEditorStep = EditorStep::Invalid;
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-            int32_t success = scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
+            int32_t success = ScenarioSave(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
             gParkFlags = parkFlagsBackup;
 
             if (success)

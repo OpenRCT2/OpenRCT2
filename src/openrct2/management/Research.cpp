@@ -480,7 +480,7 @@ void research_populate_list_random()
             continue;
         }
 
-        int32_t researched = (scenario_rand() & 0xFF) > 128;
+        int32_t researched = (ScenarioRand() & 0xFF) > 128;
         for (auto rideType : rideEntry->ride_type)
         {
             if (rideType != RIDE_TYPE_NULL)
@@ -500,7 +500,7 @@ void research_populate_list_random()
             continue;
         }
 
-        int32_t researched = (scenario_rand() & 0xFF) > 85;
+        int32_t researched = (ScenarioRand() & 0xFF) > 85;
         research_insert_scenery_group_entry(i, researched);
     }
 }

@@ -214,7 +214,7 @@ namespace OpenRCT2
 
             auto& snapshot = snapshots->CreateSnapshot();
             snapshots->Capture(snapshot);
-            snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
+            snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
             DataSerialiser snapShotDs(true, snapshotStream);
             snapshots->SerialiseSnapshot(snapshot, snapShotDs);
         }
@@ -386,7 +386,7 @@ namespace OpenRCT2
 
             auto& localSnapshot = snapshots->CreateSnapshot();
             snapshots->Capture(localSnapshot);
-            snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, scenario_rand_state().s0);
+            snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, ScenarioRandState().s0);
             try
             {
                 GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);

@@ -143,7 +143,7 @@ namespace Editor
             return;
         }
 
-        scenario_reset();
+        ScenarioReset();
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;

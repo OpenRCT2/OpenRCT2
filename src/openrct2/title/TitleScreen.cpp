@@ -232,19 +232,19 @@ void TitleScreen::TitleInitialise()
     {
         bool RCT1Installed = false, RCT1AAInstalled = false, RCT1LLInstalled = false;
         int RCT1Count = 0;
-        size_t scenarioCount = scenario_repository_get_count();
+        size_t scenarioCount = ScenarioRepositoryGetCount();
 
         for (size_t s = 0; s < scenarioCount; s++)
         {
-            if (scenario_repository_get_by_index(s)->source_game == ScenarioSource::RCT1)
+            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1)
             {
                 RCT1Count++;
             }
-            if (scenario_repository_get_by_index(s)->source_game == ScenarioSource::RCT1_AA)
+            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1_AA)
             {
                 RCT1AAInstalled = true;
             }
-            if (scenario_repository_get_by_index(s)->source_game == ScenarioSource::RCT1_LL)
+            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1_LL)
             {
                 RCT1LLInstalled = true;
             }

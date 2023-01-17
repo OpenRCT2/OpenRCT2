@@ -251,7 +251,7 @@ private:
 
     void JumpForwardToSaveScenario() const
     {
-        const auto savePrepareResult = scenario_prepare_for_save();
+        const auto savePrepareResult = ScenarioPrepareForSave();
         if (!savePrepareResult.Successful)
         {
             ContextShowError(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});

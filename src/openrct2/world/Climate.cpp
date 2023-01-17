@@ -110,7 +110,7 @@ void ClimateReset(ClimateType climate)
         _weatherVolume = 1;
     }
 
-    ClimateDetermineFutureWeather(scenario_rand());
+    ClimateDetermineFutureWeather(ScenarioRand());
 }
 
 /**
@@ -149,7 +149,7 @@ void ClimateUpdate()
                     if (gClimateCurrent.Level == gClimateNext.Level)
                     {
                         gClimateCurrent.Weather = gClimateNext.Weather;
-                        ClimateDetermineFutureWeather(scenario_rand());
+                        ClimateDetermineFutureWeather(ScenarioRand());
                         auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                         ContextBroadcastIntent(&intent);
                     }

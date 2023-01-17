@@ -1378,7 +1378,7 @@ static void ride_breakdown_update(Ride& ride)
     // a 0.8% chance, less the breakdown factor which accumulates as the game
     // continues.
     if ((ride.reliability == 0
-         || static_cast<int32_t>(scenario_rand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride.reliability)
+         || static_cast<int32_t>(ScenarioRand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride.reliability)
         && !gCheatsDisableAllBreakdowns)
     {
         int32_t breakdownReason = ride_get_new_breakdown_problem(ride);
@@ -1416,7 +1416,7 @@ static int32_t ride_get_new_breakdown_problem(const Ride& ride)
         return -1;
 
     // Choose a random number within this range
-    randomProbability = scenario_rand() % totalProbability;
+    randomProbability = ScenarioRand() % totalProbability;
 
     // Find which problem range the random number lies
     problemBits = availableBreakdownProblems;
@@ -1465,7 +1465,7 @@ static void choose_random_train_to_breakdown_safe(Ride& ride)
     if (ride.NumTrains == 0)
         return;
 
-    ride.broken_vehicle = scenario_rand() % ride.NumTrains;
+    ride.broken_vehicle = ScenarioRand() % ride.NumTrains;
 
     // Prevent crash caused by accessing SPRITE_INDEX_NULL on hacked rides.
     // This should probably be cleaned up on import instead.
@@ -1514,7 +1514,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             choose_random_train_to_breakdown_safe(ride);
             if (ride.num_cars_per_train != 0)
             {
-                ride.broken_car = scenario_rand() % ride.num_cars_per_train;
+                ride.broken_car = ScenarioRand() % ride.num_cars_per_train;
 
                 // Set flag on broken car
                 vehicle = GetEntity<Vehicle>(ride.vehicles[ride.broken_vehicle]);
@@ -3182,9 +3182,9 @@ static Vehicle* vehicle_create_car(
             if (numAttempts > 10000)
                 return nullptr;
 
-            vehicle->sprite_direction = scenario_rand() & 0x1E;
-            chosenLoc.y = dodgemPos.y + (scenario_rand() & 0xFF);
-            chosenLoc.x = dodgemPos.x + (scenario_rand() & 0xFF);
+            vehicle->sprite_direction = ScenarioRand() & 0x1E;
+            chosenLoc.y = dodgemPos.y + (ScenarioRand() & 0xFF);
+            chosenLoc.x = dodgemPos.x + (ScenarioRand() & 0xFF);
         } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc).has_value());
 
         vehicle->MoveTo({ chosenLoc, dodgemPos.z });

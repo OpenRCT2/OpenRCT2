@@ -239,7 +239,7 @@ namespace OpenRCT2::Scripting
             if (min >= max)
                 return min;
             int32_t range = max - min;
-            return min + scenario_rand_max(range);
+            return min + ScenarioRandMax(range);
         }
 
         duk_ret_t formatString(duk_context* ctx)

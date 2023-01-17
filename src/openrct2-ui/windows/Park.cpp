@@ -1037,7 +1037,7 @@ private:
         if (widgetIndex == WIDX_ENTER_NAME && !text.empty())
         {
             std::string strText(text);
-            scenario_success_submit_name(strText.c_str());
+            ScenarioSuccessSubmitName(strText.c_str());
             Invalidate();
         }
     }

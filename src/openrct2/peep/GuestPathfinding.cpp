@@ -155,7 +155,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep& peep)
         // coordinate constant, but instead clamp it to an acceptable range. This brings in 'outlier' guests from
         // the edges of the path, while allowing guests who are already in an acceptable position to stay there.
 
-        const int8_t offset = (scenario_rand() & 7) - 3;
+        const int8_t offset = (ScenarioRand() & 7) - 3;
         if (direction == 0 || direction == 2)
         {
             // Peep is moving along X, so apply the offset to the X position of the destination and clamp their current Y
@@ -183,7 +183,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep& peep)
 static int32_t guest_surface_path_finding(Peep& peep)
 {
     auto pathPos = CoordsXYRangedZ{ peep.NextLoc, peep.NextLoc.z, peep.NextLoc.z + PATH_CLEARANCE };
-    Direction randDirection = scenario_rand() & 3;
+    Direction randDirection = ScenarioRand() & 3;
 
     if (!WallInTheWay(pathPos, randDirection))
     {
@@ -201,7 +201,7 @@ static int32_t guest_surface_path_finding(Peep& peep)
     }
 
     randDirection++;
-    uint8_t rand_backwards = scenario_rand() & 1;
+    uint8_t rand_backwards = ScenarioRand() & 1;
     if (rand_backwards)
     {
         randDirection -= 2;
@@ -462,7 +462,7 @@ static uint8_t footpath_element_destination_in_direction(
  */
 static int32_t guest_path_find_aimless(Peep& peep, uint8_t edges)
 {
-    if (scenario_rand() & 1)
+    if (ScenarioRand() & 1)
     {
         // If possible go straight
         if (edges & (1 << peep.PeepDirection))
@@ -473,7 +473,7 @@ static int32_t guest_path_find_aimless(Peep& peep, uint8_t edges)
 
     while (true)
     {
-        Direction direction = scenario_rand() & 3;
+        Direction direction = ScenarioRand() & 3;
         // Otherwise go in a random direction allowed from the tile.
         if (edges & (1 << direction))
         {
@@ -494,7 +494,7 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep& peep)
     // PEEP_FLAGS_2? It's cleared here but not set anywhere!
     if ((peep.PeepFlags & PEEP_FLAGS_2))
     {
-        if ((scenario_rand() & 0xFFFF) <= 7281)
+        if ((ScenarioRand() & 0xFFFF) <= 7281)
             peep.PeepFlags &= ~PEEP_FLAGS_2;
 
         return 8;
@@ -2086,7 +2086,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
      * In principle, peeps with food are not paying as much attention to
      * where they are going and are consequently more like to walk up
      * dead end paths, paths to ride exits, etc. */
-    if (!peep.HasFoodOrDrink() && (scenario_rand() & 0xFFFF) >= 2184)
+    if (!peep.HasFoodOrDrink() && (ScenarioRand() & 0xFFFF) >= 2184)
     {
         uint8_t adjustedEdges = edges;
         for (Direction chosenDirection : ALL_DIRECTIONS)
@@ -2123,7 +2123,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
             {
                 probability = 9362;
             }
-            if ((scenario_rand() & 0xFFFF) < probability)
+            if ((ScenarioRand() & 0xFFFF) < probability)
             {
                 peep.ReadMap();
             }

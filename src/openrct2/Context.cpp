@@ -678,7 +678,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    scenario_begin();
+                    ScenarioBegin();
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_SERVER)
                     {
