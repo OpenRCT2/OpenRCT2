@@ -35,7 +35,7 @@ namespace OpenRCT2::Scripting
 
 namespace OpenRCT2::Ui::Windows
 {
-    rct_window* window_custom_open(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
+    rct_window* WindowCustomOpen(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
 }
 
 namespace OpenRCT2::Scripting
@@ -173,7 +173,7 @@ namespace OpenRCT2::Scripting
             owner->ThrowIfStopping();
 
             std::shared_ptr<ScWindow> scWindow = nullptr;
-            auto w = window_custom_open(owner, desc);
+            auto w = WindowCustomOpen(owner, desc);
             if (w != nullptr)
             {
                 scWindow = std::make_shared<ScWindow>(w);
