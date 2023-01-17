@@ -252,8 +252,7 @@ public:
         if (GetSelectedStaffType() != StaffType::Entertainer)
         {
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::ColourBtn;
-            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(
-                StaffGetColour(GetSelectedStaffType()));
+            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(StaffGetColour(GetSelectedStaffType()));
         }
         SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
 

@@ -4235,8 +4235,7 @@ void Guest::UpdateRideLeaveVehicle()
 
         platformLocation.z = station.GetBaseZ();
 
-        PeepGoToRideExit(
-            this, *ride, platformLocation.x, platformLocation.y, platformLocation.z, platformLocation.direction);
+        PeepGoToRideExit(this, *ride, platformLocation.x, platformLocation.y, platformLocation.z, platformLocation.direction);
         return;
     }
 
