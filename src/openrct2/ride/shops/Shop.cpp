@@ -57,7 +57,7 @@ static void PaintShop(
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_shop(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(int32_t trackType)
 {
     switch (trackType)
     {

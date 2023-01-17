@@ -55,7 +55,7 @@ namespace AlpineRC
                         { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
@@ -79,7 +79,7 @@ namespace AlpineRC
                         { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
@@ -118,8 +118,8 @@ namespace AlpineRC
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][2]), { 0, 0, height - 2 },
             { 32, 28, 2 }, { 0, 2, height });
-        track_paint_util_draw_station_metal_supports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS]);
-        track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 4, 7);
+        TrackPaintUtilDrawStationMetalSupports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+        TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -156,7 +156,7 @@ namespace AlpineRC
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height,
@@ -188,7 +188,7 @@ namespace AlpineRC
                         { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 8, height,
@@ -237,7 +237,7 @@ namespace AlpineRC
                         { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
@@ -269,7 +269,7 @@ namespace AlpineRC
                         { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
@@ -318,7 +318,7 @@ namespace AlpineRC
                         { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height,
@@ -350,7 +350,7 @@ namespace AlpineRC
                         { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height,
@@ -2180,7 +2180,7 @@ namespace AlpineRC
                     { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
@@ -2227,7 +2227,7 @@ namespace AlpineRC
                     { 32, 1, 26 }, { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
@@ -2292,7 +2292,7 @@ namespace AlpineRC
                     { 32, 20, 3 }, { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
@@ -2350,7 +2350,7 @@ namespace AlpineRC
                     { 32, 1, 34 }, { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 3, height,
@@ -2408,7 +2408,7 @@ namespace AlpineRC
                     { 32, 20, 3 }, { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height,
@@ -2466,7 +2466,7 @@ namespace AlpineRC
                     { 32, 1, 34 }, { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height,
@@ -2544,7 +2544,7 @@ namespace AlpineRC
                     { 32, 20, 3 }, { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
@@ -6789,7 +6789,7 @@ namespace AlpineRC
                     { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, direction & 1 ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,

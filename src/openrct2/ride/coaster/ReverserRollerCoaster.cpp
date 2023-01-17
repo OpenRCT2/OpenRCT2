@@ -113,7 +113,7 @@ static void reverser_rc_track_station(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
         { 32, 27, 2 }, { 0, 2, height });
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 9, 11);
+    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -1458,7 +1458,7 @@ static void reverser_rc_track_right_reverser(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_reverser_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRc(int32_t trackType)
 {
     switch (trackType)
     {

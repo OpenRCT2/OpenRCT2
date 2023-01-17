@@ -24,7 +24,7 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_miniature_railway),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionMiniatureRailway),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR |
@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
     SET_FIELD(Heights, { 7, 32, 5, 9, }),
     SET_FIELD(MaxMass, 39),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_miniature_railway),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateMiniatureRailway),
     SET_FIELD(RatingsMultipliers, { 70, 6, -10 }),
     SET_FIELD(UpkeepCosts, { 60, 20, 0, 10, 3, 5 }),
     SET_FIELD(BuildCosts, { 17.50_GBP, 3.00_GBP, 50, }),

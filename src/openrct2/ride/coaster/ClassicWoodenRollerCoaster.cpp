@@ -692,7 +692,7 @@ static void classic_wooden_rc_track_banked_right_quarter_turn_5(
 
     WoodenRcTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRcTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     if (supportType[direction][trackSequence] != -1)
     {
@@ -811,7 +811,7 @@ static void classic_wooden_rc_track_right_quarter_turn_3_bank(
 
     WoodenRcTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRcTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     if (supportType[direction][trackSequence] != -1)
     {
@@ -1860,7 +1860,7 @@ static void classic_wooden_rc_track_diag_25_deg_down_to_right_bank(
 // Stylistically, this coaster is _very_ similar to the regular Wooden Roller Coaster.
 // The only difference is to which parts the colours are applied, and the degree of the banking.
 // As such, all non-banked pieces are simply drawn as regular wooden roller coaster pieces with a different paint scheme.
-TRACK_PAINT_FUNCTION get_track_paint_function_classic_wooden_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRc(int32_t trackType)
 {
     if (!IsCsgLoaded())
     {

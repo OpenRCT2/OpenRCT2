@@ -193,7 +193,7 @@ static void PaintSwingingInverterShip(
     PaintUtilSetGeneralSupportHeight(session, height + 176, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingInverterShip(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack1x4B)
     {

@@ -224,7 +224,7 @@ static void PaintSpiralSlide(
         rideEntry->Cars[0].base_image_id + SpiralSlideFenceTopLeft,
     };
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height,
         spiral_slide_fence_sprites, session.CurrentRotation);
 

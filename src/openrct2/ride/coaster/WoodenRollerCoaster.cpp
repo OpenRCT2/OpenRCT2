@@ -508,7 +508,7 @@ static void wooden_rc_track_station(
             height);
     }
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 9, 11);
+    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -1453,7 +1453,7 @@ static void wooden_rc_track_right_quarter_turn_5(
 
     WoodenRcTrackPaintBb<isClassic>(session, &imageIds[0][direction][trackSequence], height);
     WoodenRcTrackPaintBb<isClassic>(session, &imageIds[1][direction][trackSequence], height);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     if (supportType[direction][trackSequence] != -1)
     {
@@ -1955,7 +1955,7 @@ static void wooden_rc_track_banked_right_quarter_turn_5(
 
     WoodenRcTrackPaintBb<isClassic>(session, &imageIds[0][direction][trackSequence], height);
     WoodenRcTrackPaintBb<isClassic>(session, &imageIds[1][direction][trackSequence], height);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     if (supportType[direction][trackSequence] != -1)
     {
@@ -3963,7 +3963,7 @@ static void wooden_rc_track_right_vertical_loop(
             break;
     }
 
-    track_paint_util_right_vertical_loop_segments(session, direction, trackSequence);
+    TrackPaintUtilRightVerticalLoopSegments(session, direction, trackSequence);
 }
 
 /** rct2: 0x008AC7E8 */
@@ -7009,7 +7009,7 @@ static void wooden_rc_track_left_quarter_turn_1_60_deg_up(
                 { 2, 2, height + 99 });
             break;
     }
-    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+    TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
@@ -7079,7 +7079,7 @@ static void wooden_rc_track_right_quarter_turn_1_60_deg_up(
                 { 2, 2, height + 99 });
             break;
     }
-    track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+    TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
@@ -7305,7 +7305,7 @@ static void wooden_rc_track_on_ride_photo(
             break;
     }
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    track_paint_util_onride_photo_small_paint(session, direction, height + 16, trackElement);
+    TrackPaintUtilOnridePhotoSmallPaint(session, direction, height + 16, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -14854,7 +14854,7 @@ static void wooden_rc_track_booster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<bool isClassic> TRACK_PAINT_FUNCTION get_track_paint_function_wooden_and_classic_wooden_rc(int32_t trackType)
+template<bool isClassic> TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRc(int32_t trackType)
 {
     switch (trackType)
     {
@@ -15144,12 +15144,12 @@ template<bool isClassic> TRACK_PAINT_FUNCTION get_track_paint_function_wooden_an
     return nullptr;
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenRc(int32_t trackType)
 {
-    return get_track_paint_function_wooden_and_classic_wooden_rc<false>(trackType);
+    return GetTrackPaintFunctionWoodenAndClassicWoodenRc<false>(trackType);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRcFallback(int32_t trackType)
 {
-    return get_track_paint_function_wooden_and_classic_wooden_rc<true>(trackType);
+    return GetTrackPaintFunctionWoodenAndClassicWoodenRc<true>(trackType);
 }

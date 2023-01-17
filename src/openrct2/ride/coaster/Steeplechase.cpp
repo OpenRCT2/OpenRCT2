@@ -84,8 +84,8 @@ static void steeplechase_track_station(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 6, height },
         { 32, 20, 3 }, { 0, 0, height });
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -2390,7 +2390,7 @@ static void steeplechase_track_block_brakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_steeplechase(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(int32_t trackType)
 {
     switch (trackType)
     {

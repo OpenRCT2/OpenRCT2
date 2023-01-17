@@ -51,7 +51,7 @@ static void flying_rc_track_flat(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -74,7 +74,7 @@ static void flying_rc_track_flat(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -126,7 +126,7 @@ static void flying_rc_track_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -159,8 +159,8 @@ static void flying_rc_track_station(
         PaintAddImageAsChildRotated(
             session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 24 },
             { 32, 20, 1 }, { 0, 6, height + 24 });
-        track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
-        track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
+        TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
+        TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     }
     else
     {
@@ -186,8 +186,8 @@ static void flying_rc_track_station(
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][2]), { 0, 0, height },
             { 32, 32, 1 });
-        track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
-        track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 9, 11);
+        TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
+        TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -254,7 +254,7 @@ static void flying_rc_track_25_deg_up(
                     break;
             }
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -328,7 +328,7 @@ static void flying_rc_track_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -393,7 +393,7 @@ static void flying_rc_track_60_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -508,7 +508,7 @@ static void flying_rc_track_flat_to_25_deg_up(
                     break;
             }
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -582,7 +582,7 @@ static void flying_rc_track_flat_to_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -653,7 +653,7 @@ static void flying_rc_track_25_deg_up_to_60_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -751,7 +751,7 @@ static void flying_rc_track_60_deg_up_to_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -802,7 +802,7 @@ static void flying_rc_track_60_deg_up_to_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -896,7 +896,7 @@ static void flying_rc_track_25_deg_up_to_flat(
                     break;
             }
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -970,7 +970,7 @@ static void flying_rc_track_25_deg_up_to_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -1461,7 +1461,7 @@ static void flying_rc_track_flat_to_left_bank(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1501,7 +1501,7 @@ static void flying_rc_track_flat_to_left_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1548,7 +1548,7 @@ static void flying_rc_track_flat_to_right_bank(
                     { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1588,7 +1588,7 @@ static void flying_rc_track_flat_to_right_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1635,7 +1635,7 @@ static void flying_rc_track_left_bank_to_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1675,7 +1675,7 @@ static void flying_rc_track_left_bank_to_flat(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1722,7 +1722,7 @@ static void flying_rc_track_right_bank_to_flat(
                     { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1762,7 +1762,7 @@ static void flying_rc_track_right_bank_to_flat(
             session,
             PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2187,7 +2187,7 @@ static void flying_rc_track_left_bank_to_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2234,7 +2234,7 @@ static void flying_rc_track_left_bank_to_25_deg_up(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -2305,7 +2305,7 @@ static void flying_rc_track_right_bank_to_25_deg_up(
                     { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2352,7 +2352,7 @@ static void flying_rc_track_right_bank_to_25_deg_up(
             session,
             PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -2423,7 +2423,7 @@ static void flying_rc_track_25_deg_up_to_left_bank(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2470,7 +2470,7 @@ static void flying_rc_track_25_deg_up_to_left_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -2541,7 +2541,7 @@ static void flying_rc_track_25_deg_up_to_right_bank(
                     { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2588,7 +2588,7 @@ static void flying_rc_track_25_deg_up_to_right_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -2685,7 +2685,7 @@ static void flying_rc_track_left_bank(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2725,7 +2725,7 @@ static void flying_rc_track_left_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -6348,7 +6348,7 @@ static void flying_rc_track_left_quarter_turn_1_60_deg_up(
         }
     }
 
-    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+    TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
@@ -6434,7 +6434,7 @@ static void flying_rc_track_right_quarter_turn_1_60_deg_up(
                 break;
         }
     }
-    track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+    TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
@@ -6477,7 +6477,7 @@ static void flying_rc_track_brakes(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -6507,7 +6507,7 @@ static void flying_rc_track_brakes(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -6536,7 +6536,7 @@ static void flying_rc_track_booster(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -7309,7 +7309,7 @@ static void flying_rc_track_25_deg_up_left_banked(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -7354,7 +7354,7 @@ static void flying_rc_track_25_deg_up_left_banked(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -7419,7 +7419,7 @@ static void flying_rc_track_25_deg_up_right_banked(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -7464,7 +7464,7 @@ static void flying_rc_track_25_deg_up_right_banked(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -7553,7 +7553,7 @@ static void flying_rc_track_on_ride_photo(
                     { 0, 6, height + 3 });
                 break;
         }
-        track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+        TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -7607,7 +7607,7 @@ static void flying_rc_track_on_ride_photo(
                     { 32, 20, 3 }, { 0, 6, height + 24 });
                 break;
         }
-        track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+        TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
@@ -15133,7 +15133,7 @@ static void flying_rc_track_block_brakes(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16315,7 +16315,7 @@ static void flying_rc_track_25_deg_up_to_left_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16360,7 +16360,7 @@ static void flying_rc_track_25_deg_up_to_left_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16428,7 +16428,7 @@ static void flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16473,7 +16473,7 @@ static void flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16541,7 +16541,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16586,7 +16586,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16654,7 +16654,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16699,7 +16699,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16798,7 +16798,7 @@ static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16843,7 +16843,7 @@ static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16908,7 +16908,7 @@ static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16953,7 +16953,7 @@ static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17018,7 +17018,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17063,7 +17063,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17128,7 +17128,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17173,7 +17173,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17277,7 +17277,7 @@ static void flying_rc_track_flat_to_left_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17322,7 +17322,7 @@ static void flying_rc_track_flat_to_left_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17390,7 +17390,7 @@ static void flying_rc_track_flat_to_right_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17435,7 +17435,7 @@ static void flying_rc_track_flat_to_right_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17503,7 +17503,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17548,7 +17548,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17616,7 +17616,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17661,7 +17661,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -18693,7 +18693,7 @@ static void flying_rc_track_right_flying_large_half_loop_uninverted_down(
     flying_rc_track_right_flying_large_half_loop_inverted_up(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRc(int32_t trackType)
 {
     switch (trackType)
     {
@@ -19032,5 +19032,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType)
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
             return flying_rc_track_right_flying_large_half_loop_uninverted_down;
     }
-    return get_track_paint_function_bolliger_mabillard<METAL_SUPPORTS_TUBES>(trackType);
+    return GetTrackPaintFunctionBolligerMabillard<METAL_SUPPORTS_TUBES>(trackType);
 }

@@ -322,7 +322,7 @@ static void water_rc_track_diag_60_deg_down_to_25_deg_down(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRc(int32_t trackType)
 {
     switch (trackType)
     {
@@ -465,36 +465,36 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType)
         case TrackElemType::DiagRightBank:
         case TrackElemType::BlockBrakes:
         case TrackElemType::Booster:
-            return get_track_paint_function_junior_rc(trackType);
+            return GetTrackPaintFunctionJuniorRc(trackType);
 
         //////////////////////////////////////////////////////
         // Use River Rafts
         //////////////////////////////////////////////////////
         case TrackElemType::FlatCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::Flat);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Flat);
         case TrackElemType::LeftQuarterTurn5TilesCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::LeftQuarterTurn5Tiles);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::LeftQuarterTurn5Tiles);
         case TrackElemType::RightQuarterTurn5TilesCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::RightQuarterTurn5Tiles);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::RightQuarterTurn5Tiles);
         case TrackElemType::SBendLeftCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::SBendLeft);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::SBendLeft);
         case TrackElemType::SBendRightCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::SBendRight);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::SBendRight);
         case TrackElemType::FlatToDown25Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::FlatToDown25);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::FlatToDown25);
         case TrackElemType::Down25Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down25);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down25);
         case TrackElemType::Down25ToDown60Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down25ToDown60);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down25ToDown60);
         case TrackElemType::Down60Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down60);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down60);
         case TrackElemType::Down60ToDown25Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down60ToDown25);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down60ToDown25);
         case TrackElemType::Down25ToFlatCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down25ToFlat);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down25ToFlat);
 
         case TrackElemType::OnRidePhoto:
-            return get_track_paint_function_junior_rc(trackType);
+            return GetTrackPaintFunctionJuniorRc(trackType);
     }
     return nullptr;
 }

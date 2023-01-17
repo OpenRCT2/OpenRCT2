@@ -218,7 +218,7 @@ static void air_powered_vertical_rc_track_station(
 
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 5, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -261,10 +261,10 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(
         },
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_3(
+    TrackPaintUtilRightQuarterTurn5TilesPaint3(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(session, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     switch (trackSequence)
     {
@@ -423,7 +423,7 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
         },
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
 
     if (direction == 1 && trackSequence == 6)
@@ -439,8 +439,8 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
     }
 
-    track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(session, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     switch (trackSequence)
     {
@@ -961,14 +961,14 @@ static void air_powered_vertical_rc_track_onride_photo(
 
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRc(int32_t trackType)
 {
     switch (trackType)
     {

@@ -713,7 +713,7 @@ static void paint_miniature_railway_station(
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
-    track_paint_util_draw_station_3(session, ride, direction, height + 2, height, trackElement);
+    TrackPaintUtilDrawStation3(session, ride, direction, height + 2, height, trackElement);
     // covers shouldn't be offset by +2
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -985,14 +985,14 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
 
         if (!isSupported || (trackSequence == 3 && direction == 2))
         {
-            track_paint_util_right_quarter_turn_5_tiles_paint(
+            TrackPaintUtilRightQuarterTurn5TilesPaint(
                 session, 2, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
                 miniature_railway_track_pieces_flat_quarter_turn_5_tiles, miniature_railway_right_quarter_turn_5_tiles_offsets,
                 miniature_railway_right_quarter_turn_5_tiles_bound_lengths, nullptr);
         }
         else
         {
-            track_paint_util_right_quarter_turn_5_tiles_paint(
+            TrackPaintUtilRightQuarterTurn5TilesPaint(
                 session, 2, height, direction, trackSequence, session.TrackColours[SCHEME_SUPPORTS],
                 miniature_railway_right_quarter_turn_5_tiles_track_floor, nullptr,
                 miniature_railway_right_quarter_turn_5_tiles_bound_lengths,
@@ -1349,7 +1349,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
     }
     if (!isSupported)
     {
-        track_paint_util_right_quarter_turn_3_tiles_paint(
+        TrackPaintUtilRightQuarterTurn3TilesPaint(
             session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
             miniature_railway_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
             defaultRightQuarterTurn3TilesBoundLengths, nullptr);
@@ -1364,7 +1364,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
     }
     else
     {
-        track_paint_util_right_quarter_turn_3_tiles_paint(
+        TrackPaintUtilRightQuarterTurn3TilesPaint(
             session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_SUPPORTS],
             miniature_railway_right_quarter_turn_3_tile_track_floor, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
             miniature_railway_right_quarter_turn_3_tile_bound_offsets);
@@ -1382,7 +1382,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
         PaintAddImageAsChild(
             session, imageId, { offset, height }, { boundsOffset + CoordsXYZ{ 0, 0, height }, { boundsLength, 3 } });
     }
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     int32_t blockedSegments = 0;
     switch (trackSequence)
@@ -2283,7 +2283,7 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(
 /**
  * rct2: 0x008ACE48
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_miniature_railway(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniatureRailway(int32_t trackType)
 {
     switch (trackType)
     {

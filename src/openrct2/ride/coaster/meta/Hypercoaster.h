@@ -22,7 +22,7 @@ constexpr const RideTypeDescriptor HypercoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_VERTICAL_LOOP, TRACK_HALF_LOOP, TRACK_CORKSCREW, TRACK_BOOSTER}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_corkscrew_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionCorkscrewRc),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS),
@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor HypercoasterRTD =
     SET_FIELD(Heights, { 55, 24, 8, 11, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftArrow, 4, 6 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_corkscrew_roller_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateCorkscrewRollerCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 11, 3, 10 }),
     SET_FIELD(BuildCosts, { 52.50_GBP, 2.50_GBP, 50, }),

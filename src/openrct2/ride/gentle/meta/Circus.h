@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(Heights, { 12, 128, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_circus),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateCircus),
     SET_FIELD(RatingsMultipliers, { 20, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 62.50_GBP, 1.00_GBP, 1, }),

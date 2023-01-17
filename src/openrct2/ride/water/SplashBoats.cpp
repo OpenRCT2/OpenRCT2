@@ -790,7 +790,7 @@ static void paint_splash_boats_station(
 
     WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 7, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 7, trackElement);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -803,9 +803,9 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Top);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4)
@@ -882,9 +882,9 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Top);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4)
@@ -1182,13 +1182,13 @@ static void paint_splash_boats_track_on_ride_photo(
 
     paint_splash_boats_track_flat(session, ride, trackSequence, direction, height, trackElement);
 
-    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(int32_t trackType)
 {
     switch (trackType)
     {
