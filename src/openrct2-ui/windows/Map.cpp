@@ -171,7 +171,7 @@ public:
     {
         _mapImageData.clear();
         _mapImageData.shrink_to_fit();
-        if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == classification
+        if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == classification
             && gCurrentToolWidget.window_number == number)
         {
             ToolCancel();
@@ -243,7 +243,7 @@ public:
                     break;
 
                 gParkEntranceGhostExists = false;
-                input_set_flag(INPUT_FLAG_6, true);
+                InputSetFlag(INPUT_FLAG_6, true);
 
                 ShowGridlines();
                 ShowLandRights();
@@ -815,7 +815,7 @@ public:
         if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
         {
             // scenario editor: build park entrance selected, show rotate button
-            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map
+            if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map
                 && gCurrentToolWidget.widget_index == WIDX_BUILD_PARK_ENTRANCE)
             {
                 widgets[WIDX_ROTATE_90].type = WindowWidgetType::FlatBtn;
@@ -825,7 +825,7 @@ public:
             widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
             // If any tool is active
-            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map)
+            if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map)
             {
                 // if not in set land rights mode: show the default scenario editor buttons
                 if (gCurrentToolWidget.widget_index != WIDX_SET_LAND_RIGHTS)

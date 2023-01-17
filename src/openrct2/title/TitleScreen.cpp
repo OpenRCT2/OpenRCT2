@@ -114,11 +114,11 @@ void TitleScreen::SetHideVersionInfo(bool value)
 
 void TitleScreen::Load()
 {
-    log_verbose("TitleScreen::Load()");
+    LOG_VERBOSE("TitleScreen::Load()");
 
-    if (game_is_paused())
+    if (GameIsPaused())
     {
-        pause_toggle();
+        PauseToggle();
     }
 
     gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
@@ -152,7 +152,7 @@ void TitleScreen::Load()
         _sequencePlayer->Update();
     }
 
-    log_verbose("TitleScreen::Load() finished");
+    LOG_VERBOSE("TitleScreen::Load() finished");
 }
 
 void TitleScreen::Tick()
@@ -160,9 +160,9 @@ void TitleScreen::Tick()
     gInUpdateCode = true;
 
     ScreenshotCheck();
-    title_handle_keyboard_input();
+    TitleHandleKeyboardInput();
 
-    if (game_is_not_paused())
+    if (GameIsNotPaused())
     {
         TryLoadSequence();
         _sequencePlayer->Update();
@@ -176,11 +176,11 @@ void TitleScreen::Tick()
         {
             _gameState.UpdateLogic();
         }
-        update_palette_effects();
+        UpdatePaletteEffects();
         // update_weather_animation();
     }
 
-    input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+    InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
     ContextUpdateMapTooltip();
     WindowDispatchUpdateAll();
@@ -334,7 +334,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
         if (!loadPreview)
         {
             GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
-            game_notify_map_changed();
+            GameNotifyMapChanged();
         }
         return false;
     }

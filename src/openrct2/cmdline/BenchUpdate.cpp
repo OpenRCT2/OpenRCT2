@@ -140,7 +140,7 @@ static exitcode_t HandleBenchUpdate(CommandLineArgEnumerator* argEnumerator)
 #else
 static exitcode_t HandleBenchUpdate(CommandLineArgEnumerator* argEnumerator)
 {
-    log_error("Sorry, Google benchmark not enabled in this build");
+    LOG_ERROR("Sorry, Google benchmark not enabled in this build");
     return EXITCODE_FAIL;
 }
 #endif // USE_BENCHMARK

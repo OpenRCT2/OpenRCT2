@@ -219,7 +219,7 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             break;
         }
         default:
-            log_error("invalid instruction");
+            LOG_ERROR("invalid instruction");
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 

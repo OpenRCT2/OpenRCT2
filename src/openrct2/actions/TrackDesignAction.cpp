@@ -87,7 +87,7 @@ GameActions::Result TrackDesignAction::Query() const
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
+        LOG_WARNING("Invalid game command for track placement, ride id = %d", rideIndex);
         return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
@@ -159,7 +159,7 @@ GameActions::Result TrackDesignAction::Execute() const
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
+        LOG_WARNING("Invalid game command for track placement, ride id = %d", rideIndex);
         return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 

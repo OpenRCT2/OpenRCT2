@@ -48,17 +48,17 @@ namespace OpenRCT2::TileInspector
 
         if (firstElement == nullptr)
         {
-            log_error("First element is out of range for the tile");
+            LOG_ERROR("First element is out of range for the tile");
             return false;
         }
         if (secondElement == nullptr)
         {
-            log_error("Second element is out of range for the tile");
+            LOG_ERROR("Second element is out of range for the tile");
             return false;
         }
         if (firstElement == secondElement)
         {
-            log_error("Can't swap the element with itself");
+            LOG_ERROR("Can't swap the element with itself");
             return false;
         }
 
@@ -339,7 +339,7 @@ namespace OpenRCT2::TileInspector
                 auto newBanner = CreateBanner();
                 if (newBanner == nullptr)
                 {
-                    log_error("No free banners available");
+                    LOG_ERROR("No free banners available");
                     return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
                 }
                 // Copy the banners style
@@ -804,7 +804,7 @@ namespace OpenRCT2::TileInspector
                 TrackElement* tileElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
                 if (tileElement == nullptr)
                 {
-                    log_error("Track map element part not found!");
+                    LOG_ERROR("Track map element part not found!");
                     return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
                 }
 
@@ -888,7 +888,7 @@ namespace OpenRCT2::TileInspector
                 TrackElement* tileElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
                 if (tileElement == nullptr)
                 {
-                    log_error("Track map element part not found!");
+                    LOG_ERROR("Track map element part not found!");
                     return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
                 }
 

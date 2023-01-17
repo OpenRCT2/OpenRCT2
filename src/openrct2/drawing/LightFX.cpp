@@ -311,7 +311,7 @@ void LightFXPrepareLightList()
                     auto info = SetInteractionInfoFromPaintSession(session, w->viewport->flags, ViewportInteractionItemAll);
                     PaintSessionFree(session);
 
-                    //  log_warning("[%i, %i]", dpi->x, dpi->y);
+                    //  LOG_WARNING("[%i, %i]", dpi->x, dpi->y);
 
                     mapCoord = info.Loc;
                     mapCoord.x += tileOffsetX;
@@ -346,7 +346,7 @@ void LightFXPrepareLightList()
                     lightIntensityOccluded += std::max(0, 200 - (projDot * 20));
                 }
 
-                //  log_warning("light %i [%i, %i, %i], [%i, %i] minDist to %i: %i; projdot: %i", light, coord_3d.x, coord_3d.y,
+                //  LOG_WARNING("light %i [%i, %i, %i], [%i, %i] minDist to %i: %i; projdot: %i", light, coord_3d.x, coord_3d.y,
                 //  coord_3d.z, mapCoord.x, mapCoord.y, baseHeight, minDist, projDot);
 
                 if (pat == 0)
@@ -453,7 +453,7 @@ void LightFXRenderLightsToFrontBuffer()
 
     _lightPolution_back = 0;
 
-    //  log_warning("%i lights", LightListCurrentCountFront);
+    //  LOG_WARNING("%i lights", LightListCurrentCountFront);
 
     for (uint32_t light = 0; light < LightListCurrentCountFront; light++)
     {
@@ -633,7 +633,7 @@ static void LightFXAdd3DLight(
         return;
     }
 
-    //  log_warning("%i lights in back", LightListCurrentCountBack);
+    //  LOG_WARNING("%i lights in back", LightListCurrentCountBack);
 
     for (uint32_t i = 0; i < LightListCurrentCountBack; i++)
     {
@@ -668,7 +668,7 @@ static void LightFXAdd3DLight(
     entry->LightID = id;
     entry->LightLinger = 1;
 
-    //  log_warning("new 3d light");
+    //  LOG_WARNING("new 3d light");
 }
 
 static void LightFXAdd3DLight(const CoordsXYZ& loc, const LightType lightType)

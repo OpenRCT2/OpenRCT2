@@ -55,13 +55,13 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
     if (_stationNum.ToUnderlying() >= OpenRCT2::Limits::MaxStationsPerRide)
     {
-        log_warning("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
+        LOG_WARNING("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
@@ -136,7 +136,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 

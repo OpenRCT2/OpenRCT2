@@ -112,9 +112,9 @@ void GameState::Tick()
 
     // 0x006E3AEC // screen_game_process_mouse_input();
     ScreenshotCheck();
-    game_handle_keyboard_input();
+    GameHandleKeyboardInput();
 
-    if (game_is_not_paused() && gPreviewingTitleSequenceInGame)
+    if (GameIsNotPaused() && gPreviewingTitleSequenceInGame)
     {
         auto player = GetContext()->GetUiContext()->GetTitleSequencePlayer();
         if (player != nullptr)
@@ -140,7 +140,7 @@ void GameState::Tick()
         }
     }
 
-    bool isPaused = game_is_paused();
+    bool isPaused = GameIsPaused();
     if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.PauseServerIfNoClients)
     {
         // If we are headless we always have 1 player (host), pause if no one else is around.
@@ -156,7 +156,7 @@ void GameState::Tick()
         if (gDoSingleUpdate && network_get_mode() == NETWORK_MODE_NONE)
         {
             didRunSingleFrame = true;
-            pause_toggle();
+            PauseToggle();
             numUpdates = 1;
         }
         else
@@ -189,11 +189,11 @@ void GameState::Tick()
         UpdateLogic();
         if (gGameSpeed == 1)
         {
-            if (input_get_state() == InputState::Reset || input_get_state() == InputState::Normal)
+            if (InputGetState() == InputState::Reset || InputGetState() == InputState::Normal)
             {
-                if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING))
+                if (InputTestFlag(INPUT_FLAG_VIEWPORT_SCROLLING))
                 {
-                    input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+                    InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
                     break;
                 }
             }
@@ -208,7 +208,7 @@ void GameState::Tick()
 
     if (!gOpenRCT2Headless)
     {
-        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+        InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
         // the flickering frequency is reduced by 4, compared to the original
         // it was done due to inability to reproduce original frequency
@@ -242,9 +242,9 @@ void GameState::Tick()
 
     WindowDispatchUpdateAll();
 
-    if (didRunSingleFrame && game_is_not_paused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (didRunSingleFrame && GameIsNotPaused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        pause_toggle();
+        PauseToggle();
     }
 
     gDoSingleUpdate = false;
@@ -360,7 +360,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     peep_update_crowd_noise();
     ClimateUpdateSound();
     report_time(LogicTimePart::Sounds);
-    editor_open_windows_for_current_step();
+    EditorOpenWindowsForCurrentStep();
 
     // Update windows
     // WindowDispatchUpdateAll();

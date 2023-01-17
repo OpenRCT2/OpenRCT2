@@ -1764,7 +1764,7 @@ bool PathElement::ShouldDrawPathOverSupports() const
 
 void PathElement::SetShouldDrawPathOverSupports(bool on)
 {
-    log_verbose("Setting 'draw path over supports' to %d", static_cast<size_t>(on));
+    LOG_VERBOSE("Setting 'draw path over supports' to %d", static_cast<size_t>(on));
 }
 
 /**

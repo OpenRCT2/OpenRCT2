@@ -66,7 +66,7 @@ namespace Editor
     static bool ReadPark(const char* path);
     static void ClearMapForEditing(bool fromSave);
 
-    static void object_list_load()
+    static void ObjectListLoad()
     {
         auto* context = GetContext();
 
@@ -104,7 +104,7 @@ namespace Editor
     void Load()
     {
         OpenRCT2::Audio::StopAll();
-        object_list_load();
+        ObjectListLoad();
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectSelection;
@@ -165,7 +165,7 @@ namespace Editor
         gScreenAge = 0;
 
         object_manager_unload_all_objects();
-        object_list_load();
+        ObjectListLoad();
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
@@ -186,7 +186,7 @@ namespace Editor
         gScreenAge = 0;
 
         object_manager_unload_all_objects();
-        object_list_load();
+        ObjectListLoad();
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
@@ -223,7 +223,7 @@ namespace Editor
         //        after we have loaded a new park.
         WindowCloseAll();
 
-        auto extension = get_file_extension_type(path);
+        auto extension = GetFileExtensionType(path);
         switch (extension)
         {
             case FileExtension::SC6:
@@ -417,7 +417,7 @@ namespace Editor
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
-        reset_all_sprite_quadrant_placements();
+        ResetAllSpriteQuadrantPlacements();
         ScenerySetDefaultPlacementConfiguration();
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
@@ -438,46 +438,46 @@ namespace Editor
 
         if (!isTrackDesignerManager)
         {
-            if (!editor_check_object_group_at_least_one_surface_selected(false))
+            if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
             {
                 return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
             }
-            if (!editor_check_object_group_at_least_one_surface_selected(true))
+            if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(true))
             {
                 return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
             }
-            if (!editor_check_object_group_at_least_one_selected(ObjectType::FootpathRailings))
+            if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::FootpathRailings))
             {
                 return { ObjectType::FootpathRailings, STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED };
             }
         }
 
-        if (!editor_check_object_group_at_least_one_selected(ObjectType::Ride))
+        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::Ride))
         {
             return { ObjectType::Ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED };
         }
-        if (!editor_check_object_group_at_least_one_selected(ObjectType::Station))
+        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::Station))
         {
             return { ObjectType::Station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED };
         }
 
-        if (!editor_check_object_group_at_least_one_selected(ObjectType::TerrainSurface))
+        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::TerrainSurface))
         {
             return { ObjectType::TerrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
-        if (!editor_check_object_group_at_least_one_selected(ObjectType::TerrainEdge))
+        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::TerrainEdge))
         {
             return { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED };
         }
 
         if (!isTrackDesignerManager)
         {
-            if (!editor_check_object_group_at_least_one_selected(ObjectType::ParkEntrance))
+            if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::ParkEntrance))
             {
                 return { ObjectType::ParkEntrance, STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED };
             }
 
-            if (!editor_check_object_group_at_least_one_selected(ObjectType::Water))
+            if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::Water))
             {
                 return { ObjectType::Water, STR_WATER_TYPE_MUST_BE_SELECTED };
             }
@@ -565,7 +565,7 @@ namespace Editor
     }
 } // namespace Editor
 
-void editor_open_windows_for_current_step()
+void EditorOpenWindowsForCurrentStep()
 {
     Editor::OpenWindowsForCurrentStep();
 }

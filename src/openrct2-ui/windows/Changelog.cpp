@@ -113,7 +113,7 @@ public:
                 return true;
 
             default:
-                log_error("Invalid personality for changelog window: %d", personality);
+                LOG_ERROR("Invalid personality for changelog window: %d", personality);
                 return false;
         }
     }
@@ -179,7 +179,7 @@ public:
                 }
                 else
                 {
-                    log_error("Cannot open URL: NewVersionInfo for ChangelogWindow is undefined!");
+                    LOG_ERROR("Cannot open URL: NewVersionInfo for ChangelogWindow is undefined!");
                 }
                 break;
         }
@@ -243,7 +243,7 @@ private:
         }
         else
         {
-            log_error("ChangelogWindow: Could not process NewVersionInfo, result was undefined");
+            LOG_ERROR("ChangelogWindow: Could not process NewVersionInfo, result was undefined");
         }
     }
 
@@ -271,12 +271,12 @@ private:
         }
         catch (const std::bad_alloc&)
         {
-            log_error("Unable to allocate memory for text file");
+            LOG_ERROR("Unable to allocate memory for text file");
             return false;
         }
         catch (const std::exception&)
         {
-            log_error("Unable to read text file");
+            LOG_ERROR("Unable to read text file");
             return false;
         }
 

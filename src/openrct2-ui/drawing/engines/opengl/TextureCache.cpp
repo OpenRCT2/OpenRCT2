@@ -334,7 +334,7 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     int32_t atlasSize = powf(2, static_cast<float>(Atlas::CalculateImageSizeOrder(imageWidth, imageHeight)));
 
 #    ifdef DEBUG
-    log_verbose("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);
+    LOG_VERBOSE("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);
 #    endif
 
     _atlases.emplace_back(atlasIndex, atlasSize);

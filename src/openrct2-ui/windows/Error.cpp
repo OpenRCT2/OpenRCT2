@@ -121,7 +121,7 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
         buffer.append(message);
     }
 
-    log_verbose("show error, %s", buffer.c_str() + 1);
+    LOG_VERBOSE("show error, %s", buffer.c_str() + 1);
 
     // Don't do unnecessary work in headless. Also saves checking if cursor state is null.
     if (gOpenRCT2Headless)

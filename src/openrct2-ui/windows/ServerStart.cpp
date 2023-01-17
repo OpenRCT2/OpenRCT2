@@ -281,7 +281,7 @@ private:
     char _password[33];
     static void ScenarioSelectCallback(const utf8* path)
     {
-        game_notify_map_change();
+        GameNotifyMapChange();
         if (GetContext()->LoadParkFromFile(path, false, true))
         {
             network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
@@ -292,7 +292,7 @@ private:
     {
         if (result == MODAL_RESULT_OK)
         {
-            game_notify_map_change();
+            GameNotifyMapChange();
             GetContext()->LoadParkFromFile(path);
             network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }

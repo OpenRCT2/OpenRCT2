@@ -274,7 +274,7 @@ void BannerFixDuplicates()
                 const auto index = bannerIndex.ToUnderlying();
                 if (activeBanners[index])
                 {
-                    log_info(
+                    LOG_INFO(
                         "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", index, x, y,
                         bannerElement->base_height);
 
@@ -282,7 +282,7 @@ void BannerFixDuplicates()
                     auto newBanner = CreateBanner();
                     if (newBanner == nullptr)
                     {
-                        log_error("Failed to create new banner.");
+                        LOG_ERROR("Failed to create new banner.");
                         continue;
                     }
                     Guard::Assert(!activeBanners[newBanner->id.ToUnderlying()]);

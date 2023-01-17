@@ -207,7 +207,7 @@ void research_finish_item(ResearchItem* researchItem)
         {
             if (!RideTypeIsValid(base_ride_type))
             {
-                log_warning("Invalid ride type: %d", base_ride_type);
+                LOG_WARNING("Invalid ride type: %d", base_ride_type);
                 base_ride_type = rideEntry->GetFirstNonNullRideType();
             }
 
@@ -568,7 +568,7 @@ void ride_type_set_invented(uint32_t rideType)
 void ride_entry_set_invented(ObjectEntryIndex rideEntryIndex)
 {
     if (rideEntryIndex >= std::size(_researchedRideEntries))
-        log_error("Tried setting ride entry %u as invented", rideEntryIndex);
+        LOG_ERROR("Tried setting ride entry %u as invented", rideEntryIndex);
     else
         _researchedRideEntries[rideEntryIndex] = true;
 }
@@ -580,7 +580,7 @@ bool scenery_is_invented(const ScenerySelection& sceneryItem)
         return _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex];
     }
 
-    log_warning("Invalid Scenery Type");
+    LOG_WARNING("Invalid Scenery Type");
     return false;
 }
 
@@ -592,7 +592,7 @@ void scenery_set_invented(const ScenerySelection& sceneryItem)
     }
     else
     {
-        log_warning("Invalid Scenery Type");
+        LOG_WARNING("Invalid Scenery Type");
     }
 }
 
@@ -604,7 +604,7 @@ void scenery_set_not_invented(const ScenerySelection& sceneryItem)
     }
     else
     {
-        log_warning("Invalid Scenery Type");
+        LOG_WARNING("Invalid Scenery Type");
     }
 }
 
@@ -960,7 +960,7 @@ static void research_update_first_of_type(ResearchItem* researchItem)
     auto rideType = researchItem->baseRideType;
     if (rideType >= RIDE_TYPE_COUNT)
     {
-        log_error("Research item has non-existent ride type index %d", rideType);
+        LOG_ERROR("Research item has non-existent ride type index %d", rideType);
         return;
     }
 

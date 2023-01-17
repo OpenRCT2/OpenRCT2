@@ -159,7 +159,7 @@ struct InternalTTFFont
 static FT_Library library;
 static int TTF_initialized = 0;
 
-#    define TTF_SetError log_error
+#    define TTF_SetError LOG_ERROR
 
 #    define TTF_CHECKPOINTER(p, errval)                                                                                        \
         if (!TTF_initialized)                                                                                                  \

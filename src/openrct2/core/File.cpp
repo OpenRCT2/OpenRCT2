@@ -26,7 +26,7 @@ namespace File
     bool Exists(u8string_view path)
     {
         fs::path file = fs::u8path(path);
-        log_verbose("Checking if file exists: %s", u8string(path).c_str());
+        LOG_VERBOSE("Checking if file exists: %s", u8string(path).c_str());
         std::error_code ec;
         const auto result = fs::exists(file, ec);
         return result && ec.value() == 0;
@@ -36,7 +36,7 @@ namespace File
     {
         if (!overwrite && Exists(dstPath))
         {
-            log_warning("File::Copy(): Not overwriting %s, because overwrite flag == false", u8string(dstPath).c_str());
+            LOG_WARNING("File::Copy(): Not overwriting %s, because overwrite flag == false", u8string(dstPath).c_str());
             return false;
         }
 

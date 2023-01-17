@@ -220,7 +220,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
                     auto stationIndex = RideGetFirstEmptyStationStart(*ride);
                     if (stationIndex.IsNull())
                     {
-                        log_verbose("No empty station starts, not updating metadata! This can happen with hacked rides.");
+                        LOG_VERBOSE("No empty station starts, not updating metadata! This can happen with hacked rides.");
                     }
                     else
                     {
@@ -355,7 +355,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
                     auto stationIndex = RideGetFirstEmptyStationStart(*ride);
                     if (stationIndex.IsNull())
                     {
-                        log_verbose("No empty station starts, not updating metadata! This can happen with hacked rides.");
+                        LOG_VERBOSE("No empty station starts, not updating metadata! This can happen with hacked rides.");
                     }
                     else
                     {

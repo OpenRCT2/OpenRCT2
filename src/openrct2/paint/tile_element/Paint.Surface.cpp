@@ -1302,7 +1302,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const auto edgeStyle = tileElement.GetEdgeStyle();
         if (static_cast<int32_t>(edgeStyle) >= object_entry_group_counts[EnumValue(ObjectType::TerrainEdge)])
         {
-            log_verbose("edgeStyle: %d", edgeStyle);
+            LOG_VERBOSE("edgeStyle: %d", edgeStyle);
         }
 
         ViewportSurfaceDrawLandSideTop(session, EDGE_TOPLEFT, height, edgeStyle, tileDescriptors[0], tileDescriptors[3]);

@@ -31,5 +31,5 @@ enum class IntroState : uint8_t
 
 extern IntroState gIntroState;
 
-void intro_update();
-void intro_draw(rct_drawpixelinfo* dpi);
+void IntroUpdate();
+void IntroDraw(rct_drawpixelinfo* dpi);

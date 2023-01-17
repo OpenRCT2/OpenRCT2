@@ -1225,7 +1225,7 @@ private:
                             ContextShowError(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
                         }
                         // report error to console regardless
-                        log_error("Failed to open language file.");
+                        LOG_ERROR("Failed to open language file.");
                     }
                     else
                     {

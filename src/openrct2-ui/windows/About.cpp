@@ -205,7 +205,7 @@ private:
         // Version info
         utf8 buffer[256];
         utf8* ch = buffer;
-        openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
+        OpenRCT2WriteFullVersionInfo(ch, sizeof(buffer) - (ch - buffer));
         auto ft = Formatter();
         ft.Add<const char*>(buffer);
 

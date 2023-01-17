@@ -909,7 +909,7 @@ public:
             case RideConstructionState::Front:
             case RideConstructionState::Back:
             case RideConstructionState::Selected:
-                if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+                if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
                     && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
                 {
                     ToolCancel();
@@ -2422,7 +2422,7 @@ private:
             gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
             gRideEntranceExitPlaceRideIndex = _currentRideIndex;
             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-            input_set_flag(INPUT_FLAG_6, true);
+            InputSetFlag(INPUT_FLAG_6, true);
             RideConstructionInvalidateCurrentTrack();
             if (_rideConstructionState != RideConstructionState::EntranceExit)
             {
@@ -2448,7 +2448,7 @@ private:
             gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
             gRideEntranceExitPlaceRideIndex = _currentRideIndex;
             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-            input_set_flag(INPUT_FLAG_6, true);
+            InputSetFlag(INPUT_FLAG_6, true);
             RideConstructionInvalidateCurrentTrack();
             if (_rideConstructionState != RideConstructionState::EntranceExit)
             {
@@ -3599,7 +3599,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
                     if (w != nullptr)
                     {
                         ToolSet(*w, WIDX_CONSTRUCT, Tool::Crosshair);
-                        input_set_flag(INPUT_FLAG_6, true);
+                        InputSetFlag(INPUT_FLAG_6, true);
                         _trackPlaceCtrlState = false;
                         _trackPlaceShiftState = false;
                     }

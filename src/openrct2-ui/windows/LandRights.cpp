@@ -68,7 +68,7 @@ public:
 
         ShowGridlines();
         ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
-        input_set_flag(INPUT_FLAG_6, true);
+        InputSetFlag(INPUT_FLAG_6, true);
 
         ShowLandRights();
 
@@ -391,7 +391,7 @@ private:
 
     bool LandRightsToolIsActive()
     {
-        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
         if (gCurrentToolWidget.window_classification != WindowClass::LandRights)
             return false;

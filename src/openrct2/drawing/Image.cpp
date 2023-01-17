@@ -162,7 +162,7 @@ static void FreeImageList(uint32_t baseImageId, uint32_t count)
 #ifdef DEBUG_LEVEL_1
     if (!AllocatedListRemove(baseImageId, count))
     {
-        log_error("Cannot unload %u items from offset %u", count, baseImageId);
+        LOG_ERROR("Cannot unload %u items from offset %u", count, baseImageId);
     }
 #endif
     _allocatedImageCount -= count;
@@ -196,7 +196,7 @@ uint32_t GfxObjectAllocateImages(const rct_g1_element* images, uint32_t count)
     uint32_t baseImageId = AllocateImageList(count);
     if (baseImageId == INVALID_IMAGE_ID)
     {
-        log_error("Reached maximum image limit.");
+        LOG_ERROR("Reached maximum image limit.");
         return INVALID_IMAGE_ID;
     }
 

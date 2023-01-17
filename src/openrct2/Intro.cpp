@@ -35,16 +35,16 @@ static int32_t _introStateCounter;
 static std::shared_ptr<IAudioChannel> _soundChannel = nullptr;
 static bool _chainLiftFinished;
 
-static void screen_intro_process_mouse_input();
-static void screen_intro_process_keyboard_input();
-static void screen_intro_skip_part();
-static void screen_intro_draw_logo(rct_drawpixelinfo* dpi);
+static void ScreenIntroProcessMouseInput();
+static void ScreenIntroProcessKeyboardInput();
+static void ScreenIntroSkipPart();
+static void ScreenIntroDrawLogo(rct_drawpixelinfo* dpi);
 
 // rct2: 0x0068E966
-void intro_update()
+void IntroUpdate()
 {
-    screen_intro_process_mouse_input();
-    screen_intro_process_keyboard_input();
+    ScreenIntroProcessMouseInput();
+    ScreenIntroProcessKeyboardInput();
 
     switch (gIntroState)
     {
@@ -168,7 +168,7 @@ void intro_update()
     }
 }
 
-void intro_draw(rct_drawpixelinfo* dpi)
+void IntroDraw(rct_drawpixelinfo* dpi)
 {
     int32_t screenWidth = ContextGetWidth();
 
@@ -216,10 +216,10 @@ void intro_draw(rct_drawpixelinfo* dpi)
             {
                 GfxTransposePalette(PALETTE_G1_IDX_LOGO, 255);
             }
-            screen_intro_draw_logo(dpi);
+            ScreenIntroDrawLogo(dpi);
             break;
         case IntroState::LogoWait:
-            screen_intro_draw_logo(dpi);
+            ScreenIntroDrawLogo(dpi);
             break;
         case IntroState::LogoFadeOut:
             if (_introStateCounter >= 0)
@@ -230,7 +230,7 @@ void intro_draw(rct_drawpixelinfo* dpi)
             {
                 GfxTransposePalette(PALETTE_G1_IDX_LOGO, 0);
             }
-            screen_intro_draw_logo(dpi);
+            ScreenIntroDrawLogo(dpi);
             break;
         case IntroState::Clear:
             GfxClear(dpi, BACKROUND_COLOUR_DARK);
@@ -240,11 +240,11 @@ void intro_draw(rct_drawpixelinfo* dpi)
     }
 }
 
-static void screen_intro_process_mouse_input()
+static void ScreenIntroProcessMouseInput()
 {
     if (ContextGetCursorState()->any == CURSOR_PRESSED)
     {
-        screen_intro_skip_part();
+        ScreenIntroSkipPart();
     }
 }
 
@@ -252,20 +252,20 @@ static void screen_intro_process_mouse_input()
  *
  *  rct2: 0x006E3AEC
  */
-static void screen_intro_process_keyboard_input()
+static void ScreenIntroProcessKeyboardInput()
 {
     const uint8_t* keys = ContextGetKeysState();
     for (int i = 0; i < 256; i++)
     {
         if (keys[i] != 0)
         {
-            screen_intro_skip_part();
+            ScreenIntroSkipPart();
             break;
         }
     }
 }
 
-static void screen_intro_skip_part()
+static void ScreenIntroSkipPart()
 {
     switch (gIntroState)
     {
@@ -280,7 +280,7 @@ static void screen_intro_skip_part()
     }
 }
 
-static void screen_intro_draw_logo(rct_drawpixelinfo* dpi)
+static void ScreenIntroDrawLogo(rct_drawpixelinfo* dpi)
 {
     int32_t screenWidth = ContextGetWidth();
     int32_t imageWidth = 640;

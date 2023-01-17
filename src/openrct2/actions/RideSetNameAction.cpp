@@ -50,7 +50,7 @@ GameActions::Result RideSetNameAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 
@@ -68,7 +68,7 @@ GameActions::Result RideSetNameAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 

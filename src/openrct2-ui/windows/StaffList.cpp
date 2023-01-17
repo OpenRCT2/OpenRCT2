@@ -577,7 +577,7 @@ private:
 
     void CancelTools()
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
             {

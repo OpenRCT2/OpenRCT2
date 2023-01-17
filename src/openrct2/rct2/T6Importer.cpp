@@ -131,7 +131,7 @@ namespace RCT2
             auto version = static_cast<RCT12TrackDesignVersion>((td6.version_and_colour_scheme >> 2) & 3);
             if (version != RCT12TrackDesignVersion::TD6)
             {
-                log_error("Unsupported track design.");
+                LOG_ERROR("Unsupported track design.");
                 return nullptr;
             }
 

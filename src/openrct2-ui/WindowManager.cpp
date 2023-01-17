@@ -323,7 +323,7 @@ public:
                         tlbrWindow->Invalidate();
                         if (!ToolSet(*tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
                         {
-                            input_set_flag(INPUT_FLAG_6, true);
+                            InputSetFlag(INPUT_FLAG_6, true);
                             window = WindowSceneryOpen();
                         }
                     }

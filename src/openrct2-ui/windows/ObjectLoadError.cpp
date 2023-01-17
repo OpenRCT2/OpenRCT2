@@ -203,7 +203,7 @@ private:
 
         auto& entry = _entries[_currentDownloadIndex];
         auto name = String::Trim(std::string(entry.GetName()));
-        log_verbose("Downloading object: [%s]:", name.c_str());
+        LOG_VERBOSE("Downloading object: [%s]:", name.c_str());
         _currentDownloadIndex++;
         UpdateProgress({ name, _lastDownloadSource, _currentDownloadIndex, _entries.size() });
         try

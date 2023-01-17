@@ -69,7 +69,7 @@ static bool WriteDpiToFile(std::string_view path, const rct_drawpixelinfo* dpi, 
     }
     catch (const std::exception& e)
     {
-        log_error("Unable to write png: %s", e.what());
+        LOG_ERROR("Unable to write png: %s", e.what());
         return false;
     }
 }
@@ -136,7 +136,7 @@ static std::optional<std::string> ScreenshotGetNextPath()
     auto screenshotDirectory = ScreenshotGetDirectory();
     if (!Platform::EnsureDirectoryExists(screenshotDirectory.c_str()))
     {
-        log_error("Unable to save screenshots in OpenRCT2 screenshot directory.");
+        LOG_ERROR("Unable to save screenshots in OpenRCT2 screenshot directory.");
         return std::nullopt;
     }
 
@@ -160,7 +160,7 @@ static std::optional<std::string> ScreenshotGetNextPath()
         }
     }
 
-    log_error("You have too many saved screenshots saved at exactly the same date and time.");
+    LOG_ERROR("You have too many saved screenshots saved at exactly the same date and time.");
     return std::nullopt;
 };
 
@@ -207,7 +207,7 @@ std::string ScreenshotDumpPNG32bpp(int32_t width, int32_t height, const void* pi
     }
     catch (const std::exception& e)
     {
-        log_error("Unable to save screenshot: %s", e.what());
+        LOG_ERROR("Unable to save screenshot: %s", e.what());
         return "";
     }
 }
@@ -327,7 +327,7 @@ static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& viewport, rct_drawpixelinfo& dpi)
 {
     // Ensure sprites appear regardless of rotation
-    reset_all_sprite_quadrant_placements();
+    ResetAllSpriteQuadrantPlacements();
 
     std::unique_ptr<X8DrawingEngine> tempDrawingEngine;
     if (drawingEngine == nullptr)
@@ -383,7 +383,7 @@ void ScreenshotGiant()
     }
     catch (const std::exception& e)
     {
-        log_error("%s", e.what());
+        LOG_ERROR("%s", e.what());
         ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {});
     }
 

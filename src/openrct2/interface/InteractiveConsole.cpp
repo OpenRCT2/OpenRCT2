@@ -1380,7 +1380,7 @@ static int32_t ConsoleCommandOpen(InteractiveConsole& console, const arguments_t
 
 static int32_t ConsoleCommandRemoveUnusedObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    int32_t result = editor_remove_unused_objects();
+    int32_t result = EditorRemoveUnusedObjects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
     return 0;
 }
@@ -1530,11 +1530,11 @@ static int32_t ConsoleCommandSavePark([[maybe_unused]] InteractiveConsole& conso
 {
     if (argv.size() < 1)
     {
-        save_game_cmd();
+        SaveGameCmd();
     }
     else
     {
-        save_game_cmd(argv[0].c_str());
+        SaveGameCmd(argv[0].c_str());
     }
     return 1;
 }

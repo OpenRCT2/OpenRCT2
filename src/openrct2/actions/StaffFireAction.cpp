@@ -38,14 +38,14 @@ GameActions::Result StaffFireAction::Query() const
 {
     if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
     {
-        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
-        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -57,7 +57,7 @@ GameActions::Result StaffFireAction::Execute() const
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
-        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     WindowCloseByClass(WindowClass::FirePrompt);

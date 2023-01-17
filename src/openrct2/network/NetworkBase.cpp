@@ -260,7 +260,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 
     mode = NETWORK_MODE_CLIENT;
 
-    log_info("Connecting to %s:%u", host.c_str(), port);
+    LOG_INFO("Connecting to %s:%u", host.c_str(), port);
     _host = host;
     _port = port;
 
@@ -293,7 +293,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         const auto keysDirectory = network_get_keys_directory();
         if (!Platform::EnsureDirectoryExists(keysDirectory.c_str()))
         {
-            log_error("Unable to create directory %s.", keysDirectory.c_str());
+            LOG_ERROR("Unable to create directory %s.", keysDirectory.c_str());
             return false;
         }
 
@@ -304,7 +304,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         }
         catch (const std::exception&)
         {
-            log_error("Unable to save private key at %s.", keyPath.c_str());
+            LOG_ERROR("Unable to save private key at %s.", keyPath.c_str());
             return false;
         }
 
@@ -320,7 +320,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         }
         catch (const std::exception&)
         {
-            log_error("Unable to save public key at %s.", keyPath.c_str());
+            LOG_ERROR("Unable to save public key at %s.", keyPath.c_str());
             return false;
         }
     }
@@ -330,13 +330,13 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         bool ok = false;
         try
         {
-            log_verbose("Loading key from %s", keyPath.c_str());
+            LOG_VERBOSE("Loading key from %s", keyPath.c_str());
             auto fs = FileStream(keyPath, FILE_MODE_OPEN);
             ok = _key.LoadPrivate(&fs);
         }
         catch (const std::exception&)
         {
-            log_error("Unable to read private key from %s.", keyPath.c_str());
+            LOG_ERROR("Unable to read private key from %s.", keyPath.c_str());
             return false;
         }
 
@@ -358,7 +358,7 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
 
     _userManager.Load();
 
-    log_verbose("Begin listening for clients");
+    LOG_VERBOSE("Begin listening for clients");
 
     _listenSocket = CreateTcpSocket();
     try
@@ -410,8 +410,8 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
     _serverState.gamestateSnapshotsEnabled = gConfigNetwork.DesyncDebugging;
     _advertiser = CreateServerAdvertiser(listening_port);
 
-    game_load_scripts();
-    game_notify_map_changed();
+    GameLoadScripts();
+    GameNotifyMapChanged();
 
     return true;
 }
@@ -757,7 +757,7 @@ bool NetworkBase::CheckSRAND(uint32_t tick, uint32_t srand0)
 
     if (storedTick.srand0 != srand0)
     {
-        log_info("Srand0 mismatch, client = %08X, server = %08X", srand0, storedTick.srand0);
+        LOG_INFO("Srand0 mismatch, client = %08X, server = %08X", srand0, storedTick.srand0);
         return false;
     }
 
@@ -767,7 +767,7 @@ bool NetworkBase::CheckSRAND(uint32_t tick, uint32_t srand0)
         std::string clientSpriteHash = checksum.ToString();
         if (clientSpriteHash != storedTick.spriteHash)
         {
-            log_info("Sprite hash mismatch, client = %s, server = %s", clientSpriteHash.c_str(), storedTick.spriteHash.c_str());
+            LOG_INFO("Sprite hash mismatch, client = %s, server = %s", clientSpriteHash.c_str(), storedTick.spriteHash.c_str());
             return false;
         }
     }
@@ -809,7 +809,7 @@ bool NetworkBase::CheckDesynchronizaton()
 
 void NetworkBase::RequestStateSnapshot()
 {
-    log_info("Requesting game state for tick %u", _serverState.desyncTick);
+    LOG_INFO("Requesting game state for tick %u", _serverState.desyncTick);
 
     Client_Send_RequestGameState(_serverState.desyncTick);
 }
@@ -932,7 +932,7 @@ uint8_t NetworkBase::GetGroupIDByHash(const std::string& keyhash)
         }
         else
         {
-            log_warning(
+            LOG_WARNING(
                 "User %s is assigned to non-existent group %u. Assigning to default group (%u)", keyhash.c_str(), assignedGroup,
                 groupId);
         }
@@ -975,7 +975,7 @@ void NetworkBase::SaveGroups()
         }
         catch (const std::exception& ex)
         {
-            log_error("Unable to save %s: %s", path.c_str(), ex.what());
+            LOG_ERROR("Unable to save %s: %s", path.c_str(), ex.what());
         }
     }
 }
@@ -1029,7 +1029,7 @@ void NetworkBase::LoadGroups()
         }
         catch (const std::exception& e)
         {
-            log_error("Failed to read %s as JSON. Setting default groups. %s", path.c_str(), e.what());
+            LOG_ERROR("Failed to read %s as JSON. Setting default groups. %s", path.c_str(), e.what());
         }
     }
 
@@ -1078,7 +1078,7 @@ void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
 {
     if (fs.fail())
     {
-        log_error("bad ostream failed to append log");
+        LOG_ERROR("bad ostream failed to append log");
         return;
     }
     try
@@ -1097,7 +1097,7 @@ void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
     }
     catch (const std::exception& ex)
     {
-        log_error("%s", ex.what());
+        LOG_ERROR("%s", ex.what());
     }
 }
 
@@ -1180,11 +1180,11 @@ void NetworkBase::Client_Send_RequestGameState(uint32_t tick)
 {
     if (_serverState.gamestateSnapshotsEnabled == false)
     {
-        log_verbose("Server does not store a gamestate history");
+        LOG_VERBOSE("Server does not store a gamestate history");
         return;
     }
 
-    log_verbose("Requesting gamestate from server for tick %u", tick);
+    LOG_VERBOSE("Requesting gamestate from server for tick %u", tick);
 
     NetworkPacket packet(NetworkCommand::RequestGameState);
     packet << tick;
@@ -1193,7 +1193,7 @@ void NetworkBase::Client_Send_RequestGameState(uint32_t tick)
 
 void NetworkBase::Client_Send_TOKEN()
 {
-    log_verbose("requesting token");
+    LOG_VERBOSE("requesting token");
     NetworkPacket packet(NetworkCommand::Token);
     _serverConnection->AuthStatus = NetworkAuth::Requested;
     _serverConnection->QueuePacket(std::move(packet));
@@ -1216,13 +1216,13 @@ void NetworkBase::Client_Send_AUTH(
 
 void NetworkBase::Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor>& objects)
 {
-    log_verbose("client requests %u objects", uint32_t(objects.size()));
+    LOG_VERBOSE("client requests %u objects", uint32_t(objects.size()));
     NetworkPacket packet(NetworkCommand::MapRequest);
     packet << static_cast<uint32_t>(objects.size());
     for (const auto& object : objects)
     {
         std::string name(object.GetName());
-        log_verbose("client requests object %s", name.c_str());
+        LOG_VERBOSE("client requests object %s", name.c_str());
         if (object.Generation == ObjectGeneration::DAT)
         {
             packet << static_cast<uint8_t>(0);
@@ -1248,7 +1248,7 @@ void NetworkBase::Server_Send_TOKEN(NetworkConnection& connection)
 void NetworkBase::Server_Send_OBJECTS_LIST(
     NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const
 {
-    log_verbose("Server sends objects list with %u items", objects.size());
+    LOG_VERBOSE("Server sends objects list with %u items", objects.size());
 
     if (objects.empty())
     {
@@ -1269,14 +1269,14 @@ void NetworkBase::Server_Send_OBJECTS_LIST(
             if (object->Identifier.empty())
             {
                 // DAT
-                log_verbose("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
+                LOG_VERBOSE("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
                 packet << static_cast<uint8_t>(0);
                 packet.Write(&object->ObjectEntry, sizeof(rct_object_entry));
             }
             else
             {
                 // JSON
-                log_verbose("Object %s", object->Identifier.c_str());
+                LOG_VERBOSE("Object %s", object->Identifier.c_str());
                 packet << static_cast<uint8_t>(1);
                 packet.WriteString(object->Identifier);
             }
@@ -1305,12 +1305,12 @@ void NetworkBase::Server_Send_SCRIPTS(NetworkConnection& connection)
         }
     }
 
-    log_verbose("Server sends %u scripts", pluginsToSend.size());
+    LOG_VERBOSE("Server sends %u scripts", pluginsToSend.size());
     packet << static_cast<uint32_t>(pluginsToSend.size());
     for (const auto& plugin : pluginsToSend)
     {
         const auto& metadata = plugin->GetMetadata();
-        log_verbose("Script %s", metadata.Name.c_str());
+        LOG_VERBOSE("Script %s", metadata.Name.c_str());
 
         const auto& code = plugin->GetCode();
         packet << static_cast<uint32_t>(code.size());
@@ -1324,7 +1324,7 @@ void NetworkBase::Server_Send_SCRIPTS(NetworkConnection& connection)
 
 void NetworkBase::Client_Send_HEARTBEAT(NetworkConnection& connection) const
 {
-    log_verbose("Sending heartbeat");
+    LOG_VERBOSE("Sending heartbeat");
 
     NetworkPacket packet(NetworkCommand::Heartbeat);
     connection.QueuePacket(std::move(packet));
@@ -1426,7 +1426,7 @@ std::vector<uint8_t> NetworkBase::save_for_network(const std::vector<const Objec
     }
     else
     {
-        log_warning("Failed to export map.");
+        LOG_WARNING("Failed to export map.");
     }
     return result;
 }
@@ -1712,7 +1712,7 @@ void NetworkBase::ProcessPacket(NetworkConnection& connection, NetworkPacket& pa
             }
             catch (const std::exception& ex)
             {
-                log_verbose("Exception during packet processing: %s", ex.what());
+                LOG_VERBOSE("Exception during packet processing: %s", ex.what());
             }
         }
     }
@@ -2122,7 +2122,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
     auto keyPath = network_get_private_key_path(gConfigNetwork.PlayerName);
     if (!File::Exists(keyPath))
     {
-        log_error("Key file (%s) was not found. Restart client to re-generate it.", keyPath.c_str());
+        LOG_ERROR("Key file (%s) was not found. Restart client to re-generate it.", keyPath.c_str());
         return;
     }
 
@@ -2136,7 +2136,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
     }
     catch (const std::exception&)
     {
-        log_error("Failed to load key %s", keyPath.c_str());
+        LOG_ERROR("Failed to load key %s", keyPath.c_str());
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
         connection.Disconnect();
         return;
@@ -2153,7 +2153,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
     bool ok = _key.Sign(_challenge.data(), _challenge.size(), signature);
     if (!ok)
     {
-        log_error("Failed to sign server's challenge.");
+        LOG_ERROR("Failed to sign server's challenge.");
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
         connection.Disconnect();
         return;
@@ -2209,7 +2209,7 @@ void NetworkBase::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection,
 
 void NetworkBase::Server_Handle_HEARTBEAT(NetworkConnection& connection, NetworkPacket& packet)
 {
-    log_verbose("Client %s heartbeat", connection.Socket->GetHostName());
+    LOG_VERBOSE("Client %s heartbeat", connection.Socket->GetHostName());
     connection.ResetLastPacketTime();
 }
 
@@ -2340,13 +2340,13 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
                 if (object == nullptr)
                 {
                     auto objectName = std::string(entry->GetName());
-                    log_verbose("Requesting object %s with checksum %x from server", objectName.c_str(), entry->checksum);
+                    LOG_VERBOSE("Requesting object %s with checksum %x from server", objectName.c_str(), entry->checksum);
                     _missingObjects.push_back(ObjectEntryDescriptor(*entry));
                 }
                 else if (object->ObjectEntry.checksum != entry->checksum || object->ObjectEntry.flags != entry->flags)
                 {
                     auto objectName = std::string(entry->GetName());
-                    log_warning(
+                    LOG_WARNING(
                         "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", objectName.c_str(),
                         object->ObjectEntry.checksum, object->ObjectEntry.flags, entry->checksum, entry->flags);
                 }
@@ -2362,7 +2362,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
                 if (object == nullptr)
                 {
                     auto objectName = std::string(identifier);
-                    log_verbose("Requesting object %s from server", objectName.c_str());
+                    LOG_VERBOSE("Requesting object %s from server", objectName.c_str());
                     _missingObjects.push_back(ObjectEntryDescriptor(objectName));
                 }
             }
@@ -2371,7 +2371,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
 
     if (index + 1 >= totalObjects)
     {
-        log_verbose("client received object list, it has %u entries", totalObjects);
+        LOG_VERBOSE("client received object list, it has %u entries", totalObjects);
         Client_Send_MAPREQUEST(_missingObjects);
         _missingObjects.clear();
     }
@@ -2420,7 +2420,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
     const uint8_t* data = packet.Read(dataSize);
     _serverGameState.Write(data, dataSize);
 
-    log_verbose(
+    LOG_VERBOSE(
         "Received Game State %.02f%%",
         (static_cast<float>(_serverGameState.GetLength()) / static_cast<float>(totalSize)) * 100.0f);
 
@@ -2452,7 +2452,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
 
             if (snapshots->LogCompareDataToFile(outputFile, cmpData))
             {
-                log_info("Wrote desync report to '%s'", outputFile.c_str());
+                LOG_INFO("Wrote desync report to '%s'", outputFile.c_str());
 
                 auto ft = Formatter();
                 ft.Add<char*>(uniqueFileName);
@@ -2472,7 +2472,7 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
 {
     uint32_t size;
     packet >> size;
-    log_verbose("Client requested %u objects", size);
+    LOG_VERBOSE("Client requested %u objects", size);
     auto& repo = GetContext().GetObjectRepository();
     for (uint32_t i = 0; i < size; i++)
     {
@@ -2485,19 +2485,19 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
         {
             const auto* entry = reinterpret_cast<const rct_object_entry*>(packet.Read(sizeof(rct_object_entry)));
             objectName = std::string(entry->GetName());
-            log_verbose("Client requested object %s", objectName.c_str());
+            LOG_VERBOSE("Client requested object %s", objectName.c_str());
             item = repo.FindObject(entry);
         }
         else
         {
             objectName = std::string(packet.ReadString());
-            log_verbose("Client requested object %s", objectName.c_str());
+            LOG_VERBOSE("Client requested object %s", objectName.c_str());
             item = repo.FindObject(objectName);
         }
 
         if (item == nullptr)
         {
-            log_warning("Client tried getting non-existent object %s from us.", objectName.c_str());
+            LOG_WARNING("Client tried getting non-existent object %s from us.", objectName.c_str());
         }
         else
         {
@@ -2560,10 +2560,10 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
                 const std::string hash = connection.Key.PublicKeyHash();
                 if (verified)
                 {
-                    log_verbose("Connection %s: Signature verification ok. Hash %s", hostName, hash.c_str());
+                    LOG_VERBOSE("Connection %s: Signature verification ok. Hash %s", hostName, hash.c_str());
                     if (gConfigNetwork.KnownKeysOnly && _userManager.GetUserByHash(hash) == nullptr)
                     {
-                        log_verbose("Connection %s: Hash %s, not known", hostName, hash.c_str());
+                        LOG_VERBOSE("Connection %s: Hash %s, not known", hostName, hash.c_str());
                         connection.AuthStatus = NetworkAuth::UnknownKeyDisallowed;
                     }
                     else
@@ -2574,13 +2574,13 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
                 else
                 {
                     connection.AuthStatus = NetworkAuth::VerificationFailure;
-                    log_verbose("Connection %s: Signature verification failed!", hostName);
+                    LOG_VERBOSE("Connection %s: Signature verification failed!", hostName);
                 }
             }
             catch (const std::exception&)
             {
                 connection.AuthStatus = NetworkAuth::VerificationFailure;
-                log_verbose("Connection %s: Signature verification failed, invalid data!", hostName);
+                LOG_VERBOSE("Connection %s: Signature verification failed, invalid data!", hostName);
             }
         }
 
@@ -2593,31 +2593,31 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
         if (gameversion != network_get_version())
         {
             connection.AuthStatus = NetworkAuth::BadVersion;
-            log_info("Connection %s: Bad version.", hostName);
+            LOG_INFO("Connection %s: Bad version.", hostName);
         }
         else if (name.empty())
         {
             connection.AuthStatus = NetworkAuth::BadName;
-            log_info("Connection %s: Bad name.", connection.Socket->GetHostName());
+            LOG_INFO("Connection %s: Bad name.", connection.Socket->GetHostName());
         }
         else if (!passwordless)
         {
             if (password.empty() && !_password.empty())
             {
                 connection.AuthStatus = NetworkAuth::RequirePassword;
-                log_info("Connection %s: Requires password.", hostName);
+                LOG_INFO("Connection %s: Requires password.", hostName);
             }
             else if (!password.empty() && _password != password)
             {
                 connection.AuthStatus = NetworkAuth::BadPassword;
-                log_info("Connection %s: Bad password.", hostName);
+                LOG_INFO("Connection %s: Bad password.", hostName);
             }
         }
 
         if (GetNumVisiblePlayers() >= gConfigNetwork.Maxplayers)
         {
             connection.AuthStatus = NetworkAuth::Full;
-            log_info("Connection %s: Server is full.", hostName);
+            LOG_INFO("Connection %s: Server is full.", hostName);
         }
         else if (connection.AuthStatus == NetworkAuth::Verified)
         {
@@ -2630,7 +2630,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             else
             {
                 connection.AuthStatus = NetworkAuth::VerificationFailure;
-                log_info("Connection %s: Denied by plugin.", hostName);
+                LOG_INFO("Connection %s: Denied by plugin.", hostName);
             }
         }
 
@@ -2680,8 +2680,8 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         GameActions::ResumeQueue();
 
         ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
-        game_unload_scripts();
-        game_notify_map_change();
+        GameUnloadScripts();
+        GameNotifyMapChange();
 
         bool has_to_free = false;
         uint8_t* data = &chunk_buffer[0];
@@ -2689,9 +2689,9 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         auto ms = MemoryStream(data, data_size);
         if (LoadMap(&ms))
         {
-            game_load_init();
-            game_load_scripts();
-            game_notify_map_changed();
+            GameLoadInit();
+            GameLoadScripts();
+            GameNotifyMapChanged();
             _serverState.tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NetworkServerState::Ok;
@@ -2856,7 +2856,7 @@ void NetworkBase::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& 
     GameAction::Ptr action = GameActions::Create(actionType);
     if (action == nullptr)
     {
-        log_error("Received unregistered game action type: 0x%08X", actionType);
+        LOG_ERROR("Received unregistered game action type: 0x%08X", actionType);
         return;
     }
     action->Serialise(ds);
@@ -2910,7 +2910,7 @@ void NetworkBase::Server_Handle_GAME_ACTION(NetworkConnection& connection, Netwo
     GameAction::Ptr ga = GameActions::Create(actionType);
     if (ga == nullptr)
     {
-        log_error(
+        LOG_ERROR(
             "Received unregistered game action type: 0x%08X from player: (%d) %s", actionType, connection.Player->Id,
             connection.Player->Name.c_str());
         return;
@@ -3114,7 +3114,7 @@ void NetworkBase::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connec
 
 void NetworkBase::Client_Send_GAMEINFO()
 {
-    log_verbose("requesting gameinfo");
+    LOG_VERBOSE("requesting gameinfo");
     NetworkPacket packet(NetworkCommand::GameInfo);
     _serverConnection->QueuePacket(std::move(packet));
 }
@@ -3621,7 +3621,7 @@ GameActions::Result network_modify_groups(
         }
         break;
         default:
-            log_error("Invalid Modify Group Type: %u", static_cast<uint8_t>(type));
+            LOG_ERROR("Invalid Modify Group Type: %u", static_cast<uint8_t>(type));
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -3828,7 +3828,7 @@ void network_send_password(const std::string& password)
     const auto keyPath = network_get_private_key_path(gConfigNetwork.PlayerName);
     if (!File::Exists(keyPath))
     {
-        log_error("Private key %s missing! Restart the game to generate it.", keyPath.c_str());
+        LOG_ERROR("Private key %s missing! Restart the game to generate it.", keyPath.c_str());
         return;
     }
     try
@@ -3838,7 +3838,7 @@ void network_send_password(const std::string& password)
     }
     catch (const std::exception&)
     {
-        log_error("Error reading private key from %s.", keyPath.c_str());
+        LOG_ERROR("Error reading private key from %s.", keyPath.c_str());
         return;
     }
     const std::string pubkey = network._key.PublicKeyString();

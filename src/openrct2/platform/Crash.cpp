@@ -153,7 +153,7 @@ static bool OnCrash(
         fclose(dest);
     }
 
-    bool with_record = stop_silent_record();
+    bool with_record = StopSilentRecord();
 
     // Try to rename the files
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)

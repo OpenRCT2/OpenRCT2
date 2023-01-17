@@ -63,7 +63,7 @@ static void GameInit(bool retainSpatialIndices)
     if (!retainSpatialIndices)
         ResetEntitySpatialIndices();
 
-    reset_all_sprite_quadrant_placements();
+    ResetAllSpriteQuadrantPlacements();
     ScenerySetDefaultPlacementConfiguration();
     LoadPalette();
     EntityTweener::Get().Reset();
@@ -140,7 +140,7 @@ static void CompareStates(MemoryStream& importBuffer, MemoryStream& exportBuffer
 {
     if (importBuffer.GetLength() != exportBuffer.GetLength())
     {
-        log_warning(
+        LOG_WARNING(
             "Inconsistent export size! Import Size: %llu bytes, Export Size: %llu bytes",
             static_cast<unsigned long long>(importBuffer.GetLength()),
             static_cast<unsigned long long>(exportBuffer.GetLength()));
@@ -171,13 +171,13 @@ static void CompareStates(MemoryStream& importBuffer, MemoryStream& exportBuffer
 
         if (res != cmpData.spriteChanges.end())
         {
-            log_warning("Snapshot data differences. %s", snapshots->GetCompareDataText(cmpData).c_str());
+            LOG_WARNING("Snapshot data differences. %s", snapshots->GetCompareDataText(cmpData).c_str());
             FAIL();
         }
     }
     catch (const std::runtime_error& err)
     {
-        log_warning("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
+        LOG_WARNING("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
         FAIL();
     }
 }

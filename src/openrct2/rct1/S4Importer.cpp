@@ -581,7 +581,7 @@ namespace RCT1
                     }
                     else
                     {
-                        log_error("Cannot find object %s", objectName);
+                        LOG_ERROR("Cannot find object %s", objectName);
                     }
                 }
             }
@@ -810,7 +810,7 @@ namespace RCT1
             // This can happen with hacked parks
             if (rideEntry == nullptr)
             {
-                log_warning("Discarding ride with invalid ride entry");
+                LOG_WARNING("Discarding ride with invalid ride entry");
                 dst->type = RIDE_TYPE_NULL;
                 return;
             }

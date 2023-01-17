@@ -51,7 +51,7 @@ void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
     const auto* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
     {
-        log_error("Tried drawing an out-of-bounds widget index!");
+        LOG_ERROR("Tried drawing an out-of-bounds widget index!");
         return;
     }
 
@@ -883,9 +883,9 @@ bool WidgetIsPressed(const rct_window& w, WidgetIndex widgetIndex)
         }
     }
 
-    if (input_get_state() == InputState::WidgetPressed || input_get_state() == InputState::DropdownActive)
+    if (InputGetState() == InputState::WidgetPressed || InputGetState() == InputState::DropdownActive)
     {
-        if (!(input_test_flag(INPUT_FLAG_WIDGET_PRESSED)))
+        if (!(InputTestFlag(INPUT_FLAG_WIDGET_PRESSED)))
             return false;
         if (gPressedWidget.window_classification != w.classification)
             return false;
@@ -911,7 +911,7 @@ bool WidgetIsHighlighted(const rct_window& w, WidgetIndex widgetIndex)
 
 bool WidgetIsActiveTool(const rct_window& w, WidgetIndex widgetIndex)
 {
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
     if (gCurrentToolWidget.window_classification != w.classification)
         return false;
@@ -1051,7 +1051,7 @@ Widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
         index++;
     }
 
-    log_error("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
+    LOG_ERROR("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
 
     return nullptr;
 }

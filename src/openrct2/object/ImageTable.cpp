@@ -106,7 +106,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             else
             {
                 std::string id(context->GetObjectIdentifier());
-                log_warning("CSG not loaded inserting placeholder images for %s", id.c_str());
+                LOG_WARNING("CSG not loaded inserting placeholder images for %s", id.c_str());
                 result.resize(range.size());
                 for (auto& res : result)
                 {

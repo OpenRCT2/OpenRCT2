@@ -43,13 +43,13 @@ void Painter::Paint(IDrawingEngine& de)
     auto dpi = de.GetDrawingPixelInfo();
     if (gIntroState != IntroState::None)
     {
-        intro_draw(dpi);
+        IntroDraw(dpi);
     }
     else
     {
         de.PaintWindows();
 
-        update_palette_effects();
+        UpdatePaletteEffects();
         _uiContext->Draw(dpi);
 
         if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !title_should_hide_version_info())

@@ -63,7 +63,7 @@ namespace Json
         }
         catch (const json_t::exception& e)
         {
-            log_error("Unable to parse JSON string (%.*s)\n\t%s", static_cast<int>(raw.length()), raw.data(), e.what());
+            LOG_ERROR("Unable to parse JSON string (%.*s)\n\t%s", static_cast<int>(raw.length()), raw.data(), e.what());
         }
 
         return json;
@@ -79,7 +79,7 @@ namespace Json
         }
         catch (const json_t::exception& e)
         {
-            log_error("Unable to parse JSON vector (%.*s)\n\t%s", static_cast<int>(vec.size()), vec.data(), e.what());
+            LOG_ERROR("Unable to parse JSON vector (%.*s)\n\t%s", static_cast<int>(vec.size()), vec.data(), e.what());
         }
 
         return json;

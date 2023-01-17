@@ -1204,7 +1204,7 @@ rct_window* WindowRideMainOpen(const Ride& ride)
         w->ride.view = 0;
     }
 
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+    if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
     {
         if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
         {
@@ -1240,7 +1240,7 @@ static rct_window* WindowRideOpenStation(const Ride& ride, StationIndex stationI
         w->ride.var_482 = -1;
     }
 
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
+    if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
         && gCurrentToolWidget.window_number == w->number)
     {
         ToolCancel();
@@ -1343,7 +1343,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
     {
         w->Invalidate();
 
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
             && gCurrentToolWidget.window_number == w->number)
         {
             ToolCancel();
@@ -1410,7 +1410,7 @@ static void WindowRideSetPage(rct_window* w, int32_t page)
 {
     int32_t listen;
 
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+    if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
             ToolCancel();
 
@@ -3770,7 +3770,7 @@ static void WindowRideMaintenanceDrawBar(
     if (colour & BAR_BLINK)
     {
         colour &= ~BAR_BLINK;
-        if (game_is_not_paused() && (gCurrentRealTimeTicks & 8))
+        if (GameIsNotPaused() && (gCurrentRealTimeTicks & 8))
             return;
     }
 
@@ -4271,7 +4271,7 @@ static void WindowRideSetTrackColourScheme(rct_window* w, const ScreenCoordsXY& 
  */
 static void WindowRideColourClose(rct_window* w)
 {
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return;
 
     if (gCurrentToolWidget.window_classification != w->classification)
@@ -6236,7 +6236,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
                 intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
                 break;
             default:
-                log_error("Wrong graph type %d", listType);
+                LOG_ERROR("Wrong graph type %d", listType);
                 firstPoint = secondPoint = 0;
                 break;
         }

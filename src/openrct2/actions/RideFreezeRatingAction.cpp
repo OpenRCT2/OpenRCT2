@@ -34,13 +34,13 @@ GameActions::Result RideFreezeRatingAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     if (_value <= 0)
     {
-        log_warning("Rating value must be positive", _rideIndex.ToUnderlying());
+        LOG_WARNING("Rating value must be positive", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 

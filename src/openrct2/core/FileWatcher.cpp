@@ -44,11 +44,11 @@ void FileWatcher::FileDescriptor::Initialise()
         fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 
         Fd = fd;
-        log_verbose("FileWatcher: inotify_init succeeded");
+        LOG_VERBOSE("FileWatcher: inotify_init succeeded");
     }
     else
     {
-        log_verbose("FileWatcher: inotify_init failed");
+        LOG_VERBOSE("FileWatcher: inotify_init failed");
         throw std::runtime_error("inotify_init failed");
     }
 }
@@ -69,11 +69,11 @@ FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
 {
     if (Wd >= 0)
     {
-        log_verbose("FileWatcher: inotify watch added for %s", path.c_str());
+        LOG_VERBOSE("FileWatcher: inotify watch added for %s", path.c_str());
     }
     else
     {
-        log_verbose("FileWatcher: inotify_add_watch failed for %s", path.c_str());
+        LOG_VERBOSE("FileWatcher: inotify_add_watch failed for %s", path.c_str());
         throw std::runtime_error("inotify_add_watch failed for '" + path + "'");
     }
 }
@@ -81,7 +81,7 @@ FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
 FileWatcher::WatchDescriptor::~WatchDescriptor()
 {
     inotify_rm_watch(Fd, Wd);
-    log_verbose("FileWatcher: inotify watch removed");
+    LOG_VERBOSE("FileWatcher: inotify watch removed");
 }
 #endif
 
@@ -106,9 +106,9 @@ void FileWatcher::FSEventsCallback(
     for (size_t i = 0; i < numEvents; i++)
     {
         if (eventFlags[i] & eventModified)
-            log_verbose("Modified: %s\n", paths[i]);
+            LOG_VERBOSE("Modified: %s\n", paths[i]);
         if (eventFlags[i] & eventRenamed)
-            log_verbose("Renamed: %s\n", paths[i]);
+            LOG_VERBOSE("Renamed: %s\n", paths[i]);
 
         if (eventFlags[i] & eventModified || eventFlags[i] & eventRenamed)
         {
@@ -211,14 +211,14 @@ void FileWatcher::WatchDirectory()
         }
     }
 #elif defined(__linux__)
-    log_verbose("FileWatcher: reading event data...");
+    LOG_VERBOSE("FileWatcher: reading event data...");
     std::array<char, 1024> eventData;
     while (!_finished)
     {
         int length = read(_fileDesc.Fd, eventData.data(), eventData.size());
         if (length >= 0)
         {
-            log_verbose("FileWatcher: inotify event data received");
+            LOG_VERBOSE("FileWatcher: inotify event data received");
             auto onFileChanged = OnFileChanged;
             if (onFileChanged)
             {
@@ -228,7 +228,7 @@ void FileWatcher::WatchDirectory()
                     auto e = reinterpret_cast<inotify_event*>(eventData.data() + offset);
                     if ((e->mask & IN_CLOSE_WRITE) && !(e->mask & IN_ISDIR))
                     {
-                        log_verbose("FileWatcher: inotify event received for %s", e->name);
+                        LOG_VERBOSE("FileWatcher: inotify event received for %s", e->name);
 
                         // Find watch descriptor
                         int wd = e->wd;

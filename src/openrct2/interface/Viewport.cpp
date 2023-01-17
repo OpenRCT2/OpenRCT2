@@ -94,11 +94,11 @@ void ViewportInitAll()
     WindowInitAll();
 
     // ?
-    input_reset_flags();
-    input_set_state(InputState::Reset);
+    InputResetFlags();
+    InputSetState(InputState::Reset);
     gPressedWidget.window_classification = WindowClass::Null;
     gPickupPeepImage = ImageId();
-    reset_tooltip_not_shown();
+    ResetTooltipNotShown();
     gMapSelectFlags = 0;
     ClearPatrolAreaToRender();
     TextinputCancel();
@@ -146,7 +146,7 @@ CoordsXYZ Focus::GetPos() const
                 }
                 else
                 {
-                    log_error("Invalid entity for focus.");
+                    LOG_ERROR("Invalid entity for focus.");
                     return CoordsXYZ{};
                 }
             }
@@ -176,7 +176,7 @@ void ViewportCreate(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t w
     rct_viewport* viewport = nullptr;
     if (_viewports.size() >= MAX_VIEWPORT_COUNT)
     {
-        log_error("No more viewport slots left to allocate.");
+        LOG_ERROR("No more viewport slots left to allocate.");
         return;
     }
 
@@ -211,7 +211,7 @@ void ViewportCreate(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t w
     auto centreLoc = centre_2d_coordinates(centrePos, viewport);
     if (!centreLoc.has_value())
     {
-        log_error("Invalid location for viewport.");
+        LOG_ERROR("Invalid location for viewport.");
         return;
     }
     w->savedViewPos = *centreLoc;
@@ -223,7 +223,7 @@ void ViewportRemove(rct_viewport* viewport)
     auto it = std::find_if(_viewports.begin(), _viewports.end(), [viewport](const auto& vp) { return &vp == viewport; });
     if (it == _viewports.end())
     {
-        log_error("Unable to remove viewport: %p", viewport);
+        LOG_ERROR("Unable to remove viewport: %p", viewport);
         return;
     }
     _viewports.erase(it);
@@ -2131,7 +2131,7 @@ uint8_t GetCurrentRotation()
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (rotation != rotation_masked)
     {
-        log_error(
+        LOG_ERROR(
             "Found wrong rotation %d! Will return %d instead.", static_cast<uint32_t>(rotation),
             static_cast<uint32_t>(rotation_masked));
     }

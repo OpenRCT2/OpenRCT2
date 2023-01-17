@@ -4228,7 +4228,7 @@ void Guest::UpdateRideLeaveVehicle()
         }
         else
         {
-            log_verbose(
+            LOG_VERBOSE(
                 "CurrentSeat %d is too large! (Vehicle entry has room for %d.)", CurrentSeat,
                 carEntry->peep_loading_positions.size());
         }
@@ -7382,7 +7382,7 @@ void Guest::RemoveFromQueue()
     auto* otherGuest = GetEntity<Guest>(station.LastPeepInQueue);
     if (otherGuest == nullptr)
     {
-        log_error("Invalid Guest Queue list!");
+        LOG_ERROR("Invalid Guest Queue list!");
         return;
     }
     for (; otherGuest != nullptr; otherGuest = GetEntity<Guest>(otherGuest->GuestNextInQueue))

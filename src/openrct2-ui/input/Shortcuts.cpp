@@ -364,7 +364,7 @@ static void ShortcutReduceGameSpeed()
         return;
 
     if (network_get_mode() == NETWORK_MODE_NONE)
-        game_reduce_game_speed();
+        GameReduceGameSpeed();
 }
 
 static void ShortcutIncreaseGameSpeed()
@@ -373,7 +373,7 @@ static void ShortcutIncreaseGameSpeed()
         return;
 
     if (network_get_mode() == NETWORK_MODE_NONE)
-        game_increase_game_speed();
+        GameIncreaseGameSpeed();
 }
 
 static void ShortcutOpenCheatWindow()
@@ -424,7 +424,7 @@ static void ShortcutQuickSaveGame()
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
         ToolCancel();
-        save_game();
+        SaveGame();
     }
     else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
@@ -764,7 +764,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
             {
                 WindowClose(*window);
             }
-            else if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+            else if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
             {
                 ToolCancel();
             }

@@ -465,7 +465,7 @@ static void WindowGameBottomToolbarDrawParkRating(
     bar_width = (factor * 114) / 255;
     GfxFillRectInset(
         dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, w->colours[1], INSET_RECT_F_30);
-    if (!(colour & BAR_BLINK) || game_is_paused() || (gCurrentRealTimeTicks & 8))
+    if (!(colour & BAR_BLINK) || GameIsPaused() || (gCurrentRealTimeTicks & 8))
     {
         if (bar_width > 2)
         {

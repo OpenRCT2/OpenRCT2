@@ -592,7 +592,7 @@ static void ServerListFetchServersCheck(rct_window* w)
             catch (const std::exception& e)
             {
                 _statusText = STR_SERVER_LIST_NO_CONNECTION;
-                log_warning("Unable to connect to master server: %s", e.what());
+                LOG_WARNING("Unable to connect to master server: %s", e.what());
             }
             _fetchFuture = {};
             w->Invalidate();

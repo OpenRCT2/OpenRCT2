@@ -151,7 +151,7 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScTool> tool_get() const
         {
-            if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
             {
                 return std::make_shared<ScTool>(_scriptEngine.GetContext());
             }

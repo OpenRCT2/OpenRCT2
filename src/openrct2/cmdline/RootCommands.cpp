@@ -442,7 +442,7 @@ static void PrintAbout()
 static void PrintVersion()
 {
     char buffer[256];
-    openrct2_write_full_version_info(buffer, sizeof(buffer));
+    OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
     Console::WriteLine(buffer);
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
     Console::WriteLine();
@@ -475,7 +475,7 @@ static void PrintLaunchInformation()
     struct tm* tmInfo;
 
     // Print name and version information
-    openrct2_write_full_version_info(buffer, sizeof(buffer));
+    OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
     Console::WriteFormat("%s", buffer);
     Console::WriteLine();
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);

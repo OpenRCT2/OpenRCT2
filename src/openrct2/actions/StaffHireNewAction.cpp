@@ -81,7 +81,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
     if (_staffType >= static_cast<uint8_t>(StaffType::Count))
     {
         // Invalid staff type.
-        log_error("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
+        LOG_ERROR("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
 
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
     }
@@ -96,7 +96,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         if (static_cast<uint8_t>(_entertainerType) >= static_cast<uint8_t>(EntertainerCostume::Count))
         {
             // Invalid entertainer costume
-            log_error("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
+            LOG_ERROR("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
         }
@@ -105,7 +105,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         if (!(availableCostumes & (1 << static_cast<uint8_t>(_entertainerType))))
         {
             // Entertainer costume unavailable
-            log_error("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
+            LOG_ERROR("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
         }

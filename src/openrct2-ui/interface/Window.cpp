@@ -521,7 +521,7 @@ void WindowAllWheelInput()
         return;
 
     // Check window cursor is over
-    if (!(input_test_flag(INPUT_FLAG_5)))
+    if (!(InputTestFlag(INPUT_FLAG_5)))
     {
         rct_window* w = WindowFindFromPoint(cursorState->position);
         if (w != nullptr)

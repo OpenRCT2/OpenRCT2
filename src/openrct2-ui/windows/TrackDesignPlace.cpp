@@ -80,7 +80,7 @@ public:
         widgets = window_track_place_widgets;
         WindowInitScrollWidgets(*this);
         ToolSet(*this, WIDX_PRICE, Tool::Crosshair);
-        input_set_flag(INPUT_FLAG_6, true);
+        InputSetFlag(INPUT_FLAG_6, true);
         WindowPushOthersRight(*this);
         ShowGridlines();
         _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
@@ -136,7 +136,7 @@ public:
 
     void OnUpdate() override
     {
-        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             if (gCurrentToolWidget.window_classification != WindowClass::TrackDesignPlace)
                 Close();
     }
@@ -173,7 +173,7 @@ public:
         mapZ = GetBaseZ(mapCoords);
         CoordsXYZD trackLoc = { mapCoords, mapZ, _currentTrackPieceDirection };
 
-        if (game_is_not_paused() || gCheatsBuildInPauseMode)
+        if (GameIsNotPaused() || gCheatsBuildInPauseMode)
         {
             ClearProvisional();
             auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);

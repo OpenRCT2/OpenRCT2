@@ -241,7 +241,7 @@ public:
             case RideConstructionState::Front:
             case RideConstructionState::Back:
             case RideConstructionState::Selected:
-                if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+                if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
                     && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
                 {
                     ToolCancel();
@@ -311,7 +311,7 @@ private:
         gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
         gRideEntranceExitPlaceRideIndex = rideId;
         gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-        input_set_flag(INPUT_FLAG_6, true);
+        InputSetFlag(INPUT_FLAG_6, true);
 
         RideConstructionInvalidateCurrentTrack();
 

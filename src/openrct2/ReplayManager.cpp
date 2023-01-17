@@ -331,7 +331,7 @@ namespace OpenRCT2
             }
             else
             {
-                log_error("Unable to write to file '%s'", outFile.c_str());
+                LOG_ERROR("Unable to write to file '%s'", outFile.c_str());
                 result = false;
             }
 
@@ -410,7 +410,7 @@ namespace OpenRCT2
             }
             catch (const std::runtime_error& err)
             {
-                log_warning("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
+                LOG_WARNING("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
             }
         }
 
@@ -423,13 +423,13 @@ namespace OpenRCT2
 
             if (!ReadReplayData(file, *replayData))
             {
-                log_error("Unable to read replay data.");
+                LOG_ERROR("Unable to read replay data.");
                 return false;
             }
 
             if (!LoadReplayDataMap(*replayData))
             {
-                log_error("Unable to load map.");
+                LOG_ERROR("Unable to load map.");
                 return false;
             }
 
@@ -534,12 +534,12 @@ namespace OpenRCT2
                 DataSerialiser parkParamsDs(false, data.parkParams);
                 SerialiseParkParameters(parkParamsDs);
 
-                game_load_init();
+                GameLoadInit();
                 FixInvalidVehicleSpriteSizes();
             }
             catch (const std::exception& ex)
             {
-                log_error("Exception: %s", ex.what());
+                LOG_ERROR("Exception: %s", ex.what());
                 return false;
             }
             return true;
@@ -712,13 +712,13 @@ namespace OpenRCT2
             serialiser << data.magic;
             if (data.magic != ReplayMagic)
             {
-                log_error("Magic does not match %08X, expected: %08X", data.magic, ReplayMagic);
+                LOG_ERROR("Magic does not match %08X, expected: %08X", data.magic, ReplayMagic);
                 return false;
             }
             serialiser << data.version;
             if (data.version != ReplayVersion && !Compatible(data))
             {
-                log_error("Invalid version detected %04X, expected: %04X", data.version, ReplayVersion);
+                LOG_ERROR("Invalid version detected %04X, expected: %04X", data.version, ReplayVersion);
                 return false;
             }
 
@@ -727,7 +727,7 @@ namespace OpenRCT2
             // NOTE: This does not mean the replay will not function, only a warning.
             if (data.networkId != network_get_version())
             {
-                log_warning(
+                LOG_WARNING(
                     "Replay network version mismatch: '%s', expected: '%s'", data.networkId.c_str(),
                     network_get_version().c_str());
             }
@@ -799,7 +799,7 @@ namespace OpenRCT2
                     uint32_t replayTick = gCurrentTicks - _currentReplay->tickStart;
 
                     // Detected different game state.
-                    log_warning(
+                    LOG_WARNING(
                         "Different sprite checksum at tick %u (Replay Tick: %u) ; Saved: %s, Current: %s", gCurrentTicks,
                         replayTick, savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
 
@@ -808,7 +808,7 @@ namespace OpenRCT2
                 else
                 {
                     // Good state.
-                    log_verbose(
+                    LOG_VERBOSE(
                         "Good state at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
                         savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
                 }

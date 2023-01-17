@@ -21,6 +21,6 @@ GameActions::Result PauseToggleAction::Query() const
 
 GameActions::Result PauseToggleAction::Execute() const
 {
-    pause_toggle();
+    PauseToggle();
     return GameActions::Result();
 }

@@ -384,7 +384,7 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
         case WIDX_SCENERY:
             if (!ToolSet(*w, WIDX_SCENERY, Tool::Arrow))
             {
-                input_set_flag(INPUT_FLAG_6, true);
+                InputSetFlag(INPUT_FLAG_6, true);
                 ContextOpenWindow(WindowClass::Scenery);
             }
             break;
@@ -576,7 +576,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                 }
                 case DDIDX_SAVE_GAME:
                     ToolCancel();
-                    save_game();
+                    SaveGame();
                     break;
                 case DDIDX_SAVE_GAME_AS:
                     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -589,7 +589,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                     else
                     {
                         ToolCancel();
-                        save_game_as();
+                        SaveGameAs();
                     }
                     break;
                 case DDIDX_ABOUT:
@@ -848,7 +848,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     const auto* mainWindow = WindowGetMain();
     if (mainWindow == nullptr || mainWindow->viewport == nullptr)
     {
-        log_error("mainWindow or mainWindow->viewport is null!");
+        LOG_ERROR("mainWindow or mainWindow->viewport is null!");
         return;
     }
 
@@ -3801,7 +3801,7 @@ static void ToggleFootpathWindow()
  */
 static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
 {
-    if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
+    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
         && gCurrentToolWidget.widget_index == WIDX_LAND)
     {
         ToolCancel();
@@ -3811,7 +3811,7 @@ static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
         _landToolBlocked = false;
         ShowGridlines();
         ToolSet(*topToolbar, widgetIndex, Tool::DigDown);
-        input_set_flag(INPUT_FLAG_6, true);
+        InputSetFlag(INPUT_FLAG_6, true);
         ContextOpenWindow(WindowClass::Land);
     }
 }
@@ -3822,7 +3822,7 @@ static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
  */
 static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
 {
-    if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
+    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
          && gCurrentToolWidget.widget_index == WIDX_CLEAR_SCENERY))
     {
         ToolCancel();
@@ -3831,7 +3831,7 @@ static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetI
     {
         ShowGridlines();
         ToolSet(*topToolbar, widgetIndex, Tool::Crosshair);
-        input_set_flag(INPUT_FLAG_6, true);
+        InputSetFlag(INPUT_FLAG_6, true);
         ContextOpenWindow(WindowClass::ClearScenery);
     }
 }
@@ -3842,7 +3842,7 @@ static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetI
  */
 static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
 {
-    if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
+    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
         && gCurrentToolWidget.widget_index == WIDX_WATER)
     {
         ToolCancel();
@@ -3852,7 +3852,7 @@ static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
         _landToolBlocked = false;
         ShowGridlines();
         ToolSet(*topToolbar, widgetIndex, Tool::WaterDown);
-        input_set_flag(INPUT_FLAG_6, true);
+        InputSetFlag(INPUT_FLAG_6, true);
         ContextOpenWindow(WindowClass::Water);
     }
 }
@@ -3863,7 +3863,7 @@ static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
  */
 bool LandToolIsActive()
 {
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
     if (gCurrentToolWidget.window_classification != WindowClass::TopToolbar)
         return false;
@@ -3878,7 +3878,7 @@ bool LandToolIsActive()
  */
 bool ClearSceneryToolIsActive()
 {
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
     if (gCurrentToolWidget.window_classification != WindowClass::TopToolbar)
         return false;
@@ -3893,7 +3893,7 @@ bool ClearSceneryToolIsActive()
  */
 bool WaterToolIsActive()
 {
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
     if (gCurrentToolWidget.window_classification != WindowClass::TopToolbar)
         return false;

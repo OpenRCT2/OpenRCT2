@@ -346,11 +346,11 @@ ObjectVersion VersionTuple(std::string_view version)
     uint16_t versions[VersionNumFields] = {};
     if (nums.size() > VersionNumFields)
     {
-        log_warning("%i fields found in version string '%s', expected X.Y.Z", nums.size(), version);
+        LOG_WARNING("%i fields found in version string '%s', expected X.Y.Z", nums.size(), version);
     }
     if (nums.size() == 0)
     {
-        log_warning("No fields found in version string '%s', expected X.Y.Z", version);
+        LOG_WARNING("No fields found in version string '%s', expected X.Y.Z", version);
         return std::make_tuple(0, 0, 0);
     }
     try
@@ -362,7 +362,7 @@ ObjectVersion VersionTuple(std::string_view version)
             constexpr auto maxValue = std::numeric_limits<uint16_t>().max();
             if (value > maxValue)
             {
-                log_warning(
+                LOG_WARNING(
                     "Version value too high in version string '%s', version value will be capped to %i.", version, maxValue);
                 value = maxValue;
             }
@@ -371,7 +371,7 @@ ObjectVersion VersionTuple(std::string_view version)
     }
     catch (const std::exception&)
     {
-        log_warning("Malformed version string '%s', expected X.Y.Z", version);
+        LOG_WARNING("Malformed version string '%s', expected X.Y.Z", version);
     }
 
     return std::make_tuple(versions[0], versions[1], versions[2]);

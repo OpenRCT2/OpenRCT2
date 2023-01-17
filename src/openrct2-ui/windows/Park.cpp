@@ -207,7 +207,7 @@ public:
 
     void OnClose() override
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && classification == gCurrentToolWidget.window_classification
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && classification == gCurrentToolWidget.window_classification
             && number == gCurrentToolWidget.window_number)
         {
             ToolCancel();
@@ -1175,7 +1175,7 @@ private:
 #pragma region Common
     void SetPage(int32_t newPage)
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
             if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
                 ToolCancel();
 

@@ -89,7 +89,7 @@ using namespace OpenRCT2;
 
 void scenario_begin()
 {
-    game_load_init();
+    GameLoadInit();
     scenario_reset();
 
     if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
@@ -187,7 +187,7 @@ void scenario_reset()
 
 static void scenario_end()
 {
-    game_reset_speed();
+    GameResetSpeed();
     WindowCloseByClass(WindowClass::Dropdown);
     WindowCloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
     ContextOpenWindowView(WV_PARK_OBJECTIVE);
@@ -292,7 +292,7 @@ void scenario_autosave_check()
     if (shouldSave)
     {
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        game_autosave();
+        GameAutosave();
     }
 }
 

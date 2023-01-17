@@ -374,7 +374,7 @@ namespace String
             return u8string(buffer, buffer + len);
         }
 
-        log_warning("Encoding error occured");
+        LOG_WARNING("Encoding error occured");
         return u8string{};
     }
 
@@ -695,7 +695,7 @@ namespace String
         {
             // Check the error
             auto error = GetLastError();
-            log_warning("LCMapStringEx failed with %d", error);
+            LOG_WARNING("LCMapStringEx failed with %d", error);
             return std::string(src);
         }
 

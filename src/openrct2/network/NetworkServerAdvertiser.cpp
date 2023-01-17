@@ -115,13 +115,13 @@ private:
                 if (p == NetworkReadPacket::Success)
                 {
                     std::string sender = endpoint->GetHostname();
-                    log_verbose("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
+                    LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
                     if (String::Equals(buffer, NETWORK_LAN_BROADCAST_MSG))
                     {
                         auto body = GetBroadcastJson();
                         auto bodyDump = body.dump();
                         size_t sendLen = bodyDump.size() + 1;
-                        log_verbose("Sending %zu bytes back to %s", sendLen, sender.c_str());
+                        LOG_VERBOSE("Sending %zu bytes back to %s", sendLen, sender.c_str());
                         _lanListener->SendData(*endpoint, bodyDump.c_str(), sendLen);
                     }
                 }
@@ -263,7 +263,7 @@ private:
             {
                 _forceIPv4 = true;
                 _lastAdvertiseTime = 0;
-                log_info("Forcing HTTP(S) over IPv4");
+                LOG_INFO("Forcing HTTP(S) over IPv4");
             }
         }
     }

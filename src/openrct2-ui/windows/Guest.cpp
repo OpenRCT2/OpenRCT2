@@ -193,7 +193,7 @@ public:
 
     void OnClose() override
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
                 ToolCancel();
@@ -478,7 +478,7 @@ private:
 
     void SetPage(int32_t newPage)
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (number == gCurrentToolWidget.window_number && classification == gCurrentToolWidget.window_classification)
                 ToolCancel();
@@ -1042,7 +1042,7 @@ private:
         GfxFillRectInset(
             &dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, colours[1], INSET_RECT_F_30);
 
-        if (!blinkFlag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
+        if (!blinkFlag || GameIsPaused() || (gCurrentRealTimeTicks & 8) == 0)
         {
             value *= 118;
             value >>= 8;

@@ -74,13 +74,13 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
     gOpenRCT2Headless = true;
     auto context = OpenRCT2::CreateContext();
     std::vector<RecordedPaintSession> sessions;
-    log_info("Starting...");
+    LOG_INFO("Starting...");
     if (context->Initialise())
     {
         DrawingEngineInit();
         if (!context->LoadParkFromFile(std::string(parkFileName)))
         {
-            log_error("Failed to load park!");
+            LOG_ERROR("Failed to load park!");
             return {};
         }
 
@@ -111,7 +111,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         gCurrentRotation = 0;
 
         // Ensure sprites appear regardless of rotation
-        reset_all_sprite_quadrant_placements();
+        ResetAllSpriteQuadrantPlacements();
 
         rct_drawpixelinfo dpi;
         dpi.x = 0;
@@ -121,13 +121,13 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         dpi.pitch = 0;
         dpi.bits = static_cast<uint8_t*>(malloc(dpi.width * dpi.height));
 
-        log_info("Obtaining sprite data...");
+        LOG_INFO("Obtaining sprite data...");
         ViewportRender(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } }, &sessions);
 
         free(dpi.bits);
         DrawingEngineDispose();
     }
-    log_info("Got %u paint sessions.", std::size(sessions));
+    LOG_INFO("Got %u paint sessions.", std::size(sessions));
     return sessions;
 }
 
@@ -215,7 +215,7 @@ static exitcode_t HandleBenchSpriteSort(CommandLineArgEnumerator* argEnumerator)
 #else
 static exitcode_t HandleBenchSpriteSort(CommandLineArgEnumerator* argEnumerator)
 {
-    log_error("Sorry, Google benchmark not enabled in this build");
+    LOG_ERROR("Sorry, Google benchmark not enabled in this build");
     return EXITCODE_FAIL;
 }
 #endif // USE_BENCHMARK

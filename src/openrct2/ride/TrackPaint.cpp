@@ -2177,7 +2177,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
-        log_error("Attempted to paint invalid ride: %d", rideIndex);
+        LOG_ERROR("Attempted to paint invalid ride: %d", rideIndex);
         return;
     }
 

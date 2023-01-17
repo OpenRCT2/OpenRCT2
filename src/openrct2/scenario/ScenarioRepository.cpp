@@ -194,7 +194,7 @@ private:
      */
     static bool GetScenarioInfo(const std::string& path, uint64_t timestamp, scenario_index_entry* entry)
     {
-        log_verbose("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
+        LOG_VERBOSE("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
         try
         {
             std::string extension = Path::GetExtension(path);
@@ -261,7 +261,7 @@ private:
                 return true;
             }
 
-            log_verbose("%s is not a scenario", path.c_str());
+            LOG_VERBOSE("%s is not a scenario", path.c_str());
         }
         catch (const std::exception&)
         {
@@ -572,7 +572,7 @@ private:
         }
         else
         {
-            log_error("Tried to add scenario with an empty filename!");
+            LOG_ERROR("Tried to add scenario with an empty filename!");
         }
     }
 

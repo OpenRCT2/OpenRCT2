@@ -54,14 +54,14 @@ GameActions::Result RideSetPriceAction::Query() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -76,14 +76,14 @@ GameActions::Result RideSetPriceAction::Execute() const
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 

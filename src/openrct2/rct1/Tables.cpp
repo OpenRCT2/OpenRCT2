@@ -62,7 +62,7 @@ namespace RCT1
         };
         if (colour >= std::size(map))
         {
-            log_warning("Unsupported RCT1 colour.");
+            LOG_WARNING("Unsupported RCT1 colour.");
             return COLOUR_BLACK;
         }
         return map[colour];
@@ -110,7 +110,7 @@ namespace RCT1
         };
         if (EnumValue(rct1SpriteType) >= std::size(map))
         {
-            log_warning("Unsupported RCT1 peep sprite type: %d.", EnumValue(rct1SpriteType));
+            LOG_WARNING("Unsupported RCT1 peep sprite type: %d.", EnumValue(rct1SpriteType));
             return ::PeepSpriteType::Normal;
         }
         return map[EnumValue(rct1SpriteType)];

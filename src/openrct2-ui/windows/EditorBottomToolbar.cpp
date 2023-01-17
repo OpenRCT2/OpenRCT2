@@ -205,7 +205,7 @@ private:
         if (!CheckObjectSelection())
             return;
 
-        finish_object_selection();
+        FinishObjectSelection();
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         {
             ContextOpenWindow(WindowClass::ConstructRide);

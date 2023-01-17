@@ -196,7 +196,7 @@ public:
 
         if (SDL_SetWindowFullscreen(_window, windowFlags))
         {
-            log_fatal("SDL_SetWindowFullscreen %s", SDL_GetError());
+            LOG_FATAL("SDL_SetWindowFullscreen %s", SDL_GetError());
             exit(1);
 
             // TODO try another display mode rather than just exiting the game
@@ -725,7 +725,7 @@ private:
     {
         SDL_version version{};
         SDL_GetVersion(&version);
-        log_verbose("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
+        LOG_VERBOSE("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
     }
 
     void CreateWindow(const ScreenCoordsXY& windowPos)

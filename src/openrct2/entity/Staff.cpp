@@ -2005,7 +2005,7 @@ void Staff::UpdateFixing(int32_t steps)
                 break;
 
             default:
-                log_error("Invalid substate");
+                LOG_ERROR("Invalid substate");
                 progressToNextSubstate = false;
         }
 
@@ -2213,7 +2213,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
         auto tileElement = MapGetTrackElementAt(stationPos);
         if (tileElement == nullptr)
         {
-            log_error("Couldn't find tile_element");
+            LOG_ERROR("Couldn't find tile_element");
             return false;
         }
 
