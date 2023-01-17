@@ -16,7 +16,7 @@ template<> bool EntityBase::Is<Litter>() const
     return Type == EntityType::Litter;
 }
 
-static bool isLocationLitterable(const CoordsXYZ& mapPos)
+static bool IsLocationLitterable(const CoordsXYZ& mapPos)
 {
     TileElement* tileElement;
 
@@ -53,7 +53,7 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
         + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
                     CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
 
-    if (!isLocationLitterable(offsetLitterPos))
+    if (!IsLocationLitterable(offsetLitterPos))
         return;
 
     if (GetEntityListCount(EntityType::Litter) >= 500)

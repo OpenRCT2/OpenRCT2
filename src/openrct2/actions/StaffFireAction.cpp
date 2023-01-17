@@ -61,7 +61,7 @@ GameActions::Result StaffFireAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     WindowCloseByClass(WindowClass::FirePrompt);
-    peep_sprite_remove(staff);
+    PeepEntityRemove(staff);
     // Due to patrol areas best to invalidate the whole screen on removal of staff
     GfxInvalidateScreen();
     return GameActions::Result();

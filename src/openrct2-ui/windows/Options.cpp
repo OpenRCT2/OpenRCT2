@@ -1672,7 +1672,7 @@ private:
                 gConfigGeneral.ShowRealNamesOfGuests ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                peep_update_names(gConfigGeneral.ShowRealNamesOfGuests);
+                PeepUpdateNames(gConfigGeneral.ShowRealNamesOfGuests);
                 break;
             case WIDX_AUTO_STAFF_PLACEMENT:
                 gConfigGeneral.AutoStaffPlacement ^= 1;

@@ -809,7 +809,7 @@ private:
         screenPos.x = marqueeWidget.width() - _marqueePosition;
         {
             auto ft = Formatter();
-            peep_thought_set_format_args(&peep->Thoughts[i], ft);
+            PeepThoughtSetFormatArgs(&peep->Thoughts[i], ft);
             DrawTextBasic(&dpiMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontStyle::Small });
         }
     }
@@ -997,7 +997,7 @@ private:
         {
             return;
         }
-        int32_t imageId = get_peep_face_sprite_large(peep);
+        int32_t imageId = GetPeepFaceSpriteLarge(peep);
         if (page == WINDOW_GUEST_STATS)
         {
             // If currently viewing this tab animate tab
@@ -1587,7 +1587,7 @@ private:
             int32_t widgWidth = widgets[WIDX_PAGE_BACKGROUND].right - widgets[WIDX_PAGE_BACKGROUND].left - 8;
 
             auto ft = Formatter();
-            peep_thought_set_format_args(&thought, ft);
+            PeepThoughtSetFormatArgs(&thought, ft);
             screenCoords.y += DrawTextWrapped(&dpi, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontStyle::Small });
 
             // If this is the last visible line end drawing.

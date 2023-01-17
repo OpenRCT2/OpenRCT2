@@ -461,26 +461,26 @@ extern const bool gSpriteTypeToSlowWalkMap[48];
 
 extern uint8_t gPeepWarningThrottle[16];
 
-int32_t peep_get_staff_count();
-void peep_update_all();
-void peep_problem_warnings_update();
-void peep_stop_crowd_noise();
-void peep_update_crowd_noise();
-void peep_update_days_in_queue();
-void peep_applause();
-int32_t get_peep_face_sprite_small(Guest* peep);
-int32_t get_peep_face_sprite_large(Guest* peep);
-void peep_sprite_remove(Peep* peep);
+int32_t PeepGetStaffCount();
+void PeepUpdateAll();
+void PeepProblemWarningsUpdate();
+void PeepStopCrowdNoise();
+void PeepUpdateCrowdNoise();
+void PeepUpdateDaysInQueue();
+void PeepApplause();
+int32_t GetPeepFaceSpriteSmall(Guest* peep);
+int32_t GetPeepFaceSpriteLarge(Guest* peep);
+void PeepEntityRemove(Peep* peep);
 
-void peep_window_state_update(Peep* peep);
-void peep_decrement_num_riders(Peep* peep);
+void PeepWindowStateUpdate(Peep* peep);
+void PeepDecrementNumRiders(Peep* peep);
 
-void peep_set_map_tooltip(Peep* peep);
-int32_t peep_compare(const EntityId sprite_index_a, const EntityId sprite_index_b);
+void PeepSetMapTooltip(Peep* peep);
+int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b);
 
-void peep_update_names(bool realNames);
+void PeepUpdateNames(bool realNames);
 
-StringId get_real_name_string_id_from_id(uint32_t id);
+StringId GetRealNameStringIDFromPeepID(uint32_t id);
 
 inline const rct_peep_animation& GetPeepAnimation(
     PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)

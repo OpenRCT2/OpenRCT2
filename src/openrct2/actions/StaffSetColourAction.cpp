@@ -55,7 +55,7 @@ GameActions::Result StaffSetColourAction::Query() const
 GameActions::Result StaffSetColourAction::Execute() const
 {
     // Update global uniform colour property
-    if (!staff_set_colour(static_cast<StaffType>(_staffType), _colour))
+    if (!StaffSetColour(static_cast<StaffType>(_staffType), _colour))
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }

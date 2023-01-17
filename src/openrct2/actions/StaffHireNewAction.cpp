@@ -101,7 +101,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
         }
 
-        uint32_t availableCostumes = staff_get_available_entertainer_costumes();
+        uint32_t availableCostumes = StaffGetAvailableEntertainerCostumes();
         if (!(availableCostumes & (1 << static_cast<uint8_t>(_entertainerType))))
         {
             // Entertainer costume unavailable
@@ -199,7 +199,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->PathfindGoal.z = 0xFF;
         newPeep->PathfindGoal.direction = INVALID_DIRECTION;
 
-        uint8_t colour = staff_get_colour(static_cast<StaffType>(_staffType));
+        uint8_t colour = StaffGetColour(static_cast<StaffType>(_staffType));
         newPeep->TshirtColour = colour;
         newPeep->TrousersColour = colour;
 
