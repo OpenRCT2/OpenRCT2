@@ -162,16 +162,14 @@ static void water_rc_track_25_deg_up_to_60_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    JuniorRcPaintTrack25DegUpTo60DegUp(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRcPaintTrack25DegUpTo60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_60_deg_up_to_25_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    JuniorRcPaintTrack60DegUpTo25DegUp(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRcPaintTrack60DegUpTo25DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_60_deg_down(
@@ -282,8 +280,7 @@ static void water_rc_track_diag_60_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    JuniorRcPaintTrackDiag60DegUp(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRcPaintTrackDiag60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_diag_25_deg_up_to_60_deg_up(
@@ -306,8 +303,7 @@ static void water_rc_track_diag_60_deg_down(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    JuniorRcPaintTrackDiag60DegDown(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRcPaintTrackDiag60DegDown(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_diag_25_deg_down_to_60_deg_down(
