@@ -33,7 +33,7 @@ bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType);
 bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue);
 void EditorObjectFlagsFree();
 void UnloadUnselectedObjects();
-void sub_6AB211();
+void Sub6AB211();
 void ResetSelectedObjectCountAndSize();
 void FinishObjectSelection();
 ResultWithMessage WindowEditorObjectSelectionSelectObject(

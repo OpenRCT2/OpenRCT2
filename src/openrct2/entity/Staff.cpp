@@ -2322,7 +2322,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
             break;
         }
 
-        // loc_6C12ED:
+        // Loc6C12ED:
         auto destination = CoordsXY{ input.x + 16, input.y + 16 };
         auto offset = _StationFixingOffsets[stationDirection];
 

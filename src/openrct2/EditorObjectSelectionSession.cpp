@@ -278,7 +278,7 @@ void SetupInUseSelectionFlags()
  *
  *  rct2: 0x006AB211
  */
-void sub_6AB211()
+void Sub6AB211()
 {
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     _objectSelectionFlags = std::vector<uint8_t>(numObjects);
@@ -654,7 +654,7 @@ bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue)
 
 int32_t EditorRemoveUnusedObjects()
 {
-    sub_6AB211();
+    Sub6AB211();
     SetupInUseSelectionFlags();
 
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());

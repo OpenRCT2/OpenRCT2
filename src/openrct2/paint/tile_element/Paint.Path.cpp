@@ -709,7 +709,7 @@ static void PathPaintFencesAndQueueBanners(
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
-static void sub_6A3F61(
+static void Sub6A3F61(
     PaintSession& session, const PathElement& pathElement, uint16_t connectedEdges, uint16_t height,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate, ImageId sceneryImageTemplate, bool hasSupports)
 {
@@ -1120,7 +1120,7 @@ void PathPaintBoxSupport(
         }
     }
 
-    sub_6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
+    Sub6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
 
     uint16_t ax = 0;
     if (pathElement.IsSloped())
@@ -1259,7 +1259,7 @@ void PathPaintPoleSupport(
         }
     }
 
-    sub_6A3F61(
+    Sub6A3F61(
         session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
         hasSupports); // TODO: arguments
 

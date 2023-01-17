@@ -206,7 +206,7 @@ GameActions::Result MapCanConstructWithClearAt(
         {
             if (tileElement->GetBaseZ() >= pos.clearanceZ)
             {
-                // loc_68BA81
+                // Loc68BA81
                 groundFlags |= ELEMENT_IS_UNDERGROUND;
                 groundFlags &= ~ELEMENT_IS_ABOVE_GROUND;
             }

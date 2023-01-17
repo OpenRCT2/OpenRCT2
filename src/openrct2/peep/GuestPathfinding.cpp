@@ -2059,7 +2059,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
     // Peep still has multiple edges to choose from.
 
     // Peep is outside the park.
-    // loc_694F19:
+    // Loc694F19:
     if (peep.OutsideOfPark)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

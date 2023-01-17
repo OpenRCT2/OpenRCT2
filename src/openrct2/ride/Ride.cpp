@@ -3122,7 +3122,7 @@ static Vehicle* vehicle_create_car(
         *remainingDistance -= edx;
     }
 
-    // loc_6DD9A5:
+    // Loc6DD9A5:
     vehicle->sprite_width = carEntry->sprite_width;
     vehicle->sprite_height_negative = carEntry->sprite_height_negative;
     vehicle->sprite_height_positive = carEntry->sprite_height_positive;
@@ -3157,7 +3157,7 @@ static Vehicle* vehicle_create_car(
 
     if (carEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
     {
-        // loc_6DDCA4:
+        // Loc6DDCA4:
         vehicle->TrackSubposition = VehicleTrackSubposition::Default;
         int32_t direction = trackElement->GetDirection();
         auto dodgemPos = carPosition + CoordsXYZ{ word_9A3AB4[direction], 0 };
@@ -3174,7 +3174,7 @@ static Vehicle* vehicle_create_car(
 
         CoordsXY chosenLoc;
         auto numAttempts = 0;
-        // loc_6DDD26:
+        // Loc6DDD26:
         do
         {
             numAttempts++;
@@ -3280,7 +3280,7 @@ static Vehicle* vehicle_create_car(
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
     }
 
-    // loc_6DDD5E:
+    // Loc6DDD5E:
     vehicle->num_peeps = 0;
     vehicle->next_free_seat = 0;
     vehicle->BoatLocation.SetNull();
