@@ -362,7 +362,7 @@ public:
                 {
                     GameNotifyMapChange();
                     GameUnloadScripts();
-                    title_load();
+                    TitleLoad();
                 }
                 break;
             case WIDX_FILTER_RIDE_TAB_ALL:

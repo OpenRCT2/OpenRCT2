@@ -351,7 +351,7 @@ static void Select(const char* path)
             {
                 WindowCloseByClass(WindowClass::Loadsave);
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                title_load();
+                TitleLoad();
             }
             else
             {

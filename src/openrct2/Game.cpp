@@ -784,7 +784,7 @@ void GameLoadOrQuitNoSavePrompt()
             gFirstTimeSaving = true;
             GameNotifyMapChange();
             GameUnloadScripts();
-            title_load();
+            TitleLoad();
             break;
         }
         case PromptMode::SaveBeforeNewGame:

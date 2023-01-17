@@ -1713,11 +1713,11 @@ private:
         {
             case WIDX_TITLE_SEQUENCE_DROPDOWN:
             {
-                uint32_t numItems = static_cast<int32_t>(title_sequence_manager_get_count());
+                uint32_t numItems = static_cast<int32_t>(TitleSequenceManagerGetCount());
                 for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
+                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(TitleSequenceManagerGetName(i));
                 }
 
                 gDropdownItems[numItems].Format = 0;
@@ -1731,7 +1731,7 @@ private:
                     Dropdown::Flag::StayOpen, numItems);
 
                 auto selectedIndex = gConfigInterface.RandomTitleSequence ? numItems - 1
-                                                                          : static_cast<int32_t>(title_get_current_sequence());
+                                                                          : static_cast<int32_t>(TitleGetCurrentSequence());
                 Dropdown::SetChecked(selectedIndex, true);
                 break;
             }
@@ -1770,11 +1770,11 @@ private:
         {
             case WIDX_TITLE_SEQUENCE_DROPDOWN:
             {
-                auto numItems = static_cast<int32_t>(title_sequence_manager_get_count());
-                if (dropdownIndex < numItems && dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
+                auto numItems = static_cast<int32_t>(TitleSequenceManagerGetCount());
+                if (dropdownIndex < numItems && dropdownIndex != static_cast<int32_t>(TitleGetCurrentSequence()))
                 {
                     gConfigInterface.RandomTitleSequence = false;
-                    title_sequence_change_preset(static_cast<size_t>(dropdownIndex));
+                    TitleSequenceChangePreset(static_cast<size_t>(dropdownIndex));
                     ConfigSaveDefault();
                     Invalidate();
                 }
@@ -1816,7 +1816,7 @@ private:
         }
         else
         {
-            auto name = title_sequence_manager_get_name(title_get_config_sequence());
+            auto name = TitleSequenceManagerGetName(TitleGetConfigSequence());
             ft.Add<StringId>(STR_STRING);
             ft.Add<utf8*>(name);
         }

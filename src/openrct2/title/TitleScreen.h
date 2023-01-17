@@ -54,15 +54,15 @@ namespace OpenRCT2
 // When testing title sequences within a normal game
 extern bool gPreviewingTitleSequenceInGame;
 
-void title_load();
-void title_create_windows();
-void* title_get_sequence_player();
-void title_sequence_change_preset(size_t preset);
-bool title_should_hide_version_info();
-void title_set_hide_version_info(bool value);
-size_t title_get_config_sequence();
-size_t title_get_current_sequence();
-bool title_preview_sequence(size_t value);
-void title_stop_previewing_sequence();
-bool title_is_previewing_sequence();
+void TitleLoad();
+void TitleCreateWindows();
+void* TitleGetSequencePlayer();
+void TitleSequenceChangePreset(size_t preset);
+bool TitleShouldHideVersionInfo();
+void TitleSetHideVersionInfo(bool value);
+size_t TitleGetConfigSequence();
+size_t TitleGetCurrentSequence();
+bool TitlePreviewSequence(size_t value);
+void TitleStopPreviewingSequence();
+bool TitleIsPreviewingSequence();
 void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords);

@@ -52,7 +52,7 @@ void Painter::Paint(IDrawingEngine& de)
         UpdatePaletteEffects();
         _uiContext->Draw(dpi);
 
-        if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !title_should_hide_version_info())
+        if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !TitleShouldHideVersionInfo())
         {
             DrawOpenRCT2(dpi, { 0, _uiContext->GetHeight() - 20 });
         }
