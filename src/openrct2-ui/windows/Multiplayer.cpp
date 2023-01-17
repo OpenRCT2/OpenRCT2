@@ -285,24 +285,24 @@ static void WindowMultiplayerGroupsShowGroupDropdown(rct_window* w, Widget* widg
 
     dropdownWidget = widget - 1;
 
-    numItems = network_get_num_groups();
+    numItems = NetworkGetNumGroups();
 
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
         w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
-    for (i = 0; i < network_get_num_groups(); i++)
+    for (i = 0; i < NetworkGetNumGroups(); i++)
     {
         gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(network_get_group_name(i));
+        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
     }
     if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
     {
-        Dropdown::SetChecked(network_get_group_index(network_get_default_group()), true);
+        Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetDefaultGroup()), true);
     }
     else if (widget == &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP_DROPDOWN])
     {
-        Dropdown::SetChecked(network_get_group_index(_selectedGroup), true);
+        Dropdown::SetChecked(NetworkGetGroupIndex(_selectedGroup), true);
     }
 }
 
@@ -343,13 +343,13 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
 
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
-        u8string buffer = network_get_server_name();
+        u8string buffer = NetworkGetServerName();
         GfxWrapString(buffer.data(), width, FontStyle::Medium, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
     // Likewise, for the optional server description -- which can be a little longer.
-    const auto& descString = network_get_server_description();
+    const auto& descString = NetworkGetServerDescription();
     if (!descString.empty())
     {
         u8string buffer = descString;
@@ -359,15 +359,15 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
 
     // Finally, account for provider info, if present.
     {
-        const auto& providerName = network_get_server_provider_name();
+        const auto& providerName = NetworkGetServerProviderName();
         if (!providerName.empty())
             height += LIST_ROW_HEIGHT;
 
-        const auto& providerEmail = network_get_server_provider_email();
+        const auto& providerEmail = NetworkGetServerProviderEmail();
         if (!providerEmail.empty())
             height += LIST_ROW_HEIGHT;
 
-        const auto& providerWebsite = network_get_server_provider_website();
+        const auto& providerWebsite = NetworkGetServerProviderWebsite();
         if (!providerWebsite.empty())
             height += LIST_ROW_HEIGHT;
     }
@@ -409,7 +409,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
         auto screenCoords = ScreenCoordsXY{ 3, 50 };
         int32_t width = w->width - 6;
 
-        const auto& name = network_get_server_name();
+        const auto& name = NetworkGetServerName();
         {
             auto ft = Formatter();
             ft.Add<const char*>(name.c_str());
@@ -417,7 +417,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
-        const auto& description = network_get_server_description();
+        const auto& description = NetworkGetServerDescription();
         if (!description.empty())
         {
             auto ft = Formatter();
@@ -426,7 +426,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
-        const auto& providerName = network_get_server_provider_name();
+        const auto& providerName = NetworkGetServerProviderName();
         if (!providerName.empty())
         {
             auto ft = Formatter();
@@ -435,7 +435,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
-        const auto& providerEmail = network_get_server_provider_email();
+        const auto& providerEmail = NetworkGetServerProviderEmail();
         if (!providerEmail.empty())
         {
             auto ft = Formatter();
@@ -444,7 +444,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
-        const auto& providerWebsite = network_get_server_provider_website();
+        const auto& providerWebsite = NetworkGetServerProviderWebsite();
         if (!providerWebsite.empty())
         {
             auto ft = Formatter();
@@ -460,7 +460,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
 
 static bool IsServerPlayerInvisible()
 {
-    return network_is_server_player_invisible() && !gConfigGeneral.DebuggingTools;
+    return NetworkIsServerPlayerInvisible() && !gConfigGeneral.DebuggingTools;
 }
 
 static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetIndex)
@@ -486,7 +486,7 @@ static void WindowMultiplayerPlayersResize(rct_window* w)
 {
     WindowSetResize(*w, 420, 124, 500, 450);
 
-    w->no_list_items = (IsServerPlayerInvisible() ? network_get_num_visible_players() : network_get_num_players());
+    w->no_list_items = (IsServerPlayerInvisible() ? NetworkGetNumVisiblePlayers() : NetworkGetNumPlayers());
     w->list_item_positions[0] = 0;
 
     w->widgets[WIDX_HEADER_PING].right = w->width - 5;
@@ -511,7 +511,7 @@ static void WindowMultiplayerPlayersScrollgetsize(rct_window* w, int32_t scrollI
         w->Invalidate();
     }
 
-    *height = network_get_num_players() * SCROLLABLE_ROW_HEIGHT;
+    *height = NetworkGetNumPlayers() * SCROLLABLE_ROW_HEIGHT;
     i = *height - window_multiplayer_players_widgets[WIDX_LIST].bottom + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
     if (i < 0)
         i = 0;
@@ -534,7 +534,7 @@ static void WindowMultiplayerPlayersScrollmousedown(rct_window* w, int32_t scrol
     w->Invalidate();
 
     int32_t player = (IsServerPlayerInvisible() ? index + 1 : index);
-    WindowPlayerOpen(network_get_player_id(player));
+    WindowPlayerOpen(NetworkGetPlayerID(player));
 }
 
 static void WindowMultiplayerPlayersScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
@@ -581,7 +581,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
     const int32_t firstPlayerInList = (IsServerPlayerInvisible() ? 1 : 0);
     int32_t listPosition = 0;
 
-    for (int32_t player = firstPlayerInList; player < network_get_num_players(); player++)
+    for (int32_t player = firstPlayerInList; player < NetworkGetNumPlayers(); player++)
     {
         if (screenCoords.y > dpi->y + dpi->height)
         {
@@ -601,12 +601,12 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 GfxFilterRect(
                     dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
                     FilterPaletteID::PaletteDarken1);
-                _buffer += network_get_player_name(player);
+                _buffer += NetworkGetPlayerName(player);
                 colour = w->colours[2];
             }
             else
             {
-                if (network_get_player_flags(player) & NETWORK_PLAYER_FLAG_ISSERVER)
+                if (NetworkGetPlayerFlags(player) & NETWORK_PLAYER_FLAG_ISSERVER)
                 {
                     _buffer += "{BABYBLUE}";
                 }
@@ -614,7 +614,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 {
                     _buffer += "{BLACK}";
                 }
-                _buffer += network_get_player_name(player);
+                _buffer += NetworkGetPlayerName(player);
             }
             screenCoords.x = 0;
             GfxClipString(_buffer.data(), 230, FontStyle::Medium);
@@ -622,22 +622,22 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
 
             // Draw group name
             _buffer.resize(0);
-            int32_t group = network_get_group_index(network_get_player_group(player));
+            int32_t group = NetworkGetGroupIndex(NetworkGetPlayerGroup(player));
             if (group != -1)
             {
                 _buffer += "{BLACK}";
                 screenCoords.x = 173;
-                _buffer += network_get_group_name(group);
+                _buffer += NetworkGetGroupName(group);
                 GfxClipString(_buffer.data(), 80, FontStyle::Medium);
                 GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
             }
 
             // Draw last action
-            int32_t action = network_get_player_last_action(player, 2000);
+            int32_t action = NetworkGetPlayerLastAction(player, 2000);
             auto ft = Formatter();
             if (action != -999)
             {
-                ft.Add<StringId>(network_get_action_name_string_id(action));
+                ft.Add<StringId>(NetworkGetActionNameStringID(action));
             }
             else
             {
@@ -647,7 +647,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
 
             // Draw ping
             _buffer.resize(0);
-            int32_t ping = network_get_player_ping(player);
+            int32_t ping = NetworkGetPlayerPing(player);
             if (ping <= 100)
             {
                 _buffer += "{GREEN}";
@@ -706,8 +706,8 @@ static void WindowMultiplayerGroupsMouseup(rct_window* w, WidgetIndex widgetInde
         }
         break;
         case WIDX_RENAME_GROUP:;
-            int32_t groupIndex = network_get_group_index(_selectedGroup);
-            const utf8* groupName = network_get_group_name(groupIndex);
+            int32_t groupIndex = NetworkGetGroupIndex(_selectedGroup);
+            const utf8* groupName = NetworkGetGroupName(groupIndex);
             WindowTextInputRawOpen(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, {}, groupName, 32);
             break;
     }
@@ -717,7 +717,7 @@ static void WindowMultiplayerGroupsResize(rct_window* w)
 {
     WindowSetResize(*w, 320, 200, 320, 500);
 
-    w->no_list_items = network_get_num_actions();
+    w->no_list_items = NetworkGetNumActions();
     w->list_item_positions[0] = 0;
 
     w->selected_list_item = -1;
@@ -748,13 +748,12 @@ static void WindowMultiplayerGroupsDropdown(rct_window* w, WidgetIndex widgetInd
     {
         case WIDX_DEFAULT_GROUP_DROPDOWN:
         {
-            auto networkModifyGroup = NetworkModifyGroupAction(
-                ModifyGroupType::SetDefault, network_get_group_id(dropdownIndex));
+            auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::SetDefault, NetworkGetGroupID(dropdownIndex));
             GameActions::Execute(&networkModifyGroup);
         }
         break;
         case WIDX_SELECTED_GROUP_DROPDOWN:
-            _selectedGroup = network_get_group_id(dropdownIndex);
+            _selectedGroup = NetworkGetGroupID(dropdownIndex);
             break;
     }
 
@@ -777,7 +776,7 @@ static void WindowMultiplayerGroupsScrollgetsize(rct_window* w, int32_t scrollIn
         w->Invalidate();
     }
 
-    *height = network_get_num_actions() * SCROLLABLE_ROW_HEIGHT;
+    *height = NetworkGetNumActions() * SCROLLABLE_ROW_HEIGHT;
     i = *height - window_multiplayer_groups_widgets[WIDX_LIST].bottom + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
     if (i < 0)
         i = 0;
@@ -837,7 +836,7 @@ static void WindowMultiplayerGroupsInvalidate(rct_window* w)
     WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 
     // select other group if one is removed
-    while (network_get_group_index(_selectedGroup) == -1 && _selectedGroup > 0)
+    while (NetworkGetGroupIndex(_selectedGroup) == -1 && _selectedGroup > 0)
     {
         _selectedGroup--;
     }
@@ -851,11 +850,11 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowMultiplayerDrawTabImages(w, dpi);
 
     Widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
-    int32_t group = network_get_group_index(network_get_default_group());
+    int32_t group = NetworkGetGroupIndex(NetworkGetDefaultGroup());
     if (group != -1)
     {
         _buffer.assign("{WINDOW_COLOUR_2}");
-        _buffer += network_get_group_name(group);
+        _buffer += NetworkGetGroupName(group);
 
         auto ft = Formatter();
         ft.Add<const char*>(_buffer.c_str());
@@ -877,11 +876,11 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
         INSET_RECT_FLAG_BORDER_INSET);
 
     widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
-    group = network_get_group_index(_selectedGroup);
+    group = NetworkGetGroupIndex(_selectedGroup);
     if (group != -1)
     {
         _buffer.assign("{WINDOW_COLOUR_2}");
-        _buffer += network_get_group_name(group);
+        _buffer += NetworkGetGroupName(group);
         auto ft = Formatter();
         ft.Add<const char*>(_buffer.c_str());
         DrawTextEllipsised(
@@ -898,7 +897,7 @@ static void WindowMultiplayerGroupsScrollpaint(rct_window* w, rct_drawpixelinfo*
     GfxFillRect(
         dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
 
-    for (int32_t i = 0; i < network_get_num_actions(); i++)
+    for (int32_t i = 0; i < NetworkGetNumActions(); i++)
     {
         if (i == w->selected_list_item)
         {
@@ -912,10 +911,10 @@ static void WindowMultiplayerGroupsScrollpaint(rct_window* w, rct_drawpixelinfo*
 
         if (screenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
         {
-            int32_t groupindex = network_get_group_index(_selectedGroup);
+            int32_t groupindex = NetworkGetGroupIndex(_selectedGroup);
             if (groupindex != -1)
             {
-                if (network_can_perform_action(groupindex, static_cast<NetworkPermission>(i)))
+                if (NetworkCanPerformAction(groupindex, static_cast<NetworkPermission>(i)))
                 {
                     screenCoords.x = 0;
                     GfxDrawString(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
@@ -924,7 +923,7 @@ static void WindowMultiplayerGroupsScrollpaint(rct_window* w, rct_drawpixelinfo*
 
             // Draw action name
             auto ft = Formatter();
-            ft.Add<uint16_t>(network_get_action_name_string_id(i));
+            ft.Add<uint16_t>(NetworkGetActionNameStringID(i));
             DrawTextBasic(dpi, { 10, screenCoords.y }, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
@@ -983,7 +982,7 @@ static void WindowMultiplayerOptionsInvalidate(rct_window* w)
     WindowMultiplayerAnchorBorderWidgets(w);
     WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT)
+    if (NetworkGetMode() == NETWORK_MODE_CLIENT)
     {
         w->widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WindowWidgetType::Empty;
     }

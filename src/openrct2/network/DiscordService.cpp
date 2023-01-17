@@ -93,13 +93,13 @@ void DiscordService::RefreshPresence() const
     {
         default:
             details = GetParkName();
-            if (network_get_mode() == NETWORK_MODE_NONE)
+            if (NetworkGetMode() == NETWORK_MODE_NONE)
             {
                 state = "Playing Solo";
             }
             else
             {
-                OpenRCT2::FmtString fmtServerName(network_get_server_name());
+                OpenRCT2::FmtString fmtServerName(NetworkGetServerName());
                 std::string serverName;
                 for (const auto& token : fmtServerName)
                 {
@@ -118,8 +118,8 @@ void DiscordService::RefreshPresence() const
                 state = serverName;
 
                 // NOTE: the party size is displayed next to state
-                discordPresence.partyId = network_get_server_name().c_str();
-                discordPresence.partySize = network_get_num_players();
+                discordPresence.partyId = NetworkGetServerName().c_str();
+                discordPresence.partySize = NetworkGetNumPlayers();
                 discordPresence.partyMax = 256;
 
                 // TODO generate secrets for the server

@@ -47,8 +47,8 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
         return a.Local ? -1 : 1;
     }
 
-    bool serverACompatible = a.Version == network_get_version();
-    bool serverBCompatible = b.Version == network_get_version();
+    bool serverACompatible = a.Version == NetworkGetVersion();
+    bool serverBCompatible = b.Version == NetworkGetVersion();
     if (serverACompatible != serverBCompatible)
     {
         return serverACompatible ? -1 : 1;
@@ -69,7 +69,7 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
 
 bool ServerListEntry::IsVersionValid() const noexcept
 {
-    return Version.empty() || Version == network_get_version();
+    return Version.empty() || Version == NetworkGetVersion();
 }
 
 std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)

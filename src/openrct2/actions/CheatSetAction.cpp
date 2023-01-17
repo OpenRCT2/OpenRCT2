@@ -251,7 +251,7 @@ GameActions::Result CheatSetAction::Execute() const
         break;
     }
 
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (NetworkGetMode() == NETWORK_MODE_NONE)
     {
         ConfigSaveDefault();
     }

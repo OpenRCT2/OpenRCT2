@@ -123,12 +123,12 @@ void GameState::Tick()
         }
     }
 
-    network_update();
+    NetworkUpdate();
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NetworkAuth::Ok)
+    if (NetworkGetMode() == NETWORK_MODE_CLIENT && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
+        && NetworkGetAuthstatus() == NetworkAuth::Ok)
     {
-        numUpdates = std::clamp<uint32_t>(network_get_server_tick() - gCurrentTicks, 0, 10);
+        numUpdates = std::clamp<uint32_t>(NetworkGetServerTick() - gCurrentTicks, 0, 10);
     }
     else
     {
@@ -141,10 +141,10 @@ void GameState::Tick()
     }
 
     bool isPaused = GameIsPaused();
-    if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.PauseServerIfNoClients)
+    if (NetworkGetMode() == NETWORK_MODE_SERVER && gConfigNetwork.PauseServerIfNoClients)
     {
         // If we are headless we always have 1 player (host), pause if no one else is around.
-        if (gOpenRCT2Headless && network_get_num_players() == 1)
+        if (gOpenRCT2Headless && NetworkGetNumPlayers() == 1)
         {
             isPaused |= true;
         }
@@ -153,7 +153,7 @@ void GameState::Tick()
     bool didRunSingleFrame = false;
     if (isPaused)
     {
-        if (gDoSingleUpdate && network_get_mode() == NETWORK_MODE_NONE)
+        if (gDoSingleUpdate && NetworkGetMode() == NETWORK_MODE_NONE)
         {
             didRunSingleFrame = true;
             PauseToggle();
@@ -165,10 +165,10 @@ void GameState::Tick()
             // If the game is paused it will not call UpdateLogic at all.
             numUpdates = 0;
 
-            if (network_get_mode() == NETWORK_MODE_SERVER)
+            if (NetworkGetMode() == NETWORK_MODE_SERVER)
             {
                 // Make sure the client always knows about what tick the host is on.
-                network_send_tick();
+                NetworkSendTick();
             }
 
             // Update the animation list. Note this does not
@@ -176,7 +176,7 @@ void GameState::Tick()
             MapAnimationInvalidateAll();
 
             // Post-tick network update
-            network_process_pending();
+            NetworkProcessPending();
 
             // Post-tick game actions.
             GameActions::ProcessQueue();
@@ -204,7 +204,7 @@ void GameState::Tick()
         }
     }
 
-    network_flush();
+    NetworkFlush();
 
     if (!gOpenRCT2Headless)
     {
@@ -270,39 +270,39 @@ void GameState::UpdateLogic(LogicTimings* timings)
 
     GetContext()->GetReplayManager()->Update();
 
-    network_update();
+    NetworkUpdate();
     report_time(LogicTimePart::NetworkUpdate);
 
-    if (network_get_mode() == NETWORK_MODE_SERVER)
+    if (NetworkGetMode() == NETWORK_MODE_SERVER)
     {
-        if (network_gamestate_snapshots_enabled())
+        if (NetworkGamestateSnapshotsEnabled())
         {
             CreateStateSnapshot();
         }
 
         // Send current tick out.
-        network_send_tick();
+        NetworkSendTick();
     }
-    else if (network_get_mode() == NETWORK_MODE_CLIENT)
+    else if (NetworkGetMode() == NETWORK_MODE_CLIENT)
     {
         // Don't run past the server, this condition can happen during map changes.
-        if (network_get_server_tick() == gCurrentTicks)
+        if (NetworkGetServerTick() == gCurrentTicks)
         {
             return;
         }
 
         // Check desync.
-        bool desynced = network_check_desynchronisation();
+        bool desynced = NetworkCheckDesynchronisation();
         if (desynced)
         {
             // If desync debugging is enabled and we are still connected request the specific game state from server.
-            if (network_gamestate_snapshots_enabled() && network_get_status() == NETWORK_STATUS_CONNECTED)
+            if (NetworkGamestateSnapshotsEnabled() && NetworkGetStatus() == NETWORK_STATUS_CONNECTED)
             {
                 // Create snapshot from this tick so we can compare it later
                 // as we won't pause the game on this event.
                 CreateStateSnapshot();
 
-                network_request_gamestate_snapshot();
+                NetworkRequestGamestateSnapshot();
             }
         }
     }
@@ -374,8 +374,8 @@ void GameState::UpdateLogic(LogicTimings* timings)
     GameActions::ProcessQueue();
     report_time(LogicTimePart::GameActions);
 
-    network_process_pending();
-    network_flush();
+    NetworkProcessPending();
+    NetworkFlush();
     report_time(LogicTimePart::NetworkFlush);
 
     gCurrentTicks++;

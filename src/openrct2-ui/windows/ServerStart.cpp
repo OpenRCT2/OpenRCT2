@@ -133,11 +133,11 @@ public:
                 Invalidate();
                 break;
             case WIDX_START_SERVER:
-                network_set_password(_password);
+                NetworkSetPassword(_password);
                 WindowScenarioselectOpen(ScenarioSelectCallback, false);
                 break;
             case WIDX_LOAD_SERVER:
-                network_set_password(_password);
+                NetworkSetPassword(_password);
                 auto intent = Intent(WindowClass::Loadsave);
                 intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
                 intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(LoadSaveCallback));
@@ -284,7 +284,7 @@ private:
         GameNotifyMapChange();
         if (GetContext()->LoadParkFromFile(path, false, true))
         {
-            network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
+            NetworkBeginServer(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 
@@ -294,7 +294,7 @@ private:
         {
             GameNotifyMapChange();
             GetContext()->LoadParkFromFile(path);
-            network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
+            NetworkBeginServer(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 };

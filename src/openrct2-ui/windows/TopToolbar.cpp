@@ -358,7 +358,7 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_PAUSE:
-            if (network_get_mode() != NETWORK_MODE_CLIENT)
+            if (NetworkGetMode() != NETWORK_MODE_CLIENT)
             {
                 auto pauseToggleAction = PauseToggleAction();
                 GameActions::Execute(&pauseToggleAction);
@@ -757,7 +757,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
         }
     }
 
-    switch (network_get_mode())
+    switch (NetworkGetMode())
     {
         case NETWORK_MODE_NONE:
             window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
@@ -988,12 +988,12 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             screenPos.y++;
 
         // Draw (de)sync icon.
-        imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
+        imgId = (NetworkIsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
         GfxDrawSprite(dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
         // Draw number of players.
         auto ft = Formatter();
-        ft.Add<int32_t>(network_get_num_visible_players());
+        ft.Add<int32_t>(NetworkGetNumVisiblePlayers());
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft,
             { COLOUR_WHITE | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE), TextAlignment::RIGHT });
@@ -1733,8 +1733,8 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
 
             int32_t quantity = 1;
             bool isCluster = gWindowSceneryScatterEnabled
-                && (network_get_mode() != NETWORK_MODE_CLIENT
-                    || network_can_perform_command(network_get_current_player_group_index(), -2));
+                && (NetworkGetMode() != NETWORK_MODE_CLIENT
+                    || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2));
 
             if (isCluster)
             {
@@ -3472,7 +3472,7 @@ static void TopToolbarInitCheatsMenu(rct_window* w, Widget* widget)
         TOP_TOOLBAR_CHEATS_COUNT);
 
     // Disable items that are not yet available in multiplayer
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
         Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
@@ -3562,7 +3562,7 @@ static void TopToolbarInitNetworkMenu(rct_window* w, Widget* widget)
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
         TOP_TOOLBAR_NETWORK_COUNT);
 
-    Dropdown::SetDisabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
+    Dropdown::SetDisabled(DDIDX_MULTIPLAYER_RECONNECT, !NetworkIsDesynchronised());
 
     gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
@@ -3605,7 +3605,7 @@ static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex)
                 ContextOpenWindow(WindowClass::Multiplayer);
                 break;
             case DDIDX_MULTIPLAYER_RECONNECT:
-                network_reconnect();
+                NetworkReconnect();
                 break;
         }
     }

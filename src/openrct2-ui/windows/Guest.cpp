@@ -621,7 +621,7 @@ private:
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                               network_get_current_player_id() };
+                                               NetworkGetCurrentPlayerId() };
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
@@ -874,7 +874,7 @@ private:
         _beingWatchedTimer++;
 
         // Disable peep watching thought for multiplayer as it's client specific
-        if (network_get_mode() == NETWORK_MODE_NONE)
+        if (NetworkGetMode() == NETWORK_MODE_NONE)
         {
             // Create the "I have the strangest feeling I am being watched thought"
             if (_beingWatchedTimer >= 3840)
@@ -961,7 +961,7 @@ private:
         PeepPickupAction pickupAction{ PeepPickupType::Place,
                                        EntityId::FromUnderlying(number),
                                        { destCoords, tileElement->GetBaseZ() },
-                                       network_get_current_player_id() };
+                                       NetworkGetCurrentPlayerId() };
         pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
                 return;
@@ -977,7 +977,7 @@ private:
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepX, 0, 0 }, network_get_current_player_id()
+            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepX, 0, 0 }, NetworkGetCurrentPlayerId()
         };
         GameActions::Execute(&pickupAction);
     }

@@ -84,11 +84,11 @@ public:
         }
         if (text.empty())
         {
-            network_shutdown_client();
+            NetworkShutdownClient();
         }
         else
         {
-            network_send_password(_password);
+            NetworkSendPassword(_password);
         }
     }
 

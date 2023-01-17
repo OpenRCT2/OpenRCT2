@@ -48,8 +48,8 @@ static int32_t ChatHistoryDrawString(
 
 bool ChatAvailable()
 {
-    return network_get_mode() != NETWORK_MODE_NONE && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NetworkAuth::Ok;
+    return NetworkGetMode() != NETWORK_MODE_NONE && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
+        && NetworkGetAuthstatus() == NetworkAuth::Ok;
 }
 
 void ChatOpen()
@@ -229,7 +229,7 @@ void ChatAddHistory(std::string_view s)
     _chatHistoryIndex++;
 
     // Log to file (src only as logging does its own timestamp)
-    network_append_chat_log(s);
+    NetworkAppendChatLog(s);
 
     CreateAudioChannel(SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
@@ -241,7 +241,7 @@ void ChatInput(enum ChatInput input)
         case ChatInput::Send:
             if (_chatCurrentLine[0] != '\0')
             {
-                network_send_chat(_chatCurrentLine);
+                NetworkSendChat(_chatCurrentLine);
             }
             ChatClearInput();
             ChatClose();

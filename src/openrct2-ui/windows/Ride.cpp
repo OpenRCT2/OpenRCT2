@@ -4073,7 +4073,7 @@ static void WindowRideMaintenanceInvalidate(rct_window* w)
     WindowRideAnchorBorderWidgets(w);
     WindowAlignTabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
-    if (gConfigGeneral.DebuggingTools && network_get_mode() == NETWORK_MODE_NONE)
+    if (gConfigGeneral.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
     {
         window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WindowWidgetType::FlatBtn;
     }

@@ -854,7 +854,7 @@ ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
  */
 bool AllowEarlyCompletion()
 {
-    switch (network_get_mode())
+    switch (NetworkGetMode())
     {
         case NETWORK_MODE_CLIENT:
             return gAllowEarlyCompletionInNetworkPlay;

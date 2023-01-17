@@ -556,7 +556,7 @@ void ScriptEngine::RefreshPlugins()
     }
 
     // Turn on hot reload if not already enabled
-    if (!_hotReloadingInitialised && gConfigPlugin.EnableHotReloading && network_get_mode() == NETWORK_MODE_NONE)
+    if (!_hotReloadingInitialised && gConfigPlugin.EnableHotReloading && NetworkGetMode() == NETWORK_MODE_NONE)
     {
         SetupHotReloading();
     }
@@ -876,7 +876,7 @@ void ScriptEngine::StartTransientPlugins()
 
 bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
 {
-    auto networkMode = network_get_mode();
+    auto networkMode = NetworkGetMode();
     if (networkMode == NETWORK_MODE_CLIENT)
     {
         // Only client plugins and plugins downloaded from server should be started
@@ -1494,9 +1494,9 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
     duk_pop(ctx);
     auto customAction = std::make_unique<CustomAction>(actionid, json);
 
-    if (customAction->GetPlayer() == -1 && network_get_mode() != NETWORK_MODE_NONE)
+    if (customAction->GetPlayer() == -1 && NetworkGetMode() != NETWORK_MODE_NONE)
     {
-        customAction->SetPlayer(network_get_current_player_id());
+        customAction->SetPlayer(NetworkGetCurrentPlayerId());
     }
     return customAction;
 }
@@ -1723,7 +1723,7 @@ std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
 bool OpenRCT2::Scripting::IsGameStateMutable()
 {
     // Allow single player to alter game state anywhere
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (NetworkGetMode() == NETWORK_MODE_NONE)
     {
         return true;
     }
@@ -1736,7 +1736,7 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
 void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
 {
     // Allow single player to alter game state anywhere
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto& execInfo = scriptEngine.GetExecInfo();

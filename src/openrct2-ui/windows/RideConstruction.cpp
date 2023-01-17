@@ -2267,7 +2267,7 @@ private:
         }
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackPos);
 
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
         }
@@ -4596,7 +4596,7 @@ static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& pie
                 type = TrackElemType::BeginStation;
             }
         }
-        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        if (NetworkGetMode() == NETWORK_MODE_CLIENT)
         {
             // rideConstructionState needs to be set again to the proper value, this only affects the client
             _rideConstructionState = RideConstructionState::Selected;

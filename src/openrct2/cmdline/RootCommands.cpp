@@ -446,7 +446,7 @@ static void PrintVersion()
     Console::WriteLine(buffer);
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
     Console::WriteLine();
-    Console::WriteFormat("Network version: %s", network_get_version().c_str());
+    Console::WriteFormat("Network version: %s", NetworkGetVersion().c_str());
     Console::WriteLine();
 #ifdef ENABLE_SCRIPTING
     Console::WriteFormat("Plugin API version: %d", OpenRCT2::Scripting::OPENRCT2_PLUGIN_API_VERSION);

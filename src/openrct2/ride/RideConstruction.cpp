@@ -229,7 +229,7 @@ void RideClearForConstruction(Ride& ride)
     // Open circuit rides will go directly into building mode (creating ghosts) where it would normally clear the stats,
     // however this causes desyncs since it's directly run from the window and other clients would not get it.
     // To prevent these problems, unconditionally invalidate the test results on all clients in multiplayer games.
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         InvalidateTestResults(ride);
     }
