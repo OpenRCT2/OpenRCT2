@@ -5209,11 +5209,11 @@ void Vehicle::KillPassengers(const Ride& curRide)
 
         if (!curPeep->OutsideOfPark)
         {
-            decrement_guests_in_park();
+            DecrementGuestsInPark();
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
             ContextBroadcastIntent(&intent);
         }
-        peep_sprite_remove(curPeep);
+        PeepEntityRemove(curPeep);
     }
 
     num_peeps = 0;

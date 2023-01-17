@@ -2908,11 +2908,11 @@ namespace RCT1
 
         if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
         {
-            increment_guests_heading_for_park();
+            IncrementGuestsHeadingForPark();
         }
         else
         {
-            increment_guests_in_park();
+            IncrementGuestsInPark();
         }
     }
 

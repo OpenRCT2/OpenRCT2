@@ -328,7 +328,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::MapStashProvisionalElements);
     MapUpdatePathWideFlags();
     report_time(LogicTimePart::MapPathWideFlags);
-    peep_update_all();
+    PeepUpdateAll();
     report_time(LogicTimePart::Peep);
     MapRestoreProvisionalElements();
     report_time(LogicTimePart::MapRestoreProvisionalElements);
@@ -357,7 +357,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     MapAnimationInvalidateAll();
     report_time(LogicTimePart::MapAnimation);
     VehicleSoundsUpdate();
-    peep_update_crowd_noise();
+    PeepUpdateCrowdNoise();
     ClimateUpdateSound();
     report_time(LogicTimePart::Sounds);
     EditorOpenWindowsForCurrentStep();

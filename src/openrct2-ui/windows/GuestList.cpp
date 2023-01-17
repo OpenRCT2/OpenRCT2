@@ -687,7 +687,7 @@ private:
                 {
                     case GuestViewType::Actions:
                         // Guest face
-                        GfxDrawSprite(&dpi, ImageId(get_peep_face_sprite_small(peep)), { 118, y + 1 });
+                        GfxDrawSprite(&dpi, ImageId(GetPeepFaceSpriteSmall(peep)), { 118, y + 1 });
 
                         // Tracking icon
                         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
@@ -710,7 +710,7 @@ private:
                                 break;
 
                             ft = Formatter();
-                            peep_thought_set_format_args(&thought, ft);
+                            PeepThoughtSetFormatArgs(&thought, ft);
                             DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, { FontStyle::Small });
                             break;
                         }
@@ -848,7 +848,7 @@ private:
             auto& group = FindOrAddGroup(GetArgumentsFromPeep(*peep, _selectedView));
             if (group.NumGuests < std::size(group.Faces))
             {
-                group.Faces[group.NumGuests] = get_peep_face_sprite_small(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
+                group.Faces[group.NumGuests] = GetPeepFaceSpriteSmall(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
             }
             group.NumGuests++;
         }
@@ -890,7 +890,7 @@ private:
                 const auto& thought = peep.Thoughts[0];
                 if (thought.type != PeepThoughtType::None && thought.freshness <= 5)
                 {
-                    peep_thought_set_format_args(&thought, ft);
+                    PeepThoughtSetFormatArgs(&thought, ft);
                 }
                 break;
             }

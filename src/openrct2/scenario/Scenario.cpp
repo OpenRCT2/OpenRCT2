@@ -212,7 +212,7 @@ void ScenarioSuccess()
     auto companyValue = gCompanyValue;
 
     gScenarioCompletedCompanyValue = companyValue;
-    peep_applause();
+    PeepApplause();
 
     if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), companyValue, nullptr))
     {
@@ -299,7 +299,7 @@ void ScenarioAutosaveCheck()
 static void ScenarioDayUpdate()
 {
     finance_update_daily_profit();
-    peep_update_days_in_queue();
+    PeepUpdateDaysInQueue();
     switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_10_ROLLERCOASTERS:
@@ -331,7 +331,7 @@ static void ScenarioWeekUpdate()
     finance_pay_research();
     finance_pay_interest();
     marketing_update();
-    peep_problem_warnings_update();
+    PeepProblemWarningsUpdate();
     RideCheckAllReachable();
     RideUpdateFavouritedStat();
 

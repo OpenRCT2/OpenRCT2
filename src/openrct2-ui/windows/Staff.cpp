@@ -766,7 +766,7 @@ private:
         // This will be moved below where Items Checked is when all
         // of dropdown related functions are finished. This prevents
         // the dropdown from not working on first click.
-        int32_t numCostumes = staff_get_available_entertainer_costume_list(_availableCostumes);
+        int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(_availableCostumes);
         for (int32_t i = 0; i < numCostumes; i++)
         {
             EntertainerCostume costume = _availableCostumes[i];

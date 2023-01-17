@@ -986,7 +986,7 @@ PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
     return newSpriteType;
 }
 
-colour_t staff_get_colour(StaffType staffType)
+colour_t StaffGetColour(StaffType staffType)
 {
     switch (staffType)
     {
@@ -1004,7 +1004,7 @@ colour_t staff_get_colour(StaffType staffType)
     }
 }
 
-bool staff_set_colour(StaffType staffType, colour_t value)
+bool StaffSetColour(StaffType staffType, colour_t value)
 {
     switch (staffType)
     {
@@ -1023,7 +1023,7 @@ bool staff_set_colour(StaffType staffType, colour_t value)
     return true;
 }
 
-uint32_t staff_get_available_entertainer_costumes()
+uint32_t StaffGetAvailableEntertainerCostumes()
 {
     uint32_t entertainerCostumes = 0;
     for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
@@ -1045,9 +1045,9 @@ uint32_t staff_get_available_entertainer_costumes()
     return entertainerCostumes;
 }
 
-int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costumeList)
+int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList)
 {
-    uint32_t availableCostumes = staff_get_available_entertainer_costumes();
+    uint32_t availableCostumes = StaffGetAvailableEntertainerCostumes();
     int32_t numCostumes = 0;
     for (uint8_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
     {
@@ -1418,7 +1418,7 @@ void Staff::UpdateAnswering()
         UpdateCurrentActionSpriteType();
 
         SubState = 1;
-        peep_window_state_update(this);
+        PeepWindowStateUpdate(this);
         return;
     }
     if (SubState == 1)
@@ -1426,7 +1426,7 @@ void Staff::UpdateAnswering()
         if (IsActionWalking())
         {
             SubState = 2;
-            peep_window_state_update(this);
+            PeepWindowStateUpdate(this);
             MechanicTimeSinceCall = 0;
             ResetPathfindGoal();
             return;

@@ -122,7 +122,7 @@ protected:
         }
 
         // Clean up the peep, because we're reusing this loaded context for all tests.
-        peep_sprite_remove(peep);
+        PeepEntityRemove(peep);
 
         // Require that the number of steps taken is exactly what we expected. The pathfinder is supposed to be
         // deterministic, and we reset the RNG seed for each test, everything should be entirely repeatable; as

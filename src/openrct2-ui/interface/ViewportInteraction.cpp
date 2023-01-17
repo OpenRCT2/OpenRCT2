@@ -108,7 +108,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
                     auto peep = sprite->As<Peep>();
                     if (peep != nullptr)
                     {
-                        peep_set_map_tooltip(peep);
+                        PeepSetMapTooltip(peep);
                     }
                     else
                     {
@@ -149,7 +149,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
             info.SpriteType = ViewportInteractionItem::Entity;
             info.Loc.x = peep->x;
             info.Loc.y = peep->y;
-            peep_set_map_tooltip(peep);
+            PeepSetMapTooltip(peep);
         }
     }
 

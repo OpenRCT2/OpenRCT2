@@ -472,12 +472,12 @@ extern uint8_t gGuestInitialThirst;
 
 extern uint32_t gNextGuestNumber;
 
-void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft);
+void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
 
-void increment_guests_in_park();
-void increment_guests_heading_for_park();
-void decrement_guests_in_park();
-void decrement_guests_heading_for_park();
+void IncrementGuestsInPark();
+void IncrementGuestsHeadingForPark();
+void DecrementGuestsInPark();
+void DecrementGuestsHeadingForPark();
 
 void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
 void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);

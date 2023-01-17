@@ -928,7 +928,7 @@ private:
         }
 
         // Invalidate number of staff if changed
-        const auto staffCount = peep_get_staff_count();
+        const auto staffCount = PeepGetStaffCount();
         if (_numberOfStaff != staffCount)
         {
             _numberOfStaff = staffCount;

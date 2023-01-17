@@ -223,7 +223,7 @@ public:
                 break;
             }
             case WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER:
-                WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], staff_get_colour(GetSelectedStaffType()));
+                WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], StaffGetColour(GetSelectedStaffType()));
                 break;
         }
     }
@@ -252,8 +252,7 @@ public:
         if (GetSelectedStaffType() != StaffType::Entertainer)
         {
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::ColourBtn;
-            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(
-                staff_get_colour(GetSelectedStaffType()));
+            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(StaffGetColour(GetSelectedStaffType()));
         }
         SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
 
@@ -491,7 +490,7 @@ public:
             }
         }
 
-        std::sort(_staffList.begin(), _staffList.end(), [](const auto a, const auto b) { return peep_compare(a, b) < 0; });
+        std::sort(_staffList.begin(), _staffList.end(), [](const auto a, const auto b) { return PeepCompare(a, b) < 0; });
     }
 
 private:
@@ -634,7 +633,7 @@ private:
     {
         auto result = EntertainerCostume::Panda;
         EntertainerCostume costumeList[static_cast<uint8_t>(EntertainerCostume::Count)];
-        int32_t numCostumes = staff_get_available_entertainer_costume_list(costumeList);
+        int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(costumeList);
         if (numCostumes > 0)
         {
             int32_t index = util_rand() % numCostumes;

@@ -148,10 +148,10 @@ extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;
 extern colour_t gStaffSecurityColour;
 
-colour_t staff_get_colour(StaffType staffType);
-bool staff_set_colour(StaffType staffType, colour_t value);
-uint32_t staff_get_available_entertainer_costumes();
-int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costumeList);
+colour_t StaffGetColour(StaffType staffType);
+bool StaffSetColour(StaffType staffType, colour_t value);
+uint32_t StaffGetAvailableEntertainerCostumes();
+int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList);
 
 money32 GetStaffWage(StaffType type);
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
