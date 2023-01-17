@@ -28,7 +28,7 @@ static void ride_invalidate_station_start(Ride& ride, StationIndex stationIndex,
  *
  *  rct2: 0x006ABFFB
  */
-void ride_update_station(Ride& ride, StationIndex stationIndex)
+void RideUpdateStation(Ride& ride, StationIndex stationIndex)
 {
     if (ride.GetStation(stationIndex).Start.IsNull())
         return;
@@ -57,7 +57,7 @@ void ride_update_station(Ride& ride, StationIndex stationIndex)
  */
 static void ride_update_station_blocksection(Ride& ride, StationIndex stationIndex)
 {
-    TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
+    TileElement* tileElement = RideGetStationStartTrackElement(ride, stationIndex);
     auto& station = ride.GetStation(stationIndex);
 
     if ((ride.status == RideStatus::Closed && ride.num_riders == 0)
@@ -321,7 +321,7 @@ static void ride_race_init_vehicle_speeds(const Ride& ride)
 static void ride_invalidate_station_start(Ride& ride, StationIndex stationIndex, bool greenLight)
 {
     auto startPos = ride.GetStation(stationIndex).Start;
-    TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
+    TileElement* tileElement = RideGetStationStartTrackElement(ride, stationIndex);
 
     // If no station track found return
     if (tileElement == nullptr)
@@ -333,7 +333,7 @@ static void ride_invalidate_station_start(Ride& ride, StationIndex stationIndex,
     MapInvalidateTileZoom1({ startPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 }
 
-TileElement* ride_get_station_start_track_element(const Ride& ride, StationIndex stationIndex)
+TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex)
 {
     auto stationStart = ride.GetStation(stationIndex).GetStart();
 
@@ -351,7 +351,7 @@ TileElement* ride_get_station_start_track_element(const Ride& ride, StationIndex
     return nullptr;
 }
 
-TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos)
+TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos)
 {
     // Find the station track element
     TileElement* tileElement = MapGetFirstElementAt(elementPos);
@@ -368,7 +368,7 @@ TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos)
     return nullptr;
 }
 
-StationIndex ride_get_first_valid_station_exit(const Ride& ride)
+StationIndex RideGetFirstValidStationExit(const Ride& ride)
 {
     for (const auto& station : ride.GetStations())
     {
@@ -380,7 +380,7 @@ StationIndex ride_get_first_valid_station_exit(const Ride& ride)
     return StationIndex::GetNull();
 }
 
-StationIndex ride_get_first_valid_station_start(const Ride& ride)
+StationIndex RideGetFirstValidStationStart(const Ride& ride)
 {
     for (const auto& station : ride.GetStations())
     {
@@ -392,7 +392,7 @@ StationIndex ride_get_first_valid_station_start(const Ride& ride)
     return StationIndex::GetNull();
 }
 
-StationIndex ride_get_first_empty_station_start(const Ride& ride)
+StationIndex RideGetFirstEmptyStationStart(const Ride& ride)
 {
     for (const auto& station : ride.GetStations())
     {

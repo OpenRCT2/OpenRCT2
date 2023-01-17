@@ -327,7 +327,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     auto isGhost = false;
     if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
-        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&wallElement)))
+        if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&wallElement)))
         {
             imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
             isGhost = true;

@@ -42,11 +42,11 @@ RideConstructionState _rideConstructionState2;
 money32 PlaceProvisionalTrackPiece(
     RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, const CoordsXYZ& trackPos)
 {
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
         return MONEY32_UNDEFINED;
 
-    ride_construction_remove_ghosts();
+    RideConstructionRemoveGhosts();
     const auto& rtd = ride->GetRideTypeDescriptor();
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
@@ -262,7 +262,7 @@ bool WindowRideConstructionUpdateState(
         liftHillAndInvertedState |= CONSTRUCTION_INVERTED_TRACK_SELECTED;
     }
 
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
         return true;
 
@@ -395,7 +395,7 @@ bool WindowRideConstructionUpdateState(
  *
  *  rct2: 0x006C84CE
  */
-void window_ride_construction_update_active_elements()
+void WindowRideConstructionUpdateActiveElements()
 {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
     ContextBroadcastIntent(&intent);

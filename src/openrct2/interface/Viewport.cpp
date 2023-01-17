@@ -742,7 +742,7 @@ void ViewportUpdateSmartFollowGuest(rct_window* window, const Guest* peep)
     if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide
         || (peep->State == PeepState::LeavingRide && peep->x == LOCATION_NULL))
     {
-        auto ride = get_ride(peep->CurrentRide);
+        auto ride = GetRide(peep->CurrentRide);
         if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         {
             auto train = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
@@ -761,7 +761,7 @@ void ViewportUpdateSmartFollowGuest(rct_window* window, const Guest* peep)
 
     if (peep->x == LOCATION_NULL && overallFocus)
     {
-        auto ride = get_ride(peep->CurrentRide);
+        auto ride = GetRide(peep->CurrentRide);
         if (ride != nullptr)
         {
             auto xy = ride->overall_view.ToTileCentre();

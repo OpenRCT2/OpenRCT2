@@ -371,7 +371,7 @@ void game_fix_save_vars()
             {
                 continue;
             }
-            Ride* ride = get_ride(rideIdx);
+            Ride* ride = GetRide(rideIdx);
             if (ride == nullptr)
             {
                 log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->sprite_index);
@@ -382,7 +382,7 @@ void game_fix_save_vars()
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(),
                 srcStation.ToUnderlying(), rideIdx);
-            auto station = ride_get_first_valid_station_exit(*ride);
+            auto station = RideGetFirstValidStationExit(*ride);
             if (station.IsNull())
             {
                 log_warning("Couldn't find station, removing peep %u", peep->sprite_index);
@@ -447,7 +447,7 @@ void game_fix_save_vars()
     BannerFixDuplicates();
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
-    fix_invalid_vehicle_sprite_sizes();
+    FixInvalidVehicleSpriteSizes();
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
     ParkEntranceFixLocations();

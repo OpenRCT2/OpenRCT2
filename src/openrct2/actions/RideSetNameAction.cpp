@@ -47,7 +47,7 @@ void RideSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result RideSetNameAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
@@ -65,7 +65,7 @@ GameActions::Result RideSetNameAction::Query() const
 
 GameActions::Result RideSetNameAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());

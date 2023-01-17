@@ -175,12 +175,12 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
 ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
 {
     CoordsXYE trackElement;
-    if (!ride_try_get_origin_element(ride, &trackElement))
+    if (!RideTryGetOriginElement(ride, &trackElement))
     {
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    ride_get_start_of_track(&trackElement);
+    RideGetStartOfTrack(&trackElement);
 
     int32_t z = trackElement.element->GetBaseZ();
     auto trackType = trackElement.element->AsTrack()->GetTrackType();
@@ -241,7 +241,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         track.flags = trackFlags;
         track_elements.push_back(track);
 
-        if (!track_block_get_next(&trackElement, &trackElement, nullptr, nullptr))
+        if (!TrackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
         {
             break;
         }
@@ -1998,7 +1998,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         return false;
     }
 
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
         return false;
 
@@ -2211,7 +2211,7 @@ static void TrackDesignPreviewClearMap()
     SetTileElements(std::move(tileElements));
 }
 
-bool track_design_are_entrance_and_exit_placed()
+bool TrackDesignAreEntranceAndExitPlaced()
 {
     return _trackDesignPlaceStateEntranceExitPlaced;
 }

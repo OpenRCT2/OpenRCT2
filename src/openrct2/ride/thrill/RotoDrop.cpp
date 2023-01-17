@@ -33,7 +33,7 @@ enum
  *
  *  rct2: 0x006D5DA9
  */
-void vehicle_visual_roto_drop(
+void VehicleVisualRotoDrop(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {

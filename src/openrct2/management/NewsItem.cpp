@@ -213,7 +213,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
     {
         case News::ItemType::Ride:
         {
-            Ride* ride = get_ride(RideId::FromUnderlying(subject));
+            Ride* ride = GetRide(RideId::FromUnderlying(subject));
             if (ride == nullptr || ride->overall_view.IsNull())
             {
                 break;
@@ -239,7 +239,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             }
 
             // Find which ride peep is on
-            Ride* ride = get_ride(peep->CurrentRide);
+            Ride* ride = GetRide(peep->CurrentRide);
             if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 subjectLoc = std::nullopt;

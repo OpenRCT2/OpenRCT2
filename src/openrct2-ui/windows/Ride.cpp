@@ -888,7 +888,7 @@ static void WindowRideDrawTabMain(rct_drawpixelinfo* dpi, rct_window* w)
     WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_MAIN);
     if (!WidgetIsDisabled(*w, widgetIndex))
     {
-        auto ride = get_ride(w->rideId);
+        auto ride = GetRide(w->rideId);
         if (ride != nullptr)
         {
             int32_t spriteIndex = 0;
@@ -944,7 +944,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
 
         screenCoords = ScreenCoordsXY{ widget.width() / 2, widget.height() - 12 };
 
-        auto ride = get_ride(w->rideId);
+        auto ride = GetRide(w->rideId);
         if (ride == nullptr)
             return;
 
@@ -969,11 +969,11 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
             screenCoords.y /= 4;
         }
 
-        const auto vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, rideEntry->TabCar);
+        const auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, rideEntry->TabCar);
         CarEntry* carEntry = &rideEntry->Cars[vehicle];
 
         auto vehicleId = ((ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_VEHICLE) ? rideEntry->TabCar : 0;
-        VehicleColour vehicleColour = ride_get_vehicle_colour(*ride, vehicleId);
+        VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleId);
 
         // imageIndex represents a precision of 64
         auto imageIndex = OpenRCT2::Entity::Yaw::YawFrom4(2) * 2;
@@ -1036,7 +1036,7 @@ static void WindowRideDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
 static void WindowRideDisableTabs(rct_window* w)
 {
     uint32_t disabled_tabs = 0;
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -1279,7 +1279,7 @@ rct_window* WindowRideOpenTrack(TileElement* tileElement)
     auto rideIndex = tileElement->GetRideIndex();
     if (!rideIndex.IsNull())
     {
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride != nullptr)
         {
             const auto type = tileElement->GetType();
@@ -1475,7 +1475,7 @@ static void WindowRideAnchorBorderWidgets(rct_window* w)
 
 static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_window& w)
 {
-    const auto* ride = get_ride(RideId::FromUnderlying(w.number));
+    const auto* ride = GetRide(RideId::FromUnderlying(w.number));
     if (ride == nullptr)
         return std::nullopt;
 
@@ -1505,7 +1505,7 @@ static void WindowRideInitViewport(rct_window* w)
     if (w->page != WINDOW_RIDE_PAGE_MAIN)
         return;
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -1602,7 +1602,7 @@ static void WindowRideInitViewport(rct_window* w)
  */
 static void WindowRideRename(rct_window* w)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr)
     {
         auto rideName = ride->GetName();
@@ -1636,7 +1636,7 @@ static void WindowRideMainMouseup(rct_window* w, WidgetIndex widgetIndex)
             break;
         case WIDX_CONSTRUCTION:
         {
-            auto ride = get_ride(w->rideId);
+            auto ride = GetRide(w->rideId);
             if (ride != nullptr)
             {
                 RideConstructionStart(*ride);
@@ -1658,7 +1658,7 @@ static void WindowRideMainMouseup(rct_window* w, WidgetIndex widgetIndex)
         case WIDX_TEST_LIGHT:
         case WIDX_OPEN_LIGHT:
         {
-            auto ride = get_ride(w->rideId);
+            auto ride = GetRide(w->rideId);
             if (ride != nullptr)
             {
                 RideStatus status;
@@ -1697,7 +1697,7 @@ static void WindowRideMainResize(rct_window* w)
     {
         minHeight += 20 + RCT1_LIGHT_OFFSET;
 
-        auto ride = get_ride(w->rideId);
+        auto ride = GetRide(w->rideId);
         if (ride != nullptr)
         {
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
@@ -1731,7 +1731,7 @@ static void WindowRideMainResize(rct_window* w)
 static void WindowRideShowViewDropdown(rct_window* w, Widget* widget)
 {
     Widget* dropdownWidget = widget - 1;
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -1842,7 +1842,7 @@ static void WindowRideSetDropdown(RideStatusDropdownInfo& info, RideStatus statu
 static void WindowRideShowOpenDropdown(rct_window* w, Widget* widget)
 {
     RideStatusDropdownInfo info;
-    info.Ride = get_ride(w->rideId);
+    info.Ride = GetRide(w->rideId);
     if (info.Ride == nullptr)
         return;
 
@@ -1910,7 +1910,7 @@ static void PopulateRideTypeDropdown()
 
 static void WindowRideShowRideTypeDropdown(rct_window* w, Widget* widget)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -1945,7 +1945,7 @@ static void WindowRideShowRideTypeDropdown(rct_window* w, Widget* widget)
 
 static void WindowRideShowLocateDropdown(rct_window* w, Widget* widget)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -1964,7 +1964,7 @@ static void WindowRideShowLocateDropdown(rct_window* w, Widget* widget)
 
 static void WindowRideMainFollowRide(rct_window* w)
 {
-    auto* ride = get_ride(w->rideId);
+    auto* ride = GetRide(w->rideId);
     if (ride != nullptr)
     {
         if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN))
@@ -2053,7 +2053,7 @@ static void PopulateVehicleTypeDropdown(const Ride& ride, bool forceRefresh)
 
 static void WindowRideShowVehicleTypeDropdown(rct_window* w, Widget* widget)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -2124,7 +2124,7 @@ static void WindowRideMainDropdown(rct_window* w, WidgetIndex widgetIndex, int32
             if (dropdownIndex == -1)
             {
                 dropdownIndex = w->ride.view + 1;
-                auto ride = get_ride(w->rideId);
+                auto ride = GetRide(w->rideId);
                 if (ride != nullptr)
                 {
                     if (dropdownIndex != 0 && dropdownIndex <= ride->NumTrains
@@ -2145,7 +2145,7 @@ static void WindowRideMainDropdown(rct_window* w, WidgetIndex widgetIndex, int32
             break;
         case WIDX_OPEN:
         {
-            auto ride = get_ride(w->rideId);
+            auto ride = GetRide(w->rideId);
             if (ride != nullptr)
             {
                 auto status = RideStatus::Closed;
@@ -2189,7 +2189,7 @@ static void WindowRideMainDropdown(rct_window* w, WidgetIndex widgetIndex, int32
                         // Will get set to the correct Alternative variable during set_default_next_piece.
                         // TODO: Rework construction window to prevent the need for this.
                         _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
-                        ride_construction_set_default_next_piece();
+                        RideConstructionSetDefaultNextPiece();
                     });
                     GameActions::Execute(&rideSetSetting);
                 }
@@ -2222,7 +2222,7 @@ static void WindowRideMainUpdate(rct_window* w)
     WidgetInvalidate(*w, WIDX_TAB_1);
 
     // Update status
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr)
     {
         if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN))
@@ -2257,7 +2257,7 @@ static void WindowRideMainTextinput(rct_window* w, WidgetIndex widgetIndex, char
     if (widgetIndex != WIDX_RENAME || text == nullptr)
         return;
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr)
     {
         auto gameAction = RideSetNameAction(ride->id, text);
@@ -2292,7 +2292,7 @@ static void WindowRideMainInvalidate(rct_window* w)
 
     WindowRideSetPressedTab(w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -2426,7 +2426,7 @@ static void WindowRideMainInvalidate(rct_window* w)
 static StringId WindowRideGetStatusOverallView(rct_window* w, Formatter& ft)
 {
     auto stringId = STR_NONE;
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr)
     {
         ride->FormatStatusTo(ft);
@@ -2445,7 +2445,7 @@ static StringId WindowRideGetStatusOverallView(rct_window* w, Formatter& ft)
  */
 static StringId WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return STR_EMPTY;
 
@@ -2493,7 +2493,7 @@ static StringId WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
  */
 static StringId WindowRideGetStatusStation(rct_window* w, Formatter& ft)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return STR_NONE;
 
@@ -2545,7 +2545,7 @@ static StringId WindowRideGetStatusStation(rct_window* w, Formatter& ft)
  */
 static StringId WindowRideGetStatus(rct_window* w, Formatter& ft)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (w->ride.view == 0)
         return WindowRideGetStatusOverallView(w, ft);
     if (ride != nullptr && w->ride.view <= ride->NumTrains)
@@ -2575,7 +2575,7 @@ static void WindowRideMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // View dropdown
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -2657,7 +2657,7 @@ static void WindowRideVehicleResize(rct_window* w)
  */
 static void WindowRideVehicleMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -2699,7 +2699,7 @@ static void WindowRideVehicleDropdown(rct_window* w, WidgetIndex widgetIndex, in
         case WIDX_VEHICLE_TYPE_DROPDOWN:
             if (dropdownIndex >= 0 && static_cast<std::size_t>(dropdownIndex) < VehicleDropdownData.size())
             {
-                auto ride = get_ride(w->rideId);
+                auto ride = GetRide(w->rideId);
                 if (ride != nullptr)
                 {
                     auto newRideType = VehicleDropdownData[dropdownIndex].subtype_id;
@@ -2723,7 +2723,7 @@ static void WindowRideVehicleUpdate(rct_window* w)
 
 static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const WidgetIndex widgetIndex, StringId fallback)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return { STR_NONE, {} };
 
@@ -2790,7 +2790,7 @@ static void WindowRideVehicleInvalidate(rct_window* w)
 
     WindowRideSetPressedTab(w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -2870,7 +2870,7 @@ static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -2945,7 +2945,7 @@ struct VehicleDrawInfo
  */
 static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -2958,7 +2958,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
     int32_t startX = std::max(2, (widget->width() - ((ride->NumTrains - 1) * 36)) / 2 - 25);
     int32_t startY = widget->height() - 4;
 
-    CarEntry* carEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, 0)];
+    CarEntry* carEntry = &rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, 0)];
     startY += carEntry->tab_height;
 
     // For each train
@@ -2973,7 +2973,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         static_assert(std::numeric_limits<decltype(ride->num_cars_per_train)>::max() <= std::size(trainCarImages));
         for (int32_t j = 0; j < ride->num_cars_per_train; j++)
         {
-            carEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, j)];
+            carEntry = &rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, j)];
             x += carEntry->spacing / 17432;
             y -= (carEntry->spacing / 2) / 17432;
 
@@ -2991,7 +2991,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                     vehicleColourIndex = j;
                     break;
             }
-            VehicleColour vehicleColour = ride_get_vehicle_colour(*ride, vehicleColourIndex);
+            VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleColourIndex);
 
             ImageIndex imageIndex = carEntry->SpriteByYaw(OpenRCT2::Entity::Yaw::BaseRotation / 2, SpriteGroupType::SlopeFlat);
             imageIndex &= carEntry->TabRotationMask;
@@ -3034,7 +3034,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
  */
 static void WindowRideModeTweakIncrease(rct_window* w)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3049,7 +3049,7 @@ static void WindowRideModeTweakIncrease(rct_window* w)
 
     uint8_t increment = ride->mode == RideMode::Dodgems ? 10 : 1;
 
-    set_operating_setting(
+    SetOperatingSetting(
         w->rideId, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option + increment, minValue, maxValue));
 }
 
@@ -3059,7 +3059,7 @@ static void WindowRideModeTweakIncrease(rct_window* w)
  */
 static void WindowRideModeTweakDecrease(rct_window* w)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3073,7 +3073,7 @@ static void WindowRideModeTweakDecrease(rct_window* w)
 
     uint8_t decrement = ride->mode == RideMode::Dodgems ? 10 : 1;
 
-    set_operating_setting(
+    SetOperatingSetting(
         w->rideId, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option - decrement, minValue, maxValue));
 }
 
@@ -3086,7 +3086,7 @@ static void WindowRideModeDropdown(rct_window* w, Widget* widget)
     Widget* dropdownWidget;
 
     dropdownWidget = widget - 1;
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3125,7 +3125,7 @@ static void WindowRideModeDropdown(rct_window* w, Widget* widget)
  */
 static void WindowRideLoadDropdown(rct_window* w, Widget* widget)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3149,7 +3149,7 @@ static void WindowRideLoadDropdown(rct_window* w, Widget* widget)
 static void WindowRideOperatingMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     const auto rideId = w->rideId;
-    auto ride = get_ride(rideId);
+    auto ride = GetRide(rideId);
     if (ride == nullptr)
         return;
 
@@ -3171,20 +3171,19 @@ static void WindowRideOperatingMouseup(rct_window* w, WidgetIndex widgetIndex)
             WindowRideSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_LOAD_CHECKBOX:
-            set_operating_setting(rideId, RideSetSetting::Departure, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_LOAD);
+            SetOperatingSetting(rideId, RideSetSetting::Departure, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_LOAD);
             break;
         case WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX:
-            set_operating_setting(
-                rideId, RideSetSetting::Departure, ride->depart_flags ^ RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES);
+            SetOperatingSetting(rideId, RideSetSetting::Departure, ride->depart_flags ^ RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES);
             break;
         case WIDX_MINIMUM_LENGTH_CHECKBOX:
-            set_operating_setting(rideId, RideSetSetting::Departure, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH);
+            SetOperatingSetting(rideId, RideSetSetting::Departure, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH);
             break;
         case WIDX_MAXIMUM_LENGTH_CHECKBOX:
-            set_operating_setting(rideId, RideSetSetting::Departure, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH);
+            SetOperatingSetting(rideId, RideSetSetting::Departure, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH);
             break;
         case WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX:
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::Departure, ride->depart_flags ^ RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS);
             break;
     }
@@ -3206,7 +3205,7 @@ static void WindowRideOperatingResize(rct_window* w)
 static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
     const auto rideId = w->rideId;
-    auto ride = get_ride(rideId);
+    auto ride = GetRide(rideId);
     if (ride == nullptr)
         return;
 
@@ -3226,7 +3225,7 @@ static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex,
             upper_bound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
                                                        : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
             lower_bound = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::LiftHillSpeed,
                 std::clamp<int16_t>(ride->lift_hill_speed + 1, lower_bound, upper_bound));
             break;
@@ -3234,7 +3233,7 @@ static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex,
             upper_bound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
                                                        : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
             lower_bound = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::LiftHillSpeed,
                 std::clamp<int16_t>(ride->lift_hill_speed - 1, lower_bound, upper_bound));
             break;
@@ -3247,28 +3246,28 @@ static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex,
         case WIDX_MINIMUM_LENGTH_INCREASE:
             upper_bound = OpenRCT2::Limits::MaxWaitingTime;
             lower_bound = 0;
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::MinWaitingTime,
                 std::clamp<int16_t>(ride->min_waiting_time + 1, lower_bound, upper_bound));
             break;
         case WIDX_MINIMUM_LENGTH_DECREASE:
             upper_bound = OpenRCT2::Limits::MaxWaitingTime;
             lower_bound = 0;
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::MinWaitingTime,
                 std::clamp<int16_t>(ride->min_waiting_time - 1, lower_bound, upper_bound));
             break;
         case WIDX_MAXIMUM_LENGTH_INCREASE:
             upper_bound = OpenRCT2::Limits::MaxWaitingTime;
             lower_bound = 0;
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::MaxWaitingTime,
                 std::clamp<int16_t>(ride->max_waiting_time + 1, lower_bound, upper_bound));
             break;
         case WIDX_MAXIMUM_LENGTH_DECREASE:
             upper_bound = OpenRCT2::Limits::MaxWaitingTime;
             lower_bound = 0;
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::MaxWaitingTime,
                 std::clamp<int16_t>(ride->max_waiting_time - 1, lower_bound, upper_bound));
             break;
@@ -3282,14 +3281,14 @@ static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex,
             upper_bound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
                                                        : OpenRCT2::Limits::MaxCircuitsPerRide;
             lower_bound = 1;
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits + 1, lower_bound, upper_bound));
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
             upper_bound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
                                                        : OpenRCT2::Limits::MaxCircuitsPerRide;
             lower_bound = 1;
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits - 1, lower_bound, upper_bound));
             break;
     }
@@ -3297,7 +3296,7 @@ static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex,
 
 static void WindowRideOperatingLengthWindow(rct_window* w, WidgetIndex widgetIndex)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3354,7 +3353,7 @@ static void WindowRideOperatingDropdown(rct_window* w, WidgetIndex widgetIndex, 
         return;
 
     const auto rideId = w->rideId;
-    auto ride = get_ride(rideId);
+    auto ride = GetRide(rideId);
     if (ride == nullptr)
         return;
 
@@ -3378,11 +3377,11 @@ static void WindowRideOperatingDropdown(rct_window* w, WidgetIndex widgetIndex, 
                 }
             }
             if (rideMode != RideMode::NullMode)
-                set_operating_setting(rideId, RideSetSetting::Mode, static_cast<uint8_t>(rideMode));
+                SetOperatingSetting(rideId, RideSetSetting::Mode, static_cast<uint8_t>(rideMode));
             break;
         }
         case WIDX_LOAD_DROPDOWN:
-            set_operating_setting(
+            SetOperatingSetting(
                 rideId, RideSetSetting::Departure, (ride->depart_flags & ~RIDE_DEPART_WAIT_FOR_LOAD_MASK) | dropdownIndex);
             break;
     }
@@ -3398,7 +3397,7 @@ static void WindowRideOperatingUpdate(rct_window* w)
     WindowEventInvalidateCall(w);
     WidgetInvalidate(*w, WIDX_TAB_3);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_OPERATING)
     {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_OPERATING;
@@ -3411,7 +3410,7 @@ static void WindowRideOperatingTextinput(rct_window* w, WidgetIndex widgetIndex,
     if (text == nullptr)
         return;
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3427,7 +3426,7 @@ static void WindowRideOperatingTextinput(rct_window* w, WidgetIndex widgetIndex,
         {
             uint32_t origSize = std::stol(std::string(text)) / multiplier;
             uint8_t size = static_cast<uint8_t>(std::clamp(origSize, minValue, maxValue));
-            set_operating_setting(ride->id, RideSetSetting::Operation, size);
+            SetOperatingSetting(ride->id, RideSetSetting::Operation, size);
         }
         catch (const std::logic_error&)
         {
@@ -3445,7 +3444,7 @@ static void WindowRideOperatingTextinput(rct_window* w, WidgetIndex widgetIndex,
             uint16_t lowerBound = 0;
             uint16_t size = std::stol(std::string(text));
             size = std::clamp(size, lowerBound, upperBound);
-            set_operating_setting(ride->id, rideSetSetting, size);
+            SetOperatingSetting(ride->id, rideSetSetting, size);
         }
         catch (const std::logic_error&)
         {
@@ -3472,7 +3471,7 @@ static void WindowRideOperatingInvalidate(rct_window* w)
 
     WindowRideSetPressedTab(w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3707,7 +3706,7 @@ static void WindowRideOperatingPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3739,16 +3738,16 @@ static void WindowRideOperatingPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowRideLocateMechanic(rct_window* w)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
     // First check if there is a mechanic assigned
-    Peep* mechanic = ride_get_assigned_mechanic(*ride);
+    Peep* mechanic = RideGetAssignedMechanic(*ride);
 
     // Otherwise find the closest mechanic
     if (mechanic == nullptr)
-        mechanic = ride_find_closest_mechanic(*ride, 1);
+        mechanic = RideFindClosestMechanic(*ride, 1);
 
     if (mechanic == nullptr)
         ContextShowError(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE, {});
@@ -3829,7 +3828,7 @@ static void WindowRideMaintenanceResize(rct_window* w)
  */
 static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3933,7 +3932,7 @@ static void WindowRideMaintenanceDropdown(rct_window* w, WidgetIndex widgetIndex
     if (dropdownIndex == -1)
         return;
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -3944,7 +3943,7 @@ static void WindowRideMaintenanceDropdown(rct_window* w, WidgetIndex widgetIndex
     switch (widgetIndex)
     {
         case WIDX_INSPECTION_INTERVAL_DROPDOWN:
-            set_operating_setting(w->rideId, RideSetSetting::InspectionInterval, dropdownIndex);
+            SetOperatingSetting(w->rideId, RideSetSetting::InspectionInterval, dropdownIndex);
             break;
 
         case WIDX_FORCE_BREAKDOWN:
@@ -4023,7 +4022,7 @@ static void WindowRideMaintenanceDropdown(rct_window* w, WidgetIndex widgetIndex
                         num_items++;
                     }
                 }
-                ride_prepare_breakdown(*ride, i);
+                RidePrepareBreakdown(*ride, i);
             }
             break;
     }
@@ -4039,7 +4038,7 @@ static void WindowRideMaintenanceUpdate(rct_window* w)
     WindowEventInvalidateCall(w);
     WidgetInvalidate(*w, WIDX_TAB_4);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAINTENANCE)
     {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -4062,7 +4061,7 @@ static void WindowRideMaintenanceInvalidate(rct_window* w)
 
     WindowRideSetPressedTab(w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -4104,7 +4103,7 @@ static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -4311,7 +4310,7 @@ static void WindowRideColourMouseup(rct_window* w, WidgetIndex widgetIndex)
             ToolSet(*w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
             break;
         case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
-            auto ride = get_ride(w->rideId);
+            auto ride = GetRide(w->rideId);
             if (ride != nullptr)
             {
                 const bool currentlyEnabled = ride->HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
@@ -4342,7 +4341,7 @@ static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, Wi
     int32_t i, numItems;
     StringId stringId;
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -4452,15 +4451,15 @@ static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, Wi
             Dropdown::SetChecked(w->vehicleIndex, true);
             break;
         case WIDX_VEHICLE_BODY_COLOUR:
-            vehicleColour = ride_get_vehicle_colour(*ride, w->vehicleIndex);
+            vehicleColour = RideGetVehicleColour(*ride, w->vehicleIndex);
             WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.Body);
             break;
         case WIDX_VEHICLE_TRIM_COLOUR:
-            vehicleColour = ride_get_vehicle_colour(*ride, w->vehicleIndex);
+            vehicleColour = RideGetVehicleColour(*ride, w->vehicleIndex);
             WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.Trim);
             break;
         case WIDX_VEHICLE_TERNARY_COLOUR:
-            vehicleColour = ride_get_vehicle_colour(*ride, w->vehicleIndex);
+            vehicleColour = RideGetVehicleColour(*ride, w->vehicleIndex);
             WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.Tertiary);
             break;
     }
@@ -4622,7 +4621,7 @@ static void WindowRideColourInvalidate(rct_window* w)
 
     WindowRideSetPressedTab(w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -4756,7 +4755,7 @@ static void WindowRideColourInvalidate(rct_window* w)
         if (vehicleColourSchemeType == 0)
             w->vehicleIndex = 0;
 
-        vehicleColour = ride_get_vehicle_colour(*ride, w->vehicleIndex);
+        vehicleColour = RideGetVehicleColour(*ride, w->vehicleIndex);
 
         window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WindowWidgetType::Scroll;
         window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
@@ -4767,7 +4766,7 @@ static void WindowRideColourInvalidate(rct_window* w)
 
         for (int32_t i = 0; i < ride->num_cars_per_train; i++)
         {
-            uint8_t vehicleTypeIndex = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, i);
+            uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, i);
 
             if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
             {
@@ -4863,7 +4862,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
     // TODO: This should use lists and identified sprites
     rct_drawpixelinfo clippedDpi;
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -4980,7 +4979,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -4989,7 +4988,7 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         return;
 
     auto vehiclePreviewWidget = &window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW];
-    auto vehicleColour = ride_get_vehicle_colour(*ride, w->vehicleIndex);
+    auto vehicleColour = RideGetVehicleColour(*ride, w->vehicleIndex);
 
     // Background colour
     GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, PALETTE_INDEX_12);
@@ -5001,8 +5000,8 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR ? w->vehicleIndex
                                                                                                      : rideEntry->TabCar;
 
-    CarEntry* carEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(
-        ride->subtype, ride->num_cars_per_train, trainCarIndex)];
+    CarEntry* carEntry = &rideEntry
+                              ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, trainCarIndex)];
 
     screenCoords.y += carEntry->tab_height;
 
@@ -5027,11 +5026,11 @@ static std::vector<ObjectEntryIndex> window_ride_current_music_style_order;
  */
 static void WindowRideToggleMusic(rct_window* w)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr)
     {
         int32_t activateMusic = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) ? 0 : 1;
-        set_operating_setting(w->rideId, RideSetSetting::Music, activateMusic);
+        SetOperatingSetting(w->rideId, RideSetSetting::Music, activateMusic);
     }
 }
 
@@ -5093,7 +5092,7 @@ static void WindowRideMusicMousedown(rct_window* w, WidgetIndex widgetIndex, Wid
         return;
 
     auto dropdownWidget = widget - 1;
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -5171,7 +5170,7 @@ static void WindowRideMusicDropdown(rct_window* w, WidgetIndex widgetIndex, int3
         && static_cast<size_t>(dropdownIndex) < window_ride_current_music_style_order.size())
     {
         auto musicStyle = window_ride_current_music_style_order[dropdownIndex];
-        set_operating_setting(w->rideId, RideSetSetting::MusicType, musicStyle);
+        SetOperatingSetting(w->rideId, RideSetSetting::MusicType, musicStyle);
     }
 }
 
@@ -5201,7 +5200,7 @@ static void WindowRideMusicInvalidate(rct_window* w)
 
     WindowRideSetPressedTab(w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -5293,7 +5292,7 @@ static void SetupScenerySelection(rct_window* w)
 
     gTrackDesignSaveRideIndex = w->rideId;
 
-    track_design_save_init();
+    TrackDesignSaveInit();
     gGamePaused |= GAME_PAUSED_SAVING_TRACK;
     gTrackDesignSaveMode = true;
 
@@ -5314,7 +5313,7 @@ static void SetupScenerySelection(rct_window* w)
  */
 static void WindowRideMeasurementsDesignReset()
 {
-    track_design_save_reset_scenery();
+    TrackDesignSaveResetScenery();
 }
 
 /**
@@ -5323,7 +5322,7 @@ static void WindowRideMeasurementsDesignReset()
  */
 static void WindowRideMeasurementsDesignSelectNearbyScenery()
 {
-    track_design_save_select_nearby_scenery(gTrackDesignSaveRideIndex);
+    TrackDesignSaveSelectNearbyScenery(gTrackDesignSaveRideIndex);
 }
 
 /**
@@ -5342,7 +5341,7 @@ static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* pat
 {
     if (result == MODAL_RESULT_OK)
     {
-        track_repository_scan();
+        TrackRepositoryScan();
     }
     GfxInvalidateScreen();
 };
@@ -5355,7 +5354,7 @@ static void WindowRideMeasurementsDesignSave(rct_window* w)
 {
     TrackDesignState tds{};
 
-    Ride* ride = get_ride(w->rideId);
+    Ride* ride = GetRide(w->rideId);
     _trackDesign = ride->SaveToTrackDesign(tds);
     if (!_trackDesign)
     {
@@ -5451,7 +5450,7 @@ static void WindowRideMeasurementsMousedown(rct_window* w, WidgetIndex widgetInd
     if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
         return;
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -5521,8 +5520,8 @@ static void WindowRideMeasurementsTooldown(rct_window* w, WidgetIndex widgetInde
         case ViewportInteractionItem::LargeScenery:
         case ViewportInteractionItem::Wall:
         case ViewportInteractionItem::Footpath:
-            _collectTrackDesignScenery = !track_design_save_contains_tile_element(info.Element);
-            track_design_save_select_tile_element(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
+            _collectTrackDesignScenery = !TrackDesignSaveContainsTileElement(info.Element);
+            TrackDesignSaveSelectTileElement(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
             break;
         default:
             break;
@@ -5546,7 +5545,7 @@ static void WindowRideMeasurementsTooldrag(rct_window* w, WidgetIndex widgetInde
         case ViewportInteractionItem::LargeScenery:
         case ViewportInteractionItem::Wall:
         case ViewportInteractionItem::Footpath:
-            track_design_save_select_tile_element(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
+            TrackDesignSaveSelectTileElement(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
             break;
         default:
             break;
@@ -5578,7 +5577,7 @@ static void WindowRideMeasurementsInvalidate(rct_window* w)
     WindowRideSetPressedTab(w);
 
     const auto rideId = w->rideId;
-    auto ride = get_ride(rideId);
+    auto ride = GetRide(rideId);
     if (ride == nullptr)
         return;
 
@@ -5640,7 +5639,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     else
     {
-        auto ride = get_ride(w->rideId);
+        auto ride = GetRide(w->rideId);
         if (ride == nullptr)
             return;
 
@@ -5655,7 +5654,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
             auto ft = Formatter();
             ft.Add<uint32_t>(ride->excitement);
             ft.Add<StringId>(ratingName);
-            StringId stringId = !ride_has_ratings(*ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
+            StringId stringId = !RideHasRatings(*ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
             DrawTextBasic(dpi, screenCoords, stringId, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
@@ -5666,7 +5665,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
             ft.Add<StringId>(ratingName);
 
             stringId = STR_INTENSITY_RATING;
-            if (!ride_has_ratings(*ride))
+            if (!RideHasRatings(*ride))
                 stringId = STR_INTENSITY_RATING_NOT_YET_AVAILABLE;
             else if (ride->intensity >= RIDE_RATING(10, 00))
                 stringId = STR_INTENSITY_RATING_RED;
@@ -5679,7 +5678,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
             ft = Formatter();
             ft.Add<uint32_t>(ride->nausea);
             ft.Add<StringId>(ratingName);
-            stringId = !ride_has_ratings(*ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
+            stringId = !RideHasRatings(*ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
             DrawTextBasic(dpi, screenCoords, stringId, ft);
             screenCoords.y += 2 * LIST_ROW_HEIGHT;
 
@@ -5965,7 +5964,7 @@ static void WindowRideGraphsUpdate(rct_window* w)
     x = w->scrolls[0].h_left;
     if (!(w->list_information_type & 0x8000))
     {
-        auto ride = get_ride(w->rideId);
+        auto ride = GetRide(w->rideId);
         if (ride != nullptr)
         {
             RideMeasurement* measurement{};
@@ -5990,7 +5989,7 @@ static void WindowRideGraphsScrollgetheight(rct_window* w, int32_t scrollIndex, 
     *width = window_ride_graphs_widgets[WIDX_GRAPH].width() - 2;
 
     // Get measurement size
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr)
     {
         RideMeasurement* measurement{};
@@ -6019,7 +6018,7 @@ static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const WidgetIndex w
 {
     if (widgetIndex == WIDX_GRAPH)
     {
-        auto ride = get_ride(w->rideId);
+        auto ride = GetRide(w->rideId);
         if (ride != nullptr)
         {
             auto [measurement, message] = ride->GetMeasurement();
@@ -6057,7 +6056,7 @@ static void WindowRideGraphsInvalidate(rct_window* w)
 
     WindowRideSetPressedTab(w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -6123,7 +6122,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     GfxClear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
     auto widget = &window_ride_graphs_widgets[WIDX_GRAPH];
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
     {
         return;
@@ -6320,7 +6319,7 @@ static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
 static void WindowRideIncomeTogglePrimaryPrice(rct_window* w)
 {
     const auto rideId = w->rideId;
-    auto ride = get_ride(rideId);
+    auto ride = GetRide(rideId);
     if (ride == nullptr)
         return;
 
@@ -6358,7 +6357,7 @@ static void WindowRideIncomeTogglePrimaryPrice(rct_window* w)
 static void WindowRideIncomeToggleSecondaryPrice(rct_window* w)
 {
     const auto rideId = w->rideId;
-    auto ride = get_ride(rideId);
+    auto ride = GetRide(rideId);
     if (ride == nullptr)
         return;
 
@@ -6391,7 +6390,7 @@ static void WindowRideIncomeIncreasePrimaryPrice(rct_window* w)
     if (!WindowRideIncomeCanModifyPrimaryPrice(w))
         return;
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -6411,7 +6410,7 @@ static void WindowRideIncomeDecreasePrimaryPrice(rct_window* w)
     if (!WindowRideIncomeCanModifyPrimaryPrice(w))
         return;
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -6424,7 +6423,7 @@ static void WindowRideIncomeDecreasePrimaryPrice(rct_window* w)
 
 static money64 WindowRideIncomeGetSecondaryPrice(rct_window* w)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return 0;
 
@@ -6439,7 +6438,7 @@ static void WindowRideIncomeSetSecondaryPrice(rct_window* w, money16 price)
 
 static bool WindowRideIncomeCanModifyPrimaryPrice(rct_window* w)
 {
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return false;
 
@@ -6505,7 +6504,7 @@ static void WindowRideIncomeMouseup(rct_window* w, WidgetIndex widgetIndex)
             if (!WindowRideIncomeCanModifyPrimaryPrice(w))
                 return;
 
-            auto ride = get_ride(w->rideId);
+            auto ride = GetRide(w->rideId);
             if (ride != nullptr)
             {
                 MoneyToString(static_cast<money64>(ride->price[0]), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
@@ -6575,7 +6574,7 @@ static void WindowRideIncomeUpdate(rct_window* w)
     WindowEventInvalidateCall(w);
     WidgetInvalidate(*w, WIDX_TAB_9);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_INCOME)
     {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_INCOME;
@@ -6622,7 +6621,7 @@ static void WindowRideIncomeInvalidate(rct_window* w)
 
     WindowRideSetPressedTab(w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -6657,7 +6656,7 @@ static void WindowRideIncomeInvalidate(rct_window* w)
     window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Empty;
 
     window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_BOTTOM_TOOLBAR_CASH;
-    money16 ridePrimaryPrice = ride_get_price(*ride);
+    money16 ridePrimaryPrice = RideGetPrice(*ride);
     ft.Rewind();
     ft.Add<money64>(ridePrimaryPrice);
     if (ridePrimaryPrice == 0)
@@ -6668,7 +6667,7 @@ static void WindowRideIncomeInvalidate(rct_window* w)
     {
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Checkbox;
 
-        if (shop_item_has_common_price(primaryItem))
+        if (ShopItemHasCommonPrice(primaryItem))
             w->pressed_widgets |= (1uLL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = GetShopItemDescriptor(primaryItem).Naming.PriceLabel;
@@ -6698,7 +6697,7 @@ static void WindowRideIncomeInvalidate(rct_window* w)
     {
         // Set same price throughout park checkbox
         w->pressed_widgets &= ~(1uLL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
-        if (shop_item_has_common_price(secondaryItem))
+        if (ShopItemHasCommonPrice(secondaryItem))
             w->pressed_widgets |= (1uLL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 
         // Show widgets
@@ -6734,7 +6733,7 @@ static void WindowRideIncomePaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -6902,7 +6901,7 @@ static void WindowRideCustomerUpdate(rct_window* w)
     WindowEventInvalidateCall(w);
     WidgetInvalidate(*w, WIDX_TAB_10);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_CUSTOMER)
     {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_CUSTOMER;
@@ -6925,7 +6924,7 @@ static void WindowRideCustomerInvalidate(rct_window* w)
 
     WindowRideSetPressedTab(w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride != nullptr)
     {
         auto ft = Formatter::Common();
@@ -6961,7 +6960,7 @@ static void WindowRideCustomerPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
-    auto ride = get_ride(w->rideId);
+    auto ride = GetRide(w->rideId);
     if (ride == nullptr)
         return;
 
@@ -6980,7 +6979,7 @@ static void WindowRideCustomerPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Customers per hour
     auto ft = Formatter();
-    ft.Add<int32_t>(ride_customers_per_hour(*ride));
+    ft.Add<int32_t>(RideCustomersPerHour(*ride));
     DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_PER_HOUR, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 

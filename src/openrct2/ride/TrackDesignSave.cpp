@@ -69,7 +69,7 @@ static TrackDesignAddStatus track_design_save_add_tile_element(
 static void track_design_save_remove_tile_element(
     ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
 
-void track_design_save_init()
+void TrackDesignSaveInit()
 {
     _trackSavedTileElements.clear();
     _trackSavedTileElementsDesc.clear();
@@ -79,10 +79,10 @@ void track_design_save_init()
  *
  *  rct2: 0x006D2B07
  */
-void track_design_save_select_tile_element(
+void TrackDesignSaveSelectTileElement(
     ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect)
 {
-    if (track_design_save_contains_tile_element(tileElement))
+    if (TrackDesignSaveContainsTileElement(tileElement))
     {
         if (!collect)
         {
@@ -106,7 +106,7 @@ void track_design_save_select_tile_element(
  *
  *  rct2: 0x006D303D
  */
-void track_design_save_select_nearby_scenery(RideId rideIndex)
+void TrackDesignSaveSelectNearbyScenery(RideId rideIndex)
 {
     tile_element_iterator it;
     TileElementIteratorBegin(&it);
@@ -125,13 +125,13 @@ void track_design_save_select_nearby_scenery(RideId rideIndex)
  *
  *  rct2: 0x006D3026
  */
-void track_design_save_reset_scenery()
+void TrackDesignSaveResetScenery()
 {
-    track_design_save_init();
+    TrackDesignSaveInit();
     GfxInvalidateScreen();
 }
 
-bool track_design_save_contains_tile_element(const TileElement* tileElement)
+bool TrackDesignSaveContainsTileElement(const TileElement* tileElement)
 {
     for (auto& tile : _trackSavedTileElements)
     {
@@ -647,7 +647,7 @@ static void track_design_save_select_nearby_scenery_for_tile(RideId rideIndex, i
 
                 if (interactionType != ViewportInteractionItem::None)
                 {
-                    if (!track_design_save_contains_tile_element(tileElement))
+                    if (!TrackDesignSaveContainsTileElement(tileElement))
                     {
                         track_design_save_add_tile_element(interactionType, TileCoordsXY(x, y).ToCoordsXY(), tileElement);
                     }

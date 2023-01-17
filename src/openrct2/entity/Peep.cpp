@@ -548,7 +548,7 @@ void peep_decrement_num_riders(Peep* peep)
 {
     if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
     {
-        auto ride = get_ride(peep->CurrentRide);
+        auto ride = GetRide(peep->CurrentRide);
         if (ride != nullptr)
         {
             ride->num_riders = std::max(0, ride->num_riders - 1);
@@ -572,7 +572,7 @@ void peep_window_state_update(Peep* peep)
     {
         if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
         {
-            auto ride = get_ride(peep->CurrentRide);
+            auto ride = GetRide(peep->CurrentRide);
             if (ride != nullptr)
             {
                 ride->num_riders++;
@@ -1081,7 +1081,7 @@ void peep_problem_warnings_update()
                     hungerCounter++;
                     break;
                 }
-                ride = get_ride(peep->GuestHeadingToRideId);
+                ride = GetRide(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                     hungerCounter++;
                 break;
@@ -1092,7 +1092,7 @@ void peep_problem_warnings_update()
                     thirstCounter++;
                     break;
                 }
-                ride = get_ride(peep->GuestHeadingToRideId);
+                ride = GetRide(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_DRINKS))
                     thirstCounter++;
                 break;
@@ -1103,7 +1103,7 @@ void peep_problem_warnings_update()
                     toiletCounter++;
                     break;
                 }
-                ride = get_ride(peep->GuestHeadingToRideId);
+                ride = GetRide(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
                     toiletCounter++;
                 break;
@@ -1388,7 +1388,7 @@ void Peep::FormatActionTo(Formatter& ft) const
         case PeepState::LeavingRide:
         case PeepState::EnteringRide:
         {
-            auto ride = get_ride(CurrentRide);
+            auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
                 ft.Add<StringId>(ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
@@ -1403,7 +1403,7 @@ void Peep::FormatActionTo(Formatter& ft) const
         case PeepState::Buying:
         {
             ft.Add<StringId>(STR_AT_RIDE);
-            auto ride = get_ride(CurrentRide);
+            auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
                 ride->FormatNameTo(ft);
@@ -1422,7 +1422,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             {
                 if (!guest->GuestHeadingToRideId.IsNull())
                 {
-                    auto ride = get_ride(guest->GuestHeadingToRideId);
+                    auto ride = GetRide(guest->GuestHeadingToRideId);
                     if (ride != nullptr)
                     {
                         ft.Add<StringId>(STR_HEADING_FOR);
@@ -1439,7 +1439,7 @@ void Peep::FormatActionTo(Formatter& ft) const
         case PeepState::QueuingFront:
         case PeepState::Queuing:
         {
-            auto ride = get_ride(CurrentRide);
+            auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
                 ft.Add<StringId>(STR_QUEUING_FOR);
@@ -1453,7 +1453,7 @@ void Peep::FormatActionTo(Formatter& ft) const
         case PeepState::Watching:
             if (!CurrentRide.IsNull())
             {
-                auto ride = get_ride(CurrentRide);
+                auto ride = GetRide(CurrentRide);
                 if (ride != nullptr)
                 {
                     ft.Add<StringId>((StandingFlags & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
@@ -1497,7 +1497,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             else
             {
                 ft.Add<StringId>(STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL);
-                auto ride = get_ride(CurrentRide);
+                auto ride = GetRide(CurrentRide);
                 if (ride != nullptr)
                 {
                     ride->FormatNameTo(ft);
@@ -1511,7 +1511,7 @@ void Peep::FormatActionTo(Formatter& ft) const
         case PeepState::Fixing:
         {
             ft.Add<StringId>(STR_FIXING_RIDE);
-            auto ride = get_ride(CurrentRide);
+            auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
                 ride->FormatNameTo(ft);
@@ -1525,7 +1525,7 @@ void Peep::FormatActionTo(Formatter& ft) const
         case PeepState::HeadingToInspection:
         {
             ft.Add<StringId>(STR_HEADING_TO_RIDE_FOR_INSPECTION);
-            auto ride = get_ride(CurrentRide);
+            auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
                 ride->FormatNameTo(ft);
@@ -1539,7 +1539,7 @@ void Peep::FormatActionTo(Formatter& ft) const
         case PeepState::Inspecting:
         {
             ft.Add<StringId>(STR_INSPECTING_RIDE);
-            auto ride = get_ride(CurrentRide);
+            auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
                 ride->FormatNameTo(ft);
@@ -1731,7 +1731,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
 
     if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             return false;
 
@@ -2201,7 +2201,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
             {
                 /* Peep is approaching the entrance of a ride queue.
                  * Decide whether to go on the ride. */
-                auto ride = get_ride(rideIndex);
+                auto ride = GetRide(rideIndex);
                 if (ride != nullptr && guest->ShouldGoOnRide(*ride, stationNum, true, false))
                 {
                     // Peep has decided to go on the ride at the queue.
@@ -2271,7 +2271,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
 static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
 {
     RideId rideIndex = coords.element->AsTrack()->GetRideIndex();
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
         return false;
 

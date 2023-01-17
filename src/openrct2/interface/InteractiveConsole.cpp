@@ -200,7 +200,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 }
                 else
                 {
-                    int32_t res = set_operating_setting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
+                    int32_t res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
                     if (res == MONEY32_UNDEFINED)
                     {
                         if (!gCheatsAllowArbitraryRideTypeChanges)
@@ -230,7 +230,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 }
                 else
                 {
-                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
+                    auto ride = GetRide(RideId::FromUnderlying(ride_index));
                     if (mode >= static_cast<uint8_t>(RideMode::Count))
                     {
                         console.WriteFormatLine("Invalid ride mode.");
@@ -242,7 +242,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                     else
                     {
                         ride->mode = static_cast<RideMode>(mode & 0xFF);
-                        invalidate_test_results(*ride);
+                        InvalidateTestResults(*ride);
                     }
                 }
             }
@@ -262,7 +262,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 }
                 else
                 {
-                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
+                    auto ride = GetRide(RideId::FromUnderlying(ride_index));
                     if (mass <= 0)
                     {
                         console.WriteFormatLine("Friction value must be strictly positive");
@@ -301,7 +301,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 else
                 {
                     auto rideIndex = RideId::FromUnderlying(ride_index);
-                    auto ride = get_ride(rideIndex);
+                    auto ride = GetRide(rideIndex);
                     if (excitement <= 0)
                     {
                         console.WriteFormatLine("Excitement value must be strictly positive");
@@ -334,7 +334,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 else
                 {
                     auto rideIndex = RideId::FromUnderlying(ride_index);
-                    auto ride = get_ride(rideIndex);
+                    auto ride = GetRide(rideIndex);
                     if (intensity <= 0)
                     {
                         console.WriteFormatLine("Intensity value must be strictly positive");
@@ -367,7 +367,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 else
                 {
                     auto rideIndex = RideId::FromUnderlying(ride_index);
-                    auto ride = get_ride(rideIndex);
+                    auto ride = GetRide(rideIndex);
                     if (nausea <= 0)
                     {
                         console.WriteFormatLine("Nausea value must be strictly positive");
@@ -1416,7 +1416,7 @@ static int32_t ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unu
     const auto& tileElements = GetTileElements();
     const auto tileElementCount = tileElements.size();
 
-    int32_t rideCount = ride_get_count();
+    int32_t rideCount = RideGetCount();
     int32_t spriteCount = 0;
     for (int32_t i = 0; i < static_cast<uint8_t>(EntityType::Count); ++i)
     {

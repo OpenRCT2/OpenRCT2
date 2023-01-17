@@ -179,7 +179,7 @@ private:
         {
             if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
-                entryName = get_ride_entry_name(item.EntryIndex);
+                entryName = GetRideEntryName(item.EntryIndex);
             }
         }
         _trackDesigns = repo->GetItemsForObjectEntry(item.Type, entryName);
@@ -366,7 +366,7 @@ public:
 
         if (entry != nullptr)
         {
-            RideNaming rideName = get_ride_naming(_window_track_list_item.Type, *entry);
+            RideNaming rideName = GetRideNaming(_window_track_list_item.Type, *entry);
             stringId = rideName.Name;
         }
 

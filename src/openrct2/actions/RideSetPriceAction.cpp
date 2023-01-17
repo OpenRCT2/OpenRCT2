@@ -51,7 +51,7 @@ GameActions::Result RideSetPriceAction::Query() const
 {
     GameActions::Result res = GameActions::Result();
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
@@ -73,7 +73,7 @@ GameActions::Result RideSetPriceAction::Execute() const
     GameActions::Result res = GameActions::Result();
     res.Expenditure = ExpenditureType::ParkRideTickets;
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
@@ -110,7 +110,7 @@ GameActions::Result RideSetPriceAction::Execute() const
             }
         }
         // Check same price in park flags
-        if (!shop_item_has_common_price(shopItem))
+        if (!ShopItemHasCommonPrice(shopItem))
         {
             ride->price[0] = _price;
             WindowInvalidateByClass(WindowClass::Ride);
@@ -131,7 +131,7 @@ GameActions::Result RideSetPriceAction::Execute() const
             }
         }
         // Check same price in park flags
-        if (!shop_item_has_common_price(shopItem))
+        if (!ShopItemHasCommonPrice(shopItem))
         {
             ride->price[1] = _price;
             WindowInvalidateByClass(WindowClass::Ride);

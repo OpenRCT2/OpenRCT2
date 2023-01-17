@@ -598,7 +598,7 @@ const rct_vehicle_info* Vehicle::GetMoveInfo() const
     return vehicle_get_move_info(TrackSubposition, GetTrackType(), GetTrackDirection(), track_progress);
 }
 
-uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction)
+uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction)
 {
     uint16_t typeAndDirection = (type << 2) | (direction & 3);
 
@@ -611,7 +611,7 @@ uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, tr
 
 uint16_t Vehicle::GetTrackProgress() const
 {
-    return vehicle_get_move_info_size(TrackSubposition, GetTrackType(), GetTrackDirection());
+    return VehicleGetMoveInfoSize(TrackSubposition, GetTrackType(), GetTrackDirection());
 }
 
 void Vehicle::ApplyMass(int16_t appliedMass)
@@ -628,7 +628,7 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
 }
 
-Vehicle* try_get_vehicle(EntityId spriteIndex)
+Vehicle* TryGetVehicle(EntityId spriteIndex)
 {
     return TryGetEntity<Vehicle>(spriteIndex);
 }
@@ -1140,7 +1140,7 @@ static void UpdateSound(
  *
  *  rct2: 0x006BBC6B
  */
-void vehicle_sounds_update()
+void VehicleSoundsUpdate()
 {
     PROFILED_FUNCTION();
 
@@ -1227,7 +1227,7 @@ void vehicle_sounds_update()
  *
  *  rct2: 0x006D4204
  */
-void vehicle_update_all()
+void VehicleUpdateAll()
 {
     PROFILED_FUNCTION();
 
@@ -1266,7 +1266,7 @@ bool Vehicle::CloseRestraints()
             {
                 curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
 
-                ride_breakdown_add_news_item(*curRide);
+                RideBreakdownAddNewsItem(*curRide);
 
                 curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -1382,7 +1382,7 @@ bool Vehicle::OpenRestraints()
             {
                 curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
 
-                ride_breakdown_add_news_item(*curRide);
+                RideBreakdownAddNewsItem(*curRide);
 
                 curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -1600,16 +1600,16 @@ void Vehicle::UpdateMeasurements()
             switch (curRide->turn_count_default >> 11)
             {
                 case 0:
-                    increment_turn_count_1_element(*curRide, turnType);
+                    IncrementTurnCount1Element(*curRide, turnType);
                     break;
                 case 1:
-                    increment_turn_count_2_elements(*curRide, turnType);
+                    IncrementTurnCount2Elements(*curRide, turnType);
                     break;
                 case 2:
-                    increment_turn_count_3_elements(*curRide, turnType);
+                    IncrementTurnCount3Elements(*curRide, turnType);
                     break;
                 default:
-                    increment_turn_count_4_plus_elements(*curRide, turnType);
+                    IncrementTurnCount4PlusElements(*curRide, turnType);
                     break;
             }
         }
@@ -1711,7 +1711,7 @@ void Vehicle::UpdateMeasurements()
 
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
         {
-            uint8_t helixes = ride_get_helix_sections(*curRide);
+            uint8_t helixes = RideGetHelixSections(*curRide);
             if (helixes != OpenRCT2::Limits::MaxHelices)
                 helixes++;
 
@@ -2460,7 +2460,7 @@ void Vehicle::UpdateWaitingToDepart()
         int32_t direction;
 
         uint8_t trackDirection = GetTrackDirection();
-        if (track_block_get_next_from_zero(TrackLocation, *curRide, trackDirection, &track, &zUnused, &direction, false))
+        if (TrackBlockGetNextFromZero(TrackLocation, *curRide, trackDirection, &track, &zUnused, &direction, false))
         {
             if (track.element->AsTrack()->HasCableLift())
             {
@@ -2615,7 +2615,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
         return false;
     }
 
-    TileElement* tileElement = get_station_platform({ coords, coords.z + 2 * COORDS_Z_STEP });
+    TileElement* tileElement = GetStationPlatform({ coords, coords.z + 2 * COORDS_Z_STEP });
     if (tileElement == nullptr)
     {
         /* No station platform element found,
@@ -2624,7 +2624,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
     }
 
     auto rideIndex = tileElement->AsTrack()->GetRideIndex();
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr || !(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
         /* Ride is not set to synchronise with adjacent stations. */
@@ -2768,7 +2768,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
 
     for (rct_synchronised_vehicle* sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++)
     {
-        Ride* sv_ride = get_ride(sv->ride_id);
+        Ride* sv_ride = GetRide(sv->ride_id);
 
         if (!(sv_ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
@@ -2794,7 +2794,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                         }
 
                         /* Here all the of sync-ed stations are from the same ride */
-                        auto curRide = get_ride(rideId);
+                        auto curRide = GetRide(rideId);
                         if (curRide != nullptr)
                         {
                             for (int32_t i = 0; i < curRide->NumTrains; i++)
@@ -3111,7 +3111,7 @@ void Vehicle::UpdateDeparting()
                 return;
 
             curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride_breakdown_add_news_item(*curRide);
+            RideBreakdownAddNewsItem(*curRide);
 
             curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -4141,7 +4141,7 @@ void Vehicle::UpdateTravellingCableLift()
                 return;
 
             curRide->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride_breakdown_add_news_item(*curRide);
+            RideBreakdownAddNewsItem(*curRide);
             curRide->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
@@ -5993,7 +5993,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     if (carEntry->flags & CAR_ENTRY_FLAG_NO_UPSTOP_WHEELS)
     {
         auto trackType = GetTrackType();
-        if (!track_element_is_covered(trackType))
+        if (!TrackElementIsCovered(trackType))
         {
             auto gForces = GetGForces();
             gForces.LateralG = std::abs(gForces.LateralG);
@@ -6022,7 +6022,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     {
         // No up stops bobsleigh type
         auto trackType = GetTrackType();
-        if (!track_element_is_covered(trackType))
+        if (!TrackElementIsCovered(trackType))
         {
             auto gForces = GetGForces();
 
@@ -6199,7 +6199,7 @@ static void block_brakes_open_previous_section(
     CoordsXY slowLocation = location;
     do
     {
-        if (!track_block_get_previous({ location, tileElement }, &trackBeginEnd))
+        if (!TrackBlockGetPrevious({ location, tileElement }, &trackBeginEnd))
         {
             return;
         }
@@ -6218,7 +6218,7 @@ static void block_brakes_open_previous_section(
         counter = !counter;
         if (counter)
         {
-            track_block_get_previous({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
+            TrackBlockGetPrevious({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
             slowLocation.x = slowTrackBeginEnd.end_x;
             slowLocation.y = slowTrackBeginEnd.end_y;
             slowTileElement = *(slowTrackBeginEnd.begin_element);
@@ -6456,7 +6456,7 @@ void Vehicle::UpdateSwingingCar()
                 break;
         }
 
-        if (track_type_is_station(trackType) || trackType == TrackElemType::Brakes || trackType == TrackElemType::BlockBrakes)
+        if (TrackTypeIsStation(trackType) || trackType == TrackElemType::Brakes || trackType == TrackElemType::BlockBrakes)
         {
             dx = 0;
             cx = 0;
@@ -6669,7 +6669,7 @@ void Vehicle::UpdateAdditionalAnimation()
                     auto curRide = GetRide();
                     if (curRide != nullptr)
                     {
-                        if (!ride_has_station_shelter(*curRide)
+                        if (!RideHasStationShelter(*curRide)
                             || (status != Vehicle::Status::MovingToEndOfStation && status != Vehicle::Status::Arriving))
                         {
                             int32_t typeIndex = [&] {
@@ -6925,7 +6925,7 @@ static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tile
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return PitchAndRoll{ ted.Definition.vangle_start, track_get_actual_bank_3(useInvertedSprites, tileElement) };
+    return PitchAndRoll{ ted.Definition.vangle_start, TrackGetActualBank3(useInvertedSprites, tileElement) };
 }
 
 void Vehicle::UpdateGoKartAttemptSwitchLanes()
@@ -7016,7 +7016,7 @@ void Vehicle::UpdateHandleWaterSplash() const
         {
             if (IsHead())
             {
-                if (track_element_is_covered(trackType))
+                if (TrackElementIsCovered(trackType))
                 {
                     Vehicle* nextVehicle = GetEntity<Vehicle>(next_vehicle_on_ride);
                     if (nextVehicle == nullptr)
@@ -7025,7 +7025,7 @@ void Vehicle::UpdateHandleWaterSplash() const
                     Vehicle* nextNextVehicle = GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
                     if (nextNextVehicle == nullptr)
                         return;
-                    if (!track_element_is_covered(nextNextVehicle->GetTrackType()))
+                    if (!TrackElementIsCovered(nextNextVehicle->GetTrackType()))
                     {
                         if (track_progress == 4)
                         {
@@ -7341,7 +7341,7 @@ void Vehicle::Sub6DBF3E()
             int32_t outputZ, outputDirection;
 
             CoordsXYE input = { TrackLocation, tileElement };
-            if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
+            if (!TrackBlockGetNext(&input, &output, &outputZ, &outputDirection))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
             }
@@ -7455,7 +7455,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     if (isGoingBack)
     {
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous({ TrackLocation, tileElement }, &trackBeginEnd))
+        if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
         {
             return false;
         }
@@ -7470,7 +7470,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
         {
             int32_t curZ, direction;
             CoordsXYE xyElement = { TrackLocation, tileElement };
-            if (!track_block_get_next(&xyElement, &xyElement, &curZ, &direction))
+            if (!TrackBlockGetNext(&xyElement, &xyElement, &curZ, &direction))
             {
                 return false;
             }
@@ -7494,7 +7494,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
         // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         {
-            int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
+            int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
             if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
                 if (tileElement->AsTrack()->IsInverted())
@@ -7617,7 +7617,7 @@ loc_6DAEB9:
     }
     else if (trackType == TrackElemType::Booster)
     {
-        auto boosterSpeed = get_booster_speed(curRide.type, (brake_speed << 16));
+        auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
         if (boosterSpeed > _vehicleVelocityF64E08)
         {
             acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration
@@ -7809,7 +7809,7 @@ static PitchAndRoll PitchAndRollEnd(const Ride& curRide, bool useInvertedSprites
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.Definition.vangle_end, track_get_actual_bank_2(curRide.type, isInverted, ted.Definition.bank_end) };
+    return { ted.Definition.vangle_end, TrackGetActualBank2(curRide.type, isInverted, ted.Definition.bank_end) };
 }
 
 /**
@@ -7853,7 +7853,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
     {
         // loc_6DBB7E:;
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous({ trackPos, tileElement }, &trackBeginEnd))
+        if (!TrackBlockGetPrevious({ trackPos, tileElement }, &trackBeginEnd))
         {
             return false;
         }
@@ -7894,7 +7894,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
         input.x = trackPos.x;
         input.y = trackPos.y;
         input.element = tileElement;
-        if (!track_block_get_next(&input, &output, &outputZ, &direction))
+        if (!TrackBlockGetNext(&input, &output, &outputZ, &direction))
         {
             return false;
         }
@@ -7998,7 +7998,7 @@ bool Vehicle::UpdateTrackMotionBackwards(CarEntry* carEntry, const Ride& curRide
 
         if (trackType == TrackElemType::Booster)
         {
-            auto boosterSpeed = get_booster_speed(curRide.type, (brake_speed << 16));
+            auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
             if (boosterSpeed < _vehicleVelocityF64E08)
             {
                 acceleration = GetRideTypeDescriptor(curRide.type).OperatingSettings.BoosterAcceleration << 16;
@@ -8245,7 +8245,7 @@ loc_6DC476:
         int32_t outZ{};
         int32_t outDirection{};
         CoordsXYE input = { TrackLocation, tileElement };
-        if (!track_block_get_next(&input, &output, &outZ, &outDirection))
+        if (!TrackBlockGetNext(&input, &output, &outZ, &outDirection))
         {
             goto loc_6DC9BC;
         }
@@ -8261,7 +8261,7 @@ loc_6DC476:
     }
 
     {
-        int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
+        int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {
@@ -8459,7 +8459,7 @@ loc_6DCA9A:
     tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
     {
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous({ TrackLocation, tileElement }, &trackBeginEnd))
+        if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
         {
             goto loc_6DC9BC;
         }
@@ -8475,7 +8475,7 @@ loc_6DCA9A:
     }
 
     {
-        int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
+        int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {
@@ -9101,7 +9101,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     {
         if (vehicle->IsHead())
         {
-            if (track_element_is_covered(vehicle->GetTrackType()))
+            if (TrackElementIsCovered(vehicle->GetTrackType()))
             {
                 if (vehicle->velocity > 0x20000)
                 {
@@ -9136,7 +9136,7 @@ CarEntry* Vehicle::Entry() const
 
 Ride* Vehicle::GetRide() const
 {
-    return get_ride(ride);
+    return ::GetRide(ride);
 }
 
 int32_t Vehicle::NumPeepsUntilTrainTail() const
@@ -9236,14 +9236,14 @@ void Vehicle::UpdateCrossings() const
 
             if (travellingForwards)
             {
-                if (!track_block_get_next(&xyElement, &xyElement, &curZ, &direction))
+                if (!TrackBlockGetNext(&xyElement, &xyElement, &curZ, &direction))
                 {
                     break;
                 }
             }
             else
             {
-                if (!track_block_get_previous(xyElement, &output))
+                if (!TrackBlockGetPrevious(xyElement, &output))
                 {
                     break;
                 }
@@ -9275,7 +9275,7 @@ void Vehicle::UpdateCrossings() const
             pathElement->SetIsBlockedByVehicle(false);
         }
 
-        if (travellingForwards && freeCount > 0 && track_block_get_previous(xyElement, &output))
+        if (travellingForwards && freeCount > 0 && TrackBlockGetPrevious(xyElement, &output))
         {
             xyElement.x = output.begin_x;
             xyElement.y = output.begin_y;

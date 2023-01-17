@@ -834,7 +834,7 @@ public:
                 case ADVERTISING_CAMPAIGN_RIDE_FREE:
                 case ADVERTISING_CAMPAIGN_RIDE:
                 {
-                    auto campaignRide = get_ride(marketingCampaign->RideId);
+                    auto campaignRide = GetRide(marketingCampaign->RideId);
                     if (campaignRide != nullptr)
                     {
                         campaignRide->FormatNameTo(ft);

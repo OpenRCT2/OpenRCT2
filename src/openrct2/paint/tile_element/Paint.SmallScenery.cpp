@@ -336,7 +336,7 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
     ImageId imageTemplate;
     if (gTrackDesignSaveMode)
     {
-        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&sceneryElement)))
+        if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&sceneryElement)))
         {
             imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
         }

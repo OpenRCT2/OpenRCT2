@@ -1337,7 +1337,7 @@ private:
         screenCoords.y = windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
         auto ft = Formatter();
-        auto* r = get_ride(peep->FavouriteRide);
+        auto* r = GetRide(peep->FavouriteRide);
         if (r != nullptr)
         {
             r->FormatNameTo(ft);
@@ -1366,7 +1366,7 @@ private:
             }
 
             const auto rId = RideId::FromUnderlying(list_item_positions[listIndex]);
-            auto* r = get_ride(rId);
+            auto* r = GetRide(rId);
             if (r != nullptr)
             {
                 auto ft = Formatter();
@@ -1649,7 +1649,7 @@ private:
                 ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.BalloonColour)).ToUInt32());
                 break;
             case ShopItem::Photo:
-                invRide = get_ride(guest.Photo1RideRef);
+                invRide = GetRide(guest.Photo1RideRef);
                 if (invRide != nullptr)
                 {
                     ft.Rewind();
@@ -1673,7 +1673,7 @@ private:
                         ft.Add<const char*>(parkName);
                         break;
                     case VOUCHER_TYPE_RIDE_FREE:
-                        invRide = get_ride(guest.VoucherRideId);
+                        invRide = GetRide(guest.VoucherRideId);
                         if (invRide != nullptr)
                         {
                             ft.Rewind();
@@ -1706,7 +1706,7 @@ private:
                 ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.TshirtColour)).ToUInt32());
                 break;
             case ShopItem::Photo2:
-                invRide = get_ride(guest.Photo2RideRef);
+                invRide = GetRide(guest.Photo2RideRef);
                 if (invRide != nullptr)
                 {
                     ft.Rewind();
@@ -1715,7 +1715,7 @@ private:
                 }
                 break;
             case ShopItem::Photo3:
-                invRide = get_ride(guest.Photo3RideRef);
+                invRide = GetRide(guest.Photo3RideRef);
                 if (invRide != nullptr)
                 {
                     ft.Rewind();
@@ -1724,7 +1724,7 @@ private:
                 }
                 break;
             case ShopItem::Photo4:
-                invRide = get_ride(guest.Photo4RideRef);
+                invRide = GetRide(guest.Photo4RideRef);
                 if (invRide != nullptr)
                 {
                     ft.Rewind();

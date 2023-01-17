@@ -405,7 +405,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     const auto& ted = GetTrackElementDescriptor(trackType);
     int32_t sequence = trackElement->GetSequenceIndex();
     int32_t direction = (_edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
-    auto ride = get_ride(trackElement->GetRideIndex());
+    auto ride = GetRide(trackElement->GetRideIndex());
     if (ride == nullptr)
     {
         return false;

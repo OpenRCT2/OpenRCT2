@@ -535,7 +535,7 @@ namespace OpenRCT2
                 SerialiseParkParameters(parkParamsDs);
 
                 game_load_init();
-                fix_invalid_vehicle_sprite_sizes();
+                FixInvalidVehicleSpriteSizes();
             }
             catch (const std::exception& ex)
             {

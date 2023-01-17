@@ -124,7 +124,7 @@ GameActions::Result TrackRemoveAction::Query() const
     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
     const auto trackType = tileElement->AsTrack()->GetTrackType();
 
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
         log_warning("Ride not found. ride index = %d.", rideIndex);
@@ -211,7 +211,7 @@ GameActions::Result TrackRemoveAction::Query() const
         int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
-            const auto removeElementResult = track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0);
+            const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);
             if (!removeElementResult.Successful)
             {
                 return GameActions::Result(
@@ -319,7 +319,7 @@ GameActions::Result TrackRemoveAction::Execute() const
     const auto trackType = tileElement->AsTrack()->GetTrackType();
     bool isLiftHill = tileElement->AsTrack()->HasChain();
 
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
         log_warning("Ride not found. ride index = %d.", rideIndex);
@@ -395,7 +395,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
-            const auto removeElementResult = track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0);
+            const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);
             if (!removeElementResult.Successful)
             {
                 return GameActions::Result(
@@ -424,7 +424,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             && !(ride->status == RideStatus::Simulating && tileElement->Flags & TILE_ELEMENT_FLAG_GHOST)
             && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
-            const auto removeElementResult = track_remove_station_element(
+            const auto removeElementResult = TrackRemoveStationElement(
                 { mapLoc, _origin.direction }, rideIndex, GAME_COMMAND_FLAG_APPLY);
             if (!removeElementResult.Successful)
             {
@@ -438,7 +438,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             surfaceElement->SetHasTrackThatNeedsWater(false);
         }
 
-        invalidate_test_results(*ride);
+        InvalidateTestResults(*ride);
         FootpathQueueChainReset();
         if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
         {

@@ -1182,7 +1182,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(int32_t trackType)
 /**
  * rct2: 0x006D42F0
  */
-void vehicle_visual_mini_golf_player(
+void VehicleVisualMiniGolfPlayer(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->num_peeps == 0)

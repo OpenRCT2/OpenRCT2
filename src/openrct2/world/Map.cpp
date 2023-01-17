@@ -1355,7 +1355,7 @@ void MapRemoveProvisionalElements()
     }
     if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
     {
-        ride_remove_provisional_track_piece();
+        RideRemoveProvisionalTrackPiece();
         RideEntranceExitRemoveGhost();
     }
     // This is in non performant so only make network games suffer for it
@@ -1380,7 +1380,7 @@ void MapRestoreProvisionalElements()
     }
     if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
     {
-        ride_restore_provisional_track_piece();
+        RideRestoreProvisionalTrackPiece();
         RideEntranceExitPlaceProvisionalGhost();
     }
     // This is in non performant so only make network games suffer for it

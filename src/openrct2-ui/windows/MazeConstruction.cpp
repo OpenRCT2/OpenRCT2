@@ -106,7 +106,7 @@ public:
 
     void OnClose() override
     {
-        ride_construction_invalidate_current_track();
+        RideConstructionInvalidateCurrentTrack();
         ViewportSetVisibility(0);
 
         MapInvalidateMapSelectionTiles();
@@ -119,7 +119,7 @@ public:
 
         HideGridlines();
 
-        auto currentRide = get_ride(_currentRideIndex);
+        auto currentRide = GetRide(_currentRideIndex);
         if (currentRide != nullptr)
         {
             if (currentRide->overall_view.IsNull())
@@ -209,7 +209,7 @@ public:
 
     void OnUpdate() override
     {
-        auto currentRide = get_ride(_currentRideIndex);
+        auto currentRide = GetRide(_currentRideIndex);
         if (currentRide == nullptr || currentRide->status != RideStatus::Closed)
         {
             Close();
@@ -283,7 +283,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        auto currentRide = get_ride(_currentRideIndex);
+        auto currentRide = GetRide(_currentRideIndex);
         auto ft = Formatter::Common();
         if (currentRide != nullptr)
         {
@@ -313,7 +313,7 @@ private:
         gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
         input_set_flag(INPUT_FLAG_6, true);
 
-        ride_construction_invalidate_current_track();
+        RideConstructionInvalidateCurrentTrack();
 
         if (_rideConstructionState != RideConstructionState::EntranceExit)
         {
@@ -336,14 +336,14 @@ private:
 
     void WindowMazeConstructionEntranceTooldown(const ScreenCoordsXY& screenCoords)
     {
-        ride_construction_invalidate_current_track();
+        RideConstructionInvalidateCurrentTrack();
 
         MapInvalidateSelectionRect();
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-        CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
+        CoordsXYZD entranceOrExitCoords = RideGetEntranceOrExitPositionFromScreenPosition(screenCoords);
         if (entranceOrExitCoords.IsNull())
             return;
 
@@ -362,8 +362,8 @@ private:
 
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
-            auto currentRide = get_ride(rideIndex);
-            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(*currentRide).Successful)
+            auto currentRide = GetRide(rideIndex);
+            if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
             {
                 ToolCancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
@@ -390,7 +390,7 @@ private:
         _currentTrackSelectionFlags = 0;
         _rideConstructionNextArrowPulse = 0;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        ride_construction_invalidate_current_track();
+        RideConstructionInvalidateCurrentTrack();
 
         x = _currentTrackBegin.x + (CoordsDirectionDelta[direction].x / 2);
         y = _currentTrackBegin.y + (CoordsDirectionDelta[direction].y / 2);

@@ -1131,7 +1131,7 @@ private:
                 {
                     if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                         break;
-                    Ride* targetRide = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                    Ride* targetRide = GetRide(tileElement->AsEntrance()->GetRideIndex());
                     if (targetRide != nullptr)
                     {
                         const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;
@@ -1141,7 +1141,7 @@ private:
                 }
                 case TileElementType::Track:
                 {
-                    Ride* targetRide = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    Ride* targetRide = GetRide(tileElement->AsTrack()->GetRideIndex());
                     if (targetRide != nullptr)
                     {
                         const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;

@@ -156,7 +156,7 @@ void scenario_reset()
     park.ResetHistories();
     finance_reset_history();
     award_reset();
-    reset_all_ride_build_dates();
+    ResetAllRideBuildDates();
     DateReset();
     Duck::RemoveAll();
     ParkCalculateSize();
@@ -332,8 +332,8 @@ static void scenario_week_update()
     finance_pay_interest();
     marketing_update();
     peep_problem_warnings_update();
-    ride_check_all_reachable();
-    ride_update_favourited_stat();
+    RideCheckAllReachable();
+    RideUpdateFavouritedStat();
 
     auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
 
@@ -548,7 +548,7 @@ static ResultWithMessage scenario_prepare_rides_for_save()
         if (rideEntry != nullptr)
         {
             // If there are more than 5 roller coasters, only mark the first five.
-            if (isFiveCoasterObjective && (ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+            if (isFiveCoasterObjective && (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
             {
                 ride.lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
                 rcs++;
@@ -576,7 +576,7 @@ static ResultWithMessage scenario_prepare_rides_for_save()
 
             if (isFiveCoasterObjective)
             {
-                auto ride = get_ride(it.element->AsTrack()->GetRideIndex());
+                auto ride = GetRide(it.element->AsTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
@@ -672,7 +672,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
             {
-                if (ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                if (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
                 {
                     type_already_counted[ride.subtype] = true;
                     rcs++;
@@ -772,7 +772,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
             {
-                if (ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                if (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
                 {
                     if ((ride.GetTotalLength() >> 16) >= MinimumLength)
                     {
@@ -804,7 +804,7 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
             if (rideEntry != nullptr)
             {
                 if ((ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                    && ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+                    && RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
                 {
                     rcs++;
                 }

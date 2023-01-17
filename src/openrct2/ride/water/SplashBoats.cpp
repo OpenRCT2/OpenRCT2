@@ -1246,7 +1246,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
  *
  *  rct2: 0x006D4295
  */
-void vehicle_visual_splash_boats_or_water_coaster(
+void VehicleVisualSplashBoatsOrWaterCoaster(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {

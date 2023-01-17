@@ -29,7 +29,7 @@ enum
  *
  *  rct2: 0x006D5FAB
  */
-void vehicle_visual_launched_freefall(
+void VehicleVisualLaunchedFreefall(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {

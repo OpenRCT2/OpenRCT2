@@ -57,7 +57,7 @@ void RideDemolishAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result RideDemolishAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
@@ -101,7 +101,7 @@ GameActions::Result RideDemolishAction::Query() const
 
 GameActions::Result RideDemolishAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
@@ -123,12 +123,12 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
 {
     money32 refundPrice = DemolishTracks();
 
-    ride_clear_for_construction(ride);
+    RideClearForConstruction(ride);
     ride.RemovePeeps();
     ride.StopGuestsQueuing();
 
     ride.ValidateStations();
-    ride_clear_leftover_entrances(ride);
+    RideClearLeftoverEntrances(ride);
 
     const auto rideId = ride.id;
     News::DisableNewsItems(News::ItemType::Ride, rideId.ToUnderlying());
@@ -296,5 +296,5 @@ money32 RideDemolishAction::GetRefurbishPrice(const Ride& ride) const
 
 money32 RideDemolishAction::GetRefundPrice(const Ride& ride) const
 {
-    return ride_get_refund_price(ride);
+    return RideGetRefundPrice(ride);
 }

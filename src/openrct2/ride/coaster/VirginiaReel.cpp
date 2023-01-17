@@ -163,7 +163,7 @@ static constexpr const uint32_t virginia_reel_track_pieces_flat_quarter_turn_1_t
  *
  *  rct2: 0x006D5B48
  */
-void vehicle_visual_virginia_reel(
+void VehicleVisualVirginiaReel(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {

@@ -67,7 +67,7 @@ void TrackPlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result TrackPlaceAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid ride for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
@@ -345,7 +345,7 @@ GameActions::Result TrackPlaceAction::Query() const
         int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
         {
-            const auto addElementResult = track_add_station_element(
+            const auto addElementResult = TrackAddStationElement(
                 { mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign);
             if (!addElementResult.Successful)
             {
@@ -409,7 +409,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
 GameActions::Result TrackPlaceAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid ride for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
@@ -527,7 +527,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            invalidate_test_results(*ride);
+            InvalidateTestResults(*ride);
             switch (_trackType)
             {
                 case TrackElemType::OnRidePhoto:
@@ -676,7 +676,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         {
             if (trackBlock->index == 0)
             {
-                track_add_station_element({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
+                TrackAddStationElement({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
             }
             ride->ValidateStations();
             ride->UpdateMaxVehicles();

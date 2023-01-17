@@ -121,7 +121,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
             }
             break;
         case ViewportInteractionItem::Ride:
-            ride_set_map_tooltip(tileElement);
+            RideSetMapTooltip(tileElement);
             break;
         case ViewportInteractionItem::ParkEntrance:
         {
@@ -277,7 +277,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 info.SpriteType = ViewportInteractionItem::None;
                 return info;
             }
-            ride = get_ride(vehicle->ride);
+            ride = GetRide(vehicle->ride);
             if (ride != nullptr && ride->status == RideStatus::Closed)
             {
                 auto ft = Formatter();
@@ -300,7 +300,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 return info;
             }
 
-            ride = get_ride(tileElement->GetRideIndex());
+            ride = GetRide(tileElement->GetRideIndex());
             if (ride == nullptr)
             {
                 info.SpriteType = ViewportInteractionItem::None;
@@ -555,7 +555,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
                 {
                     break;
                 }
-                auto ride = get_ride(vehicle->ride);
+                auto ride = GetRide(vehicle->ride);
                 if (ride != nullptr)
                 {
                     RideConstructionStart(*ride);
@@ -565,7 +565,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
         break;
         case ViewportInteractionItem::Ride:
             tileElement = { info.Loc, info.Element };
-            ride_modify(tileElement);
+            RideModify(tileElement);
             break;
         case ViewportInteractionItem::Scenery:
             ViewportInteractionRemoveScenery(info.Element, info.Loc);

@@ -106,7 +106,7 @@ static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
 
-        auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+        auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
         if (ride != nullptr)
         {
             auto stationObj = ride->GetStationObject();

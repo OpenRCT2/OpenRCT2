@@ -157,7 +157,7 @@ void TrackDesignManageWindow::OnTextInput(WidgetIndex widgetIndex, std::string_v
         return;
     }
 
-    if (track_repository_rename(_trackDesignFileReference->path, std::string(text)))
+    if (TrackRepositoryRename(_trackDesignFileReference->path, std::string(text)))
     {
         WindowCloseByClass(WindowClass::TrackDeletePrompt);
         Close();
@@ -210,7 +210,7 @@ void TrackDeletePromptWindow::OnMouseUp(WidgetIndex widgetIndex)
             // tdPath has to be saved before window is closed, as that would blank it out.
             auto tdPath = _trackDesignFileReference->path;
             Close();
-            if (track_repository_delete(tdPath))
+            if (TrackRepositoryDelete(tdPath))
             {
                 WindowCloseByClass(WindowClass::ManageTrackDesign);
                 WindowTrackDesignListReloadTracks();

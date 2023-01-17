@@ -183,7 +183,7 @@ public:
         {
             case GuestListFilterType::GuestsOnRide:
             {
-                auto guestRide = get_ride(RideId::FromUnderlying(index));
+                auto guestRide = GetRide(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<StringId>(
@@ -199,7 +199,7 @@ public:
             }
             case GuestListFilterType::GuestsInQueue:
             {
-                auto guestRide = get_ride(RideId::FromUnderlying(index));
+                auto guestRide = GetRide(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<StringId>(STR_QUEUING_FOR);
@@ -214,7 +214,7 @@ public:
             }
             case GuestListFilterType::GuestsThinkingAboutRide:
             {
-                auto guestRide = get_ride(RideId::FromUnderlying(index));
+                auto guestRide = GetRide(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<StringId>(STR_NONE);

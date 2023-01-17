@@ -865,7 +865,7 @@ static void loc_6A6D7E(
                 case TileElementType::Track:
                     if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
-                        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                        auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
                         if (ride == nullptr)
                         {
                             continue;
@@ -951,7 +951,7 @@ static void loc_6A6C85(
 
     if (tileElementPos.element->GetType() == TileElementType::Track)
     {
-        auto ride = get_ride(tileElementPos.element->AsTrack()->GetRideIndex());
+        auto ride = GetRide(tileElementPos.element->AsTrack()->GetRideIndex());
         if (ride == nullptr)
         {
             return;
@@ -1211,7 +1211,7 @@ void FootpathUpdateQueueChains()
     for (auto* queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++)
     {
         RideId rideIndex = *queueChainPtr;
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             continue;
 
@@ -2180,7 +2180,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
             case TileElementType::Track:
                 if (tileElement->base_height == coords.z)
                 {
-                    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
                     if (ride == nullptr)
                         continue;
 
@@ -2273,7 +2273,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
     if (tileElement->GetType() == TileElementType::Track)
     {
         auto rideIndex = tileElement->AsTrack()->GetRideIndex();
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             return;
 
@@ -2560,7 +2560,7 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    auto ride = get_ride(trackElement->GetRideIndex());
+    auto ride = GetRide(trackElement->GetRideIndex());
     if (ride == nullptr)
     {
         return false;
