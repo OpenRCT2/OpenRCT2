@@ -193,9 +193,9 @@ static void PaintTopSpin(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
         session.CurrentRotation);
 
@@ -247,7 +247,7 @@ static void PaintTopSpin(
     PaintUtilSetGeneralSupportHeight(session, height + 112, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionTopspin(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

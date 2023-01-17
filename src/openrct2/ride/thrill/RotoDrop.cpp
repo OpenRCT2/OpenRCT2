@@ -111,10 +111,9 @@ static void paint_roto_drop_base(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(
-        session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
         session.CurrentRotation);
 
@@ -202,7 +201,7 @@ static void paint_roto_drop_tower_section(
 /**
  * rct2: 0x00886074
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(int32_t trackType)
 {
     switch (trackType)
     {

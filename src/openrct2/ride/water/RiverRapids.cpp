@@ -316,7 +316,7 @@ static void paint_river_rapids_station(
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_flat(session, ride, trackSequence, direction, height, trackElement);
-    track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 12, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
@@ -778,7 +778,7 @@ static void paint_river_rapids_track_on_ride_photo(
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_flat(session, ride, trackSequence, direction, height, trackElement);
-    track_paint_util_onride_photo_paint(session, direction, height + 13, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 13, trackElement);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
@@ -846,7 +846,7 @@ static void paint_river_rapids_track_whirlpool(
 /**
  * rct2: 0x0075745C
  **/
-TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionRiverRapids(int32_t trackType)
 {
     switch (trackType)
     {

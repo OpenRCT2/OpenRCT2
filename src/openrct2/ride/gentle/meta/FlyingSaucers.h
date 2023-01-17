@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
     SET_FIELD(Heights, { 9, 48, 2, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_flying_saucers),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateFlyingSaucers),
     SET_FIELD(RatingsMultipliers, { 50, 25, 0 }),
     SET_FIELD(UpkeepCosts, { 90, 1, 0, 5, 0, 0 }),
     SET_FIELD(BuildCosts, { 35.00_GBP, 2.00_GBP, 1, }),

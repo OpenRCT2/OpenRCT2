@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_SLOPE_LONG, TRACK_ZERO_G_ROLL, TRACK_ZERO_G_ROLL_LARGE}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_lim_launched_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionLimLaunchedRc),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     SET_FIELD(Heights, { 35, 24, 5, 7, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 4, 6 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_lim_launched_roller_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateLimLaunchedRollerCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 42, 20, 80, 9, 3, 10 }),
     SET_FIELD(BuildCosts, { 47.50_GBP, 2.50_GBP, 50, }),

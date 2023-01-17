@@ -372,7 +372,7 @@ static void PaintCarRideStation(
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -383,10 +383,10 @@ static void PaintCarRideTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_right_quarter_turn_3_tiles_paint(
+    TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], CarRideTrackPiecesQuarterTurn3Tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)
     {
@@ -451,7 +451,7 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
 
     MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
+    TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -481,7 +481,7 @@ static void PaintCarRideTrackSpinningTunnel(
         PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 1 });
     }
 
-    track_paint_util_spinning_tunnel_paint(session, 1, height, direction);
+    TrackPaintUtilSpinningTunnelPaint(session, 1, height, direction);
 
     if (direction == 0 || direction == 2)
     {
@@ -537,7 +537,7 @@ static void PaintCarRideTrack60DegUp(
             break;
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -593,7 +593,7 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
             break;
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -649,7 +649,7 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
             break;
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
     }

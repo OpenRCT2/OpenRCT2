@@ -171,7 +171,7 @@ static void paint_log_flume_track_flat(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -210,7 +210,7 @@ static void paint_log_flume_track_station(
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station_3(session, ride, direction, height + 2, height, trackElement);
+    TrackPaintUtilDrawStation3(session, ride, direction, height + 2, height, trackElement);
     // Covers shouldn't be offset by +2
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -236,7 +236,7 @@ static void paint_log_flume_track_25_deg_up(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -271,7 +271,7 @@ static void paint_log_flume_track_flat_to_25_deg_up(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -306,7 +306,7 @@ static void paint_log_flume_track_25_deg_up_to_flat(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -341,7 +341,7 @@ static void paint_log_flume_track_25_deg_down(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -376,7 +376,7 @@ static void paint_log_flume_track_flat_to_25_deg_down(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -411,7 +411,7 @@ static void paint_log_flume_track_25_deg_down_to_flat(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -671,9 +671,9 @@ static void paint_log_flume_track_left_quarter_turn_3_tiles(
         },
     };
 
-    track_paint_util_left_quarter_turn_3_tiles_paint(
+    TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 2, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
+    TrackPaintUtilLeftQuarterTurn3TilesPaintWithHeightOffset(
         session, 0, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIdsFront, 27);
 
     if (trackSequence != 1 && trackSequence != 2)
@@ -750,9 +750,9 @@ static void paint_log_flume_track_right_quarter_turn_3_tiles(
         },
     };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn3TilesPaint2(
         session, 2, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
+    TrackPaintUtilRightQuarterTurn3TilesPaint2WithHeightOffset(
         session, 0, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIdsFront, 27);
 
     if (trackSequence != 1 && trackSequence != 2)
@@ -818,7 +818,7 @@ static void paint_log_flume_track_on_ride_photo(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 21 }, { 0, 27, height + 5 });
 
-    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -871,7 +871,7 @@ static void log_flume_track_25_down_60(
 
     if (direction == 1 || direction == 2)
     {
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -880,7 +880,7 @@ static void log_flume_track_25_down_60(
     }
     else
     {
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height + 12, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -911,7 +911,7 @@ static void log_flume_track_60_down(
 
     if (direction == 1 || direction == 2)
     {
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -920,7 +920,7 @@ static void log_flume_track_60_down(
     }
     else
     {
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height + 12, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -953,7 +953,7 @@ static void log_flume_track_60_down_25(
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_1);
 
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -962,7 +962,7 @@ static void log_flume_track_60_down_25(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_SQUARE_FLAT);
 
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -972,7 +972,7 @@ static void log_flume_track_60_down_25(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLogFlume(int32_t trackType)
 {
     switch (trackType)
     {

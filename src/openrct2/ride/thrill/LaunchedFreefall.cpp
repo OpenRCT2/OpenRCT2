@@ -99,10 +99,9 @@ static void paint_launched_freefall_base(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(
-        session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetal, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetal, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetal,
         session.CurrentRotation);
 
@@ -189,7 +188,7 @@ static void paint_launched_freefall_tower_section(
 /**
  * rct2: 0x006FD0E8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(int32_t trackType)
 {
     switch (trackType)
     {

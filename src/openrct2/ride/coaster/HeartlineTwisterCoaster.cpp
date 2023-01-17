@@ -113,8 +113,8 @@ static void heartline_twister_rc_track_station(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 0);
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 0);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -1750,7 +1750,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_heartline_twister_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRc(int32_t trackType)
 {
     switch (trackType)
     {

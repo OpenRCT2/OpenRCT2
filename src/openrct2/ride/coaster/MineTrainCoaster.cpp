@@ -118,8 +118,8 @@ static void mine_train_rc_track_station(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
             { 32, 20, 1 }, { 0, 0, height });
     }
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -4176,7 +4176,7 @@ static void mine_train_rc_track_on_ride_photo(
             WoodenASupportsPaintSetup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
-    track_paint_util_onride_photo_paint(session, direction, height + 2, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 2, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -7515,7 +7515,7 @@ static void mine_train_rc_track_block_brakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_mine_train_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRc(int32_t trackType)
 {
     switch (trackType)
     {

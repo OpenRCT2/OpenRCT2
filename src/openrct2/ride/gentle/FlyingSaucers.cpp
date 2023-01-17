@@ -52,7 +52,7 @@ static void paint_flying_saucers(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
     }
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height,
         FlyingSaucersFenceSprites, session.CurrentRotation);
 

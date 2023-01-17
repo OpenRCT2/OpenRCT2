@@ -73,7 +73,7 @@ static void paint_lift_base(
     auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL_B);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
         session.CurrentRotation);
 
@@ -131,7 +131,7 @@ static void paint_lift_tower_section(
 /**
  * rct2: 0x0076C5BC
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_lift(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLift(int32_t trackType)
 {
     switch (trackType)
     {

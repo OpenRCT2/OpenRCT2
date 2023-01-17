@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor WoodenWildMouseRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_wooden_wild_mouse),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionWoodenWildMouse),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION | RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK |
@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor WoodenWildMouseRTD =
     SET_FIELD(Heights, { 14, 24, 4, 7, }),
     SET_FIELD(MaxMass, 4),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 4, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_wooden_wild_mouse),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateWoodenWildMouse),
     SET_FIELD(RatingsMultipliers, { 50, 30, 30 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 9, 3, 10 }),
     SET_FIELD(BuildCosts, { 25.00_GBP, 3.00_GBP, 40, }),

@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor SteeplechaseRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_steeplechase),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionSteeplechase),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor SteeplechaseRTD =
     SET_FIELD(Heights, { 14, 24, 7, 7, }),
     SET_FIELD(MaxMass, 4),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 4, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_steeplechase),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSteeplechase),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 28.50_GBP, 2.00_GBP, 40, }),
