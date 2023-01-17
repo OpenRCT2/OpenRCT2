@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x008B0460 */
-static void inverted_impulse_rc_track_flat(
+static void InvertedImpulseRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -52,7 +52,7 @@ static void inverted_impulse_rc_track_flat(
 }
 
 /** rct2: 0x008B0470, 0x008B0480, 0x008B0490 */
-static void inverted_impulse_rc_track_station(
+static void InvertedImpulseRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -80,7 +80,7 @@ static void inverted_impulse_rc_track_station(
 }
 
 /** rct2: 0x008B04A0 */
-static void inverted_impulse_rc_track_25_deg_up(
+static void InvertedImpulseRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -145,7 +145,7 @@ static void inverted_impulse_rc_track_25_deg_up(
 }
 
 /** rct2: 0x008B04B0 */
-static void inverted_impulse_rc_track_60_deg_up(
+static void InvertedImpulseRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -186,7 +186,7 @@ static void inverted_impulse_rc_track_60_deg_up(
 }
 
 /** rct2: 0x008B04C0 */
-static void inverted_impulse_rc_track_flat_to_25_deg_up(
+static void InvertedImpulseRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -248,7 +248,7 @@ static void inverted_impulse_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008B04D0 */
-static void inverted_impulse_rc_track_25_deg_up_to_60_deg_up(
+static void InvertedImpulseRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -295,7 +295,7 @@ static void inverted_impulse_rc_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008B04E0 */
-static void inverted_impulse_rc_track_60_deg_up_to_25_deg_up(
+static void InvertedImpulseRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -342,7 +342,7 @@ static void inverted_impulse_rc_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008B04F0 */
-static void inverted_impulse_rc_track_25_deg_up_to_flat(
+static void InvertedImpulseRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -404,55 +404,55 @@ static void inverted_impulse_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008B0500 */
-static void inverted_impulse_rc_track_25_deg_down(
+static void InvertedImpulseRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008B0510 */
-static void inverted_impulse_rc_track_60_deg_down(
+static void InvertedImpulseRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008B0520 */
-static void inverted_impulse_rc_track_flat_to_25_deg_down(
+static void InvertedImpulseRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008B0530 */
-static void inverted_impulse_rc_track_25_deg_down_to_60_deg_down(
+static void InvertedImpulseRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008B0540 */
-static void inverted_impulse_rc_track_60_deg_down_to_25_deg_down(
+static void InvertedImpulseRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008B0550 */
-static void inverted_impulse_rc_track_25_deg_down_to_flat(
+static void InvertedImpulseRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008B05A0 */
-static void inverted_impulse_rc_track_90_deg_up(
+static void InvertedImpulseRCTrack90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -493,15 +493,15 @@ static void inverted_impulse_rc_track_90_deg_up(
 }
 
 /** rct2: 0x008B05B0 */
-static void inverted_impulse_rc_track_90_deg_down(
+static void InvertedImpulseRCTrack90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_90_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008B0560 */
-static void inverted_impulse_rc_track_60_deg_up_to_90_deg_up(
+static void InvertedImpulseRCTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -546,15 +546,15 @@ static void inverted_impulse_rc_track_60_deg_up_to_90_deg_up(
 }
 
 /** rct2: 0x008B0570 */
-static void inverted_impulse_rc_track_90_deg_down_to_60_deg_down(
+static void InvertedImpulseRCTrack90DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_60_deg_up_to_90_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedImpulseRCTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008B0580 */
-static void inverted_impulse_rc_track_90_deg_up_to_60_deg_up(
+static void InvertedImpulseRCTrack90DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -596,7 +596,7 @@ static void inverted_impulse_rc_track_90_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008B0590 */
-static void inverted_impulse_rc_track_60_deg_down_to_90_deg_down(
+static void InvertedImpulseRCTrack60DegDownTo90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -640,7 +640,7 @@ static void inverted_impulse_rc_track_60_deg_down_to_90_deg_down(
 }
 
 /** rct2: 0x008B05C0 */
-static void inverted_impulse_rc_track_left_quarter_turn_1_90_deg_up(
+static void InvertedImpulseRCTrackLeftQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -690,7 +690,7 @@ static void inverted_impulse_rc_track_left_quarter_turn_1_90_deg_up(
 }
 
 /** rct2: 0x008B05D0 */
-static void inverted_impulse_rc_track_right_quarter_turn_1_90_deg_up(
+static void InvertedImpulseRCTrackRightQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -740,21 +740,19 @@ static void inverted_impulse_rc_track_right_quarter_turn_1_90_deg_up(
 }
 
 /** rct2: 0x008B05E0 */
-static void inverted_impulse_rc_track_left_quarter_turn_1_90_deg_down(
+static void InvertedImpulseRCTrackLeftQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_right_quarter_turn_1_90_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    InvertedImpulseRCTrackRightQuarterTurn190DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008B05F0 */
-static void inverted_impulse_rc_track_right_quarter_turn_1_90_deg_down(
+static void InvertedImpulseRCTrackRightQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_impulse_rc_track_left_quarter_turn_1_90_deg_up(
-        session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedImpulseRCTrackLeftQuarterTurn190DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRc(int32_t trackType)
@@ -762,55 +760,55 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRc(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return inverted_impulse_rc_track_flat;
+            return InvertedImpulseRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return inverted_impulse_rc_track_station;
+            return InvertedImpulseRCTrackStation;
         case TrackElemType::Up25:
-            return inverted_impulse_rc_track_25_deg_up;
+            return InvertedImpulseRCTrack25DegUp;
         case TrackElemType::Up60:
-            return inverted_impulse_rc_track_60_deg_up;
+            return InvertedImpulseRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return inverted_impulse_rc_track_flat_to_25_deg_up;
+            return InvertedImpulseRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return inverted_impulse_rc_track_25_deg_up_to_60_deg_up;
+            return InvertedImpulseRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return inverted_impulse_rc_track_60_deg_up_to_25_deg_up;
+            return InvertedImpulseRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return inverted_impulse_rc_track_25_deg_up_to_flat;
+            return InvertedImpulseRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return inverted_impulse_rc_track_25_deg_down;
+            return InvertedImpulseRCTrack25DegDown;
         case TrackElemType::Down60:
-            return inverted_impulse_rc_track_60_deg_down;
+            return InvertedImpulseRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return inverted_impulse_rc_track_flat_to_25_deg_down;
+            return InvertedImpulseRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return inverted_impulse_rc_track_25_deg_down_to_60_deg_down;
+            return InvertedImpulseRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return inverted_impulse_rc_track_60_deg_down_to_25_deg_down;
+            return InvertedImpulseRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return inverted_impulse_rc_track_25_deg_down_to_flat;
+            return InvertedImpulseRCTrack25DegDownToFlat;
         case TrackElemType::Up90:
-            return inverted_impulse_rc_track_90_deg_up;
+            return InvertedImpulseRCTrack90DegUp;
         case TrackElemType::Down90:
-            return inverted_impulse_rc_track_90_deg_down;
+            return InvertedImpulseRCTrack90DegDown;
         case TrackElemType::Up60ToUp90:
-            return inverted_impulse_rc_track_60_deg_up_to_90_deg_up;
+            return InvertedImpulseRCTrack60DegUpTo90DegUp;
         case TrackElemType::Down90ToDown60:
-            return inverted_impulse_rc_track_90_deg_down_to_60_deg_down;
+            return InvertedImpulseRCTrack90DegDownTo60DegDown;
         case TrackElemType::Up90ToUp60:
-            return inverted_impulse_rc_track_90_deg_up_to_60_deg_up;
+            return InvertedImpulseRCTrack90DegUpTo60DegUp;
         case TrackElemType::Down60ToDown90:
-            return inverted_impulse_rc_track_60_deg_down_to_90_deg_down;
+            return InvertedImpulseRCTrack60DegDownTo90DegDown;
         case TrackElemType::LeftQuarterTurn1TileUp90:
-            return inverted_impulse_rc_track_left_quarter_turn_1_90_deg_up;
+            return InvertedImpulseRCTrackLeftQuarterTurn190DegUp;
         case TrackElemType::RightQuarterTurn1TileUp90:
-            return inverted_impulse_rc_track_right_quarter_turn_1_90_deg_up;
+            return InvertedImpulseRCTrackRightQuarterTurn190DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown90:
-            return inverted_impulse_rc_track_left_quarter_turn_1_90_deg_down;
+            return InvertedImpulseRCTrackLeftQuarterTurn190DegDown;
         case TrackElemType::RightQuarterTurn1TileDown90:
-            return inverted_impulse_rc_track_right_quarter_turn_1_90_deg_down;
+            return InvertedImpulseRCTrackRightQuarterTurn190DegDown;
     }
     return nullptr;
 }

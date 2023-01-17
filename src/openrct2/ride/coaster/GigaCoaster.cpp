@@ -40,7 +40,7 @@ static constexpr const uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections]
 };
 
 /** rct2: 0x008AD674 */
-static void giga_rc_track_flat(
+static void GigaRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -124,7 +124,7 @@ static void giga_rc_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void giga_rc_track_station(
+static void GigaRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -159,7 +159,7 @@ static void giga_rc_track_station(
 }
 
 /** rct2: 0x008AD684 */
-static void giga_rc_track_25_deg_up(
+static void GigaRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -267,7 +267,7 @@ static void giga_rc_track_25_deg_up(
 }
 
 /** rct2: 0x008AD694 */
-static void giga_rc_track_60_deg_up(
+static void GigaRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -345,7 +345,7 @@ static void giga_rc_track_60_deg_up(
 }
 
 /** rct2: 0x008AD6A4 */
-static void giga_rc_track_flat_to_25_deg_up(
+static void GigaRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -453,7 +453,7 @@ static void giga_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008AD6B4 */
-static void giga_rc_track_25_deg_up_to_60_deg_up(
+static void GigaRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -543,7 +543,7 @@ static void giga_rc_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008AD6C4 */
-static void giga_rc_track_60_deg_up_to_25_deg_up(
+static void GigaRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -633,7 +633,7 @@ static void giga_rc_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008AD6D4 */
-static void giga_rc_track_25_deg_up_to_flat(
+static void GigaRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -741,55 +741,55 @@ static void giga_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008AD6E4 */
-static void giga_rc_track_25_deg_down(
+static void GigaRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD6F4 */
-static void giga_rc_track_60_deg_down(
+static void GigaRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD704 */
-static void giga_rc_track_flat_to_25_deg_down(
+static void GigaRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD714 */
-static void giga_rc_track_25_deg_down_to_60_deg_down(
+static void GigaRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD724 */
-static void giga_rc_track_60_deg_down_to_25_deg_down(
+static void GigaRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD734 */
-static void giga_rc_track_25_deg_down_to_flat(
+static void GigaRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD744 */
-static void giga_rc_track_left_quarter_turn_5(
+static void GigaRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -964,16 +964,16 @@ static void giga_rc_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x008AD754 */
-static void giga_rc_track_right_quarter_turn_5(
+static void GigaRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD764 */
-static void giga_rc_track_flat_to_left_bank(
+static void GigaRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1017,7 +1017,7 @@ static void giga_rc_track_flat_to_left_bank(
 }
 
 /** rct2: 0x008AD774 */
-static void giga_rc_track_flat_to_right_bank(
+static void GigaRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1061,7 +1061,7 @@ static void giga_rc_track_flat_to_right_bank(
 }
 
 /** rct2: 0x008AD784 */
-static void giga_rc_track_left_bank_to_flat(
+static void GigaRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1105,7 +1105,7 @@ static void giga_rc_track_left_bank_to_flat(
 }
 
 /** rct2: 0x008AD794 */
-static void giga_rc_track_right_bank_to_flat(
+static void GigaRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1149,7 +1149,7 @@ static void giga_rc_track_right_bank_to_flat(
 }
 
 /** rct2: 0x008AD7A4 */
-static void giga_rc_track_banked_left_quarter_turn_5(
+static void GigaRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1330,16 +1330,16 @@ static void giga_rc_track_banked_left_quarter_turn_5(
 }
 
 /** rct2: 0x008AD7B4 */
-static void giga_rc_track_banked_right_quarter_turn_5(
+static void GigaRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_banked_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD7C4 */
-static void giga_rc_track_left_bank_to_25_deg_up(
+static void GigaRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1390,7 +1390,7 @@ static void giga_rc_track_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008AD7D4 */
-static void giga_rc_track_right_bank_to_25_deg_up(
+static void GigaRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1441,7 +1441,7 @@ static void giga_rc_track_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008AD7E4 */
-static void giga_rc_track_25_deg_up_to_left_bank(
+static void GigaRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1492,7 +1492,7 @@ static void giga_rc_track_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x008AD7F4 */
-static void giga_rc_track_25_deg_up_to_right_bank(
+static void GigaRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1543,39 +1543,39 @@ static void giga_rc_track_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x008AD804 */
-static void giga_rc_track_left_bank_to_25_deg_down(
+static void GigaRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_25_deg_up_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD814 */
-static void giga_rc_track_right_bank_to_25_deg_down(
+static void GigaRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_25_deg_up_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD824 */
-static void giga_rc_track_25_deg_down_to_left_bank(
+static void GigaRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_right_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD834 */
-static void giga_rc_track_25_deg_down_to_right_bank(
+static void GigaRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_left_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD844 */
-static void giga_rc_track_left_bank(
+static void GigaRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1613,15 +1613,15 @@ static void giga_rc_track_left_bank(
 }
 
 /** rct2: 0x008AD854 */
-static void giga_rc_track_right_bank(
+static void GigaRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD864 */
-static void giga_rc_track_left_quarter_turn_5_25_deg_up(
+static void GigaRCTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1796,7 +1796,7 @@ static void giga_rc_track_left_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008AD874 */
-static void giga_rc_track_right_quarter_turn_5_25_deg_up(
+static void GigaRCTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1971,25 +1971,25 @@ static void giga_rc_track_right_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008AD884 */
-static void giga_rc_track_left_quarter_turn_5_25_deg_down(
+static void GigaRCTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_right_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    GigaRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD894 */
-static void giga_rc_track_right_quarter_turn_5_25_deg_down(
+static void GigaRCTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD8A4 */
-static void giga_rc_track_s_bend_left(
+static void GigaRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2138,7 +2138,7 @@ static void giga_rc_track_s_bend_left(
 }
 
 /** rct2: 0x008AD8B4 */
-static void giga_rc_track_s_bend_right(
+static void GigaRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2287,7 +2287,7 @@ static void giga_rc_track_s_bend_right(
 }
 
 /** rct2: 0x008AD8F4 */
-static void giga_rc_track_left_quarter_turn_3(
+static void GigaRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2399,16 +2399,16 @@ static void giga_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x008AD904 */
-static void giga_rc_track_right_quarter_turn_3(
+static void GigaRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD914 */
-static void giga_rc_track_left_quarter_turn_3_bank(
+static void GigaRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2526,16 +2526,16 @@ static void giga_rc_track_left_quarter_turn_3_bank(
 }
 
 /** rct2: 0x008AD924 */
-static void giga_rc_track_right_quarter_turn_3_bank(
+static void GigaRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_3_bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD934 */
-static void giga_rc_track_left_quarter_turn_3_25_deg_up(
+static void GigaRCTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2622,7 +2622,7 @@ static void giga_rc_track_left_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008AD944 */
-static void giga_rc_track_right_quarter_turn_3_25_deg_up(
+static void GigaRCTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2716,25 +2716,25 @@ static void giga_rc_track_right_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008AD954 */
-static void giga_rc_track_left_quarter_turn_3_25_deg_down(
+static void GigaRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_right_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    GigaRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD964 */
-static void giga_rc_track_right_quarter_turn_3_25_deg_down(
+static void GigaRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD974 */
-static void giga_rc_track_left_half_banked_helix_up_small(
+static void GigaRCTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2964,7 +2964,7 @@ static void giga_rc_track_left_half_banked_helix_up_small(
 }
 
 /** rct2: 0x008AD984 */
-static void giga_rc_track_right_half_banked_helix_up_small(
+static void GigaRCTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3194,7 +3194,7 @@ static void giga_rc_track_right_half_banked_helix_up_small(
 }
 
 /** rct2: 0x008AD994 */
-static void giga_rc_track_left_half_banked_helix_down_small(
+static void GigaRCTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3204,11 +3204,11 @@ static void giga_rc_track_left_half_banked_helix_down_small(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_right_half_banked_helix_up_small(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    GigaRCTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD9A4 */
-static void giga_rc_track_right_half_banked_helix_down_small(
+static void GigaRCTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3218,11 +3218,11 @@ static void giga_rc_track_right_half_banked_helix_down_small(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_left_half_banked_helix_up_small(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD9B4 */
-static void giga_rc_track_left_half_banked_helix_up_large(
+static void GigaRCTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3578,7 +3578,7 @@ static void giga_rc_track_left_half_banked_helix_up_large(
 }
 
 /** rct2: 0x008AD9C4 */
-static void giga_rc_track_right_half_banked_helix_up_large(
+static void GigaRCTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3948,7 +3948,7 @@ static void giga_rc_track_right_half_banked_helix_up_large(
 }
 
 /** rct2: 0x008AD9D4 */
-static void giga_rc_track_left_half_banked_helix_down_large(
+static void GigaRCTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3958,11 +3958,11 @@ static void giga_rc_track_left_half_banked_helix_down_large(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_right_half_banked_helix_up_large(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    GigaRCTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD9E4 */
-static void giga_rc_track_right_half_banked_helix_down_large(
+static void GigaRCTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3972,11 +3972,11 @@ static void giga_rc_track_right_half_banked_helix_down_large(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_left_half_banked_helix_up_large(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA14 */
-static void giga_rc_track_left_quarter_turn_1_60_deg_up(
+static void GigaRCTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4021,7 +4021,7 @@ static void giga_rc_track_left_quarter_turn_1_60_deg_up(
 }
 
 /** rct2: 0x008AD9F4 */
-static void giga_rc_track_right_quarter_turn_1_60_deg_up(
+static void GigaRCTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4066,23 +4066,23 @@ static void giga_rc_track_right_quarter_turn_1_60_deg_up(
 }
 
 /** rct2: 0x008ADA04 */
-static void giga_rc_track_left_quarter_turn_1_60_deg_down(
+static void GigaRCTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_right_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    GigaRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA24 */
-static void giga_rc_track_right_quarter_turn_1_60_deg_down(
+static void GigaRCTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_left_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA34 */
-static void giga_rc_track_brakes(
+static void GigaRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4118,7 +4118,7 @@ static void giga_rc_track_brakes(
 }
 
 /** rct2: 0x008ADC84 */
-static void giga_rc_track_25_deg_up_left_banked(
+static void GigaRCTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4163,7 +4163,7 @@ static void giga_rc_track_25_deg_up_left_banked(
 }
 
 /** rct2: 0x008ADC94 */
-static void giga_rc_track_25_deg_up_right_banked(
+static void GigaRCTrack25DegUpRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4208,7 +4208,7 @@ static void giga_rc_track_25_deg_up_right_banked(
 }
 
 /** rct2: 0x008ADA44 */
-static void giga_rc_track_on_ride_photo(
+static void GigaRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4258,23 +4258,23 @@ static void giga_rc_track_on_ride_photo(
 }
 
 /** rct2: 0x008ADCA4 */
-static void giga_rc_track_25_deg_down_left_banked(
+static void GigaRCTrack25DegDownLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_25_deg_up_right_banked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADCB4 */
-static void giga_rc_track_25_deg_down_right_banked(
+static void GigaRCTrack25DegDownRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_25_deg_up_left_banked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADED4 */
-static void giga_rc_track_flat_to_60_deg_up_long_base(
+static void GigaRCTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4565,7 +4565,7 @@ static void giga_rc_track_flat_to_60_deg_up_long_base(
 }
 
 /** rct2: 0x008ADEE4 */
-static void giga_rc_track_60_deg_up_to_flat_long_base(
+static void GigaRCTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4716,23 +4716,23 @@ static void giga_rc_track_60_deg_up_to_flat_long_base(
 }
 
 /** rct2: 0x008ADEF4 */
-static void giga_rc_track_60_deg_down_to_flat_long_base(
+static void GigaRCTrack60DegDownToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_flat_to_60_deg_up_long_base(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackFlatTo60DegUpLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADF04 */
-static void giga_rc_track_flat_to_60_deg_down_long_base(
+static void GigaRCTrackFlatTo60DegDownLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_60_deg_up_to_flat_long_base(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack60DegUpToFlatLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADF14 */
-static void giga_rc_track_cable_lift_hill(
+static void GigaRCTrackCableLiftHill(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4908,7 +4908,7 @@ static void giga_rc_track_cable_lift_hill(
 }
 
 /** rct2: 0x008ADA64 */
-static void giga_rc_track_left_eighth_to_diag(
+static void GigaRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5053,7 +5053,7 @@ static void giga_rc_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x008ADA74 */
-static void giga_rc_track_right_eighth_to_diag(
+static void GigaRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5198,25 +5198,25 @@ static void giga_rc_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x008ADA84 */
-static void giga_rc_track_left_eighth_to_orthogonal(
+static void GigaRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    giga_rc_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA94 */
-static void giga_rc_track_right_eighth_to_orthogonal(
+static void GigaRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    giga_rc_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    GigaRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADAA4 */
-static void giga_rc_track_left_eighth_bank_to_diag(
+static void GigaRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5361,7 +5361,7 @@ static void giga_rc_track_left_eighth_bank_to_diag(
 }
 
 /** rct2: 0x008ADAB4 */
-static void giga_rc_track_right_eighth_bank_to_diag(
+static void GigaRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5506,25 +5506,25 @@ static void giga_rc_track_right_eighth_bank_to_diag(
 }
 
 /** rct2: 0x008ADAC4 */
-static void giga_rc_track_left_eighth_bank_to_orthogonal(
+static void GigaRCTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    giga_rc_track_right_eighth_bank_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADAD4 */
-static void giga_rc_track_right_eighth_bank_to_orthogonal(
+static void GigaRCTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    giga_rc_track_left_eighth_bank_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    GigaRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA54 */
-static void giga_rc_track_diag_flat(
+static void GigaRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5670,7 +5670,7 @@ static void giga_rc_track_diag_flat(
 }
 
 /** rct2: 0x008ADB04 */
-static void giga_rc_track_diag_25_deg_up(
+static void GigaRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5816,7 +5816,7 @@ static void giga_rc_track_diag_25_deg_up(
 }
 
 /** rct2: 0x008ADB64 */
-static void giga_rc_track_diag_60_deg_up(
+static void GigaRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5892,7 +5892,7 @@ static void giga_rc_track_diag_60_deg_up(
 }
 
 /** rct2: 0x008ADAE4 */
-static void giga_rc_track_diag_flat_to_25_deg_up(
+static void GigaRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6038,7 +6038,7 @@ static void giga_rc_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008ADB44 */
-static void giga_rc_track_diag_25_deg_up_to_60_deg_up(
+static void GigaRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6114,7 +6114,7 @@ static void giga_rc_track_diag_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008ADB54 */
-static void giga_rc_track_diag_60_deg_up_to_25_deg_up(
+static void GigaRCTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6190,7 +6190,7 @@ static void giga_rc_track_diag_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008ADAF4 */
-static void giga_rc_track_diag_25_deg_up_to_flat(
+static void GigaRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6336,7 +6336,7 @@ static void giga_rc_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008ADB34 */
-static void giga_rc_track_diag_25_deg_down(
+static void GigaRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6482,7 +6482,7 @@ static void giga_rc_track_diag_25_deg_down(
 }
 
 /** rct2: 0x008ADB94 */
-static void giga_rc_track_diag_60_deg_down(
+static void GigaRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6558,7 +6558,7 @@ static void giga_rc_track_diag_60_deg_down(
 }
 
 /** rct2: 0x008ADB14 */
-static void giga_rc_track_diag_flat_to_25_deg_down(
+static void GigaRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6702,7 +6702,7 @@ static void giga_rc_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x008ADB74 */
-static void giga_rc_track_diag_25_deg_down_to_60_deg_down(
+static void GigaRCTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6778,7 +6778,7 @@ static void giga_rc_track_diag_25_deg_down_to_60_deg_down(
 }
 
 /** rct2: 0x008ADB84 */
-static void giga_rc_track_diag_60_deg_down_to_25_deg_down(
+static void GigaRCTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6854,7 +6854,7 @@ static void giga_rc_track_diag_60_deg_down_to_25_deg_down(
 }
 
 /** rct2: 0x008ADB24 */
-static void giga_rc_track_diag_25_deg_down_to_flat(
+static void GigaRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7000,7 +7000,7 @@ static void giga_rc_track_diag_25_deg_down_to_flat(
 }
 
 /** rct2: 0x008ADBC4 */
-static void giga_rc_track_diag_flat_to_left_bank(
+static void GigaRCTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7079,7 +7079,7 @@ static void giga_rc_track_diag_flat_to_left_bank(
 }
 
 /** rct2: 0x008ADBD4 */
-static void giga_rc_track_diag_flat_to_right_bank(
+static void GigaRCTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7158,7 +7158,7 @@ static void giga_rc_track_diag_flat_to_right_bank(
 }
 
 /** rct2: 0x008ADBE4 */
-static void giga_rc_track_diag_left_bank_to_flat(
+static void GigaRCTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7237,7 +7237,7 @@ static void giga_rc_track_diag_left_bank_to_flat(
 }
 
 /** rct2: 0x008ADBF4 */
-static void giga_rc_track_diag_right_bank_to_flat(
+static void GigaRCTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7316,7 +7316,7 @@ static void giga_rc_track_diag_right_bank_to_flat(
 }
 
 /** rct2: 0x008ADC24 */
-static void giga_rc_track_diag_left_bank_to_25_deg_up(
+static void GigaRCTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7395,7 +7395,7 @@ static void giga_rc_track_diag_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008ADC34 */
-static void giga_rc_track_diag_right_bank_to_25_deg_up(
+static void GigaRCTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7474,7 +7474,7 @@ static void giga_rc_track_diag_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008ADC04 */
-static void giga_rc_track_diag_25_deg_up_to_left_bank(
+static void GigaRCTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7553,7 +7553,7 @@ static void giga_rc_track_diag_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x008ADC14 */
-static void giga_rc_track_diag_25_deg_up_to_right_bank(
+static void GigaRCTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7632,7 +7632,7 @@ static void giga_rc_track_diag_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x008ADC44 */
-static void giga_rc_track_diag_left_bank_to_25_deg_down(
+static void GigaRCTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7709,7 +7709,7 @@ static void giga_rc_track_diag_left_bank_to_25_deg_down(
 }
 
 /** rct2: 0x008ADC54 */
-static void giga_rc_track_diag_right_bank_to_25_deg_down(
+static void GigaRCTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7786,7 +7786,7 @@ static void giga_rc_track_diag_right_bank_to_25_deg_down(
 }
 
 /** rct2: 0x008ADC64 */
-static void giga_rc_track_diag_25_deg_down_to_left_bank(
+static void GigaRCTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7865,7 +7865,7 @@ static void giga_rc_track_diag_25_deg_down_to_left_bank(
 }
 
 /** rct2: 0x008ADC74 */
-static void giga_rc_track_diag_25_deg_down_to_right_bank(
+static void GigaRCTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7944,7 +7944,7 @@ static void giga_rc_track_diag_25_deg_down_to_right_bank(
 }
 
 /** rct2: 0x008ADBA4 */
-static void giga_rc_track_diag_left_bank(
+static void GigaRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8020,7 +8020,7 @@ static void giga_rc_track_diag_left_bank(
 }
 
 /** rct2: 0x008ADBB4 */
-static void giga_rc_track_diag_right_bank(
+static void GigaRCTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8096,7 +8096,7 @@ static void giga_rc_track_diag_right_bank(
 }
 
 /** rct2: 0x008ADEC4 */
-static void giga_rc_track_block_brakes(
+static void GigaRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8119,7 +8119,7 @@ static void giga_rc_track_block_brakes(
 }
 
 /** rct2: 0x008ADCC4 */
-static void giga_rc_track_left_banked_quarter_turn_3_25_deg_up(
+static void GigaRCTrackLeftBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8206,7 +8206,7 @@ static void giga_rc_track_left_banked_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008ADCD4 */
-static void giga_rc_track_right_banked_quarter_turn_3_25_deg_up(
+static void GigaRCTrackRightBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8300,26 +8300,25 @@ static void giga_rc_track_right_banked_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008ADCE4 */
-static void giga_rc_track_left_banked_quarter_turn_3_25_deg_down(
+static void GigaRCTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_right_banked_quarter_turn_3_25_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    GigaRCTrackRightBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADCF4 */
-static void giga_rc_track_right_banked_quarter_turn_3_25_deg_down(
+static void GigaRCTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_left_banked_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD04 */
-static void giga_rc_track_left_banked_quarter_turn_5_25_deg_up(
+static void GigaRCTrackLeftBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8494,7 +8493,7 @@ static void giga_rc_track_left_banked_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008ADD14 */
-static void giga_rc_track_right_banked_quarter_turn_5_25_deg_up(
+static void GigaRCTrackRightBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8669,26 +8668,25 @@ static void giga_rc_track_right_banked_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008ADD24 */
-static void giga_rc_track_left_banked_quarter_turn_5_25_deg_down(
+static void GigaRCTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_right_banked_quarter_turn_5_25_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    GigaRCTrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD34 */
-static void giga_rc_track_right_banked_quarter_turn_5_25_deg_down(
+static void GigaRCTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_left_banked_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    GigaRCTrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD44 */
-static void giga_rc_track_25_deg_up_to_left_banked_25_deg_up(
+static void GigaRCTrack25DegUpToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8736,7 +8734,7 @@ static void giga_rc_track_25_deg_up_to_left_banked_25_deg_up(
 }
 
 /** rct2: 0x008ADD54 */
-static void giga_rc_track_25_deg_up_to_right_banked_25_deg_up(
+static void GigaRCTrack25DegUpToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8784,7 +8782,7 @@ static void giga_rc_track_25_deg_up_to_right_banked_25_deg_up(
 }
 
 /** rct2: 0x008ADD64 */
-static void giga_rc_track_left_banked_25_deg_up_to_25_deg_up(
+static void GigaRCTrackLeftBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8832,7 +8830,7 @@ static void giga_rc_track_left_banked_25_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008ADD74 */
-static void giga_rc_track_right_banked_25_deg_up_to_25_deg_up(
+static void GigaRCTrackRightBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8880,39 +8878,39 @@ static void giga_rc_track_right_banked_25_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008ADD84 */
-static void giga_rc_track_25_deg_down_to_left_banked_25_deg_down(
+static void GigaRCTrack25DegDownToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_right_banked_25_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD94 */
-static void giga_rc_track_25_deg_down_to_right_banked_25_deg_down(
+static void GigaRCTrack25DegDownToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_left_banked_25_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDA4 */
-static void giga_rc_track_left_banked_25_deg_down_to_25_deg_down(
+static void GigaRCTrackLeftBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_25_deg_up_to_right_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDB4 */
-static void giga_rc_track_right_banked_25_deg_down_to_25_deg_down(
+static void GigaRCTrackRightBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_25_deg_up_to_left_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDC4 */
-static void giga_rc_track_left_banked_flat_to_left_banked_25_deg_up(
+static void GigaRCTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8957,7 +8955,7 @@ static void giga_rc_track_left_banked_flat_to_left_banked_25_deg_up(
 }
 
 /** rct2: 0x008ADDD4 */
-static void giga_rc_track_right_banked_flat_to_right_banked_25_deg_up(
+static void GigaRCTrackRightBankedFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9002,7 +9000,7 @@ static void giga_rc_track_right_banked_flat_to_right_banked_25_deg_up(
 }
 
 /** rct2: 0x008ADE04 */
-static void giga_rc_track_left_banked_25_deg_up_to_left_banked_flat(
+static void GigaRCTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9047,7 +9045,7 @@ static void giga_rc_track_left_banked_25_deg_up_to_left_banked_flat(
 }
 
 /** rct2: 0x008ADE14 */
-static void giga_rc_track_right_banked_25_deg_up_to_right_banked_flat(
+static void GigaRCTrackRightBanked25DegUpToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9092,43 +9090,39 @@ static void giga_rc_track_right_banked_25_deg_up_to_right_banked_flat(
 }
 
 /** rct2: 0x008ADE24 */
-static void giga_rc_track_left_banked_flat_to_left_banked_25_deg_down(
+static void GigaRCTrackLeftBankedFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_right_banked_25_deg_up_to_right_banked_flat(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackRightBanked25DegUpToRightBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADE34 */
-static void giga_rc_track_right_banked_flat_to_right_banked_25_deg_down(
+static void GigaRCTrackRightBankedFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_left_banked_25_deg_up_to_left_banked_flat(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDE4 */
-static void giga_rc_track_left_banked_25_deg_down_to_left_banked_flat(
+static void GigaRCTrackLeftBanked25DegDownToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_right_banked_flat_to_right_banked_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackRightBankedFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDF4 */
-static void giga_rc_track_right_banked_25_deg_down_to_right_banked_flat(
+static void GigaRCTrackRightBanked25DegDownToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_left_banked_flat_to_left_banked_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADE44 */
-static void giga_rc_track_flat_to_left_banked_25_deg_up(
+static void GigaRCTrackFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9176,7 +9170,7 @@ static void giga_rc_track_flat_to_left_banked_25_deg_up(
 }
 
 /** rct2: 0x008ADE54 */
-static void giga_rc_track_flat_to_right_banked_25_deg_up(
+static void GigaRCTrackFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9224,7 +9218,7 @@ static void giga_rc_track_flat_to_right_banked_25_deg_up(
 }
 
 /** rct2: 0x008ADE64 */
-static void giga_rc_track_left_banked_25_deg_up_to_flat(
+static void GigaRCTrackLeftBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9272,7 +9266,7 @@ static void giga_rc_track_left_banked_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008ADE74 */
-static void giga_rc_track_right_banked_25_deg_up_to_flat(
+static void GigaRCTrackRightBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9320,38 +9314,38 @@ static void giga_rc_track_right_banked_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008ADE84 */
-static void giga_rc_track_flat_to_left_banked_25_deg_down(
+static void GigaRCTrackFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_right_banked_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADE94 */
-static void giga_rc_track_flat_to_right_banked_25_deg_down(
+static void GigaRCTrackFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_left_banked_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADEA4 */
-static void giga_rc_track_left_banked_25_deg_down_to_flat(
+static void GigaRCTrackLeftBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_flat_to_right_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADEB4 */
-static void giga_rc_track_right_banked_25_deg_down_to_flat(
+static void GigaRCTrackRightBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    giga_rc_track_flat_to_left_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    GigaRCTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void giga_rc_track_booster(
+static void GigaRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9391,284 +9385,284 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGigaRc(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return giga_rc_track_flat;
+            return GigaRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return giga_rc_track_station;
+            return GigaRCTrackStation;
         case TrackElemType::Up25:
-            return giga_rc_track_25_deg_up;
+            return GigaRCTrack25DegUp;
         case TrackElemType::Up60:
-            return giga_rc_track_60_deg_up;
+            return GigaRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return giga_rc_track_flat_to_25_deg_up;
+            return GigaRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return giga_rc_track_25_deg_up_to_60_deg_up;
+            return GigaRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return giga_rc_track_60_deg_up_to_25_deg_up;
+            return GigaRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return giga_rc_track_25_deg_up_to_flat;
+            return GigaRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return giga_rc_track_25_deg_down;
+            return GigaRCTrack25DegDown;
         case TrackElemType::Down60:
-            return giga_rc_track_60_deg_down;
+            return GigaRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return giga_rc_track_flat_to_25_deg_down;
+            return GigaRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return giga_rc_track_25_deg_down_to_60_deg_down;
+            return GigaRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return giga_rc_track_60_deg_down_to_25_deg_down;
+            return GigaRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return giga_rc_track_25_deg_down_to_flat;
+            return GigaRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return giga_rc_track_left_quarter_turn_5;
+            return GigaRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return giga_rc_track_right_quarter_turn_5;
+            return GigaRCTrackRightQuarterTurn5;
         case TrackElemType::FlatToLeftBank:
-            return giga_rc_track_flat_to_left_bank;
+            return GigaRCTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
-            return giga_rc_track_flat_to_right_bank;
+            return GigaRCTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
-            return giga_rc_track_left_bank_to_flat;
+            return GigaRCTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
-            return giga_rc_track_right_bank_to_flat;
+            return GigaRCTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return giga_rc_track_banked_left_quarter_turn_5;
+            return GigaRCTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return giga_rc_track_banked_right_quarter_turn_5;
+            return GigaRCTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
-            return giga_rc_track_left_bank_to_25_deg_up;
+            return GigaRCTrackLeftBankTo25DegUp;
         case TrackElemType::RightBankToUp25:
-            return giga_rc_track_right_bank_to_25_deg_up;
+            return GigaRCTrackRightBankTo25DegUp;
         case TrackElemType::Up25ToLeftBank:
-            return giga_rc_track_25_deg_up_to_left_bank;
+            return GigaRCTrack25DegUpToLeftBank;
         case TrackElemType::Up25ToRightBank:
-            return giga_rc_track_25_deg_up_to_right_bank;
+            return GigaRCTrack25DegUpToRightBank;
         case TrackElemType::LeftBankToDown25:
-            return giga_rc_track_left_bank_to_25_deg_down;
+            return GigaRCTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
-            return giga_rc_track_right_bank_to_25_deg_down;
+            return GigaRCTrackRightBankTo25DegDown;
         case TrackElemType::Down25ToLeftBank:
-            return giga_rc_track_25_deg_down_to_left_bank;
+            return GigaRCTrack25DegDownToLeftBank;
         case TrackElemType::Down25ToRightBank:
-            return giga_rc_track_25_deg_down_to_right_bank;
+            return GigaRCTrack25DegDownToRightBank;
         case TrackElemType::LeftBank:
-            return giga_rc_track_left_bank;
+            return GigaRCTrackLeftBank;
         case TrackElemType::RightBank:
-            return giga_rc_track_right_bank;
+            return GigaRCTrackRightBank;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return giga_rc_track_left_quarter_turn_5_25_deg_up;
+            return GigaRCTrackLeftQuarterTurn525DegUp;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return giga_rc_track_right_quarter_turn_5_25_deg_up;
+            return GigaRCTrackRightQuarterTurn525DegUp;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return giga_rc_track_left_quarter_turn_5_25_deg_down;
+            return GigaRCTrackLeftQuarterTurn525DegDown;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return giga_rc_track_right_quarter_turn_5_25_deg_down;
+            return GigaRCTrackRightQuarterTurn525DegDown;
         case TrackElemType::SBendLeft:
-            return giga_rc_track_s_bend_left;
+            return GigaRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return giga_rc_track_s_bend_right;
+            return GigaRCTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return giga_rc_track_left_quarter_turn_3;
+            return GigaRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return giga_rc_track_right_quarter_turn_3;
+            return GigaRCTrackRightQuarterTurn3;
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
-            return giga_rc_track_left_quarter_turn_3_bank;
+            return GigaRCTrackLeftQuarterTurn3Bank;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
-            return giga_rc_track_right_quarter_turn_3_bank;
+            return GigaRCTrackRightQuarterTurn3Bank;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return giga_rc_track_left_quarter_turn_3_25_deg_up;
+            return GigaRCTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return giga_rc_track_right_quarter_turn_3_25_deg_up;
+            return GigaRCTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return giga_rc_track_left_quarter_turn_3_25_deg_down;
+            return GigaRCTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return giga_rc_track_right_quarter_turn_3_25_deg_down;
+            return GigaRCTrackRightQuarterTurn325DegDown;
         case TrackElemType::LeftHalfBankedHelixUpSmall:
-            return giga_rc_track_left_half_banked_helix_up_small;
+            return GigaRCTrackLeftHalfBankedHelixUpSmall;
         case TrackElemType::RightHalfBankedHelixUpSmall:
-            return giga_rc_track_right_half_banked_helix_up_small;
+            return GigaRCTrackRightHalfBankedHelixUpSmall;
         case TrackElemType::LeftHalfBankedHelixDownSmall:
-            return giga_rc_track_left_half_banked_helix_down_small;
+            return GigaRCTrackLeftHalfBankedHelixDownSmall;
         case TrackElemType::RightHalfBankedHelixDownSmall:
-            return giga_rc_track_right_half_banked_helix_down_small;
+            return GigaRCTrackRightHalfBankedHelixDownSmall;
         case TrackElemType::LeftHalfBankedHelixUpLarge:
-            return giga_rc_track_left_half_banked_helix_up_large;
+            return GigaRCTrackLeftHalfBankedHelixUpLarge;
         case TrackElemType::RightHalfBankedHelixUpLarge:
-            return giga_rc_track_right_half_banked_helix_up_large;
+            return GigaRCTrackRightHalfBankedHelixUpLarge;
         case TrackElemType::LeftHalfBankedHelixDownLarge:
-            return giga_rc_track_left_half_banked_helix_down_large;
+            return GigaRCTrackLeftHalfBankedHelixDownLarge;
         case TrackElemType::RightHalfBankedHelixDownLarge:
-            return giga_rc_track_right_half_banked_helix_down_large;
+            return GigaRCTrackRightHalfBankedHelixDownLarge;
         case TrackElemType::LeftQuarterTurn1TileUp60:
-            return giga_rc_track_left_quarter_turn_1_60_deg_up;
+            return GigaRCTrackLeftQuarterTurn160DegUp;
         case TrackElemType::RightQuarterTurn1TileUp60:
-            return giga_rc_track_right_quarter_turn_1_60_deg_up;
+            return GigaRCTrackRightQuarterTurn160DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            return giga_rc_track_left_quarter_turn_1_60_deg_down;
+            return GigaRCTrackLeftQuarterTurn160DegDown;
         case TrackElemType::RightQuarterTurn1TileDown60:
-            return giga_rc_track_right_quarter_turn_1_60_deg_down;
+            return GigaRCTrackRightQuarterTurn160DegDown;
         case TrackElemType::Brakes:
-            return giga_rc_track_brakes;
+            return GigaRCTrackBrakes;
         case TrackElemType::Up25LeftBanked:
-            return giga_rc_track_25_deg_up_left_banked;
+            return GigaRCTrack25DegUpLeftBanked;
         case TrackElemType::Up25RightBanked:
-            return giga_rc_track_25_deg_up_right_banked;
+            return GigaRCTrack25DegUpRightBanked;
         case TrackElemType::OnRidePhoto:
-            return giga_rc_track_on_ride_photo;
+            return GigaRCTrackOnRidePhoto;
         case TrackElemType::Down25LeftBanked:
-            return giga_rc_track_25_deg_down_left_banked;
+            return GigaRCTrack25DegDownLeftBanked;
         case TrackElemType::Down25RightBanked:
-            return giga_rc_track_25_deg_down_right_banked;
+            return GigaRCTrack25DegDownRightBanked;
         case TrackElemType::FlatToUp60LongBase:
-            return giga_rc_track_flat_to_60_deg_up_long_base;
+            return GigaRCTrackFlatTo60DegUpLongBase;
         case TrackElemType::Up60ToFlatLongBase:
-            return giga_rc_track_60_deg_up_to_flat_long_base;
+            return GigaRCTrack60DegUpToFlatLongBase;
         case TrackElemType::Down60ToFlatLongBase:
-            return giga_rc_track_60_deg_down_to_flat_long_base;
+            return GigaRCTrack60DegDownToFlatLongBase;
         case TrackElemType::FlatToDown60LongBase:
-            return giga_rc_track_flat_to_60_deg_down_long_base;
+            return GigaRCTrackFlatTo60DegDownLongBase;
         case TrackElemType::CableLiftHill:
-            return giga_rc_track_cable_lift_hill;
+            return GigaRCTrackCableLiftHill;
         case TrackElemType::LeftEighthToDiag:
-            return giga_rc_track_left_eighth_to_diag;
+            return GigaRCTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return giga_rc_track_right_eighth_to_diag;
+            return GigaRCTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return giga_rc_track_left_eighth_to_orthogonal;
+            return GigaRCTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return giga_rc_track_right_eighth_to_orthogonal;
+            return GigaRCTrackRightEighthToOrthogonal;
         case TrackElemType::LeftEighthBankToDiag:
-            return giga_rc_track_left_eighth_bank_to_diag;
+            return GigaRCTrackLeftEighthBankToDiag;
         case TrackElemType::RightEighthBankToDiag:
-            return giga_rc_track_right_eighth_bank_to_diag;
+            return GigaRCTrackRightEighthBankToDiag;
         case TrackElemType::LeftEighthBankToOrthogonal:
-            return giga_rc_track_left_eighth_bank_to_orthogonal;
+            return GigaRCTrackLeftEighthBankToOrthogonal;
         case TrackElemType::RightEighthBankToOrthogonal:
-            return giga_rc_track_right_eighth_bank_to_orthogonal;
+            return GigaRCTrackRightEighthBankToOrthogonal;
         case TrackElemType::DiagFlat:
-            return giga_rc_track_diag_flat;
+            return GigaRCTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return giga_rc_track_diag_25_deg_up;
+            return GigaRCTrackDiag25DegUp;
         case TrackElemType::DiagUp60:
-            return giga_rc_track_diag_60_deg_up;
+            return GigaRCTrackDiag60DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return giga_rc_track_diag_flat_to_25_deg_up;
+            return GigaRCTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToUp60:
-            return giga_rc_track_diag_25_deg_up_to_60_deg_up;
+            return GigaRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagUp60ToUp25:
-            return giga_rc_track_diag_60_deg_up_to_25_deg_up;
+            return GigaRCTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return giga_rc_track_diag_25_deg_up_to_flat;
+            return GigaRCTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return giga_rc_track_diag_25_deg_down;
+            return GigaRCTrackDiag25DegDown;
         case TrackElemType::DiagDown60:
-            return giga_rc_track_diag_60_deg_down;
+            return GigaRCTrackDiag60DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return giga_rc_track_diag_flat_to_25_deg_down;
+            return GigaRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToDown60:
-            return giga_rc_track_diag_25_deg_down_to_60_deg_down;
+            return GigaRCTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagDown60ToDown25:
-            return giga_rc_track_diag_60_deg_down_to_25_deg_down;
+            return GigaRCTrackDiag60DegDownTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return giga_rc_track_diag_25_deg_down_to_flat;
+            return GigaRCTrackDiag25DegDownToFlat;
         case TrackElemType::DiagFlatToLeftBank:
-            return giga_rc_track_diag_flat_to_left_bank;
+            return GigaRCTrackDiagFlatToLeftBank;
         case TrackElemType::DiagFlatToRightBank:
-            return giga_rc_track_diag_flat_to_right_bank;
+            return GigaRCTrackDiagFlatToRightBank;
         case TrackElemType::DiagLeftBankToFlat:
-            return giga_rc_track_diag_left_bank_to_flat;
+            return GigaRCTrackDiagLeftBankToFlat;
         case TrackElemType::DiagRightBankToFlat:
-            return giga_rc_track_diag_right_bank_to_flat;
+            return GigaRCTrackDiagRightBankToFlat;
         case TrackElemType::DiagLeftBankToUp25:
-            return giga_rc_track_diag_left_bank_to_25_deg_up;
+            return GigaRCTrackDiagLeftBankTo25DegUp;
         case TrackElemType::DiagRightBankToUp25:
-            return giga_rc_track_diag_right_bank_to_25_deg_up;
+            return GigaRCTrackDiagRightBankTo25DegUp;
         case TrackElemType::DiagUp25ToLeftBank:
-            return giga_rc_track_diag_25_deg_up_to_left_bank;
+            return GigaRCTrackDiag25DegUpToLeftBank;
         case TrackElemType::DiagUp25ToRightBank:
-            return giga_rc_track_diag_25_deg_up_to_right_bank;
+            return GigaRCTrackDiag25DegUpToRightBank;
         case TrackElemType::DiagLeftBankToDown25:
-            return giga_rc_track_diag_left_bank_to_25_deg_down;
+            return GigaRCTrackDiagLeftBankTo25DegDown;
         case TrackElemType::DiagRightBankToDown25:
-            return giga_rc_track_diag_right_bank_to_25_deg_down;
+            return GigaRCTrackDiagRightBankTo25DegDown;
         case TrackElemType::DiagDown25ToLeftBank:
-            return giga_rc_track_diag_25_deg_down_to_left_bank;
+            return GigaRCTrackDiag25DegDownToLeftBank;
         case TrackElemType::DiagDown25ToRightBank:
-            return giga_rc_track_diag_25_deg_down_to_right_bank;
+            return GigaRCTrackDiag25DegDownToRightBank;
         case TrackElemType::DiagLeftBank:
-            return giga_rc_track_diag_left_bank;
+            return GigaRCTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
-            return giga_rc_track_diag_right_bank;
+            return GigaRCTrackDiagRightBank;
         case TrackElemType::BlockBrakes:
-            return giga_rc_track_block_brakes;
+            return GigaRCTrackBlockBrakes;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-            return giga_rc_track_left_banked_quarter_turn_3_25_deg_up;
+            return GigaRCTrackLeftBankedQuarterTurn325DegUp;
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
-            return giga_rc_track_right_banked_quarter_turn_3_25_deg_up;
+            return GigaRCTrackRightBankedQuarterTurn325DegUp;
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-            return giga_rc_track_left_banked_quarter_turn_3_25_deg_down;
+            return GigaRCTrackLeftBankedQuarterTurn325DegDown;
         case TrackElemType::RightBankedQuarterTurn3TileDown25:
-            return giga_rc_track_right_banked_quarter_turn_3_25_deg_down;
+            return GigaRCTrackRightBankedQuarterTurn325DegDown;
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-            return giga_rc_track_left_banked_quarter_turn_5_25_deg_up;
+            return GigaRCTrackLeftBankedQuarterTurn525DegUp;
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
-            return giga_rc_track_right_banked_quarter_turn_5_25_deg_up;
+            return GigaRCTrackRightBankedQuarterTurn525DegUp;
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-            return giga_rc_track_left_banked_quarter_turn_5_25_deg_down;
+            return GigaRCTrackLeftBankedQuarterTurn525DegDown;
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
-            return giga_rc_track_right_banked_quarter_turn_5_25_deg_down;
+            return GigaRCTrackRightBankedQuarterTurn525DegDown;
         case TrackElemType::Up25ToLeftBankedUp25:
-            return giga_rc_track_25_deg_up_to_left_banked_25_deg_up;
+            return GigaRCTrack25DegUpToLeftBanked25DegUp;
         case TrackElemType::Up25ToRightBankedUp25:
-            return giga_rc_track_25_deg_up_to_right_banked_25_deg_up;
+            return GigaRCTrack25DegUpToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToUp25:
-            return giga_rc_track_left_banked_25_deg_up_to_25_deg_up;
+            return GigaRCTrackLeftBanked25DegUpTo25DegUp;
         case TrackElemType::RightBankedUp25ToUp25:
-            return giga_rc_track_right_banked_25_deg_up_to_25_deg_up;
+            return GigaRCTrackRightBanked25DegUpTo25DegUp;
         case TrackElemType::Down25ToLeftBankedDown25:
-            return giga_rc_track_25_deg_down_to_left_banked_25_deg_down;
+            return GigaRCTrack25DegDownToLeftBanked25DegDown;
         case TrackElemType::Down25ToRightBankedDown25:
-            return giga_rc_track_25_deg_down_to_right_banked_25_deg_down;
+            return GigaRCTrack25DegDownToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToDown25:
-            return giga_rc_track_left_banked_25_deg_down_to_25_deg_down;
+            return GigaRCTrackLeftBanked25DegDownTo25DegDown;
         case TrackElemType::RightBankedDown25ToDown25:
-            return giga_rc_track_right_banked_25_deg_down_to_25_deg_down;
+            return GigaRCTrackRightBanked25DegDownTo25DegDown;
         case TrackElemType::LeftBankedFlatToLeftBankedUp25:
-            return giga_rc_track_left_banked_flat_to_left_banked_25_deg_up;
+            return GigaRCTrackLeftBankedFlatToLeftBanked25DegUp;
         case TrackElemType::RightBankedFlatToRightBankedUp25:
-            return giga_rc_track_right_banked_flat_to_right_banked_25_deg_up;
+            return GigaRCTrackRightBankedFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
-            return giga_rc_track_left_banked_25_deg_up_to_left_banked_flat;
+            return GigaRCTrackLeftBanked25DegUpToLeftBankedFlat;
         case TrackElemType::RightBankedUp25ToRightBankedFlat:
-            return giga_rc_track_right_banked_25_deg_up_to_right_banked_flat;
+            return GigaRCTrackRightBanked25DegUpToRightBankedFlat;
         case TrackElemType::LeftBankedFlatToLeftBankedDown25:
-            return giga_rc_track_left_banked_flat_to_left_banked_25_deg_down;
+            return GigaRCTrackLeftBankedFlatToLeftBanked25DegDown;
         case TrackElemType::RightBankedFlatToRightBankedDown25:
-            return giga_rc_track_right_banked_flat_to_right_banked_25_deg_down;
+            return GigaRCTrackRightBankedFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
-            return giga_rc_track_left_banked_25_deg_down_to_left_banked_flat;
+            return GigaRCTrackLeftBanked25DegDownToLeftBankedFlat;
         case TrackElemType::RightBankedDown25ToRightBankedFlat:
-            return giga_rc_track_right_banked_25_deg_down_to_right_banked_flat;
+            return GigaRCTrackRightBanked25DegDownToRightBankedFlat;
         case TrackElemType::FlatToLeftBankedUp25:
-            return giga_rc_track_flat_to_left_banked_25_deg_up;
+            return GigaRCTrackFlatToLeftBanked25DegUp;
         case TrackElemType::FlatToRightBankedUp25:
-            return giga_rc_track_flat_to_right_banked_25_deg_up;
+            return GigaRCTrackFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToFlat:
-            return giga_rc_track_left_banked_25_deg_up_to_flat;
+            return GigaRCTrackLeftBanked25DegUpToFlat;
         case TrackElemType::RightBankedUp25ToFlat:
-            return giga_rc_track_right_banked_25_deg_up_to_flat;
+            return GigaRCTrackRightBanked25DegUpToFlat;
         case TrackElemType::FlatToLeftBankedDown25:
-            return giga_rc_track_flat_to_left_banked_25_deg_down;
+            return GigaRCTrackFlatToLeftBanked25DegDown;
         case TrackElemType::FlatToRightBankedDown25:
-            return giga_rc_track_flat_to_right_banked_25_deg_down;
+            return GigaRCTrackFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToFlat:
-            return giga_rc_track_left_banked_25_deg_down_to_flat;
+            return GigaRCTrackLeftBanked25DegDownToFlat;
         case TrackElemType::RightBankedDown25ToFlat:
-            return giga_rc_track_right_banked_25_deg_down_to_flat;
+            return GigaRCTrackRightBanked25DegDownToFlat;
 
         case TrackElemType::Booster:
-            return giga_rc_track_booster;
+            return GigaRCTrackBooster;
     }
     return nullptr;
 }
