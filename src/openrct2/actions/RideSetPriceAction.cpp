@@ -58,7 +58,7 @@ GameActions::Result RideSetPriceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
         LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
@@ -80,7 +80,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
         LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
@@ -150,7 +150,7 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
     for (auto& ride : GetRideManager())
     {
         auto invalidate = false;
-        auto rideEntry = get_ride_entry(ride.subtype);
+        auto rideEntry = GetRideEntryByIndex(ride.subtype);
         const auto& rtd = ride.GetRideTypeDescriptor();
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) && shopItem == ShopItem::Admission)
         {

@@ -1505,7 +1505,7 @@ private:
         for (; object_entry_get_chunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
             ;
 
-        rct_ride_entry* ride_entry = get_ride_entry(entry_index);
+        rct_ride_entry* ride_entry = GetRideEntryByIndex(entry_index);
         auto rideType = ride_entry->GetFirstNonNullRideType();
 
         auto intent = Intent(WindowClass::TrackDesignList);
@@ -1586,7 +1586,7 @@ void EditorLoadSelectedObjects()
                     auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
                     if (objectType == ObjectType::Ride)
                     {
-                        rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
+                        rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
                         auto rideType = rideEntry->GetFirstNonNullRideType();
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                         research_insert_ride_entry(rideType, entryIndex, category, true);

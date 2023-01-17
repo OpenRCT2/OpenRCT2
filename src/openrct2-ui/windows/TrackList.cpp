@@ -362,7 +362,7 @@ public:
     void OnPrepareDraw() override
     {
         StringId stringId = STR_NONE;
-        rct_ride_entry* entry = get_ride_entry(_window_track_list_item.EntryIndex);
+        rct_ride_entry* entry = GetRideEntryByIndex(_window_track_list_item.EntryIndex);
 
         if (entry != nullptr)
         {

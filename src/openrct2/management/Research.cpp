@@ -201,7 +201,7 @@ void research_finish_item(ResearchItem* researchItem)
         // Ride
         auto base_ride_type = researchItem->baseRideType;
         ObjectEntryIndex rideEntryIndex = researchItem->entryIndex;
-        rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
+        rct_ride_entry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
         if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
         {
@@ -233,7 +233,7 @@ void research_finish_item(ResearchItem* researchItem)
             {
                 if (!seenRideEntry[i])
                 {
-                    rct_ride_entry* rideEntry2 = get_ride_entry(i);
+                    rct_ride_entry* rideEntry2 = GetRideEntryByIndex(i);
                     if (rideEntry2 != nullptr)
                     {
                         for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
@@ -474,7 +474,7 @@ void research_populate_list_random()
     // Rides
     for (int32_t i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
-        rct_ride_entry* rideEntry = get_ride_entry(i);
+        rct_ride_entry* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry == nullptr)
         {
             continue;
@@ -519,7 +519,7 @@ bool research_insert_ride_entry(ride_type_t rideType, ObjectEntryIndex entryInde
 
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
 {
-    rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
     if (rideEntry == nullptr)
         return;
 
@@ -706,7 +706,7 @@ StringId ResearchItem::GetName() const
 {
     if (type == Research::EntryType::Ride)
     {
-        rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
+        rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
         if (rideEntry == nullptr)
         {
             return STR_EMPTY;
@@ -747,7 +747,7 @@ static void ResearchRemoveNullItems(std::vector<ResearchItem>& items)
     const auto it = std::remove_if(std::begin(items), std::end(items), [](const ResearchItem& researchItem) {
         if (researchItem.type == Research::EntryType::Ride)
         {
-            return get_ride_entry(researchItem.entryIndex) == nullptr;
+            return GetRideEntryByIndex(researchItem.entryIndex) == nullptr;
         }
         else
         {
@@ -761,7 +761,7 @@ static void research_mark_item_as_researched(const ResearchItem& item)
 {
     if (item.type == Research::EntryType::Ride)
     {
-        const auto* rideEntry = get_ride_entry(item.entryIndex);
+        const auto* rideEntry = GetRideEntryByIndex(item.entryIndex);
         if (rideEntry != nullptr)
         {
             ride_entry_set_invented(item.entryIndex);
@@ -813,7 +813,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
 {
     for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
-        const auto* rideEntry = get_ride_entry(i);
+        const auto* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry != nullptr)
         {
             research_insert_ride_entry(i, isResearched);

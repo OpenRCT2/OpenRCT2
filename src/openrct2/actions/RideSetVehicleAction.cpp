@@ -95,7 +95,7 @@ GameActions::Result RideSetVehicleAction::Query() const
                 LOG_ERROR("Invalid vehicle type. type = %d", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
-            auto rideEntry = get_ride_entry(_value);
+            auto rideEntry = GetRideEntryByIndex(_value);
             if (rideEntry == nullptr)
             {
                 LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
@@ -146,7 +146,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             ride->vehicle_change_timeout = 100;
 
             InvalidateTestResults(*ride);
-            auto rideEntry = get_ride_entry(ride->subtype);
+            auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
                 LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
@@ -169,7 +169,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
 
             InvalidateTestResults(*ride);
             ride->subtype = _value;
-            auto rideEntry = get_ride_entry(ride->subtype);
+            auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
                 LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);

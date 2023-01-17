@@ -1812,7 +1812,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_down_to_25_de
     },
 };
 
-void junior_rc_paint_track_flat(
+void JuniorRcPaintTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -1832,7 +1832,7 @@ void junior_rc_paint_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-void junior_rc_paint_station(
+void JuniorRcPaintStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, bool drawBlockBrake)
 {
@@ -1890,7 +1890,7 @@ void junior_rc_paint_station(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-void junior_rc_paint_track_25_deg_up(
+void JuniorRcPaintTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -1913,7 +1913,7 @@ void junior_rc_paint_track_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_flat_to_25_deg_up(
+void JuniorRcPaintTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -1942,7 +1942,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-void junior_rc_paint_track_25_deg_up_to_flat(
+void JuniorRcPaintTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -2692,7 +2692,7 @@ static void junior_rc_right_bank_paint_setup(
     junior_rc_left_bank_paint_setup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
+void JuniorRcPaintTrackLeftQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -2770,7 +2770,7 @@ void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
     }
 }
 
-void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
+void JuniorRcPaintTrackRightQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -2854,7 +2854,7 @@ static void junior_rc_left_quarter_turn_5_tiles_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
+    JuniorRcPaintTrackLeftQuarterTurn5Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -2865,7 +2865,7 @@ static void junior_rc_right_quarter_turn_5_tiles_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
+    JuniorRcPaintTrackRightQuarterTurn5Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -3245,7 +3245,7 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
+void juniorRcPaintTrackRightQuarterTurn3Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -3326,7 +3326,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
+void JuniorRcPaintTrackRightQuarterTurn3Tiles25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -3423,7 +3423,7 @@ static void junior_rc_right_quarter_turn_3_tiles_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
+    juniorRcPaintTrackRightQuarterTurn3Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -3434,7 +3434,7 @@ static void junior_rc_right_quarter_turn_3_tiles_25_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
+    JuniorRcPaintTrackRightQuarterTurn3Tiles25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4368,7 +4368,7 @@ static constexpr const uint8_t junior_rc_diag_support_segment[] = {
     3,
 };
 
-void junior_rc_paint_track_diag_flat(
+void JuniorRcPaintTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4388,7 +4388,7 @@ void junior_rc_paint_track_diag_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_up(
+void JuniorRcPaintTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4408,7 +4408,7 @@ void junior_rc_paint_track_diag_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_diag_flat_to_25_deg_up(
+void JuniorRcPaintTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4429,7 +4429,7 @@ void junior_rc_paint_track_diag_flat_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-void junior_rc_paint_track_diag_flat_to_60_deg_up(
+void JuniorRcPaintTrackDiagFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4453,7 +4453,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_up_to_flat(
+void JuniorRcPaintTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4474,7 +4474,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_up_to_flat(
+void JuniorRcPaintTrackDiag60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4498,7 +4498,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_down(
+void JuniorRcPaintTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4519,7 +4519,7 @@ void junior_rc_paint_track_diag_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_diag_flat_to_25_deg_down(
+void JuniorRcPaintTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4540,7 +4540,7 @@ void junior_rc_paint_track_diag_flat_to_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_diag_flat_to_60_deg_down(
+void JuniorRcPaintTrackDiagFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4564,7 +4564,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_down_to_flat(
+void JuniorRcPaintTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4585,7 +4585,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_down_to_flat(
+void JuniorRcPaintTrackDiag60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -4615,7 +4615,7 @@ static void junior_rc_diag_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat(
+    JuniorRcPaintTrackDiagFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4626,7 +4626,7 @@ static void junior_rc_diag_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_up(
+    JuniorRcPaintTrackDiag25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4637,7 +4637,7 @@ static void junior_rc_diag_flat_to_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_25_deg_up(
+    JuniorRcPaintTrackDiagFlatTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4647,7 +4647,7 @@ static void junior_rc_diag_flat_to_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_60_deg_up(
+    JuniorRcPaintTrackDiagFlatTo60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4658,7 +4658,7 @@ static void junior_rc_diag_25_deg_up_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_up_to_flat(
+    JuniorRcPaintTrackDiag25DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4668,7 +4668,7 @@ static void junior_rc_diag_60_deg_up_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_up_to_flat(
+    JuniorRcPaintTrackDiag60DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4679,7 +4679,7 @@ static void junior_rc_diag_25_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_down(
+    JuniorRcPaintTrackDiag25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4690,7 +4690,7 @@ static void junior_rc_diag_flat_to_25_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_25_deg_down(
+    JuniorRcPaintTrackDiagFlatTo25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4700,7 +4700,7 @@ static void junior_rc_diag_flat_to_60_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_60_deg_down(
+    JuniorRcPaintTrackDiagFlatTo60DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4711,7 +4711,7 @@ static void junior_rc_diag_25_deg_down_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_down_to_flat(
+    JuniorRcPaintTrackDiag25DegDownToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4721,7 +4721,7 @@ static void junior_rc_diag_60_deg_down_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_down_to_flat(
+    JuniorRcPaintTrackDiag60DegDownToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5138,7 +5138,7 @@ static constexpr const CoordsXY junior_rc_60_deg_up_bound_lengths[4] = {
     { 20, 32 },
 };
 
-void junior_rc_paint_track_60_deg_up(
+void JuniorRcPaintTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5184,7 +5184,7 @@ static void junior_rc_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_60_deg_up(
+    JuniorRcPaintTrack60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5217,7 +5217,7 @@ static constexpr const CoordsXY junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4
     { { 6, 0 }, { 0, 0 } },
 };
 
-void junior_rc_paint_track_25_deg_up_to_60_deg_up(
+void JuniorRcPaintTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5276,7 +5276,7 @@ static void junior_rc_25_deg_up_to_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_25_deg_up_to_60_deg_up(
+    JuniorRcPaintTrack25DegUpTo60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5288,7 +5288,7 @@ static void junior_rc_60_deg_down_to_25_deg_down_paint_setup(
     junior_rc_25_deg_up_to_60_deg_up_paint_setup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-void junior_rc_paint_track_60_deg_up_to_25_deg_up(
+void JuniorRcPaintTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5346,7 +5346,7 @@ static void junior_rc_60_deg_up_to_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_60_deg_up_to_25_deg_up(
+    JuniorRcPaintTrack60DegUpTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5358,7 +5358,7 @@ static void junior_rc_25_deg_down_to_60_deg_down_paint_setup(
     junior_rc_60_deg_up_to_25_deg_up_paint_setup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-void junior_rc_paint_track_diag_60_deg_up(
+void JuniorRcPaintTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5378,7 +5378,7 @@ void junior_rc_paint_track_diag_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_down(
+void JuniorRcPaintTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5399,7 +5399,7 @@ void junior_rc_paint_track_diag_60_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
+void JuniorRcPaintTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5420,7 +5420,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
+void JuniorRcPaintTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5452,7 +5452,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
+void JuniorRcPaintTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5484,7 +5484,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
+void JuniorRcPaintTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5510,7 +5510,7 @@ static void junior_rc_diag_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_up(
+    JuniorRcPaintTrackDiag60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5520,7 +5520,7 @@ static void junior_rc_diag_60_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_down(
+    JuniorRcPaintTrackDiag60DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5530,7 +5530,7 @@ static void junior_rc_diag_25_deg_up_to_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
+    JuniorRcPaintTrackDiag25DegUpTo60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5540,7 +5540,7 @@ static void junior_rc_diag_60_deg_up_to_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
+    JuniorRcPaintTrackDiag60DegUpTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5550,7 +5550,7 @@ static void junior_rc_diag_25_deg_down_to_60_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
+    JuniorRcPaintTrackDiag25DegDownTo60DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5560,7 +5560,7 @@ static void junior_rc_diag_60_deg_down_to_25_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
+    JuniorRcPaintTrackDiag60DegDownTo25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5729,7 +5729,7 @@ static void junior_rc_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_flat(
+    JuniorRcPaintTrackFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5739,7 +5739,7 @@ static void paint_junior_rc_station_track(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_station(session, ride, trackSequence, direction, height, trackElement, true);
+    JuniorRcPaintStation(session, ride, trackSequence, direction, height, trackElement, true);
 }
 
 /* rct2: 0x0051881E */
@@ -5748,7 +5748,7 @@ static void junior_rc_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_25_deg_up(
+    JuniorRcPaintTrack25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5759,7 +5759,7 @@ static void junior_rc_flat_to_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_flat_to_25_deg_up(
+    JuniorRcPaintTrackFlatTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5770,7 +5770,7 @@ static void junior_rc_25_deg_up_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_25_deg_up_to_flat(
+    JuniorRcPaintTrack25DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }

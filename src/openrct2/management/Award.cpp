@@ -297,7 +297,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
             continue;
 
         shops++;
-        auto rideEntry = get_ride_entry(ride.subtype);
+        auto rideEntry = GetRideEntryByIndex(ride.subtype);
         if (rideEntry != nullptr)
         {
             if (!(shopTypes & EnumToFlag(rideEntry->shop_item[0])))

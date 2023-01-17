@@ -2499,7 +2499,7 @@ void Guest::GoToRideEntrance(const Ride& ride)
     int16_t y_shift = DirectionOffsets[location.direction].y;
 
     uint8_t shift_multiplier = 21;
-    rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry != nullptr)
     {
         if (rideEntry->Cars[rideEntry->DefaultCar].flags & CAR_ENTRY_FLAG_MINI_GOLF
@@ -3382,7 +3382,7 @@ void Guest::UpdateBuying()
         }
         else
         {
-            rct_ride_entry* ride_type = get_ride_entry(ride->subtype);
+            rct_ride_entry* ride_type = GetRideEntryByIndex(ride->subtype);
             if (ride_type == nullptr)
             {
                 return;
@@ -3785,7 +3785,7 @@ static void peep_go_to_ride_exit(Peep* peep, const Ride& ride, int16_t x, int16_
 
     int16_t shift_multiplier = 20;
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry != nullptr)
     {
         CarEntry* carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
@@ -4170,7 +4170,7 @@ void Guest::UpdateRideLeaveVehicle()
             uint8_t shiftMultiplier = 12;
             uint8_t specialDirection = platformLocation.direction;
 
-            rideEntry = get_ride_entry(ride->subtype);
+            rideEntry = GetRideEntryByIndex(ride->subtype);
 
             if (rideEntry != nullptr)
             {
@@ -4537,7 +4537,7 @@ void Guest::UpdateRideApproachExitWaypoints()
 
     int16_t shift_multiplier = 20;
 
-    auto rideEntry = get_ride_entry(ride->subtype);
+    auto rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry != nullptr)
     {
         auto carEntry = &rideEntry->Cars[rideEntry->DefaultCar];

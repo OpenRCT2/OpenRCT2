@@ -1073,7 +1073,7 @@ static void WindowRideDisableTabs(rct_window* w)
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
         disabled_tabs |= (1uLL << WIDX_TAB_4 | 1uLL << WIDX_TAB_6 | 1uLL << WIDX_TAB_9 | 1uLL << WIDX_TAB_10); // 0x3280
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride->subtype);
 
     if (rideEntry == nullptr)
     {
@@ -2029,7 +2029,7 @@ static void PopulateVehicleTypeDropdown(const Ride& ride, bool forceRefresh)
         auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
         for (auto rideEntryIndex : rideEntries)
         {
-            const auto* currentRideEntry = get_ride_entry(rideEntryIndex);
+            const auto* currentRideEntry = GetRideEntryByIndex(rideEntryIndex);
             if (currentRideEntry == nullptr)
                 continue;
 
@@ -6331,7 +6331,7 @@ static void WindowRideIncomeTogglePrimaryPrice(rct_window* w)
     }
     else
     {
-        auto rideEntry = get_ride_entry(ride->subtype);
+        auto rideEntry = GetRideEntryByIndex(ride->subtype);
         if (rideEntry != nullptr)
         {
             shop_item = rideEntry->shop_item[0];
@@ -6361,7 +6361,7 @@ static void WindowRideIncomeToggleSecondaryPrice(rct_window* w)
     if (ride == nullptr)
         return;
 
-    auto rideEntry = get_ride_entry(ride->subtype);
+    auto rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
         return;
 

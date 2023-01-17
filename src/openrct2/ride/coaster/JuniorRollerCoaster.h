@@ -22,94 +22,94 @@ struct Ride;
 struct PaintSession;
 struct TrackElement;
 
-void junior_rc_paint_station(
+void JuniorRcPaintStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, bool drawBlockBrake);
 
-void junior_rc_paint_track_flat(
+void JuniorRcPaintTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_25_deg_up(
+void JuniorRcPaintTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_60_deg_up(
+void JuniorRcPaintTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_flat_to_25_deg_up(
+void JuniorRcPaintTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_25_deg_up_to_60_deg_up(
+void JuniorRcPaintTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_60_deg_up_to_25_deg_up(
+void JuniorRcPaintTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_25_deg_up_to_flat(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TrackElement& trackElement, JuniorRcChainType chainType);
-
-void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
+void JuniorRcPaintTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
 
-void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
+void JuniorRcPaintTrackLeftQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
+void JuniorRcPaintTrackRightQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
 
-void junior_rc_paint_track_diag_flat(
+void juniorRcPaintTrackRightQuarterTurn3Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_25_deg_up(
+void JuniorRcPaintTrackRightQuarterTurn3Tiles25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_60_deg_up(
+
+void JuniorRcPaintTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_flat_to_25_deg_up(
+void JuniorRcPaintTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_flat_to_60_deg_up(
+void JuniorRcPaintTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
+void JuniorRcPaintTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
+void JuniorRcPaintTrackDiagFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_25_deg_up_to_flat(
+void JuniorRcPaintTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_60_deg_up_to_flat(
+void JuniorRcPaintTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_25_deg_down(
+void JuniorRcPaintTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_60_deg_down(
+void JuniorRcPaintTrackDiag60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_flat_to_25_deg_down(
+void JuniorRcPaintTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_flat_to_60_deg_down(
+void JuniorRcPaintTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
+void JuniorRcPaintTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
+void JuniorRcPaintTrackDiagFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_25_deg_down_to_flat(
+void JuniorRcPaintTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-void junior_rc_paint_track_diag_60_deg_down_to_flat(
+void JuniorRcPaintTrackDiag60DegDownTo25DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    const TrackElement& trackElement, JuniorRcChainType chainType);
+void JuniorRcPaintTrackDiag25DegDownToFlat(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    const TrackElement& trackElement, JuniorRcChainType chainType);
+void JuniorRcPaintTrackDiag60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
