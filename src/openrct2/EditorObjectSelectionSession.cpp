@@ -483,14 +483,14 @@ void FinishObjectSelection()
 {
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
-        set_every_ride_type_invented();
-        set_every_ride_entry_invented();
+        SetEveryRideTypeInvented();
+        SetEveryRideEntryInvented();
         gEditorStep = EditorStep::RollercoasterDesigner;
         GfxInvalidateScreen();
     }
     else
     {
-        set_all_scenery_items_invented();
+        SetAllSceneryItemsInvented();
         ScenerySetDefaultPlacementConfiguration();
         gEditorStep = EditorStep::LandscapeEditor;
         GfxInvalidateScreen();

@@ -5352,7 +5352,7 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
                 }
 
                 // Can happen in select-by-track-type mode
-                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                 {
                     continue;
                 }

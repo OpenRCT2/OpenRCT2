@@ -358,7 +358,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
 
     if (!gCheatsIgnoreResearchStatus)
     {
-        if (!scenery_is_invented(item))
+        if (!SceneryIsInvented(item))
         {
             return false;
         }
@@ -472,7 +472,7 @@ void MarkAllUnrestrictedSceneryAsInvented()
     {
         if (std::find(_restrictedScenery.begin(), _restrictedScenery.end(), sceneryItem) == _restrictedScenery.end())
         {
-            scenery_set_invented(sceneryItem);
+            ScenerySetInvented(sceneryItem);
         }
     }
 }

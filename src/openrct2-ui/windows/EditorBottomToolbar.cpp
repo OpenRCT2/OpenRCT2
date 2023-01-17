@@ -61,7 +61,7 @@ public:
         widgets = _editorBottomToolbarWidgets;
 
         InitScrollWidgets();
-        set_all_scenery_items_invented();
+        SetAllSceneryItemsInvented();
     }
 
     void OnPrepareDraw() override
@@ -156,7 +156,7 @@ private:
     void JumpBackToLandscapeEditor() const
     {
         WindowCloseAll();
-        set_all_scenery_items_invented();
+        SetAllSceneryItemsInvented();
         ScenerySetDefaultPlacementConfiguration();
         gEditorStep = EditorStep::LandscapeEditor;
         ContextOpenWindow(WindowClass::Map);

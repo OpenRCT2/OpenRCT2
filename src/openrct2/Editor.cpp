@@ -334,7 +334,7 @@ namespace Editor
                 gGuestInitialCash, static_cast<money16>(10.00_GBP), static_cast<money16>(MAX_ENTRANCE_FEE));
 
             gInitialCash = std::min<money64>(gInitialCash, 100000);
-            finance_reset_cash_to_initial();
+            FinanceResetCashToInitial();
 
             gBankLoan = std::clamp<money64>(gBankLoan, 0.00_GBP, 5000000.00_GBP);
 

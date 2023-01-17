@@ -1028,7 +1028,7 @@ uint32_t StaffGetAvailableEntertainerCostumes()
     uint32_t entertainerCostumes = 0;
     for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        if (scenery_group_is_invented(i))
+        if (SceneryGroupIsInvented(i))
         {
             const auto sgEntry = GetSceneryGroupEntry(i);
             entertainerCostumes |= sgEntry->entertainer_costumes;

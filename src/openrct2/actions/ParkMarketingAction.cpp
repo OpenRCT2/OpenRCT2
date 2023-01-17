@@ -76,7 +76,7 @@ GameActions::Result ParkMarketingAction::Execute() const
     {
         campaign.ShopItemType = ShopItem(_item);
     }
-    marketing_new_campaign(campaign);
+    MarketingNewCampaign(campaign);
 
     // We are only interested in invalidating the finances (marketing) window
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();

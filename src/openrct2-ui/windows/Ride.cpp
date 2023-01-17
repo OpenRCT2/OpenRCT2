@@ -2034,7 +2034,7 @@ static void PopulateVehicleTypeDropdown(const Ride& ride, bool forceRefresh)
                 continue;
 
             // Skip if vehicle type has not been invented yet
-            if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+            if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                 continue;
 
             VehicleDropdownData.push_back(

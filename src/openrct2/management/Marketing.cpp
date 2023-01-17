@@ -39,9 +39,9 @@ static constexpr const uint16_t AdvertisingCampaignGuestGenerationProbabilities[
 
 std::vector<MarketingCampaign> gMarketingCampaigns;
 
-uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignType)
+uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
 {
-    auto campaign = marketing_get_campaign(campaignType);
+    auto campaign = MarketingGetCampaign(campaignType);
     if (campaign == nullptr)
         return 0;
 
@@ -69,7 +69,7 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
     return probability;
 }
 
-static void marketing_raise_finished_notification(const MarketingCampaign& campaign)
+static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign)
 {
     if (gConfigNotifications.ParkMarketingCampaignFinished)
     {
@@ -96,7 +96,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
  * Update status of marketing campaigns and send produce a news item when they have finished.
  *  rct2: 0x0069E0C1
  */
-void marketing_update()
+void MarketingUpdate()
 {
     PROFILED_FUNCTION();
 
@@ -119,7 +119,7 @@ void marketing_update()
 
         if (campaign.WeeksLeft == 0)
         {
-            marketing_raise_finished_notification(campaign);
+            MarketingRaiseFinishedNotification(campaign);
             it = gMarketingCampaigns.erase(it);
         }
         else
@@ -131,9 +131,9 @@ void marketing_update()
     WindowInvalidateByClass(WindowClass::Finances);
 }
 
-void marketing_set_guest_campaign(Guest* peep, int32_t campaignType)
+void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
 {
-    auto campaign = marketing_get_campaign(campaignType);
+    auto campaign = MarketingGetCampaign(campaignType);
     if (campaign == nullptr)
         return;
 
@@ -168,7 +168,7 @@ void marketing_set_guest_campaign(Guest* peep, int32_t campaignType)
     }
 }
 
-bool marketing_is_campaign_type_applicable(int32_t campaignType)
+bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 {
     switch (campaignType)
     {
@@ -217,7 +217,7 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
     }
 }
 
-MarketingCampaign* marketing_get_campaign(int32_t campaignType)
+MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 {
     for (auto& campaign : gMarketingCampaigns)
     {
@@ -229,10 +229,10 @@ MarketingCampaign* marketing_get_campaign(int32_t campaignType)
     return nullptr;
 }
 
-void marketing_new_campaign(const MarketingCampaign& campaign)
+void MarketingNewCampaign(const MarketingCampaign& campaign)
 {
     // Do not allow same campaign twice, just overwrite
-    auto currentCampaign = marketing_get_campaign(campaign.Type);
+    auto currentCampaign = MarketingGetCampaign(campaign.Type);
     if (currentCampaign != nullptr)
     {
         *currentCampaign = campaign;

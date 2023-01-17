@@ -302,14 +302,14 @@ public:
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         {
-            research_populate_list_random();
+            ResearchPopulateListRandom();
         }
         else
         {
             // Used for in-game object selection cheat
             // This resets the ride selection list and resets research to 0 on current item
             gSilentResearch = true;
-            research_reset_current_item();
+            ResearchResetCurrentItem();
             gSilentResearch = false;
         }
 
@@ -1496,8 +1496,8 @@ private:
      */
     void ManageTracks()
     {
-        set_every_ride_type_invented();
-        set_every_ride_entry_invented();
+        SetEveryRideTypeInvented();
+        SetEveryRideEntryInvented();
 
         gEditorStep = EditorStep::DesignsManager;
 
@@ -1589,11 +1589,11 @@ void EditorLoadSelectedObjects()
                         rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
                         auto rideType = rideEntry->GetFirstNonNullRideType();
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
-                        research_insert_ride_entry(rideType, entryIndex, category, true);
+                        ResearchInsertRideEntry(rideType, entryIndex, category, true);
                     }
                     else if (objectType == ObjectType::SceneryGroup)
                     {
-                        research_insert_scenery_group_entry(entryIndex, true);
+                        ResearchInsertSceneryGroupEntry(entryIndex, true);
                     }
                     if (loadedObject->UsesFallbackImages())
                     {

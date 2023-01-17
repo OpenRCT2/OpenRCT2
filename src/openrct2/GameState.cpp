@@ -65,7 +65,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 
     MapInit(mapSize);
     _park->Initialise();
-    finance_init();
+    FinanceInit();
     BannerInit();
     RideInitAll();
     ResetAllEntities();
@@ -345,7 +345,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     }
     report_time(LogicTimePart::Park);
 
-    research_update();
+    ResearchUpdate();
     report_time(LogicTimePart::Research);
     RideRatingsUpdateAll();
     report_time(LogicTimePart::RideRatings);

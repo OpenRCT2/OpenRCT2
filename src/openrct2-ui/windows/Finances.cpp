@@ -570,7 +570,7 @@ public:
         // Objective related financial information
         if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
         {
-            auto lastMonthProfit = finance_get_last_month_shop_profit();
+            auto lastMonthProfit = FinanceGetLastMonthShopProfit();
             ft = Formatter();
             ft.Add<money64>(lastMonthProfit);
             DrawTextBasic(
@@ -800,8 +800,8 @@ public:
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
             auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
-            auto marketingCampaign = marketing_get_campaign(i);
-            if (marketingCampaign == nullptr && marketing_is_campaign_type_applicable(i))
+            auto marketingCampaign = MarketingGetCampaign(i);
+            if (marketingCampaign == nullptr && MarketingIsCampaignTypeApplicable(i))
             {
                 campaignButton->type = WindowWidgetType::Button;
                 campaignButton->top = y;
@@ -821,7 +821,7 @@ public:
         int32_t noCampaignsActive = 1;
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
-            auto marketingCampaign = marketing_get_campaign(i);
+            auto marketingCampaign = MarketingGetCampaign(i);
             if (marketingCampaign == nullptr)
                 continue;
 

@@ -268,12 +268,12 @@ void Park::Initialise()
     gResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
 
-    research_reset_items();
-    finance_init();
+    ResearchResetItems();
+    FinanceInit();
 
-    set_every_ride_type_not_invented();
+    SetEveryRideTypeNotInvented();
 
-    set_all_scenery_items_invented();
+    SetAllSceneryItemsInvented();
 
     gParkEntranceFee = 10.00_GBP;
 
@@ -296,8 +296,8 @@ void Park::Initialise()
     gConstructionRightsPrice = 40.00_GBP;
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
-    finance_reset_history();
-    award_reset();
+    FinanceResetHistory();
+    AwardReset();
 
     gScenarioName.clear();
     gScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
@@ -511,7 +511,7 @@ money64 Park::CalculateCompanyValue() const
     auto result = gParkValue - gBankLoan;
 
     // Clamp addition to prevent overflow
-    result = add_clamp_money64(result, finance_get_current_cash());
+    result = add_clamp_money64(result, FinanceGetCurrentCash());
 
     return result;
 }
@@ -631,7 +631,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     for (const auto& award : GetAwards())
     {
         // +/- 0.25% of the probability
-        if (award_is_positive(award.Type))
+        if (AwardIsPositive(award.Type))
         {
             probability += probability / 4;
         }
@@ -682,7 +682,7 @@ void Park::GenerateGuests()
     for (const auto& campaign : gMarketingCampaigns)
     {
         // Random chance of guest generation
-        auto probability = marketing_get_campaign_guest_generation_probability(campaign.Type);
+        auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.Type);
         auto random = ScenarioRandMax(std::numeric_limits<uint16_t>::max());
         if (random < probability)
         {
@@ -696,7 +696,7 @@ Guest* Park::GenerateGuestFromCampaign(int32_t campaign)
     auto peep = GenerateGuest();
     if (peep != nullptr)
     {
-        marketing_set_guest_campaign(peep, campaign);
+        MarketingSetGuestCampaign(peep, campaign);
     }
     return peep;
 }
@@ -756,7 +756,7 @@ void Park::UpdateHistories()
     // Update park rating, guests in park and current cash history
     HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gParkRating / 4);
     HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gNumGuestsInPark);
-    HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, finance_get_current_cash() - gBankLoan);
+    HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gBankLoan);
 
     // Update weekly profit history
     auto currentWeeklyProfit = gWeeklyProfitAverageDividend;
