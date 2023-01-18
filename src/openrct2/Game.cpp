@@ -478,7 +478,7 @@ void GameLoadInit()
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
-    if (network_get_mode() != NETWORK_MODE_CLIENT)
+    if (NetworkGetMode() != NETWORK_MODE_CLIENT)
     {
         GameActions::ClearQueue();
     }

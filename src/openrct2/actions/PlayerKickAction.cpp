@@ -34,10 +34,10 @@ void PlayerKickAction::Serialise(DataSerialiser& stream)
 }
 GameActions::Result PlayerKickAction::Query() const
 {
-    return network_kick_player(_playerId, false);
+    return NetworkKickPlayer(_playerId, false);
 }
 
 GameActions::Result PlayerKickAction::Execute() const
 {
-    return network_kick_player(_playerId, true);
+    return NetworkKickPlayer(_playerId, true);
 }

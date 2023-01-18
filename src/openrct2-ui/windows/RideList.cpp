@@ -246,7 +246,7 @@ public:
                 OpenAllRides();
                 break;
             case WIDX_QUICK_DEMOLISH:
-                if (network_get_mode() != NETWORK_MODE_CLIENT)
+                if (NetworkGetMode() != NETWORK_MODE_CLIENT)
                 {
                     _quickDemolishMode = !_quickDemolishMode;
                 }
@@ -402,7 +402,7 @@ public:
 
         // Open ride window
         const auto rideIndex = _rideList[index];
-        if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
+        if (_quickDemolishMode && NetworkGetMode() != NETWORK_MODE_CLIENT)
         {
             auto gameAction = RideDemolishAction(rideIndex, RIDE_MODIFY_DEMOLISH);
             GameActions::Execute(&gameAction);
@@ -499,8 +499,8 @@ public:
             widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_CLOSE_ALL].bottom + 3;
         }
         widgets[WIDX_QUICK_DEMOLISH].bottom = widgets[WIDX_QUICK_DEMOLISH].top + 23;
-        widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
-                                                                                      : WindowWidgetType::Empty;
+        widgets[WIDX_QUICK_DEMOLISH].type = NetworkGetMode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
+                                                                                    : WindowWidgetType::Empty;
     }
 
     /**

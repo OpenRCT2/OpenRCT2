@@ -211,8 +211,8 @@ public:
                 if (gWindowSceneryScatterEnabled)
                     WindowCloseByClass(WindowClass::SceneryScatter);
                 else if (
-                    network_get_mode() != NETWORK_MODE_CLIENT
-                    || network_can_perform_command(network_get_current_player_group_index(), -2))
+                    NetworkGetMode() != NETWORK_MODE_CLIENT
+                    || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2))
                 {
                     WindowSceneryScatterOpen();
                 }

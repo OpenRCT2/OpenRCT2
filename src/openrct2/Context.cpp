@@ -696,7 +696,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 if (sendMap)
                 {
-                    _network.Server_Send_MAP();
+                    _network.ServerSendMap();
                 }
 #endif
 

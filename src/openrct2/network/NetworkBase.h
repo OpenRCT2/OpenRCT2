@@ -79,40 +79,40 @@ public: // Server
     void UpdateServer();
     void ServerClientDisconnected(std::unique_ptr<NetworkConnection>& connection);
     bool SaveMap(OpenRCT2::IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
-    std::vector<uint8_t> save_for_network(const std::vector<const ObjectRepositoryItem*>& objects) const;
+    std::vector<uint8_t> SaveForNetwork(const std::vector<const ObjectRepositoryItem*>& objects) const;
     std::string MakePlayerNameUnique(const std::string& name);
 
     // Packet dispatchers.
-    void Server_Send_AUTH(NetworkConnection& connection);
-    void Server_Send_TOKEN(NetworkConnection& connection);
-    void Server_Send_MAP(NetworkConnection* connection = nullptr);
-    void Server_Send_CHAT(const char* text, const std::vector<uint8_t>& playerIds = {});
-    void Server_Send_GAME_ACTION(const GameAction* action);
-    void Server_Send_TICK();
-    void Server_Send_PLAYERINFO(int32_t playerId);
-    void Server_Send_PLAYERLIST();
-    void Server_Send_PING();
-    void Server_Send_PINGLIST();
-    void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
-    void Server_Send_GAMEINFO(NetworkConnection& connection);
-    void Server_Send_SHOWERROR(NetworkConnection& connection, StringId title, StringId message);
-    void Server_Send_GROUPLIST(NetworkConnection& connection);
-    void Server_Send_EVENT_PLAYER_JOINED(const char* playerName);
-    void Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, const char* reason);
-    void Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
-    void Server_Send_SCRIPTS(NetworkConnection& connection);
+    void ServerSendAuth(NetworkConnection& connection);
+    void ServerSendToken(NetworkConnection& connection);
+    void ServerSendMap(NetworkConnection* connection = nullptr);
+    void ServerSendChat(const char* text, const std::vector<uint8_t>& playerIds = {});
+    void ServerSendGameAction(const GameAction* action);
+    void ServerSendTick();
+    void ServerSendPlayerInfo(int32_t playerId);
+    void ServerSendPlayerList();
+    void ServerSendPing();
+    void ServerSendPingList();
+    void ServerSendSetDisconnectMsg(NetworkConnection& connection, const char* msg);
+    void ServerSendGameInfo(NetworkConnection& connection);
+    void ServerSendShowError(NetworkConnection& connection, StringId title, StringId message);
+    void ServerSendGroupList(NetworkConnection& connection);
+    void ServerSendEventPlayerJoined(const char* playerName);
+    void ServerSendEventPlayerDisconnected(const char* playerName, const char* reason);
+    void ServerSendObjectsList(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
+    void ServerSendScripts(NetworkConnection& connection);
 
     // Handlers
-    void Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_HEARTBEAT(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Client_Joined(std::string_view name, const std::string& keyhash, NetworkConnection& connection);
-    void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_MAPREQUEST(NetworkConnection& connection, NetworkPacket& packet);
+    void ServerHandleRequestGamestate(NetworkConnection& connection, NetworkPacket& packet);
+    void ServerHandleHeartbeat(NetworkConnection& connection, NetworkPacket& packet);
+    void ServerHandleAuth(NetworkConnection& connection, NetworkPacket& packet);
+    void ServerClientJoined(std::string_view name, const std::string& keyhash, NetworkConnection& connection);
+    void ServerHandleChat(NetworkConnection& connection, NetworkPacket& packet);
+    void ServerHandleGameAction(NetworkConnection& connection, NetworkPacket& packet);
+    void ServerHandlePing(NetworkConnection& connection, NetworkPacket& packet);
+    void ServerHandleGameInfo(NetworkConnection& connection, NetworkPacket& packet);
+    void ServerHandleToken(NetworkConnection& connection, NetworkPacket& packet);
+    void ServerHandleMapRequest(NetworkConnection& connection, NetworkPacket& packet);
 
 public: // Client
     void Reconnect();

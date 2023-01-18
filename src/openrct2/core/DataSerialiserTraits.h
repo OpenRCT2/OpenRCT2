@@ -202,10 +202,10 @@ template<> struct DataSerializerTraits_t<NetworkPlayerId_t>
 
         stream->Write(playerId, strlen(playerId));
 
-        int32_t playerIndex = network_get_player_index(val.id);
+        int32_t playerIndex = NetworkGetPlayerIndex(val.id);
         if (playerIndex != -1)
         {
-            const char* playerName = network_get_player_name(playerIndex);
+            const char* playerName = NetworkGetPlayerName(playerIndex);
             if (playerName != nullptr)
             {
                 stream->Write(" \"", 2);

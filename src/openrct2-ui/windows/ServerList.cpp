@@ -382,7 +382,7 @@ static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {}, { COLOUR_WHITE });
 
     // Draw version number
-    std::string version = network_get_version();
+    std::string version = NetworkGetVersion();
     auto ft = Formatter();
     ft.Add<const char*>(version.c_str());
     DrawTextBasic(
@@ -467,7 +467,7 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         else
         {
             // Server online... check version
-            bool correctVersion = serverDetails.Version == network_get_version();
+            bool correctVersion = serverDetails.Version == NetworkGetVersion();
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
         GfxDrawSprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
@@ -514,7 +514,7 @@ static void JoinServer(std::string address)
         address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
     }
 
-    if (!network_begin_client(address, port))
+    if (!NetworkBeginClient(address, port))
     {
         ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
     }

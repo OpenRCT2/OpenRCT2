@@ -1322,7 +1322,7 @@ static int32_t ConsoleCommandOpen(InteractiveConsole& console, const arguments_t
         bool invalidTitle = false;
         if (argv[0] == "object_selection" && InvalidArguments(&invalidTitle, !title))
         {
-            if (network_get_mode() != NETWORK_MODE_NONE)
+            if (NetworkGetMode() != NETWORK_MODE_NONE)
             {
                 console.WriteLineError("Cannot open this window in multiplayer mode.");
             }
@@ -1335,7 +1335,7 @@ static int32_t ConsoleCommandOpen(InteractiveConsole& console, const arguments_t
         }
         else if (argv[0] == "inventions_list" && InvalidArguments(&invalidTitle, !title))
         {
-            if (network_get_mode() != NETWORK_MODE_NONE)
+            if (NetworkGetMode() != NETWORK_MODE_NONE)
             {
                 console.WriteLineError("Cannot open this window in multiplayer mode.");
             }
@@ -1350,7 +1350,7 @@ static int32_t ConsoleCommandOpen(InteractiveConsole& console, const arguments_t
         }
         else if (argv[0] == "objective_options" && InvalidArguments(&invalidTitle, !title))
         {
-            if (network_get_mode() != NETWORK_MODE_NONE)
+            if (NetworkGetMode() != NETWORK_MODE_NONE)
             {
                 console.WriteLineError("Cannot open this window in multiplayer mode.");
             }
@@ -1542,8 +1542,8 @@ static int32_t ConsoleCommandSavePark([[maybe_unused]] InteractiveConsole& conso
 
 static int32_t ConsoleCommandSay(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
-        || network_get_authstatus() != NetworkAuth::Ok)
+    if (NetworkGetMode() == NETWORK_MODE_NONE || NetworkGetStatus() != NETWORK_STATUS_CONNECTED
+        || NetworkGetAuthstatus() != NetworkAuth::Ok)
     {
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return 0;
@@ -1551,7 +1551,7 @@ static int32_t ConsoleCommandSay(InteractiveConsole& console, const arguments_t&
 
     if (!argv.empty())
     {
-        network_send_chat(argv[0].c_str());
+        NetworkSendChat(argv[0].c_str());
         return 1;
     }
 
@@ -1561,7 +1561,7 @@ static int32_t ConsoleCommandSay(InteractiveConsole& console, const arguments_t&
 
 static int32_t ConsoleCommandReplayStartRecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1608,7 +1608,7 @@ static int32_t ConsoleCommandReplayStartRecord(InteractiveConsole& console, cons
 
 static int32_t ConsoleCommandReplayStopRecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1643,7 +1643,7 @@ static int32_t ConsoleCommandReplayStopRecord(InteractiveConsole& console, const
 
 static int32_t ConsoleCommandReplayStart(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1685,7 +1685,7 @@ static int32_t ConsoleCommandReplayStart(InteractiveConsole& console, const argu
 
 static int32_t ConsoleCommandReplayStop(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1703,7 +1703,7 @@ static int32_t ConsoleCommandReplayStop(InteractiveConsole& console, const argum
 
 static int32_t ConsoleCommandReplayNormalise(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
