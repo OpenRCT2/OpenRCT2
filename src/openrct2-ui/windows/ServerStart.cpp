@@ -85,9 +85,9 @@ public:
         list_information_type = 0;
 
         snprintf(_port, 7, "%u", gConfigNetwork.DefaultPort);
-        safe_strcpy(_name, gConfigNetwork.ServerName.c_str(), sizeof(_name));
-        safe_strcpy(_description, gConfigNetwork.ServerDescription.c_str(), sizeof(_description));
-        safe_strcpy(_greeting, gConfigNetwork.ServerGreeting.c_str(), sizeof(_greeting));
+        SafeStrCpy(_name, gConfigNetwork.ServerName.c_str(), sizeof(_name));
+        SafeStrCpy(_description, gConfigNetwork.ServerDescription.c_str(), sizeof(_description));
+        SafeStrCpy(_greeting, gConfigNetwork.ServerGreeting.c_str(), sizeof(_greeting));
     }
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
@@ -181,7 +181,7 @@ public:
                 std::fill_n(_port, sizeof(_port), 0x00);
                 if (text[0] != '\0')
                 {
-                    safe_strcpy(_port, temp.c_str(), sizeof(_port));
+                    SafeStrCpy(_port, temp.c_str(), sizeof(_port));
                 }
 
                 gConfigNetwork.DefaultPort = atoi(_port);
@@ -196,7 +196,7 @@ public:
                 std::fill_n(_name, sizeof(_name), 0x00);
                 if (text[0] != '\0')
                 {
-                    safe_strcpy(_name, temp.c_str(), sizeof(_name));
+                    SafeStrCpy(_name, temp.c_str(), sizeof(_name));
                 }
 
                 if (_name[0] != '\0')
@@ -214,7 +214,7 @@ public:
                 std::fill_n(_description, sizeof(_description), 0x00);
                 if (text[0] != '\0')
                 {
-                    safe_strcpy(_description, temp.c_str(), sizeof(_description));
+                    SafeStrCpy(_description, temp.c_str(), sizeof(_description));
                 }
 
                 if (_description[0] != '\0')
@@ -232,7 +232,7 @@ public:
                 std::fill_n(_greeting, sizeof(_greeting), 0x00);
                 if (text[0] != '\0')
                 {
-                    safe_strcpy(_greeting, temp.c_str(), sizeof(_greeting));
+                    SafeStrCpy(_greeting, temp.c_str(), sizeof(_greeting));
                 }
 
                 if (_greeting[0] != '\0')
@@ -250,7 +250,7 @@ public:
                 std::fill_n(_password, sizeof(_password), 0x00);
                 if (text[0] != '\0')
                 {
-                    safe_strcpy(_password, temp.c_str(), sizeof(_password));
+                    SafeStrCpy(_password, temp.c_str(), sizeof(_password));
                 }
 
                 WidgetInvalidate(*this, WIDX_PASSWORD_INPUT);

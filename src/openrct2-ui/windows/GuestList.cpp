@@ -808,7 +808,7 @@ private:
 
     bool IsRefreshOfGroupsRequired()
     {
-        uint32_t tick256 = floor2(gCurrentTicks, 256);
+        uint32_t tick256 = Floor2(gCurrentTicks, 256);
         if (_selectedView == _lastFindGroupsSelectedView)
         {
             if (_lastFindGroupsWait != 0 || _lastFindGroupsTick == tick256)
@@ -835,7 +835,7 @@ private:
 
     void RefreshGroups()
     {
-        _lastFindGroupsTick = floor2(gCurrentTicks, 256);
+        _lastFindGroupsTick = Floor2(gCurrentTicks, 256);
         _lastFindGroupsSelectedView = _selectedView;
         _lastFindGroupsWait = 320;
         _groups.clear();
@@ -946,7 +946,7 @@ private:
                 }
             }
         }
-        return strlogicalcmp(a.Name, b.Name) < 0;
+        return StrLogicalCmp(a.Name, b.Name) < 0;
     }
 
     static GuestItem::CompareFunc GetGuestCompareFunc()

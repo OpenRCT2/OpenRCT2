@@ -699,12 +699,12 @@ private:
         switch (widgetIndex)
         {
             case WIDX_MONEY_SPINNER_INCREMENT:
-                _moneySpinnerValue = add_clamp_money32(
+                _moneySpinnerValue = AddClamp_money32(
                     CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV), CHEATS_MONEY_INCREMENT_DIV);
                 InvalidateWidget(WIDX_MONEY_SPINNER);
                 break;
             case WIDX_MONEY_SPINNER_DECREMENT:
-                _moneySpinnerValue = add_clamp_money32(
+                _moneySpinnerValue = AddClamp_money32(
                     CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV),
                     -CHEATS_MONEY_INCREMENT_DIV);
                 InvalidateWidget(WIDX_MONEY_SPINNER);

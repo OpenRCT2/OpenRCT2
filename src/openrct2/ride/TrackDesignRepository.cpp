@@ -284,7 +284,7 @@ private:
             {
                 return a.RideType < b.RideType;
             }
-            return strlogicalcmp(a.Name.c_str(), b.Name.c_str()) < 0;
+            return StrLogicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
         });
     }
 

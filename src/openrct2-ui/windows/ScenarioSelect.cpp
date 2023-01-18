@@ -231,7 +231,7 @@ static void WindowScenarioselectInitTabs(rct_window* w)
     }
     else
     {
-        int32_t firstPage = bitscanforward(showPages);
+        int32_t firstPage = UtilBitScanForward(showPages);
         if (firstPage != -1)
         {
             w->selected_tab = firstPage;
@@ -602,7 +602,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
 
                 // Draw scenario name
                 char buffer[64];
-                safe_strcpy(buffer, scenario->name, sizeof(buffer));
+                SafeStrCpy(buffer, scenario->name, sizeof(buffer));
                 StringId format = isDisabled ? static_cast<StringId>(STR_STRINGID)
                                              : (isHighlighted ? highlighted_format : unhighlighted_format);
                 auto ft = Formatter();
@@ -629,7 +629,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                     {
                         completedByName = scenario->highscore->name;
                     }
-                    safe_strcpy(buffer, completedByName, 64);
+                    SafeStrCpy(buffer, completedByName, 64);
                     ft = Formatter();
                     ft.Add<StringId>(STR_COMPLETED_BY);
                     ft.Add<StringId>(STR_STRING);

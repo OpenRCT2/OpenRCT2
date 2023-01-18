@@ -923,7 +923,7 @@ static void TrackDesignMirrorMaze(TrackDesign* td6)
 
         uint16_t maze_entry = maze.maze_entry;
         uint16_t new_entry = 0;
-        for (uint8_t position = bitscanforward(maze_entry); position != 0xFF; position = bitscanforward(maze_entry))
+        for (uint8_t position = UtilBitScanForward(maze_entry); position != 0xFF; position = UtilBitScanForward(maze_entry))
         {
             maze_entry &= ~(1 << position);
             new_entry |= (1 << maze_segment_mirror_map[position]);

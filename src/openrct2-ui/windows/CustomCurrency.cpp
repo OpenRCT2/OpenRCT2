@@ -160,7 +160,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_SYMBOL_TEXT:
-                safe_strcpy(
+                SafeStrCpy(
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
                     CURRENCY_SYMBOL_MAX_SIZE);
 

@@ -561,12 +561,12 @@ void (*MaskFn)(
 
 void MaskInit()
 {
-    if (avx2_available())
+    if (AVX2Available())
     {
         LOG_VERBOSE("registering AVX2 mask function");
         MaskFn = MaskAvx2;
     }
-    else if (sse41_available())
+    else if (SSE41Available())
     {
         LOG_VERBOSE("registering SSE4.1 mask function");
         MaskFn = MaskSse4_1;
@@ -814,9 +814,9 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
             float night = gDayNightCycle;
             if (night >= 0 && gClimateLightningFlash == 0)
             {
-                r = lerp(r, soft_light(r, 8), night);
-                g = lerp(g, soft_light(g, 8), night);
-                b = lerp(b, soft_light(b, 128), night);
+                r = Lerp(r, SoftLight(r, 8), night);
+                g = Lerp(g, SoftLight(g, 8), night);
+                b = Lerp(b, SoftLight(b, 128), night);
             }
         }
 

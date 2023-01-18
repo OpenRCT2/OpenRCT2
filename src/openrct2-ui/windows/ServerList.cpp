@@ -144,7 +144,7 @@ rct_window* WindowServerListOpen()
 
     WindowSetResize(*window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-    safe_strcpy(_playerName, gConfigNetwork.PlayerName.c_str(), sizeof(_playerName));
+    SafeStrCpy(_playerName, gConfigNetwork.PlayerName.c_str(), sizeof(_playerName));
 
     window->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
@@ -317,7 +317,7 @@ static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, ch
             std::fill_n(_playerName, sizeof(_playerName), 0x00);
             if (text[0] != '\0')
             {
-                safe_strcpy(_playerName, text, sizeof(_playerName));
+                SafeStrCpy(_playerName, text, sizeof(_playerName));
             }
 
             if (_playerName[0] != '\0')

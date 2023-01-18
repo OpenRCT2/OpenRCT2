@@ -1216,7 +1216,7 @@ static void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, Scre
                 {
                     gSceneryShiftPressZOffset = mainWnd->viewport->zoom.ApplyTo(gSceneryShiftPressZOffset);
                 }
-                gSceneryShiftPressZOffset = floor2(gSceneryShiftPressZOffset, 8);
+                gSceneryShiftPressZOffset = Floor2(gSceneryShiftPressZOffset, 8);
 
                 screenPos.x = gSceneryShiftPressX;
                 screenPos.y = gSceneryShiftPressY;
@@ -1328,7 +1328,7 @@ static void Sub6E1F34SmallScenery(
 
         if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
         {
-            rotation = util_rand() & 0xFF;
+            rotation = UtilRand() & 0xFF;
         }
 
         rotation -= GetCurrentRotation();
@@ -1412,7 +1412,7 @@ static void Sub6E1F34SmallScenery(
 
     if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
     {
-        rotation = util_rand() & 0xFF;
+        rotation = UtilRand() & 0xFF;
     }
 
     rotation -= GetCurrentRotation();
@@ -1767,11 +1767,11 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                 {
                     if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
                     {
-                        quadrant = util_rand() & 3;
+                        quadrant = UtilRand() & 3;
                     }
 
-                    int16_t grid_x_offset = (util_rand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
-                    int16_t grid_y_offset = (util_rand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                    int16_t grid_x_offset = (UtilRand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                    int16_t grid_y_offset = (UtilRand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
                     if (gWindowSceneryScatterSize % 2 == 0)
                     {
                         grid_x_offset += 1;

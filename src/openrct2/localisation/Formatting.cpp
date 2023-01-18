@@ -540,10 +540,10 @@ namespace OpenRCT2
                             FormatStringID(ss, STR_UNIT_SUFFIX_MILES_PER_HOUR, arg);
                             break;
                         case MeasurementFormat::Metric:
-                            FormatStringID(ss, STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR, mph_to_kmph(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR, MphToKmph(arg));
                             break;
                         case MeasurementFormat::SI:
-                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES_PER_SECOND, mph_to_dmps(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES_PER_SECOND, MphToDmps(arg));
                             break;
                     }
                 }
@@ -567,7 +567,7 @@ namespace OpenRCT2
                     {
                         default:
                         case MeasurementFormat::Imperial:
-                            FormatStringID(ss, STR_UNIT_SUFFIX_FEET, metres_to_feet(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_FEET, MetresToFeet(arg));
                             break;
                         case MeasurementFormat::Metric:
                         case MeasurementFormat::SI:

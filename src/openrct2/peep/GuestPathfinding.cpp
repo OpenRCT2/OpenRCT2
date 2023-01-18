@@ -532,7 +532,7 @@ static bool path_is_thin_junction(PathElement* path, const TileCoordsXYZ& loc)
 
     uint8_t edges = path->GetEdges();
 
-    int32_t test_edge = bitscanforward(edges);
+    int32_t test_edge = UtilBitScanForward(edges);
     if (test_edge == -1)
         return false;
 
@@ -556,7 +556,7 @@ static bool path_is_thin_junction(PathElement* path, const TileCoordsXYZ& loc)
             break;
         }
         edges &= ~(1 << test_edge);
-    } while ((test_edge = bitscanforward(edges)) != -1);
+    } while ((test_edge = UtilBitScanForward(edges)) != -1);
     return thin_junction;
 }
 
@@ -843,7 +843,7 @@ static void peep_pathfind_heuristic_search(
 
                 searchResult = PATH_SEARCH_THIN;
 
-                uint8_t numEdges = bitcount(tileElement->AsPath()->GetEdges());
+                uint8_t numEdges = BitCount(tileElement->AsPath()->GetEdges());
 
                 if (numEdges < 2)
                 {
@@ -1007,7 +1007,7 @@ static void peep_pathfind_heuristic_search(
         /* Remove the reverse edge (i.e. the edge back to the previous map element.) */
         edges &= ~(1 << DirectionReverse(test_edge));
 
-        int32_t next_test_edge = bitscanforward(edges);
+        int32_t next_test_edge = UtilBitScanForward(edges);
 
         /* If there are no other edges the current search ends here.
          * Continue to the next map element without updating the parameters (best result so far). */
@@ -1228,7 +1228,7 @@ static void peep_pathfind_heuristic_search(
                     *endScore);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-        } while ((next_test_edge = bitscanforward(edges)) != -1);
+        } while ((next_test_edge = UtilBitScanForward(edges)) != -1);
 
     } while (!(tileElement++)->IsLastForTile());
 
@@ -1426,7 +1426,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
     if (edges == 0)
         return INVALID_DIRECTION;
 
-    int32_t chosen_edge = bitscanforward(edges);
+    int32_t chosen_edge = UtilBitScanForward(edges);
 
     // Peep has multiple edges still to try.
     if (edges & ~(1 << chosen_edge))
@@ -1450,8 +1450,8 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
          * edge that gives the best (i.e. smallest) value (best_score)
          * or for different edges with equal value, the edge with the
          * least steps (best_sub). */
-        int32_t numEdges = bitcount(edges);
-        for (int32_t test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges))
+        int32_t numEdges = BitCount(edges);
+        for (int32_t test_edge = chosen_edge; test_edge != -1; test_edge = UtilBitScanForward(edges))
         {
             edges &= ~(1 << test_edge);
             uint8_t height = loc.z;
@@ -2040,7 +2040,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
         edges &= ~(1 << direction);
     }
 
-    direction = bitscanforward(edges);
+    direction = UtilBitScanForward(edges);
     // IF only one edge to choose from
     if ((edges & ~(1 << direction)) == 0)
     {
@@ -2116,7 +2116,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
     if (peep.HasItem(ShopItem::Map))
     {
         // If at least 2 directions consult map
-        if (bitcount(edges) >= 2)
+        if (BitCount(edges) >= 2)
         {
             uint16_t probability = 1638;
             if (peep.HeadingForRideOrParkExit())

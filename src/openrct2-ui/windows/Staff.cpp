@@ -577,7 +577,7 @@ private:
         if (page == WINDOW_STAFF_OVERVIEW)
         {
             offset = _tabAnimationOffset;
-            offset = floor2(offset, 4);
+            offset = Floor2(offset, 4);
         }
         imageIndex += offset;
 
@@ -871,7 +871,7 @@ private:
 
         auto staffOrders = staff->StaffOrders;
 
-        for (auto index = bitscanforward(staffOrders); index != -1; index = bitscanforward(staffOrders))
+        for (auto index = UtilBitScanForward(staffOrders); index != -1; index = UtilBitScanForward(staffOrders))
         {
             staffOrders &= ~(1 << index);
             SetCheckboxValue(WIDX_CHECKBOX_1 + index, true);

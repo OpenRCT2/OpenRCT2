@@ -1001,7 +1001,7 @@ void ViewportPaint(
     // make sure, the compare operation is done in int32_t to avoid the loop becoming an infinite loop.
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
     auto rightBorder = dpi1.x + dpi1.width;
-    auto alignedX = floor2(dpi1.x, 32);
+    auto alignedX = Floor2(dpi1.x, 32);
 
     _paintColumns.clear();
 
@@ -1633,7 +1633,7 @@ static bool IsPixelPresentRLE(const uint8_t* esi, int32_t x_start_point, int32_t
         if (round > 1)
         {
             // This matches the original implementation, but allows empty lines to cause false positives on zoom 0
-            if (ceil2(no_pixels, round) == 0)
+            if (Ceil2(no_pixels, round) == 0)
                 continue;
         }
 
@@ -1722,7 +1722,7 @@ static bool IsSpriteInteractedWithPaletteSet(
         }
     }
 
-    origin.y = floor2(origin.y, round);
+    origin.y = Floor2(origin.y, round);
     int32_t yEndPoint = height;
     origin.y -= dpi->y;
     if (origin.y < 0)
@@ -1752,7 +1752,7 @@ static bool IsSpriteInteractedWithPaletteSet(
     int32_t xEndPoint = g1->width;
 
     origin.x += g1->x_offset;
-    origin.x = floor2(origin.x, round);
+    origin.x = Floor2(origin.x, round);
     origin.x -= dpi->x;
     if (origin.x < 0)
     {

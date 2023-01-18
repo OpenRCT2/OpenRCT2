@@ -228,7 +228,7 @@ struct CoordsXY
 
     constexpr CoordsXY ToTileStart() const
     {
-        return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP) };
+        return { Floor2(x, COORDS_XY_STEP), Floor2(y, COORDS_XY_STEP) };
     }
 
     constexpr bool IsNull() const
@@ -277,7 +277,7 @@ struct CoordsXYZ : public CoordsXY
 
     constexpr CoordsXYZ ToTileStart() const
     {
-        return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP), z };
+        return { Floor2(x, COORDS_XY_STEP), Floor2(y, COORDS_XY_STEP), z };
     }
 
     constexpr CoordsXYZ ToTileCentre() const
@@ -662,7 +662,7 @@ struct CoordsXYZD : public CoordsXYZ
 
     constexpr CoordsXYZD ToTileStart() const
     {
-        return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP), z, direction };
+        return { Floor2(x, COORDS_XY_STEP), Floor2(y, COORDS_XY_STEP), z, direction };
     }
 
     constexpr CoordsXYZD ToTileCentre() const

@@ -2966,7 +2966,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
             {
                 _trackPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_trackPlaceShiftZ);
             }
-            _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, 8);
+            _trackPlaceShiftZ = Floor2(_trackPlaceShiftZ, 8);
 
             // Clamp to maximum possible value of base_height can offer.
             _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
@@ -2991,7 +2991,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
             auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
             if (surfaceElement == nullptr)
                 return std::nullopt;
-            auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
+            auto mapZ = Floor2(surfaceElement->GetBaseZ(), 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = std::max<int16_t>(mapZ, 16);
             _trackPlaceZ = mapZ;
@@ -4548,7 +4548,7 @@ static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& pie
 {
     if (_gotoStartPlacementMode)
     {
-        _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
+        _currentTrackBegin.z = Floor2(piecePos.z, COORDS_Z_STEP);
         _rideConstructionState = RideConstructionState::Front;
         _currentTrackSelectionFlags = 0;
         _currentTrackPieceDirection = piecePos.direction & 3;

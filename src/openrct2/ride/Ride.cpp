@@ -1409,7 +1409,7 @@ static int32_t ride_get_new_breakdown_problem(const Ride& ride)
     problemBits = availableBreakdownProblems;
     while (problemBits != 0)
     {
-        breakdownProblem = bitscanforward(problemBits);
+        breakdownProblem = UtilBitScanForward(problemBits);
         problemBits &= ~(1 << breakdownProblem);
         totalProbability += _breakdownProblemProbabilities[breakdownProblem];
     }
@@ -1423,7 +1423,7 @@ static int32_t ride_get_new_breakdown_problem(const Ride& ride)
     problemBits = availableBreakdownProblems;
     do
     {
-        breakdownProblem = bitscanforward(problemBits);
+        breakdownProblem = UtilBitScanForward(problemBits);
         problemBits &= ~(1 << breakdownProblem);
         randomProbability -= _breakdownProblemProbabilities[breakdownProblem];
     } while (randomProbability >= 0);
@@ -1913,7 +1913,7 @@ void DefaultMusicUpdate(Ride& ride)
         if (musicObj != nullptr)
         {
             auto numTracks = musicObj->GetTrackCount();
-            ride.music_tune_id = static_cast<uint8_t>(util_rand() % numTracks);
+            ride.music_tune_id = static_cast<uint8_t>(UtilRand() % numTracks);
             ride.music_position = 0;
         }
         return;
@@ -2173,10 +2173,10 @@ int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType)
 
     // If all presets have been used, just go with a random preset
     if (unused.size() == 0)
-        return util_rand() % colourPresets->count;
+        return UtilRand() % colourPresets->count;
 
     // Choose a random preset from the list of unused presets
-    auto unusedIndex = util_rand() % unused.size();
+    auto unusedIndex = UtilRand() % unused.size();
     return unused[unusedIndex];
 }
 
@@ -4145,10 +4145,10 @@ int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
 
     // If all presets have been used, just go with a random preset
     if (unused.size() == 0)
-        return util_rand() % colourPresets.count;
+        return UtilRand() % colourPresets.count;
 
     // Choose a random preset from the list of unused presets
-    auto unusedIndex = util_rand() % unused.size();
+    auto unusedIndex = UtilRand() % unused.size();
     return unused[unusedIndex];
 }
 

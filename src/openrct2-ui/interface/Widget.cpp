@@ -1149,14 +1149,14 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     {
         if (widget.text != 0)
         {
-            safe_strcpy(wrapped_string, widget.string, 512);
+            SafeStrCpy(wrapped_string, widget.string, 512);
             GfxWrapString(wrapped_string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &no_lines);
             GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
         }
         return;
     }
 
-    safe_strcpy(wrapped_string, gTextBoxInput, TEXT_INPUT_SIZE);
+    SafeStrCpy(wrapped_string, gTextBoxInput, TEXT_INPUT_SIZE);
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.

@@ -266,7 +266,7 @@ void TitleScreen::TitleInitialise()
         while (!safeSequence)
         {
             size_t total = TitleSequenceManager::GetCount();
-            random = util_rand() % static_cast<int32_t>(total);
+            random = UtilRand() % static_cast<int32_t>(total);
             const utf8* scName = TitleSequenceManagerGetName(random);
             safeSequence = true;
             if (scName == RCT1String)

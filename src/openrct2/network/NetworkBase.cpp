@@ -858,7 +858,7 @@ std::string NetworkBase::GenerateAdvertiseKey()
     char key[17];
     for (int32_t i = 0; i < 16; i++)
     {
-        int32_t hexCharIndex = util_rand() % std::size(hexChars);
+        int32_t hexCharIndex = UtilRand() % std::size(hexChars);
         key[i] = hexChars[hexCharIndex];
     }
     key[std::size(key) - 1] = 0;

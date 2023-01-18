@@ -120,15 +120,15 @@ static bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b)
     switch (gConfigGeneral.LoadSaveSort)
     {
         case Sort::NameAscending:
-            return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
+            return StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
         case Sort::NameDescending:
-            return -strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
+            return -StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
         case Sort::DateDescending:
             return -difftime(a.date_modified, b.date_modified) < 0;
         case Sort::DateAscending:
             return difftime(a.date_modified, b.date_modified) < 0;
     }
-    return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
+    return StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
 }
 
 static void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
@@ -263,7 +263,7 @@ static void Select(const char* path)
     }
 
     char pathBuffer[MAX_PATH];
-    safe_strcpy(pathBuffer, path, sizeof(pathBuffer));
+    SafeStrCpy(pathBuffer, path, sizeof(pathBuffer));
 
     switch (_type & 0x0F)
     {
@@ -529,7 +529,7 @@ public:
     void PopulateList(int32_t includeNewItem, const u8string& directory, std::string_view extensionPattern)
     {
         const auto absoluteDirectory = Path::GetAbsolute(directory);
-        safe_strcpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
+        SafeStrCpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
         // Note: This compares the pointers, not values
         _extensionPattern = extensionPattern;
         _shortenedDirectory[0] = '\0';
@@ -563,7 +563,7 @@ public:
         else
         {
             // Remove the separator at the end of the path, if present
-            safe_strcpy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
+            SafeStrCpy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
             if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
                 || _parentDirectory[strlen(_parentDirectory) - 1] == '/')
                 _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
@@ -955,7 +955,7 @@ public:
             includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 
             char directory[MAX_PATH];
-            safe_strcpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
+            SafeStrCpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
             PopulateList(includeNewItem, directory, _extensionPattern);
             InitScrollWidgets();
@@ -1143,8 +1143,8 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
     w->flags |= WF_TRANSPARENT;
     w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
 
-    safe_strcpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
-    safe_strcpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));
+    SafeStrCpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
+    SafeStrCpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));
 
     return w;
 }

@@ -89,7 +89,7 @@ private:
         if (rideB != nullptr)
             rideBName = rideB->GetName();
 
-        return strlogicalcmp(rideAName.c_str(), rideBName.c_str()) < 0;
+        return StrLogicalCmp(rideAName.c_str(), rideBName.c_str()) < 0;
     }
 
     /**

@@ -160,7 +160,7 @@ void MapGenGenerate(mapgen_settings* settings)
             // Fall back to the first available surface texture that is available in the park
             floorTexture = TerrainSurfaceObject::GetById(0)->GetIdentifier();
         else
-            floorTexture = availableTerrains[util_rand() % availableTerrains.size()];
+            floorTexture = availableTerrains[UtilRand() % availableTerrains.size()];
     }
 
     if (edgeTexture.empty())
@@ -206,7 +206,7 @@ void MapGenGenerate(mapgen_settings* settings)
     std::fill_n(_height, _heightSize.y * _heightSize.x, 0x00);
 
     MapGenSimplex(settings);
-    MapGenSmoothHeight(2 + (util_rand() % 6));
+    MapGenSmoothHeight(2 + (UtilRand() % 6));
 
     // Set the game map to the height map
     MapGenSetHeight(settings);
@@ -222,7 +222,7 @@ void MapGenGenerate(mapgen_settings* settings)
 
     // Add sandy beaches
     std::string_view beachTexture = floorTexture;
-    if (settings->floor == -1 && floorTexture == "rct2.terrain_surface.grass" && (util_rand() & 1))
+    if (settings->floor == -1 && floorTexture == "rct2.terrain_surface.grass" && (UtilRand() & 1))
     {
         std::vector<std::string_view> availableBeachTextures;
         if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand")) != nullptr)
@@ -231,7 +231,7 @@ void MapGenGenerate(mapgen_settings* settings)
             availableBeachTextures.push_back("rct2.terrain_surface.sand_brown");
 
         if (!availableBeachTextures.empty())
-            beachTexture = availableBeachTextures[util_rand() % availableBeachTextures.size()];
+            beachTexture = availableBeachTextures[UtilRand() % availableBeachTextures.size()];
     }
     auto beachTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(beachTexture));
 
@@ -265,7 +265,7 @@ static void MapGenPlaceTree(ObjectEntryIndex type, const CoordsXY& loc)
     Guard::Assert(sceneryElement != nullptr);
 
     sceneryElement->SetClearanceZ(surfaceZ + sceneryEntry->height);
-    sceneryElement->SetDirection(util_rand() & 3);
+    sceneryElement->SetDirection(UtilRand() & 3);
     sceneryElement->SetEntryIndex(type);
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(COLOUR_YELLOW);
@@ -333,7 +333,7 @@ static void MapGenPlaceTrees()
 
     // Place trees
     CoordsXY pos;
-    float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
+    float treeToLandRatio = (10 + (UtilRand() % 30)) / 100.0f;
     for (int32_t y = 1; y < gMapSize.y - 1; y++)
     {
         for (int32_t x = 1; x < gMapSize.x - 1; x++)
@@ -380,27 +380,27 @@ static void MapGenPlaceTrees()
 
             // Use tree:land ratio except when near an oasis
             constexpr static auto randModulo = 0xFFFF;
-            if (static_cast<float>(util_rand() & randModulo) / randModulo > std::max(treeToLandRatio, oasisScore))
+            if (static_cast<float>(UtilRand() & randModulo) / randModulo > std::max(treeToLandRatio, oasisScore))
                 continue;
 
             // Use fractal noise to group tiles that are likely to spawn trees together
             float noiseValue = FractalNoise(x, y, 0.025f, 2, 2.0f, 0.65f);
             // Reduces the range to rarely stray further than 0.5 from the mean.
-            float noiseOffset = util_rand_normal_distributed() * 0.25f;
+            float noiseOffset = UtilRandNormalDistributed() * 0.25f;
             if (noiseValue + oasisScore < noiseOffset)
                 continue;
 
             if (!grassTreeIds.empty() && MapGenSurfaceTakesGrassTrees(surfaceStyleObject))
             {
-                treeObjectEntryIndex = grassTreeIds[util_rand() % grassTreeIds.size()];
+                treeObjectEntryIndex = grassTreeIds[UtilRand() % grassTreeIds.size()];
             }
             else if (!desertTreeIds.empty() && MapGenSurfaceTakesSandTrees(surfaceStyleObject))
             {
-                treeObjectEntryIndex = desertTreeIds[util_rand() % desertTreeIds.size()];
+                treeObjectEntryIndex = desertTreeIds[UtilRand() % desertTreeIds.size()];
             }
             else if (!snowTreeIds.empty() && MapGenSurfaceTakesSnowTrees(surfaceStyleObject))
             {
-                treeObjectEntryIndex = snowTreeIds[util_rand() % snowTreeIds.size()];
+                treeObjectEntryIndex = snowTreeIds[UtilRand() % snowTreeIds.size()];
             }
 
             if (treeObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
@@ -525,7 +525,7 @@ static void NoiseRand()
 {
     for (auto& i : perm)
     {
-        i = util_rand() & 0xFF;
+        i = UtilRand() & 0xFF;
     }
 }
 

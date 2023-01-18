@@ -224,7 +224,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
         }
 
-        int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
+        int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
 
         int32_t clearanceZ = trackBlock->var_07;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
@@ -237,7 +237,7 @@ GameActions::Result TrackPlaceAction::Query() const
             clearanceZ += ride->GetRideTypeDescriptor().Heights.ClearanceHeight;
         }
 
-        clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
+        clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
 
         if (clearanceZ > MAX_TRACK_HEIGHT)
         {
@@ -448,7 +448,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
-        int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
+        int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
         int32_t clearanceZ = trackBlock->var_07;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
             && ride->GetRideTypeDescriptor().Heights.ClearanceHeight > 24)
@@ -460,7 +460,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             clearanceZ += ride->GetRideTypeDescriptor().Heights.ClearanceHeight;
         }
 
-        clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
+        clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
         const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
         uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
@@ -654,8 +654,8 @@ GameActions::Result TrackPlaceAction::Execute() const
             {
                 if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
                 {
-                    for (int32_t chosenDirection = bitscanforward(availableDirections); chosenDirection != -1;
-                         chosenDirection = bitscanforward(availableDirections))
+                    for (int32_t chosenDirection = UtilBitScanForward(availableDirections); chosenDirection != -1;
+                         chosenDirection = UtilBitScanForward(availableDirections))
                     {
                         availableDirections &= ~(1 << chosenDirection);
                         CoordsXY tempLoc{ mapLoc.x, mapLoc.y };

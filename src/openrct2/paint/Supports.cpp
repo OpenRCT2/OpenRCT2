@@ -473,7 +473,7 @@ bool WoodenASupportsPaintSetup(
         imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    int32_t z = floor2(session.Support.height + 15, 16);
+    int32_t z = Floor2(session.Support.height + 15, 16);
     height -= z;
     if (height < 0)
     {
@@ -634,7 +634,7 @@ bool WoodenBSupportsPaintSetup(
         imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    uint16_t baseHeight = ceil2(session.Support.height, 16);
+    uint16_t baseHeight = Ceil2(session.Support.height, 16);
     int16_t supportLength = height - baseHeight;
 
     if (supportLength < 0)
@@ -878,7 +878,7 @@ bool MetalASupportsPaintSetup(
 
     // Work out if a small support segment required to bring support to normal
     // size (aka floor2(x, 16))
-    int16_t heightDiff = floor2(height + 16, 16);
+    int16_t heightDiff = Floor2(height + 16, 16);
     if (heightDiff > si)
     {
         heightDiff = si;
@@ -1073,7 +1073,7 @@ bool MetalBSupportsPaintSetup(
         baseHeight = supportSegments[segment].height + 6;
     }
 
-    int16_t heightDiff = floor2(baseHeight + 16, 16);
+    int16_t heightDiff = Floor2(baseHeight + 16, 16);
     if (heightDiff > si)
     {
         heightDiff = si;
@@ -1192,7 +1192,7 @@ bool PathASupportsPaintSetup(
         imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    uint16_t baseHeight = ceil2(session.Support.height, 16);
+    uint16_t baseHeight = Ceil2(session.Support.height, 16);
     int32_t supportLength = height - baseHeight;
     if (supportLength < 0)
     {
@@ -1370,7 +1370,7 @@ bool PathBSupportsPaintSetup(
     // si = height
     // dx = baseHeight
 
-    int16_t heightDiff = floor2(baseHeight + 16, 16);
+    int16_t heightDiff = Floor2(baseHeight + 16, 16);
     if (heightDiff > height)
     {
         heightDiff = height;

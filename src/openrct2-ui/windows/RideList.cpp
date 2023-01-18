@@ -810,7 +810,7 @@ private:
                 case INFORMATION_TYPE_STATUS:
                     currentListPosition = SortList(
                         currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return 0 <= strlogicalcmp(thisRide.GetName().c_str(), otherRide.GetName().c_str());
+                            return 0 <= StrLogicalCmp(thisRide.GetName().c_str(), otherRide.GetName().c_str());
                         });
                     break;
                 case INFORMATION_TYPE_POPULARITY:
