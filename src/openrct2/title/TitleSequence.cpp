@@ -55,7 +55,7 @@ namespace OpenRCT2::Title
         std::vector<std::string> saves;
         bool isZip;
 
-        log_verbose("Loading title sequence: %s", path.c_str());
+        LOG_VERBOSE("Loading title sequence: %s", path.c_str());
 
         auto ext = Path::GetExtension(path);
         if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))

@@ -33,7 +33,7 @@ static FontStyle InGameConsoleGetFontStyle()
 
 static int32_t InGameConsoleGetLineHeight()
 {
-    return font_get_line_height(InGameConsoleGetFontStyle());
+    return FontGetLineHeight(InGameConsoleGetFontStyle());
 }
 
 InGameConsole::InGameConsole()
@@ -79,7 +79,7 @@ void InGameConsole::Input(ConsoleInput input)
                 std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
             }
             _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
-            _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
+            _consoleTextInputSession->Length = UTF8Length(_consoleTextInputSession->Buffer);
             _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
             break;
         case ConsoleInput::HistoryNext:
@@ -88,7 +88,7 @@ void InGameConsole::Input(ConsoleInput input)
                 _consoleHistoryIndex++;
                 std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
                 _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
-                _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
+                _consoleTextInputSession->Length = UTF8Length(_consoleTextInputSession->Buffer);
                 _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
             }
             else
@@ -150,7 +150,7 @@ void InGameConsole::RefreshCaret(size_t position)
     _selectionStart = position;
     char tempString[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(tempString, &_consoleCurrentLine, _selectionStart);
-    _caretScreenPosX = gfx_get_string_width_no_formatting(tempString, InGameConsoleGetFontStyle());
+    _caretScreenPosX = GfxGetStringWidthNoFormatting(tempString, InGameConsoleGetFontStyle());
 }
 
 void InGameConsole::Scroll(int32_t linesToScroll)
@@ -237,7 +237,7 @@ void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat
 
 void InGameConsole::Invalidate() const
 {
-    gfx_set_dirty_blocks({ _consoleTopLeft, _consoleBottomRight });
+    GfxSetDirtyBlocks({ _consoleTopLeft, _consoleBottomRight });
 }
 
 void InGameConsole::Update()
@@ -248,17 +248,17 @@ void InGameConsole::Update()
     if (_isOpen)
     {
         // When scrolling the map, the console pixels get copied... therefore invalidate the screen
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            rct_viewport* mainViewport = window_get_viewport(mainWindow);
+            rct_viewport* mainViewport = WindowGetViewport(mainWindow);
             if (mainViewport != nullptr)
             {
                 if (_lastMainViewport != mainViewport->viewPos)
                 {
                     _lastMainViewport = mainViewport->viewPos;
 
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
             }
         }
@@ -296,17 +296,17 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     Invalidate();
 
     // Give console area a translucent effect.
-    gfx_filter_rect(dpi, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::Palette51);
+    GfxFilterRect(dpi, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::Palette51);
 
     // Make input area more opaque.
-    gfx_filter_rect(
+    GfxFilterRect(
         dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
         FilterPaletteID::Palette51);
 
     // Paint background colour.
     uint8_t backgroundColour = ThemeGetColour(WindowClass::Console, 0);
-    gfx_fill_rect_inset(dpi, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
-    gfx_fill_rect_inset(
+    GfxFillRectInset(dpi, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
+    GfxFillRectInset(
         dpi, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
         INSET_RECT_FLAG_BORDER_INSET);
 
@@ -318,7 +318,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = _colourFormatStr + _consoleLines[index];
-        gfx_draw_string(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
+        GfxDrawString(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
         screenCoords.y += lineHeight;
     }
 
@@ -326,14 +326,14 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // Draw current line
     lineBuffer = _colourFormatStr + _consoleCurrentLine;
-    gfx_draw_string_no_formatting(dpi, screenCoords, lineBuffer.c_str(), { TEXT_COLOUR_255, InGameConsoleGetFontStyle() });
+    GfxDrawStringNoFormatting(dpi, screenCoords, lineBuffer.c_str(), { TEXT_COLOUR_255, InGameConsoleGetFontStyle() });
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
         uint8_t caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
-        gfx_fill_rect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
+        GfxFillRect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
     }
 
     // What about border colours?
@@ -341,22 +341,22 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     uint8_t borderColour2 = ColourMapA[BASE_COLOUR(backgroundColour)].mid_dark;
 
     // Input area top border
-    gfx_fill_rect(
+    GfxFillRect(
         dpi,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 11 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 11 } },
         borderColour1);
-    gfx_fill_rect(
+    GfxFillRect(
         dpi,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 10 } },
         borderColour2);
 
     // Input area bottom border
-    gfx_fill_rect(
+    GfxFillRect(
         dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - 1 }, { _consoleBottomRight.x, _consoleBottomRight.y - 1 } },
         borderColour1);
-    gfx_fill_rect(dpi, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
+    GfxFillRect(dpi, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.

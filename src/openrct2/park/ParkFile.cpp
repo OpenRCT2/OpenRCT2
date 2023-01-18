@@ -1060,7 +1060,7 @@ namespace OpenRCT2
                             continue;
 
                         auto* trackElement = tileElement->AsTrack();
-                        const auto* ride = get_ride(trackElement->GetRideIndex());
+                        const auto* ride = GetRide(trackElement->GetRideIndex());
                         if (ride != nullptr)
                         {
                             trackElement->SetRideType(ride->type);
@@ -1156,7 +1156,7 @@ namespace OpenRCT2
                 std::vector<RideId> rideIds;
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    ride_init_all();
+                    RideInitAll();
                 }
                 else
                 {
@@ -2297,21 +2297,21 @@ enum : uint32_t
     S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
 };
 
-int32_t scenario_save(u8string_view path, int32_t flags)
+int32_t ScenarioSave(u8string_view path, int32_t flags)
 {
     if (flags & S6_SAVE_FLAG_SCENARIO)
     {
-        log_verbose("saving scenario");
+        LOG_VERBOSE("saving scenario");
     }
     else
     {
-        log_verbose("saving game");
+        LOG_VERBOSE("saving game");
     }
 
     gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
     if (!gIsAutosave)
     {
-        window_close_construction_windows();
+        WindowCloseConstructionWindows();
     }
 
     PrepareMapForSave();
@@ -2339,12 +2339,12 @@ int32_t scenario_save(u8string_view path, int32_t flags)
     }
     catch (const std::exception& e)
     {
-        log_error(e.what());
+        LOG_ERROR(e.what());
 
         Formatter ft;
         ft.Add<const char*>(e.what());
         ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
 
         auto ctx = OpenRCT2::GetContext();
         auto uictx = ctx->GetUiContext();
@@ -2367,7 +2367,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         }
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
     {
@@ -2425,8 +2425,8 @@ public:
     void Import() override
     {
         _parkFile->Import();
-        research_determine_first_of_type();
-        game_fix_save_vars();
+        ResearchDetermineFirstOfType();
+        GameFixSaveVars();
     }
 
     bool GetDetails(scenario_index_entry* dst) override

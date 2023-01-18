@@ -264,8 +264,8 @@ public:
     {
         InitWidgets();
 
-        sub_6AB211();
-        reset_selected_object_count_and_size();
+        Sub6AB211();
+        ResetSelectedObjectCountAndSize();
 
         widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
@@ -293,23 +293,23 @@ public:
      */
     void OnClose() override
     {
-        unload_unselected_objects();
+        UnloadUnselectedObjects();
         EditorLoadSelectedObjects();
-        editor_object_flags_free();
+        EditorObjectFlagsFree();
 
         if (_loadedObject != nullptr)
             _loadedObject->Unload();
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         {
-            research_populate_list_random();
+            ResearchPopulateListRandom();
         }
         else
         {
             // Used for in-game object selection cheat
             // This resets the ride selection list and resets research to 0 on current item
             gSilentResearch = true;
-            research_reset_current_item();
+            ResearchResetCurrentItem();
             gSilentResearch = false;
         }
 
@@ -326,8 +326,8 @@ public:
     {
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
-            window_update_textbox_caret();
-            widget_invalidate(*this, WIDX_FILTER_TEXT_BOX);
+            WindowUpdateTextboxCaret();
+            WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
         }
 
         for (WidgetIndex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
@@ -339,7 +339,7 @@ public:
             if (frame_no >= window_editor_object_selection_animation_loops[i - WIDX_FILTER_RIDE_TAB_TRANSPORT])
                 frame_no = 0;
 
-            widget_invalidate(*this, i);
+            WidgetInvalidate(*this, i);
             break;
         }
     }
@@ -353,16 +353,16 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 if (gScreenFlags & SCREEN_FLAGS_EDITOR)
                 {
-                    finish_object_selection();
+                    FinishObjectSelection();
                 }
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                 {
-                    game_notify_map_change();
-                    game_unload_scripts();
-                    title_load();
+                    GameNotifyMapChange();
+                    GameUnloadScripts();
+                    TitleLoad();
                 }
                 break;
             case WIDX_FILTER_RIDE_TAB_ALL:
@@ -411,12 +411,12 @@ public:
                 Invalidate();
 
                 auto intent = Intent(WindowClass::Loadsave);
-                intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
+                intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
                 ContextOpenIntent(&intent);
                 break;
             }
             case WIDX_FILTER_TEXT_BOX:
-                window_start_textbox(*this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
                 std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
@@ -461,7 +461,7 @@ public:
 
     void OnResize() override
     {
-        window_set_resize(*this, WW, WH, 1200, 1000);
+        WindowSetResize(*this, WW, WH, 1200, 1000);
     }
 
     void OnMouseDown(WidgetIndex widgetIndex) override
@@ -576,7 +576,7 @@ public:
     {
         // Used for in-game object selection cheat to prevent crashing the game
         // when windows attempt to draw objects that don't exist any more
-        window_close_all_except_class(WindowClass::EditorObjectSelection);
+        WindowCloseAllExceptClass(WindowClass::EditorObjectSelection);
 
         int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
         if (selected_object == -1)
@@ -594,14 +594,14 @@ public:
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            const auto objectSelectResult = window_editor_object_selection_select_object(
+            const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(
                 0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem);
             if (!objectSelectResult.Successful)
                 return;
 
             // Close any other open windows such as options/colour schemes to prevent a crash.
-            window_close_all();
-            // window_close(*w);
+            WindowCloseAll();
+            // WindowClose(*w);
 
             // This function calls window_track_list_open
             ManageTracks();
@@ -614,7 +614,7 @@ public:
             inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
         _gSceneryGroupPartialSelectError = std::nullopt;
-        const auto objectSelectResult = window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem);
+        const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(0, inputFlags, listItem->repositoryItem);
         if (!objectSelectResult.Successful)
         {
             StringId error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
@@ -695,7 +695,7 @@ public:
         bool ridePage = (GetSelectedObjectType() == ObjectType::Ride);
 
         uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
-        gfx_clear(&dpi, paletteIndex);
+        GfxClear(&dpi, paletteIndex);
 
         screenCoords.y = 0;
         for (size_t i = 0; i < _listItems.size(); i++)
@@ -705,8 +705,7 @@ public:
             {
                 // Draw checkbox
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                    gfx_fill_rect_inset(
-                        &dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(&dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                 // Highlight background
                 auto highlighted = i == static_cast<size_t>(selected_list_item)
@@ -714,7 +713,7 @@ public:
                 if (highlighted)
                 {
                     auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
-                    gfx_filter_rect(&dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(&dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
                 }
 
                 // Draw checkmark
@@ -726,7 +725,7 @@ public:
                     if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                         colour2 |= COLOUR_FLAG_INSET;
 
-                    gfx_draw_string(
+                    GfxDrawString(
                         &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
                         { static_cast<colour_t>(colour2), FontStyle::Medium, darkness });
                 }
@@ -751,7 +750,7 @@ public:
                     width_limit /= 2;
                     // Draw ride type
                     StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
-                    safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
+                    safe_strcpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
                     auto ft = Formatter();
                     ft.Add<const char*>(gCommonStringFormatBuffer);
                     DrawTextEllipsised(
@@ -793,7 +792,7 @@ public:
 
     void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
-        if (widgetIndex != WIDX_FILTER_TEXT_BOX || text.empty())
+        if (widgetIndex != WIDX_FILTER_TEXT_BOX)
             return;
 
         std::string tempText = text.data();
@@ -967,7 +966,7 @@ public:
             {
                 auto image = ImageId(ObjectSelectionPages[i].Image);
                 auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                gfx_draw_sprite(&dpi, image, screenPos);
+                GfxDrawSprite(&dpi, image, screenPos);
             }
         }
 
@@ -997,13 +996,13 @@ public:
                 spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
                 auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                gfx_draw_sprite(&dpi, ImageId(spriteIndex, colours[1]), screenPos);
+                GfxDrawSprite(&dpi, ImageId(spriteIndex, colours[1]), screenPos);
             }
         }
 
         // Preview background
         const auto& previewWidget = widgets[WIDX_PREVIEW];
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi,
             { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
               windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
@@ -1056,7 +1055,7 @@ public:
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
             _width = previewWidget.width() - 1;
             int32_t _height = previewWidget.height() - 1;
-            if (clip_drawpixelinfo(&clipDPI, &dpi, screenPos, _width, _height))
+            if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, _width, _height))
             {
                 _loadedObject->DrawPreview(&clipDPI, _width, _height);
             }
@@ -1120,12 +1119,12 @@ private:
 
     void VisibleListRefresh()
     {
-        int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
+        int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
 
         VisibleListDispose();
         selected_list_item = -1;
 
-        const ObjectRepositoryItem* items = object_repository_get_items();
+        const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
         for (int32_t i = 0; i < numObjects; i++)
         {
             uint8_t selectionFlags = _objectSelectionFlags[i];
@@ -1162,7 +1161,7 @@ private:
                     sortFunc = VisibleListSortRideName;
                     break;
                 default:
-                    log_warning("Wrong sort type %d, leaving list as-is.", _listSortType);
+                    LOG_WARNING("Wrong sort type %d, leaving list as-is.", _listSortType);
                     break;
             }
             if (sortFunc != nullptr)
@@ -1213,7 +1212,7 @@ private:
                     if (!sells.empty())
                         sells += ", ";
 
-                    sells += language_get_string(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
+                    sells += LanguageGetString(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
                 }
                 auto ft = Formatter();
                 ft.Add<const char*>(sells.c_str());
@@ -1269,7 +1268,7 @@ private:
         screenPos.y += LIST_ROW_HEIGHT;
 
         // Draw object source
-        auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
+        auto stringId = ObjectManagerGetSourceGameString(listItem->repositoryItem->GetFirstSourceGame());
         DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         screenPos.y += LIST_ROW_HEIGHT;
 
@@ -1337,7 +1336,7 @@ private:
     {
         if (item.Type == ObjectType::Ride)
         {
-            auto rideTypeName = language_get_string(GetRideTypeStringId(&item));
+            auto rideTypeName = LanguageGetString(GetRideTypeStringId(&item));
             if (String::Contains(rideTypeName, filter, true))
                 return true;
         }
@@ -1432,8 +1431,8 @@ private:
             const auto& selectionFlags = _objectSelectionFlags;
             std::fill(std::begin(_filter_object_counts), std::end(_filter_object_counts), 0);
 
-            size_t numObjects = object_repository_get_items_count();
-            const ObjectRepositoryItem* items = object_repository_get_items();
+            size_t numObjects = ObjectRepositoryGetItemsCount();
+            const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
             for (size_t i = 0; i < numObjects; i++)
             {
                 const ObjectRepositoryItem* item = &items[i];
@@ -1497,21 +1496,21 @@ private:
      */
     void ManageTracks()
     {
-        set_every_ride_type_invented();
-        set_every_ride_entry_invented();
+        SetEveryRideTypeInvented();
+        SetEveryRideEntryInvented();
 
         gEditorStep = EditorStep::DesignsManager;
 
         int32_t entry_index = 0;
-        for (; object_entry_get_chunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
+        for (; ObjectEntryGetChunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
             ;
 
-        rct_ride_entry* ride_entry = get_ride_entry(entry_index);
+        rct_ride_entry* ride_entry = GetRideEntryByIndex(entry_index);
         auto rideType = ride_entry->GetFirstNonNullRideType();
 
         auto intent = Intent(WindowClass::TrackDesignList);
-        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
-        intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
+        intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, rideType);
+        intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
         ContextOpenIntent(&intent);
     }
 };
@@ -1535,8 +1534,8 @@ static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListIte
 
 static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListItem& b)
 {
-    auto rideTypeA = language_get_string(GetRideTypeStringId(a.repositoryItem));
-    auto rideTypeB = language_get_string(GetRideTypeStringId(b.repositoryItem));
+    auto rideTypeA = LanguageGetString(GetRideTypeStringId(a.repositoryItem));
+    auto rideTypeB = LanguageGetString(GetRideTypeStringId(b.repositoryItem));
     int32_t result = String::Compare(rideTypeA, rideTypeB);
     return result != 0 ? result < 0 : VisibleListSortRideName(a, b);
 }
@@ -1563,8 +1562,8 @@ static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
 void EditorLoadSelectedObjects()
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    int32_t numItems = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
     bool showFallbackWarning = false;
     for (int32_t i = 0; i < numItems; i++)
     {
@@ -1578,23 +1577,23 @@ void EditorLoadSelectedObjects()
                 loadedObject = objManager.LoadObject(descriptor);
                 if (loadedObject == nullptr)
                 {
-                    log_error("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
+                    LOG_ERROR("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
                 {
                     // Defaults selected items to researched (if in-game)
                     auto objectType = loadedObject->GetObjectType();
-                    auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+                    auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
                     if (objectType == ObjectType::Ride)
                     {
-                        rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
+                        rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
                         auto rideType = rideEntry->GetFirstNonNullRideType();
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
-                        research_insert_ride_entry(rideType, entryIndex, category, true);
+                        ResearchInsertRideEntry(rideType, entryIndex, category, true);
                     }
                     else if (objectType == ObjectType::SceneryGroup)
                     {
-                        research_insert_scenery_group_entry(entryIndex, true);
+                        ResearchInsertSceneryGroupEntry(entryIndex, true);
                     }
                     if (loadedObject->UsesFallbackImages())
                     {
@@ -1607,7 +1606,7 @@ void EditorLoadSelectedObjects()
     if (_numSelectedObjectsForType[EnumValue(ObjectType::Water)] == 0)
     {
         // Reloads the default cyan water palette if no palette was selected.
-        load_palette();
+        LoadPalette();
     }
     if (showFallbackWarning)
         ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());

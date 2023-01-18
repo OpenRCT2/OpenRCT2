@@ -92,13 +92,13 @@ GameActions::Result CheatSetAction::Execute() const
     {
         case CheatType::SandboxMode:
             gCheatsSandboxMode = _param1 != 0;
-            window_invalidate_by_class(WindowClass::Map);
-            window_invalidate_by_class(WindowClass::Footpath);
+            WindowInvalidateByClass(WindowClass::Map);
+            WindowInvalidateByClass(WindowClass::Footpath);
             break;
         case CheatType::DisableClearanceChecks:
             gCheatsDisableClearanceChecks = _param1 != 0;
             // Required to update the clearance checks overlay on the Cheats button.
-            window_invalidate_by_class(WindowClass::TopToolbar);
+            WindowInvalidateByClass(WindowClass::TopToolbar);
             break;
         case CheatType::DisableSupportLimits:
             gCheatsDisableSupportLimits = _param1 != 0;
@@ -194,7 +194,7 @@ GameActions::Result CheatSetAction::Execute() const
             Set10MinuteInspection();
             break;
         case CheatType::WinScenario:
-            scenario_success();
+            ScenarioSuccess();
             break;
         case CheatType::ForceWeather:
             // Todo - make sure this is safe
@@ -217,7 +217,7 @@ GameActions::Result CheatSetAction::Execute() const
             break;
         case CheatType::AllowArbitraryRideTypeChanges:
             gCheatsAllowArbitraryRideTypeChanges = _param1 != 0;
-            window_invalidate_by_class(WindowClass::Ride);
+            WindowInvalidateByClass(WindowClass::Ride);
             break;
         case CheatType::OwnAllLand:
             OwnAllLand();
@@ -245,7 +245,7 @@ GameActions::Result CheatSetAction::Execute() const
             break;
         default:
         {
-            log_error("Unabled cheat: %d", _cheatType.id);
+            LOG_ERROR("Unabled cheat: %d", _cheatType.id);
             GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
         }
         break;
@@ -256,7 +256,7 @@ GameActions::Result CheatSetAction::Execute() const
         ConfigSaveDefault();
     }
 
-    window_invalidate_by_class(WindowClass::Cheats);
+    WindowInvalidateByClass(WindowClass::Cheats);
     return GameActions::Result();
 }
 
@@ -378,7 +378,7 @@ void CheatSetAction::SetGrassLength(int32_t length) const
         }
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::WaterPlants() const
@@ -394,7 +394,7 @@ void CheatSetAction::WaterPlants() const
         }
     } while (TileElementIteratorNext(&it));
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::FixVandalism() const
@@ -413,7 +413,7 @@ void CheatSetAction::FixVandalism() const
         it.element->AsPath()->SetIsBroken(false);
     } while (TileElementIteratorNext(&it));
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::RemoveLitter() const
@@ -440,7 +440,7 @@ void CheatSetAction::RemoveLitter() const
 
     } while (TileElementIteratorNext(&it));
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::FixBrokenRides() const
@@ -450,13 +450,13 @@ void CheatSetAction::FixBrokenRides() const
         if ((ride.mechanic_status != RIDE_MECHANIC_STATUS_FIXING)
             && (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
         {
-            auto mechanic = ride_get_assigned_mechanic(ride);
+            auto mechanic = RideGetAssignedMechanic(ride);
             if (mechanic != nullptr)
             {
                 mechanic->RemoveFromRide();
             }
 
-            ride_fix_breakdown(ride, 0);
+            RideFixBreakdown(ride, 0);
             ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
         }
     }
@@ -468,7 +468,7 @@ void CheatSetAction::RenewRides() const
     {
         ride.Renew();
     }
-    window_invalidate_by_class(WindowClass::Ride);
+    WindowInvalidateByClass(WindowClass::Ride);
 }
 
 void CheatSetAction::MakeDestructible() const
@@ -478,7 +478,7 @@ void CheatSetAction::MakeDestructible() const
         ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
         ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
     }
-    window_invalidate_by_class(WindowClass::Ride);
+    WindowInvalidateByClass(WindowClass::Ride);
 }
 
 void CheatSetAction::ResetRideCrashStatus() const
@@ -489,7 +489,7 @@ void CheatSetAction::ResetRideCrashStatus() const
         ride.lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
         ride.last_crash_type = RIDE_CRASH_TYPE_NONE;
     }
-    window_invalidate_by_class(WindowClass::Ride);
+    WindowInvalidateByClass(WindowClass::Ride);
 }
 
 void CheatSetAction::Set10MinuteInspection() const
@@ -499,7 +499,7 @@ void CheatSetAction::Set10MinuteInspection() const
         // Set inspection interval to 10 minutes
         ride.inspection_interval = RIDE_INSPECTION_EVERY_10_MINUTES;
     }
-    window_invalidate_by_class(WindowClass::Ride);
+    WindowInvalidateByClass(WindowClass::Ride);
 }
 
 void CheatSetAction::SetScenarioNoMoney(bool enabled) const
@@ -513,29 +513,29 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
         gParkFlags &= ~PARK_FLAGS_NO_MONEY;
     }
     // Invalidate all windows that have anything to do with finance
-    window_invalidate_by_class(WindowClass::Ride);
-    window_invalidate_by_class(WindowClass::Peep);
-    window_invalidate_by_class(WindowClass::ParkInformation);
-    window_invalidate_by_class(WindowClass::Finances);
-    window_invalidate_by_class(WindowClass::BottomToolbar);
-    window_invalidate_by_class(WindowClass::TopToolbar);
-    window_invalidate_by_class(WindowClass::Cheats);
+    WindowInvalidateByClass(WindowClass::Ride);
+    WindowInvalidateByClass(WindowClass::Peep);
+    WindowInvalidateByClass(WindowClass::ParkInformation);
+    WindowInvalidateByClass(WindowClass::Finances);
+    WindowInvalidateByClass(WindowClass::BottomToolbar);
+    WindowInvalidateByClass(WindowClass::TopToolbar);
+    WindowInvalidateByClass(WindowClass::Cheats);
 }
 
 void CheatSetAction::SetMoney(money64 amount) const
 {
     gCash = amount;
 
-    window_invalidate_by_class(WindowClass::Finances);
-    window_invalidate_by_class(WindowClass::BottomToolbar);
+    WindowInvalidateByClass(WindowClass::Finances);
+    WindowInvalidateByClass(WindowClass::BottomToolbar);
 }
 
 void CheatSetAction::AddMoney(money64 amount) const
 {
     gCash = add_clamp_money64(gCash, amount);
 
-    window_invalidate_by_class(WindowClass::Finances);
-    window_invalidate_by_class(WindowClass::BottomToolbar);
+    WindowInvalidateByClass(WindowClass::Finances);
+    WindowInvalidateByClass(WindowClass::BottomToolbar);
 }
 
 void CheatSetAction::ClearLoan() const
@@ -555,7 +555,7 @@ void CheatSetAction::GenerateGuests(int32_t count) const
     {
         park.GenerateGuest();
     }
-    window_invalidate_by_class(WindowClass::BottomToolbar);
+    WindowInvalidateByClass(WindowClass::BottomToolbar);
 }
 
 void CheatSetAction::SetGuestParameter(int32_t parameter, int32_t value) const
@@ -616,17 +616,17 @@ void CheatSetAction::GiveObjectToGuests(int32_t object) const
                 break;
             case OBJECT_BALLOON:
                 peep->GiveItem(ShopItem::Balloon);
-                peep->BalloonColour = scenario_rand_max(COLOUR_COUNT - 1);
+                peep->BalloonColour = ScenarioRandMax(COLOUR_COUNT - 1);
                 peep->UpdateSpriteType();
                 break;
             case OBJECT_UMBRELLA:
                 peep->GiveItem(ShopItem::Umbrella);
-                peep->UmbrellaColour = scenario_rand_max(COLOUR_COUNT - 1);
+                peep->UmbrellaColour = ScenarioRandMax(COLOUR_COUNT - 1);
                 peep->UpdateSpriteType();
                 break;
         }
     }
-    window_invalidate_by_class(WindowClass::Peep);
+    WindowInvalidateByClass(WindowClass::Peep);
 }
 
 void CheatSetAction::RemoveAllGuests() const
@@ -673,8 +673,8 @@ void CheatSetAction::RemoveAllGuests() const
         guest->Remove();
     }
 
-    window_invalidate_by_class(WindowClass::Ride);
-    gfx_invalidate_screen();
+    WindowInvalidateByClass(WindowClass::Ride);
+    GfxInvalidateScreen();
 }
 
 void CheatSetAction::SetStaffSpeed(uint8_t value) const
@@ -745,7 +745,7 @@ void CheatSetAction::CreateDucks(int count) const
         // 100 attempts at finding some water to create a few ducks at
         for (int32_t attempts = 0; attempts < 100; attempts++)
         {
-            if (scenario_create_ducks())
+            if (ScenarioCreateDucks())
                 break;
         }
     }

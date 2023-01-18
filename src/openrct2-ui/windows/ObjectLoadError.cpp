@@ -16,6 +16,7 @@
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
@@ -121,7 +122,8 @@ private:
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
                     ft.Add<char*>(_downloadStatusInfo.Name.c_str());
-                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, ft.Data());
+                    OpenRCT2::FormatStringLegacy(
+                        str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, ft.Data());
                 }
                 else
                 {
@@ -129,13 +131,13 @@ private:
                     ft.Add<char*>(_downloadStatusInfo.Source.c_str());
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
-                    format_string(
+                    OpenRCT2::FormatStringLegacy(
                         str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, ft.Data());
                 }
 
                 auto intent = Intent(WindowClass::NetworkStatus);
-                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
-                intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
+                intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
+                intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
                 ContextOpenIntent(&intent);
             }
         }
@@ -203,7 +205,7 @@ private:
 
         auto& entry = _entries[_currentDownloadIndex];
         auto name = String::Trim(std::string(entry.GetName()));
-        log_verbose("Downloading object: [%s]:", name.c_str());
+        LOG_VERBOSE("Downloading object: [%s]:", name.c_str());
         _currentDownloadIndex++;
         UpdateProgress({ name, _lastDownloadSource, _currentDownloadIndex, _entries.size() });
         try
@@ -384,7 +386,7 @@ private:
         {
             selected_list_item = index;
         }
-        widget_invalidate(*this, WIDX_SCROLL);
+        WidgetInvalidate(*this, WIDX_SCROLL);
     }
 
 public:
@@ -409,7 +411,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 return;
             case WIDX_COPY_CURRENT:
                 if (selected_list_item > -1 && selected_list_item < no_list_items)
@@ -437,7 +439,7 @@ public:
         if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
         {
             _highlightedIndex = -1;
-            widget_invalidate(*this, WIDX_SCROLL);
+            WidgetInvalidate(*this, WIDX_SCROLL);
         }
 
 #ifndef DISABLE_HTTP
@@ -480,7 +482,7 @@ public:
         else
             _highlightedIndex = selectedItem;
 
-        widget_invalidate(*this, WIDX_SCROLL);
+        WidgetInvalidate(*this, WIDX_SCROLL);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -502,7 +504,7 @@ public:
     void OnScrollDraw(const int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
         const int32_t listWidth = widgets[WIDX_SCROLL].width();
 
@@ -520,11 +522,11 @@ public:
                                                 { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
             // If hovering over item, change the color and fill the backdrop.
             if (i == selected_list_item)
-                gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].darker);
+                GfxFillRect(&dpi, screenRect, ColourMapA[colours[1]].darker);
             else if (i == _highlightedIndex)
-                gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].mid_dark);
+                GfxFillRect(&dpi, screenRect, ColourMapA[colours[1]].mid_dark);
             else if ((i & 1) != 0) // odd / even check
-                gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].light);
+                GfxFillRect(&dpi, screenRect, ColourMapA[colours[1]].light);
 
             // Draw the actual object entry's name...
             screenCoords.x = NAME_COL_LEFT - 3;
@@ -534,12 +536,12 @@ public:
             auto name = entry.GetName();
             char buffer[256];
             String::Set(buffer, sizeof(buffer), name.data(), name.size());
-            gfx_draw_string(&dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
+            GfxDrawString(&dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
 
             if (entry.Generation == ObjectGeneration::DAT)
             {
                 // ... source game ...
-                const auto sourceStringId = object_manager_get_source_game_string(entry.Entry.GetSourceGame());
+                const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
                 DrawTextBasic(&dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
             }
 
@@ -564,7 +566,7 @@ public:
 rct_window* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
     // Check if window is already open
-    auto* window = window_bring_to_front_by_class(WindowClass::ObjectLoadError);
+    auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);
     if (window == nullptr)
     {
         window = WindowCreate<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);

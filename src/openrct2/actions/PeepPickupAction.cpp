@@ -47,7 +47,7 @@ GameActions::Result PeepPickupAction::Query() const
 {
     if (_entityId.ToUnderlying() >= MAX_ENTITIES || _entityId.IsNull())
     {
-        log_error("Failed to pick up peep for sprite %d", _entityId);
+        LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
 
@@ -59,7 +59,7 @@ GameActions::Result PeepPickupAction::Query() const
     auto* const peep = TryGetEntity<Peep>(_entityId);
     if (peep == nullptr)
     {
-        log_error("Failed to pick up peep for sprite %d", _entityId);
+        LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
 
@@ -106,7 +106,7 @@ GameActions::Result PeepPickupAction::Query() const
             }
             break;
         default:
-            log_error("Invalid pickup type: %u", _type);
+            LOG_ERROR("Invalid pickup type: %u", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
     return res;
@@ -117,7 +117,7 @@ GameActions::Result PeepPickupAction::Execute() const
     Peep* const peep = TryGetEntity<Peep>(_entityId);
     if (peep == nullptr)
     {
-        log_error("Failed to pick up peep for sprite %d", _entityId);
+        LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
 
@@ -145,7 +145,7 @@ GameActions::Result PeepPickupAction::Execute() const
                 if (_owner == network_get_current_player_id())
                 {
                     // prevent tool_cancel()
-                    input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
+                    InputSetFlag(INPUT_FLAG_TOOL_ACTIVE, false);
                 }
             }
 
@@ -176,7 +176,7 @@ GameActions::Result PeepPickupAction::Execute() const
             CancelConcurrentPickups(peep);
             break;
         default:
-            log_error("Invalid pickup type: %u", _type);
+            LOG_ERROR("Invalid pickup type: %u", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
     return res;
@@ -200,5 +200,5 @@ void PeepPickupAction::CancelConcurrentPickups(Peep* pickedPeep) const
     // By assigning the peep to null before calling tool_cancel we can avoid
     // resetting the peep to the initial position.
     network_set_pickup_peep(currentPlayerId, nullptr);
-    tool_cancel();
+    ToolCancel();
 }

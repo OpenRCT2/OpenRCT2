@@ -86,7 +86,7 @@ static void PaintSwingingShipRiders(
 static void PaintSwingingShipStructure(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
         return;
 
@@ -196,8 +196,7 @@ static void PaintSwingingShip(
         {
             if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
-                hasFence = track_paint_util_has_fence(
-                    EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
+                hasFence = TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
                 if (relativeTrackSequence == 2)
                 {
                     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
@@ -214,8 +213,7 @@ static void PaintSwingingShip(
                     (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE));
                 PaintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
 
-                hasFence = track_paint_util_has_fence(
-                    EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
+                hasFence = TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
                 if (relativeTrackSequence == 3)
                 {
                     if (hasFence)
@@ -243,8 +241,7 @@ static void PaintSwingingShip(
         {
             if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
-                hasFence = track_paint_util_has_fence(
-                    EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
+                hasFence = TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
                 if (relativeTrackSequence == 2)
                 {
                     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
@@ -261,8 +258,7 @@ static void PaintSwingingShip(
                     (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE));
                 PaintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
 
-                hasFence = track_paint_util_has_fence(
-                    EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
+                hasFence = TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
                 if (relativeTrackSequence == 3)
                 {
                     if (hasFence)
@@ -309,7 +305,7 @@ static void PaintSwingingShip(
     PaintUtilSetGeneralSupportHeight(session, height + 112, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_swinging_ship(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingShip(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack1x5)
     {

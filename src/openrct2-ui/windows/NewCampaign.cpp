@@ -65,12 +65,12 @@ private:
     static bool RideValueCompare(const RideId& a, const RideId& b)
     {
         auto valueA = 0;
-        auto rideA = get_ride(a);
+        auto rideA = GetRide(a);
         if (rideA != nullptr)
             valueA = rideA->value;
 
         auto valueB = 0;
-        auto rideB = get_ride(b);
+        auto rideB = GetRide(b);
         if (rideB != nullptr)
             valueB = rideB->value;
 
@@ -80,12 +80,12 @@ private:
     static int32_t RideNameCompare(const RideId& a, const RideId& b)
     {
         std::string rideAName = "";
-        auto rideA = get_ride(a);
+        auto rideA = GetRide(a);
         if (rideA != nullptr)
             rideAName = rideA->GetName();
 
         std::string rideBName = "";
-        auto rideB = get_ride(b);
+        auto rideB = GetRide(b);
         if (rideB != nullptr)
             rideBName = rideB->GetName();
 
@@ -210,7 +210,7 @@ public:
                     int32_t numItems = 0;
                     for (auto rideIndex : RideList)
                     {
-                        auto curRide = get_ride(rideIndex);
+                        auto curRide = GetRide(rideIndex);
                         if (curRide != nullptr)
                         {
                             // HACK until dropdown items have longer argument buffers
@@ -260,7 +260,7 @@ public:
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        window_close_by_class(WindowClass::NewCampaign);
+                        WindowCloseByClass(WindowClass::NewCampaign);
                     }
                 });
                 GameActions::Execute(&gameAction);
@@ -311,7 +311,7 @@ public:
                 widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
                 if (campaign.RideId != RideId::GetNull())
                 {
-                    auto curRide = get_ride(campaign.RideId);
+                    auto curRide = GetRide(campaign.RideId);
                     if (curRide != nullptr)
                     {
                         widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
@@ -373,13 +373,13 @@ public:
 
 rct_window* WindowNewCampaignOpen(int16_t campaignType)
 {
-    auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WindowClass::NewCampaign));
+    auto w = static_cast<NewCampaignWindow*>(WindowBringToFrontByClass(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         if (w->campaign.campaign_type == campaignType)
             return w;
 
-        window_close(*w);
+        WindowClose(*w);
     }
 
     w = WindowCreate<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
@@ -392,7 +392,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
 
 void WindowCampaignRefreshRides()
 {
-    auto w = static_cast<NewCampaignWindow*>(window_find_by_class(WindowClass::NewCampaign));
+    auto w = static_cast<NewCampaignWindow*>(WindowFindByClass(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         w->RefreshRides();

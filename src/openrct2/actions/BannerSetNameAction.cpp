@@ -47,7 +47,7 @@ GameActions::Result BannerSetNameAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_warning("Invalid banner id, banner id = %d", _bannerIndex);
+        LOG_WARNING("Invalid banner id, banner id = %d", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
     }
     return GameActions::Result();
@@ -58,18 +58,18 @@ GameActions::Result BannerSetNameAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_warning("Invalid banner id, banner id = %d", _bannerIndex);
+        LOG_WARNING("Invalid banner id, banner id = %d", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
     }
 
     banner->text = _name;
 
     auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-    intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
+    intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
     ContextBroadcastIntent(&intent);
 
-    scrolling_text_invalidate();
-    gfx_invalidate_screen();
+    ScrollingTextInvalidate();
+    GfxInvalidateScreen();
 
     return GameActions::Result();
 }

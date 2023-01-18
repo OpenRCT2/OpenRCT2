@@ -35,7 +35,7 @@ namespace OpenRCT2::Scripting
 
 namespace OpenRCT2::Ui::Windows
 {
-    rct_window* window_custom_open(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
+    rct_window* WindowCustomOpen(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
 }
 
 namespace OpenRCT2::Scripting
@@ -110,7 +110,7 @@ namespace OpenRCT2::Scripting
 
         void cancel()
         {
-            tool_cancel();
+            ToolCancel();
         }
     };
 
@@ -151,7 +151,7 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScTool> tool_get() const
         {
-            if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
             {
                 return std::make_shared<ScTool>(_scriptEngine.GetContext());
             }
@@ -173,7 +173,7 @@ namespace OpenRCT2::Scripting
             owner->ThrowIfStopping();
 
             std::shared_ptr<ScWindow> scWindow = nullptr;
-            auto w = window_custom_open(owner, desc);
+            auto w = WindowCustomOpen(owner, desc);
             if (w != nullptr)
             {
                 scWindow = std::make_shared<ScWindow>(w);
@@ -188,18 +188,18 @@ namespace OpenRCT2::Scripting
             {
                 if (id.type() == DukValue::Type::NUMBER)
                 {
-                    window_close_by_number(cls, id.as_int());
+                    WindowCloseByNumber(cls, id.as_int());
                 }
                 else
                 {
-                    window_close_by_class(cls);
+                    WindowCloseByClass(cls);
                 }
             }
         }
 
         void closeAllWindows()
         {
-            window_close_all();
+            WindowCloseAll();
         }
 
         std::shared_ptr<ScWindow> getWindow(DukValue a) const

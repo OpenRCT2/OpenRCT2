@@ -15,6 +15,7 @@
 #include "../../core/String.hpp"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/LargeSceneryObject.h"
 #include "../../profiling/Profiling.h"
@@ -212,7 +213,7 @@ static void PaintLargeScenery3DText(
     char signString[256];
     auto ft = Formatter();
     banner->FormatTextTo(ft);
-    format_string(signString, sizeof(signString), STR_STRINGID, ft.Data());
+    OpenRCT2::FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
 
     auto offsetY = text->offset[(direction & 1)].y * 2;
     if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
@@ -224,7 +225,7 @@ static void PaintLargeScenery3DText(
         for (auto codepoint : CodepointView(displayText))
         {
             char line[8]{};
-            utf8_write_codepoint(line, codepoint);
+            UTF8WriteCodepoint(line, codepoint);
             PaintLargeScenery3DTextLine(
                 session, sceneryEntry, *text, line, imageTemplate, direction, offsetY - displayTextHeight);
 
@@ -313,17 +314,17 @@ static void PaintLargeSceneryScrollingText(
     char text[256];
     if (gConfigGeneral.UpperCaseBanners)
     {
-        format_string_to_upper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
+        FormatStringToUpper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
     else
     {
-        format_string(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
+        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
 
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
-    auto stringWidth = gfx_get_string_width(text, FontStyle::Tiny);
+    auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
-    auto imageId = scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
+    auto imageId = ScrollingTextSetup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
 }
 
@@ -351,7 +352,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 
     auto isGhost = false;
     ImageId imageTemplate;
-    if (gTrackDesignSaveMode && !track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&tileElement)))
+    if (gTrackDesignSaveMode && !TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
         isGhost = true;

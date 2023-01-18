@@ -588,7 +588,7 @@ public:
     {
         if (page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER)
         {
-            auto val = string_to_money(std::string(text).c_str());
+            auto val = StringToMoney(std::string(text).c_str());
             if (val != MONEY64_UNDEFINED)
             {
                 _moneySpinnerValue = val;
@@ -662,7 +662,7 @@ private:
             uint32_t sprite_idx = SPR_TAB_FINANCES_SUMMARY_0;
             if (page == WINDOW_CHEATS_PAGE_MONEY)
                 sprite_idx += (frame_no / 2) % 8;
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
         }
 
@@ -672,14 +672,14 @@ private:
             uint32_t sprite_idx = SPR_TAB_GUESTS_0;
             if (page == WINDOW_CHEATS_PAGE_GUESTS)
                 sprite_idx += (frame_no / 3) % 8;
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
         }
 
         // Misc tab
         if (!IsWidgetDisabled(WIDX_TAB_3))
         {
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
         }
 
@@ -689,7 +689,7 @@ private:
             uint32_t sprite_idx = SPR_TAB_RIDE_0;
             if (page == WINDOW_CHEATS_PAGE_RIDES)
                 sprite_idx += (frame_no / 4) % 16;
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
         }
     }
@@ -750,14 +750,14 @@ private:
             {
                 auto setDateAction = ParkSetDateAction(_yearSpinnerValue, _monthSpinnerValue, _daySpinnerValue);
                 GameActions::Execute(&setDateAction);
-                window_invalidate_by_class(WindowClass::BottomToolbar);
+                WindowInvalidateByClass(WindowClass::BottomToolbar);
                 break;
             }
             case WIDX_DATE_RESET:
             {
                 auto setDateAction = ParkSetDateAction(1, 1, 1);
                 GameActions::Execute(&setDateAction);
-                window_invalidate_by_class(WindowClass::BottomToolbar);
+                WindowInvalidateByClass(WindowClass::BottomToolbar);
                 InvalidateWidget(WIDX_YEAR_BOX);
                 InvalidateWidget(WIDX_MONTH_BOX);
                 InvalidateWidget(WIDX_DAY_BOX);
@@ -774,7 +774,7 @@ private:
                 CheatsSet(CheatType::NoMoney, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                 break;
             case WIDX_MONEY_SPINNER:
-                money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
+                MoneyToString(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
                 WindowTextInputRawOpen(
                     this, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneySpinnerText,
                     MONEY_STRING_MAXLENGTH);
@@ -1113,7 +1113,7 @@ private:
 
 rct_window* WindowCheatsOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::Cheats);
+    auto* window = WindowBringToFrontByClass(WindowClass::Cheats);
     if (window == nullptr)
     {
         window = WindowCreate<CheatsWindow>(WindowClass::Cheats, ScreenCoordsXY(32, 32), WW, WH);

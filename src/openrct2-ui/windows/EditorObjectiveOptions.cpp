@@ -198,7 +198,7 @@ rct_window* WindowEditorObjectiveOptionsOpen()
 {
     rct_window* w;
 
-    w = window_bring_to_front_by_class(WindowClass::EditorObjectiveOptions);
+    w = WindowBringToFrontByClass(WindowClass::EditorObjectiveOptions);
     if (w != nullptr)
         return w;
 
@@ -240,7 +240,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
     if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
         spriteIndex += (w->frame_no / 4) % 16;
 
-    gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
+    GfxDrawSprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
     if (!WidgetIsDisabled(*w, WIDX_TAB_2))
@@ -250,7 +250,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
         if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
             spriteIndex += (w->frame_no / 4) % 16;
 
-        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 }
 
@@ -273,8 +273,8 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
     w->widgets = window_editor_objective_options_widgets[page];
     w->Invalidate();
     WindowEditorObjectiveOptionsUpdateDisabledWidgets(w);
-    window_event_resize_call(w);
-    window_event_invalidate_call(w);
+    WindowEventResizeCall(w);
+    WindowEventInvalidateCall(w);
     WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
@@ -334,7 +334,7 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, WidgetIndex w
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -366,7 +366,7 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, WidgetIndex w
  */
 static void WindowEditorObjectiveOptionsMainResize(rct_window* w)
 {
-    window_set_resize(*w, 450, 229, 450, 229);
+    WindowSetResize(*w, 450, 229, 450, 229);
 }
 
 static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
@@ -649,8 +649,8 @@ static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
     uint8_t objectiveType;
 
     w->frame_no++;
-    window_event_invalidate_call(w);
-    widget_invalidate(*w, WIDX_TAB_1);
+    WindowEventInvalidateCall(w);
+    WidgetInvalidate(*w, WIDX_TAB_1);
 
     parkFlags = gParkFlags;
     objectiveType = gScenarioObjective.Type;
@@ -911,7 +911,7 @@ static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, WidgetIndex 
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -926,7 +926,7 @@ static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, WidgetIndex 
  */
 static void WindowEditorObjectiveOptionsRidesResize(rct_window* w)
 {
-    window_set_resize(*w, 380, 224, 380, 224);
+    WindowSetResize(*w, 380, 224, 380, 224);
 }
 
 /**
@@ -936,9 +936,9 @@ static void WindowEditorObjectiveOptionsRidesResize(rct_window* w)
 static void WindowEditorObjectiveOptionsRidesUpdate(rct_window* w)
 {
     w->frame_no++;
-    window_event_invalidate_call(w);
-    window_event_resize_call(w);
-    widget_invalidate(*w, WIDX_TAB_2);
+    WindowEventInvalidateCall(w);
+    WindowEventResizeCall(w);
+    WidgetInvalidate(*w, WIDX_TAB_2);
 
     auto numItems = 0;
     for (auto& ride : GetRideManager())
@@ -979,7 +979,7 @@ static void WindowEditorObjectiveOptionsRidesScrollmousedown(
         return;
 
     const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
-    auto ride = get_ride(rideId);
+    auto ride = GetRide(rideId);
     if (ride != nullptr)
     {
         ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
@@ -1051,7 +1051,7 @@ static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, rct_drawpixeli
 static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t colour = ColourMapA[w->colours[1]].mid_light;
-    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
+    GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
 
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
@@ -1061,25 +1061,25 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
             continue;
 
         // Checkbox
-        gfx_fill_rect_inset(dpi, { { 2, y }, { 11, y + 10 } }, w->colours[1], INSET_RECT_F_E0);
+        GfxFillRectInset(dpi, { { 2, y }, { 11, y + 10 } }, w->colours[1], INSET_RECT_F_E0);
 
         // Highlighted
         auto stringId = STR_BLACK_STRING;
         if (i == w->selected_list_item)
         {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, { 0, y, w->width, y + 11 }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(dpi, { 0, y, w->width, y + 11 }, FilterPaletteID::PaletteDarken1);
         }
 
         // Checkbox mark
         const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
-        auto ride = get_ride(rideId);
+        auto ride = GetRide(rideId);
         if (ride != nullptr)
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
             {
                 auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
-                gfx_draw_string(
+                GfxDrawString(
                     dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
                     { static_cast<colour_t>(w->colours[1] & 0x7F), FontStyle::Medium, darkness });
             }

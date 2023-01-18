@@ -66,7 +66,7 @@ public:
         widgets = window_clear_scenery_widgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         gLandToolSize = 2;
         gClearSceneryCost = MONEY64_UNDEFINED;
@@ -81,7 +81,7 @@ public:
     void OnClose() override
     {
         if (ClearSceneryToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
     void OnMouseUp(const WidgetIndex widgetIndex) override
@@ -199,7 +199,7 @@ public:
 
 rct_window* WindowClearSceneryOpen()
 {
-    auto* w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WindowClass::ClearScenery));
+    auto* w = static_cast<CleanSceneryWindow*>(WindowBringToFrontByClass(WindowClass::ClearScenery));
 
     if (w != nullptr)
         return w;

@@ -30,16 +30,16 @@ enum class ChatInput : uint8_t
 
 extern bool gChatOpen;
 
-bool chat_available();
-void chat_open();
-void chat_close();
-void chat_toggle();
+bool ChatAvailable();
+void ChatOpen();
+void ChatClose();
+void ChatToggle();
 
-void chat_init();
-void chat_update();
-void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColour);
+void ChatInit();
+void ChatUpdate();
+void ChatDraw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColour);
 
-void chat_history_add(std::string_view s);
-void chat_input(ChatInput input);
+void ChatAddHistory(std::string_view s);
+void ChatInput(ChatInput input);
 
-int32_t chat_string_wrapped_get_height(void* args, int32_t width);
+int32_t ChatStringWrappedGetHeight(void* args, int32_t width);

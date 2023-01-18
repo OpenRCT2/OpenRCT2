@@ -1812,7 +1812,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_down_to_25_de
     },
 };
 
-void junior_rc_paint_track_flat(
+void JuniorRcPaintTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -1820,7 +1820,7 @@ void junior_rc_paint_track_flat(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
@@ -1832,7 +1832,7 @@ void junior_rc_paint_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-void junior_rc_paint_station(
+void JuniorRcPaintStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, bool drawBlockBrake)
 {
@@ -1884,13 +1884,13 @@ void junior_rc_paint_station(
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-void junior_rc_paint_track_25_deg_up(
+void JuniorRcPaintTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -1902,7 +1902,7 @@ void junior_rc_paint_track_25_deg_up(
     uint8_t tunnelType[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
     PaintUtilPushTunnelRotated(session, direction, height + tunnelHeights[direction], tunnelType[direction]);
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1913,7 +1913,7 @@ void junior_rc_paint_track_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_flat_to_25_deg_up(
+void JuniorRcPaintTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -1930,7 +1930,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         uint16_t ax = (direction == 0) ? 5 : 3;
@@ -1942,7 +1942,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-void junior_rc_paint_track_25_deg_up_to_flat(
+void JuniorRcPaintTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -1972,7 +1972,7 @@ void junior_rc_paint_track_25_deg_up_to_flat(
         PaintUtilPushTunnelLeft(session, tunnelHeight, tunnelType);
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1994,7 +1994,7 @@ static void junior_rc_right_quarter_turn_5_tiles_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint(
+    TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_flat_quarter_turn_5_tiles, defaultRightQuarterTurn5TilesOffsets,
         defaultRightQuarterTurn5TilesBoundLengths, defaultRightQuarterTurn5TilesBoundOffsets);
@@ -2115,7 +2115,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(
         }
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2163,7 +2163,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(
         }
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2260,7 +2260,7 @@ static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(
     {
         thickness = 26;
     }
-    track_paint_util_right_quarter_turn_5_tiles_paint(
+    TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, thickness, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_banked_quarter_turn_5_tiles, nullptr, junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths,
         junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets);
@@ -2385,7 +2385,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
         }
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, edi, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2445,7 +2445,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
         }
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, edi, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2522,7 +2522,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
         }
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, edi, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2583,7 +2583,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
         }
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, edi, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2671,7 +2671,7 @@ static void junior_rc_left_bank_paint_setup(
         PaintUtilPushTunnelLeft(session, height, 0);
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2692,11 +2692,11 @@ static void junior_rc_right_bank_paint_setup(
     junior_rc_left_bank_paint_setup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
+void JuniorRcPaintTrackLeftQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint(
+    TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[EnumValue(chainType)],
         junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr);
@@ -2770,11 +2770,11 @@ void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
     }
 }
 
-void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
+void JuniorRcPaintTrackRightQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint(
+    TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[EnumValue(chainType)], defaultRightQuarterTurn5TilesOffsets,
         defaultRightQuarterTurn5TilesBoundLengths, nullptr);
@@ -2854,7 +2854,7 @@ static void junior_rc_left_quarter_turn_5_tiles_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
+    JuniorRcPaintTrackLeftQuarterTurn5Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -2865,7 +2865,7 @@ static void junior_rc_right_quarter_turn_5_tiles_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
+    JuniorRcPaintTrackRightQuarterTurn5Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -3093,11 +3093,11 @@ static void junior_rc_right_quarter_turn_3_tiles_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_right_quarter_turn_3_tiles_paint(
+    TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
         defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     static constexpr uint8_t supportType[2][4] = {
         { 1, 0, 0, 2 },
@@ -3197,11 +3197,11 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
         { 1, 1, 1, 1 },
     };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint(
+    TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, thickness[direction][trackSequence], height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_banked_quarter_turn_3_tiles, nullptr, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths,
         junior_rc_right_quarter_turn_3_tiles_bank_offsets);
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     if (direction == 1 && trackSequence == 3)
     {
@@ -3245,7 +3245,7 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
+void juniorRcPaintTrackRightQuarterTurn3Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -3326,7 +3326,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
         PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
+void JuniorRcPaintTrackRightQuarterTurn3Tiles25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -3423,7 +3423,7 @@ static void junior_rc_right_quarter_turn_3_tiles_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
+    juniorRcPaintTrackRightQuarterTurn3Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -3434,7 +3434,7 @@ static void junior_rc_right_quarter_turn_3_tiles_25_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
+    JuniorRcPaintTrackRightQuarterTurn3Tiles25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -3479,7 +3479,7 @@ static void junior_rc_right_half_banked_helix_up_small_paint_setup(
         direction++;
         direction &= 3;
     }
-    track_paint_util_right_helix_up_small_quarter_tiles_paint(
+    TrackPaintUtilRightHelixUpSmallQuarterTilesPaint(
         session, thickness, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_half_banked_helix_up_small_quarter_tiles, nullptr,
         defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets);
@@ -3547,7 +3547,7 @@ static void junior_rc_right_half_banked_helix_down_small_paint_setup(
         direction++;
         direction &= 3;
     }
-    track_paint_util_right_helix_up_small_quarter_tiles_paint(
+    TrackPaintUtilRightHelixUpSmallQuarterTilesPaint(
         session, thickness, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_half_banked_helix_down_small_quarter_tiles, nullptr,
         defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets);
@@ -3647,7 +3647,7 @@ static void junior_rc_right_half_banked_helix_up_large_paint_setup(
         direction++;
         direction &= 3;
     }
-    track_paint_util_right_helix_up_large_quarter_tiles_paint(
+    TrackPaintUtilRightHelixUpLargeQuarterTilesPaint(
         session, thickness, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_half_banked_helix_up_large_quarter_tiles, nullptr,
         defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets);
@@ -3731,7 +3731,7 @@ static void junior_rc_right_half_banked_helix_down_large_paint_setup(
         direction++;
         direction &= 3;
     }
-    track_paint_util_right_helix_up_large_quarter_tiles_paint(
+    TrackPaintUtilRightHelixUpLargeQuarterTilesPaint(
         session, thickness, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_half_banked_helix_down_large_quarter_tiles, nullptr,
         defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets);
@@ -3857,7 +3857,7 @@ static void junior_rc_brake_paint_setup(
         PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3893,7 +3893,7 @@ static void junior_rc_block_brake_paint_setup(
         PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3909,7 +3909,7 @@ static void junior_rc_left_eighth_to_diag_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_eighth_to_diag_tiles_paint(
+    TrackPaintUtilEighthToDiagTilesPaint(
         session, defaultEighthToDiagThickness, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_left_eight_to_diag, nullptr, defaultLeftEighthToDiagBoundLengths,
         defaultLeftEighthToDiagBoundOffsets);
@@ -3971,7 +3971,7 @@ static void junior_rc_right_eighth_to_diag_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_eighth_to_diag_tiles_paint(
+    TrackPaintUtilEighthToDiagTilesPaint(
         session, defaultEighthToDiagThickness, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_eight_to_diag, nullptr, defaultRightEighthToDiagBoundLengths,
         defaultRightEighthToDiagBoundOffsets);
@@ -4134,7 +4134,7 @@ static void junior_rc_left_eighth_to_diag_bank_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_eighth_to_diag_tiles_paint(
+    TrackPaintUtilEighthToDiagTilesPaint(
         session, junior_rc_left_eighth_to_diag_bank_thickness, height, direction, trackSequence,
         session.TrackColours[SCHEME_TRACK], junior_rc_track_pieces_left_eight_to_diag_bank, nullptr,
         junior_rc_left_eighth_to_diag_bank_bound_lengths, junior_rc_left_eighth_to_diag_bank_bound_offsets);
@@ -4277,7 +4277,7 @@ static void junior_rc_right_eighth_to_diag_bank_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_eighth_to_diag_tiles_paint(
+    TrackPaintUtilEighthToDiagTilesPaint(
         session, junior_rc_right_eighth_to_diag_bank_thickness, height, direction, trackSequence,
         session.TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_eight_to_diag_bank, nullptr,
         junior_rc_right_eighth_to_diag_bank_bound_lengths, junior_rc_right_eighth_to_diag_bank_bound_offsets);
@@ -4368,11 +4368,11 @@ static constexpr const uint8_t junior_rc_diag_support_segment[] = {
     3,
 };
 
-void junior_rc_paint_track_diag_flat(
+void JuniorRcPaintTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4388,11 +4388,11 @@ void junior_rc_paint_track_diag_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_up(
+void JuniorRcPaintTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_25_deg_up[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4408,11 +4408,11 @@ void junior_rc_paint_track_diag_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_diag_flat_to_25_deg_up(
+void JuniorRcPaintTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_flat_to_25_deg_up[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -4429,14 +4429,14 @@ void junior_rc_paint_track_diag_flat_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-void junior_rc_paint_track_diag_flat_to_60_deg_up(
+void JuniorRcPaintTrackDiagFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
     chainType = std::min(JuniorRcChainType::FrictionWheels, chainType);
 
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_flat_to_60_deg_up[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -4453,11 +4453,11 @@ void junior_rc_paint_track_diag_flat_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_up_to_flat(
+void JuniorRcPaintTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_25_deg_up_to_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -4474,14 +4474,14 @@ void junior_rc_paint_track_diag_25_deg_up_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_up_to_flat(
+void JuniorRcPaintTrackDiag60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
     chainType = std::min(JuniorRcChainType::FrictionWheels, chainType);
 
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_60_deg_up_to_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -4498,11 +4498,11 @@ void junior_rc_paint_track_diag_60_deg_up_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_down(
+void JuniorRcPaintTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_25_deg_down[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -4519,11 +4519,11 @@ void junior_rc_paint_track_diag_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_diag_flat_to_25_deg_down(
+void JuniorRcPaintTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_flat_to_25_deg_down[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -4540,14 +4540,14 @@ void junior_rc_paint_track_diag_flat_to_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-void junior_rc_paint_track_diag_flat_to_60_deg_down(
+void JuniorRcPaintTrackDiagFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
     chainType = std::min(JuniorRcChainType::FrictionWheels, chainType);
 
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_flat_to_60_deg_down[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -4564,11 +4564,11 @@ void junior_rc_paint_track_diag_flat_to_60_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_down_to_flat(
+void JuniorRcPaintTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_25_deg_down_to_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -4585,14 +4585,14 @@ void junior_rc_paint_track_diag_25_deg_down_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_down_to_flat(
+void JuniorRcPaintTrackDiag60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
     chainType = std::min(JuniorRcChainType::FrictionWheels, chainType);
 
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_60_deg_down_to_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -4615,7 +4615,7 @@ static void junior_rc_diag_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat(
+    JuniorRcPaintTrackDiagFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4626,7 +4626,7 @@ static void junior_rc_diag_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_up(
+    JuniorRcPaintTrackDiag25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4637,7 +4637,7 @@ static void junior_rc_diag_flat_to_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_25_deg_up(
+    JuniorRcPaintTrackDiagFlatTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4647,7 +4647,7 @@ static void junior_rc_diag_flat_to_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_60_deg_up(
+    JuniorRcPaintTrackDiagFlatTo60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4658,7 +4658,7 @@ static void junior_rc_diag_25_deg_up_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_up_to_flat(
+    JuniorRcPaintTrackDiag25DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4668,7 +4668,7 @@ static void junior_rc_diag_60_deg_up_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_up_to_flat(
+    JuniorRcPaintTrackDiag60DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4679,7 +4679,7 @@ static void junior_rc_diag_25_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_down(
+    JuniorRcPaintTrackDiag25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4690,7 +4690,7 @@ static void junior_rc_diag_flat_to_25_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_25_deg_down(
+    JuniorRcPaintTrackDiagFlatTo25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4700,7 +4700,7 @@ static void junior_rc_diag_flat_to_60_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_60_deg_down(
+    JuniorRcPaintTrackDiagFlatTo60DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4711,7 +4711,7 @@ static void junior_rc_diag_25_deg_down_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_down_to_flat(
+    JuniorRcPaintTrackDiag25DegDownToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4721,7 +4721,7 @@ static void junior_rc_diag_60_deg_down_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_down_to_flat(
+    JuniorRcPaintTrackDiag60DegDownToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -4731,7 +4731,7 @@ static void junior_rc_diag_flat_to_left_bank_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_flat_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4758,7 +4758,7 @@ static void junior_rc_diag_flat_to_right_bank_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_flat_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4785,7 +4785,7 @@ static void junior_rc_diag_left_bank_to_flat_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_left_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4812,7 +4812,7 @@ static void junior_rc_diag_right_bank_to_flat_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_right_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4839,7 +4839,7 @@ static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_left_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4866,7 +4866,7 @@ static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_right_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4893,7 +4893,7 @@ static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_25_deg_up_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4920,7 +4920,7 @@ static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_25_deg_up_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4947,7 +4947,7 @@ static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_left_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -4974,7 +4974,7 @@ static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_right_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -5001,7 +5001,7 @@ static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_25_deg_down_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -5028,7 +5028,7 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_25_deg_down_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -5070,7 +5070,7 @@ static void junior_rc_diag_left_bank_paint_setup(
     const TrackElement& trackElement)
 {
     uint8_t thickness = direction == 0 ? 0 : 1;
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, thickness, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths,
         junior_rc_diag_left_bank_bound_offsets);
@@ -5093,7 +5093,7 @@ static void junior_rc_diag_right_bank_paint_setup(
     const TrackElement& trackElement)
 {
     uint8_t thickness = direction == 2 ? 0 : 1;
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, thickness, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths,
         junior_rc_diag_right_bank_bound_offsets);
@@ -5138,7 +5138,7 @@ static constexpr const CoordsXY junior_rc_60_deg_up_bound_lengths[4] = {
     { 20, 32 },
 };
 
-void junior_rc_paint_track_60_deg_up(
+void JuniorRcPaintTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5167,7 +5167,7 @@ void junior_rc_paint_track_60_deg_up(
     }
 
     static constexpr int8_t support[4] = { 35, 29, 25, 32 };
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height,
@@ -5184,7 +5184,7 @@ static void junior_rc_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_60_deg_up(
+    JuniorRcPaintTrack60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5217,7 +5217,7 @@ static constexpr const CoordsXY junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4
     { { 6, 0 }, { 0, 0 } },
 };
 
-void junior_rc_paint_track_25_deg_up_to_60_deg_up(
+void JuniorRcPaintTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5259,7 +5259,7 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
     }
 
     static constexpr int8_t support[4] = { 12, 12, 12, 14 };
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height,
@@ -5276,7 +5276,7 @@ static void junior_rc_25_deg_up_to_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_25_deg_up_to_60_deg_up(
+    JuniorRcPaintTrack25DegUpTo60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5288,7 +5288,7 @@ static void junior_rc_60_deg_down_to_25_deg_down_paint_setup(
     junior_rc_25_deg_up_to_60_deg_up_paint_setup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-void junior_rc_paint_track_60_deg_up_to_25_deg_up(
+void JuniorRcPaintTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5329,7 +5329,7 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
             break;
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height,
@@ -5346,7 +5346,7 @@ static void junior_rc_60_deg_up_to_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_60_deg_up_to_25_deg_up(
+    JuniorRcPaintTrack60DegUpTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5358,11 +5358,11 @@ static void junior_rc_25_deg_down_to_60_deg_down_paint_setup(
     junior_rc_60_deg_up_to_25_deg_up_paint_setup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-void junior_rc_paint_track_diag_60_deg_up(
+void JuniorRcPaintTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_60_deg_up[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -5378,11 +5378,11 @@ void junior_rc_paint_track_diag_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_down(
+void JuniorRcPaintTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_60_deg_down[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
@@ -5399,11 +5399,11 @@ void junior_rc_paint_track_diag_60_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
+void JuniorRcPaintTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[EnumValue(chainType)], defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
@@ -5420,7 +5420,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
+void JuniorRcPaintTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5434,7 +5434,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
     }
     else
     {
-        track_paint_util_diag_tiles_paint(
+        TrackPaintUtilDiagTilesPaint(
             session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
             junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[EnumValue(chainType)], defaultDiagTileOffsets,
             defaultDiagBoundLengths, nullptr);
@@ -5452,7 +5452,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
+void JuniorRcPaintTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
@@ -5466,7 +5466,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
     }
     else
     {
-        track_paint_util_diag_tiles_paint(
+        TrackPaintUtilDiagTilesPaint(
             session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
             junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[EnumValue(chainType)], defaultDiagTileOffsets,
             defaultDiagBoundLengths, nullptr);
@@ -5484,11 +5484,11 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
+void JuniorRcPaintTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
-    track_paint_util_diag_tiles_paint(
+    TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[EnumValue(chainType)], defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
@@ -5510,7 +5510,7 @@ static void junior_rc_diag_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_up(
+    JuniorRcPaintTrackDiag60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5520,7 +5520,7 @@ static void junior_rc_diag_60_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_down(
+    JuniorRcPaintTrackDiag60DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5530,7 +5530,7 @@ static void junior_rc_diag_25_deg_up_to_60_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
+    JuniorRcPaintTrackDiag25DegUpTo60DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5540,7 +5540,7 @@ static void junior_rc_diag_60_deg_up_to_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
+    JuniorRcPaintTrackDiag60DegUpTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5550,7 +5550,7 @@ static void junior_rc_diag_25_deg_down_to_60_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
+    JuniorRcPaintTrackDiag25DegDownTo60DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5560,7 +5560,7 @@ static void junior_rc_diag_60_deg_down_to_25_deg_down_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
+    JuniorRcPaintTrackDiag60DegDownTo25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5643,7 +5643,7 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
     }
 
     static constexpr int8_t support[4] = { 12, 12, 12, 14 };
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height - 7,
@@ -5704,7 +5704,7 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
             break;
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height - 5,
@@ -5729,7 +5729,7 @@ static void junior_rc_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_flat(
+    JuniorRcPaintTrackFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5739,7 +5739,7 @@ static void paint_junior_rc_station_track(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_station(session, ride, trackSequence, direction, height, trackElement, true);
+    JuniorRcPaintStation(session, ride, trackSequence, direction, height, trackElement, true);
 }
 
 /* rct2: 0x0051881E */
@@ -5748,7 +5748,7 @@ static void junior_rc_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_25_deg_up(
+    JuniorRcPaintTrack25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5759,7 +5759,7 @@ static void junior_rc_flat_to_25_deg_up_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_flat_to_25_deg_up(
+    JuniorRcPaintTrackFlatTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5770,7 +5770,7 @@ static void junior_rc_25_deg_up_to_flat_paint_setup(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_25_deg_up_to_flat(
+    JuniorRcPaintTrack25DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::FrictionWheels : JuniorRcChainType::None);
 }
@@ -5820,7 +5820,7 @@ static void junior_rc_booster_paint_setup(
         PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         uint8_t supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -5881,14 +5881,14 @@ static void junior_rc_track_on_ride_photo(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
             break;
     }
-    track_paint_util_onride_photo_paint(session, direction, height + 3 + photoCameraOffset, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3 + photoCameraOffset, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48 + photoCameraOffset, 0x20);
 }
 
 /* 0x008AAA0C */
-TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRc(int32_t trackType)
 {
     switch (trackType)
     {

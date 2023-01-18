@@ -221,7 +221,7 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (track_type_is_station(trackType) || trackType == TrackElemType::TowerBase)
+    if (TrackTypeIsStation(trackType) || trackType == TrackElemType::TowerBase)
     {
         return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
@@ -254,7 +254,7 @@ uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 
 bool RCT12TrackElement::HasGreenLight() const
 {
-    if (track_type_is_station(trackType))
+    if (TrackTypeIsStation(trackType))
     {
         return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
     }
@@ -462,7 +462,7 @@ uint8_t RCT12BannerElement::GetAllowedEdges() const
     return AllowedEdges & 0b00001111;
 }
 
-bool is_user_string_id(StringId stringId)
+bool IsUserStringID(StringId stringId)
 {
     return stringId >= 0x8000 && stringId < 0x9000;
 }
@@ -632,7 +632,7 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
     {
         buffer = buffer.substr(0, nullTerminator);
     }
-    auto asUtf8 = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
+    auto asUtf8 = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
 
     std::string result;
     CodepointView codepoints(asUtf8);
@@ -847,8 +847,8 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
         newResearchItem.category = static_cast<ResearchCategory>(category);
         if (newResearchItem.type == Research::EntryType::Ride)
         {
-            auto* rideEntry = get_ride_entry(newResearchItem.entryIndex);
-            newResearchItem.baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(baseRideType, rideEntry)
+            auto* rideEntry = GetRideEntryByIndex(newResearchItem.entryIndex);
+            newResearchItem.baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(baseRideType, *rideEntry)
                                                                 : baseRideType;
         }
         else

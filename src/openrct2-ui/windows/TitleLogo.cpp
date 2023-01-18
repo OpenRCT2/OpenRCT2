@@ -60,14 +60,14 @@ public:
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 2, 2 };
-        gfx_draw_sprite(&dpi, ImageId(SPR_G2_LOGO), screenCoords);
-        gfx_draw_sprite(&dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
+        GfxDrawSprite(&dpi, ImageId(SPR_G2_LOGO), screenCoords);
+        GfxDrawSprite(&dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
     }
 };
 
 rct_window* WindowTitleLogoOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::TitleLogo);
+    auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
     if (window == nullptr)
     {
         window = WindowCreate<TitleLogoWindow>(

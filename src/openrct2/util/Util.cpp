@@ -269,11 +269,11 @@ char* safe_strcpy(char* destination, const char* source, size_t size)
     const char* sourceLimit = source + size - 1;
     const char* ch = source;
     uint32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0)
+    while ((codepoint = UTF8GetNext(ch, &ch)) != 0)
     {
         if (ch <= sourceLimit)
         {
-            destination = utf8_write_codepoint(destination, codepoint);
+            destination = UTF8WriteCodepoint(destination, codepoint);
         }
         else
         {
@@ -284,7 +284,7 @@ char* safe_strcpy(char* destination, const char* source, size_t size)
 
     if (truncated)
     {
-        log_warning("Truncating string \"%s\" to %d bytes.", result, size);
+        LOG_WARNING("Truncating string \"%s\" to %d bytes.", result, size);
     }
     return result;
 }
@@ -330,7 +330,7 @@ char* safe_strcat(char* destination, const char* source, size_t size)
     if (!terminated)
     {
         result[size - 1] = '\0';
-        log_warning("Truncating string \"%s\" to %d bytes.", result, size);
+        LOG_WARNING("Truncating string \"%s\" to %d bytes.", result, size);
     }
 
     return result;
@@ -374,7 +374,7 @@ bool util_gzip_compress(FILE* source, FILE* dest)
     ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | GZIP_ENCODING, 8, Z_DEFAULT_STRATEGY);
     if (ret != Z_OK)
     {
-        log_error("Failed to initialise stream");
+        LOG_ERROR("Failed to initialise stream");
         return false;
     }
     do
@@ -383,7 +383,7 @@ bool util_gzip_compress(FILE* source, FILE* dest)
         if (ferror(source))
         {
             deflateEnd(&strm);
-            log_error("Failed to read data from source");
+            LOG_ERROR("Failed to read data from source");
             return false;
         }
         flush = feof(source) ? Z_FINISH : Z_NO_FLUSH;
@@ -395,14 +395,14 @@ bool util_gzip_compress(FILE* source, FILE* dest)
             ret = deflate(&strm, flush);
             if (ret == Z_STREAM_ERROR)
             {
-                log_error("Failed to compress data");
+                LOG_ERROR("Failed to compress data");
                 return false;
             }
             have = CHUNK - strm.avail_out;
             if (fwrite(out, 1, have, dest) != have || ferror(dest))
             {
                 deflateEnd(&strm);
-                log_error("Failed to write data to destination");
+                LOG_ERROR("Failed to write data to destination");
                 return false;
             }
         } while (strm.avail_out == 0);

@@ -232,7 +232,7 @@ static ScreenCoordsXY _windowInformationSize;
 rct_window* WindowMultiplayerOpen()
 {
     // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class(WindowClass::Multiplayer);
+    rct_window* window = WindowBringToFrontByClass(WindowClass::Multiplayer);
     if (window == nullptr)
     {
         window = WindowCreateAutoPos(
@@ -258,8 +258,8 @@ static void WindowMultiplayerSetPage(rct_window* w, int32_t page)
     w->widgets = window_multiplayer_page_widgets[page];
     w->widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
 
-    window_event_resize_call(w);
-    window_event_invalidate_call(w);
+    WindowEventResizeCall(w);
+    WindowEventInvalidateCall(w);
     WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
@@ -313,7 +313,7 @@ static void WindowMultiplayerInformationMouseup(rct_window* w, WidgetIndex widge
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB1:
         case WIDX_TAB2:
@@ -334,7 +334,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
         return _windowInformationSize;
     }
 
-    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
+    int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
     // Base dimensions.
     const int32_t width = 450;
@@ -344,7 +344,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
         u8string buffer = network_get_server_name();
-        gfx_wrap_string(buffer.data(), width, FontStyle::Medium, &numLines);
+        GfxWrapString(buffer.data(), width, FontStyle::Medium, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -353,7 +353,7 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     if (!descString.empty())
     {
         u8string buffer = descString;
-        gfx_wrap_string(buffer.data(), width, FontStyle::Medium, &numLines);
+        GfxWrapString(buffer.data(), width, FontStyle::Medium, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -380,20 +380,20 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
 static void WindowMultiplayerInformationResize(rct_window* w)
 {
     auto size = WindowMultiplayerInformationGetSize();
-    window_set_resize(*w, size.x, size.y, size.x, size.y);
+    WindowSetResize(*w, size.x, size.y, size.x, size.y);
 }
 
 static void WindowMultiplayerInformationUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
 static void WindowMultiplayerInformationInvalidate(rct_window* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
-    window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
+    WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 }
 
 static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -402,7 +402,7 @@ static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* 
     WindowMultiplayerDrawTabImages(w, dpi);
 
     rct_drawpixelinfo clippedDPI;
-    if (clip_drawpixelinfo(&clippedDPI, dpi, w->windowPos, w->width, w->height))
+    if (ClipDrawPixelInfo(&clippedDPI, dpi, w->windowPos, w->width, w->height))
     {
         dpi = &clippedDPI;
 
@@ -468,7 +468,7 @@ static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetInd
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB1:
         case WIDX_TAB2:
@@ -484,7 +484,7 @@ static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetInd
 
 static void WindowMultiplayerPlayersResize(rct_window* w)
 {
-    window_set_resize(*w, 420, 124, 500, 450);
+    WindowSetResize(*w, 420, 124, 500, 450);
 
     w->no_list_items = (IsServerPlayerInvisible() ? network_get_num_visible_players() : network_get_num_players());
     w->list_item_positions[0] = 0;
@@ -498,7 +498,7 @@ static void WindowMultiplayerPlayersResize(rct_window* w)
 static void WindowMultiplayerPlayersUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
 static void WindowMultiplayerPlayersScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
@@ -555,7 +555,7 @@ static void WindowMultiplayerPlayersInvalidate(rct_window* w)
     WindowMultiplayerAnchorBorderWidgets(w);
     window_multiplayer_players_widgets[WIDX_LIST].right = w->width - 4;
     window_multiplayer_players_widgets[WIDX_LIST].bottom = w->height - 0x0F;
-    window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
+    WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 }
 
 static void WindowMultiplayerPlayersPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -598,7 +598,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             colour_t colour = COLOUR_BLACK;
             if (listPosition == w->selected_list_item)
             {
-                gfx_filter_rect(
+                GfxFilterRect(
                     dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
                     FilterPaletteID::PaletteDarken1);
                 _buffer += network_get_player_name(player);
@@ -617,8 +617,8 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 _buffer += network_get_player_name(player);
             }
             screenCoords.x = 0;
-            gfx_clip_string(_buffer.data(), 230, FontStyle::Medium);
-            gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
+            GfxClipString(_buffer.data(), 230, FontStyle::Medium);
+            GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
 
             // Draw group name
             _buffer.resize(0);
@@ -628,8 +628,8 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 _buffer += "{BLACK}";
                 screenCoords.x = 173;
                 _buffer += network_get_group_name(group);
-                gfx_clip_string(_buffer.data(), 80, FontStyle::Medium);
-                gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
+                GfxClipString(_buffer.data(), 80, FontStyle::Medium);
+                GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
             }
 
             // Draw last action
@@ -666,7 +666,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             _buffer += pingBuffer;
 
             screenCoords.x = 356;
-            gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
+            GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
         listPosition++;
@@ -682,7 +682,7 @@ static void WindowMultiplayerGroupsMouseup(rct_window* w, WidgetIndex widgetInde
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB1:
         case WIDX_TAB2:
@@ -715,7 +715,7 @@ static void WindowMultiplayerGroupsMouseup(rct_window* w, WidgetIndex widgetInde
 
 static void WindowMultiplayerGroupsResize(rct_window* w)
 {
-    window_set_resize(*w, 320, 200, 320, 500);
+    WindowSetResize(*w, 320, 200, 320, 500);
 
     w->no_list_items = network_get_num_actions();
     w->list_item_positions[0] = 0;
@@ -764,7 +764,7 @@ static void WindowMultiplayerGroupsDropdown(rct_window* w, WidgetIndex widgetInd
 static void WindowMultiplayerGroupsUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
 static void WindowMultiplayerGroupsScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
@@ -834,7 +834,7 @@ static void WindowMultiplayerGroupsInvalidate(rct_window* w)
     WindowMultiplayerAnchorBorderWidgets(w);
     window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].right = w->width - 4;
     window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].bottom = w->height - 0x0F;
-    window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
+    WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 
     // select other group if one is removed
     while (network_get_group_index(_selectedGroup) == -1 && _selectedGroup > 0)
@@ -872,7 +872,7 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenPos.y += 20;
 
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
@@ -895,14 +895,14 @@ static void WindowMultiplayerGroupsScrollpaint(rct_window* w, rct_drawpixelinfo*
     auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
     auto dpiCoords = ScreenCoordsXY{ dpi->x, dpi->y };
-    gfx_fill_rect(
+    GfxFillRect(
         dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
 
     for (int32_t i = 0; i < network_get_num_actions(); i++)
     {
         if (i == w->selected_list_item)
         {
-            gfx_filter_rect(
+            GfxFilterRect(
                 dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
         }
         if (screenCoords.y > dpi->y + dpi->height)
@@ -918,7 +918,7 @@ static void WindowMultiplayerGroupsScrollpaint(rct_window* w, rct_drawpixelinfo*
                 if (network_can_perform_action(groupindex, static_cast<NetworkPermission>(i)))
                 {
                     screenCoords.x = 0;
-                    gfx_draw_string(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
+                    GfxDrawString(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
                 }
             }
 
@@ -940,7 +940,7 @@ static void WindowMultiplayerOptionsMouseup(rct_window* w, WidgetIndex widgetInd
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB1:
         case WIDX_TAB2:
@@ -968,20 +968,20 @@ static void WindowMultiplayerOptionsMouseup(rct_window* w, WidgetIndex widgetInd
 
 static void WindowMultiplayerOptionsResize(rct_window* w)
 {
-    window_set_resize(*w, 300, 100, 300, 100);
+    WindowSetResize(*w, 300, 100, 300, 100);
 }
 
 static void WindowMultiplayerOptionsUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
 static void WindowMultiplayerOptionsInvalidate(rct_window* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
-    window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
+    WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 
     if (network_get_mode() == NETWORK_MODE_CLIENT)
     {
@@ -1017,7 +1017,7 @@ static void WindowMultiplayerDrawTabImage(rct_window* w, rct_drawpixelinfo* dpi,
             }
         }
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(spriteIndex),
             w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }

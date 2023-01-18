@@ -132,7 +132,7 @@ namespace OpenRCT2::Title
                         auto parkHandle = TitleSequenceGetParkHandle(*_sequence, saveIndex);
                         if (parkHandle != nullptr)
                         {
-                            game_notify_map_change();
+                            GameNotifyMapChange();
                             loadSuccess = LoadParkFromStream(parkHandle->Stream.get(), parkHandle->HintPath);
                         }
                         if (!loadSuccess)
@@ -146,7 +146,7 @@ namespace OpenRCT2::Title
                             throw std::out_of_range("Failed to load park; index out of range.");
                         }
 
-                        game_notify_map_changed();
+                        GameNotifyMapChanged();
                     }
                     else if (std::holds_alternative<LoadScenarioCommand>(currentCommand))
                     {
@@ -155,7 +155,7 @@ namespace OpenRCT2::Title
                         auto scenario = GetScenarioRepository()->GetByInternalName(scenarioName);
                         if (scenario != nullptr)
                         {
-                            game_notify_map_change();
+                            GameNotifyMapChange();
                             loadSuccess = LoadParkFromFile(scenario->path);
                         }
 
@@ -165,7 +165,7 @@ namespace OpenRCT2::Title
                             throw std::domain_error(message);
                         }
 
-                        game_notify_map_changed();
+                        GameNotifyMapChanged();
                     }
 
                     IncrementPosition();
@@ -281,7 +281,7 @@ namespace OpenRCT2::Title
 
         bool LoadParkFromFile(const utf8* path)
         {
-            log_verbose("TitleSequencePlayer::LoadParkFromFile(%s)", path);
+            LOG_VERBOSE("TitleSequencePlayer::LoadParkFromFile(%s)", path);
             bool success = false;
             try
             {
@@ -318,7 +318,7 @@ namespace OpenRCT2::Title
          */
         bool LoadParkFromStream(OpenRCT2::IStream* stream, const std::string& hintPath)
         {
-            log_verbose("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
+            LOG_VERBOSE("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
             bool success = false;
             try
             {
@@ -352,26 +352,26 @@ namespace OpenRCT2::Title
 
         void CloseParkSpecificWindows()
         {
-            window_close_by_class(WindowClass::ConstructRide);
-            window_close_by_class(WindowClass::DemolishRidePrompt);
-            window_close_by_class(WindowClass::EditorInventionListDrag);
-            window_close_by_class(WindowClass::EditorInventionList);
-            window_close_by_class(WindowClass::EditorObjectSelection);
-            window_close_by_class(WindowClass::EditorObjectiveOptions);
-            window_close_by_class(WindowClass::EditorScenarioOptions);
-            window_close_by_class(WindowClass::Finances);
-            window_close_by_class(WindowClass::FirePrompt);
-            window_close_by_class(WindowClass::GuestList);
-            window_close_by_class(WindowClass::InstallTrack);
-            window_close_by_class(WindowClass::Peep);
-            window_close_by_class(WindowClass::Ride);
-            window_close_by_class(WindowClass::RideConstruction);
-            window_close_by_class(WindowClass::RideList);
-            window_close_by_class(WindowClass::Scenery);
-            window_close_by_class(WindowClass::Staff);
-            window_close_by_class(WindowClass::TrackDeletePrompt);
-            window_close_by_class(WindowClass::TrackDesignList);
-            window_close_by_class(WindowClass::TrackDesignPlace);
+            WindowCloseByClass(WindowClass::ConstructRide);
+            WindowCloseByClass(WindowClass::DemolishRidePrompt);
+            WindowCloseByClass(WindowClass::EditorInventionListDrag);
+            WindowCloseByClass(WindowClass::EditorInventionList);
+            WindowCloseByClass(WindowClass::EditorObjectSelection);
+            WindowCloseByClass(WindowClass::EditorObjectiveOptions);
+            WindowCloseByClass(WindowClass::EditorScenarioOptions);
+            WindowCloseByClass(WindowClass::Finances);
+            WindowCloseByClass(WindowClass::FirePrompt);
+            WindowCloseByClass(WindowClass::GuestList);
+            WindowCloseByClass(WindowClass::InstallTrack);
+            WindowCloseByClass(WindowClass::Peep);
+            WindowCloseByClass(WindowClass::Ride);
+            WindowCloseByClass(WindowClass::RideConstruction);
+            WindowCloseByClass(WindowClass::RideList);
+            WindowCloseByClass(WindowClass::Scenery);
+            WindowCloseByClass(WindowClass::Staff);
+            WindowCloseByClass(WindowClass::TrackDeletePrompt);
+            WindowCloseByClass(WindowClass::TrackDesignList);
+            WindowCloseByClass(WindowClass::TrackDesignPlace);
         }
 
         void PrepareParkForPlayback()
@@ -379,12 +379,12 @@ namespace OpenRCT2::Title
             auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
             windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
             ResetEntitySpatialIndices();
-            reset_all_sprite_quadrant_placements();
+            ResetAllSpriteQuadrantPlacements();
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
             ScenerySetDefaultPlacementConfiguration();
             News::InitQueue();
-            load_palette();
+            LoadPalette();
             gScreenAge = 0;
             gGamePaused = false;
             gGameSpeed = 1;
@@ -392,7 +392,7 @@ namespace OpenRCT2::Title
 
         void StoreCurrentViewLocation()
         {
-            rct_window* w = window_get_main();
+            rct_window* w = WindowGetMain();
             if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
             {
                 _previousWindowWidth = w->width;
@@ -406,7 +406,7 @@ namespace OpenRCT2::Title
          */
         void RestoreViewLocationIfResized()
         {
-            rct_window* w = window_get_main();
+            rct_window* w = WindowGetMain();
             if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
             {
                 if (w->width != _previousWindowWidth || w->height != _previousWindowHeight)

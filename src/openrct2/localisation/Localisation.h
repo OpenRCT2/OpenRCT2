@@ -18,30 +18,29 @@
 
 #include <string>
 
-std::string format_string(StringId format, const void* args);
-void format_string(char* dest, size_t size, StringId format, const void* args);
-void format_string_to_upper(char* dest, size_t size, StringId format, const void* args);
+std::string FormatStringID(StringId format, const void* args);
+void FormatStringToUpper(char* dest, size_t size, StringId format, const void* args);
 void generate_string_file();
 
 /**
  * Formats sizeBytes into buf as a human readable text, e.x.: "1024 MB"
  */
-void format_readable_size(char* buf, size_t bufSize, uint64_t sizeBytes);
+void FormatReadableSize(char* buf, size_t bufSize, uint64_t sizeBytes);
 
 /**
  * Formats sizeBytesPerSec into buf as a human readable text, e.x.: "1024 MB/sec"
  */
-void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytesPerSec);
+void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytesPerSec);
 
-utf8* get_string_end(const utf8* text);
-size_t get_string_size(const utf8* text);
+utf8* GetStringEnd(const utf8* text);
+size_t GetStringSize(const utf8* text);
 
 // The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
 #define MONEY_STRING_MAXLENGTH 14
-money64 string_to_money(const char* string_to_monetise);
-void money_to_string(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
+money64 StringToMoney(const char* string_to_monetise);
+void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
 
-bool is_user_string_id(StringId stringId);
+bool IsUserStringID(StringId stringId);
 
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32

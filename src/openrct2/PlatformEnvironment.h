@@ -70,6 +70,7 @@ namespace OpenRCT2
         SCORES_RCT2,             // Scenario scores, rct2 (\Saved Games\scores.dat).
         CHANGELOG,               // Notable changes to the game between versions, distributed with the game.
         PLUGIN_STORE,            // Shared storage for plugins.
+        CONTRIBUTORS,            // Who has provided work to the game (Contributors.md).
     };
 
     /**

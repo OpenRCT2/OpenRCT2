@@ -63,12 +63,12 @@ static void GameInit(bool retainSpatialIndices)
     if (!retainSpatialIndices)
         ResetEntitySpatialIndices();
 
-    reset_all_sprite_quadrant_placements();
+    ResetAllSpriteQuadrantPlacements();
     ScenerySetDefaultPlacementConfiguration();
-    load_palette();
+    LoadPalette();
     EntityTweener::Get().Reset();
     MapAnimationAutoCreate();
-    fix_invalid_vehicle_sprite_sizes();
+    FixInvalidVehicleSpriteSizes();
 
     gGameSpeed = 1;
 }
@@ -122,7 +122,7 @@ static void RecordGameStateSnapshot(std::unique_ptr<IContext>& context, MemorySt
 
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
-    snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
+    snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
     DataSerialiser snapShotDs(true, snapshotStream);
     snapshots->SerialiseSnapshot(snapshot, snapShotDs);
 }
@@ -140,7 +140,7 @@ static void CompareStates(MemoryStream& importBuffer, MemoryStream& exportBuffer
 {
     if (importBuffer.GetLength() != exportBuffer.GetLength())
     {
-        log_warning(
+        LOG_WARNING(
             "Inconsistent export size! Import Size: %llu bytes, Export Size: %llu bytes",
             static_cast<unsigned long long>(importBuffer.GetLength()),
             static_cast<unsigned long long>(exportBuffer.GetLength()));
@@ -171,13 +171,13 @@ static void CompareStates(MemoryStream& importBuffer, MemoryStream& exportBuffer
 
         if (res != cmpData.spriteChanges.end())
         {
-            log_warning("Snapshot data differences. %s", snapshots->GetCompareDataText(cmpData).c_str());
+            LOG_WARNING("Snapshot data differences. %s", snapshots->GetCompareDataText(cmpData).c_str());
             FAIL();
         }
     }
     catch (const std::runtime_error& err)
     {
-        log_warning("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
+        LOG_WARNING("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
         FAIL();
     }
 }

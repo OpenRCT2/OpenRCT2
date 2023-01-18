@@ -14,6 +14,6 @@
 using CExceptionHandler = void*;
 
 extern bool gOpenRCT2SilentBreakpad;
-CExceptionHandler crash_init();
-void crash_register_additional_file(const std::string& key, const std::string& path);
-void crash_unregister_additional_file(const std::string& key);
+CExceptionHandler CrashInit();
+void CrashRegisterAdditionalFile(const std::string& key, const std::string& path);
+void CrashUnregisterAdditionalFile(const std::string& key);

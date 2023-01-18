@@ -296,7 +296,7 @@ public:
     void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) override
     {
         utf8 objectName[9];
-        object_entry_get_name_fixed(objectName, sizeof(objectName), objectEntry);
+        ObjectEntryGetNameFixed(objectName, sizeof(objectName), objectEntry);
 
         // Check that the object is loadable before writing it
         auto object = ObjectFactory::CreateObjectFromLegacyData(*this, objectEntry, data, dataSize);
@@ -306,7 +306,7 @@ public:
         }
         else
         {
-            log_verbose("Adding object: [%s]", objectName);
+            LOG_VERBOSE("Adding object: [%s]", objectName);
             auto path = GetPathForNewObject(ObjectGeneration::DAT, objectName);
             try
             {
@@ -322,7 +322,7 @@ public:
 
     void AddObjectFromFile(ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) override
     {
-        log_verbose("Adding object: [%s]", std::string(objectName).c_str());
+        LOG_VERBOSE("Adding object: [%s]", std::string(objectName).c_str());
         auto path = GetPathForNewObject(generation, objectName);
         try
         {
@@ -472,12 +472,12 @@ private:
     {
         if (fixChecksum)
         {
-            uint32_t realChecksum = object_calculate_checksum(entry, data, dataSize);
+            uint32_t realChecksum = ObjectCalculateChecksum(entry, data, dataSize);
             if (realChecksum != entry->checksum)
             {
                 char objectName[9];
-                object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
-                log_verbose("[%s] Incorrect checksum, adding salt bytes...", objectName);
+                ObjectEntryGetNameFixed(objectName, sizeof(objectName), entry);
+                LOG_VERBOSE("[%s] Incorrect checksum, adding salt bytes...", objectName);
 
                 // Calculate the value of extra bytes that can be appended to the data so that the
                 // data is then valid for the object's checksum
@@ -493,7 +493,7 @@ private:
 
                 try
                 {
-                    uint32_t newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
+                    uint32_t newRealChecksum = ObjectCalculateChecksum(entry, newData, newDataSize);
                     if (newRealChecksum != entry->checksum)
                     {
                         Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
@@ -671,7 +671,7 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
     }
 }
 
-std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry)
+std::unique_ptr<Object> ObjectRepositoryLoadObject(const rct_object_entry* objectEntry)
 {
     std::unique_ptr<Object> object;
     auto& objRepository = GetContext()->GetObjectRepository();
@@ -687,47 +687,47 @@ std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* ob
     return object;
 }
 
-void scenario_translate(scenario_index_entry* scenarioEntry)
+void ScenarioTranslate(scenario_index_entry* scenarioEntry)
 {
     StringId localisedStringIds[3];
-    if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds))
+    if (LanguageGetLocalisedScenarioStrings(scenarioEntry->name, localisedStringIds))
     {
         if (localisedStringIds[0] != STR_NONE)
         {
-            String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), language_get_string(localisedStringIds[0]));
+            String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), LanguageGetString(localisedStringIds[0]));
         }
         if (localisedStringIds[2] != STR_NONE)
         {
-            String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), language_get_string(localisedStringIds[2]));
+            String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), LanguageGetString(localisedStringIds[2]));
         }
     }
 }
 
-size_t object_repository_get_items_count()
+size_t ObjectRepositoryGetItemsCount()
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.GetNumObjects();
 }
 
-const ObjectRepositoryItem* object_repository_get_items()
+const ObjectRepositoryItem* ObjectRepositoryGetItems()
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.GetObjects();
 }
 
-const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_object_entry* entry)
+const ObjectRepositoryItem* ObjectRepositoryFindObjectByEntry(const rct_object_entry* entry)
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.FindObject(entry);
 }
 
-const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name)
+const ObjectRepositoryItem* ObjectRepositoryFindObjectByName(const char* name)
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.FindObjectLegacy(name);
 }
 
-int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength)
+int32_t ObjectCalculateChecksum(const rct_object_entry* entry, const void* data, size_t dataLength)
 {
     const uint8_t* entryBytePtr = reinterpret_cast<const uint8_t*>(entry);
 

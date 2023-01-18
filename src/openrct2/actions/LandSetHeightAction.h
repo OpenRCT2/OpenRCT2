@@ -44,7 +44,7 @@ private:
      *
      *  rct2: 0x00663CB9
      */
-    static int32_t map_set_land_height_clear_func(
+    static int32_t MapSetLandHeightClearFunc(
         TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
         [[maybe_unused]] money32* price);
 };

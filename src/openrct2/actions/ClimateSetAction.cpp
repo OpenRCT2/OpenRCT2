@@ -45,7 +45,7 @@ GameActions::Result ClimateSetAction::Execute() const
 {
     gClimate = ClimateType{ _climate };
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     return GameActions::Result();
 }

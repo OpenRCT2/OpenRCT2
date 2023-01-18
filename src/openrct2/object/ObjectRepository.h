@@ -100,8 +100,8 @@ struct IObjectRepository
 
 [[nodiscard]] bool IsObjectCustom(const ObjectRepositoryItem* object);
 
-[[nodiscard]] size_t object_repository_get_items_count();
-[[nodiscard]] const ObjectRepositoryItem* object_repository_get_items();
-[[nodiscard]] const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_object_entry* entry);
-[[nodiscard]] const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name);
-[[nodiscard]] std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry);
+[[nodiscard]] size_t ObjectRepositoryGetItemsCount();
+[[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryGetItems();
+[[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryFindObjectByEntry(const rct_object_entry* entry);
+[[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryFindObjectByName(const char* name);
+[[nodiscard]] std::unique_ptr<Object> ObjectRepositoryLoadObject(const rct_object_entry* objectEntry);

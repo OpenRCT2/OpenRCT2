@@ -95,10 +95,47 @@ Some \*BSD operating systems offer native packages. These packages are usually t
 
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2).
 
-### Windows:
-- Visual Studio 2022 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
-  - Desktop development with C++
-- MSYS2 MinGW Toolchain. The toolchains with supported dependencies are `mingw-x86_64`, `mingw-xi686`, `ucrt-x86_64`, `clang-x86_64`, and `clang-xi686`, each of these require the `$MINGW_PACKAGE_PREFIX` and `msys` and `clangarm-64` are lacking packages for some dependencies
+<details>
+  <summary>Windows prerequisites</summary>
+
+  - Visual Studio 2022 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
+    - Desktop development with C++
+  - MSYS2 MinGW Toolchain. The toolchains with supported dependencies are `mingw-x86_64`, `mingw-xi686`, `ucrt-x86_64`, `clang-x86_64`, and `clang-xi686`, each of these require the `$MINGW_PACKAGE_PREFIX` and `msys` and `clangarm-64` are lacking packages for some dependencies
+    - sdl2 (only for UI client)
+    - freetype (can be disabled)
+    - fontconfig (can be disabled)
+    - libzip (>= 1.0)
+    - libpng (>= 1.2)
+    - speexdsp (only for UI client)
+    - curl (only if building with http support)
+    - nlohmann-json (>= 3.6.0)
+    - openssl (>= 1.0; only if building with multiplayer support)
+    - icu (>= 59.0)
+    - zlib
+    - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
+    - cmake
+    - benchmark (optional)
+    - innoextract (optional runtime dependency; used for GOG installer extraction during setup)
+    - libogg
+    - libvorbis
+    - flac
+ 
+  See the wiki for [the actual package names used in pacman](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-MSYS2-MinGW).
+</details>
+
+<details>
+  <summary>macOS prerequisites</summary>
+
+  - Xcode Command Line Tools
+  - [Homebrew](https://brew.sh)
+  - CMake (available through Homebrew)
+
+</details>
+
+<details>
+  <summary>Linux prerequisites</summary>
+
+  - gcc (>= 7.1) or clang (>= 8.0.0) (for C++17 support)
   - sdl2 (only for UI client)
   - freetype (can be disabled)
   - fontconfig (can be disabled)
@@ -112,102 +149,88 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
   - zlib
   - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
   - cmake
-  - benchmark (optional)
   - innoextract (optional runtime dependency; used for GOG installer extraction during setup)
-  - libogg
-  - libvorbis
-  - flac
- 
-See the wiki for [the actual package names used in pacman](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-MSYS2-MinGW).
 
-### macOS:
-- Xcode Command Line Tools
-- [Homebrew](https://brew.sh)
-- CMake (available through Homebrew)
+  Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#required-packages-general for more information about installing the packages.
 
-### Linux:
-- gcc (>= 7.1) or clang (>= 8.0.0) (for C++17 support)
-- sdl2 (only for UI client)
-- freetype (can be disabled)
-- fontconfig (can be disabled)
-- libzip (>= 1.0)
-- libpng (>= 1.2)
-- speexdsp (only for UI client)
-- curl (only if building with http support)
-- nlohmann-json (>= 3.6.0)
-- openssl (>= 1.0; only if building with multiplayer support)
-- icu (>= 59.0)
-- zlib
-- gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
-- cmake
-- innoextract (optional runtime dependency; used for GOG installer extraction during setup)
-
-Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#required-packages-general for more information about installing the packages.
+</details>
 
 ---
 
 ## 3.2 Compiling and running
 ### Windows:
-1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Open a new Developer Command Prompt for VS 2022, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
-3. To build the 64-bit version, use `msbuild openrct2.proj /t:build /p:platform=x64`.
+<details>
+  <summary>Show instructions</summary>
 
-   To build the 32-bit version, use `msbuild openrct2.proj /t:build /p:platform=Win32`.
-4. Run the game, `bin\openrct2`
+  1. Check out the repository, this can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use)
+  2. Open a new Developer Command Prompt for VS 2022
+  3. Navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`)
+  4. To build the 64-bit version, use `msbuild openrct2.proj /t:build /p:platform=x64`
 
-Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`. Make sure to select the correct target platform for which you ran the build in point #3 (`Win32` for the 32-bit version, `x64` for the 64-bit version), otherwise the build will fail in Visual Studio.
+     To build the 32-bit version, use `msbuild openrct2.proj /t:build /p:platform=Win32`
+  5. Run the game, `bin\openrct2`
 
-Other examples:
-```
-set platform=x64
-msbuild openrct2.proj /t:clean
-msbuild openrct2.proj /t:rebuild /p:configuration=release
-msbuild openrct2.proj /t:g2
-msbuild openrct2.proj /t:PublishPortable
-```
+  Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`. Make sure to select the correct target platform for which you ran the build in point #3 (`Win32` for the 32-bit version, `x64` for the 64-bit version), otherwise the build will fail in Visual Studio.
+
+  Other examples:
+  ```
+  set platform=x64
+  msbuild openrct2.proj /t:clean
+  msbuild openrct2.proj /t:rebuild /p:configuration=release
+  msbuild openrct2.proj /t:g2
+  msbuild openrct2.proj /t:PublishPortable
+  ```
+</details>
 
 ### macOS:
-#### CMake:
-CMake can build either a self-contained application bundle, which includes all the necessary game files and dependencies, or it can build a command line version that links against system installed dependencies. CMake will retrieve the dependencies from [Dependencies](https://github.com/OpenRCT2/Dependencies/) automatically. You can build the macOS app using CMake using the following commands:
-```
-cmake -S . -B build
-cmake --build build --target install
-```
-Then you can run the game by opening `OpenRCT2.app`
+<details>
+  <summary>Show instructions</summary>
 
-To build the command line version, you'll need to disable the macOS app bundle:
-```
+  CMake can build either a self-contained application bundle, which includes all the necessary game files and dependencies, or it can build a command line version that links against system installed dependencies. CMake will retrieve the dependencies from [Dependencies](https://github.com/OpenRCT2/Dependencies/) automatically. You can build the macOS app using CMake using the following commands:
+  ```
+  cmake -S . -B build
+  cmake --build build --target install
+  ```
+  Then you can run the game by opening `OpenRCT2.app`
 
-cmake -S . -B build -DMACOS_BUNDLE=off
-cmake --build build
-cmake --build build --target install
-ln -s ../data data
-```
-Then you can run the game by running `./openrct2`.
+  To build the command line version, you'll need to disable the macOS app bundle:
+  ```
 
-To link against system dependencies instead of letting CMake download the dependencies from [Dependencies](https://github.com/OpenRCT2/Dependencies), add `-DMACOS_USE_DEPENDENCIES=off` to your cmake args.
+  cmake -S . -B build -DMACOS_BUNDLE=off
+  cmake --build build
+  cmake --build build --target install
+  ln -s ../data data
+  ```
+  Then you can run the game by running `./openrct2`.
 
-Detailed instructions can be found on [Building OpenRCT2 on macOS using CMake](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-macOS-using-CMake).
+  To link against system dependencies instead of letting CMake download the dependencies from [Dependencies](https://github.com/OpenRCT2/Dependencies), add `-DMACOS_USE_DEPENDENCIES=off` to your cmake args.
+
+  Detailed instructions can be found on [Building OpenRCT2 on macOS using CMake](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-macOS-using-CMake).
+</details>
 
 ### Linux:
-The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#linux), then:
-```
-cmake -S . -B build -DCMAKE_INSTALL_PREFIX=. # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
-cmake --build build # you can parallelise your build job with e.g. -j 8 or consider using ninja
-cmake --build build --target install # the install target creates all the necessary files in places we expect them
-```
+<details>
+  <summary>Show instructions</summary>
 
-You can also use Ninja in place of Make using `-G Ninja` in the first command, if you prefer, see Wiki for details.
+  The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#linux), then:
+  ```
+  cmake -S . -B build -DCMAKE_INSTALL_PREFIX=. # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  cmake --build build # you can parallelise your build job with e.g. -j 8 or consider using ninja
+  cmake --build build --target install # the install target creates all the necessary files in places we expect them
+  ```
 
-Detailed instructions can be found on [Building OpenRCT2 on Linux](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
+  You can also use Ninja in place of Make using `-G Ninja` in the first command, if you prefer, see Wiki for details.
 
-Note: the `cmake -S . -B build` syntax is available for CMake >= 3.14. For older versions use:
-```
-mkdir build
-cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=. # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
-cmake --build . --target install
-```
+  Detailed instructions can be found on [Building OpenRCT2 on Linux](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
+  
+  Note: the `cmake -S . -B build` syntax is available for CMake >= 3.14. For older versions use:
+  ```
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_INSTALL_PREFIX=. # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  cmake --build . --target install
+  ```
+</details>
 
 ---
 

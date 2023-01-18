@@ -57,21 +57,21 @@ GameActions::Result BannerRemoveAction::Query() const
     BannerElement* bannerElement = GetBannerElementAt();
     if (bannerElement == nullptr)
     {
-        log_error("Invalid banner location, x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
+        LOG_ERROR("Invalid banner location, x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto bannerIndex = bannerElement->GetIndex();
     if (bannerIndex == BannerIndex::GetNull())
     {
-        log_error("Invalid banner index. index = ", bannerIndex);
+        LOG_ERROR("Invalid banner index. index = ", bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto banner = bannerElement->GetBanner();
     if (banner == nullptr)
     {
-        log_error("Invalid banner index. index = ", bannerIndex);
+        LOG_ERROR("Invalid banner index. index = ", bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
@@ -96,21 +96,21 @@ GameActions::Result BannerRemoveAction::Execute() const
     BannerElement* bannerElement = GetBannerElementAt();
     if (bannerElement == nullptr)
     {
-        log_error("Invalid banner location, x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
+        LOG_ERROR("Invalid banner location, x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto bannerIndex = bannerElement->GetIndex();
     if (bannerIndex == BannerIndex::GetNull())
     {
-        log_error("Invalid banner index. index = ", bannerIndex);
+        LOG_ERROR("Invalid banner index. index = ", bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto banner = bannerElement->GetBanner();
     if (banner == nullptr)
     {
-        log_error("Invalid banner index. index = ", bannerIndex);
+        LOG_ERROR("Invalid banner index. index = ", bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 

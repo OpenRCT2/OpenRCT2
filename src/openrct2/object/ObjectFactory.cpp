@@ -184,7 +184,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            log_verbose("[%s] Info (%d): %s", _identifier.c_str(), code, text);
+            LOG_VERBOSE("[%s] Info (%d): %s", _identifier.c_str(), code, text);
         }
     }
 
@@ -253,7 +253,7 @@ namespace ObjectFactory
 
     std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path, bool loadImages)
     {
-        log_verbose("CreateObjectFromLegacyFile(..., \"%s\")", path);
+        LOG_VERBOSE("CreateObjectFromLegacyFile(..., \"%s\")", path);
 
         std::unique_ptr<Object> result;
         try
@@ -269,11 +269,11 @@ namespace ObjectFactory
                 result->SetDescriptor(ObjectEntryDescriptor(entry));
 
                 utf8 objectName[DAT_NAME_LENGTH + 1] = { 0 };
-                object_entry_get_name_fixed(objectName, sizeof(objectName), &entry);
-                log_verbose("  entry: { 0x%08X, \"%s\", 0x%08X }", entry.flags, objectName, entry.checksum);
+                ObjectEntryGetNameFixed(objectName, sizeof(objectName), &entry);
+                LOG_VERBOSE("  entry: { 0x%08X, \"%s\", 0x%08X }", entry.flags, objectName, entry.checksum);
 
                 auto chunk = chunkReader.ReadChunk();
-                log_verbose("  size: %zu", chunk->GetLength());
+                LOG_VERBOSE("  size: %zu", chunk->GetLength());
 
                 auto chunkStream = OpenRCT2::MemoryStream(chunk->GetData(), chunk->GetLength());
                 auto readContext = ReadObjectContext(objectRepository, objectName, loadImages, nullptr);
@@ -287,7 +287,7 @@ namespace ObjectFactory
         }
         catch (const std::exception& e)
         {
-            log_error("Error: %s when processing object %s", e.what(), path);
+            LOG_ERROR("Error: %s when processing object %s", e.what(), path);
         }
         return result;
     }
@@ -304,7 +304,7 @@ namespace ObjectFactory
             result->SetDescriptor(ObjectEntryDescriptor(*entry));
 
             utf8 objectName[DAT_NAME_LENGTH + 1];
-            object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
+            ObjectEntryGetNameFixed(objectName, sizeof(objectName), entry);
 
             auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
             auto chunkStream = OpenRCT2::MemoryStream(data, dataSize);
@@ -312,7 +312,7 @@ namespace ObjectFactory
 
             if (readContext.WasError())
             {
-                log_error("Error when processing object.");
+                LOG_ERROR("Error when processing object.");
             }
             else
             {
@@ -452,7 +452,7 @@ namespace ObjectFactory
     std::unique_ptr<Object> CreateObjectFromJsonFile(
         IObjectRepository& objectRepository, const std::string& path, bool loadImages)
     {
-        log_verbose("CreateObjectFromJsonFile(\"%s\")", path.c_str());
+        LOG_VERBOSE("CreateObjectFromJsonFile(\"%s\")", path.c_str());
 
         try
         {
@@ -484,7 +484,7 @@ namespace ObjectFactory
             }
             else
             {
-                log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
+                LOG_ERROR("Object %s has an incorrect sourceGame parameter.", id.c_str());
                 result.SetSourceGames({ ObjectSourceGame::Custom });
             }
         }
@@ -495,7 +495,7 @@ namespace ObjectFactory
         }
         else
         {
-            log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
+            LOG_ERROR("Object %s has an incorrect sourceGame parameter.", id.c_str());
             result.SetSourceGames({ ObjectSourceGame::Custom });
         }
     }
@@ -508,7 +508,7 @@ namespace ObjectFactory
             throw std::runtime_error("Object JSON root was not an object");
         }
 
-        log_verbose("CreateObjectFromJson(...)");
+        LOG_VERBOSE("CreateObjectFromJson(...)");
 
         std::unique_ptr<Object> result;
 

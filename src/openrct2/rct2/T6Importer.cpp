@@ -131,7 +131,7 @@ namespace RCT2
             auto version = static_cast<RCT12TrackDesignVersion>((td6.version_and_colour_scheme >> 2) & 3);
             if (version != RCT12TrackDesignVersion::TD6)
             {
-                log_error("Unsupported track design.");
+                LOG_ERROR("Unsupported track design.");
                 return nullptr;
             }
 
@@ -219,14 +219,14 @@ namespace RCT2
             if (RCT2RideTypeNeedsConversion(td->type))
             {
                 std::scoped_lock<std::mutex> lock(_objectLookupMutex);
-                auto rawObject = object_repository_load_object(&td->vehicle_object.Entry);
+                auto rawObject = ObjectRepositoryLoadObject(&td->vehicle_object.Entry);
                 if (rawObject != nullptr)
                 {
                     const auto* rideEntry = static_cast<const rct_ride_entry*>(
                         static_cast<RideObject*>(rawObject.get())->GetLegacyData());
                     if (rideEntry != nullptr)
                     {
-                        td->type = RCT2RideTypeToOpenRCT2RideType(td->type, rideEntry);
+                        td->type = RCT2RideTypeToOpenRCT2RideType(td->type, *rideEntry);
                     }
                     rawObject->Unload();
                 }

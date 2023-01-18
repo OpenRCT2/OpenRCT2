@@ -213,7 +213,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(rct_drawpixeli
  *  rct2: 0x0067AA18
  * @param imageId Only flags are used.
  */
-void FASTCALL gfx_rle_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxRleSpriteToBuffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
 {
     if (args.Image.HasPrimary())
     {

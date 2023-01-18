@@ -51,13 +51,13 @@ static IDrawingEngine* GetDrawingEngine()
     return result;
 }
 
-bool drawing_engine_requires_new_window(DrawingEngine srcEngine, DrawingEngine dstEngine)
+bool DrawingEngineRequiresNewWindow(DrawingEngine srcEngine, DrawingEngine dstEngine)
 {
     bool openGL = srcEngine == DrawingEngine::OpenGL || dstEngine == DrawingEngine::OpenGL;
     return Platform::RequireNewWindow(openGL);
 }
 
-void drawing_engine_init()
+void DrawingEngineInit()
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -66,7 +66,7 @@ void drawing_engine_init()
     }
 }
 
-void drawing_engine_resize()
+void DrawingEngineResize()
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -80,7 +80,7 @@ void drawing_engine_resize()
     }
 }
 
-void drawing_engine_set_palette(const GamePalette& colours)
+void DrawingEngineSetPalette(const GamePalette& colours)
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -93,7 +93,7 @@ void drawing_engine_set_palette(const GamePalette& colours)
     }
 }
 
-void drawing_engine_copy_rect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
+void DrawingEngineCopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -106,7 +106,7 @@ void drawing_engine_copy_rect(int32_t x, int32_t y, int32_t width, int32_t heigh
     }
 }
 
-void drawing_engine_dispose()
+void DrawingEngineDispose()
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -115,14 +115,14 @@ void drawing_engine_dispose()
     }
 }
 
-rct_drawpixelinfo* drawing_engine_get_dpi()
+rct_drawpixelinfo* DrawingEngineGetDpi()
 {
     auto context = GetContext();
     auto drawingEngine = context->GetDrawingEngine();
     return drawingEngine->GetDrawingPixelInfo();
 }
 
-bool drawing_engine_has_dirty_optimisations()
+bool DrawingEngineHasDirtyOptimisations()
 {
     bool result = false;
     auto drawingEngine = GetDrawingEngine();
@@ -133,7 +133,7 @@ bool drawing_engine_has_dirty_optimisations()
     return result;
 }
 
-void drawing_engine_invalidate_image(uint32_t image)
+void DrawingEngineInvalidateImage(uint32_t image)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -142,7 +142,7 @@ void drawing_engine_invalidate_image(uint32_t image)
     }
 }
 
-void drawing_engine_set_vsync(bool vsync)
+void DrawingEngineSetVSync(bool vsync)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -151,7 +151,7 @@ void drawing_engine_set_vsync(bool vsync)
     }
 }
 
-void gfx_set_dirty_blocks(const ScreenRect& rect)
+void GfxSetDirtyBlocks(const ScreenRect& rect)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -160,7 +160,7 @@ void gfx_set_dirty_blocks(const ScreenRect& rect)
     }
 }
 
-void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
+void GfxClear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -170,7 +170,7 @@ void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
     }
 }
 
-void gfx_fill_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour)
+void GfxFillRect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -180,7 +180,7 @@ void gfx_fill_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colou
     }
 }
 
-void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette)
+void GfxFilterRect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -190,7 +190,7 @@ void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPalet
     }
 }
 
-void gfx_draw_line(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
+void GfxDrawLine(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -200,7 +200,7 @@ void gfx_draw_line(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colou
     }
 }
 
-void gfx_draw_dashed_line(
+void GfxDrawDashedLine(
     rct_drawpixelinfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
 {
     assert(dashedLineSegmentLength > 0);
@@ -233,7 +233,7 @@ void gfx_draw_dashed_line(
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords)
+void FASTCALL GfxDrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -244,7 +244,7 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, const ImageId imageId, con
 }
 
 void FASTCALL
-    gfx_draw_glyph(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    GfxDrawGlyph(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -254,7 +254,7 @@ void FASTCALL
     }
 }
 
-void FASTCALL gfx_draw_sprite_raw_masked(
+void FASTCALL GfxDrawSpriteRawMasked(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
 {
     auto drawingEngine = dpi->DrawingEngine;
@@ -265,7 +265,7 @@ void FASTCALL gfx_draw_sprite_raw_masked(
     }
 }
 
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
+void FASTCALL GfxDrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -275,7 +275,7 @@ void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, const ImageId image,
     }
 }
 
-std::string screenshot_dump()
+std::string ScreenshotDump()
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)

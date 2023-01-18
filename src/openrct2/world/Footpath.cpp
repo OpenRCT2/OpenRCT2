@@ -158,18 +158,18 @@ money32 FootpathProvisionalSet(
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            viewport_set_visibility(1);
+            ViewportSetVisibility(1);
         }
         else
         {
-            viewport_set_visibility(3);
+            ViewportSetVisibility(3);
         }
     }
 
     // Invalidate previous footpath piece.
     VirtualFloorInvalidate();
 
-    if (!scenery_tool_is_active())
+    if (!SceneryToolIsActive())
     {
         if (res.Error != GameActions::Status::Ok)
         {
@@ -241,7 +241,7 @@ void FootpathProvisionalUpdate()
  */
 CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
 {
-    rct_window* window = window_find_from_point(screenCoords);
+    rct_window* window = WindowFindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY position{};
@@ -249,11 +249,11 @@ CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32
         return position;
     }
     auto viewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Footpath));
+    auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Footpath));
     if (info.SpriteType != ViewportInteractionItem::Footpath
         || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
     {
-        info = get_map_coordinates_from_pos_window(
+        info = GetMapCoordinatesFromPosWindow(
             window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
         if (info.SpriteType == ViewportInteractionItem::None)
         {
@@ -285,7 +285,7 @@ CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32
         {
             z = TileElementHeight(position);
         }
-        position = viewport_coord_to_map_coord(start_vp_pos, z);
+        position = ViewportPosToMapPos(start_vp_pos, z);
         position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
         position.y = std::clamp(position.y, minPosition.y, maxPosition.y);
     }
@@ -339,7 +339,7 @@ CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32
 CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
 {
     // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
-    rct_window* window = window_find_from_point(screenCoords);
+    rct_window* window = WindowFindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY ret{};
@@ -347,7 +347,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         return ret;
     }
     auto viewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
+    auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
     *tileElement = info.Element;
     if (info.SpriteType == ViewportInteractionItem::Ride
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
@@ -365,7 +365,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         }
     }
 
-    info = get_map_coordinates_from_pos_window(
+    info = GetMapCoordinatesFromPosWindow(
         window, screenCoords,
         EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath, ViewportInteractionItem::Ride));
     if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TileElementType::Entrance)
@@ -752,7 +752,7 @@ static bool FootpathDisconnectQueueFromPath(const CoordsXY& footpathPos, TileEle
  *  rct2: 0x006A6D7E
  */
 
-static void loc_6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, bool query)
+static void Loc6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, bool query)
 {
     if ((initialTileElement)->GetType() == TileElementType::Path)
     {
@@ -764,7 +764,7 @@ static void loc_6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction
     }
 }
 
-static void loc_6A6F1F(
+static void Loc6A6F1F(
     const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* tileElement, TileElement* initialTileElement,
     const CoordsXY& targetPos, int32_t flags, bool query, rct_neighbour_list* neighbourList)
 {
@@ -814,10 +814,10 @@ static void loc_6A6F1F(
         FootpathInterruptPeeps({ targetPos, tileElement->GetBaseZ() });
     }
     MapInvalidateElement(targetPos, tileElement);
-    loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+    Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
 }
 
-static void loc_6A6D7E(
+static void Loc6A6D7E(
     const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, int32_t flags, bool query,
     rct_neighbour_list* neighbourList)
 {
@@ -828,7 +828,7 @@ static void loc_6A6D7E(
         {
             FootpathNeighbourListPush(neighbourList, 7, direction, RideId::GetNull(), StationIndex::GetNull());
         }
-        loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+        Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
     }
     else
     {
@@ -844,7 +844,7 @@ static void loc_6A6D7E(
                     {
                         if (!tileElement->AsPath()->IsSloped() || tileElement->AsPath()->GetSlopeDirection() == direction)
                         {
-                            loc_6A6F1F(
+                            Loc6A6F1F(
                                 initialTileElementPos, direction, tileElement, initialTileElement, targetPos, flags, query,
                                 neighbourList);
                         }
@@ -855,7 +855,7 @@ static void loc_6A6D7E(
                         if (tileElement->AsPath()->IsSloped()
                             && tileElement->AsPath()->GetSlopeDirection() == DirectionReverse(direction))
                         {
-                            loc_6A6F1F(
+                            Loc6A6F1F(
                                 initialTileElementPos, direction, tileElement, initialTileElement, targetPos, flags, query,
                                 neighbourList);
                         }
@@ -865,7 +865,7 @@ static void loc_6A6D7E(
                 case TileElementType::Track:
                     if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
-                        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                        auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
                         if (ride == nullptr)
                         {
                             continue;
@@ -894,7 +894,7 @@ static void loc_6A6D7E(
                             FootpathNeighbourListPush(
                                 neighbourList, 1, direction, tileElement->AsTrack()->GetRideIndex(), StationIndex::GetNull());
                         }
-                        loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+                        Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
                         return;
                     }
                     break;
@@ -917,7 +917,7 @@ static void loc_6A6D7E(
                                     FootpathQueueChainPush(tileElement->AsEntrance()->GetRideIndex());
                                 }
                             }
-                            loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+                            Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
                             return;
                         }
                     }
@@ -930,9 +930,9 @@ static void loc_6A6D7E(
     }
 }
 
-// TODO: Change this into a simple check that validates if the direction should be fully checked with loc_6A6D7E and move the
-// calling of loc_6A6D7E into the parent function.
-static void loc_6A6C85(
+// TODO: Change this into a simple check that validates if the direction should be fully checked with Loc6A6D7E and move the
+// calling of Loc6A6D7E into the parent function.
+static void Loc6A6C85(
     const CoordsXYE& tileElementPos, int32_t direction, int32_t flags, bool query, rct_neighbour_list* neighbourList)
 {
     if (query
@@ -951,7 +951,7 @@ static void loc_6A6C85(
 
     if (tileElementPos.element->GetType() == TileElementType::Track)
     {
-        auto ride = get_ride(tileElementPos.element->AsTrack()->GetRideIndex());
+        auto ride = GetRide(tileElementPos.element->AsTrack()->GetRideIndex());
         if (ride == nullptr)
         {
             return;
@@ -992,7 +992,7 @@ static void loc_6A6C85(
         }
     }
 
-    loc_6A6D7E(pos, direction, tileElementPos.element, flags, query, neighbourList);
+    Loc6A6D7E(pos, direction, tileElementPos.element, flags, query, neighbourList);
 }
 
 /**
@@ -1011,7 +1011,7 @@ void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement,
     FootpathUpdateQueueEntranceBanner(footpathPos, tileElement);
     for (Direction direction : ALL_DIRECTIONS)
     {
-        loc_6A6C85({ footpathPos, tileElement }, direction, flags, true, &neighbourList);
+        Loc6A6C85({ footpathPos, tileElement }, direction, flags, true, &neighbourList);
     }
 
     FoopathNeighbourListSort(&neighbourList);
@@ -1047,7 +1047,7 @@ void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement,
 
     while (FootpathNeighbourListPop(&neighbourList, &neighbour))
     {
-        loc_6A6C85({ footpathPos, tileElement }, neighbour.direction, flags, false, nullptr);
+        Loc6A6C85({ footpathPos, tileElement }, neighbour.direction, flags, false, nullptr);
     }
 
     if (tileElement->GetType() == TileElementType::Path)
@@ -1211,7 +1211,7 @@ void FootpathUpdateQueueChains()
     for (auto* queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++)
     {
         RideId rideIndex = *queueChainPtr;
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             continue;
 
@@ -1764,7 +1764,7 @@ bool PathElement::ShouldDrawPathOverSupports() const
 
 void PathElement::SetShouldDrawPathOverSupports(bool on)
 {
-    log_verbose("Setting 'draw path over supports' to %d", static_cast<size_t>(on));
+    LOG_VERBOSE("Setting 'draw path over supports' to %d", static_cast<size_t>(on));
 }
 
 /**
@@ -1860,7 +1860,7 @@ void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos)
 
         auto height = tileElement->GetBaseZ();
 
-        // pathList is a list of elements, set by sub_6A8ACF adjacent to x,y
+        // pathList is a list of elements, set by Sub6A8ACF adjacent to x,y
         // Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
         std::array<TileElement*, 8> pathList;
         for (std::size_t direction = 0; direction < pathList.size(); ++direction)
@@ -2180,7 +2180,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
             case TileElementType::Track:
                 if (tileElement->base_height == coords.z)
                 {
-                    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
                     if (ride == nullptr)
                         continue;
 
@@ -2273,7 +2273,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
     if (tileElement->GetType() == TileElementType::Track)
     {
         auto rideIndex = tileElement->AsTrack()->GetRideIndex();
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             return;
 
@@ -2560,7 +2560,7 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    auto ride = get_ride(trackElement->GetRideIndex());
+    auto ride = GetRide(trackElement->GetRideIndex());
     if (ride == nullptr)
     {
         return false;

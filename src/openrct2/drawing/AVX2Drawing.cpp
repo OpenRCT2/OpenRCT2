@@ -15,7 +15,7 @@
 
 #    include <immintrin.h>
 
-void mask_avx2(
+void MaskAvx2(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
@@ -38,7 +38,7 @@ void mask_avx2(
     }
     else
     {
-        mask_scalar(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
+        MaskScalar(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
     }
 }
 
@@ -48,7 +48,7 @@ void mask_avx2(
 #        error You have to compile this file with AVX2 enabled, when targeting x86!
 #    endif
 
-void mask_avx2(
+void MaskAvx2(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {

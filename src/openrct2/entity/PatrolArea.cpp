@@ -57,7 +57,7 @@ bool PatrolArea::Get(const TileCoordsXY& pos) const
     if (area == nullptr)
         return false;
 
-    auto it = binary_find(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+    auto it = BinaryFind(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
     auto found = it != area->SortedTiles.end();
     return found;
 }

@@ -24,6 +24,34 @@
 #include <algorithm>
 #include <iterator>
 
+static rct_large_scenery_text ReadLegacy3DFont(OpenRCT2::IStream& stream)
+{
+    rct_large_scenery_text _3dFontLegacy = {};
+    _3dFontLegacy.offset[0].x = stream.ReadValue<int16_t>();
+    _3dFontLegacy.offset[0].y = stream.ReadValue<int16_t>();
+    _3dFontLegacy.offset[1].x = stream.ReadValue<int16_t>();
+    _3dFontLegacy.offset[1].y = stream.ReadValue<int16_t>();
+    _3dFontLegacy.max_width = stream.ReadValue<uint16_t>();
+    stream.ReadValue<uint16_t>();
+    _3dFontLegacy.flags = stream.ReadValue<uint8_t>();
+    _3dFontLegacy.num_images = stream.ReadValue<uint8_t>();
+
+    auto ReadLegacyTextGlyph = [&stream]() {
+        rct_large_scenery_text_glyph glyph{};
+        glyph.image_offset = stream.ReadValue<uint8_t>();
+        glyph.width = stream.ReadValue<uint8_t>();
+        glyph.height = stream.ReadValue<uint8_t>();
+        stream.ReadValue<uint8_t>();
+        return glyph;
+    };
+
+    for (size_t i = 0; i < std::size(_3dFontLegacy.glyphs); ++i)
+    {
+        _3dFontLegacy.glyphs[i] = ReadLegacyTextGlyph();
+    }
+    return _3dFontLegacy;
+}
+
 void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
@@ -43,8 +71,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 
     if (_legacyType.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
-        rct_large_scenery_text _3dFontLegacy = {};
-        stream->Read(&_3dFontLegacy);
+        rct_large_scenery_text _3dFontLegacy = ReadLegacy3DFont(*stream);
         _3dFont = std::make_unique<LargeSceneryText>(_3dFontLegacy);
         _legacyType.text = _3dFont.get();
     }
@@ -81,8 +108,8 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 void LargeSceneryObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
-    _baseImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.name = LanguageAllocateObjectString(GetName());
+    _baseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.image = _baseImageId;
 
     _legacyType.tiles = _tiles.data();
@@ -104,8 +131,8 @@ void LargeSceneryObject::Load()
 
 void LargeSceneryObject::Unload()
 {
-    language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_baseImageId, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.name);
+    GfxObjectFreeImages(_baseImageId, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _baseImageId = _legacyType.image = 0;
@@ -123,17 +150,27 @@ void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
     if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
         image = image.WithTertiary(COLOUR_DARK_BROWN);
 
-    gfx_draw_sprite(dpi, image, screenCoords);
+    GfxDrawSprite(dpi, image, screenCoords);
 }
 
 std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)
 {
     auto tiles = std::vector<rct_large_scenery_tile>();
+
+    auto ReadLegacyTile = [&stream]() {
+        rct_large_scenery_tile tile{};
+        tile.x_offset = stream->ReadValue<int16_t>();
+        tile.y_offset = stream->ReadValue<int16_t>();
+        tile.z_offset = stream->ReadValue<int16_t>();
+        tile.z_clearance = stream->ReadValue<uint8_t>();
+        tile.flags = stream->ReadValue<uint16_t>();
+        return tile;
+    };
+
     while (stream->ReadValue<uint16_t>() != 0xFFFF)
     {
         stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
-        auto tile = stream->ReadValue<rct_large_scenery_tile>();
-        tiles.push_back(std::move(tile));
+        tiles.push_back(ReadLegacyTile());
     }
     tiles.push_back({ -1, -1, -1, 255, 0xFFFF });
     return tiles;

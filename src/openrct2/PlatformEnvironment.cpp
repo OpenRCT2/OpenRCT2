@@ -135,6 +135,7 @@ private:
             case PATHID::SCORES_RCT2:
                 return DIRBASE::RCT2;
             case PATHID::CHANGELOG:
+            case PATHID::CONTRIBUTORS:
                 return DIRBASE::DOCUMENTATION;
             case PATHID::NETWORK_GROUPS:
             case PATHID::NETWORK_SERVERS:
@@ -220,12 +221,12 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     }
 
     // Log base paths
-    log_verbose("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());
-    log_verbose("DIRBASE::RCT2    : %s", env->GetDirectoryPath(DIRBASE::RCT2).c_str());
-    log_verbose("DIRBASE::OPENRCT2: %s", env->GetDirectoryPath(DIRBASE::OPENRCT2).c_str());
-    log_verbose("DIRBASE::USER    : %s", env->GetDirectoryPath(DIRBASE::USER).c_str());
-    log_verbose("DIRBASE::CONFIG  : %s", env->GetDirectoryPath(DIRBASE::CONFIG).c_str());
-    log_verbose("DIRBASE::CACHE   : %s", env->GetDirectoryPath(DIRBASE::CACHE).c_str());
+    LOG_VERBOSE("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());
+    LOG_VERBOSE("DIRBASE::RCT2    : %s", env->GetDirectoryPath(DIRBASE::RCT2).c_str());
+    LOG_VERBOSE("DIRBASE::OPENRCT2: %s", env->GetDirectoryPath(DIRBASE::OPENRCT2).c_str());
+    LOG_VERBOSE("DIRBASE::USER    : %s", env->GetDirectoryPath(DIRBASE::USER).c_str());
+    LOG_VERBOSE("DIRBASE::CONFIG  : %s", env->GetDirectoryPath(DIRBASE::CONFIG).c_str());
+    LOG_VERBOSE("DIRBASE::CACHE   : %s", env->GetDirectoryPath(DIRBASE::CACHE).c_str());
 
     return env;
 }
@@ -285,5 +286,6 @@ const u8string PlatformEnvironment::FileNames[] = {
     u8"scores.dat",                              // SCORES (LEGACY)
     u8"Saved Games" PATH_SEPARATOR "scores.dat", // SCORES (RCT2)
     u8"changelog.txt",                           // CHANGELOG
-    u8"plugin.store.json"                        // PLUGIN_STORE
+    u8"plugin.store.json",                       // PLUGIN_STORE
+    u8"contributors.md",                         // CONTRIBUTORS
 };

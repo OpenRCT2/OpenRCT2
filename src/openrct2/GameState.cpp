@@ -65,12 +65,12 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 
     MapInit(mapSize);
     _park->Initialise();
-    finance_init();
+    FinanceInit();
     BannerInit();
-    ride_init_all();
+    RideInitAll();
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
-    date_reset();
+    DateReset();
     ClimateReset(ClimateType::CoolAndWet);
     News::InitQueue();
 
@@ -84,7 +84,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
     ContextBroadcastIntent(&intent);
 
-    load_palette();
+    LoadPalette();
 
     CheatsReset();
     ClearRestrictedScenery();
@@ -111,10 +111,10 @@ void GameState::Tick()
     uint32_t numUpdates = 1;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
-    screenshot_check();
-    game_handle_keyboard_input();
+    ScreenshotCheck();
+    GameHandleKeyboardInput();
 
-    if (game_is_not_paused() && gPreviewingTitleSequenceInGame)
+    if (GameIsNotPaused() && gPreviewingTitleSequenceInGame)
     {
         auto player = GetContext()->GetUiContext()->GetTitleSequencePlayer();
         if (player != nullptr)
@@ -140,7 +140,7 @@ void GameState::Tick()
         }
     }
 
-    bool isPaused = game_is_paused();
+    bool isPaused = GameIsPaused();
     if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.PauseServerIfNoClients)
     {
         // If we are headless we always have 1 player (host), pause if no one else is around.
@@ -156,7 +156,7 @@ void GameState::Tick()
         if (gDoSingleUpdate && network_get_mode() == NETWORK_MODE_NONE)
         {
             didRunSingleFrame = true;
-            pause_toggle();
+            PauseToggle();
             numUpdates = 1;
         }
         else
@@ -189,11 +189,11 @@ void GameState::Tick()
         UpdateLogic();
         if (gGameSpeed == 1)
         {
-            if (input_get_state() == InputState::Reset || input_get_state() == InputState::Normal)
+            if (InputGetState() == InputState::Reset || InputGetState() == InputState::Normal)
             {
-                if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING))
+                if (InputTestFlag(INPUT_FLAG_VIEWPORT_SCROLLING))
                 {
-                    input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+                    InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
                     break;
                 }
             }
@@ -208,7 +208,7 @@ void GameState::Tick()
 
     if (!gOpenRCT2Headless)
     {
-        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+        InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
         // the flickering frequency is reduced by 4, compared to the original
         // it was done due to inability to reproduce original frequency
@@ -237,14 +237,14 @@ void GameState::Tick()
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
-        scenario_autosave_check();
+        ScenarioAutosaveCheck();
     }
 
-    window_dispatch_update_all();
+    WindowDispatchUpdateAll();
 
-    if (didRunSingleFrame && game_is_not_paused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (didRunSingleFrame && GameIsNotPaused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        pause_toggle();
+        PauseToggle();
     }
 
     gDoSingleUpdate = false;
@@ -313,11 +313,11 @@ void GameState::UpdateLogic(LogicTimings* timings)
     auto day = _date.GetDay();
 #endif
 
-    date_update();
+    DateUpdate();
     _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
     report_time(LogicTimePart::Date);
 
-    scenario_update();
+    ScenarioUpdate();
     report_time(LogicTimePart::Scenario);
     ClimateUpdate();
     report_time(LogicTimePart::Climate);
@@ -328,11 +328,11 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::MapStashProvisionalElements);
     MapUpdatePathWideFlags();
     report_time(LogicTimePart::MapPathWideFlags);
-    peep_update_all();
+    PeepUpdateAll();
     report_time(LogicTimePart::Peep);
     MapRestoreProvisionalElements();
     report_time(LogicTimePart::MapRestoreProvisionalElements);
-    vehicle_update_all();
+    VehicleUpdateAll();
     report_time(LogicTimePart::Vehicle);
     UpdateAllMiscEntities();
     report_time(LogicTimePart::Misc);
@@ -345,25 +345,25 @@ void GameState::UpdateLogic(LogicTimings* timings)
     }
     report_time(LogicTimePart::Park);
 
-    research_update();
+    ResearchUpdate();
     report_time(LogicTimePart::Research);
-    ride_ratings_update_all();
+    RideRatingsUpdateAll();
     report_time(LogicTimePart::RideRatings);
-    ride_measurements_update();
+    RideMeasurementsUpdate();
     report_time(LogicTimePart::RideMeasurments);
     News::UpdateCurrentItem();
     report_time(LogicTimePart::News);
 
     MapAnimationInvalidateAll();
     report_time(LogicTimePart::MapAnimation);
-    vehicle_sounds_update();
-    peep_update_crowd_noise();
+    VehicleSoundsUpdate();
+    PeepUpdateCrowdNoise();
     ClimateUpdateSound();
     report_time(LogicTimePart::Sounds);
-    editor_open_windows_for_current_step();
+    EditorOpenWindowsForCurrentStep();
 
     // Update windows
-    // window_dispatch_update_all();
+    // WindowDispatchUpdateAll();
 
     // Start autosave timer after update
     if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
@@ -406,5 +406,5 @@ void GameState::CreateStateSnapshot()
 
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
-    snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
+    snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
 }

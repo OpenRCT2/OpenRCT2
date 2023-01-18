@@ -1090,7 +1090,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         int32_t dx = surfaceHeight + 3;
 
         int32_t image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16);
-        image_id += get_height_marker_offset();
+        image_id += GetHeightMarkerOffset();
         image_id -= gMapBaseZ;
 
         PaintAddImageAsParent(session, ImageId(image_id, COLOUR_OLIVE_GREEN), { 16, 16, surfaceHeight }, { 1, 1, 0 });
@@ -1166,7 +1166,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
-        // loc_660E9A:
+        // Loc660E9A:
         if (tileElement.GetOwnership() & OWNERSHIP_OWNED)
         {
             assert(surfaceShape < std::size(byte_97B444));
@@ -1206,7 +1206,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
     {
-        // loc_660FB8:
+        // Loc660FB8:
         const CoordsXY& pos = session.MapPosition;
         if (pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
             && pos.y <= gMapSelectPositionB.y)
@@ -1215,14 +1215,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             if (mapSelectionType >= MAP_SELECT_TYPE_EDGE_0)
             {
                 // Walls
-                // loc_661089:
+                // Loc661089:
                 const auto fpId = static_cast<FilterPaletteID>((((mapSelectionType - 9) + rotation) & 3) + 0x21);
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
             else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0)
             {
-                // loc_661051:(no jump)
+                // Loc661051:(no jump)
                 // Selection split into four quarter segments
                 const auto fpId = static_cast<FilterPaletteID>(
                     (((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27);
@@ -1302,7 +1302,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const auto edgeStyle = tileElement.GetEdgeStyle();
         if (static_cast<int32_t>(edgeStyle) >= object_entry_group_counts[EnumValue(ObjectType::TerrainEdge)])
         {
-            log_verbose("edgeStyle: %d", edgeStyle);
+            LOG_VERBOSE("edgeStyle: %d", edgeStyle);
         }
 
         ViewportSurfaceDrawLandSideTop(session, EDGE_TOPLEFT, height, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
@@ -1316,7 +1316,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
-        // loc_6615A9: (water height)
+        // Loc6615A9: (water height)
         session.InteractionType = ViewportInteractionItem::Water;
 
         const uint16_t localHeight = height + 16;
@@ -1383,7 +1383,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 }
             }
             else if (!(surfaceShape & fenceData.bit_8))
-            { // loc_6619A2:
+            { // Loc6619A2:
                 image_id = fenceData.image[1];
             }
             else
@@ -1391,15 +1391,15 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 local_height += 16;
 
                 if (!(surfaceShape & 0x10))
-                { // loc_6619B5 (first)
+                { // Loc6619B5 (first)
                     image_id = fenceData.image[0];
                 }
                 else if (surfaceShape & fenceData.bit_4)
-                { // loc_6619B5 (second)
+                { // Loc6619B5 (second)
                     image_id = fenceData.image[3];
                 }
                 else if (surfaceShape & fenceData.bit_2)
-                { // loc_6619B5 (third)
+                { // Loc6619B5 (third)
                     image_id = fenceData.image[4];
                 }
                 else
@@ -1419,7 +1419,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     switch (surfaceShape)
     {
         default:
-            // loc_661C2C
+            // Loc661C2C
             //     00
             //   00  00
             // 00  00  00
@@ -1434,7 +1434,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 1:
-            // loc_661CB9
+            // Loc661CB9
             //     00
             //   00  00
             // 01  01  01
@@ -1448,7 +1448,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 2:
-            // loc_661D4E
+            // Loc661D4E
             //     02
             //   17  00
             // 17  02  00
@@ -1462,7 +1462,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 3:
-            // loc_661DE3
+            // Loc661DE3
             //     03
             //   03  03
             // 03  03  03
@@ -1475,7 +1475,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 4:
-            // loc_661E7C
+            // Loc661E7C
             //     1E
             //   1E  1E
             // 04  04  04
@@ -1489,7 +1489,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 5:
-            // loc_661F11
+            // Loc661F11
             //     1E          ▓▓
             //   1E  1E      ▒▒  ▒▒
             // 05  05  05  ░░  ░░  ░░
@@ -1504,7 +1504,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 6:
-            // loc_661FA6
+            // Loc661FA6
             //     06          ▓▓
             //   06  06      ▓▓  ▒▒
             // 06  06  06  ▓▓  ▒▒  ░░
@@ -1517,7 +1517,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 7:
-            // loc_66203F
+            // Loc66203F
             //     07          ▓▓
             //   00  17      ▓▓  ▒▒
             // 00  07  17  ▓▓  ▓▓  ░░
@@ -1531,7 +1531,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 8:
-            // loc_6620D8
+            // Loc6620D8
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_C8 | SEGMENT_D0, height, 0);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 8);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
@@ -1540,7 +1540,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 9:
-            // loc_66216D
+            // Loc66216D
             PaintUtilForceSetGeneralSupportHeight(session, height, 9);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8, height + 2, 9);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 9);
@@ -1548,7 +1548,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 10:
-            // loc_662206
+            // Loc662206
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xA);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8, height + 6 + 6, 0x17);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
@@ -1558,7 +1558,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 11:
-            // loc_66229B
+            // Loc66229B
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xB);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4, height + 4, 0x1B);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
@@ -1567,7 +1567,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 12:
-            // loc_662334
+            // Loc662334
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xC);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2, 0xC);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 0xC);
@@ -1575,7 +1575,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 13:
-            // loc_6623CD
+            // Loc6623CD
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xD);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8, height + 4, 0x1D);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
@@ -1584,7 +1584,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 14:
-            // loc_662466
+            // Loc662466
             PaintUtilForceSetGeneralSupportHeight(session, height, 0xE);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_C0, height + 4, 0x1E);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
@@ -1593,7 +1593,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 23:
-            // loc_6624FF
+            // Loc6624FF
             PaintUtilForceSetGeneralSupportHeight(session, height, 0x17);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_BC, height + 4, 0x17);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
@@ -1603,7 +1603,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 27:
-            // loc_6625A0
+            // Loc6625A0
             PaintUtilForceSetGeneralSupportHeight(session, height, 0x1B);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_B4, height + 4, 0x1B);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
@@ -1613,7 +1613,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 29:
-            // loc_662641
+            // Loc662641
             PaintUtilForceSetGeneralSupportHeight(session, height, 0x1D);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_B8, height + 4, 0x1D);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
@@ -1623,7 +1623,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             break;
 
         case 30:
-            // loc_6626E2
+            // Loc6626E2
             PaintUtilForceSetGeneralSupportHeight(session, height, 0x1E);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_C0, height + 4, 0x1E);
             PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);

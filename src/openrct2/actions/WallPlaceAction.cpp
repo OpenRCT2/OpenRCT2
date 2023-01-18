@@ -95,7 +95,7 @@ GameActions::Result WallPlaceAction::Query() const
     }
     else if (!_trackDesignDrawingPreview && (_loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y))
     {
-        log_error("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
+        LOG_ERROR("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
@@ -111,7 +111,7 @@ GameActions::Result WallPlaceAction::Query() const
         auto* surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
-            log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
+            LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
         }
         targetHeight = surfaceElement->GetBaseZ();
@@ -128,7 +128,7 @@ GameActions::Result WallPlaceAction::Query() const
     auto* surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
-        log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
+        LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
@@ -219,7 +219,7 @@ GameActions::Result WallPlaceAction::Query() const
 
     if (wallEntry == nullptr)
     {
-        log_error("Wall Type not found %d", _wallType);
+        LOG_ERROR("Wall Type not found %d", _wallType);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
@@ -227,7 +227,7 @@ GameActions::Result WallPlaceAction::Query() const
     {
         if (HasReachedBannerLimit())
         {
-            log_error("No free banners available");
+            LOG_ERROR("No free banners available");
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
@@ -290,7 +290,7 @@ GameActions::Result WallPlaceAction::Execute() const
         auto* surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
         {
-            log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
+            LOG_ERROR("Surface element not found at %d, %d.", _loc.x, _loc.y);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
         }
         targetHeight = surfaceElement->GetBaseZ();
@@ -309,7 +309,7 @@ GameActions::Result WallPlaceAction::Execute() const
 
     if (wallEntry == nullptr)
     {
-        log_error("Wall Type not found %d", _wallType);
+        LOG_ERROR("Wall Type not found %d", _wallType);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
@@ -336,7 +336,7 @@ GameActions::Result WallPlaceAction::Execute() const
         banner = CreateBanner();
         if (banner == nullptr)
         {
-            log_error("No free banners available");
+            LOG_ERROR("No free banners available");
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
@@ -405,7 +405,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     const auto& ted = GetTrackElementDescriptor(trackType);
     int32_t sequence = trackElement->GetSequenceIndex();
     int32_t direction = (_edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
-    auto ride = get_ride(trackElement->GetRideIndex());
+    auto ride = GetRide(trackElement->GetRideIndex());
     if (ride == nullptr)
     {
         return false;

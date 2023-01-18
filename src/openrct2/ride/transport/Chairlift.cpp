@@ -201,13 +201,13 @@ static void chairlift_paint_station_ne_sw(
     imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
-    bool hasFence = track_paint_util_has_fence(EDGE_NW, pos, trackElement, ride, session.CurrentRotation);
+    bool hasFence = TrackPaintUtilHasFence(EDGE_NW, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
-    track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
 
     if ((direction == 2 && isStart) || (direction == 0 && isEnd))
     {
@@ -215,13 +215,13 @@ static void chairlift_paint_station_ne_sw(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 2, height + 4 }, { 1, 28, 7 } });
     }
 
-    hasFence = track_paint_util_has_fence(EDGE_SE, pos, trackElement, ride, session.CurrentRotation);
+    hasFence = TrackPaintUtilHasFence(EDGE_SE, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 30, height + 2 }, { 32, 1, 27 } });
     }
-    track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height);
 
     bool drawFrontColumn = true;
     bool drawBackColumn = true;
@@ -293,13 +293,13 @@ static void chairlift_paint_station_se_nw(
     imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
-    bool hasFence = track_paint_util_has_fence(EDGE_NE, pos, trackElement, ride, session.CurrentRotation);
+    bool hasFence = TrackPaintUtilHasFence(EDGE_NE, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
-    track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
 
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
@@ -307,13 +307,13 @@ static void chairlift_paint_station_se_nw(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 2, height + 4 }, { 28, 1, 7 } });
     }
 
-    hasFence = track_paint_util_has_fence(EDGE_SW, pos, trackElement, ride, session.CurrentRotation);
+    hasFence = TrackPaintUtilHasFence(EDGE_SW, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 27 } });
     }
-    track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height);
 
     bool drawRightColumn = true;
     bool drawLeftColumn = true;
@@ -649,7 +649,7 @@ static void chairlift_paint_right_quarter_turn_1_tile(
 }
 
 /* 0x008AAA0C */
-TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionChairlift(int32_t trackType)
 {
     switch (trackType)
     {

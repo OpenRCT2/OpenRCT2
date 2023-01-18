@@ -131,7 +131,7 @@ public:
 
         // Create viewport
         Widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
@@ -285,7 +285,7 @@ public:
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
         }
     }
 
@@ -303,7 +303,7 @@ public:
 
         // Create viewport
         Widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
         if (viewport != nullptr)
@@ -318,7 +318,7 @@ public:
  */
 rct_window* WindowSignOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
+    auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;
@@ -341,7 +341,7 @@ rct_window* WindowSignOpen(rct_windownumber number)
  */
 rct_window* WindowSignSmallOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
+    auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;

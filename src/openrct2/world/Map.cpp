@@ -333,7 +333,7 @@ TileElement* MapGetFirstElementAt(const TileCoordsXY& tilePos)
 {
     if (!IsTileLocationValid(tilePos))
     {
-        log_verbose("Trying to access element outside of range");
+        LOG_VERBOSE("Trying to access element outside of range");
         return nullptr;
     }
     return _tileIndex.GetFirstElementAt(tilePos);
@@ -391,7 +391,7 @@ void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements)
 {
     if (!MapIsLocationValid(tilePos.ToCoordsXY()))
     {
-        log_error("Trying to access element outside of range");
+        LOG_ERROR("Trying to access element outside of range");
         return;
     }
     _tileIndex.SetTile(tilePos, elements);
@@ -1145,7 +1145,7 @@ void MapInvalidateMapSelectionTiles()
 
 static void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
 {
-    uint32_t rotation = get_current_rotation();
+    uint32_t rotation = GetCurrentRotation();
     const std::array corners{
         CoordsXY{ _range.GetLeft(), _range.GetTop() },
         CoordsXY{ _range.GetRight(), _range.GetTop() },
@@ -1193,7 +1193,7 @@ void MapInvalidateSelectionRect()
     bottom += 32;
     top -= 32 + 2080;
 
-    viewports_invalidate({ { left, top }, { right, bottom } });
+    ViewportsInvalidate({ { left, top }, { right, bottom } });
 }
 
 static size_t CountElementsOnTile(const CoordsXY& loc)
@@ -1211,7 +1211,7 @@ static TileElement* AllocateTileElements(size_t numElementsOnTile, size_t numNew
 {
     if (!MapCheckFreeElementsAndReorganise(numElementsOnTile, numNewElements))
     {
-        log_error("Cannot insert new element");
+        LOG_ERROR("Cannot insert new element");
         return nullptr;
     }
 
@@ -1353,14 +1353,14 @@ void MapRemoveProvisionalElements()
         FootpathProvisionalRemove();
         gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
     }
-    if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
+    if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
     {
-        ride_remove_provisional_track_piece();
+        RideRemoveProvisionalTrackPiece();
         RideEntranceExitRemoveGhost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
-    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WindowClass::TrackDesignPlace) != nullptr)
+    if ((network_get_mode() != NETWORK_MODE_NONE) && WindowFindByClass(WindowClass::TrackDesignPlace) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL);
         ContextBroadcastIntent(&intent);
@@ -1378,14 +1378,14 @@ void MapRestoreProvisionalElements()
             gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
             gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
     }
-    if (window_find_by_class(WindowClass::RideConstruction) != nullptr)
+    if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
     {
-        ride_restore_provisional_track_piece();
+        RideRestoreProvisionalTrackPiece();
         RideEntranceExitPlaceProvisionalGhost();
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
-    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WindowClass::TrackDesignPlace) != nullptr)
+    if ((network_get_mode() != NETWORK_MODE_NONE) && WindowFindByClass(WindowClass::TrackDesignPlace) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL);
         ContextBroadcastIntent(&intent);
@@ -1844,14 +1844,14 @@ static void MapInvalidateTileUnderZoom(int32_t x, int32_t y, int32_t z0, int32_t
 
     x += 16;
     y += 16;
-    auto screenCoord = Translate3DTo2D(get_current_rotation(), { x, y });
+    auto screenCoord = Translate3DTo2D(GetCurrentRotation(), { x, y });
 
     x1 = screenCoord.x - 32;
     y1 = screenCoord.y - 32 - z1;
     x2 = screenCoord.x + 32;
     y2 = screenCoord.y + 32 - z0;
 
-    viewports_invalidate({ { x1, y1 }, { x2, y2 } }, maxZoom);
+    ViewportsInvalidate({ { x1, y1 }, { x2, y2 } }, maxZoom);
 }
 
 /**
@@ -1912,7 +1912,7 @@ void MapInvalidateRegion(const CoordsXY& mins, const CoordsXY& maxs)
     bottom += 32;
     top -= 32 + 2080;
 
-    viewports_invalidate({ { left, top }, { right, bottom } });
+    ViewportsInvalidate({ { left, top }, { right, bottom } });
 }
 
 int32_t MapGetTileSide(const CoordsXY& mapPos)

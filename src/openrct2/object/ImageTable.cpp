@@ -47,7 +47,7 @@ struct ImageTable::RequiredImage
 
     RequiredImage(const rct_g1_element& orig)
     {
-        auto length = g1_calculate_data_size(&orig);
+        auto length = G1CalculateDataSize(&orig);
         g1 = orig;
         g1.offset = new uint8_t[length];
         std::memcpy(g1.offset, orig.offset, length);
@@ -59,7 +59,7 @@ struct ImageTable::RequiredImage
         auto orig = getter(idx);
         if (orig != nullptr)
         {
-            auto length = g1_calculate_data_size(orig);
+            auto length = G1CalculateDataSize(orig);
             g1 = *orig;
             g1.offset = new uint8_t[length];
             std::memcpy(g1.offset, orig->offset, length);
@@ -94,19 +94,19 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         auto range = ParseRange(s.substr(4));
         if (!range.empty())
         {
-            if (is_csg_loaded())
+            if (IsCsgLoaded())
             {
                 for (auto i : range)
                 {
                     result.push_back(std::make_unique<RequiredImage>(
                         static_cast<uint32_t>(SPR_CSG_BEGIN + i),
-                        [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                        [](uint32_t idx) -> const rct_g1_element* { return GfxGetG1Element(idx); }));
                 }
             }
             else
             {
                 std::string id(context->GetObjectIdentifier());
-                log_warning("CSG not loaded inserting placeholder images for %s", id.c_str());
+                LOG_WARNING("CSG not loaded inserting placeholder images for %s", id.c_str());
                 result.resize(range.size());
                 for (auto& res : result)
                 {
@@ -123,7 +123,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             for (auto i : range)
             {
                 result.push_back(std::make_unique<RequiredImage>(
-                    static_cast<uint32_t>(i), [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                    static_cast<uint32_t>(i), [](uint32_t idx) -> const rct_g1_element* { return GfxGetG1Element(idx); }));
             }
         }
     }
@@ -542,7 +542,7 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
         // First gather all the required images from inspecting the JSON
         std::vector<std::unique_ptr<RequiredImage>> allImages;
         auto jsonImages = root["images"];
-        if (!is_csg_loaded() && root.contains("noCsgImages"))
+        if (!IsCsgLoaded() && root.contains("noCsgImages"))
         {
             jsonImages = root["noCsgImages"];
             usesFallbackSprites = true;
@@ -611,7 +611,7 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
 void ImageTable::AddImage(const rct_g1_element* g1)
 {
     rct_g1_element newg1 = *g1;
-    auto length = g1_calculate_data_size(g1);
+    auto length = G1CalculateDataSize(g1);
     if (length == 0)
     {
         newg1.offset = nullptr;

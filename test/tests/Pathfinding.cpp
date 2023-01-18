@@ -39,13 +39,13 @@ public:
 
         std::string parkPath = TestData::GetParkPath("pathfinding-tests.sv6");
         GetContext()->LoadParkFromFile(parkPath);
-        game_load_init();
+        GameLoadInit();
     }
 
     void SetUp() override
     {
         // Use a consistent random seed in every test
-        scenario_rand_seed(0x12345678, 0x87654321);
+        ScenarioRandSeed(0x12345678, 0x87654321);
     }
 
     static void TearDownTestCase()
@@ -122,7 +122,7 @@ protected:
         }
 
         // Clean up the peep, because we're reusing this loaded context for all tests.
-        peep_sprite_remove(peep);
+        PeepEntityRemove(peep);
 
         // Require that the number of steps taken is exactly what we expected. The pathfinder is supposed to be
         // deterministic, and we reset the RNG seed for each test, everything should be entirely repeatable; as

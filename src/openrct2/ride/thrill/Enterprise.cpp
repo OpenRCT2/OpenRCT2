@@ -45,7 +45,7 @@ static void PaintEnterpriseRiders(
 static void PaintEnterpriseStructure(
     PaintSession& session, const Ride& ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TrackElement& trackElement)
 {
-    const auto* rideEntry = get_ride_entry(ride.subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
         return;
 
@@ -98,9 +98,9 @@ static void PaintEnterprise(
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesRope,
         session.CurrentRotation);
 
@@ -167,7 +167,7 @@ static void PaintEnterprise(
     PaintUtilSetGeneralSupportHeight(session, height + 160, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionEnterprise(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack4x4)
     {

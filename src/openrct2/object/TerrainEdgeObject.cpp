@@ -21,8 +21,8 @@
 void TerrainEdgeObject::Load()
 {
     GetStringTable().Sort();
-    NameStringId = language_allocate_object_string(GetName());
-    IconImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    NameStringId = LanguageAllocateObjectString(GetName());
+    IconImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 
     // First image is icon followed by edge images
     BaseImageId = IconImageId + 1;
@@ -30,8 +30,8 @@ void TerrainEdgeObject::Load()
 
 void TerrainEdgeObject::Unload()
 {
-    language_free_object_string(NameStringId);
-    gfx_object_free_images(IconImageId, GetImageTable().GetCount());
+    LanguageFreeObjectString(NameStringId);
+    GfxObjectFreeImages(IconImageId, GetImageTable().GetCount());
 
     NameStringId = 0;
     IconImageId = 0;
@@ -43,8 +43,8 @@ void TerrainEdgeObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     auto imageId = ImageId(BaseImageId + 5);
-    gfx_draw_sprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
-    gfx_draw_sprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
+    GfxDrawSprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
+    GfxDrawSprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
 }
 
 void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)

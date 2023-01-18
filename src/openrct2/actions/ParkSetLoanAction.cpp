@@ -42,21 +42,20 @@ GameActions::Result ParkSetLoanAction::Query() const
 {
     auto currentLoan = gBankLoan;
     auto loanDifference = currentLoan - _value;
-    if (_value > currentLoan)
+    if (_value > currentLoan && _value > gMaxBankLoan)
     {
-        if (_value > gMaxBankLoan)
-        {
-            return GameActions::Result(
-                GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
-        }
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
     }
-    else
+    // FIXME: use money64 literal once it is implemented
+    if (_value < currentLoan && _value < 0)
     {
-        if (loanDifference > gCash)
-        {
-            return GameActions::Result(
-                GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
-        }
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_PAY_BACK_LOAN, STR_LOAN_CANT_BE_NEGATIVE);
+    }
+    if (loanDifference > gCash)
+    {
+        return GameActions::Result(
+            GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
     }
     return GameActions::Result();
 }

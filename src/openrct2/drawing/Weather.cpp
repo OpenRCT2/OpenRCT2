@@ -57,7 +57,7 @@ void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
     {
         uint32_t viewFlags = 0;
 
-        const auto* viewport = window_get_viewport(window_get_main());
+        const auto* viewport = WindowGetViewport(WindowGetMain());
         if (viewport != nullptr)
             viewFlags = viewport->flags;
 

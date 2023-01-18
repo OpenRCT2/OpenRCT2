@@ -168,7 +168,7 @@ namespace OpenRCT2::RideAudio
     void DefaultStartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        auto ride = get_ride(instance.RideId);
+        auto ride = GetRide(instance.RideId);
         auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
         if (musicObj != nullptr)
         {
@@ -206,7 +206,7 @@ namespace OpenRCT2::RideAudio
     static void StartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
         // Create new music channel
-        auto ride = get_ride(instance.RideId);
+        auto ride = GetRide(instance.RideId);
         const auto& rtd = ride->GetRideTypeDescriptor();
         rtd.StartRideMusic(instance);
     }
@@ -382,7 +382,7 @@ namespace OpenRCT2::RideAudio
     {
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
         {
-            auto rotatedCoords = Translate3DTo2DWithZ(get_current_rotation(), rideCoords);
+            auto rotatedCoords = Translate3DTo2DWithZ(GetCurrentRotation(), rideCoords);
             auto viewport = g_music_tracking_viewport;
             auto viewWidth = viewport->view_width;
             auto viewWidth2 = viewWidth * 2;

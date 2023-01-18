@@ -72,7 +72,7 @@ public:
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
                 gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                 ConfigSaveDefault();
-                window_invalidate_all();
+                WindowInvalidateAll();
                 break;
             case WIDX_RATE_DOWN:
                 if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
@@ -80,7 +80,7 @@ public:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
                     gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     ConfigSaveDefault();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
             case WIDX_AFFIX_DROPDOWN_BUTTON:
@@ -146,7 +146,7 @@ public:
             gConfigGeneral.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
             ConfigSaveDefault();
 
-            window_invalidate_all();
+            WindowInvalidateAll();
         }
     }
 
@@ -167,7 +167,7 @@ public:
                 gConfigGeneral.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode;
 
                 ConfigSaveDefault();
-                window_invalidate_all();
+                WindowInvalidateAll();
                 break;
 
             case WIDX_RATE:
@@ -178,7 +178,7 @@ public:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
                     gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     ConfigSaveDefault();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
         }
@@ -208,8 +208,7 @@ public:
             + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
                               window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
 
-        gfx_draw_string(
-            &dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { colours[1] });
+        GfxDrawString(&dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { colours[1] });
 
         auto drawPos = windowPos
             + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,

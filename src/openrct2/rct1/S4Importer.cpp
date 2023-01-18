@@ -194,9 +194,9 @@ namespace RCT1
             FixUrbanPark();
             CountBlockSections();
             SetDefaultNames();
-            determine_ride_entrance_and_exit_locations();
+            DetermineRideEntranceAndExitLocations();
 
-            research_determine_first_of_type();
+            ResearchDetermineFirstOfType();
 
             CheatsReset();
             ClearRestrictedScenery();
@@ -230,7 +230,7 @@ namespace RCT1
                 dst->objective_arg_3 = GetBuildTheBestRideId();
             }
 
-            auto name = rct2_to_utf8(_s4.scenario_name, RCT2LanguageId::EnglishUK);
+            auto name = RCT2StringToUTF8(_s4.scenario_name, RCT2LanguageId::EnglishUK);
             std::string details;
 
             // TryGetById won't set this property if the scenario is not recognised,
@@ -243,15 +243,15 @@ namespace RCT1
             String::Set(dst->internal_name, sizeof(dst->internal_name), desc.title);
 
             StringId localisedStringIds[3];
-            if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
+            if (LanguageGetLocalisedScenarioStrings(desc.title, localisedStringIds))
             {
                 if (localisedStringIds[0] != STR_NONE)
                 {
-                    name = String::ToStd(language_get_string(localisedStringIds[0]));
+                    name = String::ToStd(LanguageGetString(localisedStringIds[0]));
                 }
                 if (localisedStringIds[2] != STR_NONE)
                 {
-                    details = String::ToStd(language_get_string(localisedStringIds[2]));
+                    details = String::ToStd(LanguageGetString(localisedStringIds[2]));
                 }
             }
 
@@ -581,7 +581,7 @@ namespace RCT1
                     }
                     else
                     {
-                        log_error("Cannot find object %s", objectName);
+                        LOG_ERROR("Cannot find object %s", objectName);
                     }
                 }
             }
@@ -806,17 +806,17 @@ namespace RCT1
                 dst->subtype = _rideTypeToRideEntryMap[EnumValue(src->type)];
             }
 
-            rct_ride_entry* rideEntry = get_ride_entry(dst->subtype);
+            rct_ride_entry* rideEntry = GetRideEntryByIndex(dst->subtype);
             // This can happen with hacked parks
             if (rideEntry == nullptr)
             {
-                log_warning("Discarding ride with invalid ride entry");
+                LOG_WARNING("Discarding ride with invalid ride entry");
                 dst->type = RIDE_TYPE_NULL;
                 return;
             }
 
             // Ride name
-            if (is_user_string_id(src->name))
+            if (IsUserStringID(src->name))
             {
                 dst->custom_name = GetUserString(src->name);
             }
@@ -1172,7 +1172,7 @@ namespace RCT1
             {
                 if (src.ride_index != RCT12_RIDE_ID_NULL)
                 {
-                    auto ride = get_ride(RCT12RideIdToOpenRCT2RideId(src.ride_index));
+                    auto ride = GetRide(RCT12RideIdToOpenRCT2RideId(src.ride_index));
                     if (ride != nullptr)
                     {
                         ride->measurement = std::make_unique<RideMeasurement>();
@@ -1286,7 +1286,7 @@ namespace RCT1
             dst->sprite_direction = src->sprite_direction;
 
             // Peep name
-            if (is_user_string_id(src->name_string_idx))
+            if (IsUserStringID(src->name_string_idx))
             {
                 dst->SetName(GetUserString(src->name_string_idx));
             }
@@ -1651,7 +1651,7 @@ namespace RCT1
                 {
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
-                    const auto* ride = get_ride(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    const auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
 
                     dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
@@ -1867,7 +1867,7 @@ namespace RCT1
             // All available objects must be loaded before this method is called as it
             // requires them to correctly insert objects into the research list
 
-            research_reset_items();
+            ResearchResetItems();
 
             size_t researchListCount;
             const RCT1::ResearchItem* researchList = GetResearchList(&researchListCount);
@@ -1879,7 +1879,7 @@ namespace RCT1
             // The first six scenery groups are always available
             for (uint8_t i = 0; i < 6; i++)
             {
-                research_insert_scenery_group_entry(i, true);
+                ResearchInsertSceneryGroupEntry(i, true);
             }
 
             bool researched = true;
@@ -1911,7 +1911,7 @@ namespace RCT1
                         if (sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_IGNORE
                             && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
                         {
-                            research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
+                            ResearchInsertSceneryGroupEntry(sceneryGroupEntryIndex, researched);
                         }
                         break;
                     }
@@ -1968,7 +1968,7 @@ namespace RCT1
                             if (!_researchRideEntryUsed[ownRideEntryIndex])
                             {
                                 _researchRideEntryUsed[ownRideEntryIndex] = true;
-                                research_insert_ride_entry(ownRideEntryIndex, researched);
+                                ResearchInsertRideEntry(ownRideEntryIndex, researched);
                             }
                         }
 
@@ -2029,7 +2029,7 @@ namespace RCT1
 
             // This will mark items as researched/unresearched according to the research list.
             // This needs to be called before importing progress, as it will reset it.
-            research_reset_current_item();
+            ResearchResetCurrentItem();
 
             // Research history
             gResearchProgress = _s4.research_progress;
@@ -2099,14 +2099,14 @@ namespace RCT1
             if (!_researchRideEntryUsed[rideEntryIndex])
             {
                 _researchRideEntryUsed[rideEntryIndex] = true;
-                research_insert_ride_entry(rideEntryIndex, researched);
+                ResearchInsertRideEntry(rideEntryIndex, researched);
             }
         }
 
         void ImportParkName()
         {
             std::string parkName = std::string(_s4.scenario_name);
-            if (is_user_string_id(static_cast<StringId>(_s4.park_name_string_index)))
+            if (IsUserStringID(static_cast<StringId>(_s4.park_name_string_index)))
             {
                 std::string userString = GetUserString(_s4.park_name_string_index);
                 if (!userString.empty())
@@ -2123,7 +2123,7 @@ namespace RCT1
         {
             // Date and srand
             gCurrentTicks = _s4.ticks;
-            scenario_rand_seed(_s4.random_a, _s4.random_b);
+            ScenarioRandSeed(_s4.random_a, _s4.random_b);
             gDateMonthsElapsed = static_cast<int32_t>(_s4.month);
             gDateMonthTicks = _s4.day;
 
@@ -2230,7 +2230,7 @@ namespace RCT1
 
                 if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
                 {
-                    rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
+                    rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
 
                     if (rideEntry != nullptr)
                     {
@@ -2249,7 +2249,7 @@ namespace RCT1
 
                 if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
                 {
-                    rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
+                    rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
 
                     if (rideEntry != nullptr)
                     {
@@ -2305,15 +2305,15 @@ namespace RCT1
                 if (ScenarioSources::TryGetById(scNumber, &sourceDesc))
                 {
                     StringId localisedStringIds[3];
-                    if (language_get_localised_scenario_strings(sourceDesc.title, localisedStringIds))
+                    if (LanguageGetLocalisedScenarioStrings(sourceDesc.title, localisedStringIds))
                     {
                         if (localisedStringIds[0] != STR_NONE)
                         {
-                            name = String::ToStd(language_get_string(localisedStringIds[0]));
+                            name = String::ToStd(LanguageGetString(localisedStringIds[0]));
                         }
                         if (localisedStringIds[2] != STR_NONE)
                         {
-                            details = String::ToStd(language_get_string(localisedStringIds[2]));
+                            details = String::ToStd(LanguageGetString(localisedStringIds[2]));
                         }
                     }
                 }
@@ -2398,7 +2398,7 @@ namespace RCT1
                 dst->flags |= BANNER_FLAG_NO_ENTRY;
             }
 
-            if (is_user_string_id(src->string_idx))
+            if (IsUserStringID(src->string_idx))
             {
                 dst->text = GetUserString(src->string_idx);
             }
@@ -2475,7 +2475,7 @@ namespace RCT1
             const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(
                 originalString, RCT2::GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
-            auto asUtf8 = rct2_to_utf8(originalStringView, RCT2LanguageId::EnglishUK);
+            auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
         }
@@ -2534,7 +2534,7 @@ namespace RCT1
                 }
 
                 // Now, swap the entrance and exit.
-                auto ride = get_ride(merryGoRoundId);
+                auto ride = GetRide(merryGoRoundId);
                 if (ride != nullptr)
                 {
                     auto& station = ride->GetStation();
@@ -2592,7 +2592,7 @@ namespace RCT1
                             }
 
                             RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
-                            auto ride = get_ride(rideIndex);
+                            auto ride = GetRide(rideIndex);
                             if (ride != nullptr)
                             {
                                 ride->num_block_brakes++;
@@ -2707,7 +2707,7 @@ namespace RCT1
     {
         auto* dst = CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
-        const auto* ride = get_ride(RideId::FromUnderlying(src->ride));
+        const auto* ride = GetRide(RideId::FromUnderlying(src->ride));
         if (ride == nullptr)
             return;
 
@@ -2908,11 +2908,11 @@ namespace RCT1
 
         if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
         {
-            increment_guests_heading_for_park();
+            IncrementGuestsHeadingForPark();
         }
         else
         {
-            increment_guests_in_park();
+            IncrementGuestsInPark();
         }
     }
 

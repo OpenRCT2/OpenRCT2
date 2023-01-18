@@ -84,7 +84,7 @@ GameActions::Result RideCreateAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
     }
 
-    int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
+    int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);
     if (rideEntryIndex >= MAX_RIDE_OBJECTS)
     {
         return GameActions::Result(
@@ -97,7 +97,7 @@ GameActions::Result RideCreateAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
+    rct_ride_entry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
@@ -120,14 +120,14 @@ GameActions::Result RideCreateAction::Execute() const
     rct_ride_entry* rideEntry;
     auto res = GameActions::Result();
 
-    int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
+    int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);
     auto rideIndex = GetNextFreeRideId();
 
     auto ride = GetOrAllocateRide(rideIndex);
-    rideEntry = get_ride_entry(rideEntryIndex);
+    rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid request for ride %u", rideIndex);
+        LOG_WARNING("Invalid request for ride %u", rideIndex);
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
     }
 
@@ -237,9 +237,9 @@ GameActions::Result RideCreateAction::Execute() const
 
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
         {
-            if (shop_item_has_common_price(ShopItem::Admission))
+            if (ShopItemHasCommonPrice(ShopItem::Admission))
             {
-                money32 price = ride_get_common_price(*ride);
+                money32 price = RideGetCommonPrice(*ride);
                 if (price != MONEY32_UNDEFINED)
                 {
                     ride->price[0] = static_cast<money16>(price);
@@ -251,9 +251,9 @@ GameActions::Result RideCreateAction::Execute() const
         {
             if (rideEntry->shop_item[i] != ShopItem::None)
             {
-                if (shop_item_has_common_price(rideEntry->shop_item[i]))
+                if (ShopItemHasCommonPrice(rideEntry->shop_item[i]))
                 {
-                    money32 price = shop_item_get_common_price(ride, rideEntry->shop_item[i]);
+                    money32 price = ShopItemGetCommonPrice(ride, rideEntry->shop_item[i]);
                     if (price != MONEY32_UNDEFINED)
                     {
                         ride->price[i] = static_cast<money16>(price);
@@ -263,9 +263,9 @@ GameActions::Result RideCreateAction::Execute() const
         }
 
         // Set the on-ride photo price, whether the ride has one or not (except shops).
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) && shop_item_has_common_price(ShopItem::Photo))
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) && ShopItemHasCommonPrice(ShopItem::Photo))
         {
-            money32 price = shop_item_get_common_price(ride, ShopItem::Photo);
+            money32 price = ShopItemGetCommonPrice(ride, ShopItem::Photo);
             if (price != MONEY32_UNDEFINED)
             {
                 ride->price[1] = static_cast<money16>(price);
@@ -318,8 +318,8 @@ GameActions::Result RideCreateAction::Execute() const
     ride->mode = ride->GetDefaultMode();
     ride->MinCarsPerTrain = rideEntry->min_cars_in_train;
     ride->MaxCarsPerTrain = rideEntry->max_cars_in_train;
-    ride_set_vehicle_colours_to_random_preset(*ride, _colour2);
-    window_invalidate_by_class(WindowClass::RideList);
+    RideSetVehicleColoursToRandomPreset(*ride, _colour2);
+    WindowInvalidateByClass(WindowClass::RideList);
 
     res.Expenditure = ExpenditureType::RideConstruction;
     res.SetData(RideId{ rideIndex });

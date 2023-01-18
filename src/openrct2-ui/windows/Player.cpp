@@ -137,7 +137,7 @@ rct_window* WindowPlayerOpen(uint8_t id)
 {
     rct_window* window;
 
-    window = window_bring_to_front_by_number(WindowClass::Player, id);
+    window = WindowBringToFrontByNumber(WindowClass::Player, id);
     if (window == nullptr)
     {
         window = WindowCreateAutoPos(240, 170, &window_player_overview_events, WindowClass::Player, WF_RESIZABLE);
@@ -205,7 +205,7 @@ void WindowPlayerOverviewMouseUp(rct_window* w, WidgetIndex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -213,7 +213,7 @@ void WindowPlayerOverviewMouseUp(rct_window* w, WidgetIndex widgetIndex)
             break;
         case WIDX_LOCATE:
         {
-            rct_window* mainWindow = window_get_main();
+            rct_window* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
                 int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
@@ -224,7 +224,7 @@ void WindowPlayerOverviewMouseUp(rct_window* w, WidgetIndex widgetIndex)
                 auto coord = network_get_player_last_action_coord(player);
                 if (coord.x || coord.y || coord.z)
                 {
-                    window_scroll_to_location(*mainWindow, coord);
+                    WindowScrollToLocation(*mainWindow, coord);
                 }
             }
         }
@@ -266,7 +266,7 @@ void WindowPlayerOverviewDropdown(rct_window* w, WidgetIndex widgetIndex, int32_
     playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error == GameActions::Status::Ok)
         {
-            window_invalidate_by_number(windowHandle.first, windowHandle.second);
+            WindowInvalidateByNumber(windowHandle.first, windowHandle.second);
         }
     });
     GameActions::Execute(&playerSetGroupAction);
@@ -274,17 +274,17 @@ void WindowPlayerOverviewDropdown(rct_window* w, WidgetIndex widgetIndex, int32_
 
 void WindowPlayerOverviewResize(rct_window* w)
 {
-    window_set_resize(*w, 240, 170, 500, 300);
+    WindowSetResize(*w, 240, 170, 500, 300);
 }
 
 void WindowPlayerOverviewUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB_1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB_1 + w->page);
 
     if (network_get_player_index(static_cast<uint8_t>(w->number)) == -1)
     {
-        window_close(*w);
+        WindowClose(*w);
         return;
     }
 
@@ -292,9 +292,9 @@ void WindowPlayerOverviewUpdate(rct_window* w)
     bool scroll = true;
 
     // Use this spare window field for rotation check
-    if (w->var_4AE != get_current_rotation())
+    if (w->var_4AE != GetCurrentRotation())
     {
-        w->var_4AE = get_current_rotation();
+        w->var_4AE = GetCurrentRotation();
         scroll = false;
     }
     WindowPlayerUpdateViewport(w, scroll);
@@ -336,7 +336,7 @@ void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
-    gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { w->colours[2] });
+    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { w->colours[2] });
 
     // Draw last action
     screenCoords = w->windowPos + ScreenCoordsXY{ w->width / 2, w->height - 13 };
@@ -355,7 +355,7 @@ void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (w->viewport != nullptr && w->var_492 != -1)
     {
-        window_draw_viewport(dpi, *w);
+        WindowDrawViewport(dpi, *w);
     }
 }
 
@@ -393,7 +393,7 @@ void WindowPlayerOverviewInvalidate(rct_window* w)
     w->widgets[WIDX_GROUP_DROPDOWN].left = w->widgets[WIDX_GROUP].right - 10;
     w->widgets[WIDX_GROUP_DROPDOWN].right = w->widgets[WIDX_GROUP].right;
 
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_2);
+    WindowAlignTabs(w, WIDX_TAB_1, WIDX_TAB_2);
 
     rct_viewport* viewport = w->viewport;
     if (viewport != nullptr)
@@ -427,7 +427,7 @@ void WindowPlayerStatisticsMouseUp(rct_window* w, WidgetIndex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -438,17 +438,17 @@ void WindowPlayerStatisticsMouseUp(rct_window* w, WidgetIndex widgetIndex)
 
 void WindowPlayerStatisticsResize(rct_window* w)
 {
-    window_set_resize(*w, 210, 80, 210, 80);
+    WindowSetResize(*w, 210, 80, 210, 80);
 }
 
 void WindowPlayerStatisticsUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(*w, WIDX_TAB_1 + w->page);
+    WidgetInvalidate(*w, WIDX_TAB_1 + w->page);
 
     if (network_get_player_index(static_cast<uint8_t>(w->number)) == -1)
     {
-        window_close(*w);
+        WindowClose(*w);
     }
 }
 
@@ -468,7 +468,7 @@ void WindowPlayerStatisticsInvalidate(rct_window* w)
 
     w->ResizeFrameWithPage();
 
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_2);
+    WindowAlignTabs(w, WIDX_TAB_1, WIDX_TAB_2);
 }
 
 void WindowPlayerStatisticsPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -511,8 +511,8 @@ static void WindowPlayerSetPage(rct_window* w, int32_t page)
     w->pressed_widgets = 0;
     w->widgets = window_player_page_widgets[page];
     w->Invalidate();
-    window_event_resize_call(w);
-    window_event_invalidate_call(w);
+    WindowEventResizeCall(w);
+    WindowEventInvalidateCall(w);
     WindowInitScrollWidgets(*w);
     w->Invalidate();
 
@@ -521,14 +521,14 @@ static void WindowPlayerSetPage(rct_window* w, int32_t page)
         if (w->viewport == nullptr)
         {
             const auto focus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
-            viewport_create(w, w->windowPos, w->width, w->height, focus);
+            ViewportCreate(w, w->windowPos, w->width, w->height, focus);
             w->flags |= WF_NO_SCROLLING;
-            window_event_invalidate_call(w);
+            WindowEventInvalidateCall(w);
             WindowPlayerUpdateViewport(w, false);
         }
         else if (originalPage != page)
         {
-            window_event_invalidate_call(w);
+            WindowEventInvalidateCall(w);
             WindowPlayerUpdateViewport(w, false);
         }
     }
@@ -547,7 +547,7 @@ static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     {
         widget = &w->widgets[WIDX_TAB_1];
         auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-        gfx_draw_sprite(dpi, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
+        GfxDrawSprite(dpi, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
     }
 
     // Tab 2
@@ -562,7 +562,7 @@ static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
             imageId += (w->frame_no / 2) & 7;
         }
 
-        gfx_draw_sprite(dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 }
 
@@ -599,7 +599,7 @@ static void WindowPlayerUpdateViewport(rct_window* w, bool scroll)
                 {
                     w->viewport->viewPos = centreLoc.value();
                 }
-                widget_invalidate(*w, WIDX_VIEWPORT);
+                WidgetInvalidate(*w, WIDX_VIEWPORT);
             }
 
             // Draw the viewport

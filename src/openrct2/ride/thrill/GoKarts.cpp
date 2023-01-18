@@ -371,13 +371,13 @@ static void paint_go_karts_station(
 
     if (direction == 0 || direction == 2)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
+        hasFence = TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+        hasFence = TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
     }
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
@@ -396,13 +396,13 @@ static void paint_go_karts_station(
 
     if (direction == 0 || direction == 2)
     {
-        hasFence = track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
+        hasFence = TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height);
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+        hasFence = TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height);
     }
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
@@ -533,7 +533,7 @@ static void paint_go_karts_track_right_quarter_turn_1_tile(
 /**
  * rct2: 0x0074A668
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionGoKarts(int32_t trackType)
 {
     switch (trackType)
     {

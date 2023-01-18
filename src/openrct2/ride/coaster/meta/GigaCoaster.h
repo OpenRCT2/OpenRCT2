@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_giga_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionGigaRc),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
     SET_FIELD(Heights, { 86, 24, 9, 11, }),
     SET_FIELD(MaxMass, 31),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 5, 8 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_giga_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateGigaCoaster),
     SET_FIELD(RatingsMultipliers, { 51, 32, 10 }),
     SET_FIELD(UpkeepCosts, { 10, 20, 80, 12, 3, 40 }),
     SET_FIELD(BuildCosts, { 60.00_GBP, 2.50_GBP, 55, }),

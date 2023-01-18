@@ -72,7 +72,7 @@ static void WindowSavePromptCallback(int32_t result, const utf8* path)
 {
     if (result == MODAL_RESULT_OK)
     {
-        game_load_or_quit_no_save_prompt();
+        GameLoadOrQuitNoSavePrompt();
     }
 }
 
@@ -106,7 +106,7 @@ public:
             OpenRCT2::Audio::StopAll();
         }
 
-        window_invalidate_by_class(WindowClass::TopToolbar);
+        WindowInvalidateByClass(WindowClass::TopToolbar);
 
         StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
         if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -130,7 +130,7 @@ public:
             OpenRCT2::Audio::Resume();
         }
 
-        window_invalidate_by_class(WindowClass::TopToolbar);
+        WindowInvalidateByClass(WindowClass::TopToolbar);
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -140,7 +140,7 @@ public:
             switch (widgetIndex)
             {
                 case WQIDX_OK:
-                    game_load_or_quit_no_save_prompt();
+                    GameLoadOrQuitNoSavePrompt();
                     break;
                 case WQIDX_CLOSE:
                 case WQIDX_CANCEL:
@@ -159,20 +159,20 @@ public:
                 if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
                 {
                     intent = std::make_unique<Intent>(WindowClass::Loadsave);
-                    intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                    intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
+                    intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                    intent->PutExtra(INTENT_EXTRA_PATH, gScenarioName);
                 }
                 else
                 {
-                    intent = create_save_game_as_intent();
+                    intent = CreateSaveGameAsIntent();
                 }
                 Close();
-                intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
+                intent->PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
                 ContextOpenIntent(intent.get());
                 break;
             }
             case WIDX_DONT_SAVE:
-                game_load_or_quit_no_save_prompt();
+                GameLoadOrQuitNoSavePrompt();
                 return;
             case WIDX_CLOSE:
             case WIDX_CANCEL:
@@ -198,7 +198,7 @@ rct_window* WindowSavePromptOpen()
     // do not show save prompt if we're in the title demo and click on load game
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
-        game_load_or_quit_no_save_prompt();
+        GameLoadOrQuitNoSavePrompt();
         return nullptr;
     }
 
@@ -212,21 +212,21 @@ rct_window* WindowSavePromptOpen()
 
         if (gScreenAge < 3840 && network_get_mode() == NETWORK_MODE_NONE)
         {
-            game_load_or_quit_no_save_prompt();
+            GameLoadOrQuitNoSavePrompt();
             return nullptr;
         }
     }
 
     // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class(WindowClass::SavePrompt);
+    rct_window* window = WindowBringToFrontByClass(WindowClass::SavePrompt);
     if (window != nullptr)
     {
-        window_close(*window);
+        WindowClose(*window);
     }
 
     if (EnumValue(prompt_mode) >= std::size(window_save_prompt_labels))
     {
-        log_warning("Invalid save prompt mode %u", prompt_mode);
+        LOG_WARNING("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
 

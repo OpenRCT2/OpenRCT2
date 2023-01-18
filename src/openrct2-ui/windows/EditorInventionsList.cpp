@@ -105,7 +105,8 @@ static void DrawResearchItem(
     if (researchItem.type == Research::EntryType::Ride
         && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        const StringId rideTypeName = get_ride_naming(researchItem.baseRideType, get_ride_entry(researchItem.entryIndex)).Name;
+        const StringId rideTypeName = GetRideNaming(researchItem.baseRideType, *GetRideEntryByIndex(researchItem.entryIndex))
+                                          .Name;
 
         // Draw group name
         auto ft = Formatter();
@@ -156,13 +157,13 @@ public:
 
     void OnClose() override
     {
-        research_remove_flags();
+        ResearchRemoveFlags();
 
         // When used in-game (as a cheat)
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
         {
             gSilentResearch = true;
-            research_reset_current_item();
+            ResearchResetCurrentItem();
             gSilentResearch = false;
         }
     }
@@ -175,16 +176,16 @@ public:
                 Close();
                 break;
             case WIDX_RANDOM_SHUFFLE:
-                research_items_shuffle();
+                ResearchItemsShuffle();
                 Invalidate();
                 break;
             case WIDX_MOVE_ITEMS_TO_TOP:
-                research_items_make_all_researched();
+                ResearchItemsMakeAllResearched();
                 InitScrollWidgets();
                 Invalidate();
                 break;
             case WIDX_MOVE_ITEMS_TO_BOTTOM:
-                research_items_make_all_unresearched();
+                ResearchItemsMakeAllUnresearched();
                 InitScrollWidgets();
                 Invalidate();
                 break;
@@ -209,7 +210,7 @@ public:
     {
         frame_no++;
         OnPrepareDraw();
-        widget_invalidate(*this, WIDX_TAB_1);
+        WidgetInvalidate(*this, WIDX_TAB_1);
 
         if (WindowEditorInventionsListDragGetItem() != nullptr)
             return;
@@ -266,7 +267,7 @@ public:
     {
         // Draw background
         uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
-        gfx_clear(&dpi, paletteIndex);
+        GfxClear(&dpi, paletteIndex);
 
         int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
         int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
@@ -295,7 +296,7 @@ public:
                     bottom = itemY;
                 }
 
-                gfx_filter_rect(&dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(&dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
             }
 
             if (dragItem != nullptr && researchItem == *dragItem)
@@ -351,7 +352,7 @@ public:
 
         // Tab image
         auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top };
-        gfx_draw_sprite(&dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
+        GfxDrawSprite(&dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
 
         // Pre-researched items label
         screenPos = windowPos
@@ -365,7 +366,7 @@ public:
 
         // Preview background
         auto& bkWidget = widgets[WIDX_PREVIEW];
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi,
             { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
               windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },
@@ -383,19 +384,19 @@ public:
         if (researchItem->type == Research::EntryType::Ride)
             objectEntryType = ObjectType::Ride;
 
-        auto chunk = object_entry_get_chunk(objectEntryType, researchItem->entryIndex);
+        auto chunk = ObjectEntryGetChunk(objectEntryType, researchItem->entryIndex);
         if (chunk == nullptr)
             return;
 
         // Draw preview
-        const auto* object = object_entry_get_object(objectEntryType, researchItem->entryIndex);
+        const auto* object = ObjectEntryGetObject(objectEntryType, researchItem->entryIndex);
         if (object != nullptr)
         {
             rct_drawpixelinfo clipDPI;
             screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
             const auto clipWidth = bkWidget.width() - 1;
             const auto clipHeight = bkWidget.height() - 1;
-            if (clip_drawpixelinfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
+            if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
             {
                 object->DrawPreview(&clipDPI, clipWidth, clipHeight);
             }
@@ -413,7 +414,8 @@ public:
             && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             drawString = STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-            StringId rideTypeName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).Name;
+            StringId rideTypeName = GetRideNaming(researchItem->baseRideType, *GetRideEntryByIndex(researchItem->entryIndex))
+                                        .Name;
             ft.Add<StringId>(rideTypeName);
             ft.Add<StringId>(stringId);
         }
@@ -476,7 +478,7 @@ public:
         if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
             && windowPos.y + height > screenCoords.y)
         {
-            WidgetIndex widgetIndex = window_find_widget_from_point(*this, screenCoords);
+            WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*this, screenCoords);
             auto& widget = widgets[widgetIndex];
             if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
             {
@@ -596,7 +598,7 @@ public:
 
     CursorID OnCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
     {
-        auto* inventionListWindow = static_cast<InventionListWindow*>(window_find_by_class(WindowClass::EditorInventionList));
+        auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
         if (inventionListWindow != nullptr)
         {
             auto res = inventionListWindow->GetResearchItemAt(screenCoords);
@@ -613,7 +615,7 @@ public:
 
     void OnMoved(const ScreenCoordsXY& screenCoords) override
     {
-        auto* inventionListWindow = static_cast<InventionListWindow*>(window_find_by_class(WindowClass::EditorInventionList));
+        auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
         if (inventionListWindow == nullptr)
         {
             Close();
@@ -632,7 +634,7 @@ public:
             inventionListWindow->MoveResearchItem(_draggedItem, res->research, res->isInvented);
         }
 
-        window_invalidate_by_class(WindowClass::EditorInventionList);
+        WindowInvalidateByClass(WindowClass::EditorInventionList);
         Close();
     }
 
@@ -641,7 +643,8 @@ public:
         auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
         DrawResearchItem(
-            dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, { COLOUR_BLACK | COLOUR_FLAG_OUTLINE });
+            dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID,
+            { COLOUR_BLACK | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE) });
     }
 
     void Init(ResearchItem& researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
@@ -666,7 +669,7 @@ public:
 static void WindowEditorInventionsListDragOpen(
     ResearchItem* researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
 {
-    window_close_by_class(WindowClass::EditorInventionListDrag);
+    WindowCloseByClass(WindowClass::EditorInventionListDrag);
     auto* wnd = WindowCreate<InventionDragWindow>(
         WindowClass::EditorInventionListDrag, 10, 14, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     if (wnd != nullptr)
@@ -677,7 +680,7 @@ static void WindowEditorInventionsListDragOpen(
 
 static const ResearchItem* WindowEditorInventionsListDragGetItem()
 {
-    auto* wnd = static_cast<InventionDragWindow*>(window_find_by_class(WindowClass::EditorInventionListDrag));
+    auto* wnd = static_cast<InventionDragWindow*>(WindowFindByClass(WindowClass::EditorInventionListDrag));
     if (wnd == nullptr)
     {
         return nullptr;

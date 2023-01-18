@@ -67,4 +67,4 @@ extern currency_descriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType
  * Loads custom currency saved parameters into {@link CurrencyDescriptors}'
  * custom currency entry
  */
-void currency_load_custom_currency_config();
+void CurrencyLoadCustomCurrencyConfig();

@@ -206,7 +206,7 @@ public:
     {
         _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
         _bitsDPI.DrawingEngine = this;
-        lightfx_set_available(false);
+        LightFXSetAvailable(false);
     }
 
     ~OpenGLDrawingEngine() override
@@ -325,8 +325,8 @@ public:
     {
         _drawingContext->CalculcateClipping(&_bitsDPI);
 
-        window_update_all_viewports();
-        window_draw_all(&_bitsDPI, 0, 0, _width, _height);
+        WindowUpdateAllViewports();
+        WindowDrawAll(&_bitsDPI, 0, 0, _width, _height);
     }
 
     void PaintWeather() override
@@ -341,7 +341,7 @@ public:
         const OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
         framebuffer.Bind();
         framebuffer.GetPixels(_bitsDPI);
-        std::string result = screenshot_dump_png(&_bitsDPI);
+        std::string result = ScreenshotDumpPNG(&_bitsDPI);
         return result;
     }
 
@@ -591,7 +591,7 @@ void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId imag
 {
     CalculcateClipping(dpi);
 
-    auto g1Element = gfx_get_g1_element(imageId);
+    auto g1Element = GfxGetG1Element(imageId);
     if (g1Element == nullptr)
     {
         return;
@@ -742,8 +742,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
 {
     CalculcateClipping(dpi);
 
-    auto g1ElementMask = gfx_get_g1_element(maskImage);
-    auto g1ElementColour = gfx_get_g1_element(colourImage);
+    auto g1ElementMask = GfxGetG1Element(maskImage);
+    auto g1ElementColour = GfxGetG1Element(colourImage);
     if (g1ElementMask == nullptr || g1ElementColour == nullptr)
     {
         return;
@@ -806,7 +806,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId
 
     assert((colour & 0xFF) > 0u);
 
-    auto g1Element = gfx_get_g1_element(image);
+    auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
         return;
@@ -857,7 +857,7 @@ void OpenGLDrawingContext::DrawGlyph(
 {
     CalculcateClipping(dpi);
 
-    auto g1Element = gfx_get_g1_element(image);
+    auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
         return;

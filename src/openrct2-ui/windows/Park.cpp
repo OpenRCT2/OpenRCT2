@@ -207,10 +207,10 @@ public:
 
     void OnClose() override
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && classification == gCurrentToolWidget.window_classification
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && classification == gCurrentToolWidget.window_classification
             && number == gCurrentToolWidget.window_number)
         {
-            tool_cancel();
+            ToolCancel();
         }
     }
 
@@ -437,7 +437,7 @@ private:
     void OnResizeEntrance()
     {
         flags |= WF_RESIZABLE;
-        window_set_resize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
+        WindowSetResize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
         InitViewport();
     }
 
@@ -487,7 +487,7 @@ private:
     void OnUpdateEntrance()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_1);
+        WidgetInvalidate(*this, WIDX_TAB_1);
     }
 
     void OnTextInputEntrance(WidgetIndex widgetIndex, std::string_view text)
@@ -533,7 +533,7 @@ private:
         else
             widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
 
         // Anchor entrance page specific widgets
@@ -593,9 +593,9 @@ private:
         // Draw viewport
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-                gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
         }
 
         // Draw park closed / open label
@@ -632,7 +632,7 @@ private:
         }
 
         // Call invalidate event
-        window_event_invalidate_call(this);
+        WindowEventInvalidateCall(this);
 
         focus = newFocus;
 
@@ -642,7 +642,7 @@ private:
             if (viewport == nullptr)
             {
                 Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
-                viewport_create(
+                ViewportCreate(
                     this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                     viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
                 flags |= WF_NO_SCROLLING;
@@ -660,13 +660,13 @@ private:
 #pragma region Rating page
     void OnResizeRating()
     {
-        window_set_resize(*this, 255, 182, 255, 182);
+        WindowSetResize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateRating()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_2);
     }
 
     void OnPrepareDrawRating()
@@ -681,7 +681,7 @@ private:
         SetPressedTab();
         PrepareWindowTitleText();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -699,7 +699,7 @@ private:
         DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
         // Graph border
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi,
             { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
               screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
@@ -715,7 +715,7 @@ private:
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 20;
@@ -732,14 +732,14 @@ private:
 #pragma region Guests page
     void OnResizeGuests()
     {
-        window_set_resize(*this, 255, 182, 255, 182);
+        WindowSetResize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateGuests()
     {
         frame_no++;
         _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
-        widget_invalidate(*this, WIDX_TAB_3);
+        WidgetInvalidate(*this, WIDX_TAB_3);
     }
 
     void OnPrepareDrawGuests()
@@ -754,7 +754,7 @@ private:
         SetPressedTab();
         PrepareWindowTitleText();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -772,7 +772,7 @@ private:
         DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
         // Graph border
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi,
             { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
               screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
@@ -788,7 +788,7 @@ private:
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 20;
@@ -818,7 +818,7 @@ private:
 #pragma region Price page
     void OnResizePrice()
     {
-        window_set_resize(*this, 230, 124, 230, 124);
+        WindowSetResize(*this, 230, 124, 230, 124);
     }
 
     void OnMouseDownPrice(WidgetIndex widgetIndex)
@@ -845,7 +845,7 @@ private:
     void OnUpdatePrice()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_4);
+        WidgetInvalidate(*this, WIDX_TAB_4);
     }
 
     void OnPrepareDrawPrice()
@@ -884,7 +884,7 @@ private:
             widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Button;
         }
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -911,28 +911,28 @@ private:
 #pragma region Stats page
     void OnResizeStats()
     {
-        window_set_resize(*this, 230, 119, 230, 119);
+        WindowSetResize(*this, 230, 119, 230, 119);
     }
 
     void OnUpdateStats()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_5);
+        WidgetInvalidate(*this, WIDX_TAB_5);
 
         // Invalidate ride count if changed
-        const auto rideCount = ride_get_count();
+        const auto rideCount = RideGetCount();
         if (_numberOfRides != rideCount)
         {
             _numberOfRides = rideCount;
-            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
+            WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
         }
 
         // Invalidate number of staff if changed
-        const auto staffCount = peep_get_staff_count();
+        const auto staffCount = PeepGetStaffCount();
         if (_numberOfStaff != staffCount)
         {
             _numberOfStaff = staffCount;
-            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
+            WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
         }
     }
 
@@ -948,7 +948,7 @@ private:
         SetPressedTab();
         PrepareWindowTitleText();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -1020,16 +1020,16 @@ private:
     {
 #ifndef NO_TTF
         if (gCurrentTTFFontSet != nullptr)
-            window_set_resize(*this, 230, 270, 230, 270);
+            WindowSetResize(*this, 230, 270, 230, 270);
         else
 #endif
-            window_set_resize(*this, 230, 226, 230, 226);
+            WindowSetResize(*this, 230, 226, 230, 226);
     }
 
     void OnUpdateObjective()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_6);
+        WidgetInvalidate(*this, WIDX_TAB_6);
     }
 
     void OnTextInputObjective(WidgetIndex widgetIndex, std::string_view text)
@@ -1037,7 +1037,7 @@ private:
         if (widgetIndex == WIDX_ENTER_NAME && !text.empty())
         {
             std::string strText(text);
-            scenario_success_submit_name(strText.c_str());
+            ScenarioSuccessSubmitName(strText.c_str());
             Invalidate();
         }
     }
@@ -1057,7 +1057,7 @@ private:
         else
             widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -1094,7 +1094,7 @@ private:
         else
         {
             ft.Add<uint16_t>(gScenarioObjective.NumGuests);
-            ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.Year));
+            ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gScenarioObjective.Year));
             if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
                 ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
             else
@@ -1126,13 +1126,13 @@ private:
 #pragma region Awards page
     void OnResizeAwards()
     {
-        window_set_resize(*this, 230, 182, 230, 182);
+        WindowSetResize(*this, 230, 182, 230, 182);
     }
 
     void OnUpdateAwards()
     {
         frame_no++;
-        widget_invalidate(*this, WIDX_TAB_7);
+        WidgetInvalidate(*this, WIDX_TAB_7);
     }
 
     void OnPrepareDrawAwards()
@@ -1147,7 +1147,7 @@ private:
         SetPressedTab();
         PrepareWindowTitleText();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
     }
 
@@ -1161,7 +1161,7 @@ private:
 
         for (const auto& award : GetAwards())
         {
-            gfx_draw_sprite(&dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
+            GfxDrawSprite(&dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
             DrawTextWrapped(&dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
 
             screenCoords.y += 32;
@@ -1175,9 +1175,9 @@ private:
 #pragma region Common
     void SetPage(int32_t newPage)
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
             if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                tool_cancel();
+                ToolCancel();
 
         // Set listen only to viewport
         bool listen = false;
@@ -1194,9 +1194,9 @@ private:
         SetDisabledTabs();
         Invalidate();
 
-        window_event_resize_call(this);
-        window_event_invalidate_call(this);
-        window_event_update_call(this);
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
+        WindowEventUpdateCall(this);
         if (listen && viewport != nullptr)
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
     }
@@ -1218,7 +1218,7 @@ private:
         // Entrance tab
         if (!WidgetIsDisabled(*this, WIDX_TAB_1))
         {
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_TAB_PARK_ENTRANCE),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
         }
@@ -1229,11 +1229,11 @@ private:
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_RATING)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
-            gfx_draw_sprite(
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_RATING_HIGH),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left + 7, widgets[WIDX_TAB_2].top + 1 });
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_RATING_LOW),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left + 16, widgets[WIDX_TAB_2].top + 12 });
         }
@@ -1244,13 +1244,13 @@ private:
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_GUESTS)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
             ImageId peepImage(GetPeepAnimation(PeepSpriteType::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
             if (page == WINDOW_PARK_PAGE_GUESTS)
                 peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, peepImage, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].midX(), widgets[WIDX_TAB_3].bottom - 9 });
         }
 
@@ -1260,7 +1260,7 @@ private:
             ImageId spriteIdx(SPR_TAB_ADMISSION_0);
             if (page == WINDOW_PARK_PAGE_PRICE)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 2) % 8);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
         }
 
         // Statistics tab
@@ -1269,7 +1269,7 @@ private:
             ImageId spriteIdx(SPR_TAB_STATS_0);
             if (page == WINDOW_PARK_PAGE_STATS)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 7);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
         }
 
         // Objective tab
@@ -1278,13 +1278,13 @@ private:
             ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
             if (page == WINDOW_PARK_PAGE_OBJECTIVE)
                 spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 16);
-            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
+            GfxDrawSprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
         }
 
         // Awards tab
         if (!WidgetIsDisabled(*this, WIDX_TAB_7))
         {
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(SPR_TAB_AWARDS), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_7].left, widgets[WIDX_TAB_7].top });
         }
     }

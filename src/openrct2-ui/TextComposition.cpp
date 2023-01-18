@@ -93,7 +93,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 Memory::Free(newText);
 
                 console.RefreshCaret(_session.SelectionStart);
-                window_update_textbox();
+                WindowUpdateTextbox();
             }
             break;
         case SDL_KEYDOWN:
@@ -126,7 +126,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
             {
                 Clear();
                 console.RefreshCaret(_session.SelectionStart);
-                window_update_textbox();
+                WindowUpdateTextbox();
             }
 
             switch (key)
@@ -141,7 +141,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         Delete();
 
                         console.RefreshCaret(_session.SelectionStart);
-                        window_update_textbox();
+                        WindowUpdateTextbox();
                     }
                     break;
                 case SDLK_HOME:
@@ -160,11 +160,11 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     _session.SelectionStart = startOffset;
                     Delete();
                     console.RefreshCaret(_session.SelectionStart);
-                    window_update_textbox();
+                    WindowUpdateTextbox();
                     break;
                 }
                 case SDLK_RETURN:
-                    window_cancel_textbox();
+                    WindowCancelTextbox();
                     break;
                 case SDLK_LEFT:
                     CursorLeft();
@@ -187,7 +187,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         utf8* text = SDL_GetClipboardText();
                         Insert(text);
                         SDL_free(text);
-                        window_update_textbox();
+                        WindowUpdateTextbox();
                     }
                     break;
             }
@@ -204,7 +204,7 @@ void TextComposition::CursorEnd()
 {
     size_t selectionOffset = _session.Size;
     const utf8* ch = _session.Buffer + _session.SelectionStart;
-    while (!utf8_is_codepoint_start(ch) && selectionOffset > 0)
+    while (!UTF8IsCodepointStart(ch) && selectionOffset > 0)
     {
         ch--;
         selectionOffset--;
@@ -223,7 +223,7 @@ void TextComposition::CursorLeft()
         {
             ch--;
             selectionOffset--;
-        } while (!utf8_is_codepoint_start(ch) && selectionOffset > 0);
+        } while (!UTF8IsCodepointStart(ch) && selectionOffset > 0);
 
         _session.SelectionStart = selectionOffset;
     }
@@ -240,7 +240,7 @@ void TextComposition::CursorRight()
         {
             ch++;
             selectionOffset++;
-        } while (!utf8_is_codepoint_start(ch) && selectionOffset < selectionMaxOffset);
+        } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
 
         _session.SelectionSize = std::max<size_t>(0, _session.SelectionSize - (selectionOffset - _session.SelectionStart));
         _session.SelectionStart = selectionOffset;
@@ -251,7 +251,7 @@ void TextComposition::Insert(const utf8* text)
 {
     const utf8* ch = text;
     uint32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0)
+    while ((codepoint = UTF8GetNext(ch, &ch)) != 0)
     {
         InsertCodepoint(codepoint);
     }
@@ -259,7 +259,7 @@ void TextComposition::Insert(const utf8* text)
 
 void TextComposition::InsertCodepoint(codepoint_t codepoint)
 {
-    size_t codepointLength = utf8_get_codepoint_length(codepoint);
+    size_t codepointLength = UTF8GetCodepointLength(codepoint);
     size_t remainingSize = _session.BufferSize - _session.Size;
     if (codepointLength <= remainingSize)
     {
@@ -278,7 +278,7 @@ void TextComposition::InsertCodepoint(codepoint_t codepoint)
             buffer[_session.Size + codepointLength] = 0;
         }
 
-        utf8_write_codepoint(insertPtr, codepoint);
+        UTF8WriteCodepoint(insertPtr, codepoint);
         _session.SelectionStart += codepointLength;
         _session.Size += codepointLength;
         _session.Length++;
@@ -306,7 +306,7 @@ void TextComposition::Delete()
     {
         ch++;
         selectionOffset++;
-    } while (!utf8_is_codepoint_start(ch) && selectionOffset < selectionMaxOffset);
+    } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
 
     utf8* buffer = _session.Buffer;
     utf8* targetShiftPtr = buffer + _session.SelectionStart;

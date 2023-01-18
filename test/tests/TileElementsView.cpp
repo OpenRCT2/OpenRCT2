@@ -34,7 +34,7 @@ protected:
         ASSERT_TRUE(initialised);
 
         GetContext()->LoadParkFromFile(parkPath);
-        game_load_init();
+        GameLoadInit();
 
         // Changed in some tests. Store to restore its value
         _gScreenFlags = gScreenFlags;

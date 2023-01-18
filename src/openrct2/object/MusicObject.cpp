@@ -33,7 +33,7 @@ constexpr size_t DEFAULT_BYTES_PER_TICK = 1378;
 void MusicObject::Load()
 {
     GetStringTable().Sort();
-    NameStringId = language_allocate_object_string(GetName());
+    NameStringId = LanguageAllocateObjectString(GetName());
 
     // Start with base images
     _loadedSampleTable.LoadFrom(_sampleTable, 0, _sampleTable.GetCount());
@@ -74,12 +74,12 @@ void MusicObject::Load()
     }
 
     _hasPreview = !!GetImageTable().GetCount();
-    _previewImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _previewImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void MusicObject::Unload()
 {
-    language_free_object_string(NameStringId);
+    LanguageFreeObjectString(NameStringId);
     NameStringId = 0;
 }
 
@@ -89,7 +89,7 @@ void MusicObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t hei
     int32_t x = width / 2;
     int32_t y = height / 2;
     if (_hasPreview)
-        gfx_draw_sprite(dpi, ImageId(_previewImageId), { 0, 0 });
+        GfxDrawSprite(dpi, ImageId(_previewImageId), { 0, 0 });
     else
         DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }

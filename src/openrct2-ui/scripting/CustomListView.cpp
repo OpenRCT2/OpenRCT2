@@ -17,6 +17,7 @@
 #    include <numeric>
 #    include <openrct2/Context.h>
 #    include <openrct2/localisation/Formatter.h>
+#    include <openrct2/localisation/Formatting.h>
 #    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/util/Util.h>
 
@@ -255,7 +256,7 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(*ParentWindow);
+        WindowUpdateScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -272,7 +273,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(*ParentWindow);
+        WindowUpdateScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -283,7 +284,7 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialisi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(*ParentWindow);
+        WindowUpdateScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -551,7 +552,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
 void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scroll* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
-    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, paletteIndex);
+    GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
     for (size_t i = 0; i < Items.size(); i++)
@@ -581,19 +582,19 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
                 auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
                 if (isSelected)
                 {
-                    gfx_filter_rect(
+                    GfxFilterRect(
                         dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isHighlighted)
                 {
-                    gfx_filter_rect(
+                    GfxFilterRect(
                         dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isStriped)
                 {
-                    gfx_fill_rect(
+                    GfxFillRect(
                         dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
                         ColourMapA[w->colours[1]].lighter | 0x1000000);
                 }
@@ -640,7 +641,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
         y = scroll->v_top;
 
         auto bgColour = ColourMapA[w->colours[1]].mid_light;
-        gfx_fill_rect(dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + 12 } }, bgColour);
+        GfxFillRect(dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + 12 } }, bgColour);
 
         int32_t x = 0;
         for (int32_t j = 0; j < static_cast<int32_t>(Columns.size()); j++)
@@ -672,7 +673,7 @@ void CustomListView::PaintHeading(
     {
         boxFlags = INSET_RECT_FLAG_BORDER_INSET;
     }
-    gfx_fill_rect_inset(dpi, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
+    GfxFillRectInset(dpi, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
     if (!text.empty())
     {
         PaintCell(dpi, pos, size, text.c_str(), false);
@@ -714,40 +715,40 @@ void CustomListView::PaintSeperator(
         DrawTextBasic(dpi, { centreX, pos.y }, STR_STRING, ft, { baseColour, TextAlignment::CENTRE });
 
         // Get string dimensions
-        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
-        int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer, FontStyle::Medium) / 2) + 4;
+        FormatStringLegacy(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
+        int32_t categoryStringHalfWidth = (GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Medium) / 2) + 4;
         int32_t strLeft = centreX - categoryStringHalfWidth;
         int32_t strRight = centreX + categoryStringHalfWidth;
 
         // Draw light horizontal rule
         auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
         auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY0 };
-        gfx_draw_line(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+        GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
         auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY0 };
         auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY0 };
-        gfx_draw_line(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+        GfxDrawLine(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
 
         // Draw dark horizontal rule
         auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
         auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY1 };
-        gfx_draw_line(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+        GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
 
         auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY1 };
         auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY1 };
-        gfx_draw_line(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+        GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
     }
     else
     {
         // Draw light horizontal rule
         auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
         auto lightLineRightBottom1 = ScreenCoordsXY{ right, lineY0 };
-        gfx_draw_line(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+        GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
         // Draw dark horizontal rule
         auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
         auto darkLineRightBottom1 = ScreenCoordsXY{ right, lineY1 };
-        gfx_draw_line(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+        GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
     }
 }
 

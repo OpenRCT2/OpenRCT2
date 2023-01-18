@@ -72,7 +72,7 @@ GameActions::Result MapChangeSizeAction::Execute() const
     ParkCalculateSize();
 
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     return GameActions::Result();
 }
 

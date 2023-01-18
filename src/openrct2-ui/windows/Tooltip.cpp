@@ -14,6 +14,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 
 // clang-format off
@@ -39,7 +40,7 @@ public:
     {
         int32_t textWidth = FormatTextForTooltip(message);
         width = textWidth + 3;
-        height = ((_tooltipNumLines + 1) * font_get_line_height(FontStyle::Small)) + 4;
+        height = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small)) + 4;
 
         window_tooltip_widgets[WIDX_BACKGROUND].right = width;
         window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
@@ -65,12 +66,12 @@ public:
     void OnOpen() override
     {
         widgets = window_tooltip_widgets;
-        reset_tooltip_not_shown();
+        ResetTooltipNotShown();
     }
 
     void OnUpdate() override
     {
-        reset_tooltip_not_shown();
+        ResetTooltipNotShown();
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -81,25 +82,25 @@ public:
         int32_t bottom = windowPos.y + height - 1;
 
         // Background
-        gfx_filter_rect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
-        gfx_filter_rect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
+        GfxFilterRect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
+        GfxFilterRect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
 
         // Sides
-        gfx_filter_rect(&dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(&dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(&dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(&dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(&dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(&dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(&dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(&dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
 
         // Corners
-        gfx_filter_pixel(&dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_pixel(&dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_pixel(&dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
-        gfx_filter_pixel(&dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(&dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(&dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(&dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(&dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
 
         // Text
         left = windowPos.x + ((width + 1) / 2) - 1;
         top = windowPos.y + 1;
-        draw_string_centred_raw(&dpi, { left, top }, _tooltipNumLines, _tooltipText, FontStyle::Small);
+        DrawStringCentredRaw(&dpi, { left, top }, _tooltipNumLines, _tooltipText, FontStyle::Small);
     }
 
 private:
@@ -107,17 +108,17 @@ private:
     int32_t FormatTextForTooltip(const OpenRCT2String& message)
     {
         utf8 tempBuffer[CommonTextBufferSize];
-        format_string(tempBuffer, sizeof(tempBuffer), message.str, message.args.Data());
+        OpenRCT2::FormatStringLegacy(tempBuffer, sizeof(tempBuffer), message.str, message.args.Data());
 
         OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
         formattedMessage.args.Add<const char*>(tempBuffer);
-        format_string(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
+        OpenRCT2::FormatStringLegacy(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
 
-        auto textWidth = gfx_get_string_width_new_lined(_tooltipText, FontStyle::Small);
+        auto textWidth = GfxGetStringWidthNewLined(_tooltipText, FontStyle::Small);
         textWidth = std::min(textWidth, 196);
 
         int32_t numLines;
-        textWidth = gfx_wrap_string(_tooltipText, textWidth + 1, FontStyle::Small, &numLines);
+        textWidth = GfxWrapString(_tooltipText, textWidth + 1, FontStyle::Small, &numLines);
         _tooltipNumLines = numLines;
         return textWidth;
     }
@@ -128,13 +129,13 @@ void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
     gTooltipCursor = screenCoords;
     gTooltipTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
-    input_set_state(InputState::Normal);
-    input_set_flag(INPUT_FLAG_4, false);
+    InputSetState(InputState::Normal);
+    InputSetFlag(INPUT_FLAG_4, false);
 }
 
 void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
 {
-    auto* w = window_find_by_class(WindowClass::Error);
+    auto* w = WindowFindByClass(WindowClass::Error);
     if (w != nullptr)
         return;
 
@@ -151,7 +152,7 @@ void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const 
         return;
 
     auto widget = &widgetWindow->widgets[widgetIndex];
-    window_event_invalidate_call(widgetWindow);
+    WindowEventInvalidateCall(widgetWindow);
 
     OpenRCT2String result;
     if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
@@ -177,7 +178,7 @@ void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const 
         gTooltipWidget.window_classification = widgetWindow->classification;
         gTooltipWidget.window_number = widgetWindow->number;
         gTooltipWidget.widget_index = widgetIndex;
-        result = window_event_tooltip_call(widgetWindow, widgetIndex, stringId);
+        result = WindowEventTooltipCall(widgetWindow, widgetIndex, stringId);
         if (result.str == STR_NONE)
             return;
     }
@@ -187,7 +188,7 @@ void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const 
 
 void WindowTooltipClose()
 {
-    window_close_by_class(WindowClass::Tooltip);
+    WindowCloseByClass(WindowClass::Tooltip);
     gTooltipTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
 }

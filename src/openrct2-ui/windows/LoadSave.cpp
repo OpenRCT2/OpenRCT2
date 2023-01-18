@@ -272,8 +272,8 @@ static void Select(const char* path)
             if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
             {
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                window_close_by_class(WindowClass::Loadsave);
-                gfx_invalidate_screen();
+                WindowCloseByClass(WindowClass::Loadsave);
+                GfxInvalidateScreen();
             }
             else
             {
@@ -285,15 +285,15 @@ static void Select(const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
-            if (scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 1 : 0))
+            if (ScenarioSave(pathBuffer, gConfigGeneral.SavePluginData ? 1 : 0))
             {
                 gScenarioSavePath = pathBuffer;
                 gCurrentLoadedPath = pathBuffer;
                 gIsAutosaveLoaded = false;
                 gFirstTimeSaving = false;
 
-                window_close_by_class(WindowClass::Loadsave);
-                gfx_invalidate_screen();
+                WindowCloseByClass(WindowClass::Loadsave);
+                GfxInvalidateScreen();
 
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
@@ -309,7 +309,7 @@ static void Select(const char* path)
             if (Editor::LoadLandscape(pathBuffer))
             {
                 gCurrentLoadedPath = pathBuffer;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
             else
@@ -323,11 +323,11 @@ static void Select(const char* path)
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveLandscapeDirectory, pathBuffer);
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-            if (scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2))
+            if (ScenarioSave(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2))
             {
                 gCurrentLoadedPath = pathBuffer;
-                window_close_by_class(WindowClass::Loadsave);
-                gfx_invalidate_screen();
+                WindowCloseByClass(WindowClass::Loadsave);
+                GfxInvalidateScreen();
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
             else
@@ -344,14 +344,14 @@ static void Select(const char* path)
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
             gEditorStep = EditorStep::Invalid;
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-            int32_t success = scenario_save(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
+            int32_t success = ScenarioSave(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
             gParkFlags = parkFlagsBackup;
 
             if (success)
             {
-                window_close_by_class(WindowClass::Loadsave);
+                WindowCloseByClass(WindowClass::Loadsave);
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                title_load();
+                TitleLoad();
             }
             else
             {
@@ -366,9 +366,9 @@ static void Select(const char* path)
         {
             SetAndSaveConfigPath(gConfigGeneral.LastSaveTrackDirectory, pathBuffer);
             auto intent = Intent(WindowClass::InstallTrack);
-            intent.putExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
+            intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
             ContextOpenIntent(&intent);
-            window_close_by_class(WindowClass::Loadsave);
+            WindowCloseByClass(WindowClass::Loadsave);
             InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             break;
         }
@@ -386,7 +386,7 @@ static void Select(const char* path)
 
             if (success)
             {
-                window_close_by_class(WindowClass::Loadsave);
+                WindowCloseByClass(WindowClass::Loadsave);
                 WindowRideMeasurementsDesignCancel();
                 InvokeCallback(MODAL_RESULT_OK, path);
             }
@@ -399,7 +399,7 @@ static void Select(const char* path)
         }
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP):
-            window_close_by_class(WindowClass::Loadsave);
+            WindowCloseByClass(WindowClass::Loadsave);
             InvokeCallback(MODAL_RESULT_OK, pathBuffer);
             break;
     }
@@ -417,34 +417,33 @@ static u8string OpenSystemFileBrowser(bool isSave)
             extension = u8".park";
             fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
-            desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(_type, isSave));
+            desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
             extension = u8".park";
             fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
-            desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(_type, isSave));
+            desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_SCENARIO:
             extension = u8".park";
             fileType = FileExtension::PARK;
             title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
-            desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(_type, isSave));
+            desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_TRACK:
             extension = u8".td6";
             fileType = FileExtension::TD6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
-            desc.Filters.emplace_back(
-                language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(_type, isSave));
+            desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_HEIGHTMAP:
             title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
-            desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(_type, isSave));
+            desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(_type, isSave));
             break;
     }
 
@@ -463,7 +462,7 @@ static u8string OpenSystemFileBrowser(bool isSave)
             if (buffer.empty())
             {
                 // Use localised "Unnamed Park" if park name was empty.
-                buffer = format_string(STR_UNNAMED_PARK, nullptr);
+                buffer = FormatStringID(STR_UNNAMED_PARK, nullptr);
             }
             path = Path::Combine(path, buffer);
         }
@@ -474,16 +473,16 @@ static u8string OpenSystemFileBrowser(bool isSave)
     desc.DefaultFilename = isSave ? path : u8string();
 
     // Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
-    desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
+    desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
-    desc.Title = language_get_string(title);
+    desc.Title = LanguageGetString(title);
 
     u8string outPath = ContextOpenCommonFileDialog(desc);
     if (!outPath.empty())
     {
         // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom
         // extension, meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
-        if (isSave && get_file_extension_type(outPath) != fileType)
+        if (isSave && GetFileExtensionType(outPath) != fileType)
             outPath = Path::WithExtension(outPath, extension);
     }
 
@@ -673,7 +672,7 @@ public:
 
         // Check how this date is represented (e.g. 2000-02-20, or 00/02/20)
         std::string date = Platform::FormatShortDate(long_time);
-        maxDateWidth = gfx_get_string_width(date.c_str(), FontStyle::Medium) + DATE_TIME_GAP;
+        maxDateWidth = GfxGetStringWidth(date.c_str(), FontStyle::Medium) + DATE_TIME_GAP;
 
         // Some locales do not use leading zeros for months and days, so let's try October, too.
         tm.tm_mon = 10;
@@ -682,11 +681,11 @@ public:
 
         // Again, check how this date is represented (e.g. 2000-10-20, or 00/10/20)
         date = Platform::FormatShortDate(long_time);
-        maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str(), FontStyle::Medium) + DATE_TIME_GAP);
+        maxDateWidth = std::max(maxDateWidth, GfxGetStringWidth(date.c_str(), FontStyle::Medium) + DATE_TIME_GAP);
 
         // Time appears to be universally represented with two digits for minutes, so 12:00 or 00:00 should be representable.
         std::string time = Platform::FormatTime(long_time);
-        maxTimeWidth = gfx_get_string_width(time.c_str(), FontStyle::Medium) + DATE_TIME_GAP;
+        maxTimeWidth = GfxGetStringWidth(time.c_str(), FontStyle::Medium) + DATE_TIME_GAP;
     }
 
     void SortList()
@@ -703,7 +702,7 @@ public:
     void OnClose() override
     {
         _listItems.clear();
-        window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
+        WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
     }
 
     void OnResize() override
@@ -744,7 +743,7 @@ public:
 
         if (_shortenedDirectory[0] == '\0')
         {
-            shorten_path(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, width - 8, FontStyle::Medium);
+            ShortenPath(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, width - 8, FontStyle::Medium);
         }
 
         // Format text
@@ -976,7 +975,7 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
         const int32_t listWidth = widgets[WIDX_SCROLL].width();
         const int32_t dateAnchor = widgets[WIDX_SORT_DATE].left + maxDateWidth + DATE_TIME_GAP;
@@ -996,7 +995,7 @@ public:
             if (i == selected_list_item)
             {
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                gfx_filter_rect(&dpi, { 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(&dpi, { 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
             }
             // display a marker next to the currently loaded game file
             if (_listItems[i].loaded)
@@ -1057,7 +1056,7 @@ rct_window* WindowLoadsaveOpen(
 
     const u8string path = GetDir(type);
 
-    auto* w = static_cast<LoadSaveWindow*>(window_bring_to_front_by_class(WindowClass::Loadsave));
+    auto* w = static_cast<LoadSaveWindow*>(WindowBringToFrontByClass(WindowClass::Loadsave));
     if (w == nullptr)
     {
         w = WindowCreate<LoadSaveWindow>(
@@ -1133,7 +1132,7 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
 {
     rct_window* w;
 
-    window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
+    WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
     w = WindowCreateCentred(
         OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WindowClass::LoadsaveOverwritePrompt, WF_STICK_TO_FRONT);
@@ -1159,14 +1158,14 @@ static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
             Select(_window_overwrite_prompt_path);
 
             // As the LoadSaveWindow::Select function can change the order of the
-            // windows we can't use window_close(w).
-            window_close_by_class(WindowClass::LoadsaveOverwritePrompt);
+            // windows we can't use WindowClose(w).
+            WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
             break;
         }
 
         case WIDX_OVERWRITE_CANCEL:
         case WIDX_OVERWRITE_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
     }
 }

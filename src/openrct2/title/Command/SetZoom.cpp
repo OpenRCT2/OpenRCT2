@@ -16,10 +16,10 @@ namespace OpenRCT2::Title
 {
     int16_t SetZoomCommand::operator()(int16_t timer)
     {
-        rct_window* w = window_get_main();
+        rct_window* w = WindowGetMain();
         if (w != nullptr)
         {
-            window_zoom_set(*w, ZoomLevel{ static_cast<int8_t>(Zoom) }, false);
+            WindowZoomSet(*w, ZoomLevel{ static_cast<int8_t>(Zoom) }, false);
         }
 
         return 0;

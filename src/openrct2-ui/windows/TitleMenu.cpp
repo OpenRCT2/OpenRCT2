@@ -57,10 +57,10 @@ static Widget window_title_menu_widgets[] = {
 
 static void WindowTitleMenuScenarioselectCallback(const utf8* path)
 {
-    game_notify_map_change();
+    GameNotifyMapChange();
     OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);
-    game_load_scripts();
-    game_notify_map_changed();
+    GameLoadScripts();
+    GameNotifyMapChanged();
 }
 
 static void InvokeCustomToolboxMenuItem(size_t index)
@@ -125,42 +125,42 @@ public:
         switch (widgetIndex)
         {
             case WIDX_START_NEW_GAME:
-                windowToOpen = window_find_by_class(WindowClass::ScenarioSelect);
+                windowToOpen = WindowFindByClass(WindowClass::ScenarioSelect);
                 if (windowToOpen != nullptr)
                 {
-                    window_bring_to_front(*windowToOpen);
+                    WindowBringToFront(*windowToOpen);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::Loadsave);
-                    window_close_by_class(WindowClass::ServerList);
+                    WindowCloseByClass(WindowClass::Loadsave);
+                    WindowCloseByClass(WindowClass::ServerList);
                     WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback, false);
                 }
                 break;
             case WIDX_CONTINUE_SAVED_GAME:
-                windowToOpen = window_find_by_class(WindowClass::Loadsave);
+                windowToOpen = WindowFindByClass(WindowClass::Loadsave);
                 if (windowToOpen != nullptr)
                 {
-                    window_bring_to_front(*windowToOpen);
+                    WindowBringToFront(*windowToOpen);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::ScenarioSelect);
-                    window_close_by_class(WindowClass::ServerList);
+                    WindowCloseByClass(WindowClass::ScenarioSelect);
+                    WindowCloseByClass(WindowClass::ServerList);
                     auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
                     GameActions::Execute(&loadOrQuitAction);
                 }
                 break;
             case WIDX_MULTIPLAYER:
-                windowToOpen = window_find_by_class(WindowClass::ServerList);
+                windowToOpen = WindowFindByClass(WindowClass::ServerList);
                 if (windowToOpen != nullptr)
                 {
-                    window_bring_to_front(*windowToOpen);
+                    WindowBringToFront(*windowToOpen);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::ScenarioSelect);
-                    window_close_by_class(WindowClass::Loadsave);
+                    WindowCloseByClass(WindowClass::ScenarioSelect);
+                    WindowCloseByClass(WindowClass::Loadsave);
                     ContextOpenWindow(WindowClass::ServerList);
                 }
                 break;
@@ -271,7 +271,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        gfx_filter_rect(&dpi, _filterRect, FilterPaletteID::Palette51);
+        GfxFilterRect(&dpi, _filterRect, FilterPaletteID::Palette51);
         DrawWidgets(dpi);
     }
 };

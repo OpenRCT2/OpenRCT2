@@ -53,7 +53,7 @@ const char gVersionInfoFull[] = OPENRCT2_NAME ", "
 #endif
     ;
 
-NewVersionInfo get_latest_version()
+NewVersionInfo GetLatestVersion()
 {
     // If the check doesn't succeed, provide current version so we don't bother user
     // with invalid data.

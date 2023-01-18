@@ -34,7 +34,7 @@ namespace
 
 static void OnReady([[maybe_unused]] const DiscordUser* request)
 {
-    log_verbose("DiscordService::OnReady()");
+    LOG_VERBOSE("DiscordService::OnReady()");
 }
 
 static void OnDisconnected(int errorCode, const char* message)
@@ -111,7 +111,7 @@ void DiscordService::RefreshPresence() const
                     {
                         auto codepoint = token.GetCodepoint();
                         char buffer[8]{};
-                        utf8_write_codepoint(buffer, codepoint);
+                        UTF8WriteCodepoint(buffer, codepoint);
                         serverName += buffer;
                     }
                 }

@@ -365,12 +365,12 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
             }
             break;
         case WIDX_ZOOM_OUT:
-            if ((mainWindow = window_get_main()) != nullptr)
-                window_zoom_out(*mainWindow, false);
+            if ((mainWindow = WindowGetMain()) != nullptr)
+                WindowZoomOut(*mainWindow, false);
             break;
         case WIDX_ZOOM_IN:
-            if ((mainWindow = window_get_main()) != nullptr)
-                window_zoom_in(*mainWindow, false);
+            if ((mainWindow = WindowGetMain()) != nullptr)
+                WindowZoomIn(*mainWindow, false);
             break;
         case WIDX_CLEAR_SCENERY:
             ToggleClearSceneryWindow(w, WIDX_CLEAR_SCENERY);
@@ -382,9 +382,9 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
             ToggleWaterWindow(w, WIDX_WATER);
             break;
         case WIDX_SCENERY:
-            if (!tool_set(*w, WIDX_SCENERY, Tool::Arrow))
+            if (!ToolSet(*w, WIDX_SCENERY, Tool::Arrow))
             {
-                input_set_flag(INPUT_FLAG_6, true);
+                InputSetFlag(INPUT_FLAG_6, true);
                 ContextOpenWindow(WindowClass::Scenery);
             }
             break;
@@ -419,9 +419,9 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
             OpenRCT2::Audio::ToggleAllSounds();
             break;
         case WIDX_CHAT:
-            if (chat_available())
+            if (ChatAvailable())
             {
-                chat_toggle();
+                ChatToggle();
             }
             else
             {
@@ -575,21 +575,21 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                     break;
                 }
                 case DDIDX_SAVE_GAME:
-                    tool_cancel();
-                    save_game();
+                    ToolCancel();
+                    SaveGame();
                     break;
                 case DDIDX_SAVE_GAME_AS:
                     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
                     {
                         auto intent = Intent(WindowClass::Loadsave);
-                        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                        intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
+                        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                        intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
                         ContextOpenIntent(&intent);
                     }
                     else
                     {
-                        tool_cancel();
-                        save_game_as();
+                        ToolCancel();
+                        SaveGameAs();
                     }
                     break;
                 case DDIDX_ABOUT:
@@ -602,7 +602,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                     gScreenshotCountdown = 10;
                     break;
                 case DDIDX_GIANT_SCREENSHOT:
-                    screenshot_giant();
+                    ScreenshotGiant();
                     break;
                 case DDIDX_FILE_BUG_ON_GITHUB:
                 {
@@ -618,8 +618,8 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
                     break;
                 case DDIDX_QUIT_TO_MENU:
                 {
-                    window_close_by_class(WindowClass::ManageTrackDesign);
-                    window_close_by_class(WindowClass::TrackDeletePrompt);
+                    WindowCloseByClass(WindowClass::ManageTrackDesign);
+                    WindowCloseByClass(WindowClass::TrackDeletePrompt);
                     auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
                     GameActions::Execute(&loadOrQuitAction);
                     break;
@@ -815,7 +815,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     }
 
     // Footpath button pressed down
-    if (window_find_by_class(WindowClass::Footpath) == nullptr)
+    if (WindowFindByClass(WindowClass::Footpath) == nullptr)
         w->pressed_widgets &= ~(1uLL << WIDX_PATH);
     else
         w->pressed_widgets |= (1uLL << WIDX_PATH);
@@ -840,15 +840,15 @@ static void WindowTopToolbarInvalidate(rct_window* w)
             SPR_G2_MAP_EAST,
         };
 
-        uint32_t mapImageId = _imageIdByRotation[get_current_rotation()];
+        uint32_t mapImageId = _imageIdByRotation[GetCurrentRotation()];
         window_top_toolbar_widgets[WIDX_MAP].image = ImageId(mapImageId, FilterPaletteID::PaletteNull);
     }
 
     // Zoomed out/in disable. Not sure where this code is in the original.
-    const auto* mainWindow = window_get_main();
+    const auto* mainWindow = WindowGetMain();
     if (mainWindow == nullptr || mainWindow->viewport == nullptr)
     {
-        log_error("mainWindow or mainWindow->viewport is null!");
+        LOG_ERROR("mainWindow or mainWindow->viewport is null!");
         return;
     }
 
@@ -885,7 +885,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
         imgId = SPR_TOOLBAR_STAFF;
         if (WidgetIsPressed(*w, WIDX_STAFF))
             imgId++;
-        gfx_draw_sprite(dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
+        GfxDrawSprite(dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
     }
 
     // Draw fast forward button
@@ -895,15 +895,15 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                       w->windowPos.y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0 };
         if (WidgetIsPressed(*w, WIDX_FASTFORWARD))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
+        GfxDrawSprite(dpi, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
 
         for (int32_t i = 0; i < gGameSpeed && gGameSpeed <= 4; i++)
         {
-            gfx_draw_sprite(dpi, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
+            GfxDrawSprite(dpi, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
         }
         for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
         {
-            gfx_draw_sprite(dpi, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
+            GfxDrawSprite(dpi, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
         }
     }
 
@@ -915,14 +915,14 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                               window_top_toolbar_widgets[WIDX_CHEATS].top - 1 };
         if (WidgetIsPressed(*w, WIDX_CHEATS))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
 
         // Draw an overlay if clearance checks are disabled
         if (gCheatsDisableClearanceChecks)
         {
             DrawTextBasic(
                 dpi, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
-                { COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
+                { COLOUR_DARK_ORANGE | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE), TextAlignment::RIGHT });
         }
     }
 
@@ -933,7 +933,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHAT].left, window_top_toolbar_widgets[WIDX_CHAT].top - 2 };
         if (WidgetIsPressed(*w, WIDX_CHAT))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_G2_CHAT), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_G2_CHAT), screenPos);
     }
 
     // Draw debug button
@@ -943,7 +943,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_DEBUG].left, window_top_toolbar_widgets[WIDX_DEBUG].top - 1 };
         if (WidgetIsPressed(*w, WIDX_DEBUG))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_TAB_GEARS_0), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_TAB_GEARS_0), screenPos);
     }
 
     // Draw research button
@@ -954,7 +954,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                               window_top_toolbar_widgets[WIDX_RESEARCH].top };
         if (WidgetIsPressed(*w, WIDX_RESEARCH))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
     }
 
     // Draw finances button
@@ -965,7 +965,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                               window_top_toolbar_widgets[WIDX_FINANCES].top + 1 };
         if (WidgetIsPressed(*w, WIDX_FINANCES))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenPos);
     }
 
     // Draw news button
@@ -975,7 +975,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NEWS].left + 3, window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
         if (WidgetIsPressed(*w, WIDX_NEWS))
             screenPos.y++;
-        gfx_draw_sprite(dpi, ImageId(SPR_G2_TAB_NEWS), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_G2_TAB_NEWS), screenPos);
     }
 
     // Draw network button
@@ -989,14 +989,14 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
         // Draw (de)sync icon.
         imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
-        gfx_draw_sprite(dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
+        GfxDrawSprite(dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
         // Draw number of players.
         auto ft = Formatter();
         ft.Add<int32_t>(network_get_num_visible_players());
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft,
-            { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
+            { COLOUR_WHITE | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE), TextAlignment::RIGHT });
     }
 }
 
@@ -1009,7 +1009,7 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, WidgetIndex 
     auto flags = EnumsToFlags(
         ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
         ViewportInteractionItem::Banner);
-    auto info = get_map_coordinates_from_pos(windowPos, flags);
+    auto info = GetMapCoordinatesFromPos(windowPos, flags);
     switch (info.SpriteType)
     {
         case ViewportInteractionItem::Scenery:
@@ -1086,7 +1086,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
     auto flags = EnumsToFlags(
         ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
         ViewportInteractionItem::Banner, ViewportInteractionItem::FootpathItem);
-    auto info = get_map_coordinates_from_pos(windowPos, flags);
+    auto info = GetMapCoordinatesFromPos(windowPos, flags);
     switch (info.SpriteType)
     {
         case ViewportInteractionItem::Scenery:
@@ -1099,7 +1099,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
                 WindowScenerySetSelectedItem(
                     { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
                     sceneryElement->GetSecondaryColour(), std::nullopt,
-                    sceneryElement->GetDirectionWithOffset(get_current_rotation()));
+                    sceneryElement->GetDirectionWithOffset(GetCurrentRotation()));
             }
             break;
         }
@@ -1124,7 +1124,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
                 WindowScenerySetSelectedItem(
                     { SCENERY_TYPE_LARGE, entryIndex }, info.Element->AsLargeScenery()->GetPrimaryColour(),
                     info.Element->AsLargeScenery()->GetSecondaryColour(), std::nullopt,
-                    (get_current_rotation() + info.Element->GetDirection()) & 3);
+                    (GetCurrentRotation() + info.Element->GetDirection()) & 3);
             }
             break;
         }
@@ -1175,7 +1175,7 @@ static void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, Scre
                 constexpr auto flags = EnumsToFlags(
                     ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
                     ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery);
-                auto info = get_map_coordinates_from_pos(screenPos, flags);
+                auto info = GetMapCoordinatesFromPos(screenPos, flags);
 
                 if (info.SpriteType != ViewportInteractionItem::None)
                 {
@@ -1211,7 +1211,7 @@ static void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, Scre
                 // SHIFT pressed
                 gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);
                 // Scale delta by zoom to match mouse position.
-                auto* mainWnd = window_get_main();
+                auto* mainWnd = WindowGetMain();
                 if (mainWnd != nullptr && mainWnd->viewport != nullptr)
                 {
                     gSceneryShiftPressZOffset = mainWnd->viewport->zoom.ApplyTo(gSceneryShiftPressZOffset);
@@ -1234,7 +1234,7 @@ static void Sub6E1F34SmallScenery(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outQuadrant,
     Direction* outRotation)
 {
-    rct_window* w = window_find_by_class(WindowClass::Scenery);
+    rct_window* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1269,7 +1269,7 @@ static void Sub6E1F34SmallScenery(
         // If CTRL not pressed
         if (!gSceneryCtrlPressed)
         {
-            auto gridCoords = screen_get_map_xy_quadrant(screenPos, &quadrant);
+            auto gridCoords = ScreenGetMapXYQuadrant(screenPos, &quadrant);
             if (!gridCoords.has_value())
             {
                 gridPos.SetNull();
@@ -1302,7 +1302,7 @@ static void Sub6E1F34SmallScenery(
         {
             int16_t z = gSceneryCtrlPressZ;
 
-            auto mapCoords = screen_get_map_xy_quadrant_with_z(screenPos, z, &quadrant);
+            auto mapCoords = ScreenGetMapXYQuadrantWithZ(screenPos, z, &quadrant);
             if (!mapCoords.has_value())
             {
                 gridPos.SetNull();
@@ -1331,7 +1331,7 @@ static void Sub6E1F34SmallScenery(
             rotation = util_rand() & 0xFF;
         }
 
-        rotation -= get_current_rotation();
+        rotation -= GetCurrentRotation();
         rotation &= 0x3;
 
         if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
@@ -1350,7 +1350,7 @@ static void Sub6E1F34SmallScenery(
     {
         constexpr auto flags = EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water);
 
-        auto info = get_map_coordinates_from_pos(screenPos, flags);
+        auto info = GetMapCoordinatesFromPos(screenPos, flags);
         gridPos = info.Loc;
 
         if (info.SpriteType == ViewportInteractionItem::None)
@@ -1384,7 +1384,7 @@ static void Sub6E1F34SmallScenery(
     else
     {
         int16_t z = gSceneryCtrlPressZ;
-        auto coords = screen_get_map_xy_with_z(screenPos, z);
+        auto coords = ScreenGetMapXYWithZ(screenPos, z);
         if (coords.has_value())
         {
             gridPos = *coords;
@@ -1415,7 +1415,7 @@ static void Sub6E1F34SmallScenery(
         rotation = util_rand() & 0xFF;
     }
 
-    rotation -= get_current_rotation();
+    rotation -= GetCurrentRotation();
     rotation &= 0x3;
 
     if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
@@ -1430,7 +1430,7 @@ static void Sub6E1F34SmallScenery(
 static void Sub6E1F34PathItem(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
 {
-    rct_window* w = window_find_by_class(WindowClass::Scenery);
+    rct_window* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1443,7 +1443,7 @@ static void Sub6E1F34PathItem(
 
     // Path bits
     constexpr auto flags = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
-    auto info = get_map_coordinates_from_pos(screenPos, flags);
+    auto info = GetMapCoordinatesFromPos(screenPos, flags);
     gridPos = info.Loc;
 
     if (info.SpriteType == ViewportInteractionItem::None)
@@ -1463,7 +1463,7 @@ static void Sub6E1F34PathItem(
 static void Sub6E1F34Wall(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outEdges)
 {
-    rct_window* w = window_find_by_class(WindowClass::Scenery);
+    rct_window* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1487,7 +1487,7 @@ static void Sub6E1F34Wall(
     // If CTRL not pressed
     if (!gSceneryCtrlPressed)
     {
-        auto gridCoords = screen_get_map_xy_side(screenPos, &edge);
+        auto gridCoords = ScreenGetMapXYSide(screenPos, &edge);
         if (!gridCoords.has_value())
         {
             gridPos.SetNull();
@@ -1519,7 +1519,7 @@ static void Sub6E1F34Wall(
     else
     {
         int16_t z = gSceneryCtrlPressZ;
-        auto mapCoords = screen_get_map_xy_side_with_z(screenPos, z, &edge);
+        auto mapCoords = ScreenGetMapXYSideWithZ(screenPos, z, &edge);
         if (!mapCoords.has_value())
         {
             gridPos.SetNull();
@@ -1552,7 +1552,7 @@ static void Sub6E1F34Wall(
 static void Sub6E1F34LargeScenery(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, Direction* outDirection)
 {
-    rct_window* w = window_find_by_class(WindowClass::Scenery);
+    rct_window* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1610,7 +1610,7 @@ static void Sub6E1F34LargeScenery(
     else
     {
         int16_t z = gSceneryCtrlPressZ;
-        auto coords = screen_get_map_xy_with_z(screenPos, z);
+        auto coords = ScreenGetMapXYWithZ(screenPos, z);
         if (coords.has_value())
         {
             gridPos = *coords;
@@ -1637,7 +1637,7 @@ static void Sub6E1F34LargeScenery(
     gridPos = gridPos.ToTileStart();
 
     Direction rotation = gWindowSceneryRotation;
-    rotation -= get_current_rotation();
+    rotation -= GetCurrentRotation();
     rotation &= 0x3;
 
     if (gConfigGeneral.VirtualFloorStyle != VirtualFloorStyles::Off)
@@ -1652,7 +1652,7 @@ static void Sub6E1F34Banner(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ,
     Direction* outDirection)
 {
-    rct_window* w = window_find_by_class(WindowClass::Scenery);
+    rct_window* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1665,7 +1665,7 @@ static void Sub6E1F34Banner(
 
     // Banner
     constexpr auto flags = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
-    auto info = get_map_coordinates_from_pos(screenPos, flags);
+    auto info = GetMapCoordinatesFromPos(screenPos, flags);
     gridPos = info.Loc;
 
     if (info.SpriteType == ViewportInteractionItem::None)
@@ -1675,7 +1675,7 @@ static void Sub6E1F34Banner(
     }
 
     uint8_t rotation = gWindowSceneryRotation;
-    rotation -= get_current_rotation();
+    rotation -= GetCurrentRotation();
     rotation &= 0x3;
 
     auto z = info.Element->GetBaseZ();
@@ -2005,14 +2005,14 @@ static uint8_t TopToolbarToolUpdateLandPaint(const ScreenCoordsXY& screenPos)
     MapInvalidateSelectionRect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    auto mapTile = screen_get_map_xy(screenPos, nullptr);
+    auto mapTile = ScreenGetMapXY(screenPos, nullptr);
 
     if (!mapTile.has_value())
     {
         if (gClearSceneryCost != MONEY64_UNDEFINED)
         {
             gClearSceneryCost = MONEY64_UNDEFINED;
-            window_invalidate_by_class(WindowClass::ClearScenery);
+            WindowInvalidateByClass(WindowClass::ClearScenery);
         }
         return state_changed;
     }
@@ -2083,7 +2083,7 @@ static void TopToolbarToolUpdateSceneryClear(const ScreenCoordsXY& screenPos)
     if (gClearSceneryCost != cost)
     {
         gClearSceneryCost = cost;
-        window_invalidate_by_class(WindowClass::ClearScenery);
+        WindowInvalidateByClass(WindowClass::ClearScenery);
     }
 }
 
@@ -2109,7 +2109,7 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
             gLandToolRaiseCost = raise_cost;
             gLandToolLowerCost = lower_cost;
-            window_invalidate_by_class(WindowClass::Land);
+            WindowInvalidateByClass(WindowClass::Land);
         }
         return;
     }
@@ -2123,8 +2123,8 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
     {
         int32_t selectionType;
         // Get selection type and map coordinates from mouse x,y position
-        screen_pos_to_map_pos(screenPos, &selectionType);
-        mapTile = screen_get_map_xy_side(screenPos, &side);
+        ScreenPosToMapPos(screenPos, &selectionType);
+        mapTile = ScreenGetMapXYSide(screenPos, &side);
 
         if (!mapTile.has_value())
         {
@@ -2135,7 +2135,7 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
             {
                 gLandToolRaiseCost = raise_cost;
                 gLandToolLowerCost = lower_cost;
-                window_invalidate_by_class(WindowClass::Land);
+                WindowInvalidateByClass(WindowClass::Land);
             }
             return;
         }
@@ -2195,13 +2195,13 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
             gLandToolRaiseCost = raise_cost;
             gLandToolLowerCost = lower_cost;
-            window_invalidate_by_class(WindowClass::Land);
+            WindowInvalidateByClass(WindowClass::Land);
         }
         return;
     }
 
     // Get map coordinates and the side of the tile that is being hovered over
-    mapTile = screen_get_map_xy_side(screenPos, &side);
+    mapTile = ScreenGetMapXYSide(screenPos, &side);
 
     if (!mapTile.has_value())
     {
@@ -2212,7 +2212,7 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
             gLandToolRaiseCost = raise_cost;
             gLandToolLowerCost = lower_cost;
-            window_invalidate_by_class(WindowClass::Land);
+            WindowInvalidateByClass(WindowClass::Land);
         }
         return;
     }
@@ -2321,7 +2321,7 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
     {
         gLandToolRaiseCost = raise_cost;
         gLandToolLowerCost = lower_cost;
-        window_invalidate_by_class(WindowClass::Land);
+        WindowInvalidateByClass(WindowClass::Land);
     }
 }
 
@@ -2353,14 +2353,14 @@ static void TopToolbarToolUpdateWater(const ScreenCoordsXY& screenPos)
         {
             gWaterToolRaiseCost = raiseCost;
             gWaterToolLowerCost = lowerCost;
-            window_invalidate_by_class(WindowClass::Water);
+            WindowInvalidateByClass(WindowClass::Water);
         }
         return;
     }
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    auto info = get_map_coordinates_from_pos(
+    auto info = GetMapCoordinatesFromPos(
         screenPos, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
 
     if (info.SpriteType == ViewportInteractionItem::None)
@@ -2369,7 +2369,7 @@ static void TopToolbarToolUpdateWater(const ScreenCoordsXY& screenPos)
         {
             gWaterToolRaiseCost = MONEY64_UNDEFINED;
             gWaterToolLowerCost = MONEY64_UNDEFINED;
-            window_invalidate_by_class(WindowClass::Water);
+            WindowInvalidateByClass(WindowClass::Water);
         }
         return;
     }
@@ -2445,7 +2445,7 @@ static void TopToolbarToolUpdateWater(const ScreenCoordsXY& screenPos)
     {
         gWaterToolRaiseCost = raiseCost;
         gWaterToolLowerCost = lowerCost;
-        window_invalidate_by_class(WindowClass::Water);
+        WindowInvalidateByClass(WindowClass::Water);
     }
 }
 
@@ -2480,12 +2480,12 @@ static money64 TryPlaceGhostSmallScenery(
     if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
-        viewport_set_visibility(4);
+        ViewportSetVisibility(4);
     }
     else
     {
         // Set underground off
-        viewport_set_visibility(5);
+        ViewportSetVisibility(5);
     }
 
     gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
@@ -2561,12 +2561,12 @@ static money64 TryPlaceGhostLargeScenery(
     if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
-        viewport_set_visibility(4);
+        ViewportSetVisibility(4);
     }
     else
     {
         // Set underground off
-        viewport_set_visibility(5);
+        ViewportSetVisibility(5);
     }
 
     gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
@@ -3060,10 +3060,10 @@ static money64 SelectionLowerLand(uint8_t flags)
  */
 static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
 {
-    rct_window* window = window_find_from_point(screenPos);
+    rct_window* window = WindowFindFromPoint(screenPos);
     if (window == nullptr)
         return;
-    WidgetIndex widget_index = window_find_widget_from_point(*window, screenPos);
+    WidgetIndex widget_index = WindowFindWidgetFromPoint(*window, screenPos);
     if (widget_index == -1)
         return;
     const auto& widget = window->widgets[widget_index];
@@ -3103,10 +3103,10 @@ static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
  */
 static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
 {
-    rct_window* window = window_find_from_point(screenPos);
+    rct_window* window = WindowFindFromPoint(screenPos);
     if (!window)
         return;
-    WidgetIndex widget_index = window_find_widget_from_point(*window, screenPos);
+    WidgetIndex widget_index = WindowFindWidgetFromPoint(*window, screenPos);
     if (widget_index == -1)
         return;
     const auto& widget = window->widgets[widget_index];
@@ -3159,7 +3159,7 @@ static void WindowTopToolbarToolDrag(rct_window* w, WidgetIndex widgetIndex, con
     switch (widgetIndex)
     {
         case WIDX_CLEAR_SCENERY:
-            if (window_find_by_class(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (WindowFindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
             {
                 auto action = GetClearAction();
                 GameActions::Execute(&action);
@@ -3262,7 +3262,7 @@ static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex)
         case WIDX_LAND:
         case WIDX_WATER:
         case WIDX_CLEAR_SCENERY:
-            hide_gridlines();
+            HideGridlines();
             break;
 #ifdef ENABLE_SCRIPTING
         default:
@@ -3405,7 +3405,7 @@ static void TopToolbarInitFastforwardMenu(rct_window* w, Widget* widget)
 
 static void TopToolbarFastforwardMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = window_get_main();
+    rct_window* w = WindowGetMain();
     if (w)
     {
         if (dropdownIndex >= 0 && dropdownIndex <= 5)
@@ -3431,17 +3431,17 @@ static void TopToolbarInitRotateMenu(rct_window* w, Widget* widget)
 
 static void TopToolbarRotateMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = window_get_main();
+    rct_window* w = WindowGetMain();
     if (w)
     {
         if (dropdownIndex == 0)
         {
-            window_rotate_camera(*w, 1);
+            WindowRotateCamera(*w, 1);
             w->Invalidate();
         }
         else if (dropdownIndex == 1)
         {
-            window_rotate_camera(*w, -1);
+            WindowRotateCamera(*w, -1);
             w->Invalidate();
         }
     }
@@ -3515,7 +3515,7 @@ static void TopToolbarCheatsMenuDropdown(int16_t dropdownIndex)
             ContextOpenWindow(WindowClass::TileInspector);
             break;
         case DDIDX_OBJECT_SELECTION:
-            window_close_all();
+            WindowCloseAll();
             ContextOpenWindow(WindowClass::EditorObjectSelection);
             break;
         case DDIDX_INVENTIONS_LIST:
@@ -3550,7 +3550,7 @@ static void TopToolbarInitDebugMenu(rct_window* w, Widget* widget)
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
         Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
-    Dropdown::SetChecked(DDIDX_DEBUG_PAINT, window_find_by_class(WindowClass::DebugPaint) != nullptr);
+    Dropdown::SetChecked(DDIDX_DEBUG_PAINT, WindowFindByClass(WindowClass::DebugPaint) != nullptr);
 }
 
 static void TopToolbarInitNetworkMenu(rct_window* w, Widget* widget)
@@ -3569,7 +3569,7 @@ static void TopToolbarInitNetworkMenu(rct_window* w, Widget* widget)
 
 static void TopToolbarDebugMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = window_get_main();
+    rct_window* w = WindowGetMain();
     if (w != nullptr)
     {
         switch (dropdownIndex)
@@ -3581,13 +3581,13 @@ static void TopToolbarDebugMenuDropdown(int16_t dropdownIndex)
                 break;
             }
             case DDIDX_DEBUG_PAINT:
-                if (window_find_by_class(WindowClass::DebugPaint) == nullptr)
+                if (WindowFindByClass(WindowClass::DebugPaint) == nullptr)
                 {
                     ContextOpenWindow(WindowClass::DebugPaint);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::DebugPaint);
+                    WindowCloseByClass(WindowClass::DebugPaint);
                 }
                 break;
         }
@@ -3596,7 +3596,7 @@ static void TopToolbarDebugMenuDropdown(int16_t dropdownIndex)
 
 static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = window_get_main();
+    rct_window* w = WindowGetMain();
     if (w != nullptr)
     {
         switch (dropdownIndex)
@@ -3652,7 +3652,7 @@ static void TopToolbarInitViewMenu(rct_window* w, Widget* widget)
         TOP_TOOLBAR_VIEW_MENU_COUNT);
 
     // Set checkmarks
-    rct_viewport* mainViewport = window_get_main()->viewport;
+    rct_viewport* mainViewport = WindowGetMain()->viewport;
     if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         Dropdown::SetChecked(DDIDX_UNDERGROUND_INSIDE, true);
     if (gConfigGeneral.TransparentWater)
@@ -3691,7 +3691,7 @@ static void TopToolbarInitViewMenu(rct_window* w, Widget* widget)
     gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
 
     // Opaque water relies on RCT1 sprites.
-    if (!is_csg_loaded())
+    if (!IsCsgLoaded())
     {
         Dropdown::SetDisabled(DDIDX_TRANSPARENT_WATER, true);
     }
@@ -3703,7 +3703,7 @@ static void TopToolbarInitViewMenu(rct_window* w, Widget* widget)
  */
 static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = window_get_main();
+    rct_window* w = WindowGetMain();
     if (w != nullptr)
     {
         switch (dropdownIndex)
@@ -3755,7 +3755,7 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 w->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
                 break;
             case DDIDX_VIEW_CLIPPING:
-                if (window_find_by_class(WindowClass::ViewClipping) == nullptr)
+                if (WindowFindByClass(WindowClass::ViewClipping) == nullptr)
                 {
                     ContextOpenWindow(WindowClass::ViewClipping);
                 }
@@ -3784,14 +3784,14 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
  */
 static void ToggleFootpathWindow()
 {
-    if (window_find_by_class(WindowClass::Footpath) == nullptr)
+    if (WindowFindByClass(WindowClass::Footpath) == nullptr)
     {
         ContextOpenWindow(WindowClass::Footpath);
     }
     else
     {
-        tool_cancel();
-        window_close_by_class(WindowClass::Footpath);
+        ToolCancel();
+        WindowCloseByClass(WindowClass::Footpath);
     }
 }
 
@@ -3801,17 +3801,17 @@ static void ToggleFootpathWindow()
  */
 static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
 {
-    if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
+    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
         && gCurrentToolWidget.widget_index == WIDX_LAND)
     {
-        tool_cancel();
+        ToolCancel();
     }
     else
     {
         _landToolBlocked = false;
-        show_gridlines();
-        tool_set(*topToolbar, widgetIndex, Tool::DigDown);
-        input_set_flag(INPUT_FLAG_6, true);
+        ShowGridlines();
+        ToolSet(*topToolbar, widgetIndex, Tool::DigDown);
+        InputSetFlag(INPUT_FLAG_6, true);
         ContextOpenWindow(WindowClass::Land);
     }
 }
@@ -3822,16 +3822,16 @@ static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
  */
 static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
 {
-    if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
+    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
          && gCurrentToolWidget.widget_index == WIDX_CLEAR_SCENERY))
     {
-        tool_cancel();
+        ToolCancel();
     }
     else
     {
-        show_gridlines();
-        tool_set(*topToolbar, widgetIndex, Tool::Crosshair);
-        input_set_flag(INPUT_FLAG_6, true);
+        ShowGridlines();
+        ToolSet(*topToolbar, widgetIndex, Tool::Crosshair);
+        InputSetFlag(INPUT_FLAG_6, true);
         ContextOpenWindow(WindowClass::ClearScenery);
     }
 }
@@ -3842,17 +3842,17 @@ static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetI
  */
 static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
 {
-    if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
+    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
         && gCurrentToolWidget.widget_index == WIDX_WATER)
     {
-        tool_cancel();
+        ToolCancel();
     }
     else
     {
         _landToolBlocked = false;
-        show_gridlines();
-        tool_set(*topToolbar, widgetIndex, Tool::WaterDown);
-        input_set_flag(INPUT_FLAG_6, true);
+        ShowGridlines();
+        ToolSet(*topToolbar, widgetIndex, Tool::WaterDown);
+        InputSetFlag(INPUT_FLAG_6, true);
         ContextOpenWindow(WindowClass::Water);
     }
 }
@@ -3863,7 +3863,7 @@ static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
  */
 bool LandToolIsActive()
 {
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
     if (gCurrentToolWidget.window_classification != WindowClass::TopToolbar)
         return false;
@@ -3878,7 +3878,7 @@ bool LandToolIsActive()
  */
 bool ClearSceneryToolIsActive()
 {
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
     if (gCurrentToolWidget.window_classification != WindowClass::TopToolbar)
         return false;
@@ -3893,7 +3893,7 @@ bool ClearSceneryToolIsActive()
  */
 bool WaterToolIsActive()
 {
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
     if (gCurrentToolWidget.window_classification != WindowClass::TopToolbar)
         return false;

@@ -59,8 +59,8 @@ GameActions::Result ParkSetNameAction::Execute() const
     if (_name != park.Name)
     {
         park.Name = _name;
-        scrolling_text_invalidate();
-        gfx_invalidate_screen();
+        ScrollingTextInvalidate();
+        GfxInvalidateScreen();
     }
     return GameActions::Result();
 }

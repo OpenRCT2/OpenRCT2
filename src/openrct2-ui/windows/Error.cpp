@@ -62,38 +62,38 @@ public:
         ScreenCoordsXY leftBottom{ leftTop.x, rightBottom.y };
         ScreenCoordsXY rightTop{ rightBottom.x, leftTop.y };
 
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
             FilterPaletteID::Palette45);
-        gfx_filter_rect(&dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
+        GfxFilterRect(&dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
 
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 0, 2 }, leftBottom - ScreenCoordsXY{ 0, 2 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 0, 2 }, rightBottom - ScreenCoordsXY{ 0, 2 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 2, 0 }, rightBottom - ScreenCoordsXY{ 2, 0 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 2, 0 }, rightTop - ScreenCoordsXY{ 2, 0 } },
             FilterPaletteID::PaletteDarken3);
 
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 1, 1 }, rightTop + ScreenCoordsXY{ 1, 1 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ rightTop + ScreenCoordsXY{ -1, 1 }, rightTop + ScreenCoordsXY{ -1, 1 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 1, -1 }, leftBottom + ScreenCoordsXY{ 1, -1 } },
             FilterPaletteID::PaletteDarken3);
-        gfx_filter_rect(
+        GfxFilterRect(
             &dpi, ScreenRect{ rightBottom - ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
             FilterPaletteID::PaletteDarken3);
 
-        draw_string_centred_raw(
+        DrawStringCentredRaw(
             &dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(), FontStyle::Medium);
     }
 
@@ -109,7 +109,7 @@ public:
 
 rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
 {
-    window_close_by_class(WindowClass::Error);
+    WindowCloseByClass(WindowClass::Error);
 
     std::string buffer = "{BLACK}";
     buffer.append(title);
@@ -121,7 +121,7 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
         buffer.append(message);
     }
 
-    log_verbose("show error, %s", buffer.c_str() + 1);
+    LOG_VERBOSE("show error, %s", buffer.c_str() + 1);
 
     // Don't do unnecessary work in headless. Also saves checking if cursor state is null.
     if (gOpenRCT2Headless)
@@ -135,14 +135,14 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
         return nullptr;
     }
 
-    int32_t width = gfx_get_string_width_new_lined(buffer.data(), FontStyle::Medium);
+    int32_t width = GfxGetStringWidthNewLined(buffer.data(), FontStyle::Medium);
     width = std::clamp(width, 64, 196);
 
     int32_t numLines{};
-    gfx_wrap_string(buffer.data(), width + 1, FontStyle::Medium, &numLines);
+    GfxWrapString(buffer.data(), width + 1, FontStyle::Medium, &numLines);
 
     width = width + 3;
-    int32_t height = (numLines + 1) * font_get_line_height(FontStyle::Medium) + 4;
+    int32_t height = (numLines + 1) * FontGetLineHeight(FontStyle::Medium) + 4;
     int32_t screenWidth = ContextGetWidth();
     int32_t screenHeight = ContextGetHeight();
     const CursorState* state = ContextGetCursorState();
@@ -163,7 +163,7 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
 
 rct_window* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
 {
-    auto titlez = format_string(title, args.Data());
-    auto messagez = format_string(message, args.Data());
+    auto titlez = FormatStringID(title, args.Data());
+    auto messagez = FormatStringID(message, args.Data());
     return WindowErrorOpen(titlez, messagez);
 }

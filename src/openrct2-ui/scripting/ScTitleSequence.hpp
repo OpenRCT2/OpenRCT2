@@ -265,9 +265,9 @@ namespace OpenRCT2::Scripting
                         }
 
                         if (isScenario)
-                            scenario_begin();
+                            ScenarioBegin();
                         else
-                            game_load_init();
+                            GameLoadInit();
                         gLoadKeepWindowsOpen = old;
                     }
                     catch (const std::exception&)
@@ -446,7 +446,7 @@ namespace OpenRCT2::Scripting
         bool isPlaying_get() const
         {
             auto index = GetManagerIndex();
-            return index && title_is_previewing_sequence() && *index == title_get_current_sequence();
+            return index && TitleIsPreviewingSequence() && *index == TitleGetCurrentSequence();
         }
 
         DukValue position_get() const
@@ -454,7 +454,7 @@ namespace OpenRCT2::Scripting
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (isPlaying_get())
             {
-                auto* player = static_cast<ITitleSequencePlayer*>(title_get_sequence_player());
+                auto* player = static_cast<ITitleSequencePlayer*>(TitleGetSequencePlayer());
                 if (player != nullptr)
                 {
                     return ToDuk(ctx, player->GetCurrentPosition());
@@ -467,9 +467,9 @@ namespace OpenRCT2::Scripting
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto index = GetManagerIndex();
-            if (index && (!title_is_previewing_sequence() || *index != title_get_current_sequence()))
+            if (index && (!TitleIsPreviewingSequence() || *index != TitleGetCurrentSequence()))
             {
-                if (!title_preview_sequence(*index))
+                if (!TitlePreviewSequence(*index))
                 {
                     duk_error(ctx, DUK_ERR_ERROR, "Failed to load title sequence");
                 }
@@ -485,7 +485,7 @@ namespace OpenRCT2::Scripting
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (isPlaying_get())
             {
-                auto* player = static_cast<ITitleSequencePlayer*>(title_get_sequence_player());
+                auto* player = static_cast<ITitleSequencePlayer*>(TitleGetSequencePlayer());
                 try
                 {
                     player->Seek(position);
@@ -502,7 +502,7 @@ namespace OpenRCT2::Scripting
         {
             if (isPlaying_get())
             {
-                title_stop_previewing_sequence();
+                TitleStopPreviewingSequence();
             }
         }
 

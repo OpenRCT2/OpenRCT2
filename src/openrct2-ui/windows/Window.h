@@ -13,7 +13,7 @@
 #include <openrct2/Identifiers.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
-#include <openrct2/windows/tile_inspector.h>
+#include <openrct2/windows/TileInspectorGlobals.h>
 #include <string_view>
 
 using loadsave_callback = void (*)(int32_t result, const utf8* path);

@@ -143,7 +143,7 @@ namespace RCT2
             auto chunkReader = SawyerChunkReader(stream);
             chunkReader.ReadChunk(&_s6.header, sizeof(_s6.header));
 
-            log_verbose("saved game classic_flag = 0x%02x", _s6.header.classic_flag);
+            LOG_VERBOSE("saved game classic_flag = 0x%02x", _s6.header.classic_flag);
             if (isScenario)
             {
                 if (_s6.header.type != S6_TYPE_SCENARIO)
@@ -232,7 +232,7 @@ namespace RCT2
 
             // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
             auto loadMaybeUTF8 = [](std::string_view str) -> std::string {
-                return !IsLikelyUTF8(str) ? rct2_to_utf8(str, RCT2LanguageId::EnglishUK) : std::string(str);
+                return !IsLikelyUTF8(str) ? RCT2StringToUTF8(str, RCT2LanguageId::EnglishUK) : std::string(str);
             };
 
             if (_s6.header.type == S6_TYPE_SCENARIO)
@@ -251,7 +251,7 @@ namespace RCT2
             gDateMonthTicks = _s6.current_day;
             gCurrentTicks = _s6.game_ticks_1;
 
-            scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
+            ScenarioRandSeed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
             DetermineFlatRideStatus();
             ImportTileElements();
@@ -485,7 +485,7 @@ namespace RCT2
                 else
                 {
                     // In case where news item type is broken, consider all remaining news items invalid.
-                    log_error("Invalid news type 0x%x for news item %d, ignoring remaining news items", src->Type, i);
+                    LOG_ERROR("Invalid news type 0x%x for news item %d, ignoring remaining news items", src->Type, i);
                     // Still need to set the correct type to properly terminate the queue
                     dst->Type = News::ItemType::Null;
                     break;
@@ -501,14 +501,14 @@ namespace RCT2
             // Fix and set dynamic variables
             MapStripGhostFlagFromElements();
             ConvertScenarioStringsToUTF8();
-            determine_ride_entrance_and_exit_locations();
+            DetermineRideEntranceAndExitLocations();
 
             park.Name = GetUserString(_s6.park_name);
 
             FixLandOwnership();
             FixAyersRockScenario();
 
-            research_determine_first_of_type();
+            ResearchDetermineFirstOfType();
             UpdateConsolidatedPatrolAreas();
 
             CheatsReset();
@@ -527,9 +527,9 @@ namespace RCT2
         void ConvertScenarioStringsToUTF8()
         {
             // Scenario details
-            gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
-            gScenarioName = rct2_to_utf8(gScenarioName, RCT2LanguageId::EnglishUK);
-            gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2LanguageId::EnglishUK);
+            gScenarioCompletedBy = RCT2StringToUTF8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
+            gScenarioName = RCT2StringToUTF8(gScenarioName, RCT2LanguageId::EnglishUK);
+            gScenarioDetails = RCT2StringToUTF8(gScenarioDetails, RCT2LanguageId::EnglishUK);
         }
 
         void FixLandOwnership() const
@@ -730,7 +730,7 @@ namespace RCT2
                     continue;
 
                 auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
-                auto* rideEntry = get_ride_entry(subtype);
+                auto* rideEntry = GetRideEntryByIndex(subtype);
                 // If the ride is tracked, we don’t need to check the vehicle any more.
                 if (!GetRideTypeDescriptor(src->type).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                 {
@@ -766,16 +766,16 @@ namespace RCT2
             auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
             if (RCT2RideTypeNeedsConversion(src->type))
             {
-                auto* rideEntry = get_ride_entry(subtype);
+                auto* rideEntry = GetRideEntryByIndex(subtype);
                 if (rideEntry != nullptr)
                 {
-                    rideType = RCT2RideTypeToOpenRCT2RideType(src->type, rideEntry);
+                    rideType = RCT2RideTypeToOpenRCT2RideType(src->type, *rideEntry);
                 }
             }
 
             if (rideType >= RIDE_TYPE_COUNT)
             {
-                log_error("Invalid ride type for a ride in this save.");
+                LOG_ERROR("Invalid ride type for a ride in this save.");
                 throw UnsupportedRideTypeException(rideType);
             }
             dst->type = rideType;
@@ -794,7 +794,7 @@ namespace RCT2
             dst->status = static_cast<RideStatus>(src->status);
 
             dst->default_name_number = src->name_arguments_number;
-            if (is_user_string_id(src->name))
+            if (IsUserStringID(src->name))
             {
                 dst->custom_name = GetUserString(src->name);
             }
@@ -1027,7 +1027,7 @@ namespace RCT2
             // This stall was not colourable in RCT2.
             if (dst->type == RIDE_TYPE_FOOD_STALL)
             {
-                auto object = object_entry_get_object(ObjectType::Ride, dst->subtype);
+                auto object = ObjectEntryGetObject(ObjectType::Ride, dst->subtype);
                 if (object != nullptr && object->GetIdentifier() == "rct2.ride.icecr1")
                 {
                     dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
@@ -1102,7 +1102,7 @@ namespace RCT2
                 if (src.ride_index != RCT12_RIDE_ID_NULL)
                 {
                     const auto rideId = RideId::FromUnderlying(src.ride_index);
-                    auto ride = get_ride(rideId);
+                    auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
                         ride->measurement = std::make_unique<RideMeasurement>();
@@ -1160,7 +1160,7 @@ namespace RCT2
             dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->type);
             dst->flags = src->flags;
 
-            if (!(src->flags & BANNER_FLAG_LINKED_TO_RIDE) && is_user_string_id(src->string_idx))
+            if (!(src->flags & BANNER_FLAG_LINKED_TO_RIDE) && IsUserStringID(src->string_idx))
             {
                 dst->text = GetUserString(src->string_idx);
             }
@@ -1686,7 +1686,7 @@ namespace RCT2
             };
 
             ImportEntityCommonProperties(static_cast<EntityBase*>(dst), src);
-            if (is_user_string_id(src->name_string_idx))
+            if (IsUserStringID(src->name_string_idx))
             {
                 dst->SetName(GetUserString(src->name_string_idx));
             }
@@ -1831,7 +1831,7 @@ namespace RCT2
             const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(
                 originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
-            auto asUtf8 = rct2_to_utf8(originalStringView, RCT2LanguageId::EnglishUK);
+            auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
         }

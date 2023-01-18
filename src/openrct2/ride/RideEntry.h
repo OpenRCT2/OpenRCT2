@@ -10,11 +10,11 @@
 #pragma once
 
 #include "../rct2/DATLimits.h"
+#include "CarEntry.h"
 #include "RideColour.h"
 #include "RideTypes.h"
 #include "ShopItem.h"
 #include "VehicleColour.h"
-#include "VehicleEntry.h"
 
 #include <cstdint>
 
@@ -100,5 +100,4 @@ struct rct_ride_entry
     }
 };
 
-void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images);
-RideNaming get_ride_naming(const ride_type_t rideType, rct_ride_entry* rideEntry);
+RideNaming GetRideNaming(const ride_type_t rideType, const rct_ride_entry& rideEntry);

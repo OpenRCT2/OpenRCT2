@@ -96,7 +96,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
 {
     type = ride.type;
 
-    auto object = object_entry_get_object(ObjectType::Ride, ride.subtype);
+    auto object = ObjectEntryGetObject(ObjectType::Ride, ride.subtype);
     if (object != nullptr)
     {
         auto entry = object->GetObjectEntry();
@@ -175,12 +175,12 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
 ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
 {
     CoordsXYE trackElement;
-    if (!ride_try_get_origin_element(ride, &trackElement))
+    if (!RideTryGetOriginElement(ride, &trackElement))
     {
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    ride_get_start_of_track(&trackElement);
+    RideGetStartOfTrack(&trackElement);
 
     int32_t z = trackElement.element->GetBaseZ();
     auto trackType = trackElement.element->AsTrack()->GetTrackType();
@@ -241,7 +241,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         track.flags = trackFlags;
         track_elements.push_back(track);
 
-        if (!track_block_get_next(&trackElement, &trackElement, nullptr, nullptr))
+        if (!TrackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
         {
             break;
         }
@@ -629,9 +629,9 @@ std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path)
     }
     catch (const std::exception& e)
     {
-        log_error("Unable to load track design: %s", e.what());
+        LOG_ERROR("Unable to load track design: %s", e.what());
     }
-    log_verbose("track_design_open(\"%s\")", path);
+    LOG_VERBOSE("track_design_open(\"%s\")", path);
     return nullptr;
 }
 
@@ -1998,7 +1998,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         return false;
     }
 
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
         return false;
 
@@ -2063,7 +2063,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
-        else if (!ride_entry_is_invented(entry_index) && !gCheatsIgnoreResearchStatus)
+        else if (!RideEntryIsInvented(entry_index) && !gCheatsIgnoreResearchStatus)
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
@@ -2172,7 +2172,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         gCurrentRotation = i;
 
         view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
-        viewport_paint(&view, &dpi, { view.viewPos, view.viewPos + ScreenCoordsXY{ size_x, size_y } });
+        ViewportPaint(&view, &dpi, { view.viewPos, view.viewPos + ScreenCoordsXY{ size_x, size_y } });
 
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
     }
@@ -2211,7 +2211,7 @@ static void TrackDesignPreviewClearMap()
     SetTileElements(std::move(tileElements));
 }
 
-bool track_design_are_entrance_and_exit_placed()
+bool TrackDesignAreEntranceAndExitPlaced()
 {
     return _trackDesignPlaceStateEntranceExitPlaced;
 }

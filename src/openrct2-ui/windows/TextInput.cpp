@@ -135,7 +135,7 @@ public:
             auto parentWindow = GetParentWindow();
             if (parentWindow == nullptr)
             {
-                window_close(*this);
+                WindowClose(*this);
                 return;
             }
         }
@@ -156,12 +156,12 @@ public:
             case WIDX_CLOSE:
                 ContextStopTextInput();
                 ExecuteCallback(false);
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_OKAY:
                 ContextStopTextInput();
                 ExecuteCallback(true);
-                window_close(*this);
+                WindowClose(*this);
         }
     }
 
@@ -171,7 +171,7 @@ public:
         int32_t newHeight = CalculateWindowHeight(_buffer.data());
         if (newHeight != height)
         {
-            window_set_resize(*this, WW, newHeight, WW, newHeight);
+            WindowSetResize(*this, WW, newHeight, WW, newHeight);
         }
 
         widgets[WIDX_OKAY].top = newHeight - 22;
@@ -223,9 +223,9 @@ public:
 
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
-        gfx_wrap_string(wrapped_string, WW - (24 + 13), FontStyle::Medium, &no_lines);
+        GfxWrapString(wrapped_string, WW - (24 + 13), FontStyle::Medium, &no_lines);
 
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
             colours[1], INSET_RECT_F_60);
 
@@ -240,16 +240,16 @@ public:
         for (int32_t line = 0; line <= no_lines; line++)
         {
             screenCoords.x = windowPos.x + 12;
-            gfx_draw_string_no_formatting(&dpi, screenCoords, wrap_pointer, { colours[1], FontStyle::Medium });
+            GfxDrawStringNoFormatting(&dpi, screenCoords, wrap_pointer, { colours[1], FontStyle::Medium });
 
-            size_t string_length = get_string_size(wrap_pointer) - 1;
+            size_t string_length = GetStringSize(wrap_pointer) - 1;
 
             if (!cur_drawn && (gTextInput->SelectionStart <= char_count + string_length))
             {
                 // Make a copy of the string for measuring the width.
                 char temp_string[TEXT_INPUT_SIZE] = { 0 };
                 std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
-                cursorX = windowPos.x + 13 + gfx_get_string_width_no_formatting(temp_string, FontStyle::Medium);
+                cursorX = windowPos.x + 13 + GfxGetStringWidthNoFormatting(temp_string, FontStyle::Medium);
                 cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
@@ -258,16 +258,16 @@ public:
                     // Make a 1 utf8-character wide string for measuring the width
                     // of the currently selected character.
                     utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
-                    uint32_t codepoint = utf8_get_next(_buffer.data() + gTextInput->SelectionStart, nullptr);
-                    utf8_write_codepoint(tmp, codepoint);
-                    textWidth = std::max(gfx_get_string_width_no_formatting(tmp, FontStyle::Medium) - 2, 4);
+                    uint32_t codepoint = UTF8GetNext(_buffer.data() + gTextInput->SelectionStart, nullptr);
+                    UTF8WriteCodepoint(tmp, codepoint);
+                    textWidth = std::max(GfxGetStringWidthNoFormatting(tmp, FontStyle::Medium) - 2, 4);
                 }
 
                 if (_cursorBlink > 15)
                 {
                     uint8_t colour = ColourMapA[colours[1]].mid_light;
                     // TODO: palette index addition
-                    gfx_fill_rect(
+                    GfxFillRect(
                         &dpi, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);
                 }
 
@@ -300,7 +300,7 @@ public:
     {
         ContextStopTextInput();
         ExecuteCallback(true);
-        window_close(*this);
+        WindowClose(*this);
     }
 
     static int32_t CalculateWindowHeight(std::string_view text)
@@ -310,23 +310,23 @@ public:
 
         // String length needs to add 12 either side of box +13 for cursor when max length.
         int32_t numLines{};
-        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), FontStyle::Medium, &numLines);
+        GfxWrapString(wrappedString.data(), WW - (24 + 13), FontStyle::Medium, &numLines);
         return numLines * 10 + WH;
     }
 
 private:
     static void DrawIMEComposition(rct_drawpixelinfo& dpi, int32_t cursorX, int32_t cursorY)
     {
-        int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer, FontStyle::Medium);
+        int compositionWidth = GfxGetStringWidth(gTextInput->ImeBuffer, FontStyle::Medium);
         ScreenCoordsXY screenCoords(cursorX - (compositionWidth / 2), cursorY + 13);
         int width = compositionWidth;
         int height = 10;
 
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
             PALETTE_INDEX_12);
-        gfx_fill_rect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
-        gfx_draw_string(&dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
+        GfxFillRect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
+        GfxDrawString(&dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
     }
 
     void ExecuteCallback(bool hasValue)
@@ -337,7 +337,7 @@ private:
             if (w != nullptr)
             {
                 auto value = hasValue ? _buffer.data() : nullptr;
-                window_event_textinput_call(w, _parentWidget.widget_index, value);
+                WindowEventTextinputCall(w, _parentWidget.widget_index, value);
             }
         }
         else
@@ -366,7 +366,7 @@ private:
 
     rct_window* GetParentWindow() const
     {
-        return HasParentWindow() ? window_find_by_number(_parentWidget.window.classification, _parentWidget.window.number)
+        return HasParentWindow() ? WindowFindByNumber(_parentWidget.window.classification, _parentWidget.window.number)
                                  : nullptr;
     }
 };
@@ -375,7 +375,7 @@ void WindowTextInputRawOpen(
     rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     const_utf8string existing_text, int32_t maxLength)
 {
-    window_close_by_class(WindowClass::Textinput);
+    WindowCloseByClass(WindowClass::Textinput);
 
     auto height = TextInputWindow::CalculateWindowHeight(existing_text);
     auto w = WindowCreate<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
@@ -405,7 +405,7 @@ void WindowTextInputOpen(
     rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     StringId existing_text, uintptr_t existing_args, int32_t maxLength)
 {
-    auto existingText = format_string(existing_text, &existing_args);
+    auto existingText = FormatStringID(existing_text, &existing_args);
     WindowTextInputRawOpen(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
 }
 
@@ -425,7 +425,7 @@ void WindowTextInputKey(rct_window* w, uint32_t keycode)
     }
 
     // The window can be potentially closed within a callback, we need to check if its still alive.
-    w = window_find_by_number(wndClass, wndNumber);
+    w = WindowFindByNumber(wndClass, wndNumber);
     if (w != nullptr)
         w->Invalidate();
 }

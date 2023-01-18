@@ -12,6 +12,7 @@
 #    include "NetworkConnection.h"
 
 #    include "../core/String.hpp"
+#    include "../localisation/Formatting.h"
 #    include "../localisation/Localisation.h"
 #    include "../platform/Platform.h"
 #    include "Socket.h"
@@ -198,7 +199,7 @@ void NetworkConnection::SetLastDisconnectReason(std::string_view src)
 void NetworkConnection::SetLastDisconnectReason(const StringId string_id, void* args)
 {
     char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
-    format_string(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);
+    OpenRCT2::FormatStringLegacy(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);
     SetLastDisconnectReason(buffer);
 }
 

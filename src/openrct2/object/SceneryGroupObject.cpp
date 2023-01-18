@@ -56,15 +56,15 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream
 void SceneryGroupObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.name = LanguageAllocateObjectString(GetName());
+    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.SceneryEntries.clear();
 }
 
 void SceneryGroupObject::Unload()
 {
-    language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.name);
+    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _legacyType.image = 0;
@@ -75,7 +75,7 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     const auto imageId = ImageId(_legacyType.image + 1, COLOUR_DARK_GREEN);
-    gfx_draw_sprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 });
+    GfxDrawSprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 });
 }
 
 static std::optional<uint8_t> GetSceneryType(const ObjectType type)

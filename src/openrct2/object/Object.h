@@ -398,13 +398,13 @@ public:
 extern int32_t object_entry_group_counts[];
 extern int32_t object_entry_group_encoding[];
 
-int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
-void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
+int32_t ObjectCalculateChecksum(const rct_object_entry* entry, const void* data, size_t dataLength);
+void ObjectCreateIdentifierName(char* string_buffer, size_t size, const rct_object_entry* object);
 
-void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
+void ObjectEntryGetNameFixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
 
-void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index);
-const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index);
+void* ObjectEntryGetChunk(ObjectType objectType, ObjectEntryIndex index);
+const Object* ObjectEntryGetObject(ObjectType objectType, ObjectEntryIndex index);
 
 constexpr bool IsIntransientObjectType(ObjectType type)
 {

@@ -93,9 +93,9 @@ public:
     void OnOpen() override
     {
         widgets = window_transparency_main_widgets;
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
-        auto* w = window_get_main();
+        auto* w = WindowGetMain();
         if (w != nullptr)
             windowPos.x = ((w->width / 2) - (width / 2));
     }
@@ -116,7 +116,7 @@ public:
     void OnPrepareDraw() override
     {
         uint32_t wflags = 0;
-        rct_window* w = window_get_main();
+        rct_window* w = WindowGetMain();
 
         pressed_widgets = 0;
         disabled_widgets = 0;
@@ -152,7 +152,7 @@ public:
         const auto& widget = widgets[WIDX_HIDE_STAFF];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
         auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
-        gfx_draw_sprite(&dpi, image, screenCoords);
+        GfxDrawSprite(&dpi, image, screenCoords);
     }
 
 private:
@@ -170,7 +170,7 @@ private:
     void ToggleViewportFlag(WidgetIndex widgetIndex)
     {
         uint32_t wflags = 0;
-        rct_window* w = window_get_main();
+        rct_window* w = WindowGetMain();
 
         if (w == nullptr)
             return;
@@ -246,7 +246,7 @@ private:
 
 rct_window* WindowTransparencyOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::Transparency);
+    auto* window = WindowBringToFrontByClass(WindowClass::Transparency);
     if (window == nullptr)
         window = WindowCreate<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), WW, WH);
 

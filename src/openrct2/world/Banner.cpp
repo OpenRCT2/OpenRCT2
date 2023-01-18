@@ -39,7 +39,7 @@ std::string Banner::GetText() const
 {
     Formatter ft;
     FormatTextTo(ft);
-    return format_string(STR_STRINGID, ft.Data());
+    return FormatStringID(STR_STRINGID, ft.Data());
 }
 
 void Banner::FormatTextTo(Formatter& ft, bool addColour) const
@@ -63,7 +63,7 @@ void Banner::FormatTextTo(Formatter& ft) const
     }
     else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
-        auto ride = get_ride(ride_index);
+        auto ride = GetRide(ride_index);
         if (ride != nullptr)
         {
             ride->FormatNameTo(ft);
@@ -99,7 +99,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
             continue;
 
         RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             continue;
 
@@ -274,7 +274,7 @@ void BannerFixDuplicates()
                 const auto index = bannerIndex.ToUnderlying();
                 if (activeBanners[index])
                 {
-                    log_info(
+                    LOG_INFO(
                         "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", index, x, y,
                         bannerElement->base_height);
 
@@ -282,7 +282,7 @@ void BannerFixDuplicates()
                     auto newBanner = CreateBanner();
                     if (newBanner == nullptr)
                     {
-                        log_error("Failed to create new banner.");
+                        LOG_ERROR("Failed to create new banner.");
                         continue;
                     }
                     Guard::Assert(!activeBanners[newBanner->id.ToUnderlying()]);

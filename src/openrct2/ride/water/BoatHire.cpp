@@ -70,13 +70,13 @@ static void paint_boat_hire_station(
     if (direction & 1)
     {
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
-        track_paint_util_draw_pier(
+        TrackPaintUtilDrawPier(
             session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
     }
     else
     {
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
-        track_paint_util_draw_pier(
+        TrackPaintUtilDrawPier(
             session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
     }
 
@@ -139,7 +139,7 @@ static void paint_boat_hire_track_right_quarter_turn_1_tile(
 /**
  * rct2: 0x008B0D60
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(int32_t trackType)
 {
     switch (trackType)
     {

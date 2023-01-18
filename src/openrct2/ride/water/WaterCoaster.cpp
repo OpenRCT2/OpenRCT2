@@ -18,7 +18,7 @@ static void water_rc_track_flat(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_flat(
+    JuniorRcPaintTrackFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -28,7 +28,7 @@ static void water_rc_track_25_deg_up(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_25_deg_up(
+    JuniorRcPaintTrack25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -38,7 +38,7 @@ static void water_rc_track_flat_to_25_deg_up(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_flat_to_25_deg_up(
+    JuniorRcPaintTrackFlatTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -48,7 +48,7 @@ static void water_rc_track_25_deg_up_to_flat(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_25_deg_up_to_flat(
+    JuniorRcPaintTrack25DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -79,7 +79,7 @@ static void water_rc_track_diag_flat(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat(
+    JuniorRcPaintTrackDiagFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -89,7 +89,7 @@ static void water_rc_track_diag_25_deg_up(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_up(
+    JuniorRcPaintTrackDiag25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -99,7 +99,7 @@ static void water_rc_track_diag_flat_to_25_deg_up(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_25_deg_up(
+    JuniorRcPaintTrackDiagFlatTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -109,7 +109,7 @@ static void water_rc_track_diag_25_deg_up_to_flat(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_up_to_flat(
+    JuniorRcPaintTrackDiag25DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -119,7 +119,7 @@ static void water_rc_track_diag_25_deg_down(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_down(
+    JuniorRcPaintTrackDiag25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -129,7 +129,7 @@ static void water_rc_track_diag_flat_to_25_deg_down(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_flat_to_25_deg_down(
+    JuniorRcPaintTrackDiagFlatTo25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -139,7 +139,7 @@ static void water_rc_track_diag_25_deg_down_to_flat(
     const TrackElement& trackElement)
 {
     bool isChained = trackElement.HasChain();
-    junior_rc_paint_track_diag_25_deg_down_to_flat(
+    JuniorRcPaintTrackDiag25DegDownToFlat(
         session, ride, trackSequence, direction, height, trackElement,
         isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
 }
@@ -148,30 +148,28 @@ static void water_rc_track_station(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_station(session, ride, trackSequence, direction, height, trackElement, false);
+    JuniorRcPaintStation(session, ride, trackSequence, direction, height, trackElement, false);
 }
 
 static void water_rc_track_60_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_60_deg_up(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRcPaintTrack60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_25_deg_up_to_60_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_25_deg_up_to_60_deg_up(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRcPaintTrack25DegUpTo60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_60_deg_up_to_25_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_60_deg_up_to_25_deg_up(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRcPaintTrack60DegUpTo25DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_60_deg_down(
@@ -201,7 +199,7 @@ static void water_rc_track_left_quarter_turn_5_tiles_25_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
+    JuniorRcPaintTrackLeftQuarterTurn5Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
@@ -209,7 +207,7 @@ static void water_rc_track_right_quarter_turn_5_tiles_25_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
+    JuniorRcPaintTrackRightQuarterTurn5Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
@@ -241,7 +239,7 @@ static void water_rc_track_right_quarter_turn_3_tiles_25_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
+    juniorRcPaintTrackRightQuarterTurn3Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
@@ -249,7 +247,7 @@ static void water_rc_track_right_quarter_turn_3_tiles_25_deg_down(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
+    JuniorRcPaintTrackRightQuarterTurn3Tiles25DegDown(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
@@ -282,15 +280,14 @@ static void water_rc_track_diag_60_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_diag_60_deg_up(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRcPaintTrackDiag60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_diag_25_deg_up_to_60_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
+    JuniorRcPaintTrackDiag25DegUpTo60DegUp(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
@@ -298,7 +295,7 @@ static void water_rc_track_diag_60_deg_up_to_25_deg_up(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
+    JuniorRcPaintTrackDiag60DegUpTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
@@ -306,15 +303,14 @@ static void water_rc_track_diag_60_deg_down(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_diag_60_deg_down(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRcPaintTrackDiag60DegDown(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
 static void water_rc_track_diag_25_deg_down_to_60_deg_down(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
+    JuniorRcPaintTrackDiag25DegDownTo60DegDown(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
@@ -322,11 +318,11 @@ static void water_rc_track_diag_60_deg_down_to_25_deg_down(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
+    JuniorRcPaintTrackDiag60DegDownTo25DegDown(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRc(int32_t trackType)
 {
     switch (trackType)
     {
@@ -469,36 +465,36 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType)
         case TrackElemType::DiagRightBank:
         case TrackElemType::BlockBrakes:
         case TrackElemType::Booster:
-            return get_track_paint_function_junior_rc(trackType);
+            return GetTrackPaintFunctionJuniorRc(trackType);
 
         //////////////////////////////////////////////////////
         // Use River Rafts
         //////////////////////////////////////////////////////
         case TrackElemType::FlatCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::Flat);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Flat);
         case TrackElemType::LeftQuarterTurn5TilesCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::LeftQuarterTurn5Tiles);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::LeftQuarterTurn5Tiles);
         case TrackElemType::RightQuarterTurn5TilesCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::RightQuarterTurn5Tiles);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::RightQuarterTurn5Tiles);
         case TrackElemType::SBendLeftCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::SBendLeft);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::SBendLeft);
         case TrackElemType::SBendRightCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::SBendRight);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::SBendRight);
         case TrackElemType::FlatToDown25Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::FlatToDown25);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::FlatToDown25);
         case TrackElemType::Down25Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down25);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down25);
         case TrackElemType::Down25ToDown60Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down25ToDown60);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down25ToDown60);
         case TrackElemType::Down60Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down60);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down60);
         case TrackElemType::Down60ToDown25Covered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down60ToDown25);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down60ToDown25);
         case TrackElemType::Down25ToFlatCovered:
-            return get_track_paint_function_splash_boats(TrackElemType::Down25ToFlat);
+            return GetTrackPaintFunctionSplashBoats(TrackElemType::Down25ToFlat);
 
         case TrackElemType::OnRidePhoto:
-            return get_track_paint_function_junior_rc(trackType);
+            return GetTrackPaintFunctionJuniorRc(trackType);
     }
     return nullptr;
 }

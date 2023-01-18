@@ -59,7 +59,7 @@ void MapAnimationCreate(int32_t type, const CoordsXYZ& loc)
         }
         else
         {
-            log_error("Exceeded the maximum number of animations");
+            LOG_ERROR("Exceeded the maximum number of animations");
         }
     }
 }
@@ -106,7 +106,7 @@ static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
 
-        auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+        auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
         if (ride != nullptr)
         {
             auto stationObj = ride->GetStationObject();
@@ -145,7 +145,7 @@ static bool MapAnimationInvalidateQueueBanner(const CoordsXYZ& loc)
         if (!tileElement->AsPath()->HasQueueBanner())
             continue;
 
-        int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + get_current_rotation()) & 3;
+        int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + GetCurrentRotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
         {
             MapInvalidateTileZoom1({ loc, loc.z + 16, loc.z + 30 });
@@ -191,7 +191,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
         {
             // Peep, looking at scenery
-            if (!(gCurrentTicks & 0x3FF) && game_is_not_paused())
+            if (!(gCurrentTicks & 0x3FF) && GameIsNotPaused())
             {
                 int32_t direction = tileElement->GetDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
@@ -330,7 +330,7 @@ static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
         {
             MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
-            if (game_is_paused())
+            if (GameIsPaused())
             {
                 return false;
             }
@@ -497,7 +497,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
         if (wallEntry == nullptr || !(wallEntry->flags & WALL_SCENERY_IS_DOOR))
             continue;
 
-        if (game_is_paused())
+        if (GameIsPaused())
         {
             return false;
         }

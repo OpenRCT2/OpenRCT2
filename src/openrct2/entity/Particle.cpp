@@ -63,12 +63,12 @@ void VehicleCrashParticle::Create(VehicleColour& colours, const CoordsXYZ& vehic
         sprite->sprite_height_positive = 8;
         sprite->MoveTo(vehiclePos);
 
-        sprite->frame = (scenario_rand() & 0xFF) * 12;
-        sprite->time_to_live = (scenario_rand() & 0x7F) + 140;
-        sprite->crashed_sprite_base = scenario_rand_max(static_cast<uint32_t>(std::size(_VehicleCrashParticleSprites)));
-        sprite->acceleration_x = (static_cast<int16_t>(scenario_rand() & 0xFFFF)) * 4;
-        sprite->acceleration_y = (static_cast<int16_t>(scenario_rand() & 0xFFFF)) * 4;
-        sprite->acceleration_z = (scenario_rand() & 0xFFFF) * 4 + 0x10000;
+        sprite->frame = (ScenarioRand() & 0xFF) * 12;
+        sprite->time_to_live = (ScenarioRand() & 0x7F) + 140;
+        sprite->crashed_sprite_base = ScenarioRandMax(static_cast<uint32_t>(std::size(_VehicleCrashParticleSprites)));
+        sprite->acceleration_x = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
+        sprite->acceleration_y = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
+        sprite->acceleration_z = (ScenarioRand() & 0xFFFF) * 4 + 0x10000;
         sprite->velocity_x = 0;
         sprite->velocity_y = 0;
         sprite->velocity_z = 0;

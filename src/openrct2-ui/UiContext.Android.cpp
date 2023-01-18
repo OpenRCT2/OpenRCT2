@@ -53,7 +53,7 @@ namespace OpenRCT2::Ui
 
         void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
-            log_verbose(message.c_str());
+            LOG_VERBOSE(message.c_str());
 
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", message.c_str(), window);
         }
@@ -67,7 +67,7 @@ namespace OpenRCT2::Ui
 
         std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
         {
-            log_info(title.c_str());
+            LOG_INFO(title.c_str());
             STUB();
 
             return "/sdcard/rct2";

@@ -24,7 +24,7 @@ const int16_t days_in_month[MONTH_COUNT] = {
     31, 30, 31, 30, 31, 31, 30, 31,
 };
 
-const StringId DateFormatStringIds[] = {
+const StringId DateFormatStringIDs[] = {
     STR_DATE_FORMAT_DAY_MONTH_YEAR,
     STR_DATE_FORMAT_MONTH_DAY_YEAR,
     STR_DATE_FORMAT_YEAR_MONTH_DAY,
@@ -40,17 +40,17 @@ const StringId DateFormatStringFormatIds[] = {
 
 openrct2_timeofday gRealTimeOfDay;
 
-int32_t date_get_month(int32_t months)
+int32_t DateGetMonth(int32_t months)
 {
     return months % MONTH_COUNT;
 }
 
-int32_t date_get_year(int32_t months)
+int32_t DateGetYear(int32_t months)
 {
     return months / MONTH_COUNT;
 }
 
-int32_t date_get_total_months(int32_t month, int32_t year)
+int32_t DateGetTotalMonths(int32_t month, int32_t year)
 {
     return (year - 1) * MONTH_COUNT + month;
 }
@@ -59,14 +59,14 @@ int32_t date_get_total_months(int32_t month, int32_t year)
  *
  *  rct2: 0x006C4494
  */
-void date_reset()
+void DateReset()
 {
     gDateMonthsElapsed = 0;
     gDateMonthTicks = 0;
     gCurrentRealTimeTicks = 0;
 }
 
-void date_set(int32_t year, int32_t month, int32_t day)
+void DateSet(int32_t year, int32_t month, int32_t day)
 {
     year = std::clamp(year, 1, MAX_YEAR);
     month = std::clamp(month, 1, static_cast<int>(MONTH_COUNT));
@@ -75,7 +75,7 @@ void date_set(int32_t year, int32_t month, int32_t day)
     gDateMonthTicks = TICKS_PER_MONTH / days_in_month[month - 1] * (day - 1) + 4;
 }
 
-void date_update()
+void DateUpdate()
 {
     PROFILED_FUNCTION();
 
@@ -91,7 +91,7 @@ void date_update()
     }
 }
 
-void date_update_real_time_of_day()
+void DateUpdateRealTimeOfDay()
 {
     time_t timestamp = time(nullptr);
     struct tm* now = localtime(&timestamp);
@@ -101,29 +101,29 @@ void date_update_real_time_of_day()
     gRealTimeOfDay.hour = now->tm_hour;
 }
 
-bool date_is_day_start(int32_t monthTicks)
+bool DateIsDayStart(int32_t monthTicks)
 {
     if (monthTicks < 4)
     {
         return false;
     }
     int32_t prevMonthTick = monthTicks - 4;
-    int32_t currentMonth = date_get_month(gDateMonthsElapsed);
+    int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
     int32_t currentDaysInMonth = days_in_month[currentMonth];
     return ((currentDaysInMonth * monthTicks) >> 16 != (currentDaysInMonth * prevMonthTick) >> 16);
 }
 
-bool date_is_week_start(int32_t monthTicks)
+bool DateIsWeekStart(int32_t monthTicks)
 {
     return (monthTicks & 0x3FFF) == 0;
 }
 
-bool date_is_fortnight_start(int32_t monthTicks)
+bool DateIsFortnightStart(int32_t monthTicks)
 {
     return (monthTicks & 0x7FFF) == 0;
 }
 
-bool date_is_month_start(int32_t monthTicks)
+bool DateIsMonthStart(int32_t monthTicks)
 {
     return (monthTicks == 0);
 }

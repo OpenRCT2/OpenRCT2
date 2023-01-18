@@ -122,7 +122,7 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
 {
     _drawingContext = new X8DrawingContext(this);
     _bitsDPI.DrawingEngine = this;
-    lightfx_set_available(true);
+    LightFXSetAvailable(true);
     _lastLightFXenabled = (gConfigGeneral.EnableLightFx != 0);
 }
 
@@ -203,12 +203,12 @@ void X8DrawingEngine::EndDraw()
 
 void X8DrawingEngine::PaintWindows()
 {
-    window_reset_visibilities();
+    WindowResetVisibilities();
 
     // Redraw dirty regions before updating the viewports, otherwise
     // when viewports get panned, they copy dirty pixels
     DrawAllDirtyBlocks();
-    window_update_all_viewports();
+    WindowUpdateAllViewports();
     DrawAllDirtyBlocks();
 }
 
@@ -259,7 +259,7 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
 
 std::string X8DrawingEngine::Screenshot()
 {
-    return screenshot_dump_png(&_bitsDPI);
+    return ScreenshotDumpPNG(&_bitsDPI);
 }
 
 IDrawingContext* X8DrawingEngine::GetDrawingContext()
@@ -338,9 +338,9 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
 
     ConfigureDirtyGrid();
 
-    if (lightfx_is_available())
+    if (LightFXIsAvailable())
     {
-        lightfx_update_buffers(dpi);
+        LightFXUpdateBuffers(dpi);
     }
 }
 
@@ -437,7 +437,7 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, 
 
     // Draw region
     OnDrawDirtyBlock(x, y, columns, rows);
-    window_draw_all(&_bitsDPI, left, top, right, bottom);
+    WindowDrawAll(&_bitsDPI, left, top, right, bottom);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
@@ -705,18 +705,18 @@ void X8DrawingContext::FilterRect(
 
 void X8DrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line)
 {
-    gfx_draw_line_software(dpi, line, colour);
+    GfxDrawLineSoftware(dpi, line, colour);
 }
 
 void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, int32_t x, int32_t y)
 {
-    gfx_draw_sprite_software(dpi, imageId, { x, y });
+    GfxDrawSpriteSoftware(dpi, imageId, { x, y });
 }
 
 void X8DrawingContext::DrawSpriteRawMasked(
     rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
-    gfx_draw_sprite_raw_masked_software(dpi, { x, y }, maskImage, colourImage);
+    GfxDrawSpriteRawMaskedSoftware(dpi, { x, y }, maskImage, colourImage);
 }
 
 void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
@@ -726,11 +726,11 @@ void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId ima
     palette[0] = 0;
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
-    gfx_draw_sprite_palette_set_software(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
+    GfxDrawSpritePaletteSetSoftware(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
 }
 
 void X8DrawingContext::DrawGlyph(
     rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
-    gfx_draw_sprite_palette_set_software(dpi, image, { x, y }, paletteMap);
+    GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
 }

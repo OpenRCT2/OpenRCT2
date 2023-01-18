@@ -86,12 +86,12 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_CLIP_CHECKBOX_ENABLE:
             {
                 // Toggle height clipping.
-                rct_window* mainWindow = window_get_main();
+                rct_window* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                 {
                     mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
@@ -114,7 +114,7 @@ public:
                 break;
             case WIDX_CLIP_SELECTOR:
                 // Activate the selection tool
-                tool_set(*this, WIDX_BACKGROUND, Tool::Crosshair);
+                ToolSet(*this, WIDX_BACKGROUND, Tool::Crosshair);
                 _toolActive = true;
                 _dragging = false;
 
@@ -123,17 +123,17 @@ public:
                 _previousClipSelectionB = gClipSelectionB;
                 gClipSelectionA = { 0, 0 };
                 gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_CLIP_CLEAR:
                 if (IsActive())
                 {
                     _toolActive = false;
-                    tool_cancel();
+                    ToolCancel();
                 }
                 gClipSelectionA = { 0, 0 };
                 gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
         }
     }
@@ -147,14 +147,14 @@ public:
             case WIDX_CLIP_HEIGHT_INCREASE:
                 if (gClipHeight < 255)
                     SetClipHeight(gClipHeight + 1);
-                mainWindow = window_get_main();
+                mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                     mainWindow->Invalidate();
                 break;
             case WIDX_CLIP_HEIGHT_DECREASE:
                 if (gClipHeight > 0)
                     SetClipHeight(gClipHeight - 1);
-                mainWindow = window_get_main();
+                mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                     mainWindow->Invalidate();
                 break;
@@ -173,7 +173,7 @@ public:
             gClipHeight = clip_height;
 
             // Update the main window accordingly.
-            rct_window* mainWindow = window_get_main();
+            rct_window* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
                 mainWindow->Invalidate();
@@ -188,7 +188,7 @@ public:
             gClipSelectionB = _previousClipSelectionB;
         }
 
-        widget_invalidate(*this, WIDX_CLIP_HEIGHT_SLIDER);
+        WidgetInvalidate(*this, WIDX_CLIP_HEIGHT_SLIDER);
     }
 
     void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -199,7 +199,7 @@ public:
         }
 
         int32_t direction;
-        auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+        auto mapCoords = ScreenPosToMapPos(screenCoords, &direction);
         if (mapCoords.has_value())
         {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -213,7 +213,7 @@ public:
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         int32_t direction;
-        auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+        auto mapCoords = ScreenPosToMapPos(screenCoords, &direction);
         if (mapCoords.has_value())
         {
             _dragging = true;
@@ -229,7 +229,7 @@ public:
         }
 
         int32_t direction;
-        auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+        auto mapCoords = ScreenPosToMapPos(screenCoords, &direction);
         if (mapCoords)
         {
             MapInvalidateSelectionRect();
@@ -248,15 +248,15 @@ public:
         gClipSelectionA = gMapSelectPositionA;
         gClipSelectionB = gMapSelectPositionB;
         _toolActive = false;
-        tool_cancel();
-        gfx_invalidate_screen();
+        ToolCancel();
+        GfxInvalidateScreen();
     }
 
     void OnPrepareDraw() override
     {
         WidgetScrollUpdateThumbs(*this, WIDX_CLIP_HEIGHT_SLIDER);
 
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             WidgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
@@ -352,10 +352,10 @@ public:
         // Initialise the clip height slider from the current clip height value.
         this->SetClipHeight(gClipHeight);
 
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         // Get the main viewport to set the view clipping flag.
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
 
         // Turn on view clipping when the window is opened.
         if (mainWindow != nullptr)
@@ -369,7 +369,7 @@ private:
     void OnClose() override
     {
         // Turn off view clipping when the window is closed.
-        rct_window* mainWindow = window_get_main();
+        rct_window* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
@@ -388,7 +388,7 @@ private:
 
     bool IsActive()
     {
-        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
         if (gCurrentToolWidget.window_classification != WindowClass::ViewClipping)
             return false;
@@ -398,7 +398,7 @@ private:
 
 rct_window* WindowViewClippingOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::ViewClipping);
+    auto* window = WindowBringToFrontByClass(WindowClass::ViewClipping);
     if (window == nullptr)
     {
         window = WindowCreate<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), WW, WH);

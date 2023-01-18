@@ -344,7 +344,7 @@ private:
 
     void CommonPrepareDrawAfter()
     {
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_3);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_3);
     }
 #pragma endregion
 
@@ -369,10 +369,10 @@ private:
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = window_find_by_number(WindowClass::Peep, peepnum);
+                    rct_window* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
-                        tool_set(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                        ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
                     }
                 });
                 GameActions::Execute(&pickupAction);
@@ -381,7 +381,7 @@ private:
             case WIDX_FIRE:
             {
                 auto intent = Intent(WindowClass::FirePrompt);
-                intent.putExtra(INTENT_EXTRA_PEEP, staff);
+                intent.PutExtra(INTENT_EXTRA_PEEP, staff);
                 ContextOpenIntent(&intent);
                 break;
             }
@@ -458,7 +458,7 @@ private:
                         return;
                     }
 
-                    window_close_by_class(WindowClass::PatrolArea);
+                    WindowCloseByClass(WindowClass::PatrolArea);
 
                     auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
                         staff->sprite_index, {}, StaffSetPatrolAreaMode::ClearAll);
@@ -469,7 +469,7 @@ private:
                     auto staffId = EntityId::FromUnderlying(number);
                     if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                     {
-                        window_close_by_class(WindowClass::PatrolArea);
+                        WindowCloseByClass(WindowClass::PatrolArea);
                     }
                     else
                     {
@@ -519,11 +519,11 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(dpi, *this);
+            WindowDrawViewport(dpi, *this);
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                gfx_draw_sprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
             }
         }
 
@@ -554,7 +554,7 @@ private:
             widgetHeight++;
 
         rct_drawpixelinfo clip_dpi;
-        if (!clip_drawpixelinfo(&clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
+        if (!ClipDrawPixelInfo(&clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
         {
             return;
         }
@@ -581,7 +581,7 @@ private:
         }
         imageIndex += offset;
 
-        gfx_draw_sprite(&clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
+        GfxDrawSprite(&clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
     }
 
     void OverviewResize()
@@ -658,7 +658,7 @@ private:
 
         gPickupPeepImage = ImageId();
 
-        auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionItemAll);
+        auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
         if (info.SpriteType == ViewportInteractionItem::None)
             return;
 
@@ -697,7 +697,7 @@ private:
         pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
                 return;
-            tool_cancel();
+            ToolCancel();
             gPickupPeepImage = ImageId();
         });
         GameActions::Execute(&pickupAction);
@@ -766,7 +766,7 @@ private:
         // This will be moved below where Items Checked is when all
         // of dropdown related functions are finished. This prevents
         // the dropdown from not working on first click.
-        int32_t numCostumes = staff_get_available_entertainer_costume_list(_availableCostumes);
+        int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(_availableCostumes);
         for (int32_t i = 0; i < numCostumes; i++)
         {
             EntertainerCostume costume = _availableCostumes[i];
@@ -1062,10 +1062,10 @@ private:
 
     void CancelTools()
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (number == gCurrentToolWidget.window_number && classification == gCurrentToolWidget.window_classification)
-                tool_cancel();
+                ToolCancel();
         }
     }
 
@@ -1089,8 +1089,8 @@ private:
         RemoveViewport();
 
         Invalidate();
-        window_event_resize_call(this);
-        window_event_invalidate_call(this);
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
         InitScrollWidgets();
         ViewportInit();
         Invalidate();
@@ -1153,7 +1153,7 @@ private:
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
         }
 
-        window_event_invalidate_call(this);
+        WindowEventInvalidateCall(this);
 
         focus = tempFocus;
 
@@ -1167,7 +1167,7 @@ private:
                 int32_t viewportWidth = viewWidget.width() - 1;
                 int32_t viewportHeight = viewWidget.height() - 1;
 
-                viewport_create(this, screenPos, viewportWidth, viewportHeight, focus.value());
+                ViewportCreate(this, screenPos, viewportWidth, viewportHeight, focus.value());
                 flags |= WF_NO_SCROLLING;
                 Invalidate();
             }
@@ -1190,8 +1190,8 @@ private:
 
     void FollowPeep()
     {
-        rct_window* main = window_get_main();
-        window_follow_sprite(*main, EntityId::FromUnderlying(number));
+        rct_window* main = WindowGetMain();
+        WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
     void DrawTabImages(rct_drawpixelinfo* dpi)
@@ -1217,7 +1217,7 @@ private:
             }
 
             // Draw normal, enabled sprite.
-            gfx_draw_sprite(dpi, ImageId(baseImageId), screenCoords);
+            GfxDrawSprite(dpi, ImageId(baseImageId), screenCoords);
         }
     }
 
@@ -1236,7 +1236,7 @@ private:
 
 rct_window* WindowStaffOpen(Peep* peep)
 {
-    auto w = static_cast<StaffWindow*>(window_bring_to_front_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
+    auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
 
     if (w != nullptr)
         return w;

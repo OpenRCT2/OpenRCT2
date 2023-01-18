@@ -210,7 +210,7 @@ namespace GameActions
 
         if (result.Error == GameActions::Status::Ok)
         {
-            if (!finance_check_affordability(result.Cost, action->GetFlags()))
+            if (!FinanceCheckAffordability(result.Cost, action->GetFlags()))
             {
                 result.Error = GameActions::Status::InsufficientFunds;
                 result.ErrorTitle = STR_CANT_DO_THIS;
@@ -280,7 +280,7 @@ namespace GameActions
         output.Write(temp, strlen(temp) + 1);
 
         const char* text = static_cast<const char*>(output.GetData());
-        log_verbose("%s", text);
+        LOG_VERBOSE("%s", text);
 
         network_append_server_log(text);
     }
@@ -328,7 +328,7 @@ namespace GameActions
                     // As a client we have to wait or send it first.
                     if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
-                        log_verbose("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
+                        LOG_VERBOSE("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
                         network_send_game_action(action);
 
                         return result;
@@ -340,7 +340,7 @@ namespace GameActions
                     // at the beginning of the frame, so we have to put them into the queue.
                     if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
-                        log_verbose("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
+                        LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
                         Enqueue(action, gCurrentTicks);
 
                         return result;
@@ -369,9 +369,9 @@ namespace GameActions
                 return result;
 
             // Update money balance
-            if (result.Error == GameActions::Status::Ok && finance_check_money_required(flags) && result.Cost != 0)
+            if (result.Error == GameActions::Status::Ok && FinanceCheckMoneyRequired(flags) && result.Cost != 0)
             {
-                finance_payment(result.Cost, result.Expenditure);
+                FinancePayment(result.Cost, result.Expenditure);
                 MoneyEffect::Create(result.Cost, result.Position);
             }
 

@@ -200,7 +200,7 @@ static bool SpriteImageExport(const rct_g1_element& spriteElement, u8string_view
 
     DrawSpriteArgs args(
         ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
-    gfx_sprite_to_buffer(dpi, args);
+    GfxSpriteToBuffer(dpi, args);
 
     auto const pixels8 = dpi.bits;
     auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
@@ -263,7 +263,7 @@ static std::string PopStr(std::ostringstream& oss)
     return str;
 }
 
-int32_t cmdline_for_sprite(const char** argv, int32_t argc)
+int32_t CmdLineForSprite(const char** argv, int32_t argc)
 {
     gOpenRCT2Headless = true;
     if (argc == 0)
@@ -408,7 +408,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         auto context = OpenRCT2::CreateContext();
         context->Initialise();
 
-        const ObjectRepositoryItem* ori = object_repository_find_object_by_name(datName);
+        const ObjectRepositoryItem* ori = ObjectRepositoryFindObjectByName(datName);
         if (ori == nullptr)
         {
             fprintf(stderr, "Could not find the object.\n");
@@ -416,13 +416,13 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
 
         const rct_object_entry* entry = &ori->ObjectEntry;
-        const auto* loadedObject = object_manager_load_object(entry);
+        const auto* loadedObject = ObjectManagerLoadObject(entry);
         if (loadedObject == nullptr)
         {
             fprintf(stderr, "Unable to load object.\n");
             return -1;
         }
-        auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
         ObjectType objectType = entry->GetType();
 
         auto& objManager = context->GetObjectManager();
@@ -603,7 +603,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         if (!spriteFile.Save(spriteFilePath))
         {
-            log_error("Could not save sprite file, cancelling.");
+            LOG_ERROR("Could not save sprite file, cancelling.");
             return -1;
         }
 

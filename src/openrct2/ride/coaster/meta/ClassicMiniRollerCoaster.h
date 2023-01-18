@@ -22,7 +22,7 @@ constexpr const RideTypeDescriptor ClassicMiniRollerCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_ON_RIDE_PHOTO}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_junior_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionJuniorRc),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS),
@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor ClassicMiniRollerCoasterRTD =
     SET_FIELD(Heights, { 15, 24, 4, 7, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 6 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_classic_mini_roller_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateClassicMiniRollerCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 8, 3, 5 }),
     SET_FIELD(BuildCosts, { 22.50_GBP, 2.00_GBP, 40, }),

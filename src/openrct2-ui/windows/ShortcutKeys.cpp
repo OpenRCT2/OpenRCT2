@@ -78,7 +78,7 @@ public:
         auto registeredShortcut = shortcutManager.GetShortcut(shortcutId);
         if (registeredShortcut != nullptr)
         {
-            window_close_by_class(WindowClass::ChangeKeyboardShortcut);
+            WindowCloseByClass(WindowClass::ChangeKeyboardShortcut);
             auto w = WindowCreate<ChangeShortcutWindow>(
                 WindowClass::ChangeKeyboardShortcut, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
             if (w != nullptr)
@@ -195,7 +195,7 @@ public:
 
     void OnResize() override
     {
-        window_set_resize(*this, min_width, min_height, max_width, max_height);
+        WindowSetResize(*this, min_width, min_height, max_width, max_height);
     }
 
     void OnUpdate() override
@@ -239,7 +239,7 @@ public:
         widgets[WIDX_SCROLL].bottom = height - 19;
         widgets[WIDX_RESET].top = height - 16;
         widgets[WIDX_RESET].bottom = height - 5;
-        window_align_tabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
+        WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
 
         // Set selected tab
         for (size_t i = 0; i < _tabs.size(); i++)
@@ -298,7 +298,7 @@ public:
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // TODO: the line below is a workaround for what is presumably a bug with dpi->width
@@ -492,7 +492,7 @@ private:
                 }
 
                 const auto& widget = widgets[widgetIndex];
-                gfx_draw_sprite(&dpi, ImageId(imageId), windowPos + ScreenCoordsXY{ widget.left, widget.top });
+                GfxDrawSprite(&dpi, ImageId(imageId), windowPos + ScreenCoordsXY{ widget.left, widget.top });
             }
         }
     }
@@ -500,8 +500,8 @@ private:
     void DrawSeparator(rct_drawpixelinfo& dpi, int32_t y, int32_t scrollWidth)
     {
         const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
-        gfx_fill_rect(&dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
-        gfx_fill_rect(&dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
+        GfxFillRect(&dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
+        GfxFillRect(&dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
     }
 
     void DrawItem(
@@ -511,7 +511,7 @@ private:
         if (isHighlighted)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(&dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(&dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
         }
 
         auto bindingOffset = (scrollWidth * 2) / 3;
@@ -540,7 +540,7 @@ private:
 
 void ChangeShortcutWindow::NotifyShortcutKeysWindow()
 {
-    auto w = window_find_by_class(WindowClass::KeyboardShortcutList);
+    auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
     if (w != nullptr)
     {
         static_cast<ShortcutKeysWindow*>(w)->RefreshBindings();
@@ -549,7 +549,7 @@ void ChangeShortcutWindow::NotifyShortcutKeysWindow()
 
 rct_window* WindowShortcutKeysOpen()
 {
-    auto w = window_bring_to_front_by_class(WindowClass::KeyboardShortcutList);
+    auto w = WindowBringToFrontByClass(WindowClass::KeyboardShortcutList);
     if (w == nullptr)
     {
         w = WindowCreate<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, WW, WH, WF_RESIZABLE);

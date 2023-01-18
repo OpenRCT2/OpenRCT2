@@ -94,7 +94,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
         {
             if (!LocationValid({ x, y }))
                 continue;
-            auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
+            auto result = MapBuyLandRightsForTile({ x, y }, isExecuting);
             if (result.Error == GameActions::Status::Ok)
             {
                 res.Cost += result.Cost;
@@ -110,12 +110,12 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
     return res;
 }
 
-GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
+GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY& loc, bool isExecuting) const
 {
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
     {
-        log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
+        LOG_ERROR("Could not find surface. x = %d, y = %d", loc.x, loc.y);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -202,7 +202,7 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
             return res;
         }
         default:
-            log_warning("Tried calling set land rights with an incorrect setting. setting = %u", _setting);
+            LOG_WARNING("Tried calling set land rights with an incorrect setting. setting = %u", _setting);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 }

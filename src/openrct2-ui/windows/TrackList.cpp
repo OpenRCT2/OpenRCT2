@@ -114,7 +114,7 @@ private:
             if (listIndex == 0)
             {
                 Close();
-                ride_construct_new(_window_track_list_item);
+                RideConstructNew(_window_track_list_item);
                 return;
             }
             listIndex--;
@@ -137,7 +137,7 @@ private:
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
             auto intent = Intent(WindowClass::ManageTrackDesign);
-            intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
+            intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
             ContextOpenIntent(&intent);
         }
         else
@@ -149,7 +149,7 @@ private:
             }
 
             auto intent = Intent(WindowClass::TrackDesignPlace);
-            intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
+            intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
             ContextOpenIntent(&intent);
         }
     }
@@ -179,7 +179,7 @@ private:
         {
             if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             {
-                entryName = get_ride_entry_name(item.EntryIndex);
+                entryName = GetRideEntryName(item.EntryIndex);
             }
         }
         _trackDesigns = repo->GetItemsForObjectEntry(item.Type, entryName);
@@ -224,7 +224,7 @@ public:
             selected_list_item = 1;
         }
         gTrackDesignSceneryToggle = false;
-        window_push_others_right(*this);
+        WindowPushOthersRight(*this);
         _currentTrackPieceDirection = 2;
         _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
@@ -249,8 +249,8 @@ public:
         // try to load the track manager again, and an infinite loop will result.
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0)
         {
-            window_close_by_number(WindowClass::ManageTrackDesign, number);
-            window_close_by_number(WindowClass::TrackDeletePrompt, number);
+            WindowCloseByNumber(WindowClass::ManageTrackDesign, number);
+            WindowCloseByNumber(WindowClass::TrackDeletePrompt, number);
             Editor::LoadTrackManager();
         }
     }
@@ -280,8 +280,7 @@ public:
                 }
                 break;
             case WIDX_FILTER_STRING:
-                window_start_textbox(
-                    *this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this out
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this out
                 break;
             case WIDX_FILTER_CLEAR:
                 // Keep the highlighted item selected
@@ -363,11 +362,11 @@ public:
     void OnPrepareDraw() override
     {
         StringId stringId = STR_NONE;
-        rct_ride_entry* entry = get_ride_entry(_window_track_list_item.EntryIndex);
+        rct_ride_entry* entry = GetRideEntryByIndex(_window_track_list_item.EntryIndex);
 
         if (entry != nullptr)
         {
-            RideNaming rideName = get_ride_naming(_window_track_list_item.Type, entry);
+            RideNaming rideName = GetRideNaming(_window_track_list_item.Type, *entry);
             stringId = rideName.Name;
         }
 
@@ -421,8 +420,8 @@ public:
     {
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
-            window_update_textbox_caret();
-            widget_invalidate(*this, WIDX_FILTER_STRING); // TODO Check this
+            WindowUpdateTextboxCaret();
+            WidgetInvalidate(*this, WIDX_FILTER_STRING); // TODO Check this
         }
 
         if (track_list.reload_track_designs)
@@ -465,7 +464,7 @@ public:
         {
             utf8 pathBuffer[MAX_PATH];
             const utf8* pathPtr = pathBuffer;
-            shorten_path(pathBuffer, sizeof(pathBuffer), path.c_str(), width, FontStyle::Medium);
+            ShortenPath(pathBuffer, sizeof(pathBuffer), path.c_str(), width, FontStyle::Medium);
             auto ft = Formatter();
             ft.Add<utf8*>(pathPtr);
             DrawTextBasic(
@@ -474,7 +473,7 @@ public:
         }
 
         auto screenPos = windowPos + ScreenCoordsXY{ tdWidget.left + 1, tdWidget.top + 1 };
-        gfx_fill_rect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
+        GfxFillRect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
 
         if (_loadedTrackDesignIndex != trackIndex)
         {
@@ -501,9 +500,9 @@ public:
         g1temp.width = 370;
         g1temp.height = 217;
         g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
-        gfx_set_g1_element(SPR_TEMP, &g1temp);
-        drawing_engine_invalidate_image(SPR_TEMP);
-        gfx_draw_sprite(&dpi, ImageId(SPR_TEMP), trackPreview);
+        GfxSetG1Element(SPR_TEMP, &g1temp);
+        DrawingEngineInvalidateImage(SPR_TEMP);
+        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), trackPreview);
 
         screenPos.y = windowPos.y + tdWidget.bottom - 12;
 
@@ -669,7 +668,7 @@ public:
     void OnScrollDraw(const int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         uint8_t paletteIndex = ColourMapA[colours[0]].mid_light;
-        gfx_clear(&dpi, paletteIndex);
+        GfxClear(&dpi, paletteIndex);
 
         auto screenCoords = ScreenCoordsXY{ 0, 0 };
         size_t listIndex = 0;
@@ -689,7 +688,7 @@ public:
             if (listIndex == static_cast<size_t>(selected_list_item))
             {
                 // Highlight
-                gfx_filter_rect(
+                GfxFilterRect(
                     &dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
                     FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
@@ -714,7 +713,7 @@ public:
                 if (listIndex == static_cast<size_t>(selected_list_item))
                 {
                     // Highlight
-                    gfx_filter_rect(
+                    GfxFilterRect(
                         &dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
                         FilterPaletteID::PaletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
@@ -746,7 +745,7 @@ public:
 
 rct_window* WindowTrackListOpen(const RideSelection item)
 {
-    window_close_construction_windows();
+    WindowCloseConstructionWindows();
     ScreenCoordsXY screenPos{};
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {

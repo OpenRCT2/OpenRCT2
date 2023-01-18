@@ -103,10 +103,10 @@ public:
         thread_local std::string _buffer;
         _buffer.assign("{BLACK}");
         _buffer += _windowNetworkStatusText;
-        gfx_clip_string(_buffer.data(), widgets[WIDX_BACKGROUND].right - 50, FontStyle::Medium);
+        GfxClipString(_buffer.data(), widgets[WIDX_BACKGROUND].right - 50, FontStyle::Medium);
         ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
-        screenCoords.x -= gfx_get_string_width(_buffer, FontStyle::Medium) / 2;
-        gfx_draw_string(&dpi, screenCoords, _buffer.c_str());
+        screenCoords.x -= GfxGetStringWidth(_buffer, FontStyle::Medium) / 2;
+        GfxDrawString(&dpi, screenCoords, _buffer.c_str());
     }
 
     void SetCloseCallBack(close_callback onClose)
@@ -142,7 +142,7 @@ rct_window* WindowNetworkStatusOpen(const std::string& text, close_callback onCl
 // force close
 void WindowNetworkStatusClose()
 {
-    auto window = window_find_by_class(WindowClass::NetworkStatus);
+    auto window = WindowFindByClass(WindowClass::NetworkStatus);
     if (window == nullptr)
     {
         return;

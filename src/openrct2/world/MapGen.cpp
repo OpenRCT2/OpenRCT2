@@ -312,7 +312,7 @@ static void MapGenPlaceTrees()
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
         auto* sceneryEntry = GetSmallSceneryEntry(i);
-        auto entry = object_entry_get_object(ObjectType::SmallScenery, i);
+        auto entry = ObjectEntryGetObject(ObjectType::SmallScenery, i);
 
         if (sceneryEntry == nullptr)
             continue;
@@ -728,7 +728,7 @@ bool MapGenLoadHeightmap(const utf8* path)
                 ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
                 break;
             default:
-                log_error("Unable to load height map image: %s", e.what());
+                LOG_ERROR("Unable to load height map image: %s", e.what());
                 break;
         }
         return false;

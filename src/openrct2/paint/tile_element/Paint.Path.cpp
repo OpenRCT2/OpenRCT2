@@ -20,6 +20,7 @@
 #include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/FootpathObject.h"
 #include "../../object/FootpathRailingsObject.h"
@@ -439,7 +440,7 @@ static void PathPaintFencesAndQueueBanners(
 
         direction--;
         // If text shown
-        auto ride = get_ride(pathElement.GetRideIndex());
+        auto ride = GetRide(pathElement.GetRideIndex());
         if (direction < 2 && ride != nullptr && !imageTemplate.IsRemap())
         {
             uint16_t scrollingMode = pathPaintInfo.ScrollingMode;
@@ -458,19 +459,20 @@ static void PathPaintFencesAndQueueBanners(
             }
             if (gConfigGeneral.UpperCaseBanners)
             {
-                format_string_to_upper(
+                FormatStringToUpper(
                     gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
             else
             {
-                format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
+                FormatStringLegacy(
+                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
 
-            uint16_t stringWidth = gfx_get_string_width(gCommonStringFormatBuffer, FontStyle::Tiny);
+            uint16_t stringWidth = GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Tiny);
             uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
             PaintAddImageAsChild(
-                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),
+                session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),
                 { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
         }
 
@@ -709,7 +711,7 @@ static void PathPaintFencesAndQueueBanners(
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
-static void sub_6A3F61(
+static void Sub6A3F61(
     PaintSession& session, const PathElement& pathElement, uint16_t connectedEdges, uint16_t height,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate, ImageId sceneryImageTemplate, bool hasSupports)
 {
@@ -923,7 +925,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
 
         uint32_t baseImageIndex = SPR_HEIGHT_MARKER_BASE;
         baseImageIndex += heightMarkerBaseZ / 16;
-        baseImageIndex += get_height_marker_offset();
+        baseImageIndex += GetHeightMarkerOffset();
         baseImageIndex -= gMapBaseZ;
         auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
         PaintAddImageAsParent(session, imageId, { 16, 16, heightMarkerBaseZ }, { 1, 1, 0 });
@@ -934,7 +936,7 @@ static void PaintLampLightEffects(PaintSession& session, const PathElement& path
 {
     PROFILED_FUNCTION();
 
-    if (lightfx_is_available())
+    if (LightFXIsAvailable())
     {
         if (pathEl.HasAddition() && !(pathEl.IsBroken()))
         {
@@ -943,19 +945,19 @@ static void PaintLampLightEffects(PaintSession& session, const PathElement& path
             {
                 if (!(pathEl.GetEdges() & EDGE_NE))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SE))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SW))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_NW))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
                 }
             }
         }
@@ -980,7 +982,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
             return;
         }
 
-        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&tileElement)))
+        if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
         {
             imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
         }
@@ -1120,7 +1122,7 @@ void PathPaintBoxSupport(
         }
     }
 
-    sub_6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
+    Sub6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
 
     uint16_t ax = 0;
     if (pathElement.IsSloped())
@@ -1259,7 +1261,7 @@ void PathPaintPoleSupport(
         }
     }
 
-    sub_6A3F61(
+    Sub6A3F61(
         session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
         hasSupports); // TODO: arguments
 

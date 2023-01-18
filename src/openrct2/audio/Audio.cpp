@@ -140,13 +140,13 @@ namespace OpenRCT2::Audio
         {
             if (device.empty())
             {
-                device = language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+                device = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
             }
         }
 
 #ifndef __linux__
         // The first device is always system default on Windows and macOS
-        std::string defaultDevice = language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+        std::string defaultDevice = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
         devices.insert(devices.begin(), defaultDevice);
 #endif
 
@@ -173,11 +173,11 @@ namespace OpenRCT2::Audio
             volumeDown = 10;
         }
 
-        uint8_t rotation = get_current_rotation();
+        uint8_t rotation = GetCurrentRotation();
         auto pos2 = Translate3DTo2DWithZ(rotation, location);
 
         rct_viewport* viewport = nullptr;
-        while ((viewport = window_get_previous_viewport(viewport)) != nullptr)
+        while ((viewport = WindowGetPreviousViewport(viewport)) != nullptr)
         {
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
@@ -321,7 +321,7 @@ namespace OpenRCT2::Audio
         StopTitleMusic();
         StopVehicleSounds();
         RideAudio::StopAllChannels();
-        peep_stop_crowd_noise();
+        PeepStopCrowdNoise();
         ClimateStopWeatherSound();
     }
 
@@ -385,7 +385,7 @@ namespace OpenRCT2::Audio
 
     void Close()
     {
-        peep_stop_crowd_noise();
+        PeepStopCrowdNoise();
         StopTitleMusic();
         RideAudio::StopAllChannels();
         ClimateStopWeatherSound();
@@ -406,7 +406,7 @@ namespace OpenRCT2::Audio
             Pause();
         }
 
-        window_invalidate_by_class(WindowClass::Options);
+        WindowInvalidateByClass(WindowClass::Options);
     }
 
     void Pause()
@@ -414,7 +414,7 @@ namespace OpenRCT2::Audio
         gGameSoundsOff = true;
         StopVehicleSounds();
         RideAudio::StopAllChannels();
-        peep_stop_crowd_noise();
+        PeepStopCrowdNoise();
         ClimateStopWeatherSound();
     }
 

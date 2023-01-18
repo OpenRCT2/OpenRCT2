@@ -224,7 +224,7 @@ rct_window* WindowCreate(
         {
             if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
             {
-                window_close(*w.get());
+                WindowClose(*w.get());
                 break;
             }
         }
@@ -377,7 +377,7 @@ static void WindowScrollWheelInput(rct_window& w, int32_t scrollIndex, int32_t w
     }
 
     WidgetScrollUpdateThumbs(w, widgetIndex);
-    widget_invalidate(w, widgetIndex);
+    WidgetInvalidate(w, widgetIndex);
 }
 
 /**
@@ -415,9 +415,9 @@ static void WindowViewportWheelInput(rct_window& w, int32_t wheel)
         return;
 
     if (wheel < 0)
-        window_zoom_in(w, true);
+        WindowZoomIn(w, true);
     else if (wheel > 0)
-        window_zoom_out(w, true);
+        WindowZoomOut(w, true);
 }
 
 static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_t wheel)
@@ -500,7 +500,7 @@ static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_
         return false;
     }
 
-    window_event_mouse_down_call(&w, buttonWidgetIndex);
+    WindowEventMouseDownCall(&w, buttonWidgetIndex);
     return true;
 }
 
@@ -521,9 +521,9 @@ void WindowAllWheelInput()
         return;
 
     // Check window cursor is over
-    if (!(input_test_flag(INPUT_FLAG_5)))
+    if (!(InputTestFlag(INPUT_FLAG_5)))
     {
-        rct_window* w = window_find_from_point(cursorState->position);
+        rct_window* w = WindowFindFromPoint(cursorState->position);
         if (w != nullptr)
         {
             // Check if main window
@@ -534,7 +534,7 @@ void WindowAllWheelInput()
             }
 
             // Check scroll view, cursor is over
-            WidgetIndex widgetIndex = window_find_widget_from_point(*w, cursorState->position);
+            WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*w, cursorState->position);
             if (widgetIndex != -1)
             {
                 const auto& widget = w->widgets[widgetIndex];
@@ -593,7 +593,7 @@ void WindowInitScrollWidgets(rct_window& w)
         scroll.flags = 0;
         width = 0;
         height = 0;
-        window_get_scroll_size(&w, scroll_index, &width, &height);
+        WindowGetScrollSize(&w, scroll_index, &width, &height);
         scroll.h_left = 0;
         scroll.h_right = width + 1;
         scroll.v_top = 0;
@@ -621,7 +621,7 @@ void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
     WidgetIndex widgetIndex;
 
     if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
-        gfx_filter_rect(
+        GfxFilterRect(
             dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
 
     // todo: some code missing here? Between 006EB18C and 006EB260
@@ -650,7 +650,7 @@ void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
 
     if (w.flags & WF_WHITE_BORDER_MASK)
     {
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, COLOUR_WHITE,
             INSET_RECT_FLAG_FILL_NONE);
     }
@@ -672,7 +672,7 @@ static void WindowInvalidatePressedImageButton(const rct_window& w)
             continue;
 
         if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
-            gfx_set_dirty_blocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
+            GfxSetDirtyBlocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
     }
 }
 
@@ -682,10 +682,10 @@ static void WindowInvalidatePressedImageButton(const rct_window& w)
  */
 void InvalidateAllWindowsAfterInput()
 {
-    window_visit_each([](rct_window* w) {
-        window_update_scroll_widgets(*w);
+    WindowVisitEach([](rct_window* w) {
+        WindowUpdateScrollWidgets(*w);
         WindowInvalidatePressedImageButton(*w);
-        window_event_resize_call(w);
+        WindowEventResizeCall(w);
     });
 }
 
@@ -711,7 +711,7 @@ void Window::InitScrollWidgets()
 
 void Window::InvalidateWidget(WidgetIndex widgetIndex)
 {
-    widget_invalidate(*this, widgetIndex);
+    WidgetInvalidate(*this, widgetIndex);
 }
 
 bool Window::IsWidgetDisabled(WidgetIndex widgetIndex) const
@@ -758,18 +758,18 @@ void Window::Close()
     }
     else
     {
-        window_close(*this);
+        WindowClose(*this);
     }
 }
 
 void Window::CloseOthers()
 {
-    window_close_all_except_number_and_class(number, classification);
+    WindowCloseAllExceptNumberAndClass(number, classification);
 }
 
 void Window::CloseOthersOfThisClass()
 {
-    window_close_by_class(classification);
+    WindowCloseByClass(classification);
 }
 
 CloseWindowModifier Window::GetCloseModifier()
@@ -793,7 +793,7 @@ void Window::TextInputOpen(
     WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
 }
 
-void window_align_tabs(rct_window* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
+void WindowAlignTabs(rct_window* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
 {
     int32_t i, x = w->widgets[start_tab_id].left;
     int32_t tab_width = w->widgets[start_tab_id].width();

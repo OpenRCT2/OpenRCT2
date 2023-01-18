@@ -486,7 +486,7 @@ namespace OpenRCT2::Scripting
 
     Ride* ScRide::GetRide() const
     {
-        return get_ride(_rideId);
+        return ::GetRide(_rideId);
     }
 
     uint8_t ScRide::downtime_get() const

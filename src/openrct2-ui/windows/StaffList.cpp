@@ -139,11 +139,11 @@ public:
                 break;
             }
             case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
-                if (!tool_set(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
+                if (!ToolSet(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
                 {
-                    show_gridlines();
+                    ShowGridlines();
                     SetPatrolAreaToRender(GetSelectedStaffType());
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
                 break;
             case WIDX_STAFF_LIST_MAP:
@@ -184,7 +184,7 @@ public:
             InvalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
 
             // Enable highlighting of these staff members in map window
-            if (window_find_by_class(WindowClass::Map) != nullptr)
+            if (WindowFindByClass(WindowClass::Map) != nullptr)
             {
                 gWindowMapFlashingFlags |= MapFlashingFlags::StaffListOpen;
                 for (auto peep : EntityList<Staff>())
@@ -223,7 +223,7 @@ public:
                 break;
             }
             case WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER:
-                WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], staff_get_colour(GetSelectedStaffType()));
+                WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], StaffGetColour(GetSelectedStaffType()));
                 break;
         }
     }
@@ -252,8 +252,7 @@ public:
         if (GetSelectedStaffType() != StaffType::Entertainer)
         {
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::ColourBtn;
-            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(
-                staff_get_colour(GetSelectedStaffType()));
+            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(StaffGetColour(GetSelectedStaffType()));
         }
         SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
 
@@ -356,7 +355,7 @@ public:
                     if (peep != nullptr)
                     {
                         auto intent = Intent(WindowClass::Peep);
-                        intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                        intent.PutExtra(INTENT_EXTRA_PEEP, peep);
                         ContextOpenIntent(&intent);
                     }
                 }
@@ -370,7 +369,7 @@ public:
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // How much space do we have for the name and action columns? (Discount scroll area and icons.)
@@ -399,7 +398,7 @@ public:
 
                 if (i == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(&dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
                     format = (_quickFireMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
@@ -414,7 +413,7 @@ public:
                 // True if a patrol path is set for the worker
                 if (peep->HasPatrolArea())
                 {
-                    gfx_draw_sprite(&dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
+                    GfxDrawSprite(&dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                 }
 
                 auto staffOrderIcon_x = nameColumnSize + 20;
@@ -427,7 +426,7 @@ public:
                     {
                         if (staffOrders & 1)
                         {
-                            gfx_draw_sprite(&dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
+                            GfxDrawSprite(&dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
                         }
                         staffOrders = staffOrders >> 1;
                         staffOrderIcon_x += 9;
@@ -437,7 +436,7 @@ public:
                 }
                 else
                 {
-                    gfx_draw_sprite(&dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
+                    GfxDrawSprite(&dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
                 }
             }
 
@@ -453,9 +452,9 @@ public:
             auto closestStaffMember = GetClosestStaffMemberTo(screenCoords);
             if (closestStaffMember != nullptr)
             {
-                tool_cancel();
+                ToolCancel();
                 auto* staffWindow = WindowStaffOpen(closestStaffMember);
-                window_event_dropdown_call(staffWindow, WC_PEEP__WIDX_PATROL, 0);
+                WindowEventDropdownCall(staffWindow, WC_PEEP__WIDX_PATROL, 0);
             }
             else
             {
@@ -470,10 +469,10 @@ public:
     {
         if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
         {
-            hide_gridlines();
-            tool_cancel();
+            HideGridlines();
+            ToolCancel();
             ClearPatrolAreaToRender();
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
         }
     }
 
@@ -491,7 +490,7 @@ public:
             }
         }
 
-        std::sort(_staffList.begin(), _staffList.end(), [](const auto a, const auto b) { return peep_compare(a, b) < 0; });
+        std::sort(_staffList.begin(), _staffList.end(), [](const auto a, const auto b) { return PeepCompare(a, b) < 0; });
     }
 
 private:
@@ -530,7 +529,7 @@ private:
             // Open window for new staff.
             auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
             auto intent = Intent(WindowClass::Peep);
-            intent.putExtra(INTENT_EXTRA_PEEP, staff);
+            intent.PutExtra(INTENT_EXTRA_PEEP, staff);
             ContextOpenIntent(&intent);
         });
 
@@ -556,7 +555,7 @@ private:
         const auto& widget = widgets[widgetIndex];
         auto imageId = (_selectedTab == tabIndex ? (_tabAnimationIndex & ~3) : 0);
         imageId += GetPeepAnimation(type).base_image + 1;
-        gfx_draw_sprite(
+        GfxDrawSprite(
             &dpi, ImageId(imageId, colour), windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
     }
 
@@ -565,23 +564,23 @@ private:
         auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
         const auto& widget = widgets[widgetIndex];
         rct_drawpixelinfo clippedDpi;
-        if (clip_drawpixelinfo(
+        if (ClipDrawPixelInfo(
                 &clippedDpi, &dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
                 widget.right - widget.left - 1, widget.bottom - widget.top - 1))
         {
             auto imageId = (_selectedTab == 3 ? (_tabAnimationIndex & ~3) : 0);
             imageId += GetPeepAnimation(type).base_image + 1;
-            gfx_draw_sprite(&clippedDpi, ImageId(imageId), { 15, 23 });
+            GfxDrawSprite(&clippedDpi, ImageId(imageId), { 15, 23 });
         }
     }
 
     void CancelTools()
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
             {
-                tool_cancel();
+                ToolCancel();
             }
         }
     }
@@ -634,7 +633,7 @@ private:
     {
         auto result = EntertainerCostume::Panda;
         EntertainerCostume costumeList[static_cast<uint8_t>(EntertainerCostume::Count)];
-        int32_t numCostumes = staff_get_available_entertainer_costume_list(costumeList);
+        int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(costumeList);
         if (numCostumes > 0)
         {
             int32_t index = util_rand() % numCostumes;
@@ -710,7 +709,7 @@ rct_window* WindowStaffListOpen()
 
 void WindowStaffListRefresh()
 {
-    auto* window = window_find_by_class(WindowClass::StaffList);
+    auto* window = WindowFindByClass(WindowClass::StaffList);
     if (window != nullptr)
     {
         static_cast<StaffListWindow*>(window)->RefreshList();

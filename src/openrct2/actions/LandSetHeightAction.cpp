@@ -134,7 +134,7 @@ GameActions::Result LandSetHeightAction::Query() const
         }
 
         auto clearResult = MapCanConstructWithClearAt(
-            { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &map_set_land_height_clear_func, { 0b1111, 0 }, 0,
+            { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &MapSetLandHeightClearFunc, { 0b1111, 0 }, 0,
             CREATE_CROSSING_MODE_NONE);
         if (clearResult.Error != GameActions::Status::Ok)
         {
@@ -274,7 +274,7 @@ StringId LandSetHeightAction::CheckRideSupports() const
     {
         RideId rideIndex = trackElement->GetRideIndex();
 
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             continue;
 
@@ -347,7 +347,7 @@ void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
     MapInvalidateTileFull(_coords);
 }
 
-int32_t LandSetHeightAction::map_set_land_height_clear_func(
+int32_t LandSetHeightAction::MapSetLandHeightClearFunc(
     TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
     [[maybe_unused]] money32* price)
 {

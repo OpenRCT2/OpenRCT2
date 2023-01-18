@@ -14,6 +14,7 @@
 #include "../core/Guard.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
@@ -151,7 +152,7 @@ static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uin
 static PaintStruct* CreateNormalPaintStruct(
     PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
-    auto* const g1 = gfx_get_g1_element(image_id);
+    auto* const g1 = GfxGetG1Element(image_id);
     if (g1 == nullptr)
     {
         return nullptr;
@@ -199,7 +200,7 @@ static PaintStruct* CreateNormalPaintStruct(
 
 template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& session)
 {
-    // Optimised modified version of viewport_coord_to_map_coord
+    // Optimised modified version of ViewportPosToMapPos
     ScreenCoordsXY screenCoord = { floor2(session.DPI.x, 32), floor2((session.DPI.y - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
@@ -245,7 +246,7 @@ template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& sessio
  */
 void PaintSessionGenerate(PaintSession& session)
 {
-    session.CurrentRotation = get_current_rotation();
+    session.CurrentRotation = GetCurrentRotation();
     switch (DirectionFlipXAxis(session.CurrentRotation))
     {
         case 0:
@@ -509,7 +510,7 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
     else
     {
-        gfx_draw_sprite(dpi, imageId, { x, y });
+        GfxDrawSprite(dpi, imageId, { x, y });
     }
 
     if (ps->children != nullptr)
@@ -555,11 +556,11 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t vi
         auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->IsMasked)
         {
-            gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
+            GfxDrawSpriteRawMasked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
         }
         else
         {
-            gfx_draw_sprite(dpi, imageId, screenCoords);
+            GfxDrawSprite(dpi, imageId, screenCoords);
         }
     }
 }
@@ -567,7 +568,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t vi
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->sprite_type)];
-    const uint8_t rotation = get_current_rotation();
+    const uint8_t rotation = GetCurrentRotation();
 
     const CoordsXYZ frontTop = {
         ps->bounds.x_end,
@@ -626,28 +627,28 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, PaintStruct* p
     const auto screenCoordBackBottom = Translate3DTo2DWithZ(rotation, backBottom);
 
     // bottom square
-    gfx_draw_line(dpi, { screenCoordFrontBottom, screenCoordLeftBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordBackBottom, screenCoordLeftBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordBackBottom, screenCoordRightBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordFrontBottom, screenCoordRightBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontBottom, screenCoordLeftBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordBackBottom, screenCoordLeftBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordBackBottom, screenCoordRightBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontBottom, screenCoordRightBottom }, colour);
 
     // vertical back + sides
-    gfx_draw_line(dpi, { screenCoordBackTop, screenCoordBackBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordLeftTop, screenCoordLeftBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordRightTop, screenCoordRightBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordBackTop, screenCoordBackBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordLeftTop, screenCoordLeftBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordRightTop, screenCoordRightBottom }, colour);
 
     // top square back
-    gfx_draw_line(dpi, { screenCoordBackTop, screenCoordLeftTop }, colour);
-    gfx_draw_line(dpi, { screenCoordBackTop, screenCoordRightTop }, colour);
+    GfxDrawLine(dpi, { screenCoordBackTop, screenCoordLeftTop }, colour);
+    GfxDrawLine(dpi, { screenCoordBackTop, screenCoordRightTop }, colour);
 
-    gfx_draw_sprite(dpi, imageId, { x, y });
+    GfxDrawSprite(dpi, imageId, { x, y });
 
     // vertical front
-    gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordFrontBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontTop, screenCoordFrontBottom }, colour);
 
     // top square
-    gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordLeftTop }, colour);
-    gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontTop, screenCoordLeftTop }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
 }
 
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags)
@@ -907,17 +908,17 @@ void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, PaintStringStruct* ps)
     do
     {
         char buffer[256]{};
-        format_string(buffer, sizeof(buffer), ps->string_id, &ps->args);
+        FormatStringLegacy(buffer, sizeof(buffer), ps->string_id, &ps->args);
 
         // Use sprite font unless the currency contains characters unsupported by the sprite font
         auto forceSpriteFont = false;
         const auto& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
-        if (LocalisationService_UseTrueTypeFont() && font_supports_string_sprite(currencyDesc.symbol_unicode))
+        if (LocalisationService_UseTrueTypeFont() && FontSupportsStringSprite(currencyDesc.symbol_unicode))
         {
             forceSpriteFont = true;
         }
 
-        gfx_draw_string_with_y_offsets(
+        GfxDrawStringWithYOffsets(
             dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::Medium);
     } while ((ps = ps->next) != nullptr);
