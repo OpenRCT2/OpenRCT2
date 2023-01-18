@@ -204,16 +204,16 @@ static int32_t BitcountLut(uint32_t source)
         + BitsSetTable256[source >> 24];
 }
 
-static int32_t (*bitcount_fn)(uint32_t);
+static int32_t (*BitCountFn)(uint32_t);
 
 void BitCountInit()
 {
-    bitcount_fn = BitcountPopcntAvailable() ? BitcountPopcnt : BitcountLut;
+    BitCountFn = BitcountPopcntAvailable() ? BitcountPopcnt : BitcountLut;
 }
 
 int32_t BitCount(uint32_t source)
 {
-    return bitcount_fn(source);
+    return BitCountFn(source);
 }
 
 /* Case insensitive logical compare */

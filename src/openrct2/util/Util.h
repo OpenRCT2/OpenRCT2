@@ -41,6 +41,7 @@ bool UtilGzipCompress(FILE* source, FILE* dest);
 std::vector<uint8_t> Gzip(const void* data, const size_t dataLen);
 std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen);
 
+// TODO: Make these specialized template functions, or when possible Concepts in C++20
 int8_t AddClamp_int8_t(int8_t value, int8_t value_to_add);
 int16_t AddClamp_int16_t(int16_t value, int16_t value_to_add);
 int32_t AddClamp_int32_t(int32_t value, int32_t value_to_add);
