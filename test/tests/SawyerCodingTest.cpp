@@ -31,7 +31,7 @@ protected:
     static const uint8_t invalid7[6];
     static const uint8_t empty[1];
 
-    void test_encode_decode(uint8_t encoding_type)
+    void TestEncodeDecode(uint8_t encoding_type)
     {
         // Encode
         sawyercoding_chunk_header chdr_in;
@@ -54,7 +54,7 @@ protected:
         delete[] encodedDataBuffer;
     }
 
-    void test_decode(const uint8_t* data, size_t size)
+    void TestDecode(const uint8_t* data, size_t size)
     {
         auto expectedLength = size - sizeof(sawyercoding_chunk_header);
         auto chdr_in = reinterpret_cast<const sawyercoding_chunk_header*>(data);
@@ -72,22 +72,22 @@ protected:
 
 TEST_F(SawyerCodingTest, write_read_chunk_none)
 {
-    test_encode_decode(CHUNK_ENCODING_NONE);
+    TestEncodeDecode(CHUNK_ENCODING_NONE);
 }
 
 TEST_F(SawyerCodingTest, write_read_chunk_rle)
 {
-    test_encode_decode(CHUNK_ENCODING_RLE);
+    TestEncodeDecode(CHUNK_ENCODING_RLE);
 }
 
 TEST_F(SawyerCodingTest, write_read_chunk_rle_compressed)
 {
-    test_encode_decode(CHUNK_ENCODING_RLECOMPRESSED);
+    TestEncodeDecode(CHUNK_ENCODING_RLECOMPRESSED);
 }
 
 TEST_F(SawyerCodingTest, write_read_chunk_rotate)
 {
-    test_encode_decode(CHUNK_ENCODING_ROTATE);
+    TestEncodeDecode(CHUNK_ENCODING_ROTATE);
 }
 
 // Note we only check if provided data decompresses to the same data, not if it compresses the same.
@@ -96,23 +96,23 @@ TEST_F(SawyerCodingTest, write_read_chunk_rotate)
 
 TEST_F(SawyerCodingTest, decode_chunk_none)
 {
-    test_decode(nonedata, sizeof(nonedata));
+    TestDecode(nonedata, sizeof(nonedata));
 }
 
 TEST_F(SawyerCodingTest, decode_chunk_rle)
 {
-    test_decode(rledata, sizeof(rledata));
+    TestDecode(rledata, sizeof(rledata));
 }
 
 TEST_F(SawyerCodingTest, decode_chunk_rlecompressed)
 {
-    test_decode(rlecompresseddata, sizeof(rlecompresseddata));
+    TestDecode(rlecompresseddata, sizeof(rlecompresseddata));
 }
 
 TEST_F(SawyerCodingTest, decode_chunk_rotate)
 {
     // Rotate
-    test_decode(rotatedata, sizeof(rotatedata));
+    TestDecode(rotatedata, sizeof(rotatedata));
 }
 
 TEST_F(SawyerCodingTest, invalid1)
