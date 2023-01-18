@@ -510,8 +510,7 @@ static constexpr const uint16_t* Patterns[] = {
 };
 // clang-format on
 
-void X8DrawingContext::FillRect(
-    DrawPixelInfo* dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void X8DrawingContext::FillRect(DrawPixelInfo* dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (left > right)
         return;
@@ -729,8 +728,7 @@ void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, 
     GfxDrawSpritePaletteSetSoftware(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
 }
 
-void X8DrawingContext::DrawGlyph(
-    DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
+void X8DrawingContext::DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
     GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
 }

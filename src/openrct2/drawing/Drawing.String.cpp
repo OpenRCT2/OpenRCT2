@@ -269,8 +269,7 @@ int32_t GfxWrapString(utf8* text, int32_t width, FontStyle fontStyle, int32_t* o
 /**
  * Draws text that is left aligned and vertically centred.
  */
-void GfxDrawStringLeftCentred(
-    DrawPixelInfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords)
+void GfxDrawStringLeftCentred(DrawPixelInfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords)
 {
     char buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
@@ -334,8 +333,7 @@ static void ColourCharacterWindow(uint8_t colour, const uint16_t* current_font_f
  * text     : esi
  * dpi      : edi
  */
-void DrawStringCentredRaw(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontStyle fontStyle)
+void DrawStringCentredRaw(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontStyle fontStyle)
 {
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
     GfxDrawString(dpi, screenCoords, "", { COLOUR_BLACK, fontStyle });

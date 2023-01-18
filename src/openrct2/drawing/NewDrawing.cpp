@@ -243,8 +243,7 @@ void FASTCALL GfxDrawSprite(DrawPixelInfo* dpi, const ImageId imageId, const Scr
     }
 }
 
-void FASTCALL
-    GfxDrawGlyph(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+void FASTCALL GfxDrawGlyph(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -254,8 +253,8 @@ void FASTCALL
     }
 }
 
-void FASTCALL GfxDrawSpriteRawMasked(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
+void FASTCALL
+    GfxDrawSpriteRawMasked(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)

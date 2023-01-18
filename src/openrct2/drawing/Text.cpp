@@ -15,8 +15,7 @@
 #include "Drawing.h"
 
 static void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text,
-    bool noFormatting = false);
+    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
 static void DrawText(
     DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, StringId format, const void* args);
 
@@ -132,8 +131,7 @@ void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId fo
     DrawTextBasic(dpi, coords, format, ft, textPaint);
 }
 
-void DrawTextBasic(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
+void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     DrawText(dpi, coords, textPaint, format, ft.Data());
 }
@@ -146,8 +144,7 @@ void DrawTextEllipsised(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_
 }
 
 void DrawTextEllipsised(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
-    TextPaint textPaint)
+    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     utf8 buffer[512];
     OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
@@ -161,8 +158,7 @@ void GfxDrawString(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8s
     DrawText(dpi, coords, textPaint, buffer);
 }
 
-void GfxDrawStringNoFormatting(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
+void GfxDrawStringNoFormatting(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
     DrawText(dpi, coords, textPaint, buffer, true);
 }
@@ -175,8 +171,7 @@ int32_t DrawTextWrapped(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_
 }
 
 int32_t DrawTextWrapped(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
-    TextPaint textPaint)
+    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     const void* args = ft.Data();
 

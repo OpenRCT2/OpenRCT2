@@ -29,8 +29,7 @@ namespace OpenRCT2::Drawing
         virtual void DrawSprite(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y) abstract;
         virtual void DrawSpriteRawMasked(
             DrawPixelInfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) abstract;
-        virtual void DrawSpriteSolid(
-            DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) abstract;
+        virtual void DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) abstract;
         virtual void DrawGlyph(
             DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
         virtual void DrawBitmap(

@@ -144,8 +144,7 @@ namespace OpenRCT2::Ui::Windows
             ColumnSortOrder sortOrder, bool isPressed) const;
         void PaintSeperator(DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
         void PaintCell(
-            DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text,
-            bool isHighlighted) const;
+            DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const;
         std::optional<RowColumn> GetItemIndexAt(const ScreenCoordsXY& pos);
         Widget* GetWidget() const;
         void Invalidate();

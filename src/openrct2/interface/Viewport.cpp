@@ -402,8 +402,7 @@ static void ViewportRedrawAfterShift(
     }
 }
 
-static void ViewportShiftPixels(
-    DrawPixelInfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x_diff, int32_t y_diff)
+static void ViewportShiftPixels(DrawPixelInfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x_diff, int32_t y_diff)
 {
     auto it = WindowGetIterator(window);
     for (; it != g_window_list.end(); it++)
@@ -808,8 +807,7 @@ void ViewportUpdateSmartFollowVehicle(rct_window* window)
  *  ebp: bottom
  */
 void ViewportRender(
-    DrawPixelInfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
-    std::vector<RecordedPaintSession>* sessions)
+    DrawPixelInfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect, std::vector<RecordedPaintSession>* sessions)
 {
     auto [topLeft, bottomRight] = screenRect;
 

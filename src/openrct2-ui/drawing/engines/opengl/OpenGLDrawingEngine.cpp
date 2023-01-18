@@ -110,8 +110,7 @@ public:
     void DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
     void DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawBitmap(
-        DrawPixelInfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
-        int32_t y) override;
+        DrawPixelInfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y) override;
 
     void FlushCommandBuffers();
 
@@ -852,8 +851,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId ima
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawGlyph(
-    DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
+void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
 {
     CalculcateClipping(dpi);
 

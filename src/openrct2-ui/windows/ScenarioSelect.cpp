@@ -143,8 +143,7 @@ static WindowEventList window_scenarioselect_events([](auto& events)
 });
 // clang-format on
 
-static void DrawCategoryHeading(
-    rct_window* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
+static void DrawCategoryHeading(rct_window* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
 static void InitialiseListItems(rct_window* w);
 static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenario);
 static bool IsLockingEnabled(rct_window* w);
@@ -646,8 +645,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, DrawPixelInfo* dpi, i
     }
 }
 
-static void DrawCategoryHeading(
-    rct_window* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
+static void DrawCategoryHeading(rct_window* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
 {
     colour_t baseColour = w->colours[1];
     colour_t lightColour = ColourMapA[baseColour].lighter;

@@ -43,8 +43,7 @@ static TextInputSession* _chatTextInputSession;
 static const char* ChatGetHistory(uint32_t index);
 static uint32_t ChatHistoryGetTime(uint32_t index);
 static void ChatClearInput();
-static int32_t ChatHistoryDrawString(
-    DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
+static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
 
 bool ChatAvailable()
 {
@@ -271,8 +270,7 @@ static void ChatClearInput()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-static int32_t ChatHistoryDrawString(
-    DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
+static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
     char buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
