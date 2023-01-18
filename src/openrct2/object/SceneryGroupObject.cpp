@@ -70,7 +70,7 @@ void SceneryGroupObject::Unload()
     _legacyType.image = 0;
 }
 
-void SceneryGroupObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void SceneryGroupObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 

@@ -1000,7 +1000,7 @@ public:
         InvalidateWidget(WIDX_LIST);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
@@ -1134,7 +1134,7 @@ public:
                     else
                     {
                         // Legacy path name
-                        auto footpathEntry = reinterpret_cast<const rct_footpath_entry*>(footpathObj->GetLegacyData());
+                        auto footpathEntry = reinterpret_cast<const FootpathEntry*>(footpathObj->GetLegacyData());
                         auto ft = Formatter();
                         ft.Add<StringId>(footpathEntry->string_idx);
                         DrawTextBasic(&dpi, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, ft, { COLOUR_WHITE });
@@ -1528,7 +1528,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         const int32_t listWidth = widgets[WIDX_LIST].width();
         GfxFillRect(

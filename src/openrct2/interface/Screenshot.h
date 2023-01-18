@@ -18,7 +18,7 @@
 #include <optional>
 #include <string>
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 extern uint8_t gScreenshotCountdown;
 
@@ -54,7 +54,7 @@ struct CaptureOptions
 
 void ScreenshotCheck();
 std::string ScreenshotDump();
-std::string ScreenshotDumpPNG(rct_drawpixelinfo* dpi);
+std::string ScreenshotDumpPNG(DrawPixelInfo* dpi);
 std::string ScreenshotDumpPNG32bpp(int32_t width, int32_t height, const void* pixels);
 
 void ScreenshotGiant();

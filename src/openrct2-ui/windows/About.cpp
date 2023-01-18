@@ -133,7 +133,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -196,7 +196,7 @@ private:
     /**
      * @brief Draw OpenRCT2 info on open tab
      */
-    void DrawOpenRCT2Info(rct_drawpixelinfo& dpi)
+    void DrawOpenRCT2Info(DrawPixelInfo& dpi)
     {
         // Draw logo on placeholder widget
         ScreenCoordsXY logoCoords = windowPos
@@ -227,7 +227,7 @@ private:
     /**
      * @brief Draw RCT2 info on open tab
      */
-    void DrawRCT2Info(rct_drawpixelinfo& dpi)
+    void DrawRCT2Info(DrawPixelInfo& dpi)
     {
         int32_t yPage = windowPos.y + widgets[WIDX_PAGE_BACKGROUND].top + 5;
 

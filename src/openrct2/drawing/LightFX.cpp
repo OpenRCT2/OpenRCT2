@@ -37,7 +37,7 @@ static uint8_t _bakedLightTexture_spot_0[32 * 32];
 static uint8_t _bakedLightTexture_spot_1[64 * 64];
 static uint8_t _bakedLightTexture_spot_2[128 * 128];
 static uint8_t _bakedLightTexture_spot_3[256 * 256];
-static rct_drawpixelinfo _pixelInfo;
+static DrawPixelInfo _pixelInfo;
 static bool _lightfxAvailable = false;
 
 static void* _light_rendered_buffer_back = nullptr;
@@ -180,7 +180,7 @@ void LightFXInit()
     CalcRescaleLightHalf(_bakedLightTexture_spot_0, _bakedLightTexture_spot_1, 32, 32);
 }
 
-void LightFXUpdateBuffers(rct_drawpixelinfo* info)
+void LightFXUpdateBuffers(DrawPixelInfo* info)
 {
     _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info->width * info->height);
     _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info->width * info->height);
@@ -298,7 +298,7 @@ void LightFXPrepareLightList()
                 if (w != nullptr)
                 {
                     // based on GetMapCoordinatesFromPosWindow
-                    rct_drawpixelinfo dpi;
+                    DrawPixelInfo dpi;
                     dpi.x = entry->ViewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv;
                     dpi.y = entry->ViewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv;
                     dpi.height = 1;

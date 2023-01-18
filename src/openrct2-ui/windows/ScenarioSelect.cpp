@@ -121,8 +121,8 @@ static void WindowScenarioselectScrollgetsize(rct_window *w, int32_t scrollIndex
 static void WindowScenarioselectScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowScenarioselectScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowScenarioselectInvalidate(rct_window *w);
-static void WindowScenarioselectPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowScenarioselectScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void WindowScenarioselectPaint(rct_window *w, DrawPixelInfo *dpi);
+static void WindowScenarioselectScrollpaint(rct_window *w, DrawPixelInfo *dpi, int32_t scrollIndex);
 
 static bool ScenarioSelectUseSmallFont()
 {
@@ -144,7 +144,7 @@ static WindowEventList window_scenarioselect_events([](auto& events)
 // clang-format on
 
 static void DrawCategoryHeading(
-    rct_window* w, rct_drawpixelinfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
+    rct_window* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
 static void InitialiseListItems(rct_window* w);
 static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenario);
 static bool IsLockingEnabled(rct_window* w);
@@ -424,7 +424,7 @@ static void WindowScenarioselectInvalidate(rct_window* w)
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = w->height - bottomMargin;
 }
 
-static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowScenarioselectPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     int32_t format;
     const scenario_index_entry* scenario;
@@ -553,7 +553,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowScenarioselectScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     GfxClear(dpi, paletteIndex);
@@ -647,7 +647,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
 }
 
 static void DrawCategoryHeading(
-    rct_window* w, rct_drawpixelinfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
+    rct_window* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
 {
     colour_t baseColour = w->colours[1];
     colour_t lightColour = ColourMapA[baseColour].lighter;

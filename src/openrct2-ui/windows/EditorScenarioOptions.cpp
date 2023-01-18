@@ -284,7 +284,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         switch (page)
         {
@@ -320,7 +320,7 @@ private:
         ResizeFrameWithPage();
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         Widget* widget;
         int32_t spriteIndex;
@@ -586,7 +586,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void FinancialDraw(rct_drawpixelinfo& dpi)
+    void FinancialDraw(DrawPixelInfo& dpi)
     {
         ScreenCoordsXY screenCoords{};
 
@@ -834,7 +834,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void GuestsDraw(rct_drawpixelinfo& dpi)
+    void GuestsDraw(DrawPixelInfo& dpi)
     {
         ScreenCoordsXY screenCoords{};
 
@@ -1153,7 +1153,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void ParkDraw(rct_drawpixelinfo& dpi)
+    void ParkDraw(DrawPixelInfo& dpi)
     {
         ScreenCoordsXY screenCoords{};
 

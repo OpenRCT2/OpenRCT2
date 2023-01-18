@@ -217,7 +217,7 @@ namespace OpenRCT2
     struct IStream;
 }
 struct ObjectRepositoryItem;
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 enum class ObjectError : uint32_t
 {
@@ -353,7 +353,7 @@ public:
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual void DrawPreview(rct_drawpixelinfo* /*dpi*/, int32_t /*width*/, int32_t /*height*/) const
+    virtual void DrawPreview(DrawPixelInfo* /*dpi*/, int32_t /*width*/, int32_t /*height*/) const
     {
     }
 

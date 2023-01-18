@@ -19,7 +19,7 @@
 struct PaintSession;
 struct RecordedPaintSession;
 struct PaintStruct;
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 struct TileElement;
 struct rct_window;
 struct EntityBase;
@@ -132,10 +132,10 @@ void ViewportUpdateSmartFollowGuest(rct_window* window, const Guest* peep);
 void ViewportUpdateSmartFollowStaff(rct_window* window, const Staff* peep);
 void ViewportUpdateSmartFollowVehicle(rct_window* window);
 void ViewportRender(
-    rct_drawpixelinfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
+    DrawPixelInfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 void ViewportPaint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, const ScreenRect& screenRect,
+    const rct_viewport* viewport, DrawPixelInfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 
 CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords);

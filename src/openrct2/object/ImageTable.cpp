@@ -34,7 +34,7 @@ static thread_local std::map<u8string, std::unique_ptr<Object>> _objDataCache = 
 
 struct ImageTable::RequiredImage
 {
-    rct_g1_element g1{};
+    G1Element g1{};
     std::unique_ptr<RequiredImage> next_zoom;
 
     bool HasData() const
@@ -45,7 +45,7 @@ struct ImageTable::RequiredImage
     RequiredImage() = default;
     RequiredImage(const RequiredImage&) = delete;
 
-    RequiredImage(const rct_g1_element& orig)
+    RequiredImage(const G1Element& orig)
     {
         auto length = G1CalculateDataSize(&orig);
         g1 = orig;
@@ -54,7 +54,7 @@ struct ImageTable::RequiredImage
         g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
     }
 
-    RequiredImage(uint32_t idx, std::function<const rct_g1_element*(uint32_t)> getter)
+    RequiredImage(uint32_t idx, std::function<const G1Element*(uint32_t)> getter)
     {
         auto orig = getter(idx);
         if (orig != nullptr)
@@ -100,7 +100,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
                 {
                     result.push_back(std::make_unique<RequiredImage>(
                         static_cast<uint32_t>(SPR_CSG_BEGIN + i),
-                        [](uint32_t idx) -> const rct_g1_element* { return GfxGetG1Element(idx); }));
+                        [](uint32_t idx) -> const G1Element* { return GfxGetG1Element(idx); }));
                 }
             }
             else
@@ -123,7 +123,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             for (auto i : range)
             {
                 result.push_back(std::make_unique<RequiredImage>(
-                    static_cast<uint32_t>(i), [](uint32_t idx) -> const rct_g1_element* { return GfxGetG1Element(idx); }));
+                    static_cast<uint32_t>(i), [](uint32_t idx) -> const G1Element* { return GfxGetG1Element(idx); }));
             }
         }
     }
@@ -242,7 +242,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
     auto gxRaw = context->GetData(path);
-    std::optional<rct_gx> gxData = GfxLoadGx(gxRaw);
+    std::optional<Gx> gxData = GfxLoadGx(gxRaw);
     if (gxData.has_value())
     {
         // Fix entry data offsets
@@ -282,7 +282,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
     }
     else
     {
-        auto msg = String::StdFormat("Unable to load rct_gx '%s'", path.c_str());
+        auto msg = String::StdFormat("Unable to load Gx '%s'", path.c_str());
         context->LogWarning(ObjectError::BadImageTable, msg.c_str());
         for (size_t i = 0; i < range.size(); i++)
         {
@@ -323,7 +323,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
             if (i >= 0 && i < numImages)
             {
                 result.push_back(std::make_unique<RequiredImage>(
-                    static_cast<uint32_t>(i), [images](uint32_t idx) -> const rct_g1_element* { return &images[idx]; }));
+                    static_cast<uint32_t>(i), [images](uint32_t idx) -> const G1Element* { return &images[idx]; }));
             }
             else
             {
@@ -467,10 +467,10 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
 
         // Read g1 element headers
         uintptr_t imageDataBase = reinterpret_cast<uintptr_t>(data.get());
-        std::vector<rct_g1_element> newEntries;
+        std::vector<G1Element> newEntries;
         for (uint32_t i = 0; i < numImages; i++)
         {
-            rct_g1_element g1Element{};
+            G1Element g1Element{};
 
             uintptr_t imageDataOffset = static_cast<uintptr_t>(stream->ReadValue<uint32_t>());
             g1Element.offset = reinterpret_cast<uint8_t*>(imageDataBase + imageDataOffset);
@@ -586,7 +586,7 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
                 img = img->next_zoom.get();
 
                 // Set old image zoom offset to zoom image which we are about to add
-                auto g1a = const_cast<rct_g1_element*>(&GetImages()[tableIndex]);
+                auto g1a = const_cast<G1Element*>(&GetImages()[tableIndex]);
                 g1a->zoomed_offset = static_cast<int32_t>(tableIndex) - static_cast<int32_t>(GetCount());
 
                 while (img != nullptr)
@@ -608,9 +608,9 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
     return usesFallbackSprites;
 }
 
-void ImageTable::AddImage(const rct_g1_element* g1)
+void ImageTable::AddImage(const G1Element* g1)
 {
-    rct_g1_element newg1 = *g1;
+    G1Element newg1 = *g1;
     auto length = G1CalculateDataSize(g1);
     if (length == 0)
     {

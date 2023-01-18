@@ -56,8 +56,8 @@ bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
-static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t viewFlags);
-static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
+static void PaintAttachedPS(DrawPixelInfo* dpi, PaintStruct* ps, uint32_t viewFlags);
+static void PaintPSImageWithBoundingBoxes(DrawPixelInfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const PaintStruct& ps, uint8_t rotation)
@@ -101,7 +101,7 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
-static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const rct_g1_element& g1, const rct_drawpixelinfo& dpi)
+static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
 {
     int32_t left = imagePos.x + g1.x_offset;
     int32_t bottom = imagePos.y + g1.y_offset;
@@ -484,7 +484,7 @@ void PaintSessionArrange(PaintSessionCore& session)
 
 static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
 {
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
 
     auto x = ps->x;
     auto y = ps->y;
@@ -546,7 +546,7 @@ void PaintDrawStructs(PaintSession& session)
  *  rct2: 0x00688596
  *  Part of 0x688485
  */
-static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t viewFlags)
+static void PaintAttachedPS(DrawPixelInfo* dpi, PaintStruct* ps, uint32_t viewFlags)
 {
     AttachedPaintStruct* attached_ps = ps->attached_ps;
     for (; attached_ps != nullptr; attached_ps = attached_ps->next)
@@ -565,7 +565,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t vi
     }
 }
 
-static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
+static void PaintPSImageWithBoundingBoxes(DrawPixelInfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->sprite_type)];
     const uint8_t rotation = GetCurrentRotation();
@@ -665,7 +665,7 @@ static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uin
     }
 }
 
-PaintSession* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
+PaintSession* PaintSessionAlloc(DrawPixelInfo* dpi, uint32_t viewFlags)
 {
     return GetContext()->GetPainter()->CreateSession(dpi, viewFlags);
 }
@@ -903,7 +903,7 @@ void PaintFloatingMoneyEffect(
  *
  *  rct2: 0x006860C3
  */
-void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, PaintStringStruct* ps)
+void PaintDrawMoneyStructs(DrawPixelInfo* dpi, PaintStringStruct* ps)
 {
     do
     {

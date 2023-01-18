@@ -48,7 +48,7 @@ enum class CurrencyAffix
 #define CURRENCY_RATE_MAX_NUM_DIGITS 9
 
 // Currency format specification - inspired by OpenTTD
-struct currency_descriptor
+struct CurrencyDescriptor
 {
     char isoCode[4];
     // Rate is relative to 0.10 GBP
@@ -61,7 +61,7 @@ struct currency_descriptor
 };
 
 // List of currency formats
-extern currency_descriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType::Count)];
+extern CurrencyDescriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType::Count)];
 
 /**
  * Loads custom currency saved parameters into {@link CurrencyDescriptors}'

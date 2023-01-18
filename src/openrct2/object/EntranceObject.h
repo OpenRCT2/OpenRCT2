@@ -16,7 +16,7 @@
 class EntranceObject final : public Object
 {
 private:
-    rct_entrance_type _legacyType = {};
+    EntranceEntry _legacyType = {};
 
 public:
     void* GetLegacyData() override
@@ -29,7 +29,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
     ImageIndex GetImage(uint8_t sequence, Direction direction) const;
     uint8_t GetScrollingMode() const;

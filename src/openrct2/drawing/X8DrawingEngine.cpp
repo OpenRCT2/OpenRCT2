@@ -44,7 +44,7 @@ X8WeatherDrawer::~X8WeatherDrawer()
 }
 
 void X8WeatherDrawer::Draw(
-    rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+    DrawPixelInfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
     const uint8_t* weatherpattern)
 {
     const uint8_t* pattern = weatherpattern;
@@ -92,7 +92,7 @@ void X8WeatherDrawer::Draw(
     }
 }
 
-void X8WeatherDrawer::Restore(rct_drawpixelinfo* dpi)
+void X8WeatherDrawer::Restore(DrawPixelInfo* dpi)
 {
     if (_weatherPixelsCount > 0)
     {
@@ -267,7 +267,7 @@ IDrawingContext* X8DrawingEngine::GetDrawingContext()
     return _drawingContext;
 }
 
-rct_drawpixelinfo* X8DrawingEngine::GetDrawingPixelInfo()
+DrawPixelInfo* X8DrawingEngine::GetDrawingPixelInfo()
 {
     return &_bitsDPI;
 }
@@ -282,7 +282,7 @@ void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)
     // Not applicable for this engine
 }
 
-rct_drawpixelinfo* X8DrawingEngine::GetDPI()
+DrawPixelInfo* X8DrawingEngine::GetDPI()
 {
     return &_bitsDPI;
 }
@@ -328,7 +328,7 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
     _height = height;
     _pitch = pitch;
 
-    rct_drawpixelinfo* dpi = &_bitsDPI;
+    DrawPixelInfo* dpi = &_bitsDPI;
     dpi->bits = _bits;
     dpi->x = 0;
     dpi->y = 0;
@@ -449,7 +449,7 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine* engine)
     _engine = engine;
 }
 
-void X8DrawingContext::Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
+void X8DrawingContext::Clear(DrawPixelInfo* dpi, uint8_t paletteIndex)
 {
     int32_t w = dpi->zoom_level.ApplyInversedTo(dpi->width);
     int32_t h = dpi->zoom_level.ApplyInversedTo(dpi->height);
@@ -511,7 +511,7 @@ static constexpr const uint16_t* Patterns[] = {
 // clang-format on
 
 void X8DrawingContext::FillRect(
-    rct_drawpixelinfo* dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    DrawPixelInfo* dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (left > right)
         return;
@@ -631,7 +631,7 @@ void X8DrawingContext::FillRect(
 }
 
 void X8DrawingContext::FilterRect(
-    rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    DrawPixelInfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (left > right)
         return;
@@ -703,23 +703,23 @@ void X8DrawingContext::FilterRect(
     }
 }
 
-void X8DrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line)
+void X8DrawingContext::DrawLine(DrawPixelInfo* dpi, uint32_t colour, const ScreenLine& line)
 {
     GfxDrawLineSoftware(dpi, line, colour);
 }
 
-void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, int32_t x, int32_t y)
+void X8DrawingContext::DrawSprite(DrawPixelInfo* dpi, const ImageId imageId, int32_t x, int32_t y)
 {
     GfxDrawSpriteSoftware(dpi, imageId, { x, y });
 }
 
 void X8DrawingContext::DrawSpriteRawMasked(
-    rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
+    DrawPixelInfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
     GfxDrawSpriteRawMaskedSoftware(dpi, { x, y }, maskImage, colourImage);
 }
 
-void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
+void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
     uint8_t palette[256];
     std::fill_n(palette, sizeof(palette), colour);
@@ -730,7 +730,7 @@ void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId ima
 }
 
 void X8DrawingContext::DrawGlyph(
-    rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
+    DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
     GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
 }

@@ -55,7 +55,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY leftTop{ windowPos };
         ScreenCoordsXY rightBottom{ windowPos + ScreenCoordsXY{ width - 1, height - 1 } };

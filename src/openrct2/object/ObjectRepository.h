@@ -32,7 +32,7 @@ namespace OpenRCT2::Localisation
     class LocalisationService;
 }
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 struct ObjectRepositoryItem
 {

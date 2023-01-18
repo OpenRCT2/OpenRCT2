@@ -485,7 +485,7 @@ public:
         WidgetInvalidate(*this, WIDX_SCROLL);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
 
@@ -501,7 +501,7 @@ public:
         DrawTextEllipsised(&dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
     }
 
-    void OnScrollDraw(const int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(

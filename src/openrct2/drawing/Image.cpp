@@ -186,7 +186,7 @@ static void FreeImageList(uint32_t baseImageId, uint32_t count)
     _freeLists.push_back({ baseImageId, count });
 }
 
-uint32_t GfxObjectAllocateImages(const rct_g1_element* images, uint32_t count)
+uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count)
 {
     if (count == 0 || gOpenRCT2NoGraphics)
     {
@@ -220,7 +220,7 @@ void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count)
         for (uint32_t i = 0; i < count; i++)
         {
             uint32_t imageId = baseImageId + i;
-            rct_g1_element g1 = {};
+            G1Element g1 = {};
             GfxSetG1Element(imageId, &g1);
             DrawingEngineInvalidateImage(imageId);
         }

@@ -74,7 +74,7 @@ public:
         ResetTooltipNotShown();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         int32_t left = windowPos.x;
         int32_t top = windowPos.y;

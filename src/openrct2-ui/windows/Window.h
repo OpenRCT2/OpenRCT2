@@ -120,8 +120,8 @@ rct_window* WindowMapOpen();
 void WindowMapReset();
 
 rct_window* WindowResearchOpen();
-void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex baseWidgetIndex);
-void WindowResearchFundingPagePaint(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex baseWidgetIndex);
+void WindowResearchDevelopmentPagePaint(rct_window* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingPagePaint(rct_window* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex);
 
 rct_window* WindowNewRideOpen();
 rct_window* WindowNewRideOpenResearch();

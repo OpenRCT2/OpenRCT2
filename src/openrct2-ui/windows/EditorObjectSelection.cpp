@@ -688,7 +688,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         // ScrollPaint
         ScreenCoordsXY screenCoords;
@@ -952,7 +952,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         int32_t _width;
 
@@ -1051,7 +1051,7 @@ public:
 
         // Draw preview
         {
-            rct_drawpixelinfo clipDPI;
+            DrawPixelInfo clipDPI;
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
             _width = previewWidget.width() - 1;
             int32_t _height = previewWidget.height() - 1;
@@ -1182,7 +1182,7 @@ private:
         _listItems.shrink_to_fit();
     }
 
-    void DrawDescriptions(rct_drawpixelinfo* dpi)
+    void DrawDescriptions(DrawPixelInfo* dpi)
     {
         const auto& widget = widgets[WIDX_PREVIEW];
         auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_LIST].right + 4, widget.bottom + 23 };
@@ -1246,7 +1246,7 @@ private:
         }
     }
 
-    void DrawDebugData(rct_drawpixelinfo* dpi)
+    void DrawDebugData(DrawPixelInfo* dpi)
     {
         ObjectListItem* listItem = &_listItems[selected_list_item];
         auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 6) };

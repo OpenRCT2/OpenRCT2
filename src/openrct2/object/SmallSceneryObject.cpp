@@ -96,7 +96,7 @@ void SmallSceneryObject::Unload()
     _legacyType.image = 0;
 }
 
-void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void SmallSceneryObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto imageId = ImageId(_legacyType.image);
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))

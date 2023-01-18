@@ -615,7 +615,7 @@ void WindowInitScrollWidgets(rct_window& w)
  *
  *  rct2: 0x006EB15C
  */
-void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
+void WindowDrawWidgets(rct_window& w, DrawPixelInfo* dpi)
 {
     Widget* widget;
     WidgetIndex widgetIndex;
@@ -694,12 +694,12 @@ bool Window::IsLegacy()
     return false;
 }
 
-void Window::OnDraw(rct_drawpixelinfo& dpi)
+void Window::OnDraw(DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*this, &dpi);
 }
 
-void Window::OnDrawWidget(WidgetIndex widgetIndex, rct_drawpixelinfo& dpi)
+void Window::OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
 {
     WidgetDraw(&dpi, *this, widgetIndex);
 }
@@ -739,7 +739,7 @@ void Window::SetCheckboxValue(WidgetIndex widgetIndex, bool value)
     SetWidgetPressed(widgetIndex, value);
 }
 
-void Window::DrawWidgets(rct_drawpixelinfo& dpi)
+void Window::DrawWidgets(DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*this, &dpi);
 }

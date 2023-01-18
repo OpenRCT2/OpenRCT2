@@ -24,7 +24,7 @@
  * colour (ebp)
  * flags (si)
  */
-void GfxFillRectInset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags)
+void GfxFillRectInset(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags)
 {
     const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
     const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
@@ -32,7 +32,7 @@ void GfxFillRectInset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t co
     const auto rightBottom = ScreenCoordsXY{ rect.GetRight(), rect.GetBottom() };
     if (colour & (COLOUR_FLAG_TRANSLUCENT | COLOUR_FLAG_8))
     {
-        translucent_window_palette palette;
+        TranslucentWindowPalette palette;
         if (colour & COLOUR_FLAG_8)
         {
             // TODO: This can't be added up

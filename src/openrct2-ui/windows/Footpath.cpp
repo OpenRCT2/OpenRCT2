@@ -429,7 +429,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords;
         WindowDrawWidgets(*this, &dpi);
@@ -466,7 +466,7 @@ public:
                     objManager.GetLoadedObject(ObjectType::Paths, gFootpathSelection.LegacyPath));
                 if (pathObj != nullptr)
                 {
-                    auto pathEntry = reinterpret_cast<const rct_footpath_entry*>(pathObj->GetLegacyData());
+                    auto pathEntry = reinterpret_cast<const FootpathEntry*>(pathObj->GetLegacyData());
                     if (gFootpathSelection.IsQueueSelected)
                         baseImage = pathEntry->GetQueueImage();
                     else
@@ -568,7 +568,7 @@ private:
         }
     }
 
-    void WindowFootpathDrawDropdownButtons(rct_drawpixelinfo* dpi)
+    void WindowFootpathDrawDropdownButtons(DrawPixelInfo* dpi)
     {
         if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
         {
@@ -610,7 +610,7 @@ private:
                 objManager.GetLoadedObject(ObjectType::Paths, gFootpathSelection.LegacyPath));
             if (pathObj != nullptr)
             {
-                auto pathEntry = reinterpret_cast<rct_footpath_entry*>(pathObj->GetLegacyData());
+                auto pathEntry = reinterpret_cast<FootpathEntry*>(pathObj->GetLegacyData());
                 pathImage = pathEntry->GetPreviewImage();
                 queueImage = pathEntry->GetQueuePreviewImage();
             }
@@ -620,7 +620,7 @@ private:
         }
     }
 
-    void WindowFootpathDrawDropdownButton(rct_drawpixelinfo* dpi, WidgetIndex widgetIndex, ImageIndex image)
+    void WindowFootpathDrawDropdownButton(DrawPixelInfo* dpi, WidgetIndex widgetIndex, ImageIndex image)
     {
         const auto& widget = widgets[widgetIndex];
         GfxDrawSprite(dpi, ImageId(image), { windowPos.x + widget.left, windowPos.y + widget.top });
@@ -684,7 +684,7 @@ private:
                 continue;
             }
 
-            auto pathEntry = reinterpret_cast<const rct_footpath_entry*>(pathObj->GetLegacyData());
+            auto pathEntry = reinterpret_cast<const FootpathEntry*>(pathObj->GetLegacyData());
             if ((pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !showEditorPaths)
             {
                 continue;

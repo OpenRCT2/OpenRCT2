@@ -492,7 +492,7 @@ static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
 #define WINDOW_PALETTE_BRIGHT_RED           {FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow}
 #define WINDOW_PALETTE_BRIGHT_PINK          {FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow}
 
-const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
+const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_GREY,                    // COLOUR_BLACK
     WINDOW_PALETTE_GREY,                    // COLOUR_GREY
     {FilterPaletteID::PaletteTranslucentWhite,             FilterPaletteID::PaletteTranslucentWhiteHighlight,            FilterPaletteID::PaletteTranslucentWhiteShadow},
@@ -578,7 +578,7 @@ void MaskInit()
     }
 }
 
-void GfxFilterPixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
+void GfxFilterPixel(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
     GfxFilterRect(dpi, { coords, coords }, palette);
 }
@@ -591,7 +591,7 @@ void GfxFilterPixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, Filter
  */
 void GfxTransposePalette(int32_t pal, uint8_t product)
 {
-    const rct_g1_element* g1 = GfxGetG1Element(pal);
+    const G1Element* g1 = GfxGetG1Element(pal);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -632,7 +632,7 @@ void LoadPalette()
         palette = water_type->image_id;
     }
 
-    const rct_g1_element* g1 = GfxGetG1Element(palette);
+    const G1Element* g1 = GfxGetG1Element(palette);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -671,7 +671,7 @@ void GfxInvalidateScreen()
  * drawpixelinfo (edi)
  */
 bool ClipDrawPixelInfo(
-    rct_drawpixelinfo* dst, rct_drawpixelinfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
+    DrawPixelInfo* dst, DrawPixelInfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
     int32_t right = coords.x + width;
     int32_t bottom = coords.y + height;
@@ -737,7 +737,7 @@ void GfxInvalidatePickedUpPeep()
     }
 }
 
-void GfxDrawPickedUpPeep(rct_drawpixelinfo* dpi)
+void GfxDrawPickedUpPeep(DrawPixelInfo* dpi)
 {
     if (gPickupPeepImage.HasValue())
     {
@@ -768,19 +768,19 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-size_t rct_drawpixelinfo::GetBytesPerRow() const
+size_t DrawPixelInfo::GetBytesPerRow() const
 {
     return static_cast<size_t>(width) + pitch;
 }
 
-uint8_t* rct_drawpixelinfo::GetBitsOffset(const ScreenCoordsXY& pos) const
+uint8_t* DrawPixelInfo::GetBitsOffset(const ScreenCoordsXY& pos) const
 {
     return bits + pos.x + (pos.y * GetBytesPerRow());
 }
 
-rct_drawpixelinfo rct_drawpixelinfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
+DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
 {
-    rct_drawpixelinfo result = *this;
+    DrawPixelInfo result = *this;
     result.bits = GetBitsOffset(pos);
     result.x = static_cast<int16_t>(pos.x);
     result.y = static_cast<int16_t>(pos.y);

@@ -42,7 +42,7 @@ void FootpathSurfaceObject::Unload()
     BaseImageId = 0;
 }
 
-void FootpathSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void FootpathSurfaceObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2 - 16, height / 2 };
     GfxDrawSprite(dpi, ImageId(BaseImageId + 3), screenCoords);

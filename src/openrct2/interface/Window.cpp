@@ -84,8 +84,8 @@ namespace WindowCloseFlags
     static constexpr uint32_t CloseSingle = (1 << 1);
 } // namespace WindowCloseFlags
 
-static void WindowDrawCore(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-static void WindowDrawSingle(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawCore(DrawPixelInfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawSingle(DrawPixelInfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::list<std::shared_ptr<rct_window>>::iterator WindowGetIterator(const rct_window* w)
 {
@@ -1130,7 +1130,7 @@ void MainWindowZoom(bool zoomIn, bool atCursor)
  * Splits a drawing of a window into regions that can be seen and are not hidden
  * by other opaque overlapping windows.
  */
-void WindowDraw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void WindowDraw(DrawPixelInfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (!WindowIsVisible(w))
         return;
@@ -1185,7 +1185,7 @@ void WindowDraw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top
 /**
  * Draws the given window and any other overlapping transparent windows.
  */
-static void WindowDrawCore(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void WindowDrawCore(DrawPixelInfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Clamp region
     left = std::max<int32_t>(left, w.windowPos.x);
@@ -1208,10 +1208,10 @@ static void WindowDrawCore(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, 
     }
 }
 
-static void WindowDrawSingle(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void WindowDrawSingle(DrawPixelInfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Copy dpi so we can crop it
-    rct_drawpixelinfo copy = *dpi;
+    DrawPixelInfo copy = *dpi;
     dpi = &copy;
 
     // Clamp left to 0
@@ -1276,7 +1276,7 @@ static void WindowDrawSingle(rct_drawpixelinfo* dpi, rct_window& w, int32_t left
  * @param dpi (edi)
  * @param w (esi)
  */
-void WindowDrawViewport(rct_drawpixelinfo* dpi, rct_window& w)
+void WindowDrawViewport(DrawPixelInfo* dpi, rct_window& w)
 {
     ViewportRender(dpi, w.viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
 }
@@ -1647,7 +1647,7 @@ void WindowEventInvalidateCall(rct_window* w)
         w->event_handlers->invalidate(w);
 }
 
-void WindowEventPaintCall(rct_window* w, rct_drawpixelinfo* dpi)
+void WindowEventPaintCall(rct_window* w, DrawPixelInfo* dpi)
 {
     if (w->event_handlers == nullptr)
         w->OnDraw(*dpi);
@@ -1655,7 +1655,7 @@ void WindowEventPaintCall(rct_window* w, rct_drawpixelinfo* dpi)
         w->event_handlers->paint(w, dpi);
 }
 
-void WindowEventScrollPaintCall(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+void WindowEventScrollPaintCall(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     if (w->event_handlers == nullptr)
         w->OnScrollDraw(scrollIndex, *dpi);
@@ -2089,7 +2089,7 @@ bool WindowIsVisible(rct_window& w)
  * right (dx)
  * bottom (bp)
  */
-void WindowDrawAll(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void WindowDrawAll(DrawPixelInfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     auto windowDPI = dpi->Crop({ left, top }, { right - left, bottom - top });
     WindowVisitEach([&windowDPI, left, top, right, bottom](rct_window* w) {

@@ -113,7 +113,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         // Ensure sprites appear regardless of rotation
         ResetAllSpriteQuadrantPlacements();
 
-        rct_drawpixelinfo dpi;
+        DrawPixelInfo dpi;
         dpi.x = 0;
         dpi.y = 0;
         dpi.width = resolutionWidth;

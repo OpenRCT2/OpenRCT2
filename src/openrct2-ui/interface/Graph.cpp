@@ -15,7 +15,7 @@
 
 namespace Graph
 {
-    static void DrawMonths(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawMonths(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
         int32_t currentDay = gDateMonthTicks;
@@ -41,7 +41,7 @@ namespace Graph
         }
     }
 
-    static void DrawLineA(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawLineA(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
         auto coords = origCoords;
@@ -69,7 +69,7 @@ namespace Graph
         }
     }
 
-    static void DrawLineB(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawLineB(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
         auto coords = origCoords;
@@ -94,7 +94,7 @@ namespace Graph
         }
     }
 
-    void Draw(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos)
+    void Draw(DrawPixelInfo* dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos)
     {
         DrawMonths(dpi, history, count, screenPos);
         DrawLineA(dpi, history, count, screenPos);
@@ -150,7 +150,7 @@ static const FinancialTooltipInfo FinanceTooltipInfoFromMoney(
 
 namespace Graph
 {
-    static void DrawMonths(rct_drawpixelinfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawMonths(DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         int32_t i, yearOver32, currentMonth, currentDay;
 
@@ -179,7 +179,7 @@ namespace Graph
     }
 
     static void DrawLineA(
-        rct_drawpixelinfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
+        DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
@@ -209,7 +209,7 @@ namespace Graph
     }
 
     static void DrawLineB(
-        rct_drawpixelinfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
+        DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
@@ -236,7 +236,7 @@ namespace Graph
     }
 
     static void DrawHoveredValue(
-        rct_drawpixelinfo* dpi, const money64* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
+        DrawPixelInfo* dpi, const money64* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
         const auto cursorPosition = ContextGetCursorPositionScaled();
@@ -272,7 +272,7 @@ namespace Graph
     }
 
     void Draw(
-        rct_drawpixelinfo* dpi, const money64* history, const int32_t count, const ScreenCoordsXY& screenCoords,
+        DrawPixelInfo* dpi, const money64* history, const int32_t count, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
         DrawMonths(dpi, history, count, screenCoords);

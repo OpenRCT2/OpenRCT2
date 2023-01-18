@@ -273,7 +273,7 @@ static void PathBitBenchesPaint(
 
 /* rct2: 0x006A6008 */
 static void PathBitJumpingFountainsPaint(
-    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, rct_drawpixelinfo* dpi)
+    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, DrawPixelInfo* dpi)
 {
     if (dpi->zoom_level > ZoomLevel{ 0 })
         return;
@@ -727,7 +727,7 @@ static void Sub6A3F61(
     // Probably drawing benches etc.
     PROFILED_FUNCTION();
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
 
     if (dpi->zoom_level <= ZoomLevel{ 1 })
     {

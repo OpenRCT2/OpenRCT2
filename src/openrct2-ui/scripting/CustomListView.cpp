@@ -549,7 +549,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
     }
 }
 
-void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scroll* scroll) const
+void CustomListView::Paint(rct_window* w, DrawPixelInfo* dpi, const rct_scroll* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
     GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, paletteIndex);
@@ -665,7 +665,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
 }
 
 void CustomListView::PaintHeading(
-    rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
+    rct_window* w, DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
     ColumnSortOrder sortOrder, bool isPressed) const
 {
     auto boxFlags = 0;
@@ -694,7 +694,7 @@ void CustomListView::PaintHeading(
 }
 
 void CustomListView::PaintSeperator(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
+    DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
 {
     auto hasText = text != nullptr && text[0] != '\0';
     auto left = pos.x + 4;
@@ -753,7 +753,7 @@ void CustomListView::PaintSeperator(
 }
 
 void CustomListView::PaintCell(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
+    DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
 {
     StringId stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
 

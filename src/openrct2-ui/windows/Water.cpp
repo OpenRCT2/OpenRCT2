@@ -138,7 +138,7 @@ public:
         widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = ScreenCoordsXY{ windowPos.x + window_water_widgets[WIDX_PREVIEW].midX(),
                                             windowPos.y + window_water_widgets[WIDX_PREVIEW].midY() };

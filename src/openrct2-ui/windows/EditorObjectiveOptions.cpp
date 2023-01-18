@@ -128,7 +128,7 @@ static void WindowEditorObjectiveOptionsMainDropdown(rct_window *w, WidgetIndex 
 static void WindowEditorObjectiveOptionsMainUpdate(rct_window *w);
 static void WindowEditorObjectiveOptionsMainTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
 static void WindowEditorObjectiveOptionsMainInvalidate(rct_window *w);
-static void WindowEditorObjectiveOptionsMainPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowEditorObjectiveOptionsMainPaint(rct_window *w, DrawPixelInfo *dpi);
 
 static void WindowEditorObjectiveOptionsRidesMouseup(rct_window *w, WidgetIndex widgetIndex);
 static void WindowEditorObjectiveOptionsRidesResize(rct_window *w);
@@ -137,8 +137,8 @@ static void WindowEditorObjectiveOptionsRidesScrollgetheight(rct_window *w, int3
 static void WindowEditorObjectiveOptionsRidesScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowEditorObjectiveOptionsRidesScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window *w);
-static void WindowEditorObjectiveOptionsRidesPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void WindowEditorObjectiveOptionsRidesPaint(rct_window *w, DrawPixelInfo *dpi);
+static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window *w, DrawPixelInfo *dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
 static WindowEventList window_objective_options_main_events([](auto& events)
@@ -228,7 +228,7 @@ static void WindowEditorObjectiveOptionsAnchorBorderWidgets(rct_window* w)
     w->ResizeFrameWithPage();
 }
 
-static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, DrawPixelInfo* dpi)
 {
     Widget* widget;
     int32_t spriteIndex;
@@ -760,7 +760,7 @@ static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
  *
  *  rct2: 0x0067161C
  */
-static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     int32_t width;
     StringId stringId;
@@ -1035,7 +1035,7 @@ static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
  *
  *  rct2: 0x00672340
  */
-static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
@@ -1048,7 +1048,7 @@ static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, rct_drawpixeli
  *
  *  rct2: 0x0067236F
  */
-static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     int32_t colour = ColourMapA[w->colours[1]].mid_light;
     GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);

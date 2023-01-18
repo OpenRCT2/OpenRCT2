@@ -16,7 +16,7 @@
 #include <algorithm>
 #include <cmath>
 
-rct_colour_map ColourMapA[COLOUR_COUNT] = {};
+ColourShadeMap ColourMapA[COLOUR_COUNT] = {};
 
 enum
 {
@@ -39,7 +39,7 @@ void ColoursInitMaps()
     // Get colour maps from g1
     for (int32_t i = 0; i < COLOUR_COUNT; i++)
     {
-        const rct_g1_element* g1 = GfxGetG1Element(SPR_PALETTE_2_START + i);
+        const G1Element* g1 = GfxGetG1Element(SPR_PALETTE_2_START + i);
         if (g1 != nullptr)
         {
             ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];

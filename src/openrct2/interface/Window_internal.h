@@ -131,10 +131,10 @@ struct rct_window
     virtual void OnPrepareDraw()
     {
     }
-    virtual void OnDraw(rct_drawpixelinfo& dpi)
+    virtual void OnDraw(DrawPixelInfo& dpi)
     {
     }
-    virtual void OnDrawWidget(WidgetIndex widgetIndex, rct_drawpixelinfo& dpi)
+    virtual void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
     {
     }
     virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback)
@@ -169,7 +169,7 @@ struct rct_window
     virtual void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
     }
-    virtual void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi)
+    virtual void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi)
     {
     }
     virtual void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)

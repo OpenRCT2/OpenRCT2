@@ -16,7 +16,7 @@
  * Draws a horizontal line of specified colour to a buffer.
  *  rct2: 0x0068474C
  */
-static void GfxDrawLineOnBuffer(rct_drawpixelinfo* dpi, char colour, const ScreenCoordsXY& coords, int32_t no_pixels)
+static void GfxDrawLineOnBuffer(DrawPixelInfo* dpi, char colour, const ScreenCoordsXY& coords, int32_t no_pixels)
 {
     ScreenCoordsXY offset{ coords.x - dpi->x, coords.y - dpi->y };
 
@@ -72,7 +72,7 @@ static void GfxDrawLineOnBuffer(rct_drawpixelinfo* dpi, char colour, const Scree
  * colour (ebp)
  */
 
-void GfxDrawLineSoftware(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
+void GfxDrawLineSoftware(DrawPixelInfo* dpi, const ScreenLine& line, int32_t colour)
 {
     int32_t x1 = line.GetX1();
     int32_t x2 = line.GetX2();

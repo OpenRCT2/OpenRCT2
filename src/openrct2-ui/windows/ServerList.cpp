@@ -84,8 +84,8 @@ static void WindowServerListScrollMouseover(rct_window* w, int32_t scrollIndex, 
 static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
 static OpenRCT2String WindowServerListTooltip(rct_window* const w, const WidgetIndex widgetIndex, StringId fallback);
 static void WindowServerListInvalidate(rct_window* w);
-static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi);
-static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
+static void WindowServerListPaint(rct_window* w, DrawPixelInfo* dpi);
+static void WindowServerListScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex);
 
 static WindowEventList window_server_list_events([](auto& events) {
     events.close = &WindowServerListClose;
@@ -374,7 +374,7 @@ static void WindowServerListInvalidate(rct_window* w)
     w->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 }
 
-static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowServerListPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
 
@@ -394,7 +394,7 @@ static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, ft, { COLOUR_WHITE });
 }
 
-static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowServerListScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     GfxClear(dpi, paletteIndex);

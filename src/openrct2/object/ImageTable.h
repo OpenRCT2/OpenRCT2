@@ -27,7 +27,7 @@ class ImageTable
 {
 private:
     std::unique_ptr<uint8_t[]> _data;
-    std::vector<rct_g1_element> _entries;
+    std::vector<G1Element> _entries;
 
     /**
      * Container for a G1 image, additional information and RAII. Used by ReadJson
@@ -59,7 +59,7 @@ public:
      * @note root is deliberately left non-const: json_t behaviour changes when const
      */
     bool ReadJson(IReadObjectContext* context, json_t& root);
-    const rct_g1_element* GetImages() const
+    const G1Element* GetImages() const
     {
         return _entries.data();
     }
@@ -67,5 +67,5 @@ public:
     {
         return static_cast<uint32_t>(_entries.size());
     }
-    void AddImage(const rct_g1_element* g1);
+    void AddImage(const G1Element* g1);
 };

@@ -507,7 +507,7 @@ public:
      *
      *  rct2: 0x006B3235
      */
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
         DrawTabImages(&dpi);
@@ -523,7 +523,7 @@ public:
      *
      *  rct2: 0x006B3240
      */
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(&dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colours[1]].mid_light);
@@ -739,7 +739,7 @@ private:
      *
      *  rct2: 0x006B38EA
      */
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         int32_t sprite_idx;
 

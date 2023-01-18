@@ -13,7 +13,7 @@
 
 struct CoordsXY;
 struct Vehicle;
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 struct GamePalette;
 struct CoordsXYZ;
 struct EntityBase;
@@ -48,7 +48,7 @@ bool LightFXForVehiclesIsAvailable();
 
 void LightFXInit();
 
-void LightFXUpdateBuffers(rct_drawpixelinfo*);
+void LightFXUpdateBuffers(DrawPixelInfo*);
 
 void LightFXPrepareLightList();
 void LightFXSwapBuffers();

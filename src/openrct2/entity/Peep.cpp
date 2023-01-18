@@ -2803,7 +2803,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         }
     }
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     if (dpi->zoom_level > ZoomLevel{ 2 })
     {
         return;
