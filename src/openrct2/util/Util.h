@@ -54,7 +54,7 @@ uint8_t Lerp(uint8_t a, uint8_t b, float t);
 float FLerp(float a, float b, float t);
 uint8_t SoftLight(uint8_t a, uint8_t b);
 
-size_t StrCatfTime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp);
+size_t StrCatFTime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp);
 
 template<typename T> [[nodiscard]] constexpr uint64_t EnumToFlag(T v)
 {

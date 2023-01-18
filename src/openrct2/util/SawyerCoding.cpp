@@ -19,7 +19,7 @@
 #include <stdexcept>
 
 static size_t DecodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
-static size_t DecodeChunkRLEWithWize(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length, size_t dstSize);
+static size_t DecodeChunkRLEWithSize(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length, size_t dstSize);
 
 static size_t EncodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
 static size_t EncodeChunkRepeat(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
@@ -92,13 +92,13 @@ size_t SawyerCodingDecodeSV4(const uint8_t* src, uint8_t* dst, size_t length, si
 {
     // (0 to length - 4): RLE chunk
     // (length - 4 to length): checksum
-    return DecodeChunkRLEWithWize(src, dst, length - 4, bufferLength);
+    return DecodeChunkRLEWithSize(src, dst, length - 4, bufferLength);
 }
 
 size_t SawyerCodingDecodeSC4(const uint8_t* src, uint8_t* dst, size_t length, size_t bufferLength)
 {
     // Uncompress
-    size_t decodedLength = DecodeChunkRLEWithWize(src, dst, length - 4, bufferLength);
+    size_t decodedLength = DecodeChunkRLEWithSize(src, dst, length - 4, bufferLength);
 
     // Decode
     for (size_t i = 0x60018; i <= std::min(decodedLength - 1, static_cast<size_t>(0x1F8353)); i++)
@@ -215,7 +215,7 @@ static size_t DecodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, siz
  *
  *  rct2: 0x0067693A
  */
-static size_t DecodeChunkRLEWithWize(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length, size_t dstSize)
+static size_t DecodeChunkRLEWithSize(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length, size_t dstSize)
 {
     size_t count;
     uint8_t *dst, rleCodeByte;

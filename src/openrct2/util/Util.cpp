@@ -161,7 +161,7 @@ bool AVX2Available()
     return false;
 }
 
-static bool BitcountPopcntAvailable()
+static bool BitCountPopcntAvailable()
 {
 #ifdef OPENRCT2_X86
     // POPCNT support is declared as the 23rd bit of ECX with CPUID(EAX = 1).
@@ -174,7 +174,7 @@ static bool BitcountPopcntAvailable()
     return false;
 }
 
-static int32_t BitcountPopcnt(uint32_t source)
+static int32_t BitCountPopcnt(uint32_t source)
 {
 // Use CPUID defines to figure out calling style
 #if defined(OpenRCT2_CPUID_GNUC_X86)
@@ -191,7 +191,7 @@ static int32_t BitcountPopcnt(uint32_t source)
 #endif
 }
 
-static int32_t BitcountLut(uint32_t source)
+static int32_t BitCountLut(uint32_t source)
 {
     // https://graphics.stanford.edu/~seander/bithacks.html
     static constexpr const uint8_t BitsSetTable256[256] = {
@@ -208,7 +208,7 @@ static int32_t (*BitCountFn)(uint32_t);
 
 void BitCountInit()
 {
-    BitCountFn = BitcountPopcntAvailable() ? BitcountPopcnt : BitcountLut;
+    BitCountFn = BitCountPopcntAvailable() ? BitCountPopcnt : BitCountLut;
 }
 
 int32_t BitCount(uint32_t source)
@@ -608,7 +608,7 @@ uint8_t SoftLight(uint8_t a, uint8_t b)
 /**
  * strftime wrapper which appends to an existing string.
  */
-size_t StrCatfTime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp)
+size_t StrCatFTime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp)
 {
     size_t stringLen = strnlen(buffer, bufferSize);
     if (stringLen < bufferSize)
