@@ -462,7 +462,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorailCycles(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRc(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRc(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRc(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedHairpinRc(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionSubmarineRide(int32_t trackType);
