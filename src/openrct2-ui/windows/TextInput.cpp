@@ -109,7 +109,7 @@ public:
     void SetText(std::string_view text, size_t maxLength)
     {
         _buffer.resize(maxLength);
-        safe_strcpy(_buffer.data(), std::string(text).c_str(), maxLength);
+        SafeStrCpy(_buffer.data(), std::string(text).c_str(), maxLength);
         _maxInputLength = maxLength;
         gTextInput = ContextStartTextInput(_buffer.data(), maxLength);
     }
@@ -219,7 +219,7 @@ public:
         screenCoords.y += 25;
 
         char wrapped_string[TEXT_INPUT_SIZE];
-        safe_strcpy(wrapped_string, _buffer.data(), _buffer.size());
+        SafeStrCpy(wrapped_string, _buffer.data(), _buffer.size());
 
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.

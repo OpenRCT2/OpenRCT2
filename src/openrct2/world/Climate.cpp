@@ -185,7 +185,7 @@ void ClimateUpdate()
         || gClimateCurrent.WeatherEffect == WeatherEffectType::Blizzard)
     {
         // Create new thunder and lightning
-        uint32_t randomNumber = util_rand();
+        uint32_t randomNumber = UtilRand();
         if ((randomNumber & 0xFFFF) <= 0x1B4)
         {
             randomNumber >>= 16;
@@ -399,7 +399,7 @@ static void ClimateUpdateLightning()
     _lightningTimer--;
     if (gClimateLightningFlash == 0)
     {
-        if ((util_rand() & 0xFFFF) <= 0x2000)
+        if ((UtilRand() & 0xFFFF) <= 0x2000)
         {
             gClimateLightningFlash = 1;
         }
@@ -411,7 +411,7 @@ static void ClimateUpdateThunder()
     _thunderTimer--;
     if (_thunderTimer == 0)
     {
-        uint32_t randomNumber = util_rand();
+        uint32_t randomNumber = UtilRand();
         if (randomNumber & 0x10000)
         {
             if (_thunderStatus[0] == THUNDER_STATUS::NONE && _thunderStatus[1] == THUNDER_STATUS::NONE)

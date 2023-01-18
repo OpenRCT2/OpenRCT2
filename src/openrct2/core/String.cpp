@@ -307,7 +307,7 @@ namespace String
 
     utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src)
     {
-        return safe_strcpy(buffer, src, bufferSize);
+        return SafeStrCpy(buffer, src, bufferSize);
     }
 
     utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src, size_t srcSize)
@@ -327,7 +327,7 @@ namespace String
 
     utf8* Append(utf8* buffer, size_t bufferSize, const utf8* src)
     {
-        return safe_strcat(buffer, src, bufferSize);
+        return SafeStrCat(buffer, src, bufferSize);
     }
 
     utf8* Format(utf8* buffer, size_t bufferSize, const utf8* format, ...)

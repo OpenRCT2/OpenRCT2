@@ -87,7 +87,7 @@ void DateUpdate()
     }
     else
     {
-        gDateMonthTicks = floor2(static_cast<uint16_t>(monthTicks), 4);
+        gDateMonthTicks = Floor2(static_cast<uint16_t>(monthTicks), 4);
     }
 }
 

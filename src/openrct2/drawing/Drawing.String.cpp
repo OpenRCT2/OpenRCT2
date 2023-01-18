@@ -1078,7 +1078,7 @@ void ShortenPath(utf8* buffer, size_t bufferSize, const utf8* path, int32_t avai
     // Return full string if it fits
     if (GfxGetStringWidth(const_cast<char*>(path), fontStyle) <= availableWidth)
     {
-        safe_strcpy(buffer, path, bufferSize);
+        SafeStrCpy(buffer, path, bufferSize);
         return;
     }
 
@@ -1093,7 +1093,7 @@ void ShortenPath(utf8* buffer, size_t bufferSize, const utf8* path, int32_t avai
     }
 
     // TODO: Replace with unicode ellipsis when supported
-    safe_strcpy(buffer, "...", bufferSize);
+    SafeStrCpy(buffer, "...", bufferSize);
 
     // Abbreviate beginning with xth separator
     int32_t begin = -1;
@@ -1104,12 +1104,12 @@ void ShortenPath(utf8* buffer, size_t bufferSize, const utf8* path, int32_t avai
             begin++;
         } while (path[begin] != *PATH_SEPARATOR && path[begin] != '/');
 
-        safe_strcpy(buffer + 3, path + begin, bufferSize - 3);
+        SafeStrCpy(buffer + 3, path + begin, bufferSize - 3);
         if (GfxGetStringWidth(buffer, fontStyle) <= availableWidth)
         {
             return;
         }
     }
 
-    safe_strcpy(buffer, path, bufferSize);
+    SafeStrCpy(buffer, path, bufferSize);
 }

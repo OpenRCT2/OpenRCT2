@@ -38,7 +38,7 @@ protected:
         chdr_in.encoding = encoding_type;
         chdr_in.length = sizeof(randomdata);
         uint8_t* encodedDataBuffer = new uint8_t[BUFFER_SIZE];
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(
+        size_t encodedDataSize = SawyerCodingWriteChunkBuffer(
             encodedDataBuffer, reinterpret_cast<const uint8_t*>(randomdata), chdr_in);
         ASSERT_GT(encodedDataSize, sizeof(sawyercoding_chunk_header));
 
@@ -99,7 +99,7 @@ TEST_F(SawyerCodingTest, decode_chunk_none)
     TestDecode(nonedata, sizeof(nonedata));
 }
 
-TEST_F(SawyerCodingTest, decode_chunk_rle)
+TEST_F(SawyerCodingTest, DecodeChunkRLE)
 {
     TestDecode(rledata, sizeof(rledata));
 }

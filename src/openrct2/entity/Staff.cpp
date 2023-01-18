@@ -675,7 +675,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         pathDirections |= (1 << DirectionReverse(PeepDirection));
     }
 
-    Direction direction = bitscanforward(pathDirections);
+    Direction direction = UtilBitScanForward(pathDirections);
     pathDirections &= ~(1 << direction);
     if (pathDirections == 0)
     {
@@ -807,7 +807,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
         pathDirections |= (1 << DirectionReverse(PeepDirection));
     }
 
-    Direction direction = bitscanforward(pathDirections);
+    Direction direction = UtilBitScanForward(pathDirections);
     // If this is the only direction they can go, then go
     if (pathDirections == (1 << direction))
     {

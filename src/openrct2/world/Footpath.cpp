@@ -356,7 +356,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
-            int32_t bx = bitscanforward(directions);
+            int32_t bx = UtilBitScanForward(directions);
             bx += (*tileElement)->AsEntrance()->GetDirection();
             bx &= 3;
             if (direction != nullptr)
@@ -373,7 +373,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
-            int32_t bx = (*tileElement)->GetDirectionWithOffset(bitscanforward(directions));
+            int32_t bx = (*tileElement)->GetDirectionWithOffset(UtilBitScanForward(directions));
             if (direction != nullptr)
                 *direction = bx;
             return info.Loc;
@@ -1132,7 +1132,7 @@ void FootpathChainRideQueue(
             // Fix #2051: Stop queue paths that are already connected to two other tiles
             //            from connecting to the tile we are coming from.
             int32_t edges = tileElement->AsPath()->GetEdges();
-            int32_t numEdges = bitcount(edges);
+            int32_t numEdges = BitCount(edges);
             if (numEdges >= 2)
             {
                 int32_t requiredEdgeMask = 1 << DirectionReverse(direction);
@@ -1281,7 +1281,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
 
 static bool GetNextDirection(int32_t edges, int32_t* direction)
 {
-    int32_t index = bitscanforward(edges);
+    int32_t index = UtilBitScanForward(edges);
     if (index == -1)
         return false;
 

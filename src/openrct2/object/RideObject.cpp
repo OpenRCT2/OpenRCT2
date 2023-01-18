@@ -48,7 +48,7 @@ static constexpr SpritePrecision PrecisionFromNumFrames(uint8_t numRotationFrame
     if (numRotationFrames == 0)
         return SpritePrecision::None;
     else
-        return static_cast<SpritePrecision>(bitscanforward(numRotationFrames) + 1);
+        return static_cast<SpritePrecision>(UtilBitScanForward(numRotationFrames) + 1);
 }
 
 static void RideObjectUpdateRideType(rct_ride_entry& rideEntry)
@@ -774,7 +774,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             auto numRotationFrames = Json::GetNumber<uint8_t>(jRotationCount[SpriteGroupNames[i]], 0);
             if (numRotationFrames != 0)
             {
-                if (!is_power_of_2(numRotationFrames))
+                if (!IsPowerOf2(numRotationFrames))
                 {
                     context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
                     continue;

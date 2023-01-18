@@ -532,7 +532,7 @@ void CheatSetAction::SetMoney(money64 amount) const
 
 void CheatSetAction::AddMoney(money64 amount) const
 {
-    gCash = add_clamp_money64(gCash, amount);
+    gCash = AddClamp_money64(gCash, amount);
 
     WindowInvalidateByClass(WindowClass::Finances);
     WindowInvalidateByClass(WindowClass::BottomToolbar);

@@ -1763,8 +1763,8 @@ static int32_t ConsoleCommandMpDesync(InteractiveConsole& console, const argumen
             {
                 auto* guest = guests[0];
                 if (guests.size() > 1)
-                    guest = guests[util_rand() % guests.size() - 1];
-                guest->TshirtColour = util_rand() & 0xFF;
+                    guest = guests[UtilRand() % guests.size() - 1];
+                guest->TshirtColour = UtilRand() & 0xFF;
                 guest->Invalidate();
             }
             break;
@@ -1779,7 +1779,7 @@ static int32_t ConsoleCommandMpDesync(InteractiveConsole& console, const argumen
             {
                 auto* guest = guests[0];
                 if (guests.size() > 1)
-                    guest = guests[util_rand() % guests.size() - 1];
+                    guest = guests[UtilRand() % guests.size() - 1];
                 guest->Remove();
             }
             break;

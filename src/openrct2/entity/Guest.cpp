@@ -804,7 +804,7 @@ void Guest::Loc68FA89()
 
         if (TimeToConsume == 0)
         {
-            int32_t chosen_food = bitscanforward(GetFoodOrDrinkFlags());
+            int32_t chosen_food = UtilBitScanForward(GetFoodOrDrinkFlags());
             if (chosen_food != -1)
             {
                 ShopItem food = ShopItem(chosen_food);
@@ -1485,7 +1485,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
 
     if (GetShopItemDescriptor(shopItem).IsFoodOrDrink())
     {
-        int32_t food = bitscanforward(GetFoodOrDrinkFlags());
+        int32_t food = UtilBitScanForward(GetFoodOrDrinkFlags());
         if (food != -1)
         {
             InsertNewThought(PeepThoughtType::HaventFinished, static_cast<ShopItem>(food));
@@ -1874,8 +1874,8 @@ OpenRCT2::BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
     {
         // Take nearby rides into consideration
         constexpr auto radius = 10 * 32;
-        int32_t cx = floor2(x, 32);
-        int32_t cy = floor2(y, 32);
+        int32_t cx = Floor2(x, 32);
+        int32_t cy = Floor2(y, 32);
         for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += COORDS_XY_STEP)
         {
             for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += COORDS_XY_STEP)
@@ -3151,8 +3151,8 @@ template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool consid
     {
         // Take nearby rides into consideration
         constexpr auto searchRadius = 10 * 32;
-        int32_t cx = floor2(peep->x, 32);
-        int32_t cy = floor2(peep->y, 32);
+        int32_t cx = Floor2(peep->x, 32);
+        int32_t cy = Floor2(peep->y, 32);
         for (auto x = cx - searchRadius; x <= cx + searchRadius; x += COORDS_XY_STEP)
         {
             for (auto y = cy - searchRadius; y <= cy + searchRadius; y += COORDS_XY_STEP)
@@ -5273,7 +5273,7 @@ void Guest::UpdateWalking()
         if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index.ToUnderlying() & 0x1FF) == (gCurrentTicks & 0x1FF))
             && ((0xFFFF & ScenarioRand()) <= 4096))
         {
-            int32_t container = bitscanforward(GetEmptyContainerFlags());
+            int32_t container = UtilBitScanForward(GetEmptyContainerFlags());
             auto litterType = Litter::Type::Vomit;
 
             if (container != -1)

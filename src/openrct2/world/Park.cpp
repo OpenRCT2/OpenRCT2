@@ -511,7 +511,7 @@ money64 Park::CalculateCompanyValue() const
     auto result = gParkValue - gBankLoan;
 
     // Clamp addition to prevent overflow
-    result = add_clamp_money64(result, FinanceGetCurrentCash());
+    result = AddClamp_money64(result, FinanceGetCurrentCash());
 
     return result;
 }

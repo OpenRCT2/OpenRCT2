@@ -282,7 +282,7 @@ namespace OpenRCT2::Audio
             case TitleMusicKind::Random:
                 return ObjectEntryDescriptor(
                     ObjectType::Audio,
-                    (util_rand() & 1) ? AudioObjectIdentifiers::Rct1Title : AudioObjectIdentifiers::Rct2Title);
+                    (UtilRand() & 1) ? AudioObjectIdentifiers::Rct1Title : AudioObjectIdentifiers::Rct2Title);
         }
     }
 

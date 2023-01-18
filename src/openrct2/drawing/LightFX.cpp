@@ -855,9 +855,9 @@ void LightFXApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     float sunLight = std::max(0.0f, std::min(1.0f, 2.0f - night * 3.0f));
 
     // Night version
-    natLightR = flerp(natLightR * 4.0f, 0.635f, (std::pow(night, 0.035f + sunLight * 10.50f)));
-    natLightG = flerp(natLightG * 4.0f, 0.650f, (std::pow(night, 0.100f + sunLight * 5.50f)));
-    natLightB = flerp(natLightB * 4.0f, 0.850f, (std::pow(night, 0.200f + sunLight * 1.5f)));
+    natLightR = FLerp(natLightR * 4.0f, 0.635f, (std::pow(night, 0.035f + sunLight * 10.50f)));
+    natLightG = FLerp(natLightG * 4.0f, 0.650f, (std::pow(night, 0.100f + sunLight * 5.50f)));
+    natLightB = FLerp(natLightB * 4.0f, 0.850f, (std::pow(night, 0.200f + sunLight * 1.5f)));
 
     float overExpose = 0.0f;
     float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
@@ -953,9 +953,9 @@ void LightFXApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 
     if (night >= 0 && gClimateLightningFlash != 1)
     {
-        *r = lerp(*r, soft_light(*r, 8), night);
-        *g = lerp(*g, soft_light(*g, 8), night);
-        *b = lerp(*b, soft_light(*b, 128), night);
+        *r = Lerp(*r, SoftLight(*r, 8), night);
+        *g = Lerp(*g, SoftLight(*g, 8), night);
+        *b = Lerp(*b, SoftLight(*b, 128), night);
 
         //  if (i == 32)
         //      boost = 300000.0f;

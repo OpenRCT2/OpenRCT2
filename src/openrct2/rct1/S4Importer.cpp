@@ -163,7 +163,7 @@ namespace RCT1
             _s4 = *ReadAndDecodeS4(stream, isScenario);
             _s4Path = path;
             _isScenario = isScenario;
-            _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
+            _gameVersion = SawyerCodingDetectRCT1Version(_s4.game_version) & FILE_VERSION_MASK;
 
             // Only determine what objects we required to import this saved game
             InitialiseEntryMaps();
@@ -296,14 +296,14 @@ namespace RCT1
             auto decodedData = std::make_unique<uint8_t[]>(sizeof(S4));
 
             size_t decodedSize;
-            int32_t fileType = sawyercoding_detect_file_type(data.get(), dataSize);
+            int32_t fileType = SawyerCodingDetectFileType(data.get(), dataSize);
             if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
             {
-                decodedSize = sawyercoding_decode_sc4(data.get(), decodedData.get(), dataSize, sizeof(S4));
+                decodedSize = SawyerCodingDecodeSC4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
             else
             {
-                decodedSize = sawyercoding_decode_sv4(data.get(), decodedData.get(), dataSize, sizeof(S4));
+                decodedSize = SawyerCodingDecodeSV4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
 
             if (decodedSize == sizeof(S4))

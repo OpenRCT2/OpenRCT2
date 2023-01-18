@@ -2609,7 +2609,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
     ft.Rewind();
     peep_b->FormatNameTo(ft);
     OpenRCT2::FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
-    return strlogicalcmp(nameA, nameB);
+    return StrLogicalCmp(nameA, nameB);
 }
 
 /**

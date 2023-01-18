@@ -201,7 +201,7 @@ static PaintStruct* CreateNormalPaintStruct(
 template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& session)
 {
     // Optimised modified version of ViewportPosToMapPos
-    ScreenCoordsXY screenCoord = { floor2(session.DPI.x, 32), floor2((session.DPI.y - 16), 32) };
+    ScreenCoordsXY screenCoord = { Floor2(session.DPI.x, 32), Floor2((session.DPI.y - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -493,12 +493,12 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     {
         if (dpi->zoom_level >= ZoomLevel{ 1 })
         {
-            x = floor2(x, 2);
-            y = floor2(y, 2);
+            x = Floor2(x, 2);
+            y = Floor2(y, 2);
             if (dpi->zoom_level >= ZoomLevel{ 2 })
             {
-                x = floor2(x, 4);
-                y = floor2(y, 4);
+                x = Floor2(x, 4);
+                y = Floor2(y, 4);
             }
         }
     }

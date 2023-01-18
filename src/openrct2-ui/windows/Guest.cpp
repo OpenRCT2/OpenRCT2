@@ -881,7 +881,7 @@ private:
             {
                 if (!(_beingWatchedTimer & 0x3FF))
                 {
-                    int32_t random = util_rand() & 0xFFFF;
+                    int32_t random = UtilRand() & 0xFFFF;
                     if (random <= 0x2AAA)
                     {
                         peep->InsertNewThought(PeepThoughtType::Watched);
@@ -1855,14 +1855,14 @@ private:
             if (peep->GetNextIsSurface())
             {
                 OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
-                safe_strcat(buffer, buffer2, sizeof(buffer));
+                SafeStrCat(buffer, buffer2, sizeof(buffer));
             }
             if (peep->GetNextIsSloped())
             {
                 auto ft2 = Formatter();
                 ft2.Add<int32_t>(peep->GetNextDirection());
                 OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
-                safe_strcat(buffer, buffer2, sizeof(buffer));
+                SafeStrCat(buffer, buffer2, sizeof(buffer));
             }
             GfxDrawString(&dpi, screenCoords, buffer, {});
         }

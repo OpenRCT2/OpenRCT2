@@ -525,7 +525,7 @@ private:
         chunkHeader.encoding = object_entry_group_encoding[EnumValue(objectType)];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(
+        size_t encodedDataSize = SawyerCodingWriteChunkBuffer(
             encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
 
         // Save to file

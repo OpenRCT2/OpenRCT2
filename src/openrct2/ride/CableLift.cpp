@@ -447,7 +447,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
         vehicleCount++;
 
         massTotal += vehicle->mass;
-        accelerationTotal = add_clamp_int32_t(accelerationTotal, vehicle->acceleration);
+        accelerationTotal = AddClamp_int32_t(accelerationTotal, vehicle->acceleration);
     }
 
     int32_t newAcceleration = (accelerationTotal / vehicleCount) >> 9;

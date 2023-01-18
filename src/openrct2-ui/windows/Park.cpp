@@ -966,7 +966,7 @@ private:
         if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         {
             stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
-            parkSize = squaredmetres_to_squaredfeet(parkSize);
+            parkSize = SquaredMetresToSquaredFeet(parkSize);
         }
         auto ft = Formatter();
         ft.Add<uint32_t>(parkSize);

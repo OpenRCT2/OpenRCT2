@@ -320,7 +320,7 @@ namespace Platform
     {
         mode_t mask = openrct2_getumask();
         char buffer[MAX_PATH];
-        safe_strcpy(buffer, u8string(path).c_str(), sizeof(buffer));
+        SafeStrCpy(buffer, u8string(path).c_str(), sizeof(buffer));
 
         LOG_VERBOSE("Create directory: %s", buffer);
         for (char* p = buffer + 1; *p != '\0'; p++)

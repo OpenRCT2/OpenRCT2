@@ -636,7 +636,7 @@ private:
         int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(costumeList);
         if (numCostumes > 0)
         {
-            int32_t index = util_rand() % numCostumes;
+            int32_t index = UtilRand() % numCostumes;
             result = costumeList[index];
         }
         return result;

@@ -750,7 +750,7 @@ public:
                     width_limit /= 2;
                     // Draw ride type
                     StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
-                    safe_strcpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
+                    SafeStrCpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
                     auto ft = Formatter();
                     ft.Add<const char*>(gCommonStringFormatBuffer);
                     DrawTextEllipsised(
@@ -759,7 +759,7 @@ public:
                 }
 
                 // Draw text
-                safe_strcpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
+                SafeStrCpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                 {
                     while (*buffer != 0 && *buffer != 9)
@@ -801,7 +801,7 @@ public:
         if (strcmp(_filter_string, c) == 0)
             return;
 
-        safe_strcpy(_filter_string, c, sizeof(_filter_string));
+        SafeStrCpy(_filter_string, c, sizeof(_filter_string));
 
         FilterUpdateCounts();
 

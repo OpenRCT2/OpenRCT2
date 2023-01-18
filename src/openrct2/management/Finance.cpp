@@ -87,7 +87,7 @@ bool FinanceCheckAffordability(money64 cost, uint32_t flags)
 void FinancePayment(money64 amount, ExpenditureType type)
 {
     // overflow check
-    gCash = add_clamp_money64(gCash, -amount);
+    gCash = AddClamp_money64(gCash, -amount);
 
     gExpenditureTable[0][static_cast<int32_t>(type)] -= amount;
     if (dword_988E60[static_cast<int32_t>(type)] & 1)

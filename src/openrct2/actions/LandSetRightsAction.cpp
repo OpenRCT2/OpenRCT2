@@ -191,7 +191,7 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                         std::remove_if(
                             gPeepSpawns.begin(), gPeepSpawns.end(),
                             [x = loc.x, y = loc.y](const auto& spawn) {
-                                return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y;
+                                return Floor2(spawn.x, 32) == x && Floor2(spawn.y, 32) == y;
                             }),
                         gPeepSpawns.end());
                 }

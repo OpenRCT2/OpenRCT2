@@ -42,7 +42,7 @@ void CurrencyLoadCustomCurrencyConfig()
     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.CustomCurrencyAffix;
     if (!gConfigGeneral.CustomCurrencySymbol.empty())
     {
-        safe_strcpy(
+        SafeStrCpy(
             CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.CustomCurrencySymbol.c_str(),
             CURRENCY_SYMBOL_MAX_SIZE);
     }
