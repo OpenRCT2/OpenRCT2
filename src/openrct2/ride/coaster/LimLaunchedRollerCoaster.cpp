@@ -31,7 +31,7 @@ static constexpr const uint32_t _LimLauncherBlockBrakeImages[NumOrthogonalDirect
 };
 
 /** rct2: 0x008A6D50, 0x008A6D60, 0x008A6D70 */
-static void lim_launched_rc_track_station(
+static void LimLaunchedRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -66,7 +66,7 @@ static void lim_launched_rc_track_station(
 }
 
 /** rct2: 0x008A65E0 */
-static void lim_launched_rc_track_left_vertical_loop(
+static void LimLaunchedRCTrackLeftVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -347,7 +347,7 @@ static void lim_launched_rc_track_left_vertical_loop(
 }
 
 /** rct2: 0x008A65F0 */
-static void lim_launched_rc_track_right_vertical_loop(
+static void LimLaunchedRCTrackRightVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -588,7 +588,7 @@ static void lim_launched_rc_track_right_vertical_loop(
 }
 
 /** rct2: 0x008A6D10 */
-static void lim_launched_rc_track_left_twist_down_to_up(
+static void LimLaunchedRCTrackLeftTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -736,7 +736,7 @@ static void lim_launched_rc_track_left_twist_down_to_up(
 }
 
 /** rct2: 0x008A6D20 */
-static void lim_launched_rc_track_right_twist_down_to_up(
+static void LimLaunchedRCTrackRightTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -884,7 +884,7 @@ static void lim_launched_rc_track_right_twist_down_to_up(
 }
 
 /** rct2: 0x008A6D30 */
-static void lim_launched_rc_track_left_twist_up_to_down(
+static void LimLaunchedRCTrackLeftTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1032,7 +1032,7 @@ static void lim_launched_rc_track_left_twist_up_to_down(
 }
 
 /** rct2: 0x008A6D40 */
-static void lim_launched_rc_track_right_twist_up_to_down(
+static void LimLaunchedRCTrackRightTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1180,7 +1180,7 @@ static void lim_launched_rc_track_right_twist_up_to_down(
 }
 
 /** rct2: 0x008A6CD0 */
-static void lim_launched_rc_track_left_corkscrew_up(
+static void LimLaunchedRCTrackLeftCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1291,7 +1291,7 @@ static void lim_launched_rc_track_left_corkscrew_up(
 }
 
 /** rct2: 0x008A6CE0 */
-static void lim_launched_rc_track_right_corkscrew_up(
+static void LimLaunchedRCTrackRightCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1403,23 +1403,23 @@ static void lim_launched_rc_track_right_corkscrew_up(
 }
 
 /** rct2: 0x008A6CF0 */
-static void lim_launched_rc_track_left_corkscrew_down(
+static void LimLaunchedRCTrackLeftCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_right_corkscrew_up(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
+    LimLaunchedRCTrackRightCorkscrewUp(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A6D00 */
-static void lim_launched_rc_track_right_corkscrew_down(
+static void LimLaunchedRCTrackRightCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_left_corkscrew_up(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
+    LimLaunchedRCTrackLeftCorkscrewUp(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A6D80 */
-static void lim_launched_rc_track_brakes(
+static void LimLaunchedRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1449,7 +1449,7 @@ static void lim_launched_rc_track_brakes(
 }
 
 /** rct2: 0x008A6C10 */
-static void lim_launched_rc_track_90_deg_up(
+static void LimLaunchedRCTrack90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1490,15 +1490,15 @@ static void lim_launched_rc_track_90_deg_up(
 }
 
 /** rct2: 0x008A6C20 */
-static void lim_launched_rc_track_90_deg_down(
+static void LimLaunchedRCTrack90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_90_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A6C30 */
-static void lim_launched_rc_track_60_deg_up_to_90_deg_up(
+static void LimLaunchedRCTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1543,15 +1543,15 @@ static void lim_launched_rc_track_60_deg_up_to_90_deg_up(
 }
 
 /** rct2: 0x008A6C40 */
-static void lim_launched_rc_track_90_deg_down_to_60_deg_down(
+static void LimLaunchedRCTrack90DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_60_deg_up_to_90_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A6C50 */
-static void lim_launched_rc_track_90_deg_up_to_60_deg_up(
+static void LimLaunchedRCTrack90DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1593,7 +1593,7 @@ static void lim_launched_rc_track_90_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008A6C60 */
-static void lim_launched_rc_track_60_deg_down_to_90_deg_down(
+static void LimLaunchedRCTrack60DegDownTo90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1637,7 +1637,7 @@ static void lim_launched_rc_track_60_deg_down_to_90_deg_down(
 }
 
 /** rct2: 0x008A6C70 */
-static void lim_launched_rc_track_90_deg_to_inverted_flat_quarter_loop_up(
+static void LimLaunchedRCTrack90DegToInvertedFlatQuarterLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1735,16 +1735,15 @@ static void lim_launched_rc_track_90_deg_to_inverted_flat_quarter_loop_up(
 }
 
 /** rct2: 0x008A6C80 */
-static void lim_launched_rc_track_inverted_flat_to_90_deg_quarter_loop_down(
+static void LimLaunchedRCTrackInvertedFlatTo90DegQuarterLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_90_deg_to_inverted_flat_quarter_loop_up(
-        session, ride, 2 - trackSequence, direction, height, trackElement);
+    LimLaunchedRCTrack90DegToInvertedFlatQuarterLoopUp(session, ride, 2 - trackSequence, direction, height, trackElement);
 }
 
 /** rct2: 0x008A6D90 */
-static void lim_launched_rc_track_block_brakes(
+static void LimLaunchedRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1763,7 +1762,7 @@ static void lim_launched_rc_track_block_brakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void lim_launched_rc_track_left_quarter_turn_1_90_deg_up(
+static void LimLaunchedRCTrackLeftQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1810,7 +1809,7 @@ static void lim_launched_rc_track_left_quarter_turn_1_90_deg_up(
 }
 
 /** rct2: 0x008A6CA0 */
-static void lim_launched_rc_track_right_quarter_turn_1_90_deg_up(
+static void LimLaunchedRCTrackRightQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1857,24 +1856,22 @@ static void lim_launched_rc_track_right_quarter_turn_1_90_deg_up(
 }
 
 /** rct2: 0x008A6CB0 */
-static void lim_launched_rc_track_left_quarter_turn_1_90_deg_down(
+static void LimLaunchedRCTrackLeftQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_right_quarter_turn_1_90_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LimLaunchedRCTrackRightQuarterTurn190DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A6CC0 */
-static void lim_launched_rc_track_right_quarter_turn_1_90_deg_down(
+static void LimLaunchedRCTrackRightQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_left_quarter_turn_1_90_deg_up(
-        session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LimLaunchedRCTrackLeftQuarterTurn190DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_left_barrel_roll_up_to_down(
+static void LimLaunchedRCTrackLeftBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2052,7 +2049,7 @@ static void lim_launched_rc_track_left_barrel_roll_up_to_down(
     }
 }
 
-static void lim_launched_rc_track_right_barrel_roll_up_to_down(
+static void LimLaunchedRCTrackRightBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2230,23 +2227,21 @@ static void lim_launched_rc_track_right_barrel_roll_up_to_down(
     }
 }
 
-static void lim_launched_rc_track_left_barrel_roll_down_to_up(
+static void LimLaunchedRCTrackLeftBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_left_barrel_roll_up_to_down(
-        session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrackLeftBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_right_barrel_roll_down_to_up(
+static void LimLaunchedRCTrackRightBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_right_barrel_roll_up_to_down(
-        session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrackRightBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_half_loop_up(
+static void LimLaunchedRCTrackHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2401,14 +2396,14 @@ static void lim_launched_rc_track_half_loop_up(
     }
 }
 
-static void lim_launched_rc_track_half_loop_down(
+static void LimLaunchedRCTrackHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_half_loop_up(session, ride, 3 - trackSequence, direction, height, trackElement);
+    LimLaunchedRCTrackHalfLoopUp(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
-static void lim_launched_rc_track_flat_to_60_deg_up_long_base(
+static void LimLaunchedRCTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2573,7 +2568,7 @@ static void lim_launched_rc_track_flat_to_60_deg_up_long_base(
             break;
     }
 }
-static void lim_launched_rc_track_60_deg_up_to_flat_long_base(
+static void LimLaunchedRCTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2739,23 +2734,21 @@ static void lim_launched_rc_track_60_deg_up_to_flat_long_base(
     }
 }
 
-static void lim_launched_rc_track_flat_to_60_deg_down_long_base(
+static void LimLaunchedRCTrackFlatTo60DegDownLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_60_deg_up_to_flat_long_base(
-        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrack60DegUpToFlatLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_60_deg_down_to_flat_long_base(
+static void LimLaunchedRCTrack60DegDownToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_flat_to_60_deg_up_long_base(
-        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrackFlatTo60DegUpLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_left_large_corkscrew_up(
+static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2968,7 +2961,7 @@ static void lim_launched_rc_track_left_large_corkscrew_up(
     }
 }
 
-static void lim_launched_rc_track_right_large_corkscrew_up(
+static void LimLaunchedRCTrackRightLargeCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3180,21 +3173,21 @@ static void lim_launched_rc_track_right_large_corkscrew_up(
     }
 }
 
-static void lim_launched_rc_track_left_large_corkscrew_down(
+static void LimLaunchedRCTrackLeftLargeCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_right_large_corkscrew_up(session, ride, 5 - trackSequence, (direction + 1) & 3, height, trackElement);
+    LimLaunchedRCTrackRightLargeCorkscrewUp(session, ride, 5 - trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_right_large_corkscrew_down(
+static void LimLaunchedRCTrackRightLargeCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_left_large_corkscrew_up(session, ride, 5 - trackSequence, (direction - 1) & 3, height, trackElement);
+    LimLaunchedRCTrackLeftLargeCorkscrewUp(session, ride, 5 - trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_left_medium_half_loop_up(
+static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3389,7 +3382,7 @@ static void lim_launched_rc_track_left_medium_half_loop_up(
     }
 }
 
-static void lim_launched_rc_track_right_medium_half_loop_up(
+static void LimLaunchedRCTrackRightMediumHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3584,21 +3577,21 @@ static void lim_launched_rc_track_right_medium_half_loop_up(
     }
 }
 
-static void lim_launched_rc_track_left_medium_half_loop_down(
+static void LimLaunchedRCTrackLeftMediumHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_right_medium_half_loop_up(session, ride, 4 - trackSequence, direction, height, trackElement);
+    LimLaunchedRCTrackRightMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement);
 }
 
-static void lim_launched_rc_track_right_medium_half_loop_down(
+static void LimLaunchedRCTrackRightMediumHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_left_medium_half_loop_up(session, ride, 4 - trackSequence, direction, height, trackElement);
+    LimLaunchedRCTrackLeftMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement);
 }
 
-static void lim_launched_rc_track_left_zero_g_roll_up(
+static void LimLaunchedRCTrackLeftZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3746,7 +3739,7 @@ static void lim_launched_rc_track_left_zero_g_roll_up(
     }
 }
 
-static void lim_launched_rc_track_right_zero_g_roll_up(
+static void LimLaunchedRCTrackRightZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3893,21 +3886,21 @@ static void lim_launched_rc_track_right_zero_g_roll_up(
     }
 }
 
-static void lim_launched_rc_track_left_zero_g_roll_down(
+static void LimLaunchedRCTrackLeftZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_left_zero_g_roll_up(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrackLeftZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_right_zero_g_roll_down(
+static void LimLaunchedRCTrackRightZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_right_zero_g_roll_up(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrackRightZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_left_large_zero_g_roll_up(
+static void LimLaunchedRCTrackLeftLargeZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4086,7 +4079,7 @@ static void lim_launched_rc_track_left_large_zero_g_roll_up(
     }
 }
 
-static void lim_launched_rc_track_right_large_zero_g_roll_up(
+static void LimLaunchedRCTrackRightLargeZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4266,23 +4259,21 @@ static void lim_launched_rc_track_right_large_zero_g_roll_up(
     }
 }
 
-static void lim_launched_rc_track_left_large_zero_g_roll_down(
+static void LimLaunchedRCTrackLeftLargeZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_left_large_zero_g_roll_up(
-        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrackLeftLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_right_large_zero_g_roll_down(
+static void LimLaunchedRCTrackRightLargeZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_right_large_zero_g_roll_up(
-        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrackRightLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
+static void LimLaunchedRCTrackLeftBankToLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4380,7 +4371,7 @@ static void lim_launched_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
     }
 }
 
-static void lim_launched_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
+static void LimLaunchedRCTrackRightBankToRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4478,7 +4469,7 @@ static void lim_launched_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
     }
 }
 
-static void lim_launched_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
+static void LimLaunchedRCTrackLeftQuarterTurn325DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4576,7 +4567,7 @@ static void lim_launched_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
     }
 }
 
-static void lim_launched_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
+static void LimLaunchedRCTrackRightQuarterTurn325DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4674,7 +4665,7 @@ static void lim_launched_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank
     }
 }
 
-static void lim_launched_rc_track_left_large_half_loop_up(
+static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4940,7 +4931,7 @@ static void lim_launched_rc_track_left_large_half_loop_up(
     }
 }
 
-static void lim_launched_rc_track_right_large_half_loop_up(
+static void LimLaunchedRCTrackRightLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5206,21 +5197,21 @@ static void lim_launched_rc_track_right_large_half_loop_up(
     }
 }
 
-static void lim_launched_rc_track_right_large_half_loop_down(
+static void LimLaunchedRCTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_right_large_half_loop_up(session, ride, 6 - trackSequence, direction, height, trackElement);
+    LimLaunchedRCTrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-static void lim_launched_rc_track_left_large_half_loop_down(
+static void LimLaunchedRCTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_left_large_half_loop_up(session, ride, 6 - trackSequence, direction, height, trackElement);
+    LimLaunchedRCTrackLeftLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-static void lim_launched_rc_track_flat_to_60_deg_up(
+static void LimLaunchedRCTrackFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5276,7 +5267,7 @@ static void lim_launched_rc_track_flat_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
-static void lim_launched_rc_track_60_deg_up_to_flat(
+static void LimLaunchedRCTrack60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5329,21 +5320,21 @@ static void lim_launched_rc_track_60_deg_up_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-static void lim_launched_rc_track_flat_to_60_deg_down(
+static void LimLaunchedRCTrackFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_60_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrack60DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_60_deg_down_to_flat(
+static void LimLaunchedRCTrack60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lim_launched_rc_track_flat_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LimLaunchedRCTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void lim_launched_rc_track_diag_flat_to_60_deg_up(
+static void LimLaunchedRCTrackDiagFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5422,7 +5413,7 @@ static void lim_launched_rc_track_diag_flat_to_60_deg_up(
     }
 }
 
-static void lim_launched_rc_track_diag_60_deg_up_to_flat(
+static void LimLaunchedRCTrackDiag60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5501,7 +5492,7 @@ static void lim_launched_rc_track_diag_60_deg_up_to_flat(
     }
 }
 
-static void lim_launched_rc_track_diag_flat_to_60_deg_down(
+static void LimLaunchedRCTrackDiagFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5580,7 +5571,7 @@ static void lim_launched_rc_track_diag_flat_to_60_deg_down(
     }
 }
 
-static void lim_launched_rc_track_diag_60_deg_down_to_flat(
+static void LimLaunchedRCTrackDiag60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5659,7 +5650,7 @@ static void lim_launched_rc_track_diag_60_deg_down_to_flat(
     }
 }
 
-static void lim_launched_rc_track_booster(
+static void LimLaunchedRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5832,141 +5823,141 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRc(int32_t trackType)
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return lim_launched_rc_track_station;
+            return LimLaunchedRCTrackStation;
         case TrackElemType::LeftVerticalLoop:
-            return lim_launched_rc_track_left_vertical_loop;
+            return LimLaunchedRCTrackLeftVerticalLoop;
         case TrackElemType::RightVerticalLoop:
-            return lim_launched_rc_track_right_vertical_loop;
+            return LimLaunchedRCTrackRightVerticalLoop;
         case TrackElemType::LeftTwistDownToUp:
-            return lim_launched_rc_track_left_twist_down_to_up;
+            return LimLaunchedRCTrackLeftTwistDownToUp;
         case TrackElemType::RightTwistDownToUp:
-            return lim_launched_rc_track_right_twist_down_to_up;
+            return LimLaunchedRCTrackRightTwistDownToUp;
         case TrackElemType::LeftTwistUpToDown:
-            return lim_launched_rc_track_left_twist_up_to_down;
+            return LimLaunchedRCTrackLeftTwistUpToDown;
         case TrackElemType::RightTwistUpToDown:
-            return lim_launched_rc_track_right_twist_up_to_down;
+            return LimLaunchedRCTrackRightTwistUpToDown;
         case TrackElemType::LeftCorkscrewUp:
-            return lim_launched_rc_track_left_corkscrew_up;
+            return LimLaunchedRCTrackLeftCorkscrewUp;
         case TrackElemType::RightCorkscrewUp:
-            return lim_launched_rc_track_right_corkscrew_up;
+            return LimLaunchedRCTrackRightCorkscrewUp;
         case TrackElemType::LeftCorkscrewDown:
-            return lim_launched_rc_track_left_corkscrew_down;
+            return LimLaunchedRCTrackLeftCorkscrewDown;
         case TrackElemType::RightCorkscrewDown:
-            return lim_launched_rc_track_right_corkscrew_down;
+            return LimLaunchedRCTrackRightCorkscrewDown;
         case TrackElemType::Brakes:
-            return lim_launched_rc_track_brakes;
+            return LimLaunchedRCTrackBrakes;
         case TrackElemType::Up90:
-            return lim_launched_rc_track_90_deg_up;
+            return LimLaunchedRCTrack90DegUp;
         case TrackElemType::Down90:
-            return lim_launched_rc_track_90_deg_down;
+            return LimLaunchedRCTrack90DegDown;
         case TrackElemType::Up60ToUp90:
-            return lim_launched_rc_track_60_deg_up_to_90_deg_up;
+            return LimLaunchedRCTrack60DegUpTo90DegUp;
         case TrackElemType::Down90ToDown60:
-            return lim_launched_rc_track_90_deg_down_to_60_deg_down;
+            return LimLaunchedRCTrack90DegDownTo60DegDown;
         case TrackElemType::Up90ToUp60:
-            return lim_launched_rc_track_90_deg_up_to_60_deg_up;
+            return LimLaunchedRCTrack90DegUpTo60DegUp;
         case TrackElemType::Down60ToDown90:
-            return lim_launched_rc_track_60_deg_down_to_90_deg_down;
+            return LimLaunchedRCTrack60DegDownTo90DegDown;
         case TrackElemType::Up90ToInvertedFlatQuarterLoop:
-            return lim_launched_rc_track_90_deg_to_inverted_flat_quarter_loop_up;
+            return LimLaunchedRCTrack90DegToInvertedFlatQuarterLoopUp;
         case TrackElemType::InvertedFlatToDown90QuarterLoop:
-            return lim_launched_rc_track_inverted_flat_to_90_deg_quarter_loop_down;
+            return LimLaunchedRCTrackInvertedFlatTo90DegQuarterLoopDown;
         case TrackElemType::BlockBrakes:
-            return lim_launched_rc_track_block_brakes;
+            return LimLaunchedRCTrackBlockBrakes;
         case TrackElemType::LeftQuarterTurn1TileUp90:
-            return lim_launched_rc_track_left_quarter_turn_1_90_deg_up;
+            return LimLaunchedRCTrackLeftQuarterTurn190DegUp;
         case TrackElemType::RightQuarterTurn1TileUp90:
-            return lim_launched_rc_track_right_quarter_turn_1_90_deg_up;
+            return LimLaunchedRCTrackRightQuarterTurn190DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown90:
-            return lim_launched_rc_track_left_quarter_turn_1_90_deg_down;
+            return LimLaunchedRCTrackLeftQuarterTurn190DegDown;
         case TrackElemType::RightQuarterTurn1TileDown90:
-            return lim_launched_rc_track_right_quarter_turn_1_90_deg_down;
+            return LimLaunchedRCTrackRightQuarterTurn190DegDown;
         case TrackElemType::FlatToUp60LongBase:
-            return lim_launched_rc_track_flat_to_60_deg_up_long_base;
+            return LimLaunchedRCTrackFlatTo60DegUpLongBase;
         case TrackElemType::Up60ToFlatLongBase:
-            return lim_launched_rc_track_60_deg_up_to_flat_long_base;
+            return LimLaunchedRCTrack60DegUpToFlatLongBase;
         case TrackElemType::FlatToDown60LongBase:
-            return lim_launched_rc_track_flat_to_60_deg_down_long_base;
+            return LimLaunchedRCTrackFlatTo60DegDownLongBase;
         case TrackElemType::Down60ToFlatLongBase:
-            return lim_launched_rc_track_60_deg_down_to_flat_long_base;
+            return LimLaunchedRCTrack60DegDownToFlatLongBase;
         case TrackElemType::FlatToUp60:
-            return lim_launched_rc_track_flat_to_60_deg_up;
+            return LimLaunchedRCTrackFlatTo60DegUp;
         case TrackElemType::Up60ToFlat:
-            return lim_launched_rc_track_60_deg_up_to_flat;
+            return LimLaunchedRCTrack60DegUpToFlat;
         case TrackElemType::FlatToDown60:
-            return lim_launched_rc_track_flat_to_60_deg_down;
+            return LimLaunchedRCTrackFlatTo60DegDown;
         case TrackElemType::Down60ToFlat:
-            return lim_launched_rc_track_60_deg_down_to_flat;
+            return LimLaunchedRCTrack60DegDownToFlat;
         case TrackElemType::DiagFlatToUp60:
-            return lim_launched_rc_track_diag_flat_to_60_deg_up;
+            return LimLaunchedRCTrackDiagFlatTo60DegUp;
         case TrackElemType::DiagUp60ToFlat:
-            return lim_launched_rc_track_diag_60_deg_up_to_flat;
+            return LimLaunchedRCTrackDiag60DegUpToFlat;
         case TrackElemType::DiagFlatToDown60:
-            return lim_launched_rc_track_diag_flat_to_60_deg_down;
+            return LimLaunchedRCTrackDiagFlatTo60DegDown;
         case TrackElemType::DiagDown60ToFlat:
-            return lim_launched_rc_track_diag_60_deg_down_to_flat;
+            return LimLaunchedRCTrackDiag60DegDownToFlat;
         case TrackElemType::LeftBarrelRollUpToDown:
-            return lim_launched_rc_track_left_barrel_roll_up_to_down;
+            return LimLaunchedRCTrackLeftBarrelRollUpToDown;
         case TrackElemType::RightBarrelRollUpToDown:
-            return lim_launched_rc_track_right_barrel_roll_up_to_down;
+            return LimLaunchedRCTrackRightBarrelRollUpToDown;
         case TrackElemType::LeftBarrelRollDownToUp:
-            return lim_launched_rc_track_left_barrel_roll_down_to_up;
+            return LimLaunchedRCTrackLeftBarrelRollDownToUp;
         case TrackElemType::RightBarrelRollDownToUp:
-            return lim_launched_rc_track_right_barrel_roll_down_to_up;
+            return LimLaunchedRCTrackRightBarrelRollDownToUp;
         case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-            return lim_launched_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up;
+            return LimLaunchedRCTrackLeftBankToLeftQuarterTurn325DegUp;
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-            return lim_launched_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up;
+            return LimLaunchedRCTrackRightBankToRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-            return lim_launched_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank;
+            return LimLaunchedRCTrackLeftQuarterTurn325DegDownToLeftBank;
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
-            return lim_launched_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank;
+            return LimLaunchedRCTrackRightQuarterTurn325DegDownToRightBank;
         case TrackElemType::HalfLoopUp:
-            return lim_launched_rc_track_half_loop_up;
+            return LimLaunchedRCTrackHalfLoopUp;
         case TrackElemType::HalfLoopDown:
-            return lim_launched_rc_track_half_loop_down;
+            return LimLaunchedRCTrackHalfLoopDown;
         case TrackElemType::LeftMediumHalfLoopUp:
-            return lim_launched_rc_track_left_medium_half_loop_up;
+            return LimLaunchedRCTrackLeftMediumHalfLoopUp;
         case TrackElemType::RightMediumHalfLoopUp:
-            return lim_launched_rc_track_right_medium_half_loop_up;
+            return LimLaunchedRCTrackRightMediumHalfLoopUp;
         case TrackElemType::LeftMediumHalfLoopDown:
-            return lim_launched_rc_track_left_medium_half_loop_down;
+            return LimLaunchedRCTrackLeftMediumHalfLoopDown;
         case TrackElemType::RightMediumHalfLoopDown:
-            return lim_launched_rc_track_right_medium_half_loop_down;
+            return LimLaunchedRCTrackRightMediumHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopUp:
-            return lim_launched_rc_track_left_large_half_loop_up;
+            return LimLaunchedRCTrackLeftLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopUp:
-            return lim_launched_rc_track_right_large_half_loop_up;
+            return LimLaunchedRCTrackRightLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopDown:
-            return lim_launched_rc_track_right_large_half_loop_down;
+            return LimLaunchedRCTrackRightLargeHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return lim_launched_rc_track_left_large_half_loop_down;
+            return LimLaunchedRCTrackLeftLargeHalfLoopDown;
         case TrackElemType::LeftLargeCorkscrewUp:
-            return lim_launched_rc_track_left_large_corkscrew_up;
+            return LimLaunchedRCTrackLeftLargeCorkscrewUp;
         case TrackElemType::RightLargeCorkscrewUp:
-            return lim_launched_rc_track_right_large_corkscrew_up;
+            return LimLaunchedRCTrackRightLargeCorkscrewUp;
         case TrackElemType::LeftLargeCorkscrewDown:
-            return lim_launched_rc_track_left_large_corkscrew_down;
+            return LimLaunchedRCTrackLeftLargeCorkscrewDown;
         case TrackElemType::RightLargeCorkscrewDown:
-            return lim_launched_rc_track_right_large_corkscrew_down;
+            return LimLaunchedRCTrackRightLargeCorkscrewDown;
         case TrackElemType::LeftZeroGRollUp:
-            return lim_launched_rc_track_left_zero_g_roll_up;
+            return LimLaunchedRCTrackLeftZeroGRollUp;
         case TrackElemType::RightZeroGRollUp:
-            return lim_launched_rc_track_right_zero_g_roll_up;
+            return LimLaunchedRCTrackRightZeroGRollUp;
         case TrackElemType::LeftZeroGRollDown:
-            return lim_launched_rc_track_left_zero_g_roll_down;
+            return LimLaunchedRCTrackLeftZeroGRollDown;
         case TrackElemType::RightZeroGRollDown:
-            return lim_launched_rc_track_right_zero_g_roll_down;
+            return LimLaunchedRCTrackRightZeroGRollDown;
         case TrackElemType::LeftLargeZeroGRollUp:
-            return lim_launched_rc_track_left_large_zero_g_roll_up;
+            return LimLaunchedRCTrackLeftLargeZeroGRollUp;
         case TrackElemType::RightLargeZeroGRollUp:
-            return lim_launched_rc_track_right_large_zero_g_roll_up;
+            return LimLaunchedRCTrackRightLargeZeroGRollUp;
         case TrackElemType::LeftLargeZeroGRollDown:
-            return lim_launched_rc_track_left_large_zero_g_roll_down;
+            return LimLaunchedRCTrackLeftLargeZeroGRollDown;
         case TrackElemType::RightLargeZeroGRollDown:
-            return lim_launched_rc_track_right_large_zero_g_roll_down;
+            return LimLaunchedRCTrackRightLargeZeroGRollDown;
         case TrackElemType::Booster:
-            return lim_launched_rc_track_booster;
+            return LimLaunchedRCTrackBooster;
     }
     return nullptr;
 }

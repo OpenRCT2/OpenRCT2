@@ -99,7 +99,7 @@ void VehicleVisualRotoDrop(
 }
 
 /** rct2: 0x00886194 */
-static void paint_roto_drop_base(
+static void PaintRotoDropBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -173,7 +173,7 @@ static void paint_roto_drop_base(
 }
 
 /** rct2: 0x008861A4 */
-static void paint_roto_drop_tower_section(
+static void PaintRotoDropTowerSection(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -206,10 +206,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::TowerBase:
-            return paint_roto_drop_base;
+            return PaintRotoDropBase;
 
         case TrackElemType::TowerSection:
-            return paint_roto_drop_tower_section;
+            return PaintRotoDropTowerSection;
     }
 
     return nullptr;

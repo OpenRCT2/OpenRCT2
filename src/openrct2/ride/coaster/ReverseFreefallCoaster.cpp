@@ -195,7 +195,7 @@ static constexpr const uint32_t reverse_freefall_rc_track_pieces_vertical_suppor
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SE_NW,
 };
 
-static void paint_reverse_freefall_rc_flat(
+static void PaintReverseFreefallRcFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -217,7 +217,7 @@ static void paint_reverse_freefall_rc_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_reverse_freefall_rc_station(
+static void PaintReverseFreefallRcStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -256,7 +256,7 @@ static void paint_reverse_freefall_rc_station(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_reverse_freefall_rc_slope(
+static void PaintReverseFreefallRcSlope(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -357,7 +357,7 @@ static void paint_reverse_freefall_rc_slope(
     }
 }
 
-static void paint_reverse_freefall_rc_vertical(
+static void PaintReverseFreefallRcVertical(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -390,7 +390,7 @@ static void paint_reverse_freefall_rc_vertical(
     }
 }
 
-static void paint_reverse_freefall_rc_onride_photo(
+static void PaintReverseFreefallRcOnridePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -426,17 +426,17 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRc(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return paint_reverse_freefall_rc_flat;
+            return PaintReverseFreefallRcFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_reverse_freefall_rc_station;
+            return PaintReverseFreefallRcStation;
         case TrackElemType::ReverseFreefallSlope:
-            return paint_reverse_freefall_rc_slope;
+            return PaintReverseFreefallRcSlope;
         case TrackElemType::ReverseFreefallVertical:
-            return paint_reverse_freefall_rc_vertical;
+            return PaintReverseFreefallRcVertical;
         case TrackElemType::OnRidePhoto:
-            return paint_reverse_freefall_rc_onride_photo;
+            return PaintReverseFreefallRcOnridePhoto;
     }
     return nullptr;
 }

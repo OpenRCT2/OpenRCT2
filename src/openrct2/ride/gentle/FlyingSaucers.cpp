@@ -34,7 +34,7 @@ static constexpr const uint32_t FlyingSaucersFenceSprites[] = {
 /**
  * rct2: 0x008873D8
  */
-static void paint_flying_saucers(
+static void PaintFlyingSaucers(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -70,5 +70,5 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingSaucers(int32_t trackType)
         return nullptr;
     }
 
-    return paint_flying_saucers;
+    return PaintFlyingSaucers;
 }

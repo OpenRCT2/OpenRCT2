@@ -63,7 +63,7 @@ void VehicleVisualSubmarine(
     assert(carEntry->effect_visual == 1);
 }
 
-static void submarine_ride_paint_track_station(
+static void SubmarineRidePaintTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -94,7 +94,7 @@ static void submarine_ride_paint_track_station(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void submarine_ride_paint_track_flat(
+static void SubmarineRidePaintTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -126,7 +126,7 @@ static void submarine_ride_paint_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
 }
 
-static void submarine_ride_paint_track_left_quarter_turn_3_tiles(
+static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -162,16 +162,15 @@ static constexpr const uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left
     2,
     0,
 };
-static void submarine_ride_paint_track_right_quarter_turn_3_tiles(
+static void SubmarineRidePaintTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
-    submarine_ride_paint_track_left_quarter_turn_3_tiles(
-        session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    SubmarineRidePaintTrackLeftQuarterTurn3Tiles(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
-static void submarine_ride_paint_track_left_quarter_turn_1_tile(
+static void SubmarineRidePaintTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -185,12 +184,11 @@ static void submarine_ride_paint_track_left_quarter_turn_1_tile(
     PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
 }
 
-static void submarine_ride_paint_track_right_quarter_turn_1_tile(
+static void SubmarineRidePaintTrackRightQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    submarine_ride_paint_track_left_quarter_turn_1_tile(
-        session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    SubmarineRidePaintTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 /**
@@ -203,20 +201,20 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSubmarineRide(int32_t trackType)
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
         case TrackElemType::EndStation:
-            return submarine_ride_paint_track_station;
+            return SubmarineRidePaintTrackStation;
 
         case TrackElemType::Flat:
-            return submarine_ride_paint_track_flat;
+            return SubmarineRidePaintTrackFlat;
 
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return submarine_ride_paint_track_left_quarter_turn_3_tiles;
+            return SubmarineRidePaintTrackLeftQuarterTurn3Tiles;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return submarine_ride_paint_track_right_quarter_turn_3_tiles;
+            return SubmarineRidePaintTrackRightQuarterTurn3Tiles;
 
         case TrackElemType::LeftQuarterTurn1Tile:
-            return submarine_ride_paint_track_left_quarter_turn_1_tile;
+            return SubmarineRidePaintTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
-            return submarine_ride_paint_track_right_quarter_turn_1_tile;
+            return SubmarineRidePaintTrackRightQuarterTurn1Tile;
     }
 
     return nullptr;

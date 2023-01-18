@@ -384,7 +384,7 @@ static constexpr const uint32_t monorail_track_pieces_diag_25_deg_up[4] = {
 };
 
 /** rct2: 0x008AE1AC */
-static void paint_monorail_track_flat(
+static void PaintMonorailTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -419,7 +419,7 @@ static void paint_monorail_track_flat(
 }
 
 /** rct2: 0x008AE25C, 0x008AE26C, 0x008AE27C */
-static void paint_monorail_station(
+static void PaintMonorailStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -479,7 +479,7 @@ static void paint_monorail_station(
 }
 
 /** rct2: 0x008AE1BC */
-static void paint_monorail_track_25_deg_up(
+static void PaintMonorailTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -521,7 +521,7 @@ static void paint_monorail_track_25_deg_up(
 }
 
 /** rct2: 0x008AE1CC */
-static void paint_monorail_track_flat_to_25_deg_up(
+static void PaintMonorailTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -563,7 +563,7 @@ static void paint_monorail_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008AE1DC */
-static void paint_monorail_track_25_deg_up_to_flat(
+static void PaintMonorailTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -605,31 +605,31 @@ static void paint_monorail_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008AE1EC */
-static void paint_monorail_track_25_deg_down(
+static void PaintMonorailTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_monorail_track_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMonorailTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x008AE1FC */
-static void paint_monorail_track_flat_to_25_deg_down(
+static void PaintMonorailTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_monorail_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMonorailTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x008AE20C */
-static void paint_monorail_track_25_deg_down_to_flat(
+static void PaintMonorailTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_monorail_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMonorailTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x008AE22C */
-static void paint_monorail_track_right_quarter_turn_5_tiles(
+static void PaintMonorailTrackRightQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -692,16 +692,16 @@ static void paint_monorail_track_right_quarter_turn_5_tiles(
 }
 
 /** rct2: 0x008AE21C */
-static void paint_monorail_track_left_quarter_turn_5_tiles(
+static void PaintMonorailTrackLeftQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    paint_monorail_track_right_quarter_turn_5_tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    PaintMonorailTrackRightQuarterTurn5Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
 /** rct2: 0x */
-static void paint_monorail_track_s_bend_left(
+static void PaintMonorailTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -793,7 +793,7 @@ static void paint_monorail_track_s_bend_left(
 }
 
 /** rct2: 0x008AE24C */
-static void paint_monorail_track_s_bend_right(
+static void PaintMonorailTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -882,7 +882,7 @@ static void paint_monorail_track_s_bend_right(
 }
 
 /** rct2: 0x008AE29C */
-static void paint_monorail_track_right_quarter_turn_3_tiles(
+static void PaintMonorailTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -919,12 +919,12 @@ static void paint_monorail_track_right_quarter_turn_3_tiles(
 }
 
 /** rct2: 0x008AE28C */
-static void paint_monorail_track_left_quarter_turn_3_tiles(
+static void PaintMonorailTrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    paint_monorail_track_right_quarter_turn_3_tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    PaintMonorailTrackRightQuarterTurn3Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
 static constexpr const int8_t paint_monorail_eighth_to_diag_index[] = {
@@ -932,7 +932,7 @@ static constexpr const int8_t paint_monorail_eighth_to_diag_index[] = {
 };
 
 /** rct2: 0x008AE31C */
-static void paint_monorail_track_left_eighth_to_diag(
+static void PaintMonorailTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -997,7 +997,7 @@ static void paint_monorail_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x008AE32C */
-static void paint_monorail_track_right_eighth_to_diag(
+static void PaintMonorailTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1062,23 +1062,23 @@ static void paint_monorail_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x008AE33C */
-static void paint_monorail_track_left_eighth_to_orthogonal(
+static void PaintMonorailTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
     trackSequence = map[trackSequence];
-    paint_monorail_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMonorailTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x008AE34C */
-static void paint_monorail_track_right_eighth_to_orthogonal(
+static void PaintMonorailTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
     trackSequence = map[trackSequence];
-    paint_monorail_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintMonorailTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 static constexpr const bool monorail_diag_image_segment[][4] = {
@@ -1103,7 +1103,7 @@ static constexpr const int32_t monorail_diag_blocked_segments[] = {
 };
 
 /** rct2: 0x008AE2AC */
-static void paint_monorail_track_diag_flat(
+static void PaintMonorailTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1126,7 +1126,7 @@ static void paint_monorail_track_diag_flat(
 }
 
 /** rct2: 0x008AE2DC */
-static void paint_monorail_track_diag_25_deg_up(
+static void PaintMonorailTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1149,7 +1149,7 @@ static void paint_monorail_track_diag_25_deg_up(
 }
 
 /** rct2: 0x008AE2BC */
-static void paint_monorail_track_diag_flat_to_25_deg_up(
+static void PaintMonorailTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1172,7 +1172,7 @@ static void paint_monorail_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008AE2CC */
-static void paint_monorail_track_diag_25_deg_up_to_flat(
+static void PaintMonorailTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1195,7 +1195,7 @@ static void paint_monorail_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008AE30C */
-static void paint_monorail_track_diag_25_deg_down(
+static void PaintMonorailTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1218,7 +1218,7 @@ static void paint_monorail_track_diag_25_deg_down(
 }
 
 /** rct2: 0x008AE2EC */
-static void paint_monorail_track_diag_flat_to_25_deg_down(
+static void PaintMonorailTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1242,7 +1242,7 @@ static void paint_monorail_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x008AE2FC */
-static void paint_monorail_track_diag_25_deg_down_to_flat(
+static void PaintMonorailTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1273,67 +1273,67 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorail(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return paint_monorail_track_flat;
+            return PaintMonorailTrackFlat;
 
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_monorail_station;
+            return PaintMonorailStation;
 
         case TrackElemType::Up25:
-            return paint_monorail_track_25_deg_up;
+            return PaintMonorailTrack25DegUp;
         case TrackElemType::FlatToUp25:
-            return paint_monorail_track_flat_to_25_deg_up;
+            return PaintMonorailTrackFlatTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return paint_monorail_track_25_deg_up_to_flat;
+            return PaintMonorailTrack25DegUpToFlat;
 
         case TrackElemType::Down25:
-            return paint_monorail_track_25_deg_down;
+            return PaintMonorailTrack25DegDown;
         case TrackElemType::FlatToDown25:
-            return paint_monorail_track_flat_to_25_deg_down;
+            return PaintMonorailTrackFlatTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return paint_monorail_track_25_deg_down_to_flat;
+            return PaintMonorailTrack25DegDownToFlat;
 
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return paint_monorail_track_left_quarter_turn_5_tiles;
+            return PaintMonorailTrackLeftQuarterTurn5Tiles;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return paint_monorail_track_right_quarter_turn_5_tiles;
+            return PaintMonorailTrackRightQuarterTurn5Tiles;
 
         case TrackElemType::SBendLeft:
-            return paint_monorail_track_s_bend_left;
+            return PaintMonorailTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return paint_monorail_track_s_bend_right;
+            return PaintMonorailTrackSBendRight;
 
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return paint_monorail_track_left_quarter_turn_3_tiles;
+            return PaintMonorailTrackLeftQuarterTurn3Tiles;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return paint_monorail_track_right_quarter_turn_3_tiles;
+            return PaintMonorailTrackRightQuarterTurn3Tiles;
 
         case TrackElemType::LeftEighthToDiag:
-            return paint_monorail_track_left_eighth_to_diag;
+            return PaintMonorailTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return paint_monorail_track_right_eighth_to_diag;
+            return PaintMonorailTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return paint_monorail_track_left_eighth_to_orthogonal;
+            return PaintMonorailTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return paint_monorail_track_right_eighth_to_orthogonal;
+            return PaintMonorailTrackRightEighthToOrthogonal;
 
         case TrackElemType::DiagFlat:
-            return paint_monorail_track_diag_flat;
+            return PaintMonorailTrackDiagFlat;
 
         case TrackElemType::DiagUp25:
-            return paint_monorail_track_diag_25_deg_up;
+            return PaintMonorailTrackDiag25DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return paint_monorail_track_diag_flat_to_25_deg_up;
+            return PaintMonorailTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return paint_monorail_track_diag_25_deg_up_to_flat;
+            return PaintMonorailTrackDiag25DegUpToFlat;
 
         case TrackElemType::DiagDown25:
-            return paint_monorail_track_diag_25_deg_down;
+            return PaintMonorailTrackDiag25DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return paint_monorail_track_diag_flat_to_25_deg_down;
+            return PaintMonorailTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return paint_monorail_track_diag_25_deg_down_to_flat;
+            return PaintMonorailTrackDiag25DegDownToFlat;
     }
 
     return nullptr;

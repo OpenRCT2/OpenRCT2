@@ -121,7 +121,7 @@ enum
 };
 
 /** rct2: 0x008A5464 */
-static void wooden_wild_mouse_track_flat(
+static void WoodenWildMouseTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -145,7 +145,7 @@ static void wooden_wild_mouse_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void wooden_wild_mouse_track_station(
+static void WoodenWildMouseTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -170,7 +170,7 @@ static void wooden_wild_mouse_track_station(
 }
 
 /** rct2: 0x008A5474 */
-static void wooden_wild_mouse_track_25_deg_up(
+static void WoodenWildMouseTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -209,7 +209,7 @@ static void wooden_wild_mouse_track_25_deg_up(
 }
 
 /** rct2: 0x008A5484 */
-static void wooden_wild_mouse_track_60_deg_up(
+static void WoodenWildMouseTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -256,7 +256,7 @@ static void wooden_wild_mouse_track_60_deg_up(
 }
 
 /** rct2: 0x008A5494 */
-static void wooden_wild_mouse_track_flat_to_25_deg_up(
+static void WoodenWildMouseTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -295,7 +295,7 @@ static void wooden_wild_mouse_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008A54A4 */
-static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(
+static void WoodenWildMouseTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -345,7 +345,7 @@ static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-static void wooden_wild_mouse_track_60_deg_to_25_deg_up(
+static void WoodenWildMouseTrack60DegTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -396,7 +396,7 @@ static void wooden_wild_mouse_track_60_deg_to_25_deg_up(
 }
 
 /** rct2: 0x008A54C4 */
-static void wooden_wild_mouse_track_25_deg_up_to_flat(
+static void WoodenWildMouseTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -435,54 +435,54 @@ static void wooden_wild_mouse_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A54D4 */
-static void wooden_wild_mouse_track_25_deg_down(
+static void WoodenWildMouseTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    wooden_wild_mouse_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    WoodenWildMouseTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A54E4 */
-static void wooden_wild_mouse_track_60_deg_down(
+static void WoodenWildMouseTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    wooden_wild_mouse_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    WoodenWildMouseTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A54F4 */
-static void wooden_wild_mouse_track_flat_to_25_deg_down(
+static void WoodenWildMouseTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    wooden_wild_mouse_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    WoodenWildMouseTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5504 */
-static void wooden_wild_mouse_track_25_deg_down_to_60_deg_down(
+static void WoodenWildMouseTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    wooden_wild_mouse_track_60_deg_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    WoodenWildMouseTrack60DegTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5514 */
-static void wooden_wild_mouse_track_60_deg_down_to_25_deg_down(
+static void WoodenWildMouseTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    wooden_wild_mouse_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    WoodenWildMouseTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5524 */
-static void wooden_wild_mouse_track_25_deg_down_to_flat(
+static void WoodenWildMouseTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    wooden_wild_mouse_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    WoodenWildMouseTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void wooden_wild_mouse_track_right_quarter_turn_3(
+static void WoodenWildMouseTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -539,15 +539,15 @@ static void wooden_wild_mouse_track_right_quarter_turn_3(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void wooden_wild_mouse_track_left_quarter_turn_3(
+static void WoodenWildMouseTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    wooden_wild_mouse_track_right_quarter_turn_3(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    WoodenWildMouseTrackRightQuarterTurn3(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
-static void wooden_wild_mouse_track_left_quarter_turn_1(
+static void WoodenWildMouseTrackLeftQuarterTurn1(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -582,15 +582,15 @@ static void wooden_wild_mouse_track_left_quarter_turn_1(
 }
 
 /** rct2: 0x008A55D4 */
-static void wooden_wild_mouse_track_right_quarter_turn_1(
+static void WoodenWildMouseTrackRightQuarterTurn1(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    wooden_wild_mouse_track_left_quarter_turn_1(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    WoodenWildMouseTrackLeftQuarterTurn1(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A55E4 */
-static void wooden_wild_mouse_track_flat_to_60_deg_up(
+static void WoodenWildMouseTrackFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -640,7 +640,7 @@ static void wooden_wild_mouse_track_flat_to_60_deg_up(
 }
 
 /** rct2: 0x008A55F4 */
-static void wooden_wild_mouse_track_60_deg_up_to_flat(
+static void WoodenWildMouseTrack60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -690,19 +690,19 @@ static void wooden_wild_mouse_track_60_deg_up_to_flat(
 }
 
 /** rct2: 0x008A5604 */
-static void wooden_wild_mouse_track_flat_to_60_deg_down(
+static void WoodenWildMouseTrackFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    wooden_wild_mouse_track_60_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    WoodenWildMouseTrack60DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5614 */
-static void wooden_wild_mouse_track_60_deg_down_to_flat(
+static void WoodenWildMouseTrack60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    wooden_wild_mouse_track_flat_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    WoodenWildMouseTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(int32_t trackType)
@@ -710,51 +710,51 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return wooden_wild_mouse_track_flat;
+            return WoodenWildMouseTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return wooden_wild_mouse_track_station;
+            return WoodenWildMouseTrackStation;
         case TrackElemType::Up25:
-            return wooden_wild_mouse_track_25_deg_up;
+            return WoodenWildMouseTrack25DegUp;
         case TrackElemType::Up60:
-            return wooden_wild_mouse_track_60_deg_up;
+            return WoodenWildMouseTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return wooden_wild_mouse_track_flat_to_25_deg_up;
+            return WoodenWildMouseTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return wooden_wild_mouse_track_25_deg_up_to_60_deg_up;
+            return WoodenWildMouseTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return wooden_wild_mouse_track_60_deg_to_25_deg_up;
+            return WoodenWildMouseTrack60DegTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return wooden_wild_mouse_track_25_deg_up_to_flat;
+            return WoodenWildMouseTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return wooden_wild_mouse_track_25_deg_down;
+            return WoodenWildMouseTrack25DegDown;
         case TrackElemType::Down60:
-            return wooden_wild_mouse_track_60_deg_down;
+            return WoodenWildMouseTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return wooden_wild_mouse_track_flat_to_25_deg_down;
+            return WoodenWildMouseTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return wooden_wild_mouse_track_25_deg_down_to_60_deg_down;
+            return WoodenWildMouseTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return wooden_wild_mouse_track_60_deg_down_to_25_deg_down;
+            return WoodenWildMouseTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return wooden_wild_mouse_track_25_deg_down_to_flat;
+            return WoodenWildMouseTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return wooden_wild_mouse_track_left_quarter_turn_3;
+            return WoodenWildMouseTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return wooden_wild_mouse_track_right_quarter_turn_3;
+            return WoodenWildMouseTrackRightQuarterTurn3;
         case TrackElemType::LeftQuarterTurn1Tile:
-            return wooden_wild_mouse_track_left_quarter_turn_1;
+            return WoodenWildMouseTrackLeftQuarterTurn1;
         case TrackElemType::RightQuarterTurn1Tile:
-            return wooden_wild_mouse_track_right_quarter_turn_1;
+            return WoodenWildMouseTrackRightQuarterTurn1;
         case TrackElemType::FlatToUp60:
-            return wooden_wild_mouse_track_flat_to_60_deg_up;
+            return WoodenWildMouseTrackFlatTo60DegUp;
         case TrackElemType::Up60ToFlat:
-            return wooden_wild_mouse_track_60_deg_up_to_flat;
+            return WoodenWildMouseTrack60DegUpToFlat;
         case TrackElemType::FlatToDown60:
-            return wooden_wild_mouse_track_flat_to_60_deg_down;
+            return WoodenWildMouseTrackFlatTo60DegDown;
         case TrackElemType::Down60ToFlat:
-            return wooden_wild_mouse_track_60_deg_down_to_flat;
+            return WoodenWildMouseTrack60DegDownToFlat;
     }
     return nullptr;
 }
