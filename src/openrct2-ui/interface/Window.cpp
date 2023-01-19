@@ -466,21 +466,38 @@ static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_
 
     WidgetIndex buttonWidgetIndex;
     WindowWidgetType expectedType;
-    ImageId expectedContent[2];
+
     switch (widgetType)
     {
         case WindowWidgetType::ImgBtn:
+        {
+            auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
+            auto expectedContent2 = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
+
+            auto button1Image = w.widgets[widgetIndex + 1].image;
+            auto button2Image = w.widgets[widgetIndex + 2].image;
+            if (button1Image != expectedContent1 || button2Image != expectedContent2)
+            {
+                return false;
+            }
+
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
             expectedType = WindowWidgetType::TrnBtn;
-            expectedContent[0] = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
-            expectedContent[1] = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
             break;
+        }
         case WindowWidgetType::Spinner:
+        {
+            auto button1StringID = w.widgets[widgetIndex + 1].text;
+            auto button2StringID = w.widgets[widgetIndex + 2].text;
+            if (button1StringID != STR_NUMERIC_UP || button2StringID != STR_NUMERIC_DOWN)
+            {
+                return false;
+            }
+
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
             expectedType = WindowWidgetType::Button;
-            expectedContent[0] = ImageId(STR_NUMERIC_UP, FilterPaletteID::PaletteNull);
-            expectedContent[1] = ImageId(STR_NUMERIC_DOWN, FilterPaletteID::PaletteNull);
             break;
+        }
         default:
             return false;
     }
@@ -491,11 +508,8 @@ static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_
     }
 
     auto button1Type = w.widgets[widgetIndex + 1].type;
-    auto button1Image = w.widgets[widgetIndex + 1].image;
     auto button2Type = w.widgets[widgetIndex + 2].type;
-    auto button2Image = w.widgets[widgetIndex + 2].image;
-    if (button1Type != expectedType || button2Type != expectedType || button1Image != expectedContent[0]
-        || button2Image != expectedContent[1])
+    if (button1Type != expectedType || button2Type != expectedType)
     {
         return false;
     }
