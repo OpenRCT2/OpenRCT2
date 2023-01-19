@@ -323,7 +323,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
     }
 
-    PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.clearance_height, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.ClearanceHeight, 0x20);
 
     auto isGhost = false;
     if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))

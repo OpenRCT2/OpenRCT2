@@ -352,8 +352,7 @@ void RideClearBlockedTiles(const Ride& ride)
                     continue;
 
                 // Unblock footpath element that is at same position
-                auto* footpathElement = MapGetFootpathElement(
-                    TileCoordsXYZ{ tilePos, trackElement->base_height }.ToCoordsXYZ());
+                auto* footpathElement = MapGetFootpathElement(TileCoordsXYZ{ tilePos, trackElement->BaseHeight }.ToCoordsXYZ());
 
                 if (footpathElement == nullptr)
                     continue;
@@ -1498,7 +1497,7 @@ void Ride::ValidateStations()
         {
             if (tileElement->GetType() != TileElementType::Entrance)
                 continue;
-            if (tileElement->base_height != locationCoords.z)
+            if (tileElement->BaseHeight != locationCoords.z)
                 continue;
             if (tileElement->AsEntrance()->GetRideIndex() != id)
                 continue;
@@ -1522,7 +1521,7 @@ void Ride::ValidateStations()
                     continue;
                 if (trackElement->AsTrack()->GetRideIndex() != id)
                     continue;
-                if (trackElement->base_height != tileElement->base_height)
+                if (trackElement->BaseHeight != tileElement->BaseHeight)
                     continue;
 
                 auto trackType = trackElement->AsTrack()->GetTrackType();

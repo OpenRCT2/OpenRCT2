@@ -249,7 +249,7 @@ namespace OpenRCT2::TileInspector
                         auto entrance = station.Entrance;
                         auto exit = station.Exit;
                         uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
-                        uint8_t z = tileElement->base_height;
+                        uint8_t z = tileElement->BaseHeight;
 
                         // Make sure this is the correct entrance or exit
                         if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / COORDS_XY_STEP
@@ -405,9 +405,9 @@ namespace OpenRCT2::TileInspector
                 // While current element's base height is lower, or (when their baseheight is the same) the other map element's
                 // clearance height is lower...
                 while (currentId > 0
-                       && (otherElement->base_height > currentElement->base_height
-                           || (otherElement->base_height == currentElement->base_height
-                               && otherElement->clearance_height > currentElement->clearance_height)))
+                       && (otherElement->BaseHeight > currentElement->BaseHeight
+                           || (otherElement->BaseHeight == currentElement->BaseHeight
+                               && otherElement->ClearanceHeight > currentElement->ClearanceHeight)))
                 {
                     if (!SwapTileElements(loc, currentId - 1, currentId))
                     {
@@ -439,8 +439,8 @@ namespace OpenRCT2::TileInspector
 
     static GameActions::Result ValidateTileHeight(TileElement* const tileElement, int8_t heightOffset)
     {
-        int16_t newBaseHeight = static_cast<int16_t>(tileElement->base_height + heightOffset);
-        int16_t newClearanceHeight = static_cast<int16_t>(tileElement->clearance_height + heightOffset);
+        int16_t newBaseHeight = static_cast<int16_t>(tileElement->BaseHeight + heightOffset);
+        int16_t newClearanceHeight = static_cast<int16_t>(tileElement->ClearanceHeight + heightOffset);
         if (newBaseHeight < 0)
         {
             return GameActions::Result(GameActions::Status::TooLow, STR_CANT_LOWER_ELEMENT_HERE, STR_TOO_LOW);
@@ -485,7 +485,7 @@ namespace OpenRCT2::TileInspector
                         auto& station = ride->GetStation(entranceIndex);
                         const auto& entranceLoc = station.Entrance;
                         const auto& exitLoc = station.Exit;
-                        uint8_t z = tileElement->base_height;
+                        uint8_t z = tileElement->BaseHeight;
 
                         // Make sure this is the correct entrance or exit
                         if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entranceLoc == TileCoordsXYZ{ loc, z })
@@ -496,8 +496,8 @@ namespace OpenRCT2::TileInspector
                 }
             }
 
-            tileElement->base_height += heightOffset;
-            tileElement->clearance_height += heightOffset;
+            tileElement->BaseHeight += heightOffset;
+            tileElement->ClearanceHeight += heightOffset;
 
             MapInvalidateTileFull(loc);
 
@@ -572,8 +572,8 @@ namespace OpenRCT2::TileInspector
                     }
                 }
 
-                surfaceElement->base_height += 2;
-                surfaceElement->clearance_height = surfaceElement->base_height;
+                surfaceElement->BaseHeight += 2;
+                surfaceElement->ClearanceHeight = surfaceElement->BaseHeight;
             }
 
             surfaceElement->SetSlope(newSlope);
@@ -695,10 +695,10 @@ namespace OpenRCT2::TileInspector
             switch (entranceElement->AsEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                    station.Entrance = { loc, entranceElement->base_height, entranceElement->GetDirection() };
+                    station.Entrance = { loc, entranceElement->BaseHeight, entranceElement->GetDirection() };
                     break;
                 case ENTRANCE_TYPE_RIDE_EXIT:
-                    station.Exit = { loc, entranceElement->base_height, entranceElement->GetDirection() };
+                    station.Exit = { loc, entranceElement->BaseHeight, entranceElement->GetDirection() };
                     break;
             }
 
@@ -817,8 +817,8 @@ namespace OpenRCT2::TileInspector
                 // Keep?
                 // invalidate_test_results(ride);
 
-                tileElement->base_height += offset;
-                tileElement->clearance_height += offset;
+                tileElement->BaseHeight += offset;
+                tileElement->ClearanceHeight += offset;
             }
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)

@@ -1095,7 +1095,7 @@ public:
                     // Current base height
                     screenCoords.x = windowPos.x + widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3;
                     ft = Formatter();
-                    ft.Add<int32_t>(tileElement->base_height);
+                    ft.Add<int32_t>(tileElement->BaseHeight);
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
                     // Raised corners
@@ -1169,7 +1169,7 @@ public:
                     // Current base height
                     screenCoords.x = windowPos.x + widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3;
                     auto ft = Formatter();
-                    ft.Add<int32_t>(tileElement->base_height);
+                    ft.Add<int32_t>(tileElement->BaseHeight);
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
                     // Path connections
@@ -1249,7 +1249,7 @@ public:
                     // Current base height
                     screenCoords.x = windowPos.x + widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
                     ft = Formatter();
-                    ft.Add<int32_t>(tileElement->base_height);
+                    ft.Add<int32_t>(tileElement->BaseHeight);
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
                     break;
                 }
@@ -1294,7 +1294,7 @@ public:
                     // Current base height
                     screenCoords.x = windowPos.x + widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3;
                     ft = Formatter();
-                    ft.Add<int32_t>(tileElement->base_height);
+                    ft.Add<int32_t>(tileElement->BaseHeight);
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
                     // Quarter tile
@@ -1378,7 +1378,7 @@ public:
                     // Current base height
                     screenCoords.x = windowPos.x + widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3;
                     ft = Formatter();
-                    ft.Add<int32_t>(tileElement->base_height);
+                    ft.Add<int32_t>(tileElement->BaseHeight);
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
                     break;
                 }
@@ -1416,7 +1416,7 @@ public:
                     // Current base height
                     screenCoords.x = windowPos.x + widgets[WIDX_WALL_SPINNER_HEIGHT].left + 3;
                     ft = Formatter();
-                    ft.Add<int32_t>(tileElement->base_height);
+                    ft.Add<int32_t>(tileElement->BaseHeight);
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
                     // Slope label
@@ -1487,7 +1487,7 @@ public:
                     // Current base height
                     screenCoords.x = windowPos.x + widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
                     ft = Formatter();
-                    ft.Add<int32_t>(tileElement->base_height);
+                    ft.Add<int32_t>(tileElement->BaseHeight);
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
                     break;
                 }
@@ -1512,7 +1512,7 @@ public:
                     // Current base height
                     screenCoords.x = windowPos.x + widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3;
                     auto ft = Formatter();
-                    ft.Add<int32_t>(tileElement->base_height);
+                    ft.Add<int32_t>(tileElement->BaseHeight);
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
                     // Blocked paths
@@ -1643,7 +1643,7 @@ public:
                     typeName = buffer;
             }
 
-            const int32_t clearanceHeight = tileElement->clearance_height;
+            const int32_t clearanceHeight = tileElement->ClearanceHeight;
             const bool ghost = tileElement->IsGhost();
             const bool last = tileElement->IsLastForTile();
 
@@ -1657,7 +1657,7 @@ public:
             // Base height
             ft = Formatter();
             ft.Add<StringId>(STR_FORMAT_INTEGER);
-            ft.Add<int32_t>(tileElement->base_height);
+            ft.Add<int32_t>(tileElement->BaseHeight);
             DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ BaseHeightColumnXY.x, 0 }, stringFormat, ft);
 
             // Clearance height

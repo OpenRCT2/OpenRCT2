@@ -1254,7 +1254,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
     if (surfaceElement != nullptr)
     {
         // If the tile is not safe to own construction rights of, erase them.
-        if (CheckMaxAllowableLandRightsForTile({ mapPos, surfaceElement->base_height << 3 }) == OWNERSHIP_UNOWNED)
+        if (CheckMaxAllowableLandRightsForTile({ mapPos, surfaceElement->BaseHeight << 3 }) == OWNERSHIP_UNOWNED)
         {
             ownership = OWNERSHIP_UNOWNED;
         }
@@ -2161,7 +2161,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
         switch (tileElement->GetType())
         {
             case TileElementType::Path:
-                if (tileElement->base_height == coords.z)
+                if (tileElement->BaseHeight == coords.z)
                 {
                     if (!tileElement->AsPath()->IsSloped())
                         // The footpath is flat, it can be connected to from any direction
@@ -2170,7 +2170,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                         // The footpath is sloped and its lowest point matches the edge connection
                         return true;
                 }
-                else if (tileElement->base_height + 2 == coords.z)
+                else if (tileElement->BaseHeight + 2 == coords.z)
                 {
                     if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == coords.direction)
                         // The footpath is sloped and its higher point matches the edge connection
@@ -2178,7 +2178,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                 }
                 break;
             case TileElementType::Track:
-                if (tileElement->base_height == coords.z)
+                if (tileElement->BaseHeight == coords.z)
                 {
                     auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
                     if (ride == nullptr)
@@ -2202,7 +2202,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                 }
                 break;
             case TileElementType::Entrance:
-                if (tileElement->base_height == coords.z)
+                if (tileElement->BaseHeight == coords.z)
                 {
                     if (entrance_has_direction(*(tileElement->AsEntrance()), coords.direction - tileElement->GetDirection()))
                     {
@@ -2251,7 +2251,7 @@ static void FootpathFixCornersAround(const TileCoordsXY& footpathPos, TileElemen
                     continue;
                 if (tileElement->AsPath()->IsSloped())
                     continue;
-                if (tileElement->base_height != pathElement->base_height)
+                if (tileElement->BaseHeight != pathElement->BaseHeight)
                     continue;
 
                 const int32_t ix = xOffset + 1;
@@ -2286,7 +2286,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
     bool fixCorners = false;
     for (uint8_t direction = 0; direction < NumOrthogonalDirections; direction++)
     {
-        int32_t z1 = tileElement->base_height;
+        int32_t z1 = tileElement->BaseHeight;
         if (tileElement->GetType() == TileElementType::Path)
         {
             if (tileElement->AsPath()->IsSloped())

@@ -1522,7 +1522,7 @@ namespace RCT1
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                         do
                         {
-                            if (srcElement->base_height == Limits::MaxElementHeight)
+                            if (srcElement->BaseHeight == Limits::MaxElementHeight)
                                 continue;
 
                             // Reserve 8 elements for import
@@ -1568,8 +1568,8 @@ namespace RCT1
             // This flag will be set by the caller.
             dst->SetLastForTile(false);
 
-            dst->SetBaseZ(src->base_height * Limits::CoordsZStep);
-            dst->SetClearanceZ(src->clearance_height * Limits::CoordsZStep);
+            dst->SetBaseZ(src->BaseHeight * Limits::CoordsZStep);
+            dst->SetClearanceZ(src->ClearanceHeight * Limits::CoordsZStep);
 
             switch (tileElementType)
             {
@@ -1776,8 +1776,8 @@ namespace RCT1
                         ConvertWall(type, &colourA, &colourB);
 
                         type = _wallTypeToEntryMap[type];
-                        auto baseZ = src->base_height * Limits::CoordsZStep;
-                        auto clearanceZ = src->clearance_height * Limits::CoordsZStep;
+                        auto baseZ = src->BaseHeight * Limits::CoordsZStep;
+                        auto clearanceZ = src->ClearanceHeight * Limits::CoordsZStep;
                         auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3];
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {

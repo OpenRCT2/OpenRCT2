@@ -226,7 +226,7 @@ GameActions::Result TrackRemoveAction::Query() const
             return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
         }
 
-        int8_t _support_height = tileElement->base_height - surfaceElement->base_height;
+        int8_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
         if (_support_height < 0)
         {
             _support_height = 10;
@@ -410,7 +410,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
         }
 
-        int8_t _support_height = tileElement->base_height - surfaceElement->base_height;
+        int8_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
         if (_support_height < 0)
         {
             _support_height = 10;

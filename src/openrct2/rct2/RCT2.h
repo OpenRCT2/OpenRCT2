@@ -748,7 +748,7 @@ namespace RCT2
         uint8_t current_ride;
         uint8_t state;
         uint8_t proximity_track_type;
-        uint8_t proximity_base_height;
+        uint8_t proximity_BaseHeight;
         uint16_t proximity_total;
         uint16_t proximity_scores[26];
         uint16_t num_brakes;

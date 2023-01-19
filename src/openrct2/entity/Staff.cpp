@@ -365,7 +365,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
         return INVALID_DIRECTION;
     do
     {
-        if (tileElement->base_height != nextZ)
+        if (tileElement->BaseHeight != nextZ)
             continue;
         if (tileElement->GetType() == TileElementType::Entrance || tileElement->GetType() == TileElementType::Track)
         {
@@ -381,7 +381,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     do
     {
-        if (tileElement->base_height != nextZ)
+        if (tileElement->BaseHeight != nextZ)
             continue;
         if (tileElement->GetType() == TileElementType::Entrance || tileElement->GetType() == TileElementType::Track)
         {
@@ -1374,7 +1374,7 @@ void Staff::UpdateHeadingToInspect()
         SetDestination(newDestination, 2);
         sprite_direction = PeepDirection << 3;
 
-        z = rideEntranceExitElement->base_height * 4;
+        z = rideEntranceExitElement->BaseHeight * 4;
         SubState = 4;
         // Falls through into SubState 4
     }
@@ -1484,7 +1484,7 @@ void Staff::UpdateAnswering()
         SetDestination({ destX, destY }, 2);
         sprite_direction = PeepDirection << 3;
 
-        z = rideEntranceExitElement->base_height * 4;
+        z = rideEntranceExitElement->BaseHeight * 4;
         SubState = 4;
         // Falls through into SubState 4
     }

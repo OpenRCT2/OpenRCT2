@@ -216,9 +216,9 @@ TileElement* LandSetHeightAction::CheckTreeObstructions() const
 {
     for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
     {
-        if (_height > sceneryElement->clearance_height)
+        if (_height > sceneryElement->ClearanceHeight)
             continue;
-        if (_height + 4 < sceneryElement->base_height)
+        if (_height + 4 < sceneryElement->BaseHeight)
             continue;
 
         auto* sceneryEntry = sceneryElement->GetEntry();
@@ -236,9 +236,9 @@ money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
 
     for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
     {
-        if (_height > sceneryElement->clearance_height)
+        if (_height > sceneryElement->ClearanceHeight)
             continue;
-        if (_height + 4 < sceneryElement->base_height)
+        if (_height + 4 < sceneryElement->BaseHeight)
             continue;
 
         auto* sceneryEntry = sceneryElement->GetEntry();
@@ -260,9 +260,9 @@ void LandSetHeightAction::SmallSceneryRemoval() const
             break;
         if (tileElement->GetType() != TileElementType::SmallScenery)
             continue;
-        if (_height > tileElement->clearance_height)
+        if (_height > tileElement->ClearanceHeight)
             continue;
-        if (_height + 4 < tileElement->base_height)
+        if (_height + 4 < tileElement->BaseHeight)
             continue;
         TileElementRemove(tileElement--);
     } while (!(tileElement++)->IsLastForTile());
@@ -288,7 +288,7 @@ StringId LandSetHeightAction::CheckRideSupports() const
             maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
         }
 
-        int32_t zDelta = trackElement->clearance_height - _height;
+        int32_t zDelta = trackElement->ClearanceHeight - _height;
         if (zDelta >= 0 && zDelta / 2 > maxHeight)
         {
             return STR_SUPPORTS_CANT_BE_EXTENDED;
@@ -335,8 +335,8 @@ money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
 
 void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
 {
-    surfaceElement->base_height = _height;
-    surfaceElement->clearance_height = _height;
+    surfaceElement->BaseHeight = _height;
+    surfaceElement->ClearanceHeight = _height;
     surfaceElement->AsSurface()->SetSlope(_style);
     int32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
     if (waterHeight != 0 && waterHeight <= _height)

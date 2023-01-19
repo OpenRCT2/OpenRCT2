@@ -66,7 +66,7 @@ GameActions::Result LandSmoothAction::Execute() const
 GameActions::Result LandSmoothAction::SmoothLandTile(
     int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
 {
-    int32_t targetBaseZ = surfaceElement->base_height;
+    int32_t targetBaseZ = surfaceElement->BaseHeight;
     int32_t slope = surfaceElement->GetSlope();
     if (_isLowering)
     {
@@ -177,7 +177,7 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
         expectedLandHeight1 += landChangePerTile;
 
         // change land of current tile
-        int32_t targetBaseZ = surfaceElement->base_height;
+        int32_t targetBaseZ = surfaceElement->BaseHeight;
         int32_t slope = surfaceElement->GetSlope();
         int32_t oldSlope = slope;
         if (_isLowering)
@@ -192,7 +192,7 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
                 }
             }
             if ((shouldContinue & 0x8)
-                && MapGetCornerHeight(surfaceElement->base_height, oldSlope, direction2)
+                && MapGetCornerHeight(surfaceElement->BaseHeight, oldSlope, direction2)
                     == MapGetCornerHeight(targetBaseZ, slope, direction2))
             {
                 slope = tile_element_lower_styles[direction2][slope];
@@ -215,7 +215,7 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
                 }
             }
             if ((shouldContinue & 0x8)
-                && MapGetCornerHeight(surfaceElement->base_height, oldSlope, direction2)
+                && MapGetCornerHeight(surfaceElement->BaseHeight, oldSlope, direction2)
                     == MapGetCornerHeight(targetBaseZ, slope, direction2))
             {
                 slope = tile_element_raise_styles[direction2][slope];
@@ -443,7 +443,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
             auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
             if (surfaceElement == nullptr)
                 break;
-            uint8_t newBaseZ = surfaceElement->base_height;
+            uint8_t newBaseZ = surfaceElement->BaseHeight;
             uint8_t newSlope = surfaceElement->GetSlope();
 
             if (raiseLand)
@@ -539,7 +539,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
             auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
             if (surfaceElement == nullptr)
                 break;
-            uint8_t newBaseZ = surfaceElement->base_height;
+            uint8_t newBaseZ = surfaceElement->BaseHeight;
             uint8_t oldSlope = surfaceElement->GetSlope();
             int32_t rowIndex = selectionType - (MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1);
             uint8_t newSlope = raiseLand ? tile_element_raise_styles[rowIndex][oldSlope]

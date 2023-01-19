@@ -344,7 +344,7 @@ static uint8_t FootpathElementDestInDir(TileCoordsXYZ loc, Direction chosenDirec
         {
             case TileElementType::Track:
             {
-                if (loc.z != tileElement->base_height)
+                if (loc.z != tileElement->BaseHeight)
                     continue;
                 RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = GetRide(rideIndex);
@@ -356,7 +356,7 @@ static uint8_t FootpathElementDestInDir(TileCoordsXYZ loc, Direction chosenDirec
             }
             break;
             case TileElementType::Entrance:
-                if (loc.z != tileElement->base_height)
+                if (loc.z != tileElement->BaseHeight)
                     continue;
                 switch (tileElement->AsEntrance()->GetEntranceType())
                 {
@@ -389,7 +389,7 @@ static uint8_t FootpathElementDestInDir(TileCoordsXYZ loc, Direction chosenDirec
 
                 uint8_t edges = PathGetPermittedEdges(tileElement->AsPath());
                 edges &= ~(1 << DirectionReverse(chosenDirection));
-                loc.z = tileElement->base_height;
+                loc.z = tileElement->BaseHeight;
 
                 for (Direction dir : ALL_DIRECTIONS)
                 {
@@ -760,7 +760,7 @@ static void PeepPathfindHeuristicSearch(
         {
             case TileElementType::Track:
             {
-                if (loc.z != tileElement->base_height)
+                if (loc.z != tileElement->BaseHeight)
                     continue;
                 /* For peeps heading for a shop, the goal is the shop
                  * tile. */
@@ -774,7 +774,7 @@ static void PeepPathfindHeuristicSearch(
                 break;
             }
             case TileElementType::Entrance:
-                if (loc.z != tileElement->base_height)
+                if (loc.z != tileElement->BaseHeight)
                     continue;
                 Direction direction;
                 searchResult = PATH_SEARCH_OTHER;
@@ -828,7 +828,7 @@ static void PeepPathfindHeuristicSearch(
                     continue;
 
                 // Path may be sloped, so set z to path base height.
-                loc.z = tileElement->base_height;
+                loc.z = tileElement->BaseHeight;
 
                 if (tileElement->AsPath()->IsWide())
                 {
@@ -1311,7 +1311,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
     {
         if (dest_tile_element == nullptr)
             break;
-        if (dest_tile_element->base_height != loc.z)
+        if (dest_tile_element->BaseHeight != loc.z)
             continue;
         if (dest_tile_element->GetType() != TileElementType::Path)
             continue;
@@ -1810,7 +1810,7 @@ static void GetRideQueueEnd(TileCoordsXYZ& loc)
         if (tileElement->GetType() != TileElementType::Entrance)
             continue;
 
-        if (loc.z != tileElement->base_height)
+        if (loc.z != tileElement->BaseHeight)
             continue;
 
         found = true;
@@ -1824,7 +1824,7 @@ static void GetRideQueueEnd(TileCoordsXYZ& loc)
     TileElement* lastPathElement = nullptr;
     TileElement* firstPathElement = nullptr;
 
-    int16_t baseZ = tileElement->base_height;
+    int16_t baseZ = tileElement->BaseHeight;
     TileCoordsXY nextTile = { loc.x, loc.y };
 
     while (true)
@@ -1857,7 +1857,7 @@ static void GetRideQueueEnd(TileCoordsXYZ& loc)
             if (tileElement->GetType() != TileElementType::Path)
                 continue;
 
-            if (baseZ == tileElement->base_height)
+            if (baseZ == tileElement->BaseHeight)
             {
                 if (tileElement->AsPath()->IsSloped())
                 {
@@ -1870,7 +1870,7 @@ static void GetRideQueueEnd(TileCoordsXYZ& loc)
                 break;
             }
 
-            if (baseZ - 2 == tileElement->base_height)
+            if (baseZ - 2 == tileElement->BaseHeight)
             {
                 if (!tileElement->AsPath()->IsSloped())
                     break;
@@ -1926,7 +1926,7 @@ static void GetRideQueueEnd(TileCoordsXYZ& loc)
 
     loc.x = queueEnd.x;
     loc.y = queueEnd.y;
-    loc.z = tileElement->base_height;
+    loc.z = tileElement->BaseHeight;
 }
 
 /*
@@ -2275,7 +2275,7 @@ bool GuestPathfinding::IsValidPathZAndDirection(TileElement* tileElement, int32_
         int32_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
         if (slopeDirection == currentDirection)
         {
-            if (currentZ != tileElement->base_height)
+            if (currentZ != tileElement->BaseHeight)
                 return false;
         }
         else
@@ -2283,13 +2283,13 @@ bool GuestPathfinding::IsValidPathZAndDirection(TileElement* tileElement, int32_
             slopeDirection = DirectionReverse(slopeDirection);
             if (slopeDirection != currentDirection)
                 return false;
-            if (currentZ != tileElement->base_height + 2)
+            if (currentZ != tileElement->BaseHeight + 2)
                 return false;
         }
     }
     else
     {
-        if (currentZ != tileElement->base_height)
+        if (currentZ != tileElement->BaseHeight)
             return false;
     }
     return true;

@@ -2339,7 +2339,7 @@ static void ride_shop_connected(const Ride& ride)
         int32_t y2 = shopLoc.y - TileDirectionDelta[face_direction].y;
         int32_t x2 = shopLoc.x - TileDirectionDelta[face_direction].x;
 
-        if (MapCoordIsConnected({ x2, y2, tileElement->base_height }, face_direction))
+        if (MapCoordIsConnected({ x2, y2, tileElement->BaseHeight }, face_direction))
             return;
     }
 
@@ -5474,18 +5474,18 @@ void DetermineRideEntranceAndExitLocations()
                                 {
                                     if (station.Entrance.z == expectedHeight)
                                         continue;
-                                    if (station.Entrance.z > entranceElement->base_height)
+                                    if (station.Entrance.z > entranceElement->BaseHeight)
                                         continue;
                                 }
 
                                 // Found our entrance
-                                station.Entrance = { x, y, entranceElement->base_height,
+                                station.Entrance = { x, y, entranceElement->BaseHeight,
                                                      static_cast<uint8_t>(entranceElement->GetDirection()) };
                                 alreadyFoundEntrance = true;
 
                                 LOG_VERBOSE(
                                     "Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.", ride.id,
-                                    stationIndex, x, y, entranceElement->base_height);
+                                    stationIndex, x, y, entranceElement->BaseHeight);
                             }
                             else if (fixExit && entranceElement->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
                             {
@@ -5493,18 +5493,18 @@ void DetermineRideEntranceAndExitLocations()
                                 {
                                     if (station.Exit.z == expectedHeight)
                                         continue;
-                                    if (station.Exit.z > entranceElement->base_height)
+                                    if (station.Exit.z > entranceElement->BaseHeight)
                                         continue;
                                 }
 
                                 // Found our exit
-                                station.Exit = { x, y, entranceElement->base_height,
+                                station.Exit = { x, y, entranceElement->BaseHeight,
                                                  static_cast<uint8_t>(entranceElement->GetDirection()) };
                                 alreadyFoundExit = true;
 
                                 LOG_VERBOSE(
                                     "Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", ride.id,
-                                    stationIndex, x, y, entranceElement->base_height);
+                                    stationIndex, x, y, entranceElement->BaseHeight);
                             }
                         } while (!(tileElement++)->IsLastForTile());
                     }

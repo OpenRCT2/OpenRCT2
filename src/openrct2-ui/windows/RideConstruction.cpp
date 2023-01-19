@@ -2957,7 +2957,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
-            uint16_t maxHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
+            uint16_t maxHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
             _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
@@ -2968,7 +2968,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
             }
             _trackPlaceShiftZ = Floor2(_trackPlaceShiftZ, 8);
 
-            // Clamp to maximum possible value of base_height can offer.
+            // Clamp to maximum possible value of BaseHeight can offer.
             _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
 
             screenCoords = _trackPlaceShiftStart;

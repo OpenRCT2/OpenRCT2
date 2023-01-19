@@ -122,7 +122,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
         return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
-    if (_height > surfaceElement->base_height)
+    if (_height > surfaceElement->BaseHeight)
     {
         surfaceElement->SetWaterHeight(_height * COORDS_Z_STEP);
     }

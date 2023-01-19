@@ -98,31 +98,31 @@ void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
 
 int32_t TileElementBase::GetBaseZ() const
 {
-    return base_height * COORDS_Z_STEP;
+    return BaseHeight * COORDS_Z_STEP;
 }
 
 void TileElementBase::SetBaseZ(int32_t newZ)
 {
-    base_height = (newZ / COORDS_Z_STEP);
+    BaseHeight = (newZ / COORDS_Z_STEP);
 }
 
 int32_t TileElementBase::GetClearanceZ() const
 {
-    return clearance_height * COORDS_Z_STEP;
+    return ClearanceHeight * COORDS_Z_STEP;
 }
 
 void TileElementBase::SetClearanceZ(int32_t newZ)
 {
-    clearance_height = (newZ / COORDS_Z_STEP);
+    ClearanceHeight = (newZ / COORDS_Z_STEP);
 }
 
 uint8_t TileElementBase::GetOwner() const
 {
-    return owner & OWNER_MASK;
+    return Owner & OWNER_MASK;
 }
 
 void TileElementBase::SetOwner(uint8_t newOwner)
 {
-    owner &= ~OWNER_MASK;
-    owner |= (newOwner & OWNER_MASK);
+    Owner &= ~OWNER_MASK;
+    Owner |= (newOwner & OWNER_MASK);
 }

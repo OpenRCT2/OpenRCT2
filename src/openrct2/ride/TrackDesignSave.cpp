@@ -272,7 +272,7 @@ static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& 
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
         auto sceneryTiles = sceneryEntry->tiles;
 
-        int32_t z = tileElement->base_height;
+        int32_t z = tileElement->BaseHeight;
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
@@ -489,7 +489,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
         auto sceneryTiles = sceneryEntry->tiles;
 
-        int32_t z = tileElement->base_height;
+        int32_t z = tileElement->BaseHeight;
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 

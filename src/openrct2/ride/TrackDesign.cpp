@@ -1762,7 +1762,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                         {
                             continue;
                         }
-                        if (tile_element->base_height != newCoords.z)
+                        if (tile_element->BaseHeight != newCoords.z)
                         {
                             continue;
                         }

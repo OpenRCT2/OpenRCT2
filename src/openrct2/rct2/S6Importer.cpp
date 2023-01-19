@@ -1084,7 +1084,7 @@ namespace RCT2
                     src.proximity_track_type, _s6.rides[src.current_ride].type, IsFlatRide(src.current_ride));
             else
                 dst.ProximityTrackType = 0xFF;
-            dst.ProximityBaseHeight = src.proximity_base_height;
+            dst.ProximityBaseHeight = src.proximity_BaseHeight;
             dst.ProximityTotal = src.proximity_total;
             for (size_t i = 0; i < std::size(src.proximity_scores); i++)
             {
@@ -1276,7 +1276,7 @@ namespace RCT2
                         {
                             do
                             {
-                                if (srcElement->base_height == RCT12::Limits::MaxElementHeight)
+                                if (srcElement->BaseHeight == RCT12::Limits::MaxElementHeight)
                                 {
                                     continue;
                                 }
@@ -1329,8 +1329,8 @@ namespace RCT2
             const auto rct12Type = src->GetType();
             dst->ClearAs(ToOpenRCT2TileElementType(rct12Type));
             dst->SetDirection(src->GetDirection());
-            dst->SetBaseZ(src->base_height * COORDS_Z_STEP);
-            dst->SetClearanceZ(src->clearance_height * COORDS_Z_STEP);
+            dst->SetBaseZ(src->BaseHeight * COORDS_Z_STEP);
+            dst->SetClearanceZ(src->ClearanceHeight * COORDS_Z_STEP);
 
             // All saved in "flags"
             dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());

@@ -91,12 +91,12 @@ namespace OpenRCT2::Scripting
 
     uint8_t ScTileElement::baseHeight_get() const
     {
-        return _element->base_height;
+        return _element->BaseHeight;
     }
     void ScTileElement::baseHeight_set(uint8_t newBaseHeight)
     {
         ThrowIfGameStateNotMutable();
-        _element->base_height = newBaseHeight;
+        _element->BaseHeight = newBaseHeight;
         Invalidate();
     }
 
@@ -113,12 +113,12 @@ namespace OpenRCT2::Scripting
 
     uint8_t ScTileElement::clearanceHeight_get() const
     {
-        return _element->clearance_height;
+        return _element->ClearanceHeight;
     }
     void ScTileElement::clearanceHeight_set(uint8_t newClearanceHeight)
     {
         ThrowIfGameStateNotMutable();
-        _element->clearance_height = newClearanceHeight;
+        _element->ClearanceHeight = newClearanceHeight;
         Invalidate();
     }
 
