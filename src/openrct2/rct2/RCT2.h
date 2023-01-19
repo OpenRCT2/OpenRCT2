@@ -423,7 +423,7 @@ namespace RCT2
     };
     assert_struct_size(ScoresEntry, 0x02B0);
 
-    struct Vehicle : RCT12SpriteBase
+    struct Vehicle : RCT12EntityBase
     {
         uint8_t Pitch;         // 0x1F
         uint8_t bank_rotation; // 0x20
@@ -548,7 +548,7 @@ namespace RCT2
     };
     assert_struct_size(Vehicle, 0xDA);
 
-    struct Peep : RCT12SpriteBase
+    struct Peep : RCT12EntityBase
     {
         uint8_t pad_1F[0x22 - 0x1F];
         StringId name_string_idx; // 0x22
@@ -722,18 +722,18 @@ namespace RCT2
         uint8_t pad_00[0x100];
 
     public:
-        RCT12SpriteBase unknown;
+        RCT12EntityBase unknown;
         Vehicle vehicle;
         Peep peep;
-        RCT12SpriteLitter litter;
-        RCT12SpriteBalloon balloon;
-        RCT12SpriteDuck duck;
-        RCT12SpriteJumpingFountain jumping_fountain;
-        RCT12SpriteMoneyEffect money_effect;
-        RCT12SpriteCrashedVehicleParticle crashed_vehicle_particle;
-        RCT12SpriteCrashSplash crash_splash;
-        RCT12SpriteSteamParticle steam_particle;
-        RCT12SpriteParticle misc_particle;
+        RCT12EntityLitter litter;
+        RCT12EntityBalloon balloon;
+        RCT12EntityDuck duck;
+        RCT12EntityJumpingFountain jumping_fountain;
+        RCT12EntityMoneyEffect money_effect;
+        RCT12EntityCrashedVehicleParticle crashed_vehicle_particle;
+        RCT12EntityCrashSplash crash_splash;
+        RCT12EntitySteamParticle steam_particle;
+        RCT12EntityParticle misc_particle;
     };
     assert_struct_size(Entity, 0x100);
 
