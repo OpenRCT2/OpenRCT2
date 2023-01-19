@@ -4403,6 +4403,11 @@ STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Add more rides and attract more people to this panda-themed park
 
+<Tycoon Park>
+STR_SCNR    :Tycoon Park
+STR_PARK    :Tycoon Park
+STR_DTLS    :
+
 ###
 <UCES Halloween>
 STR_SCNR    :Cemetery Ridge
