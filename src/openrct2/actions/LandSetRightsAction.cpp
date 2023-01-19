@@ -174,8 +174,8 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 // There is no need to check the height if _ownership is 0 (unowned and no rights available).
                 if (_ownership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED || _ownership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
                 {
-                    if (entranceElement->base_height - 3 > surfaceElement->base_height
-                        || entranceElement->base_height < surfaceElement->base_height)
+                    if (entranceElement->BaseHeight - 3 > surfaceElement->BaseHeight
+                        || entranceElement->BaseHeight < surfaceElement->BaseHeight)
                     {
                         return res;
                     }

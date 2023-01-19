@@ -452,9 +452,9 @@ template<> struct DataSerializerTraitsT<TileElement>
     {
         stream->WriteValue(tileElement.type);
         stream->WriteValue(tileElement.Flags);
-        stream->WriteValue(tileElement.base_height);
-        stream->WriteValue(tileElement.clearance_height);
-        stream->WriteValue(tileElement.owner);
+        stream->WriteValue(tileElement.BaseHeight);
+        stream->WriteValue(tileElement.ClearanceHeight);
+        stream->WriteValue(tileElement.Owner);
         for (auto v : tileElement.pad_05)
         {
             stream->WriteValue(v);
@@ -468,9 +468,9 @@ template<> struct DataSerializerTraitsT<TileElement>
     {
         tileElement.type = stream->ReadValue<uint8_t>();
         tileElement.Flags = stream->ReadValue<uint8_t>();
-        tileElement.base_height = stream->ReadValue<uint8_t>();
-        tileElement.clearance_height = stream->ReadValue<uint8_t>();
-        tileElement.owner = stream->ReadValue<uint8_t>();
+        tileElement.BaseHeight = stream->ReadValue<uint8_t>();
+        tileElement.ClearanceHeight = stream->ReadValue<uint8_t>();
+        tileElement.Owner = stream->ReadValue<uint8_t>();
         for (auto& v : tileElement.pad_05)
         {
             v = stream->ReadValue<uint8_t>();
@@ -484,8 +484,8 @@ template<> struct DataSerializerTraitsT<TileElement>
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "TileElement(type = %u, flags = %u, base_height = %u)", tileElement.type, tileElement.Flags,
-            tileElement.base_height);
+            msg, sizeof(msg), "TileElement(type = %u, flags = %u, BaseHeight = %u)", tileElement.type, tileElement.Flags,
+            tileElement.BaseHeight);
         stream->Write(msg, strlen(msg));
     }
 };

@@ -1243,7 +1243,7 @@ static void Sub6E1F34SmallScenery(
     }
 
     auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
+    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
     bool can_raise_item = false;
 
     const auto* sceneryEntry = GetSmallSceneryEntry(sceneryIndex);
@@ -1472,7 +1472,7 @@ static void Sub6E1F34Wall(
     }
 
     auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
+    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
     auto* wallEntry = GetWallEntry(sceneryIndex);
     if (wallEntry != nullptr)
@@ -1561,7 +1561,7 @@ static void Sub6E1F34LargeScenery(
     }
 
     auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
+    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
     auto* sceneryEntry = GetLargeSceneryEntry(sceneryIndex);
     if (sceneryEntry)

@@ -310,10 +310,10 @@ struct RCT12EightCarsCorruptElement15;
 
 struct RCT12TileElementBase
 {
-    uint8_t type;             // 0
-    uint8_t flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
-    uint8_t base_height;      // 2
-    uint8_t clearance_height; // 3
+    uint8_t type;            // 0
+    uint8_t flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
+    uint8_t BaseHeight;      // 2
+    uint8_t ClearanceHeight; // 3
     RCT12TileElementType GetType() const;
     uint8_t GetDirection() const;
 

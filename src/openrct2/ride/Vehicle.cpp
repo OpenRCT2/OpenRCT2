@@ -9232,7 +9232,7 @@ void Vehicle::UpdateCrossings() const
                 break;
             }
 
-            curZ = xyElement.element->base_height;
+            curZ = xyElement.element->BaseHeight;
 
             if (travellingForwards)
             {

@@ -1913,7 +1913,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                     uint8_t slopeDirection = nextTileElement->AsPath()->GetSlopeDirection();
                     if (slopeDirection == entranceDirection)
                     {
-                        if (z != nextTileElement->base_height)
+                        if (z != nextTileElement->BaseHeight)
                         {
                             continue;
                         }
@@ -1924,13 +1924,13 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                     if (DirectionReverse(slopeDirection) != entranceDirection)
                         continue;
 
-                    if (z - 2 != nextTileElement->base_height)
+                    if (z - 2 != nextTileElement->BaseHeight)
                         continue;
                     found = true;
                     break;
                 }
 
-                if (z != nextTileElement->base_height)
+                if (z != nextTileElement->BaseHeight)
                 {
                     continue;
                 }
@@ -2439,9 +2439,9 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     do
     {
-        if (base_z > tileElement->base_height)
+        if (base_z > tileElement->BaseHeight)
             continue;
-        if (top_z < tileElement->base_height)
+        if (top_z < tileElement->BaseHeight)
             continue;
         if (tileElement->IsGhost())
             continue;

@@ -128,7 +128,7 @@ static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
             continue;
         if (tileElement->GetRideIndex() != ride.id)
             continue;
-        if (tileElement->base_height != z && tileElement->base_height != z - 1)
+        if (tileElement->BaseHeight != z && tileElement->BaseHeight != z - 1)
             continue;
 
         return tileElement->AsTrack();
@@ -152,7 +152,7 @@ static bool ChairliftPaintUtilIsFirstTrack(
     };
 
     const TrackElement* nextTrack = ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
-        newPos.x, newPos.y, trackElement.base_height, ride);
+        newPos.x, newPos.y, trackElement.BaseHeight, ride);
 
     return nextTrack == nullptr;
 }
@@ -172,7 +172,7 @@ static bool ChairliftPaintUtilIsLastTrack(
     };
 
     const TrackElement* nextTrack = ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
-        newPos.x, newPos.y, trackElement.base_height, ride);
+        newPos.x, newPos.y, trackElement.BaseHeight, ride);
 
     return nextTrack == nullptr;
 }

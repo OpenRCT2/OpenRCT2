@@ -130,8 +130,8 @@ void MapGenGenerateBlank(MapGenSettings* settings)
             {
                 surfaceElement->SetSurfaceStyle(settings->floor);
                 surfaceElement->SetEdgeStyle(settings->wall);
-                surfaceElement->base_height = settings->height;
-                surfaceElement->clearance_height = settings->height;
+                surfaceElement->BaseHeight = settings->height;
+                surfaceElement->ClearanceHeight = settings->height;
             }
         }
     }
@@ -194,8 +194,8 @@ void MapGenGenerate(MapGenSettings* settings)
             {
                 surfaceElement->SetSurfaceStyle(floorTextureId);
                 surfaceElement->SetEdgeStyle(edgeTextureId);
-                surfaceElement->base_height = settings->height;
-                surfaceElement->clearance_height = settings->height;
+                surfaceElement->BaseHeight = settings->height;
+                surfaceElement->ClearanceHeight = settings->height;
             }
         }
     }
@@ -241,7 +241,7 @@ void MapGenGenerate(MapGenSettings* settings)
         {
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
 
-            if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel + 6)
+            if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel + 6)
                 surfaceElement->SetSurfaceStyle(beachTextureId);
         }
     }
@@ -419,7 +419,7 @@ static void MapGenSetWaterLevel(int32_t waterLevel)
         for (int32_t x = 1; x < gMapSize.x - 1; x++)
         {
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
-            if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel)
+            if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel)
                 surfaceElement->SetWaterHeight(waterLevel * COORDS_Z_STEP);
         }
     }
@@ -482,13 +482,13 @@ static void MapGenSetHeight(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
-            surfaceElement->base_height = std::max(2, baseHeight * 2);
+            surfaceElement->BaseHeight = std::max(2, baseHeight * 2);
 
             // If base height is below water level, lower it to create more natural shorelines
-            if (surfaceElement->base_height >= 4 && surfaceElement->base_height <= settings->water_level)
-                surfaceElement->base_height -= 2;
+            if (surfaceElement->BaseHeight >= 4 && surfaceElement->BaseHeight <= settings->water_level)
+                surfaceElement->BaseHeight -= 2;
 
-            surfaceElement->clearance_height = surfaceElement->base_height;
+            surfaceElement->ClearanceHeight = surfaceElement->BaseHeight;
 
             uint8_t currentSlope = surfaceElement->GetSlope();
 
@@ -853,15 +853,15 @@ void MapGenGenerateFromHeightmap(MapGenSettings* settings)
             // Read value from bitmap, and convert its range
             uint8_t value = dest[x + y * _heightMapData.width];
             value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
-            surfaceElement->base_height = value;
+            surfaceElement->BaseHeight = value;
 
             // Floor to even number
-            surfaceElement->base_height /= 2;
-            surfaceElement->base_height *= 2;
-            surfaceElement->clearance_height = surfaceElement->base_height;
+            surfaceElement->BaseHeight /= 2;
+            surfaceElement->BaseHeight *= 2;
+            surfaceElement->ClearanceHeight = surfaceElement->BaseHeight;
 
             // Set water level
-            if (surfaceElement->base_height < settings->water_level)
+            if (surfaceElement->BaseHeight < settings->water_level)
             {
                 surfaceElement->SetWaterHeight(settings->water_level * COORDS_Z_STEP);
             }

@@ -145,7 +145,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     // If on water
     if (waterHeight > 0)
     {
-        // base_height2 is now the water height
+        // BaseHeight2 is now the water height
         surfaceHeight = waterHeight;
         if (_loc.z == 0)
         {
@@ -339,7 +339,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     // If on water
     if (waterHeight > 0)
     {
-        // base_height2 is now the water height
+        // BaseHeight2 is now the water height
         surfaceHeight = waterHeight;
     }
     auto targetHeight = _loc.z;

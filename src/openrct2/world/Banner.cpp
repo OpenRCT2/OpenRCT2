@@ -276,7 +276,7 @@ void BannerFixDuplicates()
                 {
                     LOG_INFO(
                         "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", index, x, y,
-                        bannerElement->base_height);
+                        bannerElement->BaseHeight);
 
                     // Banner index is already in use by another banner, so duplicate it
                     auto newBanner = CreateBanner();

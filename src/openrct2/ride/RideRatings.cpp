@@ -453,9 +453,9 @@ static void ride_ratings_score_close_proximity_in_direction(
         switch (tileElement->GetType())
         {
             case TileElementType::Surface:
-                if (state.ProximityBaseHeight <= inputTileElement->base_height)
+                if (state.ProximityBaseHeight <= inputTileElement->BaseHeight)
                 {
-                    if (inputTileElement->clearance_height <= tileElement->base_height)
+                    if (inputTileElement->ClearanceHeight <= tileElement->BaseHeight)
                     {
                         proximity_score_increment(state, PROXIMITY_SURFACE_SIDE_CLOSE);
                     }
@@ -509,8 +509,8 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRatingUpdateStat
         auto type = tileElement->GetType();
         if (type == TileElementType::Path)
         {
-            int32_t zDiff = static_cast<int32_t>(tileElement->base_height)
-                - static_cast<int32_t>(coordsElement.element->base_height);
+            int32_t zDiff = static_cast<int32_t>(tileElement->BaseHeight)
+                - static_cast<int32_t>(coordsElement.element->BaseHeight);
             if (zDiff >= 0 && zDiff <= 16)
             {
                 proximity_score_increment(state, PROXIMITY_PATH_TROUGH_VERTICAL_LOOP);
@@ -521,8 +521,8 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRatingUpdateStat
             bool elementsAreAt90DegAngle = ((tileElement->GetDirection() ^ coordsElement.element->GetDirection()) & 1) != 0;
             if (elementsAreAt90DegAngle)
             {
-                int32_t zDiff = static_cast<int32_t>(tileElement->base_height)
-                    - static_cast<int32_t>(coordsElement.element->base_height);
+                int32_t zDiff = static_cast<int32_t>(tileElement->BaseHeight)
+                    - static_cast<int32_t>(coordsElement.element->BaseHeight);
                 if (zDiff >= 0 && zDiff <= 16)
                 {
                     proximity_score_increment(state, PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
@@ -578,7 +578,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
         switch (tileElement->GetType())
         {
             case TileElementType::Surface:
-                state.ProximityBaseHeight = tileElement->base_height;
+                state.ProximityBaseHeight = tileElement->BaseHeight;
                 if (tileElement->GetBaseZ() == state.Proximity.z)
                 {
                     proximity_score_increment(state, PROXIMITY_SURFACE_TOUCH);
@@ -643,7 +643,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
                     int32_t sequence = tileElement->AsTrack()->GetSequenceIndex();
                     if (sequence == 3 || sequence == 6)
                     {
-                        if (tileElement->base_height - inputTileElement->clearance_height <= 10)
+                        if (tileElement->BaseHeight - inputTileElement->ClearanceHeight <= 10)
                         {
                             proximity_score_increment(state, PROXIMITY_THROUGH_VERTICAL_LOOP);
                         }
@@ -656,20 +656,20 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
                     {
                         proximity_score_increment(state, PROXIMITY_FOREIGN_TRACK_TOUCH_ABOVE);
                     }
-                    if (tileElement->clearance_height + 2 <= inputTileElement->base_height)
+                    if (tileElement->ClearanceHeight + 2 <= inputTileElement->BaseHeight)
                     {
-                        if (tileElement->clearance_height + 10 >= inputTileElement->base_height)
+                        if (tileElement->ClearanceHeight + 10 >= inputTileElement->BaseHeight)
                         {
                             proximity_score_increment(state, PROXIMITY_FOREIGN_TRACK_CLOSE_ABOVE);
                         }
                     }
-                    if (inputTileElement->clearance_height == tileElement->base_height)
+                    if (inputTileElement->ClearanceHeight == tileElement->BaseHeight)
                     {
                         proximity_score_increment(state, PROXIMITY_FOREIGN_TRACK_TOUCH_ABOVE);
                     }
-                    if (inputTileElement->clearance_height + 2 == tileElement->base_height)
+                    if (inputTileElement->ClearanceHeight + 2 == tileElement->BaseHeight)
                     {
-                        if (static_cast<uint8_t>(inputTileElement->clearance_height + 10) >= tileElement->base_height)
+                        if (static_cast<uint8_t>(inputTileElement->ClearanceHeight + 10) >= tileElement->BaseHeight)
                         {
                             proximity_score_increment(state, PROXIMITY_FOREIGN_TRACK_CLOSE_ABOVE);
                         }
@@ -678,7 +678,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
                 else
                 {
                     bool isStation = tileElement->AsTrack()->IsStation();
-                    if (tileElement->clearance_height == inputTileElement->base_height)
+                    if (tileElement->ClearanceHeight == inputTileElement->BaseHeight)
                     {
                         proximity_score_increment(state, PROXIMITY_OWN_TRACK_TOUCH_ABOVE);
                         if (isStation)
@@ -686,9 +686,9 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
                             proximity_score_increment(state, PROXIMITY_OWN_STATION_TOUCH_ABOVE);
                         }
                     }
-                    if (tileElement->clearance_height + 2 <= inputTileElement->base_height)
+                    if (tileElement->ClearanceHeight + 2 <= inputTileElement->BaseHeight)
                     {
-                        if (tileElement->clearance_height + 10 >= inputTileElement->base_height)
+                        if (tileElement->ClearanceHeight + 10 >= inputTileElement->BaseHeight)
                         {
                             proximity_score_increment(state, PROXIMITY_OWN_TRACK_CLOSE_ABOVE);
                             if (isStation)
@@ -706,9 +706,9 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
                             proximity_score_increment(state, PROXIMITY_OWN_STATION_TOUCH_ABOVE);
                         }
                     }
-                    if (inputTileElement->clearance_height + 2 <= tileElement->base_height)
+                    if (inputTileElement->ClearanceHeight + 2 <= tileElement->BaseHeight)
                     {
-                        if (inputTileElement->clearance_height + 10 >= tileElement->base_height)
+                        if (inputTileElement->ClearanceHeight + 10 >= tileElement->BaseHeight)
                         {
                             proximity_score_increment(state, PROXIMITY_OWN_TRACK_CLOSE_ABOVE);
                             if (isStation)
