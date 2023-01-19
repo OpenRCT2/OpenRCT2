@@ -112,6 +112,6 @@ void NetworkAppendServerLog(const utf8* text);
 
 [[nodiscard]] std::string NetworkGetVersion();
 
-[[nodiscard]] NetworkStats_t NetworkGetStats();
-[[nodiscard]] NetworkServerState_t NetworkGetServerState();
+[[nodiscard]] NetworkStats NetworkGetStats();
+[[nodiscard]] NetworkServerState NetworkGetServerState();
 [[nodiscard]] json_t NetworkGetServerInfoAsJson();

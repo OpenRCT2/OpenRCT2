@@ -1213,7 +1213,7 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
             return 1;
         }
 
-        const rct_object_entry* entry = &ori->ObjectEntry;
+        const RCTObjectEntry* entry = &ori->ObjectEntry;
         const auto* loadedObject = ObjectManagerGetLoadedObject(ObjectEntryDescriptor(*ori));
         if (loadedObject != nullptr)
         {

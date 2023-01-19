@@ -295,7 +295,7 @@ namespace OpenRCT2
                                         break;
                                     case DESCRIPTOR_DAT:
                                     {
-                                        rct_object_entry datEntry;
+                                        RCTObjectEntry datEntry;
                                         cs.Read(&datEntry, sizeof(datEntry));
                                         ObjectEntryDescriptor desc(datEntry);
                                         if (version <= 2 && datEntry.GetType() == ObjectType::Paths)
@@ -400,7 +400,7 @@ namespace OpenRCT2
                                 else
                                 {
                                     cs.Write(DESCRIPTOR_DAT);
-                                    cs.Write(&entry.Entry, sizeof(rct_object_entry));
+                                    cs.Write(&entry.Entry, sizeof(RCTObjectEntry));
                                 }
                             }
                             else
@@ -646,7 +646,7 @@ namespace OpenRCT2
                         auto type = cs.Read<uint8_t>();
                         if (type == DESCRIPTOR_DAT)
                         {
-                            rct_object_entry entry;
+                            RCTObjectEntry entry;
                             cs.Read(&entry, sizeof(entry));
                             auto size = cs.Read<uint32_t>();
                             std::vector<uint8_t> data;
@@ -694,7 +694,7 @@ namespace OpenRCT2
                         if (String::Equals(extension, ".dat", true))
                         {
                             cs.Write(DESCRIPTOR_DAT);
-                            cs.Write(&ori->ObjectEntry, sizeof(rct_object_entry));
+                            cs.Write(&ori->ObjectEntry, sizeof(RCTObjectEntry));
                         }
                         else if (String::Equals(extension, ".parkobj", true))
                         {

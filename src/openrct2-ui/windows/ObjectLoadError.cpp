@@ -290,7 +290,7 @@ static Widget window_object_load_error_widgets[] = {
 // clang-format on
 
 /**
- *  Returns an StringId that represents an rct_object_entry's type.
+ *  Returns an StringId that represents an RCTObjectEntry's type.
  *
  *  Could possibly be moved out of the window file if other
  *  uses exist and a suitable location is found.

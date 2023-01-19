@@ -7013,7 +7013,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
 
-    const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
     peep->sprite_width = spriteBounds->sprite_width;
     peep->sprite_height_negative = spriteBounds->sprite_height_negative;
     peep->sprite_height_positive = spriteBounds->sprite_height_positive;

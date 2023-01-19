@@ -51,7 +51,7 @@ public: // Common
     void BeginChatLog();
     void AppendChatLog(std::string_view s);
     void CloseChatLog();
-    NetworkStats_t GetStats() const;
+    NetworkStats GetStats() const;
     json_t GetServerInfoAsJson() const;
     bool ProcessConnection(NetworkConnection& connection);
     void CloseConnection();
@@ -128,7 +128,7 @@ public: // Client
     bool CheckDesynchronizaton();
     void RequestStateSnapshot();
     bool IsDesynchronised() const noexcept;
-    NetworkServerState_t GetServerState() const noexcept;
+    NetworkServerState GetServerState() const noexcept;
     void ServerClientDisconnected();
     bool LoadMap(OpenRCT2::IStream* stream);
     void UpdateClient();
@@ -210,7 +210,7 @@ private: // Client Data
         std::vector<NetworkPlayer> players;
     };
 
-    struct ServerTickData_t
+    struct ServerTickData
     {
         uint32_t srand0;
         uint32_t tick;
@@ -221,14 +221,14 @@ private: // Client Data
     std::unique_ptr<NetworkConnection> _serverConnection;
     std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
     std::multimap<uint32_t, NetworkPlayer> _pendingPlayerInfo;
-    std::map<uint32_t, ServerTickData_t> _serverTickData;
+    std::map<uint32_t, ServerTickData> _serverTickData;
     std::vector<ObjectEntryDescriptor> _missingObjects;
     std::string _host;
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _password;
     OpenRCT2::MemoryStream _serverGameState;
-    NetworkServerState_t _serverState;
+    NetworkServerState _serverState;
     uint32_t _lastSentHeartbeat = 0;
     uint32_t last_ping_sent_time = 0;
     uint32_t server_connect_time = 0;

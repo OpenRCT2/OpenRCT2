@@ -162,7 +162,7 @@ public:
         return RepositoryItemToObject(ori);
     }
 
-    Object* LoadObject(const rct_object_entry* entry) override
+    Object* LoadObject(const RCTObjectEntry* entry) override
     {
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
         return RepositoryItemToObject(ori);
@@ -722,7 +722,7 @@ private:
         Console::Error::WriteLine("[%s] Object not found.", name.c_str());
     }
 
-    void ReportObjectLoadProblem(const rct_object_entry* entry)
+    void ReportObjectLoadProblem(const RCTObjectEntry* entry)
     {
         utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
         std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
@@ -754,7 +754,7 @@ ObjectEntryIndex ObjectManagerGetLoadedObjectEntryIndex(const ObjectEntryDescrip
     return ObjectManagerGetLoadedObjectEntryIndex(ObjectManagerGetLoadedObject(entry));
 }
 
-Object* ObjectManagerLoadObject(const rct_object_entry* entry)
+Object* ObjectManagerLoadObject(const RCTObjectEntry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.LoadObject(entry);

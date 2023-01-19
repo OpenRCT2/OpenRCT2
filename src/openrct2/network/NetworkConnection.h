@@ -30,7 +30,7 @@ public:
     std::unique_ptr<ITcpSocket> Socket = nullptr;
     NetworkPacket InboundPacket;
     NetworkAuth AuthStatus = NetworkAuth::None;
-    NetworkStats_t Stats = {};
+    NetworkStats Stats = {};
     NetworkPlayer* Player = nullptr;
     uint32_t PingTime = 0;
     NetworkKey Key;

@@ -14,7 +14,7 @@
 
 #include <memory>
 
-struct rct_object_entry;
+struct RCTObjectEntry;
 
 struct scenario_highscore_entry
 {

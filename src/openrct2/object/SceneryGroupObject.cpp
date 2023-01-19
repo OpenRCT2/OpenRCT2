@@ -139,7 +139,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadItems(IStream* stream
     while (stream->ReadValue<uint8_t>() != 0xFF)
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
-        auto entry = stream->ReadValue<rct_object_entry>();
+        auto entry = stream->ReadValue<RCTObjectEntry>();
         items.emplace_back(entry);
     }
     return items;
@@ -219,7 +219,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
 
             try
             {
-                rct_object_entry entry = {};
+                RCTObjectEntry entry = {};
                 entry.flags = std::stoul(entryName.substr(DatEntryFlagsStart, DatEntryFlagsLength), nullptr, 16);
                 std::memcpy(entry.name, entryName.c_str() + DatEntryNameStart, DAT_NAME_LENGTH);
                 entry.checksum = 0;

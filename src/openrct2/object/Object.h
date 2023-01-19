@@ -33,7 +33,7 @@ constexpr const size_t VersionNumFields = 3;
 using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
 static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 
-// First 0xF of rct_object_entry->flags
+// First 0xF of RCTObjectEntry->flags
 enum class ObjectType : uint8_t
 {
     Ride,
@@ -118,7 +118,7 @@ enum class ObjectSourceGame : uint8_t
  * Object entry structure.
  * size: 0x10
  */
-struct rct_object_entry
+struct RCTObjectEntry
 {
     union
     {
@@ -159,25 +159,17 @@ struct rct_object_entry
     }
 
     bool IsEmpty() const;
-    bool operator==(const rct_object_entry& rhs) const;
-    bool operator!=(const rct_object_entry& rhs) const;
+    bool operator==(const RCTObjectEntry& rhs) const;
+    bool operator!=(const RCTObjectEntry& rhs) const;
 };
-assert_struct_size(rct_object_entry, 0x10);
+assert_struct_size(RCTObjectEntry, 0x10);
 
 #pragma pack(pop)
 
-struct rct_ride_filters
+struct RideFilters
 {
     uint8_t category[2];
     ride_type_t ride_type;
-};
-
-struct rct_object_filters
-{
-    union
-    {
-        rct_ride_filters ride;
-    };
 };
 
 enum class ObjectGeneration : uint8_t
@@ -191,7 +183,7 @@ struct ObjectEntryDescriptor
     ObjectGeneration Generation = ObjectGeneration::JSON;
 
     // DAT
-    rct_object_entry Entry{};
+    RCTObjectEntry Entry{};
 
     // JSON
     ObjectType Type{};
@@ -199,7 +191,7 @@ struct ObjectEntryDescriptor
     ObjectVersion Version;
 
     ObjectEntryDescriptor() = default;
-    explicit ObjectEntryDescriptor(const rct_object_entry& newEntry);
+    explicit ObjectEntryDescriptor(const RCTObjectEntry& newEntry);
     explicit ObjectEntryDescriptor(std::string_view newIdentifier);
     explicit ObjectEntryDescriptor(ObjectType type, std::string_view newIdentifier);
     explicit ObjectEntryDescriptor(const ObjectRepositoryItem& ori);
@@ -337,7 +329,7 @@ public:
     }
 
     // TODO remove this, we should no longer assume objects have a legacy object entry
-    const rct_object_entry& GetObjectEntry() const
+    const RCTObjectEntry& GetObjectEntry() const
     {
         return _descriptor.Entry;
     }
@@ -384,7 +376,7 @@ public:
 
     ObjectEntryDescriptor GetScgWallsHeader() const;
     ObjectEntryDescriptor GetScgPathXHeader() const;
-    rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
+    RCTObjectEntry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
 
     uint32_t GetNumImages() const
     {
@@ -398,10 +390,10 @@ public:
 extern int32_t object_entry_group_counts[];
 extern int32_t object_entry_group_encoding[];
 
-int32_t ObjectCalculateChecksum(const rct_object_entry* entry, const void* data, size_t dataLength);
-void ObjectCreateIdentifierName(char* string_buffer, size_t size, const rct_object_entry* object);
+int32_t ObjectCalculateChecksum(const RCTObjectEntry* entry, const void* data, size_t dataLength);
+void ObjectCreateIdentifierName(char* string_buffer, size_t size, const RCTObjectEntry* object);
 
-void ObjectEntryGetNameFixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
+void ObjectEntryGetNameFixed(utf8* buffer, size_t bufferSize, const RCTObjectEntry* entry);
 
 void* ObjectEntryGetChunk(ObjectType objectType, ObjectEntryIndex index);
 const Object* ObjectEntryGetObject(ObjectType objectType, ObjectEntryIndex index);

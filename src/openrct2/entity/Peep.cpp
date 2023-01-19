@@ -388,7 +388,7 @@ void Peep::UpdateCurrentActionSpriteType()
     Invalidate();
     ActionSpriteType = newActionSpriteType;
 
-    const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
     sprite_width = spriteBounds->sprite_width;
     sprite_height_negative = spriteBounds->sprite_height_negative;
     sprite_height_positive = spriteBounds->sprite_height_positive;
@@ -484,7 +484,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
-        const rct_peep_animation* peepAnimation = &GetPeepAnimation(SpriteType);
+        const PeepAnimation* peepAnimation = &GetPeepAnimation(SpriteType);
         const uint8_t* imageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets;
         if (WalkingFrameNum >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
         {
@@ -494,7 +494,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         return loc;
     }
 
-    const rct_peep_animation* peepAnimation = &GetPeepAnimation(SpriteType);
+    const PeepAnimation* peepAnimation = &GetPeepAnimation(SpriteType);
     ActionFrame++;
 
     // If last frame of action
@@ -1669,7 +1669,7 @@ void Peep::SwitchNextActionSpriteType()
     {
         Invalidate();
         ActionSpriteType = NextActionSpriteType;
-        const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
+        const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
         sprite_width = spriteBounds->sprite_width;
         sprite_height_negative = spriteBounds->sprite_height_negative;
         sprite_height_positive = spriteBounds->sprite_height_positive;

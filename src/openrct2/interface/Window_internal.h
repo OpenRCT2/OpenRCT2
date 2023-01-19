@@ -17,7 +17,7 @@
 enum class TileInspectorPage : int16_t;
 
 struct ResearchItem;
-struct rct_object_entry;
+struct RCTObjectEntry;
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
 #    pragma GCC diagnostic push

@@ -174,7 +174,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->Name = nullptr;
         newPeep->SpriteType = spriteType;
 
-        const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(spriteType);
+        const SpriteBounds* spriteBounds = &GetSpriteBounds(spriteType);
         newPeep->sprite_width = spriteBounds->sprite_width;
         newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
         newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;

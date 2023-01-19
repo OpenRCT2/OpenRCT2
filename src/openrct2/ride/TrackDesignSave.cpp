@@ -215,7 +215,7 @@ static bool track_design_is_supported_object(const Object* obj)
 }
 
 static void track_design_save_push_tile_element_desc(
-    const rct_object_entry& entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
+    const RCTObjectEntry& entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
     TrackDesignSceneryElement item{};
     item.scenery_object = ObjectEntryDescriptor(entry);
@@ -334,9 +334,9 @@ static TrackDesignAddStatus track_design_save_add_wall(const CoordsXY& loc, Wall
     return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
 }
 
-static std::optional<rct_object_entry> track_design_save_footpath_get_best_entry(PathElement* pathElement)
+static std::optional<RCTObjectEntry> track_design_save_footpath_get_best_entry(PathElement* pathElement)
 {
-    rct_object_entry pathEntry;
+    RCTObjectEntry pathEntry;
     auto legacyPathObj = pathElement->GetLegacyPathEntry();
     if (legacyPathObj != nullptr)
     {
