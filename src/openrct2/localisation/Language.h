@@ -71,7 +71,7 @@ enum class RCT2LanguageId
 
 #include "../interface/FontFamilies.h"
 
-struct language_descriptor
+struct LanguageDescriptor
 {
     const char* locale;
     const utf8* english_name;
@@ -85,7 +85,7 @@ struct language_descriptor
     bool isRtl;
 };
 
-extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
+extern const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT];
 
 constexpr const char* BlackUpArrowString = u8"{BLACK}▲";
 constexpr const char* BlackDownArrowString = u8"{BLACK}▼";

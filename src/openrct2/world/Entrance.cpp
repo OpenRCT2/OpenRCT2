@@ -221,7 +221,7 @@ void ParkEntranceFixLocations(void)
 void ParkEntranceUpdateLocations()
 {
     gParkEntrances.clear();
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {

@@ -108,7 +108,7 @@ void TrackDesignSaveSelectTileElement(
  */
 void TrackDesignSaveSelectNearbyScenery(RideId rideIndex)
 {
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {

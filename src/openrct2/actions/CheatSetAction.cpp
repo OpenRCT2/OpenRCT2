@@ -383,7 +383,7 @@ void CheatSetAction::SetGrassLength(int32_t length) const
 
 void CheatSetAction::WaterPlants() const
 {
-    tile_element_iterator it;
+    TileElementIterator it;
 
     TileElementIteratorBegin(&it);
     do
@@ -399,7 +399,7 @@ void CheatSetAction::WaterPlants() const
 
 void CheatSetAction::FixVandalism() const
 {
-    tile_element_iterator it;
+    TileElementIterator it;
 
     TileElementIteratorBegin(&it);
     do
@@ -423,7 +423,7 @@ void CheatSetAction::RemoveLitter() const
         EntityRemove(litter);
     }
 
-    tile_element_iterator it{};
+    TileElementIterator it{};
     TileElementIteratorBegin(&it);
     do
     {

@@ -13,7 +13,7 @@
 #include "../core/String.hpp"
 #include "Location.hpp"
 
-struct mapgen_settings
+struct MapGenSettings
 {
     // Base
     TileCoordsXY mapSize;
@@ -38,8 +38,8 @@ struct mapgen_settings
     bool normalize_height;
 };
 
-void MapGenGenerateBlank(mapgen_settings* settings);
-void MapGenGenerate(mapgen_settings* settings);
+void MapGenGenerateBlank(MapGenSettings* settings);
+void MapGenGenerate(MapGenSettings* settings);
 bool MapGenLoadHeightmap(const utf8* path);
 void MapGenUnloadHeightmap();
-void MapGenGenerateFromHeightmap(mapgen_settings* settings);
+void MapGenGenerateFromHeightmap(MapGenSettings* settings);

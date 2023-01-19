@@ -605,7 +605,7 @@ void MapAnimationAutoCreate()
 {
     ClearMapAnimations();
 
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {

@@ -45,7 +45,7 @@ static uint8_t _mouseInputQueueReadIndex = 0;
 static uint8_t _mouseInputQueueWriteIndex = 0;
 
 static uint32_t _ticksSinceDragStart;
-static widget_ref _dragWidget;
+static WidgetRef _dragWidget;
 static uint8_t _dragScrollIndex;
 static int32_t _originalWindowWidth;
 static int32_t _originalWindowHeight;
@@ -56,7 +56,7 @@ static uint8_t _currentScrollArea;
 ScreenCoordsXY gInputDragLast;
 
 uint16_t gTooltipTimeout;
-widget_ref gTooltipWidget;
+WidgetRef gTooltipWidget;
 ScreenCoordsXY gTooltipCursor;
 
 static int16_t _clickRepeatTicks;

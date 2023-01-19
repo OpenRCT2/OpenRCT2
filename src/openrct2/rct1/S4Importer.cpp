@@ -2412,7 +2412,7 @@ namespace RCT1
         void FixEntrancePositions()
         {
             gParkEntrances.clear();
-            tile_element_iterator it;
+            TileElementIterator it;
             TileElementIteratorBegin(&it);
             while (TileElementIteratorNext(&it) && gParkEntrances.size() < Limits::MaxParkEntrances)
             {

@@ -341,7 +341,7 @@ void Park::Update(const Date& date)
 uint32_t Park::CalculateParkSize() const
 {
     uint32_t tiles = 0;
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {

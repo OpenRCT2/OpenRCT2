@@ -1785,14 +1785,14 @@ static constexpr const int16_t monorail_diag_support_types[][4] = {
     { -1, SUPPORT_PLAIN_W, SUPPORT_PLAIN_E, SUPPORT_PLAIN_90_DEG },
 };
 
-struct floor_desc
+struct FloorDescriptor
 {
     uint32_t image_id;
     CoordsXY bound_size;
     CoordsXY bound_offset;
 };
 
-static constexpr const floor_desc floors[] = {
+static constexpr const FloorDescriptor floors[] = {
     { SPR_FLOOR_PLANKS, { 32, 32 }, { 0, 0 } },
     { SPR_FLOOR_PLANKS_90_DEG, { 32, 32 }, { 0, 0 } }, // -16,-16(1:3)
     { SPR_FLOOR_PLANKS_N_SEGMENT, { 32, 32 }, { -16, -16 } },

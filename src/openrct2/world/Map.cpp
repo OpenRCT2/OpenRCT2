@@ -278,14 +278,14 @@ bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements)
 static void ClearElementsAt(const CoordsXY& loc);
 static ScreenCoordsXY Translate3DTo2D(int32_t rotation, const CoordsXY& pos);
 
-void TileElementIteratorBegin(tile_element_iterator* it)
+void TileElementIteratorBegin(TileElementIterator* it)
 {
     it->x = 0;
     it->y = 0;
     it->element = MapGetFirstElementAt(TileCoordsXY{ 0, 0 });
 }
 
-int32_t TileElementIteratorNext(tile_element_iterator* it)
+int32_t TileElementIteratorNext(TileElementIterator* it)
 {
     if (it->element == nullptr)
     {
@@ -317,7 +317,7 @@ int32_t TileElementIteratorNext(tile_element_iterator* it)
     return 0;
 }
 
-void TileElementIteratorRestartForTile(tile_element_iterator* it)
+void TileElementIteratorRestartForTile(TileElementIterator* it)
 {
     it->element = nullptr;
 }
@@ -1100,7 +1100,7 @@ void TileElementRemove(TileElement* tileElement)
  */
 void MapRemoveAllRides()
 {
-    tile_element_iterator it;
+    TileElementIterator it;
 
     TileElementIteratorBegin(&it);
     do

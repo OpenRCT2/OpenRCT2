@@ -566,7 +566,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave()
     }
 
     bool markTrackAsIndestructible;
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {
