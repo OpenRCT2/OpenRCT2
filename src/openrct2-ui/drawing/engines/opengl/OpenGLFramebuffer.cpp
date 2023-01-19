@@ -85,7 +85,7 @@ void OpenGLFramebuffer::BindRead() const
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _id);
 }
 
-void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo& dpi) const
+void OpenGLFramebuffer::GetPixels(DrawPixelInfo& dpi) const
 {
     assert(dpi.width == _width && dpi.height == _height);
 

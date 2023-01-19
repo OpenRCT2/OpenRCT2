@@ -136,7 +136,7 @@ public:
         InputSetState(InputState::DropdownActive);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -160,7 +160,7 @@ public:
 
                 if (colours[0] & COLOUR_FLAG_TRANSLUCENT)
                 {
-                    translucent_window_palette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
+                    TranslucentWindowPalette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
                     GfxFilterRect(&dpi, { leftTop, rightBottom }, palette.highlight);
                     GfxFilterRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                 }

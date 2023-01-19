@@ -25,7 +25,7 @@
 #include <utility>
 #include <variant>
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 struct rct_window;
 struct TrackDesignFileRef;
 struct TextInputSession;
@@ -246,8 +246,8 @@ struct WindowEventList
     void (*cursor)(struct rct_window*, WidgetIndex, const ScreenCoordsXY&, CursorID*){};
     void (*moved)(struct rct_window*, const ScreenCoordsXY&){};
     void (*invalidate)(struct rct_window*){};
-    void (*paint)(struct rct_window*, rct_drawpixelinfo*){};
-    void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int32_t){};
+    void (*paint)(struct rct_window*, DrawPixelInfo*){};
+    void (*scroll_paint)(struct rct_window*, DrawPixelInfo*, int32_t){};
 
     typedef void (*fnEventInitializer)(WindowEventList&);
     WindowEventList(fnEventInitializer fn)
@@ -660,10 +660,10 @@ void WindowZoomIn(rct_window& w, bool atCursor);
 void WindowZoomOut(rct_window& w, bool atCursor);
 void MainWindowZoom(bool zoomIn, bool atCursor);
 
-void WindowDrawAll(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
-void WindowDraw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi);
-void WindowDrawViewport(rct_drawpixelinfo* dpi, rct_window& w);
+void WindowDrawAll(DrawPixelInfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
+void WindowDraw(DrawPixelInfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+void WindowDrawWidgets(rct_window& w, DrawPixelInfo* dpi);
+void WindowDrawViewport(DrawPixelInfo* dpi, rct_window& w);
 
 void WindowSetPosition(rct_window& w, const ScreenCoordsXY& screenCoords);
 void WindowMovePosition(rct_window& w, const ScreenCoordsXY& screenCoords);
@@ -711,8 +711,8 @@ OpenRCT2String WindowEventTooltipCall(rct_window* w, const WidgetIndex widgetInd
 CursorID WindowEventCursorCall(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 void WindowEventMovedCall(rct_window* w, const ScreenCoordsXY& screenCoords);
 void WindowEventInvalidateCall(rct_window* w);
-void WindowEventPaintCall(rct_window* w, rct_drawpixelinfo* dpi);
-void WindowEventScrollPaintCall(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
+void WindowEventPaintCall(rct_window* w, DrawPixelInfo* dpi);
+void WindowEventScrollPaintCall(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex);
 
 void InvalidateAllWindowsAfterInput();
 void TextinputCancel();

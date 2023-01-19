@@ -115,7 +115,7 @@ void DrawingEngineDispose()
     }
 }
 
-rct_drawpixelinfo* DrawingEngineGetDpi()
+DrawPixelInfo* DrawingEngineGetDpi()
 {
     auto context = GetContext();
     auto drawingEngine = context->GetDrawingEngine();
@@ -160,7 +160,7 @@ void GfxSetDirtyBlocks(const ScreenRect& rect)
     }
 }
 
-void GfxClear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
+void GfxClear(DrawPixelInfo* dpi, uint8_t paletteIndex)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -170,7 +170,7 @@ void GfxClear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
     }
 }
 
-void GfxFillRect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour)
+void GfxFillRect(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -180,7 +180,7 @@ void GfxFillRect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour)
     }
 }
 
-void GfxFilterRect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette)
+void GfxFilterRect(DrawPixelInfo* dpi, const ScreenRect& rect, FilterPaletteID palette)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -190,7 +190,7 @@ void GfxFilterRect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPalette
     }
 }
 
-void GfxDrawLine(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
+void GfxDrawLine(DrawPixelInfo* dpi, const ScreenLine& line, int32_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -201,7 +201,7 @@ void GfxDrawLine(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
 }
 
 void GfxDrawDashedLine(
-    rct_drawpixelinfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
+    DrawPixelInfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
 {
     assert(dashedLineSegmentLength > 0);
 
@@ -233,7 +233,7 @@ void GfxDrawDashedLine(
     }
 }
 
-void FASTCALL GfxDrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords)
+void FASTCALL GfxDrawSprite(DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -243,8 +243,7 @@ void FASTCALL GfxDrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, const
     }
 }
 
-void FASTCALL
-    GfxDrawGlyph(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+void FASTCALL GfxDrawGlyph(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -254,8 +253,8 @@ void FASTCALL
     }
 }
 
-void FASTCALL GfxDrawSpriteRawMasked(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
+void FASTCALL
+    GfxDrawSpriteRawMasked(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -265,7 +264,7 @@ void FASTCALL GfxDrawSpriteRawMasked(
     }
 }
 
-void FASTCALL GfxDrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
+void FASTCALL GfxDrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)

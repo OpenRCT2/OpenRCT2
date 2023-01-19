@@ -137,7 +137,7 @@ public:
         WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }

@@ -203,7 +203,7 @@ public:
         CommonPrepareDrawAfter();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(&dpi);
@@ -514,7 +514,7 @@ private:
         widgets[WIDX_FIRE].right = width - 2;
     }
 
-    void OverviewDraw(rct_drawpixelinfo* dpi)
+    void OverviewDraw(DrawPixelInfo* dpi)
     {
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
@@ -541,7 +541,7 @@ private:
         DrawTextEllipsised(dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
     }
 
-    void DrawOverviewTabImage(rct_drawpixelinfo* dpi)
+    void DrawOverviewTabImage(DrawPixelInfo* dpi)
     {
         if (IsWidgetDisabled(WIDX_TAB_1))
             return;
@@ -553,7 +553,7 @@ private:
         if (page == WINDOW_STAFF_OVERVIEW)
             widgetHeight++;
 
-        rct_drawpixelinfo clip_dpi;
+        DrawPixelInfo clip_dpi;
         if (!ClipDrawPixelInfo(&clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
         {
             return;
@@ -915,7 +915,7 @@ private:
 #pragma endregion
 
 #pragma region Statistics tab events
-    void StatsDraw(rct_drawpixelinfo* dpi)
+    void StatsDraw(DrawPixelInfo* dpi)
     {
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -1193,14 +1193,14 @@ private:
         WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         DrawOverviewTabImage(dpi);
         DrawTabImage(dpi, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
         DrawTabImage(dpi, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
     }
 
-    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t baseImageId)
+    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t baseImageId)
     {
         WidgetIndex widgetIndex = WIDX_TAB_1 + p;
         Widget* widget = &widgets[widgetIndex];

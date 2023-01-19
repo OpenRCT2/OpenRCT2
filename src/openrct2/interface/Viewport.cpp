@@ -77,7 +77,7 @@ InteractionInfo::InteractionInfo(const PaintStruct* ps)
     , SpriteType(ps->sprite_type)
 {
 }
-static void ViewportPaintWeatherGloom(rct_drawpixelinfo* dpi);
+static void ViewportPaintWeatherGloom(DrawPixelInfo* dpi);
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -280,7 +280,7 @@ CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords)
  *  rct2: 0x006E7FF3
  */
 static void ViewportRedrawAfterShift(
-    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, const ScreenCoordsXY& coords)
+    DrawPixelInfo* dpi, rct_window* window, rct_viewport* viewport, const ScreenCoordsXY& coords)
 {
     // sub-divide by intersecting windows
     if (window != nullptr)
@@ -402,8 +402,7 @@ static void ViewportRedrawAfterShift(
     }
 }
 
-static void ViewportShiftPixels(
-    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x_diff, int32_t y_diff)
+static void ViewportShiftPixels(DrawPixelInfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x_diff, int32_t y_diff)
 {
     auto it = WindowGetIterator(window);
     for (; it != g_window_list.end(); it++)
@@ -480,7 +479,7 @@ static void ViewportMove(const ScreenCoordsXY& coords, rct_window* w, rct_viewpo
 
         if (DrawingEngineHasDirtyOptimisations())
         {
-            rct_drawpixelinfo* dpi = DrawingEngineGetDpi();
+            DrawPixelInfo* dpi = DrawingEngineGetDpi();
             WindowDrawAll(dpi, left, top, right, bottom);
             return;
         }
@@ -532,7 +531,7 @@ static void ViewportMove(const ScreenCoordsXY& coords, rct_window* w, rct_viewpo
 
     if (DrawingEngineHasDirtyOptimisations())
     {
-        rct_drawpixelinfo* dpi = DrawingEngineGetDpi();
+        DrawPixelInfo* dpi = DrawingEngineGetDpi();
         ViewportShiftPixels(dpi, w, viewport, x_diff, y_diff);
     }
 
@@ -808,8 +807,7 @@ void ViewportUpdateSmartFollowVehicle(rct_window* window)
  *  ebp: bottom
  */
 void ViewportRender(
-    rct_drawpixelinfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
-    std::vector<RecordedPaintSession>* sessions)
+    DrawPixelInfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect, std::vector<RecordedPaintSession>* sessions)
 {
     auto [topLeft, bottomRight] = screenRect;
 
@@ -962,7 +960,7 @@ static void ViewportPaintColumn(PaintSession& session)
  *  ebp: bottom
  */
 void ViewportPaint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, const ScreenRect& screenRect,
+    const rct_viewport* viewport, DrawPixelInfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* recorded_sessions)
 {
     PROFILED_FUNCTION();
@@ -986,7 +984,7 @@ void ViewportPaint(
     y = viewport->zoom.ApplyInversedTo(y);
     y += viewport->pos.y;
 
-    rct_drawpixelinfo dpi1;
+    DrawPixelInfo dpi1;
     dpi1.DrawingEngine = dpi->DrawingEngine;
     dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
     dpi1.x = topLeft.x;
@@ -1036,7 +1034,7 @@ void ViewportPaint(
         PaintSession* session = PaintSessionAlloc(&dpi1, viewFlags);
         _paintColumns.push_back(session);
 
-        rct_drawpixelinfo& dpi2 = session->DPI;
+        DrawPixelInfo& dpi2 = session->DPI;
         if (x >= dpi2.x)
         {
             auto leftPitch = x - dpi2.x;
@@ -1095,7 +1093,7 @@ void ViewportPaint(
     }
 }
 
-static void ViewportPaintWeatherGloom(rct_drawpixelinfo* dpi)
+static void ViewportPaintWeatherGloom(DrawPixelInfo* dpi)
 {
     auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
     if (paletteId != FilterPaletteID::PaletteNull)
@@ -1532,7 +1530,7 @@ static bool PSSpriteTypeIsInFilter(PaintStruct* ps, uint16_t filter)
 /**
  * rct2: 0x00679236, 0x00679662, 0x00679B0D, 0x00679FF1
  */
-static bool IsPixelPresentBMP(uint32_t imageType, const rct_g1_element* g1, const uint8_t* index, const PaletteMap& paletteMap)
+static bool IsPixelPresentBMP(uint32_t imageType, const G1Element* g1, const uint8_t* index, const PaletteMap& paletteMap)
 {
     PROFILED_FUNCTION();
 
@@ -1653,11 +1651,11 @@ static bool IsPixelPresentRLE(const uint8_t* esi, int32_t x_start_point, int32_t
  * @return value originally stored in 0x00141F569
  */
 static bool IsSpriteInteractedWithPaletteSet(
-    rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    DrawPixelInfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     PROFILED_FUNCTION();
 
-    const rct_g1_element* g1 = GfxGetG1Element(imageId);
+    const G1Element* g1 = GfxGetG1Element(imageId);
     if (g1 == nullptr)
     {
         return false;
@@ -1673,7 +1671,7 @@ static bool IsSpriteInteractedWithPaletteSet(
         if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)
         {
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
-            rct_drawpixelinfo zoomed_dpi = {
+            DrawPixelInfo zoomed_dpi = {
                 /* .bits = */ dpi->bits,
                 /* .x = */ dpi->x >> 1,
                 /* .y = */ dpi->y >> 1,
@@ -1799,7 +1797,7 @@ static bool IsSpriteInteractedWithPaletteSet(
  *  rct2: 0x00679023
  */
 
-static bool IsSpriteInteractedWith(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords)
+static bool IsSpriteInteractedWith(DrawPixelInfo* dpi, ImageId imageId, const ScreenCoordsXY& coords)
 {
     PROFILED_FUNCTION();
 
@@ -1837,7 +1835,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
     PROFILED_FUNCTION();
 
     PaintStruct* ps = &session->PaintHead;
-    rct_drawpixelinfo* dpi = &session->DPI;
+    DrawPixelInfo* dpi = &session->DPI;
     InteractionInfo info{};
 
     while ((ps = ps->next_quadrant_ps) != nullptr)
@@ -1916,7 +1914,7 @@ InteractionInfo GetMapCoordinatesFromPosWindow(rct_window* window, const ScreenC
             viewLoc.x &= myviewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
             viewLoc.y &= myviewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
         }
-        rct_drawpixelinfo dpi;
+        DrawPixelInfo dpi;
         dpi.x = viewLoc.x;
         dpi.y = viewLoc.y;
         dpi.height = 1;

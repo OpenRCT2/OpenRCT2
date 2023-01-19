@@ -279,7 +279,7 @@ public:
         text_colour_btn->image = GetColourButtonImage(_textColour);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 

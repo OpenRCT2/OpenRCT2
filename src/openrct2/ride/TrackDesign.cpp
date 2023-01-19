@@ -2154,7 +2154,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     view.zoom = zoom_level;
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;
 
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     dpi.zoom_level = zoom_level;
     dpi.x = 0;
     dpi.y = 0;

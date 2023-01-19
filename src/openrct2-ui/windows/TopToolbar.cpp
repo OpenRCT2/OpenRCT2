@@ -287,7 +287,7 @@ static void WindowTopToolbarToolDrag(rct_window* w, WidgetIndex widgetIndex, con
 static void WindowTopToolbarToolUp(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoordsy);
 static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex);
 static void WindowTopToolbarInvalidate(rct_window* w);
-static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowTopToolbarPaint(rct_window* w, DrawPixelInfo* dpi);
 
 static WindowEventList window_top_toolbar_events([](auto& events) {
     events.mouse_up = &WindowTopToolbarMouseup;
@@ -870,7 +870,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
  *
  *  rct2: 0x0066C8EC
  */
-static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTopToolbarPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     int32_t imgId;
 

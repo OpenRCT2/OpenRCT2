@@ -162,7 +162,7 @@ constexpr Widget MakeDropdownButtonWidget(
 }
 
 void WidgetScrollUpdateThumbs(rct_window& w, WidgetIndex widget_index);
-void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+void WidgetDraw(DrawPixelInfo* dpi, rct_window& w, WidgetIndex widgetIndex);
 
 bool WidgetIsDisabled(const rct_window& w, WidgetIndex widgetIndex);
 bool WidgetIsHoldable(const rct_window& w, WidgetIndex widgetIndex);

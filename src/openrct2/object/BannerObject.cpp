@@ -74,7 +74,7 @@ void BannerObject::Unload()
     _legacyType.image = 0;
 }
 
-void BannerObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void BannerObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 

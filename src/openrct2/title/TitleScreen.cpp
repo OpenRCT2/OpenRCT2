@@ -434,7 +434,7 @@ bool TitleIsPreviewingSequence()
     return false;
 }
 
-void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
+void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords)
 {
     thread_local std::string buffer;
     buffer.clear();

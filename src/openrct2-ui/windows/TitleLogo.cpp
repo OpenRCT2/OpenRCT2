@@ -57,7 +57,7 @@ public:
      *
      *  rct2: 0x0066B872
      */
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 2, 2 };
         GfxDrawSprite(&dpi, ImageId(SPR_G2_LOGO), screenCoords);

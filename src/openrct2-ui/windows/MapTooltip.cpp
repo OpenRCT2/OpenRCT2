@@ -24,7 +24,7 @@ static Widget window_map_tooltip_widgets[] = {
 };
 
 static void WindowMapTooltipUpdate(rct_window *w);
-static void WindowMapTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowMapTooltipPaint(rct_window *w, DrawPixelInfo *dpi);
 
 static WindowEventList window_map_tooltip_events([](auto& events)
 {
@@ -137,7 +137,7 @@ static void WindowMapTooltipUpdate(rct_window* w)
  *
  *  rct2: 0x006EE894
  */
-static void WindowMapTooltipPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapTooltipPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     StringId stringId;
     std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));

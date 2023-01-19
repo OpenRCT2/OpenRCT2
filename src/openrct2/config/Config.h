@@ -276,5 +276,5 @@ std::string FindCsg1datAtLocation(u8string_view path);
 bool Csg1datPresentAtLocation(u8string_view path);
 std::string FindCsg1idatAtLocation(u8string_view path);
 bool Csg1idatPresentAtLocation(u8string_view path);
-bool CsgIsUsable(const rct_gx& csg);
+bool CsgIsUsable(const Gx& csg);
 bool CsgAtLocationIsUsable(u8string_view path);

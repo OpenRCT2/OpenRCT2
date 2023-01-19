@@ -342,7 +342,7 @@ public:
             WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords{};
 

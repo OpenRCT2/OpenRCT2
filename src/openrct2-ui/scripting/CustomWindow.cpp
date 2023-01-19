@@ -528,7 +528,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(rct_drawpixelinfo& dpi) override
+        void OnDraw(DrawPixelInfo& dpi) override
         {
             WindowDrawWidgets(*this, &dpi);
             DrawTabImages(dpi);
@@ -542,7 +542,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDrawWidget(WidgetIndex widgetIndex, rct_drawpixelinfo& dpi) override
+        void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi) override
         {
             const auto& widget = widgets[widgetIndex];
             const auto& info = GetInfo(this);
@@ -552,7 +552,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& onDraw = widgetDesc->OnDraw;
                 if (onDraw.is_function())
                 {
-                    rct_drawpixelinfo widgetDpi;
+                    DrawPixelInfo widgetDpi;
                     if (ClipDrawPixelInfo(
                             &widgetDpi, &dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
                             widget.height()))
@@ -746,7 +746,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             const auto& info = GetInfo(this);
             if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
@@ -847,7 +847,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(rct_drawpixelinfo& dpi)
+        void DrawTabImages(DrawPixelInfo& dpi)
         {
             const auto& customInfo = GetInfo(this);
             const auto& tabs = customInfo.Desc.Tabs;

@@ -25,7 +25,7 @@
 #include <unordered_map>
 #include <vector>
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 struct PaletteMap;
 enum class FilterPaletteID : int32_t;
 
@@ -237,10 +237,10 @@ private:
     AtlasTextureInfo LoadGlyphTexture(const ImageId image, const PaletteMap& paletteMap);
     AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
     AtlasTextureInfo LoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
-    static rct_drawpixelinfo GetImageAsDPI(const ImageId imageId);
-    static rct_drawpixelinfo GetGlyphAsDPI(const ImageId imageId, const PaletteMap& paletteMap);
+    static DrawPixelInfo GetImageAsDPI(const ImageId imageId);
+    static DrawPixelInfo GetGlyphAsDPI(const ImageId imageId, const PaletteMap& paletteMap);
     void FreeTextures();
 
-    static rct_drawpixelinfo CreateDPI(int32_t width, int32_t height);
-    static void DeleteDPI(rct_drawpixelinfo dpi);
+    static DrawPixelInfo CreateDPI(int32_t width, int32_t height);
+    static void DeleteDPI(DrawPixelInfo dpi);
 };

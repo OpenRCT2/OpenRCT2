@@ -193,7 +193,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -315,7 +315,7 @@ public:
     }
 
 private:
-    static void DrawIMEComposition(rct_drawpixelinfo& dpi, int32_t cursorX, int32_t cursorY)
+    static void DrawIMEComposition(DrawPixelInfo& dpi, int32_t cursorX, int32_t cursorY)
     {
         int compositionWidth = GfxGetStringWidth(gTextInput->ImeBuffer, FontStyle::Medium);
         ScreenCoordsXY screenCoords(cursorX - (compositionWidth / 2), cursorY + 13);

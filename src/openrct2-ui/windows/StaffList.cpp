@@ -275,7 +275,7 @@ public:
         widgets[WIDX_STAFF_LIST_HIRE_BUTTON].right = width - 11;
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -366,7 +366,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
@@ -541,7 +541,7 @@ private:
         return static_cast<StaffType>(_selectedTab);
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi) const
+    void DrawTabImages(DrawPixelInfo& dpi) const
     {
         DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, PeepSpriteType::Handyman, gStaffHandymanColour);
         DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, PeepSpriteType::Mechanic, gStaffMechanicColour);
@@ -549,7 +549,7 @@ private:
         DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, PeepSpriteType::EntertainerElephant);
     }
 
-    void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabIndex, PeepSpriteType type, colour_t colour) const
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepSpriteType type, colour_t colour) const
     {
         auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
         const auto& widget = widgets[widgetIndex];
@@ -559,11 +559,11 @@ private:
             &dpi, ImageId(imageId, colour), windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
     }
 
-    void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabIndex, PeepSpriteType type) const
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepSpriteType type) const
     {
         auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
         const auto& widget = widgets[widgetIndex];
-        rct_drawpixelinfo clippedDpi;
+        DrawPixelInfo clippedDpi;
         if (ClipDrawPixelInfo(
                 &clippedDpi, &dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
                 widget.right - widget.left - 1, widget.bottom - widget.top - 1))

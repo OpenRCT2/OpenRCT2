@@ -36,7 +36,7 @@ public:
     void Unload() override;
     void UpdateEntryIndexes();
 
-    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 

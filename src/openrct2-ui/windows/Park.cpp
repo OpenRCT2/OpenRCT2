@@ -362,7 +362,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         switch (page)
         {
@@ -585,7 +585,7 @@ private:
         }
     }
 
-    void OnDrawEntrance(rct_drawpixelinfo& dpi)
+    void OnDrawEntrance(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -685,7 +685,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawRating(rct_drawpixelinfo& dpi)
+    void OnDrawRating(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -758,7 +758,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawGuests(rct_drawpixelinfo& dpi)
+    void OnDrawGuests(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -888,7 +888,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawPrice(rct_drawpixelinfo& dpi)
+    void OnDrawPrice(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -952,7 +952,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawStats(rct_drawpixelinfo& dpi)
+    void OnDrawStats(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -1061,7 +1061,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawObjective(rct_drawpixelinfo& dpi)
+    void OnDrawObjective(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -1151,7 +1151,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawAwards(rct_drawpixelinfo& dpi)
+    void OnDrawAwards(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -1213,7 +1213,7 @@ private:
         pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Entrance tab
         if (!WidgetIsDisabled(*this, WIDX_TAB_1))

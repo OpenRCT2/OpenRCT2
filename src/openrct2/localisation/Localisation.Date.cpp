@@ -38,7 +38,7 @@ const StringId DateFormatStringFormatIds[] = {
     STR_DATE_FORMAT_YDM,
 };
 
-openrct2_timeofday gRealTimeOfDay;
+TimeOfDay gRealTimeOfDay;
 
 int32_t DateGetMonth(int32_t months)
 {

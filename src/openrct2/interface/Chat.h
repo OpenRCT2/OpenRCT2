@@ -18,7 +18,7 @@
 #define CHAT_MAX_MESSAGE_LENGTH 200
 #define CHAT_MAX_WINDOW_WIDTH 600
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 struct ScreenCoordsXY;
 
 enum class ChatInput : uint8_t
@@ -37,7 +37,7 @@ void ChatToggle();
 
 void ChatInit();
 void ChatUpdate();
-void ChatDraw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColour);
+void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColour);
 
 void ChatAddHistory(std::string_view s);
 void ChatInput(ChatInput input);

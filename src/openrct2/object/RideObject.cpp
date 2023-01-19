@@ -283,7 +283,7 @@ void RideObject::Unload()
     _legacyType.images_offset = 0;
 }
 
-void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
+void RideObject::DrawPreview(DrawPixelInfo* dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
 {
     uint32_t imageId = _legacyType.images_offset;
 

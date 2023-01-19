@@ -513,7 +513,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         UpdateTabPositions();
         DrawWidgets(dpi);
@@ -654,7 +654,7 @@ private:
         }
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Money tab
         if (!IsWidgetDisabled(WIDX_TAB_1))

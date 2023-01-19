@@ -15,7 +15,7 @@
 #include <cstdint>
 #include <list>
 
-struct rct_g1_element;
+struct G1Element;
 
 struct ImageList
 {
@@ -55,7 +55,7 @@ constexpr bool operator!=(const ImageList& lhs, const ImageList& rhs)
     return !(lhs == rhs);
 }
 
-uint32_t GfxObjectAllocateImages(const rct_g1_element* images, uint32_t count);
+uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count);
 void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count);
 void GfxObjectCheckAllImagesFreed();
 size_t ImageListGetUsedCount();

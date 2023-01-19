@@ -186,7 +186,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 

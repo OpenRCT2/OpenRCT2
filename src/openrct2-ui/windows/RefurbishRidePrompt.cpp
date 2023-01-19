@@ -73,7 +73,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
 

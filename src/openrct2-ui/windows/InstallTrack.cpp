@@ -146,7 +146,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -156,7 +156,7 @@ public:
         int32_t colour = ColourMapA[colours[0]].darkest;
         GfxFillRect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
-        rct_g1_element g1temp = {};
+        G1Element g1temp = {};
         g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
         g1temp.width = 370;
         g1temp.height = 217;

@@ -230,7 +230,7 @@ public:
         widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords;
         int32_t numTiles;
@@ -306,7 +306,7 @@ public:
     }
 
 private:
-    void DrawDropdownButtons(rct_drawpixelinfo& dpi)
+    void DrawDropdownButtons(DrawPixelInfo& dpi)
     {
         auto& objManager = GetContext()->GetObjectManager();
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -331,7 +331,7 @@ private:
         DrawDropdownButton(dpi, WIDX_WALL, edgeImage);
     }
 
-    void DrawDropdownButton(rct_drawpixelinfo& dpi, WidgetIndex widgetIndex, ImageId image)
+    void DrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageId image)
     {
         const auto& widget = widgets[widgetIndex];
         GfxDrawSprite(&dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });

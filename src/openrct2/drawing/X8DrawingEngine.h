@@ -56,9 +56,9 @@ namespace OpenRCT2
             X8WeatherDrawer();
             ~X8WeatherDrawer();
             void Draw(
-                rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+                DrawPixelInfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
                 const uint8_t* weatherpattern) override;
-            void Restore(rct_drawpixelinfo* dpi);
+            void Restore(DrawPixelInfo* dpi);
         };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
@@ -76,7 +76,7 @@ namespace OpenRCT2
 
             DirtyGrid _dirtyGrid = {};
 
-            rct_drawpixelinfo _bitsDPI = {};
+            DrawPixelInfo _bitsDPI = {};
 
             bool _lastLightFXenabled = false;
 
@@ -108,11 +108,11 @@ namespace OpenRCT2
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
             std::string Screenshot() override;
             IDrawingContext* GetDrawingContext() override;
-            rct_drawpixelinfo* GetDrawingPixelInfo() override;
+            DrawPixelInfo* GetDrawingPixelInfo() override;
             DRAWING_ENGINE_FLAGS GetFlags() override;
             void InvalidateImage(uint32_t image) override;
 
-            rct_drawpixelinfo* GetDPI();
+            DrawPixelInfo* GetDPI();
 
         protected:
             void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch);
@@ -136,20 +136,19 @@ namespace OpenRCT2
         public:
             explicit X8DrawingContext(X8DrawingEngine* engine);
 
-            void Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex) override;
-            void FillRect(rct_drawpixelinfo* dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+            void Clear(DrawPixelInfo* dpi, uint8_t paletteIndex) override;
+            void FillRect(DrawPixelInfo* dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
             void FilterRect(
-                rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right,
-                int32_t bottom) override;
-            void DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line) override;
-            void DrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, int32_t x, int32_t y) override;
+                DrawPixelInfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+            void DrawLine(DrawPixelInfo* dpi, uint32_t colour, const ScreenLine& line) override;
+            void DrawSprite(DrawPixelInfo* dpi, const ImageId imageId, int32_t x, int32_t y) override;
             void DrawSpriteRawMasked(
-                rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
-            void DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
+                DrawPixelInfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
+            void DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
             void DrawGlyph(
-                rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
+                DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
             void DrawBitmap(
-                rct_drawpixelinfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,
+                DrawPixelInfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,
                 int32_t y) override
             {
             }

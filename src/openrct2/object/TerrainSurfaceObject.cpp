@@ -50,7 +50,7 @@ void TerrainSurfaceObject::Unload()
     NumEntries = 0;
 }
 
-void TerrainSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void TerrainSurfaceObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto imageId = ImageId(GetImageId({}, 1, 0, 0, false, false));
     if (Colour != 255)

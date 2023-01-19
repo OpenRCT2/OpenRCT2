@@ -99,26 +99,25 @@ public:
     void ResetPalette();
     void StartNewDraw();
 
-    void Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex) override;
-    void FillRect(rct_drawpixelinfo* dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+    void Clear(DrawPixelInfo* dpi, uint8_t paletteIndex) override;
+    void FillRect(DrawPixelInfo* dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
     void FilterRect(
-        rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
-    void DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line) override;
-    void DrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, int32_t x, int32_t y) override;
+        DrawPixelInfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+    void DrawLine(DrawPixelInfo* dpi, uint32_t colour, const ScreenLine& line) override;
+    void DrawSprite(DrawPixelInfo* dpi, const ImageId imageId, int32_t x, int32_t y) override;
     void DrawSpriteRawMasked(
-        rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
-    void DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
-    void DrawGlyph(rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
+        DrawPixelInfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
+    void DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
+    void DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawBitmap(
-        rct_drawpixelinfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
-        int32_t y) override;
+        DrawPixelInfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y) override;
 
     void FlushCommandBuffers();
 
     void FlushLines();
     void FlushRectangles();
     void HandleTransparency();
-    void CalculcateClipping(rct_drawpixelinfo* dpi);
+    void CalculcateClipping(DrawPixelInfo* dpi);
 };
 
 class OpenGLWeatherDrawer final : public IWeatherDrawer
@@ -132,7 +131,7 @@ public:
     }
 
     virtual void Draw(
-        rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+        DrawPixelInfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
         const uint8_t* weatherpattern) override
     {
         const uint8_t* pattern = weatherpattern;
@@ -185,7 +184,7 @@ private:
     size_t _bitsSize = 0;
     std::unique_ptr<uint8_t[]> _bits;
 
-    rct_drawpixelinfo _bitsDPI = {};
+    DrawPixelInfo _bitsDPI = {};
 
     std::unique_ptr<OpenGLDrawingContext> _drawingContext;
 
@@ -355,7 +354,7 @@ public:
         return _drawingContext.get();
     }
 
-    rct_drawpixelinfo* GetDrawingPixelInfo() override
+    DrawPixelInfo* GetDrawingPixelInfo() override
     {
         return &_bitsDPI;
     }
@@ -370,7 +369,7 @@ public:
         _drawingContext->GetTextureCache()->InvalidateImage(image);
     }
 
-    rct_drawpixelinfo* GetDPI()
+    DrawPixelInfo* GetDPI()
     {
         return &_bitsDPI;
     }
@@ -430,7 +429,7 @@ private:
         _height = height;
         _pitch = pitch;
 
-        rct_drawpixelinfo* dpi = &_bitsDPI;
+        DrawPixelInfo* dpi = &_bitsDPI;
         dpi->bits = _bits.get();
         dpi->x = 0;
         dpi->y = 0;
@@ -509,7 +508,7 @@ void OpenGLDrawingContext::StartNewDraw()
     _swapFramebuffer->Clear();
 }
 
-void OpenGLDrawingContext::Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
+void OpenGLDrawingContext::Clear(DrawPixelInfo* dpi, uint8_t paletteIndex)
 {
     CalculcateClipping(dpi);
 
@@ -517,7 +516,7 @@ void OpenGLDrawingContext::Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
 }
 
 void OpenGLDrawingContext::FillRect(
-    rct_drawpixelinfo* dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    DrawPixelInfo* dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     CalculcateClipping(dpi);
 
@@ -552,7 +551,7 @@ void OpenGLDrawingContext::FillRect(
 }
 
 void OpenGLDrawingContext::FilterRect(
-    rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    DrawPixelInfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     CalculcateClipping(dpi);
 
@@ -575,7 +574,7 @@ void OpenGLDrawingContext::FilterRect(
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line)
+void OpenGLDrawingContext::DrawLine(DrawPixelInfo* dpi, uint32_t colour, const ScreenLine& line)
 {
     CalculcateClipping(dpi);
 
@@ -587,7 +586,7 @@ void OpenGLDrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, con
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId imageId, int32_t x, int32_t y)
+void OpenGLDrawingContext::DrawSprite(DrawPixelInfo* dpi, const ImageId imageId, int32_t x, int32_t y)
 {
     CalculcateClipping(dpi);
 
@@ -601,7 +600,7 @@ void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId imag
     {
         if (g1Element->flags & G1_FLAG_HAS_ZOOM_SPRITE)
         {
-            rct_drawpixelinfo zoomedDPI;
+            DrawPixelInfo zoomedDPI;
             zoomedDPI.bits = dpi->bits;
             zoomedDPI.x = dpi->x >> 1;
             zoomedDPI.y = dpi->y >> 1;
@@ -738,7 +737,7 @@ void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, const ImageId imag
 }
 
 void OpenGLDrawingContext::DrawSpriteRawMasked(
-    rct_drawpixelinfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
+    DrawPixelInfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
     CalculcateClipping(dpi);
 
@@ -800,7 +799,7 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
+void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
     CalculcateClipping(dpi);
 
@@ -852,8 +851,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, const ImageId
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawGlyph(
-    rct_drawpixelinfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
+void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
 {
     CalculcateClipping(dpi);
 
@@ -909,7 +907,7 @@ void OpenGLDrawingContext::DrawGlyph(
 }
 
 void OpenGLDrawingContext::DrawBitmap(
-    rct_drawpixelinfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y)
+    DrawPixelInfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y)
 {
     CalculcateClipping(dpi);
 
@@ -1029,7 +1027,7 @@ void OpenGLDrawingContext::HandleTransparency()
     _commandBuffers.transparent.clear();
 }
 
-void OpenGLDrawingContext::CalculcateClipping(rct_drawpixelinfo* dpi)
+void OpenGLDrawingContext::CalculcateClipping(DrawPixelInfo* dpi)
 {
     auto screenDPI = _engine.GetDPI();
     auto bytesPerRow = screenDPI->GetBytesPerRow();

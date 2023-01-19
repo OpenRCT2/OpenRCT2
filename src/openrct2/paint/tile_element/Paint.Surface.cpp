@@ -1019,7 +1019,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 {
     PROFILED_FUNCTION();
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     session.InteractionType = ViewportInteractionItem::Terrain;
     session.Flags |= PaintSessionFlags::PassedSurface;
     session.SurfaceElement = reinterpret_cast<const TileElement*>(&tileElement);

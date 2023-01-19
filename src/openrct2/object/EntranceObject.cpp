@@ -42,7 +42,7 @@ void EntranceObject::Unload()
     _legacyType.image_id = 0;
 }
 
-void EntranceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void EntranceObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 

@@ -154,14 +154,14 @@ namespace OpenRCT2
         std::string _strOwned;
 
     public:
-        struct token
+        struct Token
         {
             FormatToken kind{};
             std::string_view text;
             uint32_t parameter{};
 
-            token() = default;
-            token(FormatToken k, std::string_view s, uint32_t p = 0);
+            Token() = default;
+            Token(FormatToken k, std::string_view s, uint32_t p = 0);
             bool IsLiteral() const;
             bool IsCodepoint() const;
             codepoint_t GetCodepoint() const;
@@ -172,7 +172,7 @@ namespace OpenRCT2
         private:
             std::string_view str;
             size_t index;
-            token current;
+            Token current;
 
             void update();
 
@@ -180,9 +180,9 @@ namespace OpenRCT2
             iterator(std::string_view s, size_t i);
             bool operator==(iterator& rhs);
             bool operator!=(iterator& rhs);
-            token CreateToken(size_t len);
-            const token* operator->() const;
-            const token& operator*();
+            Token CreateToken(size_t len);
+            const Token* operator->() const;
+            const Token& operator*();
             iterator& operator++();
             iterator operator++(int);
             bool eol() const;

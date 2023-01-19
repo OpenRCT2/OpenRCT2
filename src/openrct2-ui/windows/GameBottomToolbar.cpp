@@ -72,16 +72,16 @@ uint8_t gToolbarDirtyFlags;
 static void WindowGameBottomToolbarMouseup(rct_window *w, WidgetIndex widgetIndex);
 static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback);
 static void WindowGameBottomToolbarInvalidate(rct_window *w);
-static void WindowGameBottomToolbarPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowGameBottomToolbarPaint(rct_window *w, DrawPixelInfo *dpi);
 static void WindowGameBottomToolbarUpdate(rct_window* w);
 static void WindowGameBottomToolbarCursor(rct_window *w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
 static void WindowGameBottomToolbarUnknown05(rct_window *w);
 
-static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo *dpi, rct_window *w);
-static void WindowGameBottomToolbarDrawParkRating(rct_drawpixelinfo *dpi, rct_window *w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor);
-static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo *dpi, rct_window *w);
-static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo *dpi, rct_window *w);
-static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo *dpi, rct_window *w);
+static void WindowGameBottomToolbarDrawLeftPanel(DrawPixelInfo *dpi, rct_window *w);
+static void WindowGameBottomToolbarDrawParkRating(DrawPixelInfo *dpi, rct_window *w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor);
+static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo *dpi, rct_window *w);
+static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo *dpi, rct_window *w);
+static void WindowGameBottomToolbarDrawMiddlePanel(DrawPixelInfo *dpi, rct_window *w);
 
 /**
  *
@@ -346,7 +346,7 @@ void WindowGameBottomToolbarInvalidateNewsItem()
  *
  *  rct2: 0x0066BC87
  */
-static void WindowGameBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowGameBottomToolbarPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     auto leftWidget = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
     auto rightWidget = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET];
@@ -384,7 +384,7 @@ static void WindowGameBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowGameBottomToolbarDrawLeftPanel(DrawPixelInfo* dpi, rct_window* w)
 {
     const auto topLeft = w->windowPos
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
@@ -458,7 +458,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
  *  rct2: 0x0066C76C
  */
 static void WindowGameBottomToolbarDrawParkRating(
-    rct_drawpixelinfo* dpi, rct_window* w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
+    DrawPixelInfo* dpi, rct_window* w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
 {
     int16_t bar_width;
 
@@ -478,7 +478,7 @@ static void WindowGameBottomToolbarDrawParkRating(
     GfxDrawSprite(dpi, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
 }
 
-static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo* dpi, rct_window* w)
 {
     const auto topLeft = w->windowPos
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
@@ -550,7 +550,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
  *
  *  rct2: 0x0066BFA5
  */
-static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo* dpi, rct_window* w)
 {
     int32_t width;
     News::Item* newsItem;
@@ -586,7 +586,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
             if (newsItem->HasButton())
                 break;
 
-            rct_drawpixelinfo cliped_dpi;
+            DrawPixelInfo cliped_dpi;
             if (!ClipDrawPixelInfo(&cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
             {
                 break;
@@ -651,7 +651,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
     }
 }
 
-static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowGameBottomToolbarDrawMiddlePanel(DrawPixelInfo* dpi, rct_window* w)
 {
     Widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 

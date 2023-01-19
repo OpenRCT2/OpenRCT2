@@ -66,7 +66,7 @@ class TrackDesignManageWindow final : public Window
         void OnClose() override;
         void OnMouseUp(WidgetIndex widgetIndex) override;
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override;
-        void OnDraw(rct_drawpixelinfo& dpi) override;
+        void OnDraw(DrawPixelInfo& dpi) override;
 };
 
 class TrackDeletePromptWindow final : public Window
@@ -79,7 +79,7 @@ class TrackDeletePromptWindow final : public Window
 
         void OnOpen() override;
         void OnMouseUp(WidgetIndex widgetIndex) override;
-        void OnDraw(rct_drawpixelinfo& dpi) override;
+        void OnDraw(DrawPixelInfo& dpi) override;
 };
 
 static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef);
@@ -169,7 +169,7 @@ void TrackDesignManageWindow::OnTextInput(WidgetIndex widgetIndex, std::string_v
     }
 }
 
-void TrackDesignManageWindow::OnDraw(rct_drawpixelinfo& dpi)
+void TrackDesignManageWindow::OnDraw(DrawPixelInfo& dpi)
 {
     Formatter::Common().Add<const utf8*>(_trackDesignFileReference->name.c_str());
     DrawWidgets(dpi);
@@ -223,7 +223,7 @@ void TrackDeletePromptWindow::OnMouseUp(WidgetIndex widgetIndex)
     }
 }
 
-void TrackDeletePromptWindow::OnDraw(rct_drawpixelinfo& dpi)
+void TrackDeletePromptWindow::OnDraw(DrawPixelInfo& dpi)
 {
     DrawWidgets(dpi);
 

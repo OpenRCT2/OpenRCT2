@@ -552,7 +552,7 @@ public:
         CommonPrepareDrawAfter();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(&dpi);
@@ -909,7 +909,7 @@ private:
         widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.DrawingEngine)];
     }
 
-    void DisplayDraw(rct_drawpixelinfo* dpi)
+    void DisplayDraw(DrawPixelInfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.WindowScale * 100));
@@ -1997,7 +1997,7 @@ private:
         widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[gConfigGeneral.AutosaveFrequency];
     }
 
-    void AdvancedDraw(rct_drawpixelinfo* dpi)
+    void AdvancedDraw(DrawPixelInfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.AutosaveAmount));
@@ -2068,7 +2068,7 @@ private:
             Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_TAB_PAINT_0);
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
@@ -2079,7 +2079,7 @@ private:
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
     }
 
-    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
         Widget* widget = &widgets[widgetIndex];

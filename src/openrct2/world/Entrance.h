@@ -17,14 +17,14 @@
 #include <vector>
 
 #pragma pack(push, 1)
-struct rct_entrance_type
+struct EntranceEntry
 {
     StringId string_idx;    // 0x00
     uint32_t image_id;      // 0x02
     uint8_t scrolling_mode; // 0x06
     uint8_t text_height;    // 0x07
 };
-assert_struct_size(rct_entrance_type, 8);
+assert_struct_size(EntranceEntry, 8);
 #pragma pack(pop)
 
 struct TileElement;

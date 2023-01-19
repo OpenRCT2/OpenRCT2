@@ -83,7 +83,7 @@ void Painter::Paint(IDrawingEngine& de)
     gCurrentDrawCount++;
 }
 
-void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
+void Painter::PaintReplayNotice(DrawPixelInfo* dpi, const char* text)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
@@ -100,7 +100,7 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
     GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
 }
 
-void Painter::PaintFPS(rct_drawpixelinfo* dpi)
+void Painter::PaintFPS(DrawPixelInfo* dpi)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
 
@@ -131,7 +131,7 @@ void Painter::MeasureFPS()
     _lastSecond = currentTime;
 }
 
-PaintSession* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags)
+PaintSession* Painter::CreateSession(DrawPixelInfo* dpi, uint32_t viewFlags)
 {
     PROFILED_FUNCTION();
 

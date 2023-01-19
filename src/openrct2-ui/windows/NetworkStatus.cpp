@@ -97,7 +97,7 @@ public:
         ResizeFrame();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
         thread_local std::string _buffer;

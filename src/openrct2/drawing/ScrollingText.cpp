@@ -50,7 +50,7 @@ static void ScrollingTextSetBitmapForTTF(
 static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
 {
     uint8_t drawingSurface[64];
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
     dpi.width = 8;
     dpi.height = 8;
@@ -84,7 +84,7 @@ static void ScrollingTextInitialiseScrollingText()
         const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
 
         // Initialize the scrolling text sprite.
-        rct_g1_element g1{};
+        G1Element g1{};
         g1.offset = _drawScrollTextList[i].bitmap;
         g1.x_offset = -32;
         g1.y_offset = 0;
@@ -1440,7 +1440,7 @@ ImageId ScrollingTextSetup(
 
     assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
 
     if (dpi->zoom_level > ZoomLevel{ 0 })
         return ImageId(SPR_SCROLLING_TEXT_DEFAULT);

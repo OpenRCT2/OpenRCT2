@@ -1483,9 +1483,9 @@ public:
         currentRide->FormatNameTo(ft);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
-        rct_drawpixelinfo clipdpi;
+        DrawPixelInfo clipdpi;
         Widget* widget;
         int32_t widgetWidth, widgetHeight;
 
@@ -2588,7 +2588,7 @@ private:
     }
 
     void DrawTrackPiece(
-        rct_drawpixelinfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+        DrawPixelInfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
         int32_t widgetWidth, int32_t widgetHeight)
     {
         auto currentRide = GetRide(rideIndex);
@@ -2627,7 +2627,7 @@ private:
     }
 
     void DrawTrackPieceHelper(
-        rct_drawpixelinfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+        DrawPixelInfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
         const CoordsXY& originCoords, int32_t originZ)
     {
         TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

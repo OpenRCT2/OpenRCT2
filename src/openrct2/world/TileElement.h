@@ -24,7 +24,7 @@ struct SmallSceneryEntry;
 struct WallSceneryEntry;
 struct PathBitEntry;
 struct BannerSceneryEntry;
-struct rct_footpath_entry;
+struct FootpathEntry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
 class TerrainEdgeObject;

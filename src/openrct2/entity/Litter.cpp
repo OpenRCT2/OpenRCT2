@@ -174,7 +174,7 @@ void Litter::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    rct_drawpixelinfo& dpi = session.DPI;
+    DrawPixelInfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
         return; // If zoomed at all no litter drawn
 

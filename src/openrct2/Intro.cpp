@@ -38,7 +38,7 @@ static bool _chainLiftFinished;
 static void ScreenIntroProcessMouseInput();
 static void ScreenIntroProcessKeyboardInput();
 static void ScreenIntroSkipPart();
-static void ScreenIntroDrawLogo(rct_drawpixelinfo* dpi);
+static void ScreenIntroDrawLogo(DrawPixelInfo* dpi);
 
 // rct2: 0x0068E966
 void IntroUpdate()
@@ -168,7 +168,7 @@ void IntroUpdate()
     }
 }
 
-void IntroDraw(rct_drawpixelinfo* dpi)
+void IntroDraw(DrawPixelInfo* dpi)
 {
     int32_t screenWidth = ContextGetWidth();
 
@@ -280,7 +280,7 @@ static void ScreenIntroSkipPart()
     }
 }
 
-static void ScreenIntroDrawLogo(rct_drawpixelinfo* dpi)
+static void ScreenIntroDrawLogo(DrawPixelInfo* dpi)
 {
     int32_t screenWidth = ContextGetWidth();
     int32_t imageWidth = 640;

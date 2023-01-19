@@ -184,7 +184,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto ft = Formatter::Common();
         ft.Add<money64>(10.00_GBP);

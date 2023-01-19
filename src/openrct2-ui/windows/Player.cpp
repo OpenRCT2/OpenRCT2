@@ -88,7 +88,7 @@ static void WindowPlayerOverviewMouseDown(rct_window *w, WidgetIndex widgetIndex
 static void WindowPlayerOverviewDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowPlayerOverviewUpdate(rct_window* w);
 static void WindowPlayerOverviewInvalidate(rct_window *w);
-static void WindowPlayerOverviewPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowPlayerOverviewPaint(rct_window *w, DrawPixelInfo *dpi);
 
 static WindowEventList window_player_overview_events([](auto& events)
 {
@@ -107,7 +107,7 @@ static void WindowPlayerStatisticsMouseUp(rct_window *w, WidgetIndex widgetIndex
 static void WindowPlayerStatisticsResize(rct_window *w);
 static void WindowPlayerStatisticsUpdate(rct_window* w);
 static void WindowPlayerStatisticsInvalidate(rct_window *w);
-static void WindowPlayerStatisticsPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowPlayerStatisticsPaint(rct_window *w, DrawPixelInfo *dpi);
 
 static WindowEventList window_player_statistics_events([](auto& events)
 {
@@ -129,7 +129,7 @@ static WindowEventList *window_player_page_events[] = {
 // clang-format on
 
 static void WindowPlayerSetPage(rct_window* w, int32_t page);
-static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
+static void WindowPlayerDrawTabImages(DrawPixelInfo* dpi, rct_window* w);
 static void WindowPlayerUpdateViewport(rct_window* w, bool scroll);
 static void WindowPlayerUpdateTitle(rct_window* w);
 
@@ -300,7 +300,7 @@ void WindowPlayerOverviewUpdate(rct_window* w)
     WindowPlayerUpdateViewport(w, scroll);
 }
 
-void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
+void WindowPlayerOverviewPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowPlayerDrawTabImages(dpi, w);
@@ -471,7 +471,7 @@ void WindowPlayerStatisticsInvalidate(rct_window* w)
     WindowAlignTabs(w, WIDX_TAB_1, WIDX_TAB_2);
 }
 
-void WindowPlayerStatisticsPaint(rct_window* w, rct_drawpixelinfo* dpi)
+void WindowPlayerStatisticsPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowPlayerDrawTabImages(dpi, w);
@@ -538,7 +538,7 @@ static void WindowPlayerSetPage(rct_window* w, int32_t page)
     }
 }
 
-static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowPlayerDrawTabImages(DrawPixelInfo* dpi, rct_window* w)
 {
     Widget* widget;
 

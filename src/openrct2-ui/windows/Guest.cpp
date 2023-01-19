@@ -319,7 +319,7 @@ public:
             OnViewportRotateOverview();
         }
     }
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         switch (page)
         {
@@ -382,7 +382,7 @@ public:
             OnScrollMouseDownRides(scrollIndex, screenCoords);
         }
     }
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         if (page == WINDOW_GUEST_RIDES)
         {
@@ -514,7 +514,7 @@ private:
 
 #pragma region Overview
 
-    void OverviewTabDraw(rct_drawpixelinfo& dpi)
+    void OverviewTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_1))
             return;
@@ -526,7 +526,7 @@ private:
         if (page == WINDOW_GUEST_OVERVIEW)
             widgHeight++;
 
-        rct_drawpixelinfo clipDpi;
+        DrawPixelInfo clipDpi;
         if (!ClipDrawPixelInfo(&clipDpi, &dpi, screenCoords, widgWidth, widgHeight))
         {
             return;
@@ -738,7 +738,7 @@ private:
         Invalidate();
     }
 
-    void OnDrawOverview(rct_drawpixelinfo& dpi)
+    void OnDrawOverview(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -782,7 +782,7 @@ private:
         int32_t left = marqueeWidget.left + 2 + windowPos.x;
         int32_t top = marqueeWidget.top + windowPos.y;
         int32_t marqHeight = marqueeWidget.height();
-        rct_drawpixelinfo dpiMarquee;
+        DrawPixelInfo dpiMarquee;
         if (!ClipDrawPixelInfo(&dpiMarquee, &dpi, { left, top }, marqWidth, marqHeight))
         {
             return;
@@ -985,7 +985,7 @@ private:
 #pragma endregion
 
 #pragma region Stats
-    void StatsTabDraw(rct_drawpixelinfo& dpi)
+    void StatsTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_2))
             return;
@@ -1032,7 +1032,7 @@ private:
         Invalidate();
     }
 
-    void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, rct_drawpixelinfo& dpi, int32_t colour, bool blinkFlag)
+    void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, DrawPixelInfo& dpi, int32_t colour, bool blinkFlag)
     {
         auto coords = origCoords;
         if (FontGetLineHeight(FontStyle::Medium) > 10)
@@ -1066,7 +1066,7 @@ private:
         return std::clamp(newValue, newMin, 255);
     }
 
-    void OnDrawStats(rct_drawpixelinfo& dpi)
+    void OnDrawStats(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1204,7 +1204,7 @@ private:
 #pragma endregion
 
 #pragma region Rides
-    void RidesTabDraw(rct_drawpixelinfo& dpi)
+    void RidesTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_3))
             return;
@@ -1312,7 +1312,7 @@ private:
         widgets[WIDX_RIDE_SCROLL].bottom = height - 15;
     }
 
-    void OnDrawRides(rct_drawpixelinfo& dpi)
+    void OnDrawRides(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1351,7 +1351,7 @@ private:
         DrawTextEllipsised(&dpi, screenCoords, width - 14, STR_FAVOURITE_RIDE, ft);
     }
 
-    void OnScrollDrawRides(int32_t scrollIndex, rct_drawpixelinfo& dpi)
+    void OnScrollDrawRides(int32_t scrollIndex, DrawPixelInfo& dpi)
     {
         auto colour = ColourMapA[colours[1]].mid_light;
         GfxFillRect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
@@ -1379,7 +1379,7 @@ private:
 #pragma endregion
 
 #pragma region Finance
-    void FinanceTabDraw(rct_drawpixelinfo& dpi)
+    void FinanceTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_4))
             return;
@@ -1405,7 +1405,7 @@ private:
         WidgetInvalidate(*this, WIDX_TAB_4);
     }
 
-    void OnDrawFinance(rct_drawpixelinfo& dpi)
+    void OnDrawFinance(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1517,7 +1517,7 @@ private:
 #pragma endregion
 
 #pragma region Thoughts
-    void ThoughtsTabDraw(rct_drawpixelinfo& dpi)
+    void ThoughtsTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_5))
             return;
@@ -1554,7 +1554,7 @@ private:
         }
     }
 
-    void OnDrawThoughts(rct_drawpixelinfo& dpi)
+    void OnDrawThoughts(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1599,7 +1599,7 @@ private:
 #pragma endregion
 
 #pragma region Inventory
-    void InventoryTabDraw(rct_drawpixelinfo& dpi)
+    void InventoryTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_6))
             return;
@@ -1741,7 +1741,7 @@ private:
         return std::make_pair(STR_GUEST_ITEM_FORMAT, ft);
     }
 
-    void OnDrawInventory(rct_drawpixelinfo& dpi)
+    void OnDrawInventory(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1788,7 +1788,7 @@ private:
 #pragma endregion
 
 #pragma region Debug
-    void DebugTabDraw(rct_drawpixelinfo& dpi)
+    void DebugTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_7))
             return;
@@ -1811,7 +1811,7 @@ private:
         Invalidate();
     }
 
-    void OnDrawDebug(rct_drawpixelinfo& dpi)
+    void OnDrawDebug(DrawPixelInfo& dpi)
     {
         char buffer[512]{};
         char buffer2[512]{};

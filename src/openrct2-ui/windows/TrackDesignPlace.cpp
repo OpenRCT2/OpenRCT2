@@ -284,17 +284,17 @@ public:
         DrawMiniPreview(_trackDesign.get());
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto ft = Formatter::Common();
         ft.Add<char*>(_trackDesign->name.c_str());
         WindowDrawWidgets(*this, &dpi);
 
         // Draw mini tile preview
-        rct_drawpixelinfo clippedDpi;
+        DrawPixelInfo clippedDpi;
         if (ClipDrawPixelInfo(&clippedDpi, &dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
         {
-            rct_g1_element g1temp = {};
+            G1Element g1temp = {};
             g1temp.offset = _miniPreview.data();
             g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
             g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;

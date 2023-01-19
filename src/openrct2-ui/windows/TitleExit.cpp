@@ -48,7 +48,7 @@ class TitleExitWindow final : public Window
         };
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }

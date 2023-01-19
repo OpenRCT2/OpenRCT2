@@ -737,7 +737,7 @@ public:
         window_loadsave_widgets[WIDX_BROWSE].bottom = height - 6;
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -973,7 +973,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         GfxFillRect(
             &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
@@ -1118,7 +1118,7 @@ static Widget window_overwrite_prompt_widgets[] = {
 };
 
 static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowOverwritePromptPaint(rct_window* w, DrawPixelInfo* dpi);
 
 static WindowEventList window_overwrite_prompt_events([](auto& events) {
     events.mouse_up = &WindowOverwritePromptMouseup;
@@ -1170,7 +1170,7 @@ static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowOverwritePromptPaint(rct_window* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
 
