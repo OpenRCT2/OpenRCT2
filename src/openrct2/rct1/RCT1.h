@@ -284,7 +284,7 @@ namespace RCT1
     };
     assert_struct_size(Ride, 0x260);
 
-    struct UnkEntity : RCT12SpriteBase
+    struct UnkEntity : RCT12EntityBase
     {
         uint8_t Pad1F[3];      // 0x1f
         StringId NameStringID; // 0x22
@@ -296,7 +296,7 @@ namespace RCT1
         uint8_t Var71;
     };
 
-    struct Vehicle : RCT12SpriteBase
+    struct Vehicle : RCT12EntityBase
     {
         uint8_t Pitch;        // 0x1F
         uint8_t BankRotation; // 0x20
@@ -435,7 +435,7 @@ namespace RCT1
         ToffeeApple = 30
     };
 
-    struct Peep : RCT12SpriteBase
+    struct Peep : RCT12EntityBase
     {
         uint8_t Pad1F[3];
         StringId NameStringID;     // 0x22
@@ -587,14 +587,14 @@ namespace RCT1
         UnkEntity Unknown;
         RCT1::Vehicle Vehicle;
         RCT1::Peep Peep;
-        RCT12SpriteLitter Litter;
-        RCT12SpriteBalloon Balloon;
-        RCT12SpriteDuck Duck;
-        RCT12SpriteJumpingFountain JumpingFountain;
-        RCT12SpriteMoneyEffect MoneyEffect;
-        RCT12SpriteCrashedVehicleParticle CrashedVehicleParticle;
-        RCT12SpriteCrashSplash CrashSplash;
-        RCT12SpriteSteamParticle SteamParticle;
+        RCT12EntityLitter Litter;
+        RCT12EntityBalloon Balloon;
+        RCT12EntityDuck Duck;
+        RCT12EntityJumpingFountain JumpingFountain;
+        RCT12EntityMoneyEffect MoneyEffect;
+        RCT12EntityCrashedVehicleParticle CrashedVehicleParticle;
+        RCT12EntityCrashSplash CrashSplash;
+        RCT12EntitySteamParticle SteamParticle;
     };
     assert_struct_size(Entity, 0x100);
 
