@@ -113,7 +113,7 @@ static std::string ScreenshotGetDirectory()
     return env->GetDirectoryPath(DIRBASE::USER, DIRID::SCREENSHOT);
 }
 
-static std::pair<PODDate, TimeOfDay> ScreenshotGetDateTime()
+static std::pair<RealWorldDate, RealWorldTime> ScreenshotGetDateTime()
 {
     auto date = Platform::GetDateLocal();
     auto time = Platform::GetTimeLocal();

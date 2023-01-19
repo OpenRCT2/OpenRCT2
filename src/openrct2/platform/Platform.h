@@ -40,14 +40,14 @@ enum class SPECIAL_FOLDER
     RCT2_DISCORD,
 };
 
-struct PODDate
+struct RealWorldDate
 {
     uint8_t day;
     uint8_t month;
     int16_t year;
     uint8_t day_of_week;
 };
-struct TimeOfDay;
+struct RealWorldTime;
 
 namespace Platform
 {
@@ -73,8 +73,8 @@ namespace Platform
     MeasurementFormat GetLocaleMeasurementFormat();
     uint8_t GetLocaleDateFormat();
     TemperatureUnit GetLocaleTemperatureFormat();
-    TimeOfDay GetTimeLocal();
-    PODDate GetDateLocal();
+    RealWorldTime GetTimeLocal();
+    RealWorldDate GetDateLocal();
 
     bool FindApp(std::string_view app, std::string* output);
     int32_t Execute(std::string_view command, std::string* output = nullptr);
