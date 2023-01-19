@@ -59,7 +59,7 @@ uint8_t TileElementsViewTests::_gScreenFlags;
 
 template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
 {
-    std::vector<TileElement*> res;
+    std::vector<T*> res;
 
     TileElement* element = MapGetFirstElementAt(pos);
     if (element == nullptr)
@@ -69,9 +69,9 @@ template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
     {
         if constexpr (!std::is_same_v<T, TileElement>)
         {
-            auto* res = element->as<T>();
-            if (res)
-                res.push_back(res);
+            auto* el = element->as<T>();
+            if (el)
+                res.push_back(el);
         }
         else
         {
@@ -85,7 +85,7 @@ template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
 
 template<typename T> std::vector<T*> BuildListByView(const CoordsXY& pos)
 {
-    std::vector<TileElement*> res;
+    std::vector<T*> res;
 
     for (auto* element : TileElementsView<T>(pos))
     {
@@ -97,8 +97,8 @@ template<typename T> std::vector<T*> BuildListByView(const CoordsXY& pos)
 
 template<typename T> bool CompareLists(const CoordsXY& pos)
 {
-    auto listManual = BuildListManual<TileElement>(pos);
-    auto listView = BuildListByView<TileElement>(pos);
+    auto listManual = BuildListManual<T>(pos);
+    auto listView = BuildListByView<T>(pos);
 
     EXPECT_EQ(listManual.size(), listView.size());
     if (listManual.size() != listView.size())
