@@ -69,9 +69,9 @@ template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
     {
         if constexpr (!std::is_same_v<T, TileElement>)
         {
-            auto* res = element->as<T>();
-            if (res)
-                res.push_back(res);
+            auto* el = element->as<T>();
+            if (el)
+                res.push_back(el);
         }
         else
         {
