@@ -140,7 +140,7 @@ void SetupInUseSelectionFlags()
         }
     }
 
-    tile_element_iterator iter;
+    TileElementIterator iter;
     TileElementIteratorBegin(&iter);
     do
     {

@@ -483,7 +483,7 @@ static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     WindowMapgenSharedMouseup(w, widgetIndex);
 
-    mapgen_settings mapgenSettings;
+    MapGenSettings mapgenSettings;
     Formatter ft;
     switch (widgetIndex)
     {
@@ -771,7 +771,7 @@ static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     WindowMapgenSharedMouseup(w, widgetIndex);
 
-    mapgen_settings mapgenSettings;
+    MapGenSettings mapgenSettings;
 
     switch (widgetIndex)
     {
@@ -843,7 +843,7 @@ static void WindowMapgenSimplexMouseup(rct_window* w, WidgetIndex widgetIndex)
 {
     WindowMapgenSharedMouseup(w, widgetIndex);
 
-    mapgen_settings mapgenSettings;
+    MapGenSettings mapgenSettings;
 
     switch (widgetIndex)
     {
@@ -1157,7 +1157,7 @@ static void WindowMapgenHeightmapMousedown(rct_window* w, WidgetIndex widgetInde
 
 static void WindowMapgenHeightmapGenerateMap()
 {
-    mapgen_settings mapgenSettings;
+    MapGenSettings mapgenSettings;
     mapgenSettings.water_level = _waterLevel;
     mapgenSettings.smooth = _heightmapSmoothTiles;
     mapgenSettings.smooth_height_map = _heightmapSmoothMap;

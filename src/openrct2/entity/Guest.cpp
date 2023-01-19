@@ -6678,14 +6678,14 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
     }
 }
 
-struct item_pref_t
+struct ItemPref
 {
     ShopItem item;
     PeepSpriteType sprite_type;
 };
 
 // clang-format off
-static item_pref_t item_order_preference[] = {
+static ItemPref item_order_preference[] = {
     { ShopItem::IceCream,         PeepSpriteType::IceCream    },
     { ShopItem::Chips,            PeepSpriteType::Chips       },
     { ShopItem::Pizza,            PeepSpriteType::Pizza       },

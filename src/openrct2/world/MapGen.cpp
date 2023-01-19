@@ -93,10 +93,10 @@ static constexpr const std::string_view BaseTerrain[] = {
 static void MapGenPlaceTrees();
 static void MapGenSetWaterLevel(int32_t waterLevel);
 static void MapGenSmoothHeight(int32_t iterations);
-static void MapGenSetHeight(mapgen_settings* settings);
+static void MapGenSetHeight(MapGenSettings* settings);
 
 static float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
-static void MapGenSimplex(mapgen_settings* settings);
+static void MapGenSimplex(MapGenSettings* settings);
 
 static TileCoordsXY _heightSize;
 static uint8_t* _height;
@@ -115,7 +115,7 @@ static void SetHeight(int32_t x, int32_t y, int32_t height)
         _height[x + y * _heightSize.x] = height;
 }
 
-void MapGenGenerateBlank(mapgen_settings* settings)
+void MapGenGenerateBlank(MapGenSettings* settings)
 {
     int32_t x, y;
     MapClearAllElements();
@@ -139,7 +139,7 @@ void MapGenGenerateBlank(mapgen_settings* settings)
     MapGenSetWaterLevel(settings->water_level);
 }
 
-void MapGenGenerate(mapgen_settings* settings)
+void MapGenGenerate(MapGenSettings* settings)
 {
     const auto& mapSize = settings->mapSize;
     auto waterLevel = settings->water_level;
@@ -461,7 +461,7 @@ static void MapGenSmoothHeight(int32_t iterations)
 /**
  * Sets the height of the actual game map tiles to the height map.
  */
-static void MapGenSetHeight(mapgen_settings* settings)
+static void MapGenSetHeight(MapGenSettings* settings)
 {
     int32_t x, y, heightX, heightY;
 
@@ -641,7 +641,7 @@ static float Grad(int32_t hash, float x, float y)
     return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -2.0f * v : 2.0f * v);
 }
 
-static void MapGenSimplex(mapgen_settings* settings)
+static void MapGenSimplex(MapGenSettings* settings)
 {
     int32_t x, y;
 
@@ -791,7 +791,7 @@ static void MapGenSmoothHeightmap(std::vector<uint8_t>& src, int32_t strength)
     }
 }
 
-void MapGenGenerateFromHeightmap(mapgen_settings* settings)
+void MapGenGenerateFromHeightmap(MapGenSettings* settings)
 {
     openrct2_assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
     openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");

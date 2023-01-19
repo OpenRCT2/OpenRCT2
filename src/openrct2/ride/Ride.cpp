@@ -426,7 +426,7 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
 {
     TileElement* resultTileElement = nullptr;
 
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {
@@ -4468,7 +4468,7 @@ bool Ride::IsBlockSectioned() const
 
 bool RideHasAnyTrackElements(const Ride& ride)
 {
-    tile_element_iterator it;
+    TileElementIterator it;
 
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
@@ -5669,7 +5669,7 @@ std::vector<RideId> GetTracklessRides()
     // Iterate map and build list of seen ride IDs
     std::vector<bool> seen;
     seen.resize(256);
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {

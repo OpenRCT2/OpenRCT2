@@ -997,7 +997,7 @@ namespace OpenRCT2
                         cs.Read(tileElements.data(), tileElements.size() * sizeof(TileElement));
                         SetTileElements(std::move(tileElements));
                         {
-                            tile_element_iterator it;
+                            TileElementIterator it;
                             TileElementIteratorBegin(&it);
                             while (TileElementIteratorNext(&it))
                             {

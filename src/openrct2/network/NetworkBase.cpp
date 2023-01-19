@@ -2441,7 +2441,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
         const GameStateSnapshot_t* desyncSnapshot = snapshots->GetLinkedSnapshot(tick);
         if (desyncSnapshot != nullptr)
         {
-            GameStateCompareData_t cmpData = snapshots->Compare(serverSnapshot, *desyncSnapshot);
+            GameStateCompareData cmpData = snapshots->Compare(serverSnapshot, *desyncSnapshot);
 
             std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_DESYNCS);
 

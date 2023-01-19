@@ -1091,7 +1091,7 @@ static void WindowRideDisableTabs(rct_window* w)
 static void WindowRideUpdateOverallView(const Ride& ride)
 {
     // Calculate x, y, z bounds of the entire ride using its track elements
-    tile_element_iterator it;
+    TileElementIterator it;
 
     TileElementIteratorBegin(&it);
 
