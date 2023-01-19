@@ -3429,7 +3429,7 @@ static void SideFrictionRCTrackDiag60DegDownTo25DegDown(
     SideFrictionRCTrackDiag25DegUpTo60DegUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 };
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(int32_t trackType)
 {
     switch (trackType)
     {

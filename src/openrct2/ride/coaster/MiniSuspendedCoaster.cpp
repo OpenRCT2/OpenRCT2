@@ -2506,7 +2506,7 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(int32_t trackType)
 {
     switch (trackType)
     {

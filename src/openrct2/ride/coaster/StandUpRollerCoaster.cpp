@@ -8769,7 +8769,7 @@ static void StandUpRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRC(int32_t trackType)
 {
     switch (trackType)
     {

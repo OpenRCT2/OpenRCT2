@@ -7511,7 +7511,7 @@ static void MineTrainRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType)
 {
     switch (trackType)
     {

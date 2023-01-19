@@ -1750,7 +1750,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType)
 {
     switch (trackType)
     {

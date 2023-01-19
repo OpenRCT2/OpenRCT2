@@ -16078,7 +16078,7 @@ static void LayDownRCTrackHalfLoopUninvertedDown(
     LayDownRCTrackHalfLoopInvertedUp(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRC(int32_t trackType)
 {
     switch (trackType)
     {
@@ -16315,5 +16315,5 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRc(int32_t trackType)
         case TrackElemType::FlyerHalfLoopUninvertedDown:
             return LayDownRCTrackHalfLoopUninvertedDown;
     }
-    return GetTrackPaintFunctionCorkscrewRc(trackType);
+    return GetTrackPaintFunctionCorkscrewRC(trackType);
 }

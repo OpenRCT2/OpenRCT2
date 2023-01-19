@@ -8867,7 +8867,7 @@ static void CompactInvertedRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(int32_t trackType)
 {
     switch (trackType)
     {

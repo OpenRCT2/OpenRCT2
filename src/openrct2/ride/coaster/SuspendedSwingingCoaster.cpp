@@ -4441,7 +4441,7 @@ static void SuspendedSwingingRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(int32_t trackType)
 {
     switch (trackType)
     {

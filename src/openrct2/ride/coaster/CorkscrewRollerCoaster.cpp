@@ -9424,7 +9424,7 @@ static void CorkscrewRCTrackRightTwistUpToDown(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType)
 {
     switch (trackType)
     {

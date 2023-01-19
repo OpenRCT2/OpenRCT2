@@ -101,7 +101,7 @@ void ScenarioBegin()
 void ScenarioReset()
 {
     // Set the scenario pseudo-random seeds
-    Random::Rct2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
+    Random::RCT2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
     gScenarioRand.seed(s);
 
     ResearchResetCurrentItem();
@@ -504,7 +504,7 @@ const random_engine_t::state_type& ScenarioRandState()
 
 void ScenarioRandSeed(random_engine_t::result_type s0, random_engine_t::result_type s1)
 {
-    Random::Rct2::Seed s{ s0, s1 };
+    Random::RCT2::Seed s{ s0, s1 };
     gScenarioRand.seed(s);
 }
 

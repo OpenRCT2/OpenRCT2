@@ -5685,7 +5685,7 @@ static void LimLaunchedRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType)
 {
     switch (trackType)
     {
@@ -5819,7 +5819,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRc(int32_t trackType)
         case TrackElemType::FlatToRightBankedDown25:
         case TrackElemType::LeftBankedDown25ToFlat:
         case TrackElemType::RightBankedDown25ToFlat:
-            return GetTrackPaintFunctionLoopingRc(trackType);
+            return GetTrackPaintFunctionLoopingRC(trackType);
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:

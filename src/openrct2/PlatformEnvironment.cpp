@@ -22,7 +22,7 @@ class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
     u8string _basePath[DIRBASE_COUNT];
-    bool _usingRctClassic{};
+    bool _usingRCTClassic{};
 
 public:
     explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
@@ -49,7 +49,7 @@ public:
                 directoryName = DirectoryNamesRCT2[static_cast<size_t>(did)];
                 break;
             case DIRBASE::RCT2:
-                directoryName = _usingRctClassic ? "Assets" : DirectoryNamesRCT2[static_cast<size_t>(did)];
+                directoryName = _usingRCTClassic ? "Assets" : DirectoryNamesRCT2[static_cast<size_t>(did)];
                 break;
             case DIRBASE::OPENRCT2:
             case DIRBASE::USER:
@@ -74,7 +74,7 @@ public:
         auto dataPath = GetDirectoryPath(base, did);
 
         std::string alternativeFilename;
-        if (_usingRctClassic && base == DIRBASE::RCT2 && did == DIRID::DATA)
+        if (_usingRCTClassic && base == DIRBASE::RCT2 && did == DIRID::DATA)
         {
             // Special case, handle RCT Classic css ogg files
             if (String::StartsWith(fileName, "css", true) && String::EndsWith(fileName, ".dat", true))
@@ -106,13 +106,13 @@ public:
 
         if (base == DIRBASE::RCT2)
         {
-            _usingRctClassic = Platform::IsRCTClassicPath(path);
+            _usingRCTClassic = Platform::IsRCTClassicPath(path);
         }
     }
 
     bool IsUsingClassic() const override
     {
-        return _usingRctClassic;
+        return _usingRCTClassic;
     }
 
 private:

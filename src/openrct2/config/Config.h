@@ -251,8 +251,8 @@ enum class MeasurementFormat : int32_t
 enum class TitleMusicKind : int32_t
 {
     None,
-    Rct1,
-    Rct2,
+    RCT1,
+    RCT2,
     Random
 };
 

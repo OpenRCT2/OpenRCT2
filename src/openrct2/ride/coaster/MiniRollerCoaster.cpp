@@ -9406,7 +9406,7 @@ static void MiniRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniRC(int32_t trackType)
 {
     switch (trackType)
     {
