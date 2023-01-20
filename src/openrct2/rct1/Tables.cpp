@@ -719,10 +719,10 @@ namespace RCT1
             "rct2.ride.ding1",                       // RCT1_RIDE_TYPE_WATER_SLIDE
             "rct2.ride.amt1",                        // RCT1_RIDE_TYPE_MINE_TRAIN_ROLLER_COASTER
             "rct2.ride.clift1",                      // RCT1_RIDE_TYPE_CHAIRLIFT
-            "rct2.ride.arrt1",                       // RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER
+            "rct1.ride.corkscrew_trains",            // RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER
             "rct2.ride.hmaze",                       // RCT1_RIDE_TYPE_HEDGE_MAZE
             "rct2.ride.hskelt",                      // RCT1_RIDE_TYPE_SPIRAL_SLIDE
-            "rct2.ride.kart1",                       // RCT1_RIDE_TYPE_GO_KARTS
+            "rct1.ride.go_karts",                    // RCT1_RIDE_TYPE_GO_KARTS
             "rct2.ride.lfb1",                        // RCT1_RIDE_TYPE_LOG_FLUME
             "rct2.ride.rapboat",                     // RCT1_RIDE_TYPE_RIVER_RAPIDS
             "rct2.ride.dodg1",                       // RCT1_RIDE_TYPE_DODGEMS
@@ -828,11 +828,11 @@ namespace RCT1
             "rct2.ride.obs1",                        // RCT1_VEHICLE_TYPE_ROTATING_CABIN
             "rct2.ride.amt1",                        // RCT1_VEHICLE_TYPE_MINE_TRAIN
             "rct2.ride.clift1",                      // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS
-            "rct2.ride.arrt1",                       // RCT1_VEHICLE_TYPE_CORKSCREW_ROLLER_COASTER_TRAIN
+            "rct1.ride.corkscrew_trains",            // RCT1_VEHICLE_TYPE_CORKSCREW_ROLLER_COASTER_TRAIN
             "rct2.ride.steep2",                      // RCT1_VEHICLE_TYPE_MOTORBIKES
             "rct2.ride.rcr",                         // RCT1_VEHICLE_TYPE_RACING_CARS
             "rct2.ride.truck1",                      // RCT1_VEHICLE_TYPE_TRUCKS
-            "rct2.ride.kart1",                       // RCT1_VEHICLE_TYPE_GO_KARTS
+            "rct1.ride.go_karts",                    // RCT1_VEHICLE_TYPE_GO_KARTS
             "rct2.ride.rapboat",                     // RCT1_VEHICLE_TYPE_RAPIDS_BOATS
             "rct2.ride.lfb1",                        // RCT1_VEHICLE_TYPE_LOG_FLUME_BOATS
             "rct2.ride.dodg1",                       // RCT1_VEHICLE_TYPE_DODGEMS
