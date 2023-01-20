@@ -60,11 +60,11 @@ struct RCTLargeSceneryText
     struct
     {
         int16_t x, y;
-    } offset[2];                              // 0x0
-    uint16_t max_width;                       // 0x8
-    uint16_t pad_A;                           // 0xA
-    uint8_t flags;                            // 0xC
-    uint8_t num_images;                       // 0xD
+    } offset[2];                       // 0x0
+    uint16_t max_width;                // 0x8
+    uint16_t pad_A;                    // 0xA
+    uint8_t flags;                     // 0xC
+    uint8_t num_images;                // 0xD
     LargeSceneryTextGlyph glyphs[256]; // 0xE
 };
 
