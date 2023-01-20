@@ -605,15 +605,15 @@ template<> struct DataSerializerTraitsT<NetworkCheatType_t>
     }
 };
 
-template<> struct DataSerializerTraitsT<rct_object_entry>
+template<> struct DataSerializerTraitsT<RCTObjectEntry>
 {
-    static void encode(OpenRCT2::IStream* stream, const rct_object_entry& val)
+    static void encode(OpenRCT2::IStream* stream, const RCTObjectEntry& val)
     {
         uint32_t temp = ByteSwapBE(val.flags);
         stream->Write(&temp);
         stream->WriteArray(val.nameWOC, 12);
     }
-    static void decode(OpenRCT2::IStream* stream, rct_object_entry& val)
+    static void decode(OpenRCT2::IStream* stream, RCTObjectEntry& val)
     {
         uint32_t temp;
         stream->Read(&temp);
@@ -621,7 +621,7 @@ template<> struct DataSerializerTraitsT<rct_object_entry>
         auto str = stream->ReadArray<char>(12);
         memcpy(val.nameWOC, str.get(), 12);
     }
-    static void log(OpenRCT2::IStream* stream, const rct_object_entry& val)
+    static void log(OpenRCT2::IStream* stream, const RCTObjectEntry& val)
     {
         stream->WriteArray(val.name, 8);
     }
@@ -634,7 +634,7 @@ template<> struct DataSerializerTraitsT<ObjectEntryDescriptor>
         stream->WriteValue<uint8_t>(static_cast<uint8_t>(val.Generation));
         if (val.Generation == ObjectGeneration::DAT)
         {
-            DataSerializerTraits<rct_object_entry> s;
+            DataSerializerTraits<RCTObjectEntry> s;
             s.encode(stream, val.Entry);
         }
         else
@@ -649,8 +649,8 @@ template<> struct DataSerializerTraitsT<ObjectEntryDescriptor>
         auto generation = static_cast<ObjectGeneration>(stream->ReadValue<uint8_t>());
         if (generation == ObjectGeneration::DAT)
         {
-            DataSerializerTraits<rct_object_entry> s;
-            rct_object_entry entry;
+            DataSerializerTraits<RCTObjectEntry> s;
+            RCTObjectEntry entry;
             s.decode(stream, entry);
             val = ObjectEntryDescriptor(entry);
         }

@@ -66,7 +66,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
-    rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
     SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     if (_legacyType.flags & LARGE_SCENERY_FLAG_3D_TEXT)

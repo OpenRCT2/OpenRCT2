@@ -40,7 +40,7 @@ struct ObjectRepositoryItem
     ObjectType Type;
     ObjectGeneration Generation;
     std::string Identifier; // e.g. rct2.c3d
-    rct_object_entry ObjectEntry;
+    RCTObjectEntry ObjectEntry;
     std::string Path;
     std::string Name;
     ObjectVersion Version;
@@ -81,14 +81,14 @@ struct IObjectRepository
     [[nodiscard]] virtual const ObjectRepositoryItem* GetObjects() const abstract;
     [[nodiscard]] virtual const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const abstract;
     [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const abstract;
-    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const RCTObjectEntry* objectEntry) const abstract;
     [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const abstract;
 
     [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;
     virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) abstract;
     virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
 
-    virtual void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) abstract;
+    virtual void AddObject(const RCTObjectEntry* objectEntry, const void* data, size_t dataSize) abstract;
     virtual void AddObjectFromFile(
         ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) abstract;
 
@@ -102,6 +102,6 @@ struct IObjectRepository
 
 [[nodiscard]] size_t ObjectRepositoryGetItemsCount();
 [[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryGetItems();
-[[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryFindObjectByEntry(const rct_object_entry* entry);
+[[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryFindObjectByEntry(const RCTObjectEntry* entry);
 [[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryFindObjectByName(const char* name);
-[[nodiscard]] std::unique_ptr<Object> ObjectRepositoryLoadObject(const rct_object_entry* objectEntry);
+[[nodiscard]] std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectEntry);

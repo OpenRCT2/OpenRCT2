@@ -752,7 +752,7 @@ bool NetworkBase::CheckSRAND(uint32_t tick, uint32_t srand0)
     if (itTickData == std::end(_serverTickData))
         return true;
 
-    const ServerTickData_t storedTick = itTickData->second;
+    const ServerTickData storedTick = itTickData->second;
     _serverTickData.erase(itTickData);
 
     if (storedTick.srand0 != srand0)
@@ -777,16 +777,16 @@ bool NetworkBase::CheckSRAND(uint32_t tick, uint32_t srand0)
 
 bool NetworkBase::IsDesynchronised() const noexcept
 {
-    return _serverState.state == NetworkServerState::Desynced;
+    return _serverState.state == NetworkServerStatus::Desynced;
 }
 
 bool NetworkBase::CheckDesynchronizaton()
 {
     // Check synchronisation
-    if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerState::Desynced
+    if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerStatus::Desynced
         && !CheckSRAND(gCurrentTicks, ScenarioRandState().s0))
     {
-        _serverState.state = NetworkServerState::Desynced;
+        _serverState.state = NetworkServerStatus::Desynced;
         _serverState.desyncTick = gCurrentTicks;
 
         char str_desync[256];
@@ -814,7 +814,7 @@ void NetworkBase::RequestStateSnapshot()
     Client_Send_RequestGameState(_serverState.desyncTick);
 }
 
-NetworkServerState_t NetworkBase::GetServerState() const noexcept
+NetworkServerState NetworkBase::GetServerState() const noexcept
 {
     return _serverState;
 }
@@ -1226,7 +1226,7 @@ void NetworkBase::Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor
         if (object.Generation == ObjectGeneration::DAT)
         {
             packet << static_cast<uint8_t>(0);
-            packet.Write(&object.Entry, sizeof(rct_object_entry));
+            packet.Write(&object.Entry, sizeof(RCTObjectEntry));
         }
         else
         {
@@ -1271,7 +1271,7 @@ void NetworkBase::ServerSendObjectsList(
                 // DAT
                 LOG_VERBOSE("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
                 packet << static_cast<uint8_t>(0);
-                packet.Write(&object->ObjectEntry, sizeof(rct_object_entry));
+                packet.Write(&object->ObjectEntry, sizeof(RCTObjectEntry));
             }
             else
             {
@@ -1330,9 +1330,9 @@ void NetworkBase::Client_Send_HEARTBEAT(NetworkConnection& connection) const
     connection.QueuePacket(std::move(packet));
 }
 
-NetworkStats_t NetworkBase::GetStats() const
+NetworkStats NetworkBase::GetStats() const
 {
-    NetworkStats_t stats = {};
+    NetworkStats stats = {};
     if (mode == NETWORK_MODE_CLIENT)
     {
         stats = _serverConnection->Stats;
@@ -2337,7 +2337,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         if (objectType == 0)
         {
             // DAT
-            auto entry = reinterpret_cast<const rct_object_entry*>(packet.Read(sizeof(rct_object_entry)));
+            auto entry = reinterpret_cast<const RCTObjectEntry*>(packet.Read(sizeof(RCTObjectEntry)));
             if (entry != nullptr)
             {
                 const auto* object = repo.FindObject(entry);
@@ -2487,7 +2487,7 @@ void NetworkBase::ServerHandleMapRequest(NetworkConnection& connection, NetworkP
         const ObjectRepositoryItem* item{};
         if (generation == static_cast<uint8_t>(ObjectGeneration::DAT))
         {
-            const auto* entry = reinterpret_cast<const rct_object_entry*>(packet.Read(sizeof(rct_object_entry)));
+            const auto* entry = reinterpret_cast<const RCTObjectEntry*>(packet.Read(sizeof(RCTObjectEntry)));
             objectName = std::string(entry->GetName());
             LOG_VERBOSE("Client requested object %s", objectName.c_str());
             item = repo.FindObject(entry);
@@ -2698,7 +2698,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
             GameNotifyMapChanged();
             _serverState.tick = gCurrentTicks;
             // WindowNetworkStatusOpen("Loaded new map from network");
-            _serverState.state = NetworkServerState::Ok;
+            _serverState.state = NetworkServerStatus::Ok;
             _clientMapLoaded = true;
             gFirstTimeSaving = true;
 
@@ -2960,7 +2960,7 @@ void NetworkBase::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connect
 
     packet >> serverTick >> srand0 >> flags;
 
-    ServerTickData_t tickData;
+    ServerTickData tickData;
     tickData.srand0 = srand0;
     tickData.tick = serverTick;
 
@@ -3926,13 +3926,13 @@ std::string NetworkGetVersion()
     return NETWORK_STREAM_ID;
 }
 
-NetworkStats_t NetworkGetStats()
+NetworkStats NetworkGetStats()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     return network.GetStats();
 }
 
-NetworkServerState_t NetworkGetServerState()
+NetworkServerState NetworkGetServerState()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     return network.GetServerState();
@@ -4200,13 +4200,13 @@ std::string NetworkGetVersion()
 {
     return "Multiplayer disabled";
 }
-NetworkStats_t NetworkGetStats()
+NetworkStats NetworkGetStats()
 {
-    return NetworkStats_t{};
+    return NetworkStats{};
 }
-NetworkServerState_t NetworkGetServerState()
+NetworkServerState NetworkGetServerState()
 {
-    return NetworkServerState_t{};
+    return NetworkServerState{};
 }
 json_t NetworkGetServerInfoAsJson()
 {

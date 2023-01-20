@@ -1275,7 +1275,7 @@ namespace RCT1
             dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->ActionSpriteType);
             dst->ActionFrame = src->ActionFrame;
 
-            const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
+            const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
             dst->sprite_width = spriteBounds->sprite_width;
             dst->sprite_height_negative = spriteBounds->sprite_height_negative;
             dst->sprite_height_positive = spriteBounds->sprite_height_positive;

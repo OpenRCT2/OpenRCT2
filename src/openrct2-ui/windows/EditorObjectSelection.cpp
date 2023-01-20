@@ -92,7 +92,7 @@ enum
 struct ObjectListItem
 {
     const ObjectRepositoryItem* repositoryItem;
-    std::unique_ptr<rct_object_filters> filter;
+    std::unique_ptr<RideFilters> filter;
     uint8_t* flags;
 };
 
@@ -1132,10 +1132,10 @@ private:
             if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6) && FilterSource(item)
                 && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags))
             {
-                auto filter = std::make_unique<rct_object_filters>();
-                filter->ride.category[0] = 0;
-                filter->ride.category[1] = 0;
-                filter->ride.ride_type = 0;
+                auto filter = std::make_unique<RideFilters>();
+                filter->category[0] = 0;
+                filter->category[1] = 0;
+                filter->ride_type = 0;
 
                 ObjectListItem currentListItem;
                 currentListItem.repositoryItem = item;

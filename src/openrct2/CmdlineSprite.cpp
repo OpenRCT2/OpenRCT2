@@ -415,7 +415,7 @@ int32_t CmdLineForSprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        const rct_object_entry* entry = &ori->ObjectEntry;
+        const RCTObjectEntry* entry = &ori->ObjectEntry;
         const auto* loadedObject = ObjectManagerLoadObject(entry);
         if (loadedObject == nullptr)
         {

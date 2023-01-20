@@ -195,7 +195,7 @@ ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier)
  *
  *  rct2: 0x006AB344
  */
-void ObjectCreateIdentifierName(char* string_buffer, size_t size, const rct_object_entry* object)
+void ObjectCreateIdentifierName(char* string_buffer, size_t size, const RCTObjectEntry* object)
 {
     snprintf(string_buffer, size, "%.8s/%4X%4X", object->name, object->flags, object->checksum);
 }
@@ -222,7 +222,7 @@ void ObjectGetTypeEntryIndex(size_t index, ObjectType* outObjectType, ObjectEntr
         *outEntryIndex = static_cast<ObjectEntryIndex>(index);
 }
 
-void ObjectEntryGetNameFixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry)
+void ObjectEntryGetNameFixed(utf8* buffer, size_t bufferSize, const RCTObjectEntry* entry)
 {
     bufferSize = std::min(static_cast<size_t>(DAT_NAME_LENGTH) + 1, bufferSize);
     std::memcpy(buffer, entry->name, bufferSize - 1);

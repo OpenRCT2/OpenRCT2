@@ -258,9 +258,9 @@ namespace RCT2
         return nullptr;
     }
 
-    std::optional<rct_object_entry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings)
+    std::optional<RCTObjectEntry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings)
     {
-        rct_object_entry result;
+        RCTObjectEntry result;
         std::memset(&result, 0, sizeof(result));
 
         result.SetType(ObjectType::Paths);
