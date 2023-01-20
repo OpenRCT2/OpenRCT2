@@ -702,7 +702,7 @@ private:
     }
 };
 
-rct_window* WindowStaffListOpen()
+WindowBase* WindowStaffListOpen()
 {
     return WindowFocusOrCreate<StaffListWindow>(WindowClass::StaffList, WW, WH, WF_10 | WF_RESIZABLE);
 }

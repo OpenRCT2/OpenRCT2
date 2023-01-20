@@ -1519,7 +1519,7 @@ private:
  *
  * rct2: 0x006AA64E
  */
-rct_window* WindowEditorObjectSelectionOpen()
+WindowBase* WindowEditorObjectSelectionOpen()
 {
     return WindowFocusOrCreate<EditorObjectSelectionWindow>(
         WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);

@@ -1111,7 +1111,7 @@ private:
     }
 };
 
-rct_window* WindowCheatsOpen()
+WindowBase* WindowCheatsOpen()
 {
     auto* window = WindowBringToFrontByClass(WindowClass::Cheats);
     if (window == nullptr)

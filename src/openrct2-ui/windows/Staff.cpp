@@ -369,7 +369,7 @@ private:
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+                    WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
                         ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
@@ -1189,7 +1189,7 @@ private:
 
     void FollowPeep()
     {
-        rct_window* main = WindowGetMain();
+        WindowBase* main = WindowGetMain();
         WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
@@ -1233,7 +1233,7 @@ private:
     static constexpr int32_t TabAnimationFrames = 7;
 };
 
-rct_window* WindowStaffOpen(Peep* peep)
+WindowBase* WindowStaffOpen(Peep* peep)
 {
     auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
 

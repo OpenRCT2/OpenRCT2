@@ -232,7 +232,7 @@ static void ClassicWoodenRCTrackFlatToLeftBank(
     const TrackElement& trackElement)
 
 {
-    static constexpr const sprite_bb_2 imageIds[4][1][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
         { {
             { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
             {},
@@ -262,7 +262,7 @@ static void ClassicWoodenRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][1][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
         { {
             { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
             {},
@@ -309,7 +309,7 @@ static void ClassicWoodenRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][1][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
         { {
             { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
             {},
@@ -348,7 +348,7 @@ static void ClassicWoodenRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][1][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
         { {
             { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
             {},
@@ -388,7 +388,7 @@ static void ClassicWoodenRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][1][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
         { {
             { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
             {},
@@ -429,7 +429,7 @@ static void ClassicWoodenRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][1][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
         { {
             { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
             {},
@@ -470,7 +470,7 @@ static void ClassicWoodenRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][1][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
         { {
             { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
             {},
@@ -539,7 +539,7 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][7][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][7][2] = {
         {
             {
                 { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_0, 0, { 0, 2, 0 }, { 0, 2, 0 }, { 32, 32, 2 } },
@@ -715,7 +715,7 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][4][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SW_SE_SEQ_0, 0, { 0, 6, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
@@ -834,7 +834,7 @@ static void ClassicWoodenRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][5][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][5][2] = {
         {
             {
                 { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_0_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
@@ -965,7 +965,7 @@ static void ClassicWoodenRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][5][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][5][2] = {
         {
             {
                 { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_0_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
@@ -1120,7 +1120,7 @@ static void ClassicWoodenRCTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][4][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
@@ -1218,7 +1218,7 @@ static void ClassicWoodenRCTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][4][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
@@ -1330,7 +1330,7 @@ static void ClassicWoodenRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][4][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
@@ -1435,7 +1435,7 @@ static void ClassicWoodenRCTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][4][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
@@ -1533,7 +1533,7 @@ static void ClassicWoodenRCTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][4][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
@@ -1631,7 +1631,7 @@ static void ClassicWoodenRCTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][4][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
@@ -1729,7 +1729,7 @@ static void ClassicWoodenRCTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[4][4][2] = {
+    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},

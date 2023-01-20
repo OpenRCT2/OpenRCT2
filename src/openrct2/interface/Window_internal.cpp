@@ -5,13 +5,13 @@
 #include "Cursors.h"
 #include "Viewport.h"
 
-void rct_window::SetLocation(const CoordsXYZ& coords)
+void WindowBase::SetLocation(const CoordsXYZ& coords)
 {
     WindowScrollToLocation(*this, coords);
     flags &= ~WF_SCROLLING_TO_LOCATION;
 }
 
-void rct_window::ScrollToViewport()
+void WindowBase::ScrollToViewport()
 {
     if (viewport == nullptr || !focus.has_value())
         return;
@@ -23,12 +23,12 @@ void rct_window::ScrollToViewport()
         WindowScrollToLocation(*mainWindow, newCoords);
 }
 
-void rct_window::Invalidate()
+void WindowBase::Invalidate()
 {
     GfxSetDirtyBlocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
 }
 
-void rct_window::RemoveViewport()
+void WindowBase::RemoveViewport()
 {
     if (viewport == nullptr)
         return;
@@ -37,7 +37,7 @@ void rct_window::RemoveViewport()
     viewport = nullptr;
 }
 
-CursorID rct_window::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
+CursorID WindowBase::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
 {
     return CursorID::Arrow;
 }

@@ -743,7 +743,7 @@ public:
     }
 };
 
-rct_window* WindowTrackListOpen(const RideSelection item)
+WindowBase* WindowTrackListOpen(const RideSelection item)
 {
     WindowCloseConstructionWindows();
     ScreenCoordsXY screenPos{};

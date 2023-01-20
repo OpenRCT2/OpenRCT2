@@ -612,7 +612,7 @@ public:
         if (page == WINDOW_OPTIONS_PAGE_ADVANCED)
             return AdvancedTooltip(widgetIndex, fallback);
 
-        return rct_window::OnTooltip(widgetIndex, fallback);
+        return WindowBase::OnTooltip(widgetIndex, fallback);
     }
 
 private:
@@ -934,7 +934,7 @@ private:
                 gConfigGeneral.AlwaysShowGridlines ^= 1;
                 ConfigSaveDefault();
                 GfxInvalidateScreen();
-                rct_window* mainWindow = WindowGetMain();
+                WindowBase* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                 {
                     if (gConfigGeneral.AlwaysShowGridlines)
@@ -2117,7 +2117,7 @@ private:
         GfxInvalidateScreen();
     }
 
-    uint8_t GetScrollPercentage(const Widget& widget, const rct_scroll& scroll)
+    uint8_t GetScrollPercentage(const Widget& widget, const ScrollBar& scroll)
     {
         uint8_t w = widget.width() - 1;
         return static_cast<float>(scroll.h_left) / (scroll.h_right - w) * 100;
@@ -2184,7 +2184,7 @@ private:
  *
  *  rct2: 0x006BAC5B
  */
-rct_window* WindowOptionsOpen()
+WindowBase* WindowOptionsOpen()
 {
     return WindowFocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
 }

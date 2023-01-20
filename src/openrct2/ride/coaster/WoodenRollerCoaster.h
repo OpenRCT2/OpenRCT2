@@ -15,7 +15,7 @@
 
 #include <cstdint>
 
-struct sprite_bb_2
+struct SpriteBoundBox2
 {
     uint32_t sprite_id_a;
     uint32_t sprite_id_b;
@@ -55,7 +55,7 @@ PaintStruct* WoodenRCTrackPaint(
         { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
 }
 
-template<bool isClassic> void WoodenRCTrackPaintBb(PaintSession& session, const sprite_bb_2* bb, int16_t height)
+template<bool isClassic> void WoodenRCTrackPaintBb(PaintSession& session, const SpriteBoundBox2* bb, int16_t height)
 {
     if (bb->sprite_id_a == 0)
         return;

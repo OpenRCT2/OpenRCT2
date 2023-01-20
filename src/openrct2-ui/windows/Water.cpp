@@ -185,7 +185,7 @@ private:
     }
 };
 
-rct_window* WindowWaterOpen()
+WindowBase* WindowWaterOpen()
 {
     return WindowFocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

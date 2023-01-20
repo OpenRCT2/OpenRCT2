@@ -187,7 +187,7 @@ public:
     }
 };
 
-rct_window* WindowSavePromptOpen()
+WindowBase* WindowSavePromptOpen()
 {
     PromptMode prompt_mode = gSavePromptMode;
     if (prompt_mode == PromptMode::Quit)
@@ -218,7 +218,7 @@ rct_window* WindowSavePromptOpen()
     }
 
     // Check if window is already open
-    rct_window* window = WindowBringToFrontByClass(WindowClass::SavePrompt);
+    WindowBase* window = WindowBringToFrontByClass(WindowClass::SavePrompt);
     if (window != nullptr)
     {
         WindowClose(*window);

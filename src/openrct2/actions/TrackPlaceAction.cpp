@@ -163,7 +163,7 @@ GameActions::Result TrackPlaceAction::Query() const
     }
 
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    const rct_preview_track* trackBlock = ted.Block;
+    const PreviewTrack* trackBlock = ted.Block;
     uint32_t numElements = 0;
     // First check if any of the track pieces are outside the park
     for (; trackBlock->index != 0xFF; trackBlock++)
@@ -440,7 +440,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
     money32 costs = 0;
     money64 supportCosts = 0;
-    const rct_preview_track* trackBlock = ted.Block;
+    const PreviewTrack* trackBlock = ted.Block;
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
@@ -714,7 +714,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
 {
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    for (const rct_preview_track* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
+    for (const PreviewTrack* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
     {
         auto rotatedTrack = CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction);
 

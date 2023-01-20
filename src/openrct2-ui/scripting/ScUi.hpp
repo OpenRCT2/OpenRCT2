@@ -35,7 +35,7 @@ namespace OpenRCT2::Scripting
 
 namespace OpenRCT2::Ui::Windows
 {
-    rct_window* WindowCustomOpen(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
+    WindowBase* WindowCustomOpen(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
 }
 
 namespace OpenRCT2::Scripting

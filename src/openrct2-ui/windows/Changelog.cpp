@@ -313,7 +313,7 @@ private:
     }
 };
 
-rct_window* WindowChangelogOpen(int personality)
+WindowBase* WindowChangelogOpen(int personality)
 {
     auto* window = WindowBringToFrontByClass(WindowClass::Changelog);
     if (window == nullptr)

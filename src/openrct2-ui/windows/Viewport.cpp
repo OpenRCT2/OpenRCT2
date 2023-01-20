@@ -59,7 +59,7 @@ private:
     void GetFreeViewportNumber()
     {
         number = 1;
-        WindowVisitEach([&](rct_window* w) {
+        WindowVisitEach([&](WindowBase* w) {
             if (w != nullptr && w != this && w->classification == WindowClass::Viewport)
             {
                 if (w->number >= number)
@@ -87,7 +87,7 @@ public:
         auto* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            rct_viewport* mainViewport = mainWindow->viewport;
+            Viewport* mainViewport = mainWindow->viewport;
             int32_t x = mainViewport->viewPos.x + (mainViewport->view_width / 2);
             int32_t y = mainViewport->viewPos.y + (mainViewport->view_height / 2);
             savedViewPos = { x - (viewport->view_width / 2), y - (viewport->view_height / 2) };
@@ -208,7 +208,7 @@ public:
     }
 };
 
-rct_window* WindowViewportOpen()
+WindowBase* WindowViewportOpen()
 {
     int32_t screenWidth = ContextGetWidth();
     int32_t screenHeight = ContextGetHeight();

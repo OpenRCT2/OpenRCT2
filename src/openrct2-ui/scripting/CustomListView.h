@@ -94,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         static constexpr int32_t HEADER_ROW = -1;
 
-        rct_window* ParentWindow{};
+        WindowBase* ParentWindow{};
         size_t ScrollIndex{};
         std::vector<ListViewColumn> Columns;
         std::vector<ListViewItem> Items;
@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
         DukValue OnClick;
         DukValue OnHighlight;
 
-        CustomListView(rct_window* parent, size_t scrollIndex);
+        CustomListView(WindowBase* parent, size_t scrollIndex);
         ScrollbarType GetScrollbars() const;
         void SetScrollbars(ScrollbarType value, bool initialising = false);
         const std::vector<ListViewColumn>& GetColumns() const;
@@ -136,11 +136,11 @@ namespace OpenRCT2::Ui::Windows
         void MouseOver(const ScreenCoordsXY& pos, bool isMouseDown);
         void MouseDown(const ScreenCoordsXY& pos);
         void MouseUp(const ScreenCoordsXY& pos);
-        void Paint(rct_window* w, DrawPixelInfo* dpi, const rct_scroll* scroll) const;
+        void Paint(WindowBase* w, DrawPixelInfo* dpi, const ScrollBar* scroll) const;
 
     private:
         void PaintHeading(
-            rct_window* w, DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
+            WindowBase* w, DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
             ColumnSortOrder sortOrder, bool isPressed) const;
         void PaintSeperator(DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
         void PaintCell(

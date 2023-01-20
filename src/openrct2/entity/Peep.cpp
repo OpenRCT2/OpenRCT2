@@ -565,7 +565,7 @@ void PeepDecrementNumRiders(Peep* peep)
  */
 void PeepWindowStateUpdate(Peep* peep)
 {
-    rct_window* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying());
+    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying());
     if (w != nullptr)
         WindowEventInvalidateCall(w);
 

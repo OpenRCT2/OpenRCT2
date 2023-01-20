@@ -220,7 +220,7 @@ public:
     }
 };
 
-rct_window* CustomCurrencyWindowOpen()
+WindowBase* CustomCurrencyWindowOpen()
 {
     return WindowFocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
 }

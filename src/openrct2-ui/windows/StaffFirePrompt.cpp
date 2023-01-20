@@ -85,7 +85,7 @@ public:
     }
 };
 
-rct_window* WindowStaffFirePromptOpen(Peep* peep)
+WindowBase* WindowStaffFirePromptOpen(Peep* peep)
 {
     // Check if the confirm window already exists
     auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(

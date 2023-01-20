@@ -17,13 +17,13 @@ constexpr const uint8_t MaxSequencesPerPiece = 16;
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 
-struct track_curve_chain
+struct TrackCurveChain
 {
     int32_t next;
     int32_t previous;
 };
 
-struct track_descriptor
+struct TrackDescriptor
 {
     bool starts_diagonal;
     uint8_t slope_start;
@@ -51,9 +51,9 @@ enum
     R9_SPIN
 };
 
-extern const track_descriptor gTrackDescriptors[142];
+extern const TrackDescriptor gTrackDescriptors[142];
 
-struct dodgems_track_size
+struct DodgemsTrackSize
 {
     uint8_t left;
     uint8_t top;
@@ -61,7 +61,7 @@ struct dodgems_track_size
     uint8_t bottom;
 };
 
-constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
+constexpr const DodgemsTrackSize DodgemsTrackSize(track_type_t type)
 {
     if (type == TrackElemType::FlatTrack2x2)
         return { 4, 4, 59, 59 };
@@ -76,11 +76,11 @@ using TrackComputeFunction = int32_t (*)(const int16_t);
 struct TrackElementDescriptor
 {
     StringId Description;
-    rct_track_coordinates Coordinates;
+    TrackCoordinates Coordinates;
 
-    rct_preview_track* Block;
+    PreviewTrack* Block;
     uint8_t PieceLength;
-    track_curve_chain CurveChain;
+    TrackCurveChain CurveChain;
     track_type_t AlternativeType;
     // Price Modifier should be used as in the following calculation:
     // (RideTrackPrice * TED::PriceModifier) / 65536
@@ -92,7 +92,7 @@ struct TrackElementDescriptor
     std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
     std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;
 
-    rct_trackdefinition Definition;
+    TrackDefinition Definition;
     uint8_t SpinFunction;
 
     TrackComputeFunction VerticalFactor;
@@ -105,7 +105,7 @@ struct TrackElementDescriptor
      * @param sequenceIndex
      * @return The track block, or nullptr if it doesn’t exist.
      */
-    const rct_preview_track* GetBlockForSequence(uint8_t sequenceIndex) const;
+    const PreviewTrack* GetBlockForSequence(uint8_t sequenceIndex) const;
 };
 
 namespace OpenRCT2

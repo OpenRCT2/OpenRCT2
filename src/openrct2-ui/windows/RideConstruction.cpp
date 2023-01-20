@@ -179,7 +179,7 @@ static int32_t RideGetAlternativeType(const Ride& ride)
 /* move to ride.c */
 static void CloseRideWindowForConstruction(RideId rideId)
 {
-    rct_window* w = WindowFindByNumber(WindowClass::Ride, rideId.ToUnderlying());
+    WindowBase* w = WindowFindByNumber(WindowClass::Ride, rideId.ToUnderlying());
     if (w != nullptr && w->page == 1)
         WindowClose(*w);
 }
@@ -2192,7 +2192,7 @@ public:
             return;
         }
 
-        const rct_preview_track* trackBlock;
+        const PreviewTrack* trackBlock;
 
         const auto& ted = GetTrackElementDescriptor(trackType);
         trackBlock = ted.Block;
@@ -2363,7 +2363,7 @@ private:
             }
 
             const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-            const rct_preview_track* trackBlock = ted.Block;
+            const PreviewTrack* trackBlock = ted.Block;
             newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
             _gotoStartPlacementMode = true;
 
@@ -2761,7 +2761,7 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
  *
  *  rct2: 0x006CB481
  */
-rct_window* WindowRideConstructionOpen()
+WindowBase* WindowRideConstructionOpen()
 {
     RideId rideIndex = _currentRideIndex;
     CloseRideWindowForConstruction(rideIndex);
@@ -3210,7 +3210,7 @@ void UpdateGhostTrackAndArrow()
 void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
 {
     int32_t z;
-    const rct_preview_track* trackBlock;
+    const PreviewTrack* trackBlock;
 
     MapInvalidateMapSelectionTiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -3475,7 +3475,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
 {
     const CursorState* state = ContextGetCursorState();
 
-    rct_window* w;
+    WindowBase* w;
 
     MapInvalidateMapSelectionTiles();
     RideConstructionInvalidateCurrentTrack();
@@ -3526,7 +3526,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
     if (_trackPlaceZ == 0)
     {
         const auto& ted = GetTrackElementDescriptor(_currentTrackPieceType);
-        const rct_preview_track* trackBlock = ted.Block;
+        const PreviewTrack* trackBlock = ted.Block;
         int32_t bx = 0;
         do
         {
@@ -3679,7 +3679,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
 
 void WindowRideConstructionKeyboardShortcutTurnLeft()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -3925,7 +3925,7 @@ void WindowRideConstructionKeyboardShortcutTurnLeft()
 
 void WindowRideConstructionKeyboardShortcutTurnRight()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4171,7 +4171,7 @@ void WindowRideConstructionKeyboardShortcutTurnRight()
 
 void WindowRideConstructionKeyboardShortcutUseTrackDefault()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4201,7 +4201,7 @@ void WindowRideConstructionKeyboardShortcutUseTrackDefault()
 
 void WindowRideConstructionKeyboardShortcutSlopeDown()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4311,7 +4311,7 @@ void WindowRideConstructionKeyboardShortcutSlopeDown()
 
 void WindowRideConstructionKeyboardShortcutSlopeUp()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4417,7 +4417,7 @@ void WindowRideConstructionKeyboardShortcutSlopeUp()
 
 void WindowRideConstructionKeyboardShortcutChainLiftToggle()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CHAIN_LIFT) || w->widgets[WIDX_CHAIN_LIFT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4428,7 +4428,7 @@ void WindowRideConstructionKeyboardShortcutChainLiftToggle()
 
 void WindowRideConstructionKeyboardShortcutBankLeft()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
         || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
     {
@@ -4464,7 +4464,7 @@ void WindowRideConstructionKeyboardShortcutBankLeft()
 
 void WindowRideConstructionKeyboardShortcutBankRight()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
         || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
     {
@@ -4500,7 +4500,7 @@ void WindowRideConstructionKeyboardShortcutBankRight()
 
 void WindowRideConstructionKeyboardShortcutPreviousTrack()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_PREVIOUS_SECTION)
         || w->widgets[WIDX_PREVIOUS_SECTION].type == WindowWidgetType::Empty)
     {
@@ -4512,7 +4512,7 @@ void WindowRideConstructionKeyboardShortcutPreviousTrack()
 
 void WindowRideConstructionKeyboardShortcutNextTrack()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_NEXT_SECTION)
         || w->widgets[WIDX_NEXT_SECTION].type == WindowWidgetType::Empty)
     {
@@ -4524,7 +4524,7 @@ void WindowRideConstructionKeyboardShortcutNextTrack()
 
 void WindowRideConstructionKeyboardShortcutBuildCurrent()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4535,7 +4535,7 @@ void WindowRideConstructionKeyboardShortcutBuildCurrent()
 
 void WindowRideConstructionKeyboardShortcutDemolishCurrent()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_DEMOLISH) || w->widgets[WIDX_DEMOLISH].type == WindowWidgetType::Empty)
     {
         return;

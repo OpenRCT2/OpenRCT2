@@ -338,7 +338,7 @@ private:
     }
 };
 
-rct_window* WindowLandOpen()
+WindowBase* WindowLandOpen()
 {
     return WindowFocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

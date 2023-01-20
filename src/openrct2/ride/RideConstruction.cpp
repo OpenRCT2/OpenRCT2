@@ -117,7 +117,7 @@ static int32_t ride_check_if_construction_allowed(Ride& ride)
     return 1;
 }
 
-static rct_window* ride_create_or_find_construction_window(RideId rideIndex)
+static WindowBase* ride_create_or_find_construction_window(RideId rideIndex)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
@@ -137,7 +137,7 @@ void RideConstructionStart(Ride& ride)
     {
         ride.FindTrackGap(trackElement, &trackElement);
 
-        rct_window* w = WindowGetMain();
+        WindowBase* w = WindowGetMain();
         if (w != nullptr && RideModify(trackElement))
             WindowScrollToLocation(*w, { trackElement, trackElement.element->GetBaseZ() });
     }
@@ -1095,7 +1095,7 @@ bool RideModify(const CoordsXYE& input)
  */
 int32_t RideInitialiseConstructionWindow(Ride& ride)
 {
-    rct_window* w;
+    WindowBase* w;
 
     ToolCancel();
 
@@ -1412,7 +1412,7 @@ void Ride::ValidateStations()
             }
             // update all the blocks with StationIndex
             ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-            const rct_preview_track* trackBlock = ted->Block;
+            const PreviewTrack* trackBlock = ted->Block;
             while ((++trackBlock)->index != 0xFF)
             {
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };

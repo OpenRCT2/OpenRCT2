@@ -21,7 +21,7 @@ struct RecordedPaintSession;
 struct PaintStruct;
 struct DrawPixelInfo;
 struct TileElement;
-struct rct_window;
+struct WindowBase;
 struct EntityBase;
 struct Guest;
 struct Staff;
@@ -112,7 +112,7 @@ extern uint8_t gShowLandRightsRefCount;
 extern uint8_t gShowConstructionRightsRefCount;
 
 // rct2: 0x014234BC
-extern rct_viewport* g_music_tracking_viewport;
+extern Viewport* g_music_tracking_viewport;
 extern ScreenCoordsXY gSavedView;
 extern ZoomLevel gSavedViewZoom;
 extern uint8_t gSavedViewRotation;
@@ -121,21 +121,21 @@ extern PaintEntry* gNextFreePaintStruct;
 extern uint8_t gCurrentRotation;
 
 void ViewportInitAll();
-std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_viewport* viewport);
-void ViewportCreate(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
-void ViewportRemove(rct_viewport* viewport);
+std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport);
+void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
+void ViewportRemove(Viewport* viewport);
 void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom = ZoomLevel{ -1 });
-void ViewportUpdatePosition(rct_window* window);
-void ViewportUpdateFollowSprite(rct_window* window);
-void ViewportUpdateSmartFollowEntity(rct_window* window);
-void ViewportUpdateSmartFollowGuest(rct_window* window, const Guest* peep);
-void ViewportUpdateSmartFollowStaff(rct_window* window, const Staff* peep);
-void ViewportUpdateSmartFollowVehicle(rct_window* window);
+void ViewportUpdatePosition(WindowBase* window);
+void ViewportUpdateFollowSprite(WindowBase* window);
+void ViewportUpdateSmartFollowEntity(WindowBase* window);
+void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep);
+void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff* peep);
+void ViewportUpdateSmartFollowVehicle(WindowBase* window);
 void ViewportRender(
-    DrawPixelInfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
+    DrawPixelInfo* dpi, const Viewport* viewport, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 void ViewportPaint(
-    const rct_viewport* viewport, DrawPixelInfo* dpi, const ScreenRect& screenRect,
+    const Viewport* viewport, DrawPixelInfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 
 CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords);
@@ -152,7 +152,7 @@ void HideConstructionRights();
 void ViewportSetVisibility(uint8_t mode);
 
 InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags);
-InteractionInfo GetMapCoordinatesFromPosWindow(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
+InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32_t viewFlags, uint16_t filter);
 InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords);
@@ -164,9 +164,9 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
 
-void ViewportInvalidate(const rct_viewport* viewport, const ScreenRect& screenRect);
+void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect);
 
-std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, rct_viewport** viewport);
+std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport);
 std::optional<CoordsXY> ScreenGetMapXYWithZ(const ScreenCoordsXY& screenCoords, int32_t z);
 std::optional<CoordsXY> ScreenGetMapXYQuadrant(const ScreenCoordsXY& screenCoords, uint8_t* quadrant);
 std::optional<CoordsXY> ScreenGetMapXYQuadrantWithZ(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* quadrant);

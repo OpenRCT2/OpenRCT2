@@ -278,16 +278,16 @@ static Widget window_top_toolbar_widgets[] = {
 };
 // clang-format on
 
-static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowTopToolbarToolUpdate(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowTopToolbarToolDown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowTopToolbarToolDrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowTopToolbarToolUp(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoordsy);
-static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex);
-static void WindowTopToolbarInvalidate(rct_window* w);
-static void WindowTopToolbarPaint(rct_window* w, DrawPixelInfo* dpi);
+static void WindowTopToolbarMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowTopToolbarMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowTopToolbarDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowTopToolbarToolUpdate(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTopToolbarToolDown(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTopToolbarToolDrag(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTopToolbarToolUp(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoordsy);
+static void WindowTopToolbarToolAbort(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowTopToolbarInvalidate(WindowBase* w);
+static void WindowTopToolbarPaint(WindowBase* w, DrawPixelInfo* dpi);
 
 static WindowEventList window_top_toolbar_events([](auto& events) {
     events.mouse_up = &WindowTopToolbarMouseup;
@@ -302,25 +302,25 @@ static WindowEventList window_top_toolbar_events([](auto& events) {
     events.paint = &WindowTopToolbarPaint;
 });
 
-static void TopToolbarInitViewMenu(rct_window* window, Widget* widget);
+static void TopToolbarInitViewMenu(WindowBase* window, Widget* widget);
 static void TopToolbarViewMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitMapMenu(rct_window* window, Widget* widget);
+static void TopToolbarInitMapMenu(WindowBase* window, Widget* widget);
 static void TopToolbarMapMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitFastforwardMenu(rct_window* window, Widget* widget);
+static void TopToolbarInitFastforwardMenu(WindowBase* window, Widget* widget);
 static void TopToolbarFastforwardMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitRotateMenu(rct_window* window, Widget* widget);
+static void TopToolbarInitRotateMenu(WindowBase* window, Widget* widget);
 static void TopToolbarRotateMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitCheatsMenu(rct_window* window, Widget* widget);
+static void TopToolbarInitCheatsMenu(WindowBase* window, Widget* widget);
 static void TopToolbarCheatsMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitDebugMenu(rct_window* window, Widget* widget);
+static void TopToolbarInitDebugMenu(WindowBase* window, Widget* widget);
 static void TopToolbarDebugMenuDropdown(int16_t dropdownIndex);
-static void TopToolbarInitNetworkMenu(rct_window* window, Widget* widget);
+static void TopToolbarInitNetworkMenu(WindowBase* window, Widget* widget);
 static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex);
 
 static void ToggleFootpathWindow();
-static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex);
-static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetIndex);
-static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex);
+static void ToggleLandWindow(WindowBase* topToolbar, WidgetIndex widgetIndex);
+static void ToggleClearSceneryWindow(WindowBase* topToolbar, WidgetIndex widgetIndex);
+static void ToggleWaterWindow(WindowBase* topToolbar, WidgetIndex widgetIndex);
 
 static money64 SelectionLowerLand(uint8_t flags);
 static money64 SelectionRaiseLand(uint8_t flags);
@@ -335,9 +335,9 @@ static int16_t _unkF64F0A;
  * Creates the main game top toolbar window.
  *  rct2: 0x0066B485 (part of 0x0066B3E8)
  */
-rct_window* WindowTopToolbarOpen()
+WindowBase* WindowTopToolbarOpen()
 {
-    rct_window* window = WindowCreate(
+    WindowBase* window = WindowCreate(
         ScreenCoordsXY(0, 0), ContextGetWidth(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WindowClass::TopToolbar,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_top_toolbar_widgets;
@@ -351,9 +351,9 @@ rct_window* WindowTopToolbarOpen()
  *
  *  rct2: 0x0066C957
  */
-static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowTopToolbarMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
-    rct_window* mainWindow;
+    WindowBase* mainWindow;
 
     switch (widgetIndex)
     {
@@ -435,7 +435,7 @@ static void WindowTopToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x0066CA3B
  */
-static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowTopToolbarMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     int32_t numItems = 0;
 
@@ -536,7 +536,7 @@ static void WindowTopToolbarMousedown(rct_window* w, WidgetIndex widgetIndex, Wi
  *
  *  rct2: 0x0066C9EA
  */
-static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowTopToolbarDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     switch (widgetIndex)
     {
@@ -657,7 +657,7 @@ static void WindowTopToolbarDropdown(rct_window* w, WidgetIndex widgetIndex, int
  *
  *  rct2: 0x0066C810
  */
-static void WindowTopToolbarInvalidate(rct_window* w)
+static void WindowTopToolbarInvalidate(WindowBase* w)
 {
     int32_t x, widgetIndex, widgetWidth, firstAlignment;
     Widget* widget;
@@ -870,7 +870,7 @@ static void WindowTopToolbarInvalidate(rct_window* w)
  *
  *  rct2: 0x0066C8EC
  */
-static void WindowTopToolbarPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowTopToolbarPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     int32_t imgId;
 
@@ -1234,7 +1234,7 @@ static void Sub6E1F34SmallScenery(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outQuadrant,
     Direction* outRotation)
 {
-    rct_window* w = WindowFindByClass(WindowClass::Scenery);
+    WindowBase* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1430,7 +1430,7 @@ static void Sub6E1F34SmallScenery(
 static void Sub6E1F34PathItem(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
 {
-    rct_window* w = WindowFindByClass(WindowClass::Scenery);
+    WindowBase* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1463,7 +1463,7 @@ static void Sub6E1F34PathItem(
 static void Sub6E1F34Wall(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outEdges)
 {
-    rct_window* w = WindowFindByClass(WindowClass::Scenery);
+    WindowBase* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1552,7 +1552,7 @@ static void Sub6E1F34Wall(
 static void Sub6E1F34LargeScenery(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, Direction* outDirection)
 {
-    rct_window* w = WindowFindByClass(WindowClass::Scenery);
+    WindowBase* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1652,7 +1652,7 @@ static void Sub6E1F34Banner(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ,
     Direction* outDirection)
 {
-    rct_window* w = WindowFindByClass(WindowClass::Scenery);
+    WindowBase* w = WindowFindByClass(WindowClass::Scenery);
 
     if (w == nullptr)
     {
@@ -1701,7 +1701,7 @@ static void Sub6E1F34Banner(
  *
  *  rct2: 0x006E2CC6
  */
-static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct_window* w, WidgetIndex widgetIndex)
+static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, WindowBase* w, WidgetIndex widgetIndex)
 {
     SceneryRemoveGhostToolPlacement();
     if (gWindowSceneryPaintEnabled & 1)
@@ -2904,7 +2904,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
  *
  *  rct2: 0x0066CB25
  */
-static void WindowTopToolbarToolUpdate(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTopToolbarToolUpdate(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -2939,7 +2939,7 @@ static void WindowTopToolbarToolUpdate(rct_window* w, WidgetIndex widgetIndex, c
  *
  *  rct2: 0x0066CB73
  */
-static void WindowTopToolbarToolDown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTopToolbarToolDown(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -3060,7 +3060,7 @@ static money64 SelectionLowerLand(uint8_t flags)
  */
 static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
 {
-    rct_window* window = WindowFindFromPoint(screenPos);
+    WindowBase* window = WindowFindFromPoint(screenPos);
     if (window == nullptr)
         return;
     WidgetIndex widget_index = WindowFindWidgetFromPoint(*window, screenPos);
@@ -3069,7 +3069,7 @@ static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
     const auto& widget = window->widgets[widget_index];
     if (widget.type != WindowWidgetType::Viewport)
         return;
-    rct_viewport* viewport = window->viewport;
+    Viewport* viewport = window->viewport;
     if (viewport == nullptr)
         return;
 
@@ -3103,7 +3103,7 @@ static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
  */
 static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
 {
-    rct_window* window = WindowFindFromPoint(screenPos);
+    WindowBase* window = WindowFindFromPoint(screenPos);
     if (!window)
         return;
     WidgetIndex widget_index = WindowFindWidgetFromPoint(*window, screenPos);
@@ -3112,7 +3112,7 @@ static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
     const auto& widget = window->widgets[widget_index];
     if (widget.type != WindowWidgetType::Viewport)
         return;
-    rct_viewport* viewport = window->viewport;
+    Viewport* viewport = window->viewport;
     if (viewport == nullptr)
         return;
 
@@ -3154,7 +3154,7 @@ static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
  *
  *  rct2: 0x0066CB4E
  */
-static void WindowTopToolbarToolDrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTopToolbarToolDrag(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -3219,7 +3219,7 @@ static void WindowTopToolbarToolDrag(rct_window* w, WidgetIndex widgetIndex, con
  *
  *  rct2: 0x0066CC5B
  */
-static void WindowTopToolbarToolUp(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTopToolbarToolUp(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     _landToolBlocked = false;
     switch (widgetIndex)
@@ -3255,7 +3255,7 @@ static void WindowTopToolbarToolUp(rct_window* w, WidgetIndex widgetIndex, const
  *
  *  rct2: 0x0066CA58
  */
-static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex)
+static void WindowTopToolbarToolAbort(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -3277,7 +3277,7 @@ static void WindowTopToolbarToolAbort(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void TopToolbarInitMapMenu(rct_window* w, Widget* widget)
+static void TopToolbarInitMapMenu(WindowBase* w, Widget* widget)
 {
     auto i = 0;
     gDropdownItems[i++].Format = STR_SHORTCUT_SHOW_MAP;
@@ -3355,7 +3355,7 @@ static void TopToolbarMapMenuDropdown(int16_t dropdownIndex)
     }
 }
 
-static void TopToolbarInitFastforwardMenu(rct_window* w, Widget* widget)
+static void TopToolbarInitFastforwardMenu(WindowBase* w, Widget* widget)
 {
     int32_t num_items = 4;
     gDropdownItems[0].Format = STR_TOGGLE_OPTION;
@@ -3405,7 +3405,7 @@ static void TopToolbarInitFastforwardMenu(rct_window* w, Widget* widget)
 
 static void TopToolbarFastforwardMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = WindowGetMain();
+    WindowBase* w = WindowGetMain();
     if (w)
     {
         if (dropdownIndex >= 0 && dropdownIndex <= 5)
@@ -3418,7 +3418,7 @@ static void TopToolbarFastforwardMenuDropdown(int16_t dropdownIndex)
     }
 }
 
-static void TopToolbarInitRotateMenu(rct_window* w, Widget* widget)
+static void TopToolbarInitRotateMenu(WindowBase* w, Widget* widget)
 {
     gDropdownItems[0].Format = STR_ROTATE_CLOCKWISE;
     gDropdownItems[1].Format = STR_ROTATE_ANTI_CLOCKWISE;
@@ -3431,7 +3431,7 @@ static void TopToolbarInitRotateMenu(rct_window* w, Widget* widget)
 
 static void TopToolbarRotateMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = WindowGetMain();
+    WindowBase* w = WindowGetMain();
     if (w)
     {
         if (dropdownIndex == 0)
@@ -3447,7 +3447,7 @@ static void TopToolbarRotateMenuDropdown(int16_t dropdownIndex)
     }
 }
 
-static void TopToolbarInitCheatsMenu(rct_window* w, Widget* widget)
+static void TopToolbarInitCheatsMenu(WindowBase* w, Widget* widget)
 {
     using namespace Dropdown;
 
@@ -3539,7 +3539,7 @@ static void TopToolbarCheatsMenuDropdown(int16_t dropdownIndex)
     }
 }
 
-static void TopToolbarInitDebugMenu(rct_window* w, Widget* widget)
+static void TopToolbarInitDebugMenu(WindowBase* w, Widget* widget)
 {
     gDropdownItems[DDIDX_CONSOLE].Format = STR_TOGGLE_OPTION;
     gDropdownItems[DDIDX_CONSOLE].Args = STR_DEBUG_DROPDOWN_CONSOLE;
@@ -3553,7 +3553,7 @@ static void TopToolbarInitDebugMenu(rct_window* w, Widget* widget)
     Dropdown::SetChecked(DDIDX_DEBUG_PAINT, WindowFindByClass(WindowClass::DebugPaint) != nullptr);
 }
 
-static void TopToolbarInitNetworkMenu(rct_window* w, Widget* widget)
+static void TopToolbarInitNetworkMenu(WindowBase* w, Widget* widget)
 {
     gDropdownItems[DDIDX_MULTIPLAYER].Format = STR_MULTIPLAYER;
     gDropdownItems[DDIDX_MULTIPLAYER_RECONNECT].Format = STR_MULTIPLAYER_RECONNECT;
@@ -3569,7 +3569,7 @@ static void TopToolbarInitNetworkMenu(rct_window* w, Widget* widget)
 
 static void TopToolbarDebugMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = WindowGetMain();
+    WindowBase* w = WindowGetMain();
     if (w != nullptr)
     {
         switch (dropdownIndex)
@@ -3596,7 +3596,7 @@ static void TopToolbarDebugMenuDropdown(int16_t dropdownIndex)
 
 static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = WindowGetMain();
+    WindowBase* w = WindowGetMain();
     if (w != nullptr)
     {
         switch (dropdownIndex)
@@ -3615,7 +3615,7 @@ static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex)
  *
  *  rct2: 0x0066CDE4
  */
-static void TopToolbarInitViewMenu(rct_window* w, Widget* widget)
+static void TopToolbarInitViewMenu(WindowBase* w, Widget* widget)
 {
     using namespace Dropdown;
     constexpr ItemExt items[] = {
@@ -3652,7 +3652,7 @@ static void TopToolbarInitViewMenu(rct_window* w, Widget* widget)
         TOP_TOOLBAR_VIEW_MENU_COUNT);
 
     // Set checkmarks
-    rct_viewport* mainViewport = WindowGetMain()->viewport;
+    Viewport* mainViewport = WindowGetMain()->viewport;
     if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         Dropdown::SetChecked(DDIDX_UNDERGROUND_INSIDE, true);
     if (gConfigGeneral.TransparentWater)
@@ -3703,7 +3703,7 @@ static void TopToolbarInitViewMenu(rct_window* w, Widget* widget)
  */
 static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
 {
-    rct_window* w = WindowGetMain();
+    WindowBase* w = WindowGetMain();
     if (w != nullptr)
     {
         switch (dropdownIndex)
@@ -3799,7 +3799,7 @@ static void ToggleFootpathWindow()
  *
  *  rct2: 0x0066CD54
  */
-static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
+static void ToggleLandWindow(WindowBase* topToolbar, WidgetIndex widgetIndex)
 {
     if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
         && gCurrentToolWidget.widget_index == WIDX_LAND)
@@ -3820,7 +3820,7 @@ static void ToggleLandWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
  *
  *  rct2: 0x0066CD0C
  */
-static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
+static void ToggleClearSceneryWindow(WindowBase* topToolbar, WidgetIndex widgetIndex)
 {
     if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
          && gCurrentToolWidget.widget_index == WIDX_CLEAR_SCENERY))
@@ -3840,7 +3840,7 @@ static void ToggleClearSceneryWindow(rct_window* topToolbar, WidgetIndex widgetI
  *
  *  rct2: 0x0066CD9C
  */
-static void ToggleWaterWindow(rct_window* topToolbar, WidgetIndex widgetIndex)
+static void ToggleWaterWindow(WindowBase* topToolbar, WidgetIndex widgetIndex)
 {
     if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::TopToolbar
         && gCurrentToolWidget.widget_index == WIDX_WATER)

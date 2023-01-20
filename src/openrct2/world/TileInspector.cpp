@@ -75,7 +75,7 @@ namespace OpenRCT2::TileInspector
         return true;
     }
 
-    static rct_window* GetTileInspectorWithPos(const CoordsXY& loc)
+    static WindowBase* GetTileInspectorWithPos(const CoordsXY& loc)
     {
         // Return the tile inspector window for everyone who has the tile selected
         auto* window = WindowFindByClass(WindowClass::TileInspector);

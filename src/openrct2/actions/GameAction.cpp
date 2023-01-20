@@ -240,12 +240,12 @@ namespace GameActions
         return "sp";
     }
 
-    struct ActionLogContext_t
+    struct ActionLogContext
     {
         MemoryStream output;
     };
 
-    static void LogActionBegin(ActionLogContext_t& ctx, const GameAction* action)
+    static void LogActionBegin(ActionLogContext& ctx, const GameAction* action)
     {
         MemoryStream& output = ctx.output;
 
@@ -262,7 +262,7 @@ namespace GameActions
         action->Serialise(ds);
     }
 
-    static void LogActionFinish(ActionLogContext_t& ctx, const GameAction* action, const GameActions::Result& result)
+    static void LogActionFinish(ActionLogContext& ctx, const GameAction* action, const GameActions::Result& result)
     {
         MemoryStream& output = ctx.output;
 
@@ -348,7 +348,7 @@ namespace GameActions
                 }
             }
 
-            ActionLogContext_t logContext;
+            ActionLogContext logContext;
             LogActionBegin(logContext, action);
 
             // Execute the action, changing the game state

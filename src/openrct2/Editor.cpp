@@ -89,7 +89,7 @@ namespace Editor
         }
     }
 
-    static rct_window* OpenEditorWindows()
+    static WindowBase* OpenEditorWindows()
     {
         auto* main = ContextOpenWindow(WindowClass::MainWindow);
         ContextOpenWindow(WindowClass::TopToolbar);
@@ -111,7 +111,7 @@ namespace Editor
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
-        rct_window* mainWindow = OpenEditorWindows();
+        WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
         gScreenAge = 0;
@@ -170,7 +170,7 @@ namespace Editor
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
-        rct_window* mainWindow = OpenEditorWindows();
+        WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
     }
@@ -191,7 +191,7 @@ namespace Editor
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
-        rct_window* mainWindow = OpenEditorWindows();
+        WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
     }

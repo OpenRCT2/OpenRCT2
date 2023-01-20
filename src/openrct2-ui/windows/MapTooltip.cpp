@@ -23,8 +23,8 @@ static Widget window_map_tooltip_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowMapTooltipUpdate(rct_window *w);
-static void WindowMapTooltipPaint(rct_window *w, DrawPixelInfo *dpi);
+static void WindowMapTooltipUpdate(WindowBase *w);
+static void WindowMapTooltipPaint(WindowBase *w, DrawPixelInfo *dpi);
 
 static WindowEventList window_map_tooltip_events([](auto& events)
 {
@@ -100,7 +100,7 @@ void WindowMapTooltipUpdateVisibility()
  */
 static void WindowMapTooltipOpen()
 {
-    rct_window* w;
+    WindowBase* w;
 
     constexpr int32_t width = 200;
     constexpr int32_t height = 44;
@@ -128,7 +128,7 @@ static void WindowMapTooltipOpen()
  *
  *  rct2: 0x006EE8CE
  */
-static void WindowMapTooltipUpdate(rct_window* w)
+static void WindowMapTooltipUpdate(WindowBase* w)
 {
     w->Invalidate();
 }
@@ -137,7 +137,7 @@ static void WindowMapTooltipUpdate(rct_window* w)
  *
  *  rct2: 0x006EE894
  */
-static void WindowMapTooltipPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowMapTooltipPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     StringId stringId;
     std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));

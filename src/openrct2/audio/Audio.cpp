@@ -176,7 +176,7 @@ namespace OpenRCT2::Audio
         uint8_t rotation = GetCurrentRotation();
         auto pos2 = Translate3DTo2DWithZ(rotation, location);
 
-        rct_viewport* viewport = nullptr;
+        Viewport* viewport = nullptr;
         while ((viewport = WindowGetPreviousViewport(viewport)) != nullptr)
         {
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)

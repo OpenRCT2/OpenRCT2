@@ -1037,17 +1037,17 @@ static FinancesWindow* FinancesWindowOpen(uint8_t page)
     return window;
 }
 
-rct_window* WindowFinancesOpen()
+WindowBase* WindowFinancesOpen()
 {
     return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 }
 
-rct_window* WindowFinancesResearchOpen()
+WindowBase* WindowFinancesResearchOpen()
 {
     return FinancesWindowOpen(WINDOW_FINANCES_PAGE_RESEARCH);
 }
 
-rct_window* WindowFinancesMarketingOpen()
+WindowBase* WindowFinancesMarketingOpen()
 {
     return FinancesWindowOpen(WINDOW_FINANCES_PAGE_MARKETING);
 }

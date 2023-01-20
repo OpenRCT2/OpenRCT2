@@ -797,11 +797,11 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
 
 static void RideRatingsCalculateValue(Ride& ride)
 {
-    struct row
+    struct Row
     {
         int32_t months, multiplier, divisor, summand;
     };
-    static const row ageTableNew[] = {
+    static const Row ageTableNew[] = {
         { 5, 3, 2, 0 },       // 1.5x
         { 13, 6, 5, 0 },      // 1.2x
         { 40, 1, 1, 0 },      // 1x
@@ -815,7 +815,7 @@ static void RideRatingsCalculateValue(Ride& ride)
     };
 
 #ifdef ORIGINAL_RATINGS
-    static const row ageTableOld[] = {
+    static const Row ageTableOld[] = {
         { 5, 1, 1, 30 },      // +30
         { 13, 1, 1, 10 },     // +10
         { 40, 1, 1, 0 },      // 1x
@@ -846,7 +846,7 @@ static void RideRatingsCalculateValue(Ride& ride)
         monthsOld = ride.GetAge();
     }
 
-    const row* ageTable = ageTableNew;
+    const Row* ageTable = ageTableNew;
     size_t tableSize = std::size(ageTableNew);
 
 #ifdef ORIGINAL_RATINGS
@@ -854,7 +854,7 @@ static void RideRatingsCalculateValue(Ride& ride)
     tableSize = std::size(ageTableOld);
 #endif
 
-    row lastRow = ageTable[tableSize - 1];
+    Row lastRow = ageTable[tableSize - 1];
 
     // Ride is older than oldest age in the table?
     if (monthsOld >= lastRow.months)
@@ -866,7 +866,7 @@ static void RideRatingsCalculateValue(Ride& ride)
         // Find the first hit in the table that matches this ride's age
         for (size_t it = 0; it < tableSize; it++)
         {
-            row curr = ageTable[it];
+            Row curr = ageTable[it];
 
             if (monthsOld < curr.months)
             {

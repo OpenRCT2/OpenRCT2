@@ -324,7 +324,7 @@ static constexpr StringId GetStringFromObjectType(const ObjectType type)
     }
 }
 
-class ObjectLoadErrorWindow final : public rct_window
+class ObjectLoadErrorWindow final : public WindowBase
 {
 private:
     std::vector<ObjectEntryDescriptor> _invalidEntries;
@@ -563,7 +563,7 @@ public:
     }
 };
 
-rct_window* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
+WindowBase* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
     // Check if window is already open
     auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);

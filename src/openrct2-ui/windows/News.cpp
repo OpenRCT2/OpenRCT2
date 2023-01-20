@@ -110,7 +110,7 @@ public:
         }
         else if (_pressedButtonIndex > 1)
         {
-            static rct_window* _mainWindow;
+            static WindowBase* _mainWindow;
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
             if (subjectLoc.has_value() && (_mainWindow = WindowGetMain()) != nullptr)
             {
@@ -308,7 +308,7 @@ public:
     }
 };
 
-rct_window* WindowNewsOpen()
+WindowBase* WindowNewsOpen()
 {
     return WindowFocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
 }

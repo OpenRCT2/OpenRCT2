@@ -15,7 +15,7 @@ struct PaintSession;
 struct CarEntry;
 struct Vehicle;
 
-struct vehicle_boundbox
+struct VehicleBoundBox
 {
     int8_t offset_x;
     int8_t offset_y;
@@ -25,7 +25,7 @@ struct vehicle_boundbox
     uint8_t length_z;
 };
 
-extern const vehicle_boundbox VehicleBoundboxes[16][224];
+extern const VehicleBoundBox VehicleBoundboxes[16][224];
 
 void VehicleVisualDefault(
     PaintSession& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry);

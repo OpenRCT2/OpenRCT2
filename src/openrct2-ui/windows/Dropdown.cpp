@@ -433,7 +433,7 @@ void WindowDropdownClose()
  * New function based on 6e914e
  * returns -1 if index is invalid
  */
-int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
+int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
 {
     if (w->classification == WindowClass::Dropdown)
     {
@@ -446,7 +446,7 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
 /**
  *  rct2: 0x006ED43D
  */
-void WindowDropdownShowColour(rct_window* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
+void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
     // Set items

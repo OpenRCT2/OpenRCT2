@@ -650,7 +650,7 @@ public:
         auto mapCoords = CoordsXY{ std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1), std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1) };
         auto mapZ = TileElementHeight(mapCoords);
 
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             WindowScrollToLocation(*mainWindow, { mapCoords, mapZ });
@@ -928,7 +928,7 @@ private:
 
     void CentreMapOnViewPoint()
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         int16_t ax, bx, cx, dx;
         int16_t bp, di;
 
@@ -1243,11 +1243,11 @@ private:
      */
     void PaintHudRectangle(DrawPixelInfo* dpi)
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
 
-        rct_viewport* mainViewport = mainWindow->viewport;
+        Viewport* mainViewport = mainWindow->viewport;
         if (mainViewport == nullptr)
             return;
 
@@ -1441,11 +1441,11 @@ private:
     };
 };
 
-rct_window* WindowMapOpen()
+WindowBase* WindowMapOpen()
 {
     try
     {
-        rct_window* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
+        WindowBase* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
         w->selected_tab = 0;
         w->list_information_type = 0;
         return w;
@@ -1458,7 +1458,7 @@ rct_window* WindowMapOpen()
 
 void WindowMapReset()
 {
-    rct_window* w;
+    WindowBase* w;
 
     // Check if window is even opened
     w = WindowBringToFrontByClass(WindowClass::Map);

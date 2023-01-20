@@ -392,7 +392,7 @@ namespace OpenRCT2::Title
 
         void StoreCurrentViewLocation()
         {
-            rct_window* w = WindowGetMain();
+            WindowBase* w = WindowGetMain();
             if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
             {
                 _previousWindowWidth = w->width;
@@ -406,7 +406,7 @@ namespace OpenRCT2::Title
          */
         void RestoreViewLocationIfResized()
         {
-            rct_window* w = WindowGetMain();
+            WindowBase* w = WindowGetMain();
             if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
             {
                 if (w->width != _previousWindowWidth || w->height != _previousWindowHeight)

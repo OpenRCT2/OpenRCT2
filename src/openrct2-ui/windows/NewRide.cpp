@@ -946,9 +946,9 @@ void WindowNewRideInitVars()
  *
  *  rct2: 0x006B3CFF
  */
-rct_window* WindowNewRideOpen()
+WindowBase* WindowNewRideOpen()
 {
-    rct_window* window;
+    WindowBase* window;
 
     window = WindowBringToFrontByClass(WindowClass::ConstructRide);
     if (window)
@@ -963,7 +963,7 @@ rct_window* WindowNewRideOpen()
     return window;
 }
 
-rct_window* WindowNewRideOpenResearch()
+WindowBase* WindowNewRideOpenResearch()
 {
     auto w = static_cast<NewRideWindow*>(WindowNewRideOpen());
     w->SetPage(RESEARCH_TAB);

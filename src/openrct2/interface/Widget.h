@@ -161,22 +161,22 @@ constexpr Widget MakeDropdownButtonWidget(
     return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
 }
 
-void WidgetScrollUpdateThumbs(rct_window& w, WidgetIndex widget_index);
-void WidgetDraw(DrawPixelInfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index);
+void WidgetDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
 
-bool WidgetIsDisabled(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsHoldable(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsVisible(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsPressed(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsHighlighted(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsActiveTool(const rct_window& w, WidgetIndex widgetIndex);
+bool WidgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsActiveTool(const WindowBase& w, WidgetIndex widgetIndex);
 void WidgetScrollGetPart(
-    rct_window& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
+    WindowBase& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id);
 
-void WidgetSetEnabled(rct_window& w, WidgetIndex widgetIndex, bool enabled);
-void WidgetSetDisabled(rct_window& w, WidgetIndex widgetIndex, bool value);
-void WidgetSetHoldable(rct_window& w, WidgetIndex widgetIndex, bool value);
-void WidgetSetVisible(rct_window& w, WidgetIndex widgetIndex, bool value);
-void WidgetSetPressed(rct_window& w, WidgetIndex widgetIndex, bool value);
-void WidgetSetCheckboxValue(rct_window& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled);
+void WidgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);

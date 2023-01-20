@@ -42,7 +42,7 @@ static Widget window_text_input_widgets[] = {
 class TextInputWindow final : public Window
 {
 private:
-    widget_identifier _parentWidget{};
+    WidgetIdentifier _parentWidget{};
 
     std::string _title;
     StringId _titleStringId = STR_NONE;
@@ -66,7 +66,7 @@ public:
         SetParentWindow(nullptr, 0);
     }
 
-    void SetParentWindow(rct_window* parentWindow, WidgetIndex widgetIndex)
+    void SetParentWindow(WindowBase* parentWindow, WidgetIndex widgetIndex)
     {
         // Save calling window details so that the information can be passed back to the correct window & widget
         if (parentWindow == nullptr)
@@ -364,7 +364,7 @@ private:
         return _parentWidget.window.classification != WindowClass::Null;
     }
 
-    rct_window* GetParentWindow() const
+    WindowBase* GetParentWindow() const
     {
         return HasParentWindow() ? WindowFindByNumber(_parentWidget.window.classification, _parentWidget.window.number)
                                  : nullptr;
@@ -372,7 +372,7 @@ private:
 };
 
 void WindowTextInputRawOpen(
-    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    WindowBase* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     const_utf8string existing_text, int32_t maxLength)
 {
     WindowCloseByClass(WindowClass::Textinput);
@@ -402,14 +402,14 @@ void WindowTextInputOpen(
 }
 
 void WindowTextInputOpen(
-    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    WindowBase* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     StringId existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     auto existingText = FormatStringID(existing_text, &existing_args);
     WindowTextInputRawOpen(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
 }
 
-void WindowTextInputKey(rct_window* w, uint32_t keycode)
+void WindowTextInputKey(WindowBase* w, uint32_t keycode)
 {
     const auto wndNumber = w->number;
     const auto wndClass = w->classification;

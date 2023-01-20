@@ -882,9 +882,9 @@ public:
     }
 };
 
-rct_window* WindowThemesOpen()
+WindowBase* WindowThemesOpen()
 {
-    rct_window* window;
+    WindowBase* window;
 
     // Check if window is already open
     window = WindowBringToFrontByClass(WindowClass::Themes);

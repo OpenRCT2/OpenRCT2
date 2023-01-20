@@ -21,7 +21,7 @@
 
 #ifndef NO_VEHICLES
 // 0x0099279E:
-static constexpr const vehicle_boundbox _riverRapidsBoundbox[] = {
+static constexpr const VehicleBoundBox _riverRapidsBoundbox[] = {
     { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
     { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
     { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },

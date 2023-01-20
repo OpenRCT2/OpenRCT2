@@ -2337,9 +2337,9 @@ private:
     }
 };
 
-rct_window* WindowTileInspectorOpen()
+WindowBase* WindowTileInspectorOpen()
 {
-    rct_window* window = WindowBringToFrontByClass(WindowClass::TileInspector);
+    WindowBase* window = WindowBringToFrontByClass(WindowClass::TileInspector);
     if (window == nullptr)
         window = WindowCreate<TileInspector>(WindowClass::TileInspector, ScreenCoordsXY(0, 29), WW, WH, WF_RESIZABLE);
     return window;

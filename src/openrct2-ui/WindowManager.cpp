@@ -38,7 +38,7 @@ public:
         WindowNewRideInitVars();
     }
 
-    rct_window* OpenWindow(WindowClass wc) override
+    WindowBase* OpenWindow(WindowClass wc) override
     {
         switch (wc)
         {
@@ -144,7 +144,7 @@ public:
         }
     }
 
-    rct_window* OpenView(uint8_t view) override
+    WindowBase* OpenView(uint8_t view) override
     {
         switch (view)
         {
@@ -183,7 +183,7 @@ public:
         }
     }
 
-    rct_window* OpenDetails(uint8_t type, int32_t id) override
+    WindowBase* OpenDetails(uint8_t type, int32_t id) override
     {
         switch (type)
         {
@@ -207,17 +207,17 @@ public:
         }
     }
 
-    rct_window* ShowError(StringId title, StringId message, const Formatter& args) override
+    WindowBase* ShowError(StringId title, StringId message, const Formatter& args) override
     {
         return WindowErrorOpen(title, message, args);
     }
 
-    rct_window* ShowError(std::string_view title, std::string_view message) override
+    WindowBase* ShowError(std::string_view title, std::string_view message) override
     {
         return WindowErrorOpen(title, message);
     }
 
-    rct_window* OpenIntent(Intent* intent) override
+    WindowBase* OpenIntent(Intent* intent) override
     {
         switch (intent->GetWindowClass())
         {
@@ -516,7 +516,7 @@ public:
             {
                 uint8_t bannerIndex = static_cast<uint8_t>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
 
-                rct_window* w = WindowFindByNumber(WindowClass::Banner, bannerIndex);
+                WindowBase* w = WindowFindByNumber(WindowClass::Banner, bannerIndex);
                 if (w != nullptr)
                 {
                     w->Invalidate();
@@ -620,7 +620,7 @@ public:
         WindowAllWheelInput();
     }
 
-    rct_window* GetOwner(const rct_viewport* viewport) override
+    WindowBase* GetOwner(const Viewport* viewport) override
     {
         for (auto& w : g_window_list)
         {

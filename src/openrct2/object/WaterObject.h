@@ -17,7 +17,7 @@
 class WaterObject final : public Object
 {
 private:
-    rct_water_type _legacyType = {};
+    WaterObjectEntry _legacyType = {};
 
 public:
     void* GetLegacyData() override

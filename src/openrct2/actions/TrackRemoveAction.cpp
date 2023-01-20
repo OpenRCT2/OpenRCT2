@@ -138,7 +138,7 @@ GameActions::Result TrackRemoveAction::Query() const
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
     auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();
-    const rct_preview_track* trackBlock = ted.GetBlockForSequence(sequenceIndex);
+    const PreviewTrack* trackBlock = ted.GetBlockForSequence(sequenceIndex);
     if (trackBlock == nullptr)
     {
         LOG_WARNING("Track block %d not found for track type %d.", sequenceIndex, trackType);
@@ -327,7 +327,7 @@ GameActions::Result TrackRemoveAction::Execute() const
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
     auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();
-    const rct_preview_track* trackBlock = ted.GetBlockForSequence(sequenceIndex);
+    const PreviewTrack* trackBlock = ted.GetBlockForSequence(sequenceIndex);
     if (trackBlock == nullptr)
     {
         LOG_WARNING("Track block %d not found for track type %d.", sequenceIndex, trackType);

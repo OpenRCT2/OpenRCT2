@@ -1420,7 +1420,7 @@ void Guest::CheckCantFindRide()
         return;
 
     GuestHeadingToRideId = RideId::GetNull();
-    rct_window* w = WindowFindByNumber(WindowClass::Peep, sprite_index);
+    WindowBase* w = WindowFindByNumber(WindowClass::Peep, sprite_index);
 
     if (w != nullptr)
     {
@@ -3110,7 +3110,7 @@ static void PeepLeavePark(Guest* peep)
 
     peep->InsertNewThought(PeepThoughtType::GoHome);
 
-    rct_window* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index);
+    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index);
     if (w != nullptr)
         WindowEventInvalidateCall(w);
     WindowInvalidateByNumber(WindowClass::Peep, peep->sprite_index);

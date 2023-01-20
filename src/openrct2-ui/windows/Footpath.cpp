@@ -1406,7 +1406,7 @@ public:
  *
  *  rct2: 0x006A7C43
  */
-rct_window* WindowFootpathOpen()
+WindowBase* WindowFootpathOpen()
 {
     if (!FootpathSelectDefault())
     {
@@ -1424,7 +1424,7 @@ void WindowFootpathResetSelectedPath()
 
 void WindowFootpathKeyboardShortcutTurnLeft()
 {
-    rct_window* w = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1437,7 +1437,7 @@ void WindowFootpathKeyboardShortcutTurnLeft()
 
 void WindowFootpathKeyboardShortcutTurnRight()
 {
-    rct_window* w = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1450,7 +1450,7 @@ void WindowFootpathKeyboardShortcutTurnRight()
 
 void WindowFootpathKeyboardShortcutSlopeDown()
 {
-    rct_window* w = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1463,7 +1463,7 @@ void WindowFootpathKeyboardShortcutSlopeDown()
 
 void WindowFootpathKeyboardShortcutSlopeUp()
 {
-    rct_window* w = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1476,7 +1476,7 @@ void WindowFootpathKeyboardShortcutSlopeUp()
 
 void WindowFootpathKeyboardShortcutDemolishCurrent()
 {
-    rct_window* w = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1489,7 +1489,7 @@ void WindowFootpathKeyboardShortcutDemolishCurrent()
 
 void WindowFootpathKeyboardShortcutBuildCurrent()
 {
-    rct_window* w = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
     {
         auto* footpathWindow = static_cast<FootpathWindow*>(w);

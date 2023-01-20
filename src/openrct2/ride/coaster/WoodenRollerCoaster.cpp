@@ -1114,7 +1114,7 @@ static void WoodenRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[2][4][7] = {
+    static constexpr const SpriteBoundBox2 imageIds[2][4][7] = {
         {
             {
                 {
@@ -1616,7 +1616,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const sprite_bb_2 imageIds[2][4][7] = {
+    static constexpr const SpriteBoundBox2 imageIds[2][4][7] = {
         {
             {
                 {

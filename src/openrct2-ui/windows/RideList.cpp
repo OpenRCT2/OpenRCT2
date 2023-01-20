@@ -954,7 +954,7 @@ private:
  *
  *  rct2: 0x006B30BC
  */
-rct_window* WindowRideListOpen()
+WindowBase* WindowRideListOpen()
 {
     // Check if window is already open
     auto* window = WindowBringToFrontByClass(WindowClass::RideList);
@@ -965,7 +965,7 @@ rct_window* WindowRideListOpen()
     return window;
 }
 
-void WindowRideListRefreshList(rct_window* w)
+void WindowRideListRefreshList(WindowBase* w)
 {
     dynamic_cast<RideListWindow*>(w)->RefreshListWrapper();
 }

@@ -576,7 +576,7 @@ private:
  *
  *  rct2: 0x00684E04
  */
-rct_window* WindowEditorInventionsListOpen()
+WindowBase* WindowEditorInventionsListOpen()
 {
     return WindowFocusOrCreate<InventionListWindow>(
         WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);

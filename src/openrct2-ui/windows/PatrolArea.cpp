@@ -285,7 +285,7 @@ private:
     }
 };
 
-rct_window* WindowPatrolAreaOpen(EntityId staffId)
+WindowBase* WindowPatrolAreaOpen(EntityId staffId)
 {
     auto w = WindowFocusOrCreate<PatrolAreaWindow>(
         WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);

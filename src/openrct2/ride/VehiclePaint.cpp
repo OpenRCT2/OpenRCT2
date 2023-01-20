@@ -28,7 +28,7 @@ using namespace OpenRCT2::Entity::Yaw;
 #pragma region VehicleBoundboxes
 
 // 0x0098E52C:
-const vehicle_boundbox VehicleBoundboxes[16][224] = {
+const VehicleBoundBox VehicleBoundboxes[16][224] = {
     {
         // 0x0099123C:
         { -5, -2, -22, 10, 4, 14 },   { -3, -3, -22, 6, 6, 14 },    { -3, -3, -22, 6, 6, 14 },    { -3, -3, -22, 6, 6, 14 },
@@ -941,7 +941,7 @@ const vehicle_boundbox VehicleBoundboxes[16][224] = {
 
 static void PaintVehicleRiders(
     PaintSession& session, const Vehicle* vehicle, const CarEntry* carEntry, uint32_t baseImageId, int32_t z,
-    const vehicle_boundbox& bb)
+    const VehicleBoundBox& bb)
 {
     baseImageId += carEntry->NumCarImages;
     for (auto i = 0; i < 8; i++)
@@ -972,7 +972,7 @@ static void PaintVehicleRiders(
 
 // 6D5214
 static void vehicle_sprite_paint(
-    PaintSession& session, const Vehicle* vehicle, int32_t spriteNum, const vehicle_boundbox& bb, int32_t z,
+    PaintSession& session, const Vehicle* vehicle, int32_t spriteNum, const VehicleBoundBox& bb, int32_t z,
     const CarEntry* carEntry)
 {
     if (carEntry->draw_order >= std::size(VehicleBoundboxes))

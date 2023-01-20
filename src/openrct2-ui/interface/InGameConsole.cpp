@@ -248,10 +248,10 @@ void InGameConsole::Update()
     if (_isOpen)
     {
         // When scrolling the map, the console pixels get copied... therefore invalidate the screen
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            rct_viewport* mainViewport = WindowGetViewport(mainWindow);
+            Viewport* mainViewport = WindowGetViewport(mainWindow);
             if (mainViewport != nullptr)
             {
                 if (_lastMainViewport != mainViewport->viewPos)

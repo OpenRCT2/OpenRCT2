@@ -431,10 +431,10 @@ void LightFXSwapBuffers()
 
 void LightFXUpdateViewportSettings()
 {
-    rct_window* mainWindow = WindowGetMain();
+    WindowBase* mainWindow = WindowGetMain();
     if (mainWindow != nullptr)
     {
-        rct_viewport* viewport = WindowGetViewport(mainWindow);
+        Viewport* viewport = WindowGetViewport(mainWindow);
         _current_view_x_back = viewport->viewPos.x;
         _current_view_y_back = viewport->viewPos.y;
         _current_view_rotation_back = GetCurrentRotation();
