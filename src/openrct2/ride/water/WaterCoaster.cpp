@@ -20,7 +20,7 @@ static void WaterRCTrackFlat(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrackFlat(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrack25DegUp(
@@ -30,7 +30,7 @@ static void WaterRCTrack25DegUp(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrack25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrackFlatTo25DegUp(
@@ -40,7 +40,7 @@ static void WaterRCTrackFlatTo25DegUp(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrackFlatTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrack25DegUpToFlat(
@@ -50,7 +50,7 @@ static void WaterRCTrack25DegUpToFlat(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrack25DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrack25DegDown(
@@ -81,7 +81,7 @@ static void WaterRCTrackDiagFlat(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrackDiagFlat(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiag25DegUp(
@@ -91,7 +91,7 @@ static void WaterRCTrackDiag25DegUp(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrackDiag25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiagFlatTo25DegUp(
@@ -101,7 +101,7 @@ static void WaterRCTrackDiagFlatTo25DegUp(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrackDiagFlatTo25DegUp(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiag25DegUpToFlat(
@@ -111,7 +111,7 @@ static void WaterRCTrackDiag25DegUpToFlat(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrackDiag25DegUpToFlat(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiag25DegDown(
@@ -121,7 +121,7 @@ static void WaterRCTrackDiag25DegDown(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrackDiag25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiagFlatTo25DegDown(
@@ -131,7 +131,7 @@ static void WaterRCTrackDiagFlatTo25DegDown(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrackDiagFlatTo25DegDown(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiag25DegDownToFlat(
@@ -141,7 +141,7 @@ static void WaterRCTrackDiag25DegDownToFlat(
     bool isChained = trackElement.HasChain();
     JuniorRCPaintTrackDiag25DegDownToFlat(
         session, ride, trackSequence, direction, height, trackElement,
-        isChained ? JuniorRcChainType::ChainLift : JuniorRcChainType::None);
+        isChained ? JuniorRCChainType::ChainLift : JuniorRCChainType::None);
 }
 
 static void WaterRCTrackStation(
@@ -155,21 +155,21 @@ static void WaterRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    JuniorRCPaintTrack60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRCPaintTrack60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    JuniorRCPaintTrack25DegUpTo60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRCPaintTrack25DegUpTo60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    JuniorRCPaintTrack60DegUpTo25DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRCPaintTrack60DegUpTo25DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrack60DegDown(
@@ -200,7 +200,7 @@ static void WaterRCTrackLeftQuarterTurn5Tiles25DegUp(
     const TrackElement& trackElement)
 {
     JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+        session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrackRightQuarterTurn5Tiles25DegUp(
@@ -208,7 +208,7 @@ static void WaterRCTrackRightQuarterTurn5Tiles25DegUp(
     const TrackElement& trackElement)
 {
     JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+        session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static constexpr const uint8_t water_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = {
@@ -240,7 +240,7 @@ static void WaterRCTrackRightQuarterTurn3Tiles25DegUp(
     const TrackElement& trackElement)
 {
     JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+        session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrackRightQuarterTurn3Tiles25DegDown(
@@ -248,7 +248,7 @@ static void WaterRCTrackRightQuarterTurn3Tiles25DegDown(
     const TrackElement& trackElement)
 {
     JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+        session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static constexpr const uint8_t water_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = {
@@ -278,7 +278,7 @@ static void WaterRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    JuniorRCPaintTrackDiag60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRCPaintTrackDiag60DegUp(session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiag25DegUpTo60DegUp(
@@ -286,7 +286,7 @@ static void WaterRCTrackDiag25DegUpTo60DegUp(
     const TrackElement& trackElement)
 {
     JuniorRCPaintTrackDiag25DegUpTo60DegUp(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+        session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiag60DegUpTo25DegUp(
@@ -294,14 +294,14 @@ static void WaterRCTrackDiag60DegUpTo25DegUp(
     const TrackElement& trackElement)
 {
     JuniorRCPaintTrackDiag60DegUpTo25DegUp(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+        session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    JuniorRCPaintTrackDiag60DegDown(session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+    JuniorRCPaintTrackDiag60DegDown(session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiag25DegDownTo60DegDown(
@@ -309,7 +309,7 @@ static void WaterRCTrackDiag25DegDownTo60DegDown(
     const TrackElement& trackElement)
 {
     JuniorRCPaintTrackDiag25DegDownTo60DegDown(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+        session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
 static void WaterRCTrackDiag60DegDownTo25DegDown(
@@ -317,10 +317,10 @@ static void WaterRCTrackDiag60DegDownTo25DegDown(
     const TrackElement& trackElement)
 {
     JuniorRCPaintTrackDiag60DegDownTo25DegDown(
-        session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
+        session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRC(int32_t trackType)
 {
     switch (trackType)
     {
@@ -463,7 +463,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRc(int32_t trackType)
         case TrackElemType::DiagRightBank:
         case TrackElemType::BlockBrakes:
         case TrackElemType::Booster:
-            return GetTrackPaintFunctionJuniorRc(trackType);
+            return GetTrackPaintFunctionJuniorRC(trackType);
 
         //////////////////////////////////////////////////////
         // Use River Rafts
@@ -492,7 +492,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRc(int32_t trackType)
             return GetTrackPaintFunctionSplashBoats(TrackElemType::Down25ToFlat);
 
         case TrackElemType::OnRidePhoto:
-            return GetTrackPaintFunctionJuniorRc(trackType);
+            return GetTrackPaintFunctionJuniorRC(trackType);
     }
     return nullptr;
 }

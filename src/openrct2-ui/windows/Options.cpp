@@ -1360,7 +1360,7 @@ private:
                     ShowDropdown(widget, numItems);
                     if (gConfigSound.TitleMusic == TitleMusicKind::None)
                         Dropdown::SetChecked(0, true);
-                    else if (gConfigSound.TitleMusic == TitleMusicKind::Rct2)
+                    else if (gConfigSound.TitleMusic == TitleMusicKind::RCT2)
                         Dropdown::SetChecked(1, true);
                 }
                 else
@@ -1410,7 +1410,7 @@ private:
                 auto titleMusic = static_cast<TitleMusicKind>(dropdownIndex);
                 if (!IsRCT1TitleMusicAvailable() && dropdownIndex != 0)
                 {
-                    titleMusic = TitleMusicKind::Rct2;
+                    titleMusic = TitleMusicKind::RCT2;
                 }
 
                 gConfigSound.TitleMusic = titleMusic;

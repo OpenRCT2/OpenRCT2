@@ -9617,7 +9617,7 @@ static void LoopingRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRC(int32_t trackType)
 {
     switch (trackType)
     {
@@ -9895,5 +9895,5 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRc(int32_t trackType)
         case TrackElemType::Booster:
             return LoopingRCTrackBooster;
     }
-    return GetTrackPaintFunctionLimLaunchedRc(trackType);
+    return GetTrackPaintFunctionLimLaunchedRC(trackType);
 }

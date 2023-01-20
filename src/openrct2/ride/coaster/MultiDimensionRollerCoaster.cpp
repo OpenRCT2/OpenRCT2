@@ -13071,7 +13071,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(int32_t trackType)
 {
     switch (trackType)
     {

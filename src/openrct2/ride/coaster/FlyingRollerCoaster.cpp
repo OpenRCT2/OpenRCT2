@@ -18683,7 +18683,7 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown(
     FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
 {
     switch (trackType)
     {

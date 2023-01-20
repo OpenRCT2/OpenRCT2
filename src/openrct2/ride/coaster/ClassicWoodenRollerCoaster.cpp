@@ -1854,11 +1854,11 @@ static void ClassicWoodenRCTrackDiag25DegDownToRightBank(
 // Stylistically, this coaster is _very_ similar to the regular Wooden Roller Coaster.
 // The only difference is to which parts the colours are applied, and the degree of the banking.
 // As such, all non-banked pieces are simply drawn as regular wooden roller coaster pieces with a different paint scheme.
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRC(int32_t trackType)
 {
     if (!IsCsgLoaded())
     {
-        return GetTrackPaintFunctionClassicWoodenRcFallback(trackType);
+        return GetTrackPaintFunctionClassicWoodenRCFallback(trackType);
     }
 
     switch (trackType)
@@ -1937,5 +1937,5 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRc(int32_t trackType)
             return ClassicWoodenRCTrackDiagRightBank;
     }
 
-    return GetTrackPaintFunctionClassicWoodenRcFallback(trackType);
+    return GetTrackPaintFunctionClassicWoodenRCFallback(trackType);
 }

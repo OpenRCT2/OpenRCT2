@@ -518,8 +518,8 @@ namespace ObjectFactory
             auto id = Json::GetString(jRoot["id"]);
 
             // HACK Disguise RCT Classic audio as RCT2 audio so asset packs override correctly
-            if (id == OpenRCT2::Audio::AudioObjectIdentifiers::Rct2cBase)
-                id = OpenRCT2::Audio::AudioObjectIdentifiers::Rct2Base;
+            if (id == OpenRCT2::Audio::AudioObjectIdentifiers::RCTCBase)
+                id = OpenRCT2::Audio::AudioObjectIdentifiers::RCT2Base;
 
             auto version = VersionTuple(Json::GetString(jRoot["version"]));
             ObjectEntryDescriptor descriptor;

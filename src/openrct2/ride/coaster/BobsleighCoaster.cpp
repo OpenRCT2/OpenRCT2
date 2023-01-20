@@ -3867,7 +3867,7 @@ static void BobsleighRCTrackOnRidePhoto(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRC(int32_t trackType)
 {
     switch (trackType)
     {

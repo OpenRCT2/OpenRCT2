@@ -486,7 +486,7 @@ namespace OpenRCT2
                     uint32_t s0{}, s1{};
                     cs.ReadWrite(s0);
                     cs.ReadWrite(s1);
-                    Random::Rct2::Seed s{ s0, s1 };
+                    Random::RCT2::Seed s{ s0, s1 };
                     gScenarioRand.seed(s);
                 }
                 else

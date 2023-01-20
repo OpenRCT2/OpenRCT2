@@ -1458,7 +1458,7 @@ static void ReverserRCTrackRightReverser(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(int32_t trackType)
 {
     switch (trackType)
     {
