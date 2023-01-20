@@ -1724,6 +1724,33 @@ static void WindowRideMainResize(rct_window* w)
     WindowRideInitViewport(w);
 }
 
+static size_t GetNumPeepsInTrain(const Ride& ride, int32_t trainIndex)
+{
+    auto numPeepsInTrain = 0;
+    const auto* vehicle = TryGetVehicle(ride.vehicles[trainIndex]);
+    while (vehicle != nullptr)
+    {
+        numPeepsInTrain += vehicle->num_peeps;
+        vehicle = TryGetVehicle(vehicle->next_vehicle_on_train);
+    }
+    return numPeepsInTrain;
+}
+
+static bool TrainMustBeHidden(const Ride& ride, int32_t trainIndex)
+{
+    if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+        return true;
+
+    const auto* rideEntry = ride.GetRideEntry();
+    if (rideEntry == nullptr)
+        return false;
+
+    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS))
+        return false;
+
+    return GetNumPeepsInTrain(ride, trainIndex) == 0;
+}
+
 /**
  *
  *  rct2: 0x006AF825
@@ -1735,8 +1762,10 @@ static void WindowRideShowViewDropdown(rct_window* w, Widget* widget)
     if (ride == nullptr)
         return;
 
+    const auto& rtd = ride->GetRideTypeDescriptor();
+
     int32_t numItems = 1;
-    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
     {
         numItems += ride->num_stations;
         numItems += ride->NumTrains;
@@ -1751,14 +1780,16 @@ static void WindowRideShowViewDropdown(rct_window* w, Widget* widget)
     gDropdownItems[0].Args = STR_OVERALL_VIEW;
     int32_t currentItem = 1;
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
-
     // Vehicles
     int32_t name = GetRideComponentName(rtd.NameConvention.vehicle).number;
-    for (int32_t i = 1; i <= ride->NumTrains; i++)
+    for (int32_t i = 0; i < ride->NumTrains; i++)
     {
         gDropdownItems[currentItem].Format = STR_DROPDOWN_MENU_LABEL;
         gDropdownItems[currentItem].Args = name | (currentItem << 16);
+        if (TrainMustBeHidden(*ride, i))
+        {
+            Dropdown::SetDisabled(currentItem, true);
+        }
         currentItem++;
     }
 
@@ -1769,16 +1800,6 @@ static void WindowRideShowViewDropdown(rct_window* w, Widget* widget)
         gDropdownItems[currentItem].Format = STR_DROPDOWN_MENU_LABEL;
         gDropdownItems[currentItem].Args = name | (i << 16);
         currentItem++;
-    }
-
-    // Set highlighted item
-    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
-    {
-        for (int32_t i = 0; i < ride->NumTrains; i++)
-        {
-            // The +1 is to skip 'Overall view'
-            Dropdown::SetDisabled(i + 1, true);
-        }
     }
 
     // Set checked item

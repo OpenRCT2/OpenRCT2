@@ -492,6 +492,7 @@ enum
     // Must be set with swing mode 1 as well.
     RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2 = 1 << 20,
     RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED = 1 << 21,
+    RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS = 1 << 22,
 };
 
 enum
