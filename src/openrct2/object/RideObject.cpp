@@ -51,7 +51,7 @@ static constexpr SpritePrecision PrecisionFromNumFrames(uint8_t numRotationFrame
         return static_cast<SpritePrecision>(UtilBitScanForward(numRotationFrames) + 1);
 }
 
-static void RideObjectUpdateRideType(rct_ride_entry& rideEntry)
+static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
 {
     for (auto i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
@@ -787,7 +787,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     return car;
 }
 
-vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
+VehicleColourPresetList RideObject::ReadJsonCarColours(json_t& jCarColours)
 {
     Guard::Assert(jCarColours.is_array(), "RideObject::ReadJsonCarColours expects parameter jCarColours to be array");
 
@@ -802,7 +802,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
         {
             // Read all colours from first config
             auto config = ReadJsonColourConfiguration(firstElement);
-            vehicle_colour_preset_list list = {};
+            VehicleColourPresetList list = {};
             list.count = 255;
             std::copy_n(config.data(), std::min<size_t>(numColours, 32), list.list);
             return list;
@@ -810,7 +810,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
     }
 
     // Read first colour for each config
-    vehicle_colour_preset_list list = {};
+    VehicleColourPresetList list = {};
     for (size_t index = 0; index < jCarColours.size(); index++)
     {
         auto config = ReadJsonColourConfiguration(jCarColours[index]);

@@ -1200,7 +1200,7 @@ private:
         if (GetSelectedObjectType() == ObjectType::Ride)
         {
             auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
-            const auto* rideEntry = reinterpret_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+            const auto* rideEntry = reinterpret_cast<RideObjectEntry*>(rideObject->GetLegacyData());
             if (rideEntry->shop_item[0] != ShopItem::None)
             {
                 std::string sells = "";
@@ -1505,7 +1505,7 @@ private:
         for (; ObjectEntryGetChunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
             ;
 
-        rct_ride_entry* ride_entry = GetRideEntryByIndex(entry_index);
+        RideObjectEntry* ride_entry = GetRideEntryByIndex(entry_index);
         auto rideType = ride_entry->GetFirstNonNullRideType();
 
         auto intent = Intent(WindowClass::TrackDesignList);
@@ -1586,7 +1586,7 @@ void EditorLoadSelectedObjects()
                     auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
                     if (objectType == ObjectType::Ride)
                     {
-                        rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
+                        RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
                         auto rideType = rideEntry->GetFirstNonNullRideType();
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                         ResearchInsertRideEntry(rideType, entryIndex, category, true);

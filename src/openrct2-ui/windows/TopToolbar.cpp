@@ -2810,7 +2810,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
             auto* sceneryEntry = GetLargeSceneryEntry(selection.EntryIndex);
             gMapSelectionTiles.clear();
 
-            for (rct_large_scenery_tile* tile = sceneryEntry->tiles;
+            for (LargeSceneryTile* tile = sceneryEntry->tiles;
                  tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)); tile++)
             {
                 CoordsXY tileLocation = { tile->x_offset, tile->y_offset };

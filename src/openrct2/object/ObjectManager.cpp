@@ -701,7 +701,7 @@ private:
             if (rideObject == nullptr)
                 continue;
 
-            const auto* entry = static_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+            const auto* entry = static_cast<RideObjectEntry*>(rideObject->GetLegacyData());
             if (entry == nullptr)
                 continue;
 

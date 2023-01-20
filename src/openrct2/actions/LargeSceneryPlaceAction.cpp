@@ -107,7 +107,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     }
 
     uint8_t tileNum = 0;
-    for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
+    for (LargeSceneryTile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 
@@ -243,7 +243,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     }
 
     uint8_t tileNum = 0;
-    for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
+    for (LargeSceneryTile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 
@@ -310,19 +310,19 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     return res;
 }
 
-int16_t LargeSceneryPlaceAction::GetTotalNumTiles(rct_large_scenery_tile* tiles) const
+int16_t LargeSceneryPlaceAction::GetTotalNumTiles(LargeSceneryTile* tiles) const
 {
     uint32_t totalNumTiles = 0;
-    for (rct_large_scenery_tile* tile = tiles; tile->x_offset != -1; tile++)
+    for (LargeSceneryTile* tile = tiles; tile->x_offset != -1; tile++)
     {
         totalNumTiles++;
     }
     return totalNumTiles;
 }
 
-bool LargeSceneryPlaceAction::CheckMapCapacity(rct_large_scenery_tile* tiles, int16_t numTiles) const
+bool LargeSceneryPlaceAction::CheckMapCapacity(LargeSceneryTile* tiles, int16_t numTiles) const
 {
-    for (rct_large_scenery_tile* tile = tiles; tile->x_offset != -1; tile++)
+    for (LargeSceneryTile* tile = tiles; tile->x_offset != -1; tile++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 
@@ -336,10 +336,10 @@ bool LargeSceneryPlaceAction::CheckMapCapacity(rct_large_scenery_tile* tiles, in
     return true;
 }
 
-int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(rct_large_scenery_tile* tiles) const
+int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(LargeSceneryTile* tiles) const
 {
     int16_t maxHeight = -1;
-    for (rct_large_scenery_tile* tile = tiles; tile->x_offset != -1; tile++)
+    for (LargeSceneryTile* tile = tiles; tile->x_offset != -1; tile++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 

@@ -118,7 +118,7 @@ private:
             }
         }
 
-        const rct_scenery_group_entry* GetSceneryGroupEntry() const
+        const SceneryGroupEntry* GetSceneryGroupEntry() const
         {
             return ::GetSceneryGroupEntry(SceneryGroupIndex);
         }

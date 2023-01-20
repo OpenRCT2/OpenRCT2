@@ -20,7 +20,7 @@
 #include "../Vehicle.h"
 
 static void PaintEnterpriseRiders(
-    PaintSession& session, const rct_ride_entry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
+    PaintSession& session, const RideObjectEntry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
     const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 0 })

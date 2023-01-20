@@ -40,7 +40,7 @@ static void PaintSpaceRingsStructure(
 
     if (ride.num_stations == 0 || vehicleIndex < ride.NumTrains)
     {
-        rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
+        RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
 
         int32_t frameNum = direction;
 

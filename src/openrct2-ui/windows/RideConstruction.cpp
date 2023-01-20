@@ -2291,7 +2291,7 @@ private:
         int32_t direction;
         TileElement* tileElement;
         CoordsXYE inputElement, outputElement;
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
 
         _currentTrackPrice = MONEY32_UNDEFINED;
         RideConstructionInvalidateCurrentTrack();
@@ -2889,7 +2889,7 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
             trackPos += CoordsDirectionDelta[trackDirection];
         }
 
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
         if (TrackBlockGetPreviousFromZero(trackPos, *ride, trackDirection, &trackBeginEnd))
         {
             _currentTrackBegin.x = trackBeginEnd.begin_x;

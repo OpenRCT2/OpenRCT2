@@ -34,13 +34,13 @@ protected:
     void TestEncodeDecode(uint8_t encoding_type)
     {
         // Encode
-        sawyercoding_chunk_header chdr_in;
+        SawyerCodingChunkHeader chdr_in;
         chdr_in.encoding = encoding_type;
         chdr_in.length = sizeof(randomdata);
         uint8_t* encodedDataBuffer = new uint8_t[BUFFER_SIZE];
         size_t encodedDataSize = SawyerCodingWriteChunkBuffer(
             encodedDataBuffer, reinterpret_cast<const uint8_t*>(randomdata), chdr_in);
-        ASSERT_GT(encodedDataSize, sizeof(sawyercoding_chunk_header));
+        ASSERT_GT(encodedDataSize, sizeof(SawyerCodingChunkHeader));
 
         // Decode
         OpenRCT2::MemoryStream ms(encodedDataBuffer, encodedDataSize);
@@ -56,8 +56,8 @@ protected:
 
     void TestDecode(const uint8_t* data, size_t size)
     {
-        auto expectedLength = size - sizeof(sawyercoding_chunk_header);
-        auto chdr_in = reinterpret_cast<const sawyercoding_chunk_header*>(data);
+        auto expectedLength = size - sizeof(SawyerCodingChunkHeader);
+        auto chdr_in = reinterpret_cast<const SawyerCodingChunkHeader*>(data);
         ASSERT_EQ(chdr_in->length, expectedLength);
 
         OpenRCT2::MemoryStream ms(data, size);

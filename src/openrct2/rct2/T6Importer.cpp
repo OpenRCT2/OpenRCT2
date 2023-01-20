@@ -222,7 +222,7 @@ namespace RCT2
                 auto rawObject = ObjectRepositoryLoadObject(&td->vehicle_object.Entry);
                 if (rawObject != nullptr)
                 {
-                    const auto* rideEntry = static_cast<const rct_ride_entry*>(
+                    const auto* rideEntry = static_cast<const RideObjectEntry*>(
                         static_cast<RideObject*>(rawObject.get())->GetLegacyData());
                     if (rideEntry != nullptr)
                     {

@@ -97,13 +97,13 @@ GameActions::Result RideCreateAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
+    VehicleColourPresetList* presetList = rideEntry->vehicle_preset_list;
     if ((presetList->count > 0 && presetList->count != 255) && _colour2 >= presetList->count)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
@@ -117,7 +117,7 @@ GameActions::Result RideCreateAction::Query() const
 
 GameActions::Result RideCreateAction::Execute() const
 {
-    rct_ride_entry* rideEntry;
+    RideObjectEntry* rideEntry;
     auto res = GameActions::Result();
 
     int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);

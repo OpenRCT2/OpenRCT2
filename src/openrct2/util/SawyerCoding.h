@@ -12,12 +12,12 @@
 #include "../common.h"
 
 #pragma pack(push, 1)
-struct sawyercoding_chunk_header
+struct SawyerCodingChunkHeader
 {
     uint8_t encoding;
     uint32_t length;
 };
-assert_struct_size(sawyercoding_chunk_header, 5);
+assert_struct_size(SawyerCodingChunkHeader, 5);
 #pragma pack(pop)
 
 enum
@@ -42,7 +42,7 @@ enum
 };
 
 uint32_t SawyerCodingCalculateChecksum(const uint8_t* buffer, size_t length);
-size_t SawyerCodingWriteChunkBuffer(uint8_t* dst_file, const uint8_t* src_buffer, sawyercoding_chunk_header chunkHeader);
+size_t SawyerCodingWriteChunkBuffer(uint8_t* dst_file, const uint8_t* src_buffer, SawyerCodingChunkHeader chunkHeader);
 size_t SawyerCodingDecodeSV4(const uint8_t* src, uint8_t* dst, size_t length, size_t bufferLength);
 size_t SawyerCodingDecodeSC4(const uint8_t* src, uint8_t* dst, size_t length, size_t bufferLength);
 size_t SawyerCodingEencodeSV4(const uint8_t* src, uint8_t* dst, size_t length);

@@ -361,7 +361,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
         {
             ride_ratings_score_close_proximity(state, tileElement);
 
-            track_begin_end trackBeginEnd;
+            TrackBeginEnd trackBeginEnd;
             if (!TrackBlockGetPrevious({ state.Proximity, tileElement }, &trackBeginEnd))
             {
                 state.State = RIDE_RATINGS_STATE_CALCULATE;
@@ -976,7 +976,7 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, const Ride& ri
  */
 static void ride_ratings_apply_adjustments(const Ride& ride, RatingTuple* ratings)
 {
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
 
     if (rideEntry == nullptr)
     {
@@ -1135,7 +1135,7 @@ static ShelteredEights get_num_of_sheltered_eighths(const Ride& ride)
     }
 
     uint8_t trackShelteredEighths = numShelteredEighths;
-    rct_ride_entry* rideType = GetRideEntryByIndex(ride.subtype);
+    RideObjectEntry* rideType = GetRideEntryByIndex(ride.subtype);
     if (rideType == nullptr)
     {
         return { 0, 0 };

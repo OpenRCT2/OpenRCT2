@@ -201,7 +201,7 @@ void ResearchFinishItem(ResearchItem* researchItem)
         // Ride
         auto base_ride_type = researchItem->baseRideType;
         ObjectEntryIndex rideEntryIndex = researchItem->entryIndex;
-        rct_ride_entry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
+        RideObjectEntry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
         if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
         {
@@ -233,7 +233,7 @@ void ResearchFinishItem(ResearchItem* researchItem)
             {
                 if (!seenRideEntry[i])
                 {
-                    rct_ride_entry* rideEntry2 = GetRideEntryByIndex(i);
+                    RideObjectEntry* rideEntry2 = GetRideEntryByIndex(i);
                     if (rideEntry2 != nullptr)
                     {
                         for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
@@ -284,7 +284,7 @@ void ResearchFinishItem(ResearchItem* researchItem)
     else
     {
         // Scenery
-        rct_scenery_group_entry* sceneryGroupEntry = GetSceneryGroupEntry(researchItem->entryIndex);
+        SceneryGroupEntry* sceneryGroupEntry = GetSceneryGroupEntry(researchItem->entryIndex);
         if (sceneryGroupEntry != nullptr)
         {
             SceneryGroupSetInvented(researchItem->entryIndex);
@@ -474,7 +474,7 @@ void ResearchPopulateListRandom()
     // Rides
     for (int32_t i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
-        rct_ride_entry* rideEntry = GetRideEntryByIndex(i);
+        RideObjectEntry* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry == nullptr)
         {
             continue;
@@ -494,7 +494,7 @@ void ResearchPopulateListRandom()
     // Scenery
     for (uint32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        rct_scenery_group_entry* sceneryGroupEntry = GetSceneryGroupEntry(i);
+        SceneryGroupEntry* sceneryGroupEntry = GetSceneryGroupEntry(i);
         if (sceneryGroupEntry == nullptr)
         {
             continue;
@@ -519,7 +519,7 @@ bool ResearchInsertRideEntry(ride_type_t rideType, ObjectEntryIndex entryIndex, 
 
 void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched)
 {
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
     if (rideEntry == nullptr)
         return;
 
@@ -649,7 +649,7 @@ void SetAllSceneryGroupsNotInvented()
 {
     for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
     {
-        rct_scenery_group_entry* scenery_set = GetSceneryGroupEntry(i);
+        SceneryGroupEntry* scenery_set = GetSceneryGroupEntry(i);
         if (scenery_set == nullptr)
         {
             continue;
@@ -706,7 +706,7 @@ StringId ResearchItem::GetName() const
 {
     if (type == Research::EntryType::Ride)
     {
-        rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
+        RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
         if (rideEntry == nullptr)
         {
             return STR_EMPTY;
@@ -715,7 +715,7 @@ StringId ResearchItem::GetName() const
         return rideEntry->naming.Name;
     }
 
-    rct_scenery_group_entry* sceneryEntry = GetSceneryGroupEntry(entryIndex);
+    SceneryGroupEntry* sceneryEntry = GetSceneryGroupEntry(entryIndex);
     if (sceneryEntry == nullptr)
     {
         return STR_EMPTY;

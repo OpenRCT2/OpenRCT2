@@ -20,8 +20,8 @@
 class RideObject final : public Object
 {
 private:
-    rct_ride_entry _legacyType = {};
-    vehicle_colour_preset_list _presetColours = {};
+    RideObjectEntry _legacyType = {};
+    VehicleColourPresetList _presetColours = {};
     std::vector<int8_t> _peepLoadingPositions[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
     std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
 
@@ -52,7 +52,7 @@ private:
     void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
     std::vector<CarEntry> ReadJsonCars([[maybe_unused]] IReadObjectContext* context, json_t& jCars);
     CarEntry ReadJsonCar([[maybe_unused]] IReadObjectContext* context, json_t& jCar);
-    vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
+    VehicleColourPresetList ReadJsonCarColours(json_t& jCarColours);
     std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
 
     static uint8_t CalculateNumVerticalFrames(const CarEntry& carEntry);

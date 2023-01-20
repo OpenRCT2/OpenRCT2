@@ -115,7 +115,7 @@ static int32_t ScenarioIndexEntryCompareByIndex(const scenario_index_entry& entr
     }
 }
 
-static void ScenarioHighscoreFree(scenario_highscore_entry* highscore)
+static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 {
     SafeFree(highscore->fileName);
     SafeFree(highscore->name);
@@ -301,7 +301,7 @@ private:
         String::Set(entry.details, sizeof(entry.details), s6Info->details);
 
         // Look up and store information regarding the origins of this scenario.
-        source_desc desc;
+        SourceDescriptor desc;
         if (ScenarioSources::TryGetByName(entry.name, &desc))
         {
             entry.sc_id = desc.id;
@@ -336,7 +336,7 @@ private:
     std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
     std::vector<scenario_index_entry> _scenarios;
-    std::vector<scenario_highscore_entry*> _highscores;
+    std::vector<ScenarioHighscoreEntry*> _highscores;
 
 public:
     explicit ScenarioRepository(const std::shared_ptr<IPlatformEnvironment>& env)
@@ -458,7 +458,7 @@ public:
         if (scenario != nullptr)
         {
             // Check if record company value has been broken or the highscore is the same but no name is registered
-            scenario_highscore_entry* highscore = scenario->highscore;
+            ScenarioHighscoreEntry* highscore = scenario->highscore;
             if (highscore == nullptr || companyValue > highscore->company_value
                 || (String::IsNullOrEmpty(highscore->name) && companyValue == highscore->company_value))
             {
@@ -617,7 +617,7 @@ private:
             uint32_t numHighscores = fs.ReadValue<uint32_t>();
             for (uint32_t i = 0; i < numHighscores; i++)
             {
-                scenario_highscore_entry* highscore = InsertHighscore();
+                ScenarioHighscoreEntry* highscore = InsertHighscore();
                 highscore->fileName = fs.ReadString();
                 highscore->name = fs.ReadString();
                 highscore->company_value = fileVersion == 1 ? fs.ReadValue<money32>() : fs.ReadValue<money64>();
@@ -690,7 +690,7 @@ private:
                     }
                     if (notFound)
                     {
-                        scenario_highscore_entry* highscore = InsertHighscore();
+                        ScenarioHighscoreEntry* highscore = InsertHighscore();
                         highscore->fileName = String::Duplicate(scBasic.Path);
                         std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                         highscore->name = String::Duplicate(name.c_str());
@@ -720,10 +720,10 @@ private:
         _highscores.clear();
     }
 
-    scenario_highscore_entry* InsertHighscore()
+    ScenarioHighscoreEntry* InsertHighscore()
     {
-        auto highscore = new scenario_highscore_entry();
-        std::memset(highscore, 0, sizeof(scenario_highscore_entry));
+        auto highscore = new ScenarioHighscoreEntry();
+        std::memset(highscore, 0, sizeof(ScenarioHighscoreEntry));
         _highscores.push_back(highscore);
         return highscore;
     }
@@ -750,7 +750,7 @@ private:
             fs.WriteValue<uint32_t>(static_cast<uint32_t>(_highscores.size()));
             for (size_t i = 0; i < _highscores.size(); i++)
             {
-                const scenario_highscore_entry* highscore = _highscores[i];
+                const ScenarioHighscoreEntry* highscore = _highscores[i];
                 fs.WriteString(highscore->fileName);
                 fs.WriteString(highscore->name);
                 fs.WriteValue(highscore->company_value);

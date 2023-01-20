@@ -28,7 +28,7 @@ void SawyerChunkWriter::WriteChunk(const SawyerChunk* chunk)
 
 void SawyerChunkWriter::WriteChunk(const void* src, size_t length, SAWYER_ENCODING encoding)
 {
-    sawyercoding_chunk_header header;
+    SawyerCodingChunkHeader header;
     header.encoding = static_cast<uint8_t>(encoding);
     header.length = static_cast<uint32_t>(length);
 

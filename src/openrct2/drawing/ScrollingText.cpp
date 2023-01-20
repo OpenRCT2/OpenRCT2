@@ -26,7 +26,7 @@
 
 using namespace OpenRCT2;
 
-struct rct_draw_scroll_text
+struct DrawScrollText
 {
     StringId string_id;
     uint8_t string_args[32];
@@ -37,7 +37,7 @@ struct rct_draw_scroll_text
     uint8_t bitmap[64 * 40];
 };
 
-static rct_draw_scroll_text _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
+static DrawScrollText _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
 static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
@@ -127,7 +127,7 @@ static int32_t ScrollingTextGetMatchingOrOldest(
     int32_t scrollIndex = -1;
     for (size_t i = 0; i < std::size(_drawScrollTextList); i++)
     {
-        rct_draw_scroll_text* scrollText = &_drawScrollTextList[i];
+        DrawScrollText* scrollText = &_drawScrollTextList[i];
         if (oldestId >= scrollText->id)
         {
             oldestId = scrollText->id;
@@ -146,7 +146,7 @@ static int32_t ScrollingTextGetMatchingOrOldest(
     return scrollIndex;
 }
 
-static void ScrollingTextFormat(utf8* dst, size_t size, rct_draw_scroll_text* scrollText)
+static void ScrollingTextFormat(utf8* dst, size_t size, DrawScrollText* scrollText)
 {
     if (gConfigGeneral.UpperCaseBanners)
     {

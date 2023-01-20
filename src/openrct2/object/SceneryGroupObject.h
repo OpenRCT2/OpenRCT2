@@ -21,7 +21,7 @@ enum class EntertainerCostume : uint8_t;
 class SceneryGroupObject final : public Object
 {
 private:
-    rct_scenery_group_entry _legacyType = {};
+    SceneryGroupEntry _legacyType = {};
     std::vector<ObjectEntryDescriptor> _items;
 
 public:

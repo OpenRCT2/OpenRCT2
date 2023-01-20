@@ -310,7 +310,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
-            track_begin_end output;
+            TrackBeginEnd output;
 
             if (!TrackBlockGetPrevious(input, &output))
                 return false;

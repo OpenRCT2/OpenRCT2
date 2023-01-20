@@ -23,7 +23,7 @@
 static void PaintTwistStructure(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
     Vehicle* vehicle = nullptr;
 
     if (rideEntry == nullptr)

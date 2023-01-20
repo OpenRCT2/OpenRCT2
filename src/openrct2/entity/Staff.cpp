@@ -2306,7 +2306,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
         }
 
         Direction stationDirection = 0;
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
         while (TrackBlockGetPrevious(input, &trackBeginEnd))
         {
             if (trackBeginEnd.begin_element->AsTrack()->IsStation())
