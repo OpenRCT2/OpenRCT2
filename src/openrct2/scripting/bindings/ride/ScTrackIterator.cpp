@@ -80,7 +80,7 @@ DukValue ScTrackIterator::previousPosition_get() const
         return ToDuk(ctx, nullptr);
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
-    track_begin_end tbe{};
+    TrackBeginEnd tbe{};
     TrackBlockGetPrevious(posEl, &tbe);
     CoordsXYZD result(tbe.end_x, tbe.end_y, tbe.begin_z, tbe.begin_direction);
     return ToDuk(ctx, result);
@@ -119,7 +119,7 @@ bool ScTrackIterator::previous()
         return false;
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
-    track_begin_end tbe{};
+    TrackBeginEnd tbe{};
     if (TrackBlockGetPrevious(posEl, &tbe))
     {
         auto prev = CoordsXYE(tbe.end_x, tbe.end_y, tbe.begin_element);

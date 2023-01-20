@@ -21,7 +21,7 @@
 
 namespace RCT2
 {
-    ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry& rideEntry)
+    ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const RideObjectEntry& rideEntry)
     {
         switch (rct2RideType)
         {

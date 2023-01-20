@@ -207,7 +207,7 @@ namespace RCT1
         {
             *dst = {};
 
-            source_desc desc;
+            SourceDescriptor desc;
             // If no entry is found, this is a custom scenario.
             bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
@@ -806,7 +806,7 @@ namespace RCT1
                 dst->subtype = _rideTypeToRideEntryMap[EnumValue(src->Type)];
             }
 
-            rct_ride_entry* rideEntry = GetRideEntryByIndex(dst->subtype);
+            RideObjectEntry* rideEntry = GetRideEntryByIndex(dst->subtype);
             // This can happen with hacked parks
             if (rideEntry == nullptr)
             {
@@ -2229,7 +2229,7 @@ namespace RCT1
 
                 if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
                 {
-                    rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
+                    RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
 
                     if (rideEntry != nullptr)
                     {
@@ -2248,7 +2248,7 @@ namespace RCT1
 
                 if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
                 {
-                    rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
+                    RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
 
                     if (rideEntry != nullptr)
                     {
@@ -2300,7 +2300,7 @@ namespace RCT1
             int32_t scNumber = _s4.ScenarioSlotIndex;
             if (scNumber != -1)
             {
-                source_desc sourceDesc;
+                SourceDescriptor sourceDesc;
                 if (ScenarioSources::TryGetById(scNumber, &sourceDesc))
                 {
                     StringId localisedStringIds[3];

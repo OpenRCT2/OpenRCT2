@@ -18,7 +18,7 @@
 #include <tuple>
 #include <vector>
 
-struct rct_ride_entry;
+struct RideObjectEntry;
 class ObjectList;
 enum class EditorStep : uint8_t;
 
@@ -1031,7 +1031,7 @@ namespace RCT2
     assert_struct_size(StexEntry, 7);
 #pragma pack(pop)
 
-    ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry& rideEntry);
+    ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const RideObjectEntry& rideEntry);
     bool RCT2TrackTypeIsBooster(ride_type_t rideType, uint16_t trackType);
     bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
     uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);

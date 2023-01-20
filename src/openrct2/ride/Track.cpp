@@ -414,7 +414,7 @@ void TrackCircuitIteratorBegin(track_circuit_iterator* it, CoordsXYE first)
 
 bool TrackCircuitIteratorPrevious(track_circuit_iterator* it)
 {
-    track_begin_end trackBeginEnd;
+    TrackBeginEnd trackBeginEnd;
 
     if (it->first == nullptr)
     {
@@ -485,7 +485,7 @@ bool TrackCircuitIteratorsMatch(const track_circuit_iterator* firstIt, const tra
 void TrackGetBack(const CoordsXYE& input, CoordsXYE* output)
 {
     CoordsXYE lastTrack;
-    track_begin_end currentTrack;
+    TrackBeginEnd currentTrack;
     bool result;
 
     lastTrack = input;

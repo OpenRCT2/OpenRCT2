@@ -94,7 +94,7 @@ using namespace OpenRCT2::TrackMetaData;
 static int32_t ride_check_if_construction_allowed(Ride& ride)
 {
     Formatter ft;
-    rct_ride_entry* rideEntry = ride.GetRideEntry();
+    RideObjectEntry* rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
     {
         ContextShowError(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE, ft);
@@ -630,7 +630,7 @@ void RideConstructionSetDefaultNextPiece()
     const auto& rtd = ride->GetRideTypeDescriptor();
 
     int32_t z, direction, trackType, curve, bank, slope;
-    track_begin_end trackBeginEnd;
+    TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -834,7 +834,7 @@ void RideSelectPreviousSection()
         // Invalidate previous track piece (we may not be changing height!)
         VirtualFloorInvalidate();
 
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
         if (TrackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
         {
             _currentTrackBegin.x = trackBeginEnd.begin_x;
@@ -1590,7 +1590,7 @@ bool RideSelectBackwardsFromFront()
     if (ride != nullptr)
     {
         RideConstructionInvalidateCurrentTrack();
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
         if (TrackBlockGetPreviousFromZero(_currentTrackBegin, *ride, _currentTrackPieceDirection, &trackBeginEnd))
         {
             _rideConstructionState = RideConstructionState::Selected;

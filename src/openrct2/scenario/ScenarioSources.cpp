@@ -358,7 +358,7 @@ namespace ScenarioSources
 
 #pragma endregion
 
-    bool TryGetByName(const utf8* name, source_desc* outDesc)
+    bool TryGetByName(const utf8* name, SourceDescriptor* outDesc)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
@@ -389,7 +389,7 @@ namespace ScenarioSources
         return false;
     }
 
-    bool TryGetById(uint8_t id, source_desc* outDesc)
+    bool TryGetById(uint8_t id, SourceDescriptor* outDesc)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 

@@ -59,7 +59,7 @@ static void PaintTopSpinRiders(
 }
 
 static void PaintTopSpinSeat(
-    PaintSession& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle* vehicle, Direction direction,
+    PaintSession& session, const Ride& ride, const RideObjectEntry& rideEntry, const Vehicle* vehicle, Direction direction,
     uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (armRotation >= std::size(TopSpinSeatHeightOffset))

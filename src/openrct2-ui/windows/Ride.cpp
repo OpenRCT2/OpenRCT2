@@ -858,7 +858,7 @@ struct VehicleTypeLabel
 };
 
 static int32_t VehicleDropdownDataLanguage = LANGUAGE_UNDEFINED;
-static rct_ride_entry* VehicleDropdownRideType = nullptr;
+static RideObjectEntry* VehicleDropdownRideType = nullptr;
 static bool VehicleDropdownExpanded = false;
 static std::vector<VehicleTypeLabel> VehicleDropdownData;
 
@@ -1073,7 +1073,7 @@ static void WindowRideDisableTabs(rct_window* w)
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
         disabled_tabs |= (1uLL << WIDX_TAB_4 | 1uLL << WIDX_TAB_6 | 1uLL << WIDX_TAB_9 | 1uLL << WIDX_TAB_10); // 0x3280
 
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride->subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride->subtype);
 
     if (rideEntry == nullptr)
     {
@@ -1516,7 +1516,7 @@ static void WindowRideInitViewport(rct_window* w)
     if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->NumTrains && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
         auto vehId = ride->vehicles[viewSelectionIndex];
-        rct_ride_entry* ride_entry = ride->GetRideEntry();
+        RideObjectEntry* ride_entry = ride->GetRideEntry();
         if (ride_entry != nullptr && ride_entry->TabCar != 0)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(vehId);
@@ -1989,7 +1989,7 @@ static void WindowRideMainFollowRide(rct_window* w)
 static void PopulateVehicleTypeDropdown(const Ride& ride, bool forceRefresh)
 {
     auto& objManager = GetContext()->GetObjectManager();
-    rct_ride_entry* rideEntry = ride.GetRideEntry();
+    RideObjectEntry* rideEntry = ride.GetRideEntry();
 
     bool selectionShouldBeExpanded;
     int32_t rideTypeIterator, rideTypeIteratorMax;
@@ -2777,7 +2777,7 @@ static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const Widget
 static void WindowRideVehicleInvalidate(rct_window* w)
 {
     Widget* widgets;
-    rct_ride_entry* rideEntry;
+    RideObjectEntry* rideEntry;
     StringId stringId;
     int32_t carsPerTrain;
 
@@ -2949,7 +2949,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, DrawPixelInfo* dpi, int3
     if (ride == nullptr)
         return;
 
-    rct_ride_entry* rideEntry = ride->GetRideEntry();
+    RideObjectEntry* rideEntry = ride->GetRideEntry();
 
     // Background
     GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, PALETTE_INDEX_12);

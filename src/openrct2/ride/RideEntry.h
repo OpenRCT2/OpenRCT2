@@ -28,13 +28,13 @@ struct RideNaming
     StringId Description;
 };
 
-struct track_colour_preset_list
+struct TrackColourPresetList
 {
     uint8_t count;
     TrackColour list[256];
 };
 
-struct vehicle_colour_preset_list
+struct VehicleColourPresetList
 {
     uint8_t count;
     VehicleColour list[256];
@@ -43,7 +43,7 @@ struct vehicle_colour_preset_list
 /**
  * Ride type structure.
  */
-struct rct_ride_entry
+struct RideObjectEntry
 {
     RideNaming naming;
     // The first three images are previews. They correspond to the ride_type[] array.
@@ -65,7 +65,7 @@ struct rct_ride_entry
     uint8_t ThirdCar;
     uint8_t BuildMenuPriority;
     CarEntry Cars[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
-    vehicle_colour_preset_list* vehicle_preset_list;
+    VehicleColourPresetList* vehicle_preset_list;
     int8_t excitement_multiplier;
     int8_t intensity_multiplier;
     int8_t nausea_multiplier;
@@ -100,4 +100,4 @@ struct rct_ride_entry
     }
 };
 
-RideNaming GetRideNaming(const ride_type_t rideType, const rct_ride_entry& rideEntry);
+RideNaming GetRideNaming(const ride_type_t rideType, const RideObjectEntry& rideEntry);

@@ -110,7 +110,7 @@ struct RideHeights
     uint8_t PlatformHeight;
 };
 
-struct rct_ride_lift_data
+struct RideLiftData
 {
     OpenRCT2::Audio::SoundId sound_id;
     uint8_t minimum_speed;
@@ -202,7 +202,7 @@ struct RideTypeDescriptor
     RideHeights Heights;
     uint8_t MaxMass;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
-    rct_ride_lift_data LiftData;
+    RideLiftData LiftData;
     // rct2: 0x0097E050
     ride_ratings_calculation RatingsCalculationFunction;
     // rct2: 0x0097CD1E
@@ -216,7 +216,7 @@ struct RideTypeDescriptor
     ShopItemIndex PhotoItem;
     /** rct2: 0x0097D21E */
     uint8_t BonusValue;
-    track_colour_preset_list ColourPresets;
+    TrackColourPresetList ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
 

@@ -521,7 +521,7 @@ private:
 
         // Encode data
         ObjectType objectType = entry->GetType();
-        sawyercoding_chunk_header chunkHeader;
+        SawyerCodingChunkHeader chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[EnumValue(objectType)];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);

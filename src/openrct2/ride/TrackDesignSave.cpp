@@ -146,7 +146,7 @@ bool TrackDesignSaveContainsTileElement(const TileElement* tileElement)
 static int32_t tile_element_get_total_element_count(TileElement* tileElement)
 {
     int32_t elementCount;
-    rct_large_scenery_tile* tile;
+    LargeSceneryTile* tile;
 
     switch (tileElement->GetType())
     {

@@ -1764,7 +1764,7 @@ SmallSceneryElement* MapGetSmallSceneryElementAt(const CoordsXYZ& sceneryCoords,
 std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
     const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement)
 {
-    rct_large_scenery_tile* tile;
+    LargeSceneryTile* tile;
 
     auto tileElement = MapGetLargeScenerySegment(sceneryPos, sequence);
     if (tileElement == nullptr)
@@ -1790,7 +1790,7 @@ std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
 bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
-    rct_large_scenery_tile *sceneryTiles, *tile;
+    LargeSceneryTile *sceneryTiles, *tile;
 
     auto sceneryOrigin = MapLargeSceneryGetOrigin(signPos, sequence, &tileElement);
     if (!sceneryOrigin)

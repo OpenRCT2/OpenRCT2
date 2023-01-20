@@ -551,7 +551,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                     break;
 
                 auto sequence = largeSceneryElement->GetSequenceIndex();
-                const rct_large_scenery_tile& tile = sceneryEntry->tiles[sequence];
+                const LargeSceneryTile& tile = sceneryEntry->tiles[sequence];
 
                 int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                 if (!(tile.flags & (1 << direction)))
