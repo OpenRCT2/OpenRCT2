@@ -17,7 +17,7 @@
 #include <iterator>
 
 // clang-format off
-static constexpr TrackCoordinates TrackCoordinates[TrackElemType::Count] = {
+static constexpr TrackCoordinates _trackCoordinates[TrackElemType::Count] = {
         { 0, 0, 0, 0, 0, 0 },       // ELEM_FLAT
         { 0, 0, 0, 0, 0, 0 },       // ELEM_END_STATION
         { 0, 0, 0, 0, 0, 0 },       // ELEM_BEGIN_STATION
@@ -7157,7 +7157,7 @@ namespace OpenRCT2
                 desc.Description = RideConfigurationStringIds[i];
                 desc.AlternativeType = AlternativeTrackTypes[i];
                 desc.Block = const_cast<PreviewTrack*>(TrackBlocks[i]);
-                desc.Coordinates = TrackCoordinates[i];
+                desc.Coordinates = _trackCoordinates[i];
                 desc.CurveChain = gTrackCurveChain[i];
                 desc.Flags = TrackFlags[i];
                 desc.HeightMarkerPositions = TrackHeightMarkerPositions[i];
