@@ -625,7 +625,7 @@ private:
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+                    WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
                         ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
@@ -692,7 +692,7 @@ private:
 
     void GuestFollow()
     {
-        rct_window* main = WindowGetMain();
+        WindowBase* main = WindowGetMain();
         WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
@@ -1908,7 +1908,7 @@ private:
  *  rct2: 0x006989E9
  *
  */
-rct_window* WindowGuestOpen(Peep* peep)
+WindowBase* WindowGuestOpen(Peep* peep)
 {
     if (peep == nullptr)
     {

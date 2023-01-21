@@ -19,7 +19,7 @@
 
 namespace OpenRCT2::Scripting
 {
-    template<> inline DukValue ToDuk(duk_context* ctx, const rct_vehicle_info& value)
+    template<> inline DukValue ToDuk(duk_context* ctx, const VehicleInfo& value)
     {
         DukObject dukSubposition(ctx);
         dukSubposition.Set("x", value.x);

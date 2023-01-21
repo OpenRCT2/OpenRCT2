@@ -371,7 +371,7 @@ public:
     }
 };
 
-rct_window* WindowNewCampaignOpen(int16_t campaignType)
+WindowBase* WindowNewCampaignOpen(int16_t campaignType)
 {
     auto w = static_cast<NewCampaignWindow*>(WindowBringToFrontByClass(WindowClass::NewCampaign));
     if (w != nullptr)

@@ -444,7 +444,7 @@ private:
 
             // Follow a single track piece shape
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const rct_preview_track* trackBlock = ted.Block;
+            const PreviewTrack* trackBlock = ted.Block;
             while (trackBlock->index != 255)
             {
                 auto rotatedAndOffsetTrackBlock = curTrackStart
@@ -489,7 +489,7 @@ private:
             // Change rotation and next position based on track curvature
             curTrackRotation &= 3;
 
-            const rct_track_coordinates* track_coordinate = &ted.Coordinates;
+            const TrackCoordinates* track_coordinate = &ted.Coordinates;
 
             curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
             curTrackRotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
@@ -612,7 +612,7 @@ private:
     }
 };
 
-rct_window* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
+WindowBase* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
 {
     std::unique_ptr<TrackDesign> openTrackDesign = TrackDesignImport(tdFileRef->path.c_str());
 

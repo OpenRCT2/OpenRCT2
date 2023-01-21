@@ -29,10 +29,10 @@ struct RCTObjectEntry;
  * Window structure
  * size: 0x4C0
  */
-struct rct_window
+struct WindowBase
 {
     WindowEventList* event_handlers{};
-    rct_viewport* viewport{};
+    Viewport* viewport{};
     uint64_t disabled_widgets{};
     uint64_t pressed_widgets{};
     uint64_t hold_down_widgets{};
@@ -50,18 +50,18 @@ struct rct_window
         RideId rideId;
     };
     uint16_t flags{};
-    rct_scroll scrolls[3];
+    ScrollBar scrolls[3];
     uint32_t list_item_positions[1024]{};
     uint16_t no_list_items{};     // 0 for no items
     int16_t selected_list_item{}; // -1 for none selected
     std::optional<Focus> focus;
     union
     {
-        campaign_variables campaign;
-        new_ride_variables new_ride;
-        ride_variables ride;
-        track_list_variables track_list;
-        error_variables error;
+        CampaignVariables campaign;
+        NewRideVariables new_ride;
+        RideVariables ride;
+        TrackListVariables track_list;
+        ErrorVariables error;
         void* custom_info;
     };
     union
@@ -101,11 +101,11 @@ struct rct_window
     void Invalidate();
     void RemoveViewport();
 
-    rct_window() = default;
-    rct_window(rct_window&) = delete;
-    virtual ~rct_window() = default;
+    WindowBase() = default;
+    WindowBase(WindowBase&) = delete;
+    virtual ~WindowBase() = default;
 
-    rct_window& operator=(const rct_window&) = delete;
+    WindowBase& operator=(const WindowBase&) = delete;
 
     virtual bool IsLegacy()
     {
@@ -207,4 +207,4 @@ struct rct_window
 #endif
 
 // rct2: 0x01420078
-extern std::list<std::shared_ptr<rct_window>> g_window_list;
+extern std::list<std::shared_ptr<WindowBase>> g_window_list;

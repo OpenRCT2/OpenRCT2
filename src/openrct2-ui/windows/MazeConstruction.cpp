@@ -428,7 +428,7 @@ private:
     }
 };
 
-rct_window* WindowMazeConstructionOpen()
+WindowBase* WindowMazeConstructionOpen()
 {
     return WindowFocusOrCreate<MazeConstructionWindow>(
         WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
@@ -436,7 +436,7 @@ rct_window* WindowMazeConstructionOpen()
 
 void WindowMazeConstructionUpdatePressedWidgets()
 {
-    rct_window* w;
+    WindowBase* w;
 
     w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr)

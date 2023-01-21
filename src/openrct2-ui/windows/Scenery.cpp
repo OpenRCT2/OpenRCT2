@@ -341,7 +341,7 @@ public:
     void OnUpdate() override
     {
         const CursorState* state = ContextGetCursorState();
-        rct_window* other = WindowFindFromPoint(state->position);
+        WindowBase* other = WindowFindFromPoint(state->position);
         if (other == this)
         {
             ScreenCoordsXY window = state->position - ScreenCoordsXY{ windowPos.x - 26, windowPos.y };
@@ -1347,7 +1347,7 @@ private:
     }
 };
 
-rct_window* WindowSceneryOpen()
+WindowBase* WindowSceneryOpen()
 {
     auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
     if (w == nullptr)

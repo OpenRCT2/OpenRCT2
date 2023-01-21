@@ -209,7 +209,7 @@ namespace OpenRCT2::Scripting
 
 } // namespace OpenRCT2::Scripting
 
-CustomListView::CustomListView(rct_window* parent, size_t scrollIndex)
+CustomListView::CustomListView(WindowBase* parent, size_t scrollIndex)
     : ParentWindow(parent)
     , ScrollIndex(scrollIndex)
 {
@@ -549,7 +549,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
     }
 }
 
-void CustomListView::Paint(rct_window* w, DrawPixelInfo* dpi, const rct_scroll* scroll) const
+void CustomListView::Paint(WindowBase* w, DrawPixelInfo* dpi, const ScrollBar* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
     GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, paletteIndex);
@@ -665,7 +665,7 @@ void CustomListView::Paint(rct_window* w, DrawPixelInfo* dpi, const rct_scroll* 
 }
 
 void CustomListView::PaintHeading(
-    rct_window* w, DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
+    WindowBase* w, DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
     ColumnSortOrder sortOrder, bool isPressed) const
 {
     auto boxFlags = 0;

@@ -955,7 +955,7 @@ private:
     }
 };
 
-rct_window* WindowGuestListOpen()
+WindowBase* WindowGuestListOpen()
 {
     auto* window = WindowBringToFrontByClass(WindowClass::GuestList);
     if (window == nullptr)
@@ -968,7 +968,7 @@ rct_window* WindowGuestListOpen()
 /**
  * @param index The number of the ride or index of the thought
  */
-rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index)
+WindowBase* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index)
 {
     auto* w = static_cast<GuestListWindow*>(WindowGuestListOpen());
     if (w != nullptr)

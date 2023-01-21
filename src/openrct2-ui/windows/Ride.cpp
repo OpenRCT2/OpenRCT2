@@ -429,107 +429,107 @@ static constexpr const uint64_t window_ride_page_hold_down_widgets[] = {
 
 #pragma region Events
 
-static void WindowRideInitViewport(rct_window* w);
+static void WindowRideInitViewport(WindowBase* w);
 
-static void WindowRideMainMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideMainResize(rct_window* w);
-static void WindowRideMainMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowRideMainDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowRideMainUpdate(rct_window* w);
-static void WindowRideMainTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
-static void WindowRideMainViewportRotate(rct_window* w);
-static void WindowRideMainInvalidate(rct_window* w);
-static void WindowRideMainPaint(rct_window* w, DrawPixelInfo* dpi);
-static void WindowRideMainFollowRide(rct_window* w);
+static void WindowRideMainMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideMainResize(WindowBase* w);
+static void WindowRideMainMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowRideMainDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowRideMainUpdate(WindowBase* w);
+static void WindowRideMainTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text);
+static void WindowRideMainViewportRotate(WindowBase* w);
+static void WindowRideMainInvalidate(WindowBase* w);
+static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideMainFollowRide(WindowBase* w);
 
-static void WindowRideVehicleMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideVehicleResize(rct_window* w);
-static void WindowRideVehicleMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowRideVehicleDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowRideVehicleUpdate(rct_window* w);
-static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const WidgetIndex widgetIndex, StringId fallback);
-static void WindowRideVehicleInvalidate(rct_window* w);
-static void WindowRideVehiclePaint(rct_window* w, DrawPixelInfo* dpi);
-static void WindowRideVehicleScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex);
+static void WindowRideVehicleMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideVehicleResize(WindowBase* w);
+static void WindowRideVehicleMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowRideVehicleDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowRideVehicleUpdate(WindowBase* w);
+static OpenRCT2String WindowRideVehicleTooltip(WindowBase* const w, const WidgetIndex widgetIndex, StringId fallback);
+static void WindowRideVehicleInvalidate(WindowBase* w);
+static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex);
 
-static void WindowRideOperatingMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideOperatingResize(rct_window* w);
-static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowRideOperatingLengthWindow(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride);
-static void WindowRideOperatingDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowRideOperatingUpdate(rct_window* w);
-static void WindowRideOperatingTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
-static void WindowRideOperatingInvalidate(rct_window* w);
-static void WindowRideOperatingPaint(rct_window* w, DrawPixelInfo* dpi);
+static void WindowRideOperatingMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideOperatingResize(WindowBase* w);
+static void WindowRideOperatingMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowRideOperatingLengthWindow(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideOperatingTweakTextInput(WindowBase* w, const Ride& ride);
+static void WindowRideOperatingDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowRideOperatingUpdate(WindowBase* w);
+static void WindowRideOperatingTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text);
+static void WindowRideOperatingInvalidate(WindowBase* w);
+static void WindowRideOperatingPaint(WindowBase* w, DrawPixelInfo* dpi);
 
-static void WindowRideMaintenanceMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideMaintenanceResize(rct_window* w);
-static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowRideMaintenanceDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowRideMaintenanceUpdate(rct_window* w);
-static void WindowRideMaintenanceInvalidate(rct_window* w);
-static void WindowRideMaintenancePaint(rct_window* w, DrawPixelInfo* dpi);
+static void WindowRideMaintenanceMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideMaintenanceResize(WindowBase* w);
+static void WindowRideMaintenanceMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowRideMaintenanceDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowRideMaintenanceUpdate(WindowBase* w);
+static void WindowRideMaintenanceInvalidate(WindowBase* w);
+static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi);
 
-static void WindowRideColourClose(rct_window* w);
-static void WindowRideColourMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideColourResize(rct_window* w);
-static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowRideColourDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowRideColourUpdate(rct_window* w);
-static void WindowRideColourTooldown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowRideColourTooldrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowRideColourInvalidate(rct_window* w);
-static void WindowRideColourPaint(rct_window* w, DrawPixelInfo* dpi);
-static void WindowRideColourScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex);
+static void WindowRideColourClose(WindowBase* w);
+static void WindowRideColourMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideColourResize(WindowBase* w);
+static void WindowRideColourMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowRideColourDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowRideColourUpdate(WindowBase* w);
+static void WindowRideColourTooldown(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowRideColourTooldrag(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowRideColourInvalidate(WindowBase* w);
+static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideColourScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex);
 
-static void WindowRideMusicMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideMusicResize(rct_window* w);
-static void WindowRideMusicMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowRideMusicDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowRideMusicUpdate(rct_window* w);
-static void WindowRideMusicInvalidate(rct_window* w);
-static void WindowRideMusicPaint(rct_window* w, DrawPixelInfo* dpi);
+static void WindowRideMusicMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideMusicResize(WindowBase* w);
+static void WindowRideMusicMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowRideMusicDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowRideMusicUpdate(WindowBase* w);
+static void WindowRideMusicInvalidate(WindowBase* w);
+static void WindowRideMusicPaint(WindowBase* w, DrawPixelInfo* dpi);
 
-static void WindowRideMeasurementsClose(rct_window* w);
-static void WindowRideMeasurementsMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideMeasurementsResize(rct_window* w);
-static void WindowRideMeasurementsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowRideMeasurementsDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowRideMeasurementsUpdate(rct_window* w);
-static void WindowRideMeasurementsTooldown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowRideMeasurementsTooldrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowRideMeasurementsToolabort(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideMeasurementsInvalidate(rct_window* w);
-static void WindowRideMeasurementsPaint(rct_window* w, DrawPixelInfo* dpi);
+static void WindowRideMeasurementsClose(WindowBase* w);
+static void WindowRideMeasurementsMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideMeasurementsResize(WindowBase* w);
+static void WindowRideMeasurementsMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowRideMeasurementsDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowRideMeasurementsUpdate(WindowBase* w);
+static void WindowRideMeasurementsTooldown(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowRideMeasurementsTooldrag(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowRideMeasurementsToolabort(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideMeasurementsInvalidate(WindowBase* w);
+static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi);
 
-static void WindowRideGraphsMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideGraphsResize(rct_window* w);
-static void WindowRideGraphsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowRideGraphsUpdate(rct_window* w);
-static void WindowRideGraphsScrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
-static void WindowRideGraphs15(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
-static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback);
-static void WindowRideGraphsInvalidate(rct_window* w);
-static void WindowRideGraphsPaint(rct_window* w, DrawPixelInfo* dpi);
-static void WindowRideGraphsScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex);
+static void WindowRideGraphsMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideGraphsResize(WindowBase* w);
+static void WindowRideGraphsMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowRideGraphsUpdate(WindowBase* w);
+static void WindowRideGraphsScrollgetheight(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void WindowRideGraphs15(WindowBase* w, int32_t scrollIndex, int32_t scrollAreaType);
+static OpenRCT2String WindowRideGraphsTooltip(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback);
+static void WindowRideGraphsInvalidate(WindowBase* w);
+static void WindowRideGraphsPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex);
 
-static void WindowRideIncomeMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideIncomeResize(rct_window* w);
-static void WindowRideIncomeMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowRideIncomeUpdate(rct_window* w);
-static void WindowRideIncomeTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
-static void WindowRideIncomeInvalidate(rct_window* w);
-static void WindowRideIncomePaint(rct_window* w, DrawPixelInfo* dpi);
-static bool WindowRideIncomeCanModifyPrimaryPrice(rct_window* w);
+static void WindowRideIncomeMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideIncomeResize(WindowBase* w);
+static void WindowRideIncomeMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowRideIncomeUpdate(WindowBase* w);
+static void WindowRideIncomeTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text);
+static void WindowRideIncomeInvalidate(WindowBase* w);
+static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi);
+static bool WindowRideIncomeCanModifyPrimaryPrice(WindowBase* w);
 
-static void WindowRideCustomerMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowRideCustomerResize(rct_window* w);
-static void WindowRideCustomerUpdate(rct_window* w);
-static void WindowRideCustomerInvalidate(rct_window* w);
-static void WindowRideCustomerPaint(rct_window* w, DrawPixelInfo* dpi);
+static void WindowRideCustomerMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowRideCustomerResize(WindowBase* w);
+static void WindowRideCustomerUpdate(WindowBase* w);
+static void WindowRideCustomerInvalidate(WindowBase* w);
+static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi);
 
-static void WindowRideSetPage(rct_window* w, int32_t page);
+static void WindowRideSetPage(WindowBase* w, int32_t page);
 
 // 0x0098DFD4
 static WindowEventList window_ride_main_events([](auto& events) {
@@ -862,7 +862,7 @@ static RideObjectEntry* VehicleDropdownRideType = nullptr;
 static bool VehicleDropdownExpanded = false;
 static std::vector<VehicleTypeLabel> VehicleDropdownData;
 
-static void WindowRideDrawTabImage(DrawPixelInfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
+static void WindowRideDrawTabImage(DrawPixelInfo* dpi, WindowBase* w, int32_t page, int32_t spriteIndex)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + page;
 
@@ -883,7 +883,7 @@ static void WindowRideDrawTabImage(DrawPixelInfo* dpi, rct_window* w, int32_t pa
  *
  *  rct2: 0x006B2E88
  */
-static void WindowRideDrawTabMain(DrawPixelInfo* dpi, rct_window* w)
+static void WindowRideDrawTabMain(DrawPixelInfo* dpi, WindowBase* w)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_MAIN);
     if (!WidgetIsDisabled(*w, widgetIndex))
@@ -921,7 +921,7 @@ static void WindowRideDrawTabMain(DrawPixelInfo* dpi, rct_window* w)
  *
  *  rct2: 0x006B2B68
  */
-static void WindowRideDrawTabVehicle(DrawPixelInfo* dpi, rct_window* w)
+static void WindowRideDrawTabVehicle(DrawPixelInfo* dpi, WindowBase* w)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_VEHICLE);
     const auto& widget = w->widgets[widgetIndex];
@@ -992,7 +992,7 @@ static void WindowRideDrawTabVehicle(DrawPixelInfo* dpi, rct_window* w)
  *
  *  rct2: 0x006B2F42
  */
-static void WindowRideDrawTabCustomer(DrawPixelInfo* dpi, rct_window* w)
+static void WindowRideDrawTabCustomer(DrawPixelInfo* dpi, WindowBase* w)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_CUSTOMER);
 
@@ -1015,7 +1015,7 @@ static void WindowRideDrawTabCustomer(DrawPixelInfo* dpi, rct_window* w)
  *
  *  rct2: 0x006B2B35
  */
-static void WindowRideDrawTabImages(DrawPixelInfo* dpi, rct_window* w)
+static void WindowRideDrawTabImages(DrawPixelInfo* dpi, WindowBase* w)
 {
     WindowRideDrawTabVehicle(dpi, w);
     WindowRideDrawTabImage(dpi, w, WINDOW_RIDE_PAGE_OPERATING, SPR_TAB_GEARS_0);
@@ -1033,7 +1033,7 @@ static void WindowRideDrawTabImages(DrawPixelInfo* dpi, rct_window* w)
  *
  * rct2: 0x006AEB9F
  */
-static void WindowRideDisableTabs(rct_window* w)
+static void WindowRideDisableTabs(WindowBase* w)
 {
     uint32_t disabled_tabs = 0;
     auto ride = GetRide(w->rideId);
@@ -1153,9 +1153,9 @@ static void WindowRideUpdateOverallView(const Ride& ride)
  *
  *  rct2: 0x006AEAB4
  */
-static rct_window* WindowRideOpen(const Ride& ride)
+static WindowBase* WindowRideOpen(const Ride& ride)
 {
-    rct_window* w;
+    WindowBase* w;
 
     w = WindowCreateAutoPos(316, 207, window_ride_page_events[0], WindowClass::Ride, WF_10 | WF_RESIZABLE);
     w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
@@ -1185,14 +1185,14 @@ static rct_window* WindowRideOpen(const Ride& ride)
  *
  *  rct2: 0x006ACC28
  */
-rct_window* WindowRideMainOpen(const Ride& ride)
+WindowBase* WindowRideMainOpen(const Ride& ride)
 {
     if (ride.type >= RIDE_TYPE_COUNT)
     {
         return nullptr;
     }
 
-    rct_window* w = WindowBringToFrontByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    WindowBase* w = WindowBringToFrontByNumber(WindowClass::Ride, ride.id.ToUnderlying());
     if (w == nullptr)
     {
         w = WindowRideOpen(ride);
@@ -1225,7 +1225,7 @@ rct_window* WindowRideMainOpen(const Ride& ride)
  *
  *  rct2: 0x006ACCCE
  */
-static rct_window* WindowRideOpenStation(const Ride& ride, StationIndex stationIndex)
+static WindowBase* WindowRideOpenStation(const Ride& ride, StationIndex stationIndex)
 {
     if (ride.type >= RIDE_TYPE_COUNT)
         return nullptr;
@@ -1273,7 +1273,7 @@ static rct_window* WindowRideOpenStation(const Ride& ride, StationIndex stationI
     return w;
 }
 
-rct_window* WindowRideOpenTrack(TileElement* tileElement)
+WindowBase* WindowRideOpenTrack(TileElement* tileElement)
 {
     assert(tileElement != nullptr);
     auto rideIndex = tileElement->GetRideIndex();
@@ -1314,7 +1314,7 @@ rct_window* WindowRideOpenTrack(TileElement* tileElement)
  *
  *  rct2: 0x006ACAC2
  */
-rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
+WindowBase* WindowRideOpenVehicle(Vehicle* vehicle)
 {
     if (vehicle == nullptr)
         return nullptr;
@@ -1338,7 +1338,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
         view++;
     }
 
-    rct_window* w = WindowFindByNumber(WindowClass::Ride, ride->id.ToUnderlying());
+    WindowBase* w = WindowFindByNumber(WindowClass::Ride, ride->id.ToUnderlying());
     if (w != nullptr)
     {
         w->Invalidate();
@@ -1360,7 +1360,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
                     continue;
 
                 numPeepsLeft--;
-                rct_window* w2 = WindowFindByNumber(WindowClass::Peep, vehicle->peep[i]);
+                WindowBase* w2 = WindowFindByNumber(WindowClass::Peep, vehicle->peep[i]);
                 if (w2 == nullptr)
                 {
                     auto intent = Intent(WindowClass::Peep);
@@ -1406,7 +1406,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
  *
  *  rct2: 0x006AF1D2
  */
-static void WindowRideSetPage(rct_window* w, int32_t page)
+static void WindowRideSetPage(WindowBase* w, int32_t page)
 {
     int32_t listen;
 
@@ -1458,7 +1458,7 @@ static void WindowRideSetPage(rct_window* w, int32_t page)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
 
-static void WindowRideSetPressedTab(rct_window* w)
+static void WindowRideSetPressedTab(WindowBase* w)
 {
     int32_t i;
     for (i = 0; i < WINDOW_RIDE_PAGE_COUNT; i++)
@@ -1466,14 +1466,14 @@ static void WindowRideSetPressedTab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void WindowRideAnchorBorderWidgets(rct_window* w)
+static void WindowRideAnchorBorderWidgets(WindowBase* w)
 {
     w->ResizeFrameWithPage();
 }
 
 #pragma region Main
 
-static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_window& w)
+static std::optional<StationIndex> GetStationIndexFromViewSelection(const WindowBase& w)
 {
     const auto* ride = GetRide(RideId::FromUnderlying(w.number));
     if (ride == nullptr)
@@ -1500,7 +1500,7 @@ static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_wi
  *
  *  rct2: 0x006AF994
  */
-static void WindowRideInitViewport(rct_window* w)
+static void WindowRideInitViewport(WindowBase* w)
 {
     if (w->page != WINDOW_RIDE_PAGE_MAIN)
         return;
@@ -1600,7 +1600,7 @@ static void WindowRideInitViewport(rct_window* w)
  *
  *  rct2: 0x006AF315
  */
-static void WindowRideRename(rct_window* w)
+static void WindowRideRename(WindowBase* w)
 {
     auto ride = GetRide(w->rideId);
     if (ride != nullptr)
@@ -1615,7 +1615,7 @@ static void WindowRideRename(rct_window* w)
  *
  *  rct2: 0x006AF17E
  */
-static void WindowRideMainMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideMainMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -1690,7 +1690,7 @@ static void WindowRideMainMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006AF4A2
  */
-static void WindowRideMainResize(rct_window* w)
+static void WindowRideMainResize(WindowBase* w)
 {
     int32_t minHeight = 180;
     if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
@@ -1755,7 +1755,7 @@ static bool TrainMustBeHidden(const Ride& ride, int32_t trainIndex)
  *
  *  rct2: 0x006AF825
  */
-static void WindowRideShowViewDropdown(rct_window* w, Widget* widget)
+static void WindowRideShowViewDropdown(WindowBase* w, Widget* widget)
 {
     Widget* dropdownWidget = widget - 1;
     auto ride = GetRide(w->rideId);
@@ -1860,7 +1860,7 @@ static void WindowRideSetDropdown(RideStatusDropdownInfo& info, RideStatus statu
     }
 }
 
-static void WindowRideShowOpenDropdown(rct_window* w, Widget* widget)
+static void WindowRideShowOpenDropdown(WindowBase* w, Widget* widget)
 {
     RideStatusDropdownInfo info;
     info.Ride = GetRide(w->rideId);
@@ -1929,7 +1929,7 @@ static void PopulateRideTypeDropdown()
     RideDropdownDataLanguage = ls.GetCurrentLanguage();
 }
 
-static void WindowRideShowRideTypeDropdown(rct_window* w, Widget* widget)
+static void WindowRideShowRideTypeDropdown(WindowBase* w, Widget* widget)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -1964,7 +1964,7 @@ static void WindowRideShowRideTypeDropdown(rct_window* w, Widget* widget)
     Dropdown::SetChecked(pos, true);
 }
 
-static void WindowRideShowLocateDropdown(rct_window* w, Widget* widget)
+static void WindowRideShowLocateDropdown(WindowBase* w, Widget* widget)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -1983,7 +1983,7 @@ static void WindowRideShowLocateDropdown(rct_window* w, Widget* widget)
     }
 }
 
-static void WindowRideMainFollowRide(rct_window* w)
+static void WindowRideMainFollowRide(WindowBase* w)
 {
     auto* ride = GetRide(w->rideId);
     if (ride != nullptr)
@@ -1998,7 +1998,7 @@ static void WindowRideMainFollowRide(rct_window* w)
                     if (vehicle != nullptr)
                     {
                         auto headVehicleSpriteIndex = vehicle->sprite_index;
-                        rct_window* w_main = WindowGetMain();
+                        WindowBase* w_main = WindowGetMain();
                         WindowFollowSprite(*w_main, headVehicleSpriteIndex);
                     }
                 }
@@ -2072,7 +2072,7 @@ static void PopulateVehicleTypeDropdown(const Ride& ride, bool forceRefresh)
     VehicleDropdownDataLanguage = ls.GetCurrentLanguage();
 }
 
-static void WindowRideShowVehicleTypeDropdown(rct_window* w, Widget* widget)
+static void WindowRideShowVehicleTypeDropdown(WindowBase* w, Widget* widget)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -2114,7 +2114,7 @@ static void WindowRideShowVehicleTypeDropdown(rct_window* w, Widget* widget)
  *
  *  rct2: 0x006AF1BD
  */
-static void WindowRideMainMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowRideMainMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -2137,7 +2137,7 @@ static void WindowRideMainMousedown(rct_window* w, WidgetIndex widgetIndex, Widg
  *
  *  rct2: 0x006AF300
  */
-static void WindowRideMainDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowRideMainDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     switch (widgetIndex)
     {
@@ -2235,7 +2235,7 @@ static void WindowRideMainDropdown(rct_window* w, WidgetIndex widgetIndex, int32
  *
  *  rct2: 0x006AF40F
  */
-static void WindowRideMainUpdate(rct_window* w)
+static void WindowRideMainUpdate(WindowBase* w)
 {
     // Update tab animation
     w->frame_no++;
@@ -2273,7 +2273,7 @@ static void WindowRideMainUpdate(rct_window* w)
  *
  *  rct2: 0x006AF2F9
  */
-static void WindowRideMainTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
+static void WindowRideMainTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
 {
     if (widgetIndex != WIDX_RENAME || text == nullptr)
         return;
@@ -2290,7 +2290,7 @@ static void WindowRideMainTextinput(rct_window* w, WidgetIndex widgetIndex, char
  *
  *  rct2: 0x006AF55A
  */
-static void WindowRideMainViewportRotate(rct_window* w)
+static void WindowRideMainViewportRotate(WindowBase* w)
 {
     WindowRideInitViewport(w);
 }
@@ -2299,7 +2299,7 @@ static void WindowRideMainViewportRotate(rct_window* w)
  *
  *  rct2: 0x006AECF6
  */
-static void WindowRideMainInvalidate(rct_window* w)
+static void WindowRideMainInvalidate(WindowBase* w)
 {
     Widget* widgets;
     int32_t i, height;
@@ -2444,7 +2444,7 @@ static void WindowRideMainInvalidate(rct_window* w)
  *
  *  rct2: 0x006AF10A
  */
-static StringId WindowRideGetStatusOverallView(rct_window* w, Formatter& ft)
+static StringId WindowRideGetStatusOverallView(WindowBase* w, Formatter& ft)
 {
     auto stringId = STR_NONE;
     auto ride = GetRide(w->rideId);
@@ -2464,7 +2464,7 @@ static StringId WindowRideGetStatusOverallView(rct_window* w, Formatter& ft)
  *
  *  rct2: 0x006AEFEF
  */
-static StringId WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
+static StringId WindowRideGetStatusVehicle(WindowBase* w, Formatter& ft)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -2512,7 +2512,7 @@ static StringId WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
  *
  *  rct2: 0x006AEF65
  */
-static StringId WindowRideGetStatusStation(rct_window* w, Formatter& ft)
+static StringId WindowRideGetStatusStation(WindowBase* w, Formatter& ft)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -2564,7 +2564,7 @@ static StringId WindowRideGetStatusStation(rct_window* w, Formatter& ft)
  *
  *  rct2: 0x006AEE73
  */
-static StringId WindowRideGetStatus(rct_window* w, Formatter& ft)
+static StringId WindowRideGetStatus(WindowBase* w, Formatter& ft)
 {
     auto ride = GetRide(w->rideId);
     if (w->ride.view == 0)
@@ -2580,7 +2580,7 @@ static StringId WindowRideGetStatus(rct_window* w, Formatter& ft)
  *
  *  rct2: 0x006AEE73
  */
-static void WindowRideMainPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     Widget* widget;
 
@@ -2641,7 +2641,7 @@ static void WindowRideMainPaint(rct_window* w, DrawPixelInfo* dpi)
  *
  *  rct2: 0x006B272D
  */
-static void WindowRideVehicleMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideVehicleMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -2667,7 +2667,7 @@ static void WindowRideVehicleMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006B2ABB
  */
-static void WindowRideVehicleResize(rct_window* w)
+static void WindowRideVehicleResize(WindowBase* w)
 {
     WindowSetResize(*w, 316, 214, 316, 214);
 }
@@ -2676,7 +2676,7 @@ static void WindowRideVehicleResize(rct_window* w)
  *
  *  rct2: 0x006B2748
  */
-static void WindowRideVehicleMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowRideVehicleMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -2710,7 +2710,7 @@ static void WindowRideVehicleMousedown(rct_window* w, WidgetIndex widgetIndex, W
  *
  *  rct2: 0x006B2767
  */
-static void WindowRideVehicleDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowRideVehicleDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
@@ -2735,14 +2735,14 @@ static void WindowRideVehicleDropdown(rct_window* w, WidgetIndex widgetIndex, in
  *
  *  rct2: 0x006B2AA1
  */
-static void WindowRideVehicleUpdate(rct_window* w)
+static void WindowRideVehicleUpdate(WindowBase* w)
 {
     w->frame_no++;
     WindowEventInvalidateCall(w);
     WidgetInvalidate(*w, WIDX_TAB_2);
 }
 
-static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const WidgetIndex widgetIndex, StringId fallback)
+static OpenRCT2String WindowRideVehicleTooltip(WindowBase* const w, const WidgetIndex widgetIndex, StringId fallback)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -2795,7 +2795,7 @@ static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const Widget
  *
  *  rct2: 0x006B222C
  */
-static void WindowRideVehicleInvalidate(rct_window* w)
+static void WindowRideVehicleInvalidate(WindowBase* w)
 {
     Widget* widgets;
     RideObjectEntry* rideEntry;
@@ -2886,7 +2886,7 @@ static void WindowRideVehicleInvalidate(rct_window* w)
  *
  *  rct2: 0x006B23DC
  */
-static void WindowRideVehiclePaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -2964,7 +2964,7 @@ struct VehicleDrawInfo
  *
  *  rct2: 0x006B2502
  */
-static void WindowRideVehicleScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -3053,7 +3053,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, DrawPixelInfo* dpi, int3
  *
  *  rct2: 0x006B11D5
  */
-static void WindowRideModeTweakIncrease(rct_window* w)
+static void WindowRideModeTweakIncrease(WindowBase* w)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -3078,7 +3078,7 @@ static void WindowRideModeTweakIncrease(rct_window* w)
  *
  *  rct2: 0x006B120A
  */
-static void WindowRideModeTweakDecrease(rct_window* w)
+static void WindowRideModeTweakDecrease(WindowBase* w)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -3102,7 +3102,7 @@ static void WindowRideModeTweakDecrease(rct_window* w)
  *
  *  rct2: 0x006B1631
  */
-static void WindowRideModeDropdown(rct_window* w, Widget* widget)
+static void WindowRideModeDropdown(WindowBase* w, Widget* widget)
 {
     Widget* dropdownWidget;
 
@@ -3144,7 +3144,7 @@ static void WindowRideModeDropdown(rct_window* w, Widget* widget)
  *
  *  rct2: 0x006B15C0
  */
-static void WindowRideLoadDropdown(rct_window* w, Widget* widget)
+static void WindowRideLoadDropdown(WindowBase* w, Widget* widget)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -3167,7 +3167,7 @@ static void WindowRideLoadDropdown(rct_window* w, Widget* widget)
  *
  *  rct2: 0x006B10A7
  */
-static void WindowRideOperatingMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideOperatingMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     const auto rideId = w->rideId;
     auto ride = GetRide(rideId);
@@ -3214,7 +3214,7 @@ static void WindowRideOperatingMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006B1715
  */
-static void WindowRideOperatingResize(rct_window* w)
+static void WindowRideOperatingResize(WindowBase* w)
 {
     WindowSetResize(*w, 316, 186, 316, 186);
 }
@@ -3223,7 +3223,7 @@ static void WindowRideOperatingResize(rct_window* w)
  *
  *  rct2: 0x006B10F4
  */
-static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowRideOperatingMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     const auto rideId = w->rideId;
     auto ride = GetRide(rideId);
@@ -3315,7 +3315,7 @@ static void WindowRideOperatingMousedown(rct_window* w, WidgetIndex widgetIndex,
     }
 }
 
-static void WindowRideOperatingLengthWindow(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideOperatingLengthWindow(WindowBase* w, WidgetIndex widgetIndex)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -3333,7 +3333,7 @@ static void WindowRideOperatingLengthWindow(rct_window* w, WidgetIndex widgetInd
     WindowTextInputRawOpen(w, widgetIndex, title, STR_ENTER_VALUE, ft, buffer, 4);
 }
 
-static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride)
+static void WindowRideOperatingTweakTextInput(WindowBase* w, const Ride& ride)
 {
     switch (ride.mode)
     {
@@ -3368,7 +3368,7 @@ static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride)
  *
  *  rct2: 0x006B1165
  */
-static void WindowRideOperatingDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowRideOperatingDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
@@ -3412,7 +3412,7 @@ static void WindowRideOperatingDropdown(rct_window* w, WidgetIndex widgetIndex, 
  *
  *  rct2: 0x006B178E
  */
-static void WindowRideOperatingUpdate(rct_window* w)
+static void WindowRideOperatingUpdate(WindowBase* w)
 {
     w->frame_no++;
     WindowEventInvalidateCall(w);
@@ -3426,7 +3426,7 @@ static void WindowRideOperatingUpdate(rct_window* w)
     }
 }
 
-static void WindowRideOperatingTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
+static void WindowRideOperatingTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
 {
     if (text == nullptr)
         return;
@@ -3478,7 +3478,7 @@ static void WindowRideOperatingTextinput(rct_window* w, WidgetIndex widgetIndex,
  *
  *  rct2: 0x006B0B30
  */
-static void WindowRideOperatingInvalidate(rct_window* w)
+static void WindowRideOperatingInvalidate(WindowBase* w)
 {
     Widget* widgets;
     StringId format, caption, tooltip;
@@ -3722,7 +3722,7 @@ static void WindowRideOperatingInvalidate(rct_window* w)
  *
  *  rct2: 0x006B1001
  */
-static void WindowRideOperatingPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideOperatingPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -3757,7 +3757,7 @@ static void WindowRideOperatingPaint(rct_window* w, DrawPixelInfo* dpi)
  *
  *  rct2: 0x006B1AE4
  */
-static void WindowRideLocateMechanic(rct_window* w)
+static void WindowRideLocateMechanic(WindowBase* w)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -3785,7 +3785,7 @@ static void WindowRideLocateMechanic(rct_window* w)
  *  rct2: 0x006B7D08
  */
 static void WindowRideMaintenanceDrawBar(
-    rct_window* w, DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t value, int32_t colour)
+    WindowBase* w, DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t value, int32_t colour)
 {
     GfxFillRectInset(dpi, { coords, coords + ScreenCoordsXY{ 149, 8 } }, w->colours[1], INSET_RECT_F_30);
     if (colour & BAR_BLINK)
@@ -3806,7 +3806,7 @@ static void WindowRideMaintenanceDrawBar(
  *
  *  rct2: 0x006B1AAD
  */
-static void WindowRideMaintenanceMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideMaintenanceMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -3838,7 +3838,7 @@ static void WindowRideMaintenanceMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006B1D70
  */
-static void WindowRideMaintenanceResize(rct_window* w)
+static void WindowRideMaintenanceResize(WindowBase* w)
 {
     WindowSetResize(*w, 316, 135, 316, 135);
 }
@@ -3847,7 +3847,7 @@ static void WindowRideMaintenanceResize(rct_window* w)
  *
  *  rct2: 0x006B1ACE
  */
-static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowRideMaintenanceMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -3948,7 +3948,7 @@ static void WindowRideMaintenanceMousedown(rct_window* w, WidgetIndex widgetInde
  *
  *  rct2: 0x006B1AD9
  */
-static void WindowRideMaintenanceDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowRideMaintenanceDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
@@ -4053,7 +4053,7 @@ static void WindowRideMaintenanceDropdown(rct_window* w, WidgetIndex widgetIndex
  *
  *  rct2: 0x006B1D37
  */
-static void WindowRideMaintenanceUpdate(rct_window* w)
+static void WindowRideMaintenanceUpdate(WindowBase* w)
 {
     w->frame_no++;
     WindowEventInvalidateCall(w);
@@ -4071,7 +4071,7 @@ static void WindowRideMaintenanceUpdate(rct_window* w)
  *
  *  rct2: 0x006B17C8
  */
-static void WindowRideMaintenanceInvalidate(rct_window* w)
+static void WindowRideMaintenanceInvalidate(WindowBase* w)
 {
     auto widgets = window_ride_page_widgets[w->page];
     if (w->widgets != widgets)
@@ -4119,7 +4119,7 @@ static void WindowRideMaintenanceInvalidate(rct_window* w)
  *
  *  rct2: 0x006B1877
  */
-static void WindowRideMaintenancePaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -4265,7 +4265,7 @@ static int32_t WindowRideHasTrackColour(const Ride& ride, int32_t trackColour)
     }
 }
 
-static void WindowRideSetTrackColourScheme(rct_window* w, const ScreenCoordsXY& screenPos)
+static void WindowRideSetTrackColourScheme(WindowBase* w, const ScreenCoordsXY& screenPos)
 {
     auto newColourScheme = static_cast<uint8_t>(w->ride_colour);
     auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::Ride));
@@ -4290,7 +4290,7 @@ static void WindowRideSetTrackColourScheme(rct_window* w, const ScreenCoordsXY& 
  *
  *  rct2: 0x006B04FA
  */
-static void WindowRideColourClose(rct_window* w)
+static void WindowRideColourClose(WindowBase* w)
 {
     if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return;
@@ -4308,7 +4308,7 @@ static void WindowRideColourClose(rct_window* w)
  *
  *  rct2: 0x006B02A1
  */
-static void WindowRideColourMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideColourMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -4347,7 +4347,7 @@ static void WindowRideColourMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006B0AB6
  */
-static void WindowRideColourResize(rct_window* w)
+static void WindowRideColourResize(WindowBase* w)
 {
     WindowSetResize(*w, 316, 207, 316, 207);
 }
@@ -4356,7 +4356,7 @@ static void WindowRideColourResize(rct_window* w)
  *
  *  rct2: 0x006B02C6
  */
-static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowRideColourMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     VehicleColour vehicleColour;
     int32_t i, numItems;
@@ -4490,7 +4490,7 @@ static void WindowRideColourMousedown(rct_window* w, WidgetIndex widgetIndex, Wi
  *
  *  rct2: 0x006B0331
  */
-static void WindowRideColourDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowRideColourDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
@@ -4596,7 +4596,7 @@ static void WindowRideColourDropdown(rct_window* w, WidgetIndex widgetIndex, int
  *
  *  rct2: 0x006B0A8F
  */
-static void WindowRideColourUpdate(rct_window* w)
+static void WindowRideColourUpdate(WindowBase* w)
 {
     w->frame_no++;
     WindowEventInvalidateCall(w);
@@ -4608,7 +4608,7 @@ static void WindowRideColourUpdate(rct_window* w)
  *
  *  rct2: 0x006B04EC
  */
-static void WindowRideColourTooldown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowRideColourTooldown(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
         WindowRideSetTrackColourScheme(w, screenCoords);
@@ -4618,7 +4618,7 @@ static void WindowRideColourTooldown(rct_window* w, WidgetIndex widgetIndex, con
  *
  *  rct2: 0x006B04F3
  */
-static void WindowRideColourTooldrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowRideColourTooldrag(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
         WindowRideSetTrackColourScheme(w, screenCoords);
@@ -4628,7 +4628,7 @@ static void WindowRideColourTooldrag(rct_window* w, WidgetIndex widgetIndex, con
  *
  *  rct2: 0x006AFB36
  */
-static void WindowRideColourInvalidate(rct_window* w)
+static void WindowRideColourInvalidate(WindowBase* w)
 {
     TrackColour trackColour;
     VehicleColour vehicleColour;
@@ -4878,7 +4878,7 @@ static void WindowRideColourInvalidate(rct_window* w)
  *
  *  rct2: 0x006AFF3E
  */
-static void WindowRideColourPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     // TODO: This should use lists and identified sprites
     DrawPixelInfo clippedDpi;
@@ -4998,7 +4998,7 @@ static void WindowRideColourPaint(rct_window* w, DrawPixelInfo* dpi)
  *
  *  rct2: 0x006B0192
  */
-static void WindowRideColourScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+static void WindowRideColourScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -5045,7 +5045,7 @@ static std::vector<ObjectEntryIndex> window_ride_current_music_style_order;
  *
  *  rct2: 0x006B215D
  */
-static void WindowRideToggleMusic(rct_window* w)
+static void WindowRideToggleMusic(WindowBase* w)
 {
     auto ride = GetRide(w->rideId);
     if (ride != nullptr)
@@ -5059,7 +5059,7 @@ static void WindowRideToggleMusic(rct_window* w)
  *
  *  rct2: 0x006B1ED7
  */
-static void WindowRideMusicMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideMusicMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -5088,7 +5088,7 @@ static void WindowRideMusicMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006AF4A2
  */
-static void WindowRideMusicResize(rct_window* w)
+static void WindowRideMusicResize(WindowBase* w)
 {
     w->flags |= WF_RESIZABLE;
     WindowSetResize(*w, 316, 81, 316, 81);
@@ -5107,7 +5107,7 @@ static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
  *
  *  rct2: 0x006B1EFC
  */
-static void WindowRideMusicMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowRideMusicMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     if (widgetIndex != WIDX_MUSIC_DROPDOWN)
         return;
@@ -5185,7 +5185,7 @@ static void WindowRideMusicMousedown(rct_window* w, WidgetIndex widgetIndex, Wid
  *
  *  rct2: 0x006B1F03
  */
-static void WindowRideMusicDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowRideMusicDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex == WIDX_MUSIC_DROPDOWN && dropdownIndex >= 0
         && static_cast<size_t>(dropdownIndex) < window_ride_current_music_style_order.size())
@@ -5199,7 +5199,7 @@ static void WindowRideMusicDropdown(rct_window* w, WidgetIndex widgetIndex, int3
  *
  *  rct2: 0x006B2198
  */
-static void WindowRideMusicUpdate(rct_window* w)
+static void WindowRideMusicUpdate(WindowBase* w)
 {
     w->frame_no++;
     WindowEventInvalidateCall(w);
@@ -5210,7 +5210,7 @@ static void WindowRideMusicUpdate(rct_window* w)
  *
  *  rct2: 0x006B1DEA
  */
-static void WindowRideMusicInvalidate(rct_window* w)
+static void WindowRideMusicInvalidate(WindowBase* w)
 {
     auto widgets = window_ride_page_widgets[w->page];
     if (w->widgets != widgets)
@@ -5261,7 +5261,7 @@ static void WindowRideMusicInvalidate(rct_window* w)
  *
  *  rct2: 0x006B1ECC
  */
-static void WindowRideMusicPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideMusicPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -5287,7 +5287,7 @@ static void CancelScenerySelection()
     gTrackDesignSaveMode = false;
     OpenRCT2::Audio::Resume();
 
-    rct_window* main_w = WindowGetMain();
+    WindowBase* main_w = WindowGetMain();
     if (main_w != nullptr)
     {
         main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
@@ -5301,7 +5301,7 @@ static void CancelScenerySelection()
  *
  *  rct2: 0x006D27A3
  */
-static void SetupScenerySelection(rct_window* w)
+static void SetupScenerySelection(WindowBase* w)
 {
     if (gTrackDesignSaveMode)
     {
@@ -5319,7 +5319,7 @@ static void SetupScenerySelection(rct_window* w)
 
     OpenRCT2::Audio::StopAll();
 
-    rct_window* w_main = WindowGetMain();
+    WindowBase* w_main = WindowGetMain();
     if (w_main != nullptr)
     {
         w_main->viewport->flags |= (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
@@ -5371,7 +5371,7 @@ static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* pat
  *
  *  rct2: 0x006AD4CD
  */
-static void WindowRideMeasurementsDesignSave(rct_window* w)
+static void WindowRideMeasurementsDesignSave(WindowBase* w)
 {
     TrackDesignState tds{};
 
@@ -5410,7 +5410,7 @@ static void WindowRideMeasurementsDesignSave(rct_window* w)
  *
  *  rct2: 0x006AD4DA
  */
-static void WindowRideMeasurementsClose(rct_window* w)
+static void WindowRideMeasurementsClose(WindowBase* w)
 {
     WindowRideMeasurementsDesignCancel();
 }
@@ -5419,7 +5419,7 @@ static void WindowRideMeasurementsClose(rct_window* w)
  *
  *  rct2: 0x006AD478
  */
-static void WindowRideMeasurementsMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideMeasurementsMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -5457,7 +5457,7 @@ static void WindowRideMeasurementsMouseup(rct_window* w, WidgetIndex widgetIndex
  *
  *  rct2: 0x006AD564
  */
-static void WindowRideMeasurementsResize(rct_window* w)
+static void WindowRideMeasurementsResize(WindowBase* w)
 {
     WindowSetResize(*w, 316, 234, 316, 234);
 }
@@ -5466,7 +5466,7 @@ static void WindowRideMeasurementsResize(rct_window* w)
  *
  *  rct2: 0x006AD4AB
  */
-static void WindowRideMeasurementsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowRideMeasurementsMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
         return;
@@ -5494,7 +5494,7 @@ static void WindowRideMeasurementsMousedown(rct_window* w, WidgetIndex widgetInd
  *
  *  rct2: 0x006AD4B2
  */
-static void WindowRideMeasurementsDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowRideMeasurementsDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
         return;
@@ -5514,7 +5514,7 @@ static void WindowRideMeasurementsDropdown(rct_window* w, WidgetIndex widgetInde
  *
  *  rct2: 0x006AD5DD
  */
-static void WindowRideMeasurementsUpdate(rct_window* w)
+static void WindowRideMeasurementsUpdate(WindowBase* w)
 {
     w->frame_no++;
     WindowEventInvalidateCall(w);
@@ -5525,7 +5525,7 @@ static void WindowRideMeasurementsUpdate(rct_window* w)
  *
  *  rct2: 0x006D2AE7
  */
-static void WindowRideMeasurementsTooldown(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowRideMeasurementsTooldown(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     _lastSceneryX = screenCoords.x;
     _lastSceneryY = screenCoords.y;
@@ -5549,7 +5549,7 @@ static void WindowRideMeasurementsTooldown(rct_window* w, WidgetIndex widgetInde
     }
 }
 
-static void WindowRideMeasurementsTooldrag(rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowRideMeasurementsTooldrag(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (screenCoords.x == _lastSceneryX && screenCoords.y == _lastSceneryY)
         return;
@@ -5577,7 +5577,7 @@ static void WindowRideMeasurementsTooldrag(rct_window* w, WidgetIndex widgetInde
  *
  *  rct2: 0x006AD4DA
  */
-static void WindowRideMeasurementsToolabort(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideMeasurementsToolabort(WindowBase* w, WidgetIndex widgetIndex)
 {
     WindowRideMeasurementsDesignCancel();
 }
@@ -5586,7 +5586,7 @@ static void WindowRideMeasurementsToolabort(rct_window* w, WidgetIndex widgetInd
  *
  *  rct2: 0x006ACDBC
  */
-static void WindowRideMeasurementsInvalidate(rct_window* w)
+static void WindowRideMeasurementsInvalidate(WindowBase* w)
 {
     auto widgets = window_ride_page_widgets[w->page];
     if (w->widgets != widgets)
@@ -5641,7 +5641,7 @@ static void WindowRideMeasurementsInvalidate(rct_window* w)
  *
  *  rct2: 0x006ACF07
  */
-static void WindowRideMeasurementsPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -5894,7 +5894,7 @@ enum
  *
  *  rct2: 0x006AE8A6
  */
-static void WindowRideSetGraph(rct_window* w, int32_t type)
+static void WindowRideSetGraph(WindowBase* w, int32_t type)
 {
     if ((w->list_information_type & 0xFF) == type)
     {
@@ -5912,7 +5912,7 @@ static void WindowRideSetGraph(rct_window* w, int32_t type)
  *
  *  rct2: 0x006AE85D
  */
-static void WindowRideGraphsMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideGraphsMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -5938,7 +5938,7 @@ static void WindowRideGraphsMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006AE8DA
  */
-static void WindowRideGraphsResize(rct_window* w)
+static void WindowRideGraphsResize(WindowBase* w)
 {
     WindowSetResize(*w, 316, 182, 500, 450);
 }
@@ -5947,7 +5947,7 @@ static void WindowRideGraphsResize(rct_window* w)
  *
  *  rct2: 0x006AE878
  */
-static void WindowRideGraphsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowRideGraphsMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -5970,7 +5970,7 @@ static void WindowRideGraphsMousedown(rct_window* w, WidgetIndex widgetIndex, Wi
  *
  *  rct2: 0x006AE95D
  */
-static void WindowRideGraphsUpdate(rct_window* w)
+static void WindowRideGraphsUpdate(WindowBase* w)
 {
     Widget* widget;
     int32_t x;
@@ -6002,7 +6002,7 @@ static void WindowRideGraphsUpdate(rct_window* w)
  *
  *  rct2: 0x006AEA75
  */
-static void WindowRideGraphsScrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+static void WindowRideGraphsScrollgetheight(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     WindowEventInvalidateCall(w);
 
@@ -6026,7 +6026,7 @@ static void WindowRideGraphsScrollgetheight(rct_window* w, int32_t scrollIndex, 
  *
  *  rct2: 0x006AE953
  */
-static void WindowRideGraphs15(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType)
+static void WindowRideGraphs15(WindowBase* w, int32_t scrollIndex, int32_t scrollAreaType)
 {
     w->list_information_type |= 0x8000;
 }
@@ -6035,7 +6035,7 @@ static void WindowRideGraphs15(rct_window* w, int32_t scrollIndex, int32_t scrol
  *
  *  rct2: 0x006AEA05
  */
-static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback)
+static OpenRCT2String WindowRideGraphsTooltip(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback)
 {
     if (widgetIndex == WIDX_GRAPH)
     {
@@ -6066,7 +6066,7 @@ static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const WidgetIndex w
  *
  *  rct2: 0x006AE372
  */
-static void WindowRideGraphsInvalidate(rct_window* w)
+static void WindowRideGraphsInvalidate(WindowBase* w)
 {
     auto widgets = window_ride_page_widgets[w->page];
     if (w->widgets != widgets)
@@ -6128,7 +6128,7 @@ static void WindowRideGraphsInvalidate(rct_window* w)
  *
  *  rct2: 0x006AE4BC
  */
-static void WindowRideGraphsPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideGraphsPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -6138,7 +6138,7 @@ static void WindowRideGraphsPaint(rct_window* w, DrawPixelInfo* dpi)
  *
  *  rct2: 0x006AE4C7
  */
-static void WindowRideGraphsScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     GfxClear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
@@ -6337,7 +6337,7 @@ static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
  *
  *  rct2: 0x006ADEFD
  */
-static void WindowRideIncomeTogglePrimaryPrice(rct_window* w)
+static void WindowRideIncomeTogglePrimaryPrice(WindowBase* w)
 {
     const auto rideId = w->rideId;
     auto ride = GetRide(rideId);
@@ -6375,7 +6375,7 @@ static void WindowRideIncomeTogglePrimaryPrice(rct_window* w)
  *
  *  rct2: 0x006AE06E
  */
-static void WindowRideIncomeToggleSecondaryPrice(rct_window* w)
+static void WindowRideIncomeToggleSecondaryPrice(WindowBase* w)
 {
     const auto rideId = w->rideId;
     auto ride = GetRide(rideId);
@@ -6396,7 +6396,7 @@ static void WindowRideIncomeToggleSecondaryPrice(rct_window* w)
     GameActions::Execute(&rideSetPriceAction);
 }
 
-static void WindowRideIncomeSetPrimaryPrice(rct_window* w, money16 price)
+static void WindowRideIncomeSetPrimaryPrice(WindowBase* w, money16 price)
 {
     auto rideSetPriceAction = RideSetPriceAction(w->rideId, price, true);
     GameActions::Execute(&rideSetPriceAction);
@@ -6406,7 +6406,7 @@ static void WindowRideIncomeSetPrimaryPrice(rct_window* w, money16 price)
  *
  *  rct2: 0x006AE1E4
  */
-static void WindowRideIncomeIncreasePrimaryPrice(rct_window* w)
+static void WindowRideIncomeIncreasePrimaryPrice(WindowBase* w)
 {
     if (!WindowRideIncomeCanModifyPrimaryPrice(w))
         return;
@@ -6426,7 +6426,7 @@ static void WindowRideIncomeIncreasePrimaryPrice(rct_window* w)
  *
  *  rct2: 0x006AE237
  */
-static void WindowRideIncomeDecreasePrimaryPrice(rct_window* w)
+static void WindowRideIncomeDecreasePrimaryPrice(WindowBase* w)
 {
     if (!WindowRideIncomeCanModifyPrimaryPrice(w))
         return;
@@ -6442,7 +6442,7 @@ static void WindowRideIncomeDecreasePrimaryPrice(rct_window* w)
     WindowRideIncomeSetPrimaryPrice(w, price);
 }
 
-static money64 WindowRideIncomeGetSecondaryPrice(rct_window* w)
+static money64 WindowRideIncomeGetSecondaryPrice(WindowBase* w)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -6451,13 +6451,13 @@ static money64 WindowRideIncomeGetSecondaryPrice(rct_window* w)
     return ride->price[1];
 }
 
-static void WindowRideIncomeSetSecondaryPrice(rct_window* w, money16 price)
+static void WindowRideIncomeSetSecondaryPrice(WindowBase* w, money16 price)
 {
     auto rideSetPriceAction = RideSetPriceAction(w->rideId, price, false);
     GameActions::Execute(&rideSetPriceAction);
 }
 
-static bool WindowRideIncomeCanModifyPrimaryPrice(rct_window* w)
+static bool WindowRideIncomeCanModifyPrimaryPrice(WindowBase* w)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -6473,7 +6473,7 @@ static bool WindowRideIncomeCanModifyPrimaryPrice(rct_window* w)
  *
  *  rct2: 0x006AE269
  */
-static void WindowRideIncomeIncreaseSecondaryPrice(rct_window* w)
+static void WindowRideIncomeIncreaseSecondaryPrice(WindowBase* w)
 {
     auto price = WindowRideIncomeGetSecondaryPrice(w);
 
@@ -6487,7 +6487,7 @@ static void WindowRideIncomeIncreaseSecondaryPrice(rct_window* w)
  *
  *  rct2: 0x006AE28D
  */
-static void WindowRideIncomeDecreaseSecondaryPrice(rct_window* w)
+static void WindowRideIncomeDecreaseSecondaryPrice(WindowBase* w)
 {
     auto price = WindowRideIncomeGetSecondaryPrice(w);
 
@@ -6501,7 +6501,7 @@ static void WindowRideIncomeDecreaseSecondaryPrice(rct_window* w)
  *
  *  rct2: 0x006ADEA9
  */
-static void WindowRideIncomeMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideIncomeMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -6557,7 +6557,7 @@ static void WindowRideIncomeMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006AE2F8
  */
-static void WindowRideIncomeResize(rct_window* w)
+static void WindowRideIncomeResize(WindowBase* w)
 {
     WindowSetResize(*w, 316, 194, 316, 194);
 }
@@ -6566,7 +6566,7 @@ static void WindowRideIncomeResize(rct_window* w)
  *
  *  rct2: 0x006ADED4
  */
-static void WindowRideIncomeMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowRideIncomeMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -6589,7 +6589,7 @@ static void WindowRideIncomeMousedown(rct_window* w, WidgetIndex widgetIndex, Wi
  *
  *  rct2: 0x006AE2BF
  */
-static void WindowRideIncomeUpdate(rct_window* w)
+static void WindowRideIncomeUpdate(WindowBase* w)
 {
     w->frame_no++;
     WindowEventInvalidateCall(w);
@@ -6603,7 +6603,7 @@ static void WindowRideIncomeUpdate(rct_window* w)
     }
 }
 
-static void WindowRideIncomeTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
+static void WindowRideIncomeTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
 {
     if ((widgetIndex != WIDX_PRIMARY_PRICE && widgetIndex != WIDX_SECONDARY_PRICE) || text == nullptr)
         return;
@@ -6631,7 +6631,7 @@ static void WindowRideIncomeTextinput(rct_window* w, WidgetIndex widgetIndex, ch
  *
  *  rct2: 0x006ADAA3
  */
-static void WindowRideIncomeInvalidate(rct_window* w)
+static void WindowRideIncomeInvalidate(WindowBase* w)
 {
     auto widgets = window_ride_page_widgets[w->page];
     if (w->widgets != widgets)
@@ -6745,7 +6745,7 @@ static void WindowRideIncomeInvalidate(rct_window* w)
  *
  *  rct2: 0x006ADCE5
  */
-static void WindowRideIncomePaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     StringId stringId;
     money64 profit;
@@ -6853,7 +6853,7 @@ static void WindowRideIncomePaint(rct_window* w, DrawPixelInfo* dpi)
  *
  *  rct2: 0x006AD986
  */
-static void WindowRideCustomerMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowRideCustomerMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -6903,7 +6903,7 @@ static void WindowRideCustomerMouseup(rct_window* w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006ADA29
  */
-static void WindowRideCustomerResize(rct_window* w)
+static void WindowRideCustomerResize(WindowBase* w)
 {
     w->flags |= WF_RESIZABLE;
     WindowSetResize(*w, 316, 163, 316, 163);
@@ -6913,7 +6913,7 @@ static void WindowRideCustomerResize(rct_window* w)
  *
  *  rct2: 0x006AD9DD
  */
-static void WindowRideCustomerUpdate(rct_window* w)
+static void WindowRideCustomerUpdate(WindowBase* w)
 {
     w->picked_peep_frame++;
     if (w->picked_peep_frame >= 24)
@@ -6934,7 +6934,7 @@ static void WindowRideCustomerUpdate(rct_window* w)
  *
  *  rct2: 0x006AD5F8
  */
-static void WindowRideCustomerInvalidate(rct_window* w)
+static void WindowRideCustomerInvalidate(WindowBase* w)
 {
     auto widgets = window_ride_page_widgets[w->page];
     if (w->widgets != widgets)
@@ -6972,7 +6972,7 @@ static void WindowRideCustomerInvalidate(rct_window* w)
  *
  *  rct2: 0x006AD6CD
  */
-static void WindowRideCustomerPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     ShopItem shopItem;
     int16_t popularity, satisfaction, queueTime;

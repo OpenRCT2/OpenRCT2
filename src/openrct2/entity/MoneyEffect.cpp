@@ -84,11 +84,11 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
             return;
         }
 
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
 
-        rct_viewport* mainViewport = WindowGetViewport(mainWindow);
+        Viewport* mainViewport = WindowGetViewport(mainWindow);
         auto mapPositionXY = ScreenGetMapXY(
             { mainViewport->pos.x + (mainViewport->width / 2), mainViewport->pos.y + (mainViewport->height / 2) }, nullptr);
         if (!mapPositionXY.has_value())

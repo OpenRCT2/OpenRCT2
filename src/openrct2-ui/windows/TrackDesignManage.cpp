@@ -89,7 +89,7 @@ static void WindowTrackDesignListReloadTracks();
  *
  *  rct2: 0x006D348F
  */
-rct_window* WindowTrackManageOpen(TrackDesignFileRef* tdFileRef)
+WindowBase* WindowTrackManageOpen(TrackDesignFileRef* tdFileRef)
 {
     WindowCloseByClass(WindowClass::ManageTrackDesign);
     auto trackDesignManageWindow = std::make_unique<TrackDesignManageWindow>(tdFileRef);
@@ -114,7 +114,7 @@ void TrackDesignManageWindow::OnOpen()
 
 void TrackDesignManageWindow::OnClose()
 {
-    rct_window* trackDesignListWindow = WindowFindByClass(WindowClass::TrackDesignList);
+    WindowBase* trackDesignListWindow = WindowFindByClass(WindowClass::TrackDesignList);
     if (trackDesignListWindow != nullptr)
     {
         trackDesignListWindow->track_list.track_list_being_updated = false;
@@ -236,7 +236,7 @@ void TrackDeletePromptWindow::OnDraw(DrawPixelInfo& dpi)
 
 static void WindowTrackDesignListReloadTracks()
 {
-    rct_window* trackListWindow = WindowFindByClass(WindowClass::TrackDesignList);
+    WindowBase* trackListWindow = WindowFindByClass(WindowClass::TrackDesignList);
     if (trackListWindow != nullptr)
     {
         trackListWindow->track_list.reload_track_designs = true;

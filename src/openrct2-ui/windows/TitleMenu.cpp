@@ -120,7 +120,7 @@ public:
 
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
-        rct_window* windowToOpen = nullptr;
+        WindowBase* windowToOpen = nullptr;
 
         switch (widgetIndex)
         {
@@ -279,7 +279,7 @@ public:
 /**
  * Creates the window containing the menu buttons on the title screen.
  */
-rct_window* WindowTitleMenuOpen()
+WindowBase* WindowTitleMenuOpen()
 {
     const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
     return WindowCreate<TitleMenuWindow>(

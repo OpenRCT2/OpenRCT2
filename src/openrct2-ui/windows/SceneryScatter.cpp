@@ -52,7 +52,7 @@ static Widget window_scenery_scatter_widgets[] = {
 };
 // clang-format on
 
-class SceneryScatterWindow final : public rct_window
+class SceneryScatterWindow final : public WindowBase
 {
 public:
     void OnOpen() override
@@ -192,7 +192,7 @@ public:
     }
 };
 
-rct_window* WindowSceneryScatterOpen()
+WindowBase* WindowSceneryScatterOpen()
 {
     // Check if window is already open
     auto* window = WindowFindByClass(WindowClass::SceneryScatter);

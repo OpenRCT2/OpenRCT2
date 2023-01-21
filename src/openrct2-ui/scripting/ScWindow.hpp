@@ -30,7 +30,7 @@ namespace OpenRCT2::Scripting
         rct_windownumber _number;
 
     public:
-        ScWindow(rct_window* w)
+        ScWindow(WindowBase* w)
             : ScWindow(w->classification, w->number)
         {
         }
@@ -358,7 +358,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        rct_window* GetWindow() const
+        WindowBase* GetWindow() const
         {
             return WindowFindByNumber(_class, _number);
         }

@@ -82,7 +82,7 @@ static Widget window_loadsave_widgets[] =
 
 #pragma endregion
 
-static rct_window* WindowOverwritePromptOpen(const char* name, const char* path);
+static WindowBase* WindowOverwritePromptOpen(const char* name, const char* path);
 
 enum
 {
@@ -1031,7 +1031,7 @@ public:
 #pragma endregion
 };
 
-rct_window* WindowLoadsaveOpen(
+WindowBase* WindowLoadsaveOpen(
     int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
     TrackDesign* trackDesign)
 {
@@ -1117,8 +1117,8 @@ static Widget window_overwrite_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowOverwritePromptPaint(rct_window* w, DrawPixelInfo* dpi);
+static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi);
 
 static WindowEventList window_overwrite_prompt_events([](auto& events) {
     events.mouse_up = &WindowOverwritePromptMouseup;
@@ -1128,9 +1128,9 @@ static WindowEventList window_overwrite_prompt_events([](auto& events) {
 static char _window_overwrite_prompt_name[256];
 static char _window_overwrite_prompt_path[MAX_PATH];
 
-static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
+static WindowBase* WindowOverwritePromptOpen(const char* name, const char* path)
 {
-    rct_window* w;
+    WindowBase* w;
 
     WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
@@ -1149,7 +1149,7 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
     return w;
 }
 
-static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -1170,7 +1170,7 @@ static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowOverwritePromptPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
 

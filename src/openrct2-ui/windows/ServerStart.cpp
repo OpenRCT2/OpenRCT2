@@ -299,7 +299,7 @@ private:
     }
 };
 
-rct_window* WindowServerStartOpen()
+WindowBase* WindowServerStartOpen()
 {
     return WindowFocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
 }

@@ -271,7 +271,7 @@ private:
     };
 };
 
-rct_window* WindowNewsOptionsOpen()
+WindowBase* WindowNewsOptionsOpen()
 {
     return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
 }

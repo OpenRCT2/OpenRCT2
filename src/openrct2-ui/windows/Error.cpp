@@ -107,7 +107,7 @@ public:
     }
 };
 
-rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
+WindowBase* WindowErrorOpen(std::string_view title, std::string_view message)
 {
     WindowCloseByClass(WindowClass::Error);
 
@@ -161,7 +161,7 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
 }
 
-rct_window* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
+WindowBase* WindowErrorOpen(StringId title, StringId message, const Formatter& args)
 {
     auto titlez = FormatStringID(title, args.Data());
     auto messagez = FormatStringID(message, args.Data());

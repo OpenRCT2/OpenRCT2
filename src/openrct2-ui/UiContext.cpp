@@ -887,10 +887,10 @@ private:
     }
 
     static void DrawWeatherWindow(
-        DrawPixelInfo* dpi, IWeatherDrawer* weatherDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top,
+        DrawPixelInfo* dpi, IWeatherDrawer* weatherDrawer, WindowBase* original_w, int16_t left, int16_t right, int16_t top,
         int16_t bottom, DrawWeatherFunc drawFunc)
     {
-        rct_window* w{};
+        WindowBase* w{};
         auto itStart = WindowGetIterator(original_w);
         for (auto it = std::next(itStart);; it++)
         {

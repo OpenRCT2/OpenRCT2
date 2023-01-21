@@ -674,10 +674,10 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "location")
         {
-            rct_window* w = WindowGetMain();
+            WindowBase* w = WindowGetMain();
             if (w != nullptr)
             {
-                rct_viewport* viewport = WindowGetViewport(w);
+                Viewport* viewport = WindowGetViewport(w);
                 auto info = GetMapCoordinatesFromPos(
                     { viewport->view_width / 2, viewport->view_height / 2 }, EnumsToFlags(ViewportInteractionItem::Terrain));
 
@@ -1053,7 +1053,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "location" && InvalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
         {
-            rct_window* w = WindowGetMain();
+            WindowBase* w = WindowGetMain();
             if (w != nullptr)
             {
                 auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
@@ -1147,7 +1147,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "current_rotation" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             uint8_t currentRotation = GetCurrentRotation();
-            rct_window* mainWindow = WindowGetMain();
+            WindowBase* mainWindow = WindowGetMain();
             int32_t newRotation = int_val[0];
             if (newRotation < 0 || newRotation > 3)
             {

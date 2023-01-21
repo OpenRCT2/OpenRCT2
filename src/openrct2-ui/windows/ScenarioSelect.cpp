@@ -112,17 +112,17 @@ static constexpr const StringId ScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_OTHER_PARKS,
 };
 
-static void WindowScenarioselectInitTabs(rct_window *w);
+static void WindowScenarioselectInitTabs(WindowBase *w);
 
-static void WindowScenarioselectClose(rct_window *w);
-static void WindowScenarioselectMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowScenarioselectMousedown(rct_window *w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowScenarioselectScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void WindowScenarioselectScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowScenarioselectScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowScenarioselectInvalidate(rct_window *w);
-static void WindowScenarioselectPaint(rct_window *w, DrawPixelInfo *dpi);
-static void WindowScenarioselectScrollpaint(rct_window *w, DrawPixelInfo *dpi, int32_t scrollIndex);
+static void WindowScenarioselectClose(WindowBase *w);
+static void WindowScenarioselectMouseup(WindowBase *w, WidgetIndex widgetIndex);
+static void WindowScenarioselectMousedown(WindowBase *w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowScenarioselectScrollgetsize(WindowBase *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void WindowScenarioselectScrollmousedown(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowScenarioselectScrollmouseover(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowScenarioselectInvalidate(WindowBase *w);
+static void WindowScenarioselectPaint(WindowBase *w, DrawPixelInfo *dpi);
+static void WindowScenarioselectScrollpaint(WindowBase *w, DrawPixelInfo *dpi, int32_t scrollIndex);
 
 static bool ScenarioSelectUseSmallFont()
 {
@@ -143,17 +143,17 @@ static WindowEventList window_scenarioselect_events([](auto& events)
 });
 // clang-format on
 
-static void DrawCategoryHeading(rct_window* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
-static void InitialiseListItems(rct_window* w);
-static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenario);
-static bool IsLockingEnabled(rct_window* w);
+static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
+static void InitialiseListItems(WindowBase* w);
+static bool IsScenarioVisible(WindowBase* w, const scenario_index_entry* scenario);
+static bool IsLockingEnabled(WindowBase* w);
 
 static std::function<void(std::string_view)> _callback;
 static bool _showLockedInformation = false;
 static bool _titleEditor = false;
 static bool _disableLocking{};
 
-rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor)
+WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor)
 {
     if (_titleEditor != titleEditor)
     {
@@ -173,9 +173,9 @@ rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titl
  *
  *  rct2: 0x006781B5
  */
-rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking)
+WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking)
 {
-    rct_window* window;
+    WindowBase* window;
 
     _callback = callback;
     _disableLocking = disableLocking;
@@ -200,7 +200,7 @@ rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
  *
  *  rct2: 0x00677C8A
  */
-static void WindowScenarioselectInitTabs(rct_window* w)
+static void WindowScenarioselectInitTabs(WindowBase* w)
 {
     int32_t showPages = 0;
     size_t numScenarios = ScenarioRepositoryGetCount();
@@ -254,13 +254,13 @@ static void WindowScenarioselectInitTabs(rct_window* w)
     }
 }
 
-static void WindowScenarioselectClose(rct_window* w)
+static void WindowScenarioselectClose(WindowBase* w)
 {
     _listItems.clear();
     _listItems.shrink_to_fit();
 }
 
-static void WindowScenarioselectMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowScenarioselectMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     if (widgetIndex == WIDX_CLOSE)
     {
@@ -268,7 +268,7 @@ static void WindowScenarioselectMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowScenarioselectMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
     {
@@ -299,7 +299,7 @@ static int32_t GetScenarioListItemSize()
     return lineHeight;
 }
 
-static void WindowScenarioselectScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+static void WindowScenarioselectScrollgetsize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -323,7 +323,7 @@ static void WindowScenarioselectScrollgetsize(rct_window* w, int32_t scrollIndex
  *
  *  rct2: 0x6780FE
  */
-static void WindowScenarioselectScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowScenarioselectScrollmousedown(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -360,7 +360,7 @@ static void WindowScenarioselectScrollmousedown(rct_window* w, int32_t scrollInd
  *
  *  rct2: 0x678162
  */
-static void WindowScenarioselectScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowScenarioselectScrollmouseover(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -407,7 +407,7 @@ static void WindowScenarioselectScrollmouseover(rct_window* w, int32_t scrollInd
     }
 }
 
-static void WindowScenarioselectInvalidate(rct_window* w)
+static void WindowScenarioselectInvalidate(WindowBase* w)
 {
     w->pressed_widgets &= ~(
         (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
@@ -423,7 +423,7 @@ static void WindowScenarioselectInvalidate(rct_window* w)
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = w->height - bottomMargin;
 }
 
-static void WindowScenarioselectPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     int32_t format;
     const scenario_index_entry* scenario;
@@ -552,7 +552,7 @@ static void WindowScenarioselectPaint(rct_window* w, DrawPixelInfo* dpi)
     }
 }
 
-static void WindowScenarioselectScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+static void WindowScenarioselectScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     GfxClear(dpi, paletteIndex);
@@ -645,7 +645,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, DrawPixelInfo* dpi, i
     }
 }
 
-static void DrawCategoryHeading(rct_window* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
+static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
 {
     colour_t baseColour = w->colours[1];
     colour_t lightColour = ColourMapA[baseColour].lighter;
@@ -684,7 +684,7 @@ static void DrawCategoryHeading(rct_window* w, DrawPixelInfo* dpi, int32_t left,
     GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
 }
 
-static void InitialiseListItems(rct_window* w)
+static void InitialiseListItems(WindowBase* w)
 {
     size_t numScenarios = ScenarioRepositoryGetCount();
     _listItems.clear();
@@ -810,7 +810,7 @@ static void InitialiseListItems(rct_window* w)
     }
 }
 
-static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenario)
+static bool IsScenarioVisible(WindowBase* w, const scenario_index_entry* scenario)
 {
     if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
     {
@@ -834,7 +834,7 @@ static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenari
     return true;
 }
 
-static bool IsLockingEnabled(rct_window* w)
+static bool IsLockingEnabled(WindowBase* w)
 {
     if (gConfigGeneral.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
         return false;

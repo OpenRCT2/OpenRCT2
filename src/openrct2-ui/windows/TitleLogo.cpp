@@ -65,7 +65,7 @@ public:
     }
 };
 
-rct_window* WindowTitleLogoOpen()
+WindowBase* WindowTitleLogoOpen()
 {
     auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
     if (window == nullptr)

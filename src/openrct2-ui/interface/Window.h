@@ -12,7 +12,7 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/Window_internal.h>
 
-struct Window : rct_window
+struct Window : WindowBase
 {
     virtual bool IsLegacy() override;
     virtual void OnDraw(DrawPixelInfo& dpi) override;
@@ -37,4 +37,4 @@ struct Window : rct_window
 
 void WindowAllWheelInput();
 void ApplyScreenSaverLockSetting();
-void WindowAlignTabs(rct_window* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id);
+void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id);

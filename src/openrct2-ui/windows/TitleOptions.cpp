@@ -53,7 +53,7 @@ public:
 /**
  * Creates the window containing the options button on the title screen.
  */
-rct_window* WindowTitleOptionsOpen()
+WindowBase* WindowTitleOptionsOpen()
 {
     auto* window = WindowBringToFrontByClass(WindowClass::TitleOptions);
     if (window == nullptr)

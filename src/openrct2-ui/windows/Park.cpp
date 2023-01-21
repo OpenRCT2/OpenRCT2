@@ -1304,7 +1304,7 @@ static ParkWindow* ParkWindowOpen(uint8_t page)
  *
  *  rct2: 0x00667C48
  */
-rct_window* WindowParkEntranceOpen()
+WindowBase* WindowParkEntranceOpen()
 {
     return ParkWindowOpen(WINDOW_PARK_PAGE_ENTRANCE);
 }
@@ -1313,7 +1313,7 @@ rct_window* WindowParkEntranceOpen()
  *
  *  rct2: 0x00667CA4
  */
-rct_window* WindowParkRatingOpen()
+WindowBase* WindowParkRatingOpen()
 {
     return ParkWindowOpen(WINDOW_PARK_PAGE_RATING);
 }
@@ -1322,7 +1322,7 @@ rct_window* WindowParkRatingOpen()
  *
  *  rct2: 0x00667D35
  */
-rct_window* WindowParkGuestsOpen()
+WindowBase* WindowParkGuestsOpen()
 {
     return ParkWindowOpen(WINDOW_PARK_PAGE_GUESTS);
 }
@@ -1331,7 +1331,7 @@ rct_window* WindowParkGuestsOpen()
  *
  *  rct2: 0x00667E57
  */
-rct_window* WindowParkObjectiveOpen()
+WindowBase* WindowParkObjectiveOpen()
 {
     auto* wnd = ParkWindowOpen(WINDOW_PARK_PAGE_OBJECTIVE);
     if (wnd != nullptr)
@@ -1348,7 +1348,7 @@ rct_window* WindowParkObjectiveOpen()
  *
  *  rct2: 0x00667DC6
  */
-rct_window* WindowParkAwardsOpen()
+WindowBase* WindowParkAwardsOpen()
 {
     return ParkWindowOpen(WINDOW_PARK_PAGE_AWARDS);
 }

@@ -56,8 +56,8 @@ uint8_t gShowGridLinesRefCount;
 uint8_t gShowLandRightsRefCount;
 uint8_t gShowConstructionRightsRefCount;
 
-static std::list<rct_viewport> _viewports;
-rct_viewport* g_music_tracking_viewport;
+static std::list<Viewport> _viewports;
+Viewport* g_music_tracking_viewport;
 
 static std::unique_ptr<JobPool> _paintJobs;
 static std::vector<PaintSession*> _paintColumns;
@@ -114,7 +114,7 @@ void ViewportInitAll()
  * out_x : ax
  * out_y : bx
  */
-std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_viewport* viewport)
+std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport)
 {
     // If the start location was invalid
     // propagate the invalid location to the output.
@@ -171,16 +171,16 @@ CoordsXYZ Focus::GetPos() const
  *  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
  *  w:      esi
  */
-void ViewportCreate(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
+void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
 {
-    rct_viewport* viewport = nullptr;
+    Viewport* viewport = nullptr;
     if (_viewports.size() >= MAX_VIEWPORT_COUNT)
     {
         LOG_ERROR("No more viewport slots left to allocate.");
         return;
     }
 
-    auto itViewport = _viewports.insert(_viewports.end(), rct_viewport{});
+    auto itViewport = _viewports.insert(_viewports.end(), Viewport{});
 
     viewport = &*itViewport;
     viewport->pos = screenCoords;
@@ -218,7 +218,7 @@ void ViewportCreate(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t w
     viewport->viewPos = *centreLoc;
 }
 
-void ViewportRemove(rct_viewport* viewport)
+void ViewportRemove(Viewport* viewport)
 {
     auto it = std::find_if(_viewports.begin(), _viewports.end(), [viewport](const auto& vp) { return &vp == viewport; });
     if (it == _viewports.end())
@@ -279,8 +279,7 @@ CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords)
 /*
  *  rct2: 0x006E7FF3
  */
-static void ViewportRedrawAfterShift(
-    DrawPixelInfo* dpi, rct_window* window, rct_viewport* viewport, const ScreenCoordsXY& coords)
+static void ViewportRedrawAfterShift(DrawPixelInfo* dpi, WindowBase* window, Viewport* viewport, const ScreenCoordsXY& coords)
 {
     // sub-divide by intersecting windows
     if (window != nullptr)
@@ -299,7 +298,7 @@ static void ViewportRedrawAfterShift(
         }
 
         // save viewport
-        rct_viewport view_copy = *viewport;
+        Viewport view_copy = *viewport;
 
         if (viewport->pos.x < window->windowPos.x)
         {
@@ -402,7 +401,7 @@ static void ViewportRedrawAfterShift(
     }
 }
 
-static void ViewportShiftPixels(DrawPixelInfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x_diff, int32_t y_diff)
+static void ViewportShiftPixels(DrawPixelInfo* dpi, WindowBase* window, Viewport* viewport, int32_t x_diff, int32_t y_diff)
 {
     auto it = WindowGetIterator(window);
     for (; it != g_window_list.end(); it++)
@@ -449,7 +448,7 @@ static void ViewportShiftPixels(DrawPixelInfo* dpi, rct_window* window, rct_view
     ViewportRedrawAfterShift(dpi, window, viewport, { x_diff, y_diff });
 }
 
-static void ViewportMove(const ScreenCoordsXY& coords, rct_window* w, rct_viewport* viewport)
+static void ViewportMove(const ScreenCoordsXY& coords, WindowBase* w, Viewport* viewport)
 {
     auto zoom = viewport->zoom;
 
@@ -485,7 +484,7 @@ static void ViewportMove(const ScreenCoordsXY& coords, rct_window* w, rct_viewpo
         }
     }
 
-    rct_viewport view_copy = *viewport;
+    Viewport view_copy = *viewport;
 
     if (viewport->pos.x < 0)
     {
@@ -539,7 +538,7 @@ static void ViewportMove(const ScreenCoordsXY& coords, rct_window* w, rct_viewpo
 }
 
 // rct2: 0x006E7A15
-static void ViewportSetUndergroundFlag(int32_t underground, rct_window* window, rct_viewport* viewport)
+static void ViewportSetUndergroundFlag(int32_t underground, WindowBase* window, Viewport* viewport)
 {
     if (window->classification != WindowClass::MainWindow
         || (window->classification == WindowClass::MainWindow && !window->viewport_smart_follow_sprite.IsNull()))
@@ -566,11 +565,11 @@ static void ViewportSetUndergroundFlag(int32_t underground, rct_window* window, 
  *
  *  rct2: 0x006E7A3A
  */
-void ViewportUpdatePosition(rct_window* window)
+void ViewportUpdatePosition(WindowBase* window)
 {
     WindowEventResizeCall(window);
 
-    rct_viewport* viewport = window->viewport;
+    Viewport* viewport = window->viewport;
     if (viewport == nullptr)
         return;
 
@@ -667,7 +666,7 @@ void ViewportUpdatePosition(rct_window* window)
     ViewportMove(windowCoords, window, viewport);
 }
 
-void ViewportUpdateFollowSprite(rct_window* window)
+void ViewportUpdateFollowSprite(WindowBase* window)
 {
     if (!window->viewport_target_sprite.IsNull() && window->viewport != nullptr)
     {
@@ -693,7 +692,7 @@ void ViewportUpdateFollowSprite(rct_window* window)
     }
 }
 
-void ViewportUpdateSmartFollowEntity(rct_window* window)
+void ViewportUpdateSmartFollowEntity(WindowBase* window)
 {
     auto entity = TryGetEntity(window->viewport_smart_follow_sprite);
     if (entity == nullptr || entity->Type == EntityType::Null)
@@ -724,7 +723,7 @@ void ViewportUpdateSmartFollowEntity(rct_window* window)
     }
 }
 
-void ViewportUpdateSmartFollowGuest(rct_window* window, const Guest* peep)
+void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep)
 {
     Focus focus = Focus(peep->sprite_index);
     window->viewport_target_sprite = peep->sprite_index;
@@ -776,7 +775,7 @@ void ViewportUpdateSmartFollowGuest(rct_window* window, const Guest* peep)
     window->focus = focus;
 }
 
-void ViewportUpdateSmartFollowStaff(rct_window* window, const Staff* peep)
+void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff* peep)
 {
     if (peep->State == PeepState::Picked)
     {
@@ -790,7 +789,7 @@ void ViewportUpdateSmartFollowStaff(rct_window* window, const Staff* peep)
     window->viewport_target_sprite = window->viewport_smart_follow_sprite;
 }
 
-void ViewportUpdateSmartFollowVehicle(rct_window* window)
+void ViewportUpdateSmartFollowVehicle(WindowBase* window)
 {
     window->focus = Focus(window->viewport_smart_follow_sprite);
     window->viewport_target_sprite = window->viewport_smart_follow_sprite;
@@ -807,7 +806,7 @@ void ViewportUpdateSmartFollowVehicle(rct_window* window)
  *  ebp: bottom
  */
 void ViewportRender(
-    DrawPixelInfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect, std::vector<RecordedPaintSession>* sessions)
+    DrawPixelInfo* dpi, const Viewport* viewport, const ScreenRect& screenRect, std::vector<RecordedPaintSession>* sessions)
 {
     auto [topLeft, bottomRight] = screenRect;
 
@@ -960,7 +959,7 @@ static void ViewportPaintColumn(PaintSession& session)
  *  ebp: bottom
  */
 void ViewportPaint(
-    const rct_viewport* viewport, DrawPixelInfo* dpi, const ScreenRect& screenRect,
+    const Viewport* viewport, DrawPixelInfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* recorded_sessions)
 {
     PROFILED_FUNCTION();
@@ -1158,7 +1157,7 @@ std::optional<CoordsXY> ScreenPosToMapPos(const ScreenCoordsXY& screenCoords, in
     return { mapCoords->ToTileStart() };
 }
 
-[[nodiscard]] ScreenCoordsXY rct_viewport::ScreenToViewportCoord(const ScreenCoordsXY& screenCoords) const
+[[nodiscard]] ScreenCoordsXY Viewport::ScreenToViewportCoord(const ScreenCoordsXY& screenCoords) const
 {
     ScreenCoordsXY ret;
     ret.x = (zoom.ApplyTo(screenCoords.x - pos.x)) + viewPos.x;
@@ -1166,7 +1165,7 @@ std::optional<CoordsXY> ScreenPosToMapPos(const ScreenCoordsXY& screenCoords, in
     return ret;
 }
 
-void rct_viewport::Invalidate() const
+void Viewport::Invalidate() const
 {
     ViewportInvalidate(this, { viewPos, viewPos + ScreenCoordsXY{ view_width, view_height } });
 }
@@ -1187,7 +1186,7 @@ void ShowGridlines()
 {
     if (gShowGridLinesRefCount == 0)
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES))
@@ -1211,7 +1210,7 @@ void HideGridlines()
 
     if (gShowGridLinesRefCount == 0)
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (!gConfigGeneral.AlwaysShowGridlines)
@@ -1231,7 +1230,7 @@ void ShowLandRights()
 {
     if (gShowLandRightsRefCount == 0)
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP))
@@ -1255,7 +1254,7 @@ void HideLandRights()
 
     if (gShowLandRightsRefCount == 0)
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)
@@ -1275,7 +1274,7 @@ void ShowConstructionRights()
 {
     if (gShowConstructionRightsRefCount == 0)
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS))
@@ -1299,7 +1298,7 @@ void HideConstructionRights()
 
     if (gShowConstructionRightsRefCount == 0)
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)
@@ -1317,11 +1316,11 @@ void HideConstructionRights()
  */
 void ViewportSetVisibility(uint8_t mode)
 {
-    rct_window* window = WindowGetMain();
+    WindowBase* window = WindowGetMain();
 
     if (window != nullptr)
     {
-        rct_viewport* vp = window->viewport;
+        Viewport* vp = window->viewport;
         uint32_t invalidate = 0;
 
         switch (mode)
@@ -1888,11 +1887,11 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
  */
 InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags)
 {
-    rct_window* window = WindowFindFromPoint(screenCoords);
+    WindowBase* window = WindowFindFromPoint(screenCoords);
     return GetMapCoordinatesFromPosWindow(window, screenCoords, flags);
 }
 
-InteractionInfo GetMapCoordinatesFromPosWindow(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags)
+InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags)
 {
     InteractionInfo info{};
     if (window == nullptr || window->viewport == nullptr)
@@ -1900,7 +1899,7 @@ InteractionInfo GetMapCoordinatesFromPosWindow(rct_window* window, const ScreenC
         return info;
     }
 
-    rct_viewport* myviewport = window->viewport;
+    Viewport* myviewport = window->viewport;
     auto viewLoc = screenCoords;
     viewLoc -= myviewport->pos;
     if (viewLoc.x >= 0 && viewLoc.x < static_cast<int32_t>(myviewport->width) && viewLoc.y >= 0
@@ -1933,7 +1932,7 @@ InteractionInfo GetMapCoordinatesFromPosWindow(rct_window* window, const ScreenC
 /**
  * screenRect represents 2D map coordinates at zoom 0.
  */
-void ViewportInvalidate(const rct_viewport* viewport, const ScreenRect& screenRect)
+void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect)
 {
     PROFILED_FUNCTION();
 
@@ -1975,13 +1974,13 @@ void ViewportInvalidate(const rct_viewport* viewport, const ScreenRect& screenRe
     }
 }
 
-static rct_viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)
+static Viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)
 {
-    rct_window* w = WindowFindFromPoint(screenCoords);
+    WindowBase* w = WindowFindFromPoint(screenCoords);
     if (w == nullptr)
         return nullptr;
 
-    rct_viewport* viewport = w->viewport;
+    Viewport* viewport = w->viewport;
     if (viewport == nullptr)
         return nullptr;
 
@@ -2003,10 +2002,10 @@ static rct_viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)
  *      tile_element: edx ?
  *      viewport: edi
  */
-std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, rct_viewport** viewport)
+std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport)
 {
     // This will get the tile location but we will need the more accuracy
-    rct_window* window = WindowFindFromPoint(screenCoords);
+    WindowBase* window = WindowFindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         return std::nullopt;
@@ -2042,7 +2041,7 @@ std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, rct_v
  */
 std::optional<CoordsXY> ScreenGetMapXYWithZ(const ScreenCoordsXY& screenCoords, int32_t z)
 {
-    rct_viewport* viewport = ViewportFindFromPoint(screenCoords);
+    Viewport* viewport = ViewportFindFromPoint(screenCoords);
     if (viewport == nullptr)
     {
         return std::nullopt;
@@ -2153,10 +2152,10 @@ int32_t GetHeightMarkerOffset()
 
 void ViewportSetSavedView()
 {
-    rct_window* w = WindowGetMain();
+    WindowBase* w = WindowGetMain();
     if (w != nullptr)
     {
-        rct_viewport* viewport = w->viewport;
+        Viewport* viewport = w->viewport;
 
         gSavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
 

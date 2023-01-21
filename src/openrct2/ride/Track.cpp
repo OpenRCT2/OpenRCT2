@@ -404,7 +404,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
     return { true };
 }
 
-void TrackCircuitIteratorBegin(track_circuit_iterator* it, CoordsXYE first)
+void TrackCircuitIteratorBegin(TrackCircuitIterator* it, CoordsXYE first)
 {
     it->last = first;
     it->first = nullptr;
@@ -412,7 +412,7 @@ void TrackCircuitIteratorBegin(track_circuit_iterator* it, CoordsXYE first)
     it->looped = false;
 }
 
-bool TrackCircuitIteratorPrevious(track_circuit_iterator* it)
+bool TrackCircuitIteratorPrevious(TrackCircuitIterator* it)
 {
     TrackBeginEnd trackBeginEnd;
 
@@ -453,7 +453,7 @@ bool TrackCircuitIteratorPrevious(track_circuit_iterator* it)
     return false;
 }
 
-bool TrackCircuitIteratorNext(track_circuit_iterator* it)
+bool TrackCircuitIteratorNext(TrackCircuitIterator* it)
 {
     if (it->first == nullptr)
     {
@@ -475,7 +475,7 @@ bool TrackCircuitIteratorNext(track_circuit_iterator* it)
     return TrackBlockGetNext(&it->last, &it->current, &it->currentZ, &it->currentDirection);
 }
 
-bool TrackCircuitIteratorsMatch(const track_circuit_iterator* firstIt, const track_circuit_iterator* secondIt)
+bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const TrackCircuitIterator* secondIt)
 {
     return (
         firstIt->currentZ == secondIt->currentZ && firstIt->currentDirection == secondIt->currentDirection

@@ -337,7 +337,7 @@ private:
     }
 };
 
-rct_window* WindowAssetPacksOpen()
+WindowBase* WindowAssetPacksOpen()
 {
     auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
     return WindowFocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);

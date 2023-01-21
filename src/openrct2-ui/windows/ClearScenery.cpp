@@ -197,7 +197,7 @@ public:
     }
 };
 
-rct_window* WindowClearSceneryOpen()
+WindowBase* WindowClearSceneryOpen()
 {
     auto* w = static_cast<CleanSceneryWindow*>(WindowBringToFrontByClass(WindowClass::ClearScenery));
 

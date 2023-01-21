@@ -39,7 +39,7 @@ struct GForces
 };
 
 // Size: 0x09
-struct rct_vehicle_info
+struct VehicleInfo
 {
     int16_t x;             // 0x00
     int16_t y;             // 0x02
@@ -279,7 +279,7 @@ struct Vehicle : EntityBase
 private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;
-    const rct_vehicle_info* GetMoveInfo() const;
+    const VehicleInfo* GetMoveInfo() const;
     uint16_t GetTrackProgress() const;
     OpenRCT2::Audio::VehicleSoundParams CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
@@ -382,7 +382,7 @@ static_assert(sizeof(Vehicle) <= 512);
 void UpdateRotatingDefault(Vehicle& vehicle);
 void UpdateRotatingEnterprise(Vehicle& vehicle);
 
-struct train_ref
+struct TrainReference
 {
     Vehicle* head;
     Vehicle* tail;

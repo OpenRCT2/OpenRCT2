@@ -181,7 +181,7 @@ private:
 
     bool CheckObjectSelection() const
     {
-        rct_window* w;
+        WindowBase* w;
 
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
@@ -390,7 +390,7 @@ private:
  * Creates the main editor top toolbar window.
  * rct2: 0x0066F052 (part of 0x0066EF38)
  */
-rct_window* WindowEditorBottomToolbarOpen()
+WindowBase* WindowEditorBottomToolbarOpen()
 {
     auto* window = WindowCreate<EditorBottomToolbarWindow>(
         WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), ContextGetWidth(), 32,

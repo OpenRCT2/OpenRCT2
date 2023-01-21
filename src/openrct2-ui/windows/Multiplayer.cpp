@@ -120,40 +120,40 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
 
 static uint8_t _selectedGroup = 0;
 
-static void WindowMultiplayerInformationMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowMultiplayerInformationResize(rct_window *w);
-static void WindowMultiplayerInformationUpdate(rct_window *w);
-static void WindowMultiplayerInformationInvalidate(rct_window *w);
-static void WindowMultiplayerInformationPaint(rct_window *w, DrawPixelInfo *dpi);
+static void WindowMultiplayerInformationMouseup(WindowBase *w, WidgetIndex widgetIndex);
+static void WindowMultiplayerInformationResize(WindowBase *w);
+static void WindowMultiplayerInformationUpdate(WindowBase *w);
+static void WindowMultiplayerInformationInvalidate(WindowBase *w);
+static void WindowMultiplayerInformationPaint(WindowBase *w, DrawPixelInfo *dpi);
 
-static void WindowMultiplayerPlayersMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowMultiplayerPlayersResize(rct_window *w);
-static void WindowMultiplayerPlayersUpdate(rct_window *w);
-static void WindowMultiplayerPlayersScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void WindowMultiplayerPlayersScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowMultiplayerPlayersScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowMultiplayerPlayersInvalidate(rct_window *w);
-static void WindowMultiplayerPlayersPaint(rct_window *w, DrawPixelInfo *dpi);
-static void WindowMultiplayerPlayersScrollpaint(rct_window *w, DrawPixelInfo *dpi, int32_t scrollIndex);
+static void WindowMultiplayerPlayersMouseup(WindowBase *w, WidgetIndex widgetIndex);
+static void WindowMultiplayerPlayersResize(WindowBase *w);
+static void WindowMultiplayerPlayersUpdate(WindowBase *w);
+static void WindowMultiplayerPlayersScrollgetsize(WindowBase *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void WindowMultiplayerPlayersScrollmousedown(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowMultiplayerPlayersScrollmouseover(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowMultiplayerPlayersInvalidate(WindowBase *w);
+static void WindowMultiplayerPlayersPaint(WindowBase *w, DrawPixelInfo *dpi);
+static void WindowMultiplayerPlayersScrollpaint(WindowBase *w, DrawPixelInfo *dpi, int32_t scrollIndex);
 
-static void WindowMultiplayerGroupsMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowMultiplayerGroupsResize(rct_window *w);
-static void WindowMultiplayerGroupsMousedown(rct_window *w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowMultiplayerGroupsDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowMultiplayerGroupsUpdate(rct_window *w);
-static void WindowMultiplayerGroupsScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void WindowMultiplayerGroupsScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowMultiplayerGroupsScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowMultiplayerGroupsTextInput(rct_window *w, WidgetIndex widgetIndex, char *text);
-static void WindowMultiplayerGroupsInvalidate(rct_window *w);
-static void WindowMultiplayerGroupsPaint(rct_window *w, DrawPixelInfo *dpi);
-static void WindowMultiplayerGroupsScrollpaint(rct_window *w, DrawPixelInfo *dpi, int32_t scrollIndex);
+static void WindowMultiplayerGroupsMouseup(WindowBase *w, WidgetIndex widgetIndex);
+static void WindowMultiplayerGroupsResize(WindowBase *w);
+static void WindowMultiplayerGroupsMousedown(WindowBase *w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowMultiplayerGroupsDropdown(WindowBase *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowMultiplayerGroupsUpdate(WindowBase *w);
+static void WindowMultiplayerGroupsScrollgetsize(WindowBase *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void WindowMultiplayerGroupsScrollmousedown(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowMultiplayerGroupsScrollmouseover(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowMultiplayerGroupsTextInput(WindowBase *w, WidgetIndex widgetIndex, char *text);
+static void WindowMultiplayerGroupsInvalidate(WindowBase *w);
+static void WindowMultiplayerGroupsPaint(WindowBase *w, DrawPixelInfo *dpi);
+static void WindowMultiplayerGroupsScrollpaint(WindowBase *w, DrawPixelInfo *dpi, int32_t scrollIndex);
 
-static void WindowMultiplayerOptionsMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowMultiplayerOptionsResize(rct_window *w);
-static void WindowMultiplayerOptionsUpdate(rct_window *w);
-static void WindowMultiplayerOptionsInvalidate(rct_window *w);
-static void WindowMultiplayerOptionsPaint(rct_window *w, DrawPixelInfo *dpi);
+static void WindowMultiplayerOptionsMouseup(WindowBase *w, WidgetIndex widgetIndex);
+static void WindowMultiplayerOptionsResize(WindowBase *w);
+static void WindowMultiplayerOptionsUpdate(WindowBase *w);
+static void WindowMultiplayerOptionsInvalidate(WindowBase *w);
+static void WindowMultiplayerOptionsPaint(WindowBase *w, DrawPixelInfo *dpi);
 
 static WindowEventList window_multiplayer_information_events([](auto& events)
 {
@@ -223,16 +223,16 @@ static constexpr const int32_t window_multiplayer_animation_frames[] = {
     4,
 };
 
-static void WindowMultiplayerDrawTabImages(rct_window* w, DrawPixelInfo* dpi);
-static void WindowMultiplayerSetPage(rct_window* w, int32_t page);
+static void WindowMultiplayerDrawTabImages(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowMultiplayerSetPage(WindowBase* w, int32_t page);
 
 static bool _windowInformationSizeDirty;
 static ScreenCoordsXY _windowInformationSize;
 
-rct_window* WindowMultiplayerOpen()
+WindowBase* WindowMultiplayerOpen()
 {
     // Check if window is already open
-    rct_window* window = WindowBringToFrontByClass(WindowClass::Multiplayer);
+    WindowBase* window = WindowBringToFrontByClass(WindowClass::Multiplayer);
     if (window == nullptr)
     {
         window = WindowCreateAutoPos(
@@ -243,7 +243,7 @@ rct_window* WindowMultiplayerOpen()
     return window;
 }
 
-static void WindowMultiplayerSetPage(rct_window* w, int32_t page)
+static void WindowMultiplayerSetPage(WindowBase* w, int32_t page)
 {
     _windowInformationSizeDirty = true;
 
@@ -264,12 +264,12 @@ static void WindowMultiplayerSetPage(rct_window* w, int32_t page)
     w->Invalidate();
 }
 
-static void WindowMultiplayerAnchorBorderWidgets(rct_window* w)
+static void WindowMultiplayerAnchorBorderWidgets(WindowBase* w)
 {
     w->ResizeFrameWithPage();
 }
 
-static void WindowMultiplayerSetPressedTab(rct_window* w)
+static void WindowMultiplayerSetPressedTab(WindowBase* w)
 {
     for (int32_t i = WIDX_TAB1; i <= WIDX_TAB4; i++)
     {
@@ -278,7 +278,7 @@ static void WindowMultiplayerSetPressedTab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB1 + w->page);
 }
 
-static void WindowMultiplayerGroupsShowGroupDropdown(rct_window* w, Widget* widget)
+static void WindowMultiplayerGroupsShowGroupDropdown(WindowBase* w, Widget* widget)
 {
     Widget* dropdownWidget;
     int32_t numItems, i;
@@ -308,7 +308,7 @@ static void WindowMultiplayerGroupsShowGroupDropdown(rct_window* w, Widget* widg
 
 #pragma region Information page
 
-static void WindowMultiplayerInformationMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowMultiplayerInformationMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -377,26 +377,26 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     return _windowInformationSize;
 }
 
-static void WindowMultiplayerInformationResize(rct_window* w)
+static void WindowMultiplayerInformationResize(WindowBase* w)
 {
     auto size = WindowMultiplayerInformationGetSize();
     WindowSetResize(*w, size.x, size.y, size.x, size.y);
 }
 
-static void WindowMultiplayerInformationUpdate(rct_window* w)
+static void WindowMultiplayerInformationUpdate(WindowBase* w)
 {
     w->frame_no++;
     WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
-static void WindowMultiplayerInformationInvalidate(rct_window* w)
+static void WindowMultiplayerInformationInvalidate(WindowBase* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
     WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 }
 
-static void WindowMultiplayerInformationPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowMultiplayerInformationPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
@@ -463,7 +463,7 @@ static bool IsServerPlayerInvisible()
     return NetworkIsServerPlayerInvisible() && !gConfigGeneral.DebuggingTools;
 }
 
-static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowMultiplayerPlayersMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -482,7 +482,7 @@ static void WindowMultiplayerPlayersMouseup(rct_window* w, WidgetIndex widgetInd
     }
 }
 
-static void WindowMultiplayerPlayersResize(rct_window* w)
+static void WindowMultiplayerPlayersResize(WindowBase* w)
 {
     WindowSetResize(*w, 420, 124, 500, 450);
 
@@ -495,13 +495,13 @@ static void WindowMultiplayerPlayersResize(rct_window* w)
     w->Invalidate();
 }
 
-static void WindowMultiplayerPlayersUpdate(rct_window* w)
+static void WindowMultiplayerPlayersUpdate(WindowBase* w)
 {
     w->frame_no++;
     WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
-static void WindowMultiplayerPlayersScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+static void WindowMultiplayerPlayersScrollgetsize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     int32_t i;
 
@@ -522,7 +522,7 @@ static void WindowMultiplayerPlayersScrollgetsize(rct_window* w, int32_t scrollI
     }
 }
 
-static void WindowMultiplayerPlayersScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowMultiplayerPlayersScrollmousedown(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index;
 
@@ -537,7 +537,7 @@ static void WindowMultiplayerPlayersScrollmousedown(rct_window* w, int32_t scrol
     WindowPlayerOpen(NetworkGetPlayerID(player));
 }
 
-static void WindowMultiplayerPlayersScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowMultiplayerPlayersScrollmouseover(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index;
 
@@ -549,7 +549,7 @@ static void WindowMultiplayerPlayersScrollmouseover(rct_window* w, int32_t scrol
     w->Invalidate();
 }
 
-static void WindowMultiplayerPlayersInvalidate(rct_window* w)
+static void WindowMultiplayerPlayersInvalidate(WindowBase* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
@@ -558,7 +558,7 @@ static void WindowMultiplayerPlayersInvalidate(rct_window* w)
     WindowAlignTabs(w, WIDX_TAB1, WIDX_TAB4);
 }
 
-static void WindowMultiplayerPlayersPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowMultiplayerPlayersPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     StringId stringId;
 
@@ -573,7 +573,7 @@ static void WindowMultiplayerPlayersPaint(rct_window* w, DrawPixelInfo* dpi)
     DrawTextBasic(dpi, screenCoords, stringId, ft, { w->colours[2] });
 }
 
-static void WindowMultiplayerPlayersScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+static void WindowMultiplayerPlayersScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     ScreenCoordsXY screenCoords;
     screenCoords.y = 0;
@@ -677,7 +677,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, DrawPixelInfo* dp
 
 #pragma region Groups page
 
-static void WindowMultiplayerGroupsMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowMultiplayerGroupsMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -713,7 +713,7 @@ static void WindowMultiplayerGroupsMouseup(rct_window* w, WidgetIndex widgetInde
     }
 }
 
-static void WindowMultiplayerGroupsResize(rct_window* w)
+static void WindowMultiplayerGroupsResize(WindowBase* w)
 {
     WindowSetResize(*w, 320, 200, 320, 500);
 
@@ -724,7 +724,7 @@ static void WindowMultiplayerGroupsResize(rct_window* w)
     w->Invalidate();
 }
 
-static void WindowMultiplayerGroupsMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowMultiplayerGroupsMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -737,7 +737,7 @@ static void WindowMultiplayerGroupsMousedown(rct_window* w, WidgetIndex widgetIn
     }
 }
 
-static void WindowMultiplayerGroupsDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowMultiplayerGroupsDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
     {
@@ -760,13 +760,13 @@ static void WindowMultiplayerGroupsDropdown(rct_window* w, WidgetIndex widgetInd
     w->Invalidate();
 }
 
-static void WindowMultiplayerGroupsUpdate(rct_window* w)
+static void WindowMultiplayerGroupsUpdate(WindowBase* w)
 {
     w->frame_no++;
     WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
-static void WindowMultiplayerGroupsScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+static void WindowMultiplayerGroupsScrollgetsize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     int32_t i;
 
@@ -787,7 +787,7 @@ static void WindowMultiplayerGroupsScrollgetsize(rct_window* w, int32_t scrollIn
     }
 }
 
-static void WindowMultiplayerGroupsScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowMultiplayerGroupsScrollmousedown(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index;
 
@@ -803,7 +803,7 @@ static void WindowMultiplayerGroupsScrollmousedown(rct_window* w, int32_t scroll
     GameActions::Execute(&networkModifyGroup);
 }
 
-static void WindowMultiplayerGroupsScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowMultiplayerGroupsScrollmouseover(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index;
 
@@ -815,7 +815,7 @@ static void WindowMultiplayerGroupsScrollmouseover(rct_window* w, int32_t scroll
     w->Invalidate();
 }
 
-static void WindowMultiplayerGroupsTextInput(rct_window* w, WidgetIndex widgetIndex, char* text)
+static void WindowMultiplayerGroupsTextInput(WindowBase* w, WidgetIndex widgetIndex, char* text)
 {
     if (widgetIndex != WIDX_RENAME_GROUP)
         return;
@@ -827,7 +827,7 @@ static void WindowMultiplayerGroupsTextInput(rct_window* w, WidgetIndex widgetIn
     GameActions::Execute(&networkModifyGroup);
 }
 
-static void WindowMultiplayerGroupsInvalidate(rct_window* w)
+static void WindowMultiplayerGroupsInvalidate(WindowBase* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
@@ -842,7 +842,7 @@ static void WindowMultiplayerGroupsInvalidate(rct_window* w)
     }
 }
 
-static void WindowMultiplayerGroupsPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowMultiplayerGroupsPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     thread_local std::string _buffer;
 
@@ -889,7 +889,7 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, DrawPixelInfo* dpi)
     }
 }
 
-static void WindowMultiplayerGroupsScrollpaint(rct_window* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+static void WindowMultiplayerGroupsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
@@ -934,7 +934,7 @@ static void WindowMultiplayerGroupsScrollpaint(rct_window* w, DrawPixelInfo* dpi
 
 #pragma region Options page
 
-static void WindowMultiplayerOptionsMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowMultiplayerOptionsMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -965,18 +965,18 @@ static void WindowMultiplayerOptionsMouseup(rct_window* w, WidgetIndex widgetInd
     }
 }
 
-static void WindowMultiplayerOptionsResize(rct_window* w)
+static void WindowMultiplayerOptionsResize(WindowBase* w)
 {
     WindowSetResize(*w, 300, 100, 300, 100);
 }
 
-static void WindowMultiplayerOptionsUpdate(rct_window* w)
+static void WindowMultiplayerOptionsUpdate(WindowBase* w)
 {
     w->frame_no++;
     WidgetInvalidate(*w, WIDX_TAB1 + w->page);
 }
 
-static void WindowMultiplayerOptionsInvalidate(rct_window* w)
+static void WindowMultiplayerOptionsInvalidate(WindowBase* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
@@ -992,7 +992,7 @@ static void WindowMultiplayerOptionsInvalidate(rct_window* w)
     WidgetSetCheckboxValue(*w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.KnownKeysOnly);
 }
 
-static void WindowMultiplayerOptionsPaint(rct_window* w, DrawPixelInfo* dpi)
+static void WindowMultiplayerOptionsPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
@@ -1000,7 +1000,7 @@ static void WindowMultiplayerOptionsPaint(rct_window* w, DrawPixelInfo* dpi)
 
 #pragma endregion
 
-static void WindowMultiplayerDrawTabImage(rct_window* w, DrawPixelInfo* dpi, int32_t page, int32_t spriteIndex)
+static void WindowMultiplayerDrawTabImage(WindowBase* w, DrawPixelInfo* dpi, int32_t page, int32_t spriteIndex)
 {
     WidgetIndex widgetIndex = WIDX_TAB1 + page;
 
@@ -1022,7 +1022,7 @@ static void WindowMultiplayerDrawTabImage(rct_window* w, DrawPixelInfo* dpi, int
     }
 }
 
-static void WindowMultiplayerDrawTabImages(rct_window* w, DrawPixelInfo* dpi)
+static void WindowMultiplayerDrawTabImages(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowMultiplayerDrawTabImage(w, dpi, WINDOW_MULTIPLAYER_PAGE_INFORMATION, SPR_TAB_KIOSKS_AND_FACILITIES_0);
     WindowMultiplayerDrawTabImage(w, dpi, WINDOW_MULTIPLAYER_PAGE_PLAYERS, SPR_TAB_GUESTS_0);

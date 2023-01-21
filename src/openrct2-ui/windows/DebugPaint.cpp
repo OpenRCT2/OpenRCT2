@@ -143,7 +143,7 @@ public:
     }
 };
 
-rct_window* WindowDebugPaintOpen()
+WindowBase* WindowDebugPaintOpen()
 {
     auto* window = WindowFocusOrCreate<DebugPaintWindow>(
         WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,

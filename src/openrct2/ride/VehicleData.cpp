@@ -372,7 +372,7 @@ const uint8_t * Rotation3TimeToSpriteMaps[] = {
 };
 
 /** rct2: 0x009A12EC */
-static constexpr const top_spin_time_to_sprite_map TopSpinTimeToSpriteMap_0[] = {
+static constexpr const TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_0[] = {
     {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 },
     {  0,  0 }, {  0,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 },
     {  1,  0 }, {  1,  0 }, {  1,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 },
@@ -458,7 +458,7 @@ static constexpr const top_spin_time_to_sprite_map TopSpinTimeToSpriteMap_0[] = 
 };
 
 /** rct2: 0x009A1751 */
-static constexpr const top_spin_time_to_sprite_map TopSpinTimeToSpriteMap_1[] = {
+static constexpr const TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_1[] = {
     {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 },
     {  0,  0 }, {  0,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 },
     {  1,  0 }, {  1,  0 }, {  1,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 },
@@ -563,7 +563,7 @@ static constexpr const top_spin_time_to_sprite_map TopSpinTimeToSpriteMap_1[] = 
 };
 
 /** rct2: 0x009A1CC6 */
-static constexpr const top_spin_time_to_sprite_map TopSpinTimeToSpriteMap_2[] = {
+static constexpr const TopSpinTimeToSpriteMap TopSpinTimeToSpriteMap_2[] = {
     {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 },
     {  0,  0 }, {  0,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 }, {  1,  0 },
     {  1,  0 }, {  1,  0 }, {  1,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 }, {  2,  0 },
@@ -703,7 +703,7 @@ static constexpr const top_spin_time_to_sprite_map TopSpinTimeToSpriteMap_2[] = 
 };
 
 /** rct2: 0x009A12E0 */
-const top_spin_time_to_sprite_map * TopSpinTimeToSpriteMaps[] = {
+const TopSpinTimeToSpriteMap * TopSpinTimeToSpriteMaps[] = {
     TopSpinTimeToSpriteMap_0,
     TopSpinTimeToSpriteMap_1,
     TopSpinTimeToSpriteMap_2,

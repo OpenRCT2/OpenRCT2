@@ -401,7 +401,7 @@ private:
     }
 };
 
-rct_window* WindowInstallTrackOpen(const utf8* path)
+WindowBase* WindowInstallTrackOpen(const utf8* path)
 {
     auto trackDesign = TrackDesignImport(path);
     if (trackDesign == nullptr)

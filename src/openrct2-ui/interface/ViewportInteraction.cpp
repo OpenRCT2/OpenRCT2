@@ -612,7 +612,7 @@ static void ViewportInteractionRemoveScenery(TileElement* tileElement, const Coo
  */
 static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const CoordsXY& mapCoords)
 {
-    rct_window* w;
+    WindowBase* w;
     TileElement* tileElement2;
 
     auto z = tileElement->GetBaseZ();
@@ -760,7 +760,7 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
  */
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords)
 {
-    rct_window* window = WindowFindFromPoint(screenCoords);
+    WindowBase* window = WindowFindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY ret{};

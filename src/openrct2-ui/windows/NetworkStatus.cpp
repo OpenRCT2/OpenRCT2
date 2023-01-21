@@ -130,7 +130,7 @@ private:
     std::string _password;
 };
 
-rct_window* WindowNetworkStatusOpen(const std::string& text, close_callback onClose)
+WindowBase* WindowNetworkStatusOpen(const std::string& text, close_callback onClose)
 {
     auto window = WindowFocusOrCreate<NetworkStatusWindow>(
         WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
@@ -152,7 +152,7 @@ void WindowNetworkStatusClose()
     networkWindow->Close();
 }
 
-rct_window* WindowNetworkStatusOpenPassword()
+WindowBase* WindowNetworkStatusOpenPassword()
 {
     auto window = WindowFocusOrCreate<NetworkStatusWindow>(
         WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);

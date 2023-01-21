@@ -265,7 +265,7 @@ private:
  *
  *  rct2: 0x0066D2AC
  */
-rct_window* WindowAboutOpen()
+WindowBase* WindowAboutOpen()
 {
     return WindowFocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
 }

@@ -1236,7 +1236,7 @@ private:
 #pragma endregion
 };
 
-rct_window* WindowEditorScenarioOptionsOpen()
+WindowBase* WindowEditorScenarioOptionsOpen()
 {
     return WindowFocusOrCreate<EditorScenarioOptionsWindow>(WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
 }

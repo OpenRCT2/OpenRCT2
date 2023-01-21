@@ -148,7 +148,7 @@ enum
  */
 void UpdatePaletteEffects()
 {
-    auto water_type = static_cast<rct_water_type*>(ObjectEntryGetChunk(ObjectType::Water, 0));
+    auto water_type = static_cast<WaterObjectEntry*>(ObjectEntryGetChunk(ObjectType::Water, 0));
 
     if (gClimateLightningFlash == 1)
     {

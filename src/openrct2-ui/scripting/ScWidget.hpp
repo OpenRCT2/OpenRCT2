@@ -42,7 +42,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        static DukValue ToDukValue(duk_context* ctx, rct_window* w, WidgetIndex widgetIndex);
+        static DukValue ToDukValue(duk_context* ctx, WindowBase* w, WidgetIndex widgetIndex);
 
     private:
         std::shared_ptr<ScWindow> window_get() const;
@@ -401,7 +401,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx);
 
     protected:
-        rct_window* GetWindow() const
+        WindowBase* GetWindow() const
         {
             if (_class == WindowClass::MainWindow)
                 return WindowGetMain();
@@ -989,7 +989,7 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    inline DukValue ScWidget::ToDukValue(duk_context* ctx, rct_window* w, WidgetIndex widgetIndex)
+    inline DukValue ScWidget::ToDukValue(duk_context* ctx, WindowBase* w, WidgetIndex widgetIndex)
     {
         const auto& widget = w->widgets[widgetIndex];
         auto c = w->classification;

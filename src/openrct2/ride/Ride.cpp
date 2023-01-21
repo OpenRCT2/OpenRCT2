@@ -742,16 +742,16 @@ bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         return false;
 
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == id)
     {
         RideConstructionInvalidateCurrentTrack();
     }
 
     bool moveSlowIt = true;
-    track_circuit_iterator it = {};
+    TrackCircuitIterator it = {};
     TrackCircuitIteratorBegin(&it, input);
-    track_circuit_iterator slowIt = it;
+    TrackCircuitIterator slowIt = it;
     while (TrackCircuitIteratorNext(&it))
     {
         if (!TrackIsConnectedByShape(it.last.element, it.current.element))
@@ -2666,11 +2666,11 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
         return { false };
 
     RideId rideIndex = input.element->AsTrack()->GetRideIndex();
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         RideConstructionInvalidateCurrentTrack();
 
-    track_circuit_iterator it;
+    TrackCircuitIterator it;
     TrackCircuitIteratorBegin(&it, input);
     while (TrackCircuitIteratorNext(&it))
     {
@@ -2730,14 +2730,14 @@ static bool ride_check_track_contains_inversions(const CoordsXYE& input, CoordsX
             return true;
     }
 
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
     }
 
     bool moveSlowIt = true;
-    track_circuit_iterator it, slowIt;
+    TrackCircuitIterator it, slowIt;
     TrackCircuitIteratorBegin(&it, input);
     slowIt = it;
 
@@ -2790,14 +2790,14 @@ static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* 
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         return true;
 
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
     }
 
     bool moveSlowIt = true;
-    track_circuit_iterator it, slowIt;
+    TrackCircuitIterator it, slowIt;
     TrackCircuitIteratorBegin(&it, input);
     slowIt = it;
 
@@ -2831,7 +2831,7 @@ static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* 
  */
 static int32_t ride_check_station_length(const CoordsXYE& input, CoordsXYE* output)
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
         && _currentRideIndex == input.element->AsTrack()->GetRideIndex())
     {
@@ -3293,10 +3293,10 @@ static Vehicle* vehicle_create_car(
  *
  *  rct2: 0x006DD84C
  */
-static train_ref vehicle_create_train(
+static TrainReference vehicle_create_train(
     RideId rideIndex, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
-    train_ref train = { nullptr, nullptr };
+    TrainReference train = { nullptr, nullptr };
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
@@ -3331,8 +3331,8 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
     if (ride == nullptr)
         return false;
 
-    train_ref firstTrain = {};
-    train_ref lastTrain = {};
+    TrainReference firstTrain = {};
+    TrainReference lastTrain = {};
     int32_t remainingDistance = 0;
     bool allTrainsCreated = true;
 
@@ -3342,7 +3342,7 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
         {
             remainingDistance = 0;
         }
-        train_ref train = vehicle_create_train(rideIndex, trainsPos, vehicleIndex, &remainingDistance, trackElement);
+        TrainReference train = vehicle_create_train(rideIndex, trainsPos, vehicleIndex, &remainingDistance, trackElement);
         if (train.head == nullptr || train.tail == nullptr)
         {
             allTrainsCreated = false;
@@ -3648,7 +3648,7 @@ static ResultWithMessage ride_initialise_cable_lift_track(const Ride& ride, bool
     };
     int32_t state = STATE_FIND_CABLE_LIFT;
 
-    track_circuit_iterator it;
+    TrackCircuitIterator it;
     TrackCircuitIteratorBegin(&it, { location, tileElement });
     while (TrackCircuitIteratorPrevious(&it))
     {
@@ -4837,7 +4837,7 @@ static int32_t ride_get_track_length(const Ride& ride)
 
     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
 
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -4846,10 +4846,10 @@ static int32_t ride_get_track_length(const Ride& ride)
     bool moveSlowIt = true;
     int32_t result = 0;
 
-    track_circuit_iterator it;
+    TrackCircuitIterator it;
     TrackCircuitIteratorBegin(&it, { trackStart.x, trackStart.y, tileElement });
 
-    track_circuit_iterator slowIt = it;
+    TrackCircuitIterator slowIt = it;
     while (TrackCircuitIteratorNext(&it))
     {
         trackType = it.current.element->AsTrack()->GetTrackType();
@@ -5077,9 +5077,9 @@ void Ride::Crash(uint8_t vehicleIndex)
         // Open ride window for crashed vehicle
         auto intent = Intent(WD_VEHICLE);
         intent.PutExtra(INTENT_EXTRA_VEHICLE, vehicle);
-        rct_window* w = ContextOpenIntent(&intent);
+        WindowBase* w = ContextOpenIntent(&intent);
 
-        rct_viewport* viewport = WindowGetViewport(w);
+        Viewport* viewport = WindowGetViewport(w);
         if (w != nullptr && viewport != nullptr)
         {
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;

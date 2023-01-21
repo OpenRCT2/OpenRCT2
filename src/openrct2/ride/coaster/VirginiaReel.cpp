@@ -17,7 +17,7 @@
 #include "../VehiclePaint.h"
 
 // 0x009927E6:
-static constexpr const vehicle_boundbox _virginiaReelBoundbox[] = {
+static constexpr const VehicleBoundBox _virginiaReelBoundbox[] = {
     { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 },
     { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 },
     { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 },
