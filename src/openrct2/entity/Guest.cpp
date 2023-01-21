@@ -4513,16 +4513,26 @@ void Guest::UpdateRideApproachExitWaypoints()
             return;
         }
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
-        CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
-
         RideObjectEntry* rideEntry = vehicle->GetRideEntry();
-        CarEntry* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
+        if (rideEntry == nullptr)
+            return;
 
-        Guard::Assert((Var37 & 3) < 3);
-        targetLoc.x += carEntry->peep_loading_waypoints[Var37 / 4][Var37 & 3].x;
-        targetLoc.y += carEntry->peep_loading_waypoints[Var37 / 4][Var37 & 3].y;
+        if (vehicle->vehicle_type >= std::size(rideEntry->Cars))
+            return;
 
+        const CarEntry& carEntry = rideEntry->Cars[vehicle->vehicle_type];
+
+        const size_t fours = Var37 / 4;
+        if (fours >= carEntry.peep_loading_waypoints.size())
+            return;
+
+        const auto remainder = Var37 & 3;
+        Guard::Assert(remainder < 3);
+
+        const auto& rtd = ride->GetRideTypeDescriptor();
+
+        CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
+        targetLoc += carEntry.peep_loading_waypoints[fours][remainder];
         SetDestination(targetLoc);
         return;
     }
