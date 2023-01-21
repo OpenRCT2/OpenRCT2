@@ -51,7 +51,7 @@ struct LargeSceneryTextGlyph
     uint8_t image_offset;
     uint8_t width;
     uint8_t height;
-    uint8_t pad_3;
+    uint8_t Pad3;
 };
 
 // TODO: Remove not required
@@ -62,7 +62,7 @@ struct RCTLargeSceneryText
         int16_t x, y;
     } offset[2];                       // 0x0
     uint16_t max_width;                // 0x8
-    uint16_t pad_A;                    // 0xA
+    uint16_t PadA;                     // 0xA
     uint8_t flags;                     // 0xC
     uint8_t num_images;                // 0xD
     LargeSceneryTextGlyph glyphs[256]; // 0xE

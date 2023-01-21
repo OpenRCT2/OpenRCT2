@@ -271,7 +271,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
     CoordsXYZD stationBackLoc = loc;
     CoordsXYZD stationFrontLoc = loc;
     int32_t stationLength = 0;
-    int32_t byte_F441D1 = -1;
+    int32_t ByteF441D1 = -1;
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
@@ -301,7 +301,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
         }
 
         stationBackLoc = currentLoc;
-        byte_F441D1++;
+        ByteF441D1++;
 
         currentLoc -= CoordsDirectionDelta[currentLoc.direction];
     }
@@ -363,7 +363,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
                         station.Start = currentLoc;
                         station.Height = currentLoc.z / COORDS_Z_STEP;
                         station.Depart = 1;
-                        station.Length = stationLength != 0 ? stationLength : byte_F441D1;
+                        station.Length = stationLength != 0 ? stationLength : ByteF441D1;
                         ride->num_stations++;
                     }
 

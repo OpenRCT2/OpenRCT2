@@ -73,11 +73,11 @@ namespace RCT2
         // pointer to static info. for example, wild mouse type is 0x36, subtype is
         // 0x4c.
         RCT12ObjectEntryIndex subtype;                                // 0x001
-        uint16_t pad_002;                                             // 0x002
+        uint16_t Pad002;                                              // 0x002
         uint8_t mode;                                                 // 0x004
         uint8_t colour_scheme_type;                                   // 0x005
         RCT12VehicleColour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x006
-        uint8_t pad_046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
+        uint8_t Pad046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test
         uint8_t status; // 0x049
         StringId name;  // 0x04A
@@ -101,7 +101,7 @@ namespace RCT2
         RCT12xy8 entrances[Limits::MaxStationsPerRide];          // 0x06A
         RCT12xy8 exits[Limits::MaxStationsPerRide];              // 0x072
         uint16_t last_peep_in_queue[Limits::MaxStationsPerRide]; // 0x07A
-        uint8_t pad_082[Limits::MaxStationsPerRide];             // 0x082, Used to be number of peeps in queue in RCT1, but this
+        uint8_t Pad082[Limits::MaxStationsPerRide];              // 0x082, Used to be number of peeps in queue in RCT1, but this
                                                                  // has moved.
         uint16_t vehicles[Limits::MaxTrainsPerRide];             // 0x086, Points to the first car in the train
         uint8_t depart_flags;                                    // 0x0C6
@@ -134,14 +134,14 @@ namespace RCT2
         // bit 6: log reverser, waterfall
         // bit 7: whirlpool
         uint8_t special_track_elements; // 0x0D5
-        uint8_t pad_0D6[2];             // 0x0D6
+        uint8_t Pad0D6[2];              // 0x0D6
         // Divide this value by 29127 to get the human-readable max speed
         // (in RCT2, display_speed = (max_speed * 9) >> 18)
         int32_t max_speed;                          // 0x0D8
         int32_t average_speed;                      // 0x0DC
         uint8_t current_test_segment;               // 0x0E0
         uint8_t average_speed_test_timeout;         // 0x0E1
-        uint8_t pad_0E2[0x2];                       // 0x0E2
+        uint8_t Pad0E2[0x2];                        // 0x0E2
         int32_t length[Limits::MaxStationsPerRide]; // 0x0E4
         uint16_t time[Limits::MaxStationsPerRide];  // 0x0F4
         fixed16_2dp max_positive_vertical_g;        // 0x0FC
@@ -149,7 +149,7 @@ namespace RCT2
         fixed16_2dp max_lateral_g;                  // 0x100
         fixed16_2dp previous_vertical_g;            // 0x102
         fixed16_2dp previous_lateral_g;             // 0x104
-        uint8_t pad_106[0x2];                       // 0x106
+        uint8_t Pad106[0x2];                        // 0x106
         uint32_t testing_flags;                     // 0x108
         // x y map location of the current track piece during a test
         // this is to prevent counting special tracks multiple times
@@ -202,7 +202,7 @@ namespace RCT2
         uint8_t satisfaction_next;             // 0x14C
         // Various flags stating whether a window needs to be refreshed
         uint8_t window_invalidate_flags; // 0x14D
-        uint8_t pad_14E[0x02];           // 0x14E
+        uint8_t Pad14E[0x02];            // 0x14E
         uint32_t total_customers;        // 0x150
         money32 total_profit;            // 0x154
         uint8_t popularity;              // 0x158
@@ -216,15 +216,15 @@ namespace RCT2
             uint16_t slide_peep; // 0x15E
             uint16_t maze_tiles; // 0x15E
         };
-        uint8_t pad_160[0xE];              // 0x160
+        uint8_t Pad160[0xE];               // 0x160
         uint8_t slide_peep_t_shirt_colour; // 0x16E
-        uint8_t pad_16F[0x7];              // 0x16F
+        uint8_t Pad16F[0x7];               // 0x16F
         uint8_t spiral_slide_progress;     // 0x176
-        uint8_t pad_177[0x9];              // 0x177
+        uint8_t Pad177[0x9];               // 0x177
         int16_t build_date;                // 0x180
         money16 upkeep_cost;               // 0x182
         uint16_t race_winner;              // 0x184
-        uint8_t pad_186[0x02];             // 0x186
+        uint8_t Pad186[0x02];              // 0x186
         uint32_t music_position;           // 0x188
         uint8_t breakdown_reason_pending;  // 0x18C
         uint8_t mechanic_status;           // 0x18D
@@ -279,10 +279,10 @@ namespace RCT2
         int16_t cable_lift_x;                                       // 0x1F8
         int16_t cable_lift_y;                                       // 0x1FA
         uint8_t cable_lift_z;                                       // 0x1FC
-        uint8_t pad_1FD;                                            // 0x1FD
+        uint8_t Pad1FD;                                             // 0x1FD
         uint16_t cable_lift;                                        // 0x1FE
         uint16_t queue_length[Limits::MaxStationsPerRide];          // 0x200
-        uint8_t pad_208[0x58];                                      // 0x208
+        uint8_t Pad208[0x58];                                       // 0x208
 
         uint8_t GetMinCarsPerTrain() const;
         uint8_t GetMaxCarsPerTrain() const;
@@ -340,7 +340,7 @@ namespace RCT2
         RCT12VehicleColour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
         union
         {
-            uint8_t pad_48;
+            uint8_t Pad48;
             uint8_t track_spine_colour_rct1; // 0x48
         };
         union
@@ -410,7 +410,7 @@ namespace RCT2
     {
         char Path[256];
         uint8_t Category;
-        uint8_t pad_0101[0x1F];
+        uint8_t Pad0101[0x1F];
         int8_t ObjectiveType;
         int8_t ObjectiveArg1;
         int32_t objectiveArg2;
@@ -427,7 +427,7 @@ namespace RCT2
     {
         uint8_t Pitch;         // 0x1F
         uint8_t bank_rotation; // 0x20
-        uint8_t pad_21[3];
+        uint8_t Pad21[3];
         int32_t remaining_distance; // 0x24
         int32_t velocity;           // 0x28
         int32_t acceleration;       // 0x2C
@@ -509,7 +509,7 @@ namespace RCT2
             uint8_t CollisionDetectionTimer;   // 0xC4
         };
         uint8_t animation_frame; // 0xC5
-        uint8_t pad_C6[0x2];
+        uint8_t PadC6[0x2];
         uint32_t animationState;
         uint8_t scream_sound_id; // 0xCC
         uint8_t TrackSubposition;
@@ -550,7 +550,7 @@ namespace RCT2
 
     struct Peep : RCT12EntityBase
     {
-        uint8_t pad_1F[0x22 - 0x1F];
+        uint8_t Pad1F[0x22 - 0x1F];
         StringId name_string_idx; // 0x22
         uint16_t next_x;          // 0x24
         uint16_t next_y;          // 0x26
@@ -592,7 +592,7 @@ namespace RCT2
         RCT12RideId photo2_ride_ref;     // 0x5C
         RCT12RideId photo3_ride_ref;     // 0x5D
         RCT12RideId photo4_ride_ref;     // 0x5E
-        uint8_t pad_5F[0x09];            // 0x5F
+        uint8_t Pad5F[0x09];             // 0x5F
         RCT12RideId current_ride;        // 0x68
         uint8_t current_ride_station;    // 0x69
         uint8_t current_train;           // 0x6A
@@ -622,8 +622,8 @@ namespace RCT2
             uint16_t mechanic_time_since_call;
             uint16_t next_in_queue; // 0x74
         };
-        uint8_t pad_76;
-        uint8_t pad_77;
+        uint8_t Pad76;
+        uint8_t Pad77;
         union
         {
             uint8_t maze_last_edge; // 0x78
@@ -700,7 +700,7 @@ namespace RCT2
         uint8_t hat_colour;            // 0xF8
         RCT12RideId favourite_ride;    // 0xF9
         uint8_t favourite_ride_rating; // 0xFA
-        uint8_t pad_FB;
+        uint8_t PadFB;
         uint32_t item_standard_flags; // 0xFC
         uint64_t GetItemFlags() const
         {
@@ -719,7 +719,7 @@ namespace RCT2
     union Entity
     {
     private:
-        uint8_t pad_00[0x100];
+        uint8_t Pad00[0x100];
 
     public:
         RCT12EntityBase unknown;
@@ -768,7 +768,7 @@ namespace RCT2
         uint16_t num_packed_objects; // 0x02
         uint32_t version;            // 0x04
         uint32_t magic_number;       // 0x08
-        uint8_t pad_0C[0x14];
+        uint8_t Pad0C[0x14];
     };
     assert_struct_size(S6Header, 0x20);
 
@@ -784,7 +784,7 @@ namespace RCT2
         uint8_t objective_arg_1; // 0x03
         int32_t objective_arg_2; // 0x04
         int16_t objective_arg_3; // 0x08
-        uint8_t pad_00A[0x3E];
+        uint8_t Pad00A[0x3E];
         char name[64];        // 0x48
         char details[256];    // 0x88
         RCTObjectEntry entry; // 0x188
@@ -838,7 +838,7 @@ namespace RCT2
         uint16_t sprite_lists_head[static_cast<uint8_t>(EntityListId::Count)];
         uint16_t sprite_lists_count[static_cast<uint8_t>(EntityListId::Count)];
         StringId park_name;
-        uint8_t pad_013573D6[2];
+        uint8_t Pad013573D6[2];
         uint32_t park_name_args;
         money32 initial_cash;
         money32 current_loan;
@@ -846,13 +846,13 @@ namespace RCT2
         money16 park_entrance_fee;
         uint16_t rct1_park_entrance_x;
         uint16_t rct1_park_entrance_y;
-        uint8_t pad_013573EE[2];
+        uint8_t Pad013573EE[2];
         uint8_t rct1_park_entrance_z;
-        uint8_t pad_013573F1;
+        uint8_t Pad013573F1;
         rct12_peep_spawn peep_spawns[Limits::MaxPeepSpawns];
         uint8_t guest_count_change_modifier;
         uint8_t current_research_level;
-        uint8_t pad_01357400[4];
+        uint8_t Pad01357400[4];
         uint32_t researched_ride_types[Limits::MaxResearchedRideTypeQuads];
         uint32_t researched_ride_entries[Limits::MaxResearchedRideEntryQuads];
         uint32_t researched_track_types_a[128];
@@ -867,7 +867,7 @@ namespace RCT2
 
         // SC6[8]
         uint16_t last_guests_in_park;
-        uint8_t pad_01357BCA[3];
+        uint8_t Pad01357BCA[3];
         uint8_t handyman_colour;
         uint8_t mechanic_colour;
         uint8_t security_colour;
@@ -886,7 +886,7 @@ namespace RCT2
         uint8_t active_research_types;
         uint8_t research_progress_stage;
         uint32_t last_researched_item_subject;
-        uint8_t pad_01357CF8[1000];
+        uint8_t Pad01357CF8[1000];
         uint32_t next_research_item;
         uint16_t research_progress;
         uint8_t next_research_category;
@@ -902,7 +902,7 @@ namespace RCT2
         uint8_t guest_initial_thirst;
         uint8_t objective_type;
         uint8_t objective_year;
-        uint8_t pad_013580FA[2];
+        uint8_t Pad013580FA[2];
         money32 objective_currency;
         uint16_t objective_guests;
         uint8_t campaign_weeks_left[20];
@@ -916,7 +916,7 @@ namespace RCT2
         money32 current_profit;
         money32 weekly_profit_average_dividend;
         uint16_t weekly_profit_average_divisor;
-        uint8_t pad_0135833A[2];
+        uint8_t Pad0135833A[2];
 
         // Ignored in scenario
         money32 weekly_profit_history[Limits::FinanceGraphSize];
@@ -937,19 +937,19 @@ namespace RCT2
         money16 land_price;
         money16 construction_rights_price;
         uint16_t word_01358774;
-        uint8_t pad_01358776[2];
+        uint8_t Pad01358776[2];
         uint32_t cd_key;
-        uint8_t pad_0135877C[64];
+        uint8_t Pad0135877C[64];
         uint32_t game_version_number;
         money32 completed_company_value_record;
         uint32_t loan_hash;
         uint16_t ride_count;
-        uint8_t pad_013587CA[6];
+        uint8_t Pad013587CA[6];
         money32 historical_profit;
-        uint8_t pad_013587D4[4];
+        uint8_t Pad013587D4[4];
         char scenario_completed_name[32];
         money32 cash;
-        uint8_t pad_013587FC[50];
+        uint8_t Pad013587FC[50];
         uint16_t park_rating_casualty_penalty;
         uint16_t map_size_units;
         uint16_t map_size_minus_2;
@@ -960,13 +960,13 @@ namespace RCT2
         uint16_t park_rating_warning_days;
         uint8_t last_entrance_style;
         uint8_t rct1_water_colour;
-        uint8_t pad_01358842[2];
+        uint8_t Pad01358842[2];
         RCT12ResearchItem research_items[Limits::MaxResearchItems];
         uint16_t map_base_z;
         char scenario_name[64];
         char scenario_description[256];
         uint8_t current_interest_rate;
-        uint8_t pad_0135934B;
+        uint8_t Pad0135934B;
         uint32_t same_price_throughout_extended;
         int16_t park_entrance_x[Limits::MaxParkEntrances];
         int16_t park_entrance_y[Limits::MaxParkEntrances];
@@ -985,21 +985,21 @@ namespace RCT2
         uint8_t saved_view_rotation;
         RCT12MapAnimation map_animations[Limits::MaxAnimatedObjects];
         uint16_t num_map_animations;
-        uint8_t pad_0138B582[2];
+        uint8_t Pad0138B582[2];
         RideRatingCalculationData ride_ratings_calc_data;
-        uint8_t pad_0138B5D0[60];
+        uint8_t Pad0138B5D0[60];
         RCT12RideMeasurement ride_measurements[8];
         uint32_t next_guest_index;
         uint16_t grass_and_scenery_tilepos;
         uint32_t patrol_areas[(Limits::MaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
         StaffMode staff_modes[Limits::MaxStaff + Limits::StaffTypeCount];
-        uint8_t pad_13CA73E;
-        uint8_t pad_13CA73F;
-        uint8_t byte_13CA740;
-        uint8_t pad_13CA741;
-        uint8_t byte_13CA742[4]; // unused
+        uint8_t Pad13CA73E;
+        uint8_t Pad13CA73F;
+        uint8_t Byte13CA740;
+        uint8_t Pad13CA741;
+        uint8_t Byte13CA742[4]; // unused
         uint8_t climate;
-        uint8_t pad_013CA747;
+        uint8_t Pad013CA747;
         uint16_t climate_update_timer;
         uint8_t current_weather;
         uint8_t next_weather;
@@ -1017,7 +1017,7 @@ namespace RCT2
         uint32_t rct1_scenario_flags;      // Unused in RCT2
         uint16_t wide_path_tile_loop_x;
         uint16_t wide_path_tile_loop_y;
-        uint8_t pad_13CE778[434];
+        uint8_t Pad13CE778[434];
     };
     assert_struct_size(S6Data, 0x5a3c4a);
 

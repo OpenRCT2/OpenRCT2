@@ -43,9 +43,9 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     stream->Seek(6, STREAM_SEEK_CURRENT);
     stream->Seek(0x80 * 2, STREAM_SEEK_CURRENT);
     stream->Seek(1, STREAM_SEEK_CURRENT); // entry_count
-    stream->Seek(1, STREAM_SEEK_CURRENT); // pad_107;
+    stream->Seek(1, STREAM_SEEK_CURRENT); // Pad107;
     _legacyType.priority = stream->ReadValue<uint8_t>();
-    stream->Seek(1, STREAM_SEEK_CURRENT); // pad_109;
+    stream->Seek(1, STREAM_SEEK_CURRENT); // Pad109;
     _legacyType.entertainer_costumes = stream->ReadValue<uint32_t>();
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);

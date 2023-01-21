@@ -316,7 +316,7 @@ struct UnkSupportsDescriptor {
 };
 
 /* 0x0097B23C */
-static constexpr const UnkSupportsDescriptor byte_97B23C[] = {
+static constexpr const UnkSupportsDescriptor Byte97B23C[] = {
     {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // Flat to gentle
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
@@ -401,7 +401,7 @@ static constexpr const UnkSupportsDescriptor byte_97B23C[] = {
 };
 
 /* 0x0098D8D4 */
-static constexpr const UnkSupportsDescriptor byte_98D8D4[] = {
+static constexpr const UnkSupportsDescriptor Byte98D8D4[] = {
     {{{0, 0, 0}, {1, 1, 4}}, 0, 1},
     {{{0, 0, 0}, {1, 1, 4}}, 0, 1},
     {{{0, 0, 0}, {1, 1, 4}}, 0, 1},
@@ -578,14 +578,14 @@ bool WoodenASupportsPaintSetup(
         special = (special - 1) & 0xFFFF;
 
         if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][special] != 0
-            && byte_97B23C[special].var_7 != 0)
+            && Byte97B23C[special].var_7 != 0)
         {
             auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][special]);
 
-            auto bBox = byte_97B23C[special].bounding_box;
+            auto bBox = Byte97B23C[special].bounding_box;
             bBox.offset.z += z;
 
-            if (byte_97B23C[special].var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
+            if (Byte97B23C[special].var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
             {
                 PaintAddImageAsParent(session, imageId, { 0, 0, z }, bBox);
                 hasSupports = true;
@@ -747,11 +747,11 @@ bool WoodenBSupportsPaintSetup(
     {
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
-        const UnkSupportsDescriptor& supportsDesc = byte_97B23C[specialIndex];
+        const UnkSupportsDescriptor& supportsDesc = Byte97B23C[specialIndex];
 
         if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][specialIndex] != 0
             && supportsDesc.var_7 != 0)
-        { // byte_97B23C[special].var_7 is never 0
+        { // Byte97B23C[special].var_7 is never 0
             auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][specialIndex]);
 
             auto boundBox = supportsDesc.bounding_box;
@@ -1285,7 +1285,7 @@ bool PathASupportsPaintSetup(
 
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + specialIndex;
 
-        const UnkSupportsDescriptor& supportsDesc = byte_98D8D4[specialIndex];
+        const UnkSupportsDescriptor& supportsDesc = Byte98D8D4[specialIndex];
         auto boundBox = supportsDesc.bounding_box;
         boundBox.offset.z += baseHeight;
 

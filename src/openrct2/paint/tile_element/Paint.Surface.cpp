@@ -39,7 +39,7 @@
 #include <cstring>
 #include <iterator>
 
-static constexpr const uint8_t byte_97B444[] = {
+static constexpr const uint8_t Byte97B444[] = {
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6, 5, 7, 12, 14, 13, 15, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 16, 0, 18, 15, 0,
 };
 
@@ -128,25 +128,25 @@ static constexpr const CornerHeight corner_heights[] = {
 };
 
 // bottom left tint
-static constexpr const uint8_t byte_97B524[] = {
+static constexpr const uint8_t Byte97B524[] = {
     2, 5, 1, 4, 2, 5, 1, 2, 2, 4,
     1, 2, 1, 3, 0, 3, 1, 5, 0,
 };
 
 // top left tint
-static constexpr const uint32_t byte_97B537[] = {
+static constexpr const uint32_t Byte97B537[] = {
     2, 5, 2, 4, 2, 5, 1, 1, 3, 4,
     3, 2, 1, 2, 0, 3, 1, 5, 0,
 };
 
 // top right tint
-static constexpr const uint8_t byte_97B54A[] = {
+static constexpr const uint8_t Byte97B54A[] = {
     2, 2, 2, 4, 0, 0, 1, 1, 3, 4,
     3, 5, 1, 2, 2, 3, 1, 5, 0,
 };
 
 // bottom right tint
-static constexpr const uint8_t byte_97B55D[] = {
+static constexpr const uint8_t Byte97B55D[] = {
     2, 2, 1, 4, 0, 0, 1, 2, 2, 4,
     1, 5, 1, 3, 2, 3, 1, 5, 0,
 };
@@ -205,11 +205,11 @@ static constexpr const int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
 
 // clang-format on
 // tunnel offset
-static constexpr const uint8_t byte_97B5B0[TUNNEL_TYPE_COUNT] = {
+static constexpr const uint8_t Byte97B5B0[TUNNEL_TYPE_COUNT] = {
     0, 0, 0, 3, 3, 3, 6, 6, 6, 6, 10, 11, 12, 13, 14, 14, 16, 17, 18, 19, 20, 21, 22,
 };
 
-static constexpr const uint8_t byte_97B740[] = {
+static constexpr const uint8_t Byte97B740[] = {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 4, 0,
 };
 
@@ -498,23 +498,23 @@ static void ViewportSurfaceSmoothenEdge(
     switch (edge)
     {
         case EDGE_BOTTOMLEFT:
-            dh = byte_97B524[byte_97B444[self.slope]];
-            cl = byte_97B54A[byte_97B444[neighbour.slope]];
+            dh = Byte97B524[Byte97B444[self.slope]];
+            cl = Byte97B54A[Byte97B444[neighbour.slope]];
             break;
 
         case EDGE_TOPLEFT:
-            dh = byte_97B537[byte_97B444[self.slope]];
-            cl = byte_97B55D[byte_97B444[neighbour.slope]];
+            dh = Byte97B537[Byte97B444[self.slope]];
+            cl = Byte97B55D[Byte97B444[neighbour.slope]];
             break;
 
         case EDGE_BOTTOMRIGHT:
-            dh = byte_97B55D[byte_97B444[self.slope]];
-            cl = byte_97B537[byte_97B444[neighbour.slope]];
+            dh = Byte97B55D[Byte97B444[self.slope]];
+            cl = Byte97B537[Byte97B444[neighbour.slope]];
             break;
 
         case EDGE_TOPRIGHT:
-            dh = byte_97B54A[byte_97B444[self.slope]];
-            cl = byte_97B524[byte_97B444[neighbour.slope]];
+            dh = Byte97B54A[Byte97B444[self.slope]];
+            cl = Byte97B524[Byte97B444[neighbour.slope]];
             break;
     }
 
@@ -536,7 +536,7 @@ static void ViewportSurfaceSmoothenEdge(
             return;
     }
 
-    const auto image_id = ImageId(maskImageBase + byte_97B444[self.slope]);
+    const auto image_id = ImageId(maskImageBase + Byte97B444[self.slope]);
 
     if (PaintAttachToPreviousPS(session, image_id, 0, 0))
     {
@@ -722,7 +722,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         if ((zOffset + tunnelHeight) > neighbourCornerHeight1 || (zOffset + tunnelHeight) > cornerHeight1)
         {
-            tunnelType = byte_97B5B0[tunnelType];
+            tunnelType = Byte97B5B0[tunnelType];
         }
 
         zOffset *= 16;
@@ -1001,10 +1001,10 @@ static void PaintPatrolArea(PaintSession& session, const SurfaceElement& element
     auto colour = GetPatrolAreaTileColour(session.MapPosition);
     if (colour)
     {
-        assert(surfaceShape < std::size(byte_97B444));
+        assert(surfaceShape < std::size(Byte97B444));
 
         auto [localZ, localSurfaceShape] = SurfaceGetHeightAboveWater(element, height, surfaceShape);
-        auto imageId = ImageId(SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[localSurfaceShape], *colour);
+        auto imageId = ImageId(SPR_TERRAIN_SELECTION_PATROL_AREA + Byte97B444[localSurfaceShape], *colour);
 
         auto* backup = session.LastPS;
         PaintAddImageAsParent(session, imageId, { 0, 0, localZ }, { 32, 32, 1 });
@@ -1118,8 +1118,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             }
         }
 
-        assert(surfaceShape < std::size(byte_97B444));
-        const uint8_t image_offset = byte_97B444[surfaceShape];
+        assert(surfaceShape < std::size(Byte97B444));
+        const uint8_t image_offset = Byte97B444[surfaceShape];
 
         ImageId imageId;
         if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
@@ -1169,8 +1169,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         // Loc660E9A:
         if (tileElement.GetOwnership() & OWNERSHIP_OWNED)
         {
-            assert(surfaceShape < std::size(byte_97B444));
-            PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape]), 0, 0);
+            assert(surfaceShape < std::size(Byte97B444));
+            PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[surfaceShape]), 0, 0);
         }
         else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
         {
@@ -1186,8 +1186,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     {
         if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
         {
-            assert(surfaceShape < std::size(byte_97B444));
-            PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape]), 0, 0);
+            assert(surfaceShape < std::size(Byte97B444));
+            PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[surfaceShape]), 0, 0);
         }
         else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
         {
@@ -1217,7 +1217,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // Walls
                 // Loc661089:
                 const auto fpId = static_cast<FilterPaletteID>((((mapSelectionType - 9) + rotation) & 3) + 0x21);
-                const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape], fpId);
+                const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
             else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0)
@@ -1226,7 +1226,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // Selection split into four quarter segments
                 const auto fpId = static_cast<FilterPaletteID>(
                     (((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27);
-                const auto image_id = ImageId(SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape], fpId);
+                const auto image_id = ImageId(SPR_TERRAIN_SELECTION_QUARTER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
             else if (mapSelectionType <= MAP_SELECT_TYPE_FULL)
@@ -1239,7 +1239,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 }
 
                 const auto fpId = static_cast<FilterPaletteID>(eax + 0x21);
-                const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape], fpId);
+                const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
             else
@@ -1248,7 +1248,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 auto [local_height, local_surfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
                 const auto fpId = static_cast<FilterPaletteID>(38);
-                const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape], fpId);
+                const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[local_surfaceShape], fpId);
 
                 PaintStruct* backup = session.LastPS;
                 PaintAddImageAsParent(session, image_id, { 0, 0, local_height }, { 32, 32, 1 });
@@ -1274,7 +1274,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 fpId = static_cast<FilterPaletteID>(43);
             }
 
-            const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape], fpId);
+            const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
             PaintAttachToPreviousPS(session, image_id, 0, 0);
             break;
         }
@@ -1292,7 +1292,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if ((session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE)
         && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
-        const uint8_t image_offset = byte_97B444[surfaceShape];
+        const uint8_t image_offset = Byte97B444[surfaceShape];
         auto imageId = GetSurfaceImage(session, terrain_type, image_offset, rotation, 1, false, true);
         PaintAttachToPreviousPS(session, imageId, 0, 0);
     }
@@ -1326,7 +1326,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         int32_t image_offset = 0;
         if (waterHeight <= localHeight)
         {
-            image_offset = byte_97B740[surfaceShape & 0xF];
+            image_offset = Byte97B740[surfaceShape & 0xF];
         }
 
         const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::PaletteWater).WithBlended(true);

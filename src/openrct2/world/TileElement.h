@@ -50,7 +50,7 @@ struct BannerElement;
 
 struct TileElementBase
 {
-    uint8_t type;            // 0
+    uint8_t Type;            // 0
     uint8_t Flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
     uint8_t BaseHeight;      // 2
     uint8_t ClearanceHeight; // 3
@@ -172,8 +172,8 @@ struct TileElementBase
  */
 struct TileElement : public TileElementBase
 {
-    uint8_t pad_05[3];
-    uint8_t pad_08[8];
+    uint8_t Pad05[3];
+    uint8_t Pad08[8];
 
     void ClearAs(TileElementType newType);
 
@@ -198,7 +198,7 @@ private:
     uint8_t EdgeStyle;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0B[5];
+    uint8_t Pad0B[5];
 #pragma clang diagnostic pop
 
 public:
@@ -433,7 +433,7 @@ private:
     uint8_t Colour[3];           // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0B[5];
+    uint8_t Pad0B[5];
 #pragma clang diagnostic pop
 
 public:
@@ -510,7 +510,7 @@ private:
     uint8_t animation;           // 0C 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0D[3];
+    uint8_t Pad0D[3];
 #pragma clang diagnostic pop
 
 public:
@@ -555,7 +555,7 @@ private:
     uint8_t flags2;            // C
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0D[3];
+    uint8_t Pad0D[3];
 #pragma clang diagnostic pop
 
 public:
@@ -597,7 +597,7 @@ private:
     uint8_t AllowedEdges; // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_09[7];
+    uint8_t Pad09[7];
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;

@@ -12,29 +12,29 @@
 
 TileElementType TileElementBase::GetType() const
 {
-    return static_cast<TileElementType>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    return static_cast<TileElementType>((this->Type & TILE_ELEMENT_TYPE_MASK) >> 2);
 }
 
 void TileElementBase::SetType(TileElementType newType)
 {
-    this->type &= ~TILE_ELEMENT_TYPE_MASK;
-    this->type |= ((EnumValue(newType) << 2) & TILE_ELEMENT_TYPE_MASK);
+    this->Type &= ~TILE_ELEMENT_TYPE_MASK;
+    this->Type |= ((EnumValue(newType) << 2) & TILE_ELEMENT_TYPE_MASK);
 }
 
 Direction TileElementBase::GetDirection() const
 {
-    return this->type & TILE_ELEMENT_DIRECTION_MASK;
+    return this->Type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
 void TileElementBase::SetDirection(Direction direction)
 {
-    this->type &= ~TILE_ELEMENT_DIRECTION_MASK;
-    this->type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
+    this->Type &= ~TILE_ELEMENT_DIRECTION_MASK;
+    this->Type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
 }
 
 Direction TileElementBase::GetDirectionWithOffset(uint8_t offset) const
 {
-    return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
+    return ((this->Type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }
 
 bool TileElementBase::IsLastForTile() const

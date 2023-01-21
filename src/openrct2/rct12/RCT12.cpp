@@ -30,7 +30,7 @@ using namespace OpenRCT2;
 
 RCT12TileElementType RCT12TileElementBase::GetType() const
 {
-    auto elem_type = static_cast<RCT12TileElementType>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    auto elem_type = static_cast<RCT12TileElementType>((this->Type & TILE_ELEMENT_TYPE_MASK) >> 2);
     switch (elem_type)
     {
         case RCT12TileElementType::Surface:
@@ -53,22 +53,22 @@ RCT12TileElementType RCT12TileElementBase::GetType() const
 
 uint8_t RCT12TileElementBase::GetDirection() const
 {
-    return this->type & TILE_ELEMENT_DIRECTION_MASK;
+    return this->Type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
 uint8_t RCT12TileElementBase::GetOccupiedQuadrants() const
 {
-    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
 }
 
 bool RCT12TileElementBase::IsLastForTile() const
 {
-    return (this->flags & RCT12_TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+    return (this->Flags & RCT12_TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 bool RCT12TileElementBase::IsGhost() const
 {
-    return (this->flags & RCT12_TILE_ELEMENT_FLAG_GHOST) != 0;
+    return (this->Flags & RCT12_TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
 uint8_t RCT12SurfaceElement::GetSlope() const
@@ -79,14 +79,14 @@ uint8_t RCT12SurfaceElement::GetSlope() const
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const
 {
     uint32_t retVal = (terrain >> 5) & 7;
-    retVal |= (type & RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK) << 3;
+    retVal |= (Type & RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK) << 3;
     return retVal;
 }
 
 uint32_t RCT12SurfaceElement::GetEdgeStyle() const
 {
     uint32_t terrain_edge = (slope >> 5) & 7;
-    if (type & 128)
+    if (Type & 128)
         terrain_edge |= (1 << 3);
     return terrain_edge;
 }
@@ -113,7 +113,7 @@ uint8_t RCT12SurfaceElement::GetParkFences() const
 
 bool RCT12SurfaceElement::HasTrackThatNeedsWater() const
 {
-    return (type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
+    return (Type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
 }
 
 uint8_t RCT12PathElement::GetEntryIndex() const
@@ -123,7 +123,7 @@ uint8_t RCT12PathElement::GetEntryIndex() const
 
 uint8_t RCT12PathElement::GetQueueBannerDirection() const
 {
-    return ((type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
+    return ((Type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
 }
 
 bool RCT12PathElement::IsSloped() const
@@ -148,12 +148,12 @@ uint8_t RCT12PathElement::GetStationIndex() const
 
 bool RCT12PathElement::IsWide() const
 {
-    return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
+    return (Type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
 }
 
 bool RCT12PathElement::IsQueue() const
 {
-    return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
+    return (Type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
 }
 
 bool RCT12PathElement::HasQueueBanner() const
@@ -187,7 +187,7 @@ uint8_t RCT12PathElement::GetAdditionStatus() const
 
 uint8_t RCT12PathElement::GetRCT1PathType() const
 {
-    uint8_t pathColour = type & 3;
+    uint8_t pathColour = Type & 3;
     uint8_t pathType2 = (entryIndex & RCT12_FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
 
     pathType2 = pathType2 | pathColour;
@@ -196,7 +196,7 @@ uint8_t RCT12PathElement::GetRCT1PathType() const
 
 uint8_t RCT12PathElement::GetRCT1SupportType() const
 {
-    return (flags & 0b01100000) >> 5;
+    return (Flags & 0b01100000) >> 5;
 }
 
 uint8_t RCT12TrackElement::GetTrackType() const
@@ -230,7 +230,7 @@ uint8_t RCT12TrackElement::GetStationIndex() const
 
 bool RCT12TrackElement::HasChain() const
 {
-    return type & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    return Type & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
 }
 
 bool RCT12TrackElement::HasCableLift() const
@@ -292,7 +292,7 @@ uint8_t RCT12TrackElement::GetDoorBState() const
 
 bool RCT12TrackElement::IsIndestructible() const
 {
-    return (flags & RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;
+    return (Flags & RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;
 }
 
 uint8_t RCT12SmallSceneryElement::GetEntryIndex() const
@@ -307,7 +307,7 @@ uint8_t RCT12SmallSceneryElement::GetAge() const
 
 uint8_t RCT12SmallSceneryElement::GetSceneryQuadrant() const
 {
-    return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (this->Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 colour_t RCT12SmallSceneryElement::GetPrimaryColour() const
@@ -346,7 +346,7 @@ colour_t RCT12LargeSceneryElement::GetSecondaryColour() const
 
 uint8_t RCT12LargeSceneryElement::GetBannerIndex() const
 {
-    return (type & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2) | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
+    return (Type & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2) | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
 }
 
 uint8_t RCT12WallElement::GetEntryIndex() const
@@ -356,7 +356,7 @@ uint8_t RCT12WallElement::GetEntryIndex() const
 
 uint8_t RCT12WallElement::GetSlope() const
 {
-    return (type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 colour_t RCT12WallElement::GetPrimaryColour() const
@@ -367,7 +367,7 @@ colour_t RCT12WallElement::GetPrimaryColour() const
 colour_t RCT12WallElement::GetSecondaryColour() const
 {
     uint8_t secondaryColour = (colour_1 & ~TILE_ELEMENT_COLOUR_MASK) >> 5;
-    secondaryColour |= (flags & 0x60) >> 2;
+    secondaryColour |= (Flags & 0x60) >> 2;
     return secondaryColour;
 }
 
@@ -414,7 +414,7 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 
 colour_t RCT12WallElement::GetRCT1WallColour() const
 {
-    return ((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5);
+    return ((Type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5);
 }
 
 uint8_t RCT12WallElement::GetRCT1Slope() const
@@ -469,17 +469,17 @@ bool IsUserStringID(StringId stringId)
 
 bool RCT12PathElement::IsBroken() const
 {
-    return (flags & RCT12_TILE_ELEMENT_FLAG_BROKEN) != 0;
+    return (Flags & RCT12_TILE_ELEMENT_FLAG_BROKEN) != 0;
 }
 
 bool RCT12PathElement::IsBlockedByVehicle() const
 {
-    return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
+    return (Flags & RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
 }
 
 bool RCT12TrackElement::BlockBrakeClosed() const
 {
-    return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+    return (Flags & RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
 }
 
 bool RCT12ResearchItem::IsInventedEndMarker() const

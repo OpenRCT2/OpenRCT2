@@ -85,7 +85,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.ThirdCar = stream->ReadValue<uint8_t>();
 
     _legacyType.BuildMenuPriority = 0;
-    // Skip pad_019
+    // Skip Pad019
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
     for (auto& carEntry : _legacyType.Cars)

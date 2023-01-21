@@ -28,10 +28,10 @@ static constexpr uint32_t InvalidTick = 0xFFFFFFFF;
 #pragma pack(push, 1)
 union EntitySnapshot
 {
-    uint8_t pad_00[0x200];
+    uint8_t Pad00[0x200];
     EntityBase base;
     EntitySnapshot()
-        : pad_00()
+        : Pad00()
     {
     }
 };
@@ -436,9 +436,9 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, powered_acceleration);
         COMPARE_FIELD(Vehicle, CollisionDetectionTimer);
         COMPARE_FIELD(Vehicle, animation_frame);
-        for (std::size_t i = 0; i < sizeof(Vehicle::pad_C6) / sizeof(*Vehicle::pad_C6); i++)
+        for (std::size_t i = 0; i < sizeof(Vehicle::PadC6) / sizeof(*Vehicle::PadC6); i++)
         {
-            COMPARE_FIELD(Vehicle, pad_C6[i]);
+            COMPARE_FIELD(Vehicle, PadC6[i]);
         }
         COMPARE_FIELD(Vehicle, animationState);
         COMPARE_FIELD(Vehicle, scream_sound_id);
