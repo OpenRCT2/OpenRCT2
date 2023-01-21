@@ -21,7 +21,7 @@ template<class KeyType, class ValueType>
 class TreeContainer : public Node<KeyType, ValueType>
 {
 public:
-    TreeContainer(const std::vector<std::pair<KeyType, ValueType>>& keyValues)
+    TreeContainer(const std::vector<std::pair<KeyType, ValueType>>& keyValues, const KeyRange<KeyType>& keyRange): _keyGenerator(keyRange)
     {
         std::vector<KeyType> keys;
         std::vector<ValueType> values;

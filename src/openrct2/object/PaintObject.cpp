@@ -165,6 +165,12 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             }
         }
 
+        if (root.contains("keyRanges"))
+        {
+            const auto& keyRangesJson = root["keyRanges"];
+            _keyRange.FromJson(keyRangesJson);
+        }
+
         std::vector<ImageIdOffsetJson> offsetsJson;
         using ImageIdKeyValue = std::pair<PaintStructKey, uint32_t>;
         auto imageIdOffsets = root["imageIdOffsets"];
@@ -186,7 +192,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 }
                 ImageIdOffset offset;
                 offset.Id = offsetJson.Id;
-                offset.Entries = std::make_shared<ImageIdTree>(keyValues);
+                offset.Entries = std::make_shared<ImageIdTree>(keyValues, _keyRange);
                 _imageIdOffsetMapping[offset.Id] = offset;
             }
         }
@@ -221,7 +227,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 
             }
         }
-        _paintStructsTree = std::make_unique<PaintStructTree>(paintKeyValues);
+        _paintStructsTree = std::make_unique<PaintStructTree>(paintKeyValues, _keyRange);
     }
     catch (JsonException& e)
     {

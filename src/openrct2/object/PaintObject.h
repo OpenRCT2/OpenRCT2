@@ -33,6 +33,7 @@ private:
     std::map<std::string, BoundBoxEntry> _boundBoxMapping;
 
     std::vector<uint32_t> _vehicleIndices;
+    KeyRange<PaintStructKey> _keyRange;
 
     constexpr const uint8_t* GetTrackSequenceMapping(const uint32_t direction, const track_type_t trackElement) const;
 

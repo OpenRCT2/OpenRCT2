@@ -365,11 +365,7 @@ void PaintStructKey::FromJson(const json_t& paintStruct)
 {
     if (paintStruct.contains("trackElement"))
     {
-        auto trackElement = paintStruct["trackElement"];
-        if (trackElement == "flat_track_3x3")
-            Element = TrackElemType::FlatTrack3x3;
-        else if (trackElement == "flat_track_4x4")
-            Element = TrackElemType::FlatTrack4x4;
+        Element = PaintStructDescriptor::TrackElemTypeFromString(paintStruct["trackElement"]);
     }
 
     if (paintStruct.contains("trackSequence"))
@@ -481,4 +477,13 @@ constexpr const uint8_t PaintStructDescriptor::GetEdges(track_type_t element, ui
         default:
             return 0;
     }
+}
+
+track_type_t PaintStructDescriptor::TrackElemTypeFromString(const std::string& elem)
+{
+    if (elem == "flat_track_3x3")
+        return TrackElemType::FlatTrack3x3;
+    else if (elem == "flat_track_4x4")
+        return TrackElemType::FlatTrack4x4;
+    return TrackElemType::None;
 }

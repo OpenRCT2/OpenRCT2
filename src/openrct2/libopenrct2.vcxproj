@@ -325,6 +325,7 @@
     <ClInclude Include="paint\KeyGenerator.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
+    <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\PaintStructDescriptor.h" />
     <ClInclude Include="paint\Supports.h" />

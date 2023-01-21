@@ -9,6 +9,7 @@
 #include <optional>
 #include <tuple>
 #include <vector>
+#include "../core/Json.hpp"
 
 struct Vehicle;
 using PaintStructSequenceMapping = std::array<std::vector<uint32_t>, 4>;
@@ -180,6 +181,8 @@ struct PaintStructDescriptor
 
     PaintStructDescriptor();
 
+    static track_type_t TrackElemTypeFromString(const std::string& elem);
+
 private:
     constexpr const uint8_t GetEdges(track_type_t element, uint8_t trackSequence) const;
 };
@@ -222,3 +225,129 @@ struct PaintStructJson
 private:
     const PaintObject& _object;
 };
+
+template<> class KeyRange<PaintStructKey>
+{
+public:
+    KeyRange()
+    {
+        SetFields();
+    }
+
+    KeyRange(const KeyRange& other)
+        : Elements(other.Elements)
+        , Directions(other.Directions)
+        , TrackSequences(other.TrackSequences)
+        , VehicleNumPeepes(other.VehicleNumPeepes)
+        , VehiclePitches(other.VehiclePitches)
+        , SessionCurrentRotations(other.SessionCurrentRotations)
+    {
+        SetFields();
+    }
+
+    const std::vector<uint32_t>& Get(uint32_t location) const
+    {
+        return *_fieldsRanges[location];
+    }
+
+    std::vector<uint32_t> Elements;
+    std::vector<uint32_t> Directions;
+    std::vector<uint32_t> TrackSequences;
+    std::vector<uint32_t> VehicleNumPeepes;
+    std::vector<uint32_t> VehiclePitches;
+    std::vector<uint32_t> VehicleSpriteDirections;
+    std::vector<uint32_t> SessionCurrentRotations;
+
+    void FromJson(const json_t& json);
+
+private:
+    std::array<std::vector<uint32_t>*, PaintStructKey::NumArgs> _fieldsRanges;
+
+    void SetFields()
+    {
+        _fieldsRanges[0] = &Elements;
+        _fieldsRanges[1] = &Directions;
+        _fieldsRanges[2] = &TrackSequences;
+        _fieldsRanges[3] = &VehicleNumPeepes;
+        _fieldsRanges[4] = &VehiclePitches;
+        _fieldsRanges[5] = &VehicleSpriteDirections;
+        _fieldsRanges[6] = &SessionCurrentRotations;
+    }
+};
+
+inline void KeyRange<PaintStructKey>::FromJson(const json_t& json)
+{
+    if (json.contains("elements"))
+    {
+        const auto& elementsJson = json["elements"];
+        if (elementsJson.is_array())
+        {
+            for (const auto& elementJson : elementsJson)
+            {
+                auto trackType = PaintStructDescriptor::TrackElemTypeFromString(elementJson);
+                Elements.push_back(trackType);
+            }
+                
+        }
+    }
+
+    if (json.contains("directions"))
+    {
+        const auto& directionsJson = json["directions"];
+        if (directionsJson.is_array())
+        {
+            for (const auto& directionJson : directionsJson)
+                Directions.push_back(directionJson);
+        }
+    }
+
+    if (json.contains("trackSequences"))
+    {
+        const auto& trackSequencesJson = json["trackSequences"];
+        if (trackSequencesJson.is_array())
+        {
+            for (const auto& trackSequenceJson : trackSequencesJson)
+                TrackSequences.push_back(trackSequenceJson);
+        }
+    }
+
+    if (json.contains("vehicleNumPeeps"))
+    {
+        const auto& vehicleNumPeepesJson = json["vehicleNumPeeps"];
+        if (vehicleNumPeepesJson.is_array())
+        {
+            for (const auto& vehicleNumPeepsJson : vehicleNumPeepesJson)
+                VehicleNumPeepes.push_back(vehicleNumPeepsJson);
+        }
+    }
+
+    if (json.contains("vehiclePitches"))
+    {
+        const auto& vehiclePitchesJson = json["vehiclePitches"];
+        if (vehiclePitchesJson.is_array())
+        {
+            for (const auto& vehiclePitchJson : vehiclePitchesJson)
+                VehiclePitches.push_back(vehiclePitchJson);
+        }
+    }
+
+    if (json.contains("vehicleSpriteDirections"))
+    {
+        const auto& vehicleSpriteDirectionsJson = json["vehicleSpriteDirections"];
+        if (vehicleSpriteDirectionsJson.is_array())
+        {
+            for (const auto& vehicleSpriteDirectionJson : vehicleSpriteDirectionsJson)
+                VehicleSpriteDirections.push_back(vehicleSpriteDirectionJson);
+        }
+    }
+
+    if (json.contains("sessionCurrentRotations"))
+    {
+        const auto& sessionCurrentRotationsJson = json["sessionCurrentRotations"];
+        if (sessionCurrentRotationsJson.is_array())
+        {
+            for (const auto& sessionCurrentRotationJson : sessionCurrentRotationsJson)
+                SessionCurrentRotations.push_back(sessionCurrentRotationJson);
+        }
+    }
+}
