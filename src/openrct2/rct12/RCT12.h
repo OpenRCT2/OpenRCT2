@@ -240,7 +240,7 @@ struct rct12_news_item
     uint16_t Ticks;
     uint16_t MonthYear;
     uint8_t Day;
-    uint8_t pad_0B;
+    uint8_t Pad0B;
     char Text[256];
 };
 assert_struct_size(rct12_news_item, 0x10C);
@@ -328,7 +328,7 @@ struct RCT12TileElementBase
  */
 struct RCT12TileElement : public RCT12TileElementBase
 {
-    uint8_t pad_04[4];
+    uint8_t Pad04[4];
     template<typename TType, RCT12TileElementType TClass> const TType* as() const
     {
         return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
@@ -677,63 +677,63 @@ assert_struct_size(RCT12EntityBase, 0x1F);
 
 struct RCT12EntityBalloon : RCT12EntityBase
 {
-    uint8_t pad_1F[0x24 - 0x1F];
+    uint8_t Pad1F[0x24 - 0x1F];
     uint16_t popped;      // 0x24
     uint8_t time_to_move; // 0x26
     uint8_t frame;        // 0x27
-    uint8_t pad_28[4];
+    uint8_t Pad28[4];
     uint8_t colour; // 0x2C
 };
 assert_struct_size(RCT12EntityBalloon, 0x2D);
 
 struct RCT12EntityDuck : RCT12EntityBase
 {
-    uint8_t pad_1F[0x26 - 0x1F];
+    uint8_t Pad1F[0x26 - 0x1F];
     uint16_t frame; // 0x26
-    uint8_t pad_28[0x30 - 0x28];
+    uint8_t Pad28[0x30 - 0x28];
     int16_t target_x; // 0x30
     int16_t target_y; // 0x32
-    uint8_t pad_34[0x14];
+    uint8_t Pad34[0x14];
     uint8_t state; // 0x48
 };
 assert_struct_size(RCT12EntityDuck, 0x49);
 
 struct RCT12EntityLitter : RCT12EntityBase
 {
-    uint8_t pad_1F[0x24 - 0x1F];
+    uint8_t Pad1F[0x24 - 0x1F];
     uint32_t creationTick; // 0x24
 };
 assert_struct_size(RCT12EntityLitter, 0x28);
 
 struct RCT12EntityParticle : RCT12EntityBase
 {
-    uint8_t pad_1F[0x26 - 0x1F];
+    uint8_t Pad1F[0x26 - 0x1F];
     uint16_t frame; // 0x26
 };
 assert_struct_size(RCT12EntityParticle, 0x28);
 
 struct RCT12EntityJumpingFountain : RCT12EntityBase
 {
-    uint8_t pad_1F[0x26 - 0x1F];
+    uint8_t Pad1F[0x26 - 0x1F];
     uint8_t num_ticks_alive; // 0x26
     uint8_t frame;           // 0x27
-    uint8_t pad_28[0x2F - 0x28];
+    uint8_t Pad28[0x2F - 0x28];
     uint8_t fountain_flags; // 0x2F
     int16_t target_x;       // 0x30
     int16_t target_y;       // 0x32
-    uint8_t pad_34[0x46 - 0x34];
+    uint8_t Pad34[0x46 - 0x34];
     uint16_t iteration; // 0x46
 };
 assert_struct_size(RCT12EntityJumpingFountain, 0x48);
 
 struct RCT12EntityMoneyEffect : RCT12EntityBase
 {
-    uint8_t pad_1F[0x24 - 0x1F];
+    uint8_t Pad1F[0x24 - 0x1F];
     uint16_t move_delay;   // 0x24
     uint8_t num_movements; // 0x26
     uint8_t vertical;
     money32 value; // 0x28
-    uint8_t pad_2C[0x44 - 0x2C];
+    uint8_t Pad2C[0x44 - 0x2C];
     int16_t offset_x; // 0x44
     uint16_t wiggle;  // 0x46
 };
@@ -741,16 +741,16 @@ assert_struct_size(RCT12EntityMoneyEffect, 0x48);
 
 struct RCT12EntityCrashedVehicleParticle : RCT12EntityBase
 {
-    uint8_t pad_1F[0x24 - 0x1F];
+    uint8_t Pad1F[0x24 - 0x1F];
     uint16_t time_to_live; // 0x24
     uint16_t frame;        // 0x26
-    uint8_t pad_28[0x2C - 0x28];
+    uint8_t Pad28[0x2C - 0x28];
     uint8_t colour[2];          // 0x2C
     uint16_t CrashedEntityBase; // 0x2E
     int16_t velocity_x;         // 0x30
     int16_t velocity_y;         // 0x32
     int16_t velocity_z;         // 0x34
-    uint8_t pad_36[0x38 - 0x36];
+    uint8_t Pad36[0x38 - 0x36];
     int32_t acceleration_x; // 0x38
     int32_t acceleration_y; // 0x3C
     int32_t acceleration_z; // 0x40
@@ -759,14 +759,14 @@ assert_struct_size(RCT12EntityCrashedVehicleParticle, 0x44);
 
 struct RCT12EntityCrashSplash : RCT12EntityBase
 {
-    uint8_t pad_1F[0x26 - 0x1F];
+    uint8_t Pad1F[0x26 - 0x1F];
     uint16_t frame; // 0x26
 };
 assert_struct_size(RCT12EntityCrashSplash, 0x28);
 
 struct RCT12EntitySteamParticle : RCT12EntityBase
 {
-    uint8_t pad_1F[0x24 - 0x1F];
+    uint8_t Pad1F[0x24 - 0x1F];
     uint16_t time_to_move; // 0x24
     uint16_t frame;        // 0x26
 };

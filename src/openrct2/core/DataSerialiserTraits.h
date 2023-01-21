@@ -455,11 +455,11 @@ template<> struct DataSerializerTraitsT<TileElement>
         stream->WriteValue(tileElement.BaseHeight);
         stream->WriteValue(tileElement.ClearanceHeight);
         stream->WriteValue(tileElement.Owner);
-        for (auto v : tileElement.pad_05)
+        for (auto v : tileElement.Pad05)
         {
             stream->WriteValue(v);
         }
-        for (auto v : tileElement.pad_08)
+        for (auto v : tileElement.Pad08)
         {
             stream->WriteValue(v);
         }
@@ -471,11 +471,11 @@ template<> struct DataSerializerTraitsT<TileElement>
         tileElement.BaseHeight = stream->ReadValue<uint8_t>();
         tileElement.ClearanceHeight = stream->ReadValue<uint8_t>();
         tileElement.Owner = stream->ReadValue<uint8_t>();
-        for (auto& v : tileElement.pad_05)
+        for (auto& v : tileElement.Pad05)
         {
             v = stream->ReadValue<uint8_t>();
         }
-        for (auto& v : tileElement.pad_08)
+        for (auto& v : tileElement.Pad08)
         {
             v = stream->ReadValue<uint8_t>();
         }

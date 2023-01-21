@@ -265,15 +265,15 @@ struct campaign_variables
         ::RideId RideId;
         ObjectEntryIndex ShopItemId;
     };
-    uint32_t pad_486;
+    uint32_t Pad486;
 };
 
 struct new_ride_variables
 {
     RideSelection SelectedRide;    // 0x480
     RideSelection HighlightedRide; // 0x482
-    uint16_t pad_484;
-    uint16_t pad_486;
+    uint16_t Pad484;
+    uint16_t Pad486;
     uint16_t selected_ride_countdown; // 488
 };
 

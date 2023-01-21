@@ -109,8 +109,8 @@ void TileElement::ClearAs(TileElementType newType)
     BaseHeight = MINIMUM_LAND_HEIGHT;
     ClearanceHeight = MINIMUM_LAND_HEIGHT;
     Owner = 0;
-    std::fill_n(pad_05, sizeof(pad_05), 0x00);
-    std::fill_n(pad_08, sizeof(pad_08), 0x00);
+    std::fill_n(Pad05, sizeof(Pad05), 0x00);
+    std::fill_n(Pad08, sizeof(Pad08), 0x00);
 }
 
 // Rotate both of the values amount

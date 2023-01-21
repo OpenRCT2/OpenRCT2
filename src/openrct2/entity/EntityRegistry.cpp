@@ -38,10 +38,10 @@
 
 union Entity
 {
-    uint8_t pad_00[0x200];
+    uint8_t Pad00[0x200];
     EntityBase base;
     Entity()
-        : pad_00()
+        : Pad00()
     {
     }
 };

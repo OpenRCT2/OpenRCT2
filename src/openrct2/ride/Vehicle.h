@@ -185,7 +185,7 @@ struct Vehicle : EntityBase
         uint8_t CollisionDetectionTimer;
     };
     uint8_t animation_frame;
-    uint8_t pad_C6[0x2];
+    uint8_t PadC6[0x2];
     uint32_t animationState;
     OpenRCT2::Audio::SoundId scream_sound_id;
     VehicleTrackSubposition TrackSubposition;

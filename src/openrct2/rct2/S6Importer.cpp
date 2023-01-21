@@ -274,14 +274,14 @@ namespace RCT2
             gParkEntranceFee = _s6.park_entrance_fee;
             // rct1_park_entrance_x
             // rct1_park_entrance_y
-            // pad_013573EE
+            // Pad013573EE
             // rct1_park_entrance_z
 
             ImportPeepSpawns();
 
             gGuestChangeModifier = _s6.guest_count_change_modifier;
             gResearchFundingLevel = _s6.current_research_level;
-            // pad_01357400
+            // Pad01357400
             // _s6.researched_track_types_a
             // _s6.researched_track_types_b
 
@@ -297,7 +297,7 @@ namespace RCT2
             }
 
             gNumGuestsInParkLastWeek = _s6.last_guests_in_park;
-            // pad_01357BCA
+            // Pad01357BCA
             gStaffHandymanColour = _s6.handyman_colour;
             gStaffMechanicColour = _s6.mechanic_colour;
             gStaffSecurityColour = _s6.security_colour;
@@ -323,7 +323,7 @@ namespace RCT2
                                         .ToResearchItem();
             else
                 gResearchLastItem = std::nullopt;
-            // pad_01357CF8
+            // Pad01357CF8
             if (_s6.next_research_item != RCT12_RESEARCHED_ITEMS_SEPARATOR)
                 gResearchNextItem = RCT12ResearchItem{ _s6.next_research_item, _s6.next_research_category }.ToResearchItem();
             else
@@ -342,7 +342,7 @@ namespace RCT2
             gGuestInitialThirst = _s6.guest_initial_thirst;
             gScenarioObjective.Type = _s6.objective_type;
             gScenarioObjective.Year = _s6.objective_year;
-            // pad_013580FA
+            // Pad013580FA
             gScenarioObjective.Currency = _s6.objective_currency;
             // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
             // This is not always the case in OpenRCT2, so we use the actual ride ID.
@@ -356,7 +356,7 @@ namespace RCT2
             gCurrentProfit = ToMoney64(_s6.current_profit);
             gWeeklyProfitAverageDividend = ToMoney64(_s6.weekly_profit_average_dividend);
             gWeeklyProfitAverageDivisor = _s6.weekly_profit_average_divisor;
-            // pad_0135833A
+            // Pad0135833A
 
             gParkValue = ToMoney64(_s6.park_value);
 
@@ -386,17 +386,17 @@ namespace RCT2
             gLandPrice = _s6.land_price;
             gConstructionRightsPrice = _s6.construction_rights_price;
             // unk_01358774
-            // pad_01358776
+            // Pad01358776
             // _s6.cd_key
             _gameVersion = _s6.game_version_number;
             gScenarioCompanyValueRecord = _s6.completed_company_value_record;
             // _s6.loan_hash;
-            // pad_013587CA
+            // Pad013587CA
             gHistoricalProfit = ToMoney64(_s6.historical_profit);
-            // pad_013587D4
+            // Pad013587D4
             gScenarioCompletedBy = std::string_view(_s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
             gCash = ToMoney64(DECRYPT_MONEY(_s6.cash));
-            // pad_013587FC
+            // Pad013587FC
             gParkRatingCasualtyPenalty = _s6.park_rating_casualty_penalty;
             gMapSize = { _s6.map_size, _s6.map_size };
             gSamePriceThroughoutPark = _s6.same_price_throughout
@@ -405,11 +405,11 @@ namespace RCT2
             gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
             gLastEntranceStyle = _s6.last_entrance_style;
             // rct1_water_colour
-            // pad_01358842
+            // Pad01358842
             ImportResearchList();
             gMapBaseZ = _s6.map_base_z;
             gBankLoanInterestRate = _s6.current_interest_rate;
-            // pad_0135934B
+            // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
             gParkEntrances.clear();
             for (uint8_t i = 0; i < Limits::MaxParkEntrances; i++)
@@ -448,12 +448,12 @@ namespace RCT2
             gNextGuestNumber = _s6.next_guest_index;
             gGrassSceneryTileLoopPosition = _s6.grass_and_scenery_tilepos;
             // unk_13CA73E
-            // pad_13CA73F
+            // Pad13CA73F
             // unk_13CA740
             gClimate = ClimateType{ _s6.climate };
-            // pad_13CA741;
+            // Pad13CA741;
             // byte_13CA742
-            // pad_013CA747
+            // Pad013CA747
             gClimateUpdateTimer = _s6.climate_update_timer;
             gClimateCurrent.Weather = WeatherType{ _s6.current_weather };
             gClimateNext.Weather = WeatherType{ _s6.next_weather };
@@ -492,11 +492,11 @@ namespace RCT2
                 }
             }
 
-            // pad_13CE730
+            // Pad13CE730
             // rct1_scenario_flags
             gWidePathTileLoopPosition.x = _s6.wide_path_tile_loop_x;
             gWidePathTileLoopPosition.y = _s6.wide_path_tile_loop_y;
-            // pad_13CE778
+            // Pad13CE778
 
             // Fix and set dynamic variables
             MapStripGhostFlagFromElements();
@@ -780,7 +780,7 @@ namespace RCT2
             }
             dst->type = rideType;
             dst->subtype = subtype;
-            // pad_002;
+            // Pad002;
             dst->mode = static_cast<RideMode>(src->mode);
             dst->colour_scheme_type = src->colour_scheme_type;
 
@@ -790,7 +790,7 @@ namespace RCT2
                 dst->vehicle_colours[i].Trim = src->vehicle_colours[i].trim_colour;
             }
 
-            // pad_046;
+            // Pad046;
             dst->status = static_cast<RideStatus>(src->status);
 
             dst->default_name_number = src->name_arguments_number;
@@ -894,20 +894,20 @@ namespace RCT2
             dst->boat_hire_return_position = { src->boat_hire_return_position.x, src->boat_hire_return_position.y };
 
             dst->special_track_elements = src->special_track_elements;
-            // pad_0D6[2];
+            // Pad0D6[2];
 
             dst->max_speed = src->max_speed;
             dst->average_speed = src->average_speed;
             dst->current_test_segment = src->current_test_segment;
             dst->average_speed_test_timeout = src->average_speed_test_timeout;
-            // pad_0E2[0x2];
+            // Pad0E2[0x2];
 
             dst->max_positive_vertical_g = src->max_positive_vertical_g;
             dst->max_negative_vertical_g = src->max_negative_vertical_g;
             dst->max_lateral_g = src->max_lateral_g;
             dst->previous_vertical_g = src->previous_vertical_g;
             dst->previous_lateral_g = src->previous_lateral_g;
-            // pad_106[0x2];
+            // Pad106[0x2];
             dst->testing_flags = src->testing_flags;
 
             if (src->cur_test_track_location.IsNull())
@@ -961,7 +961,7 @@ namespace RCT2
             dst->satisfaction_next = src->satisfaction_next;
 
             dst->window_invalidate_flags = src->window_invalidate_flags;
-            // pad_14E[0x02];
+            // Pad14E[0x02];
 
             dst->total_customers = src->total_customers;
             dst->total_profit = ToMoney64(src->total_profit);
@@ -975,15 +975,15 @@ namespace RCT2
             dst->slide_in_use = src->slide_in_use;
             // Includes maze_tiles
             dst->slide_peep = EntityId::FromUnderlying(src->slide_peep);
-            // pad_160[0xE];
+            // Pad160[0xE];
             dst->slide_peep_t_shirt_colour = src->slide_peep_t_shirt_colour;
-            // pad_16F[0x7];
+            // Pad16F[0x7];
             dst->spiral_slide_progress = src->spiral_slide_progress;
-            // pad_177[0x9];
+            // Pad177[0x9];
             dst->build_date = static_cast<int32_t>(src->build_date);
             dst->upkeep_cost = src->upkeep_cost;
             dst->race_winner = EntityId::FromUnderlying(src->race_winner);
-            // pad_186[0x02];
+            // Pad186[0x02];
             dst->music_position = src->music_position;
 
             dst->breakdown_reason_pending = src->breakdown_reason_pending;
@@ -1064,10 +1064,10 @@ namespace RCT2
             dst->current_test_station = StationIndex::FromUnderlying(src->current_test_station);
             dst->num_circuits = src->num_circuits;
             dst->CableLiftLoc = { src->cable_lift_x, src->cable_lift_y, src->cable_lift_z * COORDS_Z_STEP };
-            // pad_1FD;
+            // Pad1FD;
             dst->cable_lift = EntityId::FromUnderlying(src->cable_lift);
 
-            // pad_208[0x58];
+            // Pad208[0x58];
         }
 
         void ImportRideRatingsCalcData()
