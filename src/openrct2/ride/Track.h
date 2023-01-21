@@ -26,7 +26,7 @@ using pitch_type_t = uint8_t;
 
 struct ResultWithMessage;
 
-struct rct_trackdefinition
+struct TrackDefinition
 {
     track_type_t type;
     pitch_type_t vangle_end;
@@ -51,7 +51,7 @@ constexpr bool operator!=(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 }
 
 /* size 0x0A */
-struct rct_preview_track
+struct PreviewTrack
 {
     uint8_t index; // 0x00
     int16_t x;     // 0x01
@@ -63,7 +63,7 @@ struct rct_preview_track
 };
 
 /* size 0x0A */
-struct rct_track_coordinates
+struct TrackCoordinates
 {
     int8_t rotation_begin; // 0x00
     int8_t rotation_end;   // 0x01
@@ -598,7 +598,7 @@ enum
     GC_SET_MAZE_TRACK_FILL = 2,
 };
 
-struct track_circuit_iterator
+struct TrackCircuitIterator
 {
     CoordsXYE last;
     CoordsXYE current;
@@ -614,10 +614,10 @@ PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType);
 
 int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b);
 
-void TrackCircuitIteratorBegin(track_circuit_iterator* it, CoordsXYE first);
-bool TrackCircuitIteratorPrevious(track_circuit_iterator* it);
-bool TrackCircuitIteratorNext(track_circuit_iterator* it);
-bool TrackCircuitIteratorsMatch(const track_circuit_iterator* firstIt, const track_circuit_iterator* secondIt);
+void TrackCircuitIteratorBegin(TrackCircuitIterator* it, CoordsXYE first);
+bool TrackCircuitIteratorPrevious(TrackCircuitIterator* it);
+bool TrackCircuitIteratorNext(TrackCircuitIterator* it);
+bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const TrackCircuitIterator* secondIt);
 
 void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
 void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);

@@ -87,7 +87,7 @@ void VehicleVisualLaunchedFreefall(
 }
 
 /** rct2: 0x006FD1F8 */
-static void paint_launched_freefall_base(
+static void PaintLaunchedFreefallBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -160,7 +160,7 @@ static void paint_launched_freefall_base(
 }
 
 /** rct2: 0x006FD208 */
-static void paint_launched_freefall_tower_section(
+static void PaintLaunchedFreefallTowerSection(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -193,10 +193,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::TowerBase:
-            return paint_launched_freefall_base;
+            return PaintLaunchedFreefallBase;
 
         case TrackElemType::TowerSection:
-            return paint_launched_freefall_tower_section;
+            return PaintLaunchedFreefallTowerSection;
     }
 
     return nullptr;

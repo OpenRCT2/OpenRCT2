@@ -203,7 +203,7 @@ public:
         CommonPrepareDrawAfter();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(&dpi);
@@ -365,11 +365,11 @@ private:
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                               network_get_current_player_id() };
+                                               NetworkGetCurrentPlayerId() };
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+                    WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
                         ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
@@ -514,7 +514,7 @@ private:
         widgets[WIDX_FIRE].right = width - 2;
     }
 
-    void OverviewDraw(rct_drawpixelinfo* dpi)
+    void OverviewDraw(DrawPixelInfo* dpi)
     {
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
@@ -541,7 +541,7 @@ private:
         DrawTextEllipsised(dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
     }
 
-    void DrawOverviewTabImage(rct_drawpixelinfo* dpi)
+    void DrawOverviewTabImage(DrawPixelInfo* dpi)
     {
         if (IsWidgetDisabled(WIDX_TAB_1))
             return;
@@ -553,7 +553,7 @@ private:
         if (page == WINDOW_STAFF_OVERVIEW)
             widgetHeight++;
 
-        rct_drawpixelinfo clip_dpi;
+        DrawPixelInfo clip_dpi;
         if (!ClipDrawPixelInfo(&clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
         {
             return;
@@ -577,7 +577,7 @@ private:
         if (page == WINDOW_STAFF_OVERVIEW)
         {
             offset = _tabAnimationOffset;
-            offset = floor2(offset, 4);
+            offset = Floor2(offset, 4);
         }
         imageIndex += offset;
 
@@ -692,7 +692,7 @@ private:
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
+            PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, NetworkGetCurrentPlayerId()
         };
         pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
@@ -708,10 +708,9 @@ private:
         if (widgetIndex != WIDX_PICKUP)
             return;
 
-        PeepPickupAction pickupAction{ PeepPickupType::Cancel,
-                                       EntityId::FromUnderlying(number),
-                                       { picked_peep_old_x, 0, 0 },
-                                       network_get_current_player_id() };
+        PeepPickupAction pickupAction{
+            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { picked_peep_old_x, 0, 0 }, NetworkGetCurrentPlayerId()
+        };
         GameActions::Execute(&pickupAction);
     }
 
@@ -872,7 +871,7 @@ private:
 
         auto staffOrders = staff->StaffOrders;
 
-        for (auto index = bitscanforward(staffOrders); index != -1; index = bitscanforward(staffOrders))
+        for (auto index = UtilBitScanForward(staffOrders); index != -1; index = UtilBitScanForward(staffOrders))
         {
             staffOrders &= ~(1 << index);
             SetCheckboxValue(WIDX_CHECKBOX_1 + index, true);
@@ -916,7 +915,7 @@ private:
 #pragma endregion
 
 #pragma region Statistics tab events
-    void StatsDraw(rct_drawpixelinfo* dpi)
+    void StatsDraw(DrawPixelInfo* dpi)
     {
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -1190,18 +1189,18 @@ private:
 
     void FollowPeep()
     {
-        rct_window* main = WindowGetMain();
+        WindowBase* main = WindowGetMain();
         WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         DrawOverviewTabImage(dpi);
         DrawTabImage(dpi, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
         DrawTabImage(dpi, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
     }
 
-    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t baseImageId)
+    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t baseImageId)
     {
         WidgetIndex widgetIndex = WIDX_TAB_1 + p;
         Widget* widget = &widgets[widgetIndex];
@@ -1234,7 +1233,7 @@ private:
     static constexpr int32_t TabAnimationFrames = 7;
 };
 
-rct_window* WindowStaffOpen(Peep* peep)
+WindowBase* WindowStaffOpen(Peep* peep)
 {
     auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
 

@@ -103,7 +103,7 @@ GameActions::Result RideSetVehicleAction::Query() const
             }
 
             // Validate preset
-            vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
+            VehicleColourPresetList* presetList = rideEntry->vehicle_preset_list;
             if (_colour >= presetList->count && _colour != 255 && _colour != 0)
             {
                 LOG_ERROR("Unknown vehicle colour preset. colour = %d", _colour);

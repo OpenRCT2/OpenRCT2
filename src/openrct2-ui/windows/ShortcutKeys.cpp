@@ -119,7 +119,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -249,7 +249,7 @@ public:
         SetWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex), true);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -295,7 +295,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
@@ -468,7 +468,7 @@ private:
         RefreshBindings();
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi) const
+    void DrawTabImages(DrawPixelInfo& dpi) const
     {
         for (size_t i = 0; i < _tabs.size(); i++)
         {
@@ -476,7 +476,7 @@ private:
         }
     }
 
-    void DrawTabImage(rct_drawpixelinfo& dpi, size_t tabIndex) const
+    void DrawTabImage(DrawPixelInfo& dpi, size_t tabIndex) const
     {
         const auto& tabDesc = _tabs[tabIndex];
         auto widgetIndex = static_cast<WidgetIndex>(WIDX_TAB_0 + tabIndex);
@@ -497,15 +497,14 @@ private:
         }
     }
 
-    void DrawSeparator(rct_drawpixelinfo& dpi, int32_t y, int32_t scrollWidth)
+    void DrawSeparator(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth)
     {
         const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
         GfxFillRect(&dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
         GfxFillRect(&dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
     }
 
-    void DrawItem(
-        rct_drawpixelinfo& dpi, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
+    void DrawItem(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
     {
         auto format = STR_BLACK_STRING;
         if (isHighlighted)
@@ -547,7 +546,7 @@ void ChangeShortcutWindow::NotifyShortcutKeysWindow()
     }
 }
 
-rct_window* WindowShortcutKeysOpen()
+WindowBase* WindowShortcutKeysOpen()
 {
     auto w = WindowBringToFrontByClass(WindowClass::KeyboardShortcutList);
     if (w == nullptr)

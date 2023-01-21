@@ -12,11 +12,11 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/Window_internal.h>
 
-struct Window : rct_window
+struct Window : WindowBase
 {
     virtual bool IsLegacy() override;
-    virtual void OnDraw(rct_drawpixelinfo& dpi) override;
-    virtual void OnDrawWidget(WidgetIndex widgetIndex, rct_drawpixelinfo& dpi) override;
+    virtual void OnDraw(DrawPixelInfo& dpi) override;
+    virtual void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi) override;
 
     void InitScrollWidgets();
     void InvalidateWidget(WidgetIndex widgetIndex);
@@ -25,7 +25,7 @@ struct Window : rct_window
     void SetWidgetDisabled(WidgetIndex widgetIndex, bool value);
     void SetWidgetPressed(WidgetIndex widgetIndex, bool value);
     void SetCheckboxValue(WidgetIndex widgetIndex, bool value);
-    void DrawWidgets(rct_drawpixelinfo& dpi);
+    void DrawWidgets(DrawPixelInfo& dpi);
     void Close();
     void CloseOthers();
     void CloseOthersOfThisClass();
@@ -37,4 +37,4 @@ struct Window : rct_window
 
 void WindowAllWheelInput();
 void ApplyScreenSaverLockSetting();
-void WindowAlignTabs(rct_window* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id);
+void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id);

@@ -96,7 +96,7 @@ static void ResearchRidesSetup()
 }
 
 static void DrawResearchItem(
-    rct_drawpixelinfo& dpi, const ResearchItem& researchItem, const int16_t& width, const ScreenCoordsXY& screenCoords,
+    DrawPixelInfo& dpi, const ResearchItem& researchItem, const int16_t& width, const ScreenCoordsXY& screenCoords,
     StringId format, TextPaint textPaint)
 {
     const StringId itemNameId = researchItem.GetName();
@@ -263,7 +263,7 @@ public:
         WindowEditorInventionsListDragOpen(researchItem, windowPos, widgets[WIDX_PRE_RESEARCHED_SCROLL].right);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         // Draw background
         uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
@@ -346,7 +346,7 @@ public:
         return fallback;
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -392,7 +392,7 @@ public:
         const auto* object = ObjectEntryGetObject(objectEntryType, researchItem->entryIndex);
         if (object != nullptr)
         {
-            rct_drawpixelinfo clipDPI;
+            DrawPixelInfo clipDPI;
             screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
             const auto clipWidth = bkWidget.width() - 1;
             const auto clipHeight = bkWidget.height() - 1;
@@ -576,7 +576,7 @@ private:
  *
  *  rct2: 0x00684E04
  */
-rct_window* WindowEditorInventionsListOpen()
+WindowBase* WindowEditorInventionsListOpen()
 {
     return WindowFocusOrCreate<InventionListWindow>(
         WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
@@ -638,7 +638,7 @@ public:
         Close();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 

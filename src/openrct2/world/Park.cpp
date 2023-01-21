@@ -341,7 +341,7 @@ void Park::Update(const Date& date)
 uint32_t Park::CalculateParkSize() const
 {
     uint32_t tiles = 0;
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {
@@ -511,7 +511,7 @@ money64 Park::CalculateCompanyValue() const
     auto result = gParkValue - gBankLoan;
 
     // Clamp addition to prevent overflow
-    result = add_clamp_money64(result, FinanceGetCurrentCash());
+    result = AddClamp_money64(result, FinanceGetCurrentCash());
 
     return result;
 }

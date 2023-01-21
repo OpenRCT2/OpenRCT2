@@ -425,7 +425,7 @@ void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytes)
 money64 StringToMoney(const char* string_to_monetise)
 {
     const char* decimal_char = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
-    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
+    const CurrencyDescriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
     char processedString[128] = {};
 
     Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
@@ -519,7 +519,7 @@ void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_l
         return;
     }
 
-    const currency_descriptor& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
+    const CurrencyDescriptor& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
 
     const char* sign = amount >= 0 ? "" : "-";
     const uint64_t a = std::abs(amount) * currencyDesc.rate;

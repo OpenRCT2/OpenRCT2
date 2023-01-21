@@ -16,7 +16,7 @@
 
 #include <optional>
 
-struct rct_ride_entry;
+struct RideObjectEntry;
 struct ScenerySelection;
 
 namespace Research

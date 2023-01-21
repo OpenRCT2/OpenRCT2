@@ -4398,6 +4398,11 @@ STR_SCNR    :Monde de Panda
 STR_PARK    :Monde de Panda
 STR_DTLS    :Ajoutez davantage d’attractions et attirez plus de visiteurs avec ce parc autour du thème du panda
 
+<Tycoon Park>
+STR_SCNR    :Parc Tycoon
+STR_PARK    :Parc Tycoon
+STR_DTLS    :
+
 ###
 <UCES Halloween>
 STR_SCNR    :Crête du cimetière

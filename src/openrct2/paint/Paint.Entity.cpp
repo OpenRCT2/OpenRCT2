@@ -47,7 +47,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         return;
     }
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     if (dpi->zoom_level > ZoomLevel{ 2 })
     {
         return;

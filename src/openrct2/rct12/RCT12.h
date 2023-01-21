@@ -161,7 +161,7 @@ enum
 
 enum
 {
-    RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE = 1 << 7,
+    RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY = 1 << 7,
 };
 
 #pragma pack(push, 1)
@@ -310,10 +310,10 @@ struct RCT12EightCarsCorruptElement15;
 
 struct RCT12TileElementBase
 {
-    uint8_t type;             // 0
-    uint8_t flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
-    uint8_t base_height;      // 2
-    uint8_t clearance_height; // 3
+    uint8_t type;            // 0
+    uint8_t flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
+    uint8_t BaseHeight;      // 2
+    uint8_t ClearanceHeight; // 3
     RCT12TileElementType GetType() const;
     uint8_t GetDirection() const;
 
@@ -609,7 +609,7 @@ struct RCT12EightCarsCorruptElement15 : RCT12TileElementBase
 };
 assert_struct_size(RCT12EightCarsCorruptElement15, 8);
 
-// Offset into sprite_lists_head and sprite_lists_count
+// Offset into EntityListHead and EntityListCount
 enum class RCT12EntityLinkListOffset : uint8_t
 {
     Free = 0,
@@ -620,7 +620,7 @@ enum class RCT12EntityLinkListOffset : uint8_t
     Vehicle = 5 * sizeof(uint16_t),
 };
 
-enum class RCT12SpriteIdentifier : uint8_t
+enum class RCT12EntityIdentifier : uint8_t
 {
     Vehicle = 0,
     Peep = 1,
@@ -651,31 +651,31 @@ enum class RCT12PeepType : uint8_t
     Invalid = 0xFF
 };
 
-struct RCT12SpriteBase
+struct RCT12EntityBase
 {
-    RCT12SpriteIdentifier sprite_identifier;           // 0x00
+    RCT12EntityIdentifier EntityIdentifier;            // 0x00
     uint8_t type;                                      // 0x01
     uint16_t next_in_quadrant;                         // 0x02
     uint16_t next;                                     // 0x04
     uint16_t previous;                                 // 0x06
     RCT12EntityLinkListOffset linked_list_type_offset; // 0x08
-    uint8_t sprite_height_negative;                    // 0x09
-    uint16_t sprite_index;                             // 0x0A
+    uint8_t SpriteHeightNegative;                      // 0x09
+    uint16_t EntityIndex;                              // 0x0A
     uint16_t flags;                                    // 0x0C
     int16_t x;                                         // 0x0E
     int16_t y;                                         // 0x10
     int16_t z;                                         // 0x12
-    uint8_t sprite_width;                              // 0x14
-    uint8_t sprite_height_positive;                    // 0x15
-    int16_t sprite_left;                               // 0x16
-    int16_t sprite_top;                                // 0x18
-    int16_t sprite_right;                              // 0x1A
-    int16_t sprite_bottom;                             // 0x1C
-    uint8_t sprite_direction;                          // 0x1E
+    uint8_t SpriteWidth;                               // 0x14
+    uint8_t SpriteHeightPositive;                      // 0x15
+    int16_t SpriteLeft;                                // 0x16
+    int16_t SpriteTop;                                 // 0x18
+    int16_t SpriteRight;                               // 0x1A
+    int16_t SpriteBottom;                              // 0x1C
+    uint8_t EntityDirection;                           // 0x1E
 };
-assert_struct_size(RCT12SpriteBase, 0x1F);
+assert_struct_size(RCT12EntityBase, 0x1F);
 
-struct RCT12SpriteBalloon : RCT12SpriteBase
+struct RCT12EntityBalloon : RCT12EntityBase
 {
     uint8_t pad_1F[0x24 - 0x1F];
     uint16_t popped;      // 0x24
@@ -684,9 +684,9 @@ struct RCT12SpriteBalloon : RCT12SpriteBase
     uint8_t pad_28[4];
     uint8_t colour; // 0x2C
 };
-assert_struct_size(RCT12SpriteBalloon, 0x2D);
+assert_struct_size(RCT12EntityBalloon, 0x2D);
 
-struct RCT12SpriteDuck : RCT12SpriteBase
+struct RCT12EntityDuck : RCT12EntityBase
 {
     uint8_t pad_1F[0x26 - 0x1F];
     uint16_t frame; // 0x26
@@ -696,23 +696,23 @@ struct RCT12SpriteDuck : RCT12SpriteBase
     uint8_t pad_34[0x14];
     uint8_t state; // 0x48
 };
-assert_struct_size(RCT12SpriteDuck, 0x49);
+assert_struct_size(RCT12EntityDuck, 0x49);
 
-struct RCT12SpriteLitter : RCT12SpriteBase
+struct RCT12EntityLitter : RCT12EntityBase
 {
     uint8_t pad_1F[0x24 - 0x1F];
     uint32_t creationTick; // 0x24
 };
-assert_struct_size(RCT12SpriteLitter, 0x28);
+assert_struct_size(RCT12EntityLitter, 0x28);
 
-struct RCT12SpriteParticle : RCT12SpriteBase
+struct RCT12EntityParticle : RCT12EntityBase
 {
     uint8_t pad_1F[0x26 - 0x1F];
     uint16_t frame; // 0x26
 };
-assert_struct_size(RCT12SpriteParticle, 0x28);
+assert_struct_size(RCT12EntityParticle, 0x28);
 
-struct RCT12SpriteJumpingFountain : RCT12SpriteBase
+struct RCT12EntityJumpingFountain : RCT12EntityBase
 {
     uint8_t pad_1F[0x26 - 0x1F];
     uint8_t num_ticks_alive; // 0x26
@@ -724,9 +724,9 @@ struct RCT12SpriteJumpingFountain : RCT12SpriteBase
     uint8_t pad_34[0x46 - 0x34];
     uint16_t iteration; // 0x46
 };
-assert_struct_size(RCT12SpriteJumpingFountain, 0x48);
+assert_struct_size(RCT12EntityJumpingFountain, 0x48);
 
-struct RCT12SpriteMoneyEffect : RCT12SpriteBase
+struct RCT12EntityMoneyEffect : RCT12EntityBase
 {
     uint8_t pad_1F[0x24 - 0x1F];
     uint16_t move_delay;   // 0x24
@@ -737,40 +737,40 @@ struct RCT12SpriteMoneyEffect : RCT12SpriteBase
     int16_t offset_x; // 0x44
     uint16_t wiggle;  // 0x46
 };
-assert_struct_size(RCT12SpriteMoneyEffect, 0x48);
+assert_struct_size(RCT12EntityMoneyEffect, 0x48);
 
-struct RCT12SpriteCrashedVehicleParticle : RCT12SpriteBase
+struct RCT12EntityCrashedVehicleParticle : RCT12EntityBase
 {
     uint8_t pad_1F[0x24 - 0x1F];
     uint16_t time_to_live; // 0x24
     uint16_t frame;        // 0x26
     uint8_t pad_28[0x2C - 0x28];
-    uint8_t colour[2];            // 0x2C
-    uint16_t crashed_sprite_base; // 0x2E
-    int16_t velocity_x;           // 0x30
-    int16_t velocity_y;           // 0x32
-    int16_t velocity_z;           // 0x34
+    uint8_t colour[2];          // 0x2C
+    uint16_t CrashedEntityBase; // 0x2E
+    int16_t velocity_x;         // 0x30
+    int16_t velocity_y;         // 0x32
+    int16_t velocity_z;         // 0x34
     uint8_t pad_36[0x38 - 0x36];
     int32_t acceleration_x; // 0x38
     int32_t acceleration_y; // 0x3C
     int32_t acceleration_z; // 0x40
 };
-assert_struct_size(RCT12SpriteCrashedVehicleParticle, 0x44);
+assert_struct_size(RCT12EntityCrashedVehicleParticle, 0x44);
 
-struct RCT12SpriteCrashSplash : RCT12SpriteBase
+struct RCT12EntityCrashSplash : RCT12EntityBase
 {
     uint8_t pad_1F[0x26 - 0x1F];
     uint16_t frame; // 0x26
 };
-assert_struct_size(RCT12SpriteCrashSplash, 0x28);
+assert_struct_size(RCT12EntityCrashSplash, 0x28);
 
-struct RCT12SpriteSteamParticle : RCT12SpriteBase
+struct RCT12EntitySteamParticle : RCT12EntityBase
 {
     uint8_t pad_1F[0x24 - 0x1F];
     uint16_t time_to_move; // 0x24
     uint16_t frame;        // 0x26
 };
-assert_struct_size(RCT12SpriteSteamParticle, 0x28);
+assert_struct_size(RCT12EntitySteamParticle, 0x28);
 
 struct RCT12PeepThought
 {

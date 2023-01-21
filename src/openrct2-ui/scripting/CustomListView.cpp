@@ -209,7 +209,7 @@ namespace OpenRCT2::Scripting
 
 } // namespace OpenRCT2::Scripting
 
-CustomListView::CustomListView(rct_window* parent, size_t scrollIndex)
+CustomListView::CustomListView(WindowBase* parent, size_t scrollIndex)
     : ParentWindow(parent)
     , ScrollIndex(scrollIndex)
 {
@@ -293,7 +293,7 @@ bool CustomListView::SortItem(size_t indexA, size_t indexB, int32_t column)
 {
     const auto& cellA = Items[indexA].Cells[column];
     const auto& cellB = Items[indexB].Cells[column];
-    return strlogicalcmp(cellA.c_str(), cellB.c_str()) < 0;
+    return StrLogicalCmp(cellA.c_str(), cellB.c_str()) < 0;
 }
 
 void CustomListView::SortItems(int32_t column)
@@ -549,7 +549,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
     }
 }
 
-void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scroll* scroll) const
+void CustomListView::Paint(WindowBase* w, DrawPixelInfo* dpi, const ScrollBar* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
     GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, paletteIndex);
@@ -665,7 +665,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
 }
 
 void CustomListView::PaintHeading(
-    rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
+    WindowBase* w, DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
     ColumnSortOrder sortOrder, bool isPressed) const
 {
     auto boxFlags = 0;
@@ -694,7 +694,7 @@ void CustomListView::PaintHeading(
 }
 
 void CustomListView::PaintSeperator(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
+    DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
 {
     auto hasText = text != nullptr && text[0] != '\0';
     auto left = pos.x + 4;
@@ -753,7 +753,7 @@ void CustomListView::PaintSeperator(
 }
 
 void CustomListView::PaintCell(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
+    DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
 {
     StringId stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
 

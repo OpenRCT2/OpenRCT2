@@ -131,7 +131,7 @@ static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
         size_t dataLength = static_cast<size_t>(stream->GetLength());
         auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
-        int32_t fileTypeVersion = sawyercoding_detect_file_type(data.get(), dataLength);
+        int32_t fileTypeVersion = SawyerCodingDetectFileType(data.get(), dataLength);
 
         int32_t type = fileTypeVersion & FILE_TYPE_MASK;
         int32_t version = fileTypeVersion & FILE_VERSION_MASK;
@@ -169,11 +169,11 @@ static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* 
         auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
 
-        if (sawyercoding_validate_track_checksum(data.get(), dataLength))
+        if (SawyerCodingValidateTrackChecksum(data.get(), dataLength))
         {
             std::unique_ptr<uint8_t, decltype(&Memory::Free<uint8_t>)> td6data(
                 Memory::Allocate<uint8_t>(0x10000), &Memory::Free<uint8_t>);
-            size_t td6len = sawyercoding_decode_td6(data.get(), td6data.get(), dataLength);
+            size_t td6len = SawyerCodingDecodeTD6(data.get(), td6data.get(), dataLength);
             if (td6data != nullptr && td6len >= 8)
             {
                 uint8_t version = (td6data.get()[7] >> 2) & 3;

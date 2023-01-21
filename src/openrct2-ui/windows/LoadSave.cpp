@@ -82,7 +82,7 @@ static Widget window_loadsave_widgets[] =
 
 #pragma endregion
 
-static rct_window* WindowOverwritePromptOpen(const char* name, const char* path);
+static WindowBase* WindowOverwritePromptOpen(const char* name, const char* path);
 
 enum
 {
@@ -120,15 +120,15 @@ static bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b)
     switch (gConfigGeneral.LoadSaveSort)
     {
         case Sort::NameAscending:
-            return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
+            return StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
         case Sort::NameDescending:
-            return -strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
+            return -StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
         case Sort::DateDescending:
             return -difftime(a.date_modified, b.date_modified) < 0;
         case Sort::DateAscending:
             return difftime(a.date_modified, b.date_modified) < 0;
     }
-    return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
+    return StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
 }
 
 static void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
@@ -263,7 +263,7 @@ static void Select(const char* path)
     }
 
     char pathBuffer[MAX_PATH];
-    safe_strcpy(pathBuffer, path, sizeof(pathBuffer));
+    SafeStrCpy(pathBuffer, path, sizeof(pathBuffer));
 
     switch (_type & 0x0F)
     {
@@ -529,7 +529,7 @@ public:
     void PopulateList(int32_t includeNewItem, const u8string& directory, std::string_view extensionPattern)
     {
         const auto absoluteDirectory = Path::GetAbsolute(directory);
-        safe_strcpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
+        SafeStrCpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
         // Note: This compares the pointers, not values
         _extensionPattern = extensionPattern;
         _shortenedDirectory[0] = '\0';
@@ -563,7 +563,7 @@ public:
         else
         {
             // Remove the separator at the end of the path, if present
-            safe_strcpy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
+            SafeStrCpy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
             if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
                 || _parentDirectory[strlen(_parentDirectory) - 1] == '/')
                 _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
@@ -737,7 +737,7 @@ public:
         window_loadsave_widgets[WIDX_BROWSE].bottom = height - 6;
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -955,7 +955,7 @@ public:
             includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 
             char directory[MAX_PATH];
-            safe_strcpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
+            SafeStrCpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
             PopulateList(includeNewItem, directory, _extensionPattern);
             InitScrollWidgets();
@@ -973,7 +973,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         GfxFillRect(
             &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
@@ -1031,7 +1031,7 @@ public:
 #pragma endregion
 };
 
-rct_window* WindowLoadsaveOpen(
+WindowBase* WindowLoadsaveOpen(
     int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
     TrackDesign* trackDesign)
 {
@@ -1117,8 +1117,8 @@ static Widget window_overwrite_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi);
 
 static WindowEventList window_overwrite_prompt_events([](auto& events) {
     events.mouse_up = &WindowOverwritePromptMouseup;
@@ -1128,9 +1128,9 @@ static WindowEventList window_overwrite_prompt_events([](auto& events) {
 static char _window_overwrite_prompt_name[256];
 static char _window_overwrite_prompt_path[MAX_PATH];
 
-static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
+static WindowBase* WindowOverwritePromptOpen(const char* name, const char* path)
 {
-    rct_window* w;
+    WindowBase* w;
 
     WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
@@ -1143,13 +1143,13 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
     w->flags |= WF_TRANSPARENT;
     w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
 
-    safe_strcpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
-    safe_strcpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));
+    SafeStrCpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
+    SafeStrCpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));
 
     return w;
 }
 
-static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -1170,7 +1170,7 @@ static void WindowOverwritePromptMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
 

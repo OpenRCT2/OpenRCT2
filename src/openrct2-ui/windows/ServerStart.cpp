@@ -85,9 +85,9 @@ public:
         list_information_type = 0;
 
         snprintf(_port, 7, "%u", gConfigNetwork.DefaultPort);
-        safe_strcpy(_name, gConfigNetwork.ServerName.c_str(), sizeof(_name));
-        safe_strcpy(_description, gConfigNetwork.ServerDescription.c_str(), sizeof(_description));
-        safe_strcpy(_greeting, gConfigNetwork.ServerGreeting.c_str(), sizeof(_greeting));
+        SafeStrCpy(_name, gConfigNetwork.ServerName.c_str(), sizeof(_name));
+        SafeStrCpy(_description, gConfigNetwork.ServerDescription.c_str(), sizeof(_description));
+        SafeStrCpy(_greeting, gConfigNetwork.ServerGreeting.c_str(), sizeof(_greeting));
     }
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
@@ -133,11 +133,11 @@ public:
                 Invalidate();
                 break;
             case WIDX_START_SERVER:
-                network_set_password(_password);
+                NetworkSetPassword(_password);
                 WindowScenarioselectOpen(ScenarioSelectCallback, false);
                 break;
             case WIDX_LOAD_SERVER:
-                network_set_password(_password);
+                NetworkSetPassword(_password);
                 auto intent = Intent(WindowClass::Loadsave);
                 intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
                 intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(LoadSaveCallback));
@@ -176,7 +176,7 @@ public:
                 if (strcmp(_port, temp.c_str()) == 0)
                     return;
 
-                safe_strcpy(_port, temp.c_str(), sizeof(_port));
+                SafeStrCpy(_port, temp.c_str(), sizeof(_port));
 
                 // Don't allow negative/zero for port number
                 tempPort = atoi(_port);
@@ -192,7 +192,7 @@ public:
                 if (strcmp(_name, temp.c_str()) == 0)
                     return;
 
-                safe_strcpy(_name, temp.c_str(), sizeof(_name));
+                SafeStrCpy(_name, temp.c_str(), sizeof(_name));
 
                 // Don't allow empty server names
                 if (_name[0] != '\0')
@@ -207,7 +207,7 @@ public:
                 if (strcmp(_description, temp.c_str()) == 0)
                     return;
 
-                safe_strcpy(_description, temp.c_str(), sizeof(_description));
+                SafeStrCpy(_description, temp.c_str(), sizeof(_description));
                 gConfigNetwork.ServerDescription = _description;
                 ConfigSaveDefault();
 
@@ -217,7 +217,7 @@ public:
                 if (strcmp(_greeting, temp.c_str()) == 0)
                     return;
 
-                safe_strcpy(_greeting, temp.c_str(), sizeof(_greeting));
+                SafeStrCpy(_greeting, temp.c_str(), sizeof(_greeting));
                 gConfigNetwork.ServerGreeting = _greeting;
                 ConfigSaveDefault();
 
@@ -227,14 +227,14 @@ public:
                 if (strcmp(_password, temp.c_str()) == 0)
                     return;
 
-                safe_strcpy(_password, temp.c_str(), sizeof(_password));
+                SafeStrCpy(_password, temp.c_str(), sizeof(_password));
 
                 WidgetInvalidate(*this, WIDX_PASSWORD_INPUT);
                 break;
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PORT_INPUT].top }, STR_PORT, {}, { colours[1] });
@@ -260,7 +260,7 @@ private:
         GameNotifyMapChange();
         if (GetContext()->LoadParkFromFile(path, false, true))
         {
-            network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
+            NetworkBeginServer(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 
@@ -270,12 +270,12 @@ private:
         {
             GameNotifyMapChange();
             GetContext()->LoadParkFromFile(path);
-            network_begin_server(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
+            NetworkBeginServer(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 };
 
-rct_window* WindowServerStartOpen()
+WindowBase* WindowServerStartOpen()
 {
     return WindowFocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
 }

@@ -94,7 +94,7 @@ using namespace OpenRCT2::TrackMetaData;
 static int32_t ride_check_if_construction_allowed(Ride& ride)
 {
     Formatter ft;
-    rct_ride_entry* rideEntry = ride.GetRideEntry();
+    RideObjectEntry* rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
     {
         ContextShowError(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE, ft);
@@ -117,7 +117,7 @@ static int32_t ride_check_if_construction_allowed(Ride& ride)
     return 1;
 }
 
-static rct_window* ride_create_or_find_construction_window(RideId rideIndex)
+static WindowBase* ride_create_or_find_construction_window(RideId rideIndex)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
@@ -137,7 +137,7 @@ void RideConstructionStart(Ride& ride)
     {
         ride.FindTrackGap(trackElement, &trackElement);
 
-        rct_window* w = WindowGetMain();
+        WindowBase* w = WindowGetMain();
         if (w != nullptr && RideModify(trackElement))
             WindowScrollToLocation(*w, { trackElement, trackElement.element->GetBaseZ() });
     }
@@ -229,7 +229,7 @@ void RideClearForConstruction(Ride& ride)
     // Open circuit rides will go directly into building mode (creating ghosts) where it would normally clear the stats,
     // however this causes desyncs since it's directly run from the window and other clients would not get it.
     // To prevent these problems, unconditionally invalidate the test results on all clients in multiplayer games.
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         InvalidateTestResults(ride);
     }
@@ -352,8 +352,7 @@ void RideClearBlockedTiles(const Ride& ride)
                     continue;
 
                 // Unblock footpath element that is at same position
-                auto* footpathElement = MapGetFootpathElement(
-                    TileCoordsXYZ{ tilePos, trackElement->base_height }.ToCoordsXYZ());
+                auto* footpathElement = MapGetFootpathElement(TileCoordsXYZ{ tilePos, trackElement->BaseHeight }.ToCoordsXYZ());
 
                 if (footpathElement == nullptr)
                     continue;
@@ -631,7 +630,7 @@ void RideConstructionSetDefaultNextPiece()
     const auto& rtd = ride->GetRideTypeDescriptor();
 
     int32_t z, direction, trackType, curve, bank, slope;
-    track_begin_end trackBeginEnd;
+    TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -835,7 +834,7 @@ void RideSelectPreviousSection()
         // Invalidate previous track piece (we may not be changing height!)
         VirtualFloorInvalidate();
 
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
         if (TrackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
         {
             _currentTrackBegin.x = trackBeginEnd.begin_x;
@@ -1096,7 +1095,7 @@ bool RideModify(const CoordsXYE& input)
  */
 int32_t RideInitialiseConstructionWindow(Ride& ride)
 {
-    rct_window* w;
+    WindowBase* w;
 
     ToolCancel();
 
@@ -1413,7 +1412,7 @@ void Ride::ValidateStations()
             }
             // update all the blocks with StationIndex
             ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-            const rct_preview_track* trackBlock = ted->Block;
+            const PreviewTrack* trackBlock = ted->Block;
             while ((++trackBlock)->index != 0xFF)
             {
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };
@@ -1498,7 +1497,7 @@ void Ride::ValidateStations()
         {
             if (tileElement->GetType() != TileElementType::Entrance)
                 continue;
-            if (tileElement->base_height != locationCoords.z)
+            if (tileElement->BaseHeight != locationCoords.z)
                 continue;
             if (tileElement->AsEntrance()->GetRideIndex() != id)
                 continue;
@@ -1522,7 +1521,7 @@ void Ride::ValidateStations()
                     continue;
                 if (trackElement->AsTrack()->GetRideIndex() != id)
                     continue;
-                if (trackElement->base_height != tileElement->base_height)
+                if (trackElement->BaseHeight != tileElement->BaseHeight)
                     continue;
 
                 auto trackType = trackElement->AsTrack()->GetTrackType();
@@ -1591,7 +1590,7 @@ bool RideSelectBackwardsFromFront()
     if (ride != nullptr)
     {
         RideConstructionInvalidateCurrentTrack();
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
         if (TrackBlockGetPreviousFromZero(_currentTrackBegin, *ride, _currentTrackPieceDirection, &trackBeginEnd))
         {
             _rideConstructionState = RideConstructionState::Selected;

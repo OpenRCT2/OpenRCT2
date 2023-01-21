@@ -101,7 +101,7 @@ void ScenarioBegin()
 void ScenarioReset()
 {
     // Set the scenario pseudo-random seeds
-    Random::Rct2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
+    Random::RCT2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
     gScenarioRand.seed(s);
 
     ResearchResetCurrentItem();
@@ -242,7 +242,7 @@ void ScenarioSuccessSubmitName(const char* name)
  */
 static void ScenarioCheckEntranceFeeTooHigh()
 {
-    const auto max_fee = add_clamp_money16(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
+    const auto max_fee = AddClamp_money16(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && ParkGetEntranceFee() > max_fee)
     {
@@ -335,7 +335,7 @@ static void ScenarioWeekUpdate()
     RideCheckAllReachable();
     RideUpdateFavouritedStat();
 
-    auto water_type = static_cast<rct_water_type*>(ObjectEntryGetChunk(ObjectType::Water, 0));
+    auto water_type = static_cast<WaterObjectEntry*>(ObjectEntryGetChunk(ObjectType::Water, 0));
 
     if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
     {
@@ -504,7 +504,7 @@ const random_engine_t::state_type& ScenarioRandState()
 
 void ScenarioRandSeed(random_engine_t::result_type s0, random_engine_t::result_type s1)
 {
-    Random::Rct2::Seed s{ s0, s1 };
+    Random::RCT2::Seed s{ s0, s1 };
     gScenarioRand.seed(s);
 }
 
@@ -566,7 +566,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave()
     }
 
     bool markTrackAsIndestructible;
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {
@@ -854,7 +854,7 @@ ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
  */
 bool AllowEarlyCompletion()
 {
-    switch (network_get_mode())
+    switch (NetworkGetMode())
     {
         case NETWORK_MODE_CLIENT:
             return gAllowEarlyCompletionInNetworkPlay;

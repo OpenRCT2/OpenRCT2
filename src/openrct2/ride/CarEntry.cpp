@@ -48,7 +48,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 {
     uint8_t bitmap[200][200] = { 0 };
 
-    rct_drawpixelinfo dpi = {
+    DrawPixelInfo dpi = {
         /*.bits = */ reinterpret_cast<uint8_t*>(bitmap),
         /*.x = */ -100,
         /*.y = */ -100,

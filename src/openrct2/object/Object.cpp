@@ -28,7 +28,7 @@
 
 using namespace OpenRCT2;
 
-ObjectEntryDescriptor::ObjectEntryDescriptor(const rct_object_entry& newEntry)
+ObjectEntryDescriptor::ObjectEntryDescriptor(const RCTObjectEntry& newEntry)
 {
     if (!newEntry.IsEmpty())
     {
@@ -153,9 +153,9 @@ ObjectEntryDescriptor Object::GetScgPathXHeader() const
     return ObjectEntryDescriptor("rct2.scenery_group.scgpathx");
 }
 
-rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)
+RCTObjectEntry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)
 {
-    rct_object_entry header = {};
+    RCTObjectEntry header = {};
     header.flags = flags;
     std::copy_n(name, DAT_NAME_LENGTH, header.name);
     header.checksum = checksum;
@@ -187,7 +187,7 @@ std::string Object::GetName(int32_t language) const
     return GetString(language, ObjectStringID::NAME);
 }
 
-void rct_object_entry::SetName(std::string_view value)
+void RCTObjectEntry::SetName(std::string_view value)
 {
     std::memset(name, ' ', sizeof(name));
     std::memcpy(name, value.data(), std::min(sizeof(name), value.size()));
@@ -203,7 +203,7 @@ void Object::SetAuthors(std::vector<std::string>&& authors)
     _authors = std::move(authors);
 }
 
-bool rct_object_entry::IsEmpty() const
+bool RCTObjectEntry::IsEmpty() const
 {
     uint64_t a, b;
     std::memcpy(&a, reinterpret_cast<const uint8_t*>(this), 8);
@@ -216,7 +216,7 @@ bool rct_object_entry::IsEmpty() const
     return false;
 }
 
-bool rct_object_entry::operator==(const rct_object_entry& rhs) const
+bool RCTObjectEntry::operator==(const RCTObjectEntry& rhs) const
 {
     const auto a = this;
     const auto b = &rhs;
@@ -253,7 +253,7 @@ bool rct_object_entry::operator==(const rct_object_entry& rhs) const
     return true;
 }
 
-bool rct_object_entry::operator!=(const rct_object_entry& rhs) const
+bool RCTObjectEntry::operator!=(const RCTObjectEntry& rhs) const
 {
     return !(*this == rhs);
 }

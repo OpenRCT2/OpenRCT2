@@ -84,7 +84,7 @@ static void ShortcutRotateConstructionObject()
         return;
 
     // Rotate scenery
-    rct_window* w = WindowFindByClass(WindowClass::Scenery);
+    WindowBase* w = WindowFindByClass(WindowClass::Scenery);
     if (w != nullptr && !WidgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
         && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WindowWidgetType::Empty)
     {
@@ -193,7 +193,7 @@ static void ShortcutAdjustLand()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = WindowFindByClass(WindowClass::TopToolbar);
+            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -212,7 +212,7 @@ static void ShortcutAdjustWater()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = WindowFindByClass(WindowClass::TopToolbar);
+            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -231,7 +231,7 @@ static void ShortcutBuildScenery()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = WindowFindByClass(WindowClass::TopToolbar);
+            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -250,7 +250,7 @@ static void ShortcutBuildPaths()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = WindowFindByClass(WindowClass::TopToolbar);
+            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -363,7 +363,7 @@ static void ShortcutReduceGameSpeed()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (NetworkGetMode() == NETWORK_MODE_NONE)
         GameReduceGameSpeed();
 }
 
@@ -372,7 +372,7 @@ static void ShortcutIncreaseGameSpeed()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (NetworkGetMode() == NETWORK_MODE_NONE)
         GameIncreaseGameSpeed();
 }
 
@@ -382,7 +382,7 @@ static void ShortcutOpenCheatWindow()
         return;
 
     // Check if window is already open
-    rct_window* window = WindowFindByClass(WindowClass::Cheats);
+    WindowBase* window = WindowFindByClass(WindowClass::Cheats);
     if (window != nullptr)
     {
         WindowClose(*window);
@@ -408,7 +408,7 @@ static void ShortcutClearScenery()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window* window = WindowFindByClass(WindowClass::TopToolbar);
+            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
             if (window != nullptr)
             {
                 window->Invalidate();
@@ -450,10 +450,10 @@ static void ShortcutOpenSceneryPicker()
         || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gEditorStep != EditorStep::LandscapeEditor))
         return;
 
-    rct_window* window_scenery = WindowFindByClass(WindowClass::Scenery);
+    WindowBase* window_scenery = WindowFindByClass(WindowClass::Scenery);
     if (window_scenery == nullptr)
     {
-        rct_window* window_toolbar = WindowFindByClass(WindowClass::TopToolbar);
+        WindowBase* window_toolbar = WindowFindByClass(WindowClass::TopToolbar);
         if (window_toolbar != nullptr)
         {
             window_toolbar->Invalidate();
@@ -515,7 +515,7 @@ static void ShortcutToggleVisibility()
     if (windowTileInspectorSelectedIndex < 0)
         return;
 
-    rct_window* w = WindowFindByClass(WindowClass::TileInspector);
+    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
     if (w == nullptr)
         return;
 
@@ -530,7 +530,7 @@ static void ShortcutToggleVisibility()
 
 static void ShortcutIncreaseElementHeight()
 {
-    rct_window* w = WindowFindByClass(WindowClass::TileInspector);
+    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -571,7 +571,7 @@ static void ShortcutIncreaseElementHeight()
 
 static void ShortcutDecreaseElementHeight()
 {
-    rct_window* w = WindowFindByClass(WindowClass::TileInspector);
+    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -635,7 +635,7 @@ static void ShortcutConstructionTurnLeft()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutTurnLeft();
@@ -650,7 +650,7 @@ static void ShortcutConstructionTurnRight()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
-    rct_window* window = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutTurnRight();
@@ -666,7 +666,7 @@ static void ShortcutConstructionSlopeUp()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutSlopeUp();
@@ -682,7 +682,7 @@ static void ShortcutConstructionBuildCurrent()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutBuildCurrent();
@@ -698,7 +698,7 @@ static void ShortcutConstructionSlopeDown()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutSlopeDown();
@@ -714,7 +714,7 @@ static void ShortcutConstructionDemolishCurrent()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window* window = WindowFindByClass(WindowClass::Footpath);
+    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutDemolishCurrent();
@@ -826,7 +826,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::InterfaceOpenStaff, STR_SHORTCUT_SHOW_STAFF_LIST, "S", []() { ShortcutShowStaffList(); });
     RegisterShortcut(ShortcutId::InterfaceOpenMessages, STR_SHORTCUT_SHOW_RECENT_MESSAGES, "M", []() { ShortcutShowRecentMessages(); });
     RegisterShortcut(ShortcutId::MultiplayerShow, STR_SHORTCUT_SHOW_MULTIPLAYER, []() {
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             OpenWindow(WindowClass::Multiplayer);
         }

@@ -210,7 +210,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = ScreenCoordsXY{ windowPos.x + window_land_rights_widgets[WIDX_PREVIEW].midX(),
                                             windowPos.y + window_land_rights_widgets[WIDX_PREVIEW].midY() };
@@ -399,7 +399,7 @@ private:
     }
 };
 
-rct_window* WindowLandRightsOpen()
+WindowBase* WindowLandRightsOpen()
 {
     return WindowFocusOrCreate<LandRightsWindow>(
         WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);

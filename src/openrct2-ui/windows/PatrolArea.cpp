@@ -131,7 +131,7 @@ public:
         PatrolAreaWidgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -285,7 +285,7 @@ private:
     }
 };
 
-rct_window* WindowPatrolAreaOpen(EntityId staffId)
+WindowBase* WindowPatrolAreaOpen(EntityId staffId)
 {
     auto w = WindowFocusOrCreate<PatrolAreaWindow>(
         WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);

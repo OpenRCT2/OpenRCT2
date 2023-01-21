@@ -241,7 +241,7 @@ void FootpathProvisionalUpdate()
  */
 CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
 {
-    rct_window* window = WindowFindFromPoint(screenCoords);
+    WindowBase* window = WindowFindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY position{};
@@ -339,7 +339,7 @@ CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32
 CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
 {
     // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
-    rct_window* window = WindowFindFromPoint(screenCoords);
+    WindowBase* window = WindowFindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY ret{};
@@ -356,7 +356,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
-            int32_t bx = bitscanforward(directions);
+            int32_t bx = UtilBitScanForward(directions);
             bx += (*tileElement)->AsEntrance()->GetDirection();
             bx &= 3;
             if (direction != nullptr)
@@ -373,7 +373,7 @@ CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_
         int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
-            int32_t bx = (*tileElement)->GetDirectionWithOffset(bitscanforward(directions));
+            int32_t bx = (*tileElement)->GetDirectionWithOffset(UtilBitScanForward(directions));
             if (direction != nullptr)
                 *direction = bx;
             return info.Loc;
@@ -560,7 +560,7 @@ static void FootpathConnectCorners(const CoordsXY& footpathPos, PathElement* ini
     }
 }
 
-struct rct_neighbour
+struct FootpathNeighbour
 {
     uint8_t order;
     uint8_t direction;
@@ -568,23 +568,23 @@ struct rct_neighbour
     StationIndex entrance_index;
 };
 
-struct rct_neighbour_list
+struct FootpathNeighbourList
 {
-    rct_neighbour items[8];
+    FootpathNeighbour items[8];
     size_t count;
 };
 
 static int32_t FootpathNeighbourCompare(const void* a, const void* b)
 {
-    uint8_t va = (static_cast<const rct_neighbour*>(a))->order;
-    uint8_t vb = (static_cast<const rct_neighbour*>(b))->order;
+    uint8_t va = (static_cast<const FootpathNeighbour*>(a))->order;
+    uint8_t vb = (static_cast<const FootpathNeighbour*>(b))->order;
     if (va < vb)
         return 1;
     if (va > vb)
         return -1;
 
-    uint8_t da = (static_cast<const rct_neighbour*>(a))->direction;
-    uint8_t db = (static_cast<const rct_neighbour*>(b))->direction;
+    uint8_t da = (static_cast<const FootpathNeighbour*>(a))->direction;
+    uint8_t db = (static_cast<const FootpathNeighbour*>(b))->direction;
     if (da < db)
         return -1;
     if (da > db)
@@ -592,13 +592,13 @@ static int32_t FootpathNeighbourCompare(const void* a, const void* b)
     return 0;
 }
 
-static void FootpathNeighbourListInit(rct_neighbour_list* neighbourList)
+static void FootpathNeighbourListInit(FootpathNeighbourList* neighbourList)
 {
     neighbourList->count = 0;
 }
 
 static void FootpathNeighbourListPush(
-    rct_neighbour_list* neighbourList, int32_t order, int32_t direction, RideId rideIndex, ::StationIndex entrance_index)
+    FootpathNeighbourList* neighbourList, int32_t order, int32_t direction, RideId rideIndex, ::StationIndex entrance_index)
 {
     Guard::Assert(neighbourList->count < std::size(neighbourList->items));
     neighbourList->items[neighbourList->count].order = order;
@@ -608,7 +608,7 @@ static void FootpathNeighbourListPush(
     neighbourList->count++;
 }
 
-static bool FootpathNeighbourListPop(rct_neighbour_list* neighbourList, rct_neighbour* outNeighbour)
+static bool FootpathNeighbourListPop(FootpathNeighbourList* neighbourList, FootpathNeighbour* outNeighbour)
 {
     if (neighbourList->count == 0)
         return false;
@@ -620,20 +620,20 @@ static bool FootpathNeighbourListPop(rct_neighbour_list* neighbourList, rct_neig
     return true;
 }
 
-static void FootpathNeighbourListRemove(rct_neighbour_list* neighbourList, size_t index)
+static void FootpathNeighbourListRemove(FootpathNeighbourList* neighbourList, size_t index)
 {
     Guard::ArgumentInRange<size_t>(index, 0, neighbourList->count - 1);
     int32_t itemsRemaining = static_cast<int32_t>(neighbourList->count - index) - 1;
     if (itemsRemaining > 0)
     {
-        memmove(&neighbourList->items[index], &neighbourList->items[index + 1], sizeof(rct_neighbour) * itemsRemaining);
+        memmove(&neighbourList->items[index], &neighbourList->items[index + 1], sizeof(FootpathNeighbour) * itemsRemaining);
     }
     neighbourList->count--;
 }
 
-static void FoopathNeighbourListSort(rct_neighbour_list* neighbourList)
+static void FoopathNeighbourListSort(FootpathNeighbourList* neighbourList)
 {
-    qsort(neighbourList->items, neighbourList->count, sizeof(rct_neighbour), FootpathNeighbourCompare);
+    qsort(neighbourList->items, neighbourList->count, sizeof(FootpathNeighbour), FootpathNeighbourCompare);
 }
 
 static TileElement* FootpathGetElement(const CoordsXYRangedZ& footpathPos, int32_t direction)
@@ -766,7 +766,7 @@ static void Loc6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction,
 
 static void Loc6A6F1F(
     const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* tileElement, TileElement* initialTileElement,
-    const CoordsXY& targetPos, int32_t flags, bool query, rct_neighbour_list* neighbourList)
+    const CoordsXY& targetPos, int32_t flags, bool query, FootpathNeighbourList* neighbourList)
 {
     if (query)
     {
@@ -819,7 +819,7 @@ static void Loc6A6F1F(
 
 static void Loc6A6D7E(
     const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, int32_t flags, bool query,
-    rct_neighbour_list* neighbourList)
+    FootpathNeighbourList* neighbourList)
 {
     auto targetPos = CoordsXY{ initialTileElementPos } + CoordsDirectionDelta[direction];
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && MapIsEdge(targetPos))
@@ -933,7 +933,7 @@ static void Loc6A6D7E(
 // TODO: Change this into a simple check that validates if the direction should be fully checked with Loc6A6D7E and move the
 // calling of Loc6A6D7E into the parent function.
 static void Loc6A6C85(
-    const CoordsXYE& tileElementPos, int32_t direction, int32_t flags, bool query, rct_neighbour_list* neighbourList)
+    const CoordsXYE& tileElementPos, int32_t direction, int32_t flags, bool query, FootpathNeighbourList* neighbourList)
 {
     if (query
         && WallInTheWay(
@@ -1001,8 +1001,8 @@ static void Loc6A6C85(
  */
 void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags)
 {
-    rct_neighbour_list neighbourList;
-    rct_neighbour neighbour;
+    FootpathNeighbourList neighbourList;
+    FootpathNeighbour neighbour;
 
     FootpathUpdateQueueChains();
 
@@ -1132,7 +1132,7 @@ void FootpathChainRideQueue(
             // Fix #2051: Stop queue paths that are already connected to two other tiles
             //            from connecting to the tile we are coming from.
             int32_t edges = tileElement->AsPath()->GetEdges();
-            int32_t numEdges = bitcount(edges);
+            int32_t numEdges = BitCount(edges);
             if (numEdges >= 2)
             {
                 int32_t requiredEdgeMask = 1 << DirectionReverse(direction);
@@ -1254,7 +1254,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
     if (surfaceElement != nullptr)
     {
         // If the tile is not safe to own construction rights of, erase them.
-        if (CheckMaxAllowableLandRightsForTile({ mapPos, surfaceElement->base_height << 3 }) == OWNERSHIP_UNOWNED)
+        if (CheckMaxAllowableLandRightsForTile({ mapPos, surfaceElement->BaseHeight << 3 }) == OWNERSHIP_UNOWNED)
         {
             ownership = OWNERSHIP_UNOWNED;
         }
@@ -1281,7 +1281,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
 
 static bool GetNextDirection(int32_t edges, int32_t* direction)
 {
-    int32_t index = bitscanforward(edges);
+    int32_t index = UtilBitScanForward(edges);
     if (index == -1)
         return false;
 
@@ -2161,7 +2161,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
         switch (tileElement->GetType())
         {
             case TileElementType::Path:
-                if (tileElement->base_height == coords.z)
+                if (tileElement->BaseHeight == coords.z)
                 {
                     if (!tileElement->AsPath()->IsSloped())
                         // The footpath is flat, it can be connected to from any direction
@@ -2170,7 +2170,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                         // The footpath is sloped and its lowest point matches the edge connection
                         return true;
                 }
-                else if (tileElement->base_height + 2 == coords.z)
+                else if (tileElement->BaseHeight + 2 == coords.z)
                 {
                     if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == coords.direction)
                         // The footpath is sloped and its higher point matches the edge connection
@@ -2178,7 +2178,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                 }
                 break;
             case TileElementType::Track:
-                if (tileElement->base_height == coords.z)
+                if (tileElement->BaseHeight == coords.z)
                 {
                     auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
                     if (ride == nullptr)
@@ -2202,7 +2202,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                 }
                 break;
             case TileElementType::Entrance:
-                if (tileElement->base_height == coords.z)
+                if (tileElement->BaseHeight == coords.z)
                 {
                     if (entrance_has_direction(*(tileElement->AsEntrance()), coords.direction - tileElement->GetDirection()))
                     {
@@ -2251,7 +2251,7 @@ static void FootpathFixCornersAround(const TileCoordsXY& footpathPos, TileElemen
                     continue;
                 if (tileElement->AsPath()->IsSloped())
                     continue;
-                if (tileElement->base_height != pathElement->base_height)
+                if (tileElement->BaseHeight != pathElement->BaseHeight)
                     continue;
 
                 const int32_t ix = xOffset + 1;
@@ -2286,7 +2286,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
     bool fixCorners = false;
     for (uint8_t direction = 0; direction < NumOrthogonalDirections; direction++)
     {
-        int32_t z1 = tileElement->base_height;
+        int32_t z1 = tileElement->BaseHeight;
         if (tileElement->GetType() == TileElementType::Path)
         {
             if (tileElement->AsPath()->IsSloped())
@@ -2388,7 +2388,7 @@ static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
     auto footpathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, index));
     if (footpathObj != nullptr)
     {
-        auto pathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
+        auto pathEntry = reinterpret_cast<FootpathEntry*>(footpathObj->GetLegacyData());
         return showEditorPaths || !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR);
     }
     return false;

@@ -92,7 +92,7 @@ enum
 struct ObjectListItem
 {
     const ObjectRepositoryItem* repositoryItem;
-    std::unique_ptr<rct_object_filters> filter;
+    std::unique_ptr<RideFilters> filter;
     uint8_t* flags;
 };
 
@@ -688,7 +688,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         // ScrollPaint
         ScreenCoordsXY screenCoords;
@@ -750,7 +750,7 @@ public:
                     width_limit /= 2;
                     // Draw ride type
                     StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
-                    safe_strcpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
+                    SafeStrCpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
                     auto ft = Formatter();
                     ft.Add<const char*>(gCommonStringFormatBuffer);
                     DrawTextEllipsised(
@@ -759,7 +759,7 @@ public:
                 }
 
                 // Draw text
-                safe_strcpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
+                SafeStrCpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                 {
                     while (*buffer != 0 && *buffer != 9)
@@ -801,7 +801,7 @@ public:
         if (strcmp(_filter_string, c) == 0)
             return;
 
-        safe_strcpy(_filter_string, c, sizeof(_filter_string));
+        SafeStrCpy(_filter_string, c, sizeof(_filter_string));
 
         FilterUpdateCounts();
 
@@ -952,7 +952,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         int32_t _width;
 
@@ -1051,7 +1051,7 @@ public:
 
         // Draw preview
         {
-            rct_drawpixelinfo clipDPI;
+            DrawPixelInfo clipDPI;
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
             _width = previewWidget.width() - 1;
             int32_t _height = previewWidget.height() - 1;
@@ -1132,10 +1132,10 @@ private:
             if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6) && FilterSource(item)
                 && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags))
             {
-                auto filter = std::make_unique<rct_object_filters>();
-                filter->ride.category[0] = 0;
-                filter->ride.category[1] = 0;
-                filter->ride.ride_type = 0;
+                auto filter = std::make_unique<RideFilters>();
+                filter->category[0] = 0;
+                filter->category[1] = 0;
+                filter->ride_type = 0;
 
                 ObjectListItem currentListItem;
                 currentListItem.repositoryItem = item;
@@ -1182,7 +1182,7 @@ private:
         _listItems.shrink_to_fit();
     }
 
-    void DrawDescriptions(rct_drawpixelinfo* dpi)
+    void DrawDescriptions(DrawPixelInfo* dpi)
     {
         const auto& widget = widgets[WIDX_PREVIEW];
         auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_LIST].right + 4, widget.bottom + 23 };
@@ -1200,7 +1200,7 @@ private:
         if (GetSelectedObjectType() == ObjectType::Ride)
         {
             auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
-            const auto* rideEntry = reinterpret_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+            const auto* rideEntry = reinterpret_cast<RideObjectEntry*>(rideObject->GetLegacyData());
             if (rideEntry->shop_item[0] != ShopItem::None)
             {
                 std::string sells = "";
@@ -1246,7 +1246,7 @@ private:
         }
     }
 
-    void DrawDebugData(rct_drawpixelinfo* dpi)
+    void DrawDebugData(DrawPixelInfo* dpi)
     {
         ObjectListItem* listItem = &_listItems[selected_list_item];
         auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 6) };
@@ -1505,7 +1505,7 @@ private:
         for (; ObjectEntryGetChunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
             ;
 
-        rct_ride_entry* ride_entry = GetRideEntryByIndex(entry_index);
+        RideObjectEntry* ride_entry = GetRideEntryByIndex(entry_index);
         auto rideType = ride_entry->GetFirstNonNullRideType();
 
         auto intent = Intent(WindowClass::TrackDesignList);
@@ -1519,7 +1519,7 @@ private:
  *
  * rct2: 0x006AA64E
  */
-rct_window* WindowEditorObjectSelectionOpen()
+WindowBase* WindowEditorObjectSelectionOpen()
 {
     return WindowFocusOrCreate<EditorObjectSelectionWindow>(
         WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
@@ -1586,7 +1586,7 @@ void EditorLoadSelectedObjects()
                     auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
                     if (objectType == ObjectType::Ride)
                     {
-                        rct_ride_entry* rideEntry = GetRideEntryByIndex(entryIndex);
+                        RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
                         auto rideType = rideEntry->GetFirstNonNullRideType();
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                         ResearchInsertRideEntry(rideType, entryIndex, category, true);

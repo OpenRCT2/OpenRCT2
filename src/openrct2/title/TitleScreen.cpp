@@ -86,7 +86,7 @@ void TitleScreen::StopPreviewingSequence()
 {
     if (_previewingSequence)
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             WindowUnfollowSprite(*mainWindow);
@@ -266,7 +266,7 @@ void TitleScreen::TitleInitialise()
         while (!safeSequence)
         {
             size_t total = TitleSequenceManager::GetCount();
-            random = util_rand() % static_cast<int32_t>(total);
+            random = UtilRand() % static_cast<int32_t>(total);
             const utf8* scName = TitleSequenceManagerGetName(random);
             safeSequence = true;
             if (scName == RCT1String)
@@ -434,7 +434,7 @@ bool TitleIsPreviewingSequence()
     return false;
 }
 
-void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
+void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords)
 {
     thread_local std::string buffer;
     buffer.clear();

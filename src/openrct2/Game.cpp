@@ -148,7 +148,7 @@ enum
  */
 void UpdatePaletteEffects()
 {
-    auto water_type = static_cast<rct_water_type*>(ObjectEntryGetChunk(ObjectType::Water, 0));
+    auto water_type = static_cast<WaterObjectEntry*>(ObjectEntryGetChunk(ObjectType::Water, 0));
 
     if (gClimateLightningFlash == 1)
     {
@@ -159,7 +159,7 @@ void UpdatePaletteEffects()
         {
             palette = water_type->image_id;
         }
-        const rct_g1_element* g1 = GfxGetG1Element(palette);
+        const G1Element* g1 = GfxGetG1Element(palette);
         if (g1 != nullptr)
         {
             int32_t xoffset = g1->x_offset;
@@ -187,7 +187,7 @@ void UpdatePaletteEffects()
                 palette = water_type->image_id;
             }
 
-            const rct_g1_element* g1 = GfxGetG1Element(palette);
+            const G1Element* g1 = GfxGetG1Element(palette);
             if (g1 != nullptr)
             {
                 int32_t xoffset = g1->x_offset;
@@ -223,7 +223,7 @@ void UpdatePaletteEffects()
         {
             waterId = water_type->palette_index_1;
         }
-        const rct_g1_element* g1 = GfxGetG1Element(shade + waterId);
+        const G1Element* g1 = GfxGetG1Element(shade + waterId);
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
@@ -335,7 +335,7 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
     if (length > 0)
     {
         auto temp = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
-        safe_strcpy(buffer, temp.data(), length);
+        SafeStrCpy(buffer, temp.data(), length);
     }
 }
 
@@ -478,7 +478,7 @@ void GameLoadInit()
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
-    if (network_get_mode() != NETWORK_MODE_CLIENT)
+    if (NetworkGetMode() != NETWORK_MODE_CLIENT)
     {
         GameActions::ClearQueue();
     }

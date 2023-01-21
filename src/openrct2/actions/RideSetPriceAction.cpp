@@ -58,7 +58,7 @@ GameActions::Result RideSetPriceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride->subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
         LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
@@ -80,7 +80,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride->subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
         LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());

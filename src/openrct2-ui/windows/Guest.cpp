@@ -319,7 +319,7 @@ public:
             OnViewportRotateOverview();
         }
     }
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         switch (page)
         {
@@ -382,7 +382,7 @@ public:
             OnScrollMouseDownRides(scrollIndex, screenCoords);
         }
     }
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         if (page == WINDOW_GUEST_RIDES)
         {
@@ -514,7 +514,7 @@ private:
 
 #pragma region Overview
 
-    void OverviewTabDraw(rct_drawpixelinfo& dpi)
+    void OverviewTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_1))
             return;
@@ -526,7 +526,7 @@ private:
         if (page == WINDOW_GUEST_OVERVIEW)
             widgHeight++;
 
-        rct_drawpixelinfo clipDpi;
+        DrawPixelInfo clipDpi;
         if (!ClipDrawPixelInfo(&clipDpi, &dpi, screenCoords, widgWidth, widgHeight))
         {
             return;
@@ -621,11 +621,11 @@ private:
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                               network_get_current_player_id() };
+                                               NetworkGetCurrentPlayerId() };
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+                    WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
                         ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
@@ -692,7 +692,7 @@ private:
 
     void GuestFollow()
     {
-        rct_window* main = WindowGetMain();
+        WindowBase* main = WindowGetMain();
         WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
@@ -738,7 +738,7 @@ private:
         Invalidate();
     }
 
-    void OnDrawOverview(rct_drawpixelinfo& dpi)
+    void OnDrawOverview(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -782,7 +782,7 @@ private:
         int32_t left = marqueeWidget.left + 2 + windowPos.x;
         int32_t top = marqueeWidget.top + windowPos.y;
         int32_t marqHeight = marqueeWidget.height();
-        rct_drawpixelinfo dpiMarquee;
+        DrawPixelInfo dpiMarquee;
         if (!ClipDrawPixelInfo(&dpiMarquee, &dpi, { left, top }, marqWidth, marqHeight))
         {
             return;
@@ -874,14 +874,14 @@ private:
         _beingWatchedTimer++;
 
         // Disable peep watching thought for multiplayer as it's client specific
-        if (network_get_mode() == NETWORK_MODE_NONE)
+        if (NetworkGetMode() == NETWORK_MODE_NONE)
         {
             // Create the "I have the strangest feeling I am being watched thought"
             if (_beingWatchedTimer >= 3840)
             {
                 if (!(_beingWatchedTimer & 0x3FF))
                 {
-                    int32_t random = util_rand() & 0xFFFF;
+                    int32_t random = UtilRand() & 0xFFFF;
                     if (random <= 0x2AAA)
                     {
                         peep->InsertNewThought(PeepThoughtType::Watched);
@@ -961,7 +961,7 @@ private:
         PeepPickupAction pickupAction{ PeepPickupType::Place,
                                        EntityId::FromUnderlying(number),
                                        { destCoords, tileElement->GetBaseZ() },
-                                       network_get_current_player_id() };
+                                       NetworkGetCurrentPlayerId() };
         pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
                 return;
@@ -977,7 +977,7 @@ private:
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepX, 0, 0 }, network_get_current_player_id()
+            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepX, 0, 0 }, NetworkGetCurrentPlayerId()
         };
         GameActions::Execute(&pickupAction);
     }
@@ -985,7 +985,7 @@ private:
 #pragma endregion
 
 #pragma region Stats
-    void StatsTabDraw(rct_drawpixelinfo& dpi)
+    void StatsTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_2))
             return;
@@ -1032,7 +1032,7 @@ private:
         Invalidate();
     }
 
-    void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, rct_drawpixelinfo& dpi, int32_t colour, bool blinkFlag)
+    void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, DrawPixelInfo& dpi, int32_t colour, bool blinkFlag)
     {
         auto coords = origCoords;
         if (FontGetLineHeight(FontStyle::Medium) > 10)
@@ -1066,7 +1066,7 @@ private:
         return std::clamp(newValue, newMin, 255);
     }
 
-    void OnDrawStats(rct_drawpixelinfo& dpi)
+    void OnDrawStats(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1204,7 +1204,7 @@ private:
 #pragma endregion
 
 #pragma region Rides
-    void RidesTabDraw(rct_drawpixelinfo& dpi)
+    void RidesTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_3))
             return;
@@ -1312,7 +1312,7 @@ private:
         widgets[WIDX_RIDE_SCROLL].bottom = height - 15;
     }
 
-    void OnDrawRides(rct_drawpixelinfo& dpi)
+    void OnDrawRides(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1351,7 +1351,7 @@ private:
         DrawTextEllipsised(&dpi, screenCoords, width - 14, STR_FAVOURITE_RIDE, ft);
     }
 
-    void OnScrollDrawRides(int32_t scrollIndex, rct_drawpixelinfo& dpi)
+    void OnScrollDrawRides(int32_t scrollIndex, DrawPixelInfo& dpi)
     {
         auto colour = ColourMapA[colours[1]].mid_light;
         GfxFillRect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
@@ -1379,7 +1379,7 @@ private:
 #pragma endregion
 
 #pragma region Finance
-    void FinanceTabDraw(rct_drawpixelinfo& dpi)
+    void FinanceTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_4))
             return;
@@ -1405,7 +1405,7 @@ private:
         WidgetInvalidate(*this, WIDX_TAB_4);
     }
 
-    void OnDrawFinance(rct_drawpixelinfo& dpi)
+    void OnDrawFinance(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1517,7 +1517,7 @@ private:
 #pragma endregion
 
 #pragma region Thoughts
-    void ThoughtsTabDraw(rct_drawpixelinfo& dpi)
+    void ThoughtsTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_5))
             return;
@@ -1554,7 +1554,7 @@ private:
         }
     }
 
-    void OnDrawThoughts(rct_drawpixelinfo& dpi)
+    void OnDrawThoughts(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1599,7 +1599,7 @@ private:
 #pragma endregion
 
 #pragma region Inventory
-    void InventoryTabDraw(rct_drawpixelinfo& dpi)
+    void InventoryTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_6))
             return;
@@ -1741,7 +1741,7 @@ private:
         return std::make_pair(STR_GUEST_ITEM_FORMAT, ft);
     }
 
-    void OnDrawInventory(rct_drawpixelinfo& dpi)
+    void OnDrawInventory(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1788,7 +1788,7 @@ private:
 #pragma endregion
 
 #pragma region Debug
-    void DebugTabDraw(rct_drawpixelinfo& dpi)
+    void DebugTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_7))
             return;
@@ -1811,7 +1811,7 @@ private:
         Invalidate();
     }
 
-    void OnDrawDebug(rct_drawpixelinfo& dpi)
+    void OnDrawDebug(DrawPixelInfo& dpi)
     {
         char buffer[512]{};
         char buffer2[512]{};
@@ -1855,14 +1855,14 @@ private:
             if (peep->GetNextIsSurface())
             {
                 OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
-                safe_strcat(buffer, buffer2, sizeof(buffer));
+                SafeStrCat(buffer, buffer2, sizeof(buffer));
             }
             if (peep->GetNextIsSloped())
             {
                 auto ft2 = Formatter();
                 ft2.Add<int32_t>(peep->GetNextDirection());
                 OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
-                safe_strcat(buffer, buffer2, sizeof(buffer));
+                SafeStrCat(buffer, buffer2, sizeof(buffer));
             }
             GfxDrawString(&dpi, screenCoords, buffer, {});
         }
@@ -1908,7 +1908,7 @@ private:
  *  rct2: 0x006989E9
  *
  */
-rct_window* WindowGuestOpen(Peep* peep)
+WindowBase* WindowGuestOpen(Peep* peep)
 {
     if (peep == nullptr)
     {

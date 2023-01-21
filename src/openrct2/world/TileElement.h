@@ -24,7 +24,7 @@ struct SmallSceneryEntry;
 struct WallSceneryEntry;
 struct PathBitEntry;
 struct BannerSceneryEntry;
-struct rct_footpath_entry;
+struct FootpathEntry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
 class TerrainEdgeObject;
@@ -50,11 +50,11 @@ struct BannerElement;
 
 struct TileElementBase
 {
-    uint8_t type;             // 0
-    uint8_t Flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
-    uint8_t base_height;      // 2
-    uint8_t clearance_height; // 3
-    uint8_t owner;            // 4
+    uint8_t type;            // 0
+    uint8_t Flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
+    uint8_t BaseHeight;      // 2
+    uint8_t ClearanceHeight; // 3
+    uint8_t Owner;           // 4
 
     void Remove();
 

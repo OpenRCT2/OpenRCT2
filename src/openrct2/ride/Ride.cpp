@@ -197,15 +197,15 @@ Ride* GetRide(RideId index)
     return nullptr;
 }
 
-rct_ride_entry* GetRideEntryByIndex(ObjectEntryIndex index)
+RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index)
 {
-    rct_ride_entry* result = nullptr;
+    RideObjectEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
 
     auto obj = objMgr.GetLoadedObject(ObjectType::Ride, index);
     if (obj != nullptr)
     {
-        result = static_cast<rct_ride_entry*>(obj->GetLegacyData());
+        result = static_cast<RideObjectEntry*>(obj->GetLegacyData());
     }
 
     return result;
@@ -227,7 +227,7 @@ std::string_view GetRideEntryName(ObjectEntryIndex index)
     return {};
 }
 
-rct_ride_entry* Ride::GetRideEntry() const
+RideObjectEntry* Ride::GetRideEntry() const
 {
     return GetRideEntryByIndex(subtype);
 }
@@ -369,7 +369,7 @@ void RideUpdateFavouritedStat()
 money64 Ride::CalculateIncomePerHour() const
 {
     // Get entry by ride to provide better reporting
-    rct_ride_entry* entry = GetRideEntry();
+    RideObjectEntry* entry = GetRideEntry();
     if (entry == nullptr)
     {
         return 0;
@@ -426,7 +426,7 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
 {
     TileElement* resultTileElement = nullptr;
 
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {
@@ -595,7 +595,7 @@ bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t*
  *  rct2: 0x006C63D6
  */
 bool TrackBlockGetPreviousFromZero(
-    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, track_begin_end* outTrackBeginEnd)
+    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, TrackBeginEnd* outTrackBeginEnd)
 {
     uint8_t directionStart = direction;
     direction = DirectionReverse(direction);
@@ -687,7 +687,7 @@ bool TrackBlockGetPreviousFromZero(
  * higher two bytes of ecx and edx where as outTrackBeginEnd.end_x and
  * outTrackBeginEnd.end_y will be in the lower two bytes (cx and dx).
  */
-bool TrackBlockGetPrevious(const CoordsXYE& trackPos, track_begin_end* outTrackBeginEnd)
+bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeginEnd)
 {
     if (trackPos.element == nullptr)
         return false;
@@ -742,16 +742,16 @@ bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         return false;
 
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == id)
     {
         RideConstructionInvalidateCurrentTrack();
     }
 
     bool moveSlowIt = true;
-    track_circuit_iterator it = {};
+    TrackCircuitIterator it = {};
     TrackCircuitIteratorBegin(&it, input);
-    track_circuit_iterator slowIt = it;
+    TrackCircuitIterator slowIt = it;
     while (TrackCircuitIteratorNext(&it))
     {
         if (!TrackIsConnectedByShape(it.last.element, it.current.element))
@@ -1409,7 +1409,7 @@ static int32_t ride_get_new_breakdown_problem(const Ride& ride)
     problemBits = availableBreakdownProblems;
     while (problemBits != 0)
     {
-        breakdownProblem = bitscanforward(problemBits);
+        breakdownProblem = UtilBitScanForward(problemBits);
         problemBits &= ~(1 << breakdownProblem);
         totalProbability += _breakdownProblemProbabilities[breakdownProblem];
     }
@@ -1423,7 +1423,7 @@ static int32_t ride_get_new_breakdown_problem(const Ride& ride)
     problemBits = availableBreakdownProblems;
     do
     {
-        breakdownProblem = bitscanforward(problemBits);
+        breakdownProblem = UtilBitScanForward(problemBits);
         problemBits &= ~(1 << breakdownProblem);
         randomProbability -= _breakdownProblemProbabilities[breakdownProblem];
     } while (randomProbability >= 0);
@@ -1456,7 +1456,7 @@ bool Ride::CanBreakDown() const
         return false;
     }
 
-    rct_ride_entry* entry = GetRideEntry();
+    RideObjectEntry* entry = GetRideEntry();
     return entry != nullptr && !(entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN);
 }
 
@@ -1913,7 +1913,7 @@ void DefaultMusicUpdate(Ride& ride)
         if (musicObj != nullptr)
         {
             auto numTracks = musicObj->GetTrackCount();
-            ride.music_tune_id = static_cast<uint8_t>(util_rand() % numTracks);
+            ride.music_tune_id = static_cast<uint8_t>(UtilRand() % numTracks);
             ride.music_position = 0;
         }
         return;
@@ -2173,10 +2173,10 @@ int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType)
 
     // If all presets have been used, just go with a random preset
     if (unused.size() == 0)
-        return util_rand() % colourPresets->count;
+        return UtilRand() % colourPresets->count;
 
     // Choose a random preset from the list of unused presets
-    auto unusedIndex = util_rand() % unused.size();
+    auto unusedIndex = UtilRand() % unused.size();
     return unused[unusedIndex];
 }
 
@@ -2186,8 +2186,8 @@ int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType)
  */
 void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index)
 {
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
-    vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
+    VehicleColourPresetList* presetList = rideEntry->vehicle_preset_list;
 
     if (presetList->count != 0 && presetList->count != 255)
     {
@@ -2339,7 +2339,7 @@ static void ride_shop_connected(const Ride& ride)
         int32_t y2 = shopLoc.y - TileDirectionDelta[face_direction].y;
         int32_t x2 = shopLoc.x - TileDirectionDelta[face_direction].x;
 
-        if (MapCoordIsConnected({ x2, y2, tileElement->base_height }, face_direction))
+        if (MapCoordIsConnected({ x2, y2, tileElement->BaseHeight }, face_direction))
             return;
     }
 
@@ -2666,11 +2666,11 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
         return { false };
 
     RideId rideIndex = input.element->AsTrack()->GetRideIndex();
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         RideConstructionInvalidateCurrentTrack();
 
-    track_circuit_iterator it;
+    TrackCircuitIterator it;
     TrackCircuitIteratorBegin(&it, input);
     while (TrackCircuitIteratorNext(&it))
     {
@@ -2730,14 +2730,14 @@ static bool ride_check_track_contains_inversions(const CoordsXYE& input, CoordsX
             return true;
     }
 
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
     }
 
     bool moveSlowIt = true;
-    track_circuit_iterator it, slowIt;
+    TrackCircuitIterator it, slowIt;
     TrackCircuitIteratorBegin(&it, input);
     slowIt = it;
 
@@ -2790,14 +2790,14 @@ static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* 
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         return true;
 
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
     }
 
     bool moveSlowIt = true;
-    track_circuit_iterator it, slowIt;
+    TrackCircuitIterator it, slowIt;
     TrackCircuitIteratorBegin(&it, input);
     slowIt = it;
 
@@ -2831,7 +2831,7 @@ static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* 
  */
 static int32_t ride_check_station_length(const CoordsXYE& input, CoordsXYE* output)
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
         && _currentRideIndex == input.element->AsTrack()->GetRideIndex())
     {
@@ -2841,7 +2841,7 @@ static int32_t ride_check_station_length(const CoordsXYE& input, CoordsXYE* outp
     output->x = input.x;
     output->y = input.y;
     output->element = input.element;
-    track_begin_end trackBeginEnd;
+    TrackBeginEnd trackBeginEnd;
     while (TrackBlockGetPrevious(*output, &trackBeginEnd))
     {
         output->x = trackBeginEnd.begin_x;
@@ -2933,7 +2933,7 @@ static void ride_set_boat_hire_return_point(Ride& ride, const CoordsXYE& startEl
     auto returnPos = startElement;
     int32_t startX = returnPos.x;
     int32_t startY = returnPos.y;
-    track_begin_end trackBeginEnd;
+    TrackBeginEnd trackBeginEnd;
     while (TrackBlockGetPrevious(returnPos, &trackBeginEnd))
     {
         // If previous track is back to the starting x, y, then break loop (otherwise possible infinite loop)
@@ -3293,10 +3293,10 @@ static Vehicle* vehicle_create_car(
  *
  *  rct2: 0x006DD84C
  */
-static train_ref vehicle_create_train(
+static TrainReference vehicle_create_train(
     RideId rideIndex, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
-    train_ref train = { nullptr, nullptr };
+    TrainReference train = { nullptr, nullptr };
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
@@ -3331,8 +3331,8 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
     if (ride == nullptr)
         return false;
 
-    train_ref firstTrain = {};
-    train_ref lastTrain = {};
+    TrainReference firstTrain = {};
+    TrainReference lastTrain = {};
     int32_t remainingDistance = 0;
     bool allTrainsCreated = true;
 
@@ -3342,7 +3342,7 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
         {
             remainingDistance = 0;
         }
-        train_ref train = vehicle_create_train(rideIndex, trainsPos, vehicleIndex, &remainingDistance, trackElement);
+        TrainReference train = vehicle_create_train(rideIndex, trainsPos, vehicleIndex, &remainingDistance, trackElement);
         if (train.head == nullptr || train.tail == nullptr)
         {
             allTrainsCreated = false;
@@ -3397,7 +3397,7 @@ static void ride_create_vehicles_find_first_block(const Ride& ride, CoordsXYE* o
 
     CoordsXY trackPos = curTrackPos;
     auto trackElement = curTrackElement;
-    track_begin_end trackBeginEnd;
+    TrackBeginEnd trackBeginEnd;
     while (TrackBlockGetPrevious({ trackPos, reinterpret_cast<TileElement*>(trackElement) }, &trackBeginEnd))
     {
         trackPos = { trackBeginEnd.end_x, trackBeginEnd.end_y };
@@ -3648,7 +3648,7 @@ static ResultWithMessage ride_initialise_cable_lift_track(const Ride& ride, bool
     };
     int32_t state = STATE_FIND_CABLE_LIFT;
 
-    track_circuit_iterator it;
+    TrackCircuitIterator it;
     TrackCircuitIteratorBegin(&it, { location, tileElement });
     while (TrackCircuitIteratorPrevious(&it))
     {
@@ -4024,12 +4024,12 @@ ResultWithMessage Ride::Open(bool isApplying)
  */
 void RideGetStartOfTrack(CoordsXYE* output)
 {
-    track_begin_end trackBeginEnd;
+    TrackBeginEnd trackBeginEnd;
     CoordsXYE trackElement = *output;
     if (TrackBlockGetPrevious(trackElement, &trackBeginEnd))
     {
         TileElement* initial_map = trackElement.element;
-        track_begin_end slowIt = trackBeginEnd;
+        TrackBeginEnd slowIt = trackBeginEnd;
         bool moveSlowIt = true;
         do
         {
@@ -4145,10 +4145,10 @@ int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
 
     // If all presets have been used, just go with a random preset
     if (unused.size() == 0)
-        return util_rand() % colourPresets.count;
+        return UtilRand() % colourPresets.count;
 
     // Choose a random preset from the list of unused presets
-    auto unusedIndex = util_rand() % unused.size();
+    auto unusedIndex = UtilRand() % unused.size();
     return unused[unusedIndex];
 }
 
@@ -4158,7 +4158,7 @@ int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
  */
 void Ride::SetColourPreset(uint8_t index)
 {
-    const track_colour_preset_list* colourPresets = &GetRideTypeDescriptor().ColourPresets;
+    const TrackColourPresetList* colourPresets = &GetRideTypeDescriptor().ColourPresets;
     TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
     // Stalls save their default colour in the vehicle settings (since they share a common ride type)
     if (!IsRide())
@@ -4215,7 +4215,7 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-RideNaming GetRideNaming(const ride_type_t rideType, const rct_ride_entry& rideEntry)
+RideNaming GetRideNaming(const ride_type_t rideType, const RideObjectEntry& rideEntry)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
@@ -4468,7 +4468,7 @@ bool Ride::IsBlockSectioned() const
 
 bool RideHasAnyTrackElements(const Ride& ride)
 {
-    tile_element_iterator it;
+    TileElementIterator it;
 
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
@@ -4583,7 +4583,7 @@ void RideUpdateVehicleColours(const Ride& ride)
 
 uint8_t RideEntryGetVehicleAtPosition(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position)
 {
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (position == 0 && rideEntry->FrontCar != 255)
     {
         return rideEntry->FrontCar;
@@ -4613,7 +4613,7 @@ struct NecessarySpriteGroup
 };
 
 // Finds track pieces that a given ride entry has sprites for
-OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const rct_ride_entry& rideEntry)
+OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry)
 {
     // TODO: Use a std::span when C++20 available as 6 is due to jagged array
     static const std::array<NecessarySpriteGroup, 6> trackPieceRequiredSprites[TRACK_GROUP_COUNT] = {
@@ -4837,7 +4837,7 @@ static int32_t ride_get_track_length(const Ride& ride)
 
     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
 
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -4846,10 +4846,10 @@ static int32_t ride_get_track_length(const Ride& ride)
     bool moveSlowIt = true;
     int32_t result = 0;
 
-    track_circuit_iterator it;
+    TrackCircuitIterator it;
     TrackCircuitIteratorBegin(&it, { trackStart.x, trackStart.y, tileElement });
 
-    track_circuit_iterator slowIt = it;
+    TrackCircuitIterator slowIt = it;
     while (TrackCircuitIteratorNext(&it))
     {
         trackType = it.current.element->AsTrack()->GetTrackType();
@@ -4878,7 +4878,7 @@ void Ride::UpdateMaxVehicles()
     if (subtype == OBJECT_ENTRY_INDEX_NULL)
         return;
 
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(subtype);
     if (rideEntry == nullptr)
     {
         return;
@@ -5077,9 +5077,9 @@ void Ride::Crash(uint8_t vehicleIndex)
         // Open ride window for crashed vehicle
         auto intent = Intent(WD_VEHICLE);
         intent.PutExtra(INTENT_EXTRA_VEHICLE, vehicle);
-        rct_window* w = ContextOpenIntent(&intent);
+        WindowBase* w = ContextOpenIntent(&intent);
 
-        rct_viewport* viewport = WindowGetViewport(w);
+        Viewport* viewport = WindowGetViewport(w);
         if (w != nullptr && viewport != nullptr)
         {
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
@@ -5326,7 +5326,7 @@ void FixInvalidVehicleSpriteSizes()
     }
 }
 
-bool RideEntryHasCategory(const rct_ride_entry& rideEntry, uint8_t category)
+bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category)
 {
     auto rideType = rideEntry.GetFirstNonNullRideType();
     return GetRideTypeDescriptor(rideType).Category == category;
@@ -5474,18 +5474,18 @@ void DetermineRideEntranceAndExitLocations()
                                 {
                                     if (station.Entrance.z == expectedHeight)
                                         continue;
-                                    if (station.Entrance.z > entranceElement->base_height)
+                                    if (station.Entrance.z > entranceElement->BaseHeight)
                                         continue;
                                 }
 
                                 // Found our entrance
-                                station.Entrance = { x, y, entranceElement->base_height,
+                                station.Entrance = { x, y, entranceElement->BaseHeight,
                                                      static_cast<uint8_t>(entranceElement->GetDirection()) };
                                 alreadyFoundEntrance = true;
 
                                 LOG_VERBOSE(
                                     "Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.", ride.id,
-                                    stationIndex, x, y, entranceElement->base_height);
+                                    stationIndex, x, y, entranceElement->BaseHeight);
                             }
                             else if (fixExit && entranceElement->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
                             {
@@ -5493,18 +5493,18 @@ void DetermineRideEntranceAndExitLocations()
                                 {
                                     if (station.Exit.z == expectedHeight)
                                         continue;
-                                    if (station.Exit.z > entranceElement->base_height)
+                                    if (station.Exit.z > entranceElement->BaseHeight)
                                         continue;
                                 }
 
                                 // Found our exit
-                                station.Exit = { x, y, entranceElement->base_height,
+                                station.Exit = { x, y, entranceElement->BaseHeight,
                                                  static_cast<uint8_t>(entranceElement->GetDirection()) };
                                 alreadyFoundExit = true;
 
                                 LOG_VERBOSE(
                                     "Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", ride.id,
-                                    stationIndex, x, y, entranceElement->base_height);
+                                    stationIndex, x, y, entranceElement->BaseHeight);
                             }
                         } while (!(tileElement++)->IsLastForTile());
                     }
@@ -5669,7 +5669,7 @@ std::vector<RideId> GetTracklessRides()
     // Iterate map and build list of seen ride IDs
     std::vector<bool> seen;
     seen.resize(256);
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
@@ -5761,7 +5761,7 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
 
     if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
     {
-        rct_ride_entry* rideEntry = GetRideEntryByIndex(subtype);
+        RideObjectEntry* rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
             if (ride_check_track_contains_inversions(trackElement, &problematicTrackElement))

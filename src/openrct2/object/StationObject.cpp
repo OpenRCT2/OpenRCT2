@@ -45,7 +45,7 @@ void StationObject::Unload()
     ShelterImageId = ImageIndexUndefined;
 }
 
-void StationObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void StationObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + 16 };
 

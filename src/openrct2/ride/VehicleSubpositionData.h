@@ -15,7 +15,7 @@
 
 constexpr const size_t VehicleTrackSubpositionSizeDefault = TrackElemType::Count * NumOrthogonalDirections;
 
-struct rct_vehicle_info;
+struct VehicleInfo;
 
 enum class VehicleTrackSubposition : uint8_t
 {
@@ -43,10 +43,10 @@ enum class VehicleTrackSubposition : uint8_t
     Count,
 };
 
-struct rct_vehicle_info_list
+struct VehicleInfoList
 {
     uint16_t size;
-    const rct_vehicle_info* info;
+    const VehicleInfo* info;
 };
 
-extern const rct_vehicle_info_list* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)];
+extern const VehicleInfoList* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)];

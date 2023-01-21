@@ -70,7 +70,7 @@ namespace OpenRCT2::Scripting
                 delete[] g1->offset;
 
                 // Replace slot with empty element
-                rct_g1_element empty{};
+                G1Element empty{};
                 GfxSetG1Element(index, &empty);
             }
         }
@@ -79,7 +79,7 @@ namespace OpenRCT2::Scripting
 
     std::optional<ImageList> AllocateCustomImages(const std::shared_ptr<Plugin>& plugin, uint32_t count)
     {
-        std::vector<rct_g1_element> images;
+        std::vector<G1Element> images;
         images.resize(count);
 
         auto base = GfxObjectAllocateImages(images.data(), count);
@@ -171,7 +171,7 @@ namespace OpenRCT2::Scripting
         return obj.Take();
     }
 
-    static const char* GetPixelDataTypeForG1(const rct_g1_element& g1)
+    static const char* GetPixelDataTypeForG1(const G1Element& g1)
     {
         if (g1.flags & G1_FLAG_RLE_COMPRESSION)
             return "rle";
@@ -376,7 +376,7 @@ namespace OpenRCT2::Scripting
     static void ReplacePixelDataForImage(ImageIndex id, const PixelData& pixelData, std::vector<uint8_t>&& data)
     {
         // Setup the g1 element
-        rct_g1_element el{};
+        G1Element el{};
         auto* lastel = GfxGetG1Element(id);
         if (lastel != nullptr)
         {
@@ -420,7 +420,7 @@ namespace OpenRCT2::Scripting
         auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
 
         auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
-        rct_drawpixelinfo dpi;
+        DrawPixelInfo dpi;
         dpi.DrawingEngine = drawingEngine.get();
         dpi.width = size.width;
         dpi.height = size.height;
@@ -451,7 +451,7 @@ namespace OpenRCT2::Scripting
 
         if (createNewImage)
         {
-            rct_g1_element newg1{};
+            G1Element newg1{};
             if (g1 != nullptr)
             {
                 delete[] g1->offset;

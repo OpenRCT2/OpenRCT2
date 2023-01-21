@@ -140,7 +140,7 @@ void SetupInUseSelectionFlags()
         }
     }
 
-    tile_element_iterator iter;
+    TileElementIterator iter;
     TileElementIteratorBegin(&iter);
     do
     {
@@ -582,6 +582,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
             if (!selectionResult.Successful)
             {
                 _gSceneryGroupPartialSelectError = selectionResult.Message;
+                LOG_ERROR("Could not find object: %s", std::string(sgEntry.GetName()).c_str());
             }
         }
     }

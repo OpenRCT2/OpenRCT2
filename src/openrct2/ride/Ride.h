@@ -37,7 +37,7 @@ struct RideTypeDescriptor;
 struct Guest;
 struct Staff;
 struct Vehicle;
-struct rct_ride_entry;
+struct RideObjectEntry;
 struct ResultWithMessage;
 
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
@@ -353,7 +353,7 @@ public:
 
     void SetColourPreset(uint8_t index);
 
-    rct_ride_entry* GetRideEntry() const;
+    RideObjectEntry* GetRideEntry() const;
 
     size_t GetNumPrices() const;
     int32_t GetAge() const;
@@ -412,7 +412,7 @@ void UpdateChairlift(Ride& ride);
 
 #pragma pack(push, 1)
 
-struct track_begin_end
+struct TrackBeginEnd
 {
     int32_t begin_x;
     int32_t begin_y;
@@ -425,15 +425,8 @@ struct track_begin_end
     TileElement* end_element;
 };
 #ifdef PLATFORM_32BIT
-assert_struct_size(track_begin_end, 36);
+assert_struct_size(TrackBeginEnd, 36);
 #endif
-
-struct ride_name_args
-{
-    uint16_t type_name;
-    uint16_t number;
-};
-assert_struct_size(ride_name_args, 4);
 
 #pragma pack(pop)
 
@@ -492,6 +485,7 @@ enum
     // Must be set with swing mode 1 as well.
     RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2 = 1 << 20,
     RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED = 1 << 21,
+    RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS = 1 << 22,
 };
 
 enum
@@ -1002,7 +996,7 @@ struct RideManager
 RideManager GetRideManager();
 RideId GetNextFreeRideId();
 Ride* GetOrAllocateRide(RideId index);
-rct_ride_entry* GetRideEntryByIndex(ObjectEntryIndex index);
+RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);
 std::string_view GetRideEntryName(ObjectEntryIndex index);
 
 extern money16 gTotalRideValueForMoney;
@@ -1057,9 +1051,9 @@ bool TrackBlockGetNextFromZero(
     const CoordsXYZ& startPos, const Ride& ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
     bool isGhost);
 
-bool TrackBlockGetPrevious(const CoordsXYE& trackPos, track_begin_end* outTrackBeginEnd);
+bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeginEnd);
 bool TrackBlockGetPreviousFromZero(
-    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, track_begin_end* outTrackBeginEnd);
+    const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, TrackBeginEnd* outTrackBeginEnd);
 
 void RideGetStartOfTrack(CoordsXYE* output);
 
@@ -1073,7 +1067,7 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor);
 uint8_t RideEntryGetVehicleAtPosition(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void RideUpdateVehicleColours(const Ride& ride);
 
-OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const rct_ride_entry& rideEntry);
+OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry);
 
 enum class RideSetSetting : uint8_t;
 money32 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value);
@@ -1095,7 +1089,7 @@ bool RideHasRatings(const Ride& ride);
 
 int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed);
 void FixInvalidVehicleSpriteSizes();
-bool RideEntryHasCategory(const rct_ride_entry& rideEntry, uint8_t category);
+bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category);
 
 int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType);
 

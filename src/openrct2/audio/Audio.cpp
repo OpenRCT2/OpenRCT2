@@ -107,7 +107,7 @@ namespace OpenRCT2::Audio
         auto env = GetContext()->GetPlatformEnvironment();
         if (env->IsUsingClassic())
         {
-            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2cBase);
+            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::RCTCBase);
             if (baseAudio != nullptr)
             {
                 _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
@@ -117,7 +117,7 @@ namespace OpenRCT2::Audio
         if (baseAudio == nullptr)
         {
             // Fallback to vanilla RCT2 audio object
-            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2Base);
+            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::RCT2Base);
             if (baseAudio != nullptr)
             {
                 _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
@@ -127,7 +127,7 @@ namespace OpenRCT2::Audio
         objManager.LoadObject(AudioObjectIdentifiers::OpenRCT2Additional);
         _soundsAdditionalAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(
             AudioObjectIdentifiers::OpenRCT2Additional);
-        objManager.LoadObject(AudioObjectIdentifiers::Rct2Circus);
+        objManager.LoadObject(AudioObjectIdentifiers::RCT2Circus);
     }
 
     void PopulateDevices()
@@ -176,7 +176,7 @@ namespace OpenRCT2::Audio
         uint8_t rotation = GetCurrentRotation();
         auto pos2 = Translate3DTo2DWithZ(rotation, location);
 
-        rct_viewport* viewport = nullptr;
+        Viewport* viewport = nullptr;
         while ((viewport = WindowGetPreviousViewport(viewport)) != nullptr)
         {
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
@@ -275,14 +275,14 @@ namespace OpenRCT2::Audio
         {
             default:
                 return {};
-            case TitleMusicKind::Rct1:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::Rct1Title);
-            case TitleMusicKind::Rct2:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::Rct2Title);
+            case TitleMusicKind::RCT1:
+                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT1Title);
+            case TitleMusicKind::RCT2:
+                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT2Title);
             case TitleMusicKind::Random:
                 return ObjectEntryDescriptor(
                     ObjectType::Audio,
-                    (util_rand() & 1) ? AudioObjectIdentifiers::Rct1Title : AudioObjectIdentifiers::Rct2Title);
+                    (UtilRand() & 1) ? AudioObjectIdentifiers::RCT1Title : AudioObjectIdentifiers::RCT2Title);
         }
     }
 

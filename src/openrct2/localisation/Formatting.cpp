@@ -53,24 +53,24 @@ namespace OpenRCT2
         return std::nullopt;
     }
 
-    FmtString::token::token(FormatToken k, std::string_view s, uint32_t p)
+    FmtString::Token::Token(FormatToken k, std::string_view s, uint32_t p)
         : kind(k)
         , text(s)
         , parameter(p)
     {
     }
 
-    bool FmtString::token::IsLiteral() const
+    bool FmtString::Token::IsLiteral() const
     {
         return kind == FormatToken::Literal;
     }
 
-    bool FmtString::token::IsCodepoint() const
+    bool FmtString::Token::IsCodepoint() const
     {
         return kind == FormatToken::Escaped;
     }
 
-    codepoint_t FmtString::token::GetCodepoint() const
+    codepoint_t FmtString::Token::GetCodepoint() const
     {
         if (kind == FormatToken::Escaped)
         {
@@ -92,7 +92,7 @@ namespace OpenRCT2
         auto i = index;
         if (i >= str.size())
         {
-            current = token();
+            current = Token();
             return;
         }
 
@@ -129,7 +129,7 @@ namespace OpenRCT2
                     {
                         p = *p0;
                     }
-                    current = token(FormatToken::Move, str.substr(startIndex, i - startIndex), p);
+                    current = Token(FormatToken::Move, str.substr(startIndex, i - startIndex), p);
                     return;
                 }
 
@@ -147,7 +147,7 @@ namespace OpenRCT2
                         p |= (*p2) << 16;
                         p |= (*p3) << 24;
                     }
-                    current = token(FormatToken::InlineSprite, str.substr(startIndex, i - startIndex), p);
+                    current = Token(FormatToken::InlineSprite, str.substr(startIndex, i - startIndex), p);
                     return;
                 }
             }
@@ -172,32 +172,32 @@ namespace OpenRCT2
         return index != rhs.index;
     }
 
-    FmtString::token FmtString::iterator::CreateToken(size_t len)
+    FmtString::Token FmtString::iterator::CreateToken(size_t len)
     {
         std::string_view sztoken = str.substr(index, len);
 
         if (sztoken.size() >= 2 && ((sztoken[0] == '{' && sztoken[1] == '{') || (sztoken[0] == '}' && sztoken[1] == '}')))
         {
-            return token(FormatToken::Escaped, sztoken);
+            return Token(FormatToken::Escaped, sztoken);
         }
         if (sztoken.size() >= 2 && sztoken[0] == '{' && sztoken[1] != '{')
         {
             auto kind = FormatTokenFromString(sztoken.substr(1, len - 2));
-            return token(kind, sztoken);
+            return Token(kind, sztoken);
         }
         if (sztoken == "\n" || sztoken == "\r")
         {
-            return token(FormatToken::Newline, sztoken);
+            return Token(FormatToken::Newline, sztoken);
         }
-        return token(FormatToken::Literal, sztoken);
+        return Token(FormatToken::Literal, sztoken);
     }
 
-    const FmtString::token* FmtString::iterator::operator->() const
+    const FmtString::Token* FmtString::iterator::operator->() const
     {
         return &current;
     }
 
-    const FmtString::token& FmtString::iterator::operator*()
+    const FmtString::Token& FmtString::iterator::operator*()
     {
         return current;
     }
@@ -540,10 +540,10 @@ namespace OpenRCT2
                             FormatStringID(ss, STR_UNIT_SUFFIX_MILES_PER_HOUR, arg);
                             break;
                         case MeasurementFormat::Metric:
-                            FormatStringID(ss, STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR, mph_to_kmph(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR, MphToKmph(arg));
                             break;
                         case MeasurementFormat::SI:
-                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES_PER_SECOND, mph_to_dmps(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES_PER_SECOND, MphToDmps(arg));
                             break;
                     }
                 }
@@ -567,7 +567,7 @@ namespace OpenRCT2
                     {
                         default:
                         case MeasurementFormat::Imperial:
-                            FormatStringID(ss, STR_UNIT_SUFFIX_FEET, metres_to_feet(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_FEET, MetresToFeet(arg));
                             break;
                         case MeasurementFormat::Metric:
                         case MeasurementFormat::SI:

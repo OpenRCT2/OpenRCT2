@@ -160,7 +160,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_SYMBOL_TEXT:
-                safe_strcpy(
+                SafeStrCpy(
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
                     CURRENCY_SYMBOL_MAX_SIZE);
 
@@ -184,7 +184,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto ft = Formatter::Common();
         ft.Add<money64>(10.00_GBP);
@@ -220,7 +220,7 @@ public:
     }
 };
 
-rct_window* CustomCurrencyWindowOpen()
+WindowBase* CustomCurrencyWindowOpen()
 {
     return WindowFocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
 }

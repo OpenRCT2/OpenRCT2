@@ -318,7 +318,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -356,7 +356,7 @@ public:
         return {};
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         if (page != WINDOW_FINANCES_PAGE_SUMMARY)
             return;
@@ -526,7 +526,7 @@ public:
             InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
     }
 
-    void OnDrawSummary(rct_drawpixelinfo& dpi)
+    void OnDrawSummary(DrawPixelInfo& dpi)
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 8, 51 };
 
@@ -598,7 +598,7 @@ public:
 
 #pragma region Financial Graph Events
 
-    void OnDrawFinancialGraph(rct_drawpixelinfo& dpi)
+    void OnDrawFinancialGraph(DrawPixelInfo& dpi)
     {
         Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
@@ -661,7 +661,7 @@ public:
 
 #pragma region Park Value Graph Events
 
-    void OnDrawParkValueGraph(rct_drawpixelinfo& dpi)
+    void OnDrawParkValueGraph(DrawPixelInfo& dpi)
     {
         Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
@@ -718,7 +718,7 @@ public:
 
 #pragma region Profit Graph Events
 
-    void OnDrawProfitGraph(rct_drawpixelinfo& dpi)
+    void OnDrawProfitGraph(DrawPixelInfo& dpi)
     {
         Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
@@ -815,7 +815,7 @@ public:
         }
     }
 
-    void OnDrawMarketing(rct_drawpixelinfo& dpi)
+    void OnDrawMarketing(DrawPixelInfo& dpi)
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 8, 62 };
         int32_t noCampaignsActive = 1;
@@ -984,7 +984,7 @@ public:
         }
     }
 
-    void OnDrawResearch(rct_drawpixelinfo& dpi)
+    void OnDrawResearch(DrawPixelInfo& dpi)
     {
         WindowResearchFundingPagePaint(this, &dpi, WIDX_RESEARCH_FUNDING);
     }
@@ -999,7 +999,7 @@ public:
         WidgetScrollUpdateThumbs(*this, widgetIndex);
     }
 
-    void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabPage, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
@@ -1016,7 +1016,7 @@ public:
         }
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_SUMMARY, SPR_TAB_FINANCES_SUMMARY_0);
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH, SPR_TAB_FINANCES_FINANCIAL_GRAPH_0);
@@ -1037,17 +1037,17 @@ static FinancesWindow* FinancesWindowOpen(uint8_t page)
     return window;
 }
 
-rct_window* WindowFinancesOpen()
+WindowBase* WindowFinancesOpen()
 {
     return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 }
 
-rct_window* WindowFinancesResearchOpen()
+WindowBase* WindowFinancesResearchOpen()
 {
     return FinancesWindowOpen(WINDOW_FINANCES_PAGE_RESEARCH);
 }
 
-rct_window* WindowFinancesMarketingOpen()
+WindowBase* WindowFinancesMarketingOpen()
 {
     return FinancesWindowOpen(WINDOW_FINANCES_PAGE_MARKETING);
 }

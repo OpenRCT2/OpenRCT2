@@ -107,7 +107,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WindowWidgetType::Empty;
         auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WindowWidgetType::Empty;
@@ -181,7 +181,7 @@ private:
 
     bool CheckObjectSelection() const
     {
-        rct_window* w;
+        WindowBase* w;
 
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
@@ -278,7 +278,7 @@ private:
         widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
     }
 
-    void DrawLeftButtonBack(rct_drawpixelinfo& dpi)
+    void DrawLeftButtonBack(DrawPixelInfo& dpi)
     {
         auto previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
@@ -286,7 +286,7 @@ private:
         GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
-    void DrawLeftButton(rct_drawpixelinfo& dpi)
+    void DrawLeftButton(DrawPixelInfo& dpi)
     {
         const auto topLeft = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
@@ -316,7 +316,7 @@ private:
         DrawTextBasic(&dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
     }
 
-    void DrawRightButtonBack(rct_drawpixelinfo& dpi)
+    void DrawRightButtonBack(DrawPixelInfo& dpi)
     {
         auto nextWidget = widgets[WIDX_NEXT_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
@@ -324,7 +324,7 @@ private:
         GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
-    void DrawRightButton(rct_drawpixelinfo& dpi)
+    void DrawRightButton(DrawPixelInfo& dpi)
     {
         const auto topLeft = windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
         const auto bottomRight = windowPos
@@ -354,7 +354,7 @@ private:
         DrawTextBasic(&dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
     }
 
-    void DrawStepText(rct_drawpixelinfo& dpi)
+    void DrawStepText(DrawPixelInfo& dpi)
     {
         int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
         int16_t stateY = height - 0x0C + windowPos.y;
@@ -390,7 +390,7 @@ private:
  * Creates the main editor top toolbar window.
  * rct2: 0x0066F052 (part of 0x0066EF38)
  */
-rct_window* WindowEditorBottomToolbarOpen()
+WindowBase* WindowEditorBottomToolbarOpen()
 {
     auto* window = WindowCreate<EditorBottomToolbarWindow>(
         WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), ContextGetWidth(), 32,

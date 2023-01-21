@@ -11,7 +11,7 @@
 
 #include "../common.h"
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 struct GamePalette;
 enum class DrawingEngine : int32_t;
 
@@ -25,7 +25,7 @@ void DrawingEngineSetPalette(const GamePalette& colours);
 void DrawingEngineCopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy);
 void DrawingEngineDispose();
 
-rct_drawpixelinfo* DrawingEngineGetDpi();
+DrawPixelInfo* DrawingEngineGetDpi();
 bool DrawingEngineHasDirtyOptimisations();
 void DrawingEngineInvalidateImage(uint32_t image);
 void DrawingEngineSetVSync(bool vsync);

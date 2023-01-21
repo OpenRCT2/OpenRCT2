@@ -11128,7 +11128,7 @@ namespace HybridRC
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
-    static void Trackpowered_lift(
+    static void TrackpoweredLift(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
@@ -11939,7 +11939,7 @@ namespace HybridRC
             case TrackElemType::InvertedFlatToDown90QuarterLoop:
                 return TrackInvertedFlatTo90DegQuarterLoopDown;
             case TrackElemType::PoweredLift:
-                return Trackpowered_lift;
+                return TrackpoweredLift;
             case TrackElemType::Booster:
                 return Trackbooster;
         }

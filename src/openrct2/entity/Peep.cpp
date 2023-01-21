@@ -388,7 +388,7 @@ void Peep::UpdateCurrentActionSpriteType()
     Invalidate();
     ActionSpriteType = newActionSpriteType;
 
-    const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
     sprite_width = spriteBounds->sprite_width;
     sprite_height_negative = spriteBounds->sprite_height_negative;
     sprite_height_positive = spriteBounds->sprite_height_positive;
@@ -484,7 +484,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
-        const rct_peep_animation* peepAnimation = &GetPeepAnimation(SpriteType);
+        const PeepAnimation* peepAnimation = &GetPeepAnimation(SpriteType);
         const uint8_t* imageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets;
         if (WalkingFrameNum >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
         {
@@ -494,7 +494,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         return loc;
     }
 
-    const rct_peep_animation* peepAnimation = &GetPeepAnimation(SpriteType);
+    const PeepAnimation* peepAnimation = &GetPeepAnimation(SpriteType);
     ActionFrame++;
 
     // If last frame of action
@@ -565,7 +565,7 @@ void PeepDecrementNumRiders(Peep* peep)
  */
 void PeepWindowStateUpdate(Peep* peep)
 {
-    rct_window* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying());
+    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying());
     if (w != nullptr)
         WindowEventInvalidateCall(w);
 
@@ -1669,7 +1669,7 @@ void Peep::SwitchNextActionSpriteType()
     {
         Invalidate();
         ActionSpriteType = NextActionSpriteType;
-        const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
+        const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
         sprite_width = spriteBounds->sprite_width;
         sprite_height_negative = spriteBounds->sprite_height_negative;
         sprite_height_positive = spriteBounds->sprite_height_positive;
@@ -1913,7 +1913,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                     uint8_t slopeDirection = nextTileElement->AsPath()->GetSlopeDirection();
                     if (slopeDirection == entranceDirection)
                     {
-                        if (z != nextTileElement->base_height)
+                        if (z != nextTileElement->BaseHeight)
                         {
                             continue;
                         }
@@ -1924,13 +1924,13 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                     if (DirectionReverse(slopeDirection) != entranceDirection)
                         continue;
 
-                    if (z - 2 != nextTileElement->base_height)
+                    if (z - 2 != nextTileElement->BaseHeight)
                         continue;
                     found = true;
                     break;
                 }
 
-                if (z != nextTileElement->base_height)
+                if (z != nextTileElement->BaseHeight)
                 {
                     continue;
                 }
@@ -2439,9 +2439,9 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     do
     {
-        if (base_z > tileElement->base_height)
+        if (base_z > tileElement->BaseHeight)
             continue;
-        if (top_z < tileElement->base_height)
+        if (top_z < tileElement->BaseHeight)
             continue;
         if (tileElement->IsGhost())
             continue;
@@ -2609,7 +2609,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
     ft.Rewind();
     peep_b->FormatNameTo(ft);
     OpenRCT2::FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
-    return strlogicalcmp(nameA, nameB);
+    return StrLogicalCmp(nameA, nameB);
 }
 
 /**
@@ -2803,7 +2803,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         }
     }
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     if (dpi->zoom_level > ZoomLevel{ 2 })
     {
         return;

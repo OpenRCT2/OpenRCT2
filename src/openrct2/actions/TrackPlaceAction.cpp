@@ -74,7 +74,7 @@ GameActions::Result TrackPlaceAction::Query() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride->subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
         LOG_WARNING("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
@@ -163,7 +163,7 @@ GameActions::Result TrackPlaceAction::Query() const
     }
 
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    const rct_preview_track* trackBlock = ted.Block;
+    const PreviewTrack* trackBlock = ted.Block;
     uint32_t numElements = 0;
     // First check if any of the track pieces are outside the park
     for (; trackBlock->index != 0xFF; trackBlock++)
@@ -224,7 +224,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
         }
 
-        int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
+        int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
 
         int32_t clearanceZ = trackBlock->var_07;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
@@ -237,7 +237,7 @@ GameActions::Result TrackPlaceAction::Query() const
             clearanceZ += ride->GetRideTypeDescriptor().Heights.ClearanceHeight;
         }
 
-        clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
+        clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
 
         if (clearanceZ > MAX_TRACK_HEIGHT)
         {
@@ -417,7 +417,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride->subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
         LOG_WARNING("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
@@ -440,7 +440,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
     money32 costs = 0;
     money64 supportCosts = 0;
-    const rct_preview_track* trackBlock = ted.Block;
+    const PreviewTrack* trackBlock = ted.Block;
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
@@ -448,7 +448,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
-        int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
+        int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
         int32_t clearanceZ = trackBlock->var_07;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
             && ride->GetRideTypeDescriptor().Heights.ClearanceHeight > 24)
@@ -460,7 +460,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             clearanceZ += ride->GetRideTypeDescriptor().Heights.ClearanceHeight;
         }
 
-        clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
+        clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
         const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
         uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
@@ -654,8 +654,8 @@ GameActions::Result TrackPlaceAction::Execute() const
             {
                 if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
                 {
-                    for (int32_t chosenDirection = bitscanforward(availableDirections); chosenDirection != -1;
-                         chosenDirection = bitscanforward(availableDirections))
+                    for (int32_t chosenDirection = UtilBitScanForward(availableDirections); chosenDirection != -1;
+                         chosenDirection = UtilBitScanForward(availableDirections))
                     {
                         availableDirections &= ~(1 << chosenDirection);
                         CoordsXY tempLoc{ mapLoc.x, mapLoc.y };
@@ -714,7 +714,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
 {
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    for (const rct_preview_track* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
+    for (const PreviewTrack* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
     {
         auto rotatedTrack = CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction);
 

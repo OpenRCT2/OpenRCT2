@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x0082491C */
-static void lay_down_rc_track_flat(
+static void LayDownRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -137,7 +137,7 @@ static void lay_down_rc_track_flat(
 }
 
 /** rct2: 0x00824B8C, 0x00824B9C, 0x00824BAC */
-static void lay_down_rc_track_station(
+static void LayDownRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -196,7 +196,7 @@ static void lay_down_rc_track_station(
 }
 
 /** rct2: 0x0082492C */
-static void lay_down_rc_track_25_deg_up(
+static void LayDownRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -369,7 +369,7 @@ static void lay_down_rc_track_25_deg_up(
 }
 
 /** rct2: 0x0082493C */
-static void lay_down_rc_track_60_deg_up(
+static void LayDownRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -489,7 +489,7 @@ static void lay_down_rc_track_60_deg_up(
 }
 
 /** rct2: 0x0082494C */
-static void lay_down_rc_track_flat_to_25_deg_up(
+static void LayDownRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -662,7 +662,7 @@ static void lay_down_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x0082495C */
-static void lay_down_rc_track_25_deg_up_to_60_deg_up(
+static void LayDownRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -800,7 +800,7 @@ static void lay_down_rc_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x0082496C */
-static void lay_down_rc_track_60_deg_up_to_25_deg_up(
+static void LayDownRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -962,7 +962,7 @@ static void lay_down_rc_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x0082497C */
-static void lay_down_rc_track_25_deg_up_to_flat(
+static void LayDownRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1135,55 +1135,55 @@ static void lay_down_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x0082498C */
-static void lay_down_rc_track_25_deg_down(
+static void LayDownRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0082499C */
-static void lay_down_rc_track_60_deg_down(
+static void LayDownRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008249AC */
-static void lay_down_rc_track_flat_to_25_deg_down(
+static void LayDownRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008249BC */
-static void lay_down_rc_track_25_deg_down_to_60_deg_down(
+static void LayDownRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008249CC */
-static void lay_down_rc_track_60_deg_down_to_25_deg_down(
+static void LayDownRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008249DC */
-static void lay_down_rc_track_25_deg_down_to_flat(
+static void LayDownRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008249EC */
-static void lay_down_rc_track_left_quarter_turn_5(
+static void LayDownRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1546,16 +1546,16 @@ static void lay_down_rc_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x008249FC */
-static void lay_down_rc_track_right_quarter_turn_5(
+static void LayDownRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    lay_down_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LayDownRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824A0C */
-static void lay_down_rc_track_flat_to_left_bank(
+static void LayDownRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1642,7 +1642,7 @@ static void lay_down_rc_track_flat_to_left_bank(
 }
 
 /** rct2: 0x00824A1C */
-static void lay_down_rc_track_flat_to_right_bank(
+static void LayDownRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1729,7 +1729,7 @@ static void lay_down_rc_track_flat_to_right_bank(
 }
 
 /** rct2: 0x00824A2C */
-static void lay_down_rc_track_left_bank_to_flat(
+static void LayDownRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1816,7 +1816,7 @@ static void lay_down_rc_track_left_bank_to_flat(
 }
 
 /** rct2: 0x00824A3C */
-static void lay_down_rc_track_right_bank_to_flat(
+static void LayDownRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1903,7 +1903,7 @@ static void lay_down_rc_track_right_bank_to_flat(
 }
 
 /** rct2: 0x00824A4C */
-static void lay_down_rc_track_banked_left_quarter_turn_5(
+static void LayDownRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2272,16 +2272,16 @@ static void lay_down_rc_track_banked_left_quarter_turn_5(
 }
 
 /** rct2: 0x00824A5C */
-static void lay_down_rc_track_banked_right_quarter_turn_5(
+static void LayDownRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    lay_down_rc_track_banked_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LayDownRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824A6C */
-static void lay_down_rc_track_left_bank_to_25_deg_up(
+static void LayDownRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2399,7 +2399,7 @@ static void lay_down_rc_track_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x00824A7C */
-static void lay_down_rc_track_right_bank_to_25_deg_up(
+static void LayDownRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2517,7 +2517,7 @@ static void lay_down_rc_track_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x00824A8C */
-static void lay_down_rc_track_25_deg_up_to_left_bank(
+static void LayDownRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2635,7 +2635,7 @@ static void lay_down_rc_track_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x00824A9C */
-static void lay_down_rc_track_25_deg_up_to_right_bank(
+static void LayDownRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2753,39 +2753,39 @@ static void lay_down_rc_track_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x00824AAC */
-static void lay_down_rc_track_left_bank_to_25_deg_down(
+static void LayDownRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_25_deg_up_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824ABC */
-static void lay_down_rc_track_right_bank_to_25_deg_down(
+static void LayDownRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_25_deg_up_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824ACC */
-static void lay_down_rc_track_25_deg_down_to_left_bank(
+static void LayDownRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_right_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824ADC */
-static void lay_down_rc_track_25_deg_down_to_right_bank(
+static void LayDownRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_left_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824AEC */
-static void lay_down_rc_track_left_bank(
+static void LayDownRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2866,15 +2866,15 @@ static void lay_down_rc_track_left_bank(
 }
 
 /** rct2: 0x00824AFC */
-static void lay_down_rc_track_right_bank(
+static void LayDownRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824B0C */
-static void lay_down_rc_track_left_quarter_turn_5_25_deg_up(
+static void LayDownRCTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3237,7 +3237,7 @@ static void lay_down_rc_track_left_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x00824B1C */
-static void lay_down_rc_track_right_quarter_turn_5_25_deg_up(
+static void LayDownRCTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3600,25 +3600,25 @@ static void lay_down_rc_track_right_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x00824B2C */
-static void lay_down_rc_track_left_quarter_turn_5_25_deg_down(
+static void LayDownRCTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    lay_down_rc_track_right_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LayDownRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824B3C */
-static void lay_down_rc_track_right_quarter_turn_5_25_deg_down(
+static void LayDownRCTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    lay_down_rc_track_left_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LayDownRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824B4C */
-static void lay_down_rc_track_s_bend_left(
+static void LayDownRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3945,7 +3945,7 @@ static void lay_down_rc_track_s_bend_left(
 }
 
 /** rct2: 0x00824B5C */
-static void lay_down_rc_track_s_bend_right(
+static void LayDownRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4272,7 +4272,7 @@ static void lay_down_rc_track_s_bend_right(
 }
 
 /** rct2: 0x00824B6C */
-static void lay_down_rc_track_left_vertical_loop(
+static void LayDownRCTrackLeftVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4569,7 +4569,7 @@ static void lay_down_rc_track_left_vertical_loop(
 }
 
 /** rct2: 0x00824B7C */
-static void lay_down_rc_track_right_vertical_loop(
+static void LayDownRCTrackRightVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4828,7 +4828,7 @@ static void lay_down_rc_track_right_vertical_loop(
 }
 
 /** rct2: 0x00824BBC */
-static void lay_down_rc_track_left_quarter_turn_3(
+static void LayDownRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5061,16 +5061,16 @@ static void lay_down_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x00824BCC */
-static void lay_down_rc_track_right_quarter_turn_3(
+static void LayDownRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    lay_down_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LayDownRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824BDC */
-static void lay_down_rc_track_left_quarter_turn_3_bank(
+static void LayDownRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5309,16 +5309,16 @@ static void lay_down_rc_track_left_quarter_turn_3_bank(
 }
 
 /** rct2: 0x00824BEC */
-static void lay_down_rc_track_right_quarter_turn_3_bank(
+static void LayDownRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    lay_down_rc_track_left_quarter_turn_3_bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LayDownRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824BFC */
-static void lay_down_rc_track_left_quarter_turn_3_25_deg_up(
+static void LayDownRCTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5501,7 +5501,7 @@ static void lay_down_rc_track_left_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x00824C0C */
-static void lay_down_rc_track_right_quarter_turn_3_25_deg_up(
+static void LayDownRCTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5690,25 +5690,25 @@ static void lay_down_rc_track_right_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x00824C1C */
-static void lay_down_rc_track_left_quarter_turn_3_25_deg_down(
+static void LayDownRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    lay_down_rc_track_right_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LayDownRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824C2C */
-static void lay_down_rc_track_right_quarter_turn_3_25_deg_down(
+static void LayDownRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    lay_down_rc_track_left_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LayDownRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824C9C */
-static void lay_down_rc_track_left_half_banked_helix_up_small(
+static void LayDownRCTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5942,7 +5942,7 @@ static void lay_down_rc_track_left_half_banked_helix_up_small(
 }
 
 /** rct2: 0x00824CAC */
-static void lay_down_rc_track_right_half_banked_helix_up_small(
+static void LayDownRCTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6176,7 +6176,7 @@ static void lay_down_rc_track_right_half_banked_helix_up_small(
 }
 
 /** rct2: 0x00824CBC */
-static void lay_down_rc_track_left_half_banked_helix_down_small(
+static void LayDownRCTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6186,11 +6186,11 @@ static void lay_down_rc_track_left_half_banked_helix_down_small(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    lay_down_rc_track_right_half_banked_helix_up_small(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LayDownRCTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824CCC */
-static void lay_down_rc_track_right_half_banked_helix_down_small(
+static void LayDownRCTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6200,11 +6200,11 @@ static void lay_down_rc_track_right_half_banked_helix_down_small(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    lay_down_rc_track_left_half_banked_helix_up_small(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LayDownRCTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824CDC */
-static void lay_down_rc_track_left_half_banked_helix_up_large(
+static void LayDownRCTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6564,7 +6564,7 @@ static void lay_down_rc_track_left_half_banked_helix_up_large(
 }
 
 /** rct2: 0x00824CEC */
-static void lay_down_rc_track_right_half_banked_helix_up_large(
+static void LayDownRCTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6924,7 +6924,7 @@ static void lay_down_rc_track_right_half_banked_helix_up_large(
 }
 
 /** rct2: 0x00824CFC */
-static void lay_down_rc_track_left_half_banked_helix_down_large(
+static void LayDownRCTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6934,11 +6934,11 @@ static void lay_down_rc_track_left_half_banked_helix_down_large(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    lay_down_rc_track_right_half_banked_helix_up_large(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LayDownRCTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824D0C */
-static void lay_down_rc_track_right_half_banked_helix_down_large(
+static void LayDownRCTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6948,11 +6948,11 @@ static void lay_down_rc_track_right_half_banked_helix_down_large(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    lay_down_rc_track_left_half_banked_helix_up_large(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LayDownRCTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824D3C */
-static void lay_down_rc_track_left_quarter_turn_1_60_deg_up(
+static void LayDownRCTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7038,7 +7038,7 @@ static void lay_down_rc_track_left_quarter_turn_1_60_deg_up(
 }
 
 /** rct2: 0x00824D1C */
-static void lay_down_rc_track_right_quarter_turn_1_60_deg_up(
+static void LayDownRCTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7125,23 +7125,23 @@ static void lay_down_rc_track_right_quarter_turn_1_60_deg_up(
 }
 
 /** rct2: 0x00824D2C */
-static void lay_down_rc_track_left_quarter_turn_1_60_deg_down(
+static void LayDownRCTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_right_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LayDownRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824D4C */
-static void lay_down_rc_track_right_quarter_turn_1_60_deg_down(
+static void LayDownRCTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_left_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LayDownRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824D5C */
-static void lay_down_rc_track_brakes(
+static void LayDownRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7204,7 +7204,7 @@ static void lay_down_rc_track_brakes(
 }
 
 /** rct2: 0x00824D6C */
-static void lay_down_rc_track_on_ride_photo(
+static void LayDownRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7319,7 +7319,7 @@ static void lay_down_rc_track_on_ride_photo(
 }
 
 /** rct2: 0x00824D8C */
-static void lay_down_rc_track_left_eighth_to_diag(
+static void LayDownRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7629,7 +7629,7 @@ static void lay_down_rc_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x00824D9C */
-static void lay_down_rc_track_right_eighth_to_diag(
+static void LayDownRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7939,25 +7939,25 @@ static void lay_down_rc_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x00824DAC */
-static void lay_down_rc_track_left_eighth_to_orthogonal(
+static void LayDownRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    lay_down_rc_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824DBC */
-static void lay_down_rc_track_right_eighth_to_orthogonal(
+static void LayDownRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    lay_down_rc_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LayDownRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824DCC */
-static void lay_down_rc_track_left_eighth_bank_to_diag(
+static void LayDownRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8267,7 +8267,7 @@ static void lay_down_rc_track_left_eighth_bank_to_diag(
 }
 
 /** rct2: 0x00824DDC */
-static void lay_down_rc_track_right_eighth_bank_to_diag(
+static void LayDownRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8577,25 +8577,25 @@ static void lay_down_rc_track_right_eighth_bank_to_diag(
 }
 
 /** rct2: 0x00824DEC */
-static void lay_down_rc_track_left_eighth_bank_to_orthogonal(
+static void LayDownRCTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    lay_down_rc_track_right_eighth_bank_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LayDownRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824DFC */
-static void lay_down_rc_track_right_eighth_bank_to_orthogonal(
+static void LayDownRCTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    lay_down_rc_track_left_eighth_bank_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LayDownRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x00824D7C */
-static void lay_down_rc_track_diag_flat(
+static void LayDownRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8879,7 +8879,7 @@ static void lay_down_rc_track_diag_flat(
 }
 
 /** rct2: 0x00824E2C */
-static void lay_down_rc_track_diag_25_deg_up(
+static void LayDownRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9163,7 +9163,7 @@ static void lay_down_rc_track_diag_25_deg_up(
 }
 
 /** rct2: 0x00824E8C */
-static void lay_down_rc_track_diag_60_deg_up(
+static void LayDownRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9391,7 +9391,7 @@ static void lay_down_rc_track_diag_60_deg_up(
 }
 
 /** rct2: 0x00824E0C */
-static void lay_down_rc_track_diag_flat_to_25_deg_up(
+static void LayDownRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9675,7 +9675,7 @@ static void lay_down_rc_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x00824E6C */
-static void lay_down_rc_track_diag_25_deg_up_to_60_deg_up(
+static void LayDownRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9903,7 +9903,7 @@ static void lay_down_rc_track_diag_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x00824E7C */
-static void lay_down_rc_track_diag_60_deg_up_to_25_deg_up(
+static void LayDownRCTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10131,7 +10131,7 @@ static void lay_down_rc_track_diag_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x00824E1C */
-static void lay_down_rc_track_diag_25_deg_up_to_flat(
+static void LayDownRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10415,7 +10415,7 @@ static void lay_down_rc_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x00824E5C */
-static void lay_down_rc_track_diag_25_deg_down(
+static void LayDownRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10643,7 +10643,7 @@ static void lay_down_rc_track_diag_25_deg_down(
 }
 
 /** rct2: 0x00824EBC */
-static void lay_down_rc_track_diag_60_deg_down(
+static void LayDownRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10871,7 +10871,7 @@ static void lay_down_rc_track_diag_60_deg_down(
 }
 
 /** rct2: 0x00824E3C */
-static void lay_down_rc_track_diag_flat_to_25_deg_down(
+static void LayDownRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11092,7 +11092,7 @@ static void lay_down_rc_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x00824E9C */
-static void lay_down_rc_track_diag_25_deg_down_to_60_deg_down(
+static void LayDownRCTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11320,7 +11320,7 @@ static void lay_down_rc_track_diag_25_deg_down_to_60_deg_down(
 }
 
 /** rct2: 0x00824EAC */
-static void lay_down_rc_track_diag_60_deg_down_to_25_deg_down(
+static void LayDownRCTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11548,7 +11548,7 @@ static void lay_down_rc_track_diag_60_deg_down_to_25_deg_down(
 }
 
 /** rct2: 0x00824E4C */
-static void lay_down_rc_track_diag_25_deg_down_to_flat(
+static void LayDownRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11776,7 +11776,7 @@ static void lay_down_rc_track_diag_25_deg_down_to_flat(
 }
 
 /** rct2: 0x00824EEC */
-static void lay_down_rc_track_diag_flat_to_left_bank(
+static void LayDownRCTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11938,7 +11938,7 @@ static void lay_down_rc_track_diag_flat_to_left_bank(
 }
 
 /** rct2: 0x00824EFC */
-static void lay_down_rc_track_diag_flat_to_right_bank(
+static void LayDownRCTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12100,7 +12100,7 @@ static void lay_down_rc_track_diag_flat_to_right_bank(
 }
 
 /** rct2: 0x00824F0C */
-static void lay_down_rc_track_diag_left_bank_to_flat(
+static void LayDownRCTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12262,7 +12262,7 @@ static void lay_down_rc_track_diag_left_bank_to_flat(
 }
 
 /** rct2: 0x00824F1C */
-static void lay_down_rc_track_diag_right_bank_to_flat(
+static void LayDownRCTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12424,7 +12424,7 @@ static void lay_down_rc_track_diag_right_bank_to_flat(
 }
 
 /** rct2: 0x00824F4C */
-static void lay_down_rc_track_diag_left_bank_to_25_deg_up(
+static void LayDownRCTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12585,7 +12585,7 @@ static void lay_down_rc_track_diag_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x00824F5C */
-static void lay_down_rc_track_diag_right_bank_to_25_deg_up(
+static void LayDownRCTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12746,7 +12746,7 @@ static void lay_down_rc_track_diag_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x00824F2C */
-static void lay_down_rc_track_diag_25_deg_up_to_left_bank(
+static void LayDownRCTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12907,7 +12907,7 @@ static void lay_down_rc_track_diag_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x00824F3C */
-static void lay_down_rc_track_diag_25_deg_up_to_right_bank(
+static void LayDownRCTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13068,7 +13068,7 @@ static void lay_down_rc_track_diag_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x00824F6C */
-static void lay_down_rc_track_diag_left_bank_to_25_deg_down(
+static void LayDownRCTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13222,7 +13222,7 @@ static void lay_down_rc_track_diag_left_bank_to_25_deg_down(
 }
 
 /** rct2: 0x00824F7C */
-static void lay_down_rc_track_diag_right_bank_to_25_deg_down(
+static void LayDownRCTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13376,7 +13376,7 @@ static void lay_down_rc_track_diag_right_bank_to_25_deg_down(
 }
 
 /** rct2: 0x00824F8C */
-static void lay_down_rc_track_diag_25_deg_down_to_left_bank(
+static void LayDownRCTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13537,7 +13537,7 @@ static void lay_down_rc_track_diag_25_deg_down_to_left_bank(
 }
 
 /** rct2: 0x00824F9C */
-static void lay_down_rc_track_diag_25_deg_down_to_right_bank(
+static void LayDownRCTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13698,7 +13698,7 @@ static void lay_down_rc_track_diag_25_deg_down_to_right_bank(
 }
 
 /** rct2: 0x00824ECC */
-static void lay_down_rc_track_diag_left_bank(
+static void LayDownRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13857,7 +13857,7 @@ static void lay_down_rc_track_diag_left_bank(
 }
 
 /** rct2: 0x00824EDC */
-static void lay_down_rc_track_diag_right_bank(
+static void LayDownRCTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14016,7 +14016,7 @@ static void lay_down_rc_track_diag_right_bank(
 }
 
 /** rct2: 0x00824FAC */
-static void lay_down_rc_track_left_flyer_twist_up(
+static void LayDownRCTrackLeftFlyerTwistUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14135,7 +14135,7 @@ static void lay_down_rc_track_left_flyer_twist_up(
 }
 
 /** rct2: 0x00824FBC */
-static void lay_down_rc_track_right_flyer_twist_up(
+static void LayDownRCTrackRightFlyerTwistUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14254,7 +14254,7 @@ static void lay_down_rc_track_right_flyer_twist_up(
 }
 
 /** rct2: 0x00824FCC */
-static void lay_down_rc_track_left_flyer_twist_down(
+static void LayDownRCTrackLeftFlyerTwistDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14373,7 +14373,7 @@ static void lay_down_rc_track_left_flyer_twist_down(
 }
 
 /** rct2: 0x00824FDC */
-static void lay_down_rc_track_right_flyer_twist_down(
+static void LayDownRCTrackRightFlyerTwistDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14492,7 +14492,7 @@ static void lay_down_rc_track_right_flyer_twist_down(
 }
 
 /** rct2: 0x00824C3C */
-static void lay_down_rc_track_flyer_half_loop_up(
+static void LayDownRCTrackFlyerHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14633,7 +14633,7 @@ static void lay_down_rc_track_flyer_half_loop_up(
 }
 
 /** rct2: 0x00824C4C */
-static void lay_down_rc_track_flyer_half_loop_down(
+static void LayDownRCTrackFlyerHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14774,7 +14774,7 @@ static void lay_down_rc_track_flyer_half_loop_down(
 }
 
 /** rct2: 0x00824C5C */
-static void lay_down_rc_track_left_flyer_corkscrew_up(
+static void LayDownRCTrackLeftFlyerCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14899,7 +14899,7 @@ static void lay_down_rc_track_left_flyer_corkscrew_up(
 }
 
 /** rct2: 0x00824C6C */
-static void lay_down_rc_track_right_flyer_corkscrew_up(
+static void LayDownRCTrackRightFlyerCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15013,7 +15013,7 @@ static void lay_down_rc_track_right_flyer_corkscrew_up(
 }
 
 /** rct2: 0x00824C7C */
-static void lay_down_rc_track_left_flyer_corkscrew_down(
+static void LayDownRCTrackLeftFlyerCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15127,15 +15127,15 @@ static void lay_down_rc_track_left_flyer_corkscrew_down(
 }
 
 /** rct2: 0x00824C8C */
-static void lay_down_rc_track_right_flyer_corkscrew_down(
+static void LayDownRCTrackRightFlyerCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_left_flyer_corkscrew_up(session, ride, 2 - trackSequence, (direction + 3) % 4, height, trackElement);
+    LayDownRCTrackLeftFlyerCorkscrewUp(session, ride, 2 - trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 /** rct2: 0x00824FEC */
-static void lay_down_rc_track_block_brakes(
+static void LayDownRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15193,7 +15193,7 @@ static void lay_down_rc_track_block_brakes(
     }
 }
 
-static void lay_down_rc_track_left_quarter_banked_helix_large_up(
+static void LayDownRCTrackLeftQuarterBankedHelixLargeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15375,7 +15375,7 @@ static void lay_down_rc_track_left_quarter_banked_helix_large_up(
     }
 }
 
-static void lay_down_rc_track_right_quarter_banked_helix_large_up(
+static void LayDownRCTrackRightQuarterBankedHelixLargeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15557,7 +15557,7 @@ static void lay_down_rc_track_right_quarter_banked_helix_large_up(
     }
 }
 
-static void lay_down_rc_track_left_quarter_banked_helix_large_down(
+static void LayDownRCTrackLeftQuarterBankedHelixLargeDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15739,7 +15739,7 @@ static void lay_down_rc_track_left_quarter_banked_helix_large_down(
     }
 }
 
-static void lay_down_rc_track_right_quarter_banked_helix_large_down(
+static void LayDownRCTrackRightQuarterBankedHelixLargeDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15920,7 +15920,7 @@ static void lay_down_rc_track_right_quarter_banked_helix_large_down(
             break;
     }
 }
-static void lay_down_rc_track_half_loop_inverted_up(
+static void LayDownRCTrackHalfLoopInvertedUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16071,249 +16071,249 @@ static void lay_down_rc_track_half_loop_inverted_up(
     }
 }
 
-static void lay_down_rc_track_half_loop_uninverted_down(
+static void LayDownRCTrackHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    lay_down_rc_track_half_loop_inverted_up(session, ride, 3 - trackSequence, direction, height, trackElement);
+    LayDownRCTrackHalfLoopInvertedUp(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return lay_down_rc_track_flat;
+            return LayDownRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return lay_down_rc_track_station;
+            return LayDownRCTrackStation;
         case TrackElemType::Up25:
-            return lay_down_rc_track_25_deg_up;
+            return LayDownRCTrack25DegUp;
         case TrackElemType::Up60:
-            return lay_down_rc_track_60_deg_up;
+            return LayDownRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return lay_down_rc_track_flat_to_25_deg_up;
+            return LayDownRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return lay_down_rc_track_25_deg_up_to_60_deg_up;
+            return LayDownRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return lay_down_rc_track_60_deg_up_to_25_deg_up;
+            return LayDownRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return lay_down_rc_track_25_deg_up_to_flat;
+            return LayDownRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return lay_down_rc_track_25_deg_down;
+            return LayDownRCTrack25DegDown;
         case TrackElemType::Down60:
-            return lay_down_rc_track_60_deg_down;
+            return LayDownRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return lay_down_rc_track_flat_to_25_deg_down;
+            return LayDownRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return lay_down_rc_track_25_deg_down_to_60_deg_down;
+            return LayDownRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return lay_down_rc_track_60_deg_down_to_25_deg_down;
+            return LayDownRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return lay_down_rc_track_25_deg_down_to_flat;
+            return LayDownRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return lay_down_rc_track_left_quarter_turn_5;
+            return LayDownRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return lay_down_rc_track_right_quarter_turn_5;
+            return LayDownRCTrackRightQuarterTurn5;
         case TrackElemType::FlatToLeftBank:
-            return lay_down_rc_track_flat_to_left_bank;
+            return LayDownRCTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
-            return lay_down_rc_track_flat_to_right_bank;
+            return LayDownRCTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
-            return lay_down_rc_track_left_bank_to_flat;
+            return LayDownRCTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
-            return lay_down_rc_track_right_bank_to_flat;
+            return LayDownRCTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return lay_down_rc_track_banked_left_quarter_turn_5;
+            return LayDownRCTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return lay_down_rc_track_banked_right_quarter_turn_5;
+            return LayDownRCTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
-            return lay_down_rc_track_left_bank_to_25_deg_up;
+            return LayDownRCTrackLeftBankTo25DegUp;
         case TrackElemType::RightBankToUp25:
-            return lay_down_rc_track_right_bank_to_25_deg_up;
+            return LayDownRCTrackRightBankTo25DegUp;
         case TrackElemType::Up25ToLeftBank:
-            return lay_down_rc_track_25_deg_up_to_left_bank;
+            return LayDownRCTrack25DegUpToLeftBank;
         case TrackElemType::Up25ToRightBank:
-            return lay_down_rc_track_25_deg_up_to_right_bank;
+            return LayDownRCTrack25DegUpToRightBank;
         case TrackElemType::LeftBankToDown25:
-            return lay_down_rc_track_left_bank_to_25_deg_down;
+            return LayDownRCTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
-            return lay_down_rc_track_right_bank_to_25_deg_down;
+            return LayDownRCTrackRightBankTo25DegDown;
         case TrackElemType::Down25ToLeftBank:
-            return lay_down_rc_track_25_deg_down_to_left_bank;
+            return LayDownRCTrack25DegDownToLeftBank;
         case TrackElemType::Down25ToRightBank:
-            return lay_down_rc_track_25_deg_down_to_right_bank;
+            return LayDownRCTrack25DegDownToRightBank;
         case TrackElemType::LeftBank:
-            return lay_down_rc_track_left_bank;
+            return LayDownRCTrackLeftBank;
         case TrackElemType::RightBank:
-            return lay_down_rc_track_right_bank;
+            return LayDownRCTrackRightBank;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return lay_down_rc_track_left_quarter_turn_5_25_deg_up;
+            return LayDownRCTrackLeftQuarterTurn525DegUp;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return lay_down_rc_track_right_quarter_turn_5_25_deg_up;
+            return LayDownRCTrackRightQuarterTurn525DegUp;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return lay_down_rc_track_left_quarter_turn_5_25_deg_down;
+            return LayDownRCTrackLeftQuarterTurn525DegDown;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return lay_down_rc_track_right_quarter_turn_5_25_deg_down;
+            return LayDownRCTrackRightQuarterTurn525DegDown;
         case TrackElemType::SBendLeft:
-            return lay_down_rc_track_s_bend_left;
+            return LayDownRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return lay_down_rc_track_s_bend_right;
+            return LayDownRCTrackSBendRight;
         case TrackElemType::LeftVerticalLoop:
-            return lay_down_rc_track_left_vertical_loop;
+            return LayDownRCTrackLeftVerticalLoop;
         case TrackElemType::RightVerticalLoop:
-            return lay_down_rc_track_right_vertical_loop;
+            return LayDownRCTrackRightVerticalLoop;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return lay_down_rc_track_left_quarter_turn_3;
+            return LayDownRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return lay_down_rc_track_right_quarter_turn_3;
+            return LayDownRCTrackRightQuarterTurn3;
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
-            return lay_down_rc_track_left_quarter_turn_3_bank;
+            return LayDownRCTrackLeftQuarterTurn3Bank;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
-            return lay_down_rc_track_right_quarter_turn_3_bank;
+            return LayDownRCTrackRightQuarterTurn3Bank;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return lay_down_rc_track_left_quarter_turn_3_25_deg_up;
+            return LayDownRCTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return lay_down_rc_track_right_quarter_turn_3_25_deg_up;
+            return LayDownRCTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return lay_down_rc_track_left_quarter_turn_3_25_deg_down;
+            return LayDownRCTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return lay_down_rc_track_right_quarter_turn_3_25_deg_down;
+            return LayDownRCTrackRightQuarterTurn325DegDown;
         case TrackElemType::LeftHalfBankedHelixUpSmall:
-            return lay_down_rc_track_left_half_banked_helix_up_small;
+            return LayDownRCTrackLeftHalfBankedHelixUpSmall;
         case TrackElemType::RightHalfBankedHelixUpSmall:
-            return lay_down_rc_track_right_half_banked_helix_up_small;
+            return LayDownRCTrackRightHalfBankedHelixUpSmall;
         case TrackElemType::LeftHalfBankedHelixDownSmall:
-            return lay_down_rc_track_left_half_banked_helix_down_small;
+            return LayDownRCTrackLeftHalfBankedHelixDownSmall;
         case TrackElemType::RightHalfBankedHelixDownSmall:
-            return lay_down_rc_track_right_half_banked_helix_down_small;
+            return LayDownRCTrackRightHalfBankedHelixDownSmall;
         case TrackElemType::LeftHalfBankedHelixUpLarge:
-            return lay_down_rc_track_left_half_banked_helix_up_large;
+            return LayDownRCTrackLeftHalfBankedHelixUpLarge;
         case TrackElemType::RightHalfBankedHelixUpLarge:
-            return lay_down_rc_track_right_half_banked_helix_up_large;
+            return LayDownRCTrackRightHalfBankedHelixUpLarge;
         case TrackElemType::LeftHalfBankedHelixDownLarge:
-            return lay_down_rc_track_left_half_banked_helix_down_large;
+            return LayDownRCTrackLeftHalfBankedHelixDownLarge;
         case TrackElemType::RightHalfBankedHelixDownLarge:
-            return lay_down_rc_track_right_half_banked_helix_down_large;
+            return LayDownRCTrackRightHalfBankedHelixDownLarge;
         case TrackElemType::LeftQuarterTurn1TileUp60:
-            return lay_down_rc_track_left_quarter_turn_1_60_deg_up;
+            return LayDownRCTrackLeftQuarterTurn160DegUp;
         case TrackElemType::RightQuarterTurn1TileUp60:
-            return lay_down_rc_track_right_quarter_turn_1_60_deg_up;
+            return LayDownRCTrackRightQuarterTurn160DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            return lay_down_rc_track_left_quarter_turn_1_60_deg_down;
+            return LayDownRCTrackLeftQuarterTurn160DegDown;
         case TrackElemType::RightQuarterTurn1TileDown60:
-            return lay_down_rc_track_right_quarter_turn_1_60_deg_down;
+            return LayDownRCTrackRightQuarterTurn160DegDown;
         case TrackElemType::Brakes:
-            return lay_down_rc_track_brakes;
+            return LayDownRCTrackBrakes;
         case TrackElemType::OnRidePhoto:
-            return lay_down_rc_track_on_ride_photo;
+            return LayDownRCTrackOnRidePhoto;
         case TrackElemType::LeftEighthToDiag:
-            return lay_down_rc_track_left_eighth_to_diag;
+            return LayDownRCTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return lay_down_rc_track_right_eighth_to_diag;
+            return LayDownRCTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return lay_down_rc_track_left_eighth_to_orthogonal;
+            return LayDownRCTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return lay_down_rc_track_right_eighth_to_orthogonal;
+            return LayDownRCTrackRightEighthToOrthogonal;
         case TrackElemType::LeftEighthBankToDiag:
-            return lay_down_rc_track_left_eighth_bank_to_diag;
+            return LayDownRCTrackLeftEighthBankToDiag;
         case TrackElemType::RightEighthBankToDiag:
-            return lay_down_rc_track_right_eighth_bank_to_diag;
+            return LayDownRCTrackRightEighthBankToDiag;
         case TrackElemType::LeftEighthBankToOrthogonal:
-            return lay_down_rc_track_left_eighth_bank_to_orthogonal;
+            return LayDownRCTrackLeftEighthBankToOrthogonal;
         case TrackElemType::RightEighthBankToOrthogonal:
-            return lay_down_rc_track_right_eighth_bank_to_orthogonal;
+            return LayDownRCTrackRightEighthBankToOrthogonal;
         case TrackElemType::DiagFlat:
-            return lay_down_rc_track_diag_flat;
+            return LayDownRCTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return lay_down_rc_track_diag_25_deg_up;
+            return LayDownRCTrackDiag25DegUp;
         case TrackElemType::DiagUp60:
-            return lay_down_rc_track_diag_60_deg_up;
+            return LayDownRCTrackDiag60DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return lay_down_rc_track_diag_flat_to_25_deg_up;
+            return LayDownRCTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToUp60:
-            return lay_down_rc_track_diag_25_deg_up_to_60_deg_up;
+            return LayDownRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagUp60ToUp25:
-            return lay_down_rc_track_diag_60_deg_up_to_25_deg_up;
+            return LayDownRCTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return lay_down_rc_track_diag_25_deg_up_to_flat;
+            return LayDownRCTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return lay_down_rc_track_diag_25_deg_down;
+            return LayDownRCTrackDiag25DegDown;
         case TrackElemType::DiagDown60:
-            return lay_down_rc_track_diag_60_deg_down;
+            return LayDownRCTrackDiag60DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return lay_down_rc_track_diag_flat_to_25_deg_down;
+            return LayDownRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToDown60:
-            return lay_down_rc_track_diag_25_deg_down_to_60_deg_down;
+            return LayDownRCTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagDown60ToDown25:
-            return lay_down_rc_track_diag_60_deg_down_to_25_deg_down;
+            return LayDownRCTrackDiag60DegDownTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return lay_down_rc_track_diag_25_deg_down_to_flat;
+            return LayDownRCTrackDiag25DegDownToFlat;
         case TrackElemType::DiagFlatToLeftBank:
-            return lay_down_rc_track_diag_flat_to_left_bank;
+            return LayDownRCTrackDiagFlatToLeftBank;
         case TrackElemType::DiagFlatToRightBank:
-            return lay_down_rc_track_diag_flat_to_right_bank;
+            return LayDownRCTrackDiagFlatToRightBank;
         case TrackElemType::DiagLeftBankToFlat:
-            return lay_down_rc_track_diag_left_bank_to_flat;
+            return LayDownRCTrackDiagLeftBankToFlat;
         case TrackElemType::DiagRightBankToFlat:
-            return lay_down_rc_track_diag_right_bank_to_flat;
+            return LayDownRCTrackDiagRightBankToFlat;
         case TrackElemType::DiagLeftBankToUp25:
-            return lay_down_rc_track_diag_left_bank_to_25_deg_up;
+            return LayDownRCTrackDiagLeftBankTo25DegUp;
         case TrackElemType::DiagRightBankToUp25:
-            return lay_down_rc_track_diag_right_bank_to_25_deg_up;
+            return LayDownRCTrackDiagRightBankTo25DegUp;
         case TrackElemType::DiagUp25ToLeftBank:
-            return lay_down_rc_track_diag_25_deg_up_to_left_bank;
+            return LayDownRCTrackDiag25DegUpToLeftBank;
         case TrackElemType::DiagUp25ToRightBank:
-            return lay_down_rc_track_diag_25_deg_up_to_right_bank;
+            return LayDownRCTrackDiag25DegUpToRightBank;
         case TrackElemType::DiagLeftBankToDown25:
-            return lay_down_rc_track_diag_left_bank_to_25_deg_down;
+            return LayDownRCTrackDiagLeftBankTo25DegDown;
         case TrackElemType::DiagRightBankToDown25:
-            return lay_down_rc_track_diag_right_bank_to_25_deg_down;
+            return LayDownRCTrackDiagRightBankTo25DegDown;
         case TrackElemType::DiagDown25ToLeftBank:
-            return lay_down_rc_track_diag_25_deg_down_to_left_bank;
+            return LayDownRCTrackDiag25DegDownToLeftBank;
         case TrackElemType::DiagDown25ToRightBank:
-            return lay_down_rc_track_diag_25_deg_down_to_right_bank;
+            return LayDownRCTrackDiag25DegDownToRightBank;
         case TrackElemType::DiagLeftBank:
-            return lay_down_rc_track_diag_left_bank;
+            return LayDownRCTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
-            return lay_down_rc_track_diag_right_bank;
+            return LayDownRCTrackDiagRightBank;
         case TrackElemType::LeftFlyerTwistUp:
-            return lay_down_rc_track_left_flyer_twist_up;
+            return LayDownRCTrackLeftFlyerTwistUp;
         case TrackElemType::RightFlyerTwistUp:
-            return lay_down_rc_track_right_flyer_twist_up;
+            return LayDownRCTrackRightFlyerTwistUp;
         case TrackElemType::LeftFlyerTwistDown:
-            return lay_down_rc_track_left_flyer_twist_down;
+            return LayDownRCTrackLeftFlyerTwistDown;
         case TrackElemType::RightFlyerTwistDown:
-            return lay_down_rc_track_right_flyer_twist_down;
+            return LayDownRCTrackRightFlyerTwistDown;
         case TrackElemType::FlyerHalfLoopUninvertedUp:
-            return lay_down_rc_track_flyer_half_loop_up;
+            return LayDownRCTrackFlyerHalfLoopUp;
         case TrackElemType::FlyerHalfLoopInvertedDown:
-            return lay_down_rc_track_flyer_half_loop_down;
+            return LayDownRCTrackFlyerHalfLoopDown;
         case TrackElemType::LeftFlyerCorkscrewUp:
-            return lay_down_rc_track_left_flyer_corkscrew_up;
+            return LayDownRCTrackLeftFlyerCorkscrewUp;
         case TrackElemType::RightFlyerCorkscrewUp:
-            return lay_down_rc_track_right_flyer_corkscrew_up;
+            return LayDownRCTrackRightFlyerCorkscrewUp;
         case TrackElemType::LeftFlyerCorkscrewDown:
-            return lay_down_rc_track_left_flyer_corkscrew_down;
+            return LayDownRCTrackLeftFlyerCorkscrewDown;
         case TrackElemType::RightFlyerCorkscrewDown:
-            return lay_down_rc_track_right_flyer_corkscrew_down;
+            return LayDownRCTrackRightFlyerCorkscrewDown;
         case TrackElemType::BlockBrakes:
-            return lay_down_rc_track_block_brakes;
+            return LayDownRCTrackBlockBrakes;
 
         case TrackElemType::LeftQuarterBankedHelixLargeUp:
-            return lay_down_rc_track_left_quarter_banked_helix_large_up;
+            return LayDownRCTrackLeftQuarterBankedHelixLargeUp;
         case TrackElemType::RightQuarterBankedHelixLargeUp:
-            return lay_down_rc_track_right_quarter_banked_helix_large_up;
+            return LayDownRCTrackRightQuarterBankedHelixLargeUp;
         case TrackElemType::LeftQuarterBankedHelixLargeDown:
-            return lay_down_rc_track_left_quarter_banked_helix_large_down;
+            return LayDownRCTrackLeftQuarterBankedHelixLargeDown;
         case TrackElemType::RightQuarterBankedHelixLargeDown:
-            return lay_down_rc_track_right_quarter_banked_helix_large_down;
+            return LayDownRCTrackRightQuarterBankedHelixLargeDown;
 
         case TrackElemType::FlyerHalfLoopInvertedUp:
-            return lay_down_rc_track_half_loop_inverted_up;
+            return LayDownRCTrackHalfLoopInvertedUp;
         case TrackElemType::FlyerHalfLoopUninvertedDown:
-            return lay_down_rc_track_half_loop_uninverted_down;
+            return LayDownRCTrackHalfLoopUninvertedDown;
     }
-    return GetTrackPaintFunctionCorkscrewRc(trackType);
+    return GetTrackPaintFunctionCorkscrewRC(trackType);
 }

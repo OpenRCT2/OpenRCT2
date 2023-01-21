@@ -79,7 +79,7 @@ enum
     CORNER_LEFT
 };
 
-struct corner_height
+struct CornerHeight
 {
     uint8_t top;
     uint8_t right;
@@ -91,7 +91,7 @@ struct corner_height
 /**
 *  rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
 */
-static constexpr const corner_height corner_heights[] = {
+static constexpr const CornerHeight corner_heights[] = {
     // T  R  B  L
     { 0, 0, 0, 0 },
     { 0, 0, 1, 0 },
@@ -213,16 +213,16 @@ static constexpr const uint8_t byte_97B740[] = {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 4, 0,
 };
 
-struct tile_descriptor
+struct TileDescriptor
 {
     TileCoordsXY tile_coords;
     const TileElement* tile_element;
     uint8_t terrain;
     uint8_t slope;
-    corner_height corner_heights;
+    CornerHeight corner_heights;
 };
 
-struct tile_surface_boundary_data
+struct TileSurfaceBoundaryData
 {
     int32_t bit_1;
     int32_t bit_8;
@@ -233,7 +233,7 @@ struct tile_surface_boundary_data
     BoundBoxXY Boundbox;
 };
 
-static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] = {
+static constexpr const TileSurfaceBoundaryData _tileSurfaceBoundaries[4] = {
     {
         // Bottom right
         1,
@@ -445,7 +445,7 @@ static uint8_t ViewportSurfacePaintSetupGetRelativeSlope(const SurfaceElement& s
  *  rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
  */
 static void ViewportSurfaceSmoothenEdge(
-    PaintSession& session, enum edge_t edge, struct tile_descriptor self, struct tile_descriptor neighbour)
+    PaintSession& session, enum edge_t edge, struct TileDescriptor self, struct TileDescriptor neighbour)
 {
     PROFILED_FUNCTION();
 
@@ -547,7 +547,7 @@ static void ViewportSurfaceSmoothenEdge(
     }
 }
 
-static bool TileIsInsideClipView(const tile_descriptor& tile)
+static bool TileIsInsideClipView(const TileDescriptor& tile)
 {
     if (tile.tile_element == nullptr)
         return false;
@@ -565,8 +565,8 @@ static bool TileIsInsideClipView(const tile_descriptor& tile)
 }
 
 static void ViewportSurfaceDrawTileSideBottom(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct tile_descriptor self,
-    struct tile_descriptor neighbour, bool isWater)
+    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct TileDescriptor self,
+    struct TileDescriptor neighbour, bool isWater)
 {
     PROFILED_FUNCTION();
 
@@ -764,8 +764,8 @@ static void ViewportSurfaceDrawTileSideBottom(
  *  rct2: 0x0065EB7D, 0x0065F0D8
  */
 static void ViewportSurfaceDrawLandSideBottom(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct tile_descriptor self,
-    struct tile_descriptor neighbour)
+    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct TileDescriptor self,
+    struct TileDescriptor neighbour)
 {
     ViewportSurfaceDrawTileSideBottom(session, edge, height, edgeStyle, self, neighbour, false);
 }
@@ -774,15 +774,15 @@ static void ViewportSurfaceDrawLandSideBottom(
  *  rct2: 0x0065F8B9, 0x0065FE26
  */
 static void ViewportSurfaceDrawWaterSideBottom(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct tile_descriptor self,
-    struct tile_descriptor neighbour)
+    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct TileDescriptor self,
+    struct TileDescriptor neighbour)
 {
     ViewportSurfaceDrawTileSideBottom(session, edge, height, edgeStyle, self, neighbour, true);
 }
 
 static void ViewportSurfaceDrawTileSideTop(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct tile_descriptor self,
-    struct tile_descriptor neighbour, bool isWater)
+    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct TileDescriptor self,
+    struct TileDescriptor neighbour, bool isWater)
 {
     PROFILED_FUNCTION();
 
@@ -923,8 +923,8 @@ static void ViewportSurfaceDrawTileSideTop(
  *  rct2: 0x0065F63B, 0x0065F77D
  */
 static void ViewportSurfaceDrawLandSideTop(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct tile_descriptor self,
-    struct tile_descriptor neighbour)
+    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct TileDescriptor self,
+    struct TileDescriptor neighbour)
 {
     ViewportSurfaceDrawTileSideTop(session, edge, height, terrain, self, neighbour, false);
 }
@@ -933,8 +933,8 @@ static void ViewportSurfaceDrawLandSideTop(
  *  rct2: 0x0066039B, 0x006604F1
  */
 static void ViewportSurfaceDrawWaterSideTop(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct tile_descriptor self,
-    struct tile_descriptor neighbour)
+    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct TileDescriptor self,
+    struct TileDescriptor neighbour)
 {
     ViewportSurfaceDrawTileSideTop(session, edge, height, terrain, self, neighbour, true);
 }
@@ -1019,7 +1019,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 {
     PROFILED_FUNCTION();
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     session.InteractionType = ViewportInteractionItem::Terrain;
     session.Flags |= PaintSessionFlags::PassedSurface;
     session.SurfaceElement = reinterpret_cast<const TileElement*>(&tileElement);
@@ -1029,10 +1029,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const auto terrain_type = tileElement.GetSurfaceStyle();
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
     const CoordsXY& base = session.SpritePosition;
-    const corner_height& cornerHeights = corner_heights[surfaceShape];
+    const CornerHeight& cornerHeights = corner_heights[surfaceShape];
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
-    tile_descriptor selfDescriptor = {
+    TileDescriptor selfDescriptor = {
         TileCoordsXY(base),
         elementPtr,
         static_cast<uint8_t>(terrain_type),
@@ -1045,7 +1045,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         },
     };
 
-    tile_descriptor tileDescriptors[5];
+    TileDescriptor tileDescriptors[5];
     tileDescriptors[0] = selfDescriptor;
 
     for (std::size_t i = 0; i < std::size(viewport_surface_paint_data); i++)
@@ -1053,7 +1053,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const CoordsXY& offset = viewport_surface_paint_data[i][rotation];
         const CoordsXY position = base + offset;
 
-        tile_descriptor& descriptor = tileDescriptors[i + 1];
+        TileDescriptor& descriptor = tileDescriptors[i + 1];
 
         descriptor.tile_element = nullptr;
         if (!MapIsLocationValid(position))
@@ -1069,7 +1069,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         const uint32_t surfaceSlope = ViewportSurfacePaintSetupGetRelativeSlope(*surfaceElement, rotation);
         const uint8_t baseHeight = surfaceElement->GetBaseZ() / 16;
-        const corner_height& ch = corner_heights[surfaceSlope];
+        const CornerHeight& ch = corner_heights[surfaceSlope];
 
         descriptor.tile_coords = TileCoordsXY{ position };
         descriptor.tile_element = reinterpret_cast<TileElement*>(surfaceElement);

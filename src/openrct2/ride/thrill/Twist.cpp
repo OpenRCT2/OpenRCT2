@@ -20,10 +20,10 @@
 #include "../Vehicle.h"
 
 /** rct2: 0x0076E5C9 */
-static void paint_twist_structure(
+static void PaintTwistStructure(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
     Vehicle* vehicle = nullptr;
 
     if (rideEntry == nullptr)
@@ -81,7 +81,7 @@ static void paint_twist_structure(
 }
 
 /** rct2: 0x0076D858 */
-static void paint_twist(
+static void PaintTwist(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -120,22 +120,22 @@ static void paint_twist(
     switch (trackSequence)
     {
         case 1:
-            paint_twist_structure(session, ride, direction, 32, 32, height);
+            PaintTwistStructure(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_twist_structure(session, ride, direction, 32, -32, height);
+            PaintTwistStructure(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_twist_structure(session, ride, direction, 0, -32, height);
+            PaintTwistStructure(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_twist_structure(session, ride, direction, -32, 32, height);
+            PaintTwistStructure(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_twist_structure(session, ride, direction, -32, -32, height);
+            PaintTwistStructure(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_twist_structure(session, ride, direction, -32, 0, height);
+            PaintTwistStructure(session, ride, direction, -32, 0, height);
             break;
     }
 
@@ -171,5 +171,5 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwist(int32_t trackType)
         return nullptr;
     }
 
-    return paint_twist;
+    return PaintTwist;
 }

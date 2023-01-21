@@ -69,7 +69,7 @@ static void SetSupportHeights(
 {
     height += sceneryEntry.height;
 
-    PaintUtilSetGeneralSupportHeight(session, ceil2(height, 8), 0x20);
+    PaintUtilSetGeneralSupportHeight(session, Ceil2(height, 8), 0x20);
     if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
     {
         if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))

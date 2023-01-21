@@ -362,7 +362,7 @@ public:
     void OnPrepareDraw() override
     {
         StringId stringId = STR_NONE;
-        rct_ride_entry* entry = GetRideEntryByIndex(_window_track_list_item.EntryIndex);
+        RideObjectEntry* entry = GetRideEntryByIndex(_window_track_list_item.EntryIndex);
 
         if (entry != nullptr)
         {
@@ -433,7 +433,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -495,7 +495,7 @@ public:
         auto trackPreview = screenPos;
         screenPos = windowPos + ScreenCoordsXY{ tdWidget.midX(), tdWidget.midY() };
 
-        rct_g1_element g1temp = {};
+        G1Element g1temp = {};
         g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
         g1temp.width = 370;
         g1temp.height = 217;
@@ -665,7 +665,7 @@ public:
         }
     }
 
-    void OnScrollDraw(const int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         uint8_t paletteIndex = ColourMapA[colours[0]].mid_light;
         GfxClear(&dpi, paletteIndex);
@@ -743,7 +743,7 @@ public:
     }
 };
 
-rct_window* WindowTrackListOpen(const RideSelection item)
+WindowBase* WindowTrackListOpen(const RideSelection item)
 {
     WindowCloseConstructionWindows();
     ScreenCoordsXY screenPos{};

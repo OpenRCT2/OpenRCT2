@@ -362,7 +362,7 @@ namespace Config
             model->Device = reader->GetString("audio_device", "");
             model->MasterSoundEnabled = reader->GetBoolean("master_sound", true);
             model->MasterVolume = reader->GetInt32("master_volume", 100);
-            model->TitleMusic = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::Rct2)));
+            model->TitleMusic = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::RCT2)));
             model->SoundEnabled = reader->GetBoolean("sound", true);
             model->SoundVolume = reader->GetInt32("sound_volume", 100);
             model->RideMusicEnabled = reader->GetBoolean("ride_music", true);
@@ -976,7 +976,7 @@ bool RCT1DataPresentAtLocation(u8string_view path)
     return Csg1datPresentAtLocation(path) && Csg1idatPresentAtLocation(path) && CsgAtLocationIsUsable(path);
 }
 
-bool CsgIsUsable(const rct_gx& csg)
+bool CsgIsUsable(const Gx& csg)
 {
     return csg.header.total_size == RCT1::Limits::LL_CSG1_DAT_FileSize
         && csg.header.num_entries == RCT1::Limits::Num_LL_CSG_Entries;
@@ -1001,8 +1001,8 @@ bool CsgAtLocationIsUsable(u8string_view path)
     size_t fileHeaderSize = fileHeader.GetLength();
     size_t fileDataSize = fileData.GetLength();
 
-    rct_gx csg = {};
-    csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(rct_g1_element_32bit));
+    Gx csg = {};
+    csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
     csg.header.total_size = static_cast<uint32_t>(fileDataSize);
     return CsgIsUsable(csg);
 }

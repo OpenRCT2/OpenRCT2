@@ -138,7 +138,7 @@ static bool OnCrash(
         FILE* input = _wfopen(dumpFilePath, L"rb");
         FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
 
-        if (util_gzip_compress(input, dest))
+        if (UtilGzipCompress(input, dest))
         {
             // TODO: enable upload of gzip-compressed dumps once supported on
             // backtrace.io (uncomment the line below). For now leave compression

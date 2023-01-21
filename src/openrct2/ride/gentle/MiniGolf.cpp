@@ -453,7 +453,7 @@ static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackE
     }
 
     const TileElement* surfaceElement = session.SurfaceElement;
-    if (surfaceElement->base_height != trackElement.base_height)
+    if (surfaceElement->BaseHeight != trackElement.BaseHeight)
     {
         return true;
     }
@@ -1190,7 +1190,7 @@ void VehicleVisualMiniGolfPlayer(
         return;
     }
 
-    rct_drawpixelinfo* edi = &session.DPI;
+    DrawPixelInfo* edi = &session.DPI;
     if (edi->zoom_level >= ZoomLevel{ 2 })
     {
         return;
@@ -1227,7 +1227,7 @@ void VehicleVisualMiniGolfBall(
         return;
     }
 
-    rct_drawpixelinfo* edi = &session.DPI;
+    DrawPixelInfo* edi = &session.DPI;
     if (edi->zoom_level >= ZoomLevel{ 1 })
     {
         return;

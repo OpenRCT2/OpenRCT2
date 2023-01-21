@@ -198,7 +198,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     z = newCoords->z;
 
     const auto& ted = GetTrackElementDescriptor(trackElement.element->AsTrack()->GetTrackType());
-    const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
+    const TrackCoordinates* trackCoordinates = &ted.Coordinates;
     const auto* trackBlock = ted.Block;
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
@@ -781,7 +781,7 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
             {
                 auto* sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-                for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++)
+                for (LargeSceneryTile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++)
                 {
                     if (x1 > tile->x_offset)
                     {
@@ -923,7 +923,7 @@ static void TrackDesignMirrorMaze(TrackDesign* td6)
 
         uint16_t maze_entry = maze.maze_entry;
         uint16_t new_entry = 0;
-        for (uint8_t position = bitscanforward(maze_entry); position != 0xFF; position = bitscanforward(maze_entry))
+        for (uint8_t position = UtilBitScanForward(maze_entry); position != 0xFF; position = UtilBitScanForward(maze_entry))
         {
             maze_entry &= ~(1 << position);
             new_entry |= (1 << maze_segment_mirror_map[position]);
@@ -1588,7 +1588,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
         switch (tds.PlaceOperation)
         {
             case PTD_OPERATION_DRAW_OUTLINES:
-                for (const rct_preview_track* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
+                for (const PreviewTrack* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     TrackDesignUpdatePreviewBounds(tds, { tile, newCoords.z });
@@ -1597,8 +1597,8 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                 break;
             case PTD_OPERATION_REMOVE_GHOST:
             {
-                const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
-                const rct_preview_track* trackBlock = ted.Block;
+                const TrackCoordinates* trackCoordinates = &ted.Coordinates;
+                const PreviewTrack* trackBlock = ted.Block;
                 int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
@@ -1612,7 +1612,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
             case PTD_OPERATION_PLACE_GHOST:
             case PTD_OPERATION_PLACE_TRACK_PREVIEW:
             {
-                const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
+                const TrackCoordinates* trackCoordinates = &ted.Coordinates;
 
                 // di
                 int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
@@ -1669,7 +1669,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
             case PTD_OPERATION_GET_PLACE_Z:
             {
                 int32_t tempZ = newCoords.z - ted.Coordinates.z_begin;
-                for (const rct_preview_track* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
+                for (const PreviewTrack* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     if (!MapIsLocationValid(tile))
@@ -1708,7 +1708,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
             }
         }
 
-        const rct_track_coordinates& track_coordinates = ted.Coordinates;
+        const TrackCoordinates& track_coordinates = ted.Coordinates;
         auto offsetAndRotatedTrack = CoordsXY{ newCoords }
             + CoordsXY{ track_coordinates.x, track_coordinates.y }.Rotate(rotation);
 
@@ -1762,7 +1762,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                         {
                             continue;
                         }
-                        if (tile_element->base_height != newCoords.z)
+                        if (tile_element->BaseHeight != newCoords.z)
                         {
                             continue;
                         }
@@ -2145,7 +2145,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     size_x = zoom_level.ApplyTo(370);
     size_y = zoom_level.ApplyTo(217);
 
-    rct_viewport view;
+    Viewport view;
     view.width = 370;
     view.height = 217;
     view.view_width = size_x;
@@ -2154,7 +2154,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
     view.zoom = zoom_level;
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;
 
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     dpi.zoom_level = zoom_level;
     dpi.x = 0;
     dpi.y = 0;

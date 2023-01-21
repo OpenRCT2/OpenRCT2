@@ -250,7 +250,7 @@ void FontSpriteInitialiseCharacters()
         int32_t glyphOffset = EnumValue(fontStyle) * FONT_SPRITE_GLYPH_COUNT;
         for (uint8_t glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++)
         {
-            const rct_g1_element* g1 = GfxGetG1Element(glyphIndex + SPR_CHAR_START + glyphOffset);
+            const G1Element* g1 = GfxGetG1Element(glyphIndex + SPR_CHAR_START + glyphOffset);
             int32_t width = 0;
             if (g1 != nullptr)
             {
@@ -266,7 +266,7 @@ void FontSpriteInitialiseCharacters()
         int32_t glyphOffset = EnumValue(fontStyle) * SPR_G2_GLYPH_COUNT;
         for (int32_t glyphIndex = 0; glyphIndex < SPR_G2_GLYPH_COUNT; glyphIndex++)
         {
-            const rct_g1_element* g1 = GfxGetG1Element(glyphIndex + SPR_G2_CHAR_BEGIN + glyphOffset);
+            const G1Element* g1 = GfxGetG1Element(glyphIndex + SPR_G2_CHAR_BEGIN + glyphOffset);
             int32_t width = 0;
             if (g1 != nullptr)
             {

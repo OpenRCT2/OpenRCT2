@@ -70,7 +70,7 @@ void SceneryGroupObject::Unload()
     _legacyType.image = 0;
 }
 
-void SceneryGroupObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void SceneryGroupObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
@@ -139,7 +139,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadItems(IStream* stream
     while (stream->ReadValue<uint8_t>() != 0xFF)
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
-        auto entry = stream->ReadValue<rct_object_entry>();
+        auto entry = stream->ReadValue<RCTObjectEntry>();
         items.emplace_back(entry);
     }
     return items;
@@ -219,7 +219,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
 
             try
             {
-                rct_object_entry entry = {};
+                RCTObjectEntry entry = {};
                 entry.flags = std::stoul(entryName.substr(DatEntryFlagsStart, DatEntryFlagsLength), nullptr, 16);
                 std::memcpy(entry.name, entryName.c_str() + DatEntryNameStart, DAT_NAME_LENGTH);
                 entry.checksum = 0;

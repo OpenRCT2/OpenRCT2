@@ -138,7 +138,7 @@ public:
         widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = ScreenCoordsXY{ windowPos.x + window_water_widgets[WIDX_PREVIEW].midX(),
                                             windowPos.y + window_water_widgets[WIDX_PREVIEW].midY() };
@@ -185,7 +185,7 @@ private:
     }
 };
 
-rct_window* WindowWaterOpen()
+WindowBase* WindowWaterOpen()
 {
     return WindowFocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

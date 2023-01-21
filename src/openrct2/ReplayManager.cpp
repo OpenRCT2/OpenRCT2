@@ -233,7 +233,7 @@ namespace OpenRCT2
             auto replayData = std::make_unique<ReplayRecordData>();
             replayData->magic = ReplayMagic;
             replayData->version = ReplayVersion;
-            replayData->networkId = network_get_version();
+            replayData->networkId = NetworkGetVersion();
             replayData->name = name;
             replayData->tickStart = gCurrentTicks;
             if (maxTicks != k_MaxReplayTicks)
@@ -389,12 +389,12 @@ namespace OpenRCT2
             snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, ScenarioRandState().s0);
             try
             {
-                GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
+                GameStateCompareData cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
 
                 // Find out if there are any differences between the two states
                 auto res = std::find_if(
                     cmpData.spriteChanges.begin(), cmpData.spriteChanges.end(),
-                    [](const GameStateSpriteChange_t& diff) { return diff.changeType != GameStateSpriteChange_t::EQUAL; });
+                    [](const GameStateSpriteChange& diff) { return diff.changeType != GameStateSpriteChange::EQUAL; });
 
                 // If there are difference write a log to the desyncs folder
                 if (res != cmpData.spriteChanges.end())
@@ -725,11 +725,11 @@ namespace OpenRCT2
             serialiser << data.networkId;
 #ifndef DISABLE_NETWORK
             // NOTE: This does not mean the replay will not function, only a warning.
-            if (data.networkId != network_get_version())
+            if (data.networkId != NetworkGetVersion())
             {
                 LOG_WARNING(
                     "Replay network version mismatch: '%s', expected: '%s'", data.networkId.c_str(),
-                    network_get_version().c_str());
+                    NetworkGetVersion().c_str());
             }
 #endif
 

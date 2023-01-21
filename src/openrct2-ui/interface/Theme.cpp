@@ -871,15 +871,15 @@ StringId ThemeDescGetName(WindowClass wc)
 
 void ColourSchemeUpdateAll()
 {
-    WindowVisitEach([](rct_window* w) { ColourSchemeUpdate(w); });
+    WindowVisitEach([](WindowBase* w) { ColourSchemeUpdate(w); });
 }
 
-void ColourSchemeUpdate(rct_window* window)
+void ColourSchemeUpdate(WindowBase* window)
 {
     ColourSchemeUpdateByClass(window, window->classification);
 }
 
-void ColourSchemeUpdateByClass(rct_window* window, WindowClass classification)
+void ColourSchemeUpdateByClass(WindowBase* window, WindowClass classification)
 {
     const WindowTheme* windowTheme;
     const UIThemeWindowEntry* entry = ThemeManager::CurrentTheme->GetEntry(classification);

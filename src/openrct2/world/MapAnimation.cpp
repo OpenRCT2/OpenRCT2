@@ -99,7 +99,7 @@ static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Entrance)
             continue;
@@ -136,7 +136,7 @@ static bool MapAnimationInvalidateQueueBanner(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Path)
             continue;
@@ -169,7 +169,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::SmallScenery)
             continue;
@@ -234,7 +234,7 @@ static bool MapAnimationInvalidateParkEntrance(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Entrance)
             continue;
@@ -264,7 +264,7 @@ static bool MapAnimationInvalidateTrackWaterfall(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -293,7 +293,7 @@ static bool MapAnimationInvalidateTrackRapids(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -322,7 +322,7 @@ static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -361,7 +361,7 @@ static bool MapAnimationInvalidateTrackWhirlpool(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -390,7 +390,7 @@ static bool MapAnimationInvalidateTrackSpinningTunnel(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -428,7 +428,7 @@ static bool MapAnimationInvalidateBanner(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Banner)
             continue;
@@ -454,7 +454,7 @@ static bool MapAnimationInvalidateLargeScenery(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::LargeScenery)
             continue;
@@ -488,7 +488,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
         return removeAnimation;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
@@ -549,7 +549,7 @@ static bool MapAnimationInvalidateWall(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
@@ -605,7 +605,7 @@ void MapAnimationAutoCreate()
 {
     ClearMapAnimations();
 
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {

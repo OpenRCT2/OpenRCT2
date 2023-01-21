@@ -97,7 +97,7 @@ static Vehicle* GetFirstVehicle(const Ride& ride)
 }
 
 static void PaintMagicCarpetRiders(
-    PaintSession& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, Direction direction,
+    PaintSession& session, const RideObjectEntry& rideEntry, const Vehicle& vehicle, Direction direction,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 1 })

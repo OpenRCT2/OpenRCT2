@@ -137,13 +137,13 @@ public:
         WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
 };
 
-rct_window* WindowDebugPaintOpen()
+WindowBase* WindowDebugPaintOpen()
 {
     auto* window = WindowFocusOrCreate<DebugPaintWindow>(
         WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,

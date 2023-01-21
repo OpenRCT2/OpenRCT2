@@ -110,7 +110,7 @@ public:
         }
         else if (_pressedButtonIndex > 1)
         {
-            static rct_window* _mainWindow;
+            static WindowBase* _mainWindow;
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
             if (subjectLoc.has_value() && (_mainWindow = WindowGetMain()) != nullptr)
             {
@@ -166,12 +166,12 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         int32_t lineHeight = FontGetLineHeight(FontStyle::Small);
         int32_t itemHeight = CalculateItemHeight();
@@ -231,7 +231,7 @@ public:
                     case News::ItemType::Peep:
                     case News::ItemType::PeepOnRide:
                     {
-                        rct_drawpixelinfo cliped_dpi;
+                        DrawPixelInfo cliped_dpi;
                         if (!ClipDrawPixelInfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                         {
                             break;
@@ -308,7 +308,7 @@ public:
     }
 };
 
-rct_window* WindowNewsOpen()
+WindowBase* WindowNewsOpen()
 {
     return WindowFocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
 }

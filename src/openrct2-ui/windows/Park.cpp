@@ -362,7 +362,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         switch (page)
         {
@@ -585,7 +585,7 @@ private:
         }
     }
 
-    void OnDrawEntrance(rct_drawpixelinfo& dpi)
+    void OnDrawEntrance(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -685,7 +685,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawRating(rct_drawpixelinfo& dpi)
+    void OnDrawRating(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -758,7 +758,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawGuests(rct_drawpixelinfo& dpi)
+    void OnDrawGuests(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -888,7 +888,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawPrice(rct_drawpixelinfo& dpi)
+    void OnDrawPrice(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -952,7 +952,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawStats(rct_drawpixelinfo& dpi)
+    void OnDrawStats(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -966,7 +966,7 @@ private:
         if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         {
             stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
-            parkSize = squaredmetres_to_squaredfeet(parkSize);
+            parkSize = SquaredMetresToSquaredFeet(parkSize);
         }
         auto ft = Formatter();
         ft.Add<uint32_t>(parkSize);
@@ -1061,7 +1061,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawObjective(rct_drawpixelinfo& dpi)
+    void OnDrawObjective(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -1151,7 +1151,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void OnDrawAwards(rct_drawpixelinfo& dpi)
+    void OnDrawAwards(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -1213,7 +1213,7 @@ private:
         pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Entrance tab
         if (!WidgetIsDisabled(*this, WIDX_TAB_1))
@@ -1304,7 +1304,7 @@ static ParkWindow* ParkWindowOpen(uint8_t page)
  *
  *  rct2: 0x00667C48
  */
-rct_window* WindowParkEntranceOpen()
+WindowBase* WindowParkEntranceOpen()
 {
     return ParkWindowOpen(WINDOW_PARK_PAGE_ENTRANCE);
 }
@@ -1313,7 +1313,7 @@ rct_window* WindowParkEntranceOpen()
  *
  *  rct2: 0x00667CA4
  */
-rct_window* WindowParkRatingOpen()
+WindowBase* WindowParkRatingOpen()
 {
     return ParkWindowOpen(WINDOW_PARK_PAGE_RATING);
 }
@@ -1322,7 +1322,7 @@ rct_window* WindowParkRatingOpen()
  *
  *  rct2: 0x00667D35
  */
-rct_window* WindowParkGuestsOpen()
+WindowBase* WindowParkGuestsOpen()
 {
     return ParkWindowOpen(WINDOW_PARK_PAGE_GUESTS);
 }
@@ -1331,7 +1331,7 @@ rct_window* WindowParkGuestsOpen()
  *
  *  rct2: 0x00667E57
  */
-rct_window* WindowParkObjectiveOpen()
+WindowBase* WindowParkObjectiveOpen()
 {
     auto* wnd = ParkWindowOpen(WINDOW_PARK_PAGE_OBJECTIVE);
     if (wnd != nullptr)
@@ -1348,7 +1348,7 @@ rct_window* WindowParkObjectiveOpen()
  *
  *  rct2: 0x00667DC6
  */
-rct_window* WindowParkAwardsOpen()
+WindowBase* WindowParkAwardsOpen()
 {
     return ParkWindowOpen(WINDOW_PARK_PAGE_AWARDS);
 }

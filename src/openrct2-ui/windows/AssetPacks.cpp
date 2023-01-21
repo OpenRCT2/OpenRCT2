@@ -184,12 +184,12 @@ public:
         widgets[WIDX_APPLY].top = widgets[WIDX_APPLY].bottom - 24;
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
@@ -233,7 +233,7 @@ public:
     }
 
 private:
-    void PaintItem(rct_drawpixelinfo& dpi, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
+    void PaintItem(DrawPixelInfo& dpi, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
     {
         auto listWidth = dpi.width - 1;
         auto stringId = STR_BLACK_STRING;
@@ -254,7 +254,7 @@ private:
         PaintCheckbox(dpi, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
     }
 
-    void PaintCheckbox(rct_drawpixelinfo& dpi, const ScreenRect& rect, bool checked)
+    void PaintCheckbox(DrawPixelInfo& dpi, const ScreenRect& rect, bool checked)
     {
         GfxFillRectInset(&dpi, rect, colours[1], INSET_RECT_F_E0);
         if (checked)
@@ -337,7 +337,7 @@ private:
     }
 };
 
-rct_window* WindowAssetPacksOpen()
+WindowBase* WindowAssetPacksOpen()
 {
     auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
     return WindowFocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);

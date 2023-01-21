@@ -118,7 +118,7 @@ private:
             }
         }
 
-        const rct_scenery_group_entry* GetSceneryGroupEntry() const
+        const SceneryGroupEntry* GetSceneryGroupEntry() const
         {
             return ::GetSceneryGroupEntry(SceneryGroupIndex);
         }
@@ -211,8 +211,8 @@ public:
                 if (gWindowSceneryScatterEnabled)
                     WindowCloseByClass(WindowClass::SceneryScatter);
                 else if (
-                    network_get_mode() != NETWORK_MODE_CLIENT
-                    || network_can_perform_command(network_get_current_player_group_index(), -2))
+                    NetworkGetMode() != NETWORK_MODE_CLIENT
+                    || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2))
                 {
                     WindowSceneryScatterOpen();
                 }
@@ -341,7 +341,7 @@ public:
     void OnUpdate() override
     {
         const CursorState* state = ContextGetCursorState();
-        rct_window* other = WindowFindFromPoint(state->position);
+        WindowBase* other = WindowFindFromPoint(state->position);
         if (other == this)
         {
             ScreenCoordsXY window = state->position - ScreenCoordsXY{ windowPos.x - 26, windowPos.y };
@@ -645,7 +645,7 @@ public:
         widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].right = windowWidth - 8;
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabs(dpi, windowPos);
@@ -679,7 +679,7 @@ public:
         DrawTextEllipsised(&dpi, { windowPos.x + 3, windowPos.y + height - 13 }, width - 19, STR_BLACK_STRING, ft);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         if (scrollIndex == SceneryContentScrollIndex)
         {
@@ -1169,7 +1169,7 @@ private:
         return { name, price };
     }
 
-    void DrawTabs(rct_drawpixelinfo& dpi, const ScreenCoordsXY& offset)
+    void DrawTabs(DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
     {
         for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
         {
@@ -1184,7 +1184,7 @@ private:
         }
     }
 
-    void DrawSceneryItem(rct_drawpixelinfo& dpi, ScenerySelection scenerySelection)
+    void DrawSceneryItem(DrawPixelInfo& dpi, ScenerySelection scenerySelection)
     {
         if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
         {
@@ -1287,7 +1287,7 @@ private:
         }
     }
 
-    void ContentScrollDraw(rct_drawpixelinfo& dpi)
+    void ContentScrollDraw(DrawPixelInfo& dpi)
     {
         GfxClear(&dpi, ColourMapA[colours[1]].mid_light);
 
@@ -1330,7 +1330,7 @@ private:
                 }
             }
 
-            rct_drawpixelinfo clipdpi;
+            DrawPixelInfo clipdpi;
             if (ClipDrawPixelInfo(
                     &clipdpi, &dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
             {
@@ -1347,7 +1347,7 @@ private:
     }
 };
 
-rct_window* WindowSceneryOpen()
+WindowBase* WindowSceneryOpen()
 {
     auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
     if (w == nullptr)

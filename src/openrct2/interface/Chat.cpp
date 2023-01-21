@@ -43,13 +43,12 @@ static TextInputSession* _chatTextInputSession;
 static const char* ChatGetHistory(uint32_t index);
 static uint32_t ChatHistoryGetTime(uint32_t index);
 static void ChatClearInput();
-static int32_t ChatHistoryDrawString(
-    rct_drawpixelinfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
+static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
 
 bool ChatAvailable()
 {
-    return network_get_mode() != NETWORK_MODE_NONE && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NetworkAuth::Ok;
+    return NetworkGetMode() != NETWORK_MODE_NONE && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
+        && NetworkGetAuthstatus() == NetworkAuth::Ok;
 }
 
 void ChatOpen()
@@ -88,7 +87,7 @@ void ChatUpdate()
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
 }
 
-void ChatDraw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
+void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
 {
     thread_local std::string lineBuffer;
 
@@ -216,7 +215,7 @@ void ChatAddHistory(std::string_view s)
     time(&timer);
     auto tmInfo = localtime(&timer);
     char timeBuffer[64]{};
-    strcatftime(timeBuffer, sizeof(timeBuffer), "[%H:%M] ", tmInfo);
+    StrCatFTime(timeBuffer, sizeof(timeBuffer), "[%H:%M] ", tmInfo);
 
     std::string buffer = timeBuffer;
     buffer += s;
@@ -229,7 +228,7 @@ void ChatAddHistory(std::string_view s)
     _chatHistoryIndex++;
 
     // Log to file (src only as logging does its own timestamp)
-    network_append_chat_log(s);
+    NetworkAppendChatLog(s);
 
     CreateAudioChannel(SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
@@ -241,7 +240,7 @@ void ChatInput(enum ChatInput input)
         case ChatInput::Send:
             if (_chatCurrentLine[0] != '\0')
             {
-                network_send_chat(_chatCurrentLine);
+                NetworkSendChat(_chatCurrentLine);
             }
             ChatClearInput();
             ChatClose();
@@ -271,8 +270,7 @@ static void ChatClearInput()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-static int32_t ChatHistoryDrawString(
-    rct_drawpixelinfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
+static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
     char buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;

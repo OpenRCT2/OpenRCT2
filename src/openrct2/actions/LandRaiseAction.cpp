@@ -102,7 +102,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
             }
             withinOwnership = true;
 
-            uint8_t height = surfaceElement->base_height;
+            uint8_t height = surfaceElement->BaseHeight;
 
             if (height > minHeight)
                 continue;

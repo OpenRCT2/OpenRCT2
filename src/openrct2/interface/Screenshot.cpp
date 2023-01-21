@@ -51,7 +51,7 @@ extern uint8_t gClipHeight;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(std::string_view path, const rct_drawpixelinfo* dpi, const GamePalette& palette)
+static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo* dpi, const GamePalette& palette)
 {
     auto const pixels8 = dpi->bits;
     auto const pixelsLen = (dpi->width + dpi->pitch) * dpi->height;
@@ -113,7 +113,7 @@ static std::string ScreenshotGetDirectory()
     return env->GetDirectoryPath(DIRBASE::USER, DIRID::SCREENSHOT);
 }
 
-static std::pair<rct2_date, rct2_time> ScreenshotGetDateTime()
+static std::pair<RealWorldDate, RealWorldTime> ScreenshotGetDateTime()
 {
     auto date = Platform::GetDateLocal();
     auto time = Platform::GetTimeLocal();
@@ -164,7 +164,7 @@ static std::optional<std::string> ScreenshotGetNextPath()
     return std::nullopt;
 };
 
-std::string ScreenshotDumpPNG(rct_drawpixelinfo* dpi)
+std::string ScreenshotDumpPNG(DrawPixelInfo* dpi)
 {
     // Get a free screenshot path
     auto path = ScreenshotGetNextPath();
@@ -249,9 +249,9 @@ static int32_t GetTallestVisibleTileTop(
     return minViewY - 64;
 }
 
-static rct_drawpixelinfo CreateDPI(const rct_viewport& viewport)
+static DrawPixelInfo CreateDPI(const Viewport& viewport)
 {
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     dpi.width = viewport.width;
     dpi.height = viewport.height;
     dpi.bits = new (std::nothrow) uint8_t[dpi.width * dpi.height];
@@ -268,7 +268,7 @@ static rct_drawpixelinfo CreateDPI(const rct_viewport& viewport)
     return dpi;
 }
 
-static void ReleaseDPI(rct_drawpixelinfo& dpi)
+static void ReleaseDPI(DrawPixelInfo& dpi)
 {
     if (dpi.bits != nullptr)
         delete[] dpi.bits;
@@ -277,7 +277,7 @@ static void ReleaseDPI(rct_drawpixelinfo& dpi)
     dpi.height = 0;
 }
 
-static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
+static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 {
     // Get the tile coordinates of each corner
     const TileCoordsXY cornerCoords[2][4] = {
@@ -314,7 +314,7 @@ static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
     auto bottom = std::max({ screenCoords1.y, screenCoords2.y, screenCoords3.y, screenCoords4.y });
     auto right = std::max({ screenCoords1.x, screenCoords2.x, screenCoords3.x, screenCoords4.x }) + 32;
 
-    rct_viewport viewport{};
+    Viewport viewport{};
     viewport.viewPos = { left, top };
     viewport.view_width = right - left;
     viewport.view_height = bottom - top;
@@ -324,7 +324,7 @@ static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
     return viewport;
 }
 
-static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& viewport, rct_drawpixelinfo& dpi)
+static void RenderViewport(IDrawingEngine* drawingEngine, const Viewport& viewport, DrawPixelInfo& dpi)
 {
     // Ensure sprites appear regardless of rotation
     ResetAllSpriteQuadrantPlacements();
@@ -341,7 +341,7 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& vi
 
 void ScreenshotGiant()
 {
-    rct_drawpixelinfo dpi{};
+    DrawPixelInfo dpi{};
     try
     {
         auto path = ScreenshotGetNextPath();
@@ -414,8 +414,8 @@ static void BenchgfxRenderScreenshots(const char* inputPath, std::unique_ptr<ICo
     // rotation.
     constexpr int32_t NUM_ROTATIONS = 4;
     constexpr auto NUM_ZOOM_LEVELS = static_cast<int8_t>(ZoomLevel::max());
-    std::array<rct_drawpixelinfo, NUM_ROTATIONS * NUM_ZOOM_LEVELS> dpis;
-    std::array<rct_viewport, NUM_ROTATIONS * NUM_ZOOM_LEVELS> viewports;
+    std::array<DrawPixelInfo, NUM_ROTATIONS * NUM_ZOOM_LEVELS> dpis;
+    std::array<Viewport, NUM_ROTATIONS * NUM_ZOOM_LEVELS> viewports;
 
     for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
     {
@@ -514,7 +514,7 @@ int32_t CmdlineForGfxbench(const char** argv, int32_t argc)
     return 1;
 }
 
-static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewport)
+static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 {
     if (options->weather != WeatherType::Sunny && options->weather != WeatherType::Count)
     {
@@ -584,7 +584,7 @@ int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions*
     }
 
     int32_t exitCode = 1;
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     try
     {
         Platform::CoreInit();
@@ -612,7 +612,7 @@ int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions*
         gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-        rct_viewport viewport{};
+        Viewport viewport{};
         if (giantScreenshot)
         {
             auto customZoom = static_cast<int8_t>(std::atoi(argv[3]));
@@ -755,7 +755,7 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
 
 void CaptureImage(const CaptureOptions& options)
 {
-    rct_viewport viewport{};
+    Viewport viewport{};
     if (options.View.has_value())
     {
         viewport.width = options.View->Width;

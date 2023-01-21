@@ -427,24 +427,24 @@ private:
     void UpdatePicked();
 };
 
-struct rct_sprite_bounds
+struct SpriteBounds
 {
     uint8_t sprite_width;           // 0x00
     uint8_t sprite_height_negative; // 0x01
     uint8_t sprite_height_positive; // 0x02
 };
 
-struct rct_peep_animation
+struct PeepAnimation
 {
     uint32_t base_image; // 0x00
     size_t num_frames;
     const uint8_t* frame_offsets;
 };
 
-struct rct_peep_animation_entry
+struct PeepAnimationEntry
 {
-    const rct_peep_animation* sprite_animation; // 0x00
-    const rct_sprite_bounds* sprite_bounds;     // 0x04
+    const PeepAnimation* sprite_animation; // 0x00
+    const SpriteBounds* sprite_bounds;     // 0x04
 };
 
 enum
@@ -456,7 +456,7 @@ enum
 };
 
 // rct2: 0x00982708
-extern const rct_peep_animation_entry g_peep_animation_entries[EnumValue(PeepSpriteType::Count)];
+extern const PeepAnimationEntry g_peep_animation_entries[EnumValue(PeepSpriteType::Count)];
 extern const bool gSpriteTypeToSlowWalkMap[48];
 
 extern uint8_t gPeepWarningThrottle[16];
@@ -482,13 +482,13 @@ void PeepUpdateNames(bool realNames);
 
 StringId GetRealNameStringIDFromPeepID(uint32_t id);
 
-inline const rct_peep_animation& GetPeepAnimation(
+inline const PeepAnimation& GetPeepAnimation(
     PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)
 {
     return g_peep_animation_entries[EnumValue(spriteType)].sprite_animation[EnumValue(actionSpriteType)];
 };
 
-inline const rct_sprite_bounds& GetSpriteBounds(
+inline const SpriteBounds& GetSpriteBounds(
     PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)
 {
     return g_peep_animation_entries[EnumValue(spriteType)].sprite_bounds[EnumValue(actionSpriteType)];

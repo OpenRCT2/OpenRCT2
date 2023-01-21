@@ -31,7 +31,7 @@ static constexpr const uint32_t _CorkscrewRCBlockBrakeImages[NumOrthogonalDirect
 };
 
 /** rct2: 0x008A7AF8 */
-static void corkscrew_rc_track_flat(
+static void CorkscrewRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -94,7 +94,7 @@ static void corkscrew_rc_track_flat(
 }
 
 /** rct2: 0x008A7D68, 0x008A7D78, 0x008A7D88 */
-static void corkscrew_rc_track_station(
+static void CorkscrewRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -129,7 +129,7 @@ static void corkscrew_rc_track_station(
 }
 
 /** rct2: 0x008A7B08 */
-static void corkscrew_rc_track_25_deg_up(
+static void CorkscrewRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -207,7 +207,7 @@ static void corkscrew_rc_track_25_deg_up(
 }
 
 /** rct2: 0x008A7B18 */
-static void corkscrew_rc_track_60_deg_up(
+static void CorkscrewRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -285,7 +285,7 @@ static void corkscrew_rc_track_60_deg_up(
 }
 
 /** rct2: 0x008A7B28 */
-static void corkscrew_rc_track_flat_to_25_deg_up(
+static void CorkscrewRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -363,7 +363,7 @@ static void corkscrew_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008A7B38 */
-static void corkscrew_rc_track_25_deg_up_to_60_deg_up(
+static void CorkscrewRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -453,7 +453,7 @@ static void corkscrew_rc_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008A7B48 */
-static void corkscrew_rc_track_60_deg_up_to_25_deg_up(
+static void CorkscrewRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -543,7 +543,7 @@ static void corkscrew_rc_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008A7B58 */
-static void corkscrew_rc_track_25_deg_up_to_flat(
+static void CorkscrewRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -621,55 +621,55 @@ static void corkscrew_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A7B68 */
-static void corkscrew_rc_track_25_deg_down(
+static void CorkscrewRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7B78 */
-static void corkscrew_rc_track_60_deg_down(
+static void CorkscrewRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7B88 */
-static void corkscrew_rc_track_flat_to_25_deg_down(
+static void CorkscrewRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7B98 */
-static void corkscrew_rc_track_25_deg_down_to_60_deg_down(
+static void CorkscrewRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7BA8 */
-static void corkscrew_rc_track_60_deg_down_to_25_deg_down(
+static void CorkscrewRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7BB8 */
-static void corkscrew_rc_track_25_deg_down_to_flat(
+static void CorkscrewRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7BC8 */
-static void corkscrew_rc_track_left_quarter_turn_5(
+static void CorkscrewRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -844,16 +844,16 @@ static void corkscrew_rc_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x008A7BD8 */
-static void corkscrew_rc_track_right_quarter_turn_5(
+static void CorkscrewRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    corkscrew_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7BE8 */
-static void corkscrew_rc_track_flat_to_left_bank(
+static void CorkscrewRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -897,7 +897,7 @@ static void corkscrew_rc_track_flat_to_left_bank(
 }
 
 /** rct2: 0x008A7BF8 */
-static void corkscrew_rc_track_flat_to_right_bank(
+static void CorkscrewRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -941,7 +941,7 @@ static void corkscrew_rc_track_flat_to_right_bank(
 }
 
 /** rct2: 0x008A7C08 */
-static void corkscrew_rc_track_left_bank_to_flat(
+static void CorkscrewRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -985,7 +985,7 @@ static void corkscrew_rc_track_left_bank_to_flat(
 }
 
 /** rct2: 0x008A7C18 */
-static void corkscrew_rc_track_right_bank_to_flat(
+static void CorkscrewRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1029,7 +1029,7 @@ static void corkscrew_rc_track_right_bank_to_flat(
 }
 
 /** rct2: 0x008A7C28 */
-static void corkscrew_rc_track_banked_left_quarter_turn_5(
+static void CorkscrewRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1210,16 +1210,16 @@ static void corkscrew_rc_track_banked_left_quarter_turn_5(
 }
 
 /** rct2: 0x008A7C38 */
-static void corkscrew_rc_track_banked_right_quarter_turn_5(
+static void CorkscrewRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    corkscrew_rc_track_banked_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7C48 */
-static void corkscrew_rc_track_left_bank_to_25_deg_up(
+static void CorkscrewRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1270,7 +1270,7 @@ static void corkscrew_rc_track_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008A7C58 */
-static void corkscrew_rc_track_right_bank_to_25_deg_up(
+static void CorkscrewRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1321,7 +1321,7 @@ static void corkscrew_rc_track_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008A7C68 */
-static void corkscrew_rc_track_25_deg_up_to_left_bank(
+static void CorkscrewRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1372,7 +1372,7 @@ static void corkscrew_rc_track_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x008A7C78 */
-static void corkscrew_rc_track_25_deg_up_to_right_bank(
+static void CorkscrewRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1423,39 +1423,39 @@ static void corkscrew_rc_track_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x008A7C88 */
-static void corkscrew_rc_track_left_bank_to_25_deg_down(
+static void CorkscrewRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_25_deg_up_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7C98 */
-static void corkscrew_rc_track_right_bank_to_25_deg_down(
+static void CorkscrewRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_25_deg_up_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7CA8 */
-static void corkscrew_rc_track_25_deg_down_to_left_bank(
+static void CorkscrewRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_right_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7CB8 */
-static void corkscrew_rc_track_25_deg_down_to_right_bank(
+static void CorkscrewRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_left_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7CC8 */
-static void corkscrew_rc_track_left_bank(
+static void CorkscrewRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1493,15 +1493,15 @@ static void corkscrew_rc_track_left_bank(
 }
 
 /** rct2: 0x008A7CD8 */
-static void corkscrew_rc_track_right_bank(
+static void CorkscrewRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7CE8 */
-static void corkscrew_rc_track_left_quarter_turn_5_25_deg_up(
+static void CorkscrewRCTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1676,7 +1676,7 @@ static void corkscrew_rc_track_left_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008A7CF8 */
-static void corkscrew_rc_track_right_quarter_turn_5_25_deg_up(
+static void CorkscrewRCTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1851,25 +1851,25 @@ static void corkscrew_rc_track_right_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008A7D08 */
-static void corkscrew_rc_track_left_quarter_turn_5_25_deg_down(
+static void CorkscrewRCTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    corkscrew_rc_track_right_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    CorkscrewRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7D18 */
-static void corkscrew_rc_track_right_quarter_turn_5_25_deg_down(
+static void CorkscrewRCTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    corkscrew_rc_track_left_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7D28 */
-static void corkscrew_rc_track_s_bend_left(
+static void CorkscrewRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2018,7 +2018,7 @@ static void corkscrew_rc_track_s_bend_left(
 }
 
 /** rct2: 0x008A7D38 */
-static void corkscrew_rc_track_s_bend_right(
+static void CorkscrewRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2167,7 +2167,7 @@ static void corkscrew_rc_track_s_bend_right(
 }
 
 /** rct2: 0x008A7D48 */
-static void corkscrew_rc_track_left_vertical_loop(
+static void CorkscrewRCTrackLeftVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2464,7 +2464,7 @@ static void corkscrew_rc_track_left_vertical_loop(
 }
 
 /** rct2: 0x008A7D58 */
-static void corkscrew_rc_track_right_vertical_loop(
+static void CorkscrewRCTrackRightVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2721,7 +2721,7 @@ static void corkscrew_rc_track_right_vertical_loop(
 }
 
 /** rct2: 0x008A7D98 */
-static void corkscrew_rc_track_left_quarter_turn_3(
+static void CorkscrewRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2833,16 +2833,16 @@ static void corkscrew_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x008A7DA8 */
-static void corkscrew_rc_track_right_quarter_turn_3(
+static void CorkscrewRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    corkscrew_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7DB8 */
-static void corkscrew_rc_track_left_quarter_turn_3_bank(
+static void CorkscrewRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2960,16 +2960,16 @@ static void corkscrew_rc_track_left_quarter_turn_3_bank(
 }
 
 /** rct2: 0x008A7DC8 */
-static void corkscrew_rc_track_right_quarter_turn_3_bank(
+static void CorkscrewRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    corkscrew_rc_track_left_quarter_turn_3_bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7DD8 */
-static void corkscrew_rc_track_left_quarter_turn_3_25_deg_up(
+static void CorkscrewRCTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3056,7 +3056,7 @@ static void corkscrew_rc_track_left_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008A7DE8 */
-static void corkscrew_rc_track_right_quarter_turn_3_25_deg_up(
+static void CorkscrewRCTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3150,25 +3150,25 @@ static void corkscrew_rc_track_right_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008A7DF8 */
-static void corkscrew_rc_track_left_quarter_turn_3_25_deg_down(
+static void CorkscrewRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    corkscrew_rc_track_right_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    CorkscrewRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7E08 */
-static void corkscrew_rc_track_right_quarter_turn_3_25_deg_down(
+static void CorkscrewRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    corkscrew_rc_track_left_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7E18 */
-static void corkscrew_rc_track_half_loop_up(
+static void CorkscrewRCTrackHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3308,15 +3308,15 @@ static void corkscrew_rc_track_half_loop_up(
 }
 
 /** rct2: 0x008A7E28 */
-static void corkscrew_rc_track_half_loop_down(
+static void CorkscrewRCTrackHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_half_loop_up(session, ride, 3 - trackSequence, direction, height, trackElement);
+    CorkscrewRCTrackHalfLoopUp(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
 /** rct2: 0x008A7E38 */
-static void corkscrew_rc_track_left_corkscrew_up(
+static void CorkscrewRCTrackLeftCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3427,7 +3427,7 @@ static void corkscrew_rc_track_left_corkscrew_up(
 }
 
 /** rct2: 0x008A7E48 */
-static void corkscrew_rc_track_right_corkscrew_up(
+static void CorkscrewRCTrackRightCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3539,23 +3539,23 @@ static void corkscrew_rc_track_right_corkscrew_up(
 }
 
 /** rct2: 0x008A7E58 */
-static void corkscrew_rc_track_left_corkscrew_down(
+static void CorkscrewRCTrackLeftCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_right_corkscrew_up(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
+    CorkscrewRCTrackRightCorkscrewUp(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7E68 */
-static void corkscrew_rc_track_right_corkscrew_down(
+static void CorkscrewRCTrackRightCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_left_corkscrew_up(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackLeftCorkscrewUp(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7E78 */
-static void corkscrew_rc_track_left_half_banked_helix_up_small(
+static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3785,7 +3785,7 @@ static void corkscrew_rc_track_left_half_banked_helix_up_small(
 }
 
 /** rct2: 0x008A7E88 */
-static void corkscrew_rc_track_right_half_banked_helix_up_small(
+static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4015,7 +4015,7 @@ static void corkscrew_rc_track_right_half_banked_helix_up_small(
 }
 
 /** rct2: 0x008A7E98 */
-static void corkscrew_rc_track_left_half_banked_helix_down_small(
+static void CorkscrewRCTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4025,12 +4025,11 @@ static void corkscrew_rc_track_left_half_banked_helix_down_small(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    corkscrew_rc_track_right_half_banked_helix_up_small(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    CorkscrewRCTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7EA8 */
-static void corkscrew_rc_track_right_half_banked_helix_down_small(
+static void CorkscrewRCTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4040,11 +4039,11 @@ static void corkscrew_rc_track_right_half_banked_helix_down_small(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    corkscrew_rc_track_left_half_banked_helix_up_small(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7EB8 */
-static void corkscrew_rc_track_left_half_banked_helix_up_large(
+static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4400,7 +4399,7 @@ static void corkscrew_rc_track_left_half_banked_helix_up_large(
 }
 
 /** rct2: 0x008A7EC8 */
-static void corkscrew_rc_track_right_half_banked_helix_up_large(
+static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4756,7 +4755,7 @@ static void corkscrew_rc_track_right_half_banked_helix_up_large(
 }
 
 /** rct2: 0x008A7ED8 */
-static void corkscrew_rc_track_left_half_banked_helix_down_large(
+static void CorkscrewRCTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4766,12 +4765,11 @@ static void corkscrew_rc_track_left_half_banked_helix_down_large(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    corkscrew_rc_track_right_half_banked_helix_up_large(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    CorkscrewRCTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7EE8 */
-static void corkscrew_rc_track_right_half_banked_helix_down_large(
+static void CorkscrewRCTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4781,11 +4779,11 @@ static void corkscrew_rc_track_right_half_banked_helix_down_large(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    corkscrew_rc_track_left_half_banked_helix_up_large(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7F18 */
-static void corkscrew_rc_track_left_quarter_turn_1_60_deg_up(
+static void CorkscrewRCTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4830,7 +4828,7 @@ static void corkscrew_rc_track_left_quarter_turn_1_60_deg_up(
 }
 
 /** rct2: 0x008A7EF8 */
-static void corkscrew_rc_track_right_quarter_turn_1_60_deg_up(
+static void CorkscrewRCTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4875,23 +4873,23 @@ static void corkscrew_rc_track_right_quarter_turn_1_60_deg_up(
 }
 
 /** rct2: 0x008A7F08 */
-static void corkscrew_rc_track_left_quarter_turn_1_60_deg_down(
+static void CorkscrewRCTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_right_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    CorkscrewRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7F28 */
-static void corkscrew_rc_track_right_quarter_turn_1_60_deg_down(
+static void CorkscrewRCTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_left_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    CorkscrewRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7F38 */
-static void corkscrew_rc_track_brakes(
+static void CorkscrewRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4921,7 +4919,7 @@ static void corkscrew_rc_track_brakes(
 }
 
 /** rct2: 0x008A7F48 */
-static void corkscrew_rc_track_on_ride_photo(
+static void CorkscrewRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4971,7 +4969,7 @@ static void corkscrew_rc_track_on_ride_photo(
 }
 
 /** rct2: 0x008A8198 */
-static void corkscrew_rc_track_flat_to_60_deg_up_long_base(
+static void CorkscrewRCTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5122,7 +5120,7 @@ static void corkscrew_rc_track_flat_to_60_deg_up_long_base(
 }
 
 /** rct2: 0x008A81A8 */
-static void corkscrew_rc_track_60_deg_up_to_flat_long_base(
+static void CorkscrewRCTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5273,23 +5271,23 @@ static void corkscrew_rc_track_60_deg_up_to_flat_long_base(
 }
 
 /** rct2: 0x008A81B8 */
-static void corkscrew_rc_track_60_deg_down_to_flat_long_base(
+static void CorkscrewRCTrack60DegDownToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_flat_to_60_deg_up_long_base(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrackFlatTo60DegUpLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A81C8 */
-static void corkscrew_rc_track_flat_to_60_deg_down_long_base(
+static void CorkscrewRCTrackFlatTo60DegDownLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    corkscrew_rc_track_60_deg_up_to_flat_long_base(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrack60DegUpToFlatLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7F68 */
-static void corkscrew_rc_track_left_eighth_to_diag(
+static void CorkscrewRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5434,7 +5432,7 @@ static void corkscrew_rc_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x008A7F78 */
-static void corkscrew_rc_track_right_eighth_to_diag(
+static void CorkscrewRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5579,25 +5577,25 @@ static void corkscrew_rc_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x008A7F88 */
-static void corkscrew_rc_track_left_eighth_to_orthogonal(
+static void CorkscrewRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    corkscrew_rc_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7F98 */
-static void corkscrew_rc_track_right_eighth_to_orthogonal(
+static void CorkscrewRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    corkscrew_rc_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    CorkscrewRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7FA8 */
-static void corkscrew_rc_track_left_eighth_bank_to_diag(
+static void CorkscrewRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5742,7 +5740,7 @@ static void corkscrew_rc_track_left_eighth_bank_to_diag(
 }
 
 /** rct2: 0x008A7FB8 */
-static void corkscrew_rc_track_right_eighth_bank_to_diag(
+static void CorkscrewRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5887,25 +5885,25 @@ static void corkscrew_rc_track_right_eighth_bank_to_diag(
 }
 
 /** rct2: 0x008A7FC8 */
-static void corkscrew_rc_track_left_eighth_bank_to_orthogonal(
+static void CorkscrewRCTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    corkscrew_rc_track_right_eighth_bank_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    CorkscrewRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7FD8 */
-static void corkscrew_rc_track_right_eighth_bank_to_orthogonal(
+static void CorkscrewRCTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    corkscrew_rc_track_left_eighth_bank_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    CorkscrewRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A7F58 */
-static void corkscrew_rc_track_diag_flat(
+static void CorkscrewRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6051,7 +6049,7 @@ static void corkscrew_rc_track_diag_flat(
 }
 
 /** rct2: 0x008A8008 */
-static void corkscrew_rc_track_diag_25_deg_up(
+static void CorkscrewRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6197,7 +6195,7 @@ static void corkscrew_rc_track_diag_25_deg_up(
 }
 
 /** rct2: 0x008A8068 */
-static void corkscrew_rc_track_diag_60_deg_up(
+static void CorkscrewRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6343,7 +6341,7 @@ static void corkscrew_rc_track_diag_60_deg_up(
 }
 
 /** rct2: 0x008A7FE8 */
-static void corkscrew_rc_track_diag_flat_to_25_deg_up(
+static void CorkscrewRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6489,7 +6487,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008A8048 */
-static void corkscrew_rc_track_diag_25_deg_up_to_60_deg_up(
+static void CorkscrewRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6635,7 +6633,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008A8058 */
-static void corkscrew_rc_track_diag_60_deg_up_to_25_deg_up(
+static void CorkscrewRCTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6781,7 +6779,7 @@ static void corkscrew_rc_track_diag_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008A7FF8 */
-static void corkscrew_rc_track_diag_25_deg_up_to_flat(
+static void CorkscrewRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6927,7 +6925,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A8038 */
-static void corkscrew_rc_track_diag_25_deg_down(
+static void CorkscrewRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7073,7 +7071,7 @@ static void corkscrew_rc_track_diag_25_deg_down(
 }
 
 /** rct2: 0x008A8098 */
-static void corkscrew_rc_track_diag_60_deg_down(
+static void CorkscrewRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7219,7 +7217,7 @@ static void corkscrew_rc_track_diag_60_deg_down(
 }
 
 /** rct2: 0x008A8018 */
-static void corkscrew_rc_track_diag_flat_to_25_deg_down(
+static void CorkscrewRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7363,7 +7361,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x008A8078 */
-static void corkscrew_rc_track_diag_25_deg_down_to_60_deg_down(
+static void CorkscrewRCTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7509,7 +7507,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_60_deg_down(
 }
 
 /** rct2: 0x008A8088 */
-static void corkscrew_rc_track_diag_60_deg_down_to_25_deg_down(
+static void CorkscrewRCTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7655,7 +7653,7 @@ static void corkscrew_rc_track_diag_60_deg_down_to_25_deg_down(
 }
 
 /** rct2: 0x008A8028 */
-static void corkscrew_rc_track_diag_25_deg_down_to_flat(
+static void CorkscrewRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7801,7 +7799,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_flat(
 }
 
 /** rct2: 0x008A80C8 */
-static void corkscrew_rc_track_diag_flat_to_left_bank(
+static void CorkscrewRCTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7880,7 +7878,7 @@ static void corkscrew_rc_track_diag_flat_to_left_bank(
 }
 
 /** rct2: 0x008A80D8 */
-static void corkscrew_rc_track_diag_flat_to_right_bank(
+static void CorkscrewRCTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7959,7 +7957,7 @@ static void corkscrew_rc_track_diag_flat_to_right_bank(
 }
 
 /** rct2: 0x008A80E8 */
-static void corkscrew_rc_track_diag_left_bank_to_flat(
+static void CorkscrewRCTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8038,7 +8036,7 @@ static void corkscrew_rc_track_diag_left_bank_to_flat(
 }
 
 /** rct2: 0x008A80F8 */
-static void corkscrew_rc_track_diag_right_bank_to_flat(
+static void CorkscrewRCTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8117,7 +8115,7 @@ static void corkscrew_rc_track_diag_right_bank_to_flat(
 }
 
 /** rct2: 0x008A8128 */
-static void corkscrew_rc_track_diag_left_bank_to_25_deg_up(
+static void CorkscrewRCTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8196,7 +8194,7 @@ static void corkscrew_rc_track_diag_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008A8138 */
-static void corkscrew_rc_track_diag_right_bank_to_25_deg_up(
+static void CorkscrewRCTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8275,7 +8273,7 @@ static void corkscrew_rc_track_diag_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008A8108 */
-static void corkscrew_rc_track_diag_25_deg_up_to_left_bank(
+static void CorkscrewRCTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8354,7 +8352,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x008A8118 */
-static void corkscrew_rc_track_diag_25_deg_up_to_right_bank(
+static void CorkscrewRCTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8433,7 +8431,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x008A8148 */
-static void corkscrew_rc_track_diag_left_bank_to_25_deg_down(
+static void CorkscrewRCTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8510,7 +8508,7 @@ static void corkscrew_rc_track_diag_left_bank_to_25_deg_down(
 }
 
 /** rct2: 0x008A8158 */
-static void corkscrew_rc_track_diag_right_bank_to_25_deg_down(
+static void CorkscrewRCTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8587,7 +8585,7 @@ static void corkscrew_rc_track_diag_right_bank_to_25_deg_down(
 }
 
 /** rct2: 0x008A8168 */
-static void corkscrew_rc_track_diag_25_deg_down_to_left_bank(
+static void CorkscrewRCTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8666,7 +8664,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_left_bank(
 }
 
 /** rct2: 0x008A8178 */
-static void corkscrew_rc_track_diag_25_deg_down_to_right_bank(
+static void CorkscrewRCTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8745,7 +8743,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_right_bank(
 }
 
 /** rct2: 0x008A80A8 */
-static void corkscrew_rc_track_diag_left_bank(
+static void CorkscrewRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8821,7 +8819,7 @@ static void corkscrew_rc_track_diag_left_bank(
 }
 
 /** rct2: 0x008A80B8 */
-static void corkscrew_rc_track_diag_right_bank(
+static void CorkscrewRCTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8897,7 +8895,7 @@ static void corkscrew_rc_track_diag_right_bank(
 }
 
 /** rct2: 0x008A8188 */
-static void corkscrew_rc_track_block_brakes(
+static void CorkscrewRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8912,13 +8910,13 @@ static void corkscrew_rc_track_block_brakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void corkscrew_rc_track_booster(
+static void CorkscrewRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (!IsCsgLoaded())
     {
-        corkscrew_rc_track_brakes(session, ride, trackSequence, direction, height, trackElement);
+        CorkscrewRCTrackBrakes(session, ride, trackSequence, direction, height, trackElement);
         return;
     }
 
@@ -8958,7 +8956,7 @@ static void corkscrew_rc_track_booster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void corkscrew_rc_track_left_twist_down_to_up(
+static void CorkscrewRCTrackLeftTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9075,7 +9073,7 @@ static void corkscrew_rc_track_left_twist_down_to_up(
     }
 }
 
-static void corkscrew_rc_track_right_twist_down_to_up(
+static void CorkscrewRCTrackRightTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9192,7 +9190,7 @@ static void corkscrew_rc_track_right_twist_down_to_up(
     }
 }
 
-static void corkscrew_rc_track_left_twist_up_to_down(
+static void CorkscrewRCTrackLeftTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9309,7 +9307,7 @@ static void corkscrew_rc_track_left_twist_up_to_down(
     }
 }
 
-static void corkscrew_rc_track_right_twist_up_to_down(
+static void CorkscrewRCTrackRightTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9426,239 +9424,239 @@ static void corkscrew_rc_track_right_twist_up_to_down(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return corkscrew_rc_track_flat;
+            return CorkscrewRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return corkscrew_rc_track_station;
+            return CorkscrewRCTrackStation;
         case TrackElemType::Up25:
-            return corkscrew_rc_track_25_deg_up;
+            return CorkscrewRCTrack25DegUp;
         case TrackElemType::Up60:
-            return corkscrew_rc_track_60_deg_up;
+            return CorkscrewRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return corkscrew_rc_track_flat_to_25_deg_up;
+            return CorkscrewRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return corkscrew_rc_track_25_deg_up_to_60_deg_up;
+            return CorkscrewRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return corkscrew_rc_track_60_deg_up_to_25_deg_up;
+            return CorkscrewRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return corkscrew_rc_track_25_deg_up_to_flat;
+            return CorkscrewRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return corkscrew_rc_track_25_deg_down;
+            return CorkscrewRCTrack25DegDown;
         case TrackElemType::Down60:
-            return corkscrew_rc_track_60_deg_down;
+            return CorkscrewRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return corkscrew_rc_track_flat_to_25_deg_down;
+            return CorkscrewRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return corkscrew_rc_track_25_deg_down_to_60_deg_down;
+            return CorkscrewRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return corkscrew_rc_track_60_deg_down_to_25_deg_down;
+            return CorkscrewRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return corkscrew_rc_track_25_deg_down_to_flat;
+            return CorkscrewRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return corkscrew_rc_track_left_quarter_turn_5;
+            return CorkscrewRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return corkscrew_rc_track_right_quarter_turn_5;
+            return CorkscrewRCTrackRightQuarterTurn5;
         case TrackElemType::FlatToLeftBank:
-            return corkscrew_rc_track_flat_to_left_bank;
+            return CorkscrewRCTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
-            return corkscrew_rc_track_flat_to_right_bank;
+            return CorkscrewRCTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
-            return corkscrew_rc_track_left_bank_to_flat;
+            return CorkscrewRCTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
-            return corkscrew_rc_track_right_bank_to_flat;
+            return CorkscrewRCTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return corkscrew_rc_track_banked_left_quarter_turn_5;
+            return CorkscrewRCTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return corkscrew_rc_track_banked_right_quarter_turn_5;
+            return CorkscrewRCTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
-            return corkscrew_rc_track_left_bank_to_25_deg_up;
+            return CorkscrewRCTrackLeftBankTo25DegUp;
         case TrackElemType::RightBankToUp25:
-            return corkscrew_rc_track_right_bank_to_25_deg_up;
+            return CorkscrewRCTrackRightBankTo25DegUp;
         case TrackElemType::Up25ToLeftBank:
-            return corkscrew_rc_track_25_deg_up_to_left_bank;
+            return CorkscrewRCTrack25DegUpToLeftBank;
         case TrackElemType::Up25ToRightBank:
-            return corkscrew_rc_track_25_deg_up_to_right_bank;
+            return CorkscrewRCTrack25DegUpToRightBank;
         case TrackElemType::LeftBankToDown25:
-            return corkscrew_rc_track_left_bank_to_25_deg_down;
+            return CorkscrewRCTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
-            return corkscrew_rc_track_right_bank_to_25_deg_down;
+            return CorkscrewRCTrackRightBankTo25DegDown;
         case TrackElemType::Down25ToLeftBank:
-            return corkscrew_rc_track_25_deg_down_to_left_bank;
+            return CorkscrewRCTrack25DegDownToLeftBank;
         case TrackElemType::Down25ToRightBank:
-            return corkscrew_rc_track_25_deg_down_to_right_bank;
+            return CorkscrewRCTrack25DegDownToRightBank;
         case TrackElemType::LeftBank:
-            return corkscrew_rc_track_left_bank;
+            return CorkscrewRCTrackLeftBank;
         case TrackElemType::RightBank:
-            return corkscrew_rc_track_right_bank;
+            return CorkscrewRCTrackRightBank;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return corkscrew_rc_track_left_quarter_turn_5_25_deg_up;
+            return CorkscrewRCTrackLeftQuarterTurn525DegUp;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return corkscrew_rc_track_right_quarter_turn_5_25_deg_up;
+            return CorkscrewRCTrackRightQuarterTurn525DegUp;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return corkscrew_rc_track_left_quarter_turn_5_25_deg_down;
+            return CorkscrewRCTrackLeftQuarterTurn525DegDown;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return corkscrew_rc_track_right_quarter_turn_5_25_deg_down;
+            return CorkscrewRCTrackRightQuarterTurn525DegDown;
         case TrackElemType::SBendLeft:
-            return corkscrew_rc_track_s_bend_left;
+            return CorkscrewRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return corkscrew_rc_track_s_bend_right;
+            return CorkscrewRCTrackSBendRight;
         case TrackElemType::LeftVerticalLoop:
-            return corkscrew_rc_track_left_vertical_loop;
+            return CorkscrewRCTrackLeftVerticalLoop;
         case TrackElemType::RightVerticalLoop:
-            return corkscrew_rc_track_right_vertical_loop;
+            return CorkscrewRCTrackRightVerticalLoop;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return corkscrew_rc_track_left_quarter_turn_3;
+            return CorkscrewRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return corkscrew_rc_track_right_quarter_turn_3;
+            return CorkscrewRCTrackRightQuarterTurn3;
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
-            return corkscrew_rc_track_left_quarter_turn_3_bank;
+            return CorkscrewRCTrackLeftQuarterTurn3Bank;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
-            return corkscrew_rc_track_right_quarter_turn_3_bank;
+            return CorkscrewRCTrackRightQuarterTurn3Bank;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return corkscrew_rc_track_left_quarter_turn_3_25_deg_up;
+            return CorkscrewRCTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return corkscrew_rc_track_right_quarter_turn_3_25_deg_up;
+            return CorkscrewRCTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return corkscrew_rc_track_left_quarter_turn_3_25_deg_down;
+            return CorkscrewRCTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return corkscrew_rc_track_right_quarter_turn_3_25_deg_down;
+            return CorkscrewRCTrackRightQuarterTurn325DegDown;
         case TrackElemType::HalfLoopUp:
-            return corkscrew_rc_track_half_loop_up;
+            return CorkscrewRCTrackHalfLoopUp;
         case TrackElemType::HalfLoopDown:
-            return corkscrew_rc_track_half_loop_down;
+            return CorkscrewRCTrackHalfLoopDown;
         case TrackElemType::LeftCorkscrewUp:
-            return corkscrew_rc_track_left_corkscrew_up;
+            return CorkscrewRCTrackLeftCorkscrewUp;
         case TrackElemType::RightCorkscrewUp:
-            return corkscrew_rc_track_right_corkscrew_up;
+            return CorkscrewRCTrackRightCorkscrewUp;
         case TrackElemType::LeftCorkscrewDown:
-            return corkscrew_rc_track_left_corkscrew_down;
+            return CorkscrewRCTrackLeftCorkscrewDown;
         case TrackElemType::RightCorkscrewDown:
-            return corkscrew_rc_track_right_corkscrew_down;
+            return CorkscrewRCTrackRightCorkscrewDown;
         case TrackElemType::LeftHalfBankedHelixUpSmall:
-            return corkscrew_rc_track_left_half_banked_helix_up_small;
+            return CorkscrewRCTrackLeftHalfBankedHelixUpSmall;
         case TrackElemType::RightHalfBankedHelixUpSmall:
-            return corkscrew_rc_track_right_half_banked_helix_up_small;
+            return CorkscrewRCTrackRightHalfBankedHelixUpSmall;
         case TrackElemType::LeftHalfBankedHelixDownSmall:
-            return corkscrew_rc_track_left_half_banked_helix_down_small;
+            return CorkscrewRCTrackLeftHalfBankedHelixDownSmall;
         case TrackElemType::RightHalfBankedHelixDownSmall:
-            return corkscrew_rc_track_right_half_banked_helix_down_small;
+            return CorkscrewRCTrackRightHalfBankedHelixDownSmall;
         case TrackElemType::LeftHalfBankedHelixUpLarge:
-            return corkscrew_rc_track_left_half_banked_helix_up_large;
+            return CorkscrewRCTrackLeftHalfBankedHelixUpLarge;
         case TrackElemType::RightHalfBankedHelixUpLarge:
-            return corkscrew_rc_track_right_half_banked_helix_up_large;
+            return CorkscrewRCTrackRightHalfBankedHelixUpLarge;
         case TrackElemType::LeftHalfBankedHelixDownLarge:
-            return corkscrew_rc_track_left_half_banked_helix_down_large;
+            return CorkscrewRCTrackLeftHalfBankedHelixDownLarge;
         case TrackElemType::RightHalfBankedHelixDownLarge:
-            return corkscrew_rc_track_right_half_banked_helix_down_large;
+            return CorkscrewRCTrackRightHalfBankedHelixDownLarge;
         case TrackElemType::LeftQuarterTurn1TileUp60:
-            return corkscrew_rc_track_left_quarter_turn_1_60_deg_up;
+            return CorkscrewRCTrackLeftQuarterTurn160DegUp;
         case TrackElemType::RightQuarterTurn1TileUp60:
-            return corkscrew_rc_track_right_quarter_turn_1_60_deg_up;
+            return CorkscrewRCTrackRightQuarterTurn160DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            return corkscrew_rc_track_left_quarter_turn_1_60_deg_down;
+            return CorkscrewRCTrackLeftQuarterTurn160DegDown;
         case TrackElemType::RightQuarterTurn1TileDown60:
-            return corkscrew_rc_track_right_quarter_turn_1_60_deg_down;
+            return CorkscrewRCTrackRightQuarterTurn160DegDown;
         case TrackElemType::Brakes:
-            return corkscrew_rc_track_brakes;
+            return CorkscrewRCTrackBrakes;
         case TrackElemType::OnRidePhoto:
-            return corkscrew_rc_track_on_ride_photo;
+            return CorkscrewRCTrackOnRidePhoto;
         case TrackElemType::FlatToUp60LongBase:
-            return corkscrew_rc_track_flat_to_60_deg_up_long_base;
+            return CorkscrewRCTrackFlatTo60DegUpLongBase;
         case TrackElemType::Up60ToFlatLongBase:
-            return corkscrew_rc_track_60_deg_up_to_flat_long_base;
+            return CorkscrewRCTrack60DegUpToFlatLongBase;
         case TrackElemType::Down60ToFlatLongBase:
-            return corkscrew_rc_track_60_deg_down_to_flat_long_base;
+            return CorkscrewRCTrack60DegDownToFlatLongBase;
         case TrackElemType::FlatToDown60LongBase:
-            return corkscrew_rc_track_flat_to_60_deg_down_long_base;
+            return CorkscrewRCTrackFlatTo60DegDownLongBase;
         case TrackElemType::LeftEighthToDiag:
-            return corkscrew_rc_track_left_eighth_to_diag;
+            return CorkscrewRCTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return corkscrew_rc_track_right_eighth_to_diag;
+            return CorkscrewRCTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return corkscrew_rc_track_left_eighth_to_orthogonal;
+            return CorkscrewRCTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return corkscrew_rc_track_right_eighth_to_orthogonal;
+            return CorkscrewRCTrackRightEighthToOrthogonal;
         case TrackElemType::LeftEighthBankToDiag:
-            return corkscrew_rc_track_left_eighth_bank_to_diag;
+            return CorkscrewRCTrackLeftEighthBankToDiag;
         case TrackElemType::RightEighthBankToDiag:
-            return corkscrew_rc_track_right_eighth_bank_to_diag;
+            return CorkscrewRCTrackRightEighthBankToDiag;
         case TrackElemType::LeftEighthBankToOrthogonal:
-            return corkscrew_rc_track_left_eighth_bank_to_orthogonal;
+            return CorkscrewRCTrackLeftEighthBankToOrthogonal;
         case TrackElemType::RightEighthBankToOrthogonal:
-            return corkscrew_rc_track_right_eighth_bank_to_orthogonal;
+            return CorkscrewRCTrackRightEighthBankToOrthogonal;
         case TrackElemType::DiagFlat:
-            return corkscrew_rc_track_diag_flat;
+            return CorkscrewRCTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return corkscrew_rc_track_diag_25_deg_up;
+            return CorkscrewRCTrackDiag25DegUp;
         case TrackElemType::DiagUp60:
-            return corkscrew_rc_track_diag_60_deg_up;
+            return CorkscrewRCTrackDiag60DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return corkscrew_rc_track_diag_flat_to_25_deg_up;
+            return CorkscrewRCTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToUp60:
-            return corkscrew_rc_track_diag_25_deg_up_to_60_deg_up;
+            return CorkscrewRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagUp60ToUp25:
-            return corkscrew_rc_track_diag_60_deg_up_to_25_deg_up;
+            return CorkscrewRCTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return corkscrew_rc_track_diag_25_deg_up_to_flat;
+            return CorkscrewRCTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return corkscrew_rc_track_diag_25_deg_down;
+            return CorkscrewRCTrackDiag25DegDown;
         case TrackElemType::DiagDown60:
-            return corkscrew_rc_track_diag_60_deg_down;
+            return CorkscrewRCTrackDiag60DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return corkscrew_rc_track_diag_flat_to_25_deg_down;
+            return CorkscrewRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToDown60:
-            return corkscrew_rc_track_diag_25_deg_down_to_60_deg_down;
+            return CorkscrewRCTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagDown60ToDown25:
-            return corkscrew_rc_track_diag_60_deg_down_to_25_deg_down;
+            return CorkscrewRCTrackDiag60DegDownTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return corkscrew_rc_track_diag_25_deg_down_to_flat;
+            return CorkscrewRCTrackDiag25DegDownToFlat;
         case TrackElemType::DiagFlatToLeftBank:
-            return corkscrew_rc_track_diag_flat_to_left_bank;
+            return CorkscrewRCTrackDiagFlatToLeftBank;
         case TrackElemType::DiagFlatToRightBank:
-            return corkscrew_rc_track_diag_flat_to_right_bank;
+            return CorkscrewRCTrackDiagFlatToRightBank;
         case TrackElemType::DiagLeftBankToFlat:
-            return corkscrew_rc_track_diag_left_bank_to_flat;
+            return CorkscrewRCTrackDiagLeftBankToFlat;
         case TrackElemType::DiagRightBankToFlat:
-            return corkscrew_rc_track_diag_right_bank_to_flat;
+            return CorkscrewRCTrackDiagRightBankToFlat;
         case TrackElemType::DiagLeftBankToUp25:
-            return corkscrew_rc_track_diag_left_bank_to_25_deg_up;
+            return CorkscrewRCTrackDiagLeftBankTo25DegUp;
         case TrackElemType::DiagRightBankToUp25:
-            return corkscrew_rc_track_diag_right_bank_to_25_deg_up;
+            return CorkscrewRCTrackDiagRightBankTo25DegUp;
         case TrackElemType::DiagUp25ToLeftBank:
-            return corkscrew_rc_track_diag_25_deg_up_to_left_bank;
+            return CorkscrewRCTrackDiag25DegUpToLeftBank;
         case TrackElemType::DiagUp25ToRightBank:
-            return corkscrew_rc_track_diag_25_deg_up_to_right_bank;
+            return CorkscrewRCTrackDiag25DegUpToRightBank;
         case TrackElemType::DiagLeftBankToDown25:
-            return corkscrew_rc_track_diag_left_bank_to_25_deg_down;
+            return CorkscrewRCTrackDiagLeftBankTo25DegDown;
         case TrackElemType::DiagRightBankToDown25:
-            return corkscrew_rc_track_diag_right_bank_to_25_deg_down;
+            return CorkscrewRCTrackDiagRightBankTo25DegDown;
         case TrackElemType::DiagDown25ToLeftBank:
-            return corkscrew_rc_track_diag_25_deg_down_to_left_bank;
+            return CorkscrewRCTrackDiag25DegDownToLeftBank;
         case TrackElemType::DiagDown25ToRightBank:
-            return corkscrew_rc_track_diag_25_deg_down_to_right_bank;
+            return CorkscrewRCTrackDiag25DegDownToRightBank;
         case TrackElemType::DiagLeftBank:
-            return corkscrew_rc_track_diag_left_bank;
+            return CorkscrewRCTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
-            return corkscrew_rc_track_diag_right_bank;
+            return CorkscrewRCTrackDiagRightBank;
         case TrackElemType::BlockBrakes:
-            return corkscrew_rc_track_block_brakes;
+            return CorkscrewRCTrackBlockBrakes;
 
         case TrackElemType::Booster:
-            return corkscrew_rc_track_booster;
+            return CorkscrewRCTrackBooster;
         case TrackElemType::LeftTwistDownToUp:
-            return corkscrew_rc_track_left_twist_down_to_up;
+            return CorkscrewRCTrackLeftTwistDownToUp;
         case TrackElemType::RightTwistDownToUp:
-            return corkscrew_rc_track_right_twist_down_to_up;
+            return CorkscrewRCTrackRightTwistDownToUp;
         case TrackElemType::LeftTwistUpToDown:
-            return corkscrew_rc_track_left_twist_up_to_down;
+            return CorkscrewRCTrackLeftTwistUpToDown;
         case TrackElemType::RightTwistUpToDown:
-            return corkscrew_rc_track_right_twist_up_to_down;
+            return CorkscrewRCTrackRightTwistUpToDown;
     }
     return nullptr;
 }

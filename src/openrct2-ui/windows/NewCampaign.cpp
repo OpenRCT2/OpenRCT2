@@ -89,7 +89,7 @@ private:
         if (rideB != nullptr)
             rideBName = rideB->GetName();
 
-        return strlogicalcmp(rideAName.c_str(), rideBName.c_str()) < 0;
+        return StrLogicalCmp(rideAName.c_str(), rideBName.c_str()) < 0;
     }
 
     /**
@@ -342,7 +342,7 @@ public:
             WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords{};
 
@@ -371,7 +371,7 @@ public:
     }
 };
 
-rct_window* WindowNewCampaignOpen(int16_t campaignType)
+WindowBase* WindowNewCampaignOpen(int16_t campaignType)
 {
     auto w = static_cast<NewCampaignWindow*>(WindowBringToFrontByClass(WindowClass::NewCampaign));
     if (w != nullptr)

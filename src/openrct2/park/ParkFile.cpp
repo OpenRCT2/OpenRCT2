@@ -295,7 +295,7 @@ namespace OpenRCT2
                                         break;
                                     case DESCRIPTOR_DAT:
                                     {
-                                        rct_object_entry datEntry;
+                                        RCTObjectEntry datEntry;
                                         cs.Read(&datEntry, sizeof(datEntry));
                                         ObjectEntryDescriptor desc(datEntry);
                                         if (version <= 2 && datEntry.GetType() == ObjectType::Paths)
@@ -400,7 +400,7 @@ namespace OpenRCT2
                                 else
                                 {
                                     cs.Write(DESCRIPTOR_DAT);
-                                    cs.Write(&entry.Entry, sizeof(rct_object_entry));
+                                    cs.Write(&entry.Entry, sizeof(RCTObjectEntry));
                                 }
                             }
                             else
@@ -445,7 +445,7 @@ namespace OpenRCT2
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     auto earlyCompletion = cs.Read<bool>();
-                    if (network_get_mode() == NETWORK_MODE_CLIENT)
+                    if (NetworkGetMode() == NETWORK_MODE_CLIENT)
                     {
                         gAllowEarlyCompletionInNetworkPlay = earlyCompletion;
                     }
@@ -486,7 +486,7 @@ namespace OpenRCT2
                     uint32_t s0{}, s1{};
                     cs.ReadWrite(s0);
                     cs.ReadWrite(s1);
-                    Random::Rct2::Seed s{ s0, s1 };
+                    Random::RCT2::Seed s{ s0, s1 };
                     gScenarioRand.seed(s);
                 }
                 else
@@ -646,7 +646,7 @@ namespace OpenRCT2
                         auto type = cs.Read<uint8_t>();
                         if (type == DESCRIPTOR_DAT)
                         {
-                            rct_object_entry entry;
+                            RCTObjectEntry entry;
                             cs.Read(&entry, sizeof(entry));
                             auto size = cs.Read<uint32_t>();
                             std::vector<uint8_t> data;
@@ -694,7 +694,7 @@ namespace OpenRCT2
                         if (String::Equals(extension, ".dat", true))
                         {
                             cs.Write(DESCRIPTOR_DAT);
-                            cs.Write(&ori->ObjectEntry, sizeof(rct_object_entry));
+                            cs.Write(&ori->ObjectEntry, sizeof(RCTObjectEntry));
                         }
                         else if (String::Equals(extension, ".parkobj", true))
                         {
@@ -997,7 +997,7 @@ namespace OpenRCT2
                         cs.Read(tileElements.data(), tileElements.size() * sizeof(TileElement));
                         SetTileElements(std::move(tileElements));
                         {
-                            tile_element_iterator it;
+                            TileElementIterator it;
                             TileElementIteratorBegin(&it);
                             while (TileElementIteratorNext(&it))
                             {

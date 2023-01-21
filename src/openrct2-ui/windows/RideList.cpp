@@ -246,7 +246,7 @@ public:
                 OpenAllRides();
                 break;
             case WIDX_QUICK_DEMOLISH:
-                if (network_get_mode() != NETWORK_MODE_CLIENT)
+                if (NetworkGetMode() != NETWORK_MODE_CLIENT)
                 {
                     _quickDemolishMode = !_quickDemolishMode;
                 }
@@ -402,7 +402,7 @@ public:
 
         // Open ride window
         const auto rideIndex = _rideList[index];
-        if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
+        if (_quickDemolishMode && NetworkGetMode() != NETWORK_MODE_CLIENT)
         {
             auto gameAction = RideDemolishAction(rideIndex, RIDE_MODIFY_DEMOLISH);
             GameActions::Execute(&gameAction);
@@ -499,15 +499,15 @@ public:
             widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_CLOSE_ALL].bottom + 3;
         }
         widgets[WIDX_QUICK_DEMOLISH].bottom = widgets[WIDX_QUICK_DEMOLISH].top + 23;
-        widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
-                                                                                      : WindowWidgetType::Empty;
+        widgets[WIDX_QUICK_DEMOLISH].type = NetworkGetMode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
+                                                                                    : WindowWidgetType::Empty;
     }
 
     /**
      *
      *  rct2: 0x006B3235
      */
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
         DrawTabImages(&dpi);
@@ -523,7 +523,7 @@ public:
      *
      *  rct2: 0x006B3240
      */
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(&dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colours[1]].mid_light);
@@ -739,7 +739,7 @@ private:
      *
      *  rct2: 0x006B38EA
      */
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         int32_t sprite_idx;
 
@@ -810,7 +810,7 @@ private:
                 case INFORMATION_TYPE_STATUS:
                     currentListPosition = SortList(
                         currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return 0 <= strlogicalcmp(thisRide.GetName().c_str(), otherRide.GetName().c_str());
+                            return 0 <= StrLogicalCmp(thisRide.GetName().c_str(), otherRide.GetName().c_str());
                         });
                     break;
                 case INFORMATION_TYPE_POPULARITY:
@@ -954,7 +954,7 @@ private:
  *
  *  rct2: 0x006B30BC
  */
-rct_window* WindowRideListOpen()
+WindowBase* WindowRideListOpen()
 {
     // Check if window is already open
     auto* window = WindowBringToFrontByClass(WindowClass::RideList);
@@ -965,7 +965,7 @@ rct_window* WindowRideListOpen()
     return window;
 }
 
-void WindowRideListRefreshList(rct_window* w)
+void WindowRideListRefreshList(WindowBase* w)
 {
     dynamic_cast<RideListWindow*>(w)->RefreshListWrapper();
 }

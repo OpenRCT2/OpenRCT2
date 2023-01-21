@@ -696,7 +696,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 if (sendMap)
                 {
-                    _network.Server_Send_MAP();
+                    _network.ServerSendMap();
                 }
 #endif
 
@@ -1490,25 +1490,25 @@ void ContextSetCursorTrap(bool value)
     GetContext()->GetUiContext()->SetCursorTrap(value);
 }
 
-rct_window* ContextOpenWindow(WindowClass wc)
+WindowBase* ContextOpenWindow(WindowClass wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenWindow(wc);
 }
 
-rct_window* ContextOpenWindowView(uint8_t wc)
+WindowBase* ContextOpenWindowView(uint8_t wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenView(wc);
 }
 
-rct_window* ContextOpenDetailWindow(uint8_t type, int32_t id)
+WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenDetails(type, id);
 }
 
-rct_window* ContextOpenIntent(Intent* intent)
+WindowBase* ContextOpenIntent(Intent* intent)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenIntent(intent);
@@ -1526,7 +1526,7 @@ void ContextForceCloseWindowByClass(WindowClass windowClass)
     windowManager->ForceClose(windowClass);
 }
 
-rct_window* ContextShowError(StringId title, StringId message, const Formatter& args)
+WindowBase* ContextShowError(StringId title, StringId message, const Formatter& args)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->ShowError(title, message, args);

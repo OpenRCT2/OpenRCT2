@@ -804,7 +804,7 @@ void Guest::Loc68FA89()
 
         if (TimeToConsume == 0)
         {
-            int32_t chosen_food = bitscanforward(GetFoodOrDrinkFlags());
+            int32_t chosen_food = UtilBitScanForward(GetFoodOrDrinkFlags());
             if (chosen_food != -1)
             {
                 ShopItem food = ShopItem(chosen_food);
@@ -1420,7 +1420,7 @@ void Guest::CheckCantFindRide()
         return;
 
     GuestHeadingToRideId = RideId::GetNull();
-    rct_window* w = WindowFindByNumber(WindowClass::Peep, sprite_index);
+    WindowBase* w = WindowFindByNumber(WindowClass::Peep, sprite_index);
 
     if (w != nullptr)
     {
@@ -1485,7 +1485,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
 
     if (GetShopItemDescriptor(shopItem).IsFoodOrDrink())
     {
-        int32_t food = bitscanforward(GetFoodOrDrinkFlags());
+        int32_t food = UtilBitScanForward(GetFoodOrDrinkFlags());
         if (food != -1)
         {
             InsertNewThought(PeepThoughtType::HaventFinished, static_cast<ShopItem>(food));
@@ -1874,8 +1874,8 @@ OpenRCT2::BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
     {
         // Take nearby rides into consideration
         constexpr auto radius = 10 * 32;
-        int32_t cx = floor2(x, 32);
-        int32_t cy = floor2(y, 32);
+        int32_t cx = Floor2(x, 32);
+        int32_t cy = Floor2(y, 32);
         for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += COORDS_XY_STEP)
         {
             for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += COORDS_XY_STEP)
@@ -2302,7 +2302,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
     {
         // HACK Currently disabled for multiplayer due to limitation of all sprites
         //      needing to be synchronised
-        if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
+        if (NetworkGetMode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
         {
             MoneyEffect::CreateAt(amount, GetLocation(), true);
         }
@@ -2500,7 +2500,7 @@ void Guest::GoToRideEntrance(const Ride& ride)
     int16_t y_shift = DirectionOffsets[location.direction].y;
 
     uint8_t shift_multiplier = 21;
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry != nullptr)
     {
         if (rideEntry->Cars[rideEntry->DefaultCar].flags & CAR_ENTRY_FLAG_MINI_GOLF
@@ -3110,7 +3110,7 @@ static void PeepLeavePark(Guest* peep)
 
     peep->InsertNewThought(PeepThoughtType::GoHome);
 
-    rct_window* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index);
+    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index);
     if (w != nullptr)
         WindowEventInvalidateCall(w);
     WindowInvalidateByNumber(WindowClass::Peep, peep->sprite_index);
@@ -3151,8 +3151,8 @@ template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool consid
     {
         // Take nearby rides into consideration
         constexpr auto searchRadius = 10 * 32;
-        int32_t cx = floor2(peep->x, 32);
-        int32_t cy = floor2(peep->y, 32);
+        int32_t cx = Floor2(peep->x, 32);
+        int32_t cy = Floor2(peep->y, 32);
         for (auto x = cx - searchRadius; x <= cx + searchRadius; x += COORDS_XY_STEP)
         {
             for (auto y = cy - searchRadius; y <= cy + searchRadius; y += COORDS_XY_STEP)
@@ -3383,7 +3383,7 @@ void Guest::UpdateBuying()
         }
         else
         {
-            rct_ride_entry* ride_type = GetRideEntryByIndex(ride->subtype);
+            RideObjectEntry* ride_type = GetRideEntryByIndex(ride->subtype);
             if (ride_type == nullptr)
             {
                 return;
@@ -3786,7 +3786,7 @@ static void PeepGoToRideExit(Peep* peep, const Ride& ride, int16_t x, int16_t y,
 
     int16_t shift_multiplier = 20;
 
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(ride.subtype);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry != nullptr)
     {
         CarEntry* carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
@@ -3927,7 +3927,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     if (vehicle == nullptr)
         return;
 
-    rct_ride_entry* ride_entry = vehicle->GetRideEntry();
+    RideObjectEntry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
     {
         return;
@@ -4120,7 +4120,7 @@ void Guest::UpdateRideLeaveVehicle()
         ride_station = bestStationIndex;
     }
     CurrentRideStation = ride_station;
-    rct_ride_entry* rideEntry = vehicle->GetRideEntry();
+    RideObjectEntry* rideEntry = vehicle->GetRideEntry();
     if (rideEntry == nullptr)
     {
         return;
@@ -4299,7 +4299,7 @@ void Guest::UpdateRidePrepareForExit()
 
     int16_t shiftMultiplier = 20;
 
-    rct_ride_entry* rideEntry = ride->GetRideEntry();
+    RideObjectEntry* rideEntry = ride->GetRideEntry();
     if (rideEntry != nullptr)
     {
         CarEntry* carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
@@ -4421,7 +4421,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
 
     CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
 
-    rct_ride_entry* ride_entry = vehicle->GetRideEntry();
+    RideObjectEntry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
     {
         return;
@@ -4516,7 +4516,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         const auto& rtd = ride->GetRideTypeDescriptor();
         CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
 
-        rct_ride_entry* rideEntry = vehicle->GetRideEntry();
+        RideObjectEntry* rideEntry = vehicle->GetRideEntry();
         CarEntry* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
 
         Guard::Assert((Var37 & 3) < 3);
@@ -5273,7 +5273,7 @@ void Guest::UpdateWalking()
         if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index.ToUnderlying() & 0x1FF) == (gCurrentTicks & 0x1FF))
             && ((0xFFFF & ScenarioRand()) <= 4096))
         {
-            int32_t container = bitscanforward(GetEmptyContainerFlags());
+            int32_t container = UtilBitScanForward(GetEmptyContainerFlags());
             auto litterType = Litter::Type::Vomit;
 
             if (container != -1)
@@ -6187,7 +6187,7 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
 {
     // Ghosts are purely this-client-side and should not cause any interaction,
     // as that may lead to a desync.
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         if (tileElement->IsGhost())
             return false;
@@ -6300,7 +6300,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6339,7 +6339,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6366,7 +6366,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6411,7 +6411,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6458,7 +6458,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6484,7 +6484,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6528,7 +6528,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6574,7 +6574,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6600,7 +6600,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6678,14 +6678,14 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
     }
 }
 
-struct item_pref_t
+struct ItemPref
 {
     ShopItem item;
     PeepSpriteType sprite_type;
 };
 
 // clang-format off
-static item_pref_t item_order_preference[] = {
+static ItemPref item_order_preference[] = {
     { ShopItem::IceCream,         PeepSpriteType::IceCream    },
     { ShopItem::Chips,            PeepSpriteType::Chips       },
     { ShopItem::Pizza,            PeepSpriteType::Pizza       },
@@ -7013,7 +7013,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
 
-    const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
     peep->sprite_width = spriteBounds->sprite_width;
     peep->sprite_height_negative = spriteBounds->sprite_height_negative;
     peep->sprite_height_positive = spriteBounds->sprite_height_positive;

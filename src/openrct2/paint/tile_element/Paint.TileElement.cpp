@@ -94,7 +94,7 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
     dx -= 16;
     int32_t bx = dx + 32;
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     if (bx <= dpi->y)
         return;
     dx -= 20;
@@ -119,7 +119,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     PROFILED_FUNCTION();
 
     CoordsXY coords = origCoords;
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
 
     if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {

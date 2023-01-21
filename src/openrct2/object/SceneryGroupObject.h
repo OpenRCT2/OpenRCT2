@@ -21,7 +21,7 @@ enum class EntertainerCostume : uint8_t;
 class SceneryGroupObject final : public Object
 {
 private:
-    rct_scenery_group_entry _legacyType = {};
+    SceneryGroupEntry _legacyType = {};
     std::vector<ObjectEntryDescriptor> _items;
 
 public:
@@ -36,7 +36,7 @@ public:
     void Unload() override;
     void UpdateEntryIndexes();
 
-    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 

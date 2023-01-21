@@ -365,7 +365,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
         return INVALID_DIRECTION;
     do
     {
-        if (tileElement->base_height != nextZ)
+        if (tileElement->BaseHeight != nextZ)
             continue;
         if (tileElement->GetType() == TileElementType::Entrance || tileElement->GetType() == TileElementType::Track)
         {
@@ -381,7 +381,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     do
     {
-        if (tileElement->base_height != nextZ)
+        if (tileElement->BaseHeight != nextZ)
             continue;
         if (tileElement->GetType() == TileElementType::Entrance || tileElement->GetType() == TileElementType::Track)
         {
@@ -675,7 +675,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         pathDirections |= (1 << DirectionReverse(PeepDirection));
     }
 
-    Direction direction = bitscanforward(pathDirections);
+    Direction direction = UtilBitScanForward(pathDirections);
     pathDirections &= ~(1 << direction);
     if (pathDirections == 0)
     {
@@ -807,7 +807,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
         pathDirections |= (1 << DirectionReverse(PeepDirection));
     }
 
-    Direction direction = bitscanforward(pathDirections);
+    Direction direction = UtilBitScanForward(pathDirections);
     // If this is the only direction they can go, then go
     if (pathDirections == (1 << direction))
     {
@@ -1374,7 +1374,7 @@ void Staff::UpdateHeadingToInspect()
         SetDestination(newDestination, 2);
         sprite_direction = PeepDirection << 3;
 
-        z = rideEntranceExitElement->base_height * 4;
+        z = rideEntranceExitElement->BaseHeight * 4;
         SubState = 4;
         // Falls through into SubState 4
     }
@@ -1484,7 +1484,7 @@ void Staff::UpdateAnswering()
         SetDestination({ destX, destY }, 2);
         sprite_direction = PeepDirection << 3;
 
-        z = rideEntranceExitElement->base_height * 4;
+        z = rideEntranceExitElement->BaseHeight * 4;
         SubState = 4;
         // Falls through into SubState 4
     }
@@ -2306,7 +2306,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
         }
 
         Direction stationDirection = 0;
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
         while (TrackBlockGetPrevious(input, &trackBeginEnd))
         {
             if (trackBeginEnd.begin_element->AsTrack()->IsStation())

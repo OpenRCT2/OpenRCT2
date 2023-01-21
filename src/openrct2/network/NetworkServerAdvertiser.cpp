@@ -132,7 +132,7 @@ private:
 
     json_t GetBroadcastJson()
     {
-        json_t root = network_get_server_info_as_json();
+        json_t root = NetworkGetServerInfoAsJson();
         root["port"] = _port;
         return root;
     }
@@ -290,7 +290,7 @@ private:
 
     json_t GetHeartbeatJson()
     {
-        uint32_t numPlayers = network_get_num_visible_players();
+        uint32_t numPlayers = NetworkGetNumVisiblePlayers();
 
         json_t root = {
             { "token", _token },

@@ -162,12 +162,12 @@ static void CompareStates(MemoryStream& importBuffer, MemoryStream& exportBuffer
 
     try
     {
-        GameStateCompareData_t cmpData = snapshots->Compare(importSnapshot, exportSnapshot);
+        GameStateCompareData cmpData = snapshots->Compare(importSnapshot, exportSnapshot);
 
         // Find out if there are any differences between the two states
         auto res = std::find_if(
             cmpData.spriteChanges.begin(), cmpData.spriteChanges.end(),
-            [](const GameStateSpriteChange_t& diff) { return diff.changeType != GameStateSpriteChange_t::EQUAL; });
+            [](const GameStateSpriteChange& diff) { return diff.changeType != GameStateSpriteChange::EQUAL; });
 
         if (res != cmpData.spriteChanges.end())
         {

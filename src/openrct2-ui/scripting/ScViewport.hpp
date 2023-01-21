@@ -242,7 +242,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        rct_window* GetWindow() const
+        WindowBase* GetWindow() const
         {
             if (_class == WindowClass::MainWindow)
                 return WindowGetMain();
@@ -250,7 +250,7 @@ namespace OpenRCT2::Scripting
             return WindowFindByNumber(_class, _number);
         }
 
-        rct_viewport* GetViewport() const
+        Viewport* GetViewport() const
         {
             auto w = GetWindow();
             if (w != nullptr)

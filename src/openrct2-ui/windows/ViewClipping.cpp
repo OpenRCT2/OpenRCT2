@@ -91,7 +91,7 @@ public:
             case WIDX_CLIP_CHECKBOX_ENABLE:
             {
                 // Toggle height clipping.
-                rct_window* mainWindow = WindowGetMain();
+                WindowBase* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                 {
                     mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
@@ -140,7 +140,7 @@ public:
 
     void OnMouseDown(WidgetIndex widgetIndex) override
     {
-        rct_window* mainWindow;
+        WindowBase* mainWindow;
 
         switch (widgetIndex)
         {
@@ -164,7 +164,7 @@ public:
     void OnUpdate() override
     {
         const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
-        const rct_scroll* const scroll = &this->scrolls[0];
+        const ScrollBar* const scroll = &this->scrolls[0];
         const int16_t scroll_width = widget.width() - 1;
         const uint8_t clip_height = static_cast<uint8_t>(
             (static_cast<float>(scroll->h_left) / (scroll->h_right - scroll_width)) * 255);
@@ -173,7 +173,7 @@ public:
             gClipHeight = clip_height;
 
             // Update the main window accordingly.
-            rct_window* mainWindow = WindowGetMain();
+            WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
                 mainWindow->Invalidate();
@@ -256,7 +256,7 @@ public:
     {
         WidgetScrollUpdateThumbs(*this, WIDX_CLIP_HEIGHT_SLIDER);
 
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             WidgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
@@ -272,7 +272,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
 
@@ -355,7 +355,7 @@ public:
         WindowPushOthersBelow(*this);
 
         // Get the main viewport to set the view clipping flag.
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
 
         // Turn on view clipping when the window is opened.
         if (mainWindow != nullptr)
@@ -369,7 +369,7 @@ private:
     void OnClose() override
     {
         // Turn off view clipping when the window is closed.
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
@@ -396,7 +396,7 @@ private:
     }
 };
 
-rct_window* WindowViewClippingOpen()
+WindowBase* WindowViewClippingOpen()
 {
     auto* window = WindowBringToFrontByClass(WindowClass::ViewClipping);
     if (window == nullptr)

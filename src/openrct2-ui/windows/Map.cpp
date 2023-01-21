@@ -650,7 +650,7 @@ public:
         auto mapCoords = CoordsXY{ std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1), std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1) };
         auto mapZ = TileElementHeight(mapCoords);
 
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
             WindowScrollToLocation(*mainWindow, { mapCoords, mapZ });
@@ -703,11 +703,11 @@ public:
         OnScrollMouseDown(scrollIndex, screenCoords);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         GfxClear(&dpi, PALETTE_INDEX_10);
 
-        rct_g1_element g1temp = {};
+        G1Element g1temp = {};
         g1temp.offset = _mapImageData.data();
         g1temp.width = MAP_WINDOW_MAP_SIZE;
         g1temp.height = MAP_WINDOW_MAP_SIZE;
@@ -852,7 +852,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(&dpi);
@@ -928,7 +928,7 @@ private:
 
     void CentreMapOnViewPoint()
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         int16_t ax, bx, cx, dx;
         int16_t bp, di;
 
@@ -1161,7 +1161,7 @@ private:
         return colourB;
     }
 
-    void PaintPeepOverlay(rct_drawpixelinfo* dpi)
+    void PaintPeepOverlay(DrawPixelInfo* dpi)
     {
         auto flashColour = GetGuestFlashColour();
         for (auto guest : EntityList<Guest>())
@@ -1175,7 +1175,7 @@ private:
         }
     }
 
-    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, rct_drawpixelinfo* dpi)
+    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo* dpi)
     {
         if (peep->x == LOCATION_NULL)
             return;
@@ -1221,7 +1221,7 @@ private:
         return colour;
     }
 
-    void PaintTrainOverlay(rct_drawpixelinfo* dpi)
+    void PaintTrainOverlay(DrawPixelInfo* dpi)
     {
         for (auto train : TrainManager::View())
         {
@@ -1241,13 +1241,13 @@ private:
      * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
      * but it doesn't look like it's ever necessary here so the call was removed.
      */
-    void PaintHudRectangle(rct_drawpixelinfo* dpi)
+    void PaintHudRectangle(DrawPixelInfo* dpi)
     {
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
 
-        rct_viewport* mainViewport = mainWindow->viewport;
+        Viewport* mainViewport = mainWindow->viewport;
         if (mainViewport == nullptr)
             return;
 
@@ -1275,7 +1275,7 @@ private:
         GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         // Guest tab image (animated)
         uint32_t guestTabImage = SPR_TAB_GUESTS_0;
@@ -1441,11 +1441,11 @@ private:
     };
 };
 
-rct_window* WindowMapOpen()
+WindowBase* WindowMapOpen()
 {
     try
     {
-        rct_window* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
+        WindowBase* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
         w->selected_tab = 0;
         w->list_information_type = 0;
         return w;
@@ -1458,7 +1458,7 @@ rct_window* WindowMapOpen()
 
 void WindowMapReset()
 {
-    rct_window* w;
+    WindowBase* w;
 
     // Check if window is even opened
     w = WindowBringToFrontByClass(WindowClass::Map);

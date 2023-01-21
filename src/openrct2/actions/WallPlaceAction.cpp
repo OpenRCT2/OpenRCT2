@@ -152,7 +152,7 @@ GameActions::Result WallPlaceAction::Query() const
     if (!(edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS)))
     {
         uint8_t newEdge = (_edge + 2) & 3;
-        uint8_t newBaseHeight = surfaceElement->base_height;
+        uint8_t newBaseHeight = surfaceElement->BaseHeight;
         newBaseHeight += 2;
         if (surfaceElement->GetSlope() & (1 << newEdge))
         {
@@ -363,7 +363,7 @@ GameActions::Result WallPlaceAction::Execute() const
             GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    wallElement->clearance_height = clearanceHeight;
+    wallElement->ClearanceHeight = clearanceHeight;
     wallElement->SetDirection(_edge);
     wallElement->SetSlope(edgeSlope);
 
@@ -447,9 +447,9 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
                 direction = DirectionReverse(trackElement->GetDirection());
                 if (direction == _edge)
                 {
-                    const rct_preview_track* trackBlock = ted.GetBlockForSequence(sequence);
+                    const PreviewTrack* trackBlock = ted.GetBlockForSequence(sequence);
                     z = ted.Coordinates.z_begin;
-                    z = trackElement->base_height + ((z - trackBlock->z) * 8);
+                    z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
                     if (z == z0)
                     {
                         return true;
@@ -459,7 +459,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         }
     }
 
-    const rct_preview_track* trackBlock = &ted.Block[sequence + 1];
+    const PreviewTrack* trackBlock = &ted.Block[sequence + 1];
     if (trackBlock->index != 0xFF)
     {
         return false;
@@ -484,7 +484,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
 
     trackBlock = ted.GetBlockForSequence(sequence);
     z = ted.Coordinates.z_end;
-    z = trackElement->base_height + ((z - trackBlock->z) * 8);
+    z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
     return z == z0;
 }
 
@@ -511,9 +511,9 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             continue;
         if (tileElement->IsGhost())
             continue;
-        if (z0 >= tileElement->clearance_height)
+        if (z0 >= tileElement->ClearanceHeight)
             continue;
-        if (z1 <= tileElement->base_height)
+        if (z1 <= tileElement->BaseHeight)
             continue;
         if (elementType == TileElementType::Wall)
         {
@@ -551,7 +551,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                     break;
 
                 auto sequence = largeSceneryElement->GetSequenceIndex();
-                const rct_large_scenery_tile& tile = sceneryEntry->tiles[sequence];
+                const LargeSceneryTile& tile = sceneryEntry->tiles[sequence];
 
                 int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                 if (!(tile.flags & (1 << direction)))

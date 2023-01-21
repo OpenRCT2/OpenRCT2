@@ -26,7 +26,7 @@
 
 using namespace OpenRCT2;
 
-struct rct_draw_scroll_text
+struct DrawScrollText
 {
     StringId string_id;
     uint8_t string_args[32];
@@ -37,7 +37,7 @@ struct rct_draw_scroll_text
     uint8_t bitmap[64 * 40];
 };
 
-static rct_draw_scroll_text _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
+static DrawScrollText _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
 static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
@@ -50,7 +50,7 @@ static void ScrollingTextSetBitmapForTTF(
 static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
 {
     uint8_t drawingSurface[64];
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
     dpi.width = 8;
     dpi.height = 8;
@@ -84,7 +84,7 @@ static void ScrollingTextInitialiseScrollingText()
         const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
 
         // Initialize the scrolling text sprite.
-        rct_g1_element g1{};
+        G1Element g1{};
         g1.offset = _drawScrollTextList[i].bitmap;
         g1.x_offset = -32;
         g1.y_offset = 0;
@@ -127,7 +127,7 @@ static int32_t ScrollingTextGetMatchingOrOldest(
     int32_t scrollIndex = -1;
     for (size_t i = 0; i < std::size(_drawScrollTextList); i++)
     {
-        rct_draw_scroll_text* scrollText = &_drawScrollTextList[i];
+        DrawScrollText* scrollText = &_drawScrollTextList[i];
         if (oldestId >= scrollText->id)
         {
             oldestId = scrollText->id;
@@ -146,7 +146,7 @@ static int32_t ScrollingTextGetMatchingOrOldest(
     return scrollIndex;
 }
 
-static void ScrollingTextFormat(utf8* dst, size_t size, rct_draw_scroll_text* scrollText)
+static void ScrollingTextFormat(utf8* dst, size_t size, DrawScrollText* scrollText)
 {
     if (gConfigGeneral.UpperCaseBanners)
     {
@@ -1440,7 +1440,7 @@ ImageId ScrollingTextSetup(
 
     assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
 
     if (dpi->zoom_level > ZoomLevel{ 0 })
         return ImageId(SPR_SCROLLING_TEXT_DEFAULT);

@@ -74,7 +74,7 @@ public:
         ResetTooltipNotShown();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         int32_t left = windowPos.x;
         int32_t top = windowPos.y;
@@ -146,7 +146,7 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
     WindowCreate(std::move(tooltipWindow), WindowClass::Tooltip, windowPos, width, height, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 }
 
-void WindowTooltipOpen(rct_window* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetWindow == nullptr || widgetIndex == -1)
         return;

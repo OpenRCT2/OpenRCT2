@@ -197,6 +197,7 @@
     <ClInclude Include="core\OrcaStream.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
+    <ClInclude Include="core\Range.hpp" />
     <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\FixedVector.h" />
     <ClInclude Include="core\String.hpp" />
@@ -325,6 +326,7 @@
     <ClInclude Include="paint\Boundbox.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
+    <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\Supports.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
@@ -527,6 +529,7 @@
     <ClInclude Include="TrackImporter.h" />
     <ClInclude Include="ui\UiContext.h" />
     <ClInclude Include="ui\WindowManager.h" />
+    <ClInclude Include="util\Math.hpp" />
     <ClInclude Include="util\SawyerCoding.h" />
     <ClInclude Include="util\Util.h" />
     <ClInclude Include="Version.h" />

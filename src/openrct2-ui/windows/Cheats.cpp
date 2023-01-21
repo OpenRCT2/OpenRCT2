@@ -513,7 +513,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         UpdateTabPositions();
         DrawWidgets(dpi);
@@ -654,7 +654,7 @@ private:
         }
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Money tab
         if (!IsWidgetDisabled(WIDX_TAB_1))
@@ -699,12 +699,12 @@ private:
         switch (widgetIndex)
         {
             case WIDX_MONEY_SPINNER_INCREMENT:
-                _moneySpinnerValue = add_clamp_money32(
+                _moneySpinnerValue = AddClamp_money32(
                     CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV), CHEATS_MONEY_INCREMENT_DIV);
                 InvalidateWidget(WIDX_MONEY_SPINNER);
                 break;
             case WIDX_MONEY_SPINNER_DECREMENT:
-                _moneySpinnerValue = add_clamp_money32(
+                _moneySpinnerValue = AddClamp_money32(
                     CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV),
                     -CHEATS_MONEY_INCREMENT_DIV);
                 InvalidateWidget(WIDX_MONEY_SPINNER);
@@ -1111,7 +1111,7 @@ private:
     }
 };
 
-rct_window* WindowCheatsOpen()
+WindowBase* WindowCheatsOpen()
 {
     auto* window = WindowBringToFrontByClass(WindowClass::Cheats);
     if (window == nullptr)

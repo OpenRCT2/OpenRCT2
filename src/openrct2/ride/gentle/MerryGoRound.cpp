@@ -26,7 +26,7 @@ static constexpr const uint16_t MerryGoRoundBreakdownVibration[] = {
 };
 
 static void PaintRiders(
-    PaintSession& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle& vehicle, int32_t rotationOffset,
+    PaintSession& session, const Ride& ride, const RideObjectEntry& rideEntry, const Vehicle& vehicle, int32_t rotationOffset,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 0 })

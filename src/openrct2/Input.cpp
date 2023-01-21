@@ -15,13 +15,13 @@ InputState _inputState;
 uint8_t _inputFlags;
 uint8_t gInputPlaceObjectModifier;
 
-widget_ref gHoverWidget;
-widget_ref gPressedWidget;
+WidgetRef gHoverWidget;
+WidgetRef gPressedWidget;
 
 uint16_t _tooltipNotShownTicks;
 
 Tool gCurrentToolId;
-widget_ref gCurrentToolWidget;
+WidgetRef gCurrentToolWidget;
 
 /**
  *

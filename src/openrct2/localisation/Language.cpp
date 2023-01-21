@@ -21,7 +21,7 @@
 #include <stack>
 
 // clang-format off
-const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
+const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 {
     { "",       "",                     "",                      LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_UNDEFINED
     { "ar-EG", "Arabic (experimental)", "Arabic (experimental)", LANGUAGE_UNDEFINED, FAMILY(&TTFFamilySansSerif),           true  }, // LANGUAGE_ARABIC

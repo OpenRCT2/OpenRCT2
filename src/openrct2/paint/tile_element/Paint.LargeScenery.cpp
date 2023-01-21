@@ -55,7 +55,7 @@ static constexpr const BoundBoxXY LargeSceneryBoundBoxes[] = {
 
 static void PaintLargeScenerySupports(
     PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
-    const rct_large_scenery_tile& tile)
+    const LargeSceneryTile& tile)
 {
     PROFILED_FUNCTION();
 
@@ -72,7 +72,7 @@ static void PaintLargeScenerySupports(
 
     WoodenBSupportsPaintSetup(session, (direction & 1), special, supportHeight, imageTemplate);
 
-    int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
+    int32_t clearanceHeight = Ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
     {
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, clearanceHeight, 0x20);
@@ -182,7 +182,7 @@ static bool Is3DTextSingleLine(const LargeSceneryText& text, std::string_view s)
 }
 
 static void PaintLargeScenery3DText(
-    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const rct_large_scenery_tile& tile,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryTile& tile,
     const LargeSceneryElement& tileElement, uint8_t direction, uint16_t height, bool isGhost)
 {
     PROFILED_FUNCTION();

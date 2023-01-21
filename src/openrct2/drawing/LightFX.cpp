@@ -37,7 +37,7 @@ static uint8_t _bakedLightTexture_spot_0[32 * 32];
 static uint8_t _bakedLightTexture_spot_1[64 * 64];
 static uint8_t _bakedLightTexture_spot_2[128 * 128];
 static uint8_t _bakedLightTexture_spot_3[256 * 256];
-static rct_drawpixelinfo _pixelInfo;
+static DrawPixelInfo _pixelInfo;
 static bool _lightfxAvailable = false;
 
 static void* _light_rendered_buffer_back = nullptr;
@@ -180,7 +180,7 @@ void LightFXInit()
     CalcRescaleLightHalf(_bakedLightTexture_spot_0, _bakedLightTexture_spot_1, 32, 32);
 }
 
-void LightFXUpdateBuffers(rct_drawpixelinfo* info)
+void LightFXUpdateBuffers(DrawPixelInfo* info)
 {
     _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info->width * info->height);
     _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info->width * info->height);
@@ -298,7 +298,7 @@ void LightFXPrepareLightList()
                 if (w != nullptr)
                 {
                     // based on GetMapCoordinatesFromPosWindow
-                    rct_drawpixelinfo dpi;
+                    DrawPixelInfo dpi;
                     dpi.x = entry->ViewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv;
                     dpi.y = entry->ViewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv;
                     dpi.height = 1;
@@ -431,10 +431,10 @@ void LightFXSwapBuffers()
 
 void LightFXUpdateViewportSettings()
 {
-    rct_window* mainWindow = WindowGetMain();
+    WindowBase* mainWindow = WindowGetMain();
     if (mainWindow != nullptr)
     {
-        rct_viewport* viewport = WindowGetViewport(mainWindow);
+        Viewport* viewport = WindowGetViewport(mainWindow);
         _current_view_x_back = viewport->viewPos.x;
         _current_view_y_back = viewport->viewPos.y;
         _current_view_rotation_back = GetCurrentRotation();
@@ -855,9 +855,9 @@ void LightFXApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     float sunLight = std::max(0.0f, std::min(1.0f, 2.0f - night * 3.0f));
 
     // Night version
-    natLightR = flerp(natLightR * 4.0f, 0.635f, (std::pow(night, 0.035f + sunLight * 10.50f)));
-    natLightG = flerp(natLightG * 4.0f, 0.650f, (std::pow(night, 0.100f + sunLight * 5.50f)));
-    natLightB = flerp(natLightB * 4.0f, 0.850f, (std::pow(night, 0.200f + sunLight * 1.5f)));
+    natLightR = FLerp(natLightR * 4.0f, 0.635f, (std::pow(night, 0.035f + sunLight * 10.50f)));
+    natLightG = FLerp(natLightG * 4.0f, 0.650f, (std::pow(night, 0.100f + sunLight * 5.50f)));
+    natLightB = FLerp(natLightB * 4.0f, 0.850f, (std::pow(night, 0.200f + sunLight * 1.5f)));
 
     float overExpose = 0.0f;
     float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
@@ -953,9 +953,9 @@ void LightFXApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 
     if (night >= 0 && gClimateLightningFlash != 1)
     {
-        *r = lerp(*r, soft_light(*r, 8), night);
-        *g = lerp(*g, soft_light(*g, 8), night);
-        *b = lerp(*b, soft_light(*b, 128), night);
+        *r = Lerp(*r, SoftLight(*r, 8), night);
+        *g = Lerp(*g, SoftLight(*g, 8), night);
+        *b = Lerp(*b, SoftLight(*b, 128), night);
 
         //  if (i == 32)
         //      boost = 300000.0f;

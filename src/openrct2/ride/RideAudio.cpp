@@ -187,7 +187,7 @@ namespace OpenRCT2::RideAudio
     void CircusStartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        ObjectEntryDescriptor desc(ObjectType::Audio, AudioObjectIdentifiers::Rct2Circus);
+        ObjectEntryDescriptor desc(ObjectType::Audio, AudioObjectIdentifiers::RCT2Circus);
         auto audioObj = static_cast<AudioObject*>(objManager.GetLoadedObject(desc));
         if (audioObj != nullptr)
         {

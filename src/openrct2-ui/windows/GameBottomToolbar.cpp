@@ -69,19 +69,19 @@ static Widget window_game_bottom_toolbar_widgets[] =
 
 uint8_t gToolbarDirtyFlags;
 
-static void WindowGameBottomToolbarMouseup(rct_window *w, WidgetIndex widgetIndex);
-static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback);
-static void WindowGameBottomToolbarInvalidate(rct_window *w);
-static void WindowGameBottomToolbarPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowGameBottomToolbarUpdate(rct_window* w);
-static void WindowGameBottomToolbarCursor(rct_window *w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
-static void WindowGameBottomToolbarUnknown05(rct_window *w);
+static void WindowGameBottomToolbarMouseup(WindowBase *w, WidgetIndex widgetIndex);
+static OpenRCT2String WindowGameBottomToolbarTooltip(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback);
+static void WindowGameBottomToolbarInvalidate(WindowBase *w);
+static void WindowGameBottomToolbarPaint(WindowBase *w, DrawPixelInfo *dpi);
+static void WindowGameBottomToolbarUpdate(WindowBase* w);
+static void WindowGameBottomToolbarCursor(WindowBase *w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
+static void WindowGameBottomToolbarUnknown05(WindowBase *w);
 
-static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo *dpi, rct_window *w);
-static void WindowGameBottomToolbarDrawParkRating(rct_drawpixelinfo *dpi, rct_window *w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor);
-static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo *dpi, rct_window *w);
-static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo *dpi, rct_window *w);
-static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo *dpi, rct_window *w);
+static void WindowGameBottomToolbarDrawLeftPanel(DrawPixelInfo *dpi, WindowBase *w);
+static void WindowGameBottomToolbarDrawParkRating(DrawPixelInfo *dpi, WindowBase *w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor);
+static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo *dpi, WindowBase *w);
+static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo *dpi, WindowBase *w);
+static void WindowGameBottomToolbarDrawMiddlePanel(DrawPixelInfo *dpi, WindowBase *w);
 
 /**
  *
@@ -99,13 +99,13 @@ static WindowEventList window_game_bottom_toolbar_events([](auto& events)
 });
 // clang-format on
 
-static void WindowGameBottomToolbarInvalidateDirtyWidgets(rct_window* w);
+static void WindowGameBottomToolbarInvalidateDirtyWidgets(WindowBase* w);
 
 /**
  * Creates the main game bottom toolbar window.
  *  rct2: 0x0066B52F (part of 0x0066B3E8)
  */
-rct_window* WindowGameBottomToolbarOpen()
+WindowBase* WindowGameBottomToolbarOpen()
 {
     int32_t screenWidth = ContextGetWidth();
     int32_t screenHeight = ContextGetHeight();
@@ -114,7 +114,7 @@ rct_window* WindowGameBottomToolbarOpen()
     uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
     uint32_t toolbar_height = line_height * 2 + 12;
 
-    rct_window* window = WindowCreate(
+    WindowBase* window = WindowCreate(
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
         WindowClass::BottomToolbar, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
@@ -133,7 +133,7 @@ rct_window* WindowGameBottomToolbarOpen()
  *
  *  rct2: 0x0066C588
  */
-static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowGameBottomToolbarMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     News::Item* newsItem;
 
@@ -176,7 +176,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetInde
                 if (!subjectLoc.has_value())
                     break;
 
-                rct_window* mainWindow = WindowGetMain();
+                WindowBase* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                     WindowScrollToLocation(*mainWindow, subjectLoc.value());
             }
@@ -188,7 +188,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, WidgetIndex widgetInde
     }
 }
 
-static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const WidgetIndex widgetIndex, const StringId fallback)
+static OpenRCT2String WindowGameBottomToolbarTooltip(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback)
 {
     int32_t month, day;
     auto ft = Formatter();
@@ -217,7 +217,7 @@ static OpenRCT2String WindowGameBottomToolbarTooltip(rct_window* w, const Widget
  *
  *  rct2: 0x0066BBA0
  */
-static void WindowGameBottomToolbarInvalidate(rct_window* w)
+static void WindowGameBottomToolbarInvalidate(WindowBase* w)
 {
     // Figure out how much line height we have to work with.
     uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -346,7 +346,7 @@ void WindowGameBottomToolbarInvalidateNewsItem()
  *
  *  rct2: 0x0066BC87
  */
-static void WindowGameBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowGameBottomToolbarPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     auto leftWidget = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
     auto rightWidget = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET];
@@ -384,7 +384,7 @@ static void WindowGameBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowGameBottomToolbarDrawLeftPanel(DrawPixelInfo* dpi, WindowBase* w)
 {
     const auto topLeft = w->windowPos
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
@@ -458,7 +458,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
  *  rct2: 0x0066C76C
  */
 static void WindowGameBottomToolbarDrawParkRating(
-    rct_drawpixelinfo* dpi, rct_window* w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
+    DrawPixelInfo* dpi, WindowBase* w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
 {
     int16_t bar_width;
 
@@ -478,7 +478,7 @@ static void WindowGameBottomToolbarDrawParkRating(
     GfxDrawSprite(dpi, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
 }
 
-static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo* dpi, WindowBase* w)
 {
     const auto topLeft = w->windowPos
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
@@ -550,7 +550,7 @@ static void WindowGameBottomToolbarDrawRightPanel(rct_drawpixelinfo* dpi, rct_wi
  *
  *  rct2: 0x0066BFA5
  */
-static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo* dpi, WindowBase* w)
 {
     int32_t width;
     News::Item* newsItem;
@@ -586,7 +586,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
             if (newsItem->HasButton())
                 break;
 
-            rct_drawpixelinfo cliped_dpi;
+            DrawPixelInfo cliped_dpi;
             if (!ClipDrawPixelInfo(&cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
             {
                 break;
@@ -651,7 +651,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
     }
 }
 
-static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowGameBottomToolbarDrawMiddlePanel(DrawPixelInfo* dpi, WindowBase* w)
 {
     Widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 
@@ -688,7 +688,7 @@ static void WindowGameBottomToolbarDrawMiddlePanel(rct_drawpixelinfo* dpi, rct_w
  *
  *  rct2: 0x0066C6D8
  */
-static void WindowGameBottomToolbarUpdate(rct_window* w)
+static void WindowGameBottomToolbarUpdate(WindowBase* w)
 {
     w->frame_no++;
     if (w->frame_no >= 24)
@@ -702,7 +702,7 @@ static void WindowGameBottomToolbarUpdate(rct_window* w)
  *  rct2: 0x0066C644
  */
 static void WindowGameBottomToolbarCursor(
-    rct_window* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
+    WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
     switch (widgetIndex)
     {
@@ -719,7 +719,7 @@ static void WindowGameBottomToolbarCursor(
  *
  *  rct2: 0x0066C6F2
  */
-static void WindowGameBottomToolbarUnknown05(rct_window* w)
+static void WindowGameBottomToolbarUnknown05(WindowBase* w)
 {
     WindowGameBottomToolbarInvalidateDirtyWidgets(w);
 }
@@ -728,7 +728,7 @@ static void WindowGameBottomToolbarUnknown05(rct_window* w)
  *
  *  rct2: 0x0066C6F2
  */
-static void WindowGameBottomToolbarInvalidateDirtyWidgets(rct_window* w)
+static void WindowGameBottomToolbarInvalidateDirtyWidgets(WindowBase* w)
 {
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
     {

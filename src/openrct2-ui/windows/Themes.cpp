@@ -444,7 +444,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         // Widgets
         WindowDrawWidgets(*this, &dpi);
@@ -758,7 +758,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords;
 
@@ -789,7 +789,7 @@ public:
 
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
-                        translucent_window_palette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
+                        TranslucentWindowPalette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
                         GfxFilterRect(&dpi, { leftTop, rightBottom }, windowPalette.highlight);
                         GfxFilterRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
@@ -867,7 +867,7 @@ public:
         return 0;
     }
 
-    void WindowThemesDrawTabImages(rct_drawpixelinfo* dpi)
+    void WindowThemesDrawTabImages(DrawPixelInfo* dpi)
     {
         for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
         {
@@ -882,9 +882,9 @@ public:
     }
 };
 
-rct_window* WindowThemesOpen()
+WindowBase* WindowThemesOpen()
 {
-    rct_window* window;
+    WindowBase* window;
 
     // Check if window is already open
     window = WindowBringToFrontByClass(WindowClass::Themes);

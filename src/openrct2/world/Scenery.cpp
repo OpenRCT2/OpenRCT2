@@ -65,7 +65,7 @@ const CoordsXY SceneryQuadrantOffsets[] = {
     { 24, 8 },
 };
 
-LargeSceneryText::LargeSceneryText(const rct_large_scenery_text& original)
+LargeSceneryText::LargeSceneryText(const RCTLargeSceneryText& original)
 {
     for (size_t i = 0; i < std::size(original.offset); i++)
     {
@@ -81,7 +81,7 @@ LargeSceneryText::LargeSceneryText(const rct_large_scenery_text& original)
     }
 }
 
-const rct_large_scenery_text_glyph* LargeSceneryText::GetGlyph(char32_t codepoint) const
+const LargeSceneryTextGlyph* LargeSceneryText::GetGlyph(char32_t codepoint) const
 {
     if (codepoint >= std::size(glyphs))
     {
@@ -90,7 +90,7 @@ const rct_large_scenery_text_glyph* LargeSceneryText::GetGlyph(char32_t codepoin
     return &glyphs[codepoint];
 }
 
-const rct_large_scenery_text_glyph& LargeSceneryText::GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const
+const LargeSceneryTextGlyph& LargeSceneryText::GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const
 {
     auto glyph = GetGlyph(codepoint);
     if (glyph == nullptr)
@@ -131,7 +131,7 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -331,14 +331,14 @@ PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex)
     return result;
 }
 
-rct_scenery_group_entry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex)
+SceneryGroupEntry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex)
 {
-    rct_scenery_group_entry* result = nullptr;
+    SceneryGroupEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::SceneryGroup, entryIndex);
     if (obj != nullptr)
     {
-        result = static_cast<rct_scenery_group_entry*>(obj->GetLegacyData());
+        result = static_cast<SceneryGroupEntry*>(obj->GetLegacyData());
     }
     return result;
 }

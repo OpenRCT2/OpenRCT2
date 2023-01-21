@@ -24,7 +24,7 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_SLOPE_LONG}),
     SET_FIELD(CoveredTrackPieces, {TrackElemType::Flat, TrackElemType::LeftQuarterTurn5Tiles, TrackElemType::RightQuarterTurn5Tiles, TrackElemType::SBendLeft, TrackElemType::SBendRight}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionWaterRc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionWaterRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES | RIDE_TYPE_FLAG_HAS_LARGE_CURVES | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),

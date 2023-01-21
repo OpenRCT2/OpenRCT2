@@ -42,7 +42,7 @@ static constexpr BoundBoxXY FerrisWheelData[] = {
 };
 
 static void PaintFerrisWheelRiders(
-    PaintSession& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
+    PaintSession& session, const RideObjectEntry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
     const BoundBoxXYZ& bb)
 {
     for (int32_t i = 0; i < 32; i += 2)

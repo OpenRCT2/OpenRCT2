@@ -87,7 +87,7 @@ money32 PlaceProvisionalTrackPiece(
 
     int16_t z_begin, z_end;
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const rct_track_coordinates& coords = ted.Coordinates;
+    const TrackCoordinates& coords = ted.Coordinates;
     if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
     {
         z_begin = coords.z_begin;
@@ -155,7 +155,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     {
         for (uint32_t i = 0; i < std::size(gTrackDescriptors); i++)
         {
-            const track_descriptor* trackDescriptor = &gTrackDescriptors[i];
+            const TrackDescriptor* trackDescriptor = &gTrackDescriptors[i];
 
             if (trackDescriptor->track_curve != curve)
                 continue;
@@ -311,7 +311,7 @@ bool WindowRideConstructionUpdateState(
     }
 
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const rct_track_coordinates& trackCoordinates = ted.Coordinates;
+    const TrackCoordinates& trackCoordinates = ted.Coordinates;
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;

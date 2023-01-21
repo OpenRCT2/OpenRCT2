@@ -134,7 +134,7 @@ static void SpiralSlidePaintTileFront(
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { 8, 16, 108 }, { 8, 0, height + 3 });
     }
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     if (dpi->zoom_level <= ZoomLevel{ 0 } && ride.slide_in_use != 0)
     {
         uint8_t slide_progress = ride.spiral_slide_progress;

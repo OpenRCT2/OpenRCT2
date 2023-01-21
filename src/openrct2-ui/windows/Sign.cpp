@@ -279,7 +279,7 @@ public:
         text_colour_btn->image = GetColourButtonImage(_textColour);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -316,7 +316,7 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* WindowSignOpen(rct_windownumber number)
+WindowBase* WindowSignOpen(rct_windownumber number)
 {
     auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
@@ -339,7 +339,7 @@ rct_window* WindowSignOpen(rct_windownumber number)
  *
  *  rct2: 0x6E5F52
  */
-rct_window* WindowSignSmallOpen(rct_windownumber number)
+WindowBase* WindowSignSmallOpen(rct_windownumber number)
 {
     auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 

@@ -674,10 +674,10 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "location")
         {
-            rct_window* w = WindowGetMain();
+            WindowBase* w = WindowGetMain();
             if (w != nullptr)
             {
-                rct_viewport* viewport = WindowGetViewport(w);
+                Viewport* viewport = WindowGetViewport(w);
                 auto info = GetMapCoordinatesFromPos(
                     { viewport->view_width / 2, viewport->view_height / 2 }, EnumsToFlags(ViewportInteractionItem::Terrain));
 
@@ -1053,7 +1053,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "location" && InvalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
         {
-            rct_window* w = WindowGetMain();
+            WindowBase* w = WindowGetMain();
             if (w != nullptr)
             {
                 auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
@@ -1147,7 +1147,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "current_rotation" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             uint8_t currentRotation = GetCurrentRotation();
-            rct_window* mainWindow = WindowGetMain();
+            WindowBase* mainWindow = WindowGetMain();
             int32_t newRotation = int_val[0];
             if (newRotation < 0 || newRotation > 3)
             {
@@ -1213,7 +1213,7 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
             return 1;
         }
 
-        const rct_object_entry* entry = &ori->ObjectEntry;
+        const RCTObjectEntry* entry = &ori->ObjectEntry;
         const auto* loadedObject = ObjectManagerGetLoadedObject(ObjectEntryDescriptor(*ori));
         if (loadedObject != nullptr)
         {
@@ -1233,7 +1233,7 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
         if (objectType == ObjectType::Ride)
         {
             // Automatically research the ride so it's supported by the game.
-            rct_ride_entry* rideEntry;
+            RideObjectEntry* rideEntry;
 
             rideEntry = GetRideEntryByIndex(groupIndex);
 
@@ -1322,7 +1322,7 @@ static int32_t ConsoleCommandOpen(InteractiveConsole& console, const arguments_t
         bool invalidTitle = false;
         if (argv[0] == "object_selection" && InvalidArguments(&invalidTitle, !title))
         {
-            if (network_get_mode() != NETWORK_MODE_NONE)
+            if (NetworkGetMode() != NETWORK_MODE_NONE)
             {
                 console.WriteLineError("Cannot open this window in multiplayer mode.");
             }
@@ -1335,7 +1335,7 @@ static int32_t ConsoleCommandOpen(InteractiveConsole& console, const arguments_t
         }
         else if (argv[0] == "inventions_list" && InvalidArguments(&invalidTitle, !title))
         {
-            if (network_get_mode() != NETWORK_MODE_NONE)
+            if (NetworkGetMode() != NETWORK_MODE_NONE)
             {
                 console.WriteLineError("Cannot open this window in multiplayer mode.");
             }
@@ -1350,7 +1350,7 @@ static int32_t ConsoleCommandOpen(InteractiveConsole& console, const arguments_t
         }
         else if (argv[0] == "objective_options" && InvalidArguments(&invalidTitle, !title))
         {
-            if (network_get_mode() != NETWORK_MODE_NONE)
+            if (NetworkGetMode() != NETWORK_MODE_NONE)
             {
                 console.WriteLineError("Cannot open this window in multiplayer mode.");
             }
@@ -1395,7 +1395,7 @@ static int32_t ConsoleCommandRemoveFloatingObjects(InteractiveConsole& console, 
 
 static int32_t ConsoleCommandRemoveParkFences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {
@@ -1542,8 +1542,8 @@ static int32_t ConsoleCommandSavePark([[maybe_unused]] InteractiveConsole& conso
 
 static int32_t ConsoleCommandSay(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
-        || network_get_authstatus() != NetworkAuth::Ok)
+    if (NetworkGetMode() == NETWORK_MODE_NONE || NetworkGetStatus() != NETWORK_STATUS_CONNECTED
+        || NetworkGetAuthstatus() != NetworkAuth::Ok)
     {
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return 0;
@@ -1551,7 +1551,7 @@ static int32_t ConsoleCommandSay(InteractiveConsole& console, const arguments_t&
 
     if (!argv.empty())
     {
-        network_send_chat(argv[0].c_str());
+        NetworkSendChat(argv[0].c_str());
         return 1;
     }
 
@@ -1561,7 +1561,7 @@ static int32_t ConsoleCommandSay(InteractiveConsole& console, const arguments_t&
 
 static int32_t ConsoleCommandReplayStartRecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1608,7 +1608,7 @@ static int32_t ConsoleCommandReplayStartRecord(InteractiveConsole& console, cons
 
 static int32_t ConsoleCommandReplayStopRecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1643,7 +1643,7 @@ static int32_t ConsoleCommandReplayStopRecord(InteractiveConsole& console, const
 
 static int32_t ConsoleCommandReplayStart(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1685,7 +1685,7 @@ static int32_t ConsoleCommandReplayStart(InteractiveConsole& console, const argu
 
 static int32_t ConsoleCommandReplayStop(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1703,7 +1703,7 @@ static int32_t ConsoleCommandReplayStop(InteractiveConsole& console, const argum
 
 static int32_t ConsoleCommandReplayNormalise(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1763,8 +1763,8 @@ static int32_t ConsoleCommandMpDesync(InteractiveConsole& console, const argumen
             {
                 auto* guest = guests[0];
                 if (guests.size() > 1)
-                    guest = guests[util_rand() % guests.size() - 1];
-                guest->TshirtColour = util_rand() & 0xFF;
+                    guest = guests[UtilRand() % guests.size() - 1];
+                guest->TshirtColour = UtilRand() & 0xFF;
                 guest->Invalidate();
             }
             break;
@@ -1779,7 +1779,7 @@ static int32_t ConsoleCommandMpDesync(InteractiveConsole& console, const argumen
             {
                 auto* guest = guests[0];
                 if (guests.size() > 1)
-                    guest = guests[util_rand() % guests.size() - 1];
+                    guest = guests[UtilRand() % guests.size() - 1];
                 guest->Remove();
             }
             break;
@@ -1924,7 +1924,7 @@ static int32_t ConsoleCommandProfilerStop(
 }
 
 using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
-struct console_command
+struct ConsoleCommand
 {
     const utf8* command;
     console_command_func func;
@@ -1983,7 +1983,7 @@ static constexpr const utf8* console_window_table[] = {
 };
 // clang-format on
 
-static constexpr const console_command console_command_table[] = {
+static constexpr const ConsoleCommand console_command_table[] = {
     { "abort", ConsoleCommandAbort, "Calls std::abort(), for testing purposes only.", "abort" },
     { "add_news_item", ConsoleCommandAddNewsItem, "Inserts a news item", "add_news_item [<type> <message> <assoc>]" },
     { "assert", ConsoleCommandAssert, "Triggers assertion failure, for testing purposes only", "assert" },

@@ -254,7 +254,7 @@ public:
         CreateViewport();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -298,7 +298,7 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* WindowBannerOpen(rct_windownumber number)
+WindowBase* WindowBannerOpen(rct_windownumber number)
 {
     auto w = static_cast<BannerWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 

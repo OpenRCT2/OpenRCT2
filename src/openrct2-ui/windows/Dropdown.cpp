@@ -136,7 +136,7 @@ public:
         InputSetState(InputState::DropdownActive);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -160,7 +160,7 @@ public:
 
                 if (colours[0] & COLOUR_FLAG_TRANSLUCENT)
                 {
-                    translucent_window_palette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
+                    TranslucentWindowPalette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
                     GfxFilterRect(&dpi, { leftTop, rightBottom }, palette.highlight);
                     GfxFilterRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                 }
@@ -433,7 +433,7 @@ void WindowDropdownClose()
  * New function based on 6e914e
  * returns -1 if index is invalid
  */
-int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
+int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
 {
     if (w->classification == WindowClass::Dropdown)
     {
@@ -446,7 +446,7 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
 /**
  *  rct2: 0x006ED43D
  */
-void WindowDropdownShowColour(rct_window* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
+void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
     // Set items

@@ -66,7 +66,7 @@ constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_B = 21881;
 constexpr int32_t SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_3_A = 21879; // Needs no B piece
 
 /** rct2: 0x0077839C */
-static void side_friction_rc_track_flat(
+static void SideFrictionRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -144,7 +144,7 @@ static void side_friction_rc_track_flat(
 }
 
 /** rct2: 0x007784AC, 0x007784BC, 0x007784CC */
-static void side_friction_rc_track_station(
+static void SideFrictionRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -166,7 +166,7 @@ static void side_friction_rc_track_station(
 }
 
 /** rct2: 0x007783AC */
-static void side_friction_rc_track_25_deg_up(
+static void SideFrictionRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -267,7 +267,7 @@ static void side_friction_rc_track_25_deg_up(
 }
 
 /** rct2: 0x007783CC */
-static void side_friction_rc_track_flat_to_25_deg_up(
+static void SideFrictionRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -368,7 +368,7 @@ static void side_friction_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x007783FC */
-static void side_friction_rc_track_25_deg_up_to_flat(
+static void SideFrictionRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -469,31 +469,31 @@ static void side_friction_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x0077840C */
-static void side_friction_rc_track_25_deg_down(
+static void SideFrictionRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    side_friction_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SideFrictionRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0077842C */
-static void side_friction_rc_track_flat_to_25_deg_down(
+static void SideFrictionRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    side_friction_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SideFrictionRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0077845C */
-static void side_friction_rc_track_25_deg_down_to_flat(
+static void SideFrictionRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    side_friction_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SideFrictionRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0077846C */
-static void side_friction_rc_track_left_quarter_turn_5(
+static void SideFrictionRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -752,16 +752,16 @@ static void side_friction_rc_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x0077847C */
-static void side_friction_rc_track_right_quarter_turn_5(
+static void SideFrictionRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    side_friction_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SideFrictionRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x0077848C */
-static void side_friction_rc_track_s_bend_left(
+static void SideFrictionRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -962,7 +962,7 @@ static void side_friction_rc_track_s_bend_left(
 }
 
 /** rct2: 0x0077849C */
-static void side_friction_rc_track_s_bend_right(
+static void SideFrictionRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1163,7 +1163,7 @@ static void side_friction_rc_track_s_bend_right(
 }
 
 /** rct2: 0x007784DC */
-static void side_friction_rc_track_left_quarter_turn_3(
+static void SideFrictionRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1315,16 +1315,16 @@ static void side_friction_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x007784EC */
-static void side_friction_rc_track_right_quarter_turn_3(
+static void SideFrictionRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    side_friction_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SideFrictionRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007784FC */
-static void side_friction_rc_track_brakes(
+static void SideFrictionRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1357,7 +1357,7 @@ static void side_friction_rc_track_brakes(
 }
 
 /** rct2: 0x007785DC */
-static void side_friction_rc_track_left_eighth_to_diag(
+static void SideFrictionRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1558,7 +1558,7 @@ static void side_friction_rc_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x007785EC */
-static void side_friction_rc_track_right_eighth_to_diag(
+static void SideFrictionRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1759,25 +1759,25 @@ static void side_friction_rc_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x007785FC */
-static void side_friction_rc_track_left_eighth_to_orthogonal(
+static void SideFrictionRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    side_friction_rc_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SideFrictionRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0077860C */
-static void side_friction_rc_track_right_eighth_to_orthogonal(
+static void SideFrictionRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    side_friction_rc_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    SideFrictionRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x0077850C */
-static void side_friction_rc_track_diag_flat(
+static void SideFrictionRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1943,7 +1943,7 @@ static void side_friction_rc_track_diag_flat(
 }
 
 /** rct2: 0x0077853C */
-static void side_friction_rc_track_diag_25_deg_up(
+static void SideFrictionRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2109,7 +2109,7 @@ static void side_friction_rc_track_diag_25_deg_up(
 }
 
 /** rct2: 0x0077851C */
-static void side_friction_rc_track_diag_flat_to_25_deg_up(
+static void SideFrictionRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2275,7 +2275,7 @@ static void side_friction_rc_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x0077852C */
-static void side_friction_rc_track_diag_25_deg_up_to_flat(
+static void SideFrictionRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2441,7 +2441,7 @@ static void side_friction_rc_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x0077859C */
-static void side_friction_rc_track_diag_25_deg_down(
+static void SideFrictionRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2607,7 +2607,7 @@ static void side_friction_rc_track_diag_25_deg_down(
 }
 
 /** rct2: 0x0077857C */
-static void side_friction_rc_track_diag_flat_to_25_deg_down(
+static void SideFrictionRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2768,7 +2768,7 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x0077858C */
-static void side_friction_rc_track_diag_25_deg_down_to_flat(
+static void SideFrictionRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2933,7 +2933,7 @@ static void side_friction_rc_track_diag_25_deg_down_to_flat(
     }
 }
 
-static void side_friction_rc_track_60_deg_up(
+static void SideFrictionRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2992,14 +2992,14 @@ static void side_friction_rc_track_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-static void side_friction_rc_track_60_deg_down(
+static void SideFrictionRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    side_friction_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    SideFrictionRCTrack60DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-static void side_friction_rc_track_25_deg_up_to_60_deg_up(
+static void SideFrictionRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3063,14 +3063,14 @@ static void side_friction_rc_track_25_deg_up_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void side_friction_rc_track_60_deg_down_to_25_deg_down(
+static void SideFrictionRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    side_friction_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    SideFrictionRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-static void side_friction_rc_track_60_deg_up_to_25_deg_up(
+static void SideFrictionRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3134,14 +3134,14 @@ static void side_friction_rc_track_60_deg_up_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void side_friction_rc_track_25_deg_down_to_60_deg_down(
+static void SideFrictionRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    side_friction_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    SideFrictionRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-static void side_friction_rc_track_diag_60_deg_up(
+static void SideFrictionRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3232,14 +3232,14 @@ static void side_friction_rc_track_diag_60_deg_up(
     }
 }
 
-static void side_friction_rc_track_diag_60_deg_down(
+static void SideFrictionRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    side_friction_rc_track_diag_60_deg_up(session, ride, 3 - trackSequence, (direction + 2) % 4, height, trackElement);
+    SideFrictionRCTrackDiag60DegUp(session, ride, 3 - trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-static void side_friction_rc_track_diag_60_deg_up_to_25_deg_up(
+static void SideFrictionRCTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3328,15 +3328,14 @@ static void side_friction_rc_track_diag_60_deg_up_to_25_deg_up(
     }
 }
 
-static void side_friction_rc_track_diag_25_deg_down_to_60_deg_down(
+static void SideFrictionRCTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    side_friction_rc_track_diag_60_deg_up_to_25_deg_up(
-        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    SideFrictionRCTrackDiag60DegUpTo25DegUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 };
 
-static void side_friction_rc_track_diag_25_deg_up_to_60_deg_up(
+static void SideFrictionRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3423,99 +3422,98 @@ static void side_friction_rc_track_diag_25_deg_up_to_60_deg_up(
     }
 }
 
-static void side_friction_rc_track_diag_60_deg_down_to_25_deg_down(
+static void SideFrictionRCTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    side_friction_rc_track_diag_25_deg_up_to_60_deg_up(
-        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    SideFrictionRCTrackDiag25DegUpTo60DegUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 };
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return side_friction_rc_track_flat;
+            return SideFrictionRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return side_friction_rc_track_station;
+            return SideFrictionRCTrackStation;
         case TrackElemType::Up25:
-            return side_friction_rc_track_25_deg_up;
+            return SideFrictionRCTrack25DegUp;
         case TrackElemType::FlatToUp25:
-            return side_friction_rc_track_flat_to_25_deg_up;
+            return SideFrictionRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return side_friction_rc_track_25_deg_up_to_flat;
+            return SideFrictionRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return side_friction_rc_track_25_deg_down;
+            return SideFrictionRCTrack25DegDown;
         case TrackElemType::FlatToDown25:
-            return side_friction_rc_track_flat_to_25_deg_down;
+            return SideFrictionRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return side_friction_rc_track_25_deg_down_to_flat;
+            return SideFrictionRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return side_friction_rc_track_left_quarter_turn_5;
+            return SideFrictionRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return side_friction_rc_track_right_quarter_turn_5;
+            return SideFrictionRCTrackRightQuarterTurn5;
         case TrackElemType::SBendLeft:
-            return side_friction_rc_track_s_bend_left;
+            return SideFrictionRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return side_friction_rc_track_s_bend_right;
+            return SideFrictionRCTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return side_friction_rc_track_left_quarter_turn_3;
+            return SideFrictionRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return side_friction_rc_track_right_quarter_turn_3;
+            return SideFrictionRCTrackRightQuarterTurn3;
         case TrackElemType::Brakes:
-            return side_friction_rc_track_brakes;
+            return SideFrictionRCTrackBrakes;
         case TrackElemType::LeftEighthToDiag:
-            return side_friction_rc_track_left_eighth_to_diag;
+            return SideFrictionRCTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return side_friction_rc_track_right_eighth_to_diag;
+            return SideFrictionRCTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return side_friction_rc_track_left_eighth_to_orthogonal;
+            return SideFrictionRCTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return side_friction_rc_track_right_eighth_to_orthogonal;
+            return SideFrictionRCTrackRightEighthToOrthogonal;
         case TrackElemType::DiagFlat:
-            return side_friction_rc_track_diag_flat;
+            return SideFrictionRCTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return side_friction_rc_track_diag_25_deg_up;
+            return SideFrictionRCTrackDiag25DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return side_friction_rc_track_diag_flat_to_25_deg_up;
+            return SideFrictionRCTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return side_friction_rc_track_diag_25_deg_up_to_flat;
+            return SideFrictionRCTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return side_friction_rc_track_diag_25_deg_down;
+            return SideFrictionRCTrackDiag25DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return side_friction_rc_track_diag_flat_to_25_deg_down;
+            return SideFrictionRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return side_friction_rc_track_diag_25_deg_down_to_flat;
+            return SideFrictionRCTrackDiag25DegDownToFlat;
 
         // Added by OpenRCT2
         case TrackElemType::Down25ToDown60:
-            return side_friction_rc_track_25_deg_down_to_60_deg_down;
+            return SideFrictionRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return side_friction_rc_track_60_deg_down_to_25_deg_down;
+            return SideFrictionRCTrack60DegDownTo25DegDown;
         case TrackElemType::Up25ToUp60:
-            return side_friction_rc_track_25_deg_up_to_60_deg_up;
+            return SideFrictionRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return side_friction_rc_track_60_deg_up_to_25_deg_up;
+            return SideFrictionRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up60:
-            return side_friction_rc_track_60_deg_up;
+            return SideFrictionRCTrack60DegUp;
         case TrackElemType::Down60:
-            return side_friction_rc_track_60_deg_down;
+            return SideFrictionRCTrack60DegDown;
 
         case TrackElemType::DiagUp60:
-            return side_friction_rc_track_diag_60_deg_up;
+            return SideFrictionRCTrackDiag60DegUp;
         case TrackElemType::DiagDown60:
-            return side_friction_rc_track_diag_60_deg_down;
+            return SideFrictionRCTrackDiag60DegDown;
         case TrackElemType::DiagUp60ToUp25:
-            return side_friction_rc_track_diag_60_deg_up_to_25_deg_up;
+            return SideFrictionRCTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagDown25ToDown60:
-            return side_friction_rc_track_diag_25_deg_down_to_60_deg_down;
+            return SideFrictionRCTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagUp25ToUp60:
-            return side_friction_rc_track_diag_25_deg_up_to_60_deg_up;
+            return SideFrictionRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagDown60ToDown25:
-            return side_friction_rc_track_diag_60_deg_down_to_25_deg_down;
+            return SideFrictionRCTrackDiag60DegDownTo25DegDown;
     }
     return nullptr;
 }

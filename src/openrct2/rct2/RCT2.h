@@ -18,7 +18,7 @@
 #include <tuple>
 #include <vector>
 
-struct rct_ride_entry;
+struct RideObjectEntry;
 class ObjectList;
 enum class EditorStep : uint8_t;
 
@@ -304,13 +304,13 @@ namespace RCT2
     /* Track Scenery entry  size: 0x16 */
     struct TD6SceneryElement
     {
-        rct_object_entry scenery_object; // 0x00
-        int8_t x;                        // 0x10
-        int8_t y;                        // 0x11
-        int8_t z;                        // 0x12
-        uint8_t flags;                   // 0x13 direction quadrant tertiary colour
-        uint8_t primary_colour;          // 0x14
-        uint8_t secondary_colour;        // 0x15
+        RCTObjectEntry scenery_object; // 0x00
+        int8_t x;                      // 0x10
+        int8_t y;                      // 0x11
+        int8_t z;                      // 0x12
+        uint8_t flags;                 // 0x13 direction quadrant tertiary colour
+        uint8_t primary_colour;        // 0x14
+        uint8_t secondary_colour;      // 0x15
     };
     assert_struct_size(TD6SceneryElement, 0x16);
 
@@ -380,7 +380,7 @@ namespace RCT2
         uint8_t track_rail_colour[Limits::NumColourSchemes];         // 0x64
         uint8_t track_support_colour[Limits::NumColourSchemes];      // 0x68
         uint32_t flags2;                                             // 0x6C
-        rct_object_entry vehicle_object;                             // 0x70
+        RCTObjectEntry vehicle_object;                               // 0x70
         uint8_t space_required_x;                                    // 0x80
         uint8_t space_required_y;                                    // 0x81
         uint8_t vehicle_additional_colour[Limits::MaxTrainsPerRide]; // 0x82
@@ -423,7 +423,7 @@ namespace RCT2
     };
     assert_struct_size(ScoresEntry, 0x02B0);
 
-    struct Vehicle : RCT12SpriteBase
+    struct Vehicle : RCT12EntityBase
     {
         uint8_t Pitch;         // 0x1F
         uint8_t bank_rotation; // 0x20
@@ -548,7 +548,7 @@ namespace RCT2
     };
     assert_struct_size(Vehicle, 0xDA);
 
-    struct Peep : RCT12SpriteBase
+    struct Peep : RCT12EntityBase
     {
         uint8_t pad_1F[0x22 - 0x1F];
         StringId name_string_idx; // 0x22
@@ -722,18 +722,18 @@ namespace RCT2
         uint8_t pad_00[0x100];
 
     public:
-        RCT12SpriteBase unknown;
+        RCT12EntityBase unknown;
         Vehicle vehicle;
         Peep peep;
-        RCT12SpriteLitter litter;
-        RCT12SpriteBalloon balloon;
-        RCT12SpriteDuck duck;
-        RCT12SpriteJumpingFountain jumping_fountain;
-        RCT12SpriteMoneyEffect money_effect;
-        RCT12SpriteCrashedVehicleParticle crashed_vehicle_particle;
-        RCT12SpriteCrashSplash crash_splash;
-        RCT12SpriteSteamParticle steam_particle;
-        RCT12SpriteParticle misc_particle;
+        RCT12EntityLitter litter;
+        RCT12EntityBalloon balloon;
+        RCT12EntityDuck duck;
+        RCT12EntityJumpingFountain jumping_fountain;
+        RCT12EntityMoneyEffect money_effect;
+        RCT12EntityCrashedVehicleParticle crashed_vehicle_particle;
+        RCT12EntityCrashSplash crash_splash;
+        RCT12EntitySteamParticle steam_particle;
+        RCT12EntityParticle misc_particle;
     };
     assert_struct_size(Entity, 0x100);
 
@@ -748,7 +748,7 @@ namespace RCT2
         uint8_t current_ride;
         uint8_t state;
         uint8_t proximity_track_type;
-        uint8_t proximity_base_height;
+        uint8_t proximity_BaseHeight;
         uint16_t proximity_total;
         uint16_t proximity_scores[26];
         uint16_t num_brakes;
@@ -785,9 +785,9 @@ namespace RCT2
         int32_t objective_arg_2; // 0x04
         int16_t objective_arg_3; // 0x08
         uint8_t pad_00A[0x3E];
-        char name[64];          // 0x48
-        char details[256];      // 0x88
-        rct_object_entry entry; // 0x188
+        char name[64];        // 0x48
+        char details[256];    // 0x88
+        RCTObjectEntry entry; // 0x188
     };
     assert_struct_size(S6Info, 0x198);
 
@@ -805,20 +805,20 @@ namespace RCT2
         // SC6[3]
         union
         {
-            rct_object_entry Objects[RCT2_OBJECT_ENTRY_COUNT];
+            RCTObjectEntry Objects[RCT2_OBJECT_ENTRY_COUNT];
             struct
             {
-                rct_object_entry RideObjects[Limits::MaxRideObjects];
-                rct_object_entry SceneryObjects[Limits::MaxSmallSceneryObjects];
-                rct_object_entry LargeSceneryObjects[Limits::MaxLargeSceneryObjects];
-                rct_object_entry WallSceneryObjects[Limits::MaxWallSceneryObjects];
-                rct_object_entry BannerObjects[Limits::MaxBannerObjects];
-                rct_object_entry PathObjects[Limits::MaxPathObjects];
-                rct_object_entry PathAdditionObjects[Limits::MaxPathAdditionObjects];
-                rct_object_entry SceneryGroupObjects[Limits::MaxSceneryGroupObjects];
-                rct_object_entry ParkEntranceObjects[Limits::MaxParkEntranceObjects];
-                rct_object_entry WaterObjects[Limits::MaxWaterObjects];
-                rct_object_entry ScenarioTextObjects[Limits::MaxScenarioTextObjects];
+                RCTObjectEntry RideObjects[Limits::MaxRideObjects];
+                RCTObjectEntry SceneryObjects[Limits::MaxSmallSceneryObjects];
+                RCTObjectEntry LargeSceneryObjects[Limits::MaxLargeSceneryObjects];
+                RCTObjectEntry WallSceneryObjects[Limits::MaxWallSceneryObjects];
+                RCTObjectEntry BannerObjects[Limits::MaxBannerObjects];
+                RCTObjectEntry PathObjects[Limits::MaxPathObjects];
+                RCTObjectEntry PathAdditionObjects[Limits::MaxPathAdditionObjects];
+                RCTObjectEntry SceneryGroupObjects[Limits::MaxSceneryGroupObjects];
+                RCTObjectEntry ParkEntranceObjects[Limits::MaxParkEntranceObjects];
+                RCTObjectEntry WaterObjects[Limits::MaxWaterObjects];
+                RCTObjectEntry ScenarioTextObjects[Limits::MaxScenarioTextObjects];
             };
         };
 
@@ -1031,7 +1031,7 @@ namespace RCT2
     assert_struct_size(StexEntry, 7);
 #pragma pack(pop)
 
-    ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry& rideEntry);
+    ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const RideObjectEntry& rideEntry);
     bool RCT2TrackTypeIsBooster(ride_type_t rideType, uint16_t trackType);
     bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
     uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
@@ -1054,7 +1054,7 @@ namespace RCT2
 
     const FootpathMapping* GetFootpathSurfaceId(
         const ObjectEntryDescriptor& desc, bool ideallyLoaded = false, bool isQueue = false);
-    std::optional<rct_object_entry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings);
+    std::optional<RCTObjectEntry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings);
 
     static constexpr std::string_view DefaultTerrainSurfaces[] = {
         "rct2.terrain_surface.grass",        "rct2.terrain_surface.sand",        "rct2.terrain_surface.dirt",

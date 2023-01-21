@@ -53,7 +53,7 @@ using namespace OpenRCT2;
 
 struct ObjectEntryHash
 {
-    size_t operator()(const rct_object_entry& entry) const
+    size_t operator()(const RCTObjectEntry& entry) const
     {
         uint32_t hash = 5381;
         for (auto i : entry.name)
@@ -66,14 +66,14 @@ struct ObjectEntryHash
 
 struct ObjectEntryEqual
 {
-    bool operator()(const rct_object_entry& lhs, const rct_object_entry& rhs) const
+    bool operator()(const RCTObjectEntry& lhs, const RCTObjectEntry& rhs) const
     {
         return memcmp(&lhs.name, &rhs.name, 8) == 0;
     }
 };
 
 using ObjectIdentifierMap = std::unordered_map<std::string, size_t>;
-using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryHash, ObjectEntryEqual>;
+using ObjectEntryMap = std::unordered_map<RCTObjectEntry, size_t, ObjectEntryHash, ObjectEntryEqual>;
 
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
@@ -220,7 +220,7 @@ public:
 
     const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const override
     {
-        rct_object_entry entry = {};
+        RCTObjectEntry entry = {};
         entry.SetName(legacyIdentifier);
 
         auto kvp = _itemMap.find(entry);
@@ -241,7 +241,7 @@ public:
         return nullptr;
     }
 
-    const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const override final
+    const ObjectRepositoryItem* FindObject(const RCTObjectEntry* objectEntry) const override final
     {
         auto kvp = _itemMap.find(*objectEntry);
         if (kvp != _itemMap.end())
@@ -293,7 +293,7 @@ public:
         }
     }
 
-    void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) override
+    void AddObject(const RCTObjectEntry* objectEntry, const void* data, size_t dataSize) override
     {
         utf8 objectName[9];
         ObjectEntryGetNameFixed(objectName, sizeof(objectName), objectEntry);
@@ -340,7 +340,7 @@ public:
         auto chunkReader = SawyerChunkReader(stream);
 
         // Check if we already have this object
-        rct_object_entry entry = stream->ReadValue<rct_object_entry>();
+        RCTObjectEntry entry = stream->ReadValue<RCTObjectEntry>();
         if (FindObject(&entry) != nullptr)
         {
             chunkReader.SkipChunk();
@@ -378,7 +378,7 @@ private:
         _newItemMap.clear();
         for (size_t i = 0; i < _items.size(); i++)
         {
-            rct_object_entry entry = _items[i].ObjectEntry;
+            RCTObjectEntry entry = _items[i].ObjectEntry;
             _itemMap[entry] = i;
             if (!_items[i].Identifier.empty())
             {
@@ -468,7 +468,7 @@ private:
     }
 
     static void SaveObject(
-        std::string_view path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
+        std::string_view path, const RCTObjectEntry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
     {
         if (fixChecksum)
         {
@@ -521,18 +521,18 @@ private:
 
         // Encode data
         ObjectType objectType = entry->GetType();
-        sawyercoding_chunk_header chunkHeader;
+        SawyerCodingChunkHeader chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[EnumValue(objectType)];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(
+        size_t encodedDataSize = SawyerCodingWriteChunkBuffer(
             encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
 
         // Save to file
         try
         {
             auto fs = FileStream(std::string(path), FILE_MODE_WRITE);
-            fs.Write(entry, sizeof(rct_object_entry));
+            fs.Write(entry, sizeof(RCTObjectEntry));
             fs.Write(encodedDataBuffer, encodedDataSize);
 
             Memory::Free(encodedDataBuffer);
@@ -623,7 +623,7 @@ private:
         }
     }
 
-    void WritePackedObject(OpenRCT2::IStream* stream, const rct_object_entry* entry)
+    void WritePackedObject(OpenRCT2::IStream* stream, const RCTObjectEntry* entry)
     {
         const ObjectRepositoryItem* item = FindObject(entry);
         if (item == nullptr)
@@ -633,7 +633,7 @@ private:
 
         // Read object data from file
         auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FILE_MODE_OPEN);
-        auto fileEntry = fs.ReadValue<rct_object_entry>();
+        auto fileEntry = fs.ReadValue<RCTObjectEntry>();
         if (*entry != fileEntry)
         {
             throw std::runtime_error("Header found in object file does not match object to pack.");
@@ -671,7 +671,7 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
     }
 }
 
-std::unique_ptr<Object> ObjectRepositoryLoadObject(const rct_object_entry* objectEntry)
+std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectEntry)
 {
     std::unique_ptr<Object> object;
     auto& objRepository = GetContext()->GetObjectRepository();
@@ -715,7 +715,7 @@ const ObjectRepositoryItem* ObjectRepositoryGetItems()
     return objectRepository.GetObjects();
 }
 
-const ObjectRepositoryItem* ObjectRepositoryFindObjectByEntry(const rct_object_entry* entry)
+const ObjectRepositoryItem* ObjectRepositoryFindObjectByEntry(const RCTObjectEntry* entry)
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.FindObject(entry);
@@ -727,7 +727,7 @@ const ObjectRepositoryItem* ObjectRepositoryFindObjectByName(const char* name)
     return objectRepository.FindObjectLegacy(name);
 }
 
-int32_t ObjectCalculateChecksum(const rct_object_entry* entry, const void* data, size_t dataLength)
+int32_t ObjectCalculateChecksum(const RCTObjectEntry* entry, const void* data, size_t dataLength)
 {
     const uint8_t* entryBytePtr = reinterpret_cast<const uint8_t*>(entry);
 

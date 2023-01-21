@@ -116,7 +116,7 @@ public:
     void OnPrepareDraw() override
     {
         uint32_t wflags = 0;
-        rct_window* w = WindowGetMain();
+        WindowBase* w = WindowGetMain();
 
         pressed_widgets = 0;
         disabled_widgets = 0;
@@ -145,7 +145,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         // Locate mechanic button image
@@ -170,7 +170,7 @@ private:
     void ToggleViewportFlag(WidgetIndex widgetIndex)
     {
         uint32_t wflags = 0;
-        rct_window* w = WindowGetMain();
+        WindowBase* w = WindowGetMain();
 
         if (w == nullptr)
             return;
@@ -244,7 +244,7 @@ private:
     }
 };
 
-rct_window* WindowTransparencyOpen()
+WindowBase* WindowTransparencyOpen()
 {
     auto* window = WindowBringToFrontByClass(WindowClass::Transparency);
     if (window == nullptr)

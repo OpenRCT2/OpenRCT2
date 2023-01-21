@@ -552,7 +552,7 @@ public:
         CommonPrepareDrawAfter();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(&dpi);
@@ -612,7 +612,7 @@ public:
         if (page == WINDOW_OPTIONS_PAGE_ADVANCED)
             return AdvancedTooltip(widgetIndex, fallback);
 
-        return rct_window::OnTooltip(widgetIndex, fallback);
+        return WindowBase::OnTooltip(widgetIndex, fallback);
     }
 
 private:
@@ -909,7 +909,7 @@ private:
         widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.DrawingEngine)];
     }
 
-    void DisplayDraw(rct_drawpixelinfo* dpi)
+    void DisplayDraw(DrawPixelInfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.WindowScale * 100));
@@ -934,7 +934,7 @@ private:
                 gConfigGeneral.AlwaysShowGridlines ^= 1;
                 ConfigSaveDefault();
                 GfxInvalidateScreen();
-                rct_window* mainWindow = WindowGetMain();
+                WindowBase* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                 {
                     if (gConfigGeneral.AlwaysShowGridlines)
@@ -1360,7 +1360,7 @@ private:
                     ShowDropdown(widget, numItems);
                     if (gConfigSound.TitleMusic == TitleMusicKind::None)
                         Dropdown::SetChecked(0, true);
-                    else if (gConfigSound.TitleMusic == TitleMusicKind::Rct2)
+                    else if (gConfigSound.TitleMusic == TitleMusicKind::RCT2)
                         Dropdown::SetChecked(1, true);
                 }
                 else
@@ -1410,7 +1410,7 @@ private:
                 auto titleMusic = static_cast<TitleMusicKind>(dropdownIndex);
                 if (!IsRCT1TitleMusicAvailable() && dropdownIndex != 0)
                 {
-                    titleMusic = TitleMusicKind::Rct2;
+                    titleMusic = TitleMusicKind::RCT2;
                 }
 
                 gConfigSound.TitleMusic = titleMusic;
@@ -1693,7 +1693,7 @@ private:
                 gConfigGeneral.AllowEarlyCompletion ^= 1;
                 // Only the server can control this setting and needs to send the
                 // current value of allow_early_completion to all clients
-                if (network_get_mode() == NETWORK_MODE_SERVER)
+                if (NetworkGetMode() == NETWORK_MODE_SERVER)
                 {
                     auto setAllowEarlyCompletionAction = ScenarioSetSettingAction(
                         ScenarioSetSetting::AllowEarlyCompletion, gConfigGeneral.AllowEarlyCompletion);
@@ -1823,14 +1823,14 @@ private:
 
         // The real name setting of clients is fixed to that of the server
         // and the server cannot change the setting during gameplay to prevent desyncs
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             disabled_widgets |= (1uLL << WIDX_REAL_NAME_CHECKBOX);
             widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
             // Disable the use of the allow_early_completion option during network play on clients.
             // This is to prevent confusion on clients because changing this setting during network play wouldn't change
             // the way scenarios are completed during this network-session
-            if (network_get_mode() == NETWORK_MODE_CLIENT)
+            if (NetworkGetMode() == NETWORK_MODE_CLIENT)
             {
                 disabled_widgets |= (1uLL << WIDX_ALLOW_EARLY_COMPLETION);
                 widgets[WIDX_ALLOW_EARLY_COMPLETION].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
@@ -1997,7 +1997,7 @@ private:
         widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[gConfigGeneral.AutosaveFrequency];
     }
 
-    void AdvancedDraw(rct_drawpixelinfo* dpi)
+    void AdvancedDraw(DrawPixelInfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.AutosaveAmount));
@@ -2068,7 +2068,7 @@ private:
             Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_TAB_PAINT_0);
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
@@ -2079,7 +2079,7 @@ private:
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
     }
 
-    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
         Widget* widget = &widgets[widgetIndex];
@@ -2117,7 +2117,7 @@ private:
         GfxInvalidateScreen();
     }
 
-    uint8_t GetScrollPercentage(const Widget& widget, const rct_scroll& scroll)
+    uint8_t GetScrollPercentage(const Widget& widget, const ScrollBar& scroll)
     {
         uint8_t w = widget.width() - 1;
         return static_cast<float>(scroll.h_left) / (scroll.h_right - w) * 100;
@@ -2184,7 +2184,7 @@ private:
  *
  *  rct2: 0x006BAC5B
  */
-rct_window* WindowOptionsOpen()
+WindowBase* WindowOptionsOpen()
 {
     return WindowFocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
 }

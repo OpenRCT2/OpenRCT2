@@ -391,7 +391,7 @@ public:
         widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -448,7 +448,7 @@ public:
         Invalidate();
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         if (_currentTab == RESEARCH_TAB)
         {
@@ -643,7 +643,7 @@ private:
                 continue;
 
             // Ride entries
-            rct_ride_entry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
+            RideObjectEntry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
             // Skip if the vehicle isn't the preferred vehicle for this generic track type
             if (!gConfigInterface.ListRideVehiclesSeparately
@@ -822,9 +822,9 @@ private:
         WidgetScrollUpdateThumbs(*this, WIDX_RIDE_LIST);
     }
 
-    void DrawRideInformation(rct_drawpixelinfo& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
+    void DrawRideInformation(DrawPixelInfo& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
     {
-        rct_ride_entry* rideEntry = GetRideEntryByIndex(item.EntryIndex);
+        RideObjectEntry* rideEntry = GetRideEntryByIndex(item.EntryIndex);
         RideNaming rideNaming = GetRideNaming(item.Type, *rideEntry);
         auto ft = Formatter();
 
@@ -878,7 +878,7 @@ private:
         }
     }
 
-    void DrawTabImage(rct_drawpixelinfo& dpi, NewRideTabId tab, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo& dpi, NewRideTabId tab, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(tab);
 
@@ -896,7 +896,7 @@ private:
         }
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         DrawTabImage(dpi, TRANSPORT_TAB, SPR_TAB_RIDES_TRANSPORT_0);
         DrawTabImage(dpi, GENTLE_TAB, SPR_TAB_RIDES_GENTLE_0);
@@ -946,9 +946,9 @@ void WindowNewRideInitVars()
  *
  *  rct2: 0x006B3CFF
  */
-rct_window* WindowNewRideOpen()
+WindowBase* WindowNewRideOpen()
 {
-    rct_window* window;
+    WindowBase* window;
 
     window = WindowBringToFrontByClass(WindowClass::ConstructRide);
     if (window)
@@ -963,7 +963,7 @@ rct_window* WindowNewRideOpen()
     return window;
 }
 
-rct_window* WindowNewRideOpenResearch()
+WindowBase* WindowNewRideOpenResearch()
 {
     auto w = static_cast<NewRideWindow*>(WindowNewRideOpen());
     w->SetPage(RESEARCH_TAB);
@@ -982,7 +982,7 @@ void WindowNewRideFocus(RideSelection rideItem)
         return;
     }
 
-    rct_ride_entry* rideEntry = GetRideEntryByIndex(rideItem.EntryIndex);
+    RideObjectEntry* rideEntry = GetRideEntryByIndex(rideItem.EntryIndex);
     if (rideEntry == nullptr)
         return;
 

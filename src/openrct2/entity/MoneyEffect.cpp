@@ -78,17 +78,17 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
     {
         // If game actions return no valid location of the action we can not use the screen
         // coordinates as every client will have different ones.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             LOG_WARNING("Attempted to create money effect without a valid location in multiplayer");
             return;
         }
 
-        rct_window* mainWindow = WindowGetMain();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
 
-        rct_viewport* mainViewport = WindowGetViewport(mainWindow);
+        Viewport* mainViewport = WindowGetViewport(mainWindow);
         auto mapPositionXY = ScreenGetMapXY(
             { mainViewport->pos.x + (mainViewport->width / 2), mainViewport->pos.y + (mainViewport->height / 2) }, nullptr);
         if (!mapPositionXY.has_value())
@@ -172,7 +172,7 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    rct_drawpixelinfo& dpi = session.DPI;
+    DrawPixelInfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         return;

@@ -440,7 +440,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -586,7 +586,7 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         GfxFillRect(
             &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
@@ -639,7 +639,7 @@ public:
     }
 
 private:
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Tab 1 image
         auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
@@ -655,7 +655,7 @@ private:
             windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
     }
 
-    void DrawScrollIndividual(rct_drawpixelinfo& dpi)
+    void DrawScrollIndividual(DrawPixelInfo& dpi)
     {
         size_t index = 0;
         auto y = static_cast<int32_t>(_selectedPage) * -GUEST_PAGE_HEIGHT;
@@ -722,7 +722,7 @@ private:
         }
     }
 
-    void DrawScrollSummarised(rct_drawpixelinfo& dpi)
+    void DrawScrollSummarised(DrawPixelInfo& dpi)
     {
         size_t index = 0;
         auto y = 0;
@@ -808,7 +808,7 @@ private:
 
     bool IsRefreshOfGroupsRequired()
     {
-        uint32_t tick256 = floor2(gCurrentTicks, 256);
+        uint32_t tick256 = Floor2(gCurrentTicks, 256);
         if (_selectedView == _lastFindGroupsSelectedView)
         {
             if (_lastFindGroupsWait != 0 || _lastFindGroupsTick == tick256)
@@ -835,7 +835,7 @@ private:
 
     void RefreshGroups()
     {
-        _lastFindGroupsTick = floor2(gCurrentTicks, 256);
+        _lastFindGroupsTick = Floor2(gCurrentTicks, 256);
         _lastFindGroupsSelectedView = _selectedView;
         _lastFindGroupsWait = 320;
         _groups.clear();
@@ -946,7 +946,7 @@ private:
                 }
             }
         }
-        return strlogicalcmp(a.Name, b.Name) < 0;
+        return StrLogicalCmp(a.Name, b.Name) < 0;
     }
 
     static GuestItem::CompareFunc GetGuestCompareFunc()
@@ -955,7 +955,7 @@ private:
     }
 };
 
-rct_window* WindowGuestListOpen()
+WindowBase* WindowGuestListOpen()
 {
     auto* window = WindowBringToFrontByClass(WindowClass::GuestList);
     if (window == nullptr)
@@ -968,7 +968,7 @@ rct_window* WindowGuestListOpen()
 /**
  * @param index The number of the ride or index of the thought
  */
-rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index)
+WindowBase* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index)
 {
     auto* w = static_cast<GuestListWindow*>(WindowGuestListOpen());
     if (w != nullptr)

@@ -36,10 +36,10 @@ void PlayerSetGroupAction::Serialise(DataSerialiser& stream)
 }
 GameActions::Result PlayerSetGroupAction::Query() const
 {
-    return network_set_player_group(GetPlayer(), _playerId, _groupId, false);
+    return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, false);
 }
 
 GameActions::Result PlayerSetGroupAction::Execute() const
 {
-    return network_set_player_group(GetPlayer(), _playerId, _groupId, true);
+    return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, true);
 }

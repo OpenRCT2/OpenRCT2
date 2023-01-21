@@ -33,7 +33,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
-    rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
     SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     GetImageTable().Read(context, stream);
@@ -80,7 +80,7 @@ void FootpathItemObject::Unload()
     _legacyType.image = 0;
 }
 
-void FootpathItemObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void FootpathItemObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
     GfxDrawSprite(dpi, ImageId(_legacyType.image), screenCoords - ScreenCoordsXY{ 22, 24 });

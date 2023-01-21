@@ -43,7 +43,7 @@ public:
         WindowFootpathResetSelectedPath();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         ViewportRender(&dpi, viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
     }
@@ -71,7 +71,7 @@ private:
  * Creates the main window that holds the main viewport.
  *  rct2: 0x0066B3E8
  */
-rct_window* WindowMainOpen()
+WindowBase* WindowMainOpen()
 {
     return WindowCreate<MainWindow>(WindowClass::MainWindow, { 0, 0 }, ContextGetWidth(), ContextGetHeight(), WF_STICK_TO_BACK);
 }

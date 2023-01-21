@@ -179,7 +179,7 @@ static int32_t RideGetAlternativeType(const Ride& ride)
 /* move to ride.c */
 static void CloseRideWindowForConstruction(RideId rideId)
 {
-    rct_window* w = WindowFindByNumber(WindowClass::Ride, rideId.ToUnderlying());
+    WindowBase* w = WindowFindByNumber(WindowClass::Ride, rideId.ToUnderlying());
     if (w != nullptr && w->page == 1)
         WindowClose(*w);
 }
@@ -1483,9 +1483,9 @@ public:
         currentRide->FormatNameTo(ft);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
-        rct_drawpixelinfo clipdpi;
+        DrawPixelInfo clipdpi;
         Widget* widget;
         int32_t widgetWidth, widgetHeight;
 
@@ -2192,7 +2192,7 @@ public:
             return;
         }
 
-        const rct_preview_track* trackBlock;
+        const PreviewTrack* trackBlock;
 
         const auto& ted = GetTrackElementDescriptor(trackType);
         trackBlock = ted.Block;
@@ -2267,7 +2267,7 @@ private:
         }
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackPos);
 
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
         }
@@ -2291,7 +2291,7 @@ private:
         int32_t direction;
         TileElement* tileElement;
         CoordsXYE inputElement, outputElement;
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
 
         _currentTrackPrice = MONEY32_UNDEFINED;
         RideConstructionInvalidateCurrentTrack();
@@ -2363,7 +2363,7 @@ private:
             }
 
             const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-            const rct_preview_track* trackBlock = ted.Block;
+            const PreviewTrack* trackBlock = ted.Block;
             newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
             _gotoStartPlacementMode = true;
 
@@ -2588,7 +2588,7 @@ private:
     }
 
     void DrawTrackPiece(
-        rct_drawpixelinfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+        DrawPixelInfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
         int32_t widgetWidth, int32_t widgetHeight)
     {
         auto currentRide = GetRide(rideIndex);
@@ -2627,7 +2627,7 @@ private:
     }
 
     void DrawTrackPieceHelper(
-        rct_drawpixelinfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+        DrawPixelInfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
         const CoordsXY& originCoords, int32_t originZ)
     {
         TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -2761,7 +2761,7 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
  *
  *  rct2: 0x006CB481
  */
-rct_window* WindowRideConstructionOpen()
+WindowBase* WindowRideConstructionOpen()
 {
     RideId rideIndex = _currentRideIndex;
     CloseRideWindowForConstruction(rideIndex);
@@ -2889,7 +2889,7 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
             trackPos += CoordsDirectionDelta[trackDirection];
         }
 
-        track_begin_end trackBeginEnd;
+        TrackBeginEnd trackBeginEnd;
         if (TrackBlockGetPreviousFromZero(trackPos, *ride, trackDirection, &trackBeginEnd))
         {
             _currentTrackBegin.x = trackBeginEnd.begin_x;
@@ -2957,7 +2957,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
-            uint16_t maxHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
+            uint16_t maxHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
             _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
@@ -2966,9 +2966,9 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
             {
                 _trackPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_trackPlaceShiftZ);
             }
-            _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, 8);
+            _trackPlaceShiftZ = Floor2(_trackPlaceShiftZ, 8);
 
-            // Clamp to maximum possible value of base_height can offer.
+            // Clamp to maximum possible value of BaseHeight can offer.
             _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
 
             screenCoords = _trackPlaceShiftStart;
@@ -2991,7 +2991,7 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
             auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
             if (surfaceElement == nullptr)
                 return std::nullopt;
-            auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
+            auto mapZ = Floor2(surfaceElement->GetBaseZ(), 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = std::max<int16_t>(mapZ, 16);
             _trackPlaceZ = mapZ;
@@ -3210,7 +3210,7 @@ void UpdateGhostTrackAndArrow()
 void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
 {
     int32_t z;
-    const rct_preview_track* trackBlock;
+    const PreviewTrack* trackBlock;
 
     MapInvalidateMapSelectionTiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -3475,7 +3475,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
 {
     const CursorState* state = ContextGetCursorState();
 
-    rct_window* w;
+    WindowBase* w;
 
     MapInvalidateMapSelectionTiles();
     RideConstructionInvalidateCurrentTrack();
@@ -3526,7 +3526,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
     if (_trackPlaceZ == 0)
     {
         const auto& ted = GetTrackElementDescriptor(_currentTrackPieceType);
-        const rct_preview_track* trackBlock = ted.Block;
+        const PreviewTrack* trackBlock = ted.Block;
         int32_t bx = 0;
         do
         {
@@ -3679,7 +3679,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
 
 void WindowRideConstructionKeyboardShortcutTurnLeft()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -3925,7 +3925,7 @@ void WindowRideConstructionKeyboardShortcutTurnLeft()
 
 void WindowRideConstructionKeyboardShortcutTurnRight()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4171,7 +4171,7 @@ void WindowRideConstructionKeyboardShortcutTurnRight()
 
 void WindowRideConstructionKeyboardShortcutUseTrackDefault()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4201,7 +4201,7 @@ void WindowRideConstructionKeyboardShortcutUseTrackDefault()
 
 void WindowRideConstructionKeyboardShortcutSlopeDown()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4311,7 +4311,7 @@ void WindowRideConstructionKeyboardShortcutSlopeDown()
 
 void WindowRideConstructionKeyboardShortcutSlopeUp()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4417,7 +4417,7 @@ void WindowRideConstructionKeyboardShortcutSlopeUp()
 
 void WindowRideConstructionKeyboardShortcutChainLiftToggle()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CHAIN_LIFT) || w->widgets[WIDX_CHAIN_LIFT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4428,7 +4428,7 @@ void WindowRideConstructionKeyboardShortcutChainLiftToggle()
 
 void WindowRideConstructionKeyboardShortcutBankLeft()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
         || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
     {
@@ -4464,7 +4464,7 @@ void WindowRideConstructionKeyboardShortcutBankLeft()
 
 void WindowRideConstructionKeyboardShortcutBankRight()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
         || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
     {
@@ -4500,7 +4500,7 @@ void WindowRideConstructionKeyboardShortcutBankRight()
 
 void WindowRideConstructionKeyboardShortcutPreviousTrack()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_PREVIOUS_SECTION)
         || w->widgets[WIDX_PREVIOUS_SECTION].type == WindowWidgetType::Empty)
     {
@@ -4512,7 +4512,7 @@ void WindowRideConstructionKeyboardShortcutPreviousTrack()
 
 void WindowRideConstructionKeyboardShortcutNextTrack()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_NEXT_SECTION)
         || w->widgets[WIDX_NEXT_SECTION].type == WindowWidgetType::Empty)
     {
@@ -4524,7 +4524,7 @@ void WindowRideConstructionKeyboardShortcutNextTrack()
 
 void WindowRideConstructionKeyboardShortcutBuildCurrent()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
     {
         return;
@@ -4535,7 +4535,7 @@ void WindowRideConstructionKeyboardShortcutBuildCurrent()
 
 void WindowRideConstructionKeyboardShortcutDemolishCurrent()
 {
-    rct_window* w = WindowFindByClass(WindowClass::RideConstruction);
+    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr || WidgetIsDisabled(*w, WIDX_DEMOLISH) || w->widgets[WIDX_DEMOLISH].type == WindowWidgetType::Empty)
     {
         return;
@@ -4548,7 +4548,7 @@ static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& pie
 {
     if (_gotoStartPlacementMode)
     {
-        _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
+        _currentTrackBegin.z = Floor2(piecePos.z, COORDS_Z_STEP);
         _rideConstructionState = RideConstructionState::Front;
         _currentTrackSelectionFlags = 0;
         _currentTrackPieceDirection = piecePos.direction & 3;
@@ -4596,7 +4596,7 @@ static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& pie
                 type = TrackElemType::BeginStation;
             }
         }
-        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        if (NetworkGetMode() == NETWORK_MODE_CLIENT)
         {
             // rideConstructionState needs to be set again to the proper value, this only affects the client
             _rideConstructionState = RideConstructionState::Selected;

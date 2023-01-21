@@ -100,7 +100,7 @@ public:
         InitScrollWidgets();
 
         // Pause the game if not network play.
-        if (network_get_mode() == NETWORK_MODE_NONE)
+        if (NetworkGetMode() == NETWORK_MODE_NONE)
         {
             gGamePaused |= GAME_PAUSED_MODAL;
             OpenRCT2::Audio::StopAll();
@@ -124,7 +124,7 @@ public:
     void OnClose() override
     {
         // Unpause the game
-        if (network_get_mode() == NETWORK_MODE_NONE)
+        if (NetworkGetMode() == NETWORK_MODE_NONE)
         {
             gGamePaused &= ~GAME_PAUSED_MODAL;
             OpenRCT2::Audio::Resume();
@@ -181,13 +181,13 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
 };
 
-rct_window* WindowSavePromptOpen()
+WindowBase* WindowSavePromptOpen()
 {
     PromptMode prompt_mode = gSavePromptMode;
     if (prompt_mode == PromptMode::Quit)
@@ -210,7 +210,7 @@ rct_window* WindowSavePromptOpen()
          * and game_load_or_quit() are not called by the original binary anymore.
          */
 
-        if (gScreenAge < 3840 && network_get_mode() == NETWORK_MODE_NONE)
+        if (gScreenAge < 3840 && NetworkGetMode() == NETWORK_MODE_NONE)
         {
             GameLoadOrQuitNoSavePrompt();
             return nullptr;
@@ -218,7 +218,7 @@ rct_window* WindowSavePromptOpen()
     }
 
     // Check if window is already open
-    rct_window* window = WindowBringToFrontByClass(WindowClass::SavePrompt);
+    WindowBase* window = WindowBringToFrontByClass(WindowClass::SavePrompt);
     if (window != nullptr)
     {
         WindowClose(*window);

@@ -36,7 +36,7 @@ enum
     DATE_FORMAT_YEAR_DAY_MONTH
 };
 
-struct openrct2_timeofday
+struct RealWorldTime
 {
     uint8_t second;
     uint8_t minute;
@@ -50,7 +50,7 @@ extern const StringId DateFormatStringFormatIds[];
 extern uint16_t gDateMonthTicks;
 extern int32_t gDateMonthsElapsed;
 
-extern openrct2_timeofday gRealTimeOfDay;
+extern RealWorldTime gRealTimeOfDay;
 
 int32_t DateGetMonth(int32_t months);
 int32_t DateGetYear(int32_t months);

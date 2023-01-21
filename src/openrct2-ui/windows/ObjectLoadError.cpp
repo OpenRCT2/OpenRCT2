@@ -290,7 +290,7 @@ static Widget window_object_load_error_widgets[] = {
 // clang-format on
 
 /**
- *  Returns an StringId that represents an rct_object_entry's type.
+ *  Returns an StringId that represents an RCTObjectEntry's type.
  *
  *  Could possibly be moved out of the window file if other
  *  uses exist and a suitable location is found.
@@ -324,7 +324,7 @@ static constexpr StringId GetStringFromObjectType(const ObjectType type)
     }
 }
 
-class ObjectLoadErrorWindow final : public rct_window
+class ObjectLoadErrorWindow final : public WindowBase
 {
 private:
     std::vector<ObjectEntryDescriptor> _invalidEntries;
@@ -485,7 +485,7 @@ public:
         WidgetInvalidate(*this, WIDX_SCROLL);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
 
@@ -501,7 +501,7 @@ public:
         DrawTextEllipsised(&dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
     }
 
-    void OnScrollDraw(const int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
@@ -563,7 +563,7 @@ public:
     }
 };
 
-rct_window* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
+WindowBase* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
     // Check if window is already open
     auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);

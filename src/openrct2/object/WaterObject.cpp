@@ -54,7 +54,7 @@ void WaterObject::Unload()
     _legacyType.image_id = 0;
 }
 
-void WaterObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void WaterObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     // Write (no image)
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
@@ -119,7 +119,7 @@ void WaterObject::ReadJsonPalette(json_t& jPalette)
         dataIndex += 3;
     }
 
-    rct_g1_element g1 = {};
+    G1Element g1 = {};
     g1.offset = data.get();
     g1.width = static_cast<int16_t>(numColours);
     g1.x_offset = Json::GetNumber<int16_t>(jPalette["index"]);

@@ -43,7 +43,7 @@ ImportResult ImageImporter::Import(
     auto pixels = GetPixels(image.Pixels.data(), image.Stride, srcX, srcY, width, height, palette, flags, mode);
     auto buffer = flags & ImportFlags::RLE ? EncodeRLE(pixels.data(), width, height) : EncodeRaw(pixels.data(), width, height);
 
-    rct_g1_element outElement;
+    G1Element outElement;
     outElement.width = width;
     outElement.height = height;
     outElement.flags = (flags & ImportFlags::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_HAS_TRANSPARENCY);

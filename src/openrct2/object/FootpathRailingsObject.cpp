@@ -47,7 +47,7 @@ void FootpathRailingsObject::Unload()
     RailingsImageId = 0;
 }
 
-void FootpathRailingsObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void FootpathRailingsObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto x = width / 2;
     auto y = height / 2;

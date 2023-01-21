@@ -45,10 +45,10 @@ void NetworkModifyGroupAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result NetworkModifyGroupAction::Query() const
 {
-    return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
+    return NetworkModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
 }
 
 GameActions::Result NetworkModifyGroupAction::Execute() const
 {
-    return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
+    return NetworkModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
 }

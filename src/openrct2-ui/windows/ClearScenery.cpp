@@ -171,7 +171,7 @@ public:
         window_clear_scenery_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -197,7 +197,7 @@ public:
     }
 };
 
-rct_window* WindowClearSceneryOpen()
+WindowBase* WindowClearSceneryOpen()
 {
     auto* w = static_cast<CleanSceneryWindow*>(WindowBringToFrontByClass(WindowClass::ClearScenery));
 

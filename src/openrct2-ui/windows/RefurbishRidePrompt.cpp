@@ -73,7 +73,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
 
@@ -91,9 +91,9 @@ public:
     }
 };
 
-rct_window* WindowRideRefurbishPromptOpen(const Ride& ride)
+WindowBase* WindowRideRefurbishPromptOpen(const Ride& ride)
 {
-    rct_window* w;
+    WindowBase* w;
     RefurbishRidePromptWindow* newWindow;
 
     w = WindowFindByClass(WindowClass::DemolishRidePrompt);

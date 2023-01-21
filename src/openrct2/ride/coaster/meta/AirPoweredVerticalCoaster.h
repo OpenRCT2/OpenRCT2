@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_BOOSTER}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionAirPoweredVerticalRc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionAirPoweredVerticalRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch)),
     SET_FIELD(DefaultMode, RideMode::PoweredLaunchPasstrough),

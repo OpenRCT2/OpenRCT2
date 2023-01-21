@@ -261,7 +261,7 @@ namespace ObjectFactory
             auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
             auto chunkReader = SawyerChunkReader(&fs);
 
-            rct_object_entry entry = fs.ReadValue<rct_object_entry>();
+            RCTObjectEntry entry = fs.ReadValue<RCTObjectEntry>();
 
             if (entry.GetType() != ObjectType::ScenarioText)
             {
@@ -293,7 +293,7 @@ namespace ObjectFactory
     }
 
     std::unique_ptr<Object> CreateObjectFromLegacyData(
-        IObjectRepository& objectRepository, const rct_object_entry* entry, const void* data, size_t dataSize)
+        IObjectRepository& objectRepository, const RCTObjectEntry* entry, const void* data, size_t dataSize)
     {
         Guard::ArgumentNotNull(entry, GUARD_LINE);
         Guard::ArgumentNotNull(data, GUARD_LINE);
@@ -518,8 +518,8 @@ namespace ObjectFactory
             auto id = Json::GetString(jRoot["id"]);
 
             // HACK Disguise RCT Classic audio as RCT2 audio so asset packs override correctly
-            if (id == OpenRCT2::Audio::AudioObjectIdentifiers::Rct2cBase)
-                id = OpenRCT2::Audio::AudioObjectIdentifiers::Rct2Base;
+            if (id == OpenRCT2::Audio::AudioObjectIdentifiers::RCTCBase)
+                id = OpenRCT2::Audio::AudioObjectIdentifiers::RCT2Base;
 
             auto version = VersionTuple(Json::GetString(jRoot["version"]));
             ObjectEntryDescriptor descriptor;
@@ -528,7 +528,7 @@ namespace ObjectFactory
             {
                 auto originalName = originalId.substr(9, 8);
 
-                rct_object_entry entry = {};
+                RCTObjectEntry entry = {};
                 entry.flags = std::stoul(originalId.substr(0, 8), nullptr, 16);
                 entry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
                 entry.SetType(objectType);

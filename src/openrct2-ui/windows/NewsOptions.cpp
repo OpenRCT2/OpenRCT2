@@ -201,7 +201,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(&dpi);
@@ -218,14 +218,14 @@ private:
         }
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         DrawTabImage(dpi, NOTIFICATION_CATEGORY_PARK, SPR_TAB_PARK);
         DrawTabImage(dpi, NOTIFICATION_CATEGORY_RIDE, SPR_TAB_RIDE_0);
         DrawTabImage(dpi, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
     }
 
-    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
 
@@ -271,7 +271,7 @@ private:
     };
 };
 
-rct_window* WindowNewsOptionsOpen()
+WindowBase* WindowNewsOptionsOpen()
 {
     return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
 }

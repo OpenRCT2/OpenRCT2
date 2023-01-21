@@ -251,7 +251,7 @@ GameActions::Result CheatSetAction::Execute() const
         break;
     }
 
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (NetworkGetMode() == NETWORK_MODE_NONE)
     {
         ConfigSaveDefault();
     }
@@ -383,7 +383,7 @@ void CheatSetAction::SetGrassLength(int32_t length) const
 
 void CheatSetAction::WaterPlants() const
 {
-    tile_element_iterator it;
+    TileElementIterator it;
 
     TileElementIteratorBegin(&it);
     do
@@ -399,7 +399,7 @@ void CheatSetAction::WaterPlants() const
 
 void CheatSetAction::FixVandalism() const
 {
-    tile_element_iterator it;
+    TileElementIterator it;
 
     TileElementIteratorBegin(&it);
     do
@@ -423,7 +423,7 @@ void CheatSetAction::RemoveLitter() const
         EntityRemove(litter);
     }
 
-    tile_element_iterator it{};
+    TileElementIterator it{};
     TileElementIteratorBegin(&it);
     do
     {
@@ -532,7 +532,7 @@ void CheatSetAction::SetMoney(money64 amount) const
 
 void CheatSetAction::AddMoney(money64 amount) const
 {
-    gCash = add_clamp_money64(gCash, amount);
+    gCash = AddClamp_money64(gCash, amount);
 
     WindowInvalidateByClass(WindowClass::Finances);
     WindowInvalidateByClass(WindowClass::BottomToolbar);

@@ -404,7 +404,7 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
     constexpr uint32_t JumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t JumpingFountainWaterBaseImage = 22973;
 
-    rct_drawpixelinfo& dpi = session.DPI;
+    DrawPixelInfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         return;

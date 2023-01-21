@@ -492,7 +492,7 @@ static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
 #define WINDOW_PALETTE_BRIGHT_RED           {FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow}
 #define WINDOW_PALETTE_BRIGHT_PINK          {FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow}
 
-const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
+const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_GREY,                    // COLOUR_BLACK
     WINDOW_PALETTE_GREY,                    // COLOUR_GREY
     {FilterPaletteID::PaletteTranslucentWhite,             FilterPaletteID::PaletteTranslucentWhiteHighlight,            FilterPaletteID::PaletteTranslucentWhiteShadow},
@@ -561,12 +561,12 @@ void (*MaskFn)(
 
 void MaskInit()
 {
-    if (avx2_available())
+    if (AVX2Available())
     {
         LOG_VERBOSE("registering AVX2 mask function");
         MaskFn = MaskAvx2;
     }
-    else if (sse41_available())
+    else if (SSE41Available())
     {
         LOG_VERBOSE("registering SSE4.1 mask function");
         MaskFn = MaskSse4_1;
@@ -578,7 +578,7 @@ void MaskInit()
     }
 }
 
-void GfxFilterPixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
+void GfxFilterPixel(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
     GfxFilterRect(dpi, { coords, coords }, palette);
 }
@@ -591,7 +591,7 @@ void GfxFilterPixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, Filter
  */
 void GfxTransposePalette(int32_t pal, uint8_t product)
 {
-    const rct_g1_element* g1 = GfxGetG1Element(pal);
+    const G1Element* g1 = GfxGetG1Element(pal);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -622,7 +622,7 @@ void LoadPalette()
         return;
     }
 
-    auto water_type = static_cast<rct_water_type*>(ObjectEntryGetChunk(ObjectType::Water, 0));
+    auto water_type = static_cast<WaterObjectEntry*>(ObjectEntryGetChunk(ObjectType::Water, 0));
 
     uint32_t palette = 0x5FC;
 
@@ -632,7 +632,7 @@ void LoadPalette()
         palette = water_type->image_id;
     }
 
-    const rct_g1_element* g1 = GfxGetG1Element(palette);
+    const G1Element* g1 = GfxGetG1Element(palette);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -670,8 +670,7 @@ void GfxInvalidateScreen()
  * height (dx)
  * drawpixelinfo (edi)
  */
-bool ClipDrawPixelInfo(
-    rct_drawpixelinfo* dst, rct_drawpixelinfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
+bool ClipDrawPixelInfo(DrawPixelInfo* dst, DrawPixelInfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
     int32_t right = coords.x + width;
     int32_t bottom = coords.y + height;
@@ -737,7 +736,7 @@ void GfxInvalidatePickedUpPeep()
     }
 }
 
-void GfxDrawPickedUpPeep(rct_drawpixelinfo* dpi)
+void GfxDrawPickedUpPeep(DrawPixelInfo* dpi)
 {
     if (gPickupPeepImage.HasValue())
     {
@@ -768,19 +767,19 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-size_t rct_drawpixelinfo::GetBytesPerRow() const
+size_t DrawPixelInfo::GetBytesPerRow() const
 {
     return static_cast<size_t>(width) + pitch;
 }
 
-uint8_t* rct_drawpixelinfo::GetBitsOffset(const ScreenCoordsXY& pos) const
+uint8_t* DrawPixelInfo::GetBitsOffset(const ScreenCoordsXY& pos) const
 {
     return bits + pos.x + (pos.y * GetBytesPerRow());
 }
 
-rct_drawpixelinfo rct_drawpixelinfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
+DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
 {
-    rct_drawpixelinfo result = *this;
+    DrawPixelInfo result = *this;
     result.bits = GetBitsOffset(pos);
     result.x = static_cast<int16_t>(pos.x);
     result.y = static_cast<int16_t>(pos.y);
@@ -814,9 +813,9 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
             float night = gDayNightCycle;
             if (night >= 0 && gClimateLightningFlash == 0)
             {
-                r = lerp(r, soft_light(r, 8), night);
-                g = lerp(g, soft_light(g, 8), night);
-                b = lerp(b, soft_light(b, 128), night);
+                r = Lerp(r, SoftLight(r, 8), night);
+                g = Lerp(g, SoftLight(g, 8), night);
+                b = Lerp(b, SoftLight(b, 128), night);
             }
         }
 
