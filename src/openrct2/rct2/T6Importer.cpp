@@ -140,11 +140,11 @@ namespace RCT2
             const auto& rtd = GetRideTypeDescriptor(td->type);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
-                rct_td46_maze_element t6MazeElement{};
+                TD46MazeElement t6MazeElement{};
                 t6MazeElement.all = !0;
                 while (t6MazeElement.all != 0)
                 {
-                    _stream.Read(&t6MazeElement, sizeof(rct_td46_maze_element));
+                    _stream.Read(&t6MazeElement, sizeof(TD46MazeElement));
                     if (t6MazeElement.all != 0)
                     {
                         TrackDesignMazeElement mazeElement{};
@@ -158,11 +158,11 @@ namespace RCT2
             }
             else
             {
-                rct_td46_track_element t6TrackElement{};
+                TD46TrackElement t6TrackElement{};
                 for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
                 {
                     _stream.SetPosition(_stream.GetPosition() - 1);
-                    _stream.Read(&t6TrackElement, sizeof(rct_td46_track_element));
+                    _stream.Read(&t6TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
 
                     track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.type, td->type, true);

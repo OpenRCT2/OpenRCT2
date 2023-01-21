@@ -2163,7 +2163,7 @@ namespace RCT1
             // News items
             for (size_t i = 0; i < Limits::MaxNewsItems; i++)
             {
-                const rct12_news_item* src = &_s4.Messages[i];
+                const RCT12NewsItem* src = &_s4.Messages[i];
                 News::Item* dst = &gNewsItems[i];
 
                 dst->Type = static_cast<News::ItemType>(src->Type);

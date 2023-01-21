@@ -470,7 +470,7 @@ namespace RCT2
             News::InitQueue();
             for (size_t i = 0; i < Limits::MaxNewsItems; i++)
             {
-                const rct12_news_item* src = &_s6.news_items[i];
+                const RCT12NewsItem* src = &_s6.news_items[i];
                 News::Item* dst = &gNewsItems[i];
                 if (src->Type < News::ItemTypeCount)
                 {
@@ -1681,7 +1681,7 @@ namespace RCT2
 
         void ImportEntityPeep(::Peep* dst, const Peep* src)
         {
-            const auto isNullLocation = [](const rct12_xyzd8& pos) {
+            const auto isNullLocation = [](const RCT12xyzd8& pos) {
                 return pos.x == 0xFF && pos.y == 0xFF && pos.z == 0xFF && pos.direction == INVALID_DIRECTION;
             };
 

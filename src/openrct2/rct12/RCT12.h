@@ -190,7 +190,7 @@ struct RCT12xy8
 assert_struct_size(RCT12xy8, 2);
 
 /* Maze Element entry   size: 0x04 */
-struct rct_td46_maze_element
+struct TD46MazeElement
 {
     union
     {
@@ -211,28 +211,28 @@ struct rct_td46_maze_element
         };
     };
 };
-assert_struct_size(rct_td46_maze_element, 0x04);
+assert_struct_size(TD46MazeElement, 0x04);
 
 /* Track Element entry  size: 0x02 */
-struct rct_td46_track_element
+struct TD46TrackElement
 {
     uint8_t type;  // 0x00
     uint8_t flags; // 0x01
 };
-assert_struct_size(rct_td46_track_element, 0x02);
+assert_struct_size(TD46TrackElement, 0x02);
 
-struct rct12_award
+struct RCT12Award
 {
     uint16_t time;
     uint16_t type;
 };
-assert_struct_size(rct12_award, 4);
+assert_struct_size(RCT12Award, 4);
 
 /**
  * A single news item / message.
  * size: 0x10C
  */
-struct rct12_news_item
+struct RCT12NewsItem
 {
     uint8_t Type;
     uint8_t Flags;
@@ -243,22 +243,22 @@ struct rct12_news_item
     uint8_t Pad0B;
     char Text[256];
 };
-assert_struct_size(rct12_news_item, 0x10C);
+assert_struct_size(RCT12NewsItem, 0x10C);
 
-struct rct12_xyzd8
+struct RCT12xyzd8
 {
     uint8_t x, y, z, direction;
 };
-assert_struct_size(rct12_xyzd8, 4);
+assert_struct_size(RCT12xyzd8, 4);
 
-struct rct12_peep_spawn
+struct RCT12PeepSpawn
 {
     uint16_t x;
     uint16_t y;
     uint8_t z;
     uint8_t direction;
 };
-assert_struct_size(rct12_peep_spawn, 6);
+assert_struct_size(RCT12PeepSpawn, 6);
 
 enum class RCT12TileElementType : uint8_t
 {

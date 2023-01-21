@@ -651,12 +651,12 @@ namespace RCT2
             uint8_t staff_orders;           // 0xC6
             uint8_t peep_is_lost_countdown; // 0xC6
         };
-        RCT12RideId photo1_ride_ref;     // 0xC7
-        uint32_t peep_flags;             // 0xC8
-        rct12_xyzd8 pathfind_goal;       // 0xCC
-        rct12_xyzd8 pathfind_history[4]; // 0xD0
-        uint8_t no_action_frame_num;     // 0xE0
-        uint8_t litter_count;            // 0xE1
+        RCT12RideId photo1_ride_ref;    // 0xC7
+        uint32_t peep_flags;            // 0xC8
+        RCT12xyzd8 pathfind_goal;       // 0xCC
+        RCT12xyzd8 pathfind_history[4]; // 0xD0
+        uint8_t no_action_frame_num;    // 0xE0
+        uint8_t litter_count;           // 0xE1
         union
         {
             uint8_t time_on_ride;         // 0xE2
@@ -849,7 +849,7 @@ namespace RCT2
         uint8_t Pad013573EE[2];
         uint8_t rct1_park_entrance_z;
         uint8_t Pad013573F1;
-        rct12_peep_spawn peep_spawns[Limits::MaxPeepSpawns];
+        RCT12PeepSpawn peep_spawns[Limits::MaxPeepSpawns];
         uint8_t guest_count_change_modifier;
         uint8_t current_research_level;
         uint8_t Pad01357400[4];
@@ -933,7 +933,7 @@ namespace RCT2
         money32 income_from_admissions;
         money32 company_value;
         uint8_t peep_warning_throttle[16];
-        rct12_award awards[Limits::MaxAwards];
+        RCT12Award awards[Limits::MaxAwards];
         money16 land_price;
         money16 construction_rights_price;
         uint16_t word_01358774;
@@ -1011,7 +1011,7 @@ namespace RCT2
         uint8_t next_weather_gloom;
         uint8_t current_weather_level;
         uint8_t next_weather_level;
-        rct12_news_item news_items[Limits::MaxNewsItems];
+        RCT12NewsItem news_items[Limits::MaxNewsItems];
         char rct1_scenario_name[62];       // Unused in RCT2
         uint16_t rct1_scenario_slot_index; // Unused in RCT2
         uint32_t rct1_scenario_flags;      // Unused in RCT2
