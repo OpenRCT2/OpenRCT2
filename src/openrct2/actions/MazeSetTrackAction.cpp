@@ -25,6 +25,33 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
+// clang-format off
+/** rct2: 0x00993CE9 */
+static constexpr const uint8_t Byte993CE9[] = {
+    0xFF, 0xE0, 0xFF,
+    14, 0, 1, 2,
+    6, 2, 4, 5,
+    9, 10, 6, 8,
+    12, 13, 14, 10,
+};
+
+/** rct2: 0x00993CFC */
+static constexpr const uint8_t Byte993CFC[] = {
+    5, 12, 0xFF, 0xFF,
+    9, 0, 0xFF, 0xFF,
+    13, 4, 0xFF, 0xFF,
+    1, 8, 0xFF, 0xFF,
+};
+
+/** rct2: 0x00993D0C */
+static constexpr const uint8_t Byte993D0C[] = {
+    3, 0, 0xFF, 0xFF,
+    0, 1, 0xFF, 0xFF,
+    1, 2, 0xFF, 0xFF,
+    2, 3, 0xFF, 0xFF,
+};
+// clang-format on
+
 MazeSetTrackAction::MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode)
     : _loc(location)
     , _initialPlacement(initialPlacement)
