@@ -374,6 +374,14 @@ static void PathPaintFencesAndQueueBanners(
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(26), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
                     break;
+                case 0b0111:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(15), { 0, 4, height }, { 32, 1, 7 }, { 0, 4, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(26), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
+                    break;
                 case 0b1000:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(16), { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
@@ -394,6 +402,14 @@ static void PathPaintFencesAndQueueBanners(
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(14), { 28, 0, height }, { 1, 32, 7 }, { 28, 0, height + 2 });
                     break;
+                case 0b1011:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(14), { 28, 0, height }, { 1, 32, 7 }, { 28, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(24), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
+                    break;
                 case 0b1100:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(16), { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
@@ -403,9 +419,31 @@ static void PathPaintFencesAndQueueBanners(
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(27), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                     break;
-                default:
-                    // Purposely left empty, queues cannot have 3 or 4 connected edges
+                case 0b1101:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(15), { 0, 28, height }, { 32, 1, 7 }, { 0, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(24), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(27), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                     break;
+                case 0b1110:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(14), { 4, 0, height }, { 1, 32, 7 }, { 4, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(26), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(27), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
+                    break;
+                case 0b1111:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(24), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(26), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(27), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
             }
         }
 
