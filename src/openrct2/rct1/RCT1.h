@@ -539,11 +539,11 @@ namespace RCT1
             uint8_t StaffOrders;         // 0xC6
             uint8_t PeepIsLostCountdown; // 0xC6
         };
-        RCT12RideId Photo1RideRef;      // 0xC7
-        uint32_t PeepFlags;             // 0xC8
-        rct12_xyzd8 PathfindGoal;       // 0xCC
-        rct12_xyzd8 PathfindHistory[4]; // 0xD0
-        uint8_t NoActionFrameNum;       // 0xE0
+        RCT12RideId Photo1RideRef;     // 0xC7
+        uint32_t PeepFlags;            // 0xC8
+        RCT12xyzd8 PathfindGoal;       // 0xCC
+        RCT12xyzd8 PathfindHistory[4]; // 0xD0
+        uint8_t NoActionFrameNum;      // 0xE0
         // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
         uint8_t LitterCount; // 0xE1
         union
@@ -642,7 +642,7 @@ namespace RCT1
         money16 ParkEntranceFee;
         Entrance ParkEntrance;
         uint8_t Unk198849;
-        rct12_peep_spawn PeepSpawn[Limits::MaxPeepSpawns];
+        RCT12PeepSpawn PeepSpawn[Limits::MaxPeepSpawns];
         uint8_t Unk198856;
         uint8_t ResearchLevel;
         uint32_t Unk198858;
@@ -707,7 +707,7 @@ namespace RCT1
         money32 AdmissionTotalIncome;
         money32 CompanyValue;
         uint8_t ThoughtTimer[16];
-        rct12_award Awards[Limits::MaxAwards];
+        RCT12Award Awards[Limits::MaxAwards];
         money16 LandPrice;
         money16 ConstructionRightsPrice;
         uint16_t Unk199BCC;
@@ -776,7 +776,7 @@ namespace RCT1
         uint8_t TargetWeatherGloom;
         uint8_t Rain;
         uint8_t TargetRain;
-        rct12_news_item Messages[Limits::MaxNewsItems];
+        RCT12NewsItem Messages[Limits::MaxNewsItems];
         char ScenarioName[62];
         uint16_t ScenarioSlotIndex;
         uint32_t ScenarioFlags;
