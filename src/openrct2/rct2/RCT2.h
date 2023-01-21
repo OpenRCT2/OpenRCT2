@@ -995,9 +995,9 @@ namespace RCT2
         StaffMode staff_modes[Limits::MaxStaff + Limits::StaffTypeCount];
         uint8_t Pad13CA73E;
         uint8_t Pad13CA73F;
-        uint8_t byte_13CA740;
+        uint8_t Byte13CA740;
         uint8_t Pad13CA741;
-        uint8_t byte_13CA742[4]; // unused
+        uint8_t Byte13CA742[4]; // unused
         uint8_t climate;
         uint8_t Pad013CA747;
         uint16_t climate_update_timer;

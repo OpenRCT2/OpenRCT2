@@ -12,7 +12,7 @@
 #include "GameAction.h"
 // clang-format off
 /** rct2: 0x00993CE9 */
-static constexpr const uint8_t byte_993CE9[] = {
+static constexpr const uint8_t Byte993CE9[] = {
     0xFF, 0xE0, 0xFF,
     14, 0, 1, 2,
     6, 2, 4, 5,
@@ -21,7 +21,7 @@ static constexpr const uint8_t byte_993CE9[] = {
 };
 
 /** rct2: 0x00993CFC */
-static constexpr const uint8_t byte_993CFC[] = {
+static constexpr const uint8_t Byte993CFC[] = {
     5, 12, 0xFF, 0xFF,
     9, 0, 0xFF, 0xFF,
     13, 4, 0xFF, 0xFF,
@@ -29,7 +29,7 @@ static constexpr const uint8_t byte_993CFC[] = {
 };
 
 /** rct2: 0x00993D0C */
-static constexpr const uint8_t byte_993D0C[] = {
+static constexpr const uint8_t Byte993D0C[] = {
     3, 0, 0xFF, 0xFF,
     0, 1, 0xFF, 0xFF,
     1, 2, 0xFF, 0xFF,

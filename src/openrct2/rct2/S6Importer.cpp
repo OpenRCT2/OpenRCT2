@@ -452,7 +452,7 @@ namespace RCT2
             // unk_13CA740
             gClimate = ClimateType{ _s6.climate };
             // Pad13CA741;
-            // byte_13CA742
+            // Byte13CA742
             // Pad013CA747
             gClimateUpdateTimer = _s6.climate_update_timer;
             gClimateCurrent.Weather = WeatherType{ _s6.current_weather };

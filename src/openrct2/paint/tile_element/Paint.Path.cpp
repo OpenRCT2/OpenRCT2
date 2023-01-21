@@ -54,7 +54,7 @@ const uint8_t PathSlopeToLandSlope[] = {
     TILE_ELEMENT_SLOPE_SE_SIDE_UP,
 };
 
-static constexpr const uint8_t byte_98D6E0[] = {
+static constexpr const uint8_t Byte98D6E0[] = {
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 12, 13, 14, 15, 0, 1, 2, 20, 4, 5, 6, 22, 8, 9, 10, 26, 12, 13, 14, 36,
     0, 1, 2, 3, 4, 5, 21, 23, 8, 9,  10, 11, 12, 13, 33, 37, 0, 1, 2, 3,  4, 5, 6, 24, 8, 9, 10, 11, 12, 13, 14, 38,
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 29, 30, 34, 39, 0, 1, 2, 3,  4, 5, 6, 7,  8, 9, 10, 11, 12, 13, 14, 40,
@@ -85,7 +85,7 @@ static constexpr const BoundBoxXY stru_98D804[] = {
     { { 0, 0 }, { 32, 32 } },
 };
 
-static constexpr const uint8_t byte_98D8A4[] = {
+static constexpr const uint8_t Byte98D8A4[] = {
     0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
 // clang-format on
@@ -1065,7 +1065,7 @@ void PathPaintBoxSupport(
     }
     else
     {
-        surfaceBaseImageIndex += byte_98D6E0[edi];
+        surfaceBaseImageIndex += Byte98D6E0[edi];
     }
 
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
@@ -1107,7 +1107,7 @@ void PathPaintBoxSupport(
         }
         else
         {
-            bridgeBaseImageIndex = byte_98D8A4[edges] + pathPaintInfo.BridgeImageId + 49;
+            bridgeBaseImageIndex = Byte98D8A4[edges] + pathPaintInfo.BridgeImageId + 49;
         }
 
         PaintAddImageAsParent(
@@ -1130,7 +1130,7 @@ void PathPaintBoxSupport(
         ax = ((pathElement.GetSlopeDirection() + session.CurrentRotation) & 0x3) + 1;
     }
 
-    auto supportType = byte_98D8A4[edges] == 0 ? 0 : 1;
+    auto supportType = Byte98D8A4[edges] == 0 ? 0 : 1;
     PathASupportsPaintSetup(session, supportType, ax, height, imageTemplate, pathPaintInfo, nullptr);
 
     height += 32;
@@ -1203,7 +1203,7 @@ void PathPaintPoleSupport(
     }
     else
     {
-        surfaceBaseImageIndex += byte_98D6E0[edi];
+        surfaceBaseImageIndex += Byte98D6E0[edi];
     }
 
     // Below Surface
