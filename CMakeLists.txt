@@ -160,6 +160,11 @@ if (MACOS_USE_DEPENDENCIES)
     endif ()
 endif ()
 
+# If OS is Linux, import OpenSoundEffects and OpenMusic
+if(UNIX AND NOT APPLE)
+    set(DOWNLOAD_OPENMSX ON)
+endif()
+
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
 # Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.
 set(SUPPORTED_CHECK_CXX_COMPILER_FLAGS "")
