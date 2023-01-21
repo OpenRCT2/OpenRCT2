@@ -279,8 +279,7 @@ CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords)
 /*
  *  rct2: 0x006E7FF3
  */
-static void ViewportRedrawAfterShift(
-    DrawPixelInfo* dpi, WindowBase* window, Viewport* viewport, const ScreenCoordsXY& coords)
+static void ViewportRedrawAfterShift(DrawPixelInfo* dpi, WindowBase* window, Viewport* viewport, const ScreenCoordsXY& coords)
 {
     // sub-divide by intersecting windows
     if (window != nullptr)
