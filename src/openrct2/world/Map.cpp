@@ -1268,7 +1268,7 @@ TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, 
 
     // Insert new map element
     auto* insertedElement = newTileElement;
-    newTileElement->type = 0;
+    newTileElement->Type = 0;
     newTileElement->SetType(type);
     newTileElement->SetBaseZ(loc.z);
     newTileElement->Flags = 0;

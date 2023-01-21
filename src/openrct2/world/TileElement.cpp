@@ -103,7 +103,7 @@ RideId TileElement::GetRideIndex() const
 
 void TileElement::ClearAs(TileElementType newType)
 {
-    type = 0;
+    Type = 0;
     SetType(newType);
     Flags = 0;
     BaseHeight = MINIMUM_LAND_HEIGHT;

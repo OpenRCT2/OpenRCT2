@@ -26,13 +26,13 @@
 
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
 {
-    return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (this->Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
 {
-    type &= ~TILE_ELEMENT_QUADRANT_MASK;
-    type |= (newQuadrant << 6);
+    Type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    Type |= (newQuadrant << 6);
 }
 
 uint16_t SmallSceneryElement::GetEntryIndex() const

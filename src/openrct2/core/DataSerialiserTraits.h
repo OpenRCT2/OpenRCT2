@@ -450,7 +450,7 @@ template<> struct DataSerializerTraitsT<TileElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TileElement& tileElement)
     {
-        stream->WriteValue(tileElement.type);
+        stream->WriteValue(tileElement.Type);
         stream->WriteValue(tileElement.Flags);
         stream->WriteValue(tileElement.BaseHeight);
         stream->WriteValue(tileElement.ClearanceHeight);
@@ -466,7 +466,7 @@ template<> struct DataSerializerTraitsT<TileElement>
     }
     static void decode(OpenRCT2::IStream* stream, TileElement& tileElement)
     {
-        tileElement.type = stream->ReadValue<uint8_t>();
+        tileElement.Type = stream->ReadValue<uint8_t>();
         tileElement.Flags = stream->ReadValue<uint8_t>();
         tileElement.BaseHeight = stream->ReadValue<uint8_t>();
         tileElement.ClearanceHeight = stream->ReadValue<uint8_t>();
@@ -484,7 +484,7 @@ template<> struct DataSerializerTraitsT<TileElement>
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "TileElement(type = %u, flags = %u, BaseHeight = %u)", tileElement.type, tileElement.Flags,
+            msg, sizeof(msg), "TileElement(type = %u, flags = %u, BaseHeight = %u)", tileElement.Type, tileElement.Flags,
             tileElement.BaseHeight);
         stream->Write(msg, strlen(msg));
     }
