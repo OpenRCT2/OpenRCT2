@@ -161,11 +161,11 @@ namespace RCT1
                     td4Base.VehicleType);
                 if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                 {
-                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].body_colour);
+                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
                 else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
                 {
-                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].trim_colour);
+                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
                 else
                 {
@@ -174,11 +174,11 @@ namespace RCT1
 
                 if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
                 {
-                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].body_colour);
+                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
                 else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
                 {
-                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].trim_colour);
+                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
                 else
                 {
@@ -187,11 +187,11 @@ namespace RCT1
 
                 if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
                 {
-                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].body_colour);
+                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
                 else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
                 {
-                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].trim_colour);
+                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
                 else
                 {
@@ -243,17 +243,17 @@ namespace RCT1
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
                 TD46MazeElement t4MazeElement{};
-                t4MazeElement.all = !0;
-                while (t4MazeElement.all != 0)
+                t4MazeElement.All = !0;
+                while (t4MazeElement.All != 0)
                 {
                     _stream.Read(&t4MazeElement, sizeof(TD46MazeElement));
-                    if (t4MazeElement.all != 0)
+                    if (t4MazeElement.All != 0)
                     {
                         TrackDesignMazeElement mazeElement{};
                         mazeElement.x = t4MazeElement.x;
                         mazeElement.y = t4MazeElement.y;
-                        mazeElement.direction = t4MazeElement.direction;
-                        mazeElement.type = t4MazeElement.type;
+                        mazeElement.direction = t4MazeElement.Direction;
+                        mazeElement.type = t4MazeElement.Type;
                         td->maze_elements.push_back(mazeElement);
                     }
                 }
@@ -266,8 +266,8 @@ namespace RCT1
                     _stream.SetPosition(_stream.GetPosition() - 1);
                     _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
-                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.type, td->type);
-                    trackElement.flags = t4TrackElement.flags;
+                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->type);
+                    trackElement.flags = t4TrackElement.Flags;
                     td->track_elements.push_back(trackElement);
                 }
             }

@@ -471,14 +471,14 @@ namespace RCT1
         uint8_t Mass;            // 0x41
         uint8_t TimeToConsume;
         uint8_t Intensity; // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
-        uint8_t NauseaTolerance;        // 0x44
-        uint8_t WindowInvalidateFlags;  // 0x45
-        money16 PaidOnDrink;            // 0x46
-        uint8_t ride_types_been_on[16]; // 0x48
-        uint8_t Pad5F[0x10];            // 0x58
-        RCT12RideId CurrentRide;        // 0x68
-        uint8_t CurrentRideStation;     // 0x69
-        uint8_t CurrentTrain;           // 0x6A
+        uint8_t NauseaTolerance;       // 0x44
+        uint8_t WindowInvalidateFlags; // 0x45
+        money16 PaidOnDrink;           // 0x46
+        uint8_t RideTypesBeenOn[16];   // 0x48
+        uint8_t Pad5F[0x10];           // 0x58
+        RCT12RideId CurrentRide;       // 0x68
+        uint8_t CurrentRideStation;    // 0x69
+        uint8_t CurrentTrain;          // 0x6A
         union
         {
             struct
@@ -516,8 +516,8 @@ namespace RCT1
             uint8_t Direction;    // Direction ?
         };
         RCT12RideId InteractionRideIndex;
-        uint16_t TimeInQueue;      // 0x7A
-        uint8_t rides_been_on[32]; // 0x7C
+        uint16_t TimeInQueue;    // 0x7A
+        uint8_t RidesBeenOn[32]; // 0x7C
         // 255 bit bitmap of every ride the peep has been on see
         // WindowPeepRidesUpdate for how to use.
         uint32_t ID;                                        // 0x9C

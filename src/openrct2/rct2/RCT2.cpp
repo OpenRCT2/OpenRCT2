@@ -118,24 +118,24 @@ namespace RCT2
 
     uint8_t Ride::GetMinCarsPerTrain() const
     {
-        return min_max_cars_per_train >> 4;
+        return MinMaxCarsPerTrain >> 4;
     }
 
     uint8_t Ride::GetMaxCarsPerTrain() const
     {
-        return min_max_cars_per_train & 0xF;
+        return MinMaxCarsPerTrain & 0xF;
     }
 
     void Ride::SetMinCarsPerTrain(uint8_t newValue)
     {
-        min_max_cars_per_train &= ~0xF0;
-        min_max_cars_per_train |= (newValue << 4);
+        MinMaxCarsPerTrain &= ~0xF0;
+        MinMaxCarsPerTrain |= (newValue << 4);
     }
 
     void Ride::SetMaxCarsPerTrain(uint8_t newValue)
     {
-        min_max_cars_per_train &= ~0x0F;
-        min_max_cars_per_train |= newValue & 0x0F;
+        MinMaxCarsPerTrain &= ~0x0F;
+        MinMaxCarsPerTrain |= newValue & 0x0F;
     }
 
     bool RCT2TrackTypeIsBooster(ride_type_t rideType, uint16_t trackType)

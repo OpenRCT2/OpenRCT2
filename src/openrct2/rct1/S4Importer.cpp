@@ -1169,9 +1169,9 @@ namespace RCT1
         {
             for (const auto& src : _s4.RideMeasurements)
             {
-                if (src.ride_index != RCT12_RIDE_ID_NULL)
+                if (src.RideIndex != RCT12_RIDE_ID_NULL)
                 {
-                    auto ride = GetRide(RCT12RideIdToOpenRCT2RideId(src.ride_index));
+                    auto ride = GetRide(RCT12RideIdToOpenRCT2RideId(src.RideIndex));
                     if (ride != nullptr)
                     {
                         ride->measurement = std::make_unique<RideMeasurement>();
@@ -1183,18 +1183,18 @@ namespace RCT1
 
         void ImportRideMeasurement(RideMeasurement& dst, const RCT12RideMeasurement& src)
         {
-            dst.flags = src.flags;
-            dst.last_use_tick = src.last_use_tick;
-            dst.num_items = src.num_items;
-            dst.current_item = src.current_item;
-            dst.vehicle_index = src.vehicle_index;
-            dst.current_station = StationIndex::FromUnderlying(src.current_station);
-            for (size_t i = 0; i < std::size(src.velocity); i++)
+            dst.flags = src.Flags;
+            dst.last_use_tick = src.LastUseTick;
+            dst.num_items = src.NumItems;
+            dst.current_item = src.CurrentItem;
+            dst.vehicle_index = src.VehicleIndex;
+            dst.current_station = StationIndex::FromUnderlying(src.CurrentStation);
+            for (size_t i = 0; i < std::size(src.Velocity); i++)
             {
-                dst.velocity[i] = src.velocity[i] / 2;
-                dst.altitude[i] = src.altitude[i] / 2;
-                dst.vertical[i] = src.vertical[i] / 2;
-                dst.lateral[i] = src.lateral[i] / 2;
+                dst.velocity[i] = src.Velocity[i] / 2;
+                dst.altitude[i] = src.Altitude[i] / 2;
+                dst.vertical[i] = src.Vertical[i] / 2;
+                dst.lateral[i] = src.Lateral[i] / 2;
             }
         }
 
@@ -1219,11 +1219,11 @@ namespace RCT1
             // RCT1 had no third colour
             if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
             {
-                dst->colours.Body = RCT1::GetColour(src->Colours.body_colour);
+                dst->colours.Body = RCT1::GetColour(src->Colours.BodyColour);
             }
             else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
             {
-                dst->colours.Body = RCT1::GetColour(src->Colours.trim_colour);
+                dst->colours.Body = RCT1::GetColour(src->Colours.TrimColour);
             }
             else
             {
@@ -1232,11 +1232,11 @@ namespace RCT1
 
             if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
             {
-                dst->colours.Trim = RCT1::GetColour(src->Colours.body_colour);
+                dst->colours.Trim = RCT1::GetColour(src->Colours.BodyColour);
             }
             else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
             {
-                dst->colours.Trim = RCT1::GetColour(src->Colours.trim_colour);
+                dst->colours.Trim = RCT1::GetColour(src->Colours.TrimColour);
             }
             else
             {
@@ -1245,11 +1245,11 @@ namespace RCT1
 
             if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
             {
-                dst->colours.Tertiary = RCT1::GetColour(src->Colours.body_colour);
+                dst->colours.Tertiary = RCT1::GetColour(src->Colours.BodyColour);
             }
             else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
             {
-                dst->colours.Tertiary = RCT1::GetColour(src->Colours.trim_colour);
+                dst->colours.Tertiary = RCT1::GetColour(src->Colours.TrimColour);
             }
             else
             {
@@ -2144,9 +2144,9 @@ namespace RCT1
             auto& awards = GetAwards();
             for (auto& src : _s4.Awards)
             {
-                if (src.time != 0)
+                if (src.Time != 0)
                 {
-                    awards.push_back(Award{ src.time, static_cast<AwardType>(src.type) });
+                    awards.push_back(Award{ src.Time, static_cast<AwardType>(src.Type) });
                 }
             }
 
@@ -2389,21 +2389,21 @@ namespace RCT1
 
             *dst = {};
             dst->id = id;
-            dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->type);
+            dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->Type);
 
             dst->flags = 0;
-            if (src->flags & BANNER_FLAG_NO_ENTRY)
+            if (src->Flags & BANNER_FLAG_NO_ENTRY)
             {
                 dst->flags |= BANNER_FLAG_NO_ENTRY;
             }
 
-            if (IsUserStringID(src->string_idx))
+            if (IsUserStringID(src->StringID))
             {
-                dst->text = GetUserString(src->string_idx);
+                dst->text = GetUserString(src->StringID);
             }
 
-            dst->colour = RCT1::GetColour(src->colour);
-            dst->text_colour = src->text_colour;
+            dst->colour = RCT1::GetColour(src->Colour);
+            dst->text_colour = src->TextColour;
             dst->position.x = src->x;
             dst->position.y = src->y;
         }
@@ -2662,7 +2662,7 @@ namespace RCT1
             }
             case RCT12EntityIdentifier::Misc:
 
-                switch (RCT12MiscEntityType(src.type))
+                switch (RCT12MiscEntityType(src.Type))
                 {
                     case RCT12MiscEntityType::SteamParticle:
                         output = EntityType::SteamParticle;
@@ -2720,7 +2720,7 @@ namespace RCT1
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;
-        dst->SubType = ::Vehicle::Type(src->type);
+        dst->SubType = ::Vehicle::Type(src->Type);
         dst->var_44 = src->Var44;
         dst->remaining_distance = src->RemainingDistance;
 
@@ -2815,7 +2815,7 @@ namespace RCT1
 
         dst->num_peeps = src->NumPeeps;
         dst->next_free_seat = src->NextFreeSeat;
-        dst->IsCrashedVehicle = src->flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY;
+        dst->IsCrashedVehicle = src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY;
     }
 
     template<> void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)
@@ -2879,13 +2879,13 @@ namespace RCT1
         {
             auto srcThought = &src->Thoughts[i];
             auto dstThought = &dst->Thoughts[i];
-            dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-            if (srcThought->item == RCT12PeepThoughtItemNone)
+            dstThought->type = static_cast<PeepThoughtType>(srcThought->Type);
+            if (srcThought->Item == RCT12PeepThoughtItemNone)
                 dstThought->item = PeepThoughtItemNone;
             else
-                dstThought->item = srcThought->item;
-            dstThought->freshness = srcThought->freshness;
-            dstThought->fresh_timeout = srcThought->fresh_timeout;
+                dstThought->item = srcThought->Item;
+            dstThought->freshness = srcThought->Freshness;
+            dstThought->fresh_timeout = srcThought->FreshTimeout;
         }
 
         dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->PreviousRide);
@@ -2942,7 +2942,7 @@ namespace RCT1
         auto* src = static_cast<const RCT12EntityLitter*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
 
-        dst->SubType = Litter::Type(src->type);
+        dst->SubType = Litter::Type(src->Type);
     }
 
     template<> void S4Importer::ImportEntity<SteamParticle>(const RCT12EntityBase& srcBase)
@@ -2951,7 +2951,7 @@ namespace RCT1
         auto* src = static_cast<const RCT12EntitySteamParticle*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
-        dst->frame = src->frame;
+        dst->frame = src->Frame;
     }
 
     template<> void S4Importer::ImportEntity<MoneyEffect>(const RCT12EntityBase& srcBase)
@@ -2960,11 +2960,11 @@ namespace RCT1
         auto* src = static_cast<const RCT12EntityMoneyEffect*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
-        dst->MoveDelay = src->move_delay;
-        dst->NumMovements = src->num_movements;
-        dst->Value = src->value;
-        dst->OffsetX = src->offset_x;
-        dst->Wiggle = src->wiggle;
+        dst->MoveDelay = src->MoveDelay;
+        dst->NumMovements = src->NumMovements;
+        dst->Value = src->Value;
+        dst->OffsetX = src->OffsetX;
+        dst->Wiggle = src->Wiggle;
     }
 
     template<> void S4Importer::ImportEntity<VehicleCrashParticle>(const RCT12EntityBase& srcBase)
@@ -3001,10 +3001,10 @@ namespace RCT1
         auto* src = static_cast<const RCT12EntityJumpingFountain*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
-        dst->FountainFlags = src->fountain_flags;
-        dst->Iteration = src->iteration;
-        dst->NumTicksAlive = src->num_ticks_alive;
-        dst->frame = src->frame;
+        dst->FountainFlags = src->FountainFlags;
+        dst->Iteration = src->Iteration;
+        dst->NumTicksAlive = src->NumTicksAlive;
+        dst->frame = src->Frame;
         dst->FountainType = JumpingFountainType::Water;
     }
 
@@ -3021,7 +3021,7 @@ namespace RCT1
         }
         else
         {
-            dst->colour = RCT1::GetColour(src->colour);
+            dst->colour = RCT1::GetColour(src->Colour);
         }
     }
 
@@ -3031,8 +3031,8 @@ namespace RCT1
         auto* src = static_cast<const RCT12EntityDuck*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
-        dst->frame = src->frame;
-        dst->state = static_cast<Duck::DuckState>(src->state);
+        dst->frame = src->Frame;
+        dst->state = static_cast<Duck::DuckState>(src->State);
     }
 
     void S4Importer::ImportEntity(const RCT12EntityBase& src)

@@ -123,7 +123,7 @@ enum
     RCT12_TRACK_ELEMENT_DOOR_B_MASK = 0b11100000,
 };
 
-// Masks and flags for values stored in TileElement.properties.path.type
+// Masks and Flags for values stored in TileElement.properties.path.type
 enum
 {
     RCT12_FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
@@ -132,7 +132,7 @@ enum
     RCT12_FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
 };
 
-// Masks and flags for values stored in RCT12TileElement.properties.path.additions
+// Masks and Flags for values stored in RCT12TileElement.properties.path.additions
 enum
 {
     RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
@@ -194,18 +194,18 @@ struct TD46MazeElement
 {
     union
     {
-        uint32_t all;
+        uint32_t All;
         struct
         {
             int8_t x;
             int8_t y;
             union
             {
-                uint16_t maze_entry;
+                uint16_t MazeEntry;
                 struct
                 {
-                    uint8_t direction;
-                    uint8_t type;
+                    uint8_t Direction;
+                    uint8_t Type;
                 };
             };
         };
@@ -216,15 +216,15 @@ assert_struct_size(TD46MazeElement, 0x04);
 /* Track Element entry  size: 0x02 */
 struct TD46TrackElement
 {
-    uint8_t type;  // 0x00
-    uint8_t flags; // 0x01
+    uint8_t Type;  // 0x00
+    uint8_t Flags; // 0x01
 };
 assert_struct_size(TD46TrackElement, 0x02);
 
 struct RCT12Award
 {
-    uint16_t time;
-    uint16_t type;
+    uint16_t Time;
+    uint16_t Type;
 };
 assert_struct_size(RCT12Award, 4);
 
@@ -311,7 +311,7 @@ struct RCT12EightCarsCorruptElement15;
 struct RCT12TileElementBase
 {
     uint8_t Type;            // 0
-    uint8_t Flags;           // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
+    uint8_t Flags;           // 1. Upper nibble: Flags. Lower nibble: occupied quadrants (one bit per quadrant).
     uint8_t BaseHeight;      // 2
     uint8_t ClearanceHeight; // 3
     RCT12TileElementType GetType() const;
@@ -407,10 +407,10 @@ assert_struct_size(RCT12TileElement, 8);
 struct RCT12SurfaceElement : RCT12TileElementBase
 {
 private:
-    uint8_t slope;        // 4 0xE0 Edge Style, 0x1F Slope
-    uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
-    uint8_t grass_length; // 6
-    uint8_t ownership;    // 7
+    uint8_t Slope;       // 4 0xE0 Edge Style, 0x1F Slope
+    uint8_t Terrain;     // 5 0xE0 Terrain Style, 0x1F Water height
+    uint8_t GrassLength; // 6
+    uint8_t Ownership;   // 7
 public:
     uint8_t GetSlope() const;
     uint32_t GetSurfaceStyle() const;
@@ -425,13 +425,13 @@ assert_struct_size(RCT12SurfaceElement, 8);
 struct RCT12PathElement : RCT12TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4, 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is sloped, 0x03 Rotation
-    uint8_t additions;  // 5, 0bGSSSAAAA: G = Ghost, S = station index, A = addition (0 means no addition)
-    uint8_t edges;      // 6
+    uint8_t EntryIndex; // 4, 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is sloped, 0x03 Rotation
+    uint8_t Additions;  // 5, 0bGSSSAAAA: G = Ghost, S = station index, A = addition (0 means no addition)
+    uint8_t Edges;      // 6
     union
     {
-        uint8_t additionStatus; // 7
-        uint8_t rideIndex;
+        uint8_t AdditionStatus; // 7
+        uint8_t RideIndex;
     };
 
 public:
@@ -460,7 +460,7 @@ assert_struct_size(RCT12PathElement, 8);
 struct RCT12TrackElement : RCT12TileElementBase
 {
 private:
-    uint8_t trackType; // 4
+    uint8_t TrackType; // 4
     union
     {
         struct
@@ -476,12 +476,12 @@ private:
             // - Bits 7 and 8 are never set
             // - Bits 5 and 6 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
             // - If any of the bits 5-8 are set, the game counts it as a photo being taken.
-            uint8_t sequence; // 5.
-            uint8_t colour;   // 6
+            uint8_t Sequence; // 5.
+            uint8_t Colour;   // 6
         };
-        uint16_t mazeEntry; // 5
+        uint16_t MazeEntry; // 5
     };
-    uint8_t rideIndex; // 7
+    uint8_t RideIndex; // 7
 public:
     uint8_t GetTrackType() const;
     uint8_t GetSequenceIndex() const;
@@ -507,10 +507,10 @@ assert_struct_size(RCT12TrackElement, 8);
 struct RCT12SmallSceneryElement : RCT12TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4
-    uint8_t age;        // 5
-    uint8_t colour_1;   // 6
-    uint8_t colour_2;   // 7
+    uint8_t EntryIndex; // 4
+    uint8_t Age;        // 5
+    uint8_t Colour1;    // 6
+    uint8_t Colour2;    // 7
 public:
     RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetAge() const;
@@ -523,8 +523,8 @@ assert_struct_size(RCT12SmallSceneryElement, 8);
 struct RCT12LargeSceneryElement : RCT12TileElementBase
 {
 private:
-    uint16_t entryIndex; // 4
-    uint8_t colour[2];   // 6
+    uint16_t EntryIndex; // 4
+    uint8_t Colour[2];   // 6
 public:
     uint32_t GetEntryIndex() const;
     uint16_t GetSequenceIndex() const;
@@ -536,14 +536,14 @@ assert_struct_size(RCT12LargeSceneryElement, 8);
 struct RCT12WallElement : RCT12TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4
+    uint8_t EntryIndex; // 4
     union
     {
-        uint8_t colour_3;     // 5
-        uint8_t banner_index; // 5
+        uint8_t Colour3;     // 5
+        uint8_t BannerIndex; // 5
     };
-    uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
-    uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    uint8_t Colour1;   // 6 0b_2221_1111 2 = colour_2 (uses Flags for rest of colour2), 1 = colour_1
+    uint8_t Animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 public:
     RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetSlope() const;
@@ -562,10 +562,10 @@ assert_struct_size(RCT12WallElement, 8);
 struct RCT12EntranceElement : RCT12TileElementBase
 {
 private:
-    uint8_t entranceType; // 4
-    uint8_t index;        // 5. 0bUSSS????, S = station index.
-    uint8_t pathType;     // 6
-    uint8_t rideIndex;    // 7
+    uint8_t EntranceType; // 4
+    uint8_t Index;        // 5. 0bUSSS????, S = station index.
+    uint8_t PathType;     // 6
+    uint8_t RideIndex;    // 7
 public:
     uint8_t GetEntranceType() const;
     uint8_t GetRideIndex() const;
@@ -577,12 +577,12 @@ assert_struct_size(RCT12EntranceElement, 8);
 struct RCT12BannerElement : RCT12TileElementBase
 {
 private:
-    uint8_t index;        // 4
-    uint8_t position;     // 5
+    uint8_t Index;        // 4
+    uint8_t Position;     // 5
     uint8_t AllowedEdges; // 6
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t unused; // 7
+    uint8_t Unused; // 7
 #pragma clang diagnostic pop
 public:
     uint8_t GetIndex() const;
@@ -593,19 +593,19 @@ assert_struct_size(RCT12BannerElement, 8);
 
 struct RCT12CorruptElement : RCT12TileElementBase
 {
-    uint8_t pad[4];
+    uint8_t Pad[4];
 };
 assert_struct_size(RCT12CorruptElement, 8);
 
 struct RCT12EightCarsCorruptElement14 : RCT12TileElementBase
 {
-    uint8_t pad[4];
+    uint8_t Pad[4];
 };
 assert_struct_size(RCT12EightCarsCorruptElement14, 8);
 
 struct RCT12EightCarsCorruptElement15 : RCT12TileElementBase
 {
-    uint8_t pad[4];
+    uint8_t Pad[4];
 };
 assert_struct_size(RCT12EightCarsCorruptElement15, 8);
 
@@ -653,170 +653,170 @@ enum class RCT12PeepType : uint8_t
 
 struct RCT12EntityBase
 {
-    RCT12EntityIdentifier EntityIdentifier;            // 0x00
-    uint8_t type;                                      // 0x01
-    uint16_t next_in_quadrant;                         // 0x02
-    uint16_t next;                                     // 0x04
-    uint16_t previous;                                 // 0x06
-    RCT12EntityLinkListOffset linked_list_type_offset; // 0x08
-    uint8_t SpriteHeightNegative;                      // 0x09
-    uint16_t EntityIndex;                              // 0x0A
-    uint16_t flags;                                    // 0x0C
-    int16_t x;                                         // 0x0E
-    int16_t y;                                         // 0x10
-    int16_t z;                                         // 0x12
-    uint8_t SpriteWidth;                               // 0x14
-    uint8_t SpriteHeightPositive;                      // 0x15
-    int16_t SpriteLeft;                                // 0x16
-    int16_t SpriteTop;                                 // 0x18
-    int16_t SpriteRight;                               // 0x1A
-    int16_t SpriteBottom;                              // 0x1C
-    uint8_t EntityDirection;                           // 0x1E
+    RCT12EntityIdentifier EntityIdentifier;         // 0x00
+    uint8_t Type;                                   // 0x01
+    uint16_t NextInQuadrant;                        // 0x02
+    uint16_t Next;                                  // 0x04
+    uint16_t Previous;                              // 0x06
+    RCT12EntityLinkListOffset LinkedListTypeOffset; // 0x08
+    uint8_t SpriteHeightNegative;                   // 0x09
+    uint16_t EntityIndex;                           // 0x0A
+    uint16_t Flags;                                 // 0x0C
+    int16_t x;                                      // 0x0E
+    int16_t y;                                      // 0x10
+    int16_t z;                                      // 0x12
+    uint8_t SpriteWidth;                            // 0x14
+    uint8_t SpriteHeightPositive;                   // 0x15
+    int16_t SpriteLeft;                             // 0x16
+    int16_t SpriteTop;                              // 0x18
+    int16_t SpriteRight;                            // 0x1A
+    int16_t SpriteBottom;                           // 0x1C
+    uint8_t EntityDirection;                        // 0x1E
 };
 assert_struct_size(RCT12EntityBase, 0x1F);
 
 struct RCT12EntityBalloon : RCT12EntityBase
 {
     uint8_t Pad1F[0x24 - 0x1F];
-    uint16_t popped;      // 0x24
-    uint8_t time_to_move; // 0x26
-    uint8_t frame;        // 0x27
+    uint16_t Popped;    // 0x24
+    uint8_t TimeToMove; // 0x26
+    uint8_t Frame;      // 0x27
     uint8_t Pad28[4];
-    uint8_t colour; // 0x2C
+    uint8_t Colour; // 0x2C
 };
 assert_struct_size(RCT12EntityBalloon, 0x2D);
 
 struct RCT12EntityDuck : RCT12EntityBase
 {
     uint8_t Pad1F[0x26 - 0x1F];
-    uint16_t frame; // 0x26
+    uint16_t Frame; // 0x26
     uint8_t Pad28[0x30 - 0x28];
-    int16_t target_x; // 0x30
-    int16_t target_y; // 0x32
+    int16_t TargetX; // 0x30
+    int16_t TargetY; // 0x32
     uint8_t Pad34[0x14];
-    uint8_t state; // 0x48
+    uint8_t State; // 0x48
 };
 assert_struct_size(RCT12EntityDuck, 0x49);
 
 struct RCT12EntityLitter : RCT12EntityBase
 {
     uint8_t Pad1F[0x24 - 0x1F];
-    uint32_t creationTick; // 0x24
+    uint32_t CreationTick; // 0x24
 };
 assert_struct_size(RCT12EntityLitter, 0x28);
 
 struct RCT12EntityParticle : RCT12EntityBase
 {
     uint8_t Pad1F[0x26 - 0x1F];
-    uint16_t frame; // 0x26
+    uint16_t Frame; // 0x26
 };
 assert_struct_size(RCT12EntityParticle, 0x28);
 
 struct RCT12EntityJumpingFountain : RCT12EntityBase
 {
     uint8_t Pad1F[0x26 - 0x1F];
-    uint8_t num_ticks_alive; // 0x26
-    uint8_t frame;           // 0x27
+    uint8_t NumTicksAlive; // 0x26
+    uint8_t Frame;         // 0x27
     uint8_t Pad28[0x2F - 0x28];
-    uint8_t fountain_flags; // 0x2F
-    int16_t target_x;       // 0x30
-    int16_t target_y;       // 0x32
+    uint8_t FountainFlags; // 0x2F
+    int16_t TargetX;       // 0x30
+    int16_t TargetY;       // 0x32
     uint8_t Pad34[0x46 - 0x34];
-    uint16_t iteration; // 0x46
+    uint16_t Iteration; // 0x46
 };
 assert_struct_size(RCT12EntityJumpingFountain, 0x48);
 
 struct RCT12EntityMoneyEffect : RCT12EntityBase
 {
     uint8_t Pad1F[0x24 - 0x1F];
-    uint16_t move_delay;   // 0x24
-    uint8_t num_movements; // 0x26
-    uint8_t vertical;
-    money32 value; // 0x28
+    uint16_t MoveDelay;   // 0x24
+    uint8_t NumMovements; // 0x26
+    uint8_t Vertical;
+    money32 Value; // 0x28
     uint8_t Pad2C[0x44 - 0x2C];
-    int16_t offset_x; // 0x44
-    uint16_t wiggle;  // 0x46
+    int16_t OffsetX; // 0x44
+    uint16_t Wiggle; // 0x46
 };
 assert_struct_size(RCT12EntityMoneyEffect, 0x48);
 
 struct RCT12EntityCrashedVehicleParticle : RCT12EntityBase
 {
     uint8_t Pad1F[0x24 - 0x1F];
-    uint16_t time_to_live; // 0x24
-    uint16_t frame;        // 0x26
+    uint16_t TimeToLive; // 0x24
+    uint16_t Frame;      // 0x26
     uint8_t Pad28[0x2C - 0x28];
-    uint8_t colour[2];          // 0x2C
+    uint8_t Colour[2];          // 0x2C
     uint16_t CrashedEntityBase; // 0x2E
-    int16_t velocity_x;         // 0x30
-    int16_t velocity_y;         // 0x32
-    int16_t velocity_z;         // 0x34
+    int16_t VelocityX;          // 0x30
+    int16_t VelocityY;          // 0x32
+    int16_t VelocityZ;          // 0x34
     uint8_t Pad36[0x38 - 0x36];
-    int32_t acceleration_x; // 0x38
-    int32_t acceleration_y; // 0x3C
-    int32_t acceleration_z; // 0x40
+    int32_t AccelerationX; // 0x38
+    int32_t AccelerationY; // 0x3C
+    int32_t AccelerationZ; // 0x40
 };
 assert_struct_size(RCT12EntityCrashedVehicleParticle, 0x44);
 
 struct RCT12EntityCrashSplash : RCT12EntityBase
 {
     uint8_t Pad1F[0x26 - 0x1F];
-    uint16_t frame; // 0x26
+    uint16_t Frame; // 0x26
 };
 assert_struct_size(RCT12EntityCrashSplash, 0x28);
 
 struct RCT12EntitySteamParticle : RCT12EntityBase
 {
     uint8_t Pad1F[0x24 - 0x1F];
-    uint16_t time_to_move; // 0x24
-    uint16_t frame;        // 0x26
+    uint16_t TimeToMove; // 0x24
+    uint16_t Frame;      // 0x26
 };
 assert_struct_size(RCT12EntitySteamParticle, 0x28);
 
 struct RCT12PeepThought
 {
-    uint8_t type;
-    uint8_t item;
-    uint8_t freshness;
-    uint8_t fresh_timeout;
+    uint8_t Type;
+    uint8_t Item;
+    uint8_t Freshness;
+    uint8_t FreshTimeout;
 };
 assert_struct_size(RCT12PeepThought, 4);
 
 struct RCT12RideMeasurement
 {
-    uint8_t ride_index;                                       // 0x0000
-    uint8_t flags;                                            // 0x0001
-    uint32_t last_use_tick;                                   // 0x0002
-    uint16_t num_items;                                       // 0x0006
-    uint16_t current_item;                                    // 0x0008
-    uint8_t vehicle_index;                                    // 0x000A
-    uint8_t current_station;                                  // 0x000B
-    int8_t vertical[RCT12::Limits::RideMeasurementMaxItems];  // 0x000C
-    int8_t lateral[RCT12::Limits::RideMeasurementMaxItems];   // 0x12CC
-    uint8_t velocity[RCT12::Limits::RideMeasurementMaxItems]; // 0x258C
-    uint8_t altitude[RCT12::Limits::RideMeasurementMaxItems]; // 0x384C
+    uint8_t RideIndex;                                        // 0x0000
+    uint8_t Flags;                                            // 0x0001
+    uint32_t LastUseTick;                                     // 0x0002
+    uint16_t NumItems;                                        // 0x0006
+    uint16_t CurrentItem;                                     // 0x0008
+    uint8_t VehicleIndex;                                     // 0x000A
+    uint8_t CurrentStation;                                   // 0x000B
+    int8_t Vertical[RCT12::Limits::RideMeasurementMaxItems];  // 0x000C
+    int8_t Lateral[RCT12::Limits::RideMeasurementMaxItems];   // 0x12CC
+    uint8_t Velocity[RCT12::Limits::RideMeasurementMaxItems]; // 0x258C
+    uint8_t Altitude[RCT12::Limits::RideMeasurementMaxItems]; // 0x384C
 };
 assert_struct_size(RCT12RideMeasurement, 0x4B0C);
 
 struct RCT12Banner
 {
-    RCT12ObjectEntryIndex type;
-    uint8_t flags;       // 0x01
-    StringId string_idx; // 0x02
+    RCT12ObjectEntryIndex Type;
+    uint8_t Flags;       // 0x01
+    ::StringId StringID; // 0x02
     union
     {
-        uint8_t colour;     // 0x04
-        uint8_t ride_index; // 0x04
+        uint8_t Colour;    // 0x04
+        uint8_t RideIndex; // 0x04
     };
-    uint8_t text_colour; // 0x05
-    uint8_t x;           // 0x06
-    uint8_t y;           // 0x07
+    uint8_t TextColour; // 0x05
+    uint8_t x;          // 0x06
+    uint8_t y;          // 0x07
 };
 assert_struct_size(RCT12Banner, 8);
 
 struct RCT12MapAnimation
 {
-    uint8_t baseZ;
-    uint8_t type;
+    uint8_t BaseZ;
+    uint8_t Type;
     uint16_t x;
     uint16_t y;
 };
@@ -827,16 +827,16 @@ struct RCT12ResearchItem
     // Bit 16 (0: scenery entry, 1: ride entry)
     union
     {
-        uint32_t rawValue;
+        uint32_t RawValue;
         struct
         {
-            RCT12ObjectEntryIndex entryIndex;
-            uint8_t baseRideType;
-            uint8_t type; // 0: scenery entry, 1: ride entry
-            uint8_t flags;
+            RCT12ObjectEntryIndex EntryIndex;
+            uint8_t BaseRideType;
+            uint8_t Type; // 0: scenery entry, 1: ride entry
+            uint8_t Flags;
         };
     };
-    uint8_t category;
+    uint8_t Category;
 
     bool IsInventedEndMarker() const;
     bool IsRandomEndMarker() const;
@@ -848,8 +848,8 @@ assert_struct_size(RCT12ResearchItem, 5);
 
 struct RCT12VehicleColour
 {
-    uint8_t body_colour;
-    uint8_t trim_colour;
+    uint8_t BodyColour;
+    uint8_t TrimColour;
 };
 assert_struct_size(RCT12VehicleColour, 2);
 
@@ -877,7 +877,7 @@ template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
     std::vector<uint16_t> ridesTypesBeenOn;
     for (uint16_t i = 0; i < RCT12::Limits::MaxRideObjects; i++)
     {
-        if (srcPeep->ride_types_been_on[i / 8] & (1 << (i % 8)))
+        if (srcPeep->RideTypesBeenOn[i / 8] & (1 << (i % 8)))
         {
             ridesTypesBeenOn.push_back(i);
         }
@@ -889,7 +889,7 @@ template<typename T> std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
     std::vector<RideId> ridesBeenOn;
     for (uint16_t i = 0; i < RCT12::Limits::MaxRidesInPark; i++)
     {
-        if (srcPeep->rides_been_on[i / 8] & (1 << (i % 8)))
+        if (srcPeep->RidesBeenOn[i / 8] & (1 << (i % 8)))
         {
             ridesBeenOn.push_back(RideId::FromUnderlying(i));
         }
