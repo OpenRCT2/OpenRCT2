@@ -14,50 +14,52 @@
 #include <cstddef>
 #include <cstdint>
 #include <list>
-
-struct G1Element;
-
-struct ImageList
+namespace OpenRCT2
 {
-    ImageIndex BaseId{};
-    ImageIndex Count{};
+    struct G1Element;
 
-    ImageList() = default;
-    ImageList(ImageIndex baseId, ImageIndex count)
-        : BaseId(baseId)
-        , Count(count)
+    struct ImageList
     {
+        ImageIndex BaseId{};
+        ImageIndex Count{};
+
+        ImageList() = default;
+        ImageList(ImageIndex baseId, ImageIndex count)
+            : BaseId(baseId)
+            , Count(count)
+        {
+        }
+
+        bool Contains(ImageIndex index) const
+        {
+            return index >= BaseId && index < GetEnd();
+        }
+
+        ImageIndex GetEnd() const
+        {
+            return BaseId + Count;
+        }
+
+        static ImageList FromBeginEnd(ImageIndex begin, ImageIndex end)
+        {
+            return ImageList(begin, end - begin);
+        }
+    };
+
+    constexpr bool operator==(const ImageList& lhs, const ImageList& rhs)
+    {
+        return lhs.BaseId == rhs.BaseId && lhs.Count == rhs.Count;
     }
 
-    bool Contains(ImageIndex index) const
+    constexpr bool operator!=(const ImageList& lhs, const ImageList& rhs)
     {
-        return index >= BaseId && index < GetEnd();
+        return !(lhs == rhs);
     }
 
-    ImageIndex GetEnd() const
-    {
-        return BaseId + Count;
-    }
-
-    static ImageList FromBeginEnd(ImageIndex begin, ImageIndex end)
-    {
-        return ImageList(begin, end - begin);
-    }
-};
-
-constexpr bool operator==(const ImageList& lhs, const ImageList& rhs)
-{
-    return lhs.BaseId == rhs.BaseId && lhs.Count == rhs.Count;
-}
-
-constexpr bool operator!=(const ImageList& lhs, const ImageList& rhs)
-{
-    return !(lhs == rhs);
-}
-
-uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count);
-void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count);
-void GfxObjectCheckAllImagesFreed();
-size_t ImageListGetUsedCount();
-size_t ImageListGetMaximum();
-const std::list<ImageList>& GetAvailableAllocationRanges();
+    uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count);
+    void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count);
+    void GfxObjectCheckAllImagesFreed();
+    size_t ImageListGetUsedCount();
+    size_t ImageListGetMaximum();
+    const std::list<ImageList>& GetAvailableAllocationRanges();
+} // namespace OpenRCT2

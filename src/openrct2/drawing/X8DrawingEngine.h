@@ -155,3 +155,4 @@ namespace OpenRCT2
         };
     } // namespace Drawing
 } // namespace OpenRCT2
+}

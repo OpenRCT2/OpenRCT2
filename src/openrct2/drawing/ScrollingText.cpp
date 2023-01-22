@@ -24,145 +24,147 @@
 #include <algorithm>
 #include <mutex>
 
-using namespace OpenRCT2;
-
-struct DrawScrollText
+namespace OpenRCT2
 {
-    StringId string_id;
-    uint8_t string_args[32];
-    colour_t colour;
-    uint16_t position;
-    uint16_t mode;
-    uint32_t id;
-    uint8_t bitmap[64 * 40];
-};
 
-static DrawScrollText _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
-static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
-static uint32_t _drawSCrollNextIndex = 0;
-static std::mutex _scrollingTextMutex;
-
-static void ScrollingTextSetBitmapForSprite(
-    std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
-static void ScrollingTextSetBitmapForTTF(
-    std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
-
-static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
-{
-    uint8_t drawingSurface[64];
-    DrawPixelInfo dpi;
-    dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
-    dpi.width = 8;
-    dpi.height = 8;
-
-    for (int32_t i = 0; i < count; i++)
+    struct DrawScrollText
     {
-        std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        GfxDrawSpriteSoftware(&dpi, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
+        StringId string_id;
+        uint8_t string_args[32];
+        colour_t colour;
+        uint16_t position;
+        uint16_t mode;
+        uint32_t id;
+        uint8_t bitmap[64 * 40];
+    };
 
-        for (int32_t x = 0; x < 8; x++)
+    static DrawScrollText _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
+    static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
+    static uint32_t _drawSCrollNextIndex = 0;
+    static std::mutex _scrollingTextMutex;
+
+    static void ScrollingTextSetBitmapForSprite(
+        std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
+    static void ScrollingTextSetBitmapForTTF(
+        std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
+
+    static void ScrollingTextInitialiseCharacterBitmaps(
+        uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
+    {
+        uint8_t drawingSurface[64];
+        DrawPixelInfo dpi;
+        dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
+        dpi.width = 8;
+        dpi.height = 8;
+
+        for (int32_t i = 0; i < count; i++)
         {
-            uint8_t val = 0;
-            for (int32_t y = 0; y < 8; y++)
+            std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
+            GfxDrawSpriteSoftware(&dpi, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
+
+            for (int32_t x = 0; x < 8; x++)
             {
-                val >>= 1;
-                uint8_t pixel = dpi.bits[x + y * 8];
-                if (pixel == 1 || (isAntiAliased && pixel == 2))
+                uint8_t val = 0;
+                for (int32_t y = 0; y < 8; y++)
                 {
-                    val |= 0x80;
+                    val >>= 1;
+                    uint8_t pixel = dpi.bits[x + y * 8];
+                    if (pixel == 1 || (isAntiAliased && pixel == 2))
+                    {
+                        val |= 0x80;
+                    }
                 }
+                _characterBitmaps[offset + i][x] = val;
             }
-            _characterBitmaps[offset + i][x] = val;
         }
-    }
-};
+    };
 
-static void ScrollingTextInitialiseScrollingText()
-{
-    for (int32_t i = 0; i < OpenRCT2::MaxScrollingTextEntries; i++)
+    static void ScrollingTextInitialiseScrollingText()
     {
-        const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
-
-        // Initialize the scrolling text sprite.
-        G1Element g1{};
-        g1.offset = _drawScrollTextList[i].bitmap;
-        g1.x_offset = -32;
-        g1.y_offset = 0;
-        g1.flags = G1_FLAG_HAS_TRANSPARENCY;
-        g1.width = 64;
-        g1.height = 40;
-        g1.offset[0] = 0xFF;
-        g1.offset[1] = 0xFF;
-        g1.offset[14] = 0;
-        g1.offset[15] = 0;
-        g1.offset[16] = 0;
-        g1.offset[17] = 0;
-
-        GfxSetG1Element(imageId, &g1);
-    }
-}
-
-void ScrollingTextInitialiseBitmaps()
-{
-    ScrollingTextInitialiseCharacterBitmaps(SPR_CHAR_START, 0, FONT_SPRITE_GLYPH_COUNT, gTinyFontAntiAliased);
-    ScrollingTextInitialiseCharacterBitmaps(SPR_G2_CHAR_BEGIN, FONT_SPRITE_GLYPH_COUNT, SPR_G2_GLYPH_COUNT, false);
-    ScrollingTextInitialiseScrollingText();
-}
-
-static uint8_t* FontSpriteGetCodepointBitmap(int32_t codepoint)
-{
-    auto offset = FontSpriteGetCodepointOffset(codepoint);
-    if (offset >= FONT_SPRITE_GLYPH_COUNT)
-    {
-        return _characterBitmaps[offset - (SPR_G2_CHAR_BEGIN - SPR_CHAR_START) + FONT_SPRITE_GLYPH_COUNT];
-    }
-
-    return _characterBitmaps[offset];
-}
-
-static int32_t ScrollingTextGetMatchingOrOldest(
-    StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
-{
-    uint32_t oldestId = 0xFFFFFFFF;
-    int32_t scrollIndex = -1;
-    for (size_t i = 0; i < std::size(_drawScrollTextList); i++)
-    {
-        DrawScrollText* scrollText = &_drawScrollTextList[i];
-        if (oldestId >= scrollText->id)
+        for (int32_t i = 0; i < OpenRCT2::MaxScrollingTextEntries; i++)
         {
-            oldestId = scrollText->id;
-            scrollIndex = static_cast<int32_t>(i);
-        }
+            const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
 
-        // If exact match return the matching index
-        if (scrollText->string_id == stringId
-            && std::memcmp(scrollText->string_args, ft.Buf(), sizeof(scrollText->string_args)) == 0
-            && scrollText->colour == colour && scrollText->position == scroll && scrollText->mode == scrollingMode)
+            // Initialize the scrolling text sprite.
+            G1Element g1{};
+            g1.offset = _drawScrollTextList[i].bitmap;
+            g1.x_offset = -32;
+            g1.y_offset = 0;
+            g1.flags = G1_FLAG_HAS_TRANSPARENCY;
+            g1.width = 64;
+            g1.height = 40;
+            g1.offset[0] = 0xFF;
+            g1.offset[1] = 0xFF;
+            g1.offset[14] = 0;
+            g1.offset[15] = 0;
+            g1.offset[16] = 0;
+            g1.offset[17] = 0;
+
+            GfxSetG1Element(imageId, &g1);
+        }
+    }
+
+    void ScrollingTextInitialiseBitmaps()
+    {
+        ScrollingTextInitialiseCharacterBitmaps(SPR_CHAR_START, 0, FONT_SPRITE_GLYPH_COUNT, gTinyFontAntiAliased);
+        ScrollingTextInitialiseCharacterBitmaps(SPR_G2_CHAR_BEGIN, FONT_SPRITE_GLYPH_COUNT, SPR_G2_GLYPH_COUNT, false);
+        ScrollingTextInitialiseScrollingText();
+    }
+
+    static uint8_t* FontSpriteGetCodepointBitmap(int32_t codepoint)
+    {
+        auto offset = FontSpriteGetCodepointOffset(codepoint);
+        if (offset >= FONT_SPRITE_GLYPH_COUNT)
         {
-            scrollText->id = _drawSCrollNextIndex;
-            return static_cast<int32_t>(i + SPR_SCROLLING_TEXT_START);
+            return _characterBitmaps[offset - (SPR_G2_CHAR_BEGIN - SPR_CHAR_START) + FONT_SPRITE_GLYPH_COUNT];
+        }
+
+        return _characterBitmaps[offset];
+    }
+
+    static int32_t ScrollingTextGetMatchingOrOldest(
+        StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
+    {
+        uint32_t oldestId = 0xFFFFFFFF;
+        int32_t scrollIndex = -1;
+        for (size_t i = 0; i < std::size(_drawScrollTextList); i++)
+        {
+            DrawScrollText* scrollText = &_drawScrollTextList[i];
+            if (oldestId >= scrollText->id)
+            {
+                oldestId = scrollText->id;
+                scrollIndex = static_cast<int32_t>(i);
+            }
+
+            // If exact match return the matching index
+            if (scrollText->string_id == stringId
+                && std::memcmp(scrollText->string_args, ft.Buf(), sizeof(scrollText->string_args)) == 0
+                && scrollText->colour == colour && scrollText->position == scroll && scrollText->mode == scrollingMode)
+            {
+                scrollText->id = _drawSCrollNextIndex;
+                return static_cast<int32_t>(i + SPR_SCROLLING_TEXT_START);
+            }
+        }
+        return scrollIndex;
+    }
+
+    static void ScrollingTextFormat(utf8* dst, size_t size, DrawScrollText* scrollText)
+    {
+        if (gConfigGeneral.UpperCaseBanners)
+        {
+            FormatStringToUpper(dst, size, scrollText->string_id, scrollText->string_args);
+        }
+        else
+        {
+            FormatStringLegacy(dst, size, scrollText->string_id, scrollText->string_args);
         }
     }
-    return scrollIndex;
-}
 
-static void ScrollingTextFormat(utf8* dst, size_t size, DrawScrollText* scrollText)
-{
-    if (gConfigGeneral.UpperCaseBanners)
-    {
-        FormatStringToUpper(dst, size, scrollText->string_id, scrollText->string_args);
-    }
-    else
-    {
-        FormatStringLegacy(dst, size, scrollText->string_id, scrollText->string_args);
-    }
-}
-
-extern bool TempForScrollText;
+    extern bool TempForScrollText;
 
 #define SCROLL_POS(x, y) (((y)*64) + (x))
 
-// clang-format off
+    // clang-format off
 static constexpr const int16_t _scrollpos0[] = {
     SCROLL_POS( 35, 12 ),
     SCROLL_POS( 36, 12 ),
@@ -1422,111 +1424,145 @@ static constexpr const int16_t* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
     _scrollpos36,
     _scrollpos37,
 };
-// clang-format on
+    // clang-format on
 
-void ScrollingTextInvalidate()
-{
-    for (auto& scrollText : _drawScrollTextList)
+    void ScrollingTextInvalidate()
     {
-        scrollText.string_id = 0;
-        std::memset(scrollText.string_args, 0, sizeof(scrollText.string_args));
-    }
-}
-
-ImageId ScrollingTextSetup(
-    PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
-{
-    std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
-
-    assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
-
-    DrawPixelInfo* dpi = &session.DPI;
-
-    if (dpi->zoom_level > ZoomLevel{ 0 })
-        return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
-
-    _drawSCrollNextIndex++;
-    ft.Rewind();
-    int32_t scrollIndex = ScrollingTextGetMatchingOrOldest(stringId, ft, scroll, scrollingMode, colour);
-    if (scrollIndex >= SPR_SCROLLING_TEXT_START)
-        return ImageId(scrollIndex);
-
-    // Setup scrolling text
-    auto scrollText = &_drawScrollTextList[scrollIndex];
-    scrollText->string_id = stringId;
-    std::memcpy(scrollText->string_args, ft.Buf(), sizeof(scrollText->string_args));
-    scrollText->colour = colour;
-    scrollText->position = scroll;
-    scrollText->mode = scrollingMode;
-    scrollText->id = _drawSCrollNextIndex;
-
-    // Create the string to draw
-    utf8 scrollString[256];
-    ScrollingTextFormat(scrollString, 256, scrollText);
-
-    const int16_t* scrollingModePositions = _scrollPositions[scrollingMode];
-
-    std::fill_n(scrollText->bitmap, 320 * 8, 0x00);
-    if (LocalisationService_UseTrueTypeFont())
-    {
-        ScrollingTextSetBitmapForTTF(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
-    }
-    else
-    {
-        ScrollingTextSetBitmapForSprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
+        for (auto& scrollText : _drawScrollTextList)
+        {
+            scrollText.string_id = 0;
+            std::memset(scrollText.string_args, 0, sizeof(scrollText.string_args));
+        }
     }
 
-    uint32_t imageId = SPR_SCROLLING_TEXT_START + scrollIndex;
-    DrawingEngineInvalidateImage(imageId);
-    return ImageId(imageId);
-}
-
-static void ScrollingTextSetBitmapForSprite(
-    std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
-{
-    auto characterColour = colour;
-    auto fmt = FmtString(text);
-
-    // Repeat string a maximum of four times (eliminates possibility of infinite loop)
-    for (auto i = 0; i < 4; i++)
+    ImageId ScrollingTextSetup(
+        PaintSession& session, StringId stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
     {
+        std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
+
+        assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
+
+        DrawPixelInfo* dpi = &session.DPI;
+
+        if (dpi->zoom_level > ZoomLevel{ 0 })
+            return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
+
+        _drawSCrollNextIndex++;
+        ft.Rewind();
+        int32_t scrollIndex = ScrollingTextGetMatchingOrOldest(stringId, ft, scroll, scrollingMode, colour);
+        if (scrollIndex >= SPR_SCROLLING_TEXT_START)
+            return ImageId(scrollIndex);
+
+        // Setup scrolling text
+        auto scrollText = &_drawScrollTextList[scrollIndex];
+        scrollText->string_id = stringId;
+        std::memcpy(scrollText->string_args, ft.Buf(), sizeof(scrollText->string_args));
+        scrollText->colour = colour;
+        scrollText->position = scroll;
+        scrollText->mode = scrollingMode;
+        scrollText->id = _drawSCrollNextIndex;
+
+        // Create the string to draw
+        utf8 scrollString[256];
+        ScrollingTextFormat(scrollString, 256, scrollText);
+
+        const int16_t* scrollingModePositions = _scrollPositions[scrollingMode];
+
+        std::fill_n(scrollText->bitmap, 320 * 8, 0x00);
+        if (LocalisationService_UseTrueTypeFont())
+        {
+            ScrollingTextSetBitmapForTTF(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
+        }
+        else
+        {
+            ScrollingTextSetBitmapForSprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
+        }
+
+        uint32_t imageId = SPR_SCROLLING_TEXT_START + scrollIndex;
+        DrawingEngineInvalidateImage(imageId);
+        return ImageId(imageId);
+    }
+
+    static void ScrollingTextSetBitmapForSprite(
+        std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
+    {
+        auto characterColour = colour;
+        auto fmt = FmtString(text);
+
+        // Repeat string a maximum of four times (eliminates possibility of infinite loop)
+        for (auto i = 0; i < 4; i++)
+        {
+            for (const auto& token : fmt)
+            {
+                if (token.IsLiteral())
+                {
+                    CodepointView codepoints(token.text);
+                    for (auto codepoint : codepoints)
+                    {
+                        auto characterWidth = FontSpriteGetCodepointWidth(FontStyle::Tiny, codepoint);
+                        auto characterBitmap = FontSpriteGetCodepointBitmap(codepoint);
+                        for (; characterWidth != 0; characterWidth--, characterBitmap++)
+                        {
+                            // Skip any non-displayed columns
+                            if (scroll != 0)
+                            {
+                                scroll--;
+                                continue;
+                            }
+
+                            int16_t scrollPosition = *scrollPositionOffsets;
+                            if (scrollPosition == -1)
+                                return;
+
+                            if (scrollPosition > -1)
+                            {
+                                auto dst = &bitmap[scrollPosition];
+                                for (uint8_t char_bitmap = *characterBitmap; char_bitmap != 0; char_bitmap >>= 1)
+                                {
+                                    if (char_bitmap & 1)
+                                        *dst = characterColour;
+
+                                    // Jump to next row
+                                    dst += 64;
+                                }
+                            }
+                            scrollPositionOffsets++;
+                        }
+                    }
+                }
+                else if (FormatTokenIsColour(token.kind))
+                {
+                    auto g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
+                    if (g1 != nullptr)
+                    {
+                        auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
+                        characterColour = g1->offset[colourIndex * 4];
+                    }
+                }
+            }
+        }
+    }
+
+    static void ScrollingTextSetBitmapForTTF(
+        std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
+    {
+#ifndef NO_TTF
+        auto fontDesc = TTFGetFontFromSpriteBase(FontStyle::Tiny);
+        if (fontDesc->font == nullptr)
+        {
+            ScrollingTextSetBitmapForSprite(text, scroll, bitmap, scrollPositionOffsets, colour);
+            return;
+        }
+
+        thread_local std::string ttfBuffer;
+        ttfBuffer.clear();
+
+        auto fmt = FmtString(text);
         for (const auto& token : fmt)
         {
             if (token.IsLiteral())
             {
-                CodepointView codepoints(token.text);
-                for (auto codepoint : codepoints)
-                {
-                    auto characterWidth = FontSpriteGetCodepointWidth(FontStyle::Tiny, codepoint);
-                    auto characterBitmap = FontSpriteGetCodepointBitmap(codepoint);
-                    for (; characterWidth != 0; characterWidth--, characterBitmap++)
-                    {
-                        // Skip any non-displayed columns
-                        if (scroll != 0)
-                        {
-                            scroll--;
-                            continue;
-                        }
-
-                        int16_t scrollPosition = *scrollPositionOffsets;
-                        if (scrollPosition == -1)
-                            return;
-
-                        if (scrollPosition > -1)
-                        {
-                            auto dst = &bitmap[scrollPosition];
-                            for (uint8_t char_bitmap = *characterBitmap; char_bitmap != 0; char_bitmap >>= 1)
-                            {
-                                if (char_bitmap & 1)
-                                    *dst = characterColour;
-
-                                // Jump to next row
-                                dst += 64;
-                            }
-                        }
-                        scrollPositionOffsets++;
-                    }
-                }
+                ttfBuffer.append(token.text);
             }
             else if (FormatTokenIsColour(token.kind))
             {
@@ -1534,104 +1570,71 @@ static void ScrollingTextSetBitmapForSprite(
                 if (g1 != nullptr)
                 {
                     auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
-                    characterColour = g1->offset[colourIndex * 4];
+                    colour = g1->offset[colourIndex * 4];
                 }
             }
         }
-    }
-}
 
-static void ScrollingTextSetBitmapForTTF(
-    std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
-{
-#ifndef NO_TTF
-    auto fontDesc = TTFGetFontFromSpriteBase(FontStyle::Tiny);
-    if (fontDesc->font == nullptr)
-    {
-        ScrollingTextSetBitmapForSprite(text, scroll, bitmap, scrollPositionOffsets, colour);
-        return;
-    }
-
-    thread_local std::string ttfBuffer;
-    ttfBuffer.clear();
-
-    auto fmt = FmtString(text);
-    for (const auto& token : fmt)
-    {
-        if (token.IsLiteral())
+        auto surface = TTFSurfaceCacheGetOrAdd(fontDesc->font, ttfBuffer.c_str());
+        if (surface == nullptr)
         {
-            ttfBuffer.append(token.text);
+            return;
         }
-        else if (FormatTokenIsColour(token.kind))
+
+        int32_t pitch = surface->pitch;
+        int32_t width = surface->w;
+        auto src = static_cast<const uint8_t*>(surface->pixels);
+
+        // Pitch offset
+        src += 2 * pitch;
+
+        // Line height offset
+        int32_t min_vpos = -fontDesc->offset_y;
+        int32_t max_vpos = std::min(surface->h - 2, min_vpos + 7);
+
+        bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
+
+        for (int32_t x = 0;; x++)
         {
-            auto g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
-            if (g1 != nullptr)
+            if (x >= width)
+                x = 0;
+
+            // Skip any non-displayed columns
+            if (scroll == 0)
             {
-                auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
-                colour = g1->offset[colourIndex * 4];
-            }
-        }
-    }
+                int16_t scrollPosition = *scrollPositionOffsets;
+                if (scrollPosition == -1)
+                    return;
 
-    auto surface = TTFSurfaceCacheGetOrAdd(fontDesc->font, ttfBuffer.c_str());
-    if (surface == nullptr)
-    {
-        return;
-    }
-
-    int32_t pitch = surface->pitch;
-    int32_t width = surface->w;
-    auto src = static_cast<const uint8_t*>(surface->pixels);
-
-    // Pitch offset
-    src += 2 * pitch;
-
-    // Line height offset
-    int32_t min_vpos = -fontDesc->offset_y;
-    int32_t max_vpos = std::min(surface->h - 2, min_vpos + 7);
-
-    bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
-
-    for (int32_t x = 0;; x++)
-    {
-        if (x >= width)
-            x = 0;
-
-        // Skip any non-displayed columns
-        if (scroll == 0)
-        {
-            int16_t scrollPosition = *scrollPositionOffsets;
-            if (scrollPosition == -1)
-                return;
-
-            if (scrollPosition > -1)
-            {
-                uint8_t* dst = &bitmap[scrollPosition];
-
-                for (int32_t y = min_vpos; y < max_vpos; y++)
+                if (scrollPosition > -1)
                 {
-                    uint8_t src_pixel = src[y * pitch + x];
-                    if ((!use_hinting && src_pixel != 0) || src_pixel > 140)
-                    {
-                        // Centre of the glyph: use full colour.
-                        *dst = colour;
-                    }
-                    else if (use_hinting && src_pixel > fontDesc->hinting_threshold)
-                    {
-                        // Simulate font hinting by shading the background colour instead.
-                        *dst = BlendColours(colour, *dst);
-                    }
+                    uint8_t* dst = &bitmap[scrollPosition];
 
-                    // Jump to next row
-                    dst += 64;
+                    for (int32_t y = min_vpos; y < max_vpos; y++)
+                    {
+                        uint8_t src_pixel = src[y * pitch + x];
+                        if ((!use_hinting && src_pixel != 0) || src_pixel > 140)
+                        {
+                            // Centre of the glyph: use full colour.
+                            *dst = colour;
+                        }
+                        else if (use_hinting && src_pixel > fontDesc->hinting_threshold)
+                        {
+                            // Simulate font hinting by shading the background colour instead.
+                            *dst = BlendColours(colour, *dst);
+                        }
+
+                        // Jump to next row
+                        dst += 64;
+                    }
                 }
+                scrollPositionOffsets++;
             }
-            scrollPositionOffsets++;
+            else
+            {
+                scroll--;
+            }
         }
-        else
-        {
-            scroll--;
-        }
-    }
 #endif // NO_TTF
-}
+    }
+} // namespace OpenRCT2

@@ -10,15 +10,16 @@
 #pragma once
 
 #include "../common.h"
-
-struct DrawPixelInfo;
-
-namespace OpenRCT2::Drawing
+namespace OpenRCT2
 {
-    struct IWeatherDrawer;
-}
+    struct DrawPixelInfo;
 
-// clang-format off
+    namespace Drawing
+    {
+        struct IWeatherDrawer;
+    }
+
+    // clang-format off
 static constexpr const uint8_t RainPattern[] =
 {
     32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
@@ -35,6 +36,7 @@ static constexpr const uint8_t SnowPattern[] =
     0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
 };
 
-// clang-format on
+    // clang-format on
 
-void DrawWeather(DrawPixelInfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);
+    void DrawWeather(DrawPixelInfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);
+} // namespace OpenRCT2

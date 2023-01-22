@@ -13,185 +13,192 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "Drawing.h"
-
-static void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
-static void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, StringId format, const void* args);
-
-class StaticLayout
+namespace OpenRCT2
 {
-private:
-    utf8string Buffer;
-    TextPaint Paint;
-    int32_t LineCount = 0;
-    int32_t LineHeight;
-    int32_t MaxWidth;
+    static void DrawText(
+        DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text,
+        bool noFormatting = false);
+    static void DrawText(
+        DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, StringId format, const void* args);
 
-public:
-    StaticLayout(utf8string source, const TextPaint& paint, int32_t width)
+    class StaticLayout
     {
-        Buffer = source;
-        Paint = paint;
+    private:
+        utf8string Buffer;
+        TextPaint Paint;
+        int32_t LineCount = 0;
+        int32_t LineHeight;
+        int32_t MaxWidth;
 
-        MaxWidth = GfxWrapString(Buffer, width, paint.FontStyle, &LineCount);
-        LineCount += 1;
-        LineHeight = FontGetLineHeight(paint.FontStyle);
-    }
+    public:
+        StaticLayout(utf8string source, const TextPaint& paint, int32_t width)
+        {
+            Buffer = source;
+            Paint = paint;
 
-    void Draw(DrawPixelInfo* dpi, const ScreenCoordsXY& coords)
+            MaxWidth = GfxWrapString(Buffer, width, paint.FontStyle, &LineCount);
+            LineCount += 1;
+            LineHeight = FontGetLineHeight(paint.FontStyle);
+        }
+
+        void Draw(DrawPixelInfo* dpi, const ScreenCoordsXY& coords)
+        {
+            TextPaint tempPaint = Paint;
+
+            auto lineCoords = coords;
+            switch (Paint.Alignment)
+            {
+                case TextAlignment::LEFT:
+                    break;
+                case TextAlignment::CENTRE:
+                    lineCoords.x += MaxWidth / 2;
+                    break;
+                case TextAlignment::RIGHT:
+                    lineCoords.x += MaxWidth;
+                    break;
+            }
+            utf8* buffer = Buffer;
+            for (int32_t line = 0; line < LineCount; ++line)
+            {
+                DrawText(dpi, lineCoords, tempPaint, buffer);
+                tempPaint.Colour = TEXT_COLOUR_254;
+                buffer = GetStringEnd(buffer) + 1;
+                lineCoords.y += LineHeight;
+            }
+        }
+
+        int32_t GetHeight() const
+        {
+            return LineHeight * LineCount;
+        }
+
+        int32_t GetWidth() const
+        {
+            return MaxWidth;
+        }
+
+        int32_t GetLineCount() const
+        {
+            return LineCount;
+        }
+    };
+
+    static void DrawText(
+        DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
     {
-        TextPaint tempPaint = Paint;
+        int32_t width = noFormatting ? GfxGetStringWidthNoFormatting(text, paint.FontStyle)
+                                     : GfxGetStringWidth(text, paint.FontStyle);
 
-        auto lineCoords = coords;
-        switch (Paint.Alignment)
+        auto alignedCoords = coords;
+        switch (paint.Alignment)
         {
             case TextAlignment::LEFT:
                 break;
             case TextAlignment::CENTRE:
-                lineCoords.x += MaxWidth / 2;
+                alignedCoords.x -= (width - 1) / 2;
                 break;
             case TextAlignment::RIGHT:
-                lineCoords.x += MaxWidth;
+                alignedCoords.x -= width;
                 break;
         }
-        utf8* buffer = Buffer;
-        for (int32_t line = 0; line < LineCount; ++line)
-        {
-            DrawText(dpi, lineCoords, tempPaint, buffer);
-            tempPaint.Colour = TEXT_COLOUR_254;
-            buffer = GetStringEnd(buffer) + 1;
-            lineCoords.y += LineHeight;
-        }
-    }
 
-    int32_t GetHeight() const
-    {
-        return LineHeight * LineCount;
-    }
+        TTFDrawString(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
 
-    int32_t GetWidth() const
-    {
-        return MaxWidth;
-    }
-
-    int32_t GetLineCount() const
-    {
-        return LineCount;
-    }
-};
-
-static void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
-{
-    int32_t width = noFormatting ? GfxGetStringWidthNoFormatting(text, paint.FontStyle)
-                                 : GfxGetStringWidth(text, paint.FontStyle);
-
-    auto alignedCoords = coords;
-    switch (paint.Alignment)
-    {
-        case TextAlignment::LEFT:
-            break;
-        case TextAlignment::CENTRE:
-            alignedCoords.x -= (width - 1) / 2;
-            break;
-        case TextAlignment::RIGHT:
-            alignedCoords.x -= width;
-            break;
-    }
-
-    TTFDrawString(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
-
-    if (paint.UnderlineText == TextUnderline::On)
-    {
-        GfxFillRect(
-            dpi, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
-            gTextPalette[1]);
-        if (gTextPalette[2] != 0)
+        if (paint.UnderlineText == TextUnderline::On)
         {
             GfxFillRect(
-                dpi, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
-                gTextPalette[2]);
+                dpi, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
+                gTextPalette[1]);
+            if (gTextPalette[2] != 0)
+            {
+                GfxFillRect(
+                    dpi, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
+                    gTextPalette[2]);
+            }
         }
     }
-}
 
-static void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, StringId format, const void* args)
-{
-    utf8 buffer[512];
-    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, args);
-    DrawText(dpi, coords, paint, buffer);
-}
-
-void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format)
-{
-    Formatter ft{};
-    TextPaint textPaint{};
-    DrawTextBasic(dpi, coords, format, ft, textPaint);
-}
-
-void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
-{
-    DrawText(dpi, coords, textPaint, format, ft.Data());
-}
-
-void DrawTextEllipsised(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
-{
-    Formatter ft{};
-    TextPaint textPaint{};
-    DrawTextEllipsised(dpi, coords, width, format, ft, textPaint);
-}
-
-void DrawTextEllipsised(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
-{
-    utf8 buffer[512];
-    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
-    GfxClipString(buffer, width, textPaint.FontStyle);
-
-    DrawText(dpi, coords, textPaint, buffer);
-}
-
-void GfxDrawString(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
-{
-    DrawText(dpi, coords, textPaint, buffer);
-}
-
-void GfxDrawStringNoFormatting(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
-{
-    DrawText(dpi, coords, textPaint, buffer, true);
-}
-
-int32_t DrawTextWrapped(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
-{
-    Formatter ft{};
-    TextPaint textPaint{};
-    return DrawTextWrapped(dpi, coords, width, format, ft, textPaint);
-}
-
-int32_t DrawTextWrapped(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
-{
-    const void* args = ft.Data();
-
-    // TODO: Refactor StaticLayout to take a std::string_view instead. It shouldn't have to write to the buffer.
-    const std::string buffer = FormatStringID(format, args);
-    StaticLayout layout(const_cast<char*>(buffer.c_str()), textPaint, width);
-
-    if (textPaint.Alignment == TextAlignment::CENTRE)
+    static void DrawText(
+        DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, StringId format, const void* args)
     {
-        // The original tried to vertically centre the text, but used line count - 1
-        int32_t lineCount = layout.GetLineCount();
-        int32_t lineHeight = layout.GetHeight() / lineCount;
-        int32_t yOffset = (lineCount - 1) * lineHeight / 2;
-
-        layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
-    }
-    else
-    {
-        layout.Draw(dpi, coords);
+        utf8 buffer[512];
+        OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, args);
+        DrawText(dpi, coords, paint, buffer);
     }
 
-    return layout.GetHeight();
-}
+    void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format)
+    {
+        Formatter ft{};
+        TextPaint textPaint{};
+        DrawTextBasic(dpi, coords, format, ft, textPaint);
+    }
+
+    void DrawTextBasic(
+        DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
+    {
+        DrawText(dpi, coords, textPaint, format, ft.Data());
+    }
+
+    void DrawTextEllipsised(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
+    {
+        Formatter ft{};
+        TextPaint textPaint{};
+        DrawTextEllipsised(dpi, coords, width, format, ft, textPaint);
+    }
+
+    void DrawTextEllipsised(
+        DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+        TextPaint textPaint)
+    {
+        utf8 buffer[512];
+        OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
+        GfxClipString(buffer, width, textPaint.FontStyle);
+
+        DrawText(dpi, coords, textPaint, buffer);
+    }
+
+    void GfxDrawString(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
+    {
+        DrawText(dpi, coords, textPaint, buffer);
+    }
+
+    void GfxDrawStringNoFormatting(
+        DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
+    {
+        DrawText(dpi, coords, textPaint, buffer, true);
+    }
+
+    int32_t DrawTextWrapped(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
+    {
+        Formatter ft{};
+        TextPaint textPaint{};
+        return DrawTextWrapped(dpi, coords, width, format, ft, textPaint);
+    }
+
+    int32_t DrawTextWrapped(
+        DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+        TextPaint textPaint)
+    {
+        const void* args = ft.Data();
+
+        // TODO: Refactor StaticLayout to take a std::string_view instead. It shouldn't have to write to the buffer.
+        const std::string buffer = FormatStringID(format, args);
+        StaticLayout layout(const_cast<char*>(buffer.c_str()), textPaint, width);
+
+        if (textPaint.Alignment == TextAlignment::CENTRE)
+        {
+            // The original tried to vertically centre the text, but used line count - 1
+            int32_t lineCount = layout.GetLineCount();
+            int32_t lineHeight = layout.GetHeight() / lineCount;
+            int32_t yOffset = (lineCount - 1) * lineHeight / 2;
+
+            layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
+        }
+        else
+        {
+            layout.Draw(dpi, coords);
+        }
+
+        return layout.GetHeight();
+    }
+} // namespace OpenRCT2
