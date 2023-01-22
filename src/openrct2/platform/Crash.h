@@ -12,8 +12,10 @@
 #include <string>
 
 using CExceptionHandler = void*;
-
-extern bool gOpenRCT2SilentBreakpad;
-CExceptionHandler CrashInit();
-void CrashRegisterAdditionalFile(const std::string& key, const std::string& path);
-void CrashUnregisterAdditionalFile(const std::string& key);
+namespace OpenRCT2
+{
+    extern bool gOpenRCT2SilentBreakpad;
+    CExceptionHandler CrashInit();
+    void CrashRegisterAdditionalFile(const std::string& key, const std::string& path);
+    void CrashUnregisterAdditionalFile(const std::string& key);
+} // namespace OpenRCT2

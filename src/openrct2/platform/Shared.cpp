@@ -32,7 +32,7 @@ static constexpr std::array _prohibitedCharacters = { '<', '>', '*', '\\', ':', 
 static constexpr std::array _prohibitedCharacters = { '/' };
 #endif
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     void CoreInit()
     {
@@ -135,4 +135,4 @@ namespace Platform
         return 1;
     }
 #endif
-} // namespace Platform
+} // namespace OpenRCT2::Platform

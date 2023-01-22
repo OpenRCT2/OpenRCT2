@@ -35,7 +35,7 @@ static constexpr u8string_view SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
 
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     std::string GetEnvironmentVariable(std::string_view name)
     {
@@ -451,6 +451,6 @@ namespace Platform
         }
         return static_cast<uint32_t>(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
     }
-} // namespace Platform
+} // namespace OpenRCT2::Platform
 
 #endif

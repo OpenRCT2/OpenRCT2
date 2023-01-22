@@ -65,7 +65,7 @@ char* strndup(const char* src, size_t size)
     return dst;
 }
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule);

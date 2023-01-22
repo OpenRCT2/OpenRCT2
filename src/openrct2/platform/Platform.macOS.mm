@@ -26,7 +26,7 @@
 #    include <mach/mach_time.h>
 #    include <pwd.h>
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     std::string GetFolderPath(SPECIAL_FOLDER folder)
     {
