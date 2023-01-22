@@ -474,6 +474,8 @@ constexpr const uint8_t PaintStructDescriptor::GetEdges(track_type_t element, ui
             return edges_4x4[trackSequence];
         case TrackElemType::FlatTrack3x3:
             return edges_3x3[trackSequence];
+        case TrackElemType::FlatTrack2x2:
+            return edges_2x2[trackSequence];
         default:
             return 0;
     }
@@ -485,5 +487,7 @@ track_type_t PaintStructDescriptor::TrackElemTypeFromString(const std::string& e
         return TrackElemType::FlatTrack3x3;
     else if (elem == "flat_track_4x4")
         return TrackElemType::FlatTrack4x4;
+    else if (elem == "flat_track_2x2")
+        return TrackElemType::FlatTrack2x2;
     return TrackElemType::None;
 }
