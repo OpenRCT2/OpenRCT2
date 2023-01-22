@@ -12,23 +12,25 @@
 #include "EntityBase.h"
 
 #include <vector>
-
-class EntityTweener
+namespace OpenRCT2
 {
-    std::vector<EntityBase*> Entities;
-    std::vector<CoordsXYZ> PrePos;
-    std::vector<CoordsXYZ> PostPos;
+    class EntityTweener
+    {
+        std::vector<EntityBase*> Entities;
+        std::vector<CoordsXYZ> PrePos;
+        std::vector<CoordsXYZ> PostPos;
 
-private:
-    void PopulateEntities();
+    private:
+        void PopulateEntities();
 
-public:
-    static EntityTweener& Get();
+    public:
+        static EntityTweener& Get();
 
-    void PreTick();
-    void PostTick();
-    void RemoveEntity(EntityBase* entity);
-    void Tween(float alpha);
-    void Restore();
-    void Reset();
-};
+        void PreTick();
+        void PostTick();
+        void RemoveEntity(EntityBase* entity);
+        void Tween(float alpha);
+        void Restore();
+        void Reset();
+    };
+} // namespace OpenRCT2

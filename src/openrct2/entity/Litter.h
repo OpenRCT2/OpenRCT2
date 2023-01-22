@@ -10,37 +10,39 @@
 #pragma once
 
 #include "EntityBase.h"
-
-class DataSerialiser;
-struct CoordsXYZ;
-struct CoordsXYZD;
-struct PaintSession;
-
-struct Litter : EntityBase
+namespace OpenRCT2
 {
-    enum class Type : uint8_t
-    {
-        Vomit,
-        VomitAlt,
-        EmptyCan,
-        Rubbish,
-        BurgerBox,
-        EmptyCup,
-        EmptyBox,
-        EmptyBottle,
-        EmptyBowlRed,
-        EmptyDrinkCarton,
-        EmptyJuiceCup,
-        EmptyBowlBlue,
-    };
+    class DataSerialiser;
+    struct CoordsXYZ;
+    struct CoordsXYZD;
+    struct PaintSession;
 
-    static constexpr auto cEntityType = EntityType::Litter;
-    Type SubType;
-    uint32_t creationTick;
-    static void Create(const CoordsXYZD& litterPos, Type type);
-    static void RemoveAt(const CoordsXYZ& litterPos);
-    void Serialise(DataSerialiser& stream);
-    StringId GetName() const;
-    uint32_t GetAge() const;
-    void Paint(PaintSession& session, int32_t imageDirection) const;
-};
+    struct Litter : EntityBase
+    {
+        enum class Type : uint8_t
+        {
+            Vomit,
+            VomitAlt,
+            EmptyCan,
+            Rubbish,
+            BurgerBox,
+            EmptyCup,
+            EmptyBox,
+            EmptyBottle,
+            EmptyBowlRed,
+            EmptyDrinkCarton,
+            EmptyJuiceCup,
+            EmptyBowlBlue,
+        };
+
+        static constexpr auto cEntityType = EntityType::Litter;
+        Type SubType;
+        uint32_t creationTick;
+        static void Create(const CoordsXYZD& litterPos, Type type);
+        static void RemoveAt(const CoordsXYZ& litterPos);
+        void Serialise(DataSerialiser& stream);
+        StringId GetName() const;
+        uint32_t GetAge() const;
+        void Paint(PaintSession& session, int32_t imageDirection) const;
+    };
+} // namespace OpenRCT2

@@ -10,22 +10,24 @@
 #pragma once
 
 #include "EntityBase.h"
-
-class DataSerialiser;
-struct CoordsXYZ;
-struct PaintSession;
-
-struct Balloon : EntityBase
+namespace OpenRCT2
 {
-    static constexpr auto cEntityType = EntityType::Balloon;
-    uint16_t frame;
-    uint16_t popped;
-    uint8_t time_to_move;
-    uint8_t colour;
-    static void Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
-    void Update();
-    void Pop();
-    void Press();
-    void Serialise(DataSerialiser& stream);
-    void Paint(PaintSession& session, int32_t imageDirection) const;
-};
+    class DataSerialiser;
+    struct CoordsXYZ;
+    struct PaintSession;
+
+    struct Balloon : EntityBase
+    {
+        static constexpr auto cEntityType = EntityType::Balloon;
+        uint16_t frame;
+        uint16_t popped;
+        uint8_t time_to_move;
+        uint8_t colour;
+        static void Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
+        void Update();
+        void Pop();
+        void Press();
+        void Serialise(DataSerialiser& stream);
+        void Paint(PaintSession& session, int32_t imageDirection) const;
+    };
+} // namespace OpenRCT2

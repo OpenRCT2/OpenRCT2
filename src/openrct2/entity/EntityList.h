@@ -17,155 +17,157 @@
 
 #include <list>
 #include <vector>
-
-const std::list<EntityId>& GetEntityList(const EntityType id);
-
-uint16_t GetEntityListCount(EntityType list);
-uint16_t GetMiscEntityCount();
-uint16_t GetNumFreeEntities();
-const std::vector<EntityId>& GetEntityTileList(const CoordsXY& spritePos);
-
-template<typename T> class EntityTileIterator
+namespace OpenRCT2
 {
-private:
-    std::vector<EntityId>::const_iterator iter;
-    std::vector<EntityId>::const_iterator end;
-    T* Entity = nullptr;
+    const std::list<EntityId>& GetEntityList(const EntityType id);
 
-public:
-    EntityTileIterator(std::vector<EntityId>::const_iterator _iter, std::vector<EntityId>::const_iterator _end)
-        : iter(_iter)
-        , end(_end)
-    {
-        ++(*this);
-    }
-    EntityTileIterator& operator++()
-    {
-        Entity = nullptr;
+    uint16_t GetEntityListCount(EntityType list);
+    uint16_t GetMiscEntityCount();
+    uint16_t GetNumFreeEntities();
+    const std::vector<EntityId>& GetEntityTileList(const CoordsXY& spritePos);
 
-        while (iter != end && Entity == nullptr)
+    template<typename T> class EntityTileIterator
+    {
+    private:
+        std::vector<EntityId>::const_iterator iter;
+        std::vector<EntityId>::const_iterator end;
+        T* Entity = nullptr;
+
+    public:
+        EntityTileIterator(std::vector<EntityId>::const_iterator _iter, std::vector<EntityId>::const_iterator _end)
+            : iter(_iter)
+            , end(_end)
         {
-            Entity = GetEntity<T>(*iter++);
+            ++(*this);
         }
-        return *this;
-    }
-
-    EntityTileIterator operator++(int)
-    {
-        EntityTileIterator retval = *this;
-        ++(*this);
-        return *iter;
-    }
-    bool operator==(EntityTileIterator other) const
-    {
-        return Entity == other.Entity;
-    }
-    bool operator!=(EntityTileIterator other) const
-    {
-        return !(*this == other);
-    }
-    T* operator*()
-    {
-        return Entity;
-    }
-    // iterator traits
-    using difference_type = std::ptrdiff_t;
-    using value_type = T;
-    using pointer = const T*;
-    using reference = const T&;
-    using iterator_category = std::forward_iterator_tag;
-};
-
-template<typename T = EntityBase> class EntityTileList
-{
-private:
-    const std::vector<EntityId>& vec;
-
-public:
-    EntityTileList(const CoordsXY& loc)
-        : vec(GetEntityTileList(loc))
-    {
-    }
-
-    EntityTileIterator<T> begin()
-    {
-        return EntityTileIterator<T>(std::begin(vec), std::end(vec));
-    }
-    EntityTileIterator<T> end()
-    {
-        return EntityTileIterator<T>(std::end(vec), std::end(vec));
-    }
-};
-
-template<typename T> class EntityListIterator
-{
-private:
-    std::list<EntityId>::const_iterator iter;
-    std::list<EntityId>::const_iterator end;
-    T* Entity = nullptr;
-
-public:
-    EntityListIterator(std::list<EntityId>::const_iterator _iter, std::list<EntityId>::const_iterator _end)
-        : iter(_iter)
-        , end(_end)
-    {
-        ++(*this);
-    }
-    EntityListIterator& operator++()
-    {
-        Entity = nullptr;
-
-        while (iter != end && Entity == nullptr)
+        EntityTileIterator& operator++()
         {
-            Entity = GetEntity<T>(*iter++);
+            Entity = nullptr;
+
+            while (iter != end && Entity == nullptr)
+            {
+                Entity = GetEntity<T>(*iter++);
+            }
+            return *this;
         }
-        return *this;
-    }
 
-    EntityListIterator operator++(int)
-    {
-        EntityListIterator retval = *this;
-        ++(*this);
-        return *iter;
-    }
-    bool operator==(EntityListIterator other) const
-    {
-        return Entity == other.Entity;
-    }
-    bool operator!=(EntityListIterator other) const
-    {
-        return !(*this == other);
-    }
-    T* operator*()
-    {
-        return Entity;
-    }
-    // iterator traits
-    using difference_type = std::ptrdiff_t;
-    using value_type = T;
-    using pointer = const T*;
-    using reference = const T&;
-    using iterator_category = std::forward_iterator_tag;
-};
+        EntityTileIterator operator++(int)
+        {
+            EntityTileIterator retval = *this;
+            ++(*this);
+            return *iter;
+        }
+        bool operator==(EntityTileIterator other) const
+        {
+            return Entity == other.Entity;
+        }
+        bool operator!=(EntityTileIterator other) const
+        {
+            return !(*this == other);
+        }
+        T* operator*()
+        {
+            return Entity;
+        }
+        // iterator traits
+        using difference_type = std::ptrdiff_t;
+        using value_type = T;
+        using pointer = const T*;
+        using reference = const T&;
+        using iterator_category = std::forward_iterator_tag;
+    };
 
-template<typename T = EntityBase> class EntityList
-{
-private:
-    using EntityListIterator_t = EntityListIterator<T>;
-    const std::list<EntityId>& vec;
+    template<typename T = EntityBase> class EntityTileList
+    {
+    private:
+        const std::vector<EntityId>& vec;
 
-public:
-    EntityList()
-        : vec(GetEntityList(T::cEntityType))
-    {
-    }
+    public:
+        EntityTileList(const CoordsXY& loc)
+            : vec(GetEntityTileList(loc))
+        {
+        }
 
-    EntityListIterator_t begin() const
+        EntityTileIterator<T> begin()
+        {
+            return EntityTileIterator<T>(std::begin(vec), std::end(vec));
+        }
+        EntityTileIterator<T> end()
+        {
+            return EntityTileIterator<T>(std::end(vec), std::end(vec));
+        }
+    };
+
+    template<typename T> class EntityListIterator
     {
-        return EntityListIterator_t(std::cbegin(vec), std::cend(vec));
-    }
-    EntityListIterator_t end() const
+    private:
+        std::list<EntityId>::const_iterator iter;
+        std::list<EntityId>::const_iterator end;
+        T* Entity = nullptr;
+
+    public:
+        EntityListIterator(std::list<EntityId>::const_iterator _iter, std::list<EntityId>::const_iterator _end)
+            : iter(_iter)
+            , end(_end)
+        {
+            ++(*this);
+        }
+        EntityListIterator& operator++()
+        {
+            Entity = nullptr;
+
+            while (iter != end && Entity == nullptr)
+            {
+                Entity = GetEntity<T>(*iter++);
+            }
+            return *this;
+        }
+
+        EntityListIterator operator++(int)
+        {
+            EntityListIterator retval = *this;
+            ++(*this);
+            return *iter;
+        }
+        bool operator==(EntityListIterator other) const
+        {
+            return Entity == other.Entity;
+        }
+        bool operator!=(EntityListIterator other) const
+        {
+            return !(*this == other);
+        }
+        T* operator*()
+        {
+            return Entity;
+        }
+        // iterator traits
+        using difference_type = std::ptrdiff_t;
+        using value_type = T;
+        using pointer = const T*;
+        using reference = const T&;
+        using iterator_category = std::forward_iterator_tag;
+    };
+
+    template<typename T = EntityBase> class EntityList
     {
-        return EntityListIterator_t(std::cend(vec), std::cend(vec));
-    }
-};
+    private:
+        using EntityListIterator_t = EntityListIterator<T>;
+        const std::list<EntityId>& vec;
+
+    public:
+        EntityList()
+            : vec(GetEntityList(T::cEntityType))
+        {
+        }
+
+        EntityListIterator_t begin() const
+        {
+            return EntityListIterator_t(std::cbegin(vec), std::cend(vec));
+        }
+        EntityListIterator_t end() const
+        {
+            return EntityListIterator_t(std::cend(vec), std::cend(vec));
+        }
+    };
+} // namespace OpenRCT2

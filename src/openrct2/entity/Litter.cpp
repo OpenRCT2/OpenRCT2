@@ -10,183 +10,185 @@
 #include "../world/Map.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
-
-template<> bool EntityBase::Is<Litter>() const
+namespace OpenRCT2
 {
-    return Type == EntityType::Litter;
-}
-
-static bool IsLocationLitterable(const CoordsXYZ& mapPos)
-{
-    TileElement* tileElement;
-
-    if (!MapIsLocationOwned(mapPos))
-        return false;
-
-    tileElement = MapGetFirstElementAt(mapPos);
-    if (tileElement == nullptr)
-        return false;
-    do
+    template<> bool EntityBase::Is<Litter>() const
     {
-        if (tileElement->GetType() != TileElementType::Path)
-            continue;
+        return Type == EntityType::Litter;
+    }
 
-        int32_t pathZ = tileElement->GetBaseZ();
-        if (pathZ < mapPos.z || pathZ >= mapPos.z + PATH_CLEARANCE)
-            continue;
-
-        return !TileElementIsUnderground(tileElement);
-    } while (!(tileElement++)->IsLastForTile());
-    return false;
-}
-
-/**
- *
- *  rct2: 0x0067375D
- */
-void Litter::Create(const CoordsXYZD& litterPos, Type type)
-{
-    if (gCheatsDisableLittering)
-        return;
-
-    auto offsetLitterPos = litterPos
-        + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
-                    CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
-
-    if (!IsLocationLitterable(offsetLitterPos))
-        return;
-
-    if (GetEntityListCount(EntityType::Litter) >= 500)
+    static bool IsLocationLitterable(const CoordsXYZ& mapPos)
     {
-        Litter* newestLitter = nullptr;
-        uint32_t newestLitterCreationTick = 0;
-        for (auto litter : EntityList<Litter>())
+        TileElement* tileElement;
+
+        if (!MapIsLocationOwned(mapPos))
+            return false;
+
+        tileElement = MapGetFirstElementAt(mapPos);
+        if (tileElement == nullptr)
+            return false;
+        do
         {
-            if (newestLitterCreationTick <= litter->creationTick)
+            if (tileElement->GetType() != TileElementType::Path)
+                continue;
+
+            int32_t pathZ = tileElement->GetBaseZ();
+            if (pathZ < mapPos.z || pathZ >= mapPos.z + PATH_CLEARANCE)
+                continue;
+
+            return !TileElementIsUnderground(tileElement);
+        } while (!(tileElement++)->IsLastForTile());
+        return false;
+    }
+
+    /**
+     *
+     *  rct2: 0x0067375D
+     */
+    void Litter::Create(const CoordsXYZD& litterPos, Type type)
+    {
+        if (gCheatsDisableLittering)
+            return;
+
+        auto offsetLitterPos = litterPos
+            + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
+                        CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
+
+        if (!IsLocationLitterable(offsetLitterPos))
+            return;
+
+        if (GetEntityListCount(EntityType::Litter) >= 500)
+        {
+            Litter* newestLitter = nullptr;
+            uint32_t newestLitterCreationTick = 0;
+            for (auto litter : EntityList<Litter>())
             {
-                newestLitterCreationTick = litter->creationTick;
-                newestLitter = litter;
+                if (newestLitterCreationTick <= litter->creationTick)
+                {
+                    newestLitterCreationTick = litter->creationTick;
+                    newestLitter = litter;
+                }
+            }
+
+            if (newestLitter != nullptr)
+            {
+                newestLitter->Invalidate();
+                EntityRemove(newestLitter);
             }
         }
 
-        if (newestLitter != nullptr)
-        {
-            newestLitter->Invalidate();
-            EntityRemove(newestLitter);
-        }
+        Litter* litter = CreateEntity<Litter>();
+        if (litter == nullptr)
+            return;
+
+        litter->sprite_direction = offsetLitterPos.direction;
+        litter->sprite_width = 6;
+        litter->sprite_height_negative = 6;
+        litter->sprite_height_positive = 3;
+        litter->SubType = type;
+        litter->MoveTo(offsetLitterPos);
+        litter->creationTick = gCurrentTicks;
     }
 
-    Litter* litter = CreateEntity<Litter>();
-    if (litter == nullptr)
-        return;
-
-    litter->sprite_direction = offsetLitterPos.direction;
-    litter->sprite_width = 6;
-    litter->sprite_height_negative = 6;
-    litter->sprite_height_positive = 3;
-    litter->SubType = type;
-    litter->MoveTo(offsetLitterPos);
-    litter->creationTick = gCurrentTicks;
-}
-
-/**
- *
- *  rct2: 0x006738E1
- */
-void Litter::RemoveAt(const CoordsXYZ& litterPos)
-{
-    std::vector<Litter*> removals;
-    for (auto litter : EntityTileList<Litter>(litterPos))
+    /**
+     *
+     *  rct2: 0x006738E1
+     */
+    void Litter::RemoveAt(const CoordsXYZ& litterPos)
     {
-        if (abs(litter->z - litterPos.z) <= 16)
+        std::vector<Litter*> removals;
+        for (auto litter : EntityTileList<Litter>(litterPos))
         {
-            if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
+            if (abs(litter->z - litterPos.z) <= 16)
             {
-                removals.push_back(litter);
+                if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
+                {
+                    removals.push_back(litter);
+                }
             }
         }
+        for (auto* litter : removals)
+        {
+            litter->Invalidate();
+            EntityRemove(litter);
+        }
     }
-    for (auto* litter : removals)
+
+    static const StringId litterNames[12] = {
+        STR_LITTER_VOMIT,
+        STR_LITTER_VOMIT,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
+        STR_SHOP_ITEM_SINGULAR_RUBBISH,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
+    };
+
+    StringId Litter::GetName() const
     {
-        litter->Invalidate();
-        EntityRemove(litter);
+        if (EnumValue(SubType) >= std::size(litterNames))
+            return STR_NONE;
+        return litterNames[EnumValue(SubType)];
     }
-}
 
-static const StringId litterNames[12] = {
-    STR_LITTER_VOMIT,
-    STR_LITTER_VOMIT,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
-    STR_SHOP_ITEM_SINGULAR_RUBBISH,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
-};
+    uint32_t Litter::GetAge() const
+    {
+        return gCurrentTicks - creationTick;
+    }
 
-StringId Litter::GetName() const
-{
-    if (EnumValue(SubType) >= std::size(litterNames))
-        return STR_NONE;
-    return litterNames[EnumValue(SubType)];
-}
+    void Litter::Serialise(DataSerialiser& stream)
+    {
+        EntityBase::Serialise(stream);
 
-uint32_t Litter::GetAge() const
-{
-    return gCurrentTicks - creationTick;
-}
+        stream << SubType;
+        stream << creationTick;
+    }
 
-void Litter::Serialise(DataSerialiser& stream)
-{
-    EntityBase::Serialise(stream);
+    struct LitterSprite
+    {
+        uint16_t base_id;
+        uint8_t direction_mask;
+    };
 
-    stream << SubType;
-    stream << creationTick;
-}
+    /** rct2: 0x0097EF6C */
+    static constexpr const LitterSprite _litterSprites[] = {
+        { SPR_LITTER_SICK, 0x1 },
+        { SPR_LITTER_SICK_ALT, 0x1 },
+        { SPR_LITTER_EMPTY_CAN, 0x1 },
+        { SPR_LITTER_RUBBISH, 0x1 },
+        { SPR_LITTER_EMPTY_BURGER_BOX, 0x1 },
+        { SPR_LITTER_EMPTY_CUP, 0x1 },
+        { SPR_LITTER_EMPTY_BOX, 0x1 },
+        { SPR_LITTER_EMPTY_BOTTLE, 0x1 },
+        { SPR_LITTER_EMPTY_BOWL_RED, 0x3 },
+        { SPR_LITTER_EMPTY_DRINK_CART, 0x3 },
+        { SPR_LITTER_EMPTY_JUICE_CUP, 0x3 },
+        { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
+    };
 
-struct LitterSprite
-{
-    uint16_t base_id;
-    uint8_t direction_mask;
-};
+    void Litter::Paint(PaintSession& session, int32_t imageDirection) const
+    {
+        PROFILED_FUNCTION();
 
-/** rct2: 0x0097EF6C */
-static constexpr const LitterSprite _litterSprites[] = {
-    { SPR_LITTER_SICK, 0x1 },
-    { SPR_LITTER_SICK_ALT, 0x1 },
-    { SPR_LITTER_EMPTY_CAN, 0x1 },
-    { SPR_LITTER_RUBBISH, 0x1 },
-    { SPR_LITTER_EMPTY_BURGER_BOX, 0x1 },
-    { SPR_LITTER_EMPTY_CUP, 0x1 },
-    { SPR_LITTER_EMPTY_BOX, 0x1 },
-    { SPR_LITTER_EMPTY_BOTTLE, 0x1 },
-    { SPR_LITTER_EMPTY_BOWL_RED, 0x3 },
-    { SPR_LITTER_EMPTY_DRINK_CART, 0x3 },
-    { SPR_LITTER_EMPTY_JUICE_CUP, 0x3 },
-    { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
-};
+        DrawPixelInfo& dpi = session.DPI;
+        if (dpi.zoom_level > ZoomLevel{ 0 })
+            return; // If zoomed at all no litter drawn
 
-void Litter::Paint(PaintSession& session, int32_t imageDirection) const
-{
-    PROFILED_FUNCTION();
+        // litter has no sprite direction so remove that
+        imageDirection >>= 3;
+        // Some litter types have only 1 direction so remove
+        // anything that isn't required.
+        imageDirection &= _litterSprites[EnumValue(SubType)].direction_mask;
 
-    DrawPixelInfo& dpi = session.DPI;
-    if (dpi.zoom_level > ZoomLevel{ 0 })
-        return; // If zoomed at all no litter drawn
+        uint32_t image_id = imageDirection + _litterSprites[EnumValue(SubType)].base_id;
 
-    // litter has no sprite direction so remove that
-    imageDirection >>= 3;
-    // Some litter types have only 1 direction so remove
-    // anything that isn't required.
-    imageDirection &= _litterSprites[EnumValue(SubType)].direction_mask;
-
-    uint32_t image_id = imageDirection + _litterSprites[EnumValue(SubType)].base_id;
-
-    // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
-    // bound_box_offset_z to make sure litter is drawn on top of railways
-    PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { { -4, -4, z + 4 }, { 5, 5, -1 } });
-}
+        // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
+        // bound_box_offset_z to make sure litter is drawn on top of railways
+        PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { { -4, -4, z + 4 }, { 5, 5, -1 } });
+    }
+} // namespace OpenRCT2
