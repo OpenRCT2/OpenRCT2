@@ -102,15 +102,15 @@ static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
     {
         auto chunkReader = SawyerChunkReader(stream);
         auto s6Header = chunkReader.ReadChunkAs<RCT2::S6Header>();
-        if (s6Header.type == S6_TYPE_SAVEDGAME)
+        if (s6Header.Type == S6_TYPE_SAVEDGAME)
         {
             result->Type = FILE_TYPE::SAVED_GAME;
         }
-        else if (s6Header.type == S6_TYPE_SCENARIO)
+        else if (s6Header.Type == S6_TYPE_SCENARIO)
         {
             result->Type = FILE_TYPE::SCENARIO;
         }
-        result->Version = s6Header.version;
+        result->Version = s6Header.Version;
         success = true;
     }
     catch (const std::exception& e)

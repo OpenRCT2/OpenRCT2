@@ -246,15 +246,15 @@ private:
             auto chunkReader = SawyerChunkReader(stream.get());
 
             const auto header = chunkReader.ReadChunkAs<RCT2::S6Header>();
-            if (header.type == S6_TYPE_SCENARIO)
+            if (header.Type == S6_TYPE_SCENARIO)
             {
                 auto info = chunkReader.ReadChunkAs<RCT2::S6Info>();
                 // If the name or the details contain a colour code, they might be in UTF-8 already.
                 // This is caused by a bug that was in OpenRCT2 for 3 years.
-                if (!IsLikelyUTF8(info.name) && !IsLikelyUTF8(info.details))
+                if (!IsLikelyUTF8(info.Name) && !IsLikelyUTF8(info.Details))
                 {
-                    RCT2StringToUTF8Self(info.name, sizeof(info.name));
-                    RCT2StringToUTF8Self(info.details, sizeof(info.details));
+                    RCT2StringToUTF8Self(info.Name, sizeof(info.Name));
+                    RCT2StringToUTF8Self(info.Details, sizeof(info.Details));
                 }
 
                 *entry = CreateNewScenarioEntry(path, timestamp, &info);
@@ -277,20 +277,20 @@ private:
         // Set new entry
         String::Set(entry.path, sizeof(entry.path), path.c_str());
         entry.timestamp = timestamp;
-        entry.category = s6Info->category;
-        entry.objective_type = s6Info->objective_type;
-        entry.objective_arg_1 = s6Info->objective_arg_1;
-        entry.objective_arg_2 = s6Info->objective_arg_2;
-        entry.objective_arg_3 = s6Info->objective_arg_3;
+        entry.category = s6Info->Category;
+        entry.objective_type = s6Info->ObjectiveType;
+        entry.objective_arg_1 = s6Info->ObjectiveArg1;
+        entry.objective_arg_2 = s6Info->ObjectiveArg2;
+        entry.objective_arg_3 = s6Info->ObjectiveArg3;
         entry.highscore = nullptr;
-        if (String::IsNullOrEmpty(s6Info->name))
+        if (String::IsNullOrEmpty(s6Info->Name))
         {
             // If the scenario doesn't have a name, set it to the filename
             String::Set(entry.name, sizeof(entry.name), Path::GetFileNameWithoutExtension(entry.path).c_str());
         }
         else
         {
-            String::Set(entry.name, sizeof(entry.name), s6Info->name);
+            String::Set(entry.name, sizeof(entry.name), s6Info->Name);
             // Normalise the name to make the scenario as recognisable as possible.
             ScenarioSources::NormaliseName(entry.name, sizeof(entry.name), entry.name);
         }
@@ -298,7 +298,7 @@ private:
         // entry.name will be translated later so keep the untranslated name here
         String::Set(entry.internal_name, sizeof(entry.internal_name), entry.name);
 
-        String::Set(entry.details, sizeof(entry.details), s6Info->details);
+        String::Set(entry.details, sizeof(entry.details), s6Info->Details);
 
         // Look up and store information regarding the origins of this scenario.
         SourceDescriptor desc;
