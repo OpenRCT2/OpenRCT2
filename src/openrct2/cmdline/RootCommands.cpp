@@ -36,32 +36,33 @@
 #else
 #    define IMPLIES_SILENT_BREAKPAD
 #endif // USE_BREAKPAD
-
+namespace OpenRCT2
+{
 #ifndef DISABLE_NETWORK
-int32_t gNetworkStart = NETWORK_MODE_NONE;
-std::string gNetworkStartHost;
-int32_t gNetworkStartPort = NETWORK_DEFAULT_PORT;
-std::string gNetworkStartAddress;
+    int32_t gNetworkStart = NETWORK_MODE_NONE;
+    std::string gNetworkStartHost;
+    int32_t gNetworkStartPort = NETWORK_DEFAULT_PORT;
+    std::string gNetworkStartAddress;
 
-static uint32_t _port = 0;
-static char* _address = nullptr;
+    static uint32_t _port = 0;
+    static char* _address = nullptr;
 #endif
 
-static bool _help = false;
-static bool _version = false;
-static bool _noInstall = false;
-static bool _all = false;
-static bool _about = false;
-static bool _verbose = false;
-static bool _headless = false;
-static u8string _password = {};
-static u8string _userDataPath = {};
-static u8string _openrct2DataPath = {};
-static u8string _rct1DataPath = {};
-static u8string _rct2DataPath = {};
-static bool _silentBreakpad = false;
+    static bool _help = false;
+    static bool _version = false;
+    static bool _noInstall = false;
+    static bool _all = false;
+    static bool _about = false;
+    static bool _verbose = false;
+    static bool _headless = false;
+    static u8string _password = {};
+    static u8string _userDataPath = {};
+    static u8string _openrct2DataPath = {};
+    static u8string _rct1DataPath = {};
+    static u8string _rct2DataPath = {};
+    static bool _silentBreakpad = false;
 
-// clang-format off
+    // clang-format off
 static constexpr const CommandLineOptionDefinition StandardOptions[]
 {
     { CMDLINE_TYPE_SWITCH,  &_help,             'h', "help",               "show this help message and exit"                            },
@@ -161,333 +162,334 @@ const CommandLineExample CommandLine::RootExamples[]
 #endif
     ExampleTableEnd
 };
-// clang-format on
+    // clang-format on
 
-exitcode_t CommandLine::HandleCommandDefault()
-{
-    exitcode_t result = EXITCODE_CONTINUE;
-
-    if (_about)
+    exitcode_t CommandLine::HandleCommandDefault()
     {
-        PrintAbout();
-        result = EXITCODE_OK;
-    }
-    else
-    {
-        if (_verbose)
-        {
-            _log_levels[static_cast<uint8_t>(DiagnosticLevel::Verbose)] = true;
-            PrintLaunchInformation();
-        }
+        exitcode_t result = EXITCODE_CONTINUE;
 
-        if (_version)
+        if (_about)
         {
-            if (!_verbose)
-            {
-                PrintVersion();
-            }
+            PrintAbout();
             result = EXITCODE_OK;
         }
-    }
+        else
+        {
+            if (_verbose)
+            {
+                _log_levels[static_cast<uint8_t>(DiagnosticLevel::Verbose)] = true;
+                PrintLaunchInformation();
+            }
 
-    if (_help || _all)
-    {
-        CommandLine::PrintHelp(_all);
-        result = EXITCODE_OK;
-    }
+            if (_version)
+            {
+                if (!_verbose)
+                {
+                    PrintVersion();
+                }
+                result = EXITCODE_OK;
+            }
+        }
 
-    gOpenRCT2Headless = _headless;
-    gOpenRCT2NoGraphics = _headless;
-    gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
+        if (_help || _all)
+        {
+            CommandLine::PrintHelp(_all);
+            result = EXITCODE_OK;
+        }
 
-    if (!_userDataPath.empty())
-    {
-        gCustomUserDataPath = Path::GetAbsolute(_userDataPath);
-    }
+        gOpenRCT2Headless = _headless;
+        gOpenRCT2NoGraphics = _headless;
+        gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
 
-    if (!_openrct2DataPath.empty())
-    {
-        gCustomOpenRCT2DataPath = Path::GetAbsolute(_openrct2DataPath);
-    }
+        if (!_userDataPath.empty())
+        {
+            gCustomUserDataPath = Path::GetAbsolute(_userDataPath);
+        }
 
-    if (!_rct1DataPath.empty())
-    {
-        gCustomRCT1DataPath = Path::GetAbsolute(_rct1DataPath);
-    }
+        if (!_openrct2DataPath.empty())
+        {
+            gCustomOpenRCT2DataPath = Path::GetAbsolute(_openrct2DataPath);
+        }
 
-    if (!_rct2DataPath.empty())
-    {
-        gCustomRCT2DataPath = Path::GetAbsolute(_rct2DataPath);
-    }
+        if (!_rct1DataPath.empty())
+        {
+            gCustomRCT1DataPath = Path::GetAbsolute(_rct1DataPath);
+        }
 
-    if (!_password.empty())
-    {
-        gCustomPassword = _password;
-    }
+        if (!_rct2DataPath.empty())
+        {
+            gCustomRCT2DataPath = Path::GetAbsolute(_rct2DataPath);
+        }
 
-    return result;
-}
+        if (!_password.empty())
+        {
+            gCustomPassword = _password;
+        }
 
-exitcode_t HandleNoCommand(CommandLineArgEnumerator* enumerator)
-{
-    exitcode_t result = CommandLine::HandleCommandDefault();
-    if (result != EXITCODE_CONTINUE)
-    {
         return result;
     }
 
-    const char* parkUri;
-    if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
+    exitcode_t HandleNoCommand(CommandLineArgEnumerator* enumerator)
     {
+        exitcode_t result = CommandLine::HandleCommandDefault();
+        if (result != EXITCODE_CONTINUE)
+        {
+            return result;
+        }
+
+        const char* parkUri;
+        if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
+        {
+            String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
+            gOpenRCT2StartupAction = StartupAction::Open;
+        }
+
+        return EXITCODE_CONTINUE;
+    }
+
+    exitcode_t HandleCommandEdit(CommandLineArgEnumerator* enumerator)
+    {
+        exitcode_t result = CommandLine::HandleCommandDefault();
+        if (result != EXITCODE_CONTINUE)
+        {
+            return result;
+        }
+
+        const char* parkUri;
+        if (!enumerator->TryPopString(&parkUri))
+        {
+            Console::Error::WriteLine("Expected path or URL to a saved park.");
+            return EXITCODE_FAIL;
+        }
         String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
-        gOpenRCT2StartupAction = StartupAction::Open;
+
+        gOpenRCT2StartupAction = StartupAction::Edit;
+        return EXITCODE_CONTINUE;
     }
 
-    return EXITCODE_CONTINUE;
-}
-
-exitcode_t HandleCommandEdit(CommandLineArgEnumerator* enumerator)
-{
-    exitcode_t result = CommandLine::HandleCommandDefault();
-    if (result != EXITCODE_CONTINUE)
+    exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
-        return result;
+        exitcode_t result = CommandLine::HandleCommandDefault();
+        if (result != EXITCODE_CONTINUE)
+        {
+            return result;
+        }
+
+        gOpenRCT2StartupAction = StartupAction::Intro;
+        return EXITCODE_CONTINUE;
     }
-
-    const char* parkUri;
-    if (!enumerator->TryPopString(&parkUri))
-    {
-        Console::Error::WriteLine("Expected path or URL to a saved park.");
-        return EXITCODE_FAIL;
-    }
-    String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
-
-    gOpenRCT2StartupAction = StartupAction::Edit;
-    return EXITCODE_CONTINUE;
-}
-
-exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator* enumerator)
-{
-    exitcode_t result = CommandLine::HandleCommandDefault();
-    if (result != EXITCODE_CONTINUE)
-    {
-        return result;
-    }
-
-    gOpenRCT2StartupAction = StartupAction::Intro;
-    return EXITCODE_CONTINUE;
-}
 
 #ifndef DISABLE_NETWORK
 
-exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
-{
-    exitcode_t result = CommandLine::HandleCommandDefault();
-    if (result != EXITCODE_CONTINUE)
+    exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
     {
-        return result;
+        exitcode_t result = CommandLine::HandleCommandDefault();
+        if (result != EXITCODE_CONTINUE)
+        {
+            return result;
+        }
+
+        const char* parkUri;
+        if (!enumerator->TryPopString(&parkUri))
+        {
+            Console::Error::WriteLine("Expected path or URL to a scenario or saved park.");
+            return EXITCODE_FAIL;
+        }
+
+        gOpenRCT2StartupAction = StartupAction::Open;
+        String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
+
+        gNetworkStart = NETWORK_MODE_SERVER;
+        gNetworkStartPort = _port;
+        gNetworkStartAddress = String::ToStd(_address);
+
+        return EXITCODE_CONTINUE;
     }
 
-    const char* parkUri;
-    if (!enumerator->TryPopString(&parkUri))
+    exitcode_t HandleCommandJoin(CommandLineArgEnumerator* enumerator)
     {
-        Console::Error::WriteLine("Expected path or URL to a scenario or saved park.");
-        return EXITCODE_FAIL;
+        exitcode_t result = CommandLine::HandleCommandDefault();
+        if (result != EXITCODE_CONTINUE)
+        {
+            return result;
+        }
+
+        const char* hostname;
+        if (!enumerator->TryPopString(&hostname))
+        {
+            Console::Error::WriteLine("Expected a hostname or IP address to the server to connect to.");
+            return EXITCODE_FAIL;
+        }
+
+        gNetworkStart = NETWORK_MODE_CLIENT;
+        gNetworkStartPort = _port;
+        gNetworkStartHost = hostname;
+        return EXITCODE_CONTINUE;
     }
-
-    gOpenRCT2StartupAction = StartupAction::Open;
-    String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
-
-    gNetworkStart = NETWORK_MODE_SERVER;
-    gNetworkStartPort = _port;
-    gNetworkStartAddress = String::ToStd(_address);
-
-    return EXITCODE_CONTINUE;
-}
-
-exitcode_t HandleCommandJoin(CommandLineArgEnumerator* enumerator)
-{
-    exitcode_t result = CommandLine::HandleCommandDefault();
-    if (result != EXITCODE_CONTINUE)
-    {
-        return result;
-    }
-
-    const char* hostname;
-    if (!enumerator->TryPopString(&hostname))
-    {
-        Console::Error::WriteLine("Expected a hostname or IP address to the server to connect to.");
-        return EXITCODE_FAIL;
-    }
-
-    gNetworkStart = NETWORK_MODE_CLIENT;
-    gNetworkStartPort = _port;
-    gNetworkStartHost = hostname;
-    return EXITCODE_CONTINUE;
-}
 
 #endif // DISABLE_NETWORK
 
-static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
-{
-    exitcode_t result = CommandLine::HandleCommandDefault();
-    if (result != EXITCODE_CONTINUE)
+    static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     {
-        return result;
-    }
+        exitcode_t result = CommandLine::HandleCommandDefault();
+        if (result != EXITCODE_CONTINUE)
+        {
+            return result;
+        }
 
-    // Get the path that was passed
-    const utf8* rawPath;
-    if (!enumerator->TryPopString(&rawPath))
-    {
-        Console::Error::WriteLine("Expected a path.");
+        // Get the path that was passed
+        const utf8* rawPath;
+        if (!enumerator->TryPopString(&rawPath))
+        {
+            Console::Error::WriteLine("Expected a path.");
+            return EXITCODE_FAIL;
+        }
+
+        const auto path = Path::GetAbsolute(rawPath);
+
+        // Check if path exists
+        Console::WriteLine("Checking path...");
+        if (!Path::DirectoryExists(path))
+        {
+            Console::Error::WriteLine("The path '%s' does not exist", path.c_str());
+            return EXITCODE_FAIL;
+        }
+
+        // Check if g1.dat exists (naive but good check)
+        Console::WriteLine("Checking g1.dat...");
+
+        auto pathG1Check = Path::Combine(path, u8"Data", u8"g1.dat");
+        if (!File::Exists(pathG1Check))
+        {
+            Console::Error::WriteLine("RCT2 path not valid.");
+            Console::Error::WriteLine("Unable to find %s.", pathG1Check.c_str());
+            return EXITCODE_FAIL;
+        }
+
+        // Update RCT2 path in config
+        auto env = OpenRCT2::CreatePlatformEnvironment();
+        auto configPath = env->GetFilePath(OpenRCT2::PATHID::CONFIG);
+        ConfigSetDefaults();
+        ConfigOpen(configPath);
+        gConfigGeneral.RCT2Path = path;
+        if (ConfigSave(configPath))
+        {
+            Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
+            Console::WriteLine();
+            Console::WriteLine("Updated config.ini");
+            return EXITCODE_OK;
+        }
+
+        Console::Error::WriteLine("Unable to update config.ini");
         return EXITCODE_FAIL;
     }
 
-    const auto path = Path::GetAbsolute(rawPath);
-
-    // Check if path exists
-    Console::WriteLine("Checking path...");
-    if (!Path::DirectoryExists(path))
+    static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
-        Console::Error::WriteLine("The path '%s' does not exist", path.c_str());
-        return EXITCODE_FAIL;
-    }
+        exitcode_t result = CommandLine::HandleCommandDefault();
+        if (result != EXITCODE_CONTINUE)
+        {
+            return result;
+        }
 
-    // Check if g1.dat exists (naive but good check)
-    Console::WriteLine("Checking g1.dat...");
+        gOpenRCT2Headless = true;
+        gOpenRCT2NoGraphics = true;
 
-    auto pathG1Check = Path::Combine(path, u8"Data", u8"g1.dat");
-    if (!File::Exists(pathG1Check))
-    {
-        Console::Error::WriteLine("RCT2 path not valid.");
-        Console::Error::WriteLine("Unable to find %s.", pathG1Check.c_str());
-        return EXITCODE_FAIL;
-    }
-
-    // Update RCT2 path in config
-    auto env = OpenRCT2::CreatePlatformEnvironment();
-    auto configPath = env->GetFilePath(OpenRCT2::PATHID::CONFIG);
-    ConfigSetDefaults();
-    ConfigOpen(configPath);
-    gConfigGeneral.RCT2Path = path;
-    if (ConfigSave(configPath))
-    {
-        Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
-        Console::WriteLine();
-        Console::WriteLine("Updated config.ini");
+        auto context = OpenRCT2::CreateContext();
+        auto env = context->GetPlatformEnvironment();
+        auto objectRepository = CreateObjectRepository(env);
+        objectRepository->Construct(gConfigGeneral.Language);
         return EXITCODE_OK;
     }
 
-    Console::Error::WriteLine("Unable to update config.ini");
-    return EXITCODE_FAIL;
-}
-
-static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator* enumerator)
-{
-    exitcode_t result = CommandLine::HandleCommandDefault();
-    if (result != EXITCODE_CONTINUE)
-    {
-        return result;
-    }
-
-    gOpenRCT2Headless = true;
-    gOpenRCT2NoGraphics = true;
-
-    auto context = OpenRCT2::CreateContext();
-    auto env = context->GetPlatformEnvironment();
-    auto objectRepository = CreateObjectRepository(env);
-    objectRepository->Construct(gConfigGeneral.Language);
-    return EXITCODE_OK;
-}
-
 #if defined(_WIN32)
-static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator* enumerator)
-{
-    exitcode_t result = CommandLine::HandleCommandDefault();
-    if (result != EXITCODE_CONTINUE)
+    static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
-        return result;
-    }
+        exitcode_t result = CommandLine::HandleCommandDefault();
+        if (result != EXITCODE_CONTINUE)
+        {
+            return result;
+        }
 
-    if (!_removeShell)
-    {
-        Platform::SetUpFileAssociations();
+        if (!_removeShell)
+        {
+            Platform::SetUpFileAssociations();
+        }
+        else
+        {
+            Platform::RemoveFileAssociations();
+        }
+        return EXITCODE_OK;
     }
-    else
-    {
-        Platform::RemoveFileAssociations();
-    }
-    return EXITCODE_OK;
-}
 #endif // defined(_WIN32)
 
-static void PrintAbout()
-{
-    PrintVersion();
-    Console::WriteLine();
-    Console::WriteLine("OpenRCT2 is an amusement park simulation game based upon the popular game");
-    Console::WriteLine("RollerCoaster Tycoon 2, written by Chris Sawyer. It attempts to mimic the ");
-    Console::WriteLine("original game as closely as possible while extending it with new features.");
-    Console::WriteLine("OpenRCT2 is licensed under the GNU General Public License version 3.0, but");
-    Console::WriteLine("includes some 3rd party software under different licenses. See the file");
-    Console::WriteLine("\"licence.txt\" shipped with the game for details.");
-    Console::WriteLine();
-    Console::WriteLine("Website:      https://openrct2.io");
-    Console::WriteLine("GitHub:       https://github.com/OpenRCT2/OpenRCT2");
-    Console::WriteLine("Contributors: https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md");
-    Console::WriteLine();
-}
+    static void PrintAbout()
+    {
+        PrintVersion();
+        Console::WriteLine();
+        Console::WriteLine("OpenRCT2 is an amusement park simulation game based upon the popular game");
+        Console::WriteLine("RollerCoaster Tycoon 2, written by Chris Sawyer. It attempts to mimic the ");
+        Console::WriteLine("original game as closely as possible while extending it with new features.");
+        Console::WriteLine("OpenRCT2 is licensed under the GNU General Public License version 3.0, but");
+        Console::WriteLine("includes some 3rd party software under different licenses. See the file");
+        Console::WriteLine("\"licence.txt\" shipped with the game for details.");
+        Console::WriteLine();
+        Console::WriteLine("Website:      https://openrct2.io");
+        Console::WriteLine("GitHub:       https://github.com/OpenRCT2/OpenRCT2");
+        Console::WriteLine("Contributors: https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md");
+        Console::WriteLine();
+    }
 
-static void PrintVersion()
-{
-    char buffer[256];
-    OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
-    Console::WriteLine(buffer);
-    Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-    Console::WriteLine();
-    Console::WriteFormat("Network version: %s", NetworkGetVersion().c_str());
-    Console::WriteLine();
+    static void PrintVersion()
+    {
+        char buffer[256];
+        OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
+        Console::WriteLine(buffer);
+        Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+        Console::WriteLine();
+        Console::WriteFormat("Network version: %s", NetworkGetVersion().c_str());
+        Console::WriteLine();
 #ifdef ENABLE_SCRIPTING
-    Console::WriteFormat("Plugin API version: %d", OpenRCT2::Scripting::OPENRCT2_PLUGIN_API_VERSION);
-    Console::WriteLine();
+        Console::WriteFormat("Plugin API version: %d", OpenRCT2::Scripting::OPENRCT2_PLUGIN_API_VERSION);
+        Console::WriteLine();
 #else
-    Console::WriteFormat("Plugin API not enabled in this build");
-    Console::WriteLine();
+        Console::WriteFormat("Plugin API not enabled in this build");
+        Console::WriteLine();
 #endif
-    Console::WriteFormat("Current park file version: %d", OpenRCT2::PARK_FILE_CURRENT_VERSION);
-    Console::WriteLine();
-    Console::WriteFormat("Minimum park file version: %d", OpenRCT2::PARK_FILE_MIN_VERSION);
-    Console::WriteLine();
+        Console::WriteFormat("Current park file version: %d", OpenRCT2::PARK_FILE_CURRENT_VERSION);
+        Console::WriteLine();
+        Console::WriteFormat("Minimum park file version: %d", OpenRCT2::PARK_FILE_MIN_VERSION);
+        Console::WriteLine();
 #ifdef USE_BREAKPAD
-    Console::WriteFormat("With breakpad support enabled");
-    Console::WriteLine();
+        Console::WriteFormat("With breakpad support enabled");
+        Console::WriteLine();
 #else
-    Console::WriteFormat("Breakpad support disabled");
-    Console::WriteLine();
+        Console::WriteFormat("Breakpad support disabled");
+        Console::WriteLine();
 #endif
-}
+    }
 
-static void PrintLaunchInformation()
-{
-    char buffer[256];
-    time_t timer;
-    struct tm* tmInfo;
+    static void PrintLaunchInformation()
+    {
+        char buffer[256];
+        time_t timer;
+        struct tm* tmInfo;
 
-    // Print name and version information
-    OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
-    Console::WriteFormat("%s", buffer);
-    Console::WriteLine();
-    Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-    Console::WriteLine();
-    Console::WriteLine();
+        // Print name and version information
+        OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
+        Console::WriteFormat("%s", buffer);
+        Console::WriteLine();
+        Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+        Console::WriteLine();
+        Console::WriteLine();
 
-    // Print current time
-    time(&timer);
-    tmInfo = localtime(&timer);
-    strftime(buffer, sizeof(buffer), "%Y/%m/%d %H:%M:%S", tmInfo);
-    Console::WriteFormat("VERBOSE: time is %s", buffer);
-    Console::WriteLine();
+        // Print current time
+        time(&timer);
+        tmInfo = localtime(&timer);
+        strftime(buffer, sizeof(buffer), "%Y/%m/%d %H:%M:%S", tmInfo);
+        Console::WriteFormat("VERBOSE: time is %s", buffer);
+        Console::WriteLine();
 
-    // TODO Print other potential information (e.g. user, hardware)
-}
+        // TODO Print other potential information (e.g. user, hardware)
+    }
+} // namespace OpenRCT2

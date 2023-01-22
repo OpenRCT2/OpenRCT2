@@ -9,22 +9,24 @@
 
 #include "../interface/Screenshot.h"
 #include "CommandLine.hpp"
-
-static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator);
-
-const CommandLineCommand CommandLine::BenchGfxCommands[]{
-    // Main commands
-    DefineCommand("", "<file> [iterations count]", nullptr, HandleBenchGfx), CommandTableEnd
-};
-
-static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator)
+namespace OpenRCT2
 {
-    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
-    int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    int32_t result = CmdlineForGfxbench(argv, argc);
-    if (result < 0)
+    static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator);
+
+    const CommandLineCommand CommandLine::BenchGfxCommands[]{
+        // Main commands
+        DefineCommand("", "<file> [iterations count]", nullptr, HandleBenchGfx), CommandTableEnd
+    };
+
+    static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator)
     {
-        return EXITCODE_FAIL;
+        const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
+        int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
+        int32_t result = CmdlineForGfxbench(argv, argc);
+        if (result < 0)
+        {
+            return EXITCODE_FAIL;
+        }
+        return EXITCODE_OK;
     }
-    return EXITCODE_OK;
-}
+} // namespace OpenRCT2

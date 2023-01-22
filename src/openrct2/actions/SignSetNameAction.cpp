@@ -19,75 +19,77 @@
 #include "../world/Banner.h"
 
 #include <string>
-
-SignSetNameAction::SignSetNameAction(BannerIndex bannerIndex, const std::string& name)
-    : _bannerIndex(bannerIndex)
-    , _name(name)
+namespace OpenRCT2
 {
-}
-
-void SignSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("id", _bannerIndex);
-    visitor.Visit("name", _name);
-}
-
-uint16_t SignSetNameAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void SignSetNameAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
-}
-
-GameActions::Result SignSetNameAction::Query() const
-{
-    auto banner = GetBanner(_bannerIndex);
-    if (banner == nullptr)
+    SignSetNameAction::SignSetNameAction(BannerIndex bannerIndex, const std::string& name)
+        : _bannerIndex(bannerIndex)
+        , _name(name)
     {
-        LOG_WARNING("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
-    }
-    return GameActions::Result();
-}
-
-GameActions::Result SignSetNameAction::Execute() const
-{
-    auto banner = GetBanner(_bannerIndex);
-    if (banner == nullptr)
-    {
-        LOG_WARNING("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
 
-    if (!_name.empty())
+    void SignSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-        banner->ride_index = RideId::GetNull();
-        banner->text = _name;
+        visitor.Visit("id", _bannerIndex);
+        visitor.Visit("name", _name);
     }
-    else
+
+    uint16_t SignSetNameAction::GetActionFlags() const
     {
-        // If empty name take closest ride name.
-        RideId rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
-        if (rideIndex.IsNull())
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
+
+    void SignSetNameAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
+    }
+
+    GameActions::Result SignSetNameAction::Query() const
+    {
+        auto banner = GetBanner(_bannerIndex);
+        if (banner == nullptr)
+        {
+            LOG_WARNING("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
+        }
+        return GameActions::Result();
+    }
+
+    GameActions::Result SignSetNameAction::Execute() const
+    {
+        auto banner = GetBanner(_bannerIndex);
+        if (banner == nullptr)
+        {
+            LOG_WARNING("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
+        }
+
+        if (!_name.empty())
         {
             banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
             banner->ride_index = RideId::GetNull();
-            banner->text = {};
+            banner->text = _name;
         }
         else
         {
-            banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-            banner->ride_index = rideIndex;
-            banner->text = {};
+            // If empty name take closest ride name.
+            RideId rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
+            if (rideIndex.IsNull())
+            {
+                banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+                banner->ride_index = RideId::GetNull();
+                banner->text = {};
+            }
+            else
+            {
+                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+                banner->ride_index = rideIndex;
+                banner->text = {};
+            }
         }
-    }
 
-    ScrollingTextInvalidate();
-    GfxInvalidateScreen();
-    return GameActions::Result();
-}
+        ScrollingTextInvalidate();
+        GfxInvalidateScreen();
+        return GameActions::Result();
+    }
+} // namespace OpenRCT2

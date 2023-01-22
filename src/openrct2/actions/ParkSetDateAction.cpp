@@ -16,44 +16,46 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
-
-ParkSetDateAction::ParkSetDateAction(int32_t year, int32_t month, int32_t day)
-    : _year(year)
-    , _month(month)
-    , _day(day)
+namespace OpenRCT2
 {
-}
-
-void ParkSetDateAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("year", _year);
-    visitor.Visit("month", _month);
-    visitor.Visit("day", _day);
-}
-
-uint16_t ParkSetDateAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void ParkSetDateAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_year) << DS_TAG(_month) << DS_TAG(_day);
-}
-
-GameActions::Result ParkSetDateAction::Query() const
-{
-    if (_year <= 0 || _year > MAX_YEAR || _month <= 0 || _month > MONTH_COUNT || _day <= 0 || _day > 31)
+    ParkSetDateAction::ParkSetDateAction(int32_t year, int32_t month, int32_t day)
+        : _year(year)
+        , _month(month)
+        , _day(day)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    return GameActions::Result();
-}
+    void ParkSetDateAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("year", _year);
+        visitor.Visit("month", _month);
+        visitor.Visit("day", _day);
+    }
 
-GameActions::Result ParkSetDateAction::Execute() const
-{
-    DateSet(_year, _month, _day);
-    return GameActions::Result();
-}
+    uint16_t ParkSetDateAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
+
+    void ParkSetDateAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_year) << DS_TAG(_month) << DS_TAG(_day);
+    }
+
+    GameActions::Result ParkSetDateAction::Query() const
+    {
+        if (_year <= 0 || _year > MAX_YEAR || _month <= 0 || _month > MONTH_COUNT || _day <= 0 || _day > 31)
+        {
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        return GameActions::Result();
+    }
+
+    GameActions::Result ParkSetDateAction::Execute() const
+    {
+        DateSet(_year, _month, _day);
+        return GameActions::Result();
+    }
+} // namespace OpenRCT2

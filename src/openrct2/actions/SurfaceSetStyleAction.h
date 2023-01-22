@@ -10,21 +10,23 @@
 #pragma once
 
 #include "GameAction.h"
-
-class SurfaceSetStyleAction final : public GameActionBase<GameCommand::ChangeSurfaceStyle>
+namespace OpenRCT2
 {
-private:
-    MapRange _range;
-    ObjectEntryIndex _surfaceStyle{};
-    ObjectEntryIndex _edgeStyle{};
+    class SurfaceSetStyleAction final : public GameActionBase<GameCommand::ChangeSurfaceStyle>
+    {
+    private:
+        MapRange _range;
+        ObjectEntryIndex _surfaceStyle{};
+        ObjectEntryIndex _edgeStyle{};
 
-public:
-    SurfaceSetStyleAction() = default;
-    SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle);
+    public:
+        SurfaceSetStyleAction() = default;
+        SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

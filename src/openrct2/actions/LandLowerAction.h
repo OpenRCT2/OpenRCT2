@@ -10,26 +10,28 @@
 #pragma once
 
 #include "GameAction.h"
-
-class LandLowerAction final : public GameActionBase<GameCommand::LowerLand>
+namespace OpenRCT2
 {
-private:
-    CoordsXY _coords;
-    MapRange _range;
-    uint8_t _selectionType{};
+    class LandLowerAction final : public GameActionBase<GameCommand::LowerLand>
+    {
+    private:
+        CoordsXY _coords;
+        MapRange _range;
+        uint8_t _selectionType{};
 
-public:
-    LandLowerAction() = default;
-    LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType);
+    public:
+        LandLowerAction() = default;
+        LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    GameActions::Result QueryExecute(bool isExecuting) const;
-};
+    private:
+        GameActions::Result QueryExecute(bool isExecuting) const;
+    };
+} // namespace OpenRCT2

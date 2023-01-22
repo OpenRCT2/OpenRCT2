@@ -10,21 +10,23 @@
 #pragma once
 
 #include "GameAction.h"
-
-class WallRemoveAction final : public GameActionBase<GameCommand::RemoveWall>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZD _loc;
+    class WallRemoveAction final : public GameActionBase<GameCommand::RemoveWall>
+    {
+    private:
+        CoordsXYZD _loc;
 
-public:
-    WallRemoveAction() = default;
-    WallRemoveAction(const CoordsXYZD& loc);
+    public:
+        WallRemoveAction() = default;
+        WallRemoveAction(const CoordsXYZD& loc);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const;
-};
+    private:
+        TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const;
+    };
+} // namespace OpenRCT2

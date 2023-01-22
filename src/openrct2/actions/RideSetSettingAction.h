@@ -10,45 +10,47 @@
 #pragma once
 
 #include "GameAction.h"
-
-enum class RideSetSetting : uint8_t
+namespace OpenRCT2
 {
-    Mode,
-    Departure,
-    MinWaitingTime,
-    MaxWaitingTime,
-    Operation,
-    InspectionInterval,
-    Music,
-    MusicType,
-    LiftHillSpeed,
-    NumCircuits,
-    RideType,
-};
+    enum class RideSetSetting : uint8_t
+    {
+        Mode,
+        Departure,
+        MinWaitingTime,
+        MaxWaitingTime,
+        Operation,
+        InspectionInterval,
+        Music,
+        MusicType,
+        LiftHillSpeed,
+        NumCircuits,
+        RideType,
+    };
 
-class RideSetSettingAction final : public GameActionBase<GameCommand::SetRideSetting>
-{
-private:
-    RideId _rideIndex{ RideId::GetNull() };
-    RideSetSetting _setting{};
-    uint8_t _value{};
+    class RideSetSettingAction final : public GameActionBase<GameCommand::SetRideSetting>
+    {
+    private:
+        RideId _rideIndex{ RideId::GetNull() };
+        RideSetSetting _setting{};
+        uint8_t _value{};
 
-public:
-    RideSetSettingAction() = default;
-    RideSetSettingAction(RideId rideIndex, RideSetSetting setting, uint8_t value);
+    public:
+        RideSetSettingAction() = default;
+        RideSetSettingAction(RideId rideIndex, RideSetSetting setting, uint8_t value);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    bool RideIsModeValid(const Ride& ride) const;
-    bool RideIsValidLiftHillSpeed(const Ride& ride) const;
-    bool RideIsValidNumCircuits() const;
-    bool RideIsValidOperationOption(const Ride& ride) const;
-    StringId GetOperationErrorMessage(const Ride& ride) const;
-};
+    private:
+        bool RideIsModeValid(const Ride& ride) const;
+        bool RideIsValidLiftHillSpeed(const Ride& ride) const;
+        bool RideIsValidNumCircuits() const;
+        bool RideIsValidOperationOption(const Ride& ride) const;
+        StringId GetOperationErrorMessage(const Ride& ride) const;
+    };
+} // namespace OpenRCT2

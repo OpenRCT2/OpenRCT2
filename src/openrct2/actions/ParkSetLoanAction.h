@@ -10,21 +10,23 @@
 #pragma once
 
 #include "GameAction.h"
-
-class ParkSetLoanAction final : public GameActionBase<GameCommand::SetCurrentLoan>
+namespace OpenRCT2
 {
-private:
-    money64 _value{ MONEY64_UNDEFINED };
+    class ParkSetLoanAction final : public GameActionBase<GameCommand::SetCurrentLoan>
+    {
+    private:
+        money64 _value{ MONEY64_UNDEFINED };
 
-public:
-    ParkSetLoanAction() = default;
-    ParkSetLoanAction(money64 value);
+    public:
+        ParkSetLoanAction() = default;
+        ParkSetLoanAction(money64 value);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

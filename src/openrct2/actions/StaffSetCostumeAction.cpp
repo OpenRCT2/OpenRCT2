@@ -15,100 +15,102 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
-
-/** rct2: 0x00982134 */
-constexpr const bool peep_slow_walking_types[] = {
-    false, // PeepSpriteType::Normal
-    false, // PeepSpriteType::Handyman
-    false, // PeepSpriteType::Mechanic
-    false, // PeepSpriteType::Security
-    false, // PeepSpriteType::EntertainerPanda
-    false, // PeepSpriteType::EntertainerTiger
-    false, // PeepSpriteType::EntertainerElephant
-    false, // PeepSpriteType::EntertainerRoman
-    false, // PeepSpriteType::EntertainerGorilla
-    false, // PeepSpriteType::EntertainerSnowman
-    false, // PeepSpriteType::EntertainerKnight
-    true,  // PeepSpriteType::EntertainerAstronaut
-    false, // PeepSpriteType::EntertainerBandit
-    false, // PeepSpriteType::EntertainerSheriff
-    true,  // PeepSpriteType::EntertainerPirate
-    true,  // PeepSpriteType::Balloon
-};
-
-StaffSetCostumeAction::StaffSetCostumeAction(EntityId spriteIndex, EntertainerCostume costume)
-    : _spriteIndex(spriteIndex)
-    , _costume(costume)
+namespace OpenRCT2
 {
-}
+    /** rct2: 0x00982134 */
+    constexpr const bool peep_slow_walking_types[] = {
+        false, // PeepSpriteType::Normal
+        false, // PeepSpriteType::Handyman
+        false, // PeepSpriteType::Mechanic
+        false, // PeepSpriteType::Security
+        false, // PeepSpriteType::EntertainerPanda
+        false, // PeepSpriteType::EntertainerTiger
+        false, // PeepSpriteType::EntertainerElephant
+        false, // PeepSpriteType::EntertainerRoman
+        false, // PeepSpriteType::EntertainerGorilla
+        false, // PeepSpriteType::EntertainerSnowman
+        false, // PeepSpriteType::EntertainerKnight
+        true,  // PeepSpriteType::EntertainerAstronaut
+        false, // PeepSpriteType::EntertainerBandit
+        false, // PeepSpriteType::EntertainerSheriff
+        true,  // PeepSpriteType::EntertainerPirate
+        true,  // PeepSpriteType::Balloon
+    };
 
-void StaffSetCostumeAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("id", _spriteIndex);
-    visitor.Visit("costume", _costume);
-}
-
-uint16_t StaffSetCostumeAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_spriteIndex) << DS_TAG(_costume);
-}
-
-GameActions::Result StaffSetCostumeAction::Query() const
-{
-    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
+    StaffSetCostumeAction::StaffSetCostumeAction(EntityId spriteIndex, EntertainerCostume costume)
+        : _spriteIndex(spriteIndex)
+        , _costume(costume)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto* staff = TryGetEntity<Staff>(_spriteIndex);
-    if (staff == nullptr)
+    void StaffSetCostumeAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        visitor.Visit("id", _spriteIndex);
+        visitor.Visit("costume", _costume);
     }
 
-    auto spriteType = EntertainerCostumeToSprite(_costume);
-    if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
+    uint16_t StaffSetCostumeAction::GetActionFlags() const
     {
-        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
-    }
-    return GameActions::Result();
-}
-
-GameActions::Result StaffSetCostumeAction::Execute() const
-{
-    auto* staff = TryGetEntity<Staff>(_spriteIndex);
-    if (staff == nullptr)
-    {
-        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
-    auto spriteType = EntertainerCostumeToSprite(_costume);
-    staff->SpriteType = spriteType;
-    staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    if (peep_slow_walking_types[EnumValue(spriteType)])
+    void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
     {
-        staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_spriteIndex) << DS_TAG(_costume);
     }
-    staff->ActionFrame = 0;
-    staff->UpdateCurrentActionSpriteType();
-    staff->Invalidate();
 
-    WindowInvalidateByNumber(WindowClass::Peep, _spriteIndex);
-    auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
-    ContextBroadcastIntent(&intent);
+    GameActions::Result StaffSetCostumeAction::Query() const
+    {
+        if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
+        {
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
 
-    auto res = GameActions::Result();
-    res.Position = staff->GetLocation();
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
+        {
+            LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
 
-    return res;
-}
+        auto spriteType = EntertainerCostumeToSprite(_costume);
+        if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
+        {
+            LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+        return GameActions::Result();
+    }
+
+    GameActions::Result StaffSetCostumeAction::Execute() const
+    {
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
+        {
+            LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        auto spriteType = EntertainerCostumeToSprite(_costume);
+        staff->SpriteType = spriteType;
+        staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
+        if (peep_slow_walking_types[EnumValue(spriteType)])
+        {
+            staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
+        }
+        staff->ActionFrame = 0;
+        staff->UpdateCurrentActionSpriteType();
+        staff->Invalidate();
+
+        WindowInvalidateByNumber(WindowClass::Peep, _spriteIndex);
+        auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
+        ContextBroadcastIntent(&intent);
+
+        auto res = GameActions::Result();
+        res.Position = staff->GetLocation();
+
+        return res;
+    }
+} // namespace OpenRCT2

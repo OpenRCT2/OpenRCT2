@@ -10,23 +10,25 @@
 #pragma once
 
 #include "GameAction.h"
-
-class RideSetColourSchemeAction final : public GameActionBase<GameCommand::SetColourScheme>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZD _loc;
-    track_type_t _trackType{};
-    uint16_t _newColourScheme{};
+    class RideSetColourSchemeAction final : public GameActionBase<GameCommand::SetColourScheme>
+    {
+    private:
+        CoordsXYZD _loc;
+        track_type_t _trackType{};
+        uint16_t _newColourScheme{};
 
-public:
-    RideSetColourSchemeAction() = default;
-    RideSetColourSchemeAction(const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme);
+    public:
+        RideSetColourSchemeAction() = default;
+        RideSetColourSchemeAction(const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

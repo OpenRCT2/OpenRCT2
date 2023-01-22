@@ -10,22 +10,24 @@
 #pragma once
 
 #include "GameAction.h"
-
-class SignSetNameAction final : public GameActionBase<GameCommand::SetSignName>
+namespace OpenRCT2
 {
-private:
-    BannerIndex _bannerIndex{ BannerIndex::GetNull() };
-    std::string _name;
+    class SignSetNameAction final : public GameActionBase<GameCommand::SetSignName>
+    {
+    private:
+        BannerIndex _bannerIndex{ BannerIndex::GetNull() };
+        std::string _name;
 
-public:
-    SignSetNameAction() = default;
-    SignSetNameAction(BannerIndex bannerIndex, const std::string& name);
+    public:
+        SignSetNameAction() = default;
+        SignSetNameAction(BannerIndex bannerIndex, const std::string& name);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

@@ -10,34 +10,36 @@
 #include "PlayerKickAction.h"
 
 #include "../network/network.h"
-
-PlayerKickAction::PlayerKickAction(NetworkPlayerId_t playerId)
-    : _playerId(playerId)
+namespace OpenRCT2
 {
-}
+    PlayerKickAction::PlayerKickAction(NetworkPlayerId_t playerId)
+        : _playerId(playerId)
+    {
+    }
 
-void PlayerKickAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("playerId", _playerId);
-}
+    void PlayerKickAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("playerId", _playerId);
+    }
 
-uint16_t PlayerKickAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
+    uint16_t PlayerKickAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
 
-void PlayerKickAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
+    void PlayerKickAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
 
-    stream << DS_TAG(_playerId);
-}
-GameActions::Result PlayerKickAction::Query() const
-{
-    return NetworkKickPlayer(_playerId, false);
-}
+        stream << DS_TAG(_playerId);
+    }
+    GameActions::Result PlayerKickAction::Query() const
+    {
+        return NetworkKickPlayer(_playerId, false);
+    }
 
-GameActions::Result PlayerKickAction::Execute() const
-{
-    return NetworkKickPlayer(_playerId, true);
-}
+    GameActions::Result PlayerKickAction::Execute() const
+    {
+        return NetworkKickPlayer(_playerId, true);
+    }
+} // namespace OpenRCT2

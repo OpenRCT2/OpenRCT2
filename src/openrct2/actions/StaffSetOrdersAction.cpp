@@ -16,65 +16,67 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
-
-StaffSetOrdersAction::StaffSetOrdersAction(EntityId spriteIndex, uint8_t ordersId)
-    : _spriteIndex(spriteIndex)
-    , _ordersId(ordersId)
+namespace OpenRCT2
 {
-}
-
-void StaffSetOrdersAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("id", _spriteIndex);
-    visitor.Visit("staffOrders", _ordersId);
-}
-
-uint16_t StaffSetOrdersAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void StaffSetOrdersAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_spriteIndex) << DS_TAG(_ordersId);
-}
-
-GameActions::Result StaffSetOrdersAction::Query() const
-{
-    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
+    StaffSetOrdersAction::StaffSetOrdersAction(EntityId spriteIndex, uint8_t ordersId)
+        : _spriteIndex(spriteIndex)
+        , _ordersId(ordersId)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto* staff = TryGetEntity<Staff>(_spriteIndex);
-    if (staff == nullptr
-        || (staff->AssignedStaffType != StaffType::Handyman && staff->AssignedStaffType != StaffType::Mechanic))
+    void StaffSetOrdersAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        visitor.Visit("id", _spriteIndex);
+        visitor.Visit("staffOrders", _ordersId);
     }
 
-    return GameActions::Result();
-}
-
-GameActions::Result StaffSetOrdersAction::Execute() const
-{
-    auto* staff = TryGetEntity<Staff>(_spriteIndex);
-    if (staff == nullptr)
+    uint16_t StaffSetOrdersAction::GetActionFlags() const
     {
-        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
-    staff->StaffOrders = _ordersId;
 
-    WindowInvalidateByNumber(WindowClass::Peep, _spriteIndex);
-    auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
-    ContextBroadcastIntent(&intent);
+    void StaffSetOrdersAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
 
-    auto res = GameActions::Result();
-    res.Position = staff->GetLocation();
+        stream << DS_TAG(_spriteIndex) << DS_TAG(_ordersId);
+    }
 
-    return res;
-}
+    GameActions::Result StaffSetOrdersAction::Query() const
+    {
+        if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
+        {
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr
+            || (staff->AssignedStaffType != StaffType::Handyman && staff->AssignedStaffType != StaffType::Mechanic))
+        {
+            LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        return GameActions::Result();
+    }
+
+    GameActions::Result StaffSetOrdersAction::Execute() const
+    {
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
+        {
+            LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+        staff->StaffOrders = _ordersId;
+
+        WindowInvalidateByNumber(WindowClass::Peep, _spriteIndex);
+        auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
+        ContextBroadcastIntent(&intent);
+
+        auto res = GameActions::Result();
+        res.Position = staff->GetLocation();
+
+        return res;
+    }
+} // namespace OpenRCT2

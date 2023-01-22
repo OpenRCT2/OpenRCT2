@@ -18,219 +18,222 @@
 #include "../world/Park.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
-
-SurfaceSetStyleAction::SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle)
-    : _range(range)
-    , _surfaceStyle(surfaceStyle)
-    , _edgeStyle(edgeStyle)
+namespace OpenRCT2
 {
-}
-
-void SurfaceSetStyleAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit(_range);
-    visitor.Visit("surfaceStyle", _surfaceStyle);
-    visitor.Visit("edgeStyle", _edgeStyle);
-}
-
-void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle);
-}
-
-GameActions::Result SurfaceSetStyleAction::Query() const
-{
-    auto res = GameActions::Result();
-    res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-    res.Expenditure = ExpenditureType::Landscaping;
-
-    auto validRange = ClampRangeWithinMap(_range.Normalise());
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
+    SurfaceSetStyleAction::SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle)
+        : _range(range)
+        , _surfaceStyle(surfaceStyle)
+        , _edgeStyle(edgeStyle)
     {
-        if (_surfaceStyle > 0x1F)
-        {
-            LOG_ERROR("Invalid surface style.");
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
-        }
-
-        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-            objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
-
-        if (surfaceObj == nullptr)
-        {
-            LOG_ERROR("Invalid surface style.");
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
-        }
     }
 
-    if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
+    void SurfaceSetStyleAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        if (_edgeStyle > 0xF)
-        {
-            LOG_ERROR("Invalid edge style.");
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
-        }
-
-        const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
-
-        if (edgeObj == nullptr)
-        {
-            LOG_ERROR("Invalid edge style.");
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
-        }
+        visitor.Visit(_range);
+        visitor.Visit("surfaceStyle", _surfaceStyle);
+        visitor.Visit("edgeStyle", _edgeStyle);
     }
 
-    auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
-    auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
-    auto heightMid = TileElementHeight({ xMid, yMid });
-
-    res.Position.x = xMid;
-    res.Position.y = yMid;
-    res.Position.z = heightMid;
-
-    // Do nothing if not in editor, sandbox mode or landscaping is forbidden
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-        && (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
+    void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
     {
-        return GameActions::Result(
-            GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle);
     }
 
-    money32 surfaceCost = 0;
-    money32 edgeCost = 0;
-    for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
-         coords.x += COORDS_XY_STEP)
+    GameActions::Result SurfaceSetStyleAction::Query() const
     {
-        for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += COORDS_XY_STEP)
-        {
-            if (!LocationValid(coords))
-                continue;
+        auto res = GameActions::Result();
+        res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
+        res.Expenditure = ExpenditureType::Landscaping;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+        auto validRange = ClampRangeWithinMap(_range.Normalise());
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
+        {
+            if (_surfaceStyle > 0x1F)
             {
-                if (!MapIsLocationInPark(coords))
+                LOG_ERROR("Invalid surface style.");
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            }
+
+            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+                objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
+
+            if (surfaceObj == nullptr)
+            {
+                LOG_ERROR("Invalid surface style.");
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            }
+        }
+
+        if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
+        {
+            if (_edgeStyle > 0xF)
+            {
+                LOG_ERROR("Invalid edge style.");
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            }
+
+            const auto edgeObj = static_cast<TerrainEdgeObject*>(
+                objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
+
+            if (edgeObj == nullptr)
+            {
+                LOG_ERROR("Invalid edge style.");
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            }
+        }
+
+        auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
+        auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
+        auto heightMid = TileElementHeight({ xMid, yMid });
+
+        res.Position.x = xMid;
+        res.Position.y = yMid;
+        res.Position.z = heightMid;
+
+        // Do nothing if not in editor, sandbox mode or landscaping is forbidden
+        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
+            && (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
+        {
+            return GameActions::Result(
+                GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+        }
+
+        money32 surfaceCost = 0;
+        money32 edgeCost = 0;
+        for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
+             coords.x += COORDS_XY_STEP)
+        {
+            for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += COORDS_XY_STEP)
+            {
+                if (!LocationValid(coords))
                     continue;
-            }
 
-            auto surfaceElement = MapGetSurfaceElementAt(coords);
-            if (surfaceElement == nullptr)
-            {
-                continue;
-            }
-
-            if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
-            {
-                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
-
-                if (_surfaceStyle != curSurfaceStyle)
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 {
-                    const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
-                    if (surfaceObject != nullptr)
+                    if (!MapIsLocationInPark(coords))
+                        continue;
+                }
+
+                auto surfaceElement = MapGetSurfaceElementAt(coords);
+                if (surfaceElement == nullptr)
+                {
+                    continue;
+                }
+
+                if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
+                {
+                    uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
+
+                    if (_surfaceStyle != curSurfaceStyle)
                     {
-                        surfaceCost += surfaceObject->Price;
+                        const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
+                            objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
+                        if (surfaceObject != nullptr)
+                        {
+                            surfaceCost += surfaceObject->Price;
+                        }
+                    }
+                }
+
+                if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
+                {
+                    uint8_t curEdgeStyle = surfaceElement->GetEdgeStyle();
+
+                    if (_edgeStyle != curEdgeStyle)
+                    {
+                        edgeCost += 100;
                     }
                 }
             }
-
-            if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
-            {
-                uint8_t curEdgeStyle = surfaceElement->GetEdgeStyle();
-
-                if (_edgeStyle != curEdgeStyle)
-                {
-                    edgeCost += 100;
-                }
-            }
         }
+        res.Cost = surfaceCost + edgeCost;
+
+        return res;
     }
-    res.Cost = surfaceCost + edgeCost;
 
-    return res;
-}
-
-GameActions::Result SurfaceSetStyleAction::Execute() const
-{
-    auto res = GameActions::Result();
-    res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-    res.Expenditure = ExpenditureType::Landscaping;
-
-    auto validRange = ClampRangeWithinMap(_range.Normalise());
-    auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
-    auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
-    auto heightMid = TileElementHeight({ xMid, yMid });
-
-    res.Position.x = xMid;
-    res.Position.y = yMid;
-    res.Position.z = heightMid;
-
-    money32 surfaceCost = 0;
-    money32 edgeCost = 0;
-    for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
-         coords.x += COORDS_XY_STEP)
+    GameActions::Result SurfaceSetStyleAction::Execute() const
     {
-        for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += COORDS_XY_STEP)
+        auto res = GameActions::Result();
+        res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
+        res.Expenditure = ExpenditureType::Landscaping;
+
+        auto validRange = ClampRangeWithinMap(_range.Normalise());
+        auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
+        auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
+        auto heightMid = TileElementHeight({ xMid, yMid });
+
+        res.Position.x = xMid;
+        res.Position.y = yMid;
+        res.Position.z = heightMid;
+
+        money32 surfaceCost = 0;
+        money32 edgeCost = 0;
+        for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
+             coords.x += COORDS_XY_STEP)
         {
-            if (!LocationValid(coords))
-                continue;
-
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+            for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += COORDS_XY_STEP)
             {
-                if (!MapIsLocationInPark(coords))
+                if (!LocationValid(coords))
                     continue;
-            }
 
-            auto surfaceElement = MapGetSurfaceElementAt(coords);
-            if (surfaceElement == nullptr)
-            {
-                continue;
-            }
-
-            if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
-            {
-                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
-
-                if (_surfaceStyle != curSurfaceStyle)
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 {
-                    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-                    const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
-                    if (surfaceObject != nullptr)
+                    if (!MapIsLocationInPark(coords))
+                        continue;
+                }
+
+                auto surfaceElement = MapGetSurfaceElementAt(coords);
+                if (surfaceElement == nullptr)
+                {
+                    continue;
+                }
+
+                if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
+                {
+                    uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
+
+                    if (_surfaceStyle != curSurfaceStyle)
                     {
-                        surfaceCost += surfaceObject->Price;
+                        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+                        const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
+                            objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
+                        if (surfaceObject != nullptr)
+                        {
+                            surfaceCost += surfaceObject->Price;
 
-                        surfaceElement->SetSurfaceStyle(_surfaceStyle);
+                            surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
+                            MapInvalidateTileFull(coords);
+                            FootpathRemoveLitter({ coords, TileElementHeight(coords) });
+                        }
+                    }
+                }
+
+                if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
+                {
+                    uint8_t curEdgeStyle = surfaceElement->GetEdgeStyle();
+
+                    if (_edgeStyle != curEdgeStyle)
+                    {
+                        edgeCost += 100;
+
+                        surfaceElement->SetEdgeStyle(_edgeStyle);
                         MapInvalidateTileFull(coords);
-                        FootpathRemoveLitter({ coords, TileElementHeight(coords) });
                     }
                 }
-            }
 
-            if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
-            {
-                uint8_t curEdgeStyle = surfaceElement->GetEdgeStyle();
-
-                if (_edgeStyle != curEdgeStyle)
+                if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
                 {
-                    edgeCost += 100;
-
-                    surfaceElement->SetEdgeStyle(_edgeStyle);
+                    surfaceElement->SetGrassLength(GRASS_LENGTH_CLEAR_0);
                     MapInvalidateTileFull(coords);
                 }
             }
-
-            if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
-            {
-                surfaceElement->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                MapInvalidateTileFull(coords);
-            }
         }
-    }
-    res.Cost = surfaceCost + edgeCost;
+        res.Cost = surfaceCost + edgeCost;
 
-    return res;
-}
+        return res;
+    }
+} // namespace OpenRCT2

@@ -10,26 +10,28 @@
 #pragma once
 
 #include "GameAction.h"
-
-class TrackSetBrakeSpeedAction final : public GameActionBase<GameCommand::SetBrakesSpeed>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZ _loc;
-    track_type_t _trackType{};
-    uint8_t _brakeSpeed{};
+    class TrackSetBrakeSpeedAction final : public GameActionBase<GameCommand::SetBrakesSpeed>
+    {
+    private:
+        CoordsXYZ _loc;
+        track_type_t _trackType{};
+        uint8_t _brakeSpeed{};
 
-public:
-    TrackSetBrakeSpeedAction() = default;
-    TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed);
+    public:
+        TrackSetBrakeSpeedAction() = default;
+        TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override final;
+        uint16_t GetActionFlags() const override final;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    GameActions::Result QueryExecute(bool isExecuting) const;
-};
+    private:
+        GameActions::Result QueryExecute(bool isExecuting) const;
+    };
+} // namespace OpenRCT2

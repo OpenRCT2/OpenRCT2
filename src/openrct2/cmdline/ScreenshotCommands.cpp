@@ -9,10 +9,11 @@
 
 #include "../interface/Screenshot.h"
 #include "CommandLine.hpp"
+namespace OpenRCT2
+{
+    static ScreenshotOptions _options;
 
-static ScreenshotOptions _options;
-
-// clang-format off
+    // clang-format off
 static constexpr const CommandLineOptionDefinition ScreenshotOptionsDef[]
 {
     { CMDLINE_TYPE_INTEGER, &_options.weather,       NAC, "weather",       "weather to be used (0 = default, 1 = sunny, ..., 6 = thunder)." },
@@ -37,16 +38,17 @@ const CommandLineCommand CommandLine::ScreenshotCommands[]
     DefineCommand("", "<file> <output_image> giant <zoom> <rotation>",                      ScreenshotOptionsDef, HandleScreenshot),
     CommandTableEnd
 };
-// clang-format on
+    // clang-format on
 
-static exitcode_t HandleScreenshot(CommandLineArgEnumerator* argEnumerator)
-{
-    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
-    int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    int32_t result = CmdlineForScreenshot(argv, argc, &_options);
-    if (result < 0)
+    static exitcode_t HandleScreenshot(CommandLineArgEnumerator* argEnumerator)
     {
-        return EXITCODE_FAIL;
+        const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
+        int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
+        int32_t result = CmdlineForScreenshot(argv, argc, &_options);
+        if (result < 0)
+        {
+            return EXITCODE_FAIL;
+        }
+        return EXITCODE_OK;
     }
-    return EXITCODE_OK;
-}
+} // namespace OpenRCT2

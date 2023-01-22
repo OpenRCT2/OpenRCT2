@@ -11,14 +11,16 @@
 
 #include "../common.h"
 #include "../localisation/StringIds.h"
-
-struct ResultWithMessage
+namespace OpenRCT2
 {
-    bool Successful{};
-    StringId Message = STR_NONE;
-
-    bool HasMessage() const
+    struct ResultWithMessage
     {
-        return Message != STR_NONE;
-    }
-};
+        bool Successful{};
+        StringId Message = STR_NONE;
+
+        bool HasMessage() const
+        {
+            return Message != STR_NONE;
+        }
+    };
+} // namespace OpenRCT2

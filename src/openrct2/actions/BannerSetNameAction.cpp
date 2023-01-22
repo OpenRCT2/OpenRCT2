@@ -18,58 +18,60 @@
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "GameAction.h"
-
-BannerSetNameAction::BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
-    : _bannerIndex(bannerIndex)
-    , _name(name)
+namespace OpenRCT2
 {
-}
-
-void BannerSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("id", _bannerIndex);
-    visitor.Visit("name", _name);
-}
-
-uint16_t BannerSetNameAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void BannerSetNameAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
-}
-
-GameActions::Result BannerSetNameAction::Query() const
-{
-    auto banner = GetBanner(_bannerIndex);
-    if (banner == nullptr)
+    BannerSetNameAction::BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
+        : _bannerIndex(bannerIndex)
+        , _name(name)
     {
-        LOG_WARNING("Invalid banner id, banner id = %d", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
-    }
-    return GameActions::Result();
-}
-
-GameActions::Result BannerSetNameAction::Execute() const
-{
-    auto banner = GetBanner(_bannerIndex);
-    if (banner == nullptr)
-    {
-        LOG_WARNING("Invalid banner id, banner id = %d", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
     }
 
-    banner->text = _name;
+    void BannerSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("id", _bannerIndex);
+        visitor.Visit("name", _name);
+    }
 
-    auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-    intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
-    ContextBroadcastIntent(&intent);
+    uint16_t BannerSetNameAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
 
-    ScrollingTextInvalidate();
-    GfxInvalidateScreen();
+    void BannerSetNameAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
+    }
 
-    return GameActions::Result();
-}
+    GameActions::Result BannerSetNameAction::Query() const
+    {
+        auto banner = GetBanner(_bannerIndex);
+        if (banner == nullptr)
+        {
+            LOG_WARNING("Invalid banner id, banner id = %d", _bannerIndex);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        }
+        return GameActions::Result();
+    }
+
+    GameActions::Result BannerSetNameAction::Execute() const
+    {
+        auto banner = GetBanner(_bannerIndex);
+        if (banner == nullptr)
+        {
+            LOG_WARNING("Invalid banner id, banner id = %d", _bannerIndex);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        }
+
+        banner->text = _name;
+
+        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+        intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
+        ContextBroadcastIntent(&intent);
+
+        ScrollingTextInvalidate();
+        GfxInvalidateScreen();
+
+        return GameActions::Result();
+    }
+} // namespace OpenRCT2

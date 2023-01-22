@@ -10,33 +10,35 @@
 #pragma once
 
 #include "GameAction.h"
-
-class FootpathLayoutPlaceAction final : public GameActionBase<GameCommand::PlacePathLayout>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZ _loc;
-    uint8_t _slope{};
-    ObjectEntryIndex _type{};
-    ObjectEntryIndex _railingsType{};
-    uint8_t _edges{};
-    PathConstructFlags _constructFlags{};
+    class FootpathLayoutPlaceAction final : public GameActionBase<GameCommand::PlacePathLayout>
+    {
+    private:
+        CoordsXYZ _loc;
+        uint8_t _slope{};
+        ObjectEntryIndex _type{};
+        ObjectEntryIndex _railingsType{};
+        uint8_t _edges{};
+        PathConstructFlags _constructFlags{};
 
-public:
-    FootpathLayoutPlaceAction() = default;
-    FootpathLayoutPlaceAction(
-        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
-        PathConstructFlags constructFlags = 0);
+    public:
+        FootpathLayoutPlaceAction() = default;
+        FootpathLayoutPlaceAction(
+            const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
+            PathConstructFlags constructFlags = 0);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    GameActions::Result ElementInsertQuery(GameActions::Result res) const;
-    GameActions::Result ElementInsertExecute(GameActions::Result res) const;
-    bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
-};
+    private:
+        GameActions::Result ElementInsertQuery(GameActions::Result res) const;
+        GameActions::Result ElementInsertExecute(GameActions::Result res) const;
+        bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
+    };
+} // namespace OpenRCT2

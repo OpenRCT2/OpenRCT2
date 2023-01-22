@@ -10,84 +10,85 @@
 #pragma once
 
 #include "../common.h"
-
-/**
- * Class for enumerating and retrieving values for a set of command line arguments.
- */
-class CommandLineArgEnumerator final
+namespace OpenRCT2
 {
-private:
-    const char* const* _arguments;
-    uint16_t _count;
-    uint16_t _index;
-
-public:
-    const char* const* GetArguments() const
+    /**
+     * Class for enumerating and retrieving values for a set of command line arguments.
+     */
+    class CommandLineArgEnumerator final
     {
-        return _arguments;
-    }
-    uint16_t GetCount() const
+    private:
+        const char* const* _arguments;
+        uint16_t _count;
+        uint16_t _index;
+
+    public:
+        const char* const* GetArguments() const
+        {
+            return _arguments;
+        }
+        uint16_t GetCount() const
+        {
+            return _count;
+        }
+        uint16_t GetIndex() const
+        {
+            return _index;
+        }
+
+        CommandLineArgEnumerator(const char* const* arguments, int32_t count);
+
+        void Reset();
+        bool Backtrack();
+        bool TryPop();
+        bool TryPopInteger(int32_t* result);
+        bool TryPopReal(float* result);
+        bool TryPopString(const char** result);
+    };
+
+    using exitcode_t = int32_t;
+    using CommandLineFunc = exitcode_t (*)(CommandLineArgEnumerator*);
+
+    enum
     {
-        return _count;
-    }
-    uint16_t GetIndex() const
+        EXITCODE_FAIL = -1,
+        EXITCODE_OK = 0,
+        EXITCODE_CONTINUE = 1,
+    };
+
+    struct CommandLineExample
     {
-        return _index;
-    }
+        const char* Arguments;
+        const char* Description;
+    };
 
-    CommandLineArgEnumerator(const char* const* arguments, int32_t count);
+    struct CommandLineOptionDefinition
+    {
+        uint8_t Type;
+        void* OutAddress;
+        char ShortName;
+        const char* LongName;
+        const char* Description;
+    };
 
-    void Reset();
-    bool Backtrack();
-    bool TryPop();
-    bool TryPopInteger(int32_t* result);
-    bool TryPopReal(float* result);
-    bool TryPopString(const char** result);
-};
+    struct CommandLineCommand
+    {
+        const char* Name;
+        const char* Parameters;
+        const CommandLineOptionDefinition* Options;
+        const CommandLineCommand* SubCommands;
+        CommandLineFunc Func;
+    };
 
-using exitcode_t = int32_t;
-using CommandLineFunc = exitcode_t (*)(CommandLineArgEnumerator*);
+    enum
+    {
+        CMDLINE_TYPE_SWITCH,
+        CMDLINE_TYPE_INTEGER,
+        CMDLINE_TYPE_REAL,
+        CMDLINE_TYPE_STRING,
+    };
 
-enum
-{
-    EXITCODE_FAIL = -1,
-    EXITCODE_OK = 0,
-    EXITCODE_CONTINUE = 1,
-};
-
-struct CommandLineExample
-{
-    const char* Arguments;
-    const char* Description;
-};
-
-struct CommandLineOptionDefinition
-{
-    uint8_t Type;
-    void* OutAddress;
-    char ShortName;
-    const char* LongName;
-    const char* Description;
-};
-
-struct CommandLineCommand
-{
-    const char* Name;
-    const char* Parameters;
-    const CommandLineOptionDefinition* Options;
-    const CommandLineCommand* SubCommands;
-    CommandLineFunc Func;
-};
-
-enum
-{
-    CMDLINE_TYPE_SWITCH,
-    CMDLINE_TYPE_INTEGER,
-    CMDLINE_TYPE_REAL,
-    CMDLINE_TYPE_STRING,
-};
-
-constexpr char NAC = '\0';
+    constexpr char NAC = '\0';
 
 #define ExampleTableEnd                                                                                                        \
     {                                                                                                                          \
@@ -111,22 +112,23 @@ constexpr char NAC = '\0';
         name, "", nullptr, subcommandtable, nullptr                                                                            \
     }
 
-namespace CommandLine
-{
-    extern const CommandLineCommand RootCommands[];
-    extern const CommandLineCommand ScreenshotCommands[];
-    extern const CommandLineCommand SpriteCommands[];
-    extern const CommandLineCommand BenchGfxCommands[];
-    extern const CommandLineCommand BenchSpriteSortCommands[];
-    extern const CommandLineCommand BenchUpdateCommands[];
-    extern const CommandLineCommand SimulateCommands[];
-    extern const CommandLineCommand ParkInfoCommands[];
+    namespace CommandLine
+    {
+        extern const CommandLineCommand RootCommands[];
+        extern const CommandLineCommand ScreenshotCommands[];
+        extern const CommandLineCommand SpriteCommands[];
+        extern const CommandLineCommand BenchGfxCommands[];
+        extern const CommandLineCommand BenchSpriteSortCommands[];
+        extern const CommandLineCommand BenchUpdateCommands[];
+        extern const CommandLineCommand SimulateCommands[];
+        extern const CommandLineCommand ParkInfoCommands[];
 
-    extern const CommandLineExample RootExamples[];
+        extern const CommandLineExample RootExamples[];
 
-    void PrintHelp(bool allCommands = false);
-    exitcode_t HandleCommandDefault();
+        void PrintHelp(bool allCommands = false);
+        exitcode_t HandleCommandDefault();
 
-    exitcode_t HandleCommandConvert(CommandLineArgEnumerator* enumerator);
-    exitcode_t HandleCommandUri(CommandLineArgEnumerator* enumerator);
-} // namespace CommandLine
+        exitcode_t HandleCommandConvert(CommandLineArgEnumerator* enumerator);
+        exitcode_t HandleCommandUri(CommandLineArgEnumerator* enumerator);
+    } // namespace CommandLine
+} // namespace OpenRCT2

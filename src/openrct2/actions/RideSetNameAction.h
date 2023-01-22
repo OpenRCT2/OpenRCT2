@@ -10,22 +10,24 @@
 #pragma once
 
 #include "GameAction.h"
-
-class RideSetNameAction final : public GameActionBase<GameCommand::SetRideName>
+namespace OpenRCT2
 {
-private:
-    RideId _rideIndex{ RideId::GetNull() };
-    std::string _name;
+    class RideSetNameAction final : public GameActionBase<GameCommand::SetRideName>
+    {
+    private:
+        RideId _rideIndex{ RideId::GetNull() };
+        std::string _name;
 
-public:
-    RideSetNameAction() = default;
-    RideSetNameAction(RideId rideIndex, const std::string& name);
+    public:
+        RideSetNameAction() = default;
+        RideSetNameAction(RideId rideIndex, const std::string& name);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

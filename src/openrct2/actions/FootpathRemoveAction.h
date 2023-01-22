@@ -11,26 +11,28 @@
 
 #include "../management/Finance.h"
 #include "GameAction.h"
-
-class FootpathRemoveAction final : public GameActionBase<GameCommand::RemovePath>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZ _loc;
+    class FootpathRemoveAction final : public GameActionBase<GameCommand::RemovePath>
+    {
+    private:
+        CoordsXYZ _loc;
 
-public:
-    FootpathRemoveAction() = default;
-    FootpathRemoveAction(const CoordsXYZ& location);
+    public:
+        FootpathRemoveAction() = default;
+        FootpathRemoveAction(const CoordsXYZ& location);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    TileElement* GetFootpathElement() const;
-    money32 GetRefundPrice(TileElement* footpathElement) const;
-    GameActions::Result RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
-};
+    private:
+        TileElement* GetFootpathElement() const;
+        money32 GetRefundPrice(TileElement* footpathElement) const;
+        GameActions::Result RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
+    };
+} // namespace OpenRCT2

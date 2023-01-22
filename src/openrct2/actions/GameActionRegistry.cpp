@@ -93,7 +93,7 @@
 
 #include <array>
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     struct GameActionEntry
     {
@@ -251,4 +251,4 @@ namespace GameActions
         return false;
     }
 
-} // namespace GameActions
+} // namespace OpenRCT2::GameActions

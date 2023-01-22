@@ -10,41 +10,43 @@
 #pragma once
 
 #include "GameAction.h"
-
-class LandSetHeightAction final : public GameActionBase<GameCommand::SetLandHeight>
+namespace OpenRCT2
 {
-private:
-    CoordsXY _coords;
-    uint8_t _height{};
-    uint8_t _style{};
+    class LandSetHeightAction final : public GameActionBase<GameCommand::SetLandHeight>
+    {
+    private:
+        CoordsXY _coords;
+        uint8_t _height{};
+        uint8_t _style{};
 
-public:
-    LandSetHeightAction() = default;
-    LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style);
+    public:
+        LandSetHeightAction() = default;
+        LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    StringId CheckParameters() const;
-    TileElement* CheckTreeObstructions() const;
-    money32 GetSmallSceneryRemovalCost() const;
-    void SmallSceneryRemoval() const;
-    StringId CheckRideSupports() const;
-    TileElement* CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const;
-    money32 GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const;
-    void SetSurfaceHeight(TileElement* surfaceElement) const;
+    private:
+        StringId CheckParameters() const;
+        TileElement* CheckTreeObstructions() const;
+        money32 GetSmallSceneryRemovalCost() const;
+        void SmallSceneryRemoval() const;
+        StringId CheckRideSupports() const;
+        TileElement* CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const;
+        money32 GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const;
+        void SetSurfaceHeight(TileElement* surfaceElement) const;
 
-    /**
-     *
-     *  rct2: 0x00663CB9
-     */
-    static int32_t MapSetLandHeightClearFunc(
-        TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
-        [[maybe_unused]] money32* price);
-};
+        /**
+         *
+         *  rct2: 0x00663CB9
+         */
+        static int32_t MapSetLandHeightClearFunc(
+            TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
+            [[maybe_unused]] money32* price);
+    };
+} // namespace OpenRCT2

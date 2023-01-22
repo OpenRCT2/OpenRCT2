@@ -10,24 +10,26 @@
 #pragma once
 
 #include "GameAction.h"
-
-class WallSetColourAction final : public GameActionBase<GameCommand::SetWallColour>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZD _loc;
-    int32_t _primaryColour{};
-    int32_t _secondaryColour{};
-    int32_t _tertiaryColour{};
+    class WallSetColourAction final : public GameActionBase<GameCommand::SetWallColour>
+    {
+    private:
+        CoordsXYZD _loc;
+        int32_t _primaryColour{};
+        int32_t _secondaryColour{};
+        int32_t _tertiaryColour{};
 
-public:
-    WallSetColourAction() = default;
-    WallSetColourAction(const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour);
+    public:
+        WallSetColourAction() = default;
+        WallSetColourAction(const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

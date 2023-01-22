@@ -10,25 +10,27 @@
 #pragma once
 
 #include "GameAction.h"
-
-class ParkEntrancePlaceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZD _loc;
-    ObjectEntryIndex _pathType;
+    class ParkEntrancePlaceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
+    {
+    private:
+        CoordsXYZD _loc;
+        ObjectEntryIndex _pathType;
 
-public:
-    ParkEntrancePlaceAction() = default;
-    ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
+    public:
+        ParkEntrancePlaceAction() = default;
+        ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    bool CheckMapCapacity(int16_t numTiles) const;
-};
+    private:
+        bool CheckMapCapacity(int16_t numTiles) const;
+    };
+} // namespace OpenRCT2

@@ -12,57 +12,59 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
-
-StaffFireAction::StaffFireAction(EntityId spriteId)
-    : _spriteId(spriteId)
+namespace OpenRCT2
 {
-}
-
-void StaffFireAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("id", _spriteId);
-}
-
-uint16_t StaffFireAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void StaffFireAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_spriteId);
-}
-
-GameActions::Result StaffFireAction::Query() const
-{
-    if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
+    StaffFireAction::StaffFireAction(EntityId spriteId)
+        : _spriteId(spriteId)
     {
-        LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto staff = TryGetEntity<Staff>(_spriteId);
-    if (staff == nullptr)
+    void StaffFireAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        visitor.Visit("id", _spriteId);
     }
 
-    return GameActions::Result();
-}
-
-GameActions::Result StaffFireAction::Execute() const
-{
-    auto staff = TryGetEntity<Staff>(_spriteId);
-    if (staff == nullptr)
+    uint16_t StaffFireAction::GetActionFlags() const
     {
-        LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
-    WindowCloseByClass(WindowClass::FirePrompt);
-    PeepEntityRemove(staff);
-    // Due to patrol areas best to invalidate the whole screen on removal of staff
-    GfxInvalidateScreen();
-    return GameActions::Result();
-}
+
+    void StaffFireAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_spriteId);
+    }
+
+    GameActions::Result StaffFireAction::Query() const
+    {
+        if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
+        {
+            LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        auto staff = TryGetEntity<Staff>(_spriteId);
+        if (staff == nullptr)
+        {
+            LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        return GameActions::Result();
+    }
+
+    GameActions::Result StaffFireAction::Execute() const
+    {
+        auto staff = TryGetEntity<Staff>(_spriteId);
+        if (staff == nullptr)
+        {
+            LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+        WindowCloseByClass(WindowClass::FirePrompt);
+        PeepEntityRemove(staff);
+        // Due to patrol areas best to invalidate the whole screen on removal of staff
+        GfxInvalidateScreen();
+        return GameActions::Result();
+    }
+} // namespace OpenRCT2

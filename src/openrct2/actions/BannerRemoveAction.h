@@ -10,24 +10,26 @@
 #pragma once
 
 #include "GameAction.h"
-
-class BannerRemoveAction final : public GameActionBase<GameCommand::RemoveBanner>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZD _loc;
+    class BannerRemoveAction final : public GameActionBase<GameCommand::RemoveBanner>
+    {
+    private:
+        CoordsXYZD _loc;
 
-public:
-    BannerRemoveAction() = default;
-    BannerRemoveAction(const CoordsXYZD& loc);
+    public:
+        BannerRemoveAction() = default;
+        BannerRemoveAction(const CoordsXYZD& loc);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    BannerElement* GetBannerElementAt() const;
-};
+    private:
+        BannerElement* GetBannerElementAt() const;
+    };
+} // namespace OpenRCT2

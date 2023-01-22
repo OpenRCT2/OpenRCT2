@@ -16,56 +16,59 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
-
-ParkSetLoanAction::ParkSetLoanAction(money64 value)
-    : _value(value)
+namespace OpenRCT2
 {
-}
-
-void ParkSetLoanAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("value", _value);
-}
-
-uint16_t ParkSetLoanAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void ParkSetLoanAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_value);
-}
-
-GameActions::Result ParkSetLoanAction::Query() const
-{
-    auto currentLoan = gBankLoan;
-    auto loanDifference = currentLoan - _value;
-    if (_value > currentLoan && _value > gMaxBankLoan)
+    ParkSetLoanAction::ParkSetLoanAction(money64 value)
+        : _value(value)
     {
-        return GameActions::Result(
-            GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
     }
-    // FIXME: use money64 literal once it is implemented
-    if (_value < currentLoan && _value < 0)
-    {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_PAY_BACK_LOAN, STR_LOAN_CANT_BE_NEGATIVE);
-    }
-    if (loanDifference > gCash)
-    {
-        return GameActions::Result(
-            GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
-    }
-    return GameActions::Result();
-}
 
-GameActions::Result ParkSetLoanAction::Execute() const
-{
-    gCash -= (gBankLoan - _value);
-    gBankLoan = _value;
+    void ParkSetLoanAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("value", _value);
+    }
 
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
-    windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
-    return GameActions::Result();
-}
+    uint16_t ParkSetLoanAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
+
+    void ParkSetLoanAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_value);
+    }
+
+    GameActions::Result ParkSetLoanAction::Query() const
+    {
+        auto currentLoan = gBankLoan;
+        auto loanDifference = currentLoan - _value;
+        if (_value > currentLoan && _value > gMaxBankLoan)
+        {
+            return GameActions::Result(
+                GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
+        }
+        // FIXME: use money64 literal once it is implemented
+        if (_value < currentLoan && _value < 0)
+        {
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_PAY_BACK_LOAN, STR_LOAN_CANT_BE_NEGATIVE);
+        }
+        if (loanDifference > gCash)
+        {
+            return GameActions::Result(
+                GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
+        }
+        return GameActions::Result();
+    }
+
+    GameActions::Result ParkSetLoanAction::Execute() const
+    {
+        gCash -= (gBankLoan - _value);
+        gBankLoan = _value;
+
+        auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
+        return GameActions::Result();
+    }
+} // namespace OpenRCT2

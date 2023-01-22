@@ -9,20 +9,22 @@
 #pragma once
 
 #include "GameAction.h"
-
-class MazePlaceTrackAction final : public GameActionBase<GameCommand::PlaceMazeDesign>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZ _loc;
-    RideId _rideIndex{ RideId::GetNull() };
-    uint16_t _mazeEntry{};
+    class MazePlaceTrackAction final : public GameActionBase<GameCommand::PlaceMazeDesign>
+    {
+    private:
+        CoordsXYZ _loc;
+        RideId _rideIndex{ RideId::GetNull() };
+        uint16_t _mazeEntry{};
 
-public:
-    MazePlaceTrackAction() = default;
-    MazePlaceTrackAction(const CoordsXYZ& location, RideId rideIndex, uint16_t mazeEntry);
+    public:
+        MazePlaceTrackAction() = default;
+        MazePlaceTrackAction(const CoordsXYZ& location, RideId rideIndex, uint16_t mazeEntry);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

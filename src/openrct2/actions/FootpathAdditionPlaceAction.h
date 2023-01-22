@@ -10,22 +10,24 @@
 #pragma once
 
 #include "GameAction.h"
-
-class FootpathAdditionPlaceAction final : public GameActionBase<GameCommand::PlaceFootpathAddition>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZ _loc;
-    ObjectEntryIndex _pathItemType{};
+    class FootpathAdditionPlaceAction final : public GameActionBase<GameCommand::PlaceFootpathAddition>
+    {
+    private:
+        CoordsXYZ _loc;
+        ObjectEntryIndex _pathItemType{};
 
-public:
-    FootpathAdditionPlaceAction() = default;
-    FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType);
+    public:
+        FootpathAdditionPlaceAction() = default;
+        FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

@@ -10,22 +10,24 @@
 #pragma once
 
 #include "GameAction.h"
-
-class StaffSetColourAction final : public GameActionBase<GameCommand::SetStaffColour>
+namespace OpenRCT2
 {
-private:
-    uint8_t _staffType{};
-    uint8_t _colour{};
+    class StaffSetColourAction final : public GameActionBase<GameCommand::SetStaffColour>
+    {
+    private:
+        uint8_t _staffType{};
+        uint8_t _colour{};
 
-public:
-    StaffSetColourAction() = default;
-    StaffSetColourAction(StaffType staffType, uint8_t colour);
+    public:
+        StaffSetColourAction() = default;
+        StaffSetColourAction(StaffType staffType, uint8_t colour);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

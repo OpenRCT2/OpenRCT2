@@ -10,58 +10,60 @@
 #pragma once
 
 #include "GameAction.h"
-
-enum class TileModifyType : uint8_t
+namespace OpenRCT2
 {
-    AnyRemove,
-    AnySwap,
-    AnyToggleInvisilibity,
-    AnyRotate,
-    AnyPaste,
-    AnySort,
-    AnyBaseHeightOffset,
-    SurfaceShowParkFences,
-    SurfaceToggleCorner,
-    SurfaceToggleDiagonal,
-    PathSetSlope,
-    PathSetBroken,
-    PathToggleEdge,
-    EntranceMakeUsable,
-    WallSetSlope,
-    WallSetAnimationFrame,
-    TrackBaseHeightOffset,
-    TrackSetChain,
-    TrackSetChainBlock,
-    TrackSetBrake,
-    TrackSetIndestructible,
-    ScenerySetQuarterLocation,
-    ScenerySetQuarterCollision,
-    BannerToggleBlockingEdge,
-    Count,
-};
+    enum class TileModifyType : uint8_t
+    {
+        AnyRemove,
+        AnySwap,
+        AnyToggleInvisilibity,
+        AnyRotate,
+        AnyPaste,
+        AnySort,
+        AnyBaseHeightOffset,
+        SurfaceShowParkFences,
+        SurfaceToggleCorner,
+        SurfaceToggleDiagonal,
+        PathSetSlope,
+        PathSetBroken,
+        PathToggleEdge,
+        EntranceMakeUsable,
+        WallSetSlope,
+        WallSetAnimationFrame,
+        TrackBaseHeightOffset,
+        TrackSetChain,
+        TrackSetChainBlock,
+        TrackSetBrake,
+        TrackSetIndestructible,
+        ScenerySetQuarterLocation,
+        ScenerySetQuarterCollision,
+        BannerToggleBlockingEdge,
+        Count,
+    };
 
-class TileModifyAction final : public GameActionBase<GameCommand::ModifyTile>
-{
-private:
-    CoordsXY _loc;
-    TileModifyType _setting{};
-    uint32_t _value1{};
-    uint32_t _value2{};
-    TileElement _pasteElement{};
+    class TileModifyAction final : public GameActionBase<GameCommand::ModifyTile>
+    {
+    private:
+        CoordsXY _loc;
+        TileModifyType _setting{};
+        uint32_t _value1{};
+        uint32_t _value2{};
+        TileElement _pasteElement{};
 
-public:
-    TileModifyAction() = default;
-    TileModifyAction(
-        CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {});
+    public:
+        TileModifyAction() = default;
+        TileModifyAction(
+            CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {});
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    GameActions::Result QueryExecute(bool isExecuting) const;
-};
+    private:
+        GameActions::Result QueryExecute(bool isExecuting) const;
+    };
+} // namespace OpenRCT2

@@ -10,31 +10,33 @@
 #pragma once
 
 #include "GameAction.h"
-
-enum class StaffSetPatrolAreaMode : uint8_t
+namespace OpenRCT2
 {
-    Set,
-    Unset,
-    ClearAll
-};
+    enum class StaffSetPatrolAreaMode : uint8_t
+    {
+        Set,
+        Unset,
+        ClearAll
+    };
 
-class StaffSetPatrolAreaAction final : public GameActionBase<GameCommand::SetStaffPatrol>
-{
-private:
-    EntityId _spriteId{ EntityId::GetNull() };
-    MapRange _range;
-    StaffSetPatrolAreaMode _mode;
+    class StaffSetPatrolAreaAction final : public GameActionBase<GameCommand::SetStaffPatrol>
+    {
+    private:
+        EntityId _spriteId{ EntityId::GetNull() };
+        MapRange _range;
+        StaffSetPatrolAreaMode _mode;
 
-    GameActions::Result QueryExecute(bool executing) const;
+        GameActions::Result QueryExecute(bool executing) const;
 
-public:
-    StaffSetPatrolAreaAction() = default;
-    StaffSetPatrolAreaAction(EntityId spriteId, const MapRange& range, const StaffSetPatrolAreaMode mode);
+    public:
+        StaffSetPatrolAreaAction() = default;
+        StaffSetPatrolAreaAction(EntityId spriteId, const MapRange& range, const StaffSetPatrolAreaMode mode);
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

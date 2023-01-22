@@ -10,28 +10,30 @@
 #pragma once
 
 #include "GameAction.h"
-
-class RideCreateAction final : public GameActionBase<GameCommand::CreateRide>
+namespace OpenRCT2
 {
-private:
-    ObjectEntryIndex _rideType{ OBJECT_ENTRY_INDEX_NULL };
-    ObjectEntryIndex _subType{ OBJECT_ENTRY_INDEX_NULL };
-    ObjectEntryIndex _entranceObjectIndex{ OBJECT_ENTRY_INDEX_NULL };
-    uint8_t _colour1{ 0xFF };
-    uint8_t _colour2{ 0xFF };
+    class RideCreateAction final : public GameActionBase<GameCommand::CreateRide>
+    {
+    private:
+        ObjectEntryIndex _rideType{ OBJECT_ENTRY_INDEX_NULL };
+        ObjectEntryIndex _subType{ OBJECT_ENTRY_INDEX_NULL };
+        ObjectEntryIndex _entranceObjectIndex{ OBJECT_ENTRY_INDEX_NULL };
+        uint8_t _colour1{ 0xFF };
+        uint8_t _colour2{ 0xFF };
 
-public:
-    RideCreateAction() = default;
-    RideCreateAction(
-        int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2, ObjectEntryIndex entranceStyleIndex);
+    public:
+        RideCreateAction() = default;
+        RideCreateAction(
+            int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2, ObjectEntryIndex entranceStyleIndex);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    int32_t GetRideType() const;
-    int32_t GetRideObject() const;
-    uint16_t GetActionFlags() const override;
+        int32_t GetRideType() const;
+        int32_t GetRideObject() const;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

@@ -10,66 +10,68 @@
 #include "TrackSetBrakeSpeedAction.h"
 
 #include "../management/Finance.h"
-
-TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)
-    : _loc(loc)
-    , _trackType(trackType)
-    , _brakeSpeed(brakeSpeed)
+namespace OpenRCT2
 {
-}
-
-void TrackSetBrakeSpeedAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit(_loc);
-    visitor.Visit("trackType", _trackType);
-    visitor.Visit("brakeSpeed", _brakeSpeed);
-}
-
-uint16_t TrackSetBrakeSpeedAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void TrackSetBrakeSpeedAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_brakeSpeed);
-}
-
-GameActions::Result TrackSetBrakeSpeedAction::Query() const
-{
-    return QueryExecute(false);
-}
-
-GameActions::Result TrackSetBrakeSpeedAction::Execute() const
-{
-    return QueryExecute(true);
-}
-
-GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) const
-{
-    auto res = GameActions::Result();
-
-    res.Position = _loc;
-    res.Position.x += 16;
-    res.Position.y += 16;
-    res.Expenditure = ExpenditureType::RideConstruction;
-
-    if (!LocationValid(_loc))
+    TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)
+        : _loc(loc)
+        , _trackType(trackType)
+        , _brakeSpeed(brakeSpeed)
     {
-        return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_NONE);
     }
 
-    TileElement* tileElement = MapGetTrackElementAtOfType(_loc, _trackType);
-    if (tileElement == nullptr)
+    void TrackSetBrakeSpeedAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_WARNING("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        visitor.Visit(_loc);
+        visitor.Visit("trackType", _trackType);
+        visitor.Visit("brakeSpeed", _brakeSpeed);
     }
 
-    if (isExecuting)
+    uint16_t TrackSetBrakeSpeedAction::GetActionFlags() const
     {
-        tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
-    return res;
-}
+
+    void TrackSetBrakeSpeedAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_brakeSpeed);
+    }
+
+    GameActions::Result TrackSetBrakeSpeedAction::Query() const
+    {
+        return QueryExecute(false);
+    }
+
+    GameActions::Result TrackSetBrakeSpeedAction::Execute() const
+    {
+        return QueryExecute(true);
+    }
+
+    GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) const
+    {
+        auto res = GameActions::Result();
+
+        res.Position = _loc;
+        res.Position.x += 16;
+        res.Position.y += 16;
+        res.Expenditure = ExpenditureType::RideConstruction;
+
+        if (!LocationValid(_loc))
+        {
+            return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_NONE);
+        }
+
+        TileElement* tileElement = MapGetTrackElementAtOfType(_loc, _trackType);
+        if (tileElement == nullptr)
+        {
+            LOG_WARNING("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        if (isExecuting)
+        {
+            tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
+        }
+        return res;
+    }
+} // namespace OpenRCT2

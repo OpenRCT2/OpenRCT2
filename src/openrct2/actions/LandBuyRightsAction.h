@@ -10,39 +10,41 @@
 #pragma once
 
 #include "GameAction.h"
-
-enum class LandBuyRightSetting : uint8_t
+namespace OpenRCT2
 {
-    BuyLand,
-    BuyConstructionRights,
-    Count
-};
-
-class LandBuyRightsAction final : public GameActionBase<GameCommand::BuyLandRights>
-{
-private:
-    MapRange _range;
-    LandBuyRightSetting _setting{ LandBuyRightSetting::Count };
-
-    constexpr static StringId _ErrorTitles[] = {
-        STR_CANT_BUY_LAND,
-        STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE,
+    enum class LandBuyRightSetting : uint8_t
+    {
+        BuyLand,
+        BuyConstructionRights,
+        Count
     };
 
-public:
-    LandBuyRightsAction() = default;
-    LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting);
-    LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting);
+    class LandBuyRightsAction final : public GameActionBase<GameCommand::BuyLandRights>
+    {
+    private:
+        MapRange _range;
+        LandBuyRightSetting _setting{ LandBuyRightSetting::Count };
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        constexpr static StringId _ErrorTitles[] = {
+            STR_CANT_BUY_LAND,
+            STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE,
+        };
 
-    uint16_t GetActionFlags() const override;
+    public:
+        LandBuyRightsAction() = default;
+        LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting);
+        LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting);
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-private:
-    GameActions::Result QueryExecute(bool isExecuting) const;
-    GameActions::Result MapBuyLandRightsForTile(const CoordsXY& loc, bool isExecuting) const;
-};
+        uint16_t GetActionFlags() const override;
+
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+
+    private:
+        GameActions::Result QueryExecute(bool isExecuting) const;
+        GameActions::Result MapBuyLandRightsForTile(const CoordsXY& loc, bool isExecuting) const;
+    };
+} // namespace OpenRCT2

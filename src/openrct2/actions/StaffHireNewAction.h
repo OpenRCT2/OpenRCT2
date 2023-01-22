@@ -11,33 +11,35 @@
 
 #include "../entity/Staff.h"
 #include "GameAction.h"
-
-struct StaffHireNewActionResult
+namespace OpenRCT2
 {
-    EntityId StaffEntityId = EntityId::GetNull();
-};
+    struct StaffHireNewActionResult
+    {
+        EntityId StaffEntityId = EntityId::GetNull();
+    };
 
-class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaffMember>
-{
-private:
-    bool _autoPosition{};
-    uint8_t _staffType{ EnumValue(StaffType::Count) };
-    EntertainerCostume _entertainerType{ EntertainerCostume::Count };
-    uint32_t _staffOrders{};
+    class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaffMember>
+    {
+    private:
+        bool _autoPosition{};
+        uint8_t _staffType{ EnumValue(StaffType::Count) };
+        EntertainerCostume _entertainerType{ EntertainerCostume::Count };
+        uint32_t _staffOrders{};
 
-public:
-    StaffHireNewAction() = default;
-    StaffHireNewAction(bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders);
+    public:
+        StaffHireNewAction() = default;
+        StaffHireNewAction(bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    GameActions::Result QueryExecute(bool execute) const;
-    void AutoPositionNewStaff(Peep* newPeep) const;
-};
+    private:
+        GameActions::Result QueryExecute(bool execute) const;
+        void AutoPositionNewStaff(Peep* newPeep) const;
+    };
+} // namespace OpenRCT2

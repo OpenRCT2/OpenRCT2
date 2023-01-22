@@ -10,23 +10,25 @@
 #pragma once
 
 #include "GameAction.h"
-
-class TrackRemoveAction final : public GameActionBase<GameCommand::RemoveTrack>
+namespace OpenRCT2
 {
-private:
-    track_type_t _trackType{};
-    int32_t _sequence{};
-    CoordsXYZD _origin;
+    class TrackRemoveAction final : public GameActionBase<GameCommand::RemoveTrack>
+    {
+    private:
+        track_type_t _trackType{};
+        int32_t _sequence{};
+        CoordsXYZD _origin;
 
-public:
-    TrackRemoveAction() = default;
-    TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin);
+    public:
+        TrackRemoveAction() = default;
+        TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override final;
+        uint16_t GetActionFlags() const override final;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

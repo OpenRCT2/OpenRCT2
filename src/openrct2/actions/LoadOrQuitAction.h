@@ -10,28 +10,30 @@
 #pragma once
 
 #include "GameAction.h"
-
-enum class LoadOrQuitModes : uint8_t
+namespace OpenRCT2
 {
-    OpenSavePrompt,
-    CloseSavePrompt
-};
+    enum class LoadOrQuitModes : uint8_t
+    {
+        OpenSavePrompt,
+        CloseSavePrompt
+    };
 
-class LoadOrQuitAction final : public GameActionBase<GameCommand::LoadOrQuit>
-{
-private:
-    LoadOrQuitModes _mode{};
-    PromptMode _savePromptMode{ PromptMode::SaveBeforeLoad };
+    class LoadOrQuitAction final : public GameActionBase<GameCommand::LoadOrQuit>
+    {
+    private:
+        LoadOrQuitModes _mode{};
+        PromptMode _savePromptMode{ PromptMode::SaveBeforeLoad };
 
-public:
-    LoadOrQuitAction() = default;
-    LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::SaveBeforeLoad);
+    public:
+        LoadOrQuitAction() = default;
+        LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::SaveBeforeLoad);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

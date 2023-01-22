@@ -11,23 +11,25 @@
 
 #include "../ride/TrackDesign.h"
 #include "GameAction.h"
-
-class TrackDesignAction final : public GameActionBase<GameCommand::PlaceTrackDesign>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZD _loc;
-    TrackDesign _td;
+    class TrackDesignAction final : public GameActionBase<GameCommand::PlaceTrackDesign>
+    {
+    private:
+        CoordsXYZD _loc;
+        TrackDesign _td;
 
-public:
-    TrackDesignAction() = default;
-    TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td);
+    public:
+        TrackDesignAction() = default;
+        TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
+        void Serialise(DataSerialiser& stream) override;
 
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

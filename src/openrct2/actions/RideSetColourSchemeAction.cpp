@@ -19,67 +19,69 @@
 #include "../ride/Ride.h"
 #include "../ride/RideConstruction.h"
 #include "../world/Park.h"
-
-RideSetColourSchemeAction::RideSetColourSchemeAction(
-    const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme)
-    : _loc(location)
-    , _trackType(trackType)
-    , _newColourScheme(newColourScheme)
+namespace OpenRCT2
 {
-}
-
-void RideSetColourSchemeAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit(_loc);
-    visitor.Visit("trackType", _trackType);
-    visitor.Visit("colourScheme", _newColourScheme);
-}
-
-uint16_t RideSetColourSchemeAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void RideSetColourSchemeAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_newColourScheme);
-}
-
-GameActions::Result RideSetColourSchemeAction::Query() const
-{
-    if (!LocationValid(_loc))
+    RideSetColourSchemeAction::RideSetColourSchemeAction(
+        const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme)
+        : _loc(location)
+        , _trackType(trackType)
+        , _newColourScheme(newColourScheme)
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
     }
-    // Find the relevant track piece, prefer sequence 0 (logic copied from GetTrackElementOriginAndApplyChanges)
-    auto trackElement = MapGetTrackElementAtOfTypeSeq(_loc, _trackType, 0);
-    if (trackElement == nullptr)
+
+    void RideSetColourSchemeAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        trackElement = MapGetTrackElementAtOfType(_loc, _trackType);
-        if (trackElement == nullptr)
+        visitor.Visit(_loc);
+        visitor.Visit("trackType", _trackType);
+        visitor.Visit("colourScheme", _newColourScheme);
+    }
+
+    uint16_t RideSetColourSchemeAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
+
+    void RideSetColourSchemeAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_newColourScheme);
+    }
+
+    GameActions::Result RideSetColourSchemeAction::Query() const
+    {
+        if (!LocationValid(_loc))
         {
             return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_TRACK_PARAMETERS);
+                GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
         }
+        // Find the relevant track piece, prefer sequence 0 (logic copied from GetTrackElementOriginAndApplyChanges)
+        auto trackElement = MapGetTrackElementAtOfTypeSeq(_loc, _trackType, 0);
+        if (trackElement == nullptr)
+        {
+            trackElement = MapGetTrackElementAtOfType(_loc, _trackType);
+            if (trackElement == nullptr)
+            {
+                return GameActions::Result(
+                    GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_TRACK_PARAMETERS);
+            }
+        }
+        if (_newColourScheme >= OpenRCT2::Limits::NumColourSchemes)
+        {
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_COLOUR_SCHEME_PARAMETER);
+        }
+        return GameActions::Result();
     }
-    if (_newColourScheme >= OpenRCT2::Limits::NumColourSchemes)
+
+    GameActions::Result RideSetColourSchemeAction::Execute() const
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_INVALID_COLOUR_SCHEME_PARAMETER);
+        GameActions::Result res = GameActions::Result();
+        res.Expenditure = ExpenditureType::RideConstruction;
+        res.ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
+
+        GetTrackElementOriginAndApplyChanges(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
+
+        return res;
     }
-    return GameActions::Result();
-}
-
-GameActions::Result RideSetColourSchemeAction::Execute() const
-{
-    GameActions::Result res = GameActions::Result();
-    res.Expenditure = ExpenditureType::RideConstruction;
-    res.ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
-
-    GetTrackElementOriginAndApplyChanges(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
-
-    return res;
-}
+} // namespace OpenRCT2

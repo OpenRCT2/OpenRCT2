@@ -18,58 +18,60 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
-
-StaffSetColourAction::StaffSetColourAction(StaffType staffType, uint8_t colour)
-    : _staffType(static_cast<uint8_t>(staffType))
-    , _colour(colour)
+namespace OpenRCT2
 {
-}
-
-void StaffSetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("staffType", _staffType);
-    visitor.Visit("colour", _colour);
-}
-
-uint16_t StaffSetColourAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void StaffSetColourAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_staffType) << DS_TAG(_colour);
-}
-
-GameActions::Result StaffSetColourAction::Query() const
-{
-    auto staffType = static_cast<StaffType>(_staffType);
-    if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
+    StaffSetColourAction::StaffSetColourAction(StaffType staffType, uint8_t colour)
+        : _staffType(static_cast<uint8_t>(staffType))
+        , _colour(colour)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
-    }
-    return GameActions::Result();
-}
-
-GameActions::Result StaffSetColourAction::Execute() const
-{
-    // Update global uniform colour property
-    if (!StaffSetColour(static_cast<StaffType>(_staffType), _colour))
-    {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    // Update each staff member's uniform
-    for (auto peep : EntityList<Staff>())
+    void StaffSetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        if (peep->AssignedStaffType == static_cast<StaffType>(_staffType))
+        visitor.Visit("staffType", _staffType);
+        visitor.Visit("colour", _colour);
+    }
+
+    uint16_t StaffSetColourAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
+
+    void StaffSetColourAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_staffType) << DS_TAG(_colour);
+    }
+
+    GameActions::Result StaffSetColourAction::Query() const
+    {
+        auto staffType = static_cast<StaffType>(_staffType);
+        if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
         {
-            peep->TshirtColour = _colour;
-            peep->TrousersColour = _colour;
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
         }
+        return GameActions::Result();
     }
 
-    GfxInvalidateScreen();
-    return GameActions::Result();
-}
+    GameActions::Result StaffSetColourAction::Execute() const
+    {
+        // Update global uniform colour property
+        if (!StaffSetColour(static_cast<StaffType>(_staffType), _colour))
+        {
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        // Update each staff member's uniform
+        for (auto peep : EntityList<Staff>())
+        {
+            if (peep->AssignedStaffType == static_cast<StaffType>(_staffType))
+            {
+                peep->TshirtColour = _colour;
+                peep->TrousersColour = _colour;
+            }
+        }
+
+        GfxInvalidateScreen();
+        return GameActions::Result();
+    }
+} // namespace OpenRCT2

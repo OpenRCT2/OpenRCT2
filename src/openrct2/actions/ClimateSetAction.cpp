@@ -8,44 +8,46 @@
  *****************************************************************************/
 
 #include "ClimateSetAction.h"
-
-ClimateSetAction::ClimateSetAction(ClimateType climate)
-    : _climate(climate)
+namespace OpenRCT2
 {
-}
-
-void ClimateSetAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("climate", _climate);
-}
-
-uint16_t ClimateSetAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags();
-}
-
-void ClimateSetAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_climate);
-}
-
-GameActions::Result ClimateSetAction::Query() const
-{
-    if (_climate >= ClimateType::Count)
+    ClimateSetAction::ClimateSetAction(ClimateType climate)
+        : _climate(climate)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
     }
 
-    return GameActions::Result();
-}
+    void ClimateSetAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("climate", _climate);
+    }
 
-GameActions::Result ClimateSetAction::Execute() const
-{
-    gClimate = ClimateType{ _climate };
+    uint16_t ClimateSetAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags();
+    }
 
-    GfxInvalidateScreen();
+    void ClimateSetAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
 
-    return GameActions::Result();
-}
+        stream << DS_TAG(_climate);
+    }
+
+    GameActions::Result ClimateSetAction::Query() const
+    {
+        if (_climate >= ClimateType::Count)
+        {
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
+        }
+
+        return GameActions::Result();
+    }
+
+    GameActions::Result ClimateSetAction::Execute() const
+    {
+        gClimate = ClimateType{ _climate };
+
+        GfxInvalidateScreen();
+
+        return GameActions::Result();
+    }
+} // namespace OpenRCT2

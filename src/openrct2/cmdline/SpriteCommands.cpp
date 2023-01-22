@@ -15,14 +15,15 @@
 #define SZ_DEFAULT "default"
 #define SZ_CLOSEST "closest"
 #define SZ_DITHERING "dithering"
+namespace OpenRCT2
+{
+    using ImportMode = OpenRCT2::Drawing::ImageImporter::ImportMode;
 
-using ImportMode = OpenRCT2::Drawing::ImageImporter::ImportMode;
+    ImportMode gSpriteMode = ImportMode::Default;
 
-ImportMode gSpriteMode = ImportMode::Default;
+    static const char* _mode;
 
-static const char* _mode;
-
-// clang-format off
+    // clang-format off
 static constexpr const CommandLineOptionDefinition SpriteOptions[]
 {
     { CMDLINE_TYPE_STRING, &_mode, 'm', "mode", "the type of sprite conversion <" SZ_DEFAULT "|" SZ_CLOSEST "|" SZ_DITHERING ">" },
@@ -44,22 +45,23 @@ const CommandLineCommand CommandLine::SpriteCommands[]
 
     CommandTableEnd
 };
-// clang-format on
+    // clang-format on
 
-static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
-{
-    if (String::Equals(_mode, SZ_CLOSEST, true))
-        gSpriteMode = ImportMode::Closest;
-    else if (String::Equals(_mode, SZ_DITHERING, true))
-        gSpriteMode = ImportMode::Dithering;
-    Memory::Free(_mode);
-
-    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;
-    int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
-    int32_t result = CmdLineForSprite(argv, argc);
-    if (result < 0)
+    static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
     {
-        return EXITCODE_FAIL;
+        if (String::Equals(_mode, SZ_CLOSEST, true))
+            gSpriteMode = ImportMode::Closest;
+        else if (String::Equals(_mode, SZ_DITHERING, true))
+            gSpriteMode = ImportMode::Dithering;
+        Memory::Free(_mode);
+
+        const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;
+        int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
+        int32_t result = CmdLineForSprite(argv, argc);
+        if (result < 0)
+        {
+            return EXITCODE_FAIL;
+        }
+        return EXITCODE_OK;
     }
-    return EXITCODE_OK;
-}
+} // namespace OpenRCT2

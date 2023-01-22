@@ -10,25 +10,27 @@
 #pragma once
 
 #include "GameAction.h"
-
-class LargeSceneryRemoveAction final : public GameActionBase<GameCommand::RemoveLargeScenery>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZD _loc;
-    uint16_t _tileIndex{};
+    class LargeSceneryRemoveAction final : public GameActionBase<GameCommand::RemoveLargeScenery>
+    {
+    private:
+        CoordsXYZD _loc;
+        uint16_t _tileIndex{};
 
-public:
-    LargeSceneryRemoveAction() = default;
-    LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex);
+    public:
+        LargeSceneryRemoveAction() = default;
+        LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    TileElement* FindLargeSceneryElement(const CoordsXYZ& pos, int32_t sequenceIndex) const;
-};
+    private:
+        TileElement* FindLargeSceneryElement(const CoordsXYZ& pos, int32_t sequenceIndex) const;
+    };
+} // namespace OpenRCT2

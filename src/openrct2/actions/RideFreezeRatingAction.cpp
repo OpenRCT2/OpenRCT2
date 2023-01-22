@@ -8,66 +8,68 @@
  *****************************************************************************/
 
 #include "RideFreezeRatingAction.h"
-
-RideFreezeRatingAction::RideFreezeRatingAction(RideId rideIndex, RideRatingType type, ride_rating value)
-    : _rideIndex(rideIndex)
-    , _type(type)
-    , _value(value)
+namespace OpenRCT2
 {
-}
-
-void RideFreezeRatingAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("ride", _rideIndex);
-    visitor.Visit("type", _type);
-    visitor.Visit("value", _value);
-}
-
-void RideFreezeRatingAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value);
-}
-
-GameActions::Result RideFreezeRatingAction::Query() const
-{
-    auto ride = GetRide(_rideIndex);
-    if (ride == nullptr)
+    RideFreezeRatingAction::RideFreezeRatingAction(RideId rideIndex, RideRatingType type, ride_rating value)
+        : _rideIndex(rideIndex)
+        , _type(type)
+        , _value(value)
     {
-        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    if (_value <= 0)
+    void RideFreezeRatingAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_WARNING("Rating value must be positive", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("type", _type);
+        visitor.Visit("value", _value);
     }
 
-    return GameActions::Result();
-}
-
-GameActions::Result RideFreezeRatingAction::Execute() const
-{
-    auto ride = GetRide(_rideIndex);
-
-    switch (_type)
+    void RideFreezeRatingAction::Serialise(DataSerialiser& stream)
     {
-        case RideRatingType::Excitement:
-            ride->excitement = _value;
-            break;
-        case RideRatingType::Intensity:
-            ride->intensity = _value;
-            break;
-        case RideRatingType::Nausea:
-            ride->nausea = _value;
-            break;
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value);
     }
 
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_FIXED_RATINGS;
+    GameActions::Result RideFreezeRatingAction::Query() const
+    {
+        auto ride = GetRide(_rideIndex);
+        if (ride == nullptr)
+        {
+            LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
 
-    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+        if (_value <= 0)
+        {
+            LOG_WARNING("Rating value must be positive", _rideIndex.ToUnderlying());
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
 
-    auto res = GameActions::Result();
-    return res;
-}
+        return GameActions::Result();
+    }
+
+    GameActions::Result RideFreezeRatingAction::Execute() const
+    {
+        auto ride = GetRide(_rideIndex);
+
+        switch (_type)
+        {
+            case RideRatingType::Excitement:
+                ride->excitement = _value;
+                break;
+            case RideRatingType::Intensity:
+                ride->intensity = _value;
+                break;
+            case RideRatingType::Nausea:
+                ride->nausea = _value;
+                break;
+        }
+
+        ride->lifecycle_flags |= RIDE_LIFECYCLE_FIXED_RATINGS;
+
+        WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+
+        auto res = GameActions::Result();
+        return res;
+    }
+} // namespace OpenRCT2

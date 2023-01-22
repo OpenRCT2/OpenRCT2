@@ -20,136 +20,139 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
-
-RideSetAppearanceAction::RideSetAppearanceAction(RideId rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index)
-    : _rideIndex(rideIndex)
-    , _type(type)
-    , _value(value)
-    , _index(index)
+namespace OpenRCT2
 {
-}
-
-void RideSetAppearanceAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("ride", _rideIndex);
-    visitor.Visit("type", _type);
-    visitor.Visit("value", _value);
-    visitor.Visit("index", _index);
-}
-
-uint16_t RideSetAppearanceAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void RideSetAppearanceAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_index);
-}
-
-GameActions::Result RideSetAppearanceAction::Query() const
-{
-    auto ride = GetRide(_rideIndex);
-    if (ride == nullptr)
+    RideSetAppearanceAction::RideSetAppearanceAction(
+        RideId rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index)
+        : _rideIndex(rideIndex)
+        , _type(type)
+        , _value(value)
+        , _index(index)
     {
-        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    switch (_type)
+    void RideSetAppearanceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        case RideSetAppearanceType::TrackColourMain:
-        case RideSetAppearanceType::TrackColourAdditional:
-        case RideSetAppearanceType::TrackColourSupports:
-            if (_index >= std::size(ride->track_colour))
-            {
-                LOG_WARNING("Invalid game command, index %d out of bounds", _index);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
-            }
-            break;
-        case RideSetAppearanceType::VehicleColourBody:
-        case RideSetAppearanceType::VehicleColourTrim:
-        case RideSetAppearanceType::VehicleColourTernary:
-            if (_index >= std::size(ride->vehicle_colours))
-            {
-                LOG_WARNING("Invalid game command, index %d out of bounds", _index);
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
-            }
-            break;
-        case RideSetAppearanceType::VehicleColourScheme:
-        case RideSetAppearanceType::EntranceStyle:
-        case RideSetAppearanceType::SellingItemColourIsRandom:
-            break;
-        default:
-            LOG_WARNING("Invalid game command, type %d not recognised", _type);
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("type", _type);
+        visitor.Visit("value", _value);
+        visitor.Visit("index", _index);
+    }
+
+    uint16_t RideSetAppearanceAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
+
+    void RideSetAppearanceAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_index);
+    }
+
+    GameActions::Result RideSetAppearanceAction::Query() const
+    {
+        auto ride = GetRide(_rideIndex);
+        if (ride == nullptr)
+        {
+            LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        switch (_type)
+        {
+            case RideSetAppearanceType::TrackColourMain:
+            case RideSetAppearanceType::TrackColourAdditional:
+            case RideSetAppearanceType::TrackColourSupports:
+                if (_index >= std::size(ride->track_colour))
+                {
+                    LOG_WARNING("Invalid game command, index %d out of bounds", _index);
+                    return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                }
+                break;
+            case RideSetAppearanceType::VehicleColourBody:
+            case RideSetAppearanceType::VehicleColourTrim:
+            case RideSetAppearanceType::VehicleColourTernary:
+                if (_index >= std::size(ride->vehicle_colours))
+                {
+                    LOG_WARNING("Invalid game command, index %d out of bounds", _index);
+                    return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                }
+                break;
+            case RideSetAppearanceType::VehicleColourScheme:
+            case RideSetAppearanceType::EntranceStyle:
+            case RideSetAppearanceType::SellingItemColourIsRandom:
+                break;
+            default:
+                LOG_WARNING("Invalid game command, type %d not recognised", _type);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
+
+        return GameActions::Result();
     }
 
-    return GameActions::Result();
-}
-
-GameActions::Result RideSetAppearanceAction::Execute() const
-{
-    auto ride = GetRide(_rideIndex);
-    if (ride == nullptr)
+    GameActions::Result RideSetAppearanceAction::Execute() const
     {
-        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
-    }
+        auto ride = GetRide(_rideIndex);
+        if (ride == nullptr)
+        {
+            LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        }
 
-    switch (_type)
-    {
-        case RideSetAppearanceType::TrackColourMain:
-            ride->track_colour[_index].main = _value;
-            GfxInvalidateScreen();
-            break;
-        case RideSetAppearanceType::TrackColourAdditional:
-            ride->track_colour[_index].additional = _value;
-            GfxInvalidateScreen();
-            break;
-        case RideSetAppearanceType::TrackColourSupports:
-            ride->track_colour[_index].supports = _value;
-            GfxInvalidateScreen();
-            break;
-        case RideSetAppearanceType::VehicleColourBody:
-            ride->vehicle_colours[_index].Body = _value;
-            RideUpdateVehicleColours(*ride);
-            break;
-        case RideSetAppearanceType::VehicleColourTrim:
-            ride->vehicle_colours[_index].Trim = _value;
-            RideUpdateVehicleColours(*ride);
-            break;
-        case RideSetAppearanceType::VehicleColourTernary:
-            ride->vehicle_colours[_index].Tertiary = _value;
-            RideUpdateVehicleColours(*ride);
-            break;
-        case RideSetAppearanceType::VehicleColourScheme:
-            ride->colour_scheme_type &= ~(
-                RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR);
-            ride->colour_scheme_type |= _value;
-            for (uint32_t i = 1; i < std::size(ride->vehicle_colours); i++)
-            {
-                ride->vehicle_colours[i] = ride->vehicle_colours[0];
-            }
-            RideUpdateVehicleColours(*ride);
-            break;
-        case RideSetAppearanceType::EntranceStyle:
-            ride->entrance_style = _value;
-            GfxInvalidateScreen();
-            break;
-        case RideSetAppearanceType::SellingItemColourIsRandom:
-            ride->SetLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
-            break;
-    }
-    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+        switch (_type)
+        {
+            case RideSetAppearanceType::TrackColourMain:
+                ride->track_colour[_index].main = _value;
+                GfxInvalidateScreen();
+                break;
+            case RideSetAppearanceType::TrackColourAdditional:
+                ride->track_colour[_index].additional = _value;
+                GfxInvalidateScreen();
+                break;
+            case RideSetAppearanceType::TrackColourSupports:
+                ride->track_colour[_index].supports = _value;
+                GfxInvalidateScreen();
+                break;
+            case RideSetAppearanceType::VehicleColourBody:
+                ride->vehicle_colours[_index].Body = _value;
+                RideUpdateVehicleColours(*ride);
+                break;
+            case RideSetAppearanceType::VehicleColourTrim:
+                ride->vehicle_colours[_index].Trim = _value;
+                RideUpdateVehicleColours(*ride);
+                break;
+            case RideSetAppearanceType::VehicleColourTernary:
+                ride->vehicle_colours[_index].Tertiary = _value;
+                RideUpdateVehicleColours(*ride);
+                break;
+            case RideSetAppearanceType::VehicleColourScheme:
+                ride->colour_scheme_type &= ~(
+                    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR);
+                ride->colour_scheme_type |= _value;
+                for (uint32_t i = 1; i < std::size(ride->vehicle_colours); i++)
+                {
+                    ride->vehicle_colours[i] = ride->vehicle_colours[0];
+                }
+                RideUpdateVehicleColours(*ride);
+                break;
+            case RideSetAppearanceType::EntranceStyle:
+                ride->entrance_style = _value;
+                GfxInvalidateScreen();
+                break;
+            case RideSetAppearanceType::SellingItemColourIsRandom:
+                ride->SetLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
+                break;
+        }
+        WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
 
-    auto res = GameActions::Result();
-    if (!ride->overall_view.IsNull())
-    {
-        auto location = ride->overall_view.ToTileCentre();
-        res.Position = { location, TileElementHeight(location) };
-    }
+        auto res = GameActions::Result();
+        if (!ride->overall_view.IsNull())
+        {
+            auto location = ride->overall_view.ToTileCentre();
+            res.Position = { location, TileElementHeight(location) };
+        }
 
-    return res;
-}
+        return res;
+    }
+} // namespace OpenRCT2

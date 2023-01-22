@@ -16,163 +16,165 @@
 #include "../world/TileElementsView.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
-BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour)
-    : _loc(loc)
-    , _bannerType(bannerType)
-    , _primaryColour(primaryColour)
+namespace OpenRCT2
 {
-}
 
-void BannerPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit(_loc);
-    visitor.Visit("object", _bannerType);
-    visitor.Visit("primaryColour", _primaryColour);
-}
-
-uint16_t BannerPlaceAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags();
-}
-
-void BannerPlaceAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_loc) << DS_TAG(_bannerType) << DS_TAG(_primaryColour);
-}
-
-GameActions::Result BannerPlaceAction::Query() const
-{
-    auto res = GameActions::Result();
-    res.Position.x = _loc.x + 16;
-    res.Position.y = _loc.y + 16;
-    res.Position.z = _loc.z;
-    res.Expenditure = ExpenditureType::Landscaping;
-    res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-
-    if (!LocationValid(_loc))
+    BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour)
+        : _loc(loc)
+        , _bannerType(bannerType)
+        , _primaryColour(primaryColour)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
-    if (!MapCheckCapacityAndReorganise(_loc))
+    void BannerPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_ERROR("No free map elements.");
-        return GameActions::Result(
-            GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+        visitor.Visit(_loc);
+        visitor.Visit("object", _bannerType);
+        visitor.Visit("primaryColour", _primaryColour);
     }
 
-    auto pathElement = GetValidPathElement();
-
-    if (pathElement == nullptr)
+    uint16_t BannerPlaceAction::GetActionFlags() const
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
+        return GameAction::GetActionFlags();
     }
 
-    if (!MapCanBuildAt(_loc))
+    void BannerPlaceAction::Serialise(DataSerialiser& stream)
     {
-        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_loc) << DS_TAG(_bannerType) << DS_TAG(_primaryColour);
     }
 
-    auto baseHeight = _loc.z + PATH_HEIGHT_STEP;
-    BannerElement* existingBannerElement = MapGetBannerElementAt({ _loc.x, _loc.y, baseHeight }, _loc.direction);
-    if (existingBannerElement != nullptr)
+    GameActions::Result BannerPlaceAction::Query() const
     {
-        return GameActions::Result(
-            GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_BANNER_SIGN_IN_THE_WAY);
+        auto res = GameActions::Result();
+        res.Position.x = _loc.x + 16;
+        res.Position.y = _loc.y + 16;
+        res.Position.z = _loc.z;
+        res.Expenditure = ExpenditureType::Landscaping;
+        res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+
+        if (!LocationValid(_loc))
+        {
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        }
+
+        if (!MapCheckCapacityAndReorganise(_loc))
+        {
+            LOG_ERROR("No free map elements.");
+            return GameActions::Result(
+                GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+        }
+
+        auto pathElement = GetValidPathElement();
+
+        if (pathElement == nullptr)
+        {
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
+        }
+
+        if (!MapCanBuildAt(_loc))
+        {
+            return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        }
+
+        auto baseHeight = _loc.z + PATH_HEIGHT_STEP;
+        BannerElement* existingBannerElement = MapGetBannerElementAt({ _loc.x, _loc.y, baseHeight }, _loc.direction);
+        if (existingBannerElement != nullptr)
+        {
+            return GameActions::Result(
+                GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_BANNER_SIGN_IN_THE_WAY);
+        }
+
+        if (HasReachedBannerLimit())
+        {
+            LOG_ERROR("No free banners available");
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+        }
+
+        auto* bannerEntry = GetBannerEntry(_bannerType);
+        if (bannerEntry == nullptr)
+        {
+            LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        }
+        res.Cost = bannerEntry->price;
+
+        return res;
     }
 
-    if (HasReachedBannerLimit())
+    GameActions::Result BannerPlaceAction::Execute() const
     {
-        LOG_ERROR("No free banners available");
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+        auto res = GameActions::Result();
+        res.Position.x = _loc.x + 16;
+        res.Position.y = _loc.y + 16;
+        res.Position.z = _loc.z;
+        res.Expenditure = ExpenditureType::Landscaping;
+        res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+
+        if (!MapCheckCapacityAndReorganise(_loc))
+        {
+            LOG_ERROR("No free map elements.");
+            return GameActions::Result(
+                GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+        }
+
+        auto* bannerEntry = GetBannerEntry(_bannerType);
+        if (bannerEntry == nullptr)
+        {
+            LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        }
+
+        auto banner = CreateBanner();
+        if (banner == nullptr)
+        {
+            LOG_ERROR("No free banners available");
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+        }
+        banner->flags = 0;
+        banner->text = {};
+        banner->text_colour = 2;
+        banner->type = _bannerType; // Banner must be deleted after this point in an early return
+        banner->colour = _primaryColour;
+        banner->position = TileCoordsXY(_loc);
+
+        res.SetData(BannerPlaceActionResult{ banner->id });
+        auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
+        Guard::Assert(bannerElement != nullptr);
+
+        bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);
+        bannerElement->SetPosition(_loc.direction);
+        bannerElement->ResetAllowedEdges();
+        bannerElement->SetIndex(banner->id);
+        bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+
+        MapInvalidateTileFull(_loc);
+        MapAnimationCreate(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
+
+        res.Cost = bannerEntry->price;
+        return res;
     }
 
-    auto* bannerEntry = GetBannerEntry(_bannerType);
-    if (bannerEntry == nullptr)
+    PathElement* BannerPlaceAction::GetValidPathElement() const
     {
-        LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        for (auto* pathElement : TileElementsView<PathElement>(_loc))
+        {
+            if (pathElement->GetBaseZ() != _loc.z && pathElement->GetBaseZ() != _loc.z - PATH_HEIGHT_STEP)
+                continue;
+
+            if (!(pathElement->GetEdges() & (1 << _loc.direction)))
+                continue;
+
+            if (pathElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+                continue;
+
+            return pathElement;
+        }
+
+        return nullptr;
     }
-    res.Cost = bannerEntry->price;
-
-    return res;
-}
-
-GameActions::Result BannerPlaceAction::Execute() const
-{
-    auto res = GameActions::Result();
-    res.Position.x = _loc.x + 16;
-    res.Position.y = _loc.y + 16;
-    res.Position.z = _loc.z;
-    res.Expenditure = ExpenditureType::Landscaping;
-    res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-
-    if (!MapCheckCapacityAndReorganise(_loc))
-    {
-        LOG_ERROR("No free map elements.");
-        return GameActions::Result(
-            GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
-    }
-
-    auto* bannerEntry = GetBannerEntry(_bannerType);
-    if (bannerEntry == nullptr)
-    {
-        LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
-    }
-
-    auto banner = CreateBanner();
-    if (banner == nullptr)
-    {
-        LOG_ERROR("No free banners available");
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
-    }
-    banner->flags = 0;
-    banner->text = {};
-    banner->text_colour = 2;
-    banner->type = _bannerType; // Banner must be deleted after this point in an early return
-    banner->colour = _primaryColour;
-    banner->position = TileCoordsXY(_loc);
-
-    res.SetData(BannerPlaceActionResult{ banner->id });
-    auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
-    Guard::Assert(bannerElement != nullptr);
-
-    bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);
-    bannerElement->SetPosition(_loc.direction);
-    bannerElement->ResetAllowedEdges();
-    bannerElement->SetIndex(banner->id);
-    bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
-
-    MapInvalidateTileFull(_loc);
-    MapAnimationCreate(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
-
-    res.Cost = bannerEntry->price;
-    return res;
-}
-
-PathElement* BannerPlaceAction::GetValidPathElement() const
-{
-    for (auto* pathElement : TileElementsView<PathElement>(_loc))
-    {
-        if (pathElement->GetBaseZ() != _loc.z && pathElement->GetBaseZ() != _loc.z - PATH_HEIGHT_STEP)
-            continue;
-
-        if (!(pathElement->GetEdges() & (1 << _loc.direction)))
-            continue;
-
-        if (pathElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
-            continue;
-
-        return pathElement;
-    }
-
-    return nullptr;
-}
+} // namespace OpenRCT2

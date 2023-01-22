@@ -11,22 +11,24 @@
 
 #include "../entity/Staff.h"
 #include "GameAction.h"
-
-class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffCostume>
+namespace OpenRCT2
 {
-private:
-    EntityId _spriteIndex{ EntityId::GetNull() };
-    EntertainerCostume _costume = EntertainerCostume::Count;
+    class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffCostume>
+    {
+    private:
+        EntityId _spriteIndex{ EntityId::GetNull() };
+        EntertainerCostume _costume = EntertainerCostume::Count;
 
-public:
-    StaffSetCostumeAction() = default;
-    StaffSetCostumeAction(EntityId spriteIndex, EntertainerCostume costume);
+    public:
+        StaffSetCostumeAction() = default;
+        StaffSetCostumeAction(EntityId spriteIndex, EntertainerCostume costume);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

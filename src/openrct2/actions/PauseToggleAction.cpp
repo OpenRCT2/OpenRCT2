@@ -8,19 +8,21 @@
  *****************************************************************************/
 
 #include "PauseToggleAction.h"
-
-uint16_t PauseToggleAction::GetActionFlags() const
+namespace OpenRCT2
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
+    uint16_t PauseToggleAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
 
-GameActions::Result PauseToggleAction::Query() const
-{
-    return GameActions::Result();
-}
+    GameActions::Result PauseToggleAction::Query() const
+    {
+        return GameActions::Result();
+    }
 
-GameActions::Result PauseToggleAction::Execute() const
-{
-    PauseToggle();
-    return GameActions::Result();
-}
+    GameActions::Result PauseToggleAction::Execute() const
+    {
+        PauseToggle();
+        return GameActions::Result();
+    }
+} // namespace OpenRCT2

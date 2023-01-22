@@ -21,46 +21,48 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
-
-ParkSetNameAction::ParkSetNameAction(const std::string& name)
-    : _name(name)
+namespace OpenRCT2
 {
-}
-
-void ParkSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("name", _name);
-}
-
-uint16_t ParkSetNameAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void ParkSetNameAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_name);
-}
-
-GameActions::Result ParkSetNameAction::Query() const
-{
-    if (_name.empty())
+    ParkSetNameAction::ParkSetNameAction(const std::string& name)
+        : _name(name)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
     }
-    return GameActions::Result();
-}
 
-GameActions::Result ParkSetNameAction::Execute() const
-{
-    // Do a no-op if new name is the same as the current name is the same
-    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-    if (_name != park.Name)
+    void ParkSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        park.Name = _name;
-        ScrollingTextInvalidate();
-        GfxInvalidateScreen();
+        visitor.Visit("name", _name);
     }
-    return GameActions::Result();
-}
+
+    uint16_t ParkSetNameAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    }
+
+    void ParkSetNameAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_name);
+    }
+
+    GameActions::Result ParkSetNameAction::Query() const
+    {
+        if (_name.empty())
+        {
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
+        }
+        return GameActions::Result();
+    }
+
+    GameActions::Result ParkSetNameAction::Execute() const
+    {
+        // Do a no-op if new name is the same as the current name is the same
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        if (_name != park.Name)
+        {
+            park.Name = _name;
+            ScrollingTextInvalidate();
+            GfxInvalidateScreen();
+        }
+        return GameActions::Result();
+    }
+} // namespace OpenRCT2

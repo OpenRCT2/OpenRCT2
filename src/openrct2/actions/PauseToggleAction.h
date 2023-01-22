@@ -10,9 +10,10 @@
 #pragma once
 
 #include "GameAction.h"
-
-// Clang format is broken for small game actions
-// clang-format off
+namespace OpenRCT2
+{
+    // Clang format is broken for small game actions
+    // clang-format off
 class PauseToggleAction final : public GameActionBase<GameCommand::TogglePause>
 {
 public:
@@ -23,4 +24,5 @@ public:
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2

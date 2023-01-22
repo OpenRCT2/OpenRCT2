@@ -10,24 +10,26 @@
 #pragma once
 
 #include "GameAction.h"
-
-class SignSetStyleAction final : public GameActionBase<GameCommand::SetSignStyle>
+namespace OpenRCT2
 {
-private:
-    BannerIndex _bannerIndex{ BannerIndex::GetNull() };
-    uint8_t _mainColour{};
-    uint8_t _textColour{};
-    bool _isLarge{};
+    class SignSetStyleAction final : public GameActionBase<GameCommand::SetSignStyle>
+    {
+    private:
+        BannerIndex _bannerIndex{ BannerIndex::GetNull() };
+        uint8_t _mainColour{};
+        uint8_t _textColour{};
+        bool _isLarge{};
 
-public:
-    SignSetStyleAction() = default;
-    SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge);
+    public:
+        SignSetStyleAction() = default;
+        SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

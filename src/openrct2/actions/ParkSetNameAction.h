@@ -10,21 +10,23 @@
 #pragma once
 
 #include "GameAction.h"
-
-class ParkSetNameAction final : public GameActionBase<GameCommand::SetParkName>
+namespace OpenRCT2
 {
-private:
-    std::string _name;
+    class ParkSetNameAction final : public GameActionBase<GameCommand::SetParkName>
+    {
+    private:
+        std::string _name;
 
-public:
-    ParkSetNameAction() = default;
-    ParkSetNameAction(const std::string& name);
+    public:
+        ParkSetNameAction() = default;
+        ParkSetNameAction(const std::string& name);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

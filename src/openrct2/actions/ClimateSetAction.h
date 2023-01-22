@@ -11,21 +11,23 @@
 
 #include "../world/Climate.h"
 #include "GameAction.h"
-
-class ClimateSetAction final : public GameActionBase<GameCommand::SetClimate>
+namespace OpenRCT2
 {
-private:
-    ClimateType _climate{};
+    class ClimateSetAction final : public GameActionBase<GameCommand::SetClimate>
+    {
+    private:
+        ClimateType _climate{};
 
-public:
-    ClimateSetAction() = default;
-    ClimateSetAction(ClimateType climate);
+    public:
+        ClimateSetAction() = default;
+        ClimateSetAction(ClimateType climate);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

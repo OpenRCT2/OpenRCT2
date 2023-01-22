@@ -12,25 +12,27 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "GameAction.h"
-
-class CustomAction final : public GameActionBase<GameCommand::Custom>
+namespace OpenRCT2
 {
-private:
-    std::string _id;
-    std::string _json;
+    class CustomAction final : public GameActionBase<GameCommand::Custom>
+    {
+    private:
+        std::string _id;
+        std::string _json;
 
-public:
-    CustomAction() = default;
-    CustomAction(const std::string& id, const std::string& json);
+    public:
+        CustomAction() = default;
+        CustomAction(const std::string& id, const std::string& json);
 
-    std::string GetId() const;
-    std::string GetJson() const;
+        std::string GetId() const;
+        std::string GetJson() const;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
 
 #endif
+}

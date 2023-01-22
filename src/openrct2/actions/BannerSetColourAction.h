@@ -10,25 +10,27 @@
 #pragma once
 
 #include "GameAction.h"
-
-class BannerSetColourAction final : public GameActionBase<GameCommand::SetBannerColour>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZD _loc;
-    uint8_t _primaryColour{};
+    class BannerSetColourAction final : public GameActionBase<GameCommand::SetBannerColour>
+    {
+    private:
+        CoordsXYZD _loc;
+        uint8_t _primaryColour{};
 
-public:
-    BannerSetColourAction() = default;
-    BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour);
+    public:
+        BannerSetColourAction() = default;
+        BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    GameActions::Result QueryExecute(bool isExecuting) const;
-};
+    private:
+        GameActions::Result QueryExecute(bool isExecuting) const;
+    };
+} // namespace OpenRCT2

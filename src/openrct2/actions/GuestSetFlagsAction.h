@@ -10,22 +10,24 @@
 #pragma once
 
 #include "GameAction.h"
-
-class GuestSetFlagsAction final : public GameActionBase<GameCommand::GuestSetFlags>
+namespace OpenRCT2
 {
-private:
-    EntityId _peepId{ EntityId::GetNull() };
-    uint32_t _newFlags{};
+    class GuestSetFlagsAction final : public GameActionBase<GameCommand::GuestSetFlags>
+    {
+    private:
+        EntityId _peepId{ EntityId::GetNull() };
+        uint32_t _newFlags{};
 
-public:
-    GuestSetFlagsAction() = default;
-    GuestSetFlagsAction(EntityId peepId, uint32_t flags);
+    public:
+        GuestSetFlagsAction() = default;
+        GuestSetFlagsAction(EntityId peepId, uint32_t flags);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

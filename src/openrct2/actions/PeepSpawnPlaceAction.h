@@ -10,21 +10,23 @@
 #pragma once
 
 #include "GameAction.h"
-
-class PeepSpawnPlaceAction final : public GameActionBase<GameCommand::PlacePeepSpawn>
+namespace OpenRCT2
 {
-private:
-    CoordsXYZD _location;
+    class PeepSpawnPlaceAction final : public GameActionBase<GameCommand::PlacePeepSpawn>
+    {
+    private:
+        CoordsXYZD _location;
 
-public:
-    PeepSpawnPlaceAction() = default;
-    PeepSpawnPlaceAction(const CoordsXYZD& location);
+    public:
+        PeepSpawnPlaceAction() = default;
+        PeepSpawnPlaceAction(const CoordsXYZD& location);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

@@ -10,21 +10,23 @@
 #pragma once
 
 #include "GameAction.h"
-
-class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
+namespace OpenRCT2
 {
-private:
-    money16 _fee{ MONEY16_UNDEFINED };
+    class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
+    {
+    private:
+        money16 _fee{ MONEY16_UNDEFINED };
 
-public:
-    ParkSetEntranceFeeAction() = default;
-    ParkSetEntranceFeeAction(money16 fee);
+    public:
+        ParkSetEntranceFeeAction() = default;
+        ParkSetEntranceFeeAction(money16 fee);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2

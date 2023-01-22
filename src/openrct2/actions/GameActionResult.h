@@ -21,7 +21,7 @@
 #include <type_traits>
 #include <variant>
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     /**
      * Common error codes for game actions.
@@ -113,4 +113,4 @@ namespace GameActions
 #    pragma GCC diagnostic pop
 #endif
 
-} // namespace GameActions
+} // namespace OpenRCT2::GameActions

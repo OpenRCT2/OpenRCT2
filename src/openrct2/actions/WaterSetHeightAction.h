@@ -10,25 +10,27 @@
 #pragma once
 
 #include "GameAction.h"
-
-class WaterSetHeightAction final : public GameActionBase<GameCommand::SetWaterHeight>
+namespace OpenRCT2
 {
-private:
-    CoordsXY _coords;
-    uint8_t _height{};
+    class WaterSetHeightAction final : public GameActionBase<GameCommand::SetWaterHeight>
+    {
+    private:
+        CoordsXY _coords;
+        uint8_t _height{};
 
-public:
-    WaterSetHeightAction() = default;
-    WaterSetHeightAction(const CoordsXY& coords, uint8_t height);
+    public:
+        WaterSetHeightAction() = default;
+        WaterSetHeightAction(const CoordsXY& coords, uint8_t height);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    StringId CheckParameters() const;
-};
+    private:
+        StringId CheckParameters() const;
+    };
+} // namespace OpenRCT2

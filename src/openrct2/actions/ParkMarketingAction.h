@@ -10,27 +10,29 @@
 #pragma once
 
 #include "GameAction.h"
-
-class ParkMarketingAction final : public GameActionBase<GameCommand::StartMarketingCampaign>
+namespace OpenRCT2
 {
-private:
-    int32_t _type{};
-    int32_t _item{};
-    int32_t _numWeeks{};
+    class ParkMarketingAction final : public GameActionBase<GameCommand::StartMarketingCampaign>
+    {
+    private:
+        int32_t _type{};
+        int32_t _item{};
+        int32_t _numWeeks{};
 
-public:
-    ParkMarketingAction() = default;
-    ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks);
+    public:
+        ParkMarketingAction() = default;
+        ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    GameActions::Result CreateResult() const;
-    money32 CalculatePrice() const;
-};
+    private:
+        GameActions::Result CreateResult() const;
+        money32 CalculatePrice() const;
+    };
+} // namespace OpenRCT2

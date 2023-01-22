@@ -10,31 +10,33 @@
 #pragma once
 
 #include "GameAction.h"
-
-struct BannerPlaceActionResult
+namespace OpenRCT2
 {
-    BannerIndex bannerId = BannerIndex::GetNull();
-};
+    struct BannerPlaceActionResult
+    {
+        BannerIndex bannerId = BannerIndex::GetNull();
+    };
 
-class BannerPlaceAction final : public GameActionBase<GameCommand::PlaceBanner>
-{
-private:
-    CoordsXYZD _loc;
-    ObjectEntryIndex _bannerType{ BANNER_NULL };
-    uint8_t _primaryColour{};
+    class BannerPlaceAction final : public GameActionBase<GameCommand::PlaceBanner>
+    {
+    private:
+        CoordsXYZD _loc;
+        ObjectEntryIndex _bannerType{ BANNER_NULL };
+        uint8_t _primaryColour{};
 
-public:
-    BannerPlaceAction() = default;
-    BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour);
+    public:
+        BannerPlaceAction() = default;
+        BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        GameActions::Result Query() const override;
+        GameActions::Result Execute() const override;
 
-private:
-    PathElement* GetValidPathElement() const;
-};
+    private:
+        PathElement* GetValidPathElement() const;
+    };
+} // namespace OpenRCT2
