@@ -12,8 +12,9 @@
 #include "../config/Config.h"
 #include "../util/Util.h"
 #include "StringIds.h"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
     {   "GBP",  10,     CurrencyAffix::Prefix,    "\xC2\xA3",     CurrencyAffix::Suffix,    "GBP",  STR_POUNDS          },  // British Pound
     {   "USD",  10,     CurrencyAffix::Prefix,    "$",            CurrencyAffix::Prefix,    "$",    STR_DOLLARS         },  // US Dollar
@@ -34,16 +35,17 @@ CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
     {   "HUF",  1000,   CurrencyAffix::Suffix,    " Ft",          CurrencyAffix::Suffix,    " Ft",  STR_HUNGARIAN_FORINT},  // Hungarian Forint
     {   "CTM",  10,     CurrencyAffix::Prefix,    "Ctm",          CurrencyAffix::Prefix,    "Ctm",  STR_CUSTOM_CURRENCY },  // Customizable currency
 };
-// clang-format on
+    // clang-format on
 
-void CurrencyLoadCustomCurrencyConfig()
-{
-    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = gConfigGeneral.CustomCurrencyRate;
-    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.CustomCurrencyAffix;
-    if (!gConfigGeneral.CustomCurrencySymbol.empty())
+    void CurrencyLoadCustomCurrencyConfig()
     {
-        SafeStrCpy(
-            CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.CustomCurrencySymbol.c_str(),
-            CURRENCY_SYMBOL_MAX_SIZE);
+        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = gConfigGeneral.CustomCurrencyRate;
+        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.CustomCurrencyAffix;
+        if (!gConfigGeneral.CustomCurrencySymbol.empty())
+        {
+            SafeStrCpy(
+                CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
+                gConfigGeneral.CustomCurrencySymbol.c_str(), CURRENCY_SYMBOL_MAX_SIZE);
+        }
     }
-}
+} // namespace OpenRCT2

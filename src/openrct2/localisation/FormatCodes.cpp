@@ -14,8 +14,9 @@
 #include <mutex>
 #include <string>
 #include <vector>
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 static const EnumMap<FormatToken> FormatTokenMap = {
     { "MOVE_X",               FormatToken::Move,                },
     { "NEWLINE",              FormatToken::Newline,             },
@@ -63,145 +64,146 @@ static const EnumMap<FormatToken> FormatTokenMap = {
     { "PEARLAQUA",            FormatToken::ColourPearlAqua,     },
     { "PALESILVER",           FormatToken::ColourPaleSilver,    },
 };
-// clang-format on
+    // clang-format on
 
-std::string_view GetFormatTokenStringWithBraces(FormatToken token)
-{
-    // Ensure cache is thread safe
-    static std::mutex mutex;
-    std::lock_guard<std::mutex> guard(mutex);
-
-    static std::vector<std::string> cache;
-    auto index = static_cast<size_t>(token);
-    if (cache.size() <= index)
+    std::string_view GetFormatTokenStringWithBraces(FormatToken token)
     {
-        cache.resize(index + 1);
-    }
-    if (cache[index].empty())
-    {
-        cache[index] = "{" + std::string(FormatTokenToString(token)) + "}";
-    }
-    return cache[index];
-}
+        // Ensure cache is thread safe
+        static std::mutex mutex;
+        std::lock_guard<std::mutex> guard(mutex);
 
-FormatToken FormatTokenFromString(std::string_view token)
-{
-    auto result = FormatTokenMap.find(token);
-    return result != std::end(FormatTokenMap) ? result->second : FormatToken::Unknown;
-}
-
-std::string_view FormatTokenToString(FormatToken token, bool withBraces)
-{
-    if (withBraces)
-    {
-        return GetFormatTokenStringWithBraces(token);
+        static std::vector<std::string> cache;
+        auto index = static_cast<size_t>(token);
+        if (cache.size() <= index)
+        {
+            cache.resize(index + 1);
+        }
+        if (cache[index].empty())
+        {
+            cache[index] = "{" + std::string(FormatTokenToString(token)) + "}";
+        }
+        return cache[index];
     }
 
-    auto it = FormatTokenMap.find(token);
-    if (it != FormatTokenMap.end())
-        return it->first;
-
-    return {};
-}
-
-bool FormatTokenTakesArgument(FormatToken token)
-{
-    switch (token)
+    FormatToken FormatTokenFromString(std::string_view token)
     {
-        case FormatToken::Comma32:
-        case FormatToken::Int32:
-        case FormatToken::Comma1dp16:
-        case FormatToken::Comma2dp32:
-        case FormatToken::Comma16:
-        case FormatToken::UInt16:
-        case FormatToken::Currency2dp:
-        case FormatToken::Currency:
-        case FormatToken::StringById:
-        case FormatToken::String:
-        case FormatToken::MonthYear:
-        case FormatToken::Month:
-        case FormatToken::Velocity:
-        case FormatToken::DurationShort:
-        case FormatToken::DurationLong:
-        case FormatToken::Length:
-        case FormatToken::Sprite:
-            return true;
-        default:
-            return false;
+        auto result = FormatTokenMap.find(token);
+        return result != std::end(FormatTokenMap) ? result->second : FormatToken::Unknown;
     }
-}
 
-bool FormatTokenIsColour(FormatToken token)
-{
-    switch (token)
+    std::string_view FormatTokenToString(FormatToken token, bool withBraces)
     {
-        case FormatToken::ColourBlack:
-        case FormatToken::ColourGrey:
-        case FormatToken::ColourWhite:
-        case FormatToken::ColourRed:
-        case FormatToken::ColourGreen:
-        case FormatToken::ColourYellow:
-        case FormatToken::ColourTopaz:
-        case FormatToken::ColourCeladon:
-        case FormatToken::ColourBabyBlue:
-        case FormatToken::ColourPaleLavender:
-        case FormatToken::ColourPaleGold:
-        case FormatToken::ColourLightPink:
-        case FormatToken::ColourPearlAqua:
-        case FormatToken::ColourPaleSilver:
-            return true;
-        default:
-            return false;
-    }
-}
+        if (withBraces)
+        {
+            return GetFormatTokenStringWithBraces(token);
+        }
 
-size_t FormatTokenGetTextColourIndex(FormatToken token)
-{
-    switch (token)
+        auto it = FormatTokenMap.find(token);
+        if (it != FormatTokenMap.end())
+            return it->first;
+
+        return {};
+    }
+
+    bool FormatTokenTakesArgument(FormatToken token)
     {
-        case FormatToken::ColourBlack:
-            return 0;
-        case FormatToken::ColourGrey:
-            return 1;
-        case FormatToken::ColourWhite:
-            return 2;
-        case FormatToken::ColourRed:
-            return 3;
-        case FormatToken::ColourGreen:
-            return 4;
-        case FormatToken::ColourYellow:
-            return 5;
-        case FormatToken::ColourTopaz:
-            return 6;
-        case FormatToken::ColourCeladon:
-            return 7;
-        case FormatToken::ColourBabyBlue:
-            return 8;
-        case FormatToken::ColourPaleLavender:
-            return 9;
-        case FormatToken::ColourPaleGold:
-            return 10;
-        case FormatToken::ColourLightPink:
-            return 11;
-        case FormatToken::ColourPearlAqua:
-            return 12;
-        case FormatToken::ColourPaleSilver:
-            return 13;
-        default:
-            return 0;
+        switch (token)
+        {
+            case FormatToken::Comma32:
+            case FormatToken::Int32:
+            case FormatToken::Comma1dp16:
+            case FormatToken::Comma2dp32:
+            case FormatToken::Comma16:
+            case FormatToken::UInt16:
+            case FormatToken::Currency2dp:
+            case FormatToken::Currency:
+            case FormatToken::StringById:
+            case FormatToken::String:
+            case FormatToken::MonthYear:
+            case FormatToken::Month:
+            case FormatToken::Velocity:
+            case FormatToken::DurationShort:
+            case FormatToken::DurationLong:
+            case FormatToken::Length:
+            case FormatToken::Sprite:
+                return true;
+            default:
+                return false;
+        }
     }
-}
 
-FormatToken FormatTokenFromTextColour(size_t textColour)
-{
-    static constexpr const FormatToken tokens[] = {
-        FormatToken::ColourBlack,        FormatToken::ColourGrey,       FormatToken::ColourWhite,
-        FormatToken::ColourRed,          FormatToken::ColourGreen,      FormatToken::ColourYellow,
-        FormatToken::ColourTopaz,        FormatToken::ColourCeladon,    FormatToken::ColourBabyBlue,
-        FormatToken::ColourPaleLavender, FormatToken::ColourPaleGold,   FormatToken::ColourLightPink,
-        FormatToken::ColourPearlAqua,    FormatToken::ColourPaleSilver,
-    };
-    if (textColour > std::size(tokens))
-        return FormatToken::ColourBlack;
-    return tokens[textColour];
-}
+    bool FormatTokenIsColour(FormatToken token)
+    {
+        switch (token)
+        {
+            case FormatToken::ColourBlack:
+            case FormatToken::ColourGrey:
+            case FormatToken::ColourWhite:
+            case FormatToken::ColourRed:
+            case FormatToken::ColourGreen:
+            case FormatToken::ColourYellow:
+            case FormatToken::ColourTopaz:
+            case FormatToken::ColourCeladon:
+            case FormatToken::ColourBabyBlue:
+            case FormatToken::ColourPaleLavender:
+            case FormatToken::ColourPaleGold:
+            case FormatToken::ColourLightPink:
+            case FormatToken::ColourPearlAqua:
+            case FormatToken::ColourPaleSilver:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    size_t FormatTokenGetTextColourIndex(FormatToken token)
+    {
+        switch (token)
+        {
+            case FormatToken::ColourBlack:
+                return 0;
+            case FormatToken::ColourGrey:
+                return 1;
+            case FormatToken::ColourWhite:
+                return 2;
+            case FormatToken::ColourRed:
+                return 3;
+            case FormatToken::ColourGreen:
+                return 4;
+            case FormatToken::ColourYellow:
+                return 5;
+            case FormatToken::ColourTopaz:
+                return 6;
+            case FormatToken::ColourCeladon:
+                return 7;
+            case FormatToken::ColourBabyBlue:
+                return 8;
+            case FormatToken::ColourPaleLavender:
+                return 9;
+            case FormatToken::ColourPaleGold:
+                return 10;
+            case FormatToken::ColourLightPink:
+                return 11;
+            case FormatToken::ColourPearlAqua:
+                return 12;
+            case FormatToken::ColourPaleSilver:
+                return 13;
+            default:
+                return 0;
+        }
+    }
+
+    FormatToken FormatTokenFromTextColour(size_t textColour)
+    {
+        static constexpr const FormatToken tokens[] = {
+            FormatToken::ColourBlack,        FormatToken::ColourGrey,       FormatToken::ColourWhite,
+            FormatToken::ColourRed,          FormatToken::ColourGreen,      FormatToken::ColourYellow,
+            FormatToken::ColourTopaz,        FormatToken::ColourCeladon,    FormatToken::ColourBabyBlue,
+            FormatToken::ColourPaleLavender, FormatToken::ColourPaleGold,   FormatToken::ColourLightPink,
+            FormatToken::ColourPearlAqua,    FormatToken::ColourPaleSilver,
+        };
+        if (textColour > std::size(tokens))
+            return FormatToken::ColourBlack;
+        return tokens[textColour];
+    }
+} // namespace OpenRCT2

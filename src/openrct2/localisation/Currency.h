@@ -11,60 +11,62 @@
 
 #include "../common.h"
 #include "../core/String.hpp"
-
-// List of currencies
-enum class CurrencyType : uint8_t
+namespace OpenRCT2
 {
-    Pounds,       // British Pound
-    Dollars,      // US Dollar
-    Franc,        // French Franc
-    DeutscheMark, // Deutsche Mark
-    Yen,          // Japanese Yen
-    Peseta,       // Spanish Peseta
-    Lira,         // Italian Lira
-    Guilders,     // Dutch Gilder
-    Krona,        // Swedish Krona
-    Euros,        // Euro
-    Won,          // South Korean Won
-    Rouble,       // Russian Rouble
-    CzechKoruna,  // Czech koruna
-    HKD,          // Hong Kong Dollar
-    TWD,          // New Taiwan Dollar
-    Yuan,         // Chinese Yuan
-    Forint,       // Hungarian Forint
+    // List of currencies
+    enum class CurrencyType : uint8_t
+    {
+        Pounds,       // British Pound
+        Dollars,      // US Dollar
+        Franc,        // French Franc
+        DeutscheMark, // Deutsche Mark
+        Yen,          // Japanese Yen
+        Peseta,       // Spanish Peseta
+        Lira,         // Italian Lira
+        Guilders,     // Dutch Gilder
+        Krona,        // Swedish Krona
+        Euros,        // Euro
+        Won,          // South Korean Won
+        Rouble,       // Russian Rouble
+        CzechKoruna,  // Czech koruna
+        HKD,          // Hong Kong Dollar
+        TWD,          // New Taiwan Dollar
+        Yuan,         // Chinese Yuan
+        Forint,       // Hungarian Forint
 
-    Custom, // Custom currency
+        Custom, // Custom currency
 
-    Count // Last item
-};
+        Count // Last item
+    };
 
-enum class CurrencyAffix
-{
-    Prefix,
-    Suffix
-};
+    enum class CurrencyAffix
+    {
+        Prefix,
+        Suffix
+    };
 
 #define CURRENCY_SYMBOL_MAX_SIZE 8
 #define CURRENCY_RATE_MAX_NUM_DIGITS 9
 
-// Currency format specification - inspired by OpenTTD
-struct CurrencyDescriptor
-{
-    char isoCode[4];
-    // Rate is relative to 0.10 GBP
-    int32_t rate;
-    CurrencyAffix affix_unicode;
-    utf8 symbol_unicode[CURRENCY_SYMBOL_MAX_SIZE];
-    CurrencyAffix affix_ascii;
-    char symbol_ascii[CURRENCY_SYMBOL_MAX_SIZE];
-    StringId stringId;
-};
+    // Currency format specification - inspired by OpenTTD
+    struct CurrencyDescriptor
+    {
+        char isoCode[4];
+        // Rate is relative to 0.10 GBP
+        int32_t rate;
+        CurrencyAffix affix_unicode;
+        utf8 symbol_unicode[CURRENCY_SYMBOL_MAX_SIZE];
+        CurrencyAffix affix_ascii;
+        char symbol_ascii[CURRENCY_SYMBOL_MAX_SIZE];
+        StringId stringId;
+    };
 
-// List of currency formats
-extern CurrencyDescriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType::Count)];
+    // List of currency formats
+    extern CurrencyDescriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType::Count)];
 
-/**
- * Loads custom currency saved parameters into {@link CurrencyDescriptors}'
- * custom currency entry
- */
-void CurrencyLoadCustomCurrencyConfig();
+    /**
+     * Loads custom currency saved parameters into {@link CurrencyDescriptors}'
+     * custom currency entry
+     */
+    void CurrencyLoadCustomCurrencyConfig();
+} // namespace OpenRCT2

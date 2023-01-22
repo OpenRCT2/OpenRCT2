@@ -14,125 +14,127 @@
 
 #include <string>
 #include <string_view>
-
-enum
+namespace OpenRCT2
 {
-    LANGUAGE_UNDEFINED,
-    LANGUAGE_ARABIC,
-    LANGUAGE_CATALAN,
-    LANGUAGE_CHINESE_SIMPLIFIED,
-    LANGUAGE_CHINESE_TRADITIONAL,
-    LANGUAGE_CZECH,
-    LANGUAGE_DANISH,
-    LANGUAGE_GERMAN,
-    LANGUAGE_ENGLISH_UK,
-    LANGUAGE_ENGLISH_US,
-    LANGUAGE_ESPERANTO,
-    LANGUAGE_SPANISH,
-    LANGUAGE_FRENCH,
-    LANGUAGE_FRENCH_CA,
-    LANGUAGE_ITALIAN,
-    LANGUAGE_JAPANESE,
-    LANGUAGE_KOREAN,
-    LANGUAGE_HUNGARIAN,
-    LANGUAGE_DUTCH,
-    LANGUAGE_NORWEGIAN,
-    LANGUAGE_POLISH,
-    LANGUAGE_PORTUGUESE_BR,
-    LANGUAGE_RUSSIAN,
-    LANGUAGE_FINNISH,
-    LANGUAGE_SWEDISH,
-    LANGUAGE_TURKISH,
-    LANGUAGE_VIETNAMESE,
-    LANGUAGE_COUNT
-};
+    enum
+    {
+        LANGUAGE_UNDEFINED,
+        LANGUAGE_ARABIC,
+        LANGUAGE_CATALAN,
+        LANGUAGE_CHINESE_SIMPLIFIED,
+        LANGUAGE_CHINESE_TRADITIONAL,
+        LANGUAGE_CZECH,
+        LANGUAGE_DANISH,
+        LANGUAGE_GERMAN,
+        LANGUAGE_ENGLISH_UK,
+        LANGUAGE_ENGLISH_US,
+        LANGUAGE_ESPERANTO,
+        LANGUAGE_SPANISH,
+        LANGUAGE_FRENCH,
+        LANGUAGE_FRENCH_CA,
+        LANGUAGE_ITALIAN,
+        LANGUAGE_JAPANESE,
+        LANGUAGE_KOREAN,
+        LANGUAGE_HUNGARIAN,
+        LANGUAGE_DUTCH,
+        LANGUAGE_NORWEGIAN,
+        LANGUAGE_POLISH,
+        LANGUAGE_PORTUGUESE_BR,
+        LANGUAGE_RUSSIAN,
+        LANGUAGE_FINNISH,
+        LANGUAGE_SWEDISH,
+        LANGUAGE_TURKISH,
+        LANGUAGE_VIETNAMESE,
+        LANGUAGE_COUNT
+    };
 
-enum class RCT2LanguageId
-{
-    EnglishUK,
-    EnglishUS,
-    French,
-    German,
-    Spanish,
-    Italian,
-    Dutch,
-    Swedish,
-    Japanese,
-    Korean,
-    ChineseSimplified,
-    ChineseTraditional,
-    Undefined,
-    Portuguese,
-    Blank = 254,
-    End = 255
-};
+    enum class RCT2LanguageId
+    {
+        EnglishUK,
+        EnglishUS,
+        French,
+        German,
+        Spanish,
+        Italian,
+        Dutch,
+        Swedish,
+        Japanese,
+        Korean,
+        ChineseSimplified,
+        ChineseTraditional,
+        Undefined,
+        Portuguese,
+        Blank = 254,
+        End = 255
+    };
 
 #define FONT_OPENRCT2_SPRITE NULL
 
 #include "../interface/FontFamilies.h"
 
-struct LanguageDescriptor
-{
-    const char* locale;
-    const utf8* english_name;
-    const utf8* native_name;
-    uint8_t fallback;
+    struct LanguageDescriptor
+    {
+        const char* locale;
+        const utf8* english_name;
+        const utf8* native_name;
+        uint8_t fallback;
 #if !defined(NO_TTF)
-    TTFontFamily const* font_family;
+        TTFontFamily const* font_family;
 #else
-    void* font_family;
+        void* font_family;
 #endif
-    bool isRtl;
-};
+        bool isRtl;
+    };
 
-extern const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT];
+    extern const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT];
 
-constexpr const char* BlackUpArrowString = u8"{BLACK}▲";
-constexpr const char* BlackDownArrowString = u8"{BLACK}▼";
-constexpr const char* BlackLeftArrowString = u8"{BLACK}◀";
-constexpr const char* BlackRightArrowString = u8"{BLACK}▶";
-constexpr const char* CheckBoxMarkString = u8"✓";
-constexpr const char* EyeString = u8"👁";
+    constexpr const char* BlackUpArrowString = u8"{BLACK}▲";
+    constexpr const char* BlackDownArrowString = u8"{BLACK}▼";
+    constexpr const char* BlackLeftArrowString = u8"{BLACK}◀";
+    constexpr const char* BlackRightArrowString = u8"{BLACK}▶";
+    constexpr const char* CheckBoxMarkString = u8"✓";
+    constexpr const char* EyeString = u8"👁";
 
-uint8_t LanguageGetIDFromLocale(const char* locale);
-const char* LanguageGetString(StringId id);
-bool LanguageOpen(int32_t id);
+    uint8_t LanguageGetIDFromLocale(const char* locale);
+    const char* LanguageGetString(StringId id);
+    bool LanguageOpen(int32_t id);
 
-uint32_t UTF8GetNext(const utf8* char_ptr, const utf8** nextchar_ptr);
-int32_t UTF8InsertCodepoint(utf8* dst, uint32_t codepoint);
-bool UTF8IsCodepointStart(const utf8* text);
-int32_t UTF8GetCodepointLength(char32_t codepoint);
-int32_t UTF8Length(const utf8* text);
+    uint32_t UTF8GetNext(const utf8* char_ptr, const utf8** nextchar_ptr);
+    int32_t UTF8InsertCodepoint(utf8* dst, uint32_t codepoint);
+    bool UTF8IsCodepointStart(const utf8* text);
+    int32_t UTF8GetCodepointLength(char32_t codepoint);
+    int32_t UTF8Length(const utf8* text);
 
-std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId);
-bool LanguageGetLocalisedScenarioStrings(const utf8* scenarioFilename, StringId* outStringIds);
-void LanguageFreeObjectString(StringId stringId);
-StringId LanguageAllocateObjectString(const std::string& target);
+    std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId);
+    bool LanguageGetLocalisedScenarioStrings(const utf8* scenarioFilename, StringId* outStringIds);
+    void LanguageFreeObjectString(StringId stringId);
+    StringId LanguageAllocateObjectString(const std::string& target);
 
-constexpr utf8* UTF8WriteCodepoint(utf8* dst, uint32_t codepoint)
-{
-    if (codepoint <= 0x7F)
+    constexpr utf8* UTF8WriteCodepoint(utf8* dst, uint32_t codepoint)
     {
-        dst[0] = static_cast<utf8>(codepoint);
-        return dst + 1;
-    }
-    if (codepoint <= 0x7FF)
-    {
-        dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
-        dst[1] = 0x80 | (codepoint & 0x3F);
-        return dst + 2;
-    }
-    if (codepoint <= 0xFFFF)
-    {
-        dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
-        dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
-        dst[2] = 0x80 | (codepoint & 0x3F);
-        return dst + 3;
-    }
+        if (codepoint <= 0x7F)
+        {
+            dst[0] = static_cast<utf8>(codepoint);
+            return dst + 1;
+        }
+        if (codepoint <= 0x7FF)
+        {
+            dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
+            dst[1] = 0x80 | (codepoint & 0x3F);
+            return dst + 2;
+        }
+        if (codepoint <= 0xFFFF)
+        {
+            dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
+            dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
+            dst[2] = 0x80 | (codepoint & 0x3F);
+            return dst + 3;
+        }
 
-    dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
-    dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
-    dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
-    dst[3] = 0x80 | (codepoint & 0x3F);
-    return dst + 4;
-}
+        dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
+        dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
+        dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
+        dst[3] = 0x80 | (codepoint & 0x3F);
+        return dst + 4;
+    }
+} // namespace OpenRCT2

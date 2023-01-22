@@ -19,8 +19,9 @@
 #include "LocalisationService.h"
 
 #include <stack>
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 {
     { "",       "",                     "",                      LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_UNDEFINED
@@ -51,64 +52,65 @@ const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "tr-TR", "Turkish",               "Türkçe",                LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_TURKISH
     { "vi-VN", "Vietnamese",            "Vietnamese",            LANGUAGE_UNDEFINED, FAMILY(&TTFFamilySansSerif),           false }, // LANGUAGE_VIETNAMESE
 };
-// clang-format on
+    // clang-format on
 
-uint8_t LanguageGetIDFromLocale(const char* locale)
-{
-    uint8_t i = 0;
-    for (const auto& langDesc : LanguagesDescriptors)
+    uint8_t LanguageGetIDFromLocale(const char* locale)
     {
-        if (String::Equals(locale, langDesc.locale))
+        uint8_t i = 0;
+        for (const auto& langDesc : LanguagesDescriptors)
         {
-            return i;
+            if (String::Equals(locale, langDesc.locale))
+            {
+                return i;
+            }
+            i++;
         }
-        i++;
+        return LANGUAGE_UNDEFINED;
     }
-    return LANGUAGE_UNDEFINED;
-}
 
-const char* LanguageGetString(StringId id)
-{
-    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
-    return localisationService.GetString(id);
-}
-
-bool LanguageOpen(int32_t id)
-{
-    auto context = OpenRCT2::GetContext();
-    auto& localisationService = context->GetLocalisationService();
-    auto& objectManager = context->GetObjectManager();
-    try
+    const char* LanguageGetString(StringId id)
     {
-        localisationService.OpenLanguage(id);
-        // Objects and their localised strings need to be refreshed
-        objectManager.ResetObjects();
-        return true;
+        const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+        return localisationService.GetString(id);
     }
-    catch (const std::exception&)
+
+    bool LanguageOpen(int32_t id)
     {
-        return false;
+        auto context = OpenRCT2::GetContext();
+        auto& localisationService = context->GetLocalisationService();
+        auto& objectManager = context->GetObjectManager();
+        try
+        {
+            localisationService.OpenLanguage(id);
+            // Objects and their localised strings need to be refreshed
+            objectManager.ResetObjects();
+            return true;
+        }
+        catch (const std::exception&)
+        {
+            return false;
+        }
     }
-}
 
-bool LanguageGetLocalisedScenarioStrings(const utf8* scenarioFilename, StringId* outStringIds)
-{
-    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
-    auto result = localisationService.GetLocalisedScenarioStrings(scenarioFilename);
-    outStringIds[0] = std::get<0>(result);
-    outStringIds[1] = std::get<1>(result);
-    outStringIds[2] = std::get<2>(result);
-    return outStringIds[0] != STR_NONE || outStringIds[1] != STR_NONE || outStringIds[2] != STR_NONE;
-}
+    bool LanguageGetLocalisedScenarioStrings(const utf8* scenarioFilename, StringId* outStringIds)
+    {
+        const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+        auto result = localisationService.GetLocalisedScenarioStrings(scenarioFilename);
+        outStringIds[0] = std::get<0>(result);
+        outStringIds[1] = std::get<1>(result);
+        outStringIds[2] = std::get<2>(result);
+        return outStringIds[0] != STR_NONE || outStringIds[1] != STR_NONE || outStringIds[2] != STR_NONE;
+    }
 
-void LanguageFreeObjectString(StringId stringId)
-{
-    auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
-    localisationService.FreeObjectString(stringId);
-}
+    void LanguageFreeObjectString(StringId stringId)
+    {
+        auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+        localisationService.FreeObjectString(stringId);
+    }
 
-StringId LanguageAllocateObjectString(const std::string& target)
-{
-    auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
-    return localisationService.AllocateObjectString(target);
-}
+    StringId LanguageAllocateObjectString(const std::string& target)
+    {
+        auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+        return localisationService.AllocateObjectString(target);
+    }
+} // namespace OpenRCT2

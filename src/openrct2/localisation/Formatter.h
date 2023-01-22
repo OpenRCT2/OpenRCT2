@@ -16,74 +16,75 @@
 
 #include <array>
 #include <cstring>
-
-extern thread_local uint8_t gCommonFormatArgs[80];
-
-class Formatter
+namespace OpenRCT2
 {
-    std::array<uint8_t, 256> Buffer{};
-    uint8_t* StartBuf{};
-    uint8_t* CurrentBuf{};
+    extern thread_local uint8_t gCommonFormatArgs[80];
 
-public:
-    explicit Formatter(uint8_t* buf)
-        : StartBuf(buf)
-        , CurrentBuf(buf)
+    class Formatter
     {
-    }
+        std::array<uint8_t, 256> Buffer{};
+        uint8_t* StartBuf{};
+        uint8_t* CurrentBuf{};
 
-    Formatter()
-        : Buffer{}
-        , StartBuf(Buffer.data())
-        , CurrentBuf(StartBuf)
-    {
-    }
-
-    Formatter(const Formatter& other)
-    {
-        *this = other;
-    }
-
-    Formatter& operator=(const Formatter& other);
-
-    static Formatter Common();
-
-    auto Buf()
-    {
-        return CurrentBuf;
-    }
-
-    auto Data() const
-    {
-        return StartBuf;
-    }
-
-    void Increment(size_t count)
-    {
-        auto finalCount = NumBytes() + count;
-        Guard::Assert(finalCount < Buffer.size(), "Increment is greater than buffer size!");
-        if (finalCount < Buffer.size())
+    public:
+        explicit Formatter(uint8_t* buf)
+            : StartBuf(buf)
+            , CurrentBuf(buf)
         {
-            CurrentBuf += count;
         }
-    }
 
-    void Rewind()
-    {
-        CurrentBuf -= NumBytes();
-    }
+        Formatter()
+            : Buffer{}
+            , StartBuf(Buffer.data())
+            , CurrentBuf(StartBuf)
+        {
+        }
 
-    std::size_t NumBytes() const
-    {
-        return CurrentBuf - StartBuf;
-    }
+        Formatter(const Formatter& other)
+        {
+            *this = other;
+        }
 
-    template<typename TSpecified, typename TDeduced> Formatter& Add(TDeduced value)
-    {
-        static_assert(sizeof(TSpecified) <= sizeof(uint64_t), "Type too large");
-        static_assert(sizeof(TDeduced) <= sizeof(uint64_t), "Type too large");
+        Formatter& operator=(const Formatter& other);
 
-        // clang-format off
+        static Formatter Common();
+
+        auto Buf()
+        {
+            return CurrentBuf;
+        }
+
+        auto Data() const
+        {
+            return StartBuf;
+        }
+
+        void Increment(size_t count)
+        {
+            auto finalCount = NumBytes() + count;
+            Guard::Assert(finalCount < Buffer.size(), "Increment is greater than buffer size!");
+            if (finalCount < Buffer.size())
+            {
+                CurrentBuf += count;
+            }
+        }
+
+        void Rewind()
+        {
+            CurrentBuf -= NumBytes();
+        }
+
+        std::size_t NumBytes() const
+        {
+            return CurrentBuf - StartBuf;
+        }
+
+        template<typename TSpecified, typename TDeduced> Formatter& Add(TDeduced value)
+        {
+            static_assert(sizeof(TSpecified) <= sizeof(uint64_t), "Type too large");
+            static_assert(sizeof(TDeduced) <= sizeof(uint64_t), "Type too large");
+
+            // clang-format off
         static_assert(
             std::is_same_v<typename std::remove_cv_t<TSpecified>, char*> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, const char*> ||
@@ -99,33 +100,34 @@ public:
             std::is_same_v<typename std::remove_cv_t<TSpecified>, utf8*> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, const utf8*>
         );
-        // clang-format on
+            // clang-format on
 
-        uint64_t convertedValue;
-        if constexpr (std::is_same_v<std::remove_cv_t<TDeduced>, RideId>)
-        {
-            convertedValue = static_cast<uint64_t>(value.ToUnderlying());
+            uint64_t convertedValue;
+            if constexpr (std::is_same_v<std::remove_cv_t<TDeduced>, RideId>)
+            {
+                convertedValue = static_cast<uint64_t>(value.ToUnderlying());
+            }
+            else if constexpr (std::is_same_v<std::remove_cv_t<TDeduced>, EntityId>)
+            {
+                convertedValue = static_cast<uint64_t>(value.ToUnderlying());
+            }
+            else if constexpr (std::is_integral_v<TSpecified> || std::is_enum_v<TSpecified>)
+            {
+                convertedValue = static_cast<uint64_t>(value);
+            }
+            else
+            {
+                convertedValue = reinterpret_cast<uint64_t>(value);
+            }
+            std::memcpy(CurrentBuf, &convertedValue, sizeof(TSpecified));
+            Increment(sizeof(TSpecified));
+            return *this;
         }
-        else if constexpr (std::is_same_v<std::remove_cv_t<TDeduced>, EntityId>)
-        {
-            convertedValue = static_cast<uint64_t>(value.ToUnderlying());
-        }
-        else if constexpr (std::is_integral_v<TSpecified> || std::is_enum_v<TSpecified>)
-        {
-            convertedValue = static_cast<uint64_t>(value);
-        }
-        else
-        {
-            convertedValue = reinterpret_cast<uint64_t>(value);
-        }
-        std::memcpy(CurrentBuf, &convertedValue, sizeof(TSpecified));
-        Increment(sizeof(TSpecified));
-        return *this;
-    }
-};
+    };
 
-struct OpenRCT2String
-{
-    StringId str;
-    Formatter args;
-};
+    struct OpenRCT2String
+    {
+        StringId str;
+        Formatter args;
+    };
+} // namespace OpenRCT2

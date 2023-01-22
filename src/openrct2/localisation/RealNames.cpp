@@ -8,12 +8,13 @@
  *****************************************************************************/
 
 #include "Localisation.h"
+namespace OpenRCT2
+{
+    const char real_name_initials[] = {
+        'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W',
+    };
 
-const char real_name_initials[] = {
-    'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W',
-};
-
-// clang-format off
+    // clang-format off
 // The peep sorter assumes this array is alphabetically ordered
 const char *real_names[] = {
     "Aaron",
@@ -1041,4 +1042,5 @@ const char *real_names[] = {
     "Zachery",
     "Zola",
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2

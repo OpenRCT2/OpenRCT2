@@ -36,16 +36,17 @@
 #include <ctype.h>
 #include <iterator>
 #include <limits.h>
-
-thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
+namespace OpenRCT2
+{
+    thread_local char gCommonStringFormatBuffer[CommonTextBufferSize];
 
 #ifdef DEBUG
-// Set to true before a string format call to see details of the formatting.
-// Set to false after the call.
-bool gDebugStringFormatting = false;
+    // Set to true before a string format call to see details of the formatting.
+    // Set to false after the call.
+    bool gDebugStringFormatting = false;
 #endif
 
-// clang-format off
+    // clang-format off
 const StringId SpeedNames[] = {
     STR_SPEED_NORMAL,
     STR_SPEED_QUICK,
@@ -327,227 +328,228 @@ const StringId DateGameShortMonthNames[MONTH_COUNT] = {
     STR_MONTH_SHORT_SEP,
     STR_MONTH_SHORT_OCT,
 };
-// clang-format on
+    // clang-format on
 
-std::string FormatStringID(StringId format, const void* args)
-{
-    std::string buffer(256, 0);
-    size_t len{};
-    for (;;)
+    std::string FormatStringID(StringId format, const void* args)
     {
-        OpenRCT2::FormatStringLegacy(buffer.data(), buffer.size(), format, args);
-        len = buffer.find('\0');
-        if (len == std::string::npos)
+        std::string buffer(256, 0);
+        size_t len{};
+        for (;;)
         {
-            len = buffer.size();
+            OpenRCT2::FormatStringLegacy(buffer.data(), buffer.size(), format, args);
+            len = buffer.find('\0');
+            if (len == std::string::npos)
+            {
+                len = buffer.size();
+            }
+            if (len >= buffer.size() - 1)
+            {
+                // Null terminator to close to end of buffer, grow buffer and try again
+                buffer.resize(buffer.size() * 2);
+            }
+            else
+            {
+                buffer.resize(len);
+                break;
+            }
         }
-        if (len >= buffer.size() - 1)
-        {
-            // Null terminator to close to end of buffer, grow buffer and try again
-            buffer.resize(buffer.size() * 2);
-        }
-        else
-        {
-            buffer.resize(len);
-            break;
-        }
+        return buffer;
     }
-    return buffer;
-}
 
-/**
- * Writes a formatted string to a buffer and converts it to upper case.
- *  rct2: 0x006C2538
- * dest (edi)
- * format (ax)
- * args (ecx)
- */
-void FormatStringToUpper(utf8* dest, size_t size, StringId format, const void* args)
-{
+    /**
+     * Writes a formatted string to a buffer and converts it to upper case.
+     *  rct2: 0x006C2538
+     * dest (edi)
+     * format (ax)
+     * args (ecx)
+     */
+    void FormatStringToUpper(utf8* dest, size_t size, StringId format, const void* args)
+    {
 #ifdef DEBUG
-    if (gDebugStringFormatting)
-    {
-        printf("FormatStringToUpper(%hu)\n", format);
-    }
+        if (gDebugStringFormatting)
+        {
+            printf("FormatStringToUpper(%hu)\n", format);
+        }
 #endif
 
-    if (size == 0)
-    {
-        return;
-    }
-
-    OpenRCT2::FormatStringLegacy(dest, size, format, args);
-
-    std::string upperString = String::ToUpper(dest);
-
-    if (upperString.size() + 1 >= size)
-    {
-        upperString.resize(size - 1);
-        dest[size - 1] = '\0';
-        LOG_WARNING("Truncating formatted string \"%s\" to %d bytes.", dest, size);
-    }
-
-    upperString.copy(dest, upperString.size());
-    dest[upperString.size()] = '\0';
-}
-
-void FormatReadableSize(char* buf, size_t bufSize, uint64_t sizeBytes)
-{
-    constexpr uint32_t SizeTable[] = {
-        STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE, STR_SIZE_TERABYTE,
-    };
-
-    double size = sizeBytes;
-    size_t idx = 0;
-    while (size >= 1024.0)
-    {
-        size /= 1024.0;
-        idx++;
-    }
-
-    char sizeType[128] = {};
-    OpenRCT2::FormatStringLegacy(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
-
-    snprintf(buf, bufSize, "%.03f %s", size, sizeType);
-}
-
-void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytes)
-{
-    char sizeText[128] = {};
-    FormatReadableSize(sizeText, sizeof(sizeText), sizeBytes);
-
-    const char* args[1] = {
-        sizeText,
-    };
-    OpenRCT2::FormatStringLegacy(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
-}
-
-money64 StringToMoney(const char* string_to_monetise)
-{
-    const char* decimal_char = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
-    const CurrencyDescriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
-    char processedString[128] = {};
-
-    Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
-
-    uint32_t numNumbers = 0;
-    bool hasMinus = false;
-    bool hasDecSep = false;
-    const char* src_ptr = string_to_monetise;
-    char* dst_ptr = processedString;
-
-    // Process the string, keeping only numbers decimal, and minus sign(s).
-    while (*src_ptr != '\0')
-    {
-        if (*src_ptr >= '0' && *src_ptr <= '9')
+        if (size == 0)
         {
-            numNumbers++;
+            return;
         }
-        else if (*src_ptr == decimal_char[0])
-        {
-            if (hasDecSep)
-                return MONEY64_UNDEFINED;
-            hasDecSep = true;
 
-            // Replace localised decimal separator with an English one.
-            *dst_ptr++ = '.';
+        OpenRCT2::FormatStringLegacy(dest, size, format, args);
+
+        std::string upperString = String::ToUpper(dest);
+
+        if (upperString.size() + 1 >= size)
+        {
+            upperString.resize(size - 1);
+            dest[size - 1] = '\0';
+            LOG_WARNING("Truncating formatted string \"%s\" to %d bytes.", dest, size);
+        }
+
+        upperString.copy(dest, upperString.size());
+        dest[upperString.size()] = '\0';
+    }
+
+    void FormatReadableSize(char* buf, size_t bufSize, uint64_t sizeBytes)
+    {
+        constexpr uint32_t SizeTable[] = {
+            STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE, STR_SIZE_TERABYTE,
+        };
+
+        double size = sizeBytes;
+        size_t idx = 0;
+        while (size >= 1024.0)
+        {
+            size /= 1024.0;
+            idx++;
+        }
+
+        char sizeType[128] = {};
+        OpenRCT2::FormatStringLegacy(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
+
+        snprintf(buf, bufSize, "%.03f %s", size, sizeType);
+    }
+
+    void FormatReadableSpeed(char* buf, size_t bufSize, uint64_t sizeBytes)
+    {
+        char sizeText[128] = {};
+        FormatReadableSize(sizeText, sizeof(sizeText), sizeBytes);
+
+        const char* args[1] = {
+            sizeText,
+        };
+        OpenRCT2::FormatStringLegacy(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
+    }
+
+    money64 StringToMoney(const char* string_to_monetise)
+    {
+        const char* decimal_char = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
+        const CurrencyDescriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
+        char processedString[128] = {};
+
+        Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
+
+        uint32_t numNumbers = 0;
+        bool hasMinus = false;
+        bool hasDecSep = false;
+        const char* src_ptr = string_to_monetise;
+        char* dst_ptr = processedString;
+
+        // Process the string, keeping only numbers decimal, and minus sign(s).
+        while (*src_ptr != '\0')
+        {
+            if (*src_ptr >= '0' && *src_ptr <= '9')
+            {
+                numNumbers++;
+            }
+            else if (*src_ptr == decimal_char[0])
+            {
+                if (hasDecSep)
+                    return MONEY64_UNDEFINED;
+                hasDecSep = true;
+
+                // Replace localised decimal separator with an English one.
+                *dst_ptr++ = '.';
+                src_ptr++;
+                continue;
+            }
+            else if (*src_ptr == '-')
+            {
+                if (hasMinus)
+                    return MONEY64_UNDEFINED;
+                hasMinus = true;
+            }
+            else
+            {
+                // Skip invalid characters.
+                src_ptr++;
+                continue;
+            }
+
+            // Copy numeric values.
+            *dst_ptr++ = *src_ptr;
             src_ptr++;
-            continue;
-        }
-        else if (*src_ptr == '-')
-        {
-            if (hasMinus)
-                return MONEY64_UNDEFINED;
-            hasMinus = true;
-        }
-        else
-        {
-            // Skip invalid characters.
-            src_ptr++;
-            continue;
         }
 
-        // Copy numeric values.
-        *dst_ptr++ = *src_ptr;
-        src_ptr++;
-    }
+        // Terminate destination string.
+        *dst_ptr = '\0';
 
-    // Terminate destination string.
-    *dst_ptr = '\0';
-
-    if (numNumbers == 0)
-        return MONEY64_UNDEFINED;
-
-    int64_t sign = 1;
-    if (hasMinus)
-    {
-        // If there is a minus sign, it has to be at position 0 in order to be valid.
-        if (processedString[0] == '-')
-            sign = -1;
-        else
+        if (numNumbers == 0)
             return MONEY64_UNDEFINED;
+
+        int64_t sign = 1;
+        if (hasMinus)
+        {
+            // If there is a minus sign, it has to be at position 0 in order to be valid.
+            if (processedString[0] == '-')
+                sign = -1;
+            else
+                return MONEY64_UNDEFINED;
+        }
+
+        // Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
+        // ".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
+        if (processedString[0] == decimal_char[0])
+        {
+            for (size_t i = strlen(processedString); i >= 1; i--)
+                processedString[i] = processedString[i - 1];
+            processedString[0] = '0';
+        }
+
+        auto number = std::stod(processedString, nullptr);
+        number /= (currencyDesc->rate / 10.0);
+
+        return ToMoney64FromGBP(number) * sign;
     }
 
-    // Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
-    // ".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
-    if (processedString[0] == decimal_char[0])
+    /**
+     *
+     * @param amount The amount in tens of pounds, e.g. 123 = £ 12.30
+     * @param buffer_to_put_value_to Output parameter.
+     * @param buffer_len Length of the buffer.
+     * @param forceDecimals Show decimals, even if the amount does not have them. Will be ignored if the current exchange
+     *                          rate is too big to have decimals.
+     */
+    void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals)
     {
-        for (size_t i = strlen(processedString); i >= 1; i--)
-            processedString[i] = processedString[i - 1];
-        processedString[0] = '0';
+        if (amount == MONEY64_UNDEFINED)
+        {
+            snprintf(buffer_to_put_value_to, buffer_len, "0");
+            return;
+        }
+
+        const CurrencyDescriptor& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
+
+        const char* sign = amount >= 0 ? "" : "-";
+        const uint64_t a = std::abs(amount) * currencyDesc.rate;
+        const unsigned long long whole = a / 100;
+        const unsigned long long decimal = a % 100;
+
+        bool amountIsInteger = (whole > 0) && decimal == 0;
+
+        // If whole and decimal exist
+        if ((whole > 0 && decimal > 0) || (amountIsInteger && forceDecimals && currencyDesc.rate < 100))
+        {
+            const char* decimalChar = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
+            auto precedingZero = (decimal < 10) ? "0" : "";
+            snprintf(buffer_to_put_value_to, buffer_len, "%s%llu%s%s%llu", sign, whole, decimalChar, precedingZero, decimal);
+        }
+        // If whole exists, but not decimal
+        else if (amountIsInteger)
+        {
+            snprintf(buffer_to_put_value_to, buffer_len, "%s%llu", sign, whole);
+        }
+        // If decimal exists, but not whole
+        else if (whole == 0 && decimal > 0)
+        {
+            const char* decimalChar = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
+            snprintf(buffer_to_put_value_to, buffer_len, "%s0%s%llu", sign, decimalChar, decimal);
+        }
+        else
+        {
+            snprintf(buffer_to_put_value_to, buffer_len, "0");
+        }
     }
-
-    auto number = std::stod(processedString, nullptr);
-    number /= (currencyDesc->rate / 10.0);
-
-    return ToMoney64FromGBP(number) * sign;
-}
-
-/**
- *
- * @param amount The amount in tens of pounds, e.g. 123 = £ 12.30
- * @param buffer_to_put_value_to Output parameter.
- * @param buffer_len Length of the buffer.
- * @param forceDecimals Show decimals, even if the amount does not have them. Will be ignored if the current exchange
- *                          rate is too big to have decimals.
- */
-void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals)
-{
-    if (amount == MONEY64_UNDEFINED)
-    {
-        snprintf(buffer_to_put_value_to, buffer_len, "0");
-        return;
-    }
-
-    const CurrencyDescriptor& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
-
-    const char* sign = amount >= 0 ? "" : "-";
-    const uint64_t a = std::abs(amount) * currencyDesc.rate;
-    const unsigned long long whole = a / 100;
-    const unsigned long long decimal = a % 100;
-
-    bool amountIsInteger = (whole > 0) && decimal == 0;
-
-    // If whole and decimal exist
-    if ((whole > 0 && decimal > 0) || (amountIsInteger && forceDecimals && currencyDesc.rate < 100))
-    {
-        const char* decimalChar = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
-        auto precedingZero = (decimal < 10) ? "0" : "";
-        snprintf(buffer_to_put_value_to, buffer_len, "%s%llu%s%s%llu", sign, whole, decimalChar, precedingZero, decimal);
-    }
-    // If whole exists, but not decimal
-    else if (amountIsInteger)
-    {
-        snprintf(buffer_to_put_value_to, buffer_len, "%s%llu", sign, whole);
-    }
-    // If decimal exists, but not whole
-    else if (whole == 0 && decimal > 0)
-    {
-        const char* decimalChar = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
-        snprintf(buffer_to_put_value_to, buffer_len, "%s0%s%llu", sign, decimalChar, decimal);
-    }
-    else
-    {
-        snprintf(buffer_to_put_value_to, buffer_len, "0");
-    }
-}
+} // namespace OpenRCT2
