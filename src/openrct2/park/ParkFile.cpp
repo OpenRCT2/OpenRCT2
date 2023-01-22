@@ -64,8 +64,6 @@
 #include <string_view>
 #include <vector>
 
-using namespace OpenRCT2;
-
 namespace OpenRCT2
 {
     namespace ParkFileChunkType
@@ -2275,168 +2273,170 @@ namespace OpenRCT2
             }
         });
     }
-} // namespace OpenRCT2
 
-void ParkFileExporter::Export(std::string_view path)
-{
-    auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
-    parkFile->Save(path);
-}
-
-void ParkFileExporter::Export(IStream& stream)
-{
-    auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
-    parkFile->ExportObjectsList = ExportObjectsList;
-    parkFile->Save(stream);
-}
-
-enum : uint32_t
-{
-    S6_SAVE_FLAG_EXPORT = 1 << 0,
-    S6_SAVE_FLAG_SCENARIO = 1 << 1,
-    S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
-};
-
-int32_t ScenarioSave(u8string_view path, int32_t flags)
-{
-    if (flags & S6_SAVE_FLAG_SCENARIO)
+    void ParkFileExporter::Export(std::string_view path)
     {
-        LOG_VERBOSE("saving scenario");
-    }
-    else
-    {
-        LOG_VERBOSE("saving game");
+        auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        parkFile->Save(path);
     }
 
-    gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
-    if (!gIsAutosave)
+    void ParkFileExporter::Export(IStream& stream)
     {
-        WindowCloseConstructionWindows();
+        auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        parkFile->ExportObjectsList = ExportObjectsList;
+        parkFile->Save(stream);
     }
 
-    PrepareMapForSave();
-
-    bool result = false;
-    auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
-    try
+    enum : uint32_t
     {
-        if (flags & S6_SAVE_FLAG_EXPORT)
-        {
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-            parkFile->ExportObjectsList = objManager.GetPackableObjects();
-        }
-        parkFile->OmitTracklessRides = true;
+        S6_SAVE_FLAG_EXPORT = 1 << 0,
+        S6_SAVE_FLAG_SCENARIO = 1 << 1,
+        S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
+    };
+
+    int32_t ScenarioSave(u8string_view path, int32_t flags)
+    {
         if (flags & S6_SAVE_FLAG_SCENARIO)
         {
-            // s6exporter->SaveScenario(path);
+            LOG_VERBOSE("saving scenario");
         }
         else
         {
-            // s6exporter->SaveGame(path);
+            LOG_VERBOSE("saving game");
         }
-        parkFile->Save(path);
-        result = true;
-    }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR(e.what());
 
-        Formatter ft;
-        ft.Add<const char*>(e.what());
-        ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
+        gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
+        if (!gIsAutosave)
+        {
+            WindowCloseConstructionWindows();
+        }
+
+        PrepareMapForSave();
+
+        bool result = false;
+        auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        try
+        {
+            if (flags & S6_SAVE_FLAG_EXPORT)
+            {
+                auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+                parkFile->ExportObjectsList = objManager.GetPackableObjects();
+            }
+            parkFile->OmitTracklessRides = true;
+            if (flags & S6_SAVE_FLAG_SCENARIO)
+            {
+                // s6exporter->SaveScenario(path);
+            }
+            else
+            {
+                // s6exporter->SaveGame(path);
+            }
+            parkFile->Save(path);
+            result = true;
+        }
+        catch (const std::exception& e)
+        {
+            LOG_ERROR(e.what());
+
+            Formatter ft;
+            ft.Add<const char*>(e.what());
+            ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
+            GfxInvalidateScreen();
+
+            auto ctx = OpenRCT2::GetContext();
+            auto uictx = ctx->GetUiContext();
+
+            std::string title = "Error while saving";
+            std::string message = "There was an error while saving "
+                                  "scenario.\nhttps://github.com/OpenRCT2/OpenRCT2/issues/17664\nWe would like to "
+                                  "collect more information about this issue, if this did not happen due to missing "
+                                  "permissions, lack of space, "
+                                  "etc. please consider submitting a bug report. To collect information we would like to "
+                                  "trigger an assert.";
+
+            std::string report_bug_button = "Report bug, trigger an assert, potentially terminating the game";
+            std::string skip_button = "Skip reporting, let me continue";
+
+            std::vector<std::string> buttons{ std::move(report_bug_button), std::move(skip_button) };
+            int choice = uictx->ShowMessageBox(title, message, buttons);
+
+            if (choice == 0)
+            {
+                Guard::Assert(false, "Error while saving: %s", e.what());
+            }
+        }
+
         GfxInvalidateScreen();
 
-        auto ctx = OpenRCT2::GetContext();
-        auto uictx = ctx->GetUiContext();
-
-        std::string title = "Error while saving";
-        std::string message
-            = "There was an error while saving scenario.\nhttps://github.com/OpenRCT2/OpenRCT2/issues/17664\nWe would like to "
-              "collect more information about this issue, if this did not happen due to missing permissions, lack of space, "
-              "etc. please consider submitting a bug report. To collect information we would like to trigger an assert.";
-
-        std::string report_bug_button = "Report bug, trigger an assert, potentially terminating the game";
-        std::string skip_button = "Skip reporting, let me continue";
-
-        std::vector<std::string> buttons{ std::move(report_bug_button), std::move(skip_button) };
-        int choice = uictx->ShowMessageBox(title, message, buttons);
-
-        if (choice == 0)
+        if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
         {
-            Guard::Assert(false, "Error while saving: %s", e.what());
+            gScreenAge = 0;
         }
+        return result;
     }
 
-    GfxInvalidateScreen();
-
-    if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
+    class ParkFileImporter final : public IParkImporter
     {
-        gScreenAge = 0;
-    }
-    return result;
-}
-
-class ParkFileImporter final : public IParkImporter
-{
-private:
+    private:
 #ifdef __clang__
-    [[maybe_unused]]
+        [[maybe_unused]]
 #endif
-    const IObjectRepository& _objectRepository;
-    std::unique_ptr<OpenRCT2::ParkFile> _parkFile;
+        const IObjectRepository& _objectRepository;
+        std::unique_ptr<OpenRCT2::ParkFile> _parkFile;
 
-public:
-    ParkFileImporter(IObjectRepository& objectRepository)
-        : _objectRepository(objectRepository)
+    public:
+        ParkFileImporter(IObjectRepository& objectRepository)
+            : _objectRepository(objectRepository)
+        {
+        }
+
+        ParkLoadResult Load(const utf8* path) override
+        {
+            _parkFile = std::make_unique<OpenRCT2::ParkFile>();
+            _parkFile->Load(path);
+
+            auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
+            result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);
+            return result;
+        }
+
+        ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
+        {
+            return Load(path);
+        }
+
+        ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) override
+        {
+            return Load(path);
+        }
+
+        ParkLoadResult LoadFromStream(
+            OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) override
+        {
+            _parkFile = std::make_unique<OpenRCT2::ParkFile>();
+            _parkFile->Load(*stream);
+
+            auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
+            result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);
+            return result;
+        }
+
+        void Import() override
+        {
+            _parkFile->Import();
+            ResearchDetermineFirstOfType();
+            GameFixSaveVars();
+        }
+
+        bool GetDetails(scenario_index_entry* dst) override
+        {
+            *dst = _parkFile->ReadScenarioChunk();
+            return true;
+        }
+    };
+
+    std::unique_ptr<IParkImporter> ParkImporter::CreateParkFile(IObjectRepository& objectRepository)
     {
+        return std::make_unique<ParkFileImporter>(objectRepository);
     }
-
-    ParkLoadResult Load(const utf8* path) override
-    {
-        _parkFile = std::make_unique<OpenRCT2::ParkFile>();
-        _parkFile->Load(path);
-
-        auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
-        result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);
-        return result;
-    }
-
-    ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
-    {
-        return Load(path);
-    }
-
-    ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) override
-    {
-        return Load(path);
-    }
-
-    ParkLoadResult LoadFromStream(
-        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) override
-    {
-        _parkFile = std::make_unique<OpenRCT2::ParkFile>();
-        _parkFile->Load(*stream);
-
-        auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
-        result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);
-        return result;
-    }
-
-    void Import() override
-    {
-        _parkFile->Import();
-        ResearchDetermineFirstOfType();
-        GameFixSaveVars();
-    }
-
-    bool GetDetails(scenario_index_entry* dst) override
-    {
-        *dst = _parkFile->ReadScenarioChunk();
-        return true;
-    }
-};
-
-std::unique_ptr<IParkImporter> ParkImporter::CreateParkFile(IObjectRepository& objectRepository)
-{
-    return std::make_unique<ParkFileImporter>(objectRepository);
-}
+} // namespace OpenRCT2

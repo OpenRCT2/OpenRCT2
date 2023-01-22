@@ -16,13 +16,16 @@ namespace RCT2
 {
     struct FootpathMapping;
 }
-struct ObjectEntryDescriptor;
-class ObjectList;
+namespace OpenRCT2
+{
+    struct ObjectEntryDescriptor;
+    class ObjectList;
 
-std::string_view MapToNewObjectIdentifier(std::string_view s);
-std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
-const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
-void UpdateFootpathsFromMapping(
-    ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
-    ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
-    const RCT2::FootpathMapping* footpathMapping);
+    std::string_view MapToNewObjectIdentifier(std::string_view s);
+    std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
+    const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
+    void UpdateFootpathsFromMapping(
+        ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
+        ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount,
+        ObjectEntryIndex entryIndex, const RCT2::FootpathMapping* footpathMapping);
+} // namespace OpenRCT2
