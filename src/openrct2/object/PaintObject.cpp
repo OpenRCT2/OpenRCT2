@@ -299,6 +299,9 @@ void PaintObject::Paint(
             paintStruct->Paint(session, ride, trackSequence, direction, height, trackElement, key, vehicle);
         }
     }
+
+    session.CurrentlyDrawnEntity = nullptr;
+    session.InteractionType = ViewportInteractionItem::Ride;
 }
 
 void PaintObject::LoadPaintObjects()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Limits.h"
+#include "../core/Json.hpp"
 #include "../ride/TrackData.h"
 #include "KeyGenerator.h"
 #include "TreeContainer.h"
@@ -9,7 +10,6 @@
 #include <optional>
 #include <tuple>
 #include <vector>
-#include "../core/Json.hpp"
 
 struct Vehicle;
 using PaintStructSequenceMapping = std::array<std::vector<uint32_t>, 4>;
@@ -166,7 +166,7 @@ struct PaintStructDescriptor
     std::optional<FenceType> Fences;
     std::optional<PaintType> PaintCode;
     std::optional<Scheme> ImageIdScheme;
-    ImageIdBase ImageId;
+    std::optional<ImageIdBase> ImageId;
     Colour PrimaryColour;
     uint32_t PrimaryColourIndex;
     std::optional<Colour> SecondaryColour;
@@ -196,7 +196,6 @@ struct PaintStructJson
 {
     PaintStructJson(const PaintObject& object)
         : _object(object)
-        , ImageIdBase(PaintStructDescriptor::ImageIdBase::Car0)
         , PrimaryColour(PaintStructDescriptor::Colour::VehicleBody)
         , PrimaryColourIndex(0)
         , SecondaryColour(PaintStructDescriptor::Colour::VehicleTrim)
@@ -211,7 +210,7 @@ struct PaintStructJson
     std::optional<PaintStructDescriptor::FenceType> Fences;
     std::optional<PaintStructDescriptor::PaintType> PaintType;
     std::optional<PaintStructDescriptor::Scheme> ImageIdScheme;
-    PaintStructDescriptor::ImageIdBase ImageIdBase;
+    std::optional<PaintStructDescriptor::ImageIdBase> ImageIdBase;
     PaintStructDescriptor::Colour PrimaryColour;
     uint32_t PrimaryColourIndex;
     std::optional<PaintStructDescriptor::Colour> SecondaryColour;
@@ -294,7 +293,6 @@ inline void KeyRange<PaintStructKey>::FromJson(const json_t& json)
                 auto trackType = PaintStructDescriptor::TrackElemTypeFromString(elementJson);
                 Elements.push_back(trackType);
             }
-                
         }
     }
 

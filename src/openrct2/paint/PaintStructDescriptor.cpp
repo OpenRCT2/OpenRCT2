@@ -15,7 +15,6 @@ PaintStructDescriptor::PaintStructDescriptor()
     , ImageIdOffsetIndex(0)
     , ImageIdOffset(nullptr)
     , HeightSupports(nullptr)
-    , ImageId(PaintStructDescriptor::ImageIdBase::Car0)
     , BoundBoxTable(nullptr)
 {
 }
@@ -165,12 +164,15 @@ void PaintStructDescriptor::Paint(
             }
 
             uint32_t imageIndex = 0;
-            switch (ImageId)
+            if (ImageId.has_value())
             {
-                case ImageIdBase::Car0:
-                default:
-                    imageIndex = rideEntry->Cars[0].base_image_id;
-                    break;
+                switch (ImageId.value())
+                {
+                    case ImageIdBase::Car0:
+                    default:
+                        imageIndex = rideEntry->Cars[0].base_image_id;
+                        break;
+                }
             }
 
             if (ImageIdOffset != nullptr)

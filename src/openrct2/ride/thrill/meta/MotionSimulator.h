@@ -64,5 +64,6 @@ constexpr const RideTypeDescriptor MotionSimulatorRTD =
     SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_Default),
     SET_FIELD(MusicTrackOffsetLength, OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default),
     SET_FIELD(UpdateRideApproachVehicleWaypoints, UpdateRideApproachVehicleWaypointsMotionSimulator),
+    SET_FIELD(PaintObjectId, "openrct2.paint.motsim"),
 };
 // clang-format on
