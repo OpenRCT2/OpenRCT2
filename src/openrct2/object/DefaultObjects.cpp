@@ -10,8 +10,9 @@
 #include "DefaultObjects.h"
 
 #include "Object.h"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 const std::string_view MinimumRequiredObjects[] = { "rct2.terrain_surface.grass", "rct2.terrain_edge.rock" };
 
 const std::string_view DefaultSelectedObjects[] = {
@@ -184,4 +185,5 @@ const std::string_view DesignerSelectedObjects[] = {
     "rct2.station.space",
 };
 
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2

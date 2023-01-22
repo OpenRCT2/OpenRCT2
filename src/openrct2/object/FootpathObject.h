@@ -11,45 +11,47 @@
 
 #include "../world/Footpath.h"
 #include "Object.h"
-
-class FootpathObject final : public Object
+namespace OpenRCT2
 {
-private:
-    FootpathEntry _legacyType = {};
-    PathSurfaceDescriptor _pathSurfaceDescriptor = {};
-    PathSurfaceDescriptor _queueSurfaceDescriptor = {};
-    PathRailingsDescriptor _pathRailingsDescriptor = {};
-
-public:
-    void* GetLegacyData() override
+    class FootpathObject final : public Object
     {
-        return &_legacyType;
-    }
+    private:
+        FootpathEntry _legacyType = {};
+        PathSurfaceDescriptor _pathSurfaceDescriptor = {};
+        PathSurfaceDescriptor _queueSurfaceDescriptor = {};
+        PathRailingsDescriptor _pathRailingsDescriptor = {};
 
-    const void* GetLegacyData() const
-    {
-        return &_legacyType;
-    }
+    public:
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-    const PathSurfaceDescriptor& GetPathSurfaceDescriptor() const
-    {
-        return _pathSurfaceDescriptor;
-    }
+        const void* GetLegacyData() const
+        {
+            return &_legacyType;
+        }
 
-    const PathSurfaceDescriptor& GetQueueSurfaceDescriptor() const
-    {
-        return _queueSurfaceDescriptor;
-    }
+        const PathSurfaceDescriptor& GetPathSurfaceDescriptor() const
+        {
+            return _pathSurfaceDescriptor;
+        }
 
-    const PathRailingsDescriptor& GetPathRailingsDescriptor() const
-    {
-        return _pathRailingsDescriptor;
-    }
+        const PathSurfaceDescriptor& GetQueueSurfaceDescriptor() const
+        {
+            return _queueSurfaceDescriptor;
+        }
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+        const PathRailingsDescriptor& GetPathRailingsDescriptor() const
+        {
+            return _pathRailingsDescriptor;
+        }
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
-};
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+    };
+} // namespace OpenRCT2

@@ -15,18 +15,20 @@
 #include "Object.h"
 
 #include <optional>
-
-class AudioObject final : public Object
+namespace OpenRCT2
 {
-private:
-    AudioSampleTable _sampleTable;
-    AudioSampleTable _loadedSampleTable;
+    class AudioObject final : public Object
+    {
+    private:
+        AudioSampleTable _sampleTable;
+        AudioSampleTable _loadedSampleTable;
 
-public:
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
 
-    OpenRCT2::Audio::IAudioSource* GetSample(uint32_t index) const;
-    int32_t GetSampleModifier(uint32_t index) const;
-};
+        OpenRCT2::Audio::IAudioSource* GetSample(uint32_t index) const;
+        int32_t GetSampleModifier(uint32_t index) const;
+    };
+} // namespace OpenRCT2

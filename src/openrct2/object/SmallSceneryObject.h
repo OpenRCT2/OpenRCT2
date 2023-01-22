@@ -13,29 +13,31 @@
 #include "SceneryObject.h"
 
 #include <vector>
-
-class SmallSceneryObject final : public SceneryObject
+namespace OpenRCT2
 {
-private:
-    SmallSceneryEntry _legacyType = {};
-    std::vector<uint8_t> _frameOffsets;
-
-public:
-    void* GetLegacyData() override
+    class SmallSceneryObject final : public SceneryObject
     {
-        return &_legacyType;
-    }
+    private:
+        SmallSceneryEntry _legacyType = {};
+        std::vector<uint8_t> _frameOffsets;
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
 
-private:
-    static std::vector<uint8_t> ReadFrameOffsets(OpenRCT2::IStream* stream);
-    static std::vector<uint8_t> ReadJsonFrameOffsets(json_t& jFrameOffsets);
-    void PerformFixes();
-    ObjectEntryDescriptor GetScgPiratHeader() const;
-};
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+
+    private:
+        static std::vector<uint8_t> ReadFrameOffsets(OpenRCT2::IStream* stream);
+        static std::vector<uint8_t> ReadJsonFrameOffsets(json_t& jFrameOffsets);
+        void PerformFixes();
+        ObjectEntryDescriptor GetScgPiratHeader() const;
+    };
+} // namespace OpenRCT2

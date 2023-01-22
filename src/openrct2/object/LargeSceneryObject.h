@@ -14,33 +14,35 @@
 
 #include <memory>
 #include <vector>
-
-class LargeSceneryObject final : public SceneryObject
+namespace OpenRCT2
 {
-private:
-    LargeSceneryEntry _legacyType = {};
-    uint32_t _baseImageId = 0;
-    std::vector<LargeSceneryTile> _tiles;
-    std::unique_ptr<LargeSceneryText> _3dFont;
-
-public:
-    void* GetLegacyData() override
+    class LargeSceneryObject final : public SceneryObject
     {
-        return &_legacyType;
-    }
+    private:
+        LargeSceneryEntry _legacyType = {};
+        uint32_t _baseImageId = 0;
+        std::vector<LargeSceneryTile> _tiles;
+        std::unique_ptr<LargeSceneryText> _3dFont;
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
-    const LargeSceneryTile* GetTileForSequence(uint8_t SequenceIndex) const;
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
 
-private:
-    [[nodiscard]] static std::vector<LargeSceneryTile> ReadTiles(OpenRCT2::IStream* stream);
-    [[nodiscard]] static std::vector<LargeSceneryTile> ReadJsonTiles(json_t& jTiles);
-    [[nodiscard]] static std::unique_ptr<LargeSceneryText> ReadJson3dFont(json_t& j3dFont);
-    [[nodiscard]] static std::vector<CoordsXY> ReadJsonOffsets(json_t& jOffsets);
-    [[nodiscard]] static std::vector<LargeSceneryTextGlyph> ReadJsonGlyphs(json_t& jGlyphs);
-};
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+        const LargeSceneryTile* GetTileForSequence(uint8_t SequenceIndex) const;
+
+    private:
+        [[nodiscard]] static std::vector<LargeSceneryTile> ReadTiles(OpenRCT2::IStream* stream);
+        [[nodiscard]] static std::vector<LargeSceneryTile> ReadJsonTiles(json_t& jTiles);
+        [[nodiscard]] static std::unique_ptr<LargeSceneryText> ReadJson3dFont(json_t& j3dFont);
+        [[nodiscard]] static std::vector<CoordsXY> ReadJsonOffsets(json_t& jOffsets);
+        [[nodiscard]] static std::vector<LargeSceneryTextGlyph> ReadJsonGlyphs(json_t& jGlyphs);
+    };
+} // namespace OpenRCT2

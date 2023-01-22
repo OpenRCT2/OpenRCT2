@@ -10,21 +10,23 @@
 #pragma once
 
 #include "Object.h"
-
-class TerrainEdgeObject final : public Object
+namespace OpenRCT2
 {
-private:
-public:
-    StringId NameStringId{};
-    uint32_t IconImageId{};
-    uint32_t BaseImageId{};
-    bool HasDoors{};
+    class TerrainEdgeObject final : public Object
+    {
+    private:
+    public:
+        StringId NameStringId{};
+        uint32_t IconImageId{};
+        uint32_t BaseImageId{};
+        bool HasDoors{};
 
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
-    static TerrainEdgeObject* GetById(ObjectEntryIndex entryIndex);
-};
+        static TerrainEdgeObject* GetById(ObjectEntryIndex entryIndex);
+    };
+} // namespace OpenRCT2

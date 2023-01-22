@@ -10,59 +10,61 @@
 #pragma once
 
 #include "Object.h"
-
-struct CoordsXY;
-
-enum TERRAIN_SURFACE_FLAGS
+namespace OpenRCT2
 {
-    NONE = 0,
-    SMOOTH_WITH_SELF = 1 << 0,
-    SMOOTH_WITH_OTHER = 1 << 1,
-    CAN_GROW = 1 << 2,
-};
+    struct CoordsXY;
 
-class TerrainSurfaceObject final : public Object
-{
-private:
-    struct SpecialEntry
+    enum TERRAIN_SURFACE_FLAGS
     {
-        uint32_t Index{};
-        int32_t Length{};
-        int32_t Rotation{};
-        int32_t Variation{};
-        bool Grid{};
-        bool Underground{};
+        NONE = 0,
+        SMOOTH_WITH_SELF = 1 << 0,
+        SMOOTH_WITH_OTHER = 1 << 1,
+        CAN_GROW = 1 << 2,
     };
 
-    static constexpr auto NUM_IMAGES_IN_ENTRY = 19;
+    class TerrainSurfaceObject final : public Object
+    {
+    private:
+        struct SpecialEntry
+        {
+            uint32_t Index{};
+            int32_t Length{};
+            int32_t Rotation{};
+            int32_t Variation{};
+            bool Grid{};
+            bool Underground{};
+        };
 
-public:
-    StringId NameStringId{};
-    uint32_t IconImageId{};
-    uint32_t PatternBaseImageId{};
-    uint32_t EntryBaseImageId{};
+        static constexpr auto NUM_IMAGES_IN_ENTRY = 19;
 
-    uint32_t NumEntries{};
-    uint32_t DefaultEntry{};
-    uint32_t DefaultGridEntry{};
-    uint32_t DefaultUndergroundEntry{};
-    std::vector<SpecialEntry> SpecialEntries;
-    std::vector<uint32_t> SpecialEntryMap;
+    public:
+        StringId NameStringId{};
+        uint32_t IconImageId{};
+        uint32_t PatternBaseImageId{};
+        uint32_t EntryBaseImageId{};
 
-    colour_t Colour{};
-    uint8_t Rotations{};
-    money32 Price{};
-    TERRAIN_SURFACE_FLAGS Flags{};
-    PaletteIndex MapColours[2]{};
+        uint32_t NumEntries{};
+        uint32_t DefaultEntry{};
+        uint32_t DefaultGridEntry{};
+        uint32_t DefaultUndergroundEntry{};
+        std::vector<SpecialEntry> SpecialEntries;
+        std::vector<uint32_t> SpecialEntryMap;
 
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+        colour_t Colour{};
+        uint8_t Rotations{};
+        money32 Price{};
+        TERRAIN_SURFACE_FLAGS Flags{};
+        PaletteIndex MapColours[2]{};
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
 
-    uint32_t GetImageId(
-        const CoordsXY& position, int32_t length, int32_t rotation, int32_t offset, bool grid, bool underground) const;
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
-    static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
-};
+        uint32_t GetImageId(
+            const CoordsXY& position, int32_t length, int32_t rotation, int32_t offset, bool grid, bool underground) const;
+
+        static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
+    };
+} // namespace OpenRCT2

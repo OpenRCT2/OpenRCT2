@@ -13,38 +13,40 @@
 #include "Object.h"
 
 #include <vector>
-
-struct ObjectRepositoryItem;
-
-enum class EntertainerCostume : uint8_t;
-
-class SceneryGroupObject final : public Object
+namespace OpenRCT2
 {
-private:
-    SceneryGroupEntry _legacyType = {};
-    std::vector<ObjectEntryDescriptor> _items;
+    struct ObjectRepositoryItem;
 
-public:
-    void* GetLegacyData() override
+    enum class EntertainerCostume : uint8_t;
+
+    class SceneryGroupObject final : public Object
     {
-        return &_legacyType;
-    }
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
+    private:
+        SceneryGroupEntry _legacyType = {};
+        std::vector<ObjectEntryDescriptor> _items;
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void Load() override;
-    void Unload() override;
-    void UpdateEntryIndexes();
+    public:
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void Load() override;
+        void Unload() override;
+        void UpdateEntryIndexes();
 
-    void SetRepositoryItem(ObjectRepositoryItem* item) const override;
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
-    uint16_t GetNumIncludedObjects() const;
+        void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
-private:
-    static std::vector<ObjectEntryDescriptor> ReadItems(OpenRCT2::IStream* stream);
-    static uint32_t ReadJsonEntertainerCostumes(json_t& jCostumes);
-    static EntertainerCostume ParseEntertainerCostume(const std::string& s);
-    static std::vector<ObjectEntryDescriptor> ReadJsonEntries(IReadObjectContext* context, json_t& jEntries);
-};
+        uint16_t GetNumIncludedObjects() const;
+
+    private:
+        static std::vector<ObjectEntryDescriptor> ReadItems(OpenRCT2::IStream* stream);
+        static uint32_t ReadJsonEntertainerCostumes(json_t& jCostumes);
+        static EntertainerCostume ParseEntertainerCostume(const std::string& s);
+        static std::vector<ObjectEntryDescriptor> ReadJsonEntries(IReadObjectContext* context, json_t& jEntries);
+    };
+} // namespace OpenRCT2

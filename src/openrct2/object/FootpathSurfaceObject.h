@@ -11,27 +11,29 @@
 
 #include "../world/Footpath.h"
 #include "Object.h"
-
-class FootpathSurfaceObject final : public Object
+namespace OpenRCT2
 {
-public:
-    StringId NameStringId{};
-    uint32_t PreviewImageId{};
-    uint32_t BaseImageId{};
-    uint8_t Flags{};
-    PathSurfaceDescriptor _descriptor = {};
-
-public:
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
-
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
-
-    void SetRepositoryItem(ObjectRepositoryItem* item) const override;
-
-    const PathSurfaceDescriptor& GetDescriptor() const
+    class FootpathSurfaceObject final : public Object
     {
-        return _descriptor;
-    }
-};
+    public:
+        StringId NameStringId{};
+        uint32_t PreviewImageId{};
+        uint32_t BaseImageId{};
+        uint8_t Flags{};
+        PathSurfaceDescriptor _descriptor = {};
+
+    public:
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+
+        void SetRepositoryItem(ObjectRepositoryItem* item) const override;
+
+        const PathSurfaceDescriptor& GetDescriptor() const
+        {
+            return _descriptor;
+        }
+    };
+} // namespace OpenRCT2

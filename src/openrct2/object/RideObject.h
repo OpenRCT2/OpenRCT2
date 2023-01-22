@@ -16,52 +16,54 @@
 #include "Object.h"
 
 #include <vector>
-
-class RideObject final : public Object
+namespace OpenRCT2
 {
-private:
-    RideObjectEntry _legacyType = {};
-    VehicleColourPresetList _presetColours = {};
-    std::vector<int8_t> _peepLoadingPositions[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
-    std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
-
-public:
-    void* GetLegacyData() override
+    class RideObject final : public Object
     {
-        return &_legacyType;
-    }
+    private:
+        RideObjectEntry _legacyType = {};
+        VehicleColourPresetList _presetColours = {};
+        std::vector<int8_t> _peepLoadingPositions[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
+        std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
 
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void Load() override;
+        void Unload() override;
 
-    std::string GetDescription() const;
-    std::string GetCapacity() const;
-    ImageIndex GetPreviewImage(ride_type_t type);
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
-    void SetRepositoryItem(ObjectRepositoryItem* item) const override;
+        std::string GetDescription() const;
+        std::string GetCapacity() const;
+        ImageIndex GetPreviewImage(ride_type_t type);
 
-    static ride_type_t ParseRideType(const std::string& s);
+        void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
-private:
-    void ReadLegacyCar(IReadObjectContext* context, OpenRCT2::IStream* stream, CarEntry* car);
+        static ride_type_t ParseRideType(const std::string& s);
 
-    void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
-    std::vector<CarEntry> ReadJsonCars([[maybe_unused]] IReadObjectContext* context, json_t& jCars);
-    CarEntry ReadJsonCar([[maybe_unused]] IReadObjectContext* context, json_t& jCar);
-    VehicleColourPresetList ReadJsonCarColours(json_t& jCarColours);
-    std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
+    private:
+        void ReadLegacyCar(IReadObjectContext* context, OpenRCT2::IStream* stream, CarEntry* car);
 
-    static uint8_t CalculateNumVerticalFrames(const CarEntry& carEntry);
-    static uint8_t CalculateNumHorizontalFrames(const CarEntry& carEntry);
+        void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
+        std::vector<CarEntry> ReadJsonCars([[maybe_unused]] IReadObjectContext* context, json_t& jCars);
+        CarEntry ReadJsonCar([[maybe_unused]] IReadObjectContext* context, json_t& jCar);
+        VehicleColourPresetList ReadJsonCarColours(json_t& jCarColours);
+        std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
 
-    static bool IsRideTypeShopOrFacility(ride_type_t rideType);
-    static uint8_t ParseRideCategory(const std::string& s);
-    static ShopItem ParseShopItem(const std::string& s);
-    static colour_t ParseColour(const std::string& s);
+        static uint8_t CalculateNumVerticalFrames(const CarEntry& carEntry);
+        static uint8_t CalculateNumHorizontalFrames(const CarEntry& carEntry);
 
-    void ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups);
-};
+        static bool IsRideTypeShopOrFacility(ride_type_t rideType);
+        static uint8_t ParseRideCategory(const std::string& s);
+        static ShopItem ParseShopItem(const std::string& s);
+        static colour_t ParseColour(const std::string& s);
+
+        void ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups);
+    };
+} // namespace OpenRCT2

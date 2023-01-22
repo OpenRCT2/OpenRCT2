@@ -11,22 +11,24 @@
 
 #include "../world/Scenery.h"
 #include "SceneryObject.h"
-
-class FootpathItemObject final : public SceneryObject
+namespace OpenRCT2
 {
-private:
-    PathBitEntry _legacyType = {};
-
-public:
-    void* GetLegacyData() override
+    class FootpathItemObject final : public SceneryObject
     {
-        return &_legacyType;
-    }
+    private:
+        PathBitEntry _legacyType = {};
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
-};
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+    };
+} // namespace OpenRCT2

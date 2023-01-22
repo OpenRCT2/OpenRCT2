@@ -13,26 +13,28 @@
 #include "Object.h"
 
 #include <tuple>
-
-class WaterObject final : public Object
+namespace OpenRCT2
 {
-private:
-    WaterObjectEntry _legacyType = {};
-
-public:
-    void* GetLegacyData() override
+    class WaterObject final : public Object
     {
-        return &_legacyType;
-    }
+    private:
+        WaterObjectEntry _legacyType = {};
 
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void Load() override;
+        void Unload() override;
 
-private:
-    void ReadJsonPalette(json_t& jPalette);
-    uint32_t ParseColour(const std::string& s) const;
-};
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+
+    private:
+        void ReadJsonPalette(json_t& jPalette);
+        uint32_t ParseColour(const std::string& s) const;
+    };
+} // namespace OpenRCT2

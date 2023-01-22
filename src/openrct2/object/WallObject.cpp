@@ -17,100 +17,101 @@
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Banner.h"
-
-void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+namespace OpenRCT2
 {
-    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-    _legacyType.flags = stream->ReadValue<uint8_t>();
-    _legacyType.height = stream->ReadValue<uint8_t>();
-    _legacyType.flags2 = stream->ReadValue<uint8_t>();
-    _legacyType.price = stream->ReadValue<uint16_t>();
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
-    stream->Seek(1, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
-
-    GetStringTable().Read(context, stream, ObjectStringID::NAME);
-
-    RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
-    SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
-
-    GetImageTable().Read(context, stream);
-
-    // Validate properties
-    if (_legacyType.price <= 0)
+    void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
     {
-        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
+        stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
+        _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
+        _legacyType.flags = stream->ReadValue<uint8_t>();
+        _legacyType.height = stream->ReadValue<uint8_t>();
+        _legacyType.flags2 = stream->ReadValue<uint8_t>();
+        _legacyType.price = stream->ReadValue<uint16_t>();
+        _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+        stream->Seek(1, OpenRCT2::STREAM_SEEK_CURRENT);
+        _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
+
+        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+
+        RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
+        SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
+
+        GetImageTable().Read(context, stream);
+
+        // Validate properties
+        if (_legacyType.price <= 0)
+        {
+            context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
+        }
+
+        // Autofix this object (will be turned into an official object later).
+        auto identifier = GetLegacyIdentifier();
+        if (identifier == "XXWLBR03")
+        {
+            _legacyType.flags2 &= ~WALL_SCENERY_2_DOOR_SOUND_MASK;
+            _legacyType.flags2 |= (1u << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
+        }
     }
 
-    // Autofix this object (will be turned into an official object later).
-    auto identifier = GetLegacyIdentifier();
-    if (identifier == "XXWLBR03")
+    void WallObject::Load()
     {
-        _legacyType.flags2 &= ~WALL_SCENERY_2_DOOR_SOUND_MASK;
-        _legacyType.flags2 |= (1u << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
-    }
-}
-
-void WallObject::Load()
-{
-    GetStringTable().Sort();
-    _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
-}
-
-void WallObject::Unload()
-{
-    LanguageFreeObjectString(_legacyType.name);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
-
-    _legacyType.name = 0;
-    _legacyType.image = 0;
-}
-
-void WallObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
-{
-    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-
-    screenCoords.x += 14;
-    screenCoords.y += (_legacyType.height * 2) + 16;
-
-    auto imageId = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
-    if (_legacyType.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
-    {
-        imageId = imageId.WithSecondary(COLOUR_YELLOW);
+        GetStringTable().Sort();
+        _legacyType.name = LanguageAllocateObjectString(GetName());
+        _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     }
 
-    GfxDrawSprite(dpi, imageId, screenCoords);
-
-    if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
+    void WallObject::Unload()
     {
-        auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
-        GfxDrawSprite(dpi, glassImageId, screenCoords);
+        LanguageFreeObjectString(_legacyType.name);
+        GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+
+        _legacyType.name = 0;
+        _legacyType.image = 0;
     }
-    else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
+
+    void WallObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
     {
-        GfxDrawSprite(dpi, imageId.WithIndexOffset(1), screenCoords);
+        auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+
+        screenCoords.x += 14;
+        screenCoords.y += (_legacyType.height * 2) + 16;
+
+        auto imageId = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
+        if (_legacyType.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+        {
+            imageId = imageId.WithSecondary(COLOUR_YELLOW);
+        }
+
+        GfxDrawSprite(dpi, imageId, screenCoords);
+
+        if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
+        {
+            auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
+            GfxDrawSprite(dpi, glassImageId, screenCoords);
+        }
+        else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
+        {
+            GfxDrawSprite(dpi, imageId.WithIndexOffset(1), screenCoords);
+        }
     }
-}
 
-void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
-{
-    Guard::Assert(root.is_object(), "WallObject::ReadJson expects parameter root to be object");
-
-    auto properties = root["properties"];
-
-    if (properties.is_object())
+    void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
-        _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::FenceDown);
-        _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
-        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]);
+        Guard::Assert(root.is_object(), "WallObject::ReadJson expects parameter root to be object");
 
-        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+        auto properties = root["properties"];
 
-        SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
+        if (properties.is_object())
+        {
+            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::FenceDown);
+            _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
+            _legacyType.price = Json::GetNumber<int16_t>(properties["price"]);
 
-        // clang-format off
+            _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+
+            SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
+
+            // clang-format off
         _legacyType.flags = Json::GetFlags<uint8_t>(
             properties,
             {
@@ -125,34 +126,35 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "isDoor",                 WALL_SCENERY_IS_DOOR,               Json::FlagType::Normal },
                 { "isLongDoorAnimation",    WALL_SCENERY_LONG_DOOR_ANIMATION,   Json::FlagType::Normal },
             });
-        // clang-format on
+            // clang-format on
 
-        _legacyType.flags2 = Json::GetFlags<uint8_t>(
-            properties,
-            {
-                { "isOpaque", WALL_SCENERY_2_IS_OPAQUE },
-                { "isAnimated", WALL_SCENERY_2_ANIMATED },
-            });
+            _legacyType.flags2 = Json::GetFlags<uint8_t>(
+                properties,
+                {
+                    { "isOpaque", WALL_SCENERY_2_IS_OPAQUE },
+                    { "isAnimated", WALL_SCENERY_2_ANIMATED },
+                });
 
-        // HACK WALL_SCENERY_HAS_PRIMARY_COLOUR actually means, has any colour but we simplify the
-        //      JSON and handle this on load. We should change code base in future to reflect the JSON.
-        if (!(_legacyType.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR))
-        {
-            if (_legacyType.flags & (WALL_SCENERY_HAS_SECONDARY_COLOUR | WALL_SCENERY_HAS_TERTIARY_COLOUR))
+            // HACK WALL_SCENERY_HAS_PRIMARY_COLOUR actually means, has any colour but we simplify the
+            //      JSON and handle this on load. We should change code base in future to reflect the JSON.
+            if (!(_legacyType.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR))
             {
-                _legacyType.flags |= WALL_SCENERY_HAS_PRIMARY_COLOUR;
-                _legacyType.flags2 |= WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR;
+                if (_legacyType.flags & (WALL_SCENERY_HAS_SECONDARY_COLOUR | WALL_SCENERY_HAS_TERTIARY_COLOUR))
+                {
+                    _legacyType.flags |= WALL_SCENERY_HAS_PRIMARY_COLOUR;
+                    _legacyType.flags2 |= WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR;
+                }
+            }
+
+            // Door sound
+            auto jDoorSound = properties["doorSound"];
+            if (jDoorSound.is_number())
+            {
+                auto doorSound = Json::GetNumber<uint8_t>(jDoorSound);
+                _legacyType.flags2 |= (doorSound << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
             }
         }
 
-        // Door sound
-        auto jDoorSound = properties["doorSound"];
-        if (jDoorSound.is_number())
-        {
-            auto doorSound = Json::GetNumber<uint8_t>(jDoorSound);
-            _legacyType.flags2 |= (doorSound << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
-        }
+        PopulateTablesFromJson(context, root);
     }
-
-    PopulateTablesFromJson(context, root);
-}
+} // namespace OpenRCT2

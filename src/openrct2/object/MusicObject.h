@@ -14,65 +14,67 @@
 
 #include <string>
 #include <vector>
-
-class MusicObjectTrack
+namespace OpenRCT2
 {
-public:
-    std::string Name;
-    std::string Composer;
-    ObjectAsset Asset;
-
-    /**
-     * The number of PCM bytes to seek per game tick when the music is playing offscreen.
-     */
-    size_t BytesPerTick;
-
-    /**
-     * The length of the PCM track in bytes.
-     */
-    size_t Size;
-};
-
-enum class MusicNiceFactor : int8_t
-{
-    Overbearing = -1, // Drowns out other music
-    Neutral = 0,
-    Nice = 1,
-};
-
-class MusicObject final : public Object
-{
-private:
-    std::vector<uint8_t> _rideTypes;
-    std::vector<MusicObjectTrack> _tracks;
-    std::optional<uint8_t> _originalStyleId;
-    MusicNiceFactor _niceFactor;
-    AudioSampleTable _sampleTable;
-    AudioSampleTable _loadedSampleTable;
-    bool _hasPreview{};
-    uint32_t _previewImageId{};
-
-public:
-    StringId NameStringId{};
-
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
-
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
-
-    std::optional<uint8_t> GetOriginalStyleId() const;
-    bool SupportsRideType(ride_type_t rideType);
-    size_t GetTrackCount() const;
-    const MusicObjectTrack* GetTrack(size_t trackIndex) const;
-    OpenRCT2::Audio::IAudioSource* GetTrackSample(size_t trackIndex) const;
-    constexpr MusicNiceFactor GetNiceFactor() const
+    class MusicObjectTrack
     {
-        return _niceFactor;
-    }
+    public:
+        std::string Name;
+        std::string Composer;
+        ObjectAsset Asset;
 
-private:
-    void ParseRideTypes(const json_t& jRideTypes);
-    void ParseTracks(IReadObjectContext& context, json_t& jTracks);
-    static ObjectAsset GetAsset(IReadObjectContext& context, std::string_view path);
-};
+        /**
+         * The number of PCM bytes to seek per game tick when the music is playing offscreen.
+         */
+        size_t BytesPerTick;
+
+        /**
+         * The length of the PCM track in bytes.
+         */
+        size_t Size;
+    };
+
+    enum class MusicNiceFactor : int8_t
+    {
+        Overbearing = -1, // Drowns out other music
+        Neutral = 0,
+        Nice = 1,
+    };
+
+    class MusicObject final : public Object
+    {
+    private:
+        std::vector<uint8_t> _rideTypes;
+        std::vector<MusicObjectTrack> _tracks;
+        std::optional<uint8_t> _originalStyleId;
+        MusicNiceFactor _niceFactor;
+        AudioSampleTable _sampleTable;
+        AudioSampleTable _loadedSampleTable;
+        bool _hasPreview{};
+        uint32_t _previewImageId{};
+
+    public:
+        StringId NameStringId{};
+
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+
+        std::optional<uint8_t> GetOriginalStyleId() const;
+        bool SupportsRideType(ride_type_t rideType);
+        size_t GetTrackCount() const;
+        const MusicObjectTrack* GetTrack(size_t trackIndex) const;
+        OpenRCT2::Audio::IAudioSource* GetTrackSample(size_t trackIndex) const;
+        constexpr MusicNiceFactor GetNiceFactor() const
+        {
+            return _niceFactor;
+        }
+
+    private:
+        void ParseRideTypes(const json_t& jRideTypes);
+        void ParseTracks(IReadObjectContext& context, json_t& jTracks);
+        static ObjectAsset GetAsset(IReadObjectContext& context, std::string_view path);
+    };
+} // namespace OpenRCT2

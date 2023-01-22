@@ -17,53 +17,55 @@
 #include "../drawing/Image.h"
 #include "../localisation/Localisation.h"
 #include "ObjectManager.h"
-
-void TerrainEdgeObject::Load()
+namespace OpenRCT2
 {
-    GetStringTable().Sort();
-    NameStringId = LanguageAllocateObjectString(GetName());
-    IconImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
-
-    // First image is icon followed by edge images
-    BaseImageId = IconImageId + 1;
-}
-
-void TerrainEdgeObject::Unload()
-{
-    LanguageFreeObjectString(NameStringId);
-    GfxObjectFreeImages(IconImageId, GetImageTable().GetCount());
-
-    NameStringId = 0;
-    IconImageId = 0;
-    BaseImageId = 0;
-}
-
-void TerrainEdgeObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
-{
-    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-
-    auto imageId = ImageId(BaseImageId + 5);
-    GfxDrawSprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
-    GfxDrawSprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
-}
-
-void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
-{
-    Guard::Assert(root.is_object(), "TerrainEdgeObject::ReadJson expects parameter root to be object");
-
-    auto properties = root["properties"];
-
-    if (properties.is_object())
+    void TerrainEdgeObject::Load()
     {
-        HasDoors = Json::GetBoolean(properties["hasDoors"]);
+        GetStringTable().Sort();
+        NameStringId = LanguageAllocateObjectString(GetName());
+        IconImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+
+        // First image is icon followed by edge images
+        BaseImageId = IconImageId + 1;
     }
 
-    PopulateTablesFromJson(context, root);
-}
+    void TerrainEdgeObject::Unload()
+    {
+        LanguageFreeObjectString(NameStringId);
+        GfxObjectFreeImages(IconImageId, GetImageTable().GetCount());
 
-TerrainEdgeObject* TerrainEdgeObject::GetById(ObjectEntryIndex entryIndex)
-{
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto* obj = objMgr.GetLoadedObject(ObjectType::TerrainEdge, entryIndex);
-    return static_cast<TerrainEdgeObject*>(obj);
-}
+        NameStringId = 0;
+        IconImageId = 0;
+        BaseImageId = 0;
+    }
+
+    void TerrainEdgeObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
+    {
+        auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+
+        auto imageId = ImageId(BaseImageId + 5);
+        GfxDrawSprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
+        GfxDrawSprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
+    }
+
+    void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
+    {
+        Guard::Assert(root.is_object(), "TerrainEdgeObject::ReadJson expects parameter root to be object");
+
+        auto properties = root["properties"];
+
+        if (properties.is_object())
+        {
+            HasDoors = Json::GetBoolean(properties["hasDoors"]);
+        }
+
+        PopulateTablesFromJson(context, root);
+    }
+
+    TerrainEdgeObject* TerrainEdgeObject::GetById(ObjectEntryIndex entryIndex)
+    {
+        auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+        auto* obj = objMgr.GetLoadedObject(ObjectType::TerrainEdge, entryIndex);
+        return static_cast<TerrainEdgeObject*>(obj);
+    }
+} // namespace OpenRCT2

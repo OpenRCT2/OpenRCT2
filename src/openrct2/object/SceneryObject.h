@@ -12,23 +12,25 @@
 #include "Object.h"
 
 #include <string>
-
-class SceneryObject : public Object
+namespace OpenRCT2
 {
-private:
-    ObjectEntryDescriptor _primarySceneryGroupEntry = {};
-
-public:
-    virtual ~SceneryObject() = default;
-
-    const ObjectEntryDescriptor& GetPrimarySceneryGroup() const
+    class SceneryObject : public Object
     {
-        return _primarySceneryGroupEntry;
-    }
+    private:
+        ObjectEntryDescriptor _primarySceneryGroupEntry = {};
 
-protected:
-    void SetPrimarySceneryGroup(const ObjectEntryDescriptor& entry)
-    {
-        _primarySceneryGroupEntry = entry;
-    }
-};
+    public:
+        virtual ~SceneryObject() = default;
+
+        const ObjectEntryDescriptor& GetPrimarySceneryGroup() const
+        {
+            return _primarySceneryGroupEntry;
+        }
+
+    protected:
+        void SetPrimarySceneryGroup(const ObjectEntryDescriptor& entry)
+        {
+            _primarySceneryGroupEntry = entry;
+        }
+    };
+} // namespace OpenRCT2

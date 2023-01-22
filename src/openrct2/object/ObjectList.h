@@ -13,41 +13,43 @@
 #include "ObjectLimits.h"
 
 #include <vector>
-
-class ObjectList
+namespace OpenRCT2
 {
-private:
-    std::vector<std::vector<ObjectEntryDescriptor>> _subLists;
-
-public:
-    void Add(const ObjectEntryDescriptor& entry);
-    std::vector<ObjectEntryDescriptor>& GetList(ObjectType type);
-    std::vector<ObjectEntryDescriptor>& GetList(ObjectType type) const;
-    const ObjectEntryDescriptor& GetObject(ObjectType type, ObjectEntryIndex index) const;
-    void SetObject(ObjectEntryIndex index, const ObjectEntryDescriptor& entry);
-    void SetObject(ObjectType type, ObjectEntryIndex index, std::string_view identifier);
-    ObjectEntryIndex Find(ObjectType type, std::string_view identifier);
-
-    struct const_iterator
+    class ObjectList
     {
     private:
-        const ObjectList* _parent;
-        size_t _subList;
-        size_t _index;
-
-        void MoveToNextEntry();
+        std::vector<std::vector<ObjectEntryDescriptor>> _subLists;
 
     public:
-        const_iterator(const ObjectList* parent, bool end);
-        const ObjectEntryDescriptor& operator*();
-        bool operator==(const_iterator& rhs);
-        bool operator!=(const_iterator& rhs);
-        const_iterator& operator++();
-        const_iterator operator++(int);
+        void Add(const ObjectEntryDescriptor& entry);
+        std::vector<ObjectEntryDescriptor>& GetList(ObjectType type);
+        std::vector<ObjectEntryDescriptor>& GetList(ObjectType type) const;
+        const ObjectEntryDescriptor& GetObject(ObjectType type, ObjectEntryIndex index) const;
+        void SetObject(ObjectEntryIndex index, const ObjectEntryDescriptor& entry);
+        void SetObject(ObjectType type, ObjectEntryIndex index, std::string_view identifier);
+        ObjectEntryIndex Find(ObjectType type, std::string_view identifier);
+
+        struct const_iterator
+        {
+        private:
+            const ObjectList* _parent;
+            size_t _subList;
+            size_t _index;
+
+            void MoveToNextEntry();
+
+        public:
+            const_iterator(const ObjectList* parent, bool end);
+            const ObjectEntryDescriptor& operator*();
+            bool operator==(const_iterator& rhs);
+            bool operator!=(const_iterator& rhs);
+            const_iterator& operator++();
+            const_iterator operator++(int);
+        };
+
+        const_iterator begin() const;
+        const_iterator end() const;
     };
 
-    const_iterator begin() const;
-    const_iterator end() const;
-};
-
-void ObjectGetTypeEntryIndex(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex);
+    void ObjectGetTypeEntryIndex(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex);
+} // namespace OpenRCT2
