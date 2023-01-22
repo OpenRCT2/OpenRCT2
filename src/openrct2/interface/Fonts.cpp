@@ -16,15 +16,16 @@
 #include "../localisation/LocalisationService.h"
 #include "../util/Util.h"
 #include "FontFamilies.h"
-
-using namespace OpenRCT2::Localisation;
+namespace OpenRCT2
+{
+    using namespace Localisation;
 
 #ifndef NO_TTF
-uint8_t const HINTING_DISABLED = 0;
-uint8_t const HINTING_THRESHOLD_LOW = 40;
-uint8_t const HINTING_THRESHOLD_MEDIUM = 60;
+    uint8_t const HINTING_DISABLED = 0;
+    uint8_t const HINTING_THRESHOLD_LOW = 40;
+    uint8_t const HINTING_THRESHOLD_MEDIUM = 60;
 
-// clang-format off
+    // clang-format off
 TTFFontSetDescriptor TTFFontMSGothic = { {
     { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
@@ -105,79 +106,64 @@ TTFFontSetDescriptor TTFFontMicroHei = { {
 // clang-format on
 #endif // NO_TTF
 
-static void LoadSpriteFont(LocalisationService& localisationService)
-{
-    TTFDispose();
-    localisationService.UseTrueTypeFont(false);
-#ifndef NO_TTF
-    gCurrentTTFFontSet = nullptr;
-#endif // NO_TTF
-}
-
-#ifndef NO_TTF
-static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescriptor* font)
-{
-    localisationService.UseTrueTypeFont(true);
-    gCurrentTTFFontSet = font;
-
-    TTFDispose();
-    bool fontInitialised = TTFInitialise();
-    return fontInitialised;
-}
-
-static bool LoadCustomConfigFont(LocalisationService& localisationService)
-{
-    static TTFFontSetDescriptor TTFFontCustom = { {
-        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeTiny, gConfigFonts.OffsetX,
-          gConfigFonts.OffsetY, gConfigFonts.HeightTiny, gConfigFonts.HintingThreshold, nullptr },
-        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeSmall, gConfigFonts.OffsetX,
-          gConfigFonts.OffsetY, gConfigFonts.HeightSmall, gConfigFonts.HintingThreshold, nullptr },
-        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeMedium, gConfigFonts.OffsetX,
-          gConfigFonts.OffsetY, gConfigFonts.HeightMedium, gConfigFonts.HintingThreshold, nullptr },
-    } };
-
-    TTFDispose();
-    localisationService.UseTrueTypeFont(true);
-    gCurrentTTFFontSet = &TTFFontCustom;
-
-    bool fontInitialised = TTFInitialise();
-    return fontInitialised;
-}
-#endif // NO_TTF
-
-void TryLoadFonts(LocalisationService& localisationService)
-{
-#ifndef NO_TTF
-    auto currentLanguage = localisationService.GetCurrentLanguage();
-    TTFontFamily const* fontFamily = LanguagesDescriptors[currentLanguage].font_family;
-
-    if (fontFamily != FAMILY_OPENRCT2_SPRITE)
+    static void LoadSpriteFont(LocalisationService& localisationService)
     {
-        if (!gConfigFonts.FileName.empty())
+        TTFDispose();
+        localisationService.UseTrueTypeFont(false);
+#ifndef NO_TTF
+        gCurrentTTFFontSet = nullptr;
+#endif // NO_TTF
+    }
+
+#ifndef NO_TTF
+    static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescriptor* font)
+    {
+        localisationService.UseTrueTypeFont(true);
+        gCurrentTTFFontSet = font;
+
+        TTFDispose();
+        bool fontInitialised = TTFInitialise();
+        return fontInitialised;
+    }
+
+    static bool LoadCustomConfigFont(LocalisationService& localisationService)
+    {
+        static TTFFontSetDescriptor TTFFontCustom = { {
+            { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeTiny, gConfigFonts.OffsetX,
+              gConfigFonts.OffsetY, gConfigFonts.HeightTiny, gConfigFonts.HintingThreshold, nullptr },
+            { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeSmall, gConfigFonts.OffsetX,
+              gConfigFonts.OffsetY, gConfigFonts.HeightSmall, gConfigFonts.HintingThreshold, nullptr },
+            { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeMedium, gConfigFonts.OffsetX,
+              gConfigFonts.OffsetY, gConfigFonts.HeightMedium, gConfigFonts.HintingThreshold, nullptr },
+        } };
+
+        TTFDispose();
+        localisationService.UseTrueTypeFont(true);
+        gCurrentTTFFontSet = &TTFFontCustom;
+
+        bool fontInitialised = TTFInitialise();
+        return fontInitialised;
+    }
+#endif // NO_TTF
+
+    void TryLoadFonts(LocalisationService& localisationService)
+    {
+#ifndef NO_TTF
+        auto currentLanguage = localisationService.GetCurrentLanguage();
+        TTFontFamily const* fontFamily = LanguagesDescriptors[currentLanguage].font_family;
+
+        if (fontFamily != FAMILY_OPENRCT2_SPRITE)
         {
-            if (LoadCustomConfigFont(localisationService))
+            if (!gConfigFonts.FileName.empty())
             {
-                return;
-            }
-            LOG_VERBOSE("Unable to initialise configured TrueType font -- falling back to the language's default.");
-        }
-
-        for (auto& font : *fontFamily)
-        {
-            if (LoadFont(localisationService, font))
-            {
-                return;
+                if (LoadCustomConfigFont(localisationService))
+                {
+                    return;
+                }
+                LOG_VERBOSE("Unable to initialise configured TrueType font -- falling back to the language's default.");
             }
 
-            TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::Small)];
-            LOG_VERBOSE("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
-        }
-
-        if (fontFamily != &TTFFamilySansSerif)
-        {
-            LOG_VERBOSE("Unable to initialise any of the preferred TrueType fonts -- falling back to sans serif fonts.");
-
-            for (auto& font : TTFFamilySansSerif)
+            for (auto& font : *fontFamily)
             {
                 if (LoadFont(localisationService, font))
                 {
@@ -188,9 +174,26 @@ void TryLoadFonts(LocalisationService& localisationService)
                 LOG_VERBOSE("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
             }
 
-            LOG_VERBOSE("Unable to initialise any of the preferred TrueType fonts -- falling back to sprite font.");
+            if (fontFamily != &TTFFamilySansSerif)
+            {
+                LOG_VERBOSE("Unable to initialise any of the preferred TrueType fonts -- falling back to sans serif fonts.");
+
+                for (auto& font : TTFFamilySansSerif)
+                {
+                    if (LoadFont(localisationService, font))
+                    {
+                        return;
+                    }
+
+                    TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::Small)];
+                    LOG_VERBOSE(
+                        "Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
+                }
+
+                LOG_VERBOSE("Unable to initialise any of the preferred TrueType fonts -- falling back to sprite font.");
+            }
         }
-    }
 #endif // NO_TTF
-    LoadSpriteFont(localisationService);
-}
+        LoadSpriteFont(localisationService);
+    }
+} // namespace OpenRCT2

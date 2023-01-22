@@ -17,48 +17,50 @@
 
 #include <optional>
 #include <string>
-
-struct DrawPixelInfo;
-
-extern uint8_t gScreenshotCountdown;
-
-struct ScreenshotOptions
+namespace OpenRCT2
 {
-    WeatherType weather = WeatherType::Sunny;
-    bool hide_guests = false;
-    bool hide_sprites = false;
-    bool clear_grass = false;
-    bool mowed_grass = false;
-    bool water_plants = false;
-    bool fix_vandalism = false;
-    bool remove_litter = false;
-    bool tidy_up_park = false;
-    bool transparent = false;
-};
+    struct DrawPixelInfo;
 
-struct CaptureView
-{
-    int32_t Width{};
-    int32_t Height{};
-    CoordsXY Position;
-};
+    extern uint8_t gScreenshotCountdown;
 
-struct CaptureOptions
-{
-    fs::path Filename;
-    std::optional<CaptureView> View;
-    ZoomLevel Zoom;
-    uint8_t Rotation{};
-    bool Transparent{};
-};
+    struct ScreenshotOptions
+    {
+        WeatherType weather = WeatherType::Sunny;
+        bool hide_guests = false;
+        bool hide_sprites = false;
+        bool clear_grass = false;
+        bool mowed_grass = false;
+        bool water_plants = false;
+        bool fix_vandalism = false;
+        bool remove_litter = false;
+        bool tidy_up_park = false;
+        bool transparent = false;
+    };
 
-void ScreenshotCheck();
-std::string ScreenshotDump();
-std::string ScreenshotDumpPNG(DrawPixelInfo* dpi);
-std::string ScreenshotDumpPNG32bpp(int32_t width, int32_t height, const void* pixels);
+    struct CaptureView
+    {
+        int32_t Width{};
+        int32_t Height{};
+        CoordsXY Position;
+    };
 
-void ScreenshotGiant();
-int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options);
-int32_t CmdlineForGfxbench(const char** argv, int32_t argc);
+    struct CaptureOptions
+    {
+        fs::path Filename;
+        std::optional<CaptureView> View;
+        ZoomLevel Zoom;
+        uint8_t Rotation{};
+        bool Transparent{};
+    };
 
-void CaptureImage(const CaptureOptions& options);
+    void ScreenshotCheck();
+    std::string ScreenshotDump();
+    std::string ScreenshotDumpPNG(DrawPixelInfo* dpi);
+    std::string ScreenshotDumpPNG32bpp(int32_t width, int32_t height, const void* pixels);
+
+    void ScreenshotGiant();
+    int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options);
+    int32_t CmdlineForGfxbench(const char** argv, int32_t argc);
+
+    void CaptureImage(const CaptureOptions& options);
+} // namespace OpenRCT2

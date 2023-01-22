@@ -12,34 +12,36 @@
 #include "Fonts.h"
 
 #ifndef NO_TTF
+namespace OpenRCT2
+{
+    TTFontFamily const TTFFamilyChineseSimplified = {
+        &TTFFontSimSun,
+        &TTFFontHeiti,
+        &TTFFontMicroHei,
+    };
 
-TTFontFamily const TTFFamilyChineseSimplified = {
-    &TTFFontSimSun,
-    &TTFFontHeiti,
-    &TTFFontMicroHei,
-};
+    TTFontFamily const TTFFamilyChineseTraditional = {
+        &TTFFontMingLiu,
+        &TTFFontLiHeiPro,
+        &TTFFontMicroHei,
+    };
 
-TTFontFamily const TTFFamilyChineseTraditional = {
-    &TTFFontMingLiu,
-    &TTFFontLiHeiPro,
-    &TTFFontMicroHei,
-};
+    TTFontFamily const TTFFamilyJapanese = {
+        &TTFFontHiragano,
+        &TTFFontNotoSansMono,
+        &TTFFontMSGothic,
+    };
 
-TTFontFamily const TTFFamilyJapanese = {
-    &TTFFontHiragano,
-    &TTFFontNotoSansMono,
-    &TTFFontMSGothic,
-};
+    TTFontFamily const TTFFamilyKorean = {
+        &TTFFontGulim,
+        &TTFFontNanum,
+        &TTFFontMalgun,
+    };
 
-TTFontFamily const TTFFamilyKorean = {
-    &TTFFontGulim,
-    &TTFFontNanum,
-    &TTFFontMalgun,
-};
+    TTFontFamily const TTFFamilySansSerif = {
+        &TTFFontArialUnicode,
+        &TTFFontArial,
+    };
 
-TTFontFamily const TTFFamilySansSerif = {
-    &TTFFontArialUnicode,
-    &TTFFontArial,
-};
-
+} // namespace OpenRCT2
 #endif // NO_TTF

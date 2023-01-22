@@ -15,24 +15,26 @@ namespace OpenRCT2::Localisation
 }
 
 #include "../drawing/Font.h"
-
+namespace OpenRCT2
+{
 #ifndef NO_TTF
-extern TTFFontSetDescriptor TTFFontMSGothic;
-extern TTFFontSetDescriptor TTFFontNotoSansMono;
-extern TTFFontSetDescriptor TTFFontHiragano;
-extern TTFFontSetDescriptor TTFFontMingLiu;
-extern TTFFontSetDescriptor TTFFontHeiti;
-extern TTFFontSetDescriptor TTFFontSimSun;
-extern TTFFontSetDescriptor TTFFontLiHeiPro;
-extern TTFFontSetDescriptor TTFFontGulim;
-extern TTFFontSetDescriptor TTFFontMalgun;
-extern TTFFontSetDescriptor TTFFontNanum;
-extern TTFFontSetDescriptor TTFFontArial;
-extern TTFFontSetDescriptor TTFFontArialUnicode;
-extern TTFFontSetDescriptor TTFFontMicroHei;
+    extern TTFFontSetDescriptor TTFFontMSGothic;
+    extern TTFFontSetDescriptor TTFFontNotoSansMono;
+    extern TTFFontSetDescriptor TTFFontHiragano;
+    extern TTFFontSetDescriptor TTFFontMingLiu;
+    extern TTFFontSetDescriptor TTFFontHeiti;
+    extern TTFFontSetDescriptor TTFFontSimSun;
+    extern TTFFontSetDescriptor TTFFontLiHeiPro;
+    extern TTFFontSetDescriptor TTFFontGulim;
+    extern TTFFontSetDescriptor TTFFontMalgun;
+    extern TTFFontSetDescriptor TTFFontNanum;
+    extern TTFFontSetDescriptor TTFFontArial;
+    extern TTFFontSetDescriptor TTFFontArialUnicode;
+    extern TTFFontSetDescriptor TTFFontMicroHei;
 #    define FONT(x) x
 #else
 #    define FONT(x) FONT_OPENRCT2_SPRITE
 #endif // NO_TTF
 
-void TryLoadFonts(OpenRCT2::Localisation::LocalisationService& localisationService);
+    void TryLoadFonts(OpenRCT2::Localisation::LocalisationService& localisationService);
+} // namespace OpenRCT2

@@ -8,71 +8,73 @@
  *****************************************************************************/
 
 #include "ZoomLevel.h"
-
-ZoomLevel ZoomLevel::operator++(int)
+namespace OpenRCT2
 {
-    ZoomLevel tmp(*this);
-    operator++();
-    return tmp;
-}
+    ZoomLevel ZoomLevel::operator++(int)
+    {
+        ZoomLevel tmp(*this);
+        operator++();
+        return tmp;
+    }
 
-ZoomLevel& ZoomLevel::operator++()
-{
-    _level++;
-    return *this;
-}
+    ZoomLevel& ZoomLevel::operator++()
+    {
+        _level++;
+        return *this;
+    }
 
-ZoomLevel ZoomLevel::operator--(int)
-{
-    ZoomLevel tmp(*this);
-    operator--();
-    return tmp;
-}
+    ZoomLevel ZoomLevel::operator--(int)
+    {
+        ZoomLevel tmp(*this);
+        operator--();
+        return tmp;
+    }
 
-ZoomLevel& ZoomLevel::operator--()
-{
-    _level--;
-    return *this;
-}
+    ZoomLevel& ZoomLevel::operator--()
+    {
+        _level--;
+        return *this;
+    }
 
-ZoomLevel& ZoomLevel::operator=(const ZoomLevel& other)
-{
-    _level = other._level;
-    return *this;
-}
+    ZoomLevel& ZoomLevel::operator=(const ZoomLevel& other)
+    {
+        _level = other._level;
+        return *this;
+    }
 
-ZoomLevel& ZoomLevel::operator+=(const ZoomLevel& rhs)
-{
-    _level += rhs._level;
-    return *this;
-}
+    ZoomLevel& ZoomLevel::operator+=(const ZoomLevel& rhs)
+    {
+        _level += rhs._level;
+        return *this;
+    }
 
-ZoomLevel& ZoomLevel::operator-=(const ZoomLevel& rhs)
-{
-    _level -= rhs._level;
-    return *this;
-}
+    ZoomLevel& ZoomLevel::operator-=(const ZoomLevel& rhs)
+    {
+        _level -= rhs._level;
+        return *this;
+    }
 
-ZoomLevel operator+(ZoomLevel lhs, const ZoomLevel& rhs)
-{
-    lhs += rhs;
-    return lhs;
-}
+    ZoomLevel operator+(ZoomLevel lhs, const ZoomLevel& rhs)
+    {
+        lhs += rhs;
+        return lhs;
+    }
 
-ZoomLevel operator-(ZoomLevel lhs, const ZoomLevel& rhs)
-{
-    lhs -= rhs;
-    return lhs;
-}
+    ZoomLevel operator-(ZoomLevel lhs, const ZoomLevel& rhs)
+    {
+        lhs -= rhs;
+        return lhs;
+    }
 
-ZoomLevel operator+(ZoomLevel lhs, int8_t rhs)
-{
-    lhs += ZoomLevel{ rhs };
-    return lhs;
-}
+    ZoomLevel operator+(ZoomLevel lhs, int8_t rhs)
+    {
+        lhs += ZoomLevel{ rhs };
+        return lhs;
+    }
 
-ZoomLevel operator-(ZoomLevel lhs, int8_t rhs)
-{
-    lhs -= ZoomLevel{ rhs };
-    return lhs;
-}
+    ZoomLevel operator-(ZoomLevel lhs, int8_t rhs)
+    {
+        lhs -= ZoomLevel{ rhs };
+        return lhs;
+    }
+} // namespace OpenRCT2

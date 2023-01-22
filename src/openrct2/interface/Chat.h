@@ -17,29 +17,31 @@
 #define CHAT_INPUT_SIZE 1024
 #define CHAT_MAX_MESSAGE_LENGTH 200
 #define CHAT_MAX_WINDOW_WIDTH 600
-
-struct DrawPixelInfo;
-struct ScreenCoordsXY;
-
-enum class ChatInput : uint8_t
+namespace OpenRCT2
 {
-    None,
-    Send,
-    Close,
-};
+    struct DrawPixelInfo;
+    struct ScreenCoordsXY;
 
-extern bool gChatOpen;
+    enum class ChatInput : uint8_t
+    {
+        None,
+        Send,
+        Close,
+    };
 
-bool ChatAvailable();
-void ChatOpen();
-void ChatClose();
-void ChatToggle();
+    extern bool gChatOpen;
 
-void ChatInit();
-void ChatUpdate();
-void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColour);
+    bool ChatAvailable();
+    void ChatOpen();
+    void ChatClose();
+    void ChatToggle();
 
-void ChatAddHistory(std::string_view s);
-void ChatInput(ChatInput input);
+    void ChatInit();
+    void ChatUpdate();
+    void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColour);
 
-int32_t ChatStringWrappedGetHeight(void* args, int32_t width);
+    void ChatAddHistory(std::string_view s);
+    void ChatInput(ChatInput input);
+
+    int32_t ChatStringWrappedGetHeight(void* args, int32_t width);
+} // namespace OpenRCT2

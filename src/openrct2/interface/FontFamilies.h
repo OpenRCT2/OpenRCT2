@@ -12,19 +12,21 @@
 #define FAMILY_OPENRCT2_SPRITE nullptr
 
 #ifndef NO_TTF
-
 #    include <vector>
+namespace OpenRCT2
+{
 
-struct TTFFontSetDescriptor;
+    struct TTFFontSetDescriptor;
 
-using TTFontFamily = std::vector<TTFFontSetDescriptor*>;
+    using TTFontFamily = std::vector<TTFFontSetDescriptor*>;
 
-extern TTFontFamily const TTFFamilyChineseSimplified;
-extern TTFontFamily const TTFFamilyChineseTraditional;
-extern TTFontFamily const TTFFamilyJapanese;
-extern TTFontFamily const TTFFamilyKorean;
-extern TTFontFamily const TTFFamilySansSerif;
+    extern TTFontFamily const TTFFamilyChineseSimplified;
+    extern TTFontFamily const TTFFamilyChineseTraditional;
+    extern TTFontFamily const TTFFamilyJapanese;
+    extern TTFontFamily const TTFFamilyKorean;
+    extern TTFontFamily const TTFFamilySansSerif;
 
+} // namespace OpenRCT2
 #    define FAMILY(x) x
 
 #else // NO_TTF
