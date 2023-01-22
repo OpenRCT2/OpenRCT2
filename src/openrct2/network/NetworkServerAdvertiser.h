@@ -12,22 +12,24 @@
 #include "../common.h"
 
 #include <memory>
-
-enum class ADVERTISE_STATUS
+namespace OpenRCT2
 {
-    DISABLED,
-    UNREGISTERED,
-    REGISTERED,
-};
-
-struct INetworkServerAdvertiser
-{
-    virtual ~INetworkServerAdvertiser()
+    enum class ADVERTISE_STATUS
     {
-    }
+        DISABLED,
+        UNREGISTERED,
+        REGISTERED,
+    };
 
-    virtual ADVERTISE_STATUS GetStatus() const abstract;
-    virtual void Update() abstract;
-};
+    struct INetworkServerAdvertiser
+    {
+        virtual ~INetworkServerAdvertiser()
+        {
+        }
 
-[[nodiscard]] std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);
+        virtual ADVERTISE_STATUS GetStatus() const abstract;
+        virtual void Update() abstract;
+    };
+
+    [[nodiscard]] std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);
+} // namespace OpenRCT2

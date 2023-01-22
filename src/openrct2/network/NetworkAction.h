@@ -15,49 +15,51 @@
 #include <array>
 #include <string>
 #include <vector>
-
-enum class NetworkPermission : uint32_t
+namespace OpenRCT2
 {
-    Chat,
-    Terraform,
-    SetWaterLevel,
-    TogglePause,
-    CreateRide,
-    RemoveRide,
-    BuildRide,
-    RideProperties,
-    Scenery,
-    Path,
-    ClearLandscape,
-    Guest,
-    Staff,
-    ParkProperties,
-    ParkFunding,
-    KickPlayer,
-    ModifyGroups,
-    SetPlayerGroup,
-    Cheat,
-    ToggleSceneryCluster,
-    PasswordlessLogin,
-    ModifyTile,
-    EditScenarioOptions,
+    enum class NetworkPermission : uint32_t
+    {
+        Chat,
+        Terraform,
+        SetWaterLevel,
+        TogglePause,
+        CreateRide,
+        RemoveRide,
+        BuildRide,
+        RideProperties,
+        Scenery,
+        Path,
+        ClearLandscape,
+        Guest,
+        Staff,
+        ParkProperties,
+        ParkFunding,
+        KickPlayer,
+        ModifyGroups,
+        SetPlayerGroup,
+        Cheat,
+        ToggleSceneryCluster,
+        PasswordlessLogin,
+        ModifyTile,
+        EditScenarioOptions,
 
-    Count
-};
+        Count
+    };
 
-class NetworkAction final
-{
-public:
-    StringId Name;
-    std::string PermissionName;
-    std::vector<GameCommand> Commands;
-};
+    class NetworkAction final
+    {
+    public:
+        StringId Name;
+        std::string PermissionName;
+        std::vector<GameCommand> Commands;
+    };
 
-class NetworkActions final
-{
-public:
-    static const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> Actions;
+    class NetworkActions final
+    {
+    public:
+        static const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> Actions;
 
-    static NetworkPermission FindCommand(GameCommand command);
-    static NetworkPermission FindCommandByPermissionName(const std::string& permission_name);
-};
+        static NetworkPermission FindCommand(GameCommand command);
+        static NetworkPermission FindCommandByPermissionName(const std::string& permission_name);
+    };
+} // namespace OpenRCT2

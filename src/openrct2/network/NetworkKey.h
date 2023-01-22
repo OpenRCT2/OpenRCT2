@@ -16,36 +16,36 @@
 #    include <memory>
 #    include <string>
 #    include <vector>
-
 namespace OpenRCT2
 {
+
     struct IStream;
-}
 
-namespace Crypt
-{
-    class RsaKey;
-}
+    namespace Crypt
+    {
+        class RsaKey;
+    }
 
-class NetworkKey final
-{
-public:
-    NetworkKey();
-    ~NetworkKey();
-    bool Generate();
-    bool LoadPrivate(OpenRCT2::IStream* stream);
-    bool LoadPublic(OpenRCT2::IStream* stream);
-    bool SavePrivate(OpenRCT2::IStream* stream);
-    bool SavePublic(OpenRCT2::IStream* stream);
-    std::string PublicKeyString();
-    std::string PublicKeyHash();
-    void Unload();
-    bool Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature) const;
-    bool Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature) const;
+    class NetworkKey final
+    {
+    public:
+        NetworkKey();
+        ~NetworkKey();
+        bool Generate();
+        bool LoadPrivate(OpenRCT2::IStream* stream);
+        bool LoadPublic(OpenRCT2::IStream* stream);
+        bool SavePrivate(OpenRCT2::IStream* stream);
+        bool SavePublic(OpenRCT2::IStream* stream);
+        std::string PublicKeyString();
+        std::string PublicKeyHash();
+        void Unload();
+        bool Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature) const;
+        bool Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature) const;
 
-private:
-    NetworkKey(const NetworkKey&) = delete;
-    std::unique_ptr<Crypt::RsaKey> _key;
-};
+    private:
+        NetworkKey(const NetworkKey&) = delete;
+        std::unique_ptr<Crypt::RsaKey> _key;
+    };
 
 #endif // DISABLE_NETWORK
+}

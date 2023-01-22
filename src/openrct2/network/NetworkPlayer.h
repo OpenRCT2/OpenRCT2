@@ -16,34 +16,36 @@
 #include <string>
 #include <string_view>
 #include <unordered_map>
-
-struct NetworkPacket;
-struct Peep;
-
-class NetworkPlayer final
+namespace OpenRCT2
 {
-public:
-    uint8_t Id = 0;
-    std::string Name;
-    uint16_t Ping = 0;
-    uint8_t Flags = 0;
-    uint8_t Group = 0;
-    money32 MoneySpent = 0.00_GBP;
-    uint32_t CommandsRan = 0;
-    int32_t LastAction = -999;
-    uint32_t LastActionTime = 0;
-    CoordsXYZ LastActionCoord = {};
-    Peep* PickupPeep = nullptr;
-    int32_t PickupPeepOldX = LOCATION_NULL;
-    std::string KeyHash;
-    uint32_t LastDemolishRideTime = 0;
-    uint32_t LastPlaceSceneryTime = 0;
-    std::unordered_map<GameCommand, int32_t> CooldownTime;
-    NetworkPlayer() noexcept = default;
+    struct NetworkPacket;
+    struct Peep;
 
-    void SetName(std::string_view name);
+    class NetworkPlayer final
+    {
+    public:
+        uint8_t Id = 0;
+        std::string Name;
+        uint16_t Ping = 0;
+        uint8_t Flags = 0;
+        uint8_t Group = 0;
+        money32 MoneySpent = 0.00_GBP;
+        uint32_t CommandsRan = 0;
+        int32_t LastAction = -999;
+        uint32_t LastActionTime = 0;
+        CoordsXYZ LastActionCoord = {};
+        Peep* PickupPeep = nullptr;
+        int32_t PickupPeepOldX = LOCATION_NULL;
+        std::string KeyHash;
+        uint32_t LastDemolishRideTime = 0;
+        uint32_t LastPlaceSceneryTime = 0;
+        std::unordered_map<GameCommand, int32_t> CooldownTime;
+        NetworkPlayer() noexcept = default;
 
-    void Read(NetworkPacket& packet);
-    void Write(NetworkPacket& packet);
-    void AddMoneySpent(money32 cost);
-};
+        void SetName(std::string_view name);
+
+        void Read(NetworkPacket& packet);
+        void Write(NetworkPacket& packet);
+        void AddMoneySpent(money32 cost);
+    };
+} // namespace OpenRCT2

@@ -14,33 +14,35 @@
 #    include "../interface/Window.h"
 #    include "../localisation/Localisation.h"
 #    include "NetworkPacket.h"
-
-void NetworkPlayer::SetName(std::string_view name)
+namespace OpenRCT2
 {
-    // 36 == 31 + strlen(" #255");
-    Name = name.substr(0, 36);
-}
+    void NetworkPlayer::SetName(std::string_view name)
+    {
+        // 36 == 31 + strlen(" #255");
+        Name = name.substr(0, 36);
+    }
 
-void NetworkPlayer::Read(NetworkPacket& packet)
-{
-    auto name = packet.ReadString();
-    SetName(name);
-    packet >> Id >> Flags >> Group >> LastAction >> LastActionCoord.x >> LastActionCoord.y >> LastActionCoord.z >> MoneySpent
-        >> CommandsRan;
-}
+    void NetworkPlayer::Read(NetworkPacket& packet)
+    {
+        auto name = packet.ReadString();
+        SetName(name);
+        packet >> Id >> Flags >> Group >> LastAction >> LastActionCoord.x >> LastActionCoord.y >> LastActionCoord.z
+            >> MoneySpent >> CommandsRan;
+    }
 
-void NetworkPlayer::Write(NetworkPacket& packet)
-{
-    packet.WriteString(Name);
-    packet << Id << Flags << Group << LastAction << LastActionCoord.x << LastActionCoord.y << LastActionCoord.z << MoneySpent
-           << CommandsRan;
-}
+    void NetworkPlayer::Write(NetworkPacket& packet)
+    {
+        packet.WriteString(Name);
+        packet << Id << Flags << Group << LastAction << LastActionCoord.x << LastActionCoord.y << LastActionCoord.z
+               << MoneySpent << CommandsRan;
+    }
 
-void NetworkPlayer::AddMoneySpent(money32 cost)
-{
-    MoneySpent += cost;
-    CommandsRan++;
-    WindowInvalidateByNumber(WindowClass::Player, Id);
-}
+    void NetworkPlayer::AddMoneySpent(money32 cost)
+    {
+        MoneySpent += cost;
+        CommandsRan++;
+        WindowInvalidateByNumber(WindowClass::Player, Id);
+    }
 
 #endif
+}

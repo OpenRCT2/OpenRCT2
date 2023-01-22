@@ -17,53 +17,55 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
-
-class NetworkUser final
+namespace OpenRCT2
 {
-public:
-    std::string Hash;
-    std::string Name;
-    std::optional<uint8_t> GroupId;
-    bool Remove;
+    class NetworkUser final
+    {
+    public:
+        std::string Hash;
+        std::string Name;
+        std::optional<uint8_t> GroupId;
+        bool Remove;
 
-    /**
-     * Creates a NetworkUser object from a JSON object
-     * @param jsonData Must be a JSON node of type object
-     * @return Pointer to a new NetworkUser object
-     * @note jsonData is deliberately left non-const: json_t behaviour changes when const
-     */
-    static std::unique_ptr<NetworkUser> FromJson(const json_t& jsonData);
+        /**
+         * Creates a NetworkUser object from a JSON object
+         * @param jsonData Must be a JSON node of type object
+         * @return Pointer to a new NetworkUser object
+         * @note jsonData is deliberately left non-const: json_t behaviour changes when const
+         */
+        static std::unique_ptr<NetworkUser> FromJson(const json_t& jsonData);
 
-    /**
-     * Serialise a NetworkUser object into a JSON object
-     *
-     * @return JSON representation of the NetworkUser object
-     */
-    json_t ToJson() const;
-};
+        /**
+         * Serialise a NetworkUser object into a JSON object
+         *
+         * @return JSON representation of the NetworkUser object
+         */
+        json_t ToJson() const;
+    };
 
-class NetworkUserManager final
-{
-public:
-    void Load();
+    class NetworkUserManager final
+    {
+    public:
+        void Load();
 
-    /**
-     * @brief NetworkUserManager::Save
-     * Reads mappings from JSON, updates them in-place and saves JSON.
-     *
-     * Useful for retaining custom entries in JSON file.
-     */
-    void Save();
+        /**
+         * @brief NetworkUserManager::Save
+         * Reads mappings from JSON, updates them in-place and saves JSON.
+         *
+         * Useful for retaining custom entries in JSON file.
+         */
+        void Save();
 
-    void UnsetUsersOfGroup(uint8_t groupId);
-    void RemoveUser(const std::string& hash);
+        void UnsetUsersOfGroup(uint8_t groupId);
+        void RemoveUser(const std::string& hash);
 
-    const NetworkUser* GetUserByHash(const std::string& hash) const;
-    const NetworkUser* GetUserByName(const std::string& name) const;
-    NetworkUser* GetOrAddUser(const std::string& hash);
+        const NetworkUser* GetUserByHash(const std::string& hash) const;
+        const NetworkUser* GetUserByName(const std::string& name) const;
+        NetworkUser* GetOrAddUser(const std::string& hash);
 
-private:
-    std::unordered_map<std::string, std::unique_ptr<NetworkUser>> _usersByHash;
+    private:
+        std::unordered_map<std::string, std::unique_ptr<NetworkUser>> _usersByHash;
 
-    static u8string GetStorePath();
-};
+        static u8string GetStorePath();
+    };
+} // namespace OpenRCT2

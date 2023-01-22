@@ -16,40 +16,42 @@
 #include <array>
 #include <string>
 #include <string_view>
-
-enum class NetworkPermission : uint32_t;
-
-class NetworkGroup final
+namespace OpenRCT2
 {
-public:
-    std::array<uint8_t, 8> ActionsAllowed{};
-    uint8_t Id = 0;
+    enum class NetworkPermission : uint32_t;
 
-    /**
-     * Creates a NetworkGroup object from a JSON object
-     *
-     * @param json JSON data source
-     * @return A NetworkGroup object
-     * @note json is deliberately left non-const: json_t behaviour changes when const
-     */
-    static NetworkGroup FromJson(const json_t& json);
+    class NetworkGroup final
+    {
+    public:
+        std::array<uint8_t, 8> ActionsAllowed{};
+        uint8_t Id = 0;
 
-    const std::string& GetName() const noexcept;
-    void SetName(std::string_view name);
+        /**
+         * Creates a NetworkGroup object from a JSON object
+         *
+         * @param json JSON data source
+         * @return A NetworkGroup object
+         * @note json is deliberately left non-const: json_t behaviour changes when const
+         */
+        static NetworkGroup FromJson(const json_t& json);
 
-    void Read(NetworkPacket& packet);
-    void Write(NetworkPacket& packet) const;
-    void ToggleActionPermission(NetworkPermission index);
-    bool CanPerformAction(NetworkPermission index) const noexcept;
-    bool CanPerformCommand(GameCommand command) const;
+        const std::string& GetName() const noexcept;
+        void SetName(std::string_view name);
 
-    /**
-     * Serialise a NetworkGroup object into a JSON object
-     *
-     * @return JSON representation of the NetworkGroup object
-     */
-    json_t ToJson() const;
+        void Read(NetworkPacket& packet);
+        void Write(NetworkPacket& packet) const;
+        void ToggleActionPermission(NetworkPermission index);
+        bool CanPerformAction(NetworkPermission index) const noexcept;
+        bool CanPerformCommand(GameCommand command) const;
 
-private:
-    std::string _name;
-};
+        /**
+         * Serialise a NetworkGroup object into a JSON object
+         *
+         * @return JSON representation of the NetworkGroup object
+         */
+        json_t ToJson() const;
+
+    private:
+        std::string _name;
+    };
+} // namespace OpenRCT2

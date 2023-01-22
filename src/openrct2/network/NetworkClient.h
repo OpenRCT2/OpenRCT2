@@ -3,10 +3,11 @@
 #include "NetworkBase.h"
 
 #ifndef DISABLE_NETWORK
-
-class NetworkClient final : public NetworkBase
+namespace OpenRCT2
 {
-public:
-};
-
+    class NetworkClient final : public NetworkBase
+    {
+    public:
+    };
+} // namespace OpenRCT2
 #endif // DISABLE_NETWORK
