@@ -75,15 +75,12 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
             {
                 for (const auto& boundBox : boundBoxes)
                 {
-                    BoundBoxEntry entry;
-                    if (boundBox.contains("id"))
-                    {
-                        entry.Id = boundBox["id"];
-                    }
-
                     if (boundBox.contains("values"))
                     {
                         const auto& values = boundBox["values"];
+                        using BoundBoxKeyValue = std::pair<PaintStructKey, std::shared_ptr<BoundBoxEntryValue>>;
+
+                        std::vector<BoundBoxKeyValue> keyValues;
                         for (const auto& value : values)
                         {
                             BoundBoxEntryValue entryValue;
@@ -150,17 +147,27 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                                     entryValue.Boundbox.length.z = bbLengthZ;
                             }
 
-                            uint32_t trackSequence = 0;
-                            if (value.contains("trackSequence"))
-                            {
-                                auto trackSequenceJson = value["trackSequence"];
-                                if (trackSequenceJson.is_number())
-                                    trackSequence = trackSequenceJson;
-                            }
-                            entry.Values[trackSequence] = entryValue;
+                            PaintStructKey key;
+                            key.FromJson(value);
+
+                            BoundBoxKeyValue keyValue;
+                            keyValue.first = key;
+                            keyValue.second = std::make_shared<BoundBoxEntryValue>(entryValue);
+                            keyValues.push_back(keyValue);
                         }
+
+                        std::string id;
+                        if (boundBox.contains("id"))
+                        {
+                            id = boundBox["id"];
+                        }
+                        BoundBoxEntry entry;
+                        entry.Id = id;
+                        entry.Values = std::make_shared<BoundBoxTree>(keyValues, _keyRange);
+
+                        _boundBoxMapping[id] = entry;
                     }
-                    _boundBoxMapping[entry.Id] = entry;
+                    
                 }
             }
         }

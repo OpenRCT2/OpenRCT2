@@ -106,10 +106,11 @@ struct BoundBoxEntryValue
     BoundBoxXYZ Boundbox;
 };
 
+using BoundBoxTree = TreeContainer<PaintStructKey, std::shared_ptr<BoundBoxEntryValue>>;
 struct BoundBoxEntry
 {
     std::string Id;
-    std::unordered_map<uint32_t, BoundBoxEntryValue> Values;
+    std::shared_ptr<BoundBoxTree> Values;
 };
 
 using ImageIdTree = TreeContainer<PaintStructKey, uint32_t>;

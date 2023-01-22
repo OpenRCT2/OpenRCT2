@@ -12,6 +12,7 @@
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
+#include "../../core/Console.hpp"
 #include "../Ride.h"
 #include "../RideEntry.h"
 #include "../Track.h"
@@ -54,6 +55,7 @@ static void PaintMotionSimulatorVehicle(
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     if (vehicle != nullptr)
     {
+        Console::WriteLine("vehiclePitch=%d, vehicleRestraintsPosition=%d", vehicle->Pitch, vehicle->restraints_position);
         if (vehicle->restraints_position >= 64)
         {
             imageIndex += (vehicle->restraints_position >> 6) << 2;

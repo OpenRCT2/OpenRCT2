@@ -187,18 +187,22 @@ void PaintStructDescriptor::Paint(
 
                     if (BoundBoxTable != nullptr)
                     {
-                        auto it = BoundBoxTable->Values.find(trackSequence);
-                        if (it != BoundBoxTable->Values.end())
+                        auto boundBoxes = BoundBoxTable->Values->Get(key);
+                        if (boundBoxes != nullptr)
                         {
-                            auto Offset = it->second.Coords;
-                            auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
-                            auto newBoundBox = it->second.Boundbox;
-                            newBoundBox.offset.z += height;
+                            for (const auto& bb : *boundBoxes)
+                            {
+                                auto Offset = bb->Coords;
+                                auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
+                                auto newBoundBox = bb->Boundbox;
+                                newBoundBox.offset.z += height;
 
-                            if (type == PaintType::AddImageAsParent)
-                                PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
-                            else if (type == PaintType::AddImageAsChild)
-                                PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                                if (type == PaintType::AddImageAsParent)
+                                    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                                else if (type == PaintType::AddImageAsChild)
+                                    PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                            }
+
                         }
                     }
                 }
