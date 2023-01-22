@@ -15,8 +15,9 @@
 #include "../../ShopItem.h"
 #include "../../Track.h"
 #include "../BolligerMabillardTrack.hpp"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -55,4 +56,5 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "vertical_drop_rc"),
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2

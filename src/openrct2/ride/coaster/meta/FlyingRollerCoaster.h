@@ -13,8 +13,9 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 // Non-inverted variant
 constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
 {
@@ -100,4 +101,5 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterAltRTD =
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "flying_rc_alt"),
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2

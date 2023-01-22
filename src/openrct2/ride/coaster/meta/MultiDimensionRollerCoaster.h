@@ -13,8 +13,9 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT),
@@ -94,4 +95,5 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "multi_dimension_rc_alt"),
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2

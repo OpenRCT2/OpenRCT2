@@ -11,8 +11,9 @@
 
 #include "../../RideData.h"
 #include "../../Track.h"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 constexpr const RideTypeDescriptor SingleRailRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -52,4 +53,5 @@ constexpr const RideTypeDescriptor SingleRailRollerCoasterRTD =
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "single_rail_rc"),
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2

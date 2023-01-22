@@ -14,8 +14,9 @@
 #include "../../ShopItem.h"
 #include "../../Track.h"
 #include "../BolligerMabillardTrack.hpp"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 constexpr const RideTypeDescriptor HyperTwisterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -57,4 +58,5 @@ constexpr const RideTypeDescriptor HyperTwisterRTD =
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "hyper_twister"),
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2
