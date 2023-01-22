@@ -10,8 +10,9 @@
 #include "../entity/Peep.h"
 
 #include <iterator>
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 static constexpr const uint8_t PeepSpriteImage_Normal_00_sequence[] = { 0, 1, 2, 3, 4, 5 };
 static constexpr const uint8_t PeepSpriteImage_Normal_01_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8 };
 static constexpr const uint8_t PeepSpriteImage_Normal_02_sequence[] = { 0 };
@@ -5450,4 +5451,5 @@ constexpr PeepAnimationEntry g_peep_animation_entries[] =
     { PeepSpriteImage_Soup, PeepSpriteBounds_Soup },
     { PeepSpriteImage_Sandwich, PeepSpriteBounds_Sandwich },
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2
