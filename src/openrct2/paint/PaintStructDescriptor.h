@@ -47,6 +47,7 @@ struct PaintStructKey
         , VehiclePitch(other.VehiclePitch)
         , VehicleNumPeeps(other.VehicleNumPeeps)
         , SessionCurrentRotation(other.SessionCurrentRotation)
+        , VehicleRestraintsPosition(other.VehicleRestraintsPosition)
     {
         SetFields();
     }
@@ -59,13 +60,14 @@ struct PaintStructKey
     VehicleParam VehicleSpriteDirection;
     VehicleParam VehiclePitch;
     VehicleParam VehicleNumPeeps;
+    VehicleParam VehicleRestraintsPosition;
     void FromJson(const json_t& element);
 
     const std::optional<uint32_t>& Get(uint32_t location) const;
     void Set(uint32_t location, uint32_t value);
     PaintStructDescriptorKey GetKey() const;
 
-    static constexpr const size_t NumArgs = 7;
+    static constexpr const size_t NumArgs = 8;
 
 private:
     std::array<std::optional<uint32_t>*, NumArgs> _fields;
@@ -78,6 +80,7 @@ private:
         _fields[4] = &VehiclePitch[0];
         _fields[5] = &VehicleSpriteDirection[0];
         _fields[6] = &SessionCurrentRotation;
+        _fields[7] = &VehicleRestraintsPosition[0];
     }
 };
 
@@ -241,6 +244,7 @@ public:
         , VehicleNumPeepes(other.VehicleNumPeepes)
         , VehiclePitches(other.VehiclePitches)
         , SessionCurrentRotations(other.SessionCurrentRotations)
+        , VehicleRestraintsPositions(other.VehicleRestraintsPositions)
     {
         SetFields();
     }
@@ -256,6 +260,7 @@ public:
     std::vector<uint32_t> VehicleNumPeepes;
     std::vector<uint32_t> VehiclePitches;
     std::vector<uint32_t> VehicleSpriteDirections;
+    std::vector<uint32_t> VehicleRestraintsPositions;
     std::vector<uint32_t> SessionCurrentRotations;
 
     void FromJson(const json_t& json);
@@ -272,6 +277,7 @@ private:
         _fieldsRanges[4] = &VehiclePitches;
         _fieldsRanges[5] = &VehicleSpriteDirections;
         _fieldsRanges[6] = &SessionCurrentRotations;
+        _fieldsRanges[7] = &VehicleRestraintsPositions;
     }
 };
 
@@ -348,6 +354,16 @@ inline void KeyRange<PaintStructKey>::FromJson(const json_t& json)
         {
             for (const auto& sessionCurrentRotationJson : sessionCurrentRotationsJson)
                 SessionCurrentRotations.push_back(sessionCurrentRotationJson);
+        }
+    }
+
+    if (json.contains("vehicleRestraintsPositions"))
+    {
+        const auto& vehicleRestraintsPositionsJson = json["vehicleRestraintsPositions"];
+        if (vehicleRestraintsPositionsJson.is_array())
+        {
+            for (const auto& vehicleRestraintsPositionJson : vehicleRestraintsPositionsJson)
+                VehicleRestraintsPositions.push_back(vehicleRestraintsPositionJson);
         }
     }
 }

@@ -279,6 +279,7 @@ void PaintObject::Paint(
         key.VehicleNumPeeps[0] = vehicle->num_peeps;
         key.VehiclePitch[0] = vehicle->Pitch;
         key.VehicleSpriteDirection[0] = vehicle->sprite_direction;
+        key.VehicleRestraintsPosition[0] = vehicle->restraints_position;
     }
 
     key.SessionCurrentRotation = session.CurrentRotation;
