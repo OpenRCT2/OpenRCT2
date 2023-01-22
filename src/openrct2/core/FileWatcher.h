@@ -23,58 +23,60 @@ typedef void* HANDLE;
 #elif defined(__APPLE__)
 #    include <CoreServices/CoreServices.h>
 #endif
-
-/**
- * Creates a new thread that watches a directory tree for file modifications.
- */
-class FileWatcher
+namespace OpenRCT2
 {
-private:
-    std::thread _watchThread;
+    /**
+     * Creates a new thread that watches a directory tree for file modifications.
+     */
+    class FileWatcher
+    {
+    private:
+        std::thread _watchThread;
 #if defined(_WIN32)
-    fs::path _path;
-    HANDLE _directoryHandle{};
+        fs::path _path;
+        HANDLE _directoryHandle{};
 #elif defined(__linux__)
-    struct FileDescriptor
-    {
-        int Fd = -1;
+        struct FileDescriptor
+        {
+            int Fd = -1;
 
-        ~FileDescriptor();
-        void Initialise();
-        void Close();
-    };
+            ~FileDescriptor();
+            void Initialise();
+            void Close();
+        };
 
-    struct WatchDescriptor
-    {
-        int const Fd;
-        int const Wd;
-        std::string const Path;
+        struct WatchDescriptor
+        {
+            int const Fd;
+            int const Wd;
+            std::string const Path;
 
-        WatchDescriptor(int fd, const std::string& path);
-        ~WatchDescriptor();
-    };
+            WatchDescriptor(int fd, const std::string& path);
+            ~WatchDescriptor();
+        };
 
-    FileDescriptor _fileDesc;
-    std::vector<WatchDescriptor> _watchDescs;
+        FileDescriptor _fileDesc;
+        std::vector<WatchDescriptor> _watchDescs;
 #elif defined(__APPLE__)
-    FSEventStreamRef _stream{};
-    CFRunLoopRef _runLoop{};
+        FSEventStreamRef _stream{};
+        CFRunLoopRef _runLoop{};
 #endif
 
-public:
-    std::function<void(u8string_view path)> OnFileChanged;
+    public:
+        std::function<void(u8string_view path)> OnFileChanged;
 
-    FileWatcher(u8string_view directoryPath);
-    ~FileWatcher();
+        FileWatcher(u8string_view directoryPath);
+        ~FileWatcher();
 
-private:
+    private:
 #if defined(_WIN32) || defined(__linux__)
-    bool _finished{};
+        bool _finished{};
 #elif defined(__APPLE__)
-    static void FSEventsCallback(
-        ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
-        const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
+        static void FSEventsCallback(
+            ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
+            const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
 #endif
 
-    void WatchDirectory();
-};
+        void WatchDirectory();
+    };
+} // namespace OpenRCT2

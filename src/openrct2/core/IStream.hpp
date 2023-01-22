@@ -212,42 +212,41 @@ namespace OpenRCT2
         void WriteString(const std::string& string);
     };
 
-} // namespace OpenRCT2
-
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
 #    pragma GCC diagnostic pop
 #endif
 
-class IOException : public std::runtime_error
-{
-public:
-    explicit IOException(const std::string& message)
-        : std::runtime_error(message)
-    {
-    }
-};
-
-template<typename T> class ivstream : public std::istream
-{
-private:
-    class vector_streambuf : public std::basic_streambuf<char, std::char_traits<char>>
+    class IOException : public std::runtime_error
     {
     public:
-        explicit vector_streambuf(const std::vector<T>& vec)
+        explicit IOException(const std::string& message)
+            : std::runtime_error(message)
         {
-            this->setg(
-                reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data())),
-                reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data())),
-                reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data() + vec.size())));
         }
     };
 
-    vector_streambuf _streambuf;
-
-public:
-    ivstream(const std::vector<T>& vec)
-        : std::istream(&_streambuf)
-        , _streambuf(vec)
+    template<typename T> class ivstream : public std::istream
     {
-    }
-};
+    private:
+        class vector_streambuf : public std::basic_streambuf<char, std::char_traits<char>>
+        {
+        public:
+            explicit vector_streambuf(const std::vector<T>& vec)
+            {
+                this->setg(
+                    reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data())),
+                    reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data())),
+                    reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data() + vec.size())));
+            }
+        };
+
+        vector_streambuf _streambuf;
+
+    public:
+        ivstream(const std::vector<T>& vec)
+            : std::istream(&_streambuf)
+            , _streambuf(vec)
+        {
+        }
+    };
+} // namespace OpenRCT2

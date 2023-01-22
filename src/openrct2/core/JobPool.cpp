@@ -11,116 +11,118 @@
 
 #include <algorithm>
 #include <cassert>
-
-JobPool::TaskData::TaskData(std::function<void()> workFn, std::function<void()> completionFn)
-    : WorkFn(workFn)
-    , CompletionFn(completionFn)
+namespace OpenRCT2
 {
-}
-
-JobPool::JobPool(size_t maxThreads)
-{
-    maxThreads = std::min<size_t>(maxThreads, std::thread::hardware_concurrency());
-    for (size_t n = 0; n < maxThreads; n++)
+    JobPool::TaskData::TaskData(std::function<void()> workFn, std::function<void()> completionFn)
+        : WorkFn(workFn)
+        , CompletionFn(completionFn)
     {
-        _threads.emplace_back(&JobPool::ProcessQueue, this);
     }
-}
 
-JobPool::~JobPool()
-{
+    JobPool::JobPool(size_t maxThreads)
+    {
+        maxThreads = std::min<size_t>(maxThreads, std::thread::hardware_concurrency());
+        for (size_t n = 0; n < maxThreads; n++)
+        {
+            _threads.emplace_back(&JobPool::ProcessQueue, this);
+        }
+    }
+
+    JobPool::~JobPool()
+    {
+        {
+            unique_lock lock(_mutex);
+            _shouldStop = true;
+            _condPending.notify_all();
+        }
+
+        for (auto& th : _threads)
+        {
+            assert(th.joinable() != false);
+            th.join();
+        }
+    }
+
+    void JobPool::AddTask(std::function<void()> workFn, std::function<void()> completionFn)
     {
         unique_lock lock(_mutex);
-        _shouldStop = true;
-        _condPending.notify_all();
+        _pending.emplace_back(workFn, completionFn);
+        _condPending.notify_one();
     }
 
-    for (auto& th : _threads)
+    void JobPool::Join(std::function<void()> reportFn)
     {
-        assert(th.joinable() != false);
-        th.join();
-    }
-}
-
-void JobPool::AddTask(std::function<void()> workFn, std::function<void()> completionFn)
-{
-    unique_lock lock(_mutex);
-    _pending.emplace_back(workFn, completionFn);
-    _condPending.notify_one();
-}
-
-void JobPool::Join(std::function<void()> reportFn)
-{
-    unique_lock lock(_mutex);
-    while (true)
-    {
-        // Wait for the queue to become empty or having completed tasks.
-        _condComplete.wait(lock, [this]() { return (_pending.empty() && _processing == 0) || !_completed.empty(); });
-
-        // Dispatch all completion callbacks if there are any.
-        while (!_completed.empty())
+        unique_lock lock(_mutex);
+        while (true)
         {
-            auto taskData = _completed.front();
-            _completed.pop_front();
+            // Wait for the queue to become empty or having completed tasks.
+            _condComplete.wait(lock, [this]() { return (_pending.empty() && _processing == 0) || !_completed.empty(); });
 
-            if (taskData.CompletionFn)
+            // Dispatch all completion callbacks if there are any.
+            while (!_completed.empty())
+            {
+                auto taskData = _completed.front();
+                _completed.pop_front();
+
+                if (taskData.CompletionFn)
+                {
+                    lock.unlock();
+
+                    taskData.CompletionFn();
+
+                    lock.lock();
+                }
+            }
+
+            if (reportFn)
             {
                 lock.unlock();
 
-                taskData.CompletionFn();
+                reportFn();
 
                 lock.lock();
             }
-        }
 
-        if (reportFn)
-        {
-            lock.unlock();
-
-            reportFn();
-
-            lock.lock();
-        }
-
-        // If everything is empty and no more work has to be done we can stop waiting.
-        if (_completed.empty() && _pending.empty() && _processing == 0)
-        {
-            break;
+            // If everything is empty and no more work has to be done we can stop waiting.
+            if (_completed.empty() && _pending.empty() && _processing == 0)
+            {
+                break;
+            }
         }
     }
-}
 
-size_t JobPool::CountPending()
-{
-    unique_lock lock(_mutex);
-    return _pending.size();
-}
-
-void JobPool::ProcessQueue()
-{
-    unique_lock lock(_mutex);
-    do
+    size_t JobPool::CountPending()
     {
-        // Wait for work or cancellation.
-        _condPending.wait(lock, [this]() { return _shouldStop || !_pending.empty(); });
+        unique_lock lock(_mutex);
+        return _pending.size();
+    }
 
-        if (!_pending.empty())
+    void JobPool::ProcessQueue()
+    {
+        unique_lock lock(_mutex);
+        do
         {
-            _processing++;
+            // Wait for work or cancellation.
+            _condPending.wait(lock, [this]() { return _shouldStop || !_pending.empty(); });
 
-            auto taskData = _pending.front();
-            _pending.pop_front();
+            if (!_pending.empty())
+            {
+                _processing++;
 
-            lock.unlock();
+                auto taskData = _pending.front();
+                _pending.pop_front();
 
-            taskData.WorkFn();
+                lock.unlock();
 
-            lock.lock();
+                taskData.WorkFn();
 
-            _completed.push_back(std::move(taskData));
+                lock.lock();
 
-            _processing--;
-            _condComplete.notify_one();
-        }
-    } while (!_shouldStop);
-}
+                _completed.push_back(std::move(taskData));
+
+                _processing--;
+                _condComplete.notify_one();
+            }
+        } while (!_shouldStop);
+    }
+} // namespace OpenRCT2

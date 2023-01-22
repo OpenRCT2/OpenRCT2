@@ -18,34 +18,34 @@
 namespace OpenRCT2
 {
     struct IStream;
-}
 
-template<typename T> struct IConfigEnum;
+    template<typename T> struct IConfigEnum;
 
-struct IIniReader
-{
-    virtual ~IIniReader() = default;
-
-    virtual bool ReadSection(const std::string& name) abstract;
-
-    virtual bool GetBoolean(const std::string& name, bool defaultValue) const abstract;
-    virtual int32_t GetInt32(const std::string& name, int32_t defaultValue) const abstract;
-    virtual int64_t GetInt64(const std::string& name, int64_t defaultValue) const abstract;
-    virtual float GetFloat(const std::string& name, float defaultValue) const abstract;
-    virtual std::string GetString(const std::string& name, const std::string& defaultValue) const abstract;
-    virtual bool TryGetString(const std::string& name, std::string* outValue) const abstract;
-
-    template<typename T> T GetEnum(const std::string& name, T defaultValue, const IConfigEnum<T>& configEnum) const
+    struct IIniReader
     {
-        std::string szValue;
-        if (!TryGetString(name, &szValue))
+        virtual ~IIniReader() = default;
+
+        virtual bool ReadSection(const std::string& name) abstract;
+
+        virtual bool GetBoolean(const std::string& name, bool defaultValue) const abstract;
+        virtual int32_t GetInt32(const std::string& name, int32_t defaultValue) const abstract;
+        virtual int64_t GetInt64(const std::string& name, int64_t defaultValue) const abstract;
+        virtual float GetFloat(const std::string& name, float defaultValue) const abstract;
+        virtual std::string GetString(const std::string& name, const std::string& defaultValue) const abstract;
+        virtual bool TryGetString(const std::string& name, std::string* outValue) const abstract;
+
+        template<typename T> T GetEnum(const std::string& name, T defaultValue, const IConfigEnum<T>& configEnum) const
         {
-            return defaultValue;
+            std::string szValue;
+            if (!TryGetString(name, &szValue))
+            {
+                return defaultValue;
+            }
+
+            return configEnum.GetValue(szValue, defaultValue);
         }
+    };
 
-        return configEnum.GetValue(szValue, defaultValue);
-    }
-};
-
-[[nodiscard]] std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream);
-[[nodiscard]] std::unique_ptr<IIniReader> CreateDefaultIniReader();
+    [[nodiscard]] std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream);
+    [[nodiscard]] std::unique_ptr<IIniReader> CreateDefaultIniReader();
+} // namespace OpenRCT2

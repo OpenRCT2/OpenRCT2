@@ -20,7 +20,7 @@
 #include <random>
 #include <type_traits>
 
-namespace Random
+namespace OpenRCT2::Random
 {
     using namespace Numerics;
 
@@ -192,4 +192,4 @@ namespace Random
         using Seed = FixedSeedSequence<2>;
         using State = Engine::state_type;
     } // namespace RCT2
-} // namespace Random
+} // namespace OpenRCT2::Random

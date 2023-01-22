@@ -15,7 +15,7 @@
 #include <cstdio>
 #include <string>
 
-namespace Console
+namespace OpenRCT2::Console
 {
     void Write(char c)
     {
@@ -108,4 +108,4 @@ namespace Console
                 std::printf("%s\n", buffer);
         }
     } // namespace Error
-} // namespace Console
+} // namespace OpenRCT2::Console

@@ -14,96 +14,98 @@
 #include "../platform/Platform.h"
 
 #include <sstream>
-
-class IniWriter final : public IIniWriter
+namespace OpenRCT2
 {
-private:
-    OpenRCT2::IStream* _stream;
-    bool _firstSection = true;
-
-public:
-    explicit IniWriter(OpenRCT2::IStream* stream)
-        : _stream(stream)
+    class IniWriter final : public IIniWriter
     {
-    }
+    private:
+        OpenRCT2::IStream* _stream;
+        bool _firstSection = true;
 
-    void WriteSection(const std::string& name) override
-    {
-        if (!_firstSection)
+    public:
+        explicit IniWriter(OpenRCT2::IStream* stream)
+            : _stream(stream)
         {
+        }
+
+        void WriteSection(const std::string& name) override
+        {
+            if (!_firstSection)
+            {
+                WriteLine();
+            }
+            _firstSection = false;
+
+            WriteLine("[" + name + "]");
+        }
+
+        void WriteBoolean(const std::string& name, bool value) override
+        {
+            WriteProperty(name, value ? "true" : "false");
+        }
+
+        void WriteInt32(const std::string& name, int32_t value) override
+        {
+            WriteProperty(name, std::to_string(value));
+        }
+
+        void WriteInt64(const std::string& name, int64_t value) override
+        {
+            WriteProperty(name, std::to_string(value));
+        }
+
+        void WriteFloat(const std::string& name, float value) override
+        {
+            WriteProperty(name, std::to_string(value));
+        }
+
+        void WriteString(const std::string& name, const std::string& value) override
+        {
+            std::ostringstream buffer;
+            buffer << '"';
+            for (char c : value)
+            {
+                if (c == '\\' || c == '"')
+                {
+                    buffer << '\\';
+                }
+                buffer << c;
+            }
+            buffer << '"';
+
+            WriteProperty(name, buffer.str());
+        }
+
+        void WriteEnum(const std::string& name, const std::string& key) override
+        {
+            WriteProperty(name, key);
+        }
+
+    private:
+        void WriteProperty(const std::string& name, const std::string& value)
+        {
+            WriteLine(name + " = " + value);
+        }
+
+        void WriteLine()
+        {
+            _stream->Write(PLATFORM_NEWLINE, String::SizeOf(PLATFORM_NEWLINE));
+        }
+
+        void WriteLine(const std::string& line)
+        {
+            _stream->Write(line.c_str(), line.size());
             WriteLine();
         }
-        _firstSection = false;
+    };
 
-        WriteLine("[" + name + "]");
-    }
-
-    void WriteBoolean(const std::string& name, bool value) override
+    void IIniWriter::WriteString(const std::string& name, const utf8* value)
     {
-        WriteProperty(name, value ? "true" : "false");
+        WriteString(name, String::ToStd(value));
     }
 
-    void WriteInt32(const std::string& name, int32_t value) override
+    std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream)
     {
-        WriteProperty(name, std::to_string(value));
+        return std::make_unique<IniWriter>(stream);
     }
-
-    void WriteInt64(const std::string& name, int64_t value) override
-    {
-        WriteProperty(name, std::to_string(value));
-    }
-
-    void WriteFloat(const std::string& name, float value) override
-    {
-        WriteProperty(name, std::to_string(value));
-    }
-
-    void WriteString(const std::string& name, const std::string& value) override
-    {
-        std::ostringstream buffer;
-        buffer << '"';
-        for (char c : value)
-        {
-            if (c == '\\' || c == '"')
-            {
-                buffer << '\\';
-            }
-            buffer << c;
-        }
-        buffer << '"';
-
-        WriteProperty(name, buffer.str());
-    }
-
-    void WriteEnum(const std::string& name, const std::string& key) override
-    {
-        WriteProperty(name, key);
-    }
-
-private:
-    void WriteProperty(const std::string& name, const std::string& value)
-    {
-        WriteLine(name + " = " + value);
-    }
-
-    void WriteLine()
-    {
-        _stream->Write(PLATFORM_NEWLINE, String::SizeOf(PLATFORM_NEWLINE));
-    }
-
-    void WriteLine(const std::string& line)
-    {
-        _stream->Write(line.c_str(), line.size());
-        WriteLine();
-    }
-};
-
-void IIniWriter::WriteString(const std::string& name, const utf8* value)
-{
-    WriteString(name, String::ToStd(value));
-}
-
-std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream)
-{
-    return std::make_unique<IniWriter>(stream);
-}
+} // namespace OpenRCT2

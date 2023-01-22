@@ -14,58 +14,60 @@
 #include <initializer_list>
 #include <utility>
 #include <vector>
-
-template<typename T> struct ConfigEnumEntry
+namespace OpenRCT2
 {
-    std::string Key;
-    T Value;
-
-    ConfigEnumEntry(std::string key, T value)
-        : Key(std::move(key))
-        , Value(value)
+    template<typename T> struct ConfigEnumEntry
     {
-    }
-};
+        std::string Key;
+        T Value;
 
-template<typename T> struct IConfigEnum
-{
-    virtual ~IConfigEnum() = default;
-    virtual std::string GetName(T value) const abstract;
-    virtual T GetValue(const std::string& key, T defaultValue) const abstract;
-};
-
-template<typename T> class ConfigEnum final : public IConfigEnum<T>
-{
-private:
-    const std::vector<ConfigEnumEntry<T>> _entries;
-
-public:
-    ConfigEnum(const std::initializer_list<ConfigEnumEntry<T>>& entries)
-        : _entries(entries)
-    {
-    }
-
-    std::string GetName(T value) const override
-    {
-        for (const auto& entry : _entries)
+        ConfigEnumEntry(std::string key, T value)
+            : Key(std::move(key))
+            , Value(value)
         {
-            if (entry.Value == value)
-            {
-                return entry.Key;
-            }
         }
-        return std::string();
-    }
+    };
 
-    T GetValue(const std::string& key, T defaultValue) const override
+    template<typename T> struct IConfigEnum
     {
-        for (const auto& entry : _entries)
+        virtual ~IConfigEnum() = default;
+        virtual std::string GetName(T value) const abstract;
+        virtual T GetValue(const std::string& key, T defaultValue) const abstract;
+    };
+
+    template<typename T> class ConfigEnum final : public IConfigEnum<T>
+    {
+    private:
+        const std::vector<ConfigEnumEntry<T>> _entries;
+
+    public:
+        ConfigEnum(const std::initializer_list<ConfigEnumEntry<T>>& entries)
+            : _entries(entries)
         {
-            if (String::Equals(entry.Key, key, true))
-            {
-                return entry.Value;
-            }
         }
-        return defaultValue;
-    }
-};
+
+        std::string GetName(T value) const override
+        {
+            for (const auto& entry : _entries)
+            {
+                if (entry.Value == value)
+                {
+                    return entry.Key;
+                }
+            }
+            return std::string();
+        }
+
+        T GetValue(const std::string& key, T defaultValue) const override
+        {
+            for (const auto& entry : _entries)
+            {
+                if (String::Equals(entry.Key, key, true))
+                {
+                    return entry.Value;
+                }
+            }
+            return defaultValue;
+        }
+    };
+} // namespace OpenRCT2

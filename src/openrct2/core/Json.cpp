@@ -13,7 +13,7 @@
 #include "Memory.hpp"
 #include "String.hpp"
 
-namespace Json
+namespace OpenRCT2::Json
 {
     json_t ReadFromFile(u8string_view path, size_t maxSize)
     {
@@ -123,4 +123,4 @@ namespace Json
 
         return retVal;
     }
-} // namespace Json
+} // namespace OpenRCT2::Json

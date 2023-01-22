@@ -10,5 +10,7 @@
 #pragma once
 
 #include <string>
-
-std::string FixRTL(std::string& input);
+namespace OpenRCT2
+{
+    std::string FixRTL(std::string& input);
+}

@@ -23,141 +23,143 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
-
-void openrct2_assert_fwd(bool expression, const char* message, ...)
+namespace OpenRCT2
 {
-    va_list va;
-    va_start(va, message);
-    Guard::Assert_VA(expression, message, va);
-    va_end(va);
-}
+    void openrct2_assert_fwd(bool expression, const char* message, ...)
+    {
+        va_list va;
+        va_start(va, message);
+        Guard::Assert_VA(expression, message, va);
+        va_end(va);
+    }
 
-namespace Guard
-{
-    constexpr const utf8* ASSERTION_MESSAGE = "An assertion failed, please report this to the OpenRCT2 developers.";
+    namespace Guard
+    {
+        constexpr const utf8* ASSERTION_MESSAGE = "An assertion failed, please report this to the OpenRCT2 developers.";
 
-    // The default behaviour when an assertion is raised.
-    static ASSERT_BEHAVIOUR _assertBehaviour =
+        // The default behaviour when an assertion is raised.
+        static ASSERT_BEHAVIOUR _assertBehaviour =
 #ifdef _WIN32
-        ASSERT_BEHAVIOUR::MESSAGE_BOX
+            ASSERT_BEHAVIOUR::MESSAGE_BOX
 #else
-        ASSERT_BEHAVIOUR::CASSERT
+            ASSERT_BEHAVIOUR::CASSERT
 #endif
-        ;
+            ;
 
-    static std::optional<std::string> _lastAssertMessage = std::nullopt;
+        static std::optional<std::string> _lastAssertMessage = std::nullopt;
 
 #ifdef _WIN32
-    [[nodiscard]] static std::wstring CreateDialogAssertMessage(std::string_view);
-    static void ForceCrash();
+        [[nodiscard]] static std::wstring CreateDialogAssertMessage(std::string_view);
+        static void ForceCrash();
 #endif
 
-    ASSERT_BEHAVIOUR GetAssertBehaviour()
-    {
-        return _assertBehaviour;
-    }
-
-    void SetAssertBehaviour(ASSERT_BEHAVIOUR behaviour)
-    {
-        _assertBehaviour = behaviour;
-    }
-
-    void Assert(bool expression, const char* message, ...)
-    {
-        va_list args;
-        va_start(args, message);
-        Assert_VA(expression, message, args);
-        va_end(args);
-    }
-
-    void Assert_VA(bool expression, const char* message, va_list args)
-    {
-        if (expression)
-            return;
-
-        Console::Error::WriteLine(ASSERTION_MESSAGE);
-        Console::Error::WriteLine("Version: %s", gVersionInfoFull);
-
-        // This is never freed, but acceptable considering we are about to crash out
-        std::string formattedMessage;
-        if (message != nullptr)
+        ASSERT_BEHAVIOUR GetAssertBehaviour()
         {
-            formattedMessage = String::Format_VA(message, args);
-            Console::Error::WriteLine(formattedMessage.c_str());
-            _lastAssertMessage = std::make_optional(formattedMessage);
+            return _assertBehaviour;
         }
+
+        void SetAssertBehaviour(ASSERT_BEHAVIOUR behaviour)
+        {
+            _assertBehaviour = behaviour;
+        }
+
+        void Assert(bool expression, const char* message, ...)
+        {
+            va_list args;
+            va_start(args, message);
+            Assert_VA(expression, message, args);
+            va_end(args);
+        }
+
+        void Assert_VA(bool expression, const char* message, va_list args)
+        {
+            if (expression)
+                return;
+
+            Console::Error::WriteLine(ASSERTION_MESSAGE);
+            Console::Error::WriteLine("Version: %s", gVersionInfoFull);
+
+            // This is never freed, but acceptable considering we are about to crash out
+            std::string formattedMessage;
+            if (message != nullptr)
+            {
+                formattedMessage = String::Format_VA(message, args);
+                Console::Error::WriteLine(formattedMessage.c_str());
+                _lastAssertMessage = std::make_optional(formattedMessage);
+            }
 
 #ifdef DEBUG
-        Debug::Break();
+            Debug::Break();
 #endif
 
-        switch (_assertBehaviour)
-        {
-            case ASSERT_BEHAVIOUR::ABORT:
-                abort();
-            default:
-            case ASSERT_BEHAVIOUR::CASSERT:
-                assert(false);
-                break;
-#ifdef _WIN32
-            case ASSERT_BEHAVIOUR::MESSAGE_BOX:
+            switch (_assertBehaviour)
             {
-                // Show message box if we are not building for testing
-                auto buffer = CreateDialogAssertMessage(formattedMessage);
-                int32_t result = MessageBoxW(
-                    nullptr, buffer.c_str(), L"" OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
-                if (result == IDABORT)
+                case ASSERT_BEHAVIOUR::ABORT:
+                    abort();
+                default:
+                case ASSERT_BEHAVIOUR::CASSERT:
+                    assert(false);
+                    break;
+#ifdef _WIN32
+                case ASSERT_BEHAVIOUR::MESSAGE_BOX:
                 {
-                    ForceCrash();
+                    // Show message box if we are not building for testing
+                    auto buffer = CreateDialogAssertMessage(formattedMessage);
+                    int32_t result = MessageBoxW(
+                        nullptr, buffer.c_str(), L"" OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+                    if (result == IDABORT)
+                    {
+                        ForceCrash();
+                    }
+                    break;
                 }
-                break;
-            }
 #endif
+            }
         }
-    }
 
-    void Fail(const char* message, ...)
-    {
-        va_list args;
-        va_start(args, message);
-        Assert_VA(false, message, args);
-        va_end(args);
-    }
+        void Fail(const char* message, ...)
+        {
+            va_list args;
+            va_start(args, message);
+            Assert_VA(false, message, args);
+            va_end(args);
+        }
 
-    void Fail_VA(const char* message, va_list args)
-    {
-        Assert_VA(false, message, args);
-    }
+        void Fail_VA(const char* message, va_list args)
+        {
+            Assert_VA(false, message, args);
+        }
 
-    std::optional<std::string> GetLastAssertMessage()
-    {
-        return _lastAssertMessage;
-    }
+        std::optional<std::string> GetLastAssertMessage()
+        {
+            return _lastAssertMessage;
+        }
 
 #ifdef _WIN32
-    [[nodiscard]] static std::wstring CreateDialogAssertMessage(std::string_view formattedMessage)
-    {
-        StringBuilder sb;
-        sb.Append(ASSERTION_MESSAGE);
-        sb.Append("\n\n");
-        sb.Append("Version: ");
-        sb.Append(gVersionInfoFull);
-        if (!formattedMessage.empty())
+        [[nodiscard]] static std::wstring CreateDialogAssertMessage(std::string_view formattedMessage)
         {
-            sb.Append("\n");
-            sb.Append(formattedMessage);
+            StringBuilder sb;
+            sb.Append(ASSERTION_MESSAGE);
+            sb.Append("\n\n");
+            sb.Append("Version: ");
+            sb.Append(gVersionInfoFull);
+            if (!formattedMessage.empty())
+            {
+                sb.Append("\n");
+                sb.Append(formattedMessage);
+            }
+            return String::ToWideChar({ sb.GetBuffer(), sb.GetLength() });
         }
-        return String::ToWideChar({ sb.GetBuffer(), sb.GetLength() });
-    }
 
-    static void ForceCrash()
-    {
+        static void ForceCrash()
+        {
 #    ifdef USE_BREAKPAD
-        // Force a crash that breakpad will handle allowing us to get a dump
-        *((void**)0) = 0;
+            // Force a crash that breakpad will handle allowing us to get a dump
+            *((void**)0) = 0;
 #    else
-        assert(false);
+            assert(false);
 #    endif
-    }
+        }
 #endif
-} // namespace Guard
+    } // namespace Guard
+} // namespace OpenRCT2

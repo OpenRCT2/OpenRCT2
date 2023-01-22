@@ -13,64 +13,66 @@
 #include "../core/String.hpp"
 
 #include <string>
-
-/**
- * Class for constructing strings efficiently. A buffer is automatically allocated and reallocated when characters or strings
- * are appended. Use GetString to copy the current state of the string builder to a new fire-and-forget string.
- */
-class StringBuilder final
+namespace OpenRCT2
 {
-public:
-    StringBuilder() = default;
-    explicit StringBuilder(size_t capacity);
-    ~StringBuilder() = default;
-
-    void Append(int32_t codepoint);
-
     /**
-     * Appends the given character to the current string.
+     * Class for constructing strings efficiently. A buffer is automatically allocated and reallocated when characters or
+     * strings are appended. Use GetString to copy the current state of the string builder to a new fire-and-forget string.
      */
-    void Append(codepoint_t codepoint);
+    class StringBuilder final
+    {
+    public:
+        StringBuilder() = default;
+        explicit StringBuilder(size_t capacity);
+        ~StringBuilder() = default;
 
-    /**
-     * Appends the given string to the current string.
-     */
-    void Append(std::string_view text);
+        void Append(int32_t codepoint);
 
-    /**
-     * Appends the given string of the given length to the current string. Essentially used to ignore null terminators or copy
-     * the data faster as the length is already known.
-     * @param text Pointer to the UTF-8 text to append.
-     * @param textLength Number of bytes to copy. (Can be used to append single bytes rather than codepoints)
-     */
-    void Append(const utf8* text, size_t textLength);
+        /**
+         * Appends the given character to the current string.
+         */
+        void Append(codepoint_t codepoint);
 
-    /**
-     * Appends the string of a given StringBuilder to the current string.
-     */
-    void Append(const StringBuilder* sb);
+        /**
+         * Appends the given string to the current string.
+         */
+        void Append(std::string_view text);
 
-    /**
-     * Clears the current string, but preserves the allocated memory for another string.
-     */
-    void Clear();
+        /**
+         * Appends the given string of the given length to the current string. Essentially used to ignore null terminators or
+         * copy the data faster as the length is already known.
+         * @param text Pointer to the UTF-8 text to append.
+         * @param textLength Number of bytes to copy. (Can be used to append single bytes rather than codepoints)
+         */
+        void Append(const utf8* text, size_t textLength);
 
-    /**
-     * Returns the current string buffer as a standard string.
-     */
-    std::string GetStdString() const;
+        /**
+         * Appends the string of a given StringBuilder to the current string.
+         */
+        void Append(const StringBuilder* sb);
 
-    /**
-     * Gets the current state of the StringBuilder. Warning: this represents the StringBuilder's current working buffer and will
-     * be deallocated when the StringBuilder is destructed.
-     */
-    const utf8* GetBuffer() const;
+        /**
+         * Clears the current string, but preserves the allocated memory for another string.
+         */
+        void Clear();
 
-    /**
-     * Gets the length of the current string.
-     */
-    size_t GetLength() const;
+        /**
+         * Returns the current string buffer as a standard string.
+         */
+        std::string GetStdString() const;
 
-private:
-    std::basic_string<utf8> _buffer;
-};
+        /**
+         * Gets the current state of the StringBuilder. Warning: this represents the StringBuilder's current working buffer and
+         * will be deallocated when the StringBuilder is destructed.
+         */
+        const utf8* GetBuffer() const;
+
+        /**
+         * Gets the length of the current string.
+         */
+        size_t GetLength() const;
+
+    private:
+        std::basic_string<utf8> _buffer;
+    };
+} // namespace OpenRCT2

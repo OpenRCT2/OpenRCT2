@@ -11,93 +11,95 @@
 
 #include <cstdint>
 #include <cstdio>
-
-template<typename T, T TNullValue, typename TTag> class TIdentifier
+namespace OpenRCT2
 {
-    enum class ValueType : T
+    template<typename T, T TNullValue, typename TTag> class TIdentifier
     {
-        Null = TNullValue,
-    } _handle;
+        enum class ValueType : T
+        {
+            Null = TNullValue,
+        } _handle;
 
-private:
-    explicit constexpr TIdentifier(const T index)
-        : _handle{ static_cast<ValueType>(index) }
-    {
-    }
+    private:
+        explicit constexpr TIdentifier(const T index)
+            : _handle{ static_cast<ValueType>(index) }
+        {
+        }
 
-    explicit constexpr TIdentifier(const ValueType other)
-        : _handle{ other }
-    {
-    }
+        explicit constexpr TIdentifier(const ValueType other)
+            : _handle{ other }
+        {
+        }
 
-public:
-    using UnderlyingType = T;
+    public:
+        using UnderlyingType = T;
 
-    constexpr TIdentifier() = default;
+        constexpr TIdentifier() = default;
 
-    static constexpr TIdentifier GetNull() noexcept
-    {
-        return TIdentifier{ ValueType::Null };
-    }
+        static constexpr TIdentifier GetNull() noexcept
+        {
+            return TIdentifier{ ValueType::Null };
+        }
 
-    static constexpr TIdentifier FromUnderlying(const T val) noexcept
-    {
-        return TIdentifier{ val };
-    }
+        static constexpr TIdentifier FromUnderlying(const T val) noexcept
+        {
+            return TIdentifier{ val };
+        }
 
-    constexpr T ToUnderlying() const noexcept
-    {
-        return static_cast<T>(_handle);
-    }
+        constexpr T ToUnderlying() const noexcept
+        {
+            return static_cast<T>(_handle);
+        }
 
-    // Support for static_cast<size_t>.
-    explicit operator size_t() const noexcept
-    {
-        return static_cast<std::size_t>(ToUnderlying());
-    }
+        // Support for static_cast<size_t>.
+        explicit operator size_t() const noexcept
+        {
+            return static_cast<std::size_t>(ToUnderlying());
+        }
 
-    constexpr bool IsNull() const noexcept
-    {
-        return _handle == ValueType::Null;
-    }
+        constexpr bool IsNull() const noexcept
+        {
+            return _handle == ValueType::Null;
+        }
 
-    constexpr bool operator==(const ValueType other) const noexcept
-    {
-        return _handle == other;
-    }
+        constexpr bool operator==(const ValueType other) const noexcept
+        {
+            return _handle == other;
+        }
 
-    constexpr bool operator!=(const ValueType other) const noexcept
-    {
-        return _handle != other;
-    }
+        constexpr bool operator!=(const ValueType other) const noexcept
+        {
+            return _handle != other;
+        }
 
-    constexpr bool operator==(const TIdentifier& other) const noexcept
-    {
-        return _handle == other._handle;
-    }
+        constexpr bool operator==(const TIdentifier& other) const noexcept
+        {
+            return _handle == other._handle;
+        }
 
-    constexpr bool operator!=(const TIdentifier& other) const noexcept
-    {
-        return _handle != other._handle;
-    }
+        constexpr bool operator!=(const TIdentifier& other) const noexcept
+        {
+            return _handle != other._handle;
+        }
 
-    constexpr bool operator<(const TIdentifier& other) const noexcept
-    {
-        return ToUnderlying() < other.ToUnderlying();
-    }
+        constexpr bool operator<(const TIdentifier& other) const noexcept
+        {
+            return ToUnderlying() < other.ToUnderlying();
+        }
 
-    constexpr bool operator<=(const TIdentifier& other) const noexcept
-    {
-        return ToUnderlying() <= other.ToUnderlying();
-    }
+        constexpr bool operator<=(const TIdentifier& other) const noexcept
+        {
+            return ToUnderlying() <= other.ToUnderlying();
+        }
 
-    constexpr bool operator>(const TIdentifier& other) const noexcept
-    {
-        return ToUnderlying() > other.ToUnderlying();
-    }
+        constexpr bool operator>(const TIdentifier& other) const noexcept
+        {
+            return ToUnderlying() > other.ToUnderlying();
+        }
 
-    constexpr bool operator>=(const TIdentifier& other) const noexcept
-    {
-        return ToUnderlying() >= other.ToUnderlying();
-    }
-};
+        constexpr bool operator>=(const TIdentifier& other) const noexcept
+        {
+            return ToUnderlying() >= other.ToUnderlying();
+        }
+    };
+} // namespace OpenRCT2

@@ -16,37 +16,39 @@
 #include <mutex>
 #include <thread>
 #include <vector>
-
-class JobPool
+namespace OpenRCT2
 {
-private:
-    struct TaskData
+    class JobPool
     {
-        const std::function<void()> WorkFn;
-        const std::function<void()> CompletionFn;
+    private:
+        struct TaskData
+        {
+            const std::function<void()> WorkFn;
+            const std::function<void()> CompletionFn;
 
-        TaskData(std::function<void()> workFn, std::function<void()> completionFn);
+            TaskData(std::function<void()> workFn, std::function<void()> completionFn);
+        };
+
+        std::atomic_bool _shouldStop = { false };
+        std::atomic<size_t> _processing = { 0 };
+        std::vector<std::thread> _threads;
+        std::deque<TaskData> _pending;
+        std::deque<TaskData> _completed;
+        std::condition_variable _condPending;
+        std::condition_variable _condComplete;
+        std::mutex _mutex;
+
+        using unique_lock = std::unique_lock<std::mutex>;
+
+    public:
+        JobPool(size_t maxThreads = 255);
+        ~JobPool();
+
+        void AddTask(std::function<void()> workFn, std::function<void()> completionFn = nullptr);
+        void Join(std::function<void()> reportFn = nullptr);
+        size_t CountPending();
+
+    private:
+        void ProcessQueue();
     };
-
-    std::atomic_bool _shouldStop = { false };
-    std::atomic<size_t> _processing = { 0 };
-    std::vector<std::thread> _threads;
-    std::deque<TaskData> _pending;
-    std::deque<TaskData> _completed;
-    std::condition_variable _condPending;
-    std::condition_variable _condComplete;
-    std::mutex _mutex;
-
-    using unique_lock = std::unique_lock<std::mutex>;
-
-public:
-    JobPool(size_t maxThreads = 255);
-    ~JobPool();
-
-    void AddTask(std::function<void()> workFn, std::function<void()> completionFn = nullptr);
-    void Join(std::function<void()> reportFn = nullptr);
-    size_t CountPending();
-
-private:
-    void ProcessQueue();
-};
+} // namespace OpenRCT2

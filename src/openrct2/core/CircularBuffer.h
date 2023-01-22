@@ -11,131 +11,133 @@
 
 #include <array>
 #include <cstddef>
-
-template<typename TType, size_t TMax> class CircularBuffer
+namespace OpenRCT2
 {
-public:
-    using value_type = TType;
-    using pointer = TType*;
-    using const_pointer = const TType*;
-    using reference = TType&;
-    using const_reference = const TType&;
-    using size_type = size_t;
-    using difference_type = ptrdiff_t;
-
-    reference front()
+    template<typename TType, size_t TMax> class CircularBuffer
     {
-        return _elements[_head];
-    }
+    public:
+        using value_type = TType;
+        using pointer = TType*;
+        using const_pointer = const TType*;
+        using reference = TType&;
+        using const_reference = const TType&;
+        using size_type = size_t;
+        using difference_type = ptrdiff_t;
 
-    const_reference front() const
-    {
-        return _elements[_head];
-    }
-
-    reference back()
-    {
-        return _elements[_tail];
-    }
-
-    const_reference back() const
-    {
-        return _elements[_tail];
-    }
-
-    reference operator[](size_type idx)
-    {
-        idx = (_head + idx) % capacity();
-        return _elements[idx];
-    }
-
-    const_reference operator[](size_type idx) const
-    {
-        idx = (_head + idx) % capacity();
-        return _elements[idx];
-    }
-
-    void clear()
-    {
-        _head = 0;
-        _tail = 0;
-        _size = 0;
-    }
-
-    size_type size() const
-    {
-        return _size;
-    }
-
-    bool empty() const
-    {
-        return _size == 0;
-    }
-
-    constexpr size_type capacity() const
-    {
-        return _elements.size();
-    }
-
-    void push_back(const value_type& val)
-    {
-        if (_size == 0)
+        reference front()
         {
-            _elements[_head] = val;
-            _tail = _head;
-            _size++;
+            return _elements[_head];
         }
-        else if (_size != capacity())
-        {
-            _tail++;
-            if (_tail == capacity())
-                _tail = 0;
-            _size++;
-            _elements[_tail] = val;
-        }
-        else
-        {
-            _head++;
-            if (_head == capacity())
-                _head = 0;
-            _tail++;
-            if (_tail == capacity())
-                _tail = 0;
-            _elements[_tail] = val;
-        }
-    }
 
-    void push_back(value_type&& val)
-    {
-        if (_size == 0)
+        const_reference front() const
         {
-            _elements[_head] = std::move(val);
-            _tail = _head;
-            _size++;
+            return _elements[_head];
         }
-        else if (_size != capacity())
-        {
-            _tail++;
-            if (_tail == capacity())
-                _tail = 0;
-            _size++;
-            _elements[_tail] = std::move(val);
-        }
-        else
-        {
-            _head++;
-            if (_head == capacity())
-                _head = 0;
-            _tail++;
-            if (_tail == capacity())
-                _tail = 0;
-            _elements[_tail] = std::move(val);
-        }
-    }
 
-private:
-    size_t _head = 0;
-    size_t _tail = 0;
-    size_t _size = 0;
-    std::array<TType, TMax> _elements;
-};
+        reference back()
+        {
+            return _elements[_tail];
+        }
+
+        const_reference back() const
+        {
+            return _elements[_tail];
+        }
+
+        reference operator[](size_type idx)
+        {
+            idx = (_head + idx) % capacity();
+            return _elements[idx];
+        }
+
+        const_reference operator[](size_type idx) const
+        {
+            idx = (_head + idx) % capacity();
+            return _elements[idx];
+        }
+
+        void clear()
+        {
+            _head = 0;
+            _tail = 0;
+            _size = 0;
+        }
+
+        size_type size() const
+        {
+            return _size;
+        }
+
+        bool empty() const
+        {
+            return _size == 0;
+        }
+
+        constexpr size_type capacity() const
+        {
+            return _elements.size();
+        }
+
+        void push_back(const value_type& val)
+        {
+            if (_size == 0)
+            {
+                _elements[_head] = val;
+                _tail = _head;
+                _size++;
+            }
+            else if (_size != capacity())
+            {
+                _tail++;
+                if (_tail == capacity())
+                    _tail = 0;
+                _size++;
+                _elements[_tail] = val;
+            }
+            else
+            {
+                _head++;
+                if (_head == capacity())
+                    _head = 0;
+                _tail++;
+                if (_tail == capacity())
+                    _tail = 0;
+                _elements[_tail] = val;
+            }
+        }
+
+        void push_back(value_type&& val)
+        {
+            if (_size == 0)
+            {
+                _elements[_head] = std::move(val);
+                _tail = _head;
+                _size++;
+            }
+            else if (_size != capacity())
+            {
+                _tail++;
+                if (_tail == capacity())
+                    _tail = 0;
+                _size++;
+                _elements[_tail] = std::move(val);
+            }
+            else
+            {
+                _head++;
+                if (_head == capacity())
+                    _head = 0;
+                _tail++;
+                if (_tail == capacity())
+                    _tail = 0;
+                _elements[_tail] = std::move(val);
+            }
+        }
+
+    private:
+        size_t _head = 0;
+        size_t _tail = 0;
+        size_t _size = 0;
+        std::array<TType, TMax> _elements;
+    };
+} // namespace OpenRCT2

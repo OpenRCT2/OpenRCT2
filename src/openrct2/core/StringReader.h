@@ -11,28 +11,30 @@
 
 #include "../common.h"
 #include "../core/String.hpp"
-
-struct IStringReader
+namespace OpenRCT2
 {
-    virtual ~IStringReader() = default;
+    struct IStringReader
+    {
+        virtual ~IStringReader() = default;
 
-    virtual bool TryPeek(codepoint_t* outCodepoint) abstract;
-    virtual bool TryRead(codepoint_t* outCodepoint) abstract;
-    virtual void Skip() abstract;
-    virtual bool CanRead() const abstract;
-};
+        virtual bool TryPeek(codepoint_t* outCodepoint) abstract;
+        virtual bool TryRead(codepoint_t* outCodepoint) abstract;
+        virtual void Skip() abstract;
+        virtual bool CanRead() const abstract;
+    };
 
-class UTF8StringReader final : public IStringReader
-{
-public:
-    explicit UTF8StringReader(const utf8* text);
+    class UTF8StringReader final : public IStringReader
+    {
+    public:
+        explicit UTF8StringReader(const utf8* text);
 
-    bool TryPeek(codepoint_t* outCodepoint) override;
-    bool TryRead(codepoint_t* outCodepoint) override;
-    void Skip() override;
-    bool CanRead() const override;
+        bool TryPeek(codepoint_t* outCodepoint) override;
+        bool TryRead(codepoint_t* outCodepoint) override;
+        void Skip() override;
+        bool CanRead() const override;
 
-private:
-    const utf8* _text;
-    const utf8* _current;
-};
+    private:
+        const utf8* _text;
+        const utf8* _current;
+    };
+} // namespace OpenRCT2

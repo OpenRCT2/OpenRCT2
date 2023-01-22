@@ -14,7 +14,7 @@
 
 #include <cstdarg>
 
-namespace Console
+namespace OpenRCT2::Console
 {
     void Write(char c);
     void Write(const utf8* str);
@@ -32,4 +32,4 @@ namespace Console
         void WriteLine(const utf8* format, ...);
         void WriteLine_VA(const utf8* format, va_list args);
     } // namespace Error
-} // namespace Console
+} // namespace OpenRCT2::Console

@@ -13,60 +13,62 @@
 
 #include <algorithm>
 #include <iterator>
-
-StringBuilder::StringBuilder(size_t capacity)
+namespace OpenRCT2
 {
-    _buffer.reserve(capacity);
-}
+    StringBuilder::StringBuilder(size_t capacity)
+    {
+        _buffer.reserve(capacity);
+    }
 
-void StringBuilder::Append(int32_t codepoint)
-{
-    Append(static_cast<codepoint_t>(codepoint));
-}
+    void StringBuilder::Append(int32_t codepoint)
+    {
+        Append(static_cast<codepoint_t>(codepoint));
+    }
 
-void StringBuilder::Append(codepoint_t codepoint)
-{
-    size_t codepointLength = String::GetCodepointLength(codepoint);
-    std::basic_string<utf8> data(codepointLength, {});
-    String::WriteCodepoint(data.data(), codepoint);
-    _buffer.insert(_buffer.end(), data.begin(), data.end());
-}
+    void StringBuilder::Append(codepoint_t codepoint)
+    {
+        size_t codepointLength = String::GetCodepointLength(codepoint);
+        std::basic_string<utf8> data(codepointLength, {});
+        String::WriteCodepoint(data.data(), codepoint);
+        _buffer.insert(_buffer.end(), data.begin(), data.end());
+    }
 
-void StringBuilder::Append(std::string_view text)
-{
-    size_t textLength = text.length();
-    Append(text.data(), textLength);
-}
+    void StringBuilder::Append(std::string_view text)
+    {
+        size_t textLength = text.length();
+        Append(text.data(), textLength);
+    }
 
-void StringBuilder::Append(const utf8* text, size_t textLength)
-{
-    _buffer.insert(_buffer.end(), text, text + textLength);
-}
+    void StringBuilder::Append(const utf8* text, size_t textLength)
+    {
+        _buffer.insert(_buffer.end(), text, text + textLength);
+    }
 
-void StringBuilder::Append(const StringBuilder* sb)
-{
-    Append(sb->GetBuffer(), sb->GetLength());
-}
+    void StringBuilder::Append(const StringBuilder* sb)
+    {
+        Append(sb->GetBuffer(), sb->GetLength());
+    }
 
-void StringBuilder::Clear()
-{
-    _buffer.clear();
-}
+    void StringBuilder::Clear()
+    {
+        _buffer.clear();
+    }
 
-std::string StringBuilder::GetStdString() const
-{
-    return std::string(GetBuffer(), GetLength());
-}
+    std::string StringBuilder::GetStdString() const
+    {
+        return std::string(GetBuffer(), GetLength());
+    }
 
-const utf8* StringBuilder::GetBuffer() const
-{
-    // buffer may be empty, so return an immutable empty string
-    if (_buffer.empty())
-        return "";
-    return _buffer.c_str();
-}
+    const utf8* StringBuilder::GetBuffer() const
+    {
+        // buffer may be empty, so return an immutable empty string
+        if (_buffer.empty())
+            return "";
+        return _buffer.c_str();
+    }
 
-size_t StringBuilder::GetLength() const
-{
-    return _buffer.size();
-}
+    size_t StringBuilder::GetLength() const
+    {
+        return _buffer.size();
+    }
+} // namespace OpenRCT2

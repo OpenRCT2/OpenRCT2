@@ -84,3 +84,4 @@ namespace OpenRCT2
     };
 
 } // namespace OpenRCT2
+}

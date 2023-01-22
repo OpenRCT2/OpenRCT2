@@ -18,7 +18,7 @@
 #    include <string>
 #    include <thread>
 
-namespace Http
+namespace OpenRCT2::Http
 {
     enum class Status
     {
@@ -71,6 +71,6 @@ namespace Http
         });
         thread.detach();
     }
-} // namespace Http
+} // namespace OpenRCT2::Http
 
 #endif // DISABLE_HTTP

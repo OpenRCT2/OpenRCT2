@@ -13,77 +13,80 @@
 #include <cstdint>
 #include <cstdio>
 #include <vector>
-
-template<typename Handle, typename V> class GroupVector
+namespace OpenRCT2
 {
-    std::vector<std::vector<V>> _data;
-
-public:
-    bool Contains(Handle handle, V value)
+    template<typename Handle, typename V> class GroupVector
     {
-        const auto index = static_cast<size_t>(handle);
-        if (index >= _data.size())
-            return false;
+        std::vector<std::vector<V>> _data;
 
-        const auto& values = _data[index];
-        return std::find(values.begin(), values.end(), value) != values.end();
-    }
-
-    void Add(Handle handle, V value)
-    {
-        const auto index = static_cast<size_t>(handle);
-        if (index >= _data.size())
+    public:
+        bool Contains(Handle handle, V value)
         {
-            _data.resize(index + 1);
+            const auto index = static_cast<size_t>(handle);
+            if (index >= _data.size())
+                return false;
+
+            const auto& values = _data[index];
+            return std::find(values.begin(), values.end(), value) != values.end();
         }
-        auto& values = _data[index];
 
-        auto it = std::find(values.begin(), values.end(), value);
-        if (it != values.end())
-            return;
-
-        values.push_back(value);
-    }
-
-    void Set(Handle handle, std::vector<V>&& values)
-    {
-        const auto index = static_cast<size_t>(handle);
-        if (index >= _data.size())
+        void Add(Handle handle, V value)
         {
-            _data.resize(index + 1);
-        }
-        _data[index] = values;
-    }
+            const auto index = static_cast<size_t>(handle);
+            if (index >= _data.size())
+            {
+                _data.resize(index + 1);
+            }
+            auto& values = _data[index];
 
-    std::vector<V>* GetAll(Handle handle)
-    {
-        const auto index = static_cast<size_t>(handle);
-        if (index < _data.size())
+            auto it = std::find(values.begin(), values.end(), value);
+            if (it != values.end())
+                return;
+
+            values.push_back(value);
+        }
+
+        void Set(Handle handle, std::vector<V>&& values)
         {
-            return &_data[index];
+            const auto index = static_cast<size_t>(handle);
+            if (index >= _data.size())
+            {
+                _data.resize(index + 1);
+            }
+            _data[index] = values;
         }
-        return nullptr;
-    }
 
-    void Clear()
-    {
-        _data.clear();
-    }
-
-    void RemoveHandle(Handle handle)
-    {
-        const auto index = static_cast<size_t>(handle);
-        if (index < _data.size())
+        std::vector<V>* GetAll(Handle handle)
         {
-            _data[index].clear();
+            const auto index = static_cast<size_t>(handle);
+            if (index < _data.size())
+            {
+                return &_data[index];
+            }
+            return nullptr;
         }
-    }
 
-    void RemoveValue(V value)
-    {
-        for (auto& values : _data)
+        void Clear()
         {
-            values.erase(std::remove_if(values.begin(), values.end(), [value](auto v) { return v == value; }), values.end());
+            _data.clear();
         }
-    }
-};
+
+        void RemoveHandle(Handle handle)
+        {
+            const auto index = static_cast<size_t>(handle);
+            if (index < _data.size())
+            {
+                _data[index].clear();
+            }
+        }
+
+        void RemoveValue(V value)
+        {
+            for (auto& values : _data)
+            {
+                values.erase(
+                    std::remove_if(values.begin(), values.end(), [value](auto v) { return v == value; }), values.end());
+            }
+        }
+    };
+} // namespace OpenRCT2

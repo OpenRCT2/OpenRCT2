@@ -11,10 +11,12 @@
 
 #include <algorithm>
 #include <functional>
-
-template<class ForwardIt, class T, class Compare = std::less<>>
-ForwardIt BinaryFind(ForwardIt first, ForwardIt last, const T& value, Compare comp = {})
+namespace OpenRCT2
 {
-    first = std::lower_bound(first, last, value, comp);
-    return first != last && !comp(value, *first) ? first : last;
-}
+    template<class ForwardIt, class T, class Compare = std::less<>>
+    ForwardIt BinaryFind(ForwardIt first, ForwardIt last, const T& value, Compare comp = {})
+    {
+        first = std::lower_bound(first, last, value, comp);
+        return first != last && !comp(value, *first) ? first : last;
+    }
+} // namespace OpenRCT2

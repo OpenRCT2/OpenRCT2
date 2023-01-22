@@ -20,45 +20,45 @@
 namespace OpenRCT2
 {
     struct IStream;
-}
-
-/**
- * Represents a zip file.
- */
-struct IZipArchive
-{
-    virtual ~IZipArchive()
-    {
-    }
-
-    [[nodiscard]] virtual size_t GetNumFiles() const abstract;
-    [[nodiscard]] virtual std::string GetFileName(size_t index) const abstract;
-    [[nodiscard]] virtual uint64_t GetFileSize(size_t index) const abstract;
-    [[nodiscard]] virtual std::vector<uint8_t> GetFileData(std::string_view path) const abstract;
-    [[nodiscard]] virtual std::unique_ptr<OpenRCT2::IStream> GetFileStream(std::string_view path) const abstract;
 
     /**
-     * Creates or overwrites a file within the zip archive to the given data buffer.
-     * @param path The path of the file within the zip.
-     * @param data The data to write.
+     * Represents a zip file.
      */
-    virtual void SetFileData(std::string_view path, std::vector<uint8_t>&& data) abstract;
+    struct IZipArchive
+    {
+        virtual ~IZipArchive()
+        {
+        }
 
-    virtual void DeleteFile(std::string_view path) abstract;
-    virtual void RenameFile(std::string_view path, std::string_view newPath) abstract;
+        [[nodiscard]] virtual size_t GetNumFiles() const abstract;
+        [[nodiscard]] virtual std::string GetFileName(size_t index) const abstract;
+        [[nodiscard]] virtual uint64_t GetFileSize(size_t index) const abstract;
+        [[nodiscard]] virtual std::vector<uint8_t> GetFileData(std::string_view path) const abstract;
+        [[nodiscard]] virtual std::unique_ptr<OpenRCT2::IStream> GetFileStream(std::string_view path) const abstract;
 
-    [[nodiscard]] std::optional<size_t> GetIndexFromPath(std::string_view path) const;
-    [[nodiscard]] bool Exists(std::string_view path) const;
-};
+        /**
+         * Creates or overwrites a file within the zip archive to the given data buffer.
+         * @param path The path of the file within the zip.
+         * @param data The data to write.
+         */
+        virtual void SetFileData(std::string_view path, std::vector<uint8_t>&& data) abstract;
 
-enum class ZIP_ACCESS
-{
-    READ,
-    WRITE,
-};
+        virtual void DeleteFile(std::string_view path) abstract;
+        virtual void RenameFile(std::string_view path, std::string_view newPath) abstract;
 
-namespace Zip
-{
-    [[nodiscard]] std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS zipAccess);
-    [[nodiscard]] std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS zipAccess);
-} // namespace Zip
+        [[nodiscard]] std::optional<size_t> GetIndexFromPath(std::string_view path) const;
+        [[nodiscard]] bool Exists(std::string_view path) const;
+    };
+
+    enum class ZIP_ACCESS
+    {
+        READ,
+        WRITE,
+    };
+
+    namespace Zip
+    {
+        [[nodiscard]] std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS zipAccess);
+        [[nodiscard]] std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS zipAccess);
+    } // namespace Zip
+} // namespace OpenRCT2

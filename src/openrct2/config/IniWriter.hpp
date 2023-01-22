@@ -18,39 +18,39 @@
 namespace OpenRCT2
 {
     struct IStream;
-}
 
-template<typename T> struct IConfigEnum;
+    template<typename T> struct IConfigEnum;
 
-struct IIniWriter
-{
-    virtual ~IIniWriter() = default;
-
-    virtual void WriteSection(const std::string& name) abstract;
-
-    virtual void WriteBoolean(const std::string& name, bool value) abstract;
-    virtual void WriteInt32(const std::string& name, int32_t value) abstract;
-    virtual void WriteInt64(const std::string& name, int64_t value) abstract;
-    virtual void WriteFloat(const std::string& name, float value) abstract;
-    virtual void WriteString(const std::string& name, const std::string& value) abstract;
-    virtual void WriteEnum(const std::string& name, const std::string& key) abstract;
-
-    template<typename T> void WriteEnum(const std::string& name, T value, const IConfigEnum<T>& configEnum)
+    struct IIniWriter
     {
-        static_assert(sizeof(T) <= sizeof(int32_t), "Type too large");
+        virtual ~IIniWriter() = default;
 
-        std::string key = configEnum.GetName(value);
-        if (key.empty())
+        virtual void WriteSection(const std::string& name) abstract;
+
+        virtual void WriteBoolean(const std::string& name, bool value) abstract;
+        virtual void WriteInt32(const std::string& name, int32_t value) abstract;
+        virtual void WriteInt64(const std::string& name, int64_t value) abstract;
+        virtual void WriteFloat(const std::string& name, float value) abstract;
+        virtual void WriteString(const std::string& name, const std::string& value) abstract;
+        virtual void WriteEnum(const std::string& name, const std::string& key) abstract;
+
+        template<typename T> void WriteEnum(const std::string& name, T value, const IConfigEnum<T>& configEnum)
         {
-            WriteInt32(name, static_cast<int32_t>(value));
-        }
-        else
-        {
-            WriteEnum(name, key);
-        }
-    }
+            static_assert(sizeof(T) <= sizeof(int32_t), "Type too large");
 
-    void WriteString(const std::string& name, const utf8* value);
-};
+            std::string key = configEnum.GetName(value);
+            if (key.empty())
+            {
+                WriteInt32(name, static_cast<int32_t>(value));
+            }
+            else
+            {
+                WriteEnum(name, key);
+            }
+        }
 
-[[nodiscard]] std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream);
+        void WriteString(const std::string& name, const utf8* value);
+    };
+
+    [[nodiscard]] std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream);
+} // namespace OpenRCT2

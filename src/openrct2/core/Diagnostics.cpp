@@ -13,7 +13,7 @@
 
 #include "Diagnostics.hpp"
 
-namespace Debug
+namespace OpenRCT2::Debug
 {
     void Break()
     {
@@ -26,4 +26,4 @@ namespace Debug
 #    endif
 #endif
     }
-} // namespace Debug
+} // namespace OpenRCT2::Debug

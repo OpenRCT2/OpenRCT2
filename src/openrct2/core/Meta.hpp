@@ -11,7 +11,7 @@
 
 #include <type_traits>
 
-namespace Meta
+namespace OpenRCT2::Meta
 {
     /**
      * Meta function for checking that all Conditions are true types.
@@ -27,4 +27,4 @@ namespace Meta
 
     template<typename TType, typename... TTypes> using all_convertible = all<std::is_convertible<TTypes, TType>...>;
 
-} // namespace Meta
+} // namespace OpenRCT2::Meta

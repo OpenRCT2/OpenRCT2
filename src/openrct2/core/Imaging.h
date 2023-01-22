@@ -17,39 +17,41 @@
 #include <memory>
 #include <string_view>
 #include <vector>
-
-struct DrawPixelInfo;
-
-enum class IMAGE_FORMAT
+namespace OpenRCT2
 {
-    UNKNOWN,
-    AUTOMATIC, // Automatically detect from file extension
-    BITMAP,
-    PNG,
-    PNG_32, // Force load to 32bpp buffer
-};
+    struct DrawPixelInfo;
 
-struct Image
-{
-    // Meta
-    uint32_t Width{};
-    uint32_t Height{};
-    uint32_t Depth{};
+    enum class IMAGE_FORMAT
+    {
+        UNKNOWN,
+        AUTOMATIC, // Automatically detect from file extension
+        BITMAP,
+        PNG,
+        PNG_32, // Force load to 32bpp buffer
+    };
 
-    // Data
-    std::vector<uint8_t> Pixels;
-    std::unique_ptr<GamePalette> Palette;
-    uint32_t Stride{};
-};
+    struct Image
+    {
+        // Meta
+        uint32_t Width{};
+        uint32_t Height{};
+        uint32_t Depth{};
 
-using ImageReaderFunc = std::function<Image(std::istream&, IMAGE_FORMAT)>;
+        // Data
+        std::vector<uint8_t> Pixels;
+        std::unique_ptr<GamePalette> Palette;
+        uint32_t Stride{};
+    };
 
-namespace Imaging
-{
-    IMAGE_FORMAT GetImageFormatFromPath(std::string_view path);
-    Image ReadFromFile(std::string_view path, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
-    Image ReadFromBuffer(const std::vector<uint8_t>& buffer, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
-    void WriteToFile(std::string_view path, const Image& image, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
+    using ImageReaderFunc = std::function<Image(std::istream&, IMAGE_FORMAT)>;
 
-    void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl);
-} // namespace Imaging
+    namespace Imaging
+    {
+        IMAGE_FORMAT GetImageFormatFromPath(std::string_view path);
+        Image ReadFromFile(std::string_view path, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
+        Image ReadFromBuffer(const std::vector<uint8_t>& buffer, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
+        void WriteToFile(std::string_view path, const Image& image, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
+
+        void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl);
+    } // namespace Imaging
+} // namespace OpenRCT2

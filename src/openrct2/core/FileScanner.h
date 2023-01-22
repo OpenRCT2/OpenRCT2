@@ -15,54 +15,56 @@
 #include <memory>
 #include <string>
 #include <vector>
-
-namespace FileScanner
+namespace OpenRCT2
 {
-    struct FileInfo
+    namespace FileScanner
     {
-        const utf8* Name;
-        uint64_t Size;
-        uint64_t LastModified;
+        struct FileInfo
+        {
+            const utf8* Name;
+            uint64_t Size;
+            uint64_t LastModified;
+        };
+    } // namespace FileScanner
+
+    struct IFileScanner
+    {
+        virtual ~IFileScanner() = default;
+
+        virtual const FileScanner::FileInfo* GetFileInfo() const abstract;
+        virtual const utf8* GetPath() const abstract;
+        virtual const utf8* GetPathRelative() const abstract;
+
+        virtual void Reset() abstract;
+        virtual bool Next() abstract;
     };
-} // namespace FileScanner
 
-struct IFileScanner
-{
-    virtual ~IFileScanner() = default;
+    struct QueryDirectoryResult
+    {
+        uint32_t TotalFiles;
+        uint64_t TotalFileSize;
+        uint32_t FileDateModifiedChecksum;
+        uint32_t PathChecksum;
+    };
 
-    virtual const FileScanner::FileInfo* GetFileInfo() const abstract;
-    virtual const utf8* GetPath() const abstract;
-    virtual const utf8* GetPathRelative() const abstract;
+    namespace Path
+    {
+        /**
+         * Scans a directory and optionally sub directories for files that matches the
+         * given pattern and returns an enumerator.
+         * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
+         * @param recurse Whether to scan sub directories or not.
+         * @returns A new FileScanner, this must be deleted when no longer needed.
+         */
+        [[nodiscard]] std::unique_ptr<IFileScanner> ScanDirectory(const std::string& pattern, bool recurse);
 
-    virtual void Reset() abstract;
-    virtual bool Next() abstract;
-};
+        /**
+         * Scans a directory and all sub directories
+         * @param result The query result to modify.
+         * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
+         */
+        void QueryDirectory(QueryDirectoryResult* result, const std::string& pattern);
 
-struct QueryDirectoryResult
-{
-    uint32_t TotalFiles;
-    uint64_t TotalFileSize;
-    uint32_t FileDateModifiedChecksum;
-    uint32_t PathChecksum;
-};
-
-namespace Path
-{
-    /**
-     * Scans a directory and optionally sub directories for files that matches the
-     * given pattern and returns an enumerator.
-     * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
-     * @param recurse Whether to scan sub directories or not.
-     * @returns A new FileScanner, this must be deleted when no longer needed.
-     */
-    [[nodiscard]] std::unique_ptr<IFileScanner> ScanDirectory(const std::string& pattern, bool recurse);
-
-    /**
-     * Scans a directory and all sub directories
-     * @param result The query result to modify.
-     * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
-     */
-    void QueryDirectory(QueryDirectoryResult* result, const std::string& pattern);
-
-    [[nodiscard]] std::vector<std::string> GetDirectories(const std::string& path);
-} // namespace Path
+        [[nodiscard]] std::vector<std::string> GetDirectories(const std::string& path);
+    } // namespace Path
+} // namespace OpenRCT2

@@ -8,35 +8,37 @@
  *****************************************************************************/
 
 #pragma once
-
-template<typename T> class DataSerialiserTag
+namespace OpenRCT2
 {
-public:
-    DataSerialiserTag(const char* name, T& data)
-        : _name(name)
-        , _data(data)
+    template<typename T> class DataSerialiserTag
     {
-    }
+    public:
+        DataSerialiserTag(const char* name, T& data)
+            : _name(name)
+            , _data(data)
+        {
+        }
 
-    const char* Name() const
+        const char* Name() const
+        {
+            return _name;
+        }
+
+        T& Data() const
+        {
+            return _data;
+        }
+
+    private:
+        const char* _name = nullptr;
+        T& _data;
+    };
+
+    template<typename T> inline DataSerialiserTag<T> CreateDataSerialiserTag(const char* name, T& data)
     {
-        return _name;
+        DataSerialiserTag<T> r(name, data);
+        return r;
     }
-
-    T& Data() const
-    {
-        return _data;
-    }
-
-private:
-    const char* _name = nullptr;
-    T& _data;
-};
-
-template<typename T> inline DataSerialiserTag<T> CreateDataSerialiserTag(const char* name, T& data)
-{
-    DataSerialiserTag<T> r(name, data);
-    return r;
-}
 
 #define DS_TAG(var) CreateDataSerialiserTag(#var, var)
+} // namespace OpenRCT2

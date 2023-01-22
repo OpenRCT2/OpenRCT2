@@ -14,7 +14,7 @@
 
 #include <string>
 
-namespace Path
+namespace OpenRCT2::Path
 {
     [[nodiscard]] u8string Combine(u8string_view a, u8string_view b);
 
@@ -42,4 +42,4 @@ namespace Path
      * Note: This will not resolve the case for Windows.
      */
     u8string ResolveCasing(u8string_view path);
-} // namespace Path
+} // namespace OpenRCT2::Path

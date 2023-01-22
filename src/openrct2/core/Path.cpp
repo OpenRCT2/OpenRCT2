@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <iterator>
 
-namespace Path
+namespace OpenRCT2::Path
 {
     u8string Combine(u8string_view a, u8string_view b)
     {
@@ -113,4 +113,4 @@ namespace Path
         const auto result = fs::remove_all(fs::u8path(path), ec);
         return (result > 0) && ec.value() == 0;
     }
-} // namespace Path
+} // namespace OpenRCT2::Path

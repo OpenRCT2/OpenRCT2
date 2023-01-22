@@ -15,8 +15,9 @@
 #include "../localisation/Currency.h"
 
 #include <string>
-
-enum class MeasurementFormat : int32_t;
+namespace OpenRCT2
+{
+    enum class MeasurementFormat : int32_t;
 enum class TemperatureUnit : int32_t;
 enum class ScaleQuality : int32_t;
 enum class Sort : int32_t;
@@ -278,3 +279,4 @@ std::string FindCsg1idatAtLocation(u8string_view path);
 bool Csg1idatPresentAtLocation(u8string_view path);
 bool CsgIsUsable(const Gx& csg);
 bool CsgAtLocationIsUsable(u8string_view path);
+}
