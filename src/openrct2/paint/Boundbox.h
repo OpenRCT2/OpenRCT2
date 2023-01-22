@@ -12,29 +12,31 @@
 #include "../world/Location.hpp"
 
 #include <cstdint>
-
-struct BoundBoxXY
+namespace OpenRCT2
 {
-    CoordsXY offset{};
-    CoordsXY length{};
-
-    constexpr BoundBoxXY() = default;
-    constexpr BoundBoxXY(CoordsXY _offset, CoordsXY _length)
-        : offset(_offset)
-        , length(_length)
+    struct BoundBoxXY
     {
-    }
-};
+        CoordsXY offset{};
+        CoordsXY length{};
 
-struct BoundBoxXYZ
-{
-    CoordsXYZ offset{};
-    CoordsXYZ length{};
+        constexpr BoundBoxXY() = default;
+        constexpr BoundBoxXY(CoordsXY _offset, CoordsXY _length)
+            : offset(_offset)
+            , length(_length)
+        {
+        }
+    };
 
-    constexpr BoundBoxXYZ() = default;
-    constexpr BoundBoxXYZ(CoordsXYZ _offset, CoordsXYZ _length)
-        : offset(_offset)
-        , length(_length)
+    struct BoundBoxXYZ
     {
-    }
-};
+        CoordsXYZ offset{};
+        CoordsXYZ length{};
+
+        constexpr BoundBoxXYZ() = default;
+        constexpr BoundBoxXYZ(CoordsXYZ _offset, CoordsXYZ _length)
+            : offset(_offset)
+            , length(_length)
+        {
+        }
+    };
+} // namespace OpenRCT2

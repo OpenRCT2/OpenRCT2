@@ -8,8 +8,10 @@
  *****************************************************************************/
 
 #pragma once
+namespace OpenRCT2
+{
+    struct PaintSession;
+    struct CoordsXY;
 
-struct PaintSession;
-struct CoordsXY;
-
-void EntityPaintSetup(PaintSession& session, const CoordsXY& pos);
+    void EntityPaintSetup(PaintSession& session, const CoordsXY& pos);
+} // namespace OpenRCT2

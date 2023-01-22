@@ -16,10 +16,10 @@
 #include <memory>
 #include <vector>
 
-struct DrawPixelInfo;
-
 namespace OpenRCT2
 {
+    struct DrawPixelInfo;
+
     namespace Drawing
     {
         struct IDrawingEngine;

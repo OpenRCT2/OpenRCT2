@@ -10,27 +10,29 @@
 #pragma once
 
 #include "../common.h"
-
-struct CoordsXY;
-
-enum class VirtualFloorStyles : int32_t
+namespace OpenRCT2
 {
-    Off,
-    Clear,
-    Glassy
-};
+    struct CoordsXY;
 
-struct PaintSession;
+    enum class VirtualFloorStyles : int32_t
+    {
+        Off,
+        Clear,
+        Glassy
+    };
 
-uint16_t VirtualFloorGetHeight();
+    struct PaintSession;
 
-bool VirtualFloorIsEnabled();
-void VirtualFloorSetHeight(int16_t height);
+    uint16_t VirtualFloorGetHeight();
 
-void VirtualFloorEnable();
-void VirtualFloorDisable();
-void VirtualFloorInvalidate();
+    bool VirtualFloorIsEnabled();
+    void VirtualFloorSetHeight(int16_t height);
 
-bool VirtualFloorTileIsFloor(const CoordsXY& loc);
+    void VirtualFloorEnable();
+    void VirtualFloorDisable();
+    void VirtualFloorInvalidate();
 
-void VirtualFloorPaint(PaintSession& session);
+    bool VirtualFloorTileIsFloor(const CoordsXY& loc);
+
+    void VirtualFloorPaint(PaintSession& session);
+} // namespace OpenRCT2

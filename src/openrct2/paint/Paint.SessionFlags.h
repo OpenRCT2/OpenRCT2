@@ -10,9 +10,11 @@
 #pragma once
 
 #include "../common.h"
-
-namespace PaintSessionFlags
+namespace OpenRCT2
 {
-    constexpr uint8_t PassedSurface = 1u << 0;
-    constexpr uint8_t IsTrackPiecePreview = 1u << 1;
-} // namespace PaintSessionFlags
+    namespace PaintSessionFlags
+    {
+        constexpr uint8_t PassedSurface = 1u << 0;
+        constexpr uint8_t IsTrackPiecePreview = 1u << 1;
+    } // namespace PaintSessionFlags
+} // namespace OpenRCT2

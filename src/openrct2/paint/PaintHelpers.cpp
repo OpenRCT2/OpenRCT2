@@ -10,56 +10,59 @@
 #include "../interface/Viewport.h"
 #include "../ride/TrackPaint.h"
 #include "Paint.h"
-
-PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
+namespace OpenRCT2
 {
-    if (direction & 1)
+    PaintStruct* PaintAddImageAsParentRotated(
+        PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
+        const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
     {
-        return PaintAddImageAsParent(
-            session, imageId, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
-            { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
+        if (direction & 1)
+        {
+            return PaintAddImageAsParent(
+                session, imageId, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
+                { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
+        }
+
+        return PaintAddImageAsParent(session, imageId, offset, boundBoxSize, boundBoxOffset);
     }
 
-    return PaintAddImageAsParent(session, imageId, offset, boundBoxSize, boundBoxOffset);
-}
-
-PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize)
-{
-    if (direction & 1)
+    PaintStruct* PaintAddImageAsParentRotated(
+        PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
+        const CoordsXYZ& boundBoxSize)
     {
-        return PaintAddImageAsParent(
-            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z });
+        if (direction & 1)
+        {
+            return PaintAddImageAsParent(
+                session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z });
+        }
+
+        return PaintAddImageAsParent(session, image_id, offset, boundBoxSize);
     }
 
-    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize);
-}
-
-PaintStruct* PaintAddImageAsChildRotated(
-    PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
-{
-    if (direction & 1)
+    PaintStruct* PaintAddImageAsChildRotated(
+        PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
+        const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
     {
-        return PaintAddImageAsChild(
-            session, image_id, { offset.y, offset.x, offset.z },
-            { { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z } });
+        if (direction & 1)
+        {
+            return PaintAddImageAsChild(
+                session, image_id, { offset.y, offset.x, offset.z },
+                { { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z },
+                  { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z } });
+        }
+
+        return PaintAddImageAsChild(session, image_id, offset, { boundBoxOffset, boundBoxSize });
     }
 
-    return PaintAddImageAsChild(session, image_id, offset, { boundBoxOffset, boundBoxSize });
-}
-
-void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type)
-{
-    if (direction & 1)
+    void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type)
     {
-        PaintUtilPushTunnelRight(session, height, type);
+        if (direction & 1)
+        {
+            PaintUtilPushTunnelRight(session, height, type);
+        }
+        else
+        {
+            PaintUtilPushTunnelLeft(session, height, type);
+        }
     }
-    else
-    {
-        PaintUtilPushTunnelLeft(session, height, type);
-    }
-}
+} // namespace OpenRCT2
