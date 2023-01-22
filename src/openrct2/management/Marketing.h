@@ -15,58 +15,60 @@
 #include "../ride/ShopItem.h"
 
 #include <vector>
-
-struct Guest;
-
-enum
+namespace OpenRCT2
 {
-    ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,
-    ADVERTISING_CAMPAIGN_RIDE_FREE,
-    ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE,
-    ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE,
-    ADVERTISING_CAMPAIGN_PARK,
-    ADVERTISING_CAMPAIGN_RIDE,
-    ADVERTISING_CAMPAIGN_COUNT
-};
+    struct Guest;
 
-enum
-{
-    VOUCHER_TYPE_PARK_ENTRY_FREE,
-    VOUCHER_TYPE_RIDE_FREE,
-    VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE,
-    VOUCHER_TYPE_FOOD_OR_DRINK_FREE,
-};
-
-enum
-{
-    CAMPAIGN_FIRST_WEEK_FLAG = (1 << 6),
-    CAMPAIGN_ACTIVE_FLAG = (1 << 7)
-};
-
-struct MarketingCampaign
-{
-    uint8_t Type{};
-    uint8_t WeeksLeft{};
-    uint8_t Flags{};
-    union
+    enum
     {
-        ::RideId RideId{};
-        ShopItemIndex ShopItemType;
+        ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,
+        ADVERTISING_CAMPAIGN_RIDE_FREE,
+        ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE,
+        ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE,
+        ADVERTISING_CAMPAIGN_PARK,
+        ADVERTISING_CAMPAIGN_RIDE,
+        ADVERTISING_CAMPAIGN_COUNT
     };
-};
 
-namespace MarketingCampaignFlags
-{
-    constexpr uint8_t FIRST_WEEK = 1 << 0;
-}
+    enum
+    {
+        VOUCHER_TYPE_PARK_ENTRY_FREE,
+        VOUCHER_TYPE_RIDE_FREE,
+        VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE,
+        VOUCHER_TYPE_FOOD_OR_DRINK_FREE,
+    };
 
-extern const money16 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
-extern std::vector<MarketingCampaign> gMarketingCampaigns;
+    enum
+    {
+        CAMPAIGN_FIRST_WEEK_FLAG = (1 << 6),
+        CAMPAIGN_ACTIVE_FLAG = (1 << 7)
+    };
 
-uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
-void MarketingUpdate();
-void MarketingSetGuestCampaign(Guest* peep, int32_t campaign);
-bool MarketingIsCampaignTypeApplicable(int32_t campaignType);
-MarketingCampaign* MarketingGetCampaign(int32_t campaignType);
-void MarketingNewCampaign(const MarketingCampaign& campaign);
-void MarketingCancelCampaignsForRide(const RideId rideId);
+    struct MarketingCampaign
+    {
+        uint8_t Type{};
+        uint8_t WeeksLeft{};
+        uint8_t Flags{};
+        union
+        {
+            ::RideId RideId{};
+            ShopItemIndex ShopItemType;
+        };
+    };
+
+    namespace MarketingCampaignFlags
+    {
+        constexpr uint8_t FIRST_WEEK = 1 << 0;
+    }
+
+    extern const money16 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
+    extern std::vector<MarketingCampaign> gMarketingCampaigns;
+
+    uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
+    void MarketingUpdate();
+    void MarketingSetGuestCampaign(Guest* peep, int32_t campaign);
+    bool MarketingIsCampaignTypeApplicable(int32_t campaignType);
+    MarketingCampaign* MarketingGetCampaign(int32_t campaignType);
+    void MarketingNewCampaign(const MarketingCampaign& campaign);
+    void MarketingCancelCampaignsForRide(const RideId rideId);
+} // namespace OpenRCT2
