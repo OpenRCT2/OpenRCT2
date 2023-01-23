@@ -305,7 +305,7 @@ static void WindowServerListScrollMouseover(WindowBase* w, int32_t scrollIndex, 
 
 static void WindowServerListTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
 {
-    if (text == nullptr || text[0] == 0)
+    if (text == nullptr)
         return;
 
     switch (widgetIndex)
@@ -314,12 +314,9 @@ static void WindowServerListTextinput(WindowBase* w, WidgetIndex widgetIndex, ch
             if (strcmp(_playerName, text) == 0)
                 return;
 
-            std::fill_n(_playerName, sizeof(_playerName), 0x00);
-            if (text[0] != '\0')
-            {
-                SafeStrCpy(_playerName, text, sizeof(_playerName));
-            }
+            SafeStrCpy(_playerName, text, sizeof(_playerName));
 
+            // Don't allow empty player names
             if (_playerName[0] != '\0')
             {
                 gConfigNetwork.PlayerName = _playerName;

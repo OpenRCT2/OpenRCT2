@@ -167,10 +167,8 @@ public:
     }
     void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
-        if (text.empty())
-            return;
-
         std::string temp = static_cast<std::string>(text);
+        int tempPort = 0;
 
         switch (widgetIndex)
         {
@@ -178,27 +176,25 @@ public:
                 if (strcmp(_port, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_port, sizeof(_port), 0x00);
-                if (text[0] != '\0')
+                SafeStrCpy(_port, temp.c_str(), sizeof(_port));
+
+                // Don't allow negative/zero for port number
+                tempPort = atoi(_port);
+                if (tempPort > 0)
                 {
-                    SafeStrCpy(_port, temp.c_str(), sizeof(_port));
+                    gConfigNetwork.DefaultPort = tempPort;
+                    ConfigSaveDefault();
                 }
 
-                gConfigNetwork.DefaultPort = atoi(_port);
-                ConfigSaveDefault();
-
-                WidgetInvalidate(*this, WIDX_NAME_INPUT);
+                WidgetInvalidate(*this, WIDX_PORT_INPUT);
                 break;
             case WIDX_NAME_INPUT:
                 if (strcmp(_name, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_name, sizeof(_name), 0x00);
-                if (text[0] != '\0')
-                {
-                    SafeStrCpy(_name, temp.c_str(), sizeof(_name));
-                }
+                SafeStrCpy(_name, temp.c_str(), sizeof(_name));
 
+                // Don't allow empty server names
                 if (_name[0] != '\0')
                 {
                     gConfigNetwork.ServerName = _name;
@@ -211,17 +207,9 @@ public:
                 if (strcmp(_description, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_description, sizeof(_description), 0x00);
-                if (text[0] != '\0')
-                {
-                    SafeStrCpy(_description, temp.c_str(), sizeof(_description));
-                }
-
-                if (_description[0] != '\0')
-                {
-                    gConfigNetwork.ServerDescription = _description;
-                    ConfigSaveDefault();
-                }
+                SafeStrCpy(_description, temp.c_str(), sizeof(_description));
+                gConfigNetwork.ServerDescription = _description;
+                ConfigSaveDefault();
 
                 WidgetInvalidate(*this, WIDX_DESCRIPTION_INPUT);
                 break;
@@ -229,17 +217,9 @@ public:
                 if (strcmp(_greeting, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_greeting, sizeof(_greeting), 0x00);
-                if (text[0] != '\0')
-                {
-                    SafeStrCpy(_greeting, temp.c_str(), sizeof(_greeting));
-                }
-
-                if (_greeting[0] != '\0')
-                {
-                    gConfigNetwork.ServerGreeting = _greeting;
-                    ConfigSaveDefault();
-                }
+                SafeStrCpy(_greeting, temp.c_str(), sizeof(_greeting));
+                gConfigNetwork.ServerGreeting = _greeting;
+                ConfigSaveDefault();
 
                 WidgetInvalidate(*this, WIDX_GREETING_INPUT);
                 break;
@@ -247,11 +227,7 @@ public:
                 if (strcmp(_password, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_password, sizeof(_password), 0x00);
-                if (text[0] != '\0')
-                {
-                    SafeStrCpy(_password, temp.c_str(), sizeof(_password));
-                }
+                SafeStrCpy(_password, temp.c_str(), sizeof(_password));
 
                 WidgetInvalidate(*this, WIDX_PASSWORD_INPUT);
                 break;

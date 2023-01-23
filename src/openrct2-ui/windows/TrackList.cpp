@@ -344,7 +344,7 @@ public:
 
     void OnTextInput(const WidgetIndex widgetIndex, std::string_view text) override
     {
-        if (widgetIndex != WIDX_FILTER_STRING || text.empty())
+        if (widgetIndex != WIDX_FILTER_STRING)
             return;
 
         if (String::Equals(_filterString, std::string(text).c_str()))
