@@ -16,110 +16,112 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
-
-static void Paint3dCinemaDome(
-    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+namespace OpenRCT2
 {
-    auto rideEntry = ride.GetRideEntry();
-    if (rideEntry == nullptr)
-        return;
-
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
+    static void Paint3dCinemaDome(
+        PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
     {
-        session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnEntity = GetEntity<Vehicle>(ride.vehicles[0]);
+        auto rideEntry = ride.GetRideEntry();
+        if (rideEntry == nullptr)
+            return;
+
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
+        {
+            session.InteractionType = ViewportInteractionItem::Entity;
+            session.CurrentlyDrawnEntity = GetEntity<Vehicle>(ride.vehicles[0]);
+        }
+
+        auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+        auto imageFlags = session.TrackColours[SCHEME_MISC];
+        if (imageFlags != TrackGhost)
+        {
+            imageTemplate = imageFlags;
+        }
+
+        auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction);
+        PaintAddImageAsParent(
+            session, imageId, { xOffset, yOffset, height + 3 }, { { xOffset + 16, yOffset + 16, height + 3 }, { 24, 24, 47 } });
+
+        session.CurrentlyDrawnEntity = nullptr;
+        session.InteractionType = ViewportInteractionItem::Ride;
     }
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    /**
+     * rct2: 0x0076574C
+     */
+    static void Paint3dCinema(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        imageTemplate = imageFlags;
+        trackSequence = track_map_3x3[direction][trackSequence];
+
+        int32_t edges = edges_3x3[trackSequence];
+
+        WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+
+        const StationObject* stationObject = ride.GetStationObject();
+
+        TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+
+        TrackPaintUtilPaintFences(
+            session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height,
+            fenceSpritesRope, session.CurrentRotation);
+
+        switch (trackSequence)
+        {
+            case 1:
+                Paint3dCinemaDome(session, ride, direction, 32, 32, height);
+                break;
+            case 3:
+                Paint3dCinemaDome(session, ride, direction, 32, -32, height);
+                break;
+            case 5:
+                Paint3dCinemaDome(session, ride, direction, 0, -32, height);
+                break;
+            case 6:
+                Paint3dCinemaDome(session, ride, direction, -32, 32, height);
+                break;
+            case 7:
+                Paint3dCinemaDome(session, ride, direction, -32, -32, height);
+                break;
+            case 8:
+                Paint3dCinemaDome(session, ride, direction, -32, 0, height);
+                break;
+        }
+
+        int32_t cornerSegments = 0;
+        switch (trackSequence)
+        {
+            case 1:
+                // top
+                cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
+                break;
+            case 3:
+                // right
+                cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
+                break;
+            case 6:
+                // left
+                cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
+                break;
+            case 7:
+                // bottom
+                cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
+                break;
+        }
+
+        PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
     }
 
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction);
-    PaintAddImageAsParent(
-        session, imageId, { xOffset, yOffset, height + 3 }, { { xOffset + 16, yOffset + 16, height + 3 }, { 24, 24, 47 } });
-
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
-}
-
-/**
- * rct2: 0x0076574C
- */
-static void Paint3dCinema(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    trackSequence = track_map_3x3[direction][trackSequence];
-
-    int32_t edges = edges_3x3[trackSequence];
-
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
-
-    const StationObject* stationObject = ride.GetStationObject();
-
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
-
-    TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-        session.CurrentRotation);
-
-    switch (trackSequence)
+    TRACK_PAINT_FUNCTION GetTrackPaintFunction3dCinema(int32_t trackType)
     {
-        case 1:
-            Paint3dCinemaDome(session, ride, direction, 32, 32, height);
-            break;
-        case 3:
-            Paint3dCinemaDome(session, ride, direction, 32, -32, height);
-            break;
-        case 5:
-            Paint3dCinemaDome(session, ride, direction, 0, -32, height);
-            break;
-        case 6:
-            Paint3dCinemaDome(session, ride, direction, -32, 32, height);
-            break;
-        case 7:
-            Paint3dCinemaDome(session, ride, direction, -32, -32, height);
-            break;
-        case 8:
-            Paint3dCinemaDome(session, ride, direction, -32, 0, height);
-            break;
+        if (trackType != TrackElemType::FlatTrack3x3)
+        {
+            return nullptr;
+        }
+
+        return Paint3dCinema;
     }
-
-    int32_t cornerSegments = 0;
-    switch (trackSequence)
-    {
-        case 1:
-            // top
-            cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
-            break;
-        case 3:
-            // right
-            cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
-            break;
-        case 6:
-            // left
-            cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
-            break;
-        case 7:
-            // bottom
-            cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
-            break;
-    }
-
-    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
-}
-
-TRACK_PAINT_FUNCTION GetTrackPaintFunction3dCinema(int32_t trackType)
-{
-    if (trackType != TrackElemType::FlatTrack3x3)
-    {
-        return nullptr;
-    }
-
-    return Paint3dCinema;
-}
+} // namespace OpenRCT2

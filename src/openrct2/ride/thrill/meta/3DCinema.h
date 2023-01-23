@@ -12,8 +12,9 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 // C++ does not allow names to start with a number, hence the absence of the '3D' prefix.
 constexpr const RideTypeDescriptor CinemaRTD =
 {
@@ -51,4 +52,5 @@ constexpr const RideTypeDescriptor CinemaRTD =
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "3d_cinema"),
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2

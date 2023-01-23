@@ -12,8 +12,9 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 constexpr const RideTypeDescriptor EnterpriseRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -60,4 +61,5 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
     SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationEnterprise),
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2
