@@ -80,10 +80,7 @@ void MusicObject::Load()
 void MusicObject::Unload()
 {
     LanguageFreeObjectString(NameStringId);
-    if (_hasPreview)
-    {
-        GfxObjectFreeImages(_previewImageId, GetImageTable().GetCount());
-    }
+    GfxObjectFreeImages(_previewImageId, GetImageTable().GetCount());
 
     _hasPreview = false;
     _previewImageId = 0;
