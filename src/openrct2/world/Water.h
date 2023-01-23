@@ -10,20 +10,22 @@
 #pragma once
 
 #include "../common.h"
-
-enum
+namespace OpenRCT2
 {
-    WATER_FLAGS_ALLOW_DUCKS = (1 << 0)
-};
+    enum
+    {
+        WATER_FLAGS_ALLOW_DUCKS = (1 << 0)
+    };
 
 #pragma pack(push, 1)
-struct WaterObjectEntry
-{
-    StringId string_idx;      // 0x00
-    uint32_t image_id;        // 0x02
-    uint32_t palette_index_1; // 0x06
-    uint32_t palette_index_2; // 0x0A
-    uint16_t flags;           // 0x0E
-};
-assert_struct_size(WaterObjectEntry, 16);
+    struct WaterObjectEntry
+    {
+        StringId string_idx;      // 0x00
+        uint32_t image_id;        // 0x02
+        uint32_t palette_index_1; // 0x06
+        uint32_t palette_index_2; // 0x0A
+        uint16_t flags;           // 0x0E
+    };
+    assert_struct_size(WaterObjectEntry, 16);
 #pragma pack(pop)
+} // namespace OpenRCT2

@@ -27,161 +27,164 @@
 #include "SmallScenery.h"
 #include "Surface.h"
 #include "Wall.h"
-
-/**
- *
- *  rct2: 0x006E588E
- */
-void WallRemoveAt(const CoordsXYRangedZ& wallPos)
+namespace OpenRCT2
 {
-    for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr; wallElement = MapGetWallElementAt(wallPos))
+    /**
+     *
+     *  rct2: 0x006E588E
+     */
+    void WallRemoveAt(const CoordsXYRangedZ& wallPos)
     {
-        reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
-        MapInvalidateTileZoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
-        TileElementRemove(reinterpret_cast<TileElement*>(wallElement));
+        for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr;
+             wallElement = MapGetWallElementAt(wallPos))
+        {
+            reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
+            MapInvalidateTileZoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
+            TileElementRemove(reinterpret_cast<TileElement*>(wallElement));
+        }
     }
-}
 
-/**
- *
- *  rct2: 0x006E57E6
- */
-void WallRemoveAtZ(const CoordsXYZ& wallPos)
-{
-    WallRemoveAt({ wallPos, wallPos.z, wallPos.z + 48 });
-}
-
-/**
- *
- *  rct2: 0x006E5935
- */
-void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
-{
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(wallPos);
-    if (tileElement == nullptr)
-        return;
-    do
+    /**
+     *
+     *  rct2: 0x006E57E6
+     */
+    void WallRemoveAtZ(const CoordsXYZ& wallPos)
     {
-        if (tileElement->GetType() != TileElementType::Wall)
-            continue;
+        WallRemoveAt({ wallPos, wallPos.z, wallPos.z + 48 });
+    }
 
-        if (tileElement->GetClearanceZ() <= wallPos.baseZ || tileElement->GetBaseZ() >= wallPos.clearanceZ)
-            continue;
+    /**
+     *
+     *  rct2: 0x006E5935
+     */
+    void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
+    {
+        TileElement* tileElement;
 
-        if (direction != tileElement->GetDirection())
-            continue;
+        tileElement = MapGetFirstElementAt(wallPos);
+        if (tileElement == nullptr)
+            return;
+        do
+        {
+            if (tileElement->GetType() != TileElementType::Wall)
+                continue;
 
-        tileElement->RemoveBannerEntry();
-        MapInvalidateTileZoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
-        TileElementRemove(tileElement);
-        tileElement--;
-    } while (!(tileElement++)->IsLastForTile());
-}
+            if (tileElement->GetClearanceZ() <= wallPos.baseZ || tileElement->GetBaseZ() >= wallPos.clearanceZ)
+                continue;
 
-uint8_t WallElement::GetSlope() const
-{
-    return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
-}
+            if (direction != tileElement->GetDirection())
+                continue;
 
-void WallElement::SetSlope(uint8_t newSlope)
-{
-    Type &= ~TILE_ELEMENT_QUADRANT_MASK;
-    Type |= (newSlope << 6);
-}
+            tileElement->RemoveBannerEntry();
+            MapInvalidateTileZoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
+            TileElementRemove(tileElement);
+            tileElement--;
+        } while (!(tileElement++)->IsLastForTile());
+    }
 
-colour_t WallElement::GetPrimaryColour() const
-{
-    return colour_1;
-}
+    uint8_t WallElement::GetSlope() const
+    {
+        return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    }
 
-colour_t WallElement::GetSecondaryColour() const
-{
-    return colour_2;
-}
+    void WallElement::SetSlope(uint8_t newSlope)
+    {
+        Type &= ~TILE_ELEMENT_QUADRANT_MASK;
+        Type |= (newSlope << 6);
+    }
 
-colour_t WallElement::GetTertiaryColour() const
-{
-    return colour_3;
-}
+    colour_t WallElement::GetPrimaryColour() const
+    {
+        return colour_1;
+    }
 
-void WallElement::SetPrimaryColour(colour_t newColour)
-{
-    colour_1 = newColour;
-}
+    colour_t WallElement::GetSecondaryColour() const
+    {
+        return colour_2;
+    }
 
-void WallElement::SetSecondaryColour(colour_t newColour)
-{
-    colour_2 = newColour;
-}
+    colour_t WallElement::GetTertiaryColour() const
+    {
+        return colour_3;
+    }
 
-void WallElement::SetTertiaryColour(colour_t newColour)
-{
-    colour_3 = newColour;
-}
+    void WallElement::SetPrimaryColour(colour_t newColour)
+    {
+        colour_1 = newColour;
+    }
 
-uint8_t WallElement::GetAnimationFrame() const
-{
-    return (animation >> 3) & 0xF;
-}
+    void WallElement::SetSecondaryColour(colour_t newColour)
+    {
+        colour_2 = newColour;
+    }
 
-void WallElement::SetAnimationFrame(uint8_t frameNum)
-{
-    animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
-    animation |= (frameNum & 0xF) << 3;
-}
+    void WallElement::SetTertiaryColour(colour_t newColour)
+    {
+        colour_3 = newColour;
+    }
 
-uint16_t WallElement::GetEntryIndex() const
-{
-    return entryIndex;
-}
+    uint8_t WallElement::GetAnimationFrame() const
+    {
+        return (animation >> 3) & 0xF;
+    }
 
-WallSceneryEntry* WallElement::GetEntry() const
-{
-    return GetWallEntry(entryIndex);
-}
+    void WallElement::SetAnimationFrame(uint8_t frameNum)
+    {
+        animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
+        animation |= (frameNum & 0xF) << 3;
+    }
 
-void WallElement::SetEntryIndex(uint16_t newIndex)
-{
-    entryIndex = newIndex;
-}
+    uint16_t WallElement::GetEntryIndex() const
+    {
+        return entryIndex;
+    }
 
-Banner* WallElement::GetBanner() const
-{
-    return ::GetBanner(GetBannerIndex());
-}
+    WallSceneryEntry* WallElement::GetEntry() const
+    {
+        return GetWallEntry(entryIndex);
+    }
 
-BannerIndex WallElement::GetBannerIndex() const
-{
-    return banner_index;
-}
+    void WallElement::SetEntryIndex(uint16_t newIndex)
+    {
+        entryIndex = newIndex;
+    }
 
-void WallElement::SetBannerIndex(BannerIndex newIndex)
-{
-    banner_index = newIndex;
-}
+    Banner* WallElement::GetBanner() const
+    {
+        return ::GetBanner(GetBannerIndex());
+    }
 
-bool WallElement::IsAcrossTrack() const
-{
-    return (animation & WALL_ANIMATION_FLAG_ACROSS_TRACK) != 0;
-}
+    BannerIndex WallElement::GetBannerIndex() const
+    {
+        return banner_index;
+    }
 
-void WallElement::SetAcrossTrack(bool acrossTrack)
-{
-    animation &= ~WALL_ANIMATION_FLAG_ACROSS_TRACK;
-    if (acrossTrack)
-        animation |= WALL_ANIMATION_FLAG_ACROSS_TRACK;
-}
+    void WallElement::SetBannerIndex(BannerIndex newIndex)
+    {
+        banner_index = newIndex;
+    }
 
-bool WallElement::AnimationIsBackwards() const
-{
-    return (animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
-}
+    bool WallElement::IsAcrossTrack() const
+    {
+        return (animation & WALL_ANIMATION_FLAG_ACROSS_TRACK) != 0;
+    }
 
-void WallElement::SetAnimationIsBackwards(bool isBackwards)
-{
-    animation &= ~WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
-    if (isBackwards)
-        animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
-}
+    void WallElement::SetAcrossTrack(bool acrossTrack)
+    {
+        animation &= ~WALL_ANIMATION_FLAG_ACROSS_TRACK;
+        if (acrossTrack)
+            animation |= WALL_ANIMATION_FLAG_ACROSS_TRACK;
+    }
+
+    bool WallElement::AnimationIsBackwards() const
+    {
+        return (animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
+    }
+
+    void WallElement::SetAnimationIsBackwards(bool isBackwards)
+    {
+        animation &= ~WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
+        if (isBackwards)
+            animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
+    }
+} // namespace OpenRCT2

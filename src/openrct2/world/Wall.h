@@ -11,18 +11,19 @@
 
 #include "../common.h"
 #include "TileElement.h"
-
-enum
+namespace OpenRCT2
 {
-    WALL_ANIMATION_FLAG_ACROSS_TRACK = (1 << 2),
-    // 3 - 6 animation frame number
-    WALL_ANIMATION_FLAG_DIRECTION_BACKWARD = (1 << 7),
-    WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_ACROSS_TRACK | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
-};
+    enum
+    {
+        WALL_ANIMATION_FLAG_ACROSS_TRACK = (1 << 2),
+        // 3 - 6 animation frame number
+        WALL_ANIMATION_FLAG_DIRECTION_BACKWARD = (1 << 7),
+        WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_ACROSS_TRACK | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
+    };
 
 #pragma region Edge Slopes Table
 
-// clang-format off
+    // clang-format off
 enum EDGE_SLOPE
 {
     EDGE_SLOPE_UPWARDS      = (1 << 0),
@@ -69,6 +70,7 @@ constexpr const uint8_t LandSlopeToWallSlope[][NumOrthogonalDirections] = {
     { EDGE_SLOPE_DOWNWARDS_ELEVATED, EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_UPWARDS_ELEVATED   },
     { 0,                             0,                             0,                             0                             },
 };
-// clang-format on
+    // clang-format on
 
 #pragma endregion
+} // namespace OpenRCT2

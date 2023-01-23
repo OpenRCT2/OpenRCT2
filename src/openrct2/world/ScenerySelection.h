@@ -13,21 +13,23 @@
 
 #include <cstdint>
 #include <limits>
-
-constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16_t>::max();
-
-struct ScenerySelection
+namespace OpenRCT2
 {
-    uint8_t SceneryType{};
-    ObjectEntryIndex EntryIndex = OBJECT_ENTRY_INDEX_NULL;
+    constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16_t>::max();
 
-    inline bool operator==(const ScenerySelection& rhs) const
+    struct ScenerySelection
     {
-        return SceneryType == rhs.SceneryType && EntryIndex == rhs.EntryIndex;
-    }
+        uint8_t SceneryType{};
+        ObjectEntryIndex EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 
-    bool IsUndefined() const
-    {
-        return EntryIndex == OBJECT_ENTRY_INDEX_NULL;
-    }
-};
+        inline bool operator==(const ScenerySelection& rhs) const
+        {
+            return SceneryType == rhs.SceneryType && EntryIndex == rhs.EntryIndex;
+        }
+
+        bool IsUndefined() const
+        {
+            return EntryIndex == OBJECT_ENTRY_INDEX_NULL;
+        }
+    };
+} // namespace OpenRCT2

@@ -14,26 +14,28 @@
 #include "Map.h"
 
 #include <cstdint>
-
-struct TileElement;
-struct CoordsXY;
-struct CoordsXYRangedZ;
-class QuarterTile;
-
-using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-
-int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-
-struct ConstructClearResult
+namespace OpenRCT2
 {
-    uint8_t GroundFlags{ 0 };
-};
+    struct TileElement;
+    struct CoordsXY;
+    struct CoordsXYRangedZ;
+    class QuarterTile;
 
-[[nodiscard]] GameActions::Result MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
-    uint8_t crossingMode = CREATE_CROSSING_MODE_NONE, bool isTree = false);
+    using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 
-[[nodiscard]] GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
+    int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
+    int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 
-void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& res);
+    struct ConstructClearResult
+    {
+        uint8_t GroundFlags{ 0 };
+    };
+
+    [[nodiscard]] GameActions::Result MapCanConstructWithClearAt(
+        const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
+        uint8_t crossingMode = CREATE_CROSSING_MODE_NONE, bool isTree = false);
+
+    [[nodiscard]] GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
+
+    void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& res);
+} // namespace OpenRCT2

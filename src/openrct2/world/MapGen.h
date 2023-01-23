@@ -12,34 +12,36 @@
 #include "../common.h"
 #include "../core/String.hpp"
 #include "Location.hpp"
-
-struct MapGenSettings
+namespace OpenRCT2
 {
-    // Base
-    TileCoordsXY mapSize;
-    int32_t height;
-    int32_t water_level;
-    int32_t floor;
-    int32_t wall;
+    struct MapGenSettings
+    {
+        // Base
+        TileCoordsXY mapSize;
+        int32_t height;
+        int32_t water_level;
+        int32_t floor;
+        int32_t wall;
 
-    // Features (e.g. tree, rivers, lakes etc.)
-    int32_t trees;
+        // Features (e.g. tree, rivers, lakes etc.)
+        int32_t trees;
 
-    // Simplex Noise Parameters
-    int32_t simplex_low;
-    int32_t simplex_high;
-    float simplex_base_freq;
-    int32_t simplex_octaves;
+        // Simplex Noise Parameters
+        int32_t simplex_low;
+        int32_t simplex_high;
+        float simplex_base_freq;
+        int32_t simplex_octaves;
 
-    // Height map settings
-    bool smooth;
-    bool smooth_height_map;
-    uint32_t smooth_strength;
-    bool normalize_height;
-};
+        // Height map settings
+        bool smooth;
+        bool smooth_height_map;
+        uint32_t smooth_strength;
+        bool normalize_height;
+    };
 
-void MapGenGenerateBlank(MapGenSettings* settings);
-void MapGenGenerate(MapGenSettings* settings);
-bool MapGenLoadHeightmap(const utf8* path);
-void MapGenUnloadHeightmap();
-void MapGenGenerateFromHeightmap(MapGenSettings* settings);
+    void MapGenGenerateBlank(MapGenSettings* settings);
+    void MapGenGenerate(MapGenSettings* settings);
+    bool MapGenLoadHeightmap(const utf8* path);
+    void MapGenUnloadHeightmap();
+    void MapGenGenerateFromHeightmap(MapGenSettings* settings);
+} // namespace OpenRCT2

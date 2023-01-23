@@ -11,14 +11,16 @@
 
 #include "../common.h"
 #include "Location.hpp"
-
-enum
+namespace OpenRCT2
 {
-    SLOPE_S_THRESHOLD_FLAGS = (1 << 0),
-    SLOPE_W_THRESHOLD_FLAGS = (1 << 1),
-    SLOPE_N_THRESHOLD_FLAGS = (1 << 2),
-    SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
-};
+    enum
+    {
+        SLOPE_S_THRESHOLD_FLAGS = (1 << 0),
+        SLOPE_W_THRESHOLD_FLAGS = (1 << 1),
+        SLOPE_N_THRESHOLD_FLAGS = (1 << 2),
+        SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
+    };
 
-int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b);
-int32_t TileSmooth(const TileCoordsXY& tileCoords);
+    int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b);
+    int32_t TileSmooth(const TileCoordsXY& tileCoords);
+} // namespace OpenRCT2

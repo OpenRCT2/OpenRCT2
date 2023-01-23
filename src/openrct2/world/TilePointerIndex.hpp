@@ -14,42 +14,44 @@
 #include <cassert>
 #include <cstdint>
 #include <vector>
-
-template<typename T> class TilePointerIndex
+namespace OpenRCT2
 {
-    std::vector<T*> TilePointers;
-    uint16_t MapSize{};
-
-public:
-    TilePointerIndex() = default;
-
-    explicit TilePointerIndex(const uint16_t mapSize, T* tileElements, size_t count)
+    template<typename T> class TilePointerIndex
     {
-        MapSize = mapSize;
-        TilePointers.reserve(MapSize * MapSize);
+        std::vector<T*> TilePointers;
+        uint16_t MapSize{};
 
-        size_t index = 0;
-        for (size_t y = 0; y < MapSize; y++)
+    public:
+        TilePointerIndex() = default;
+
+        explicit TilePointerIndex(const uint16_t mapSize, T* tileElements, size_t count)
         {
-            for (size_t x = 0; x < MapSize; x++)
+            MapSize = mapSize;
+            TilePointers.reserve(MapSize * MapSize);
+
+            size_t index = 0;
+            for (size_t y = 0; y < MapSize; y++)
             {
-                assert(index < count);
-                TilePointers.emplace_back(&tileElements[index]);
-                do
+                for (size_t x = 0; x < MapSize; x++)
                 {
-                    index++;
-                } while (!tileElements[index - 1].IsLastForTile());
+                    assert(index < count);
+                    TilePointers.emplace_back(&tileElements[index]);
+                    do
+                    {
+                        index++;
+                    } while (!tileElements[index - 1].IsLastForTile());
+                }
             }
         }
-    }
 
-    T* GetFirstElementAt(TileCoordsXY coords)
-    {
-        return TilePointers[coords.x + (coords.y * MapSize)];
-    }
+        T* GetFirstElementAt(TileCoordsXY coords)
+        {
+            return TilePointers[coords.x + (coords.y * MapSize)];
+        }
 
-    void SetTile(TileCoordsXY coords, T* tileElement)
-    {
-        TilePointers[coords.x + (coords.y * MapSize)] = tileElement;
-    }
-};
+        void SetTile(TileCoordsXY coords, T* tileElement)
+        {
+            TilePointers[coords.x + (coords.y * MapSize)] = tileElement;
+        }
+    };
+} // namespace OpenRCT2

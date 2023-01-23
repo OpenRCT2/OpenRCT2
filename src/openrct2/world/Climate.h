@@ -12,79 +12,81 @@
 #include "../common.h"
 #include "../drawing/Drawing.h"
 #include "../util/Util.h"
-
-enum class ClimateType : uint8_t
+namespace OpenRCT2
 {
-    CoolAndWet,
-    Warm,
-    HotAndDry,
-    Cold,
-    Count
-};
+    enum class ClimateType : uint8_t
+    {
+        CoolAndWet,
+        Warm,
+        HotAndDry,
+        Cold,
+        Count
+    };
 
-enum class WeatherType : uint8_t
-{
-    Sunny,
-    PartiallyCloudy,
-    Cloudy,
-    Rain,
-    HeavyRain,
-    Thunder,
-    Snow,
-    HeavySnow,
-    Blizzard,
-    Count
-};
+    enum class WeatherType : uint8_t
+    {
+        Sunny,
+        PartiallyCloudy,
+        Cloudy,
+        Rain,
+        HeavyRain,
+        Thunder,
+        Snow,
+        HeavySnow,
+        Blizzard,
+        Count
+    };
 
-enum class WeatherEffectType : uint8_t
-{
-    None,
-    Rain,
-    Storm,
-    Snow,
-    Blizzard,
-};
+    enum class WeatherEffectType : uint8_t
+    {
+        None,
+        Rain,
+        Storm,
+        Snow,
+        Blizzard,
+    };
 
-enum class WeatherLevel
-{
-    None,
-    Light,
-    Heavy,
-};
+    enum class WeatherLevel
+    {
+        None,
+        Light,
+        Heavy,
+    };
 
-struct WeatherState
-{
-    int8_t TemperatureDelta;
-    WeatherEffectType EffectLevel;
-    int8_t GloomLevel;
-    WeatherLevel Level;
-    uint32_t SpriteId;
-};
+    struct WeatherState
+    {
+        int8_t TemperatureDelta;
+        WeatherEffectType EffectLevel;
+        int8_t GloomLevel;
+        WeatherLevel Level;
+        uint32_t SpriteId;
+    };
 
-struct ClimateState
-{
-    WeatherType Weather;
-    int8_t Temperature;
-    WeatherEffectType WeatherEffect;
-    uint8_t WeatherGloom;
-    WeatherLevel Level;
-};
+    struct ClimateState
+    {
+        WeatherType Weather;
+        int8_t Temperature;
+        WeatherEffectType WeatherEffect;
+        uint8_t WeatherGloom;
+        WeatherLevel Level;
+    };
 
-extern ClimateType gClimate;
-extern ClimateState gClimateCurrent;
-extern ClimateState gClimateNext;
-extern uint16_t gClimateUpdateTimer;
-extern uint16_t gClimateLightningFlash;
+    extern ClimateType gClimate;
+    extern ClimateState gClimateCurrent;
+    extern ClimateState gClimateNext;
+    extern uint16_t gClimateUpdateTimer;
+    extern uint16_t gClimateLightningFlash;
 
-int32_t ClimateCelsiusToFahrenheit(int32_t celsius);
-void ClimateReset(ClimateType climate);
-void ClimateUpdate();
-void ClimateUpdateSound();
-void ClimateStopWeatherSound();
-void ClimateForceWeather(WeatherType weather);
+    int32_t ClimateCelsiusToFahrenheit(int32_t celsius);
+    void ClimateReset(ClimateType climate);
+    void ClimateUpdate();
+    void ClimateUpdateSound();
+    void ClimateStopWeatherSound();
+    void ClimateForceWeather(WeatherType weather);
 
-bool ClimateIsRaining();
-bool ClimateIsSnowing();
-bool WeatherIsDry(WeatherType);
-FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state);
-uint32_t ClimateGetWeatherSpriteId(const ClimateState& state);
+    bool ClimateIsRaining();
+    bool ClimateIsSnowing();
+    bool WeatherIsDry(WeatherType);
+    FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state);
+    uint32_t ClimateGetWeatherSpriteId(const ClimateState& state);
+} // namespace OpenRCT2

@@ -12,10 +12,12 @@
 #include "../common.h"
 #include "Map.h"
 #include "TileElement.h"
-
-LargeSceneryEntry* GetLargeSceneryEntry(ObjectEntryIndex entryIndex);
-
-enum
+namespace OpenRCT2
 {
-    LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED = 1 << 0,
-};
+    LargeSceneryEntry* GetLargeSceneryEntry(ObjectEntryIndex entryIndex);
+
+    enum
+    {
+        LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED = 1 << 0,
+    };
+} // namespace OpenRCT2

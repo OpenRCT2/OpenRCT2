@@ -15,51 +15,53 @@
 #include "Map.h"
 
 #include <vector>
-
-#pragma pack(push, 1)
-struct EntranceEntry
+namespace OpenRCT2
 {
-    StringId string_idx;    // 0x00
-    uint32_t image_id;      // 0x02
-    uint8_t scrolling_mode; // 0x06
-    uint8_t text_height;    // 0x07
-};
-assert_struct_size(EntranceEntry, 8);
+#pragma pack(push, 1)
+    struct EntranceEntry
+    {
+        StringId string_idx;    // 0x00
+        uint32_t image_id;      // 0x02
+        uint8_t scrolling_mode; // 0x06
+        uint8_t text_height;    // 0x07
+    };
+    assert_struct_size(EntranceEntry, 8);
 #pragma pack(pop)
 
-struct TileElement;
+    struct TileElement;
 
-enum
-{
-    ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 0),
-};
+    enum
+    {
+        ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 0),
+    };
 
-namespace EntranceSequence
-{
-    constexpr const uint8_t Centre = 0;
-    constexpr const uint8_t Left = 1;
-    constexpr const uint8_t Right = 2;
-}; // namespace EntranceSequence
+    namespace EntranceSequence
+    {
+        constexpr const uint8_t Centre = 0;
+        constexpr const uint8_t Left = 1;
+        constexpr const uint8_t Right = 2;
+    }; // namespace EntranceSequence
 
-constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;
-constexpr const uint8_t RideEntranceHeight = 7 * COORDS_Z_STEP;
-constexpr const uint8_t RideExitHeight = 5 * COORDS_Z_STEP;
+    constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;
+    constexpr const uint8_t RideEntranceHeight = 7 * COORDS_Z_STEP;
+    constexpr const uint8_t RideExitHeight = 5 * COORDS_Z_STEP;
 
-extern bool gParkEntranceGhostExists;
-extern CoordsXYZD gParkEntranceGhostPosition;
+    extern bool gParkEntranceGhostExists;
+    extern CoordsXYZD gParkEntranceGhostPosition;
 
-constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
+    constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
 
-extern std::vector<CoordsXYZD> gParkEntrances;
+    extern std::vector<CoordsXYZD> gParkEntrances;
 
-extern CoordsXYZD gRideEntranceExitGhostPosition;
-extern StationIndex gRideEntranceExitGhostStationIndex;
+    extern CoordsXYZD gRideEntranceExitGhostPosition;
+    extern StationIndex gRideEntranceExitGhostStationIndex;
 
-void ParkEntranceRemoveGhost();
+    void ParkEntranceRemoveGhost();
 
-void ParkEntranceReset();
-void MazeEntranceHedgeReplacement(const CoordsXYE& entrance);
-void MazeEntranceHedgeRemoval(const CoordsXYE& entrance);
+    void ParkEntranceReset();
+    void MazeEntranceHedgeReplacement(const CoordsXYE& entrance);
+    void MazeEntranceHedgeRemoval(const CoordsXYE& entrance);
 
-void ParkEntranceFixLocations();
-void ParkEntranceUpdateLocations();
+    void ParkEntranceFixLocations();
+    void ParkEntranceUpdateLocations();
+} // namespace OpenRCT2

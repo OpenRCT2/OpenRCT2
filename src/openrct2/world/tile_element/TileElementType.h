@@ -10,15 +10,17 @@
 #pragma once
 
 #include <cstdint>
-
-enum class TileElementType : uint8_t
+namespace OpenRCT2
 {
-    Surface = 0,
-    Path = 1,
-    Track = 2,
-    SmallScenery = 3,
-    Entrance = 4,
-    Wall = 5,
-    LargeScenery = 6,
-    Banner = 7,
-};
+    enum class TileElementType : uint8_t
+    {
+        Surface = 0,
+        Path = 1,
+        Track = 2,
+        SmallScenery = 3,
+        Entrance = 4,
+        Wall = 5,
+        LargeScenery = 6,
+        Banner = 7,
+    };
+}
