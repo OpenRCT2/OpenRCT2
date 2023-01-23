@@ -81,17 +81,15 @@
 #include <iterator>
 #include <memory>
 #include <string>
-
-using namespace OpenRCT2;
-using namespace OpenRCT2::Audio;
-using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::Localisation;
-using namespace OpenRCT2::Paint;
-using namespace OpenRCT2::Scripting;
-using namespace OpenRCT2::Ui;
-
 namespace OpenRCT2
 {
+    using namespace Audio;
+    using namespace Drawing;
+    using namespace Localisation;
+    using namespace Paint;
+    using namespace Scripting;
+    using namespace Ui;
+
     class Context final : public IContext
     {
     private:
@@ -1582,4 +1580,5 @@ u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc)
         LOG_ERROR(ex.what());
         return u8string{};
     }
+}
 }

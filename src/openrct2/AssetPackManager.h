@@ -15,10 +15,9 @@
 #include <memory>
 #include <vector>
 
-class AudioSampleTable;
-
 namespace OpenRCT2
 {
+    class AudioSampleTable;
     class AssetPack;
 
     class AssetPackManager

@@ -16,71 +16,68 @@
 
 #include <memory>
 #include <string>
-
-struct IObjectManager;
-struct IObjectRepository;
-struct IScenarioRepository;
-enum class DrawingEngine : int32_t;
-enum class CursorID : uint8_t;
-
 namespace OpenRCT2
 {
+    struct IObjectManager;
+    struct IObjectRepository;
+    struct IScenarioRepository;
+    enum class DrawingEngine : int32_t;
+    enum class CursorID : uint8_t;
+
     struct IStream;
-}
-struct ITrackDesignRepository;
-struct IGameStateSnapshots;
 
-class Intent;
-struct WindowBase;
-struct NewVersionInfo;
+    struct ITrackDesignRepository;
+    struct IGameStateSnapshots;
 
-struct TTFFontDescriptor;
-namespace OpenRCT2::Ui
-{
-    struct FileDialogDesc;
-}
+    class Intent;
+    struct WindowBase;
+    struct NewVersionInfo;
 
-struct CursorState
-{
-    ScreenCoordsXY position;
-    uint8_t left, middle, right, any;
-    int32_t wheel;
-    int32_t old;
-    bool touch, touchIsDouble;
-    uint32_t touchDownTimestamp;
-};
+    struct TTFFontDescriptor;
+    namespace Ui
+    {
+        struct FileDialogDesc;
+    }
 
-struct TextInputSession
-{
-    utf8* Buffer;          // UTF-8 stream
-    size_t BufferSize;     // Maximum number of bytes (excluding null terminator)
-    size_t Size;           // Number of bytes (excluding null terminator)
-    size_t Length;         // Number of codepoints
-    size_t SelectionStart; // Selection start, in bytes
-    size_t SelectionSize;  // Selection length in bytes
+    struct CursorState
+    {
+        ScreenCoordsXY position;
+        uint8_t left, middle, right, any;
+        int32_t wheel;
+        int32_t old;
+        bool touch, touchIsDouble;
+        uint32_t touchDownTimestamp;
+    };
 
-    const utf8* ImeBuffer; // IME UTF-8 stream
-};
+    struct TextInputSession
+    {
+        utf8* Buffer;          // UTF-8 stream
+        size_t BufferSize;     // Maximum number of bytes (excluding null terminator)
+        size_t Size;           // Number of bytes (excluding null terminator)
+        size_t Length;         // Number of codepoints
+        size_t SelectionStart; // Selection start, in bytes
+        size_t SelectionSize;  // Selection length in bytes
 
-struct Resolution
-{
-    int32_t Width;
-    int32_t Height;
-};
+        const utf8* ImeBuffer; // IME UTF-8 stream
+    };
 
-enum
-{
-    CURSOR_UP = 0,
-    CURSOR_DOWN = 1,
-    CURSOR_CHANGED = 2,
-    CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
-    CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
-};
+    struct Resolution
+    {
+        int32_t Width;
+        int32_t Height;
+    };
 
-class NetworkBase;
+    enum
+    {
+        CURSOR_UP = 0,
+        CURSOR_DOWN = 1,
+        CURSOR_CHANGED = 2,
+        CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
+        CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
+    };
 
-namespace OpenRCT2
-{
+    class NetworkBase;
+
     class AssetPackManager;
     class GameState;
 
@@ -224,3 +221,4 @@ void ContextQuit();
 bool ContextLoadParkFromStream(void* stream);
 bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize);
 u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);
+}

@@ -16,26 +16,28 @@
 #include <memory>
 #include <string>
 #include <vector>
-
-/**
- * Interface to import scenarios and saved games.
- */
-struct ITrackImporter
+namespace OpenRCT2
 {
-public:
-    virtual ~ITrackImporter() = default;
+    /**
+     * Interface to import scenarios and saved games.
+     */
+    struct ITrackImporter
+    {
+    public:
+        virtual ~ITrackImporter() = default;
 
-    virtual bool Load(const utf8* path) abstract;
-    virtual bool LoadFromStream(OpenRCT2::IStream* stream) abstract;
+        virtual bool Load(const utf8* path) abstract;
+        virtual bool LoadFromStream(OpenRCT2::IStream* stream) abstract;
 
-    [[nodiscard]] virtual std::unique_ptr<TrackDesign> Import() abstract;
-};
+        [[nodiscard]] virtual std::unique_ptr<TrackDesign> Import() abstract;
+    };
 
-namespace TrackImporter
-{
-    [[nodiscard]] std::unique_ptr<ITrackImporter> Create(const std::string& hintPath);
-    [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD4();
-    [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD6();
+    namespace TrackImporter
+    {
+        [[nodiscard]] std::unique_ptr<ITrackImporter> Create(const std::string& hintPath);
+        [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD4();
+        [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD6();
 
-    bool ExtensionIsRCT1(const std::string& extension);
-} // namespace TrackImporter
+        bool ExtensionIsRCT1(const std::string& extension);
+    } // namespace TrackImporter
+} // namespace OpenRCT2

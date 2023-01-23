@@ -8,23 +8,25 @@
  *****************************************************************************/
 
 #include "OpenRCT2.h"
+namespace OpenRCT2
+{
+    StartupAction gOpenRCT2StartupAction = StartupAction::Title;
+    utf8 gOpenRCT2StartupActionPath[512] = { 0 };
+    u8string gCustomUserDataPath = {};
+    u8string gCustomOpenRCT2DataPath = {};
+    u8string gCustomRCT1DataPath = {};
+    u8string gCustomRCT2DataPath = {};
+    u8string gCustomPassword = {};
+    u8string gSilentRecordingName = {};
 
-StartupAction gOpenRCT2StartupAction = StartupAction::Title;
-utf8 gOpenRCT2StartupActionPath[512] = { 0 };
-u8string gCustomUserDataPath = {};
-u8string gCustomOpenRCT2DataPath = {};
-u8string gCustomRCT1DataPath = {};
-u8string gCustomRCT2DataPath = {};
-u8string gCustomPassword = {};
-u8string gSilentRecordingName = {};
+    bool gOpenRCT2Headless = false;
+    bool gOpenRCT2NoGraphics = false;
 
-bool gOpenRCT2Headless = false;
-bool gOpenRCT2NoGraphics = false;
+    bool gOpenRCT2ShowChangelog;
+    bool gOpenRCT2SilentBreakpad;
 
-bool gOpenRCT2ShowChangelog;
-bool gOpenRCT2SilentBreakpad;
-
-uint32_t gCurrentDrawCount = 0;
-uint8_t gScreenFlags;
-uint32_t gScreenAge;
-PromptMode gSavePromptMode;
+    uint32_t gCurrentDrawCount = 0;
+    uint8_t gScreenFlags;
+    uint32_t gScreenAge;
+    PromptMode gSavePromptMode;
+} // namespace OpenRCT2

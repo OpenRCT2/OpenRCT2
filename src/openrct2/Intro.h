@@ -10,26 +10,28 @@
 #pragma once
 
 #include "common.h"
-
-struct DrawPixelInfo;
-
-enum class IntroState : uint8_t
+namespace OpenRCT2
 {
-    None,
-    PublisherBegin,
-    PublisherScroll,
-    DeveloperBegin,
-    DeveloperScroll,
-    LogoFadeIn,
-    LogoWait,
-    LogoFadeOut,
-    Disclaimer1,
-    Disclaimer2,
-    Clear = 254,
-    Finish = 255,
-};
+    struct DrawPixelInfo;
 
-extern IntroState gIntroState;
+    enum class IntroState : uint8_t
+    {
+        None,
+        PublisherBegin,
+        PublisherScroll,
+        DeveloperBegin,
+        DeveloperScroll,
+        LogoFadeIn,
+        LogoWait,
+        LogoFadeOut,
+        Disclaimer1,
+        Disclaimer2,
+        Clear = 254,
+        Finish = 255,
+    };
 
-void IntroUpdate();
-void IntroDraw(DrawPixelInfo* dpi);
+    extern IntroState gIntroState;
+
+    void IntroUpdate();
+    void IntroDraw(DrawPixelInfo* dpi);
+} // namespace OpenRCT2

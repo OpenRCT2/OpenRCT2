@@ -30,8 +30,6 @@
 #    define MAX_PATH 260
 #endif
 
-using colour_t = uint8_t;
-
 // Gets the name of a symbol as a C string
 #define nameof(symbol) #symbol
 
@@ -53,11 +51,12 @@ using colour_t = uint8_t;
 #    endif // RCT2_ENDIANNESS
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-
+namespace OpenRCT2
+{
 #ifdef _WIN32
-char* strndup(const char* src, size_t size);
+    char* strndup(const char* src, size_t size);
 #endif
-
+    using colour_t = uint8_t;
 // BSD and macOS have MAP_ANON instead of MAP_ANONYMOUS
 #ifndef MAP_ANONYMOUS
 #    define MAP_ANONYMOUS MAP_ANON
@@ -65,25 +64,25 @@ char* strndup(const char* src, size_t size);
 
 #define OPENRCT2_MASTER_SERVER_URL "https://servers.openrct2.io"
 
-// Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
-using datetime64 = uint64_t;
+    // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
+    using datetime64 = uint64_t;
 
-constexpr const datetime64 DATETIME64_MIN = 0;
+    constexpr const datetime64 DATETIME64_MIN = 0;
 
-// Represent fixed point numbers. dp = decimal point
-using fixed8_1dp = uint8_t;
-using fixed8_2dp = uint8_t;
-using fixed16_1dp = int16_t;
-using fixed16_2dp = int16_t;
-using fixed32_1dp = int32_t;
-using fixed32_2dp = int32_t;
-using fixed64_1dp = int64_t;
+    // Represent fixed point numbers. dp = decimal point
+    using fixed8_1dp = uint8_t;
+    using fixed8_2dp = uint8_t;
+    using fixed16_1dp = int16_t;
+    using fixed16_2dp = int16_t;
+    using fixed32_1dp = int32_t;
+    using fixed32_2dp = int32_t;
+    using fixed64_1dp = int64_t;
 
-// Money is stored as a multiple of 0.10.
-using money8 = fixed8_1dp;
-using money16 = fixed16_1dp;
-using money32 = fixed32_1dp;
-using money64 = fixed64_1dp;
+    // Money is stored as a multiple of 0.10.
+    using money8 = fixed8_1dp;
+    using money16 = fixed16_1dp;
+    using money32 = fixed32_1dp;
+    using money64 = fixed64_1dp;
 
 // Construct a fixed point number. For example, to create the value 3.65 you
 // would write FIXED_2DP(3,65)
@@ -91,41 +90,41 @@ using money64 = fixed64_1dp;
 #define FIXED_1DP(whole, fraction) FIXED_XDP(1, whole, fraction)
 #define FIXED_2DP(whole, fraction) FIXED_XDP(10, whole, fraction)
 
-constexpr money64 operator"" _GBP(long double money) noexcept
-{
-    return money * 10;
-}
+    constexpr money64 operator"" _GBP(long double money) noexcept
+    {
+        return money * 10;
+    }
 
-constexpr money64 ToMoney64FromGBP(int32_t money) noexcept
-{
-    return money * 10;
-}
+    constexpr money64 ToMoney64FromGBP(int32_t money) noexcept
+    {
+        return money * 10;
+    }
 
-constexpr money64 ToMoney64FromGBP(int64_t money) noexcept
-{
-    return money * 10;
-}
+    constexpr money64 ToMoney64FromGBP(int64_t money) noexcept
+    {
+        return money * 10;
+    }
 
-constexpr money64 ToMoney64FromGBP(double money) noexcept
-{
-    return money * 10;
-}
+    constexpr money64 ToMoney64FromGBP(double money) noexcept
+    {
+        return money * 10;
+    }
 
 #define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 #define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))
 
-constexpr money64 ToMoney64(money32 value)
-{
-    return value == MONEY32_UNDEFINED ? MONEY64_UNDEFINED : value;
-}
+    constexpr money64 ToMoney64(money32 value)
+    {
+        return value == MONEY32_UNDEFINED ? MONEY64_UNDEFINED : value;
+    }
 
-constexpr money64 ToMoney64(money16 value)
-{
-    return value == MONEY16_UNDEFINED ? MONEY64_UNDEFINED : value;
-}
+    constexpr money64 ToMoney64(money16 value)
+    {
+        return value == MONEY16_UNDEFINED ? MONEY64_UNDEFINED : value;
+    }
 
-using StringId = uint16_t;
+    using StringId = uint16_t;
 
 #define SafeFree(x)                                                                                                            \
     do                                                                                                                         \
@@ -143,7 +142,7 @@ using StringId = uint16_t;
 #define SafeDeleteArray(x)                                                                                                     \
     do                                                                                                                         \
     {                                                                                                                          \
-        delete[](x);                                                                                                           \
+        delete[] (x);                                                                                                          \
         (x) = nullptr;                                                                                                         \
     } while (false)
 
@@ -191,3 +190,4 @@ using StringId = uint16_t;
 #else      // PLATFORM_X86
 #    define FASTCALL
 #endif // PLATFORM_X86
+} // namespace OpenRCT2

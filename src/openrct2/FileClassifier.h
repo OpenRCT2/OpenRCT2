@@ -11,45 +11,47 @@
 
 #include "common.h"
 #include "core/String.hpp"
-
-enum class FileExtension
+namespace OpenRCT2
 {
-    Unknown,
-    DAT,
-    SC4,
-    SV4,
-    TD4,
-    SC6,
-    SV6,
-    TD6,
-    PARK,
-};
+    enum class FileExtension
+    {
+        Unknown,
+        DAT,
+        SC4,
+        SV4,
+        TD4,
+        SC6,
+        SV6,
+        TD6,
+        PARK,
+    };
 
 #include <string>
 
-namespace OpenRCT2
-{
-    struct IStream;
-}
+    namespace OpenRCT2
+    {
+        struct IStream;
+    }
 
-enum class FILE_TYPE
-{
-    UNDEFINED,
-    OBJECT,
-    SAVED_GAME,
-    SCENARIO,
-    TRACK_DESIGN,
-    PARK,
-};
+    enum class FILE_TYPE
+    {
+        UNDEFINED,
+        OBJECT,
+        SAVED_GAME,
+        SCENARIO,
+        TRACK_DESIGN,
+        PARK,
+    };
 
-struct ClassifiedFileInfo
-{
-    FILE_TYPE Type = FILE_TYPE::UNDEFINED;
-    uint32_t Version = 0;
-};
+    struct ClassifiedFileInfo
+    {
+        FILE_TYPE Type = FILE_TYPE::UNDEFINED;
+        uint32_t Version = 0;
+    };
 
 #define FILE_TYPE_S4_CUTOFF 2
-bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result);
-bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
+    bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result);
+    bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 
-FileExtension GetFileExtensionType(u8string_view path);
+    FileExtension GetFileExtensionType(u8string_view path);
+} // namespace OpenRCT2

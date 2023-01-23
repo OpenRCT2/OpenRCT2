@@ -10,38 +10,39 @@
 #pragma once
 
 #include <cstdint>
-
-enum class DiagnosticLevel
+namespace OpenRCT2
 {
-    Fatal,
-    Error,
-    Warning,
-    Verbose,
-    Information,
-    Count
-};
+    enum class DiagnosticLevel
+    {
+        Fatal,
+        Error,
+        Warning,
+        Verbose,
+        Information,
+        Count
+    };
 
-/**
- * Compile-time debug levels.
- *
- * When compiling, just add -DDEBUG={0,1,2,3} (where 0 means disabled)
- * Regardless of DEBUG value, a set of defines will be created:
- * - DEBUG_LEVEL_1
- * - DEBUG_LEVEL_2
- * - DEBUG_LEVEL_3
- * which you would use like so:
- *
- * #if DEBUG_LEVEL_1
- *     (... some debug code ...)
- *     #if DEBUG_LEVEL_2
- *         (... more debug code ...)
- *    #endif // DEBUG_LEVEL_2
- * #endif // DEBUG_LEVEL_1
- *
- * The defines will be either 0 or 1 so compiler will complain about undefined
- * macro if you forget to include the file, which would not happen if we were
- * only checking whether the define is present or not.
- */
+    /**
+     * Compile-time debug levels.
+     *
+     * When compiling, just add -DDEBUG={0,1,2,3} (where 0 means disabled)
+     * Regardless of DEBUG value, a set of defines will be created:
+     * - DEBUG_LEVEL_1
+     * - DEBUG_LEVEL_2
+     * - DEBUG_LEVEL_3
+     * which you would use like so:
+     *
+     * #if DEBUG_LEVEL_1
+     *     (... some debug code ...)
+     *     #if DEBUG_LEVEL_2
+     *         (... more debug code ...)
+     *    #endif // DEBUG_LEVEL_2
+     * #endif // DEBUG_LEVEL_1
+     *
+     * The defines will be either 0 or 1 so compiler will complain about undefined
+     * macro if you forget to include the file, which would not happen if we were
+     * only checking whether the define is present or not.
+     */
 
 #if defined(DEBUG)
 #    if DEBUG > 0
@@ -68,11 +69,11 @@ enum class DiagnosticLevel
 #    define DEBUG_LEVEL_1 0
 #endif // defined(DEBUG)
 
-extern bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::Count)];
+    extern bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::Count)];
 
-void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...);
-void DiagnosticLogWithLocation(
-    DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...);
+    void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...);
+    void DiagnosticLogWithLocation(
+        DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...);
 
 #ifdef _MSC_VER
 #    define DIAGNOSTIC_LOG_MACRO(level, format, ...)                                                                           \
@@ -87,3 +88,4 @@ void DiagnosticLogWithLocation(
 #define LOG_WARNING(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::Warning, format, ##__VA_ARGS__)
 #define LOG_VERBOSE(format, ...) DiagnosticLog(DiagnosticLevel::Verbose, format, ##__VA_ARGS__)
 #define LOG_INFO(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::Information, format, ##__VA_ARGS__)
+} // namespace OpenRCT2

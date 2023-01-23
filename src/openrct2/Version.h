@@ -12,7 +12,8 @@
 #include "common.h"
 
 #include <string>
-
+namespace OpenRCT2
+{
 #define OPENRCT2_NAME "OpenRCT2"
 #define OPENRCT2_VERSION "0.4.3"
 
@@ -74,14 +75,15 @@
 #    error Unknown platform!
 #endif
 
-extern const char gVersionInfoFull[];
-extern const char gVersionInfoTag[];
-struct NewVersionInfo
-{
-    std::string tag;
-    std::string name;
-    std::string changelog;
-    std::string url;
-};
+    extern const char gVersionInfoFull[];
+    extern const char gVersionInfoTag[];
+    struct NewVersionInfo
+    {
+        std::string tag;
+        std::string name;
+        std::string changelog;
+        std::string url;
+    };
 
-NewVersionInfo GetLatestVersion();
+    NewVersionInfo GetLatestVersion();
+} // namespace OpenRCT2

@@ -15,10 +15,9 @@
 #include <set>
 #include <string>
 
-class GameAction;
-
 namespace OpenRCT2
 {
+    class GameAction;
     static constexpr uint32_t k_MaxReplayTicks = 0xFFFFFFFF;
 
     struct ReplayRecordInfo

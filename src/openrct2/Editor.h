@@ -11,40 +11,42 @@
 
 #include "common.h"
 #include "object/Object.h"
-
-struct ResultWithMessage;
-
-namespace Editor
+namespace OpenRCT2
 {
-    void Load();
-    void ConvertSaveToScenario();
-    void LoadTrackDesigner();
-    void LoadTrackManager();
-    bool LoadLandscape(const utf8* path);
+    struct ResultWithMessage;
 
-    ResultWithMessage CheckPark();
-    std::pair<ObjectType, StringId> CheckObjectSelection();
+    namespace Editor
+    {
+        void Load();
+        void ConvertSaveToScenario();
+        void LoadTrackDesigner();
+        void LoadTrackManager();
+        bool LoadLandscape(const utf8* path);
 
-    void OpenWindowsForCurrentStep();
+        ResultWithMessage CheckPark();
+        std::pair<ObjectType, StringId> CheckObjectSelection();
 
-    uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index);
-    void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
-    void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
-} // namespace Editor
+        void OpenWindowsForCurrentStep();
 
-enum class EditorStep : uint8_t
-{
-    ObjectSelection,       // 0
-    LandscapeEditor,       // 1
-    InventionsListSetUp,   // 2
-    OptionsSelection,      // 3
-    ObjectiveSelection,    // 4
-    SaveScenario,          // 5
-    RollercoasterDesigner, // 6
-    DesignsManager,        // 7
-    Invalid = 255,         // 255
-};
+        uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index);
+        void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
+        void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
+    } // namespace Editor
 
-extern EditorStep gEditorStep;
+    enum class EditorStep : uint8_t
+    {
+        ObjectSelection,       // 0
+        LandscapeEditor,       // 1
+        InventionsListSetUp,   // 2
+        OptionsSelection,      // 3
+        ObjectiveSelection,    // 4
+        SaveScenario,          // 5
+        RollercoasterDesigner, // 6
+        DesignsManager,        // 7
+        Invalid = 255,         // 255
+    };
 
-void EditorOpenWindowsForCurrentStep();
+    extern EditorStep gEditorStep;
+
+    void EditorOpenWindowsForCurrentStep();
+} // namespace OpenRCT2

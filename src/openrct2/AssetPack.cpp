@@ -19,171 +19,173 @@
 
 #include <algorithm>
 
-using namespace OpenRCT2;
-
-constexpr std::string_view ManifestFileName = "manifest.json";
-
-AssetPack::AssetPack(const fs::path& path)
-    : Path(path)
+namespace OpenRCT2
 {
-}
 
-AssetPack::~AssetPack()
-{
-}
+    constexpr std::string_view ManifestFileName = "manifest.json";
 
-bool AssetPack::IsEnabled() const
-{
-    return _enabled;
-}
-
-void AssetPack::SetEnabled(bool value)
-{
-    _enabled = value;
-}
-
-void AssetPack::Fetch()
-{
-    auto archive = Zip::Open(Path.u8string(), ZIP_ACCESS::READ);
-    if (!archive->Exists(ManifestFileName))
+    AssetPack::AssetPack(const fs::path& path)
+        : Path(path)
     {
-        throw std::runtime_error("Manifest does not exist.");
     }
 
-    auto manifestJson = archive->GetFileData(ManifestFileName);
-    auto jManifest = Json::FromVector(manifestJson);
-    Id = jManifest["id"].get<std::string>();
-    Version = jManifest["version"].get<std::string>();
-
-    // TODO use a better string table class that can be used for objects, park files and asset packs
-    auto& localisationService = GetContext()->GetLocalisationService();
-    auto locale = std::string(localisationService.GetCurrentLanguageLocale());
-    Name = GetString(jManifest, "name", locale);
-    Description = GetString(jManifest, "description", locale);
-}
-
-std::string AssetPack::GetString(json_t& jManifest, const std::string& key, const std::string& locale)
-{
-    if (jManifest.contains("strings"))
+    AssetPack::~AssetPack()
     {
-        auto& jStrings = jManifest["strings"];
-        if (jStrings.contains(key))
+    }
+
+    bool AssetPack::IsEnabled() const
+    {
+        return _enabled;
+    }
+
+    void AssetPack::SetEnabled(bool value)
+    {
+        _enabled = value;
+    }
+
+    void AssetPack::Fetch()
+    {
+        auto archive = Zip::Open(Path.u8string(), ZIP_ACCESS::READ);
+        if (!archive->Exists(ManifestFileName))
         {
-            auto& jKey = jStrings[key];
-            if (jKey.contains(locale))
+            throw std::runtime_error("Manifest does not exist.");
+        }
+
+        auto manifestJson = archive->GetFileData(ManifestFileName);
+        auto jManifest = Json::FromVector(manifestJson);
+        Id = jManifest["id"].get<std::string>();
+        Version = jManifest["version"].get<std::string>();
+
+        // TODO use a better string table class that can be used for objects, park files and asset packs
+        auto& localisationService = GetContext()->GetLocalisationService();
+        auto locale = std::string(localisationService.GetCurrentLanguageLocale());
+        Name = GetString(jManifest, "name", locale);
+        Description = GetString(jManifest, "description", locale);
+    }
+
+    std::string AssetPack::GetString(json_t& jManifest, const std::string& key, const std::string& locale)
+    {
+        if (jManifest.contains("strings"))
+        {
+            auto& jStrings = jManifest["strings"];
+            if (jStrings.contains(key))
             {
-                return jKey[locale].get<std::string>();
-            }
-            if (jKey.contains("en-GB"))
-            {
-                return jKey["en-GB"].get<std::string>();
-            }
-            if (jKey.contains("en-US"))
-            {
-                return jKey["en-US"].get<std::string>();
+                auto& jKey = jStrings[key];
+                if (jKey.contains(locale))
+                {
+                    return jKey[locale].get<std::string>();
+                }
+                if (jKey.contains("en-GB"))
+                {
+                    return jKey["en-GB"].get<std::string>();
+                }
+                if (jKey.contains("en-US"))
+                {
+                    return jKey["en-US"].get<std::string>();
+                }
             }
         }
-    }
-    return {};
-}
-
-bool AssetPack::ContainsObject(std::string_view id) const
-{
-    auto it = std::find_if(_entries.begin(), _entries.end(), [id](const Entry& entry) { return entry.ObjectId == id; });
-    return it != _entries.end();
-}
-
-void AssetPack::LoadSamplesForObject(std::string_view id, AudioSampleTable& objectTable)
-{
-    auto it = std::find_if(_entries.begin(), _entries.end(), [id](const Entry& entry) { return entry.ObjectId == id; });
-    if (it != _entries.end())
-    {
-        objectTable.LoadFrom(_sampleTable, it->TableIndex, it->TableLength);
-    }
-}
-
-class AssetPackLoadContext : public IReadObjectContext
-{
-private:
-    std::string _zipPath;
-    IZipArchive* _zipArchive;
-
-public:
-    AssetPackLoadContext(std::string_view zipPath, IZipArchive* zipArchive)
-        : _zipPath(zipPath)
-        , _zipArchive(zipArchive)
-    {
+        return {};
     }
 
-    virtual ~AssetPackLoadContext() override
+    bool AssetPack::ContainsObject(std::string_view id) const
     {
+        auto it = std::find_if(_entries.begin(), _entries.end(), [id](const Entry& entry) { return entry.ObjectId == id; });
+        return it != _entries.end();
     }
 
-    std::string_view GetObjectIdentifier() override
+    void AssetPack::LoadSamplesForObject(std::string_view id, AudioSampleTable& objectTable)
     {
-        throw std::runtime_error("Not implemented");
-    }
-
-    IObjectRepository& GetObjectRepository() override
-    {
-        throw std::runtime_error("Not implemented");
-    }
-
-    bool ShouldLoadImages() override
-    {
-        return true;
-    }
-
-    std::vector<uint8_t> GetData(std::string_view path) override
-    {
-        return _zipArchive->GetFileData(path);
-    }
-
-    ObjectAsset GetAsset(std::string_view path) override
-    {
-        return ObjectAsset(_zipPath, path);
-    }
-
-    void LogVerbose(ObjectError code, const utf8* text) override
-    {
-    }
-
-    void LogWarning(ObjectError code, const utf8* text) override
-    {
-    }
-
-    void LogError(ObjectError code, const utf8* text) override
-    {
-    }
-};
-
-void AssetPack::Load()
-{
-    auto path = Path.u8string();
-    auto archive = Zip::Open(path, ZIP_ACCESS::READ);
-    if (!archive->Exists(ManifestFileName))
-    {
-        throw std::runtime_error("Manifest does not exist.");
-    }
-
-    AssetPackLoadContext loadContext(path, archive.get());
-
-    auto manifestJson = archive->GetFileData(ManifestFileName);
-    auto jManifest = Json::FromVector(manifestJson);
-    auto& jObjects = jManifest["objects"];
-
-    _entries.clear();
-    for (auto& jObject : jObjects)
-    {
-        Entry entry;
-        entry.ObjectId = jObject["id"].get<std::string>();
-
-        if (jObject.contains("samples"))
+        auto it = std::find_if(_entries.begin(), _entries.end(), [id](const Entry& entry) { return entry.ObjectId == id; });
+        if (it != _entries.end())
         {
-            entry.TableIndex = _sampleTable.GetCount();
-            _sampleTable.ReadFromJson(&loadContext, jObject);
-            entry.TableLength = _sampleTable.GetCount() - entry.TableIndex;
+            objectTable.LoadFrom(_sampleTable, it->TableIndex, it->TableLength);
         }
-        _entries.push_back(entry);
     }
-}
+
+    class AssetPackLoadContext : public IReadObjectContext
+    {
+    private:
+        std::string _zipPath;
+        IZipArchive* _zipArchive;
+
+    public:
+        AssetPackLoadContext(std::string_view zipPath, IZipArchive* zipArchive)
+            : _zipPath(zipPath)
+            , _zipArchive(zipArchive)
+        {
+        }
+
+        virtual ~AssetPackLoadContext() override
+        {
+        }
+
+        std::string_view GetObjectIdentifier() override
+        {
+            throw std::runtime_error("Not implemented");
+        }
+
+        IObjectRepository& GetObjectRepository() override
+        {
+            throw std::runtime_error("Not implemented");
+        }
+
+        bool ShouldLoadImages() override
+        {
+            return true;
+        }
+
+        std::vector<uint8_t> GetData(std::string_view path) override
+        {
+            return _zipArchive->GetFileData(path);
+        }
+
+        ObjectAsset GetAsset(std::string_view path) override
+        {
+            return ObjectAsset(_zipPath, path);
+        }
+
+        void LogVerbose(ObjectError code, const utf8* text) override
+        {
+        }
+
+        void LogWarning(ObjectError code, const utf8* text) override
+        {
+        }
+
+        void LogError(ObjectError code, const utf8* text) override
+        {
+        }
+    };
+
+    void AssetPack::Load()
+    {
+        auto path = Path.u8string();
+        auto archive = Zip::Open(path, ZIP_ACCESS::READ);
+        if (!archive->Exists(ManifestFileName))
+        {
+            throw std::runtime_error("Manifest does not exist.");
+        }
+
+        AssetPackLoadContext loadContext(path, archive.get());
+
+        auto manifestJson = archive->GetFileData(ManifestFileName);
+        auto jManifest = Json::FromVector(manifestJson);
+        auto& jObjects = jManifest["objects"];
+
+        _entries.clear();
+        for (auto& jObject : jObjects)
+        {
+            Entry entry;
+            entry.ObjectId = jObject["id"].get<std::string>();
+
+            if (jObject.contains("samples"))
+            {
+                entry.TableIndex = _sampleTable.GetCount();
+                _sampleTable.ReadFromJson(&loadContext, jObject);
+                entry.TableLength = _sampleTable.GetCount() - entry.TableIndex;
+            }
+            _entries.push_back(entry);
+        }
+    }
+} // namespace OpenRCT2
