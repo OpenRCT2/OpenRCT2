@@ -10,5 +10,7 @@
 #pragma once
 
 #include "../RideData.h"
-
-money64 MazeCalculateCost(money32 constructionCost, const Ride& ride, const CoordsXYZ& loc);
+namespace OpenRCT2
+{
+    money64 MazeCalculateCost(money32 constructionCost, const Ride& ride, const CoordsXYZ& loc);
+}

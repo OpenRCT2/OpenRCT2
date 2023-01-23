@@ -13,8 +13,9 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 constexpr const RideTypeDescriptor SpiralSlideRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -66,4 +67,5 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
     SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
     SET_FIELD(RideUpdate, UpdateSpiralSlide),
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2
