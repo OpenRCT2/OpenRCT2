@@ -12,10 +12,9 @@
 #include "../common.h"
 #include "../drawing/Drawing.h"
 
-struct ITitleSequencePlayer;
-
 namespace OpenRCT2
 {
+    struct ITitleSequencePlayer;
     class GameState;
 
     class TitleScreen final
@@ -49,20 +48,20 @@ namespace OpenRCT2
         void TitleInitialise();
         bool TryLoadSequence(bool loadPreview = false);
     };
+
+    // When testing title sequences within a normal game
+    extern bool gPreviewingTitleSequenceInGame;
+
+    void TitleLoad();
+    void TitleCreateWindows();
+    void* TitleGetSequencePlayer();
+    void TitleSequenceChangePreset(size_t preset);
+    bool TitleShouldHideVersionInfo();
+    void TitleSetHideVersionInfo(bool value);
+    size_t TitleGetConfigSequence();
+    size_t TitleGetCurrentSequence();
+    bool TitlePreviewSequence(size_t value);
+    void TitleStopPreviewingSequence();
+    bool TitleIsPreviewingSequence();
+    void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords);
 } // namespace OpenRCT2
-
-// When testing title sequences within a normal game
-extern bool gPreviewingTitleSequenceInGame;
-
-void TitleLoad();
-void TitleCreateWindows();
-void* TitleGetSequencePlayer();
-void TitleSequenceChangePreset(size_t preset);
-bool TitleShouldHideVersionInfo();
-void TitleSetHideVersionInfo(bool value);
-size_t TitleGetConfigSequence();
-size_t TitleGetCurrentSequence();
-bool TitlePreviewSequence(size_t value);
-void TitleStopPreviewingSequence();
-bool TitleIsPreviewingSequence();
-void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords);

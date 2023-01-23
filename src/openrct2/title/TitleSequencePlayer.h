@@ -11,15 +11,18 @@
 
 #include "../common.h"
 
-struct ITitleSequencePlayer
+namespace OpenRCT2
 {
-    virtual ~ITitleSequencePlayer() = default;
+    struct ITitleSequencePlayer
+    {
+        virtual ~ITitleSequencePlayer() = default;
 
-    virtual int32_t GetCurrentPosition() const abstract;
+        virtual int32_t GetCurrentPosition() const abstract;
 
-    virtual bool Begin(size_t titleSequenceId) abstract;
-    virtual void Reset() abstract;
-    virtual bool Update() abstract;
-    virtual void Seek(int32_t position) abstract;
-    virtual void Eject() abstract;
-};
+        virtual bool Begin(size_t titleSequenceId) abstract;
+        virtual void Reset() abstract;
+        virtual bool Update() abstract;
+        virtual void Seek(int32_t position) abstract;
+        virtual void Eject() abstract;
+    };
+} // namespace OpenRCT2
