@@ -18,12 +18,11 @@
 #include <string>
 #include <vector>
 
-struct ScreenCoordsXY;
-struct DrawPixelInfo;
-struct ITitleSequencePlayer;
-
 namespace OpenRCT2
 {
+    struct ScreenCoordsXY;
+    struct DrawPixelInfo;
+    struct ITitleSequencePlayer;
     namespace Drawing
     {
         struct IDrawingEngineFactory;

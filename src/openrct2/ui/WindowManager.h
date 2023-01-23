@@ -17,8 +17,10 @@
 #include <string>
 #include <string_view>
 
-class Formatter;
-
+namespace OpenRCT2
+{
+    class Formatter;
+}
 namespace OpenRCT2::Ui
 {
     /**
