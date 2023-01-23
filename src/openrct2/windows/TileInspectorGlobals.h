@@ -11,20 +11,22 @@
 
 #include "../common.h"
 #include "../interface/Window.h"
-
-enum class TileInspectorPage : int16_t
+namespace OpenRCT2
 {
-    Default = 0,
-    Surface,
-    Path,
-    Track,
-    Scenery,
-    Entrance,
-    Wall,
-    LargeScenery,
-    Banner,
-};
+    enum class TileInspectorPage : int16_t
+    {
+        Default = 0,
+        Surface,
+        Path,
+        Track,
+        Scenery,
+        Entrance,
+        Wall,
+        LargeScenery,
+        Banner,
+    };
 
-extern TileCoordsXY windowTileInspectorTile;
-extern int32_t windowTileInspectorElementCount;
-extern int32_t windowTileInspectorSelectedIndex;
+    extern TileCoordsXY windowTileInspectorTile;
+    extern int32_t windowTileInspectorElementCount;
+    extern int32_t windowTileInspectorSelectedIndex;
+} // namespace OpenRCT2
