@@ -127,7 +127,7 @@ struct ImageIdOffset
 using PaintStructEdgesTable = std::vector<edge_t>;
 struct PaintStructDescriptor
 {
-    enum class SupportsType
+    enum class SupportsCode
     {
         WoodenA
     };
@@ -161,7 +161,9 @@ struct PaintStructDescriptor
         PeepTShirt
     };
 
-    std::optional<SupportsType> Supports;
+    std::optional<SupportsCode> Supports;
+    uint32_t SupportsType;
+
     std::optional<FloorType> Floor;
     std::optional<FenceType> Fences;
     std::optional<PaintType> PaintCode;
@@ -201,10 +203,12 @@ struct PaintStructJson
         , SecondaryColour(PaintStructDescriptor::Colour::VehicleTrim)
         , SecondaryColourIndex(0)
         , ImageIdOffsetIndex(0)
+        , SupportsType(0)
     {
     }
     PaintStructKey Key;
-    std::optional<PaintStructDescriptor::SupportsType> Supports;
+    std::optional<PaintStructDescriptor::SupportsCode> Supports;
+    uint32_t SupportsType;
     std::optional<PaintStructDescriptor::FloorType> Floor;
     std::string EdgesId;
     std::optional<PaintStructDescriptor::FenceType> Fences;

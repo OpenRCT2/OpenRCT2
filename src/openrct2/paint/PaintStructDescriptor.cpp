@@ -11,6 +11,7 @@ PaintStructDescriptor::PaintStructDescriptor()
     : PrimaryColour(Colour::VehicleBody)
     , PrimaryColourIndex(0)
     , SecondaryColour(Colour::VehicleTrim)
+    , SupportsType(0)
     , SecondaryColourIndex(0)
     , ImageIdOffsetIndex(0)
     , ImageIdOffset(nullptr)
@@ -49,9 +50,9 @@ void PaintStructDescriptor::Paint(
     {
         switch (Supports.value())
         {
-            case SupportsType::WoodenA:
+            case SupportsCode::WoodenA:
             default:
-                WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+                WoodenASupportsPaintSetup(session, SupportsType, 0, height, session.TrackColours[SCHEME_MISC]);
                 break;
         }
     }
@@ -233,7 +234,12 @@ void PaintStructJson::FromJson(const json_t& paintStruct)
         if (supports.is_string())
         {
             if (supports == "wooden_a")
-                Supports = PaintStructDescriptor::SupportsType::WoodenA;
+                Supports = PaintStructDescriptor::SupportsCode::WoodenA;
+        }
+
+        if (paintStruct.contains("supportsType"))
+        {
+            SupportsType = paintStruct["supportsType"];
         }
     }
 
@@ -451,6 +457,7 @@ PaintStructDescriptor PaintStructJson::Value() const
 {
     PaintStructDescriptor result;
     result.Supports = Supports;
+    result.SupportsType = SupportsType;
     result.Floor = Floor;
     result.Fences = Fences;
     result.PaintCode = PaintType;
