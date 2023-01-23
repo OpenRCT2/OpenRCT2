@@ -13,35 +13,37 @@
 
 #include <cstdint>
 #include <utility>
-
-struct CoordsXYZ;
-struct Ride;
-
-namespace OpenRCT2::RideAudio
+namespace OpenRCT2
 {
-    /**
-     * Represents a particular instance of ride music that can be heard in a viewport.
-     * These are created each frame via enumerating each ride / viewport.
-     */
-    struct ViewportRideMusicInstance
+    struct CoordsXYZ;
+    struct Ride;
+
+    namespace RideAudio
     {
-        ::RideId RideId;
-        uint8_t TrackIndex{};
+        /**
+         * Represents a particular instance of ride music that can be heard in a viewport.
+         * These are created each frame via enumerating each ride / viewport.
+         */
+        struct ViewportRideMusicInstance
+        {
+            ::RideId RideId;
+            uint8_t TrackIndex{};
 
-        size_t Offset{};
-        int16_t Volume{};
-        int16_t Pan{};
-        uint16_t Frequency{};
-    };
+            size_t Offset{};
+            int16_t Volume{};
+            int16_t Pan{};
+            uint16_t Frequency{};
+        };
 
-    void ClearAllViewportInstances();
-    void StopAllChannels();
-    void UpdateMusicChannels();
-    void UpdateMusicInstance(Ride& ride, const CoordsXYZ& rideCoords, uint16_t sampleRate);
+        void ClearAllViewportInstances();
+        void StopAllChannels();
+        void UpdateMusicChannels();
+        void UpdateMusicInstance(Ride& ride, const CoordsXYZ& rideCoords, uint16_t sampleRate);
 
-    void DefaultStartRideMusicChannel(const ViewportRideMusicInstance& instance);
-    void CircusStartRideMusicChannel(const ViewportRideMusicInstance& instance);
+        void DefaultStartRideMusicChannel(const ViewportRideMusicInstance& instance);
+        void CircusStartRideMusicChannel(const ViewportRideMusicInstance& instance);
 
-    std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Circus(const Ride& ride);
-    std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Default(const Ride& ride);
-} // namespace OpenRCT2::RideAudio
+        std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Circus(const Ride& ride);
+        std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Default(const Ride& ride);
+    } // namespace RideAudio
+} // namespace OpenRCT2

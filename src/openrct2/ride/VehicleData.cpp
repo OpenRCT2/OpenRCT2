@@ -10,8 +10,9 @@
 #include "VehicleData.h"
 
 #include <iterator>
-
-// clang-format off
+namespace OpenRCT2
+{
+    // clang-format off
 /** rct2: 0x0099F100 */
 static constexpr const uint8_t Rotation1TimeToSpriteMap_0[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
@@ -922,4 +923,5 @@ const int32_t SpriteDirectionToSoundDirection[] = {
     -0x4800,    // 30
     -0x4800,    // 31
 };
-// clang-format on
+    // clang-format on
+} // namespace OpenRCT2

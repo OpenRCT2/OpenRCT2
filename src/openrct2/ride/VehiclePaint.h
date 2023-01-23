@@ -10,51 +10,53 @@
 #pragma once
 
 #include "../common.h"
-
-struct PaintSession;
-struct CarEntry;
-struct Vehicle;
-
-struct VehicleBoundBox
+namespace OpenRCT2
 {
-    int8_t offset_x;
-    int8_t offset_y;
-    int8_t offset_z;
-    uint8_t length_x;
-    uint8_t length_y;
-    uint8_t length_z;
-};
+    struct PaintSession;
+    struct CarEntry;
+    struct Vehicle;
 
-extern const VehicleBoundBox VehicleBoundboxes[16][224];
+    struct VehicleBoundBox
+    {
+        int8_t offset_x;
+        int8_t offset_y;
+        int8_t offset_z;
+        uint8_t length_x;
+        uint8_t length_y;
+        uint8_t length_z;
+    };
 
-void VehicleVisualDefault(
-    PaintSession& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry);
-void VehicleVisualRotoDrop(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* carEntry);
-void VehicleVisualObservationTower(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* carEntry);
-void VehicleVisualRiverRapids(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* carEntry);
-void VehicleVisualReverser(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* carEntry);
-void VehicleVisualSplashBoatsOrWaterCoaster(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* carEntry);
-void VehicleVisualLaunchedFreefall(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* carEntry);
-void VehicleVisualSplashEffect(PaintSession& session, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry);
-void VehicleVisualVirginiaReel(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* carEntry);
-void VehicleVisualSubmarine(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* carEntry);
-void VehicleVisualMiniGolfPlayer(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
-void VehicleVisualMiniGolfBall(
-    PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
+    extern const VehicleBoundBox VehicleBoundboxes[16][224];
+
+    void VehicleVisualDefault(
+        PaintSession& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry);
+    void VehicleVisualRotoDrop(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        const CarEntry* carEntry);
+    void VehicleVisualObservationTower(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        const CarEntry* carEntry);
+    void VehicleVisualRiverRapids(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        const CarEntry* carEntry);
+    void VehicleVisualReverser(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        const CarEntry* carEntry);
+    void VehicleVisualSplashBoatsOrWaterCoaster(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        const CarEntry* carEntry);
+    void VehicleVisualLaunchedFreefall(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        const CarEntry* carEntry);
+    void VehicleVisualSplashEffect(PaintSession& session, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry);
+    void VehicleVisualVirginiaReel(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        const CarEntry* carEntry);
+    void VehicleVisualSubmarine(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        const CarEntry* carEntry);
+    void VehicleVisualMiniGolfPlayer(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
+    void VehicleVisualMiniGolfBall(
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
+} // namespace OpenRCT2

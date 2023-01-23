@@ -12,41 +12,43 @@
 #include "Track.h"
 
 #include <cstdint>
-
-constexpr const size_t VehicleTrackSubpositionSizeDefault = TrackElemType::Count * NumOrthogonalDirections;
-
-struct VehicleInfo;
-
-enum class VehicleTrackSubposition : uint8_t
+namespace OpenRCT2
 {
-    Default,
-    // Going out means "moving away from the start". Viewed from Station 1, this is the left hand side of the track.
-    ChairliftGoingOut,
-    ChairliftGoingBack,
-    // End and start bullwheel as viewed from Station 1.
-    ChairliftEndBullwheel,
-    ChairliftStartBullwheel,
-    GoKartsLeftLane,
-    GoKartsRightLane,
-    GoKartsMovingToRightLane,
-    GoKartsMovingToLeftLane,
-    MiniGolfStart9 = 9,
-    MiniGolfPathA9 = 9,
-    MiniGolfBallPathA10,
-    MiniGolfPathB11,
-    MiniGolfBallPathB12,
-    MiniGolfPathC13,
-    MiniGolfBallPathC14,
-    ReverserRCFrontBogie,
-    ReverserRCRearBogie,
+    constexpr const size_t VehicleTrackSubpositionSizeDefault = TrackElemType::Count * NumOrthogonalDirections;
 
-    Count,
-};
+    struct VehicleInfo;
 
-struct VehicleInfoList
-{
-    uint16_t size;
-    const VehicleInfo* info;
-};
+    enum class VehicleTrackSubposition : uint8_t
+    {
+        Default,
+        // Going out means "moving away from the start". Viewed from Station 1, this is the left hand side of the track.
+        ChairliftGoingOut,
+        ChairliftGoingBack,
+        // End and start bullwheel as viewed from Station 1.
+        ChairliftEndBullwheel,
+        ChairliftStartBullwheel,
+        GoKartsLeftLane,
+        GoKartsRightLane,
+        GoKartsMovingToRightLane,
+        GoKartsMovingToLeftLane,
+        MiniGolfStart9 = 9,
+        MiniGolfPathA9 = 9,
+        MiniGolfBallPathA10,
+        MiniGolfPathB11,
+        MiniGolfBallPathB12,
+        MiniGolfPathC13,
+        MiniGolfBallPathC14,
+        ReverserRCFrontBogie,
+        ReverserRCRearBogie,
 
-extern const VehicleInfoList* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)];
+        Count,
+    };
+
+    struct VehicleInfoList
+    {
+        uint16_t size;
+        const VehicleInfo* info;
+    };
+
+    extern const VehicleInfoList* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)];
+} // namespace OpenRCT2

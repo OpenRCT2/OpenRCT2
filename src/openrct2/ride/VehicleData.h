@@ -10,23 +10,25 @@
 #pragma once
 
 #include "../common.h"
-
-extern const uint8_t* Rotation1TimeToSpriteMaps[];
-extern const uint8_t* Rotation2TimeToSpriteMaps[];
-extern const uint8_t* Rotation3TimeToSpriteMaps[];
-
-struct TopSpinTimeToSpriteMap
+namespace OpenRCT2
 {
-    uint8_t arm_rotation;
-    uint8_t bank_rotation;
-};
+    extern const uint8_t* Rotation1TimeToSpriteMaps[];
+    extern const uint8_t* Rotation2TimeToSpriteMaps[];
+    extern const uint8_t* Rotation3TimeToSpriteMaps[];
 
-extern const TopSpinTimeToSpriteMap* TopSpinTimeToSpriteMaps[];
+    struct TopSpinTimeToSpriteMap
+    {
+        uint8_t arm_rotation;
+        uint8_t bank_rotation;
+    };
 
-extern const uint8_t MotionSimulatorTimeToSpriteMap[];
-extern const int32_t MotionSimulatorTimeToSpriteMapCount;
+    extern const TopSpinTimeToSpriteMap* TopSpinTimeToSpriteMaps[];
 
-extern const int32_t SubpositionTranslationDistances[];
-extern const int32_t AccelerationFromPitch[];
+    extern const uint8_t MotionSimulatorTimeToSpriteMap[];
+    extern const int32_t MotionSimulatorTimeToSpriteMapCount;
 
-extern const int32_t SpriteDirectionToSoundDirection[];
+    extern const int32_t SubpositionTranslationDistances[];
+    extern const int32_t AccelerationFromPitch[];
+
+    extern const int32_t SpriteDirectionToSoundDirection[];
+} // namespace OpenRCT2

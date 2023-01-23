@@ -14,15 +14,16 @@
 #include "../localisation/StringIds.h"
 #include "../ride/RideEntry.h"
 #include "../sprites.h"
-
-ShopItem& operator++(ShopItem& d, int)
+namespace OpenRCT2
 {
-    return d = (d == ShopItem::Count) ? ShopItem::Balloon : ShopItem(EnumValue(d) + 1);
-}
+    ShopItem& operator++(ShopItem& d, int)
+    {
+        return d = (d == ShopItem::Count) ? ShopItem::Balloon : ShopItem(EnumValue(d) + 1);
+    }
 
-uint64_t gSamePriceThroughoutPark;
+    uint64_t gSamePriceThroughoutPark;
 
-// clang-format off
+    // clang-format off
 /** rct2: 0x00982164 (cost, base value, hot and cold value); 0x00982358 (default price) */
 constexpr ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)] = {
     // Item,                            Cost,     Base value, Hot value, Cold value, Default price, Image,                               Price label,                                      Singular,                                   Plural,                                     Indefinite,                                     Display (in guest inventory),                Shop Item Flag,                                              Litter type,                    Consumption time, Discard Container,          Peep thought price too much,            Peep thought price good value,
@@ -81,105 +82,106 @@ constexpr ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)] = {
     /* ShopItem::RoastSausage */     {  0.50_GBP, 1.60_GBP,   1.60_GBP,  2.00_GBP,   1.50_GBP,      SPR_SHOP_ITEM_ROAST_SAUSAGE,       { STR_SHOP_ITEM_PRICE_LABEL_ROAST_SAUSAGE,          STR_SHOP_ITEM_SINGULAR_ROAST_SAUSAGE,       STR_SHOP_ITEM_PLURAL_ROAST_SAUSAGE,         STR_SHOP_ITEM_INDEFINITE_ROAST_SAUSAGE,         STR_SHOP_ITEM_DISPLAY_ROAST_SAUSAGE       }, SHOP_ITEM_FLAG_IS_FOOD,                                      Litter::Type::Rubbish,          115,              ShopItem::None,             PeepThoughtType::RoastSausageMuch,      PeepThoughtType::RoastSausage       },
     /* ShopItem::EmptyBowlBlue */    {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      SPR_SHOP_ITEM_EMPTY_BOWL_BLUE,     { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOWL_BLUE,        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,     STR_SHOP_ITEM_PLURAL_EMPTY_BOWL_BLUE,       STR_SHOP_ITEM_INDEFINITE_EMPTY_BOWL_BLUE,       STR_SHOP_ITEM_DISPLAY_EMPTY_BOWL_BLUE     }, SHOP_ITEM_FLAG_IS_CONTAINER,                                 Litter::Type::EmptyBowlBlue,    0,                ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
 };
-// clang-format on
+    // clang-format on
 
-constexpr uint64_t GetAllShopItemsWithFlag(uint16_t flag)
-{
-    uint64_t ret = 0;
-    for (auto i = 0; i < EnumValue(ShopItem::Count); ++i)
+    constexpr uint64_t GetAllShopItemsWithFlag(uint16_t flag)
     {
-        const auto& sid = ShopItems[i];
-        if (sid.HasFlag(flag))
+        uint64_t ret = 0;
+        for (auto i = 0; i < EnumValue(ShopItem::Count); ++i)
         {
-            ret |= (1uLL << i);
-        }
-    }
-    return ret;
-}
-
-constexpr auto AllFoodFlags = GetAllShopItemsWithFlag(SHOP_ITEM_FLAG_IS_FOOD);
-uint64_t ShopItemsGetAllFoods()
-{
-    return AllFoodFlags;
-}
-
-constexpr auto AllDrinkFlags = GetAllShopItemsWithFlag(SHOP_ITEM_FLAG_IS_DRINK);
-uint64_t ShopItemsGetAllDrinks()
-{
-    return AllDrinkFlags;
-}
-
-constexpr auto AllContainerFlags = GetAllShopItemsWithFlag(SHOP_ITEM_FLAG_IS_CONTAINER);
-uint64_t ShopItemsGetAllContainers()
-{
-    return AllContainerFlags;
-}
-
-money32 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
-{
-    for (const auto& ride : GetRideManager())
-    {
-        if (&ride != forRide)
-        {
-            auto rideEntry = ride.GetRideEntry();
-            if (rideEntry == nullptr)
+            const auto& sid = ShopItems[i];
+            if (sid.HasFlag(flag))
             {
-                continue;
-            }
-            if (rideEntry->shop_item[0] == shopItem)
-            {
-                return ride.price[0];
-            }
-            if (rideEntry->shop_item[1] == shopItem)
-            {
-                return ride.price[1];
-            }
-            if (GetShopItemDescriptor(shopItem).IsPhoto() && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
-            {
-                return ride.price[1];
+                ret |= (1uLL << i);
             }
         }
+        return ret;
     }
 
-    return MONEY32_UNDEFINED;
-}
+    constexpr auto AllFoodFlags = GetAllShopItemsWithFlag(SHOP_ITEM_FLAG_IS_FOOD);
+    uint64_t ShopItemsGetAllFoods()
+    {
+        return AllFoodFlags;
+    }
 
-bool ShopItemHasCommonPrice(const ShopItem shopItem)
-{
-    return (gSamePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
-}
+    constexpr auto AllDrinkFlags = GetAllShopItemsWithFlag(SHOP_ITEM_FLAG_IS_DRINK);
+    uint64_t ShopItemsGetAllDrinks()
+    {
+        return AllDrinkFlags;
+    }
 
-bool ShopItemDescriptor::IsFood() const
-{
-    return HasFlag(SHOP_ITEM_FLAG_IS_FOOD);
-}
+    constexpr auto AllContainerFlags = GetAllShopItemsWithFlag(SHOP_ITEM_FLAG_IS_CONTAINER);
+    uint64_t ShopItemsGetAllContainers()
+    {
+        return AllContainerFlags;
+    }
 
-bool ShopItemDescriptor::IsDrink() const
-{
-    return HasFlag(SHOP_ITEM_FLAG_IS_DRINK);
-}
+    money32 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
+    {
+        for (const auto& ride : GetRideManager())
+        {
+            if (&ride != forRide)
+            {
+                auto rideEntry = ride.GetRideEntry();
+                if (rideEntry == nullptr)
+                {
+                    continue;
+                }
+                if (rideEntry->shop_item[0] == shopItem)
+                {
+                    return ride.price[0];
+                }
+                if (rideEntry->shop_item[1] == shopItem)
+                {
+                    return ride.price[1];
+                }
+                if (GetShopItemDescriptor(shopItem).IsPhoto() && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
+                {
+                    return ride.price[1];
+                }
+            }
+        }
 
-bool ShopItemDescriptor::IsFoodOrDrink() const
-{
-    return HasFlag(SHOP_ITEM_FLAG_IS_FOOD | SHOP_ITEM_FLAG_IS_DRINK);
-}
+        return MONEY32_UNDEFINED;
+    }
 
-bool ShopItemDescriptor::IsSouvenir() const
-{
-    return HasFlag(SHOP_ITEM_FLAG_IS_SOUVENIR);
-}
+    bool ShopItemHasCommonPrice(const ShopItem shopItem)
+    {
+        return (gSamePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
+    }
 
-bool ShopItemDescriptor::IsPhoto() const
-{
-    return HasFlag(SHOP_ITEM_FLAG_IS_PHOTO);
-}
+    bool ShopItemDescriptor::IsFood() const
+    {
+        return HasFlag(SHOP_ITEM_FLAG_IS_FOOD);
+    }
 
-bool ShopItemDescriptor::IsRecolourable() const
-{
-    return HasFlag(SHOP_ITEM_FLAG_IS_RECOLOURABLE);
-}
+    bool ShopItemDescriptor::IsDrink() const
+    {
+        return HasFlag(SHOP_ITEM_FLAG_IS_DRINK);
+    }
 
-const ShopItemDescriptor& GetShopItemDescriptor(const ShopItem item)
-{
-    return ShopItems[EnumValue(item)];
-}
+    bool ShopItemDescriptor::IsFoodOrDrink() const
+    {
+        return HasFlag(SHOP_ITEM_FLAG_IS_FOOD | SHOP_ITEM_FLAG_IS_DRINK);
+    }
+
+    bool ShopItemDescriptor::IsSouvenir() const
+    {
+        return HasFlag(SHOP_ITEM_FLAG_IS_SOUVENIR);
+    }
+
+    bool ShopItemDescriptor::IsPhoto() const
+    {
+        return HasFlag(SHOP_ITEM_FLAG_IS_PHOTO);
+    }
+
+    bool ShopItemDescriptor::IsRecolourable() const
+    {
+        return HasFlag(SHOP_ITEM_FLAG_IS_RECOLOURABLE);
+    }
+
+    const ShopItemDescriptor& GetShopItemDescriptor(const ShopItem item)
+    {
+        return ShopItems[EnumValue(item)];
+    }
+} // namespace OpenRCT2

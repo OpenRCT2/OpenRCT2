@@ -16,38 +16,40 @@
 #include <memory>
 #include <string>
 #include <vector>
-
-struct TrackDesignFileRef
-{
-    u8string name;
-    u8string path;
-};
-
 namespace OpenRCT2
 {
-    struct IPlatformEnvironment;
-}
+    struct TrackDesignFileRef
+    {
+        u8string name;
+        u8string path;
+    };
 
-struct ITrackDesignRepository
-{
-    virtual ~ITrackDesignRepository() = default;
+    namespace OpenRCT2
+    {
+        struct IPlatformEnvironment;
+    }
 
-    [[nodiscard]] virtual size_t GetCount() const abstract;
-    [[nodiscard]] virtual size_t GetCountForObjectEntry(ride_type_t rideType, const std::string& entry) const abstract;
-    [[nodiscard]] virtual std::vector<TrackDesignFileRef> GetItemsForObjectEntry(
-        ride_type_t rideType, const std::string& entry) const abstract;
+    struct ITrackDesignRepository
+    {
+        virtual ~ITrackDesignRepository() = default;
 
-    virtual void Scan(int32_t language) abstract;
-    virtual bool Delete(const std::string& path) abstract;
-    virtual std::string Rename(const std::string& path, const std::string& newName) abstract;
-    virtual std::string Install(const std::string& path, const std::string& name) abstract;
-};
+        [[nodiscard]] virtual size_t GetCount() const abstract;
+        [[nodiscard]] virtual size_t GetCountForObjectEntry(ride_type_t rideType, const std::string& entry) const abstract;
+        [[nodiscard]] virtual std::vector<TrackDesignFileRef> GetItemsForObjectEntry(
+            ride_type_t rideType, const std::string& entry) const abstract;
 
-[[nodiscard]] std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(
-    const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
-[[nodiscard]] std::string GetNameFromTrackPath(const std::string& path);
+        virtual void Scan(int32_t language) abstract;
+        virtual bool Delete(const std::string& path) abstract;
+        virtual std::string Rename(const std::string& path, const std::string& newName) abstract;
+        virtual std::string Install(const std::string& path, const std::string& name) abstract;
+    };
 
-void TrackRepositoryScan();
-bool TrackRepositoryDelete(const u8string& path);
-bool TrackRepositoryRename(const u8string& path, const u8string& newName);
-bool TrackRepositoryInstall(const u8string& srcPath, const u8string& name);
+    [[nodiscard]] std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(
+        const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+    [[nodiscard]] std::string GetNameFromTrackPath(const std::string& path);
+
+    void TrackRepositoryScan();
+    bool TrackRepositoryDelete(const u8string& path);
+    bool TrackRepositoryRename(const u8string& path, const u8string& newName);
+    bool TrackRepositoryInstall(const u8string& srcPath, const u8string& name);
+} // namespace OpenRCT2

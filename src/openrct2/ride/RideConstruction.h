@@ -16,81 +16,83 @@
 
 #include <cstdint>
 #include <optional>
-
-using track_type_t = uint16_t;
-
-struct TileElement;
-struct CoordsXYE;
-
-enum class RideConstructionState : uint8_t
+namespace OpenRCT2
 {
-    State0,
-    Front,
-    Back,
-    Selected,
-    Place,
-    EntranceExit,
-    MazeBuild,
-    MazeMove,
-    MazeFill
-};
+    using track_type_t = uint16_t;
 
-extern money32 _currentTrackPrice;
+    struct TileElement;
+    struct CoordsXYE;
 
-extern uint32_t _currentTrackCurve;
-extern RideConstructionState _rideConstructionState;
-extern RideId _currentRideIndex;
+    enum class RideConstructionState : uint8_t
+    {
+        State0,
+        Front,
+        Back,
+        Selected,
+        Place,
+        EntranceExit,
+        MazeBuild,
+        MazeMove,
+        MazeFill
+    };
 
-extern CoordsXYZ _currentTrackBegin;
+    extern money32 _currentTrackPrice;
 
-extern uint8_t _currentTrackPieceDirection;
-extern track_type_t _currentTrackPieceType;
-extern uint8_t _currentTrackSelectionFlags;
-extern uint32_t _rideConstructionNextArrowPulse;
-extern uint8_t _currentTrackSlopeEnd;
-extern uint8_t _currentTrackBankEnd;
-extern uint8_t _currentTrackLiftHill;
-extern uint8_t _currentTrackAlternative;
-extern track_type_t _selectedTrackType;
+    extern uint32_t _currentTrackCurve;
+    extern RideConstructionState _rideConstructionState;
+    extern RideId _currentRideIndex;
 
-extern uint8_t _previousTrackBankEnd;
-extern uint8_t _previousTrackSlopeEnd;
+    extern CoordsXYZ _currentTrackBegin;
 
-extern CoordsXYZ _previousTrackPiece;
+    extern uint8_t _currentTrackPieceDirection;
+    extern track_type_t _currentTrackPieceType;
+    extern uint8_t _currentTrackSelectionFlags;
+    extern uint32_t _rideConstructionNextArrowPulse;
+    extern uint8_t _currentTrackSlopeEnd;
+    extern uint8_t _currentTrackBankEnd;
+    extern uint8_t _currentTrackLiftHill;
+    extern uint8_t _currentTrackAlternative;
+    extern track_type_t _selectedTrackType;
 
-extern uint8_t _currentBrakeSpeed2;
-extern uint8_t _currentSeatRotationAngle;
+    extern uint8_t _previousTrackBankEnd;
+    extern uint8_t _previousTrackSlopeEnd;
 
-extern CoordsXYZD _unkF440C5;
+    extern CoordsXYZ _previousTrackPiece;
 
-extern uint8_t gRideEntranceExitPlaceType;
-extern RideId gRideEntranceExitPlaceRideIndex;
-extern StationIndex gRideEntranceExitPlaceStationIndex;
-extern RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
-extern uint8_t gRideEntranceExitPlaceDirection;
+    extern uint8_t _currentBrakeSpeed2;
+    extern uint8_t _currentSeatRotationAngle;
 
-std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
-    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
+    extern CoordsXYZD _unkF440C5;
 
-void RideEntranceExitPlaceProvisionalGhost();
-void RideEntranceExitRemoveGhost();
-void RideRestoreProvisionalTrackPiece();
-void RideRemoveProvisionalTrackPiece();
+    extern uint8_t gRideEntranceExitPlaceType;
+    extern RideId gRideEntranceExitPlaceRideIndex;
+    extern StationIndex gRideEntranceExitPlaceStationIndex;
+    extern RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
+    extern uint8_t gRideEntranceExitPlaceDirection;
 
-void RideConstructionRemoveGhosts();
+    std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
+        const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 
-void RideConstructionInvalidateCurrentTrack();
+    void RideEntranceExitPlaceProvisionalGhost();
+    void RideEntranceExitRemoveGhost();
+    void RideRestoreProvisionalTrackPiece();
+    void RideRemoveProvisionalTrackPiece();
 
-void RideConstructionSetDefaultNextPiece();
+    void RideConstructionRemoveGhosts();
 
-void RideSelectNextSection();
-void RideSelectPreviousSection();
+    void RideConstructionInvalidateCurrentTrack();
 
-bool RideModify(const CoordsXYE& input);
+    void RideConstructionSetDefaultNextPiece();
 
-CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords);
+    void RideSelectNextSection();
+    void RideSelectPreviousSection();
 
-bool RideSelectBackwardsFromFront();
-bool RideSelectForwardsFromBack();
+    bool RideModify(const CoordsXYE& input);
 
-void RideConstructionStart(Ride& ride);
+    CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords);
+
+    bool RideSelectBackwardsFromFront();
+    bool RideSelectForwardsFromBack();
+
+    void RideConstructionStart(Ride& ride);
+} // namespace OpenRCT2

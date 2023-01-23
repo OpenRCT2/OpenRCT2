@@ -10,10 +10,12 @@
 #pragma once
 
 #include <cstdint>
-
-struct TrackColour
+namespace OpenRCT2
 {
-    uint8_t main;
-    uint8_t additional;
-    uint8_t supports;
-};
+    struct TrackColour
+    {
+        uint8_t main;
+        uint8_t additional;
+        uint8_t supports;
+    };
+} // namespace OpenRCT2

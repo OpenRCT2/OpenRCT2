@@ -12,69 +12,71 @@
 
 #include <cstdint>
 #include <list>
-
-struct Vehicle;
-
-namespace TrainManager
+namespace OpenRCT2
 {
-    // Iteration of heads of trains
-    class View
-    {
-    private:
-        const std::list<EntityId>* vec;
+    struct Vehicle;
 
-        class Iterator
+    namespace TrainManager
+    {
+        // Iteration of heads of trains
+        class View
         {
         private:
-            std::list<EntityId>::const_iterator iter;
-            std::list<EntityId>::const_iterator end;
-            Vehicle* Entity = nullptr;
+            const std::list<EntityId>* vec;
+
+            class Iterator
+            {
+            private:
+                std::list<EntityId>::const_iterator iter;
+                std::list<EntityId>::const_iterator end;
+                Vehicle* Entity = nullptr;
+
+            public:
+                Iterator(std::list<EntityId>::const_iterator _iter, std::list<EntityId>::const_iterator _end)
+                    : iter(_iter)
+                    , end(_end)
+                {
+                    ++(*this);
+                }
+                Iterator& operator++();
+
+                Iterator operator++(int)
+                {
+                    Iterator retval = *this;
+                    ++(*this);
+                    return retval;
+                }
+                bool operator==(Iterator other) const
+                {
+                    return Entity == other.Entity;
+                }
+                bool operator!=(Iterator other) const
+                {
+                    return !(*this == other);
+                }
+                Vehicle* operator*()
+                {
+                    return Entity;
+                }
+                // iterator traits
+                using difference_type = std::ptrdiff_t;
+                using value_type = Vehicle;
+                using pointer = const Vehicle*;
+                using reference = const Vehicle&;
+                using iterator_category = std::forward_iterator_tag;
+            };
 
         public:
-            Iterator(std::list<EntityId>::const_iterator _iter, std::list<EntityId>::const_iterator _end)
-                : iter(_iter)
-                , end(_end)
-            {
-                ++(*this);
-            }
-            Iterator& operator++();
+            View();
 
-            Iterator operator++(int)
+            Iterator begin()
             {
-                Iterator retval = *this;
-                ++(*this);
-                return retval;
+                return Iterator(std::cbegin(*vec), std::cend(*vec));
             }
-            bool operator==(Iterator other) const
+            Iterator end()
             {
-                return Entity == other.Entity;
+                return Iterator(std::cend(*vec), std::cend(*vec));
             }
-            bool operator!=(Iterator other) const
-            {
-                return !(*this == other);
-            }
-            Vehicle* operator*()
-            {
-                return Entity;
-            }
-            // iterator traits
-            using difference_type = std::ptrdiff_t;
-            using value_type = Vehicle;
-            using pointer = const Vehicle*;
-            using reference = const Vehicle&;
-            using iterator_category = std::forward_iterator_tag;
         };
-
-    public:
-        View();
-
-        Iterator begin()
-        {
-            return Iterator(std::cbegin(*vec), std::cend(*vec));
-        }
-        Iterator end()
-        {
-            return Iterator(std::cend(*vec), std::cend(*vec));
-        }
-    };
-} // namespace TrainManager
+    } // namespace TrainManager
+} // namespace OpenRCT2

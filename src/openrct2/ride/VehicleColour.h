@@ -10,10 +10,12 @@
 #pragma once
 
 #include "../common.h"
-
-struct VehicleColour
+namespace OpenRCT2
 {
-    uint8_t Body;
-    uint8_t Trim;
-    uint8_t Tertiary;
-};
+    struct VehicleColour
+    {
+        uint8_t Body;
+        uint8_t Trim;
+        uint8_t Tertiary;
+    };
+} // namespace OpenRCT2

@@ -15,26 +15,28 @@
 #include <cstdint>
 #include <limits>
 #include <type_traits>
-
-struct Ride;
-
-using ride_type_t = uint16_t;
-
-/**
- * Couples a ride type and subtype together.
- */
-struct RideSelection
+namespace OpenRCT2
 {
-    ride_type_t Type;
-    ObjectEntryIndex EntryIndex;
+    struct Ride;
 
-    bool operator==(const RideSelection& other) const
-    {
-        return Type == other.Type && EntryIndex == other.EntryIndex;
-    }
+    using ride_type_t = uint16_t;
 
-    bool operator!=(const RideSelection& other) const
+    /**
+     * Couples a ride type and subtype together.
+     */
+    struct RideSelection
     {
-        return !(*this == other);
-    }
-};
+        ride_type_t Type;
+        ObjectEntryIndex EntryIndex;
+
+        bool operator==(const RideSelection& other) const
+        {
+            return Type == other.Type && EntryIndex == other.EntryIndex;
+        }
+
+        bool operator!=(const RideSelection& other) const
+        {
+            return !(*this == other);
+        }
+    };
+} // namespace OpenRCT2
