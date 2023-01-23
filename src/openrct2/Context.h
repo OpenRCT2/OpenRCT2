@@ -169,56 +169,55 @@ namespace OpenRCT2
         const std::shared_ptr<IPlatformEnvironment>& env, const std::shared_ptr<Audio::IAudioContext>& audioContext,
         const std::shared_ptr<Ui::IUiContext>& uiContext);
     [[nodiscard]] IContext* GetContext();
+
+    namespace
+    {
+        // The number of logical update / ticks per second.
+        constexpr uint32_t GAME_UPDATE_FPS = 40;
+        // The maximum amount of updates in case rendering is slower
+        constexpr uint32_t GAME_MAX_UPDATES = 4;
+        // The game update interval in milliseconds, (1000 / 40fps) = 25ms
+        constexpr float GAME_UPDATE_TIME_MS = 1.0f / GAME_UPDATE_FPS;
+        // The maximum threshold to advance.
+        constexpr float GAME_UPDATE_MAX_THRESHOLD = GAME_UPDATE_TIME_MS * GAME_MAX_UPDATES;
+    }; // namespace
+
+    constexpr float GAME_MIN_TIME_SCALE = 0.1f;
+    constexpr float GAME_MAX_TIME_SCALE = 5.0f;
+
+    void ContextInit();
+    void ContextSetCurrentCursor(CursorID cursor);
+    void ContextUpdateCursorScale();
+    void ContextHideCursor();
+    void ContextShowCursor();
+    ScreenCoordsXY ContextGetCursorPosition();
+    ScreenCoordsXY ContextGetCursorPositionScaled();
+    void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition);
+    const CursorState* ContextGetCursorState();
+    const uint8_t* ContextGetKeysState();
+    const uint8_t* ContextGetKeysPressed();
+    TextInputSession* ContextStartTextInput(utf8* buffer, size_t maxLength);
+    void ContextStopTextInput();
+    bool ContextIsInputActive();
+    void ContextTriggerResize();
+    void ContextSetFullscreenMode(int32_t mode);
+    void ContextRecreateWindow();
+    int32_t ContextGetWidth();
+    int32_t ContextGetHeight();
+    bool ContextHasFocus();
+    void ContextSetCursorTrap(bool value);
+    WindowBase* ContextOpenWindow(WindowClass wc);
+    WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
+    WindowBase* ContextOpenWindowView(uint8_t view);
+    WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args);
+    WindowBase* ContextOpenIntent(Intent* intent);
+    void ContextBroadcastIntent(Intent* intent);
+    void ContextForceCloseWindowByClass(WindowClass wc);
+    void ContextUpdateMapTooltip();
+    void ContextHandleInput();
+    void ContextInputHandleKeyboard(bool isTitle);
+    void ContextQuit();
+    bool ContextLoadParkFromStream(void* stream);
+    bool ContextOpenCommonFileDialog(utf8* outFilename, Ui::FileDialogDesc& desc, size_t outSize);
+    u8string ContextOpenCommonFileDialog(Ui::FileDialogDesc& desc);
 } // namespace OpenRCT2
-
-namespace
-{
-    // The number of logical update / ticks per second.
-    constexpr uint32_t GAME_UPDATE_FPS = 40;
-    // The maximum amount of updates in case rendering is slower
-    constexpr uint32_t GAME_MAX_UPDATES = 4;
-    // The game update interval in milliseconds, (1000 / 40fps) = 25ms
-    constexpr float GAME_UPDATE_TIME_MS = 1.0f / GAME_UPDATE_FPS;
-    // The maximum threshold to advance.
-    constexpr float GAME_UPDATE_MAX_THRESHOLD = GAME_UPDATE_TIME_MS * GAME_MAX_UPDATES;
-}; // namespace
-
-constexpr float GAME_MIN_TIME_SCALE = 0.1f;
-constexpr float GAME_MAX_TIME_SCALE = 5.0f;
-
-void ContextInit();
-void ContextSetCurrentCursor(CursorID cursor);
-void ContextUpdateCursorScale();
-void ContextHideCursor();
-void ContextShowCursor();
-ScreenCoordsXY ContextGetCursorPosition();
-ScreenCoordsXY ContextGetCursorPositionScaled();
-void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition);
-const CursorState* ContextGetCursorState();
-const uint8_t* ContextGetKeysState();
-const uint8_t* ContextGetKeysPressed();
-TextInputSession* ContextStartTextInput(utf8* buffer, size_t maxLength);
-void ContextStopTextInput();
-bool ContextIsInputActive();
-void ContextTriggerResize();
-void ContextSetFullscreenMode(int32_t mode);
-void ContextRecreateWindow();
-int32_t ContextGetWidth();
-int32_t ContextGetHeight();
-bool ContextHasFocus();
-void ContextSetCursorTrap(bool value);
-WindowBase* ContextOpenWindow(WindowClass wc);
-WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
-WindowBase* ContextOpenWindowView(uint8_t view);
-WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args);
-WindowBase* ContextOpenIntent(Intent* intent);
-void ContextBroadcastIntent(Intent* intent);
-void ContextForceCloseWindowByClass(WindowClass wc);
-void ContextUpdateMapTooltip();
-void ContextHandleInput();
-void ContextInputHandleKeyboard(bool isTitle);
-void ContextQuit();
-bool ContextLoadParkFromStream(void* stream);
-bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize);
-u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);
-}

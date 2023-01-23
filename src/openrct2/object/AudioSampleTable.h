@@ -25,7 +25,7 @@ namespace OpenRCT2
     private:
         struct Entry
         {
-            OpenRCT2::Audio::IAudioSource* Source{};
+            Audio::IAudioSource* Source{};
             std::optional<ObjectAsset> Asset;
             std::optional<uint32_t> PathIndex;
             int32_t Modifier{};
@@ -57,8 +57,8 @@ namespace OpenRCT2
         void Unload();
 
         size_t GetCount() const;
-        OpenRCT2::Audio::IAudioSource* GetSample(uint32_t index) const;
-        OpenRCT2::Audio::IAudioSource* LoadSample(uint32_t index) const;
+        Audio::IAudioSource* GetSample(uint32_t index) const;
+        Audio::IAudioSource* LoadSample(uint32_t index) const;
         int32_t GetSampleModifier(uint32_t index) const;
     };
 } // namespace OpenRCT2

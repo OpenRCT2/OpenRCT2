@@ -18,8 +18,8 @@ namespace OpenRCT2
     class DataSerialiser
     {
     private:
-        OpenRCT2::MemoryStream _stream;
-        OpenRCT2::IStream& _activeStream;
+        MemoryStream _stream;
+        IStream& _activeStream;
         bool _isSaving = false;
         bool _isLogging = false;
 
@@ -31,7 +31,7 @@ namespace OpenRCT2
         {
         }
 
-        DataSerialiser(bool isSaving, OpenRCT2::IStream& stream, bool isLogging = false)
+        DataSerialiser(bool isSaving, IStream& stream, bool isLogging = false)
             : _activeStream(stream)
             , _isSaving(isSaving)
             , _isLogging(isLogging)
@@ -53,7 +53,7 @@ namespace OpenRCT2
             return _isLogging;
         }
 
-        OpenRCT2::IStream& GetStream()
+        IStream& GetStream()
         {
             return _activeStream;
         }

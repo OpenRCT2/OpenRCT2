@@ -51,7 +51,7 @@ namespace OpenRCT2
         StringTable(const StringTable&) = delete;
         StringTable& operator=(const StringTable&) = delete;
 
-        void Read(IReadObjectContext* context, OpenRCT2::IStream* stream, ObjectStringID id);
+        void Read(IReadObjectContext* context, IStream* stream, ObjectStringID id);
         /**
          * @note root is deliberately left non-const: json_t behaviour changes when const
          */

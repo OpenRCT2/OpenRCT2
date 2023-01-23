@@ -110,7 +110,7 @@ namespace OpenRCT2
         return money * 10;
     }
 
-#define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
+#define MONEY16_UNDEFINED static_cast<money16>(static_cast<std::uint16_t>(0xFFFF))
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 #define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))
 
@@ -124,7 +124,7 @@ namespace OpenRCT2
         return value == MONEY16_UNDEFINED ? MONEY64_UNDEFINED : value;
     }
 
-    using StringId = uint16_t;
+    using StringId = std::uint16_t;
 
 #define SafeFree(x)                                                                                                            \
     do                                                                                                                         \

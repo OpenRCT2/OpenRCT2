@@ -18,7 +18,7 @@ namespace OpenRCT2
 {
     constexpr const uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
 
-    enum class FontStyle : uint8_t
+    enum class FontStyles : uint8_t
     {
         Small = 0,
         Medium = 1,
@@ -26,7 +26,7 @@ namespace OpenRCT2
     };
 
     constexpr const uint8_t FontStyleCount = 3;
-    constexpr const std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
+    constexpr const std::array<FontStyles, FontStyleCount> FontStyles = { FontStyles::Small, FontStyles::Medium, FontStyles::Tiny };
 
 #ifndef NO_TTF
 
@@ -55,11 +55,11 @@ namespace OpenRCT2
 
     void FontSpriteInitialiseCharacters();
     int32_t FontSpriteGetCodepointOffset(int32_t codepoint);
-    int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint);
-    ImageId FontSpriteGetCodepointSprite(FontStyle fontStyle, int32_t codepoint);
-    int32_t FontGetLineHeight(FontStyle fontStyle);
-    int32_t FontGetLineHeightSmall(FontStyle fontStyle);
+    int32_t FontSpriteGetCodepointWidth(FontStyles fontStyle, int32_t codepoint);
+    ImageId FontSpriteGetCodepointSprite(FontStyles fontStyle, int32_t codepoint);
+    int32_t FontGetLineHeight(FontStyles fontStyle);
+    int32_t FontGetLineHeightSmall(FontStyles fontStyle);
     bool FontSupportsStringSprite(const utf8* text);
-    bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle);
-    bool FontSupportsString(const utf8* text, FontStyle fontStyle);
+    bool FontSupportsStringTTF(const utf8* text, FontStyles fontStyle);
+    bool FontSupportsString(const utf8* text, FontStyles fontStyle);
 } // namespace OpenRCT2

@@ -41,7 +41,7 @@ namespace OpenRCT2
     struct TextPaint
     {
         colour_t Colour = COLOUR_BLACK;
-        ::FontStyle FontStyle = FontStyle::Medium;
+        FontStyles FontStyle = FontStyles::Medium;
         TextUnderline UnderlineText = TextUnderline::Off;
         TextAlignment Alignment = TextAlignment::LEFT;
         TextDarkness Darkness = TextDarkness::Regular;
@@ -51,8 +51,8 @@ namespace OpenRCT2
             : Colour(colour)
         {
         }
-        TextPaint(::FontStyle fontStyle)
-            : FontStyle(fontStyle)
+        TextPaint(FontStyles fontStyle)
+            : FontStyles(fontStyle)
         {
         }
         TextPaint(TextUnderline underlineText)
@@ -64,7 +64,7 @@ namespace OpenRCT2
         {
         }
 
-        TextPaint(colour_t colour, ::FontStyle fontStyle)
+        TextPaint(colour_t colour, FontStyles fontStyle)
             : Colour(colour)
             , FontStyle(fontStyle)
         {
@@ -80,12 +80,12 @@ namespace OpenRCT2
         {
         }
 
-        TextPaint(::FontStyle fontStyle, TextUnderline underlineText)
+        TextPaint(FontStyles fontStyle, TextUnderline underlineText)
             : FontStyle(fontStyle)
             , UnderlineText(underlineText)
         {
         }
-        TextPaint(::FontStyle fontStyle, TextAlignment alignment)
+        TextPaint(FontStyles fontStyle, TextAlignment alignment)
             : FontStyle(fontStyle)
             , Alignment(alignment)
         {
@@ -96,19 +96,19 @@ namespace OpenRCT2
         {
         }
 
-        TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText)
+        TextPaint(colour_t colour, FontStyles fontStyle, TextUnderline underlineText)
             : Colour(colour)
             , FontStyle(fontStyle)
             , UnderlineText(underlineText)
         {
         }
-        TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment)
+        TextPaint(colour_t colour, FontStyles fontStyle, TextAlignment alignment)
             : Colour(colour)
             , FontStyle(fontStyle)
             , Alignment(alignment)
         {
         }
-        TextPaint(colour_t colour, ::FontStyle fontStyle, TextDarkness darkness)
+        TextPaint(colour_t colour, FontStyles fontStyle, TextDarkness darkness)
             : Colour(colour)
             , FontStyle(fontStyle)
             , Darkness(darkness)
@@ -120,21 +120,21 @@ namespace OpenRCT2
             , Alignment(alignment)
         {
         }
-        TextPaint(::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
+        TextPaint(FontStyles fontStyle, TextUnderline underlineText, TextAlignment alignment)
             : FontStyle(fontStyle)
             , UnderlineText(underlineText)
             , Alignment(alignment)
         {
         }
 
-        TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
+        TextPaint(colour_t colour, FontStyles fontStyle, TextUnderline underlineText, TextAlignment alignment)
             : Colour(colour)
             , FontStyle(fontStyle)
             , UnderlineText(underlineText)
             , Alignment(alignment)
         {
         }
-        TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment, TextDarkness darkness)
+        TextPaint(colour_t colour, FontStyles fontStyle, TextAlignment alignment, TextDarkness darkness)
             : Colour(colour)
             , FontStyle(fontStyle)
             , Alignment(alignment)

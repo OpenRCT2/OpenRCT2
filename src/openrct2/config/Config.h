@@ -39,7 +39,7 @@ namespace OpenRCT2
         int32_t FullscreenWidth;
         int32_t FullscreenHeight;
         float WindowScale;
-        ::DrawingEngine DrawingEngine;
+        DrawingEngine DrawingEngine;
         bool UncapFPS;
         bool UseVSync;
         bool ShowFPS;
@@ -71,7 +71,7 @@ namespace OpenRCT2
 
         // Localisation
         int32_t Language;
-        ::MeasurementFormat MeasurementFormat;
+        MeasurementFormat MeasurementFormat;
         TemperatureUnit TemperatureFormat;
         bool ShowHeightAsUnits;
         int32_t DateFormat;

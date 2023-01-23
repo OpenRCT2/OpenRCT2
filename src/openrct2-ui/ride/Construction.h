@@ -10,5 +10,7 @@
 #pragma once
 
 #include <openrct2/ride/RideTypes.h>
-
-void RideConstructNew(RideSelection listItem);
+namespace OpenRCT2
+{
+    void RideConstructNew(RideSelection listItem);
+}

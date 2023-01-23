@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../drawing/Font.h"
+#include "../interface/FontFamilies.h"
 
 #include <string>
 #include <string_view>
@@ -69,8 +70,6 @@ namespace OpenRCT2
     };
 
 #define FONT_OPENRCT2_SPRITE NULL
-
-#include "../interface/FontFamilies.h"
 
     struct LanguageDescriptor
     {
