@@ -370,7 +370,6 @@ private:
 
         // Create list items with a separator between each group
         _list.clear();
-        size_t index = 0;
         std::string group;
         for (const auto* shortcut : shortcuts)
         {
@@ -395,7 +394,6 @@ private:
             ssp.CustomString = shortcut->CustomName;
             ssp.Binding = shortcut->GetDisplayString();
             _list.push_back(std::move(ssp));
-            index++;
         }
 
         Invalidate();
