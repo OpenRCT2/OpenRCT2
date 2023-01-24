@@ -178,35 +178,32 @@ void PaintStructDescriptor::Paint(
 
             if (ImageIdOffset != nullptr)
             {
-                if (ImageIdOffset->Entries != nullptr)
+                auto offset = ImageIdOffset->Entries.Get(key);
+                if (offset != nullptr)
                 {
-                    auto offset = ImageIdOffset->Entries->Get(key);
-                    if (offset != nullptr)
-                    {
-                        if (offset->size() > ImageIdOffsetIndex)
-                            imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
-                    }
+                    if (offset->size() > ImageIdOffsetIndex)
+                        imageIndex = imageIndex + (*offset)[ImageIdOffsetIndex];
+                }
                         
 
-                    if (BoundBoxTable != nullptr)
+                if (BoundBoxTable != nullptr)
+                {
+                    auto boundBoxes = BoundBoxTable->Values.Get(key);
+                    if (boundBoxes != nullptr)
                     {
-                        auto boundBoxes = BoundBoxTable->Values->Get(key);
-                        if (boundBoxes != nullptr)
+                        for (const auto& bb : *boundBoxes)
                         {
-                            for (const auto& bb : *boundBoxes)
-                            {
-                                auto Offset = bb->Coords;
-                                auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
-                                auto newBoundBox = bb->Boundbox;
-                                newBoundBox.offset.z += height;
+                            auto Offset = bb->Coords;
+                            auto newOffset = Offset + CoordsXYZ{ 0, 0, height };
+                            auto newBoundBox = bb->Boundbox;
+                            newBoundBox.offset.z += height;
 
-                                if (type == PaintType::AddImageAsParent)
-                                    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
-                                else if (type == PaintType::AddImageAsChild)
-                                    PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
-                            }
-
+                            if (type == PaintType::AddImageAsParent)
+                                PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
+                            else if (type == PaintType::AddImageAsChild)
+                                PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), newOffset, newBoundBox);
                         }
+
                     }
                 }
             }

@@ -27,7 +27,7 @@ struct TrackElement;
 class PaintObject final : public Object
 {
 private:
-    std::unique_ptr<PaintStructTree> _paintStructsTree;
+    PaintStructTree _paintStructsTree;
     std::map<std::string, HeightSupportsTable> _heightMapping;
     std::map<std::string, ImageIdOffset> _imageIdOffsetMapping;
     std::map<std::string, BoundBoxEntry> _boundBoxMapping;

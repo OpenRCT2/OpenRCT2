@@ -12,12 +12,11 @@ template<class KeyType> class KeyRange
 template<class KeyType> class KeyGenerator
 {
 public:
-    KeyGenerator(const KeyRange<KeyType>& keyRange)
-        : _keysRange(keyRange)
+    KeyGenerator()
     {
         std::fill(_fieldPresent.begin(), _fieldPresent.end(), false);
     }
-    void Initialize(const std::vector<KeyType>& keyDescs);
+    void Initialize(const std::vector<KeyType>& keyDescs, const KeyRange<KeyType>& keyRange);
 
     std::vector<uint32_t> GetParams(const KeyType& key) const;
     std::vector<KeyType> GenerateKeys(const KeyType& key) const;
@@ -25,12 +24,13 @@ private:
     using ElementsType = std::array<std::vector<uint32_t>, KeyType::NumArgs>;
     std::array<bool, KeyType::NumArgs> _fieldPresent;
 
-    const KeyRange<KeyType>& _keysRange;
+    const KeyRange<KeyType>* _keysRange;
 };
 
 template<class KeyType>
-void KeyGenerator<KeyType>::Initialize(const std::vector<KeyType>& keys)
+void KeyGenerator<KeyType>::Initialize(const std::vector<KeyType>& keys, const KeyRange<KeyType>& keyRange)
 {
+    _keysRange = &keyRange;
     for (auto& key : keys)
     {
         for (uint32_t index = 0; index < _fieldPresent.size(); index++)
@@ -50,7 +50,7 @@ std::vector<KeyType> KeyGenerator<KeyType>::GenerateKeys(const KeyType& keyDesc)
     {
         auto& values = elementValues[index];
         const auto& fieldPresent = _fieldPresent[index];
-        const auto& vector = _keysRange.Get(index);
+        const auto& vector = _keysRange->Get(index);
 
         const std::optional<uint32_t> arg = keyDesc.Get(index);
 

@@ -77,6 +77,9 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 {
                     if (boundBox.contains("values"))
                     {
+                        BoundBoxEntry entry;
+                        entry.Values.Initialize(_keyRange);
+
                         const auto& values = boundBox["values"];
                         using BoundBoxKeyValue = std::pair<PaintStructKey, std::shared_ptr<BoundBoxEntryValue>>;
 
@@ -150,10 +153,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                             PaintStructKey key;
                             key.FromJson(value);
 
-                            BoundBoxKeyValue keyValue;
-                            keyValue.first = key;
-                            keyValue.second = std::make_shared<BoundBoxEntryValue>(entryValue);
-                            keyValues.push_back(keyValue);
+                            entry.Values.Add(key, std::make_shared<BoundBoxEntryValue>(entryValue));
                         }
 
                         std::string id;
@@ -161,9 +161,8 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                         {
                             id = boundBox["id"];
                         }
-                        BoundBoxEntry entry;
                         entry.Id = id;
-                        entry.Values = std::make_shared<BoundBoxTree>(keyValues, _keyRange);
+                        entry.Values.Build();
 
                         _boundBoxMapping[id] = entry;
                     }
@@ -189,17 +188,19 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 offsetJson.FromJson(imageIdOffset);
                 offsetsJson.push_back(offsetJson);
 
+                ImageIdOffset offset;
+                offset.Id = offsetJson.Id;
+                offset.Entries.Initialize(_keyRange);
+
                 std::vector<ImageIdKeyValue> keyValues;
                 for (size_t index = 0; index < offsetJson.Keys.size(); index++)
                 {
                     const auto& key = offsetJson.Keys[index];
                     const auto& values = offsetJson.Values[index];
                     for (const auto& value : values)
-                        keyValues.push_back(ImageIdKeyValue(key, value));
+                        offset.Entries.Add(key, value);
                 }
-                ImageIdOffset offset;
-                offset.Id = offsetJson.Id;
-                offset.Entries = std::make_shared<ImageIdTree>(keyValues, _keyRange);
+                offset.Entries.Build();
                 _imageIdOffsetMapping[offset.Id] = offset;
             }
         }
@@ -220,6 +221,7 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         using PaintKeyValue = std::pair<PaintStructKey, std::shared_ptr<PaintStructDescriptor>>;
         std::vector<PaintKeyValue> paintKeyValues;
+        _paintStructsTree.Initialize(_keyRange);
         if (paintStructs.is_array())
         {
             for (const auto& paintStruct : paintStructs)
@@ -230,11 +232,11 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                 PaintStructKey key;
                 key.FromJson(paintStruct);
 
-                paintKeyValues.push_back(PaintKeyValue(key, std::make_shared<PaintStructDescriptor>(paintJson.Value())));
+                _paintStructsTree.Add(key, std::make_shared<PaintStructDescriptor>(paintJson.Value()));
                 
             }
         }
-        _paintStructsTree = std::make_unique<PaintStructTree>(paintKeyValues, _keyRange);
+        _paintStructsTree.Build();
     }
     catch (JsonException& e)
     {
@@ -291,7 +293,7 @@ void PaintObject::Paint(
 
     key.SessionCurrentRotation = session.CurrentRotation;
 
-    auto paintStructs = _paintStructsTree->Get(key);
+    auto paintStructs = _paintStructsTree.Get(key);
     if (paintStructs != nullptr)
     {
         for (const auto& paintStruct : *paintStructs)

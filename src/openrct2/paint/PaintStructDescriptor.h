@@ -110,14 +110,14 @@ using BoundBoxTree = TreeContainer<PaintStructKey, std::shared_ptr<BoundBoxEntry
 struct BoundBoxEntry
 {
     std::string Id;
-    std::shared_ptr<BoundBoxTree> Values;
+    BoundBoxTree Values;
 };
 
 using ImageIdTree = TreeContainer<PaintStructKey, uint32_t>;
 struct ImageIdOffset
 {
     std::string Id;
-    std::shared_ptr<ImageIdTree> Entries;
+    ImageIdTree Entries;
 
     ImageIdOffset()
     {

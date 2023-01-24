@@ -21,28 +21,23 @@ template<class KeyType, class ValueType>
 class TreeContainer : public Node<KeyType, ValueType>
 {
 public:
-    TreeContainer(const std::vector<std::pair<KeyType, ValueType>>& keyValues, const KeyRange<KeyType>& keyRange): _keyGenerator(keyRange)
+    TreeContainer()
     {
-        std::vector<KeyType> keys;
-        std::vector<ValueType> values;
-        for (const auto& keyValue : keyValues)
-        {
-            keys.push_back(keyValue.first);
-            values.push_back(keyValue.second);
-        }
-        _keyGenerator.Initialize(keys);
-
-        for (const auto& keyValue : keyValues)
-            Add(keyValue.first, keyValue.second);
     }
+    void Initialize(const KeyRange<KeyType>& keyRange);
     const std::vector<ValueType>* Get(const KeyType& location) const;
 
-private:
     void Add(const KeyType& location, const ValueType& value);
+    void Build();
+private:
 
     const std::vector<ValueType>* Get(const std::vector<uint32_t>& location) const;
     void Add(const std::vector<uint32_t>& location, const ValueType& value);
     KeyGenerator<KeyType> _keyGenerator;
+
+    const KeyRange<KeyType>* _keyRange;
+
+    std::vector<std::pair<KeyType, ValueType>> _keyValues;
 };
 
 template<class KeyType, class ValueType>
@@ -84,12 +79,7 @@ void TreeContainer<KeyType, ValueType>::Add(const std::vector<uint32_t>& locatio
 template<class KeyType, class ValueType>
 void TreeContainer<KeyType, ValueType>::Add(const KeyType& location, const ValueType& value)
 {
-    auto keys = _keyGenerator.GenerateKeys(location);
-    for (const auto& key : keys)
-    {
-        auto params = _keyGenerator.GetParams(key);
-        Add(params, value);
-    }
+    _keyValues.push_back(std::pair<KeyType, ValueType>(location, value));
 }
 
 template<class KeyType, class ValueType>
@@ -97,4 +87,33 @@ const std::vector<ValueType>* TreeContainer<KeyType, ValueType>::Get(
     const KeyType& location) const
 {
     return Get(_keyGenerator.GetParams(location));
+}
+
+template<class KeyType, class ValueType> void TreeContainer<KeyType, ValueType>::Initialize(const KeyRange<KeyType>& keyRange)
+{
+    _keyRange = &keyRange;
+}
+
+template<class KeyType, class ValueType> void TreeContainer<KeyType, ValueType>::Build()
+{
+    std::vector<KeyType> keys;
+    for (const auto& keyValue : _keyValues)
+        keys.push_back(keyValue.first);
+
+    _keyGenerator.Initialize(keys, *_keyRange);
+    for (const auto& keyValue : _keyValues)
+    {
+        const auto& key = keyValue.first;
+        const auto& value = keyValue.second;
+
+        auto keysGenerated = _keyGenerator.GenerateKeys(key);
+        for (const auto& aKey : keysGenerated)
+        {
+            auto params = _keyGenerator.GetParams(aKey);
+            Add(params, value);
+        }
+    }
+
+    //clear the keyvalues as we don't need them anymore
+    _keyValues.clear();
 }
