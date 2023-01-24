@@ -97,7 +97,6 @@ public:
         widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
 #endif
 
-        WidgetIndex i = 0;
         int32_t x = 0;
         for (Widget* widget = widgets; widget != &widgets[WIDX_NEW_VERSION]; widget++)
         {
@@ -108,7 +107,6 @@ public:
 
                 x += MenuButtonDims.width;
             }
-            i++;
         }
         width = x;
         widgets[WIDX_NEW_VERSION].right = width;
