@@ -3290,8 +3290,8 @@ STR_6133    :Accéder au décor et aux attractions qui ne sont pas encore invent
 STR_6134    :Effacer le décor
 STR_6135    :Le client a envoyé une requête invalide
 STR_6136    :Le serveur a envoyé une requête invalide
-STR_6137    :OpenRCT2, un clone gratuit et open source de RollerCoaster Tycoon 2.
-STR_6138    :OpenRCT2 est le fruit du travail de nombreux auteurs, une liste complète est disponible dans le fichier {SMALLFONT}contributors.md{MEDIUMFONT}. Pour plus d’informations, visitez {SMALLFONT}http://github.com/OpenRCT2/OpenRCT2{MEDIUMFONT}
+STR_6137    :OpenRCT2, une recréation et amélioration libre et open source de RollerCoaster Tycoon 2.
+STR_6138    :OpenRCT2 est le fruit du travail de nombreuses personnes, une liste complète est disponible via le bouton {SMALLFONT}Contributions{MEDIUMFONT}. Pour plus d’informations, visitez {SMALLFONT}http://github.com/OpenRCT2/OpenRCT2{MEDIUMFONT}
 STR_6139    :Tous les noms des produits et entreprises appartiennent à leurs propriétaires respectifs. L’utilisation de ces derniers n’implique pas d’affiliation ou d’approbation par eux.
 STR_6140    :Journal des changements…
 STR_6141    :Barre d’outils RCT1 du bas
@@ -3653,6 +3653,9 @@ STR_6538    :Affiche les allées normales dans le menu déroulant des files d’
 STR_6539    :Freins serrés
 STR_6540    :{WINDOW_COLOUR_2}Remerciements particuliers aux entreprises suivantes pour l’autorisation d’utilisation de leur image :
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Contributions
+STR_6543    :Contributions…
+STR_6544    :Un emprunt ne peut pas être négatif !
 
 #############
 # Scenarios #
