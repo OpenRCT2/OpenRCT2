@@ -2237,6 +2237,11 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                         }
                     }
 
+                    // Force set centre of tile to prevent issues with guests accidentally skipping the queue
+                    auto queueTileCentre = CoordsXY{ CoordsXY{ guest->NextLoc } + CoordsDirectionDelta[guest->PeepDirection] }
+                                               .ToTileCentre();
+                    guest->SetDestination(queueTileCentre);
+
                     PeepFootpathMoveForward(guest, { coords, tile_element }, vandalism_present);
                 }
                 else

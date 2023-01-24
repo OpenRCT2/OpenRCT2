@@ -7318,10 +7318,10 @@ bool Guest::UpdateQueuePosition(PeepActionType previous_action)
                 return false;
         }
 
-        if (sprite_direction != guestNext->sprite_direction)
+        if (PeepDirection != guestNext->PeepDirection)
             return false;
 
-        switch (guestNext->sprite_direction / 8)
+        switch (guestNext->PeepDirection)
         {
             case 0:
                 if (x >= guestNext->x)
