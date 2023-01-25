@@ -23,6 +23,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathItemEntry.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/SmallSceneryEntry.h"

@@ -19,6 +19,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/LargeScenery.h>

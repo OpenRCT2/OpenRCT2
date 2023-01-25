@@ -15,6 +15,7 @@
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/BannerObject.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"

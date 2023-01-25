@@ -53,7 +53,9 @@
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
+#include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
+#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/UiContext.h>
