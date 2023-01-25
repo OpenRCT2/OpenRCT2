@@ -221,7 +221,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         using PaintKeyValue = std::pair<PaintStructKey, std::shared_ptr<PaintStructDescriptor>>;
         std::vector<PaintKeyValue> paintKeyValues;
-        _paintStructsTree.Initialize(_keyRange);
         if (paintStructs.is_array())
         {
             for (const auto& paintStruct : paintStructs)
@@ -231,12 +230,13 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
                 PaintStructKey key;
                 key.FromJson(paintStruct);
+                _paintStructsJson.push_back(std::pair<PaintStructKey, PaintStructJson>(key, paintJson));
 
-                _paintStructsTree.Add(key, std::make_shared<PaintStructDescriptor>(paintJson.Value()));
+                //_paintStructsTree.Add(key, std::make_shared<PaintStructDescriptor>(paintJson.Value()));
                 
             }
         }
-        _paintStructsTree.Build();
+        //_paintStructsTree.Build();
     }
     catch (JsonException& e)
     {
@@ -246,6 +246,25 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 
 void PaintObject::Load()
 {
+    _paintStructsTree.Initialize(_keyRange);
+
+    for (const auto& keyValue : _paintStructsJson)
+    {
+        const auto& value = keyValue.second;
+        _paintStructs.push_back(value.Value());
+    }
+
+    for (size_t index = 0; index < _paintStructs.size(); index++)
+    {
+        const auto& key = _paintStructsJson.at(index).first;
+        auto& paintStruct = _paintStructs.at(index);
+        _paintStructsTree.Add(key, &paintStruct);
+
+    }
+
+    _paintStructsTree.Build();
+
+    _paintStructsJson.clear();
 }
 
 void PaintObject::Unload()

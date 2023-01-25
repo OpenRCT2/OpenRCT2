@@ -21,7 +21,7 @@
 #include <optional>
 #include <vector>
 
-using PaintStructTree = TreeContainer<PaintStructKey, std::shared_ptr<PaintStructDescriptor>>;
+using PaintStructTree = TreeContainer<PaintStructKey, PaintStructDescriptor*>;
 
 struct TrackElement;
 class PaintObject final : public Object
@@ -37,7 +37,8 @@ private:
 
     constexpr const uint8_t* GetTrackSequenceMapping(const uint32_t direction, const track_type_t trackElement) const;
 
-
+    std::vector<std::pair<PaintStructKey, PaintStructJson>> _paintStructsJson;
+    std::vector<PaintStructDescriptor> _paintStructs;
 
 public:
     PaintObject();
