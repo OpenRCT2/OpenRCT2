@@ -29,7 +29,6 @@
 - Fix: [#19112] Clearing the last character in the Object Selection filter does not properly reset it.
 - Fix: [#19114] [Plugin] GameActionResult does not comply to API specification.
 - Fix: [#19136] SV6 saves with experimental RCT1 paths not imported correctly.
-- Removed: [project#1] Snakes.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
