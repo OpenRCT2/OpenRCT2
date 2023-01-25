@@ -459,6 +459,10 @@ public:
                     gCurrentToolId = static_cast<Tool>(GetSmallSceneryEntry(tabSelectedScenery.EntryIndex)->tool_id);
                 }
             }
+            else
+            {
+                gCurrentToolId = Tool::Arrow;
+            }
         }
     }
 
