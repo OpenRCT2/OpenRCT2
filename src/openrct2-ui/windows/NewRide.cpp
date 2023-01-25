@@ -321,8 +321,8 @@ public:
 
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
-            window_update_textbox_caret();
-            widget_invalidate(*this, WIDX_FILTER_TEXT_BOX);
+            WindowUpdateTextboxCaret();
+            WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
         }
 
         if (new_ride.SelectedRide.Type != RIDE_TYPE_NULL && new_ride.selected_ride_countdown-- == 0)
@@ -364,7 +364,7 @@ public:
                 SetPage(_currentTab);
                 break;
             case WIDX_FILTER_TEXT_BOX:
-                window_start_textbox(*this, widgetIndex, STR_STRING, _filter.data(), MAX_PATH);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter.data(), MAX_PATH);
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
                 _filter.clear();
@@ -741,7 +741,7 @@ private:
         return nextListItem;
     }
 
-    bool IsFiltered(const rct_ride_entry& rideEntry)
+    bool IsFiltered(const RideObjectEntry& rideEntry)
     {
         if (_filter.empty())
             return true;
@@ -750,19 +750,19 @@ private:
             || IsFilterInAuthors(rideEntry) || IsFilterInFilename(rideEntry);
     }
 
-    bool IsFilterInRideType(const rct_ride_entry& rideEntry)
+    bool IsFilterInRideType(const RideObjectEntry& rideEntry)
     {
-        auto rideTypeName = get_ride_naming(rideEntry.ride_type[0], rideEntry).Name;
-        return String::Contains(std::string_view(language_get_string(rideTypeName)), _filter, true);
+        auto rideTypeName = GetRideNaming(rideEntry.ride_type[0], rideEntry).Name;
+        return String::Contains(std::string_view(LanguageGetString(rideTypeName)), _filter, true);
     }
 
-    bool IsFilterInRideName(const rct_ride_entry& rideEntry)
+    bool IsFilterInRideName(const RideObjectEntry& rideEntry)
     {
         auto rideName = rideEntry.naming.Name;
-        return String::Contains(std::string_view(language_get_string(rideName)), _filter, true);
+        return String::Contains(std::string_view(LanguageGetString(rideName)), _filter, true);
     }
 
-    bool IsFilterInAuthors(const rct_ride_entry& rideEntry)
+    bool IsFilterInAuthors(const RideObjectEntry& rideEntry)
     {
         auto rideObject = static_cast<RideObject*>(rideEntry.obj);
         auto authors = rideObject->GetAuthors();
@@ -774,7 +774,7 @@ private:
         return false;
     }
 
-    bool IsFilterInIdentifier(const rct_ride_entry& rideEntry)
+    bool IsFilterInIdentifier(const RideObjectEntry& rideEntry)
     {
         auto rideObject = static_cast<RideObject*>(rideEntry.obj);
         auto objectName = rideObject->GetObjectEntry().GetName();
@@ -782,10 +782,10 @@ private:
         return String::Contains(objectName, _filter, true);
     }
 
-    bool IsFilterInFilename(const rct_ride_entry& rideEntry)
+    bool IsFilterInFilename(const RideObjectEntry& rideEntry)
     {
         auto rideObject = static_cast<RideObject*>(rideEntry.obj);
-        auto repoItem = object_repository_find_object_by_entry(&(rideObject->GetObjectEntry()));
+        auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject->GetObjectEntry()));
 
         return String::Contains(repoItem->Path, _filter, true);
     }
