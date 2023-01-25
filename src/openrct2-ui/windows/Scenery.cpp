@@ -573,9 +573,11 @@ public:
             {
                 auto* sceneryEntry = GetLargeSceneryEntry(tabSelectedScenery.EntryIndex);
 
-                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR
+                    && !(sceneryEntry->flags & LARGE_SCENERY_FLAG_HIDE_PRIMARY_REMAP_BUTTON))
                     widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
-                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR
+                    && !(sceneryEntry->flags & LARGE_SCENERY_FLAG_HIDE_SECONDARY_REMAP_BUTTON))
                     widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
                 if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
                     widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
