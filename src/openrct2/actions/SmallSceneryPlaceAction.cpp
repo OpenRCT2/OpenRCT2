@@ -17,6 +17,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
 #include "../world/ConstructionClearance.h"
