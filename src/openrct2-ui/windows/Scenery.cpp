@@ -33,6 +33,8 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 
+using namespace OpenRCT2;
+
 static constexpr const StringId WINDOW_TITLE = STR_NONE;
 constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 180;
@@ -133,7 +135,7 @@ private:
             return ::GetSceneryGroupEntry(SceneryGroupIndex);
         }
     };
-    
+
     std::vector<SceneryTabInfo> _tabEntries;
     std::vector<Widget> _widgets;
     int32_t _requiredWidth;
@@ -148,7 +150,6 @@ public:
         Init();
 
         _filter.clear();
-
         InitScrollWidgets();
         ContentUpdateScroll();
         ShowGridlines();
@@ -934,7 +935,7 @@ private:
         if (sceneryItem.scenerySelection.IsUndefined())
         {
             rowSelected = 0;
-            if (_filteredScenery.size() > 0)
+            if (!_filteredScenery.empty())
             {
                 const auto& scenery = _filteredScenery[0];
                 if (!scenery.IsUndefined())
@@ -1060,38 +1061,39 @@ private:
 
     bool IsFiltered(const ScenerySelection& selection)
     {
-        auto empty = _filter.empty();
-        auto length = _filter.length();
-        if (empty || length == 0)
+        if (_filter.empty())
             return true;
 
         auto& objManager = GetContext()->GetObjectManager();
-        const Object* sceneryObject = objManager.GetLoadedObject();
-        return true;
+        auto sceneryObjectType = GetObjectTypeFromSceneryType(selection.SceneryType);
+        auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selection.EntryIndex);
+
+        return IsFilterInName(*sceneryObject) || IsFilterInAuthors(*sceneryObject) || IsFilterInIdentifier(*sceneryObject)
+            || IsFilterInFilename(*sceneryObject);
     }
 
-    bool IsFilterInName(const SceneryEntryBase& sceneryEntry)
+    bool IsFilterInName(const Object& object)
     {
-        return String::Contains(sceneryEntry.obj->GetName(), _filter, true);
+        return String::Contains(object.GetName(), _filter, true);
     }
 
-    bool IsFilterInAuthors(const SceneryEntryBase& sceneryEntry)
+    bool IsFilterInAuthors(const Object& object)
     {
-        for (auto author : sceneryEntry.obj->GetAuthors())
+        for (auto author : object.GetAuthors())
             if (String::Contains(author, _filter, true))
                 return true;
 
         return false;
     }
 
-    bool IsFilterInIdentifier(const SceneryEntryBase& sceneryEntry)
+    bool IsFilterInIdentifier(const Object& object)
     {
-        return String::Contains(sceneryEntry.obj->GetIdentifier(), _filter, true);
+        return String::Contains(object.GetIdentifier(), _filter, true);
     }
 
-    bool IsFilterInFilename(const SceneryEntryBase& sceneryEntry)
+    bool IsFilterInFilename(const Object& object)
     {
-        auto repoItem = ObjectRepositoryFindObjectByEntry(&(sceneryEntry.obj->GetObjectEntry()));
+        auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
         return String::Contains(repoItem->Path, _filter, true);
     }
 
