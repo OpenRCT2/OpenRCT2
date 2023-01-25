@@ -95,6 +95,10 @@ enum
     WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP,
     WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN,
     WIDX_SIMULATE,
+    WIDX_SPEED_GROUPBOX = WIDX_BANKING_GROUPBOX,
+    WIDX_SPEED_SETTING_SPINNER = WIDX_BANK_LEFT,
+    WIDX_SPEED_SETTING_SPINNER_UP = WIDX_BANK_STRAIGHT,
+    WIDX_SPEED_SETTING_SPINNER_DOWN = WIDX_BANK_RIGHT,
 };
 
 validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_CONSTRUCT);
@@ -1805,12 +1809,21 @@ public:
         widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
         widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
 
-        bool brakesSelected = _selectedTrackType == TrackElemType::Brakes
-            || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Brakes);
+        bool trackHasSpeedSetting = TrackTypeHasSpeedSetting(_selectedTrackType)
+            || TrackTypeHasSpeedSetting(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
         bool boosterTrackSelected = _selectedTrackType == TrackElemType::Booster
             || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster);
 
-        if (!brakesSelected && !boosterTrackSelected)
+        // Only necessary because TD6 writes speed and seat rotation to the same bits. Remove for new track design format.
+        bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::BlockBrakes
+            || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::BlockBrakes)
+            || _selectedTrackType > TrackElemType::HighestAlias
+            || _currentTrackCurve > (RideConstructionSpecialPieceSelected | TrackElemType::HighestAlias);
+
+        const auto& rtd = GetRideTypeDescriptor(rideType);
+        bool rideHasSeatRotation = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_SEAT_ROTATION);
+
+        if (!trackHasSpeedSetting)
         {
             if (IsTrackEnabled(TRACK_FLAT_ROLL_BANKING))
             {
@@ -1850,60 +1863,75 @@ public:
         }
         else
         {
-            if (brakesSelected)
+            if (!boosterTrackSelected)
             {
-                widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
-                widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
-                widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
-                widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+                widgets[WIDX_SPEED_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
+                widgets[WIDX_SPEED_SETTING_SPINNER].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+                widgets[WIDX_SPEED_SETTING_SPINNER_UP].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
             }
             else
             {
-                widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
-                widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
-                widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
-                widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
+                widgets[WIDX_SPEED_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
+                widgets[WIDX_SPEED_SETTING_SPINNER].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
+                widgets[WIDX_SPEED_SETTING_SPINNER_UP].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
+                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
             }
 
             _currentlyShowingBrakeOrBoosterSpeed = true;
-            widgets[WIDX_BANK_LEFT].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
+            widgets[WIDX_SPEED_SETTING_SPINNER].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
 
-            widgets[WIDX_BANK_LEFT].type = WindowWidgetType::Spinner;
-            widgets[WIDX_BANK_LEFT].left = 12;
-            widgets[WIDX_BANK_LEFT].right = 96;
-            widgets[WIDX_BANK_LEFT].top = 138;
-            widgets[WIDX_BANK_LEFT].bottom = 149;
-            widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::Button;
-            widgets[WIDX_BANK_STRAIGHT].text = STR_NUMERIC_UP;
-            widgets[WIDX_BANK_STRAIGHT].left = 84;
-            widgets[WIDX_BANK_STRAIGHT].right = 95;
-            widgets[WIDX_BANK_STRAIGHT].top = 139;
-            widgets[WIDX_BANK_STRAIGHT].bottom = 148;
-            widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::Button;
-            widgets[WIDX_BANK_RIGHT].text = STR_NUMERIC_DOWN;
-            widgets[WIDX_BANK_RIGHT].left = 72;
-            widgets[WIDX_BANK_RIGHT].right = 83;
-            widgets[WIDX_BANK_RIGHT].top = 139;
-            widgets[WIDX_BANK_RIGHT].bottom = 148;
-            hold_down_widgets |= (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT);
+            widgets[WIDX_SPEED_SETTING_SPINNER].type = WindowWidgetType::Spinner;
+            widgets[WIDX_SPEED_SETTING_SPINNER].left = 12;
+            widgets[WIDX_SPEED_SETTING_SPINNER].right = 96;
+            widgets[WIDX_SPEED_SETTING_SPINNER].top = 138;
+            widgets[WIDX_SPEED_SETTING_SPINNER].bottom = 149;
+            widgets[WIDX_SPEED_SETTING_SPINNER_UP].type = WindowWidgetType::Button;
+            widgets[WIDX_SPEED_SETTING_SPINNER_UP].text = STR_NUMERIC_UP;
+            widgets[WIDX_SPEED_SETTING_SPINNER_UP].left = 84;
+            widgets[WIDX_SPEED_SETTING_SPINNER_UP].right = 95;
+            widgets[WIDX_SPEED_SETTING_SPINNER_UP].top = 139;
+            widgets[WIDX_SPEED_SETTING_SPINNER_UP].bottom = 148;
+            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].type = WindowWidgetType::Button;
+            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].text = STR_NUMERIC_DOWN;
+            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].left = 72;
+            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].right = 83;
+            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].top = 139;
+            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].bottom = 148;
+            hold_down_widgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
         }
 
-        widgets[WIDX_BANKING_GROUPBOX].right = 162;
+        static constexpr const int16_t bankingGroupboxRightNoSeatRotation = 162;
+        static constexpr const int16_t bankingGroupboxRightWithSeatRotation = 92;
+
+        widgets[WIDX_BANKING_GROUPBOX].right = bankingGroupboxRightNoSeatRotation;
         widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Empty;
         widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Empty;
         widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Empty;
         widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Empty;
 
-        const auto& rtd = GetRideTypeDescriptor(rideType);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_SEAT_ROTATION) && _selectedTrackType != TrackElemType::Brakes
-            && _currentTrackCurve != (RideConstructionSpecialPieceSelected | TrackElemType::Brakes))
+        // Simplify this condition to "rideHasSeatRotation" for new track design format
+        if ((rideHasSeatRotation && !trackHasSpeedSetting)
+            || (rideHasSeatRotation && trackHasSpeedSetting && trackHasSpeedAndSeatRotation))
         {
             widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Groupbox;
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Spinner;
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Button;
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Button;
-            widgets[WIDX_BANKING_GROUPBOX].right = 92;
-            if (widgets[WIDX_BANK_LEFT].type != WindowWidgetType::Spinner)
+            widgets[WIDX_BANKING_GROUPBOX].right = bankingGroupboxRightWithSeatRotation;
+
+            // squishes the track speed spinner slightly to make room for the seat rotation widgets
+            if (trackHasSpeedSetting)
+            {
+                widgets[WIDX_SPEED_SETTING_SPINNER].left -= 4;
+                widgets[WIDX_SPEED_SETTING_SPINNER].right -= 8;
+                widgets[WIDX_SPEED_SETTING_SPINNER_UP].right -= 8;
+                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].right -= 8;
+                widgets[WIDX_SPEED_SETTING_SPINNER_UP].left -= 8;
+                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].left -= 8;
+            }
+            // moves banking buttons to the left to make room for the seat rotation widgets
+            else if (IsTrackEnabled(TRACK_FLAT_ROLL_BANKING))
             {
                 for (int32_t i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++)
                 {

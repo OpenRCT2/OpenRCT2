@@ -18,6 +18,7 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/WallSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"

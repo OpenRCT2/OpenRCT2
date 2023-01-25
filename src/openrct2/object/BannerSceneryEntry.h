@@ -10,14 +10,20 @@
 #pragma once
 
 #include "../common.h"
-#include "Map.h"
-#include "Scenery.h"
 
-struct SmallSceneryEntry;
+using ObjectEntryIndex = uint16_t;
 
 enum
 {
-    MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
+    BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
 };
 
-SmallSceneryEntry* GetSmallSceneryEntry(ObjectEntryIndex entryIndex);
+struct BannerSceneryEntry
+{
+    StringId name;
+    uint32_t image;
+    uint8_t scrolling_mode;
+    uint8_t flags;
+    int16_t price;
+    ObjectEntryIndex scenery_tab_id;
+};

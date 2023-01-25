@@ -22,6 +22,7 @@
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/FootpathItemEntry.h"
 #include "../../object/FootpathObject.h"
 #include "../../object/FootpathRailingsObject.h"
 #include "../../object/FootpathSurfaceObject.h"

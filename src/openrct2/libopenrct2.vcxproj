@@ -295,8 +295,10 @@
     <ClInclude Include="object\AudioObject.h" />
     <ClInclude Include="object\AudioSampleTable.h" />
     <ClInclude Include="object\BannerObject.h" />
+    <ClInclude Include="object\BannerSceneryEntry.h" />
     <ClInclude Include="object\DefaultObjects.h" />
     <ClInclude Include="object\EntranceObject.h" />
+    <ClInclude Include="object\FootpathItemEntry.h" />
     <ClInclude Include="object\FootpathItemObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
     <ClInclude Include="object\FootpathRailingsObject.h" />
@@ -315,11 +317,13 @@
     <ClInclude Include="object\RideObject.h" />
     <ClInclude Include="object\SceneryGroupObject.h" />
     <ClInclude Include="object\SceneryObject.h" />
+    <ClInclude Include="object\SmallSceneryEntry.h" />
     <ClInclude Include="object\SmallSceneryObject.h" />
     <ClInclude Include="object\StationObject.h" />
     <ClInclude Include="object\StringTable.h" />
     <ClInclude Include="object\TerrainEdgeObject.h" />
     <ClInclude Include="object\TerrainSurfaceObject.h" />
+    <ClInclude Include="object\WallSceneryEntry.h" />
     <ClInclude Include="object\WallObject.h" />
     <ClInclude Include="object\WaterObject.h" />
     <ClInclude Include="OpenRCT2.h" />

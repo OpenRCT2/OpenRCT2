@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../world/Scenery.h"
+#include "FootpathItemEntry.h"
 #include "SceneryObject.h"
 
 class FootpathItemObject final : public SceneryObject

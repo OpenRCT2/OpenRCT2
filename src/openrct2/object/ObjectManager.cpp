@@ -18,6 +18,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
 #include "../util/Util.h"
+#include "BannerSceneryEntry.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"

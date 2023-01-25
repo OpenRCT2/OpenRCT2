@@ -20,7 +20,11 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/network.h>
+#include <openrct2/object/BannerSceneryEntry.h>
+#include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/ObjectList.h>
+#include <openrct2/object/SmallSceneryEntry.h>
+#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/sprites.h>

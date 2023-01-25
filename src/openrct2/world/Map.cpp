@@ -28,6 +28,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/ObjectManager.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../profiling/Profiling.h"
 #include "../ride/RideConstruction.h"
