@@ -234,6 +234,8 @@ declare global {
          */
         getTrackSegment(type: number): TrackSegment | null;
 
+        getAllTrackSegments(): TrackSegment[];
+
         /**
          * Gets the image number for the given icon.
          * @param iconName The name of the icon.
@@ -1953,9 +1955,24 @@ declare global {
         readonly description: string;
 
         /**
-         * The relative starting Z position.
+         * The relative starting Z position from the base of the first track sequence block.
          */
         readonly beginZ: number;
+
+        /**
+         * The relative ending Z position from the base of the first track sequence block.
+         */
+        readonly endZ: number;
+
+        /**
+         * The relative ending X position. BeginX is always 0.
+         */
+        readonly endX: number;
+
+        /**
+         * The relative ending Y position. BeginY is always 0.
+         */
+        readonly endY: number;
 
         /**
         * The relative starting direction. Usually 0, but will be 4
@@ -1964,9 +1981,19 @@ declare global {
         readonly beginDirection: Direction8;
 
         /**
+         * The relative ending direction.
+         */
+        readonly endDirection: Direction8;
+
+        /**
          * The slope angle the segment starts with.
          */
-        readonly beginAngle: TrackSlope;
+        readonly beginSlope: TrackSlope;
+
+        /**
+         * The slope angle the segment ends with.
+         */
+        readonly endSlope: TrackSlope;
 
         /**
          * The kind of banking the segment starts with.
@@ -1974,41 +2001,12 @@ declare global {
         readonly beginBank: TrackBanking;
 
         /**
-         * The relative ending X position.
-         */
-        readonly endX: number;
-
-        /**
-         * The relative ending Y position.
-         */
-        readonly endY: number;
-
-        /**
-         * The relative ending Z position. Negative numbers indicate
-         * that the track ends upside down.
-         */
-        readonly endZ: number;
-
-        /**
-         * The relative ending direction.
-         */
-        readonly endDirection: Direction8;
-
-
-        /**
-         * The slope angle the segment ends with.
-         */
-        readonly endAngle: TrackSlope;
-
-        /**
          * The kind of banking the segment ends with.
          */
         readonly endBank: TrackBanking;
 
         /**
-         * The length of the segment in RCT track length units.
-         *
-         * *1 metre = 1 / (2 ^ 16)*
+         * The rough length of the segment.
          */
         readonly length: number;
 
@@ -2017,6 +2015,97 @@ declare global {
          */
         readonly elements: TrackSegmentElement[];
 
+        /**
+         * The curve direction of the suggested following piece, or track segment if it is specified.
+         */
+        readonly nextSuggestedSegment: TrackCurveType | number;
+
+        /**
+         * The curve direction of the suggested preceding piece, or track segment if it is specified.
+         */
+        readonly previousSuggestedSegment: TrackCurveType | number;
+
+        /**
+         * The base price of the track segment.
+         */
+        readonly priceModifier: number;
+
+        /**
+         * Track segment representing the mirror image of the track segment.
+         */
+        readonly mirrorSegment: number | null;
+
+        /**
+         * Track segment representing the covered/flume variant of the track segment.
+         */
+        readonly alternateTypeSegment: number | null;
+
+        /**
+         * The group the track element belongs to. Ride types allow or disallow track groups to limit the
+         * buildable track segments.
+         */
+        readonly trackGroup: number;
+
+        /**
+         * Which direction the track curves towards.
+         */
+        readonly turnDirection: TrackCurveType;
+
+        /**
+         * Which direction the track slopes towards.
+         */
+        readonly slopeDirection: TrackSlopeType;
+
+        readonly onlyAllowedUnderwater: boolean;
+        readonly onlyAllowedAboveGround: boolean;
+        readonly allowsChainLift: boolean;
+
+        /**
+         * The track segment counts as banked for vehicles with "no banked track" behaviour.
+         */
+        readonly isBanked: boolean;
+
+        /**
+         * The track segment counts as an inversion for vehicles with "no inversions" behaviour.
+         */
+        readonly isInversion: boolean;
+
+        /**
+         * Pevents steep forward chainlifts but allows steep reverse chainlifts for reverse incline
+         * shuttle mode for ride types which do not normally allow steep chainlifts.
+         */
+        readonly isSteepUp: boolean;
+
+        /**
+         * The track segment begins one height unit above normal track height units.
+         */
+        readonly startsHalfHeightUp: boolean;
+
+        /**
+         * The track segment adds to golf hole counter.
+         */
+        readonly countsAsGolfHole: boolean;
+
+        /**
+         * The track segment adds to banked turn counter.
+         */
+        readonly isBankedTurn: boolean;
+
+        /**
+         * The track segment adds to sloped turn counter.
+         */
+        readonly isSlopedTurn: boolean;
+
+        /**
+         * The track segment adds to helix counter.
+         */
+        readonly isHelix: boolean;
+
+        /**
+         * The track segment adds to inversion counter. Usually applied to the first half of inversions.
+         */
+        readonly countsAsInversion: boolean;
+        
         /**
          * Gets a length of the subpositions list for this track segment.
          */
@@ -2045,6 +2134,9 @@ declare global {
         Right = 4,
         UpsideDown = 15
     }
+
+    type TrackCurveType = "straight" | "left" | "right";
+    type TrackSlopeType = "flat" | "up" | "down";
 
     interface TrackSegmentElement extends Readonly<CoordsXYZ> {
     }
