@@ -934,6 +934,7 @@ private:
         auto rowSelected = CountRows(sceneryItem.selected_item);
         if (sceneryItem.scenerySelection.IsUndefined())
         {
+            SetSelectedScenery(tabIndex, ScenerySelection());
             rowSelected = 0;
             if (!_filteredScenery.empty())
             {
