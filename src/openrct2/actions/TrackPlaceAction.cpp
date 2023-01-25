@@ -441,6 +441,8 @@ GameActions::Result TrackPlaceAction::Execute() const
     money32 costs = 0;
     money64 supportCosts = 0;
     const PreviewTrack* trackBlock = ted.Block;
+    CoordsXYZ originLocation = CoordsXYZ{ _origin.x, _origin.y, _origin.z }
+        + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
@@ -524,60 +526,6 @@ GameActions::Result TrackPlaceAction::Execute() const
         }
 
         supportCosts += (supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
-
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
-        {
-            InvalidateTestResults(*ride);
-            switch (_trackType)
-            {
-                case TrackElemType::OnRidePhoto:
-                    ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
-                    break;
-                case TrackElemType::CableLiftHill:
-                    if (trackBlock->index != 0)
-                        break;
-                    ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
-                    ride->CableLiftLoc = mapLoc;
-                    break;
-                case TrackElemType::BlockBrakes:
-                {
-                    ride->num_block_brakes++;
-                    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
-
-                    // change the current mode to its circuit blocked equivalent
-                    RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
-                    if (ride->mode == RideMode::PoweredLaunch)
-                    {
-                        if (ride->GetRideTypeDescriptor().SupportsRideMode(RideMode::PoweredLaunchBlockSectioned)
-                            || gCheatsShowAllOperatingModes)
-                            newMode = RideMode::PoweredLaunchBlockSectioned;
-                        else
-                            newMode = RideMode::PoweredLaunch;
-                    }
-
-                    auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
-                    GameActions::ExecuteNested(&rideSetSetting);
-                    break;
-                }
-            }
-
-            if (trackBlock->index == 0)
-            {
-                switch (_trackType)
-                {
-                    case TrackElemType::Up25ToFlat:
-                    case TrackElemType::Up60ToFlat:
-                    case TrackElemType::DiagUp25ToFlat:
-                    case TrackElemType::DiagUp60ToFlat:
-                        if (!(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED))
-                            break;
-                        [[fallthrough]];
-                    case TrackElemType::CableLiftHill:
-                        ride->num_block_brakes++;
-                        break;
-                }
-            }
-        }
 
         int32_t entranceDirections = 0;
         if (!ride->overall_view.IsNull())
@@ -699,6 +647,56 @@ GameActions::Result TrackPlaceAction::Execute() const
             FootpathConnectEdges(mapLoc, tileElement, GetFlags());
         }
         MapInvalidateTileFull(mapLoc);
+    }
+
+    // Update ride stats and block brake count if the piece was successfully built
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    {
+        InvalidateTestResults(*ride);
+        switch (_trackType)
+        {
+            case TrackElemType::OnRidePhoto:
+                ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+                break;
+            case TrackElemType::CableLiftHill:
+                ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
+                ride->CableLiftLoc = originLocation;
+                break;
+            case TrackElemType::BlockBrakes:
+            {
+                ride->num_block_brakes++;
+                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
+
+                // change the current mode to its circuit blocked equivalent
+                RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
+                if (ride->mode == RideMode::PoweredLaunch)
+                {
+                    if (ride->GetRideTypeDescriptor().SupportsRideMode(RideMode::PoweredLaunchBlockSectioned)
+                        || gCheatsShowAllOperatingModes)
+                        newMode = RideMode::PoweredLaunchBlockSectioned;
+                    else
+                        newMode = RideMode::PoweredLaunch;
+                }
+
+                auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                GameActions::ExecuteNested(&rideSetSetting);
+                break;
+            }
+        }
+
+        switch (_trackType)
+        {
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+            case TrackElemType::DiagUp25ToFlat:
+            case TrackElemType::DiagUp60ToFlat:
+                if (!(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED))
+                    break;
+                [[fallthrough]];
+            case TrackElemType::CableLiftHill:
+                ride->num_block_brakes++;
+                break;
+        }
     }
 
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
