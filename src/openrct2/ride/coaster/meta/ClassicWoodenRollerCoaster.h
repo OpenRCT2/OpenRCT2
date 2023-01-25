@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
    SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
    SET_FIELD(Heights, { 41, 24, 8, 11, }),
    SET_FIELD(MaxMass, 19),
-   SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftWood, 5, 7 }),
+   SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftWood, 3, 5 }),
    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateClassicWoodenRollerCoaster),
    SET_FIELD(RatingsMultipliers, { 52, 33, 4 }),
    SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),

@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/IStream.hpp"
-#include "../world/Scenery.h"
+#include "BannerSceneryEntry.h"
 #include "SceneryObject.h"
 
 class BannerObject final : public SceneryObject

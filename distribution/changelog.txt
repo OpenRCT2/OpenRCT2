@@ -4,6 +4,8 @@
 - Feature: [#18732] [Plugin] API to get the guests thoughts.
 - Feature: [#18744] Cheat to allow using a regular path as a queue path.
 - Feature: [#19023] Add Canadian French translation.
+- Feature: [objects#226] Port RCT1 Corkscrew Coaster train.
+- Feature: [objects#229] Port RCT1 go karts with helmets.
 - Improved: [#11473] Hot reload for plug-ins now works on macOS.
 - Improved: [#18706] Ability to view the list of contributors in-game.
 - Improved: [#18749] Ability to have 4 active awards for more than one month in a row.
@@ -12,9 +14,12 @@
 - Improved: [#18970] Trying to load a non-park save will now display a context error.
 - Improved: [#18975] Add lift sprites for 60 steep hills on the wooden roller coaster.
 - Improved: [#19044] Added special thanks to RMC and Wiegand to the About page.
+- Improved: [#19131] Track missing objects when selecting scenery groups in console.
+- Improved: [#19253] Queue junctions drawn properly when using regular paths as queue.
 - Improved: [#19067] New Ride window now allows filtering similarly to Object Selection.
 - Change: [#19018] Renamed actions to fit the naming scheme.
 - Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
+- Change: [#19233] Reduce lift speed minimum and maximum values for “Classic Wooden Coaster”.
 - Fix: [#474] Mini golf window shows more players than there actually are (original bug).
 - Fix: [#18467] “Selected only” Object Selection filter is active in Track Designs Manager, and cannot be toggled.
 - Fix: [#18905] Ride Construction window theme is not applied correctly.

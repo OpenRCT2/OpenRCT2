@@ -98,75 +98,6 @@ enum LARGE_SCENERY_FLAGS
     LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR = (1 << 6),  // 0x40
 };
 
-enum WALL_SCENERY_FLAGS
-{
-    WALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 0),   // 0x1
-    WALL_SCENERY_HAS_GLASS = (1 << 1),            // 0x2
-    WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),  // 0x4
-    WALL_SCENERY_IS_DOUBLE_SIDED = (1 << 3),      // 0x8
-    WALL_SCENERY_IS_DOOR = (1 << 4),              // 0x10
-    WALL_SCENERY_LONG_DOOR_ANIMATION = (1 << 5),  // 0x20
-    WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6), // 0x40
-    WALL_SCENERY_HAS_TERTIARY_COLOUR = (1 << 7),  // 0x80
-};
-
-enum WALL_SCENERY_2_FLAGS
-{
-    WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR = (1 << 0), // 0x1
-    WALL_SCENERY_2_DOOR_SOUND_MASK = 0x6,
-    WALL_SCENERY_2_DOOR_SOUND_SHIFT = 1,
-    WALL_SCENERY_2_IS_OPAQUE = (1 << 3), // 0x8
-    WALL_SCENERY_2_ANIMATED = (1 << 4),  // 0x10
-};
-
-struct SmallSceneryEntry : SceneryEntryBase
-{
-    uint32_t flags;
-    uint8_t height;
-    CursorID tool_id;
-    money32 price;
-    money32 removal_price;
-    uint8_t* frame_offsets;
-    uint16_t animation_delay;
-    uint16_t animation_mask;
-    uint16_t num_frames;
-    ObjectEntryIndex scenery_tab_id;
-
-    constexpr bool HasFlag(const uint32_t _flags) const
-    {
-        return (flags & _flags) != 0;
-    }
-};
-
-struct WallSceneryEntry : SceneryEntryBase
-{
-    CursorID tool_id;
-    uint8_t flags;
-    uint8_t height;
-    uint8_t flags2;
-    money16 price;
-    ObjectEntryIndex scenery_tab_id;
-    uint8_t scrolling_mode;
-};
-enum class PathBitDrawType : uint8_t;
-
-struct PathBitEntry : SceneryEntryBase
-{
-    uint16_t flags;
-    PathBitDrawType draw_type;
-    CursorID tool_id;
-    money16 price;
-    ObjectEntryIndex scenery_tab_id;
-};
-
-struct BannerSceneryEntry : SceneryEntryBase
-{
-    uint8_t scrolling_mode;
-    uint8_t flags;
-    int16_t price;
-    ObjectEntryIndex scenery_tab_id;
-};
-
 #pragma pack(pop)
 
 struct LargeSceneryText
@@ -196,27 +127,6 @@ struct SceneryGroupEntry
 
 enum
 {
-    PATH_BIT_FLAG_IS_BIN = 1 << 0,
-    PATH_BIT_FLAG_IS_BENCH = 1 << 1,
-    PATH_BIT_FLAG_BREAKABLE = 1 << 2,
-    PATH_BIT_FLAG_LAMP = 1 << 3,
-    PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER = 1 << 4,
-    PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW = 1 << 5,
-    PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE = 1 << 6,
-    PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE = 1 << 7,
-    PATH_BIT_FLAG_IS_QUEUE_SCREEN = 1 << 8
-};
-
-enum class PathBitDrawType : uint8_t
-{
-    Light,
-    Bin,
-    Bench,
-    JumpingFountain,
-};
-
-enum
-{
     SCENERY_TYPE_SMALL,
     SCENERY_TYPE_PATH_ITEM,
     SCENERY_TYPE_WALL,
@@ -233,11 +143,6 @@ enum
     SCENERY_GHOST_FLAG_2 = (1 << SCENERY_TYPE_WALL),
     SCENERY_GHOST_FLAG_3 = (1 << SCENERY_TYPE_LARGE),
     SCENERY_GHOST_FLAG_4 = (1 << SCENERY_TYPE_BANNER)
-};
-
-enum
-{
-    BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
 };
 
 enum class ScatterToolDensity : uint8_t
@@ -275,6 +180,8 @@ void SceneryInit();
 void SceneryUpdateTile(const CoordsXY& sceneryPos);
 void ScenerySetDefaultPlacementConfiguration();
 void SceneryRemoveGhostToolPlacement();
+
+struct WallSceneryEntry;
 
 WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex);
 BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex);
