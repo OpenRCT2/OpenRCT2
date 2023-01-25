@@ -113,9 +113,9 @@ static void PaintMotionSimulator(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_SUPPORTS], height,
         fenceSpritesRope, session.CurrentRotation);
 
@@ -140,7 +140,7 @@ static void PaintMotionSimulator(
  *
  *  rct2: 0x00763520
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMotionsimulator(int32_t trackType)
 {
     switch (trackType)
     {

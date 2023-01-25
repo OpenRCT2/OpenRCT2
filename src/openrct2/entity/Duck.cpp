@@ -153,7 +153,7 @@ void Duck::UpdateSwim()
     if (((gCurrentTicks + sprite_index.ToUnderlying()) & 3) != 0)
         return;
 
-    uint32_t randomNumber = scenario_rand();
+    uint32_t randomNumber = ScenarioRand();
     if ((randomNumber & 0xFFFF) < 0x666)
     {
         if (randomNumber & 0x80000000)
@@ -171,7 +171,7 @@ void Duck::UpdateSwim()
     }
     else
     {
-        int32_t currentMonth = date_get_month(gDateMonthsElapsed);
+        int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
         if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
         {
             state = DuckState::FlyAway;
@@ -191,7 +191,7 @@ void Duck::UpdateSwim()
             else
             {
                 z = waterZ;
-                randomNumber = scenario_rand();
+                randomNumber = ScenarioRand();
                 if ((randomNumber & 0xFFFF) <= 0xAAA)
                 {
                     randomNumber >>= 16;
@@ -290,7 +290,7 @@ void Duck::Create(const CoordsXY& pos)
 
     CoordsXY targetPos = pos;
 
-    int32_t offsetXY = scenario_rand() & 0x1E;
+    int32_t offsetXY = ScenarioRand() & 0x1E;
     targetPos.x += offsetXY;
     targetPos.y += offsetXY;
 
@@ -299,20 +299,20 @@ void Duck::Create(const CoordsXY& pos)
     duck->sprite_height_positive = 9;
     duck->target_x = targetPos.x;
     duck->target_y = targetPos.y;
-    uint8_t direction = scenario_rand() & 3;
+    uint8_t direction = ScenarioRand() & 3;
     switch (direction)
     {
         case 0:
-            targetPos.x = GetMapSizeMaxXY().x - (scenario_rand() & 0x3F);
+            targetPos.x = GetMapSizeMaxXY().x - (ScenarioRand() & 0x3F);
             break;
         case 1:
-            targetPos.y = scenario_rand() & 0x3F;
+            targetPos.y = ScenarioRand() & 0x3F;
             break;
         case 2:
-            targetPos.x = scenario_rand() & 0x3F;
+            targetPos.x = ScenarioRand() & 0x3F;
             break;
         case 3:
-            targetPos.y = GetMapSizeMaxXY().y - (scenario_rand() & 0x3F);
+            targetPos.y = GetMapSizeMaxXY().y - (ScenarioRand() & 0x3F);
             break;
     }
     duck->sprite_direction = direction << 3;
@@ -369,7 +369,7 @@ void Duck::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    rct_drawpixelinfo& dpi = session.DPI;
+    DrawPixelInfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 1 })
         return;
 

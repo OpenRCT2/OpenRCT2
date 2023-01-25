@@ -197,34 +197,34 @@ static Widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
 
 #pragma region Events
 
-static void WindowMapgenSharedClose(rct_window* w);
-static void WindowMapgenSharedMouseup(rct_window* w, WidgetIndex widgetIndex);
+static void WindowMapgenSharedClose(WindowBase* w);
+static void WindowMapgenSharedMouseup(WindowBase* w, WidgetIndex widgetIndex);
 
-static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowMapgenBaseMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowMapgenBaseDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowMapgenBaseUpdate(rct_window* w);
-static void WindowMapgenTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
-static void WindowMapgenBaseInvalidate(rct_window* w);
-static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowMapgenBaseMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowMapgenBaseMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowMapgenBaseDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowMapgenBaseUpdate(WindowBase* w);
+static void WindowMapgenTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text);
+static void WindowMapgenBaseInvalidate(WindowBase* w);
+static void WindowMapgenBasePaint(WindowBase* w, DrawPixelInfo* dpi);
 
-static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowMapgenRandomMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowMapgenRandomUpdate(rct_window* w);
-static void WindowMapgenRandomInvalidate(rct_window* w);
-static void WindowMapgenRandomPaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowMapgenRandomMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowMapgenRandomMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowMapgenRandomUpdate(WindowBase* w);
+static void WindowMapgenRandomInvalidate(WindowBase* w);
+static void WindowMapgenRandomPaint(WindowBase* w, DrawPixelInfo* dpi);
 
-static void WindowMapgenSimplexMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowMapgenSimplexMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowMapgenSimplexDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowMapgenSimplexUpdate(rct_window* w);
-static void WindowMapgenSimplexInvalidate(rct_window* w);
-static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowMapgenSimplexMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowMapgenSimplexMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowMapgenSimplexDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowMapgenSimplexUpdate(WindowBase* w);
+static void WindowMapgenSimplexInvalidate(WindowBase* w);
+static void WindowMapgenSimplexPaint(WindowBase* w, DrawPixelInfo* dpi);
 
-static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowMapgenHeightmapMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowMapgenHeightmapInvalidate(rct_window* w);
-static void WindowMapgenHeightmapPaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowMapgenHeightmapMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowMapgenHeightmapMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowMapgenHeightmapInvalidate(WindowBase* w);
+static void WindowMapgenHeightmapPaint(WindowBase* w, DrawPixelInfo* dpi);
 
 static WindowEventList BaseEvents([](auto& events) {
     events.close = &WindowMapgenSharedClose;
@@ -374,9 +374,9 @@ constexpr int32_t WATERLEVEL_MIN = 0;
 constexpr int32_t WATERLEVEL_MAX = 54;
 constexpr int32_t MAX_SMOOTH_ITERATIONS = 20;
 
-static void WindowMapgenSetPage(rct_window* w, int32_t page);
-static void WindowMapgenSetPressedTab(rct_window* w);
-static void WindowMapgenDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
+static void WindowMapgenSetPage(WindowBase* w, int32_t page);
+static void WindowMapgenSetPressedTab(WindowBase* w);
+static void WindowMapgenDrawTabImages(DrawPixelInfo* dpi, WindowBase* w);
 
 enum class ResizeDirection
 {
@@ -419,9 +419,9 @@ static void WindowMapgenChangeMapSize(int32_t sizeOffset)
         _mapSize.x = std::clamp(_mapSize.x + sizeOffset, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
 }
 
-rct_window* WindowMapgenOpen()
+WindowBase* WindowMapgenOpen()
 {
-    rct_window* w = window_bring_to_front_by_class(WindowClass::Mapgen);
+    WindowBase* w = WindowBringToFrontByClass(WindowClass::Mapgen);
     if (w != nullptr)
     {
         return w;
@@ -445,17 +445,17 @@ rct_window* WindowMapgenOpen()
     return w;
 }
 
-static void WindowMapgenSharedClose(rct_window* w)
+static void WindowMapgenSharedClose(WindowBase* w)
 {
     MapGenUnloadHeightmap();
 }
 
-static void WindowMapgenSharedMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowMapgenSharedMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -466,7 +466,7 @@ static void WindowMapgenSharedMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowMapgenInputMapSize(rct_window* w, WidgetIndex callingWidget, int32_t currentValue)
+static void WindowMapgenInputMapSize(WindowBase* w, WidgetIndex callingWidget, int32_t currentValue)
 {
     Formatter ft;
     ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
@@ -479,11 +479,11 @@ static void WindowMapgenInputMapSize(rct_window* w, WidgetIndex callingWidget, i
 
 #pragma region Base page
 
-static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowMapgenBaseMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     WindowMapgenSharedMouseup(w, widgetIndex);
 
-    mapgen_settings mapgenSettings;
+    MapGenSettings mapgenSettings;
     Formatter ft;
     switch (widgetIndex)
     {
@@ -495,7 +495,7 @@ static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.wall = _wallTexture;
 
             MapGenGenerateBlank(&mapgenSettings);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case WIDX_MAP_SIZE_Y:
             _resizeDirection = ResizeDirection::Y;
@@ -523,7 +523,7 @@ static void WindowMapgenBaseMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowMapgenBaseMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowMapgenBaseMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -572,7 +572,7 @@ static void WindowMapgenBaseMousedown(rct_window* w, WidgetIndex widgetIndex, Wi
     }
 }
 
-static void WindowMapgenBaseDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowMapgenBaseDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     int32_t type;
 
@@ -615,15 +615,15 @@ static void WindowMapgenBaseDropdown(rct_window* w, WidgetIndex widgetIndex, int
     }
 }
 
-static void WindowMapgenBaseUpdate(rct_window* w)
+static void WindowMapgenBaseUpdate(WindowBase* w)
 {
     // Tab animation
     if (++w->frame_no >= TabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(*w, WIDX_TAB_1);
+    WidgetInvalidate(*w, WIDX_TAB_1);
 }
 
-static void WindowMapgenTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
+static void WindowMapgenTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
 {
     int32_t value;
     char* end;
@@ -662,7 +662,7 @@ static void WindowMapgenTextinput(rct_window* w, WidgetIndex widgetIndex, char* 
     w->Invalidate();
 }
 
-static void WindowMapgenBaseInvalidate(rct_window* w)
+static void WindowMapgenBaseInvalidate(WindowBase* w)
 {
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_BASE])
     {
@@ -682,7 +682,7 @@ static void WindowMapgenBaseInvalidate(rct_window* w)
     ft.Add<uint16_t>(_mapSize.x - 2);
 }
 
-static void WindowMapgenDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex widgetIndex, ImageId image)
+static void WindowMapgenDrawDropdownButton(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex widgetIndex, ImageId image)
 {
     const auto& widget = w->widgets[widgetIndex];
     ScreenCoordsXY pos = { w->windowPos.x + widget.left, w->windowPos.y + widget.top };
@@ -691,21 +691,21 @@ static void WindowMapgenDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi
         // Draw greyed out (light border bottom right shadow)
         auto colour = w->colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-        gfx_draw_sprite_solid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
+        GfxDrawSpriteSolid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
 
         // Draw greyed out (dark)
         colour = w->colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-        gfx_draw_sprite_solid(dpi, image, pos, colour);
+        GfxDrawSpriteSolid(dpi, image, pos, colour);
     }
     else
     {
-        gfx_draw_sprite(dpi, image, pos);
+        GfxDrawSprite(dpi, image, pos);
     }
 }
 
 static void WindowMapgenDrawDropdownButtons(
-    rct_window* w, rct_drawpixelinfo* dpi, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
+    WindowBase* w, DrawPixelInfo* dpi, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
 {
     auto& objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -731,7 +731,7 @@ static void WindowMapgenDrawDropdownButtons(
     WindowMapgenDrawDropdownButton(w, dpi, edgeWidgetIndex, edgeImage);
 }
 
-static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapgenBasePaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
@@ -767,11 +767,11 @@ static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Random page
 
-static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowMapgenRandomMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     WindowMapgenSharedMouseup(w, widgetIndex);
 
-    mapgen_settings mapgenSettings;
+    MapGenSettings mapgenSettings;
 
     switch (widgetIndex)
     {
@@ -783,13 +783,13 @@ static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.wall = _randomTerrain ? -1 : _wallTexture;
             mapgenSettings.trees = _placeTrees;
 
-            mapgenSettings.simplex_low = util_rand() % 4;
-            mapgenSettings.simplex_high = 12 + (util_rand() % (32 - 12));
+            mapgenSettings.simplex_low = UtilRand() % 4;
+            mapgenSettings.simplex_high = 12 + (UtilRand() % (32 - 12));
             mapgenSettings.simplex_base_freq = 1.75f;
             mapgenSettings.simplex_octaves = 6;
 
             MapGenGenerate(&mapgenSettings);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case WIDX_RANDOM_TERRAIN:
             _randomTerrain = !_randomTerrain;
@@ -800,19 +800,19 @@ static void WindowMapgenRandomMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowMapgenRandomMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowMapgenRandomMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
 }
 
-static void WindowMapgenRandomUpdate(rct_window* w)
+static void WindowMapgenRandomUpdate(WindowBase* w)
 {
     // Tab animation
     if (++w->frame_no >= TabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(*w, WIDX_TAB_2);
+    WidgetInvalidate(*w, WIDX_TAB_2);
 }
 
-static void WindowMapgenRandomInvalidate(rct_window* w)
+static void WindowMapgenRandomInvalidate(WindowBase* w)
 {
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM])
     {
@@ -829,7 +829,7 @@ static void WindowMapgenRandomInvalidate(rct_window* w)
     WindowMapgenSetPressedTab(w);
 }
 
-static void WindowMapgenRandomPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapgenRandomPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
@@ -839,11 +839,11 @@ static void WindowMapgenRandomPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Simplex page
 
-static void WindowMapgenSimplexMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowMapgenSimplexMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     WindowMapgenSharedMouseup(w, widgetIndex);
 
-    mapgen_settings mapgenSettings;
+    MapGenSettings mapgenSettings;
 
     switch (widgetIndex)
     {
@@ -873,12 +873,12 @@ static void WindowMapgenSimplexMouseup(rct_window* w, WidgetIndex widgetIndex)
             mapgenSettings.simplex_octaves = _simplex_octaves;
 
             MapGenGenerate(&mapgenSettings);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
     }
 }
 
-static void WindowMapgenSimplexMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowMapgenSimplexMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -959,7 +959,7 @@ static void WindowMapgenSimplexMousedown(rct_window* w, WidgetIndex widgetIndex,
     }
 }
 
-static void WindowMapgenSimplexDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowMapgenSimplexDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     int32_t type;
 
@@ -1002,15 +1002,15 @@ static void WindowMapgenSimplexDropdown(rct_window* w, WidgetIndex widgetIndex, 
     }
 }
 
-static void WindowMapgenSimplexUpdate(rct_window* w)
+static void WindowMapgenSimplexUpdate(WindowBase* w)
 {
     // Tab animation
     if (++w->frame_no >= TabAnimationLoops[w->page])
         w->frame_no = 0;
-    widget_invalidate(*w, WIDX_TAB_3);
+    WidgetInvalidate(*w, WIDX_TAB_3);
 }
 
-static void WindowMapgenSimplexInvalidate(rct_window* w)
+static void WindowMapgenSimplexInvalidate(WindowBase* w)
 {
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX])
     {
@@ -1045,7 +1045,7 @@ static void WindowMapgenSimplexInvalidate(rct_window* w)
     ft.Add<uint16_t>(_mapSize.x - 2);
 }
 
-static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapgenSimplexPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
@@ -1114,50 +1114,50 @@ static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Heightmap page
 
-static void WindowMapgenHeightmapMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowMapgenHeightmapMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
         case WIDX_HEIGHTMAP_STRENGTH_UP:
             _heightmapSmoothStrength = std::min(_heightmapSmoothStrength + 1, MAX_SMOOTH_ITERATIONS);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
             break;
         case WIDX_HEIGHTMAP_STRENGTH_DOWN:
             _heightmapSmoothStrength = std::max(_heightmapSmoothStrength - 1, 1);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
             break;
         case WIDX_HEIGHTMAP_LOW_UP:
             _heightmapLow = std::min(_heightmapLow + 1, 142 - 1);
             _heightmapHigh = std::max(_heightmapHigh, _heightmapLow + 1);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_LOW);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_LOW);
             break;
         case WIDX_HEIGHTMAP_LOW_DOWN:
             _heightmapLow = std::max(_heightmapLow - 1, 2);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_LOW);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_LOW);
             break;
         case WIDX_HEIGHTMAP_HIGH_UP:
             _heightmapHigh = std::min(_heightmapHigh + 1, 142);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_HIGH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_HIGH);
             break;
         case WIDX_HEIGHTMAP_HIGH_DOWN:
             _heightmapHigh = std::max(_heightmapHigh - 1, 2 + 1);
             _heightmapLow = std::min(_heightmapLow, _heightmapHigh - 1);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_HIGH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_HIGH);
             break;
         case WIDX_HEIGHTMAP_WATER_LEVEL_UP:
             _waterLevel = std::min(_waterLevel + MINIMUM_WATER_HEIGHT, MINIMUM_WATER_HEIGHT + MAXIMUM_WATER_HEIGHT);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_WATER_LEVEL);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_WATER_LEVEL);
             break;
         case WIDX_HEIGHTMAP_WATER_LEVEL_DOWN:
             _waterLevel = std::max(_waterLevel - MINIMUM_WATER_HEIGHT, 0);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_WATER_LEVEL);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_WATER_LEVEL);
             break;
     }
 }
 
 static void WindowMapgenHeightmapGenerateMap()
 {
-    mapgen_settings mapgenSettings;
+    MapGenSettings mapgenSettings;
     mapgenSettings.water_level = _waterLevel;
     mapgenSettings.smooth = _heightmapSmoothTiles;
     mapgenSettings.smooth_height_map = _heightmapSmoothMap;
@@ -1166,7 +1166,7 @@ static void WindowMapgenHeightmapGenerateMap()
     mapgenSettings.simplex_low = _heightmapLow;
     mapgenSettings.simplex_high = _heightmapHigh;
     MapGenGenerateFromHeightmap(&mapgenSettings);
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* path)
@@ -1180,7 +1180,7 @@ static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* pa
         }
 
         // The window needs to be open while using the map
-        rct_window* const w = ContextOpenWindow(WindowClass::Mapgen);
+        WindowBase* const w = ContextOpenWindow(WindowClass::Mapgen);
         _heightmapLoaded = true;
         WindowMapgenSetPage(w, WINDOW_MAPGEN_PAGE_HEIGHTMAP);
 
@@ -1188,7 +1188,7 @@ static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* pa
     }
 }
 
-static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowMapgenHeightmapMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     WindowMapgenSharedMouseup(w, widgetIndex);
 
@@ -1205,8 +1205,8 @@ static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex)
         case WIDX_HEIGHTMAP_SELECT:
         {
             auto intent = Intent(WindowClass::Loadsave);
-            intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowMapgenHeightmapLoadsaveCallback));
+            intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
+            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowMapgenHeightmapLoadsaveCallback));
             ContextOpenIntent(&intent);
             return;
         }
@@ -1216,18 +1216,18 @@ static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex)
             WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
             WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
             WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_STRENGTH);
             break;
         case WIDX_HEIGHTMAP_NORMALIZE:
             _heightmapNormalize = !_heightmapNormalize;
             WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_NORMALIZE);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_NORMALIZE);
             break;
         case WIDX_HEIGHTMAP_SMOOTH_TILES:
             _heightmapSmoothTiles = !_heightmapSmoothTiles;
             WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
-            widget_invalidate(*w, WIDX_HEIGHTMAP_SMOOTH_TILES);
+            WidgetInvalidate(*w, WIDX_HEIGHTMAP_SMOOTH_TILES);
             break;
     }
 
@@ -1235,7 +1235,7 @@ static void WindowMapgenHeightmapMouseup(rct_window* w, WidgetIndex widgetIndex)
     WindowMapgenHeightmapGenerateMap();
 }
 
-static void WindowMapgenHeightmapInvalidate(rct_window* w)
+static void WindowMapgenHeightmapInvalidate(WindowBase* w)
 {
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP])
     {
@@ -1250,7 +1250,7 @@ static void WindowMapgenHeightmapInvalidate(rct_window* w)
     WindowMapgenSetPressedTab(w);
 }
 
-static void WindowMapgenHeightmapPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapgenHeightmapPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
@@ -1313,7 +1313,7 @@ static void WindowMapgenHeightmapPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Common
 
-static void WindowMapgenSetPage(rct_window* w, int32_t page)
+static void WindowMapgenSetPage(WindowBase* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
@@ -1349,7 +1349,7 @@ static void WindowMapgenSetPage(rct_window* w, int32_t page)
     w->Invalidate();
 }
 
-static void WindowMapgenSetPressedTab(rct_window* w)
+static void WindowMapgenSetPressedTab(WindowBase* w)
 {
     int32_t i;
     for (i = 0; i < WINDOW_MAPGEN_PAGE_COUNT; i++)
@@ -1357,7 +1357,7 @@ static void WindowMapgenSetPressedTab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void WindowMapgenDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
+static void WindowMapgenDrawTabImage(DrawPixelInfo* dpi, WindowBase* w, int32_t page, int32_t spriteIndex)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + page;
 
@@ -1369,13 +1369,13 @@ static void WindowMapgenDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int3
             spriteIndex += (frame % TabAnimationFrames[w->page]);
         }
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(spriteIndex),
             w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
 }
 
-static void WindowMapgenDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowMapgenDrawTabImages(DrawPixelInfo* dpi, WindowBase* w)
 {
     WindowMapgenDrawTabImage(dpi, w, WINDOW_MAPGEN_PAGE_BASE, SPR_G2_TAB_LAND);
     WindowMapgenDrawTabImage(dpi, w, WINDOW_MAPGEN_PAGE_RANDOM, SPR_G2_TAB_TREE);

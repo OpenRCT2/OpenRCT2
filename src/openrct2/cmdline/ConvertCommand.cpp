@@ -42,7 +42,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     }
 
     const auto sourcePath = Path::GetAbsolute(rawSourcePath);
-    auto sourceFileType = get_file_extension_type(sourcePath.c_str());
+    auto sourceFileType = GetFileExtensionType(sourcePath.c_str());
 
     // Get the destination path
     const utf8* rawDestinationPath;
@@ -53,7 +53,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     }
 
     const auto destinationPath = Path::GetAbsolute(rawDestinationPath);
-    auto destinationFileType = get_file_extension_type(destinationPath.c_str());
+    auto destinationFileType = GetFileExtensionType(destinationPath.c_str());
 
     // Validate target type
     if (destinationFileType != FileExtension::PARK)
@@ -109,7 +109,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     if (sourceFileType == FileExtension::SC4 || sourceFileType == FileExtension::SC6)
     {
         // We are converting a scenario, so reset the park
-        scenario_begin();
+        ScenarioBegin();
     }
 
     try
@@ -118,7 +118,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
 
         // HACK remove the main window so it saves the park with the
         //      correct initial view
-        window_close_by_class(WindowClass::MainWindow);
+        WindowCloseByClass(WindowClass::MainWindow);
 
         exporter->Export(destinationPath);
     }

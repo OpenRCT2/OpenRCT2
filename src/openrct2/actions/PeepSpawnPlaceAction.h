@@ -11,14 +11,14 @@
 
 #include "GameAction.h"
 
-class PlacePeepSpawnAction final : public GameActionBase<GameCommand::PlacePeepSpawn>
+class PeepSpawnPlaceAction final : public GameActionBase<GameCommand::PlacePeepSpawn>
 {
 private:
     CoordsXYZD _location;
 
 public:
-    PlacePeepSpawnAction() = default;
-    PlacePeepSpawnAction(const CoordsXYZD& location);
+    PeepSpawnPlaceAction() = default;
+    PeepSpawnPlaceAction(const CoordsXYZD& location);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

@@ -50,7 +50,7 @@ private:
     int32_t _pressedNewsItemIndex{}, _pressedButtonIndex{}, _suspendUpdateTicks{};
     static int32_t CalculateItemHeight()
     {
-        return 4 * font_get_line_height(FontStyle::Small) + 2;
+        return 4 * FontGetLineHeight(FontStyle::Small) + 2;
     }
 
 public:
@@ -62,7 +62,7 @@ public:
 
         int32_t w = 0, h = 0;
         Widget* widget = &widgets[WIDX_SCROLL];
-        window_get_scroll_size(this, 0, &w, &h);
+        WindowGetScrollSize(this, 0, &w, &h);
         scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
         WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
     }
@@ -110,11 +110,11 @@ public:
         }
         else if (_pressedButtonIndex > 1)
         {
-            static rct_window* _mainWindow;
+            static WindowBase* _mainWindow;
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
-            if (subjectLoc.has_value() && (_mainWindow = window_get_main()) != nullptr)
+            if (subjectLoc.has_value() && (_mainWindow = WindowGetMain()) != nullptr)
             {
-                window_scroll_to_location(*_mainWindow, subjectLoc.value());
+                WindowScrollToLocation(*_mainWindow, subjectLoc.value());
             }
         }
     }
@@ -166,14 +166,14 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
-        int32_t lineHeight = font_get_line_height(FontStyle::Small);
+        int32_t lineHeight = FontGetLineHeight(FontStyle::Small);
         int32_t itemHeight = CalculateItemHeight();
         int32_t y = 0;
         int32_t i = 0;
@@ -190,7 +190,7 @@ public:
             }
 
             // Background
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
                 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
@@ -198,7 +198,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<StringId>(DateDayNames[newsItem.Day - 1]);
-                ft.Add<StringId>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
+                ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.MonthYear)]);
                 DrawTextBasic(&dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::Small });
             }
             // Item text
@@ -221,18 +221,18 @@ public:
                         press = INSET_RECT_FLAG_BORDER_INSET;
                     }
                 }
-                gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxFillRectInset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
 
                 switch (newsItem.Type)
                 {
                     case News::ItemType::Ride:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_RIDE), screenCoords);
+                        GfxDrawSprite(&dpi, ImageId(SPR_RIDE), screenCoords);
                         break;
                     case News::ItemType::Peep:
                     case News::ItemType::PeepOnRide:
                     {
-                        rct_drawpixelinfo cliped_dpi;
-                        if (!clip_drawpixelinfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                        DrawPixelInfo cliped_dpi;
+                        if (!ClipDrawPixelInfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                         {
                             break;
                         }
@@ -260,24 +260,24 @@ public:
 
                         ImageIndex imageId = GetPeepAnimation(spriteType).base_image + 1;
                         auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
-                        gfx_draw_sprite(&cliped_dpi, image, clipCoords);
+                        GfxDrawSprite(&cliped_dpi, image, clipCoords);
                         break;
                     }
                     case News::ItemType::Money:
                     case News::ItemType::Campaign:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_FINANCE), screenCoords);
+                        GfxDrawSprite(&dpi, ImageId(SPR_FINANCE), screenCoords);
                         break;
                     case News::ItemType::Research:
-                        gfx_draw_sprite(&dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                        GfxDrawSprite(&dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                         break;
                     case News::ItemType::Peeps:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_GUESTS), screenCoords);
+                        GfxDrawSprite(&dpi, ImageId(SPR_GUESTS), screenCoords);
                         break;
                     case News::ItemType::Award:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_AWARD), screenCoords);
+                        GfxDrawSprite(&dpi, ImageId(SPR_AWARD), screenCoords);
                         break;
                     case News::ItemType::Graph:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_GRAPH), screenCoords);
+                        GfxDrawSprite(&dpi, ImageId(SPR_GRAPH), screenCoords);
                         break;
                     case News::ItemType::Null:
                     case News::ItemType::Blank:
@@ -298,8 +298,8 @@ public:
                     if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
                         press = 0x20;
                 }
-                gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
-                gfx_draw_sprite(&dpi, ImageId(SPR_LOCATE), screenCoords);
+                GfxFillRectInset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxDrawSprite(&dpi, ImageId(SPR_LOCATE), screenCoords);
             }
 
             y += itemHeight;
@@ -308,7 +308,7 @@ public:
     }
 };
 
-rct_window* WindowNewsOpen()
+WindowBase* WindowNewsOpen()
 {
     return WindowFocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
 }

@@ -50,10 +50,10 @@ void RideSetAppearanceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result RideSetAppearanceAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -64,7 +64,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
         case RideSetAppearanceType::TrackColourSupports:
             if (_index >= std::size(ride->track_colour))
             {
-                log_warning("Invalid game command, index %d out of bounds", _index);
+                LOG_WARNING("Invalid game command, index %d out of bounds", _index);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
             }
             break;
@@ -73,7 +73,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
         case RideSetAppearanceType::VehicleColourTernary:
             if (_index >= std::size(ride->vehicle_colours))
             {
-                log_warning("Invalid game command, index %d out of bounds", _index);
+                LOG_WARNING("Invalid game command, index %d out of bounds", _index);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
             }
             break;
@@ -82,7 +82,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
         case RideSetAppearanceType::SellingItemColourIsRandom:
             break;
         default:
-            log_warning("Invalid game command, type %d not recognised", _type);
+            LOG_WARNING("Invalid game command, type %d not recognised", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -91,10 +91,10 @@ GameActions::Result RideSetAppearanceAction::Query() const
 
 GameActions::Result RideSetAppearanceAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -102,27 +102,27 @@ GameActions::Result RideSetAppearanceAction::Execute() const
     {
         case RideSetAppearanceType::TrackColourMain:
             ride->track_colour[_index].main = _value;
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::TrackColourAdditional:
             ride->track_colour[_index].additional = _value;
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::TrackColourSupports:
             ride->track_colour[_index].supports = _value;
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::VehicleColourBody:
             ride->vehicle_colours[_index].Body = _value;
-            ride_update_vehicle_colours(ride);
+            RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourTrim:
             ride->vehicle_colours[_index].Trim = _value;
-            ride_update_vehicle_colours(ride);
+            RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourTernary:
             ride->vehicle_colours[_index].Tertiary = _value;
-            ride_update_vehicle_colours(ride);
+            RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourScheme:
             ride->colour_scheme_type &= ~(
@@ -132,17 +132,17 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             {
                 ride->vehicle_colours[i] = ride->vehicle_colours[0];
             }
-            ride_update_vehicle_colours(ride);
+            RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::EntranceStyle:
             ride->entrance_style = _value;
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::SellingItemColourIsRandom:
             ride->SetLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
             break;
     }
-    window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
+    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
 
     auto res = GameActions::Result();
     if (!ride->overall_view.IsNull())

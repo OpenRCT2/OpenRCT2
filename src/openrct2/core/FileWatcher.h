@@ -20,6 +20,8 @@
 #    include "FileSystem.hpp"
 
 typedef void* HANDLE;
+#elif defined(__APPLE__)
+#    include <CoreServices/CoreServices.h>
 #endif
 
 /**
@@ -54,6 +56,9 @@ private:
 
     FileDescriptor _fileDesc;
     std::vector<WatchDescriptor> _watchDescs;
+#elif defined(__APPLE__)
+    FSEventStreamRef _stream{};
+    CFRunLoopRef _runLoop{};
 #endif
 
 public:
@@ -65,6 +70,10 @@ public:
 private:
 #if defined(_WIN32) || defined(__linux__)
     bool _finished{};
+#elif defined(__APPLE__)
+    static void FSEventsCallback(
+        ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
+        const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
 #endif
 
     void WatchDirectory();

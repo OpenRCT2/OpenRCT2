@@ -13,7 +13,7 @@
 #include "BannerSetColourAction.h"
 #include "BannerSetNameAction.h"
 #include "BannerSetStyleAction.h"
-#include "ChangeMapSizeAction.h"
+#include "CheatSetAction.h"
 #include "ClearAction.h"
 #include "ClimateSetAction.h"
 #include "CustomAction.h"
@@ -35,20 +35,22 @@
 #include "LargeSceneryRemoveAction.h"
 #include "LargeScenerySetColourAction.h"
 #include "LoadOrQuitAction.h"
+#include "MapChangeSizeAction.h"
 #include "MazePlaceTrackAction.h"
 #include "MazeSetTrackAction.h"
 #include "NetworkModifyGroupAction.h"
+#include "ParkEntrancePlaceAction.h"
 #include "ParkEntranceRemoveAction.h"
 #include "ParkMarketingAction.h"
 #include "ParkSetDateAction.h"
+#include "ParkSetEntranceFeeAction.h"
 #include "ParkSetLoanAction.h"
 #include "ParkSetNameAction.h"
 #include "ParkSetParameterAction.h"
 #include "ParkSetResearchFundingAction.h"
 #include "PauseToggleAction.h"
 #include "PeepPickupAction.h"
-#include "PlaceParkEntranceAction.h"
-#include "PlacePeepSpawnAction.h"
+#include "PeepSpawnPlaceAction.h"
 #include "PlayerKickAction.h"
 #include "PlayerSetGroupAction.h"
 #include "RideCreateAction.h"
@@ -64,8 +66,6 @@
 #include "RideSetStatusAction.h"
 #include "RideSetVehicleAction.h"
 #include "ScenarioSetSettingAction.h"
-#include "SetCheatAction.h"
-#include "SetParkEntranceFeeAction.h"
 #include "SignSetNameAction.h"
 #include "SignSetStyleAction.h"
 #include "SmallSceneryPlaceAction.h"
@@ -148,8 +148,8 @@ namespace GameActions
         REGISTER_ACTION(ParkSetParameterAction);
         REGISTER_ACTION(ParkSetResearchFundingAction);
         REGISTER_ACTION(PeepPickupAction);
-        REGISTER_ACTION(PlaceParkEntranceAction);
-        REGISTER_ACTION(PlacePeepSpawnAction);
+        REGISTER_ACTION(ParkEntrancePlaceAction);
+        REGISTER_ACTION(PeepSpawnPlaceAction);
         REGISTER_ACTION(PlayerKickAction);
         REGISTER_ACTION(PlayerSetGroupAction);
         REGISTER_ACTION(RideCreateAction);
@@ -165,7 +165,7 @@ namespace GameActions
         REGISTER_ACTION(RideSetVehicleAction);
         REGISTER_ACTION(RideSetSettingAction);
         REGISTER_ACTION(ScenarioSetSettingAction);
-        REGISTER_ACTION(SetParkEntranceFeeAction);
+        REGISTER_ACTION(ParkSetEntranceFeeAction);
         REGISTER_ACTION(SignSetNameAction);
         REGISTER_ACTION(SignSetStyleAction);
         REGISTER_ACTION(StaffFireAction);
@@ -204,8 +204,8 @@ namespace GameActions
         REGISTER_ACTION(WaterRaiseAction);
         REGISTER_ACTION(GuestSetFlagsAction);
         REGISTER_ACTION(ParkSetDateAction);
-        REGISTER_ACTION(SetCheatAction);
-        REGISTER_ACTION(ChangeMapSizeAction);
+        REGISTER_ACTION(CheatSetAction);
+        REGISTER_ACTION(MapChangeSizeAction);
 #ifdef ENABLE_SCRIPTING
         REGISTER_ACTION(CustomAction);
 #endif

@@ -16,6 +16,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/ride/RideData.h>
@@ -111,17 +112,17 @@ static constexpr const StringId ScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_OTHER_PARKS,
 };
 
-static void WindowScenarioselectInitTabs(rct_window *w);
+static void WindowScenarioselectInitTabs(WindowBase *w);
 
-static void WindowScenarioselectClose(rct_window *w);
-static void WindowScenarioselectMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowScenarioselectMousedown(rct_window *w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowScenarioselectScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void WindowScenarioselectScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowScenarioselectScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowScenarioselectInvalidate(rct_window *w);
-static void WindowScenarioselectPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowScenarioselectScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void WindowScenarioselectClose(WindowBase *w);
+static void WindowScenarioselectMouseup(WindowBase *w, WidgetIndex widgetIndex);
+static void WindowScenarioselectMousedown(WindowBase *w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowScenarioselectScrollgetsize(WindowBase *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void WindowScenarioselectScrollmousedown(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowScenarioselectScrollmouseover(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowScenarioselectInvalidate(WindowBase *w);
+static void WindowScenarioselectPaint(WindowBase *w, DrawPixelInfo *dpi);
+static void WindowScenarioselectScrollpaint(WindowBase *w, DrawPixelInfo *dpi, int32_t scrollIndex);
 
 static bool ScenarioSelectUseSmallFont()
 {
@@ -142,26 +143,25 @@ static WindowEventList window_scenarioselect_events([](auto& events)
 });
 // clang-format on
 
-static void DrawCategoryHeading(
-    rct_window* w, rct_drawpixelinfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
-static void InitialiseListItems(rct_window* w);
-static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenario);
-static bool IsLockingEnabled(rct_window* w);
+static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
+static void InitialiseListItems(WindowBase* w);
+static bool IsScenarioVisible(WindowBase* w, const scenario_index_entry* scenario);
+static bool IsLockingEnabled(WindowBase* w);
 
 static std::function<void(std::string_view)> _callback;
 static bool _showLockedInformation = false;
 static bool _titleEditor = false;
 static bool _disableLocking{};
 
-rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor)
+WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor)
 {
     if (_titleEditor != titleEditor)
     {
         _titleEditor = titleEditor;
-        window_close_by_class(WindowClass::ScenarioSelect);
+        WindowCloseByClass(WindowClass::ScenarioSelect);
     }
 
-    auto window = window_bring_to_front_by_class(WindowClass::ScenarioSelect);
+    auto window = WindowBringToFrontByClass(WindowClass::ScenarioSelect);
     if (window != nullptr)
         return window;
 
@@ -173,15 +173,15 @@ rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titl
  *
  *  rct2: 0x006781B5
  */
-rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking)
+WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking)
 {
-    rct_window* window;
+    WindowBase* window;
 
     _callback = callback;
     _disableLocking = disableLocking;
 
     // Load scenario list
-    scenario_repository_scan();
+    ScenarioRepositoryScan();
 
     window = WindowCreateCentred(
         WW, WH, &window_scenarioselect_events, WindowClass::ScenarioSelect, WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));
@@ -200,13 +200,13 @@ rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
  *
  *  rct2: 0x00677C8A
  */
-static void WindowScenarioselectInitTabs(rct_window* w)
+static void WindowScenarioselectInitTabs(WindowBase* w)
 {
     int32_t showPages = 0;
-    size_t numScenarios = scenario_repository_get_count();
+    size_t numScenarios = ScenarioRepositoryGetCount();
     for (size_t i = 0; i < numScenarios; i++)
     {
-        const scenario_index_entry* scenario = scenario_repository_get_by_index(i);
+        const scenario_index_entry* scenario = ScenarioRepositoryGetByIndex(i);
         if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             if (_titleEditor && scenario->source_game == ScenarioSource::Other)
@@ -230,7 +230,7 @@ static void WindowScenarioselectInitTabs(rct_window* w)
     }
     else
     {
-        int32_t firstPage = bitscanforward(showPages);
+        int32_t firstPage = UtilBitScanForward(showPages);
         if (firstPage != -1)
         {
             w->selected_tab = firstPage;
@@ -254,21 +254,21 @@ static void WindowScenarioselectInitTabs(rct_window* w)
     }
 }
 
-static void WindowScenarioselectClose(rct_window* w)
+static void WindowScenarioselectClose(WindowBase* w)
 {
     _listItems.clear();
     _listItems.shrink_to_fit();
 }
 
-static void WindowScenarioselectMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowScenarioselectMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     if (widgetIndex == WIDX_CLOSE)
     {
-        window_close(*w);
+        WindowClose(*w);
     }
 }
 
-static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowScenarioselectMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
     {
@@ -278,8 +278,8 @@ static void WindowScenarioselectMousedown(rct_window* w, WidgetIndex widgetIndex
         ConfigSaveDefault();
         InitialiseListItems(w);
         w->Invalidate();
-        window_event_resize_call(w);
-        window_event_invalidate_call(w);
+        WindowEventResizeCall(w);
+        WindowEventInvalidateCall(w);
         WindowInitScrollWidgets(*w);
         w->Invalidate();
     }
@@ -291,15 +291,15 @@ static int32_t GetScenarioListItemSize()
         return 24;
 
     // Scenario title
-    int32_t lineHeight = font_get_line_height(FontStyle::Medium);
+    int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
     // 'Completed by' line
-    lineHeight += font_get_line_height(FontStyle::Small);
+    lineHeight += FontGetLineHeight(FontStyle::Small);
 
     return lineHeight;
 }
 
-static void WindowScenarioselectScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+static void WindowScenarioselectScrollgetsize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -323,7 +323,7 @@ static void WindowScenarioselectScrollgetsize(rct_window* w, int32_t scrollIndex
  *
  *  rct2: 0x6780FE
  */
-static void WindowScenarioselectScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowScenarioselectScrollmousedown(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -344,7 +344,7 @@ static void WindowScenarioselectScrollmousedown(rct_window* w, int32_t scrollInd
                     _callback(listItem.scenario.scenario->path);
                     if (_titleEditor)
                     {
-                        window_close(*w);
+                        WindowClose(*w);
                     }
                 }
                 break;
@@ -360,7 +360,7 @@ static void WindowScenarioselectScrollmousedown(rct_window* w, int32_t scrollInd
  *
  *  rct2: 0x678162
  */
-static void WindowScenarioselectScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowScenarioselectScrollmouseover(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
@@ -407,7 +407,7 @@ static void WindowScenarioselectScrollmouseover(rct_window* w, int32_t scrollInd
     }
 }
 
-static void WindowScenarioselectInvalidate(rct_window* w)
+static void WindowScenarioselectInvalidate(WindowBase* w)
 {
     w->pressed_widgets &= ~(
         (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
@@ -423,7 +423,7 @@ static void WindowScenarioselectInvalidate(rct_window* w)
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = w->height - bottomMargin;
 }
 
-static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     int32_t format;
     const scenario_index_entry* scenario;
@@ -485,7 +485,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         utf8 path[MAX_PATH];
 
-        shorten_path(path, sizeof(path), scenario->path, w->width - 6 - TabWidth, FontStyle::Medium);
+        ShortenPath(path, sizeof(path), scenario->path, w->width - 6 - TabWidth, FontStyle::Medium);
 
         const utf8* pathPtr = path;
         auto ft = Formatter();
@@ -527,7 +527,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     else
     {
         ft.Add<int16_t>(scenario->objective_arg_3);
-        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
+        ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, scenario->objective_arg_1));
         if (scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             ft.Add<uint16_t>(scenario->objective_arg_2);
         else
@@ -540,7 +540,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         // TODO: Should probably be translatable
         const utf8* completedByName = "???";
-        if (!str_is_null_or_empty(scenario->highscore->name))
+        if (!String::IsNullOrEmpty(scenario->highscore->name))
         {
             completedByName = scenario->highscore->name;
         }
@@ -552,10 +552,10 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowScenarioselectScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
-    gfx_clear(dpi, paletteIndex);
+    GfxClear(dpi, paletteIndex);
 
     StringId highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
     StringId unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
@@ -566,7 +566,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
     const int32_t scenarioItemHeight = GetScenarioListItemSize();
 
     // Scenario title
-    int32_t scenarioTitleHeight = font_get_line_height(FontStyle::Medium);
+    int32_t scenarioTitleHeight = FontGetLineHeight(FontStyle::Medium);
 
     int32_t y = 0;
     for (const auto& listItem : _listItems)
@@ -593,7 +593,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                 bool isHighlighted = w->highlighted_scenario == scenario;
                 if (isHighlighted)
                 {
-                    gfx_filter_rect(dpi, { 0, y, w->width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, y, w->width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
                 }
 
                 bool isCompleted = scenario->highscore != nullptr;
@@ -601,7 +601,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
 
                 // Draw scenario name
                 char buffer[64];
-                safe_strcpy(buffer, scenario->name, sizeof(buffer));
+                SafeStrCpy(buffer, scenario->name, sizeof(buffer));
                 StringId format = isDisabled ? static_cast<StringId>(STR_STRINGID)
                                              : (isHighlighted ? highlighted_format : unhighlighted_format);
                 auto ft = Formatter();
@@ -618,17 +618,17 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                 if (isCompleted)
                 {
                     // Draw completion tick
-                    gfx_draw_sprite(
+                    GfxDrawSprite(
                         dpi, ImageId(SPR_MENU_CHECKMARK),
                         { window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
 
                     // Draw completion score
                     const utf8* completedByName = "???";
-                    if (!str_is_null_or_empty(scenario->highscore->name))
+                    if (!String::IsNullOrEmpty(scenario->highscore->name))
                     {
                         completedByName = scenario->highscore->name;
                     }
-                    safe_strcpy(buffer, completedByName, 64);
+                    SafeStrCpy(buffer, completedByName, 64);
                     ft = Formatter();
                     ft.Add<StringId>(STR_COMPLETED_BY);
                     ft.Add<StringId>(STR_STRING);
@@ -645,8 +645,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
     }
 }
 
-static void DrawCategoryHeading(
-    rct_window* w, rct_drawpixelinfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
+static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
 {
     colour_t baseColour = w->colours[1];
     colour_t lightColour = ColourMapA[baseColour].lighter;
@@ -659,8 +658,8 @@ static void DrawCategoryHeading(
     // Get string dimensions
     utf8 buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
-    format_string(bufferPtr, sizeof(buffer), stringId, nullptr);
-    int32_t categoryStringHalfWidth = (gfx_get_string_width(bufferPtr, FontStyle::Medium) / 2) + 4;
+    OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
+    int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;
 
@@ -668,26 +667,26 @@ static void DrawCategoryHeading(
     int32_t lineY = y + 4;
     auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY };
     auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-    gfx_draw_line(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+    GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
     auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
     auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-    gfx_draw_line(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+    GfxDrawLine(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
 
     // Draw dark horizontal rule
     lineY++;
     auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY };
     auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-    gfx_draw_line(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+    GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
 
     auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
     auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-    gfx_draw_line(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+    GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
 }
 
-static void InitialiseListItems(rct_window* w)
+static void InitialiseListItems(WindowBase* w)
 {
-    size_t numScenarios = scenario_repository_get_count();
+    size_t numScenarios = ScenarioRepositoryGetCount();
     _listItems.clear();
 
     // Mega park unlock
@@ -699,7 +698,7 @@ static void InitialiseListItems(rct_window* w)
     uint8_t currentHeading = UINT8_MAX;
     for (size_t i = 0; i < numScenarios; i++)
     {
-        const scenario_index_entry* scenario = scenario_repository_get_by_index(i);
+        const scenario_index_entry* scenario = ScenarioRepositoryGetByIndex(i);
 
         if (!IsScenarioVisible(w, scenario))
             continue;
@@ -811,7 +810,7 @@ static void InitialiseListItems(rct_window* w)
     }
 }
 
-static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenario)
+static bool IsScenarioVisible(WindowBase* w, const scenario_index_entry* scenario)
 {
     if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
     {
@@ -835,7 +834,7 @@ static bool IsScenarioVisible(rct_window* w, const scenario_index_entry* scenari
     return true;
 }
 
-static bool IsLockingEnabled(rct_window* w)
+static bool IsLockingEnabled(WindowBase* w)
 {
     if (gConfigGeneral.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
         return false;

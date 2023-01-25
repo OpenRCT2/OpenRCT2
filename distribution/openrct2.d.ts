@@ -265,10 +265,10 @@ declare global {
          * @param execute Logic for validating and executing the action.
          * @throws An error if the action has already been registered by this or another plugin.
          */
-        registerAction(
+        registerAction<T = object>(
             action: string,
-            query: (args: object) => GameActionResult,
-            execute: (args: object) => GameActionResult): void;
+            query: (args: GameActionEventArgs<T>) => GameActionResult,
+            execute: (args: GameActionEventArgs<T>) => GameActionResult): void;
 
         /**
          * Query the result of running a game action. This allows you to check the outcome and validity of
@@ -285,7 +285,7 @@ declare global {
         queryAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "changemapsize", args: ChangeMapSizeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -305,6 +305,7 @@ declare global {
         queryAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "mapchangesize", args: MapChangeSizeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
@@ -312,6 +313,7 @@ declare global {
         queryAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetentrancefee", args: ParkSetEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
@@ -321,7 +323,7 @@ declare global {
         queryAction(action: "peepspawnplace", args: PeepSpawnPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "playerkick", args: PlayerKickArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
         queryAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
@@ -334,15 +336,13 @@ declare global {
         queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "setcheat", args: SetCheatArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallsceneryremove", args: SmallSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallscenerysetcolour", args: SmallScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "stafffire", args: StaffFireArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "staffhire", args: StaffHireArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffhire", args: StaffHireArgs, callback?: (result: StaffHireNewActionResult) => void): void;
         queryAction(action: "staffsetcolour", args: StaffSetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "staffsetcostume", args: StaffSetCostumeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "staffsetname", args: StaffSetNameArgs, callback?: (result: GameActionResult) => void): void;
@@ -376,7 +376,7 @@ declare global {
         executeAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "changemapsize", args: ChangeMapSizeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -396,6 +396,7 @@ declare global {
         executeAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "mapchangesize", args: MapChangeSizeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
@@ -403,6 +404,7 @@ declare global {
         executeAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetentrancefee", args: ParkSetEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
@@ -412,7 +414,7 @@ declare global {
         executeAction(action: "peepspawnplace", args: PeepSpawnPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "playerkick", args: PlayerKickArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
         executeAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
@@ -425,15 +427,13 @@ declare global {
         executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "setcheat", args: SetCheatArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallsceneryremove", args: SmallSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallscenerysetcolour", args: SmallScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "stafffire", args: StaffFireArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "staffhire", args: StaffHireArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffhire", args: StaffHireArgs, callback?: (result: StaffHireNewActionResult) => void): void;
         executeAction(action: "staffsetcolour", args: StaffSetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "staffsetcostume", args: StaffSetCostumeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "staffsetname", args: StaffSetNameArgs, callback?: (result: GameActionResult) => void): void;
@@ -609,7 +609,7 @@ declare global {
         "bannersetcolour" |
         "bannersetname" |
         "bannersetstyle" |
-        "changemapsize" |
+        "cheatset" |
         "clearscenery" |
         "climateset" |
         "footpathadditionplace" |
@@ -629,6 +629,7 @@ declare global {
         "largesceneryremove" |
         "largescenerysetcolour" |
         "loadorquit" |
+        "mapchangesize" |
         "mazeplacetrack" |
         "mazesettrack" |
         "networkmodifygroup" |
@@ -636,6 +637,7 @@ declare global {
         "parkentranceremove" |
         "parkmarketing" |
         "parksetdate" |
+        "parksetentrancefee" |
         "parksetloan" |
         "parksetname" |
         "parksetparameter" |
@@ -658,8 +660,6 @@ declare global {
         "ridesetstatus" |
         "ridesetvehicle" |
         "scenariosetsetting" |
-        "setcheat" |
-        "setparkentrancefee" |
         "signsetname" |
         "signsetstyle" |
         "smallsceneryplace" |
@@ -729,9 +729,10 @@ declare global {
         parameter: number; // primary colour | secondary colour | 0: disable, 1: enable
     }
 
-    interface ChangeMapSizeArgs extends GameActionArgs {
-        targetSizeX: number;
-        targetSizeY: number;
+    interface CheatSetArgs extends GameActionArgs {
+        type: number; // see CheatType in openrct2/Cheats.h
+        param1: number; // see openrct2/actions/CheatSetAction.cpp
+        param2: number; // see openrct2/actions/CheatSetAction.cpp
     }
 
     interface ClearSceneryArgs extends GameActionArgs {
@@ -891,6 +892,11 @@ declare global {
         savePromptMode: number; // 0: save before load, 1: save before quit. Only used if mode = 0 (open save prompt).
     }
 
+    interface MapChangeSizeArgs extends GameActionArgs {
+        targetSizeX: number;
+        targetSizeY: number;
+    }
+
     interface MazePlaceTrackArgs extends GameActionArgs {
         x: number;
         y: number;
@@ -941,6 +947,10 @@ declare global {
         year: number;
         month: number;
         day: number;
+    }
+
+    interface ParkSetEntranceFeeArgs extends GameActionArgs {
+        value: number;
     }
 
     interface ParkSetLoanArgs extends GameActionArgs {
@@ -1077,16 +1087,6 @@ declare global {
 
     interface ScenarioSetSettingArgs extends GameActionArgs {
         setting: number; // see ScenarioSetSetting in openrct2/actions/ScenarioSetSettingAction.h
-        value: number;
-    }
-
-    interface SetCheatArgs extends GameActionArgs {
-        type: number; // see CheatType in openrct2/Cheats.h
-        param1: number; // see openrct2/actions/SetCheatAction.cpp
-        param2: number; // see openrct2/actions/SetCheatAction.cpp
-    }
-
-    interface SetParkEntranceFeeArgs extends GameActionArgs {
         value: number;
     }
 
@@ -1278,12 +1278,12 @@ declare global {
         height: number;
     }
 
-    interface GameActionEventArgs {
+    interface GameActionEventArgs<T = object> {
         readonly player: number;
         readonly type: number;
         readonly action: string;
         readonly isClientOnly: boolean;
-        readonly args: object;
+        readonly args: T;
         result: GameActionResult;
     }
 
@@ -1296,8 +1296,12 @@ declare global {
         expenditureType?: ExpenditureType;
     }
 
-    interface RideCreateGameActionResult extends GameActionResult {
-        readonly ride: number;
+    interface RideCreateActionResult extends GameActionResult {
+        readonly ride?: number;
+    }
+
+    interface StaffHireNewActionResult extends GameActionResult {
+        readonly peep?: number;
     }
 
     interface NetworkEventArgs {

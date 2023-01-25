@@ -48,7 +48,7 @@ class TitleExitWindow final : public Window
         };
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
@@ -58,7 +58,7 @@ class TitleExitWindow final : public Window
  * Creates the window containing the exit button on the title screen.
  *  rct2: 0x0066B624 (part of 0x0066B3E8)
  */
-rct_window* WindowTitleExitOpen()
+WindowBase* WindowTitleExitOpen()
 {
     return WindowCreate<TitleExitWindow>(
         WindowClass::TitleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), 40, 64,

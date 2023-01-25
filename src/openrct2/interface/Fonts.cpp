@@ -107,7 +107,7 @@ TTFFontSetDescriptor TTFFontMicroHei = { {
 
 static void LoadSpriteFont(LocalisationService& localisationService)
 {
-    ttf_dispose();
+    TTFDispose();
     localisationService.UseTrueTypeFont(false);
 #ifndef NO_TTF
     gCurrentTTFFontSet = nullptr;
@@ -120,27 +120,27 @@ static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescrip
     localisationService.UseTrueTypeFont(true);
     gCurrentTTFFontSet = font;
 
-    ttf_dispose();
-    bool fontInitialised = ttf_initialise();
+    TTFDispose();
+    bool fontInitialised = TTFInitialise();
     return fontInitialised;
 }
 
 static bool LoadCustomConfigFont(LocalisationService& localisationService)
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
-        { gConfigFonts.FileName, gConfigFonts.FontName, gConfigFonts.SizeTiny, gConfigFonts.OffsetX, gConfigFonts.OffsetY,
-          gConfigFonts.HeightTiny, gConfigFonts.HintingThreshold, nullptr },
-        { gConfigFonts.FileName, gConfigFonts.FontName, gConfigFonts.SizeSmall, gConfigFonts.OffsetX, gConfigFonts.OffsetY,
-          gConfigFonts.HeightSmall, gConfigFonts.HintingThreshold, nullptr },
-        { gConfigFonts.FileName, gConfigFonts.FontName, gConfigFonts.SizeMedium, gConfigFonts.OffsetX, gConfigFonts.OffsetY,
-          gConfigFonts.HeightMedium, gConfigFonts.HintingThreshold, nullptr },
+        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeTiny, gConfigFonts.OffsetX,
+          gConfigFonts.OffsetY, gConfigFonts.HeightTiny, gConfigFonts.HintingThreshold, nullptr },
+        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeSmall, gConfigFonts.OffsetX,
+          gConfigFonts.OffsetY, gConfigFonts.HeightSmall, gConfigFonts.HintingThreshold, nullptr },
+        { gConfigFonts.FileName.c_str(), gConfigFonts.FontName.c_str(), gConfigFonts.SizeMedium, gConfigFonts.OffsetX,
+          gConfigFonts.OffsetY, gConfigFonts.HeightMedium, gConfigFonts.HintingThreshold, nullptr },
     } };
 
-    ttf_dispose();
+    TTFDispose();
     localisationService.UseTrueTypeFont(true);
     gCurrentTTFFontSet = &TTFFontCustom;
 
-    bool fontInitialised = ttf_initialise();
+    bool fontInitialised = TTFInitialise();
     return fontInitialised;
 }
 #endif // NO_TTF
@@ -153,13 +153,13 @@ void TryLoadFonts(LocalisationService& localisationService)
 
     if (fontFamily != FAMILY_OPENRCT2_SPRITE)
     {
-        if (!String::IsNullOrEmpty(gConfigFonts.FileName))
+        if (!gConfigFonts.FileName.empty())
         {
             if (LoadCustomConfigFont(localisationService))
             {
                 return;
             }
-            log_verbose("Unable to initialise configured TrueType font -- falling back to the language's default.");
+            LOG_VERBOSE("Unable to initialise configured TrueType font -- falling back to the language's default.");
         }
 
         for (auto& font : *fontFamily)
@@ -170,12 +170,12 @@ void TryLoadFonts(LocalisationService& localisationService)
             }
 
             TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::Small)];
-            log_verbose("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
+            LOG_VERBOSE("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
         }
 
         if (fontFamily != &TTFFamilySansSerif)
         {
-            log_verbose("Unable to initialise any of the preferred TrueType fonts -- falling back to sans serif fonts.");
+            LOG_VERBOSE("Unable to initialise any of the preferred TrueType fonts -- falling back to sans serif fonts.");
 
             for (auto& font : TTFFamilySansSerif)
             {
@@ -185,10 +185,10 @@ void TryLoadFonts(LocalisationService& localisationService)
                 }
 
                 TTFFontDescriptor smallFont = font->size[EnumValue(FontStyle::Small)];
-                log_verbose("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
+                LOG_VERBOSE("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
             }
 
-            log_verbose("Unable to initialise any of the preferred TrueType fonts -- falling back to sprite font.");
+            LOG_VERBOSE("Unable to initialise any of the preferred TrueType fonts -- falling back to sprite font.");
         }
     }
 #endif // NO_TTF

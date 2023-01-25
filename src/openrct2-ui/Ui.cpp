@@ -43,7 +43,7 @@ int main(int argc, const char** argv)
 {
     std::unique_ptr<IContext> context;
     int32_t rc = EXIT_SUCCESS;
-    int runGame = cmdline_run(argv, argc);
+    int runGame = CmdlineRun(argv, argc);
     Platform::CoreInit();
     RegisterBitmapReader();
     if (runGame == EXITCODE_CONTINUE)
@@ -64,7 +64,7 @@ int main(int argc, const char** argv)
             }
             catch (const SDLException& e)
             {
-                log_warning("Failed to create audio context. Using dummy audio context. Error message was: %s", e.what());
+                LOG_WARNING("Failed to create audio context. Using dummy audio context. Error message was: %s", e.what());
                 audioContext = ToShared(CreateDummyAudioContext());
             }
             auto uiContext = ToShared(CreateUiContext(env));

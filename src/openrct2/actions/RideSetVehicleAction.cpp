@@ -62,14 +62,14 @@ GameActions::Result RideSetVehicleAction::Query() const
 {
     if (_type >= RideSetVehicleType::Count)
     {
-        log_warning("Invalid type. type = %d", _type);
+        LOG_WARNING("Invalid type. type = %d", _type);
     }
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -90,30 +90,30 @@ GameActions::Result RideSetVehicleAction::Query() const
             break;
         case RideSetVehicleType::RideEntry:
         {
-            if (!ride_is_vehicle_type_valid(ride))
+            if (!RideIsVehicleTypeValid(*ride))
             {
-                log_error("Invalid vehicle type. type = %d", _value);
+                LOG_ERROR("Invalid vehicle type. type = %d", _value);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
-            auto rideEntry = get_ride_entry(_value);
+            auto rideEntry = GetRideEntryByIndex(_value);
             if (rideEntry == nullptr)
             {
-                log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
             // Validate preset
-            vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
+            VehicleColourPresetList* presetList = rideEntry->vehicle_preset_list;
             if (_colour >= presetList->count && _colour != 255 && _colour != 0)
             {
-                log_error("Unknown vehicle colour preset. colour = %d", _colour);
+                LOG_ERROR("Unknown vehicle colour preset. colour = %d", _colour);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             break;
         }
 
         default:
-            log_error("Unknown vehicle command. type = %d", _type);
+            LOG_ERROR("Unknown vehicle command. type = %d", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -123,17 +123,17 @@ GameActions::Result RideSetVehicleAction::Query() const
 GameActions::Result RideSetVehicleAction::Execute() const
 {
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
     switch (_type)
     {
         case RideSetVehicleType::NumTrains:
-            ride_clear_for_construction(ride);
+            RideClearForConstruction(*ride);
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
@@ -141,15 +141,15 @@ GameActions::Result RideSetVehicleAction::Execute() const
             break;
         case RideSetVehicleType::NumCarsPerTrain:
         {
-            ride_clear_for_construction(ride);
+            RideClearForConstruction(*ride);
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
-            invalidate_test_results(ride);
-            auto rideEntry = get_ride_entry(ride->subtype);
+            InvalidateTestResults(*ride);
+            auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
-                log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             uint8_t clampValue = _value;
@@ -163,20 +163,20 @@ GameActions::Result RideSetVehicleAction::Execute() const
         }
         case RideSetVehicleType::RideEntry:
         {
-            ride_clear_for_construction(ride);
+            RideClearForConstruction(*ride);
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
-            invalidate_test_results(ride);
+            InvalidateTestResults(*ride);
             ride->subtype = _value;
-            auto rideEntry = get_ride_entry(ride->subtype);
+            auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
-                log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
+                LOG_WARNING("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
-            ride_set_vehicle_colours_to_random_preset(ride, _colour);
+            RideSetVehicleColoursToRandomPreset(*ride, _colour);
             if (!gCheatsDisableTrainLengthLimit)
             {
                 ride->proposed_num_cars_per_train = std::clamp(
@@ -186,7 +186,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
         }
 
         default:
-            log_error("Unknown vehicle command. type = %d", _type);
+            LOG_ERROR("Unknown vehicle command. type = %d", _type);
             return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -201,24 +201,24 @@ GameActions::Result RideSetVehicleAction::Execute() const
     }
 
     auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);
-    intent.putExtra(INTENT_EXTRA_RIDE_ID, _rideIndex.ToUnderlying());
+    intent.PutExtra(INTENT_EXTRA_RIDE_ID, _rideIndex.ToUnderlying());
     ContextBroadcastIntent(&intent);
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     return res;
 }
 
-bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
+bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
 {
     bool selectionShouldBeExpanded;
     int32_t rideTypeIterator, rideTypeIteratorMax;
 
     {
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride.GetRideTypeDescriptor();
         if (gCheatsShowVehiclesFromOtherTrackTypes
             && !(
-                ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE)
-                || ride->type == RIDE_TYPE_MINI_GOLF))
+                ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE)
+                || ride.type == RIDE_TYPE_MINI_GOLF))
         {
             selectionShouldBeExpanded = true;
             rideTypeIterator = 0;
@@ -227,8 +227,8 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
         else
         {
             selectionShouldBeExpanded = false;
-            rideTypeIterator = ride->type;
-            rideTypeIteratorMax = ride->type;
+            rideTypeIterator = ride.type;
+            rideTypeIteratorMax = ride.type;
         }
     }
 
@@ -250,7 +250,7 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
         {
             if (rideEntryIndex == _value)
             {
-                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                 {
                     return false;
                 }

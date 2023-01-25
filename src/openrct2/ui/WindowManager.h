@@ -28,13 +28,13 @@ namespace OpenRCT2::Ui
     {
         virtual ~IWindowManager() = default;
         virtual void Init() abstract;
-        virtual rct_window* OpenWindow(WindowClass wc) abstract;
-        virtual rct_window* OpenView(uint8_t view) abstract;
-        virtual rct_window* OpenDetails(uint8_t type, int32_t id) abstract;
-        virtual rct_window* OpenIntent(Intent* intent) abstract;
+        virtual WindowBase* OpenWindow(WindowClass wc) abstract;
+        virtual WindowBase* OpenView(uint8_t view) abstract;
+        virtual WindowBase* OpenDetails(uint8_t type, int32_t id) abstract;
+        virtual WindowBase* OpenIntent(Intent* intent) abstract;
         virtual void BroadcastIntent(const Intent& intent) abstract;
-        virtual rct_window* ShowError(StringId title, StringId message, const Formatter& formatter) abstract;
-        virtual rct_window* ShowError(std::string_view title, std::string_view message) abstract;
+        virtual WindowBase* ShowError(StringId title, StringId message, const Formatter& formatter) abstract;
+        virtual WindowBase* ShowError(std::string_view title, std::string_view message) abstract;
         virtual void ForceClose(WindowClass windowClass) abstract;
         virtual void UpdateMapTooltip() abstract;
         virtual void HandleInput() abstract;
@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui
         virtual std::string GetKeyboardShortcutString(std::string_view shortcutId) abstract;
         virtual void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) abstract;
         virtual void UpdateMouseWheel() abstract;
-        virtual rct_window* GetOwner(const rct_viewport* viewport) abstract;
+        virtual WindowBase* GetOwner(const Viewport* viewport) abstract;
     };
 
     std::unique_ptr<IWindowManager> CreateDummyWindowManager();

@@ -97,7 +97,7 @@ static Vehicle* GetFirstVehicle(const Ride& ride)
 }
 
 static void PaintMagicCarpetRiders(
-    PaintSession& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, Direction direction,
+    PaintSession& session, const RideObjectEntry& rideEntry, const Vehicle& vehicle, Direction direction,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 1 })
@@ -260,7 +260,7 @@ static void PaintMagicCarpet(
     PaintUtilSetGeneralSupportHeight(session, height + 176, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(int32_t trackType)
 {
     switch (trackType)
     {

@@ -21,9 +21,9 @@ enum
     UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR = 1 << 4,
 };
 
-void ColourSchemeUpdate(rct_window* window);
+void ColourSchemeUpdate(WindowBase* window);
 void ColourSchemeUpdateAll();
-void ColourSchemeUpdateByClass(rct_window* window, WindowClass classification);
+void ColourSchemeUpdateByClass(WindowBase* window, WindowClass classification);
 
 void ThemeManagerInitialise();
 void ThemeManagerLoadAvailableThemes();

@@ -14,15 +14,15 @@
 #include <cstdlib>
 #include <iterator>
 
-struct encoding_convert_entry
+struct EncodingConvertEntry
 {
     uint16_t code;
     uint32_t unicode;
 };
 
-extern const encoding_convert_entry RCT2ToUnicodeTable[];
+extern const EncodingConvertEntry RCT2ToUnicodeTable[];
 
-const encoding_convert_entry RCT2ToUnicodeTable[] = {
+const EncodingConvertEntry RCT2ToUnicodeTable[] = {
     // { 1, FORMAT_MOVE_X },
     // { 2, FORMAT_ADJUST_PALETTE },
     // { 5, FORMAT_NEWLINE },
@@ -105,10 +105,10 @@ const encoding_convert_entry RCT2ToUnicodeTable[] = {
     { CSChar::z_acute, UnicodeChar::z_acute },
 };
 
-static int32_t encoding_search_compare(const void* pKey, const void* pEntry)
+static int32_t EncodingSearchCompare(const void* pKey, const void* pEntry)
 {
     const uint16_t key = *reinterpret_cast<const uint16_t*>(pKey);
-    const encoding_convert_entry* entry = static_cast<const encoding_convert_entry*>(pEntry);
+    const EncodingConvertEntry* entry = static_cast<const EncodingConvertEntry*>(pEntry);
     if (key < entry->code)
         return -1;
     if (key > entry->code)
@@ -116,10 +116,10 @@ static int32_t encoding_search_compare(const void* pKey, const void* pEntry)
     return 0;
 }
 
-wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
+wchar_t EncodingConvertRCT2ToUnicode(wchar_t rct2str)
 {
-    encoding_convert_entry* entry = static_cast<encoding_convert_entry*>(std::bsearch(
-        &rct2str, RCT2ToUnicodeTable, std::size(RCT2ToUnicodeTable), sizeof(encoding_convert_entry), encoding_search_compare));
+    EncodingConvertEntry* entry = static_cast<EncodingConvertEntry*>(std::bsearch(
+        &rct2str, RCT2ToUnicodeTable, std::size(RCT2ToUnicodeTable), sizeof(EncodingConvertEntry), EncodingSearchCompare));
     if (entry == nullptr)
         return rct2str;
     return entry->unicode;

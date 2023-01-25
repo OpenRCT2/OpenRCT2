@@ -131,7 +131,7 @@ namespace Platform
 
 AndroidClassLoader::AndroidClassLoader()
 {
-    log_info("Obtaining JNI class loader");
+    LOG_INFO("Obtaining JNI class loader");
 
     // This is a workaround to be able to call JNI's ClassLoader from non-main
     // thread, based on https://stackoverflow.com/a/16302771

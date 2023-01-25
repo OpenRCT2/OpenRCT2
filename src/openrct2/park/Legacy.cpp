@@ -2219,7 +2219,7 @@ const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& des
         auto datPathName = GetDATPathName(desc.Identifier);
         if (datPathName.has_value())
         {
-            rct_object_entry objectEntry = {};
+            RCTObjectEntry objectEntry = {};
             objectEntry.SetName(datPathName.value());
             return RCT2::GetFootpathSurfaceId(ObjectEntryDescriptor(objectEntry));
         }

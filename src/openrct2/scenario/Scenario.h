@@ -23,7 +23,7 @@
 
 struct ResultWithMessage;
 
-using random_engine_t = Random::Rct2::Engine;
+using random_engine_t = Random::RCT2::Engine;
 
 enum
 {
@@ -172,20 +172,20 @@ extern uint32_t gLastAutoSaveUpdate;
 
 extern std::string gScenarioFileName;
 
-void scenario_begin();
-void scenario_reset();
-void scenario_update();
-bool scenario_create_ducks();
+void ScenarioBegin();
+void ScenarioReset();
+void ScenarioUpdate();
+bool ScenarioCreateDucks();
 bool AllowEarlyCompletion();
 
-const random_engine_t::state_type& scenario_rand_state();
-void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1);
-random_engine_t::result_type scenario_rand();
-uint32_t scenario_rand_max(uint32_t max);
+const random_engine_t::state_type& ScenarioRandState();
+void ScenarioRandSeed(random_engine_t::result_type s0, random_engine_t::result_type s1);
+random_engine_t::result_type ScenarioRand();
+uint32_t ScenarioRandMax(uint32_t max);
 
-ResultWithMessage scenario_prepare_for_save();
-int32_t scenario_save(u8string_view path, int32_t flags);
-void scenario_failure();
-void scenario_success();
-void scenario_success_submit_name(const char* name);
-void scenario_autosave_check();
+ResultWithMessage ScenarioPrepareForSave();
+int32_t ScenarioSave(u8string_view path, int32_t flags);
+void ScenarioFailure();
+void ScenarioSuccess();
+void ScenarioSuccessSubmitName(const char* name);
+void ScenarioAutosaveCheck();

@@ -60,7 +60,7 @@ static void PaintDodgems(
         auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SprDodgemsFloor);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
 
-        track_paint_util_paint_fences(
+        TrackPaintUtilPaintFences(
             session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_SUPPORTS], height,
             DodgemsFenceSprites, session.CurrentRotation);
 

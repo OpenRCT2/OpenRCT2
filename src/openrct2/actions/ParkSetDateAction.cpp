@@ -54,6 +54,6 @@ GameActions::Result ParkSetDateAction::Query() const
 
 GameActions::Result ParkSetDateAction::Execute() const
 {
-    date_set(_year, _month, _day);
+    DateSet(_year, _month, _day);
     return GameActions::Result();
 }

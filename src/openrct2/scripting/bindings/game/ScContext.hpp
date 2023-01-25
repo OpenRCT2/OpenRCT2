@@ -239,7 +239,7 @@ namespace OpenRCT2::Scripting
             if (min >= max)
                 return min;
             int32_t range = max - min;
-            return min + scenario_rand_max(range);
+            return min + ScenarioRandMax(range);
         }
 
         duk_ret_t formatString(duk_context* ctx)
@@ -339,15 +339,15 @@ namespace OpenRCT2::Scripting
                     if (isExecute)
                     {
                         action->SetCallback(
-                            [this, plugin, callback](const GameAction*, const GameActions::Result* res) -> void {
-                                HandleGameActionResult(plugin, *res, callback);
+                            [this, plugin, callback](const GameAction* act, const GameActions::Result* res) -> void {
+                                HandleGameActionResult(plugin, *act, *res, callback);
                             });
                         GameActions::Execute(action.get());
                     }
                     else
                     {
                         auto res = GameActions::Query(action.get());
-                        HandleGameActionResult(plugin, res, callback);
+                        HandleGameActionResult(plugin, *action, res, callback);
                     }
                 }
                 else
@@ -362,38 +362,15 @@ namespace OpenRCT2::Scripting
         }
 
         void HandleGameActionResult(
-            const std::shared_ptr<Plugin>& plugin, const GameActions::Result& res, const DukValue& callback)
+            const std::shared_ptr<Plugin>& plugin, const GameAction& action, const GameActions::Result& res,
+            const DukValue& callback)
         {
-            // Construct result object
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
-            auto objIdx = duk_push_object(ctx);
-            duk_push_int(ctx, static_cast<duk_int_t>(res.Error));
-            duk_put_prop_string(ctx, objIdx, "error");
-
-            if (res.Error != GameActions::Status::Ok)
-            {
-                auto title = res.GetErrorTitle();
-                duk_push_string(ctx, title.c_str());
-                duk_put_prop_string(ctx, objIdx, "errorTitle");
-
-                auto message = res.GetErrorMessage();
-                duk_push_string(ctx, message.c_str());
-                duk_put_prop_string(ctx, objIdx, "errorMessage");
-            }
-
-            duk_push_int(ctx, static_cast<duk_int_t>(res.Cost));
-            duk_put_prop_string(ctx, objIdx, "cost");
-
-            duk_push_int(ctx, static_cast<duk_int_t>(res.Expenditure));
-            duk_put_prop_string(ctx, objIdx, "expenditureType");
-
-            auto args = DukValue::take_from_stack(ctx);
-
             if (callback.is_function())
             {
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                auto dukResult = scriptEngine.GameActionResultToDuk(action, res);
                 // Call the plugin callback and pass the result object
-                scriptEngine.ExecutePluginCall(plugin, callback, { args }, false);
+                scriptEngine.ExecutePluginCall(plugin, callback, { dukResult }, false);
             }
         }
 

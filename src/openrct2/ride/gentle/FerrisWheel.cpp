@@ -42,7 +42,7 @@ static constexpr BoundBoxXY FerrisWheelData[] = {
 };
 
 static void PaintFerrisWheelRiders(
-    PaintSession& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
+    PaintSession& session, const RideObjectEntry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
     const BoundBoxXYZ& bb)
 {
     for (int32_t i = 0; i < 32; i += 2)
@@ -121,29 +121,29 @@ static void PaintFerrisWheel(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     ImageId imageId;
     uint8_t rotation = session.CurrentRotation;
     auto colourFlags = session.TrackColours[SCHEME_MISC];
 
-    if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session.MapPosition, trackElement, ride, rotation))
+    if (edges & EDGE_NW && TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, rotation))
     {
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
-    if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, session.MapPosition, trackElement, ride, rotation))
+    if (edges & EDGE_NE && TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, rotation))
     {
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
-    if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, rotation))
+    if (edges & EDGE_SE && TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, rotation))
     {
-        // Bound box is slightly different from track_paint_util_paint_fences
+        // Bound box is slightly different from TrackPaintUtilPaintFences
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
     }
-    if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, rotation))
+    if (edges & EDGE_SW && TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, rotation))
     {
         imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 7 } });

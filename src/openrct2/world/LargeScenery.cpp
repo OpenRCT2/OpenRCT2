@@ -93,7 +93,7 @@ LargeSceneryEntry* LargeSceneryElement::GetEntry() const
 
 const LargeSceneryObject* LargeSceneryElement::GetObject() const
 {
-    return static_cast<const LargeSceneryObject*>(object_entry_get_object(ObjectType::LargeScenery, GetEntryIndex()));
+    return static_cast<const LargeSceneryObject*>(ObjectEntryGetObject(ObjectType::LargeScenery, GetEntryIndex()));
 }
 
 uint8_t LargeSceneryElement::GetSequenceIndex() const

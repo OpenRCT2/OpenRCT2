@@ -83,7 +83,7 @@ public:
 #ifdef DEBUG
             if (index != OBJECT_ENTRY_INDEX_NULL)
             {
-                log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
+                LOG_WARNING("Object index %u exceeds maximum for type %d.", index, objectType);
             }
 #endif
             return nullptr;
@@ -133,7 +133,7 @@ public:
         size_t index = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
-            get_type_entry_index(index, nullptr, &result);
+            ObjectGetTypeEntryIndex(index, nullptr, &result);
         }
         return result;
     }
@@ -162,7 +162,7 @@ public:
         return RepositoryItemToObject(ori);
     }
 
-    Object* LoadObject(const rct_object_entry* entry) override
+    Object* LoadObject(const RCTObjectEntry* entry) override
     {
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
         return RepositoryItemToObject(ori);
@@ -456,7 +456,7 @@ private:
             }
         }
 
-        log_verbose("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
+        LOG_VERBOSE("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
     }
 
     template<typename T> void UpdateSceneryGroupIndexes(ObjectType type)
@@ -492,7 +492,7 @@ private:
 
         // HACK Scenery window will lose its tabs after changing the scenery group indexing
         //      for now just close it, but it will be better to later tell it to invalidate the tabs
-        window_close_by_class(WindowClass::Scenery);
+        WindowCloseByClass(WindowClass::Scenery);
     }
 
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
@@ -661,7 +661,7 @@ private:
             list[otl.Index] = otl.LoadedObject;
         }
 
-        log_verbose("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
+        LOG_VERBOSE("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
     }
 
     Object* GetOrLoadObject(const ObjectRepositoryItem* ori)
@@ -701,7 +701,7 @@ private:
             if (rideObject == nullptr)
                 continue;
 
-            const auto* entry = static_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+            const auto* entry = static_cast<RideObjectEntry*>(rideObject->GetLegacyData());
             if (entry == nullptr)
                 continue;
 
@@ -722,7 +722,7 @@ private:
         Console::Error::WriteLine("[%s] Object not found.", name.c_str());
     }
 
-    void ReportObjectLoadProblem(const rct_object_entry* entry)
+    void ReportObjectLoadProblem(const RCTObjectEntry* entry)
     {
         utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
         std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
@@ -735,45 +735,45 @@ std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRep
     return std::make_unique<ObjectManager>(objectRepository);
 }
 
-Object* object_manager_get_loaded_object(const ObjectEntryDescriptor& entry)
+Object* ObjectManagerGetLoadedObject(const ObjectEntryDescriptor& entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.GetLoadedObject(entry);
     return loadedObject;
 }
 
-ObjectEntryIndex object_manager_get_loaded_object_entry_index(const Object* loadedObject)
+ObjectEntryIndex ObjectManagerGetLoadedObjectEntryIndex(const Object* loadedObject)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     auto entryIndex = objectManager.GetLoadedObjectEntryIndex(loadedObject);
     return entryIndex;
 }
 
-ObjectEntryIndex object_manager_get_loaded_object_entry_index(const ObjectEntryDescriptor& entry)
+ObjectEntryIndex ObjectManagerGetLoadedObjectEntryIndex(const ObjectEntryDescriptor& entry)
 {
-    return object_manager_get_loaded_object_entry_index(object_manager_get_loaded_object(entry));
+    return ObjectManagerGetLoadedObjectEntryIndex(ObjectManagerGetLoadedObject(entry));
 }
 
-Object* object_manager_load_object(const rct_object_entry* entry)
+Object* ObjectManagerLoadObject(const RCTObjectEntry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.LoadObject(entry);
     return loadedObject;
 }
 
-void object_manager_unload_objects(const std::vector<ObjectEntryDescriptor>& entries)
+void ObjectManagerUnloadObjects(const std::vector<ObjectEntryDescriptor>& entries)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager.UnloadObjects(entries);
 }
 
-void object_manager_unload_all_objects()
+void ObjectManagerUnloadAllObjects()
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager.UnloadAllTransient();
 }
 
-StringId object_manager_get_source_game_string(const ObjectSourceGame sourceGame)
+StringId ObjectManagerGetSourceGameString(const ObjectSourceGame sourceGame)
 {
     return ObjectManager::GetObjectSourceGameString(sourceGame);
 }

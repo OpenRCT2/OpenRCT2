@@ -11,14 +11,15 @@
 
 #include "GameAction.h"
 
-class SetParkEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
+class ParkEntrancePlaceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
 {
 private:
-    money16 _fee{ MONEY16_UNDEFINED };
+    CoordsXYZD _loc;
+    ObjectEntryIndex _pathType;
 
 public:
-    SetParkEntranceFeeAction() = default;
-    SetParkEntranceFeeAction(money16 fee);
+    ParkEntrancePlaceAction() = default;
+    ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
@@ -27,4 +28,7 @@ public:
     void Serialise(DataSerialiser& stream) override;
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;
+
+private:
+    bool CheckMapCapacity(int16_t numTiles) const;
 };

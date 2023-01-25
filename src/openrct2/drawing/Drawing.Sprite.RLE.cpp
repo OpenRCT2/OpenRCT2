@@ -13,7 +13,7 @@
 #include <cstring>
 
 template<DrawBlendOp TBlendOp, size_t TZoom>
-static void FASTCALL DrawRLESpriteMagnify(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+static void FASTCALL DrawRLESpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto src0 = args.SourceImage.offset;
     auto dst0 = args.DestinationBits;
@@ -84,7 +84,7 @@ static void FASTCALL DrawRLESpriteMagnify(rct_drawpixelinfo& dpi, const DrawSpri
 }
 
 template<DrawBlendOp TBlendOp, size_t TZoom>
-static void FASTCALL DrawRLESpriteMinify(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+static void FASTCALL DrawRLESpriteMinify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto src0 = args.SourceImage.offset;
     auto dst0 = args.DestinationBits;
@@ -178,7 +178,7 @@ static void FASTCALL DrawRLESpriteMinify(rct_drawpixelinfo& dpi, const DrawSprit
     }
 }
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto zoom_level = static_cast<int8_t>(dpi.zoom_level);
     switch (zoom_level)
@@ -213,7 +213,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(rct_drawpixeli
  *  rct2: 0x0067AA18
  * @param imageId Only flags are used.
  */
-void FASTCALL gfx_rle_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxRleSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     if (args.Image.HasPrimary())
     {

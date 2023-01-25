@@ -19,7 +19,7 @@
 #include <vector>
 
 struct ScreenCoordsXY;
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 struct ITitleSequencePlayer;
 
 namespace OpenRCT2
@@ -29,7 +29,7 @@ namespace OpenRCT2
         struct IDrawingEngineFactory;
         struct IWeatherDrawer;
         using DrawWeatherFunc = void (*)(
-            rct_drawpixelinfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width,
+            DrawPixelInfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width,
             int32_t height);
     } // namespace Drawing
 
@@ -101,7 +101,7 @@ namespace OpenRCT2
 
             virtual void Initialise() abstract;
             virtual void Tick() abstract;
-            virtual void Draw(rct_drawpixelinfo* dpi) abstract;
+            virtual void Draw(DrawPixelInfo* dpi) abstract;
 
             // Window
             virtual void CreateWindow() abstract;
@@ -149,7 +149,7 @@ namespace OpenRCT2
             // Drawing
             [[nodiscard]] virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() abstract;
             virtual void DrawWeatherAnimation(
-                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi,
+                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, DrawPixelInfo* dpi,
                 OpenRCT2::Drawing::DrawWeatherFunc drawFunc) abstract;
 
             // Text input

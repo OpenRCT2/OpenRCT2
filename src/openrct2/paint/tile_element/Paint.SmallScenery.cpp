@@ -69,7 +69,7 @@ static void SetSupportHeights(
 {
     height += sceneryEntry.height;
 
-    PaintUtilSetGeneralSupportHeight(session, ceil2(height, 8), 0x20);
+    PaintUtilSetGeneralSupportHeight(session, Ceil2(height, 8), 0x20);
     if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
     {
         if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
@@ -336,7 +336,7 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
     ImageId imageTemplate;
     if (gTrackDesignSaveMode)
     {
-        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&sceneryElement)))
+        if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&sceneryElement)))
         {
             imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
         }

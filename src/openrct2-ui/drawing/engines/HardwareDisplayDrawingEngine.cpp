@@ -100,7 +100,7 @@ public:
         int32_t result = SDL_GetRendererInfo(_sdlRenderer, &rendererInfo);
         if (result < 0)
         {
-            log_warning("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
+            LOG_WARNING("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
             return;
         }
         uint32_t pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
@@ -165,7 +165,7 @@ public:
 
             if (gConfigGeneral.EnableLightFx)
             {
-                auto& lightPalette = lightfx_get_palette();
+                auto& lightPalette = LightFXGetPalette();
                 for (int32_t i = 0; i < 256; i++)
                 {
                     const auto& src = lightPalette[i];
@@ -210,7 +210,7 @@ private:
             int32_t pitch;
             if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
-                lightfx_render_to_texture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+                LightFXRenderToTexture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
                 SDL_UnlockTexture(_screenTexture);
             }
         }
@@ -390,12 +390,12 @@ private:
             _pausedBeforeOverlay = gGamePaused & GAME_PAUSED_NORMAL;
             if (!_pausedBeforeOverlay)
             {
-                pause_toggle();
+                PauseToggle();
             }
         }
         else if (_overlayActive && !newOverlayActive && !_pausedBeforeOverlay)
         {
-            pause_toggle();
+            PauseToggle();
         }
 
         _overlayActive = newOverlayActive;

@@ -23,6 +23,7 @@
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
@@ -193,10 +194,10 @@ public:
 
     void OnClose() override
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                tool_cancel();
+                ToolCancel();
         }
     }
 
@@ -318,7 +319,7 @@ public:
             OnViewportRotateOverview();
         }
     }
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         switch (page)
         {
@@ -381,7 +382,7 @@ public:
             OnScrollMouseDownRides(scrollIndex, screenCoords);
         }
     }
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         if (page == WINDOW_GUEST_RIDES)
         {
@@ -419,7 +420,7 @@ private:
         }
         maxWidth = std::max(minWidth, maxWidth);
 
-        window_set_resize(*this, minWidth, minHeight, maxWidth, maxHeight);
+        WindowSetResize(*this, minWidth, minHeight, maxWidth, maxHeight);
     }
 
     void OnPrepareDrawCommon()
@@ -442,7 +443,7 @@ private:
 
         ResizeFrameWithPage();
 
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
     }
 
     void DisableWidgets()
@@ -478,10 +479,10 @@ private:
 
     void SetPage(int32_t newPage)
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (number == gCurrentToolWidget.window_number && classification == gCurrentToolWidget.window_classification)
-                tool_cancel();
+                ToolCancel();
         }
         int32_t listen = 0;
         if (newPage == WINDOW_GUEST_OVERVIEW && page == WINDOW_GUEST_OVERVIEW && viewport != nullptr)
@@ -513,7 +514,7 @@ private:
 
 #pragma region Overview
 
-    void OverviewTabDraw(rct_drawpixelinfo& dpi)
+    void OverviewTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_1))
             return;
@@ -525,8 +526,8 @@ private:
         if (page == WINDOW_GUEST_OVERVIEW)
             widgHeight++;
 
-        rct_drawpixelinfo clipDpi;
-        if (!clip_drawpixelinfo(&clipDpi, &dpi, screenCoords, widgWidth, widgHeight))
+        DrawPixelInfo clipDpi;
+        if (!ClipDrawPixelInfo(&clipDpi, &dpi, screenCoords, widgWidth, widgHeight))
         {
             return;
         }
@@ -551,7 +552,7 @@ private:
         animationFrame += animationFrameOffset;
 
         auto spriteId = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
-        gfx_draw_sprite(&clipDpi, spriteId, screenCoords);
+        GfxDrawSprite(&clipDpi, spriteId, screenCoords);
 
         auto* guest = peep->As<Guest>();
         if (guest != nullptr)
@@ -559,19 +560,19 @@ private:
             // If holding a balloon
             if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
             {
-                gfx_draw_sprite(&clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
+                GfxDrawSprite(&clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
             }
 
             // If holding umbrella
             if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
             {
-                gfx_draw_sprite(&clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
+                GfxDrawSprite(&clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
             }
 
             // If wearing hat
             if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
             {
-                gfx_draw_sprite(&clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
+                GfxDrawSprite(&clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
             }
         }
     }
@@ -581,7 +582,7 @@ private:
         DisableWidgets();
         OnPrepareDraw();
 
-        widget_invalidate(*this, WIDX_MARQUEE);
+        WidgetInvalidate(*this, WIDX_MARQUEE);
 
         OnResizeCommon();
 
@@ -620,14 +621,14 @@ private:
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                               network_get_current_player_id() };
+                                               NetworkGetCurrentPlayerId() };
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = window_find_by_number(WindowClass::Peep, peepnum);
+                    WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
-                        tool_set(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
+                        ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
                     }
                 });
                 GameActions::Execute(&pickupAction);
@@ -691,8 +692,8 @@ private:
 
     void GuestFollow()
     {
-        rct_window* main = window_get_main();
-        window_follow_sprite(*main, EntityId::FromUnderlying(number));
+        WindowBase* main = WindowGetMain();
+        WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
     void OnViewportRotateOverview()
@@ -703,7 +704,7 @@ private:
             return;
         }
 
-        viewport_update_smart_guest_follow(this, peep);
+        ViewportUpdateSmartFollowGuest(this, peep);
         bool reCreateViewport = false;
         uint16_t origViewportFlags{};
         if (viewport != nullptr)
@@ -726,7 +727,7 @@ private:
             int32_t widgWidth = viewWidget.width() - 1;
             int32_t widgHeight = viewWidget.height() - 1;
 
-            viewport_create(this, screenPos, widgWidth, widgHeight, focus.value());
+            ViewportCreate(this, screenPos, widgWidth, widgHeight, focus.value());
             if (viewport != nullptr && reCreateViewport)
             {
                 viewport->flags = origViewportFlags;
@@ -737,7 +738,7 @@ private:
         Invalidate();
     }
 
-    void OnDrawOverview(rct_drawpixelinfo& dpi)
+    void OnDrawOverview(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -751,10 +752,10 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
             }
         }
 
@@ -781,8 +782,8 @@ private:
         int32_t left = marqueeWidget.left + 2 + windowPos.x;
         int32_t top = marqueeWidget.top + windowPos.y;
         int32_t marqHeight = marqueeWidget.height();
-        rct_drawpixelinfo dpiMarquee;
-        if (!clip_drawpixelinfo(&dpiMarquee, &dpi, { left, top }, marqWidth, marqHeight))
+        DrawPixelInfo dpiMarquee;
+        if (!ClipDrawPixelInfo(&dpiMarquee, &dpi, { left, top }, marqWidth, marqHeight))
         {
             return;
         }
@@ -809,7 +810,7 @@ private:
         screenPos.x = marqueeWidget.width() - _marqueePosition;
         {
             auto ft = Formatter();
-            peep_thought_set_format_args(&peep->Thoughts[i], ft);
+            PeepThoughtSetFormatArgs(&peep->Thoughts[i], ft);
             DrawTextBasic(&dpiMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontStyle::Small });
         }
     }
@@ -854,8 +855,8 @@ private:
         newAnimationFrame %= 24;
         _guestAnimationFrame = newAnimationFrame;
 
-        widget_invalidate(*this, WIDX_TAB_1);
-        widget_invalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_1);
+        WidgetInvalidate(*this, WIDX_TAB_2);
 
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -865,7 +866,7 @@ private:
         if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
         {
             peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
-            widget_invalidate(*this, WIDX_ACTION_LBL);
+            WidgetInvalidate(*this, WIDX_ACTION_LBL);
         }
 
         _marqueePosition += 2;
@@ -873,14 +874,14 @@ private:
         _beingWatchedTimer++;
 
         // Disable peep watching thought for multiplayer as it's client specific
-        if (network_get_mode() == NETWORK_MODE_NONE)
+        if (NetworkGetMode() == NETWORK_MODE_NONE)
         {
             // Create the "I have the strangest feeling I am being watched thought"
             if (_beingWatchedTimer >= 3840)
             {
                 if (!(_beingWatchedTimer & 0x3FF))
                 {
-                    int32_t random = util_rand() & 0xFFFF;
+                    int32_t random = UtilRand() & 0xFFFF;
                     if (random <= 0x2AAA)
                     {
                         peep->InsertNewThought(PeepThoughtType::Watched);
@@ -923,7 +924,7 @@ private:
 
         gPickupPeepImage = ImageId();
 
-        auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionItemAll);
+        auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
         if (info.SpriteType == ViewportInteractionItem::None)
             return;
 
@@ -960,11 +961,11 @@ private:
         PeepPickupAction pickupAction{ PeepPickupType::Place,
                                        EntityId::FromUnderlying(number),
                                        { destCoords, tileElement->GetBaseZ() },
-                                       network_get_current_player_id() };
+                                       NetworkGetCurrentPlayerId() };
         pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
                 return;
-            tool_cancel();
+            ToolCancel();
             gPickupPeepImage = ImageId();
         });
         GameActions::Execute(&pickupAction);
@@ -976,7 +977,7 @@ private:
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepX, 0, 0 }, network_get_current_player_id()
+            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepX, 0, 0 }, NetworkGetCurrentPlayerId()
         };
         GameActions::Execute(&pickupAction);
     }
@@ -984,7 +985,7 @@ private:
 #pragma endregion
 
 #pragma region Stats
-    void StatsTabDraw(rct_drawpixelinfo& dpi)
+    void StatsTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_2))
             return;
@@ -997,7 +998,7 @@ private:
         {
             return;
         }
-        int32_t imageId = get_peep_face_sprite_large(peep);
+        int32_t imageId = GetPeepFaceSpriteLarge(peep);
         if (page == WINDOW_GUEST_STATS)
         {
             // If currently viewing this tab animate tab
@@ -1015,7 +1016,7 @@ private:
                     break;
             }
         }
-        gfx_draw_sprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateStats()
@@ -1031,18 +1032,18 @@ private:
         Invalidate();
     }
 
-    void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, rct_drawpixelinfo& dpi, int32_t colour, bool blinkFlag)
+    void StatsBarsDraw(int32_t value, const ScreenCoordsXY& origCoords, DrawPixelInfo& dpi, int32_t colour, bool blinkFlag)
     {
         auto coords = origCoords;
-        if (font_get_line_height(FontStyle::Medium) > 10)
+        if (FontGetLineHeight(FontStyle::Medium) > 10)
         {
             coords.y += 1;
         }
 
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, colours[1], INSET_RECT_F_30);
 
-        if (!blinkFlag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
+        if (!blinkFlag || GameIsPaused() || (gCurrentRealTimeTicks & 8) == 0)
         {
             value *= 118;
             value >>= 8;
@@ -1050,7 +1051,7 @@ private:
             if (value <= 2)
                 return;
 
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { coords + ScreenCoordsXY{ 63, 2 }, coords + ScreenCoordsXY{ 63 + value - 1, 8 } }, colour, 0);
         }
     }
@@ -1065,7 +1066,7 @@ private:
         return std::clamp(newValue, newMin, 255);
     }
 
-    void OnDrawStats(rct_drawpixelinfo& dpi)
+    void OnDrawStats(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1155,7 +1156,7 @@ private:
         }
 
         screenCoords.y += LIST_ROW_HEIGHT + 9;
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
@@ -1203,7 +1204,7 @@ private:
 #pragma endregion
 
 #pragma region Rides
-    void RidesTabDraw(rct_drawpixelinfo& dpi)
+    void RidesTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_3))
             return;
@@ -1218,15 +1219,15 @@ private:
             imageId += (frame_no / 4) & 0xF;
         }
 
-        gfx_draw_sprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateRides()
     {
         frame_no++;
 
-        widget_invalidate(*this, WIDX_TAB_2);
-        widget_invalidate(*this, WIDX_TAB_3);
+        WidgetInvalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_3);
 
         const auto guest = GetGuest();
         if (guest == nullptr)
@@ -1242,7 +1243,7 @@ private:
         uint8_t currListPosition = 0;
         for (const auto& r : GetRideManager())
         {
-            if (r.IsRide() && guest->HasRidden(&r))
+            if (r.IsRide() && guest->HasRidden(r))
             {
                 list_item_positions[currListPosition] = r.id.ToUnderlying();
                 currListPosition++;
@@ -1288,7 +1289,7 @@ private:
             return;
 
         auto intent = Intent(WindowClass::Ride);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
+        intent.PutExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
         ContextOpenIntent(&intent);
     }
 
@@ -1311,7 +1312,7 @@ private:
         widgets[WIDX_RIDE_SCROLL].bottom = height - 15;
     }
 
-    void OnDrawRides(rct_drawpixelinfo& dpi)
+    void OnDrawRides(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1337,7 +1338,7 @@ private:
         screenCoords.y = windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
         auto ft = Formatter();
-        auto* r = get_ride(peep->FavouriteRide);
+        auto* r = GetRide(peep->FavouriteRide);
         if (r != nullptr)
         {
             r->FormatNameTo(ft);
@@ -1350,10 +1351,10 @@ private:
         DrawTextEllipsised(&dpi, screenCoords, width - 14, STR_FAVOURITE_RIDE, ft);
     }
 
-    void OnScrollDrawRides(int32_t scrollIndex, rct_drawpixelinfo& dpi)
+    void OnScrollDrawRides(int32_t scrollIndex, DrawPixelInfo& dpi)
     {
         auto colour = ColourMapA[colours[1]].mid_light;
-        gfx_fill_rect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
+        GfxFillRect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
         for (int32_t listIndex = 0; listIndex < no_list_items; listIndex++)
         {
@@ -1361,12 +1362,12 @@ private:
             StringId stringId = STR_BLACK_STRING;
             if (listIndex == selected_list_item)
             {
-                gfx_filter_rect(&dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(&dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
 
             const auto rId = RideId::FromUnderlying(list_item_positions[listIndex]);
-            auto* r = get_ride(rId);
+            auto* r = GetRide(rId);
             if (r != nullptr)
             {
                 auto ft = Formatter();
@@ -1378,7 +1379,7 @@ private:
 #pragma endregion
 
 #pragma region Finance
-    void FinanceTabDraw(rct_drawpixelinfo& dpi)
+    void FinanceTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_4))
             return;
@@ -1393,18 +1394,18 @@ private:
             imageId += (frame_no / 2) & 0x7;
         }
 
-        gfx_draw_sprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateFinance()
     {
         frame_no++;
 
-        widget_invalidate(*this, WIDX_TAB_2);
-        widget_invalidate(*this, WIDX_TAB_4);
+        WidgetInvalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_4);
     }
 
-    void OnDrawFinance(rct_drawpixelinfo& dpi)
+    void OnDrawFinance(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1441,7 +1442,7 @@ private:
             screenCoords.y += LIST_ROW_HEIGHT * 2;
         }
 
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
@@ -1516,7 +1517,7 @@ private:
 #pragma endregion
 
 #pragma region Thoughts
-    void ThoughtsTabDraw(rct_drawpixelinfo& dpi)
+    void ThoughtsTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_5))
             return;
@@ -1531,15 +1532,15 @@ private:
             imageId += (frame_no / 2) & 0x7;
         }
 
-        gfx_draw_sprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateThoughts()
     {
         frame_no++;
 
-        widget_invalidate(*this, WIDX_TAB_2);
-        widget_invalidate(*this, WIDX_TAB_5);
+        WidgetInvalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_5);
 
         auto peep = GetGuest();
         if (peep == nullptr)
@@ -1553,7 +1554,7 @@ private:
         }
     }
 
-    void OnDrawThoughts(rct_drawpixelinfo& dpi)
+    void OnDrawThoughts(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1587,7 +1588,7 @@ private:
             int32_t widgWidth = widgets[WIDX_PAGE_BACKGROUND].right - widgets[WIDX_PAGE_BACKGROUND].left - 8;
 
             auto ft = Formatter();
-            peep_thought_set_format_args(&thought, ft);
+            PeepThoughtSetFormatArgs(&thought, ft);
             screenCoords.y += DrawTextWrapped(&dpi, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontStyle::Small });
 
             // If this is the last visible line end drawing.
@@ -1598,7 +1599,7 @@ private:
 #pragma endregion
 
 #pragma region Inventory
-    void InventoryTabDraw(rct_drawpixelinfo& dpi)
+    void InventoryTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_6))
             return;
@@ -1606,15 +1607,15 @@ private:
         const auto& widget = widgets[WIDX_TAB_6];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
-        gfx_draw_sprite(&dpi, ImageId(SPR_TAB_GUEST_INVENTORY), screenCoords);
+        GfxDrawSprite(&dpi, ImageId(SPR_TAB_GUEST_INVENTORY), screenCoords);
     }
 
     void OnUpdateInventory()
     {
         frame_no++;
 
-        widget_invalidate(*this, WIDX_TAB_2);
-        widget_invalidate(*this, WIDX_TAB_6);
+        WidgetInvalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_6);
 
         auto peep = GetGuest();
         if (peep == nullptr)
@@ -1649,7 +1650,7 @@ private:
                 ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.BalloonColour)).ToUInt32());
                 break;
             case ShopItem::Photo:
-                invRide = get_ride(guest.Photo1RideRef);
+                invRide = GetRide(guest.Photo1RideRef);
                 if (invRide != nullptr)
                 {
                     ft.Rewind();
@@ -1673,7 +1674,7 @@ private:
                         ft.Add<const char*>(parkName);
                         break;
                     case VOUCHER_TYPE_RIDE_FREE:
-                        invRide = get_ride(guest.VoucherRideId);
+                        invRide = GetRide(guest.VoucherRideId);
                         if (invRide != nullptr)
                         {
                             ft.Rewind();
@@ -1706,7 +1707,7 @@ private:
                 ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.TshirtColour)).ToUInt32());
                 break;
             case ShopItem::Photo2:
-                invRide = get_ride(guest.Photo2RideRef);
+                invRide = GetRide(guest.Photo2RideRef);
                 if (invRide != nullptr)
                 {
                     ft.Rewind();
@@ -1715,7 +1716,7 @@ private:
                 }
                 break;
             case ShopItem::Photo3:
-                invRide = get_ride(guest.Photo3RideRef);
+                invRide = GetRide(guest.Photo3RideRef);
                 if (invRide != nullptr)
                 {
                     ft.Rewind();
@@ -1724,7 +1725,7 @@ private:
                 }
                 break;
             case ShopItem::Photo4:
-                invRide = get_ride(guest.Photo4RideRef);
+                invRide = GetRide(guest.Photo4RideRef);
                 if (invRide != nullptr)
                 {
                     ft.Rewind();
@@ -1740,7 +1741,7 @@ private:
         return std::make_pair(STR_GUEST_ITEM_FORMAT, ft);
     }
 
-    void OnDrawInventory(rct_drawpixelinfo& dpi)
+    void OnDrawInventory(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         OverviewTabDraw(dpi);
@@ -1787,7 +1788,7 @@ private:
 #pragma endregion
 
 #pragma region Debug
-    void DebugTabDraw(rct_drawpixelinfo& dpi)
+    void DebugTabDraw(DrawPixelInfo& dpi)
     {
         if (WidgetIsDisabled(*this, WIDX_TAB_7))
             return;
@@ -1801,7 +1802,7 @@ private:
             imageId += (frame_no / 2) & 0x3;
         }
 
-        gfx_draw_sprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateDebug()
@@ -1810,7 +1811,7 @@ private:
         Invalidate();
     }
 
-    void OnDrawDebug(rct_drawpixelinfo& dpi)
+    void OnDrawDebug(DrawPixelInfo& dpi)
     {
         char buffer[512]{};
         char buffer2[512]{};
@@ -1850,20 +1851,20 @@ private:
             ft.Add<int32_t>(peep->NextLoc.x);
             ft.Add<int32_t>(peep->NextLoc.y);
             ft.Add<int32_t>(peep->NextLoc.z);
-            format_string(buffer, sizeof(buffer), STR_PEEP_DEBUG_NEXT, ft.Data());
+            OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), STR_PEEP_DEBUG_NEXT, ft.Data());
             if (peep->GetNextIsSurface())
             {
-                format_string(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
-                safe_strcat(buffer, buffer2, sizeof(buffer));
+                OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
+                SafeStrCat(buffer, buffer2, sizeof(buffer));
             }
             if (peep->GetNextIsSloped())
             {
                 auto ft2 = Formatter();
                 ft2.Add<int32_t>(peep->GetNextDirection());
-                format_string(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
-                safe_strcat(buffer, buffer2, sizeof(buffer));
+                OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
+                SafeStrCat(buffer, buffer2, sizeof(buffer));
             }
-            gfx_draw_string(&dpi, screenCoords, buffer, {});
+            GfxDrawString(&dpi, screenCoords, buffer, {});
         }
         screenCoords.y += LIST_ROW_HEIGHT;
         {
@@ -1907,7 +1908,7 @@ private:
  *  rct2: 0x006989E9
  *
  */
-rct_window* WindowGuestOpen(Peep* peep)
+WindowBase* WindowGuestOpen(Peep* peep)
 {
     if (peep == nullptr)
     {
@@ -1918,8 +1919,7 @@ rct_window* WindowGuestOpen(Peep* peep)
         return WindowStaffOpen(peep);
     }
 
-    auto* window = static_cast<GuestWindow*>(
-        window_bring_to_front_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
+    auto* window = static_cast<GuestWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
     if (window == nullptr)
     {
         int32_t windowWidth = 192;

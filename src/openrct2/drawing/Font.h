@@ -52,12 +52,12 @@ extern TTFFontSetDescriptor* gCurrentTTFFontSet;
 
 #endif // NO_TTF
 
-void font_sprite_initialise_characters();
-int32_t font_sprite_get_codepoint_offset(int32_t codepoint);
-int32_t font_sprite_get_codepoint_width(FontStyle fontStyle, int32_t codepoint);
-ImageId font_sprite_get_codepoint_sprite(FontStyle fontStyle, int32_t codepoint);
-int32_t font_get_line_height(FontStyle fontStyle);
-int32_t font_get_line_height_small(FontStyle fontStyle);
-bool font_supports_string_sprite(const utf8* text);
-bool font_supports_string_ttf(const utf8* text, FontStyle fontStyle);
-bool font_supports_string(const utf8* text, FontStyle fontStyle);
+void FontSpriteInitialiseCharacters();
+int32_t FontSpriteGetCodepointOffset(int32_t codepoint);
+int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint);
+ImageId FontSpriteGetCodepointSprite(FontStyle fontStyle, int32_t codepoint);
+int32_t FontGetLineHeight(FontStyle fontStyle);
+int32_t FontGetLineHeightSmall(FontStyle fontStyle);
+bool FontSupportsStringSprite(const utf8* text);
+bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle);
+bool FontSupportsString(const utf8* text, FontStyle fontStyle);

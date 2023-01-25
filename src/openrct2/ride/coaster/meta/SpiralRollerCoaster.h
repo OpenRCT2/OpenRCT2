@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor SpiralRollerCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_BOOSTER, TRACK_LIFT_HILL}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_mini_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionMiniRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor SpiralRollerCoasterRTD =
     SET_FIELD(Heights, { 19, 24, 9, 11, }),
     SET_FIELD(MaxMass, 31),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 7, 7 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_spiral_roller_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSpiralRollerCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 41, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 35.00_GBP, 2.50_GBP, 50, }),

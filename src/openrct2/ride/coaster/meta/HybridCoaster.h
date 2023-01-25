@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor HybridCoasterRTD =
     SET_FIELD(Heights, { 43, 24, 13, 13}),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftRMC, 5, 8 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_hybrid_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateHybridCoaster),
     SET_FIELD(RatingsMultipliers, { 52, 36, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 65.00_GBP, 3.50_GBP, 55}),

@@ -80,8 +80,8 @@ DukValue ScTrackIterator::previousPosition_get() const
         return ToDuk(ctx, nullptr);
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
-    track_begin_end tbe{};
-    track_block_get_previous(posEl, &tbe);
+    TrackBeginEnd tbe{};
+    TrackBlockGetPrevious(posEl, &tbe);
     CoordsXYZD result(tbe.end_x, tbe.end_y, tbe.begin_z, tbe.begin_direction);
     return ToDuk(ctx, result);
 }
@@ -103,7 +103,7 @@ DukValue ScTrackIterator::nextPosition_get() const
     CoordsXYE next;
     int32_t z{};
     int32_t direction{};
-    track_block_get_next(&posEl, &next, &z, &direction);
+    TrackBlockGetNext(&posEl, &next, &z, &direction);
     CoordsXYZD result(next.x, next.y, z, direction);
     return ToDuk(ctx, result);
 }
@@ -119,8 +119,8 @@ bool ScTrackIterator::previous()
         return false;
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
-    track_begin_end tbe{};
-    if (track_block_get_previous(posEl, &tbe))
+    TrackBeginEnd tbe{};
+    if (TrackBlockGetPrevious(posEl, &tbe))
     {
         auto prev = CoordsXYE(tbe.end_x, tbe.end_y, tbe.begin_element);
         auto origin = GetTrackSegmentOrigin(prev);
@@ -148,7 +148,7 @@ bool ScTrackIterator::next()
     CoordsXYE next;
     int32_t z{};
     int32_t direction{};
-    if (track_block_get_next(&posEl, &next, &z, &direction))
+    if (TrackBlockGetNext(&posEl, &next, &z, &direction))
     {
         auto origin = GetTrackSegmentOrigin(next);
         if (origin)

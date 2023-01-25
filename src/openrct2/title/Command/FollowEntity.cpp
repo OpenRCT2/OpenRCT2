@@ -15,10 +15,10 @@ namespace OpenRCT2::Title
 {
     int16_t FollowEntityCommand::operator()(int16_t timer)
     {
-        auto* w = window_get_main();
+        auto* w = WindowGetMain();
         if (w != nullptr)
         {
-            window_follow_sprite(*w, Follow.SpriteIndex);
+            WindowFollowSprite(*w, Follow.SpriteIndex);
         }
 
         return 0;

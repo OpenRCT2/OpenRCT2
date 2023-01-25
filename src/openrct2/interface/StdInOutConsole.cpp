@@ -47,7 +47,7 @@ void StdInOutConsole::Start()
             {
                 if (lastPromptQuit)
                 {
-                    openrct2_finish();
+                    OpenRCT2Finish();
                     break;
                 }
 
@@ -105,7 +105,7 @@ void StdInOutConsole::Clear()
 
 void StdInOutConsole::Close()
 {
-    openrct2_finish();
+    OpenRCT2Finish();
 }
 
 void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)

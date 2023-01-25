@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor SuspendedSwingingCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_suspended_swinging_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionSuspendedSwingingRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_IS_SUSPENDED),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor SuspendedSwingingCoasterRTD =
     SET_FIELD(Heights, { 24, 40, 29, 8, }),
     SET_FIELD(MaxMass, 26),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 4, 6 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_suspended_swinging_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSuspendedSwingingCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 20, 3, 10 }),
     SET_FIELD(BuildCosts, { 47.50_GBP, 2.50_GBP, 50, }),

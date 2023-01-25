@@ -367,7 +367,7 @@ namespace Platform
         return _dllModule;
     }
 
-    static std::wstring get_progIdName(std::string_view extension)
+    static std::wstring GetProdIDName(std::string_view extension)
     {
         auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
         auto progIdNameW = String::ToWideChar(progIdName);
@@ -390,7 +390,7 @@ namespace Platform
         auto fileTypeTextW = String::ToWideChar(fileTypeText);
         auto commandTextW = String::ToWideChar(commandText);
         auto commandArgsW = String::ToWideChar(commandArgs);
-        auto progIdNameW = get_progIdName(extension);
+        auto progIdNameW = GetProdIDName(extension);
 
         HKEY hKey = nullptr;
         HKEY hRootKey = nullptr;
@@ -473,7 +473,7 @@ namespace Platform
             RegDeleteTreeW(hRootKey, String::ToWideChar(extension).c_str());
 
             // [hRootKey\OpenRCT2.ext]
-            auto progIdName = get_progIdName(extension);
+            auto progIdName = GetProdIDName(extension);
             RegDeleteTreeW(hRootKey, progIdName.c_str());
 
             RegCloseKey(hRootKey);
@@ -504,13 +504,13 @@ namespace Platform
 
     bool FindApp(std::string_view app, std::string* output)
     {
-        log_warning("FindApp() not implemented for Windows!");
+        LOG_WARNING("FindApp() not implemented for Windows!");
         return false;
     }
 
     int32_t Execute(std::string_view command, std::string* output)
     {
-        log_warning("Execute() not implemented for Windows!");
+        LOG_WARNING("Execute() not implemented for Windows!");
         return -1;
     }
 
@@ -798,7 +798,7 @@ namespace Platform
         HANDLE mutex = CreateMutexW(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (mutex == nullptr)
         {
-            log_error("unable to create mutex");
+            LOG_ERROR("unable to create mutex");
             return true;
         }
         else if (GetLastError() == ERROR_ALREADY_EXISTS)
@@ -861,7 +861,7 @@ namespace Platform
 
     bool SetupUriProtocol()
     {
-        log_verbose("Setting up URI protocol...");
+        LOG_VERBOSE("Setting up URI protocol...");
 
         // [HKEY_CURRENT_USER\Software\Classes]
         HKEY hRootKey;
@@ -895,7 +895,7 @@ namespace Platform
                                 RegSetKeyValueW(hMuiCacheKey, nullptr, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2"));
                             }
 
-                            log_verbose("URI protocol setup successful");
+                            LOG_VERBOSE("URI protocol setup successful");
                             return true;
                         }
                     }
@@ -903,7 +903,7 @@ namespace Platform
             }
         }
 
-        log_verbose("URI protocol setup failed");
+        LOG_VERBOSE("URI protocol setup failed");
         return false;
     }
 

@@ -20,7 +20,7 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x008636F4 */
-static void suspended_monorail_track_flat(
+static void SuspendedMonorailTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -42,7 +42,7 @@ static void suspended_monorail_track_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -52,7 +52,7 @@ static void suspended_monorail_track_flat(
 }
 
 /** rct2: 0x008637A4, 0x008637B4, 0x008637C4 */
-static void suspended_monorail_track_station(
+static void SuspendedMonorailTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -72,15 +72,15 @@ static void suspended_monorail_track_station(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 32 },
         { 32, 20, 3 }, { 0, 6, height + 32 });
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
-    track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
+    TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x00863704 */
-static void suspended_monorail_track_25_deg_up(
+static void SuspendedMonorailTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -110,7 +110,7 @@ static void suspended_monorail_track_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -145,7 +145,7 @@ static void suspended_monorail_track_25_deg_up(
 }
 
 /** rct2: 0x00863714 */
-static void suspended_monorail_track_flat_to_25_deg_up(
+static void SuspendedMonorailTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -175,7 +175,7 @@ static void suspended_monorail_track_flat_to_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -210,7 +210,7 @@ static void suspended_monorail_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x00863724 */
-static void suspended_monorail_track_25_deg_up_to_flat(
+static void SuspendedMonorailTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -240,7 +240,7 @@ static void suspended_monorail_track_25_deg_up_to_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -275,31 +275,31 @@ static void suspended_monorail_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x00863734 */
-static void suspended_monorail_track_25_deg_down(
+static void SuspendedMonorailTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    suspended_monorail_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedMonorailTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00863744 */
-static void suspended_monorail_track_flat_to_25_deg_down(
+static void SuspendedMonorailTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    suspended_monorail_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedMonorailTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00863754 */
-static void suspended_monorail_track_25_deg_down_to_flat(
+static void SuspendedMonorailTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    suspended_monorail_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedMonorailTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00863764 */
-static void suspended_monorail_track_left_quarter_turn_5(
+static void SuspendedMonorailTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -480,16 +480,16 @@ static void suspended_monorail_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x00863774 */
-static void suspended_monorail_track_right_quarter_turn_5(
+static void SuspendedMonorailTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    suspended_monorail_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SuspendedMonorailTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00863784 */
-static void suspended_monorail_track_s_bend_left(
+static void SuspendedMonorailTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -660,7 +660,7 @@ static void suspended_monorail_track_s_bend_left(
 }
 
 /** rct2: 0x00863794 */
-static void suspended_monorail_track_s_bend_right(
+static void SuspendedMonorailTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -831,7 +831,7 @@ static void suspended_monorail_track_s_bend_right(
 }
 
 /** rct2: 0x008637D4 */
-static void suspended_monorail_track_left_quarter_turn_3(
+static void SuspendedMonorailTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -949,16 +949,16 @@ static void suspended_monorail_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x008637E4 */
-static void suspended_monorail_track_right_quarter_turn_3(
+static void SuspendedMonorailTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    suspended_monorail_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SuspendedMonorailTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00863864 */
-static void suspended_monorail_track_left_eighth_to_diag(
+static void SuspendedMonorailTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1118,7 +1118,7 @@ static void suspended_monorail_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x00863874 */
-static void suspended_monorail_track_right_eighth_to_diag(
+static void SuspendedMonorailTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1278,25 +1278,25 @@ static void suspended_monorail_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x00863884 */
-static void suspended_monorail_track_left_eighth_to_orthogonal(
+static void SuspendedMonorailTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    suspended_monorail_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedMonorailTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00863894 */
-static void suspended_monorail_track_right_eighth_to_orthogonal(
+static void SuspendedMonorailTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    suspended_monorail_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    SuspendedMonorailTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008637F4 */
-static void suspended_monorail_track_diag_flat(
+static void SuspendedMonorailTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1379,7 +1379,7 @@ static void suspended_monorail_track_diag_flat(
 }
 
 /** rct2: 0x00863824 */
-static void suspended_monorail_track_diag_25_deg_up(
+static void SuspendedMonorailTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1462,7 +1462,7 @@ static void suspended_monorail_track_diag_25_deg_up(
 }
 
 /** rct2: 0x00863804 */
-static void suspended_monorail_track_diag_flat_to_25_deg_up(
+static void SuspendedMonorailTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1545,7 +1545,7 @@ static void suspended_monorail_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x00863814 */
-static void suspended_monorail_track_diag_25_deg_up_to_flat(
+static void SuspendedMonorailTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1628,7 +1628,7 @@ static void suspended_monorail_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x00863854 */
-static void suspended_monorail_track_diag_25_deg_down(
+static void SuspendedMonorailTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1711,7 +1711,7 @@ static void suspended_monorail_track_diag_25_deg_down(
 }
 
 /** rct2: 0x00863834 */
-static void suspended_monorail_track_diag_flat_to_25_deg_down(
+static void SuspendedMonorailTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1791,7 +1791,7 @@ static void suspended_monorail_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x00863844 */
-static void suspended_monorail_track_diag_25_deg_down_to_flat(
+static void SuspendedMonorailTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1873,62 +1873,62 @@ static void suspended_monorail_track_diag_25_deg_down_to_flat(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_suspended_monorail(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedMonorail(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return suspended_monorail_track_flat;
+            return SuspendedMonorailTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return suspended_monorail_track_station;
+            return SuspendedMonorailTrackStation;
         case TrackElemType::Up25:
-            return suspended_monorail_track_25_deg_up;
+            return SuspendedMonorailTrack25DegUp;
         case TrackElemType::FlatToUp25:
-            return suspended_monorail_track_flat_to_25_deg_up;
+            return SuspendedMonorailTrackFlatTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return suspended_monorail_track_25_deg_up_to_flat;
+            return SuspendedMonorailTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return suspended_monorail_track_25_deg_down;
+            return SuspendedMonorailTrack25DegDown;
         case TrackElemType::FlatToDown25:
-            return suspended_monorail_track_flat_to_25_deg_down;
+            return SuspendedMonorailTrackFlatTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return suspended_monorail_track_25_deg_down_to_flat;
+            return SuspendedMonorailTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return suspended_monorail_track_left_quarter_turn_5;
+            return SuspendedMonorailTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return suspended_monorail_track_right_quarter_turn_5;
+            return SuspendedMonorailTrackRightQuarterTurn5;
         case TrackElemType::SBendLeft:
-            return suspended_monorail_track_s_bend_left;
+            return SuspendedMonorailTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return suspended_monorail_track_s_bend_right;
+            return SuspendedMonorailTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return suspended_monorail_track_left_quarter_turn_3;
+            return SuspendedMonorailTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return suspended_monorail_track_right_quarter_turn_3;
+            return SuspendedMonorailTrackRightQuarterTurn3;
         case TrackElemType::LeftEighthToDiag:
-            return suspended_monorail_track_left_eighth_to_diag;
+            return SuspendedMonorailTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return suspended_monorail_track_right_eighth_to_diag;
+            return SuspendedMonorailTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return suspended_monorail_track_left_eighth_to_orthogonal;
+            return SuspendedMonorailTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return suspended_monorail_track_right_eighth_to_orthogonal;
+            return SuspendedMonorailTrackRightEighthToOrthogonal;
         case TrackElemType::DiagFlat:
-            return suspended_monorail_track_diag_flat;
+            return SuspendedMonorailTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return suspended_monorail_track_diag_25_deg_up;
+            return SuspendedMonorailTrackDiag25DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return suspended_monorail_track_diag_flat_to_25_deg_up;
+            return SuspendedMonorailTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return suspended_monorail_track_diag_25_deg_up_to_flat;
+            return SuspendedMonorailTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return suspended_monorail_track_diag_25_deg_down;
+            return SuspendedMonorailTrackDiag25DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return suspended_monorail_track_diag_flat_to_25_deg_down;
+            return SuspendedMonorailTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return suspended_monorail_track_diag_25_deg_down_to_flat;
+            return SuspendedMonorailTrackDiag25DegDownToFlat;
     }
     return nullptr;
 }

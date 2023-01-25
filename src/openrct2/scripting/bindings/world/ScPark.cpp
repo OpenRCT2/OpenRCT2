@@ -120,7 +120,7 @@ namespace OpenRCT2::Scripting
         if (gParkEntranceFee != value)
         {
             gParkEntranceFee = value;
-            window_invalidate_by_class(WindowClass::ParkInformation);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
@@ -207,7 +207,7 @@ namespace OpenRCT2::Scripting
         if (gTotalAdmissions != value)
         {
             gTotalAdmissions = value;
-            window_invalidate_by_class(WindowClass::ParkInformation);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
@@ -222,7 +222,7 @@ namespace OpenRCT2::Scripting
         if (gTotalIncomeFromAdmissions != value)
         {
             gTotalIncomeFromAdmissions = value;
-            window_invalidate_by_class(WindowClass::ParkInformation);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
@@ -273,7 +273,7 @@ namespace OpenRCT2::Scripting
         if (park.Name != value)
         {
             park.Name = std::move(value);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
         }
     }
 
@@ -291,7 +291,7 @@ namespace OpenRCT2::Scripting
             gParkFlags |= mask;
         else
             gParkFlags &= ~mask;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     std::vector<std::shared_ptr<ScParkMessage>> ScPark::messages_get() const

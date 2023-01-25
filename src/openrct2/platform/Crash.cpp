@@ -138,7 +138,7 @@ static bool OnCrash(
         FILE* input = _wfopen(dumpFilePath, L"rb");
         FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
 
-        if (util_gzip_compress(input, dest))
+        if (UtilGzipCompress(input, dest))
         {
             // TODO: enable upload of gzip-compressed dumps once supported on
             // backtrace.io (uncomment the line below). For now leave compression
@@ -153,7 +153,7 @@ static bool OnCrash(
         fclose(dest);
     }
 
-    bool with_record = stop_silent_record();
+    bool with_record = StopSilentRecord();
 
     // Try to rename the files
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
@@ -214,7 +214,7 @@ static bool OnCrash(
     // Discovering which of the approaches got implemented is left as an excercise for the reader.
     if (OpenRCT2::GetContext()->GetDrawingEngineType() != DrawingEngine::OpenGL)
     {
-        std::string screenshotPath = screenshot_dump();
+        std::string screenshotPath = ScreenshotDump();
         if (!screenshotPath.empty())
         {
             auto screenshotPathW = String::ToWideChar(screenshotPath.c_str());
@@ -328,7 +328,7 @@ constexpr const wchar_t* PipeName = L"openrct2-bpad";
 
 #endif // USE_BREAKPAD
 
-CExceptionHandler crash_init()
+CExceptionHandler CrashInit()
 {
 #ifdef USE_BREAKPAD
     // Path must exist and be RW!
@@ -340,14 +340,14 @@ CExceptionHandler crash_init()
 #endif // USE_BREAKPAD
 }
 
-void crash_register_additional_file(const std::string& key, const std::string& path)
+void CrashRegisterAdditionalFile(const std::string& key, const std::string& path)
 {
 #ifdef USE_BREAKPAD
     _uploadFiles[String::ToWideChar(key.c_str())] = String::ToWideChar(path.c_str());
 #endif // USE_BREAKPAD
 }
 
-void crash_unregister_additional_file(const std::string& key)
+void CrashUnregisterAdditionalFile(const std::string& key)
 {
 #ifdef USE_BREAKPAD
     auto it = _uploadFiles.find(String::ToWideChar(key.c_str()));

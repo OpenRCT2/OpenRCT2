@@ -101,13 +101,13 @@ public:
         widgets = window_maze_construction_widgets;
         WindowInitScrollWidgets(*this);
         rideId = _currentRideIndex;
-        show_gridlines();
+        ShowGridlines();
     }
 
     void OnClose() override
     {
-        ride_construction_invalidate_current_track();
-        viewport_set_visibility(0);
+        RideConstructionInvalidateCurrentTrack();
+        ViewportSetVisibility(0);
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -115,11 +115,11 @@ public:
 
         // In order to cancel the yellow arrow correctly the
         // selection tool should be cancelled.
-        tool_cancel();
+        ToolCancel();
 
-        hide_gridlines();
+        HideGridlines();
 
-        auto currentRide = get_ride(_currentRideIndex);
+        auto currentRide = GetRide(_currentRideIndex);
         if (currentRide != nullptr)
         {
             if (currentRide->overall_view.IsNull())
@@ -134,7 +134,7 @@ public:
             else
             {
                 auto intent = Intent(WindowClass::Ride);
-                intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
+                intent.PutExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
                 ContextOpenIntent(&intent);
             }
         }
@@ -155,7 +155,7 @@ public:
             case WIDX_MAZE_DIRECTION_NE:
             case WIDX_MAZE_DIRECTION_SE:
             case WIDX_MAZE_DIRECTION_SW:
-                WindowMazeConstructionConstruct(((widgetIndex - WIDX_MAZE_DIRECTION_NW) - get_current_rotation()) & 3);
+                WindowMazeConstructionConstruct(((widgetIndex - WIDX_MAZE_DIRECTION_NW) - GetCurrentRotation()) & 3);
                 break;
         }
     }
@@ -185,7 +185,7 @@ public:
         {
             if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
             {
-                widget_invalidate(*this, i);
+                WidgetInvalidate(*this, i);
             }
         }
         disabled_widgets = disabledWidgets;
@@ -209,7 +209,7 @@ public:
 
     void OnUpdate() override
     {
-        auto currentRide = get_ride(_currentRideIndex);
+        auto currentRide = GetRide(_currentRideIndex);
         if (currentRide == nullptr || currentRide->status != RideStatus::Closed)
         {
             Close();
@@ -241,10 +241,10 @@ public:
             case RideConstructionState::Front:
             case RideConstructionState::Back:
             case RideConstructionState::Selected:
-                if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+                if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
                     && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
                 {
-                    tool_cancel();
+                    ToolCancel();
                 }
                 break;
             default:
@@ -258,11 +258,11 @@ public:
         switch (widgetIndex)
         {
             case WIDX_MAZE_DIRECTION_GROUPBOX:
-                ride_construction_toolupdate_construct(screenCoords);
+                RideConstructionToolupdateConstruct(screenCoords);
                 break;
             case WIDX_MAZE_ENTRANCE:
             case WIDX_MAZE_EXIT:
-                ride_construction_toolupdate_entrance_exit(screenCoords);
+                RideConstructionToolupdateEntranceExit(screenCoords);
                 break;
         }
     }
@@ -272,7 +272,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_MAZE_DIRECTION_GROUPBOX:
-                ride_construction_tooldown_construct(screenCoords);
+                RideConstructionTooldownConstruct(screenCoords);
                 break;
             case WIDX_MAZE_ENTRANCE:
             case WIDX_MAZE_EXIT:
@@ -283,7 +283,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        auto currentRide = get_ride(_currentRideIndex);
+        auto currentRide = GetRide(_currentRideIndex);
         auto ft = Formatter::Common();
         if (currentRide != nullptr)
         {
@@ -297,7 +297,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
@@ -305,15 +305,15 @@ public:
 private:
     void WindowMazeConstructionEntranceMouseup(WidgetIndex widgetIndex)
     {
-        if (tool_set(*this, widgetIndex, Tool::Crosshair))
+        if (ToolSet(*this, widgetIndex, Tool::Crosshair))
             return;
 
         gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
         gRideEntranceExitPlaceRideIndex = rideId;
         gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-        input_set_flag(INPUT_FLAG_6, true);
+        InputSetFlag(INPUT_FLAG_6, true);
 
-        ride_construction_invalidate_current_track();
+        RideConstructionInvalidateCurrentTrack();
 
         if (_rideConstructionState != RideConstructionState::EntranceExit)
         {
@@ -328,7 +328,7 @@ private:
     {
         if (_rideConstructionState == RideConstructionState::EntranceExit)
         {
-            tool_cancel();
+            ToolCancel();
         }
         _rideConstructionState = rideConstructionState;
         WindowMazeConstructionUpdatePressedWidgets();
@@ -336,14 +336,14 @@ private:
 
     void WindowMazeConstructionEntranceTooldown(const ScreenCoordsXY& screenCoords)
     {
-        ride_construction_invalidate_current_track();
+        RideConstructionInvalidateCurrentTrack();
 
         MapInvalidateSelectionRect();
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-        CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
+        CoordsXYZD entranceOrExitCoords = RideGetEntranceOrExitPositionFromScreenPosition(screenCoords);
         if (entranceOrExitCoords.IsNull())
             return;
 
@@ -362,17 +362,17 @@ private:
 
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
-            auto currentRide = get_ride(rideIndex);
-            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide).Successful)
+            auto currentRide = GetRide(rideIndex);
+            if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
             {
-                tool_cancel();
+                ToolCancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
-                    window_close_by_class(WindowClass::RideConstruction);
+                    WindowCloseByClass(WindowClass::RideConstruction);
             }
             else
             {
                 gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                window_invalidate_by_class(WindowClass::RideConstruction);
+                WindowInvalidateByClass(WindowClass::RideConstruction);
                 gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     ? WIDX_MAZE_ENTRANCE
                     : WIDX_MAZE_EXIT;
@@ -390,7 +390,7 @@ private:
         _currentTrackSelectionFlags = 0;
         _rideConstructionNextArrowPulse = 0;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        ride_construction_invalidate_current_track();
+        RideConstructionInvalidateCurrentTrack();
 
         x = _currentTrackBegin.x + (CoordsDirectionDelta[direction].x / 2);
         y = _currentTrackBegin.y + (CoordsDirectionDelta[direction].y / 2);
@@ -428,7 +428,7 @@ private:
     }
 };
 
-rct_window* WindowMazeConstructionOpen()
+WindowBase* WindowMazeConstructionOpen()
 {
     return WindowFocusOrCreate<MazeConstructionWindow>(
         WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
@@ -436,9 +436,9 @@ rct_window* WindowMazeConstructionOpen()
 
 void WindowMazeConstructionUpdatePressedWidgets()
 {
-    rct_window* w;
+    WindowBase* w;
 
-    w = window_find_by_class(WindowClass::RideConstruction);
+    w = WindowFindByClass(WindowClass::RideConstruction);
     if (w == nullptr)
         return;
 

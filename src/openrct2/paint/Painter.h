@@ -16,7 +16,7 @@
 #include <memory>
 #include <vector>
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 namespace OpenRCT2
 {
@@ -47,13 +47,13 @@ namespace OpenRCT2
             explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
-            PaintSession* CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags);
+            PaintSession* CreateSession(DrawPixelInfo* dpi, uint32_t viewFlags);
             void ReleaseSession(PaintSession* session);
             ~Painter();
 
         private:
-            void PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text);
-            void PaintFPS(rct_drawpixelinfo* dpi);
+            void PaintReplayNotice(DrawPixelInfo* dpi, const char* text);
+            void PaintFPS(DrawPixelInfo* dpi);
             void MeasureFPS();
         };
     } // namespace Paint

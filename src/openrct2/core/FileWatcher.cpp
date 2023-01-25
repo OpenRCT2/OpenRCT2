@@ -18,8 +18,11 @@
 #    include <sys/inotify.h>
 #    include <sys/types.h>
 #    include <unistd.h>
+#elif defined(__APPLE__)
+#    include <CoreServices/CoreServices.h>
 #endif
 
+#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "FileSystem.hpp"
@@ -41,11 +44,11 @@ void FileWatcher::FileDescriptor::Initialise()
         fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 
         Fd = fd;
-        log_verbose("FileWatcher: inotify_init succeeded");
+        LOG_VERBOSE("FileWatcher: inotify_init succeeded");
     }
     else
     {
-        log_verbose("FileWatcher: inotify_init failed");
+        LOG_VERBOSE("FileWatcher: inotify_init failed");
         throw std::runtime_error("inotify_init failed");
     }
 }
@@ -66,11 +69,11 @@ FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
 {
     if (Wd >= 0)
     {
-        log_verbose("FileWatcher: inotify watch added for %s", path.c_str());
+        LOG_VERBOSE("FileWatcher: inotify watch added for %s", path.c_str());
     }
     else
     {
-        log_verbose("FileWatcher: inotify_add_watch failed for %s", path.c_str());
+        LOG_VERBOSE("FileWatcher: inotify_add_watch failed for %s", path.c_str());
         throw std::runtime_error("inotify_add_watch failed for '" + path + "'");
     }
 }
@@ -78,7 +81,40 @@ FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
 FileWatcher::WatchDescriptor::~WatchDescriptor()
 {
     inotify_rm_watch(Fd, Wd);
-    log_verbose("FileWatcher: inotify watch removed");
+    LOG_VERBOSE("FileWatcher: inotify watch removed");
+}
+#endif
+
+#if defined(__APPLE__)
+
+static int eventModified = kFSEventStreamEventFlagItemFinderInfoMod | kFSEventStreamEventFlagItemModified
+    | kFSEventStreamEventFlagItemInodeMetaMod | kFSEventStreamEventFlagItemChangeOwner | kFSEventStreamEventFlagItemXattrMod;
+
+static int eventRenamed = kFSEventStreamEventFlagItemCreated | kFSEventStreamEventFlagItemRemoved
+    | kFSEventStreamEventFlagItemRenamed;
+
+void FileWatcher::FSEventsCallback(
+    ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
+    const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
+{
+    FileWatcher* fileWatcher = static_cast<FileWatcher*>(clientCallBackInfo);
+
+    Guard::Assert(fileWatcher != nullptr, "FileWatcher is null");
+    Guard::Assert(fileWatcher->OnFileChanged != nullptr, "OnFileChanged is null");
+
+    char** paths = static_cast<char**>(eventPaths);
+    for (size_t i = 0; i < numEvents; i++)
+    {
+        if (eventFlags[i] & eventModified)
+            LOG_VERBOSE("Modified: %s\n", paths[i]);
+        if (eventFlags[i] & eventRenamed)
+            LOG_VERBOSE("Renamed: %s\n", paths[i]);
+
+        if (eventFlags[i] & eventModified || eventFlags[i] & eventRenamed)
+        {
+            fileWatcher->OnFileChanged(paths[i]);
+        }
+    }
 }
 #endif
 
@@ -103,6 +139,22 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
             _watchDescs.emplace_back(_fileDesc.Fd, p.path().string());
         }
     }
+#elif defined(__APPLE__)
+    CFStringRef path = CFStringCreateWithCString(kCFAllocatorDefault, directoryPath.data(), kCFStringEncodingUTF8);
+    CFArrayRef pathsToWatch = CFArrayCreate(kCFAllocatorDefault, reinterpret_cast<const void**>(&path), 1, nullptr);
+    CFAbsoluteTime latencyInSeconds = 0.5;
+    FSEventStreamContext context = { 0, this, nullptr, nullptr, nullptr };
+
+    _stream = FSEventStreamCreate(
+        NULL, &FSEventsCallback, &context, pathsToWatch, kFSEventStreamEventIdSinceNow, latencyInSeconds,
+        kFSEventStreamCreateFlagFileEvents);
+
+    if (!_stream)
+    {
+        throw std::runtime_error("Unable to create FSEventStream");
+    }
+
+    _runLoop = CFRunLoopGetCurrent();
 #else
     throw std::runtime_error("FileWatcher not supported on this platform.");
 #endif
@@ -119,6 +171,16 @@ FileWatcher::~FileWatcher()
     _finished = true;
     _watchThread.join();
     _fileDesc.Close();
+#elif defined(__APPLE__)
+    if (_stream)
+    {
+        FSEventStreamStop(_stream);
+        FSEventStreamUnscheduleFromRunLoop(_stream, _runLoop, kCFRunLoopDefaultMode);
+        FSEventStreamInvalidate(_stream);
+        FSEventStreamRelease(_stream);
+    }
+    _watchThread.join();
+    _stream = nullptr;
 #else
     return;
 #endif
@@ -149,14 +211,14 @@ void FileWatcher::WatchDirectory()
         }
     }
 #elif defined(__linux__)
-    log_verbose("FileWatcher: reading event data...");
+    LOG_VERBOSE("FileWatcher: reading event data...");
     std::array<char, 1024> eventData;
     while (!_finished)
     {
         int length = read(_fileDesc.Fd, eventData.data(), eventData.size());
         if (length >= 0)
         {
-            log_verbose("FileWatcher: inotify event data received");
+            LOG_VERBOSE("FileWatcher: inotify event data received");
             auto onFileChanged = OnFileChanged;
             if (onFileChanged)
             {
@@ -166,7 +228,7 @@ void FileWatcher::WatchDirectory()
                     auto e = reinterpret_cast<inotify_event*>(eventData.data() + offset);
                     if ((e->mask & IN_CLOSE_WRITE) && !(e->mask & IN_ISDIR))
                     {
-                        log_verbose("FileWatcher: inotify event received for %s", e->name);
+                        LOG_VERBOSE("FileWatcher: inotify event received for %s", e->name);
 
                         // Find watch descriptor
                         int wd = e->wd;
@@ -185,6 +247,13 @@ void FileWatcher::WatchDirectory()
 
         // Sleep for 1/2 second
         usleep(500000);
+    }
+#elif defined(__APPLE__)
+    if (_stream)
+    {
+        FSEventStreamScheduleWithRunLoop(_stream, _runLoop, kCFRunLoopDefaultMode);
+        FSEventStreamStart(_stream);
+        CFRunLoopRun();
     }
 #endif
 }

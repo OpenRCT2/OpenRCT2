@@ -164,7 +164,7 @@ enum
     SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0 = 22333,
 };
 
-static ImageId air_powered_vertical_rc_get_support_colour(PaintSession& session)
+static ImageId AirPoweredVerticalRCGetSupportColour(PaintSession& session)
 {
     auto colourFlags = session.TrackColours[SCHEME_SUPPORTS];
     auto trackColour = session.TrackColours[SCHEME_TRACK];
@@ -176,7 +176,7 @@ static ImageId air_powered_vertical_rc_get_support_colour(PaintSession& session)
 }
 
 /** rct2: 0x008AFAD4 */
-static void air_powered_vertical_rc_track_flat(
+static void AirPoweredVerticalRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -198,7 +198,7 @@ static void air_powered_vertical_rc_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void air_powered_vertical_rc_track_station(
+static void AirPoweredVerticalRCTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -218,7 +218,7 @@ static void air_powered_vertical_rc_track_station(
 
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 5, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -226,7 +226,7 @@ static void air_powered_vertical_rc_track_station(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void air_powered_vertical_rc_track_right_quarter_turn_5(
+static void AirPoweredVerticalRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -261,10 +261,10 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(
         },
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_3(
+    TrackPaintUtilRightQuarterTurn5TilesPaint3(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(session, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     switch (trackSequence)
     {
@@ -307,16 +307,16 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void air_powered_vertical_rc_track_left_quarter_turn_5(
+static void AirPoweredVerticalRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    air_powered_vertical_rc_track_right_quarter_turn_5(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    AirPoweredVerticalRCTrackRightQuarterTurn5(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
 /** rct2: 0x008AFB74 */
-static void air_powered_vertical_rc_track_flat_to_left_bank(
+static void AirPoweredVerticalRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -345,7 +345,7 @@ static void air_powered_vertical_rc_track_flat_to_left_bank(
 }
 
 /** rct2: 0x008AFB84 */
-static void air_powered_vertical_rc_track_flat_to_right_bank(
+static void AirPoweredVerticalRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -373,22 +373,22 @@ static void air_powered_vertical_rc_track_flat_to_right_bank(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void air_powered_vertical_rc_track_left_bank_to_flat(
+static void AirPoweredVerticalRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    air_powered_vertical_rc_track_flat_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    AirPoweredVerticalRCTrackFlatToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AFBA4 */
-static void air_powered_vertical_rc_track_right_bank_to_flat(
+static void AirPoweredVerticalRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    air_powered_vertical_rc_track_flat_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    AirPoweredVerticalRCTrackFlatToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
+static void AirPoweredVerticalRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -423,7 +423,7 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
         },
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
 
     if (direction == 1 && trackSequence == 6)
@@ -439,8 +439,8 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
     }
 
-    track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
+    TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(session, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     switch (trackSequence)
     {
@@ -483,17 +483,16 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void air_powered_vertical_rc_track_banked_left_quarter_turn_5(
+static void AirPoweredVerticalRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    air_powered_vertical_rc_track_banked_right_quarter_turn_5(
-        session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    AirPoweredVerticalRCTrackBankedRightQuarterTurn5(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
 /** rct2: 0x008AFBD4 */
-static void air_powered_vertical_rc_track_left_bank(
+static void AirPoweredVerticalRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -522,14 +521,14 @@ static void air_powered_vertical_rc_track_left_bank(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void air_powered_vertical_rc_track_right_bank(
+static void AirPoweredVerticalRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    air_powered_vertical_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    AirPoweredVerticalRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void air_powered_vertical_rc_track_brakes(
+static void AirPoweredVerticalRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -551,7 +550,7 @@ static void air_powered_vertical_rc_track_brakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void air_powered_vertical_rc_track_vertical_slope_up(
+static void AirPoweredVerticalRCTrackVerticalSlopeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -650,8 +649,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
         48, 64, 128, 176, 208, 240, 240,
     };
 
-    auto supportsImageId = air_powered_vertical_rc_get_support_colour(session).WithIndex(
-        supportImageIds[trackSequence][direction]);
+    auto supportsImageId = AirPoweredVerticalRCGetSupportColour(session).WithIndex(supportImageIds[trackSequence][direction]);
     auto trackImageId = session.TrackColours[SCHEME_TRACK].WithIndex(trackImageIds[trackSequence][direction]);
     int8_t bbHeight;
     bool isDirection03 = (direction == 0 || direction == 3);
@@ -773,7 +771,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
     }
 }
 
-static void air_powered_vertical_rc_track_vertical_up(
+static void AirPoweredVerticalRCTrackVerticalUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -788,7 +786,7 @@ static void air_powered_vertical_rc_track_vertical_up(
     switch (trackSequence)
     {
         case 0:
-            imageId = air_powered_vertical_rc_get_support_colour(session).WithIndex(imageIds[direction][0]);
+            imageId = AirPoweredVerticalRCGetSupportColour(session).WithIndex(imageIds[direction][0]);
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 26, 26, 79 }, { 3, 3, height });
             break;
         case 1:
@@ -810,13 +808,13 @@ static void air_powered_vertical_rc_track_vertical_up(
     PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
 }
 
-static void air_powered_vertical_rc_track_vertical_top(
+static void AirPoweredVerticalRCTrackVerticalTop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction == 2 || direction == 3)
     {
-        air_powered_vertical_rc_track_vertical_top(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+        AirPoweredVerticalRCTrackVerticalTop(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
         return;
     }
 
@@ -843,7 +841,7 @@ static void air_powered_vertical_rc_track_vertical_top(
     switch (trackSequence)
     {
         case 0:
-            imageIdS = air_powered_vertical_rc_get_support_colour(session).WithIndex(imageIds[direction][0]);
+            imageIdS = AirPoweredVerticalRCGetSupportColour(session).WithIndex(imageIds[direction][0]);
             imageIdT = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
             if (direction == 0)
             {
@@ -881,7 +879,7 @@ static void air_powered_vertical_rc_track_vertical_top(
             PaintUtilSetVerticalTunnel(session, height + 80);
             break;
         case 3:
-            imageIdS = air_powered_vertical_rc_get_support_colour(session).WithIndex(imageIds[direction][4]);
+            imageIdS = AirPoweredVerticalRCGetSupportColour(session).WithIndex(imageIds[direction][4]);
             imageIdT = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][5]);
             if (direction == 0)
             {
@@ -900,22 +898,21 @@ static void air_powered_vertical_rc_track_vertical_top(
     PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
 }
 
-static void air_powered_vertical_rc_track_vertical_down(
+static void AirPoweredVerticalRCTrackVerticalDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    air_powered_vertical_rc_track_vertical_up(session, ride, trackSequence ^ 1, (direction + 2) & 3, height, trackElement);
+    AirPoweredVerticalRCTrackVerticalUp(session, ride, trackSequence ^ 1, (direction + 2) & 3, height, trackElement);
 }
 
-static void air_powered_vertical_rc_track_vertical_slope_down(
+static void AirPoweredVerticalRCTrackVerticalSlopeDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    air_powered_vertical_rc_track_vertical_slope_up(
-        session, ride, 6 - trackSequence, (direction + 2) & 3, height, trackElement);
+    AirPoweredVerticalRCTrackVerticalSlopeUp(session, ride, 6 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void air_powered_vertical_rc_track_booster(
+static void AirPoweredVerticalRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -945,7 +942,7 @@ static void air_powered_vertical_rc_track_booster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void air_powered_vertical_rc_track_onride_photo(
+static void AirPoweredVerticalRCTrackOnridePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -961,59 +958,59 @@ static void air_powered_vertical_rc_track_onride_photo(
 
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return air_powered_vertical_rc_track_flat;
+            return AirPoweredVerticalRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return air_powered_vertical_rc_track_station;
+            return AirPoweredVerticalRCTrackStation;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return air_powered_vertical_rc_track_left_quarter_turn_5;
+            return AirPoweredVerticalRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return air_powered_vertical_rc_track_right_quarter_turn_5;
+            return AirPoweredVerticalRCTrackRightQuarterTurn5;
         case TrackElemType::FlatToLeftBank:
-            return air_powered_vertical_rc_track_flat_to_left_bank;
+            return AirPoweredVerticalRCTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
-            return air_powered_vertical_rc_track_flat_to_right_bank;
+            return AirPoweredVerticalRCTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
-            return air_powered_vertical_rc_track_left_bank_to_flat;
+            return AirPoweredVerticalRCTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
-            return air_powered_vertical_rc_track_right_bank_to_flat;
+            return AirPoweredVerticalRCTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return air_powered_vertical_rc_track_banked_left_quarter_turn_5;
+            return AirPoweredVerticalRCTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return air_powered_vertical_rc_track_banked_right_quarter_turn_5;
+            return AirPoweredVerticalRCTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBank:
-            return air_powered_vertical_rc_track_left_bank;
+            return AirPoweredVerticalRCTrackLeftBank;
         case TrackElemType::RightBank:
-            return air_powered_vertical_rc_track_right_bank;
+            return AirPoweredVerticalRCTrackRightBank;
         case TrackElemType::Brakes:
-            return air_powered_vertical_rc_track_brakes;
+            return AirPoweredVerticalRCTrackBrakes;
         case TrackElemType::ReverseFreefallSlope:
-            return air_powered_vertical_rc_track_vertical_slope_up;
+            return AirPoweredVerticalRCTrackVerticalSlopeUp;
         case TrackElemType::ReverseFreefallVertical:
-            return air_powered_vertical_rc_track_vertical_up;
+            return AirPoweredVerticalRCTrackVerticalUp;
         case TrackElemType::AirThrustTopCap:
-            return air_powered_vertical_rc_track_vertical_top;
+            return AirPoweredVerticalRCTrackVerticalTop;
         case TrackElemType::AirThrustVerticalDown:
-            return air_powered_vertical_rc_track_vertical_down;
+            return AirPoweredVerticalRCTrackVerticalDown;
         case TrackElemType::AirThrustVerticalDownToLevel:
-            return air_powered_vertical_rc_track_vertical_slope_down;
+            return AirPoweredVerticalRCTrackVerticalSlopeDown;
         case TrackElemType::Booster:
-            return air_powered_vertical_rc_track_booster;
+            return AirPoweredVerticalRCTrackBooster;
         case TrackElemType::OnRidePhoto:
-            return air_powered_vertical_rc_track_onride_photo;
+            return AirPoweredVerticalRCTrackOnridePhoto;
     }
     return nullptr;
 }

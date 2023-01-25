@@ -121,24 +121,24 @@ static Widget *window_editor_objective_options_widgets[] = {
 
 #pragma region Events
 
-static void WindowEditorObjectiveOptionsMainMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowEditorObjectiveOptionsMainResize(rct_window *w);
-static void WindowEditorObjectiveOptionsMainMousedown(rct_window *w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowEditorObjectiveOptionsMainDropdown(rct_window *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowEditorObjectiveOptionsMainUpdate(rct_window *w);
-static void WindowEditorObjectiveOptionsMainTextinput(rct_window *w, WidgetIndex widgetIndex, char *text);
-static void WindowEditorObjectiveOptionsMainInvalidate(rct_window *w);
-static void WindowEditorObjectiveOptionsMainPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowEditorObjectiveOptionsMainMouseup(WindowBase *w, WidgetIndex widgetIndex);
+static void WindowEditorObjectiveOptionsMainResize(WindowBase *w);
+static void WindowEditorObjectiveOptionsMainMousedown(WindowBase *w, WidgetIndex widgetIndex, Widget* widget);
+static void WindowEditorObjectiveOptionsMainDropdown(WindowBase *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowEditorObjectiveOptionsMainUpdate(WindowBase *w);
+static void WindowEditorObjectiveOptionsMainTextinput(WindowBase *w, WidgetIndex widgetIndex, char *text);
+static void WindowEditorObjectiveOptionsMainInvalidate(WindowBase *w);
+static void WindowEditorObjectiveOptionsMainPaint(WindowBase *w, DrawPixelInfo *dpi);
 
-static void WindowEditorObjectiveOptionsRidesMouseup(rct_window *w, WidgetIndex widgetIndex);
-static void WindowEditorObjectiveOptionsRidesResize(rct_window *w);
-static void WindowEditorObjectiveOptionsRidesUpdate(rct_window *w);
-static void WindowEditorObjectiveOptionsRidesScrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void WindowEditorObjectiveOptionsRidesScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowEditorObjectiveOptionsRidesScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window *w);
-static void WindowEditorObjectiveOptionsRidesPaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void WindowEditorObjectiveOptionsRidesMouseup(WindowBase *w, WidgetIndex widgetIndex);
+static void WindowEditorObjectiveOptionsRidesResize(WindowBase *w);
+static void WindowEditorObjectiveOptionsRidesUpdate(WindowBase *w);
+static void WindowEditorObjectiveOptionsRidesScrollgetheight(WindowBase *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void WindowEditorObjectiveOptionsRidesScrollmousedown(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowEditorObjectiveOptionsRidesScrollmouseover(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowEditorObjectiveOptionsRidesInvalidate(WindowBase *w);
+static void WindowEditorObjectiveOptionsRidesPaint(WindowBase *w, DrawPixelInfo *dpi);
+static void WindowEditorObjectiveOptionsRidesScrollpaint(WindowBase *w, DrawPixelInfo *dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
 static WindowEventList window_objective_options_main_events([](auto& events)
@@ -188,17 +188,17 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-static void WindowEditorObjectiveOptionsUpdateDisabledWidgets(rct_window* w);
+static void WindowEditorObjectiveOptionsUpdateDisabledWidgets(WindowBase* w);
 
 /**
  *
  *  rct2: 0x0067137D
  */
-rct_window* WindowEditorObjectiveOptionsOpen()
+WindowBase* WindowEditorObjectiveOptionsOpen()
 {
-    rct_window* w;
+    WindowBase* w;
 
-    w = window_bring_to_front_by_class(WindowClass::EditorObjectiveOptions);
+    w = WindowBringToFrontByClass(WindowClass::EditorObjectiveOptions);
     if (w != nullptr)
         return w;
 
@@ -215,7 +215,7 @@ rct_window* WindowEditorObjectiveOptionsOpen()
     return w;
 }
 
-static void WindowEditorObjectiveOptionsSetPressedTab(rct_window* w)
+static void WindowEditorObjectiveOptionsSetPressedTab(WindowBase* w)
 {
     int32_t i;
     for (i = WIDX_TAB_1; i <= WIDX_TAB_2; i++)
@@ -223,12 +223,12 @@ static void WindowEditorObjectiveOptionsSetPressedTab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void WindowEditorObjectiveOptionsAnchorBorderWidgets(rct_window* w)
+static void WindowEditorObjectiveOptionsAnchorBorderWidgets(WindowBase* w)
 {
     w->ResizeFrameWithPage();
 }
 
-static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorObjectiveOptionsDrawTabImages(WindowBase* w, DrawPixelInfo* dpi)
 {
     Widget* widget;
     int32_t spriteIndex;
@@ -240,7 +240,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
     if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
         spriteIndex += (w->frame_no / 4) % 16;
 
-    gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
+    GfxDrawSprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
     if (!WidgetIsDisabled(*w, WIDX_TAB_2))
@@ -250,7 +250,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
         if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
             spriteIndex += (w->frame_no / 4) % 16;
 
-        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 }
 
@@ -258,7 +258,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
  *
  *  rct2: 0x00668496
  */
-static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
+static void WindowEditorObjectiveOptionsSetPage(WindowBase* w, int32_t page)
 {
     if (w->page == page)
         return;
@@ -273,8 +273,8 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
     w->widgets = window_editor_objective_options_widgets[page];
     w->Invalidate();
     WindowEditorObjectiveOptionsUpdateDisabledWidgets(w);
-    window_event_resize_call(w);
-    window_event_invalidate_call(w);
+    WindowEventResizeCall(w);
+    WindowEventInvalidateCall(w);
     WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
@@ -283,7 +283,7 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
  *
  *  rct2: 0x0067201D
  */
-static void WindowEditorObjectiveOptionsSetObjective(rct_window* w, int32_t objective)
+static void WindowEditorObjectiveOptionsSetObjective(WindowBase* w, int32_t objective)
 {
     gScenarioObjective.Type = objective;
     w->Invalidate();
@@ -329,12 +329,12 @@ static void WindowEditorObjectiveOptionsSetObjective(rct_window* w, int32_t obje
  *
  *  rct2: 0x006719CA
  */
-static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowEditorObjectiveOptionsMainMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -364,12 +364,12 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, WidgetIndex w
  *
  *  rct2: 0x00672254
  */
-static void WindowEditorObjectiveOptionsMainResize(rct_window* w)
+static void WindowEditorObjectiveOptionsMainResize(WindowBase* w)
 {
-    window_set_resize(*w, 450, 229, 450, 229);
+    WindowSetResize(*w, 450, 229, 450, 229);
 }
 
-static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
+static void WindowEditorObjectiveOptionsShowObjectiveDropdown(WindowBase* w)
 {
     int32_t numItems = 0, objectiveType;
     Widget* dropdownWidget;
@@ -409,7 +409,7 @@ static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
     }
 }
 
-static void WindowEditorObjectiveOptionsShowCategoryDropdown(rct_window* w)
+static void WindowEditorObjectiveOptionsShowCategoryDropdown(WindowBase* w)
 {
     int32_t i;
     Widget* dropdownWidget;
@@ -427,7 +427,7 @@ static void WindowEditorObjectiveOptionsShowCategoryDropdown(rct_window* w)
     Dropdown::SetChecked(gScenarioCategory, true);
 }
 
-static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
+static void WindowEditorObjectiveOptionsArg1Increase(WindowBase* w)
 {
     switch (gScenarioObjective.Type)
     {
@@ -491,7 +491,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
     }
 }
 
-static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
+static void WindowEditorObjectiveOptionsArg1Decrease(WindowBase* w)
 {
     switch (gScenarioObjective.Type)
     {
@@ -555,7 +555,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
     }
 }
 
-static void WindowEditorObjectiveOptionsArg2Increase(rct_window* w)
+static void WindowEditorObjectiveOptionsArg2Increase(WindowBase* w)
 {
     if (gScenarioObjective.Year >= 25)
     {
@@ -568,7 +568,7 @@ static void WindowEditorObjectiveOptionsArg2Increase(rct_window* w)
     }
 }
 
-static void WindowEditorObjectiveOptionsArg2Decrease(rct_window* w)
+static void WindowEditorObjectiveOptionsArg2Decrease(WindowBase* w)
 {
     if (gScenarioObjective.Year <= 1)
     {
@@ -585,7 +585,7 @@ static void WindowEditorObjectiveOptionsArg2Decrease(rct_window* w)
  *
  *  rct2: 0x00671A0D
  */
-static void WindowEditorObjectiveOptionsMainMousedown(rct_window* w, WidgetIndex widgetIndex, Widget* widget)
+static void WindowEditorObjectiveOptionsMainMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
 {
     switch (widgetIndex)
     {
@@ -614,7 +614,7 @@ static void WindowEditorObjectiveOptionsMainMousedown(rct_window* w, WidgetIndex
  *
  *  rct2: 0x00671A54
  */
-static void WindowEditorObjectiveOptionsMainDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowEditorObjectiveOptionsMainDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     uint8_t newObjectiveType;
 
@@ -643,14 +643,14 @@ static void WindowEditorObjectiveOptionsMainDropdown(rct_window* w, WidgetIndex 
  *
  *  rct2: 0x006721E7
  */
-static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
+static void WindowEditorObjectiveOptionsMainUpdate(WindowBase* w)
 {
     uint32_t parkFlags;
     uint8_t objectiveType;
 
     w->frame_no++;
-    window_event_invalidate_call(w);
-    widget_invalidate(*w, WIDX_TAB_1);
+    WindowEventInvalidateCall(w);
+    WidgetInvalidate(*w, WIDX_TAB_1);
 
     parkFlags = gParkFlags;
     objectiveType = gScenarioObjective.Type;
@@ -670,7 +670,7 @@ static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
  *
  *  rct2: 0x00671A73
  */
-static void WindowEditorObjectiveOptionsMainTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
+static void WindowEditorObjectiveOptionsMainTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
 {
     if (text == nullptr)
         return;
@@ -704,7 +704,7 @@ static void WindowEditorObjectiveOptionsMainTextinput(rct_window* w, WidgetIndex
  *
  *  rct2: 0x0067161C
  */
-static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
+static void WindowEditorObjectiveOptionsMainInvalidate(WindowBase* w)
 {
     auto widgets = window_editor_objective_options_widgets[w->page];
     if (w->widgets != widgets)
@@ -760,7 +760,7 @@ static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
  *
  *  rct2: 0x0067161C
  */
-static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorObjectiveOptionsMainPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     int32_t width;
     StringId stringId;
@@ -906,12 +906,12 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
  *
  *  rct2: 0x006724A4
  */
-static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowEditorObjectiveOptionsRidesMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -924,21 +924,21 @@ static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, WidgetIndex 
  *
  *  rct2: 0x006725A8
  */
-static void WindowEditorObjectiveOptionsRidesResize(rct_window* w)
+static void WindowEditorObjectiveOptionsRidesResize(WindowBase* w)
 {
-    window_set_resize(*w, 380, 224, 380, 224);
+    WindowSetResize(*w, 380, 224, 380, 224);
 }
 
 /**
  *
  *  rct2: 0x00672544
  */
-static void WindowEditorObjectiveOptionsRidesUpdate(rct_window* w)
+static void WindowEditorObjectiveOptionsRidesUpdate(WindowBase* w)
 {
     w->frame_no++;
-    window_event_invalidate_call(w);
-    window_event_resize_call(w);
-    widget_invalidate(*w, WIDX_TAB_2);
+    WindowEventInvalidateCall(w);
+    WindowEventResizeCall(w);
+    WidgetInvalidate(*w, WIDX_TAB_2);
 
     auto numItems = 0;
     for (auto& ride : GetRideManager())
@@ -962,7 +962,7 @@ static void WindowEditorObjectiveOptionsRidesUpdate(rct_window* w)
  *  rct2: 0x006724BF
  */
 static void WindowEditorObjectiveOptionsRidesScrollgetheight(
-    rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+    WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     *height = w->no_list_items * 12;
 }
@@ -972,14 +972,14 @@ static void WindowEditorObjectiveOptionsRidesScrollgetheight(
  *  rct2: 0x006724FC
  */
 static void WindowEditorObjectiveOptionsRidesScrollmousedown(
-    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     auto i = screenCoords.y / 12;
     if (i < 0 || i >= w->no_list_items)
         return;
 
     const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
-    auto ride = get_ride(rideId);
+    auto ride = GetRide(rideId);
     if (ride != nullptr)
     {
         ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
@@ -992,7 +992,7 @@ static void WindowEditorObjectiveOptionsRidesScrollmousedown(
  *  rct2: 0x006724CC
  */
 static void WindowEditorObjectiveOptionsRidesScrollmouseover(
-    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t i;
 
@@ -1011,7 +1011,7 @@ static void WindowEditorObjectiveOptionsRidesScrollmouseover(
  *
  *  rct2: 0x006722B5
  */
-static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
+static void WindowEditorObjectiveOptionsRidesInvalidate(WindowBase* w)
 {
     Widget* widgets;
 
@@ -1035,7 +1035,7 @@ static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
  *
  *  rct2: 0x00672340
  */
-static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorObjectiveOptionsRidesPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
@@ -1048,10 +1048,10 @@ static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, rct_drawpixeli
  *
  *  rct2: 0x0067236F
  */
-static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowEditorObjectiveOptionsRidesScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     int32_t colour = ColourMapA[w->colours[1]].mid_light;
-    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
+    GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
 
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
@@ -1061,25 +1061,25 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
             continue;
 
         // Checkbox
-        gfx_fill_rect_inset(dpi, { { 2, y }, { 11, y + 10 } }, w->colours[1], INSET_RECT_F_E0);
+        GfxFillRectInset(dpi, { { 2, y }, { 11, y + 10 } }, w->colours[1], INSET_RECT_F_E0);
 
         // Highlighted
         auto stringId = STR_BLACK_STRING;
         if (i == w->selected_list_item)
         {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, { 0, y, w->width, y + 11 }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(dpi, { 0, y, w->width, y + 11 }, FilterPaletteID::PaletteDarken1);
         }
 
         // Checkbox mark
         const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
-        auto ride = get_ride(rideId);
+        auto ride = GetRide(rideId);
         if (ride != nullptr)
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
             {
                 auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
-                gfx_draw_string(
+                GfxDrawString(
                     dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
                     { static_cast<colour_t>(w->colours[1] & 0x7F), FontStyle::Medium, darkness });
             }
@@ -1097,7 +1097,7 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
  *
  *  rct2: 0x00672609
  */
-static void WindowEditorObjectiveOptionsUpdateDisabledWidgets(rct_window* w)
+static void WindowEditorObjectiveOptionsUpdateDisabledWidgets(WindowBase* w)
 {
     // Check if there are any rides (not shops or facilities)
     const auto& rideManager = GetRideManager();

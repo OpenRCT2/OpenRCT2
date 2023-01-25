@@ -60,35 +60,35 @@ public:
         widgets = window_land_rights_widgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
         _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
         pressed_widgets = (1uLL << WIDX_BUY_LAND_RIGHTS);
 
         gLandToolSize = 1;
 
-        show_gridlines();
-        tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
-        input_set_flag(INPUT_FLAG_6, true);
+        ShowGridlines();
+        ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+        InputSetFlag(INPUT_FLAG_6, true);
 
-        show_land_rights();
+        ShowLandRights();
 
         if (gLandRemainingConstructionSales == 0)
         {
-            show_construction_rights();
+            ShowConstructionRights();
         }
     }
 
     void OnClose() override
     {
-        hide_gridlines();
+        HideGridlines();
         if (gLandRemainingConstructionSales == 0)
         {
-            hide_construction_rights();
+            HideConstructionRights();
         }
 
         // If the tool wasn't changed, turn tool off
         if (LandRightsToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -104,18 +104,18 @@ public:
             case WIDX_BUY_LAND_RIGHTS:
                 if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
                 {
-                    tool_set(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
+                    ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
-                    show_land_rights();
+                    ShowLandRights();
                     Invalidate();
                 }
                 break;
             case WIDX_BUY_CONSTRUCTION_RIGHTS:
                 if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
                 {
-                    tool_set(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
+                    ToolSet(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
                     _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
-                    show_construction_rights();
+                    ShowConstructionRights();
                     Invalidate();
                 }
                 break;
@@ -210,7 +210,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = ScreenCoordsXY{ windowPos.x + window_land_rights_widgets[WIDX_PREVIEW].midX(),
                                             windowPos.y + window_land_rights_widgets[WIDX_PREVIEW].midY() };
@@ -240,14 +240,14 @@ public:
         MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-        auto mapTile = screen_get_map_xy(screenCoords, nullptr);
+        auto mapTile = ScreenGetMapXY(screenCoords, nullptr);
 
         if (!mapTile.has_value())
         {
             if (_landRightsCost != MONEY32_UNDEFINED)
             {
                 _landRightsCost = MONEY32_UNDEFINED;
-                window_invalidate_by_class(WindowClass::ClearScenery);
+                WindowInvalidateByClass(WindowClass::ClearScenery);
             }
             return;
         }
@@ -321,11 +321,11 @@ public:
     {
         if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
         {
-            hide_land_rights();
+            HideLandRights();
         }
         else
         {
-            hide_construction_rights();
+            HideConstructionRights();
         }
     }
 
@@ -391,7 +391,7 @@ private:
 
     bool LandRightsToolIsActive()
     {
-        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
         if (gCurrentToolWidget.window_classification != WindowClass::LandRights)
             return false;
@@ -399,7 +399,7 @@ private:
     }
 };
 
-rct_window* WindowLandRightsOpen()
+WindowBase* WindowLandRightsOpen()
 {
     return WindowFocusOrCreate<LandRightsWindow>(
         WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);

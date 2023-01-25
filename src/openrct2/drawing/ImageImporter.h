@@ -27,7 +27,7 @@ namespace OpenRCT2::Drawing
     public:
         struct ImportResult
         {
-            rct_g1_element Element{};
+            G1Element Element{};
             std::vector<uint8_t> Buffer;
         };
 

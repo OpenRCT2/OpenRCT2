@@ -427,17 +427,6 @@ public:
     }
 };
 
-utf8* IIniReader::GetCString(const std::string& name, const utf8* defaultValue) const
-{
-    std::string szValue;
-    if (!TryGetString(name, &szValue))
-    {
-        return String::Duplicate(defaultValue);
-    }
-
-    return String::Duplicate(szValue.c_str());
-}
-
 std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream)
 {
     return std::make_unique<IniReader>(stream);

@@ -84,4 +84,4 @@ struct NewVersionInfo
     std::string url;
 };
 
-NewVersionInfo get_latest_version();
+NewVersionInfo GetLatestVersion();

@@ -17,6 +17,7 @@
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
@@ -132,10 +133,10 @@ public:
         ResetDropdownFlags();
         gDropdownIsColour = false;
         gDropdownDefaultIndex = -1;
-        input_set_state(InputState::DropdownActive);
+        InputSetState(InputState::DropdownActive);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -159,15 +160,14 @@ public:
 
                 if (colours[0] & COLOUR_FLAG_TRANSLUCENT)
                 {
-                    translucent_window_palette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
-                    gfx_filter_rect(&dpi, { leftTop, rightBottom }, palette.highlight);
-                    gfx_filter_rect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
+                    TranslucentWindowPalette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
+                    GfxFilterRect(&dpi, { leftTop, rightBottom }, palette.highlight);
+                    GfxFilterRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                 }
                 else
                 {
-                    gfx_fill_rect(&dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
-                    gfx_fill_rect(
-                        &dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
+                    GfxFillRect(&dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
+                    GfxFillRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
                 }
             }
             else
@@ -176,7 +176,7 @@ public:
                 {
                     // Darken the cell's background slightly when highlighted
                     const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                    gfx_filter_rect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
+                    GfxFilterRect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                 }
 
                 StringId item = gDropdownItems[i].Format;
@@ -187,7 +187,7 @@ public:
                                            : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
                     if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                         image = image.WithIndexOffset(1);
-                    gfx_draw_sprite(&dpi, image, screenCoords);
+                    GfxDrawSprite(&dpi, image, screenCoords);
                 }
                 else
                 {
@@ -353,8 +353,8 @@ void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uin
     max_string_width = 0;
     for (size_t i = 0; i < num_items; i++)
     {
-        format_string(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
-        string_width = gfx_get_string_width(buffer, FontStyle::Medium);
+        FormatStringLegacy(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
+        string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
         max_string_width = std::max(string_width, max_string_width);
     }
 
@@ -377,9 +377,9 @@ void WindowDropdownShowTextCustomWidth(
     const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items,
     int32_t width)
 {
-    input_set_flag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & Dropdown::Flag::StayOpen)
-        input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
+        InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     WindowDropdownClose();
 
@@ -409,9 +409,9 @@ void WindowDropdownShowImage(
     int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
     int32_t itemHeight, int32_t numColumns)
 {
-    input_set_flag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & Dropdown::Flag::StayOpen)
-        input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
+        InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     // Close existing dropdown
     WindowDropdownClose();
@@ -426,14 +426,14 @@ void WindowDropdownShowImage(
 
 void WindowDropdownClose()
 {
-    window_close_by_class(WindowClass::Dropdown);
+    WindowCloseByClass(WindowClass::Dropdown);
 }
 
 /**
  * New function based on 6e914e
  * returns -1 if index is invalid
  */
-int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
+int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
 {
     if (w->classification == WindowClass::Dropdown)
     {
@@ -446,7 +446,7 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
 /**
  *  rct2: 0x006ED43D
  */
-void WindowDropdownShowColour(rct_window* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
+void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
     // Set items

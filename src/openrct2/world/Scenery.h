@@ -30,7 +30,7 @@ struct SceneryEntryBase
     uint32_t image;
 };
 
-struct rct_large_scenery_tile
+struct LargeSceneryTile
 {
     int16_t x_offset;
     int16_t y_offset;
@@ -39,7 +39,6 @@ struct rct_large_scenery_tile
     // CCCC WWWW 0SS0 0000
     uint16_t flags;
 };
-assert_struct_size(rct_large_scenery_tile, 9);
 
 enum
 {
@@ -47,28 +46,27 @@ enum
     LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE = 0x40,
 };
 
-struct rct_large_scenery_text_glyph
+struct LargeSceneryTextGlyph
 {
     uint8_t image_offset;
     uint8_t width;
     uint8_t height;
-    uint8_t pad_3;
+    uint8_t Pad3;
 };
-assert_struct_size(rct_large_scenery_text_glyph, 4);
 
-struct rct_large_scenery_text
+// TODO: Remove not required
+struct RCTLargeSceneryText
 {
     struct
     {
         int16_t x, y;
-    } offset[2];                              // 0x0
-    uint16_t max_width;                       // 0x8
-    uint16_t pad_A;                           // 0xA
-    uint8_t flags;                            // 0xC
-    uint8_t num_images;                       // 0xD
-    rct_large_scenery_text_glyph glyphs[256]; // 0xE
+    } offset[2];                       // 0x0
+    uint16_t max_width;                // 0x8
+    uint16_t PadA;                     // 0xA
+    uint8_t flags;                     // 0xC
+    uint8_t num_images;                // 0xD
+    LargeSceneryTextGlyph glyphs[256]; // 0xE
 };
-assert_struct_size(rct_large_scenery_text, 14 + 4 * 256);
 
 enum LARGE_SCENERY_TEXT_FLAGS
 {
@@ -82,7 +80,7 @@ struct LargeSceneryEntry : SceneryEntryBase
     uint8_t flags;
     money32 price;
     money32 removal_price;
-    rct_large_scenery_tile* tiles;
+    LargeSceneryTile* tiles;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
     LargeSceneryText* text;
@@ -177,17 +175,17 @@ struct LargeSceneryText
     uint16_t max_width;
     uint8_t flags;
     uint16_t num_images;
-    rct_large_scenery_text_glyph glyphs[256];
+    LargeSceneryTextGlyph glyphs[256];
 
     LargeSceneryText() = default;
-    explicit LargeSceneryText(const rct_large_scenery_text& original);
-    const rct_large_scenery_text_glyph* GetGlyph(char32_t codepoint) const;
-    const rct_large_scenery_text_glyph& GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const;
+    explicit LargeSceneryText(const RCTLargeSceneryText& original);
+    const LargeSceneryTextGlyph* GetGlyph(char32_t codepoint) const;
+    const LargeSceneryTextGlyph& GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const;
     int32_t MeasureWidth(std::string_view text) const;
     int32_t MeasureHeight(std::string_view text) const;
 };
 
-struct rct_scenery_group_entry
+struct SceneryGroupEntry
 {
     StringId name;
     uint32_t image;
@@ -281,7 +279,7 @@ void SceneryRemoveGhostToolPlacement();
 WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex);
 BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex);
 PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex);
-rct_scenery_group_entry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex);
+SceneryGroupEntry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex);
 
 int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry);
 

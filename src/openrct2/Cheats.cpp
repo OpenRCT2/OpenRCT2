@@ -10,8 +10,8 @@
 #include "Cheats.h"
 
 #include "GameState.h"
+#include "actions/CheatSetAction.h"
 #include "actions/ParkSetLoanAction.h"
-#include "actions/SetCheatAction.h"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "localisation/Localisation.h"
@@ -83,8 +83,8 @@ void CheatsReset()
 
 void CheatsSet(CheatType cheatType, int32_t param1 /* = 0*/, int32_t param2 /* = 0*/)
 {
-    auto setCheatAction = SetCheatAction(cheatType, param1, param2);
-    GameActions::Execute(&setCheatAction);
+    auto cheatSetAction = CheatSetAction(cheatType, param1, param2);
+    GameActions::Execute(&cheatSetAction);
 }
 
 template<typename T> static void CheatEntrySerialise(DataSerialiser& ds, CheatType type, const T& value, uint16_t& count)
@@ -235,99 +235,99 @@ const char* CheatsGetName(CheatType cheatType)
     switch (cheatType)
     {
         case CheatType::SandboxMode:
-            return language_get_string(STR_CHEAT_SANDBOX_MODE);
+            return LanguageGetString(STR_CHEAT_SANDBOX_MODE);
         case CheatType::DisableClearanceChecks:
-            return language_get_string(STR_DISABLE_CLEARANCE_CHECKS);
+            return LanguageGetString(STR_DISABLE_CLEARANCE_CHECKS);
         case CheatType::DisableSupportLimits:
-            return language_get_string(STR_DISABLE_SUPPORT_LIMITS);
+            return LanguageGetString(STR_DISABLE_SUPPORT_LIMITS);
         case CheatType::ShowAllOperatingModes:
-            return language_get_string(STR_CHEAT_SHOW_ALL_OPERATING_MODES);
+            return LanguageGetString(STR_CHEAT_SHOW_ALL_OPERATING_MODES);
         case CheatType::ShowVehiclesFromOtherTrackTypes:
-            return language_get_string(STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES);
+            return LanguageGetString(STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES);
         case CheatType::FastLiftHill:
-            return language_get_string(STR_CHEAT_UNLOCK_OPERATING_LIMITS);
+            return LanguageGetString(STR_CHEAT_UNLOCK_OPERATING_LIMITS);
         case CheatType::DisableBrakesFailure:
-            return language_get_string(STR_CHEAT_DISABLE_BRAKES_FAILURE);
+            return LanguageGetString(STR_CHEAT_DISABLE_BRAKES_FAILURE);
         case CheatType::DisableAllBreakdowns:
-            return language_get_string(STR_CHEAT_DISABLE_BREAKDOWNS);
+            return LanguageGetString(STR_CHEAT_DISABLE_BREAKDOWNS);
         case CheatType::DisableTrainLengthLimit:
-            return language_get_string(STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT);
+            return LanguageGetString(STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT);
         case CheatType::EnableChainLiftOnAllTrack:
-            return language_get_string(STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK);
+            return LanguageGetString(STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK);
         case CheatType::BuildInPauseMode:
-            return language_get_string(STR_CHEAT_BUILD_IN_PAUSE_MODE);
+            return LanguageGetString(STR_CHEAT_BUILD_IN_PAUSE_MODE);
         case CheatType::IgnoreRideIntensity:
-            return language_get_string(STR_CHEAT_IGNORE_INTENSITY);
+            return LanguageGetString(STR_CHEAT_IGNORE_INTENSITY);
         case CheatType::DisableVandalism:
-            return language_get_string(STR_CHEAT_DISABLE_VANDALISM);
+            return LanguageGetString(STR_CHEAT_DISABLE_VANDALISM);
         case CheatType::DisableLittering:
-            return language_get_string(STR_CHEAT_DISABLE_LITTERING);
+            return LanguageGetString(STR_CHEAT_DISABLE_LITTERING);
         case CheatType::NoMoney:
-            return language_get_string(STR_MAKE_PARK_NO_MONEY);
+            return LanguageGetString(STR_MAKE_PARK_NO_MONEY);
         case CheatType::AddMoney:
-            return language_get_string(STR_LOG_CHEAT_ADD_MONEY);
+            return LanguageGetString(STR_LOG_CHEAT_ADD_MONEY);
         case CheatType::ClearLoan:
-            return language_get_string(STR_CHEAT_CLEAR_LOAN);
+            return LanguageGetString(STR_CHEAT_CLEAR_LOAN);
         case CheatType::SetGuestParameter:
-            return language_get_string(STR_CHEAT_SET_GUESTS_PARAMETERS);
+            return LanguageGetString(STR_CHEAT_SET_GUESTS_PARAMETERS);
         case CheatType::GenerateGuests:
-            return language_get_string(STR_CHEAT_LARGE_TRAM_GUESTS);
+            return LanguageGetString(STR_CHEAT_LARGE_TRAM_GUESTS);
         case CheatType::RemoveAllGuests:
-            return language_get_string(STR_CHEAT_REMOVE_ALL_GUESTS);
+            return LanguageGetString(STR_CHEAT_REMOVE_ALL_GUESTS);
         case CheatType::GiveAllGuests:
-            return language_get_string(STR_CHEAT_GIVE_ALL_GUESTS);
+            return LanguageGetString(STR_CHEAT_GIVE_ALL_GUESTS);
         case CheatType::SetGrassLength:
-            return language_get_string(STR_CHEAT_CLEAR_GRASS);
+            return LanguageGetString(STR_CHEAT_CLEAR_GRASS);
         case CheatType::WaterPlants:
-            return language_get_string(STR_CHEAT_WATER_PLANTS);
+            return LanguageGetString(STR_CHEAT_WATER_PLANTS);
         case CheatType::FixVandalism:
-            return language_get_string(STR_CHEAT_FIX_VANDALISM);
+            return LanguageGetString(STR_CHEAT_FIX_VANDALISM);
         case CheatType::RemoveLitter:
-            return language_get_string(STR_CHEAT_REMOVE_LITTER);
+            return LanguageGetString(STR_CHEAT_REMOVE_LITTER);
         case CheatType::DisablePlantAging:
-            return language_get_string(STR_CHEAT_DISABLE_PLANT_AGING);
+            return LanguageGetString(STR_CHEAT_DISABLE_PLANT_AGING);
         case CheatType::SetStaffSpeed:
-            return language_get_string(STR_CHEAT_STAFF_SPEED);
+            return LanguageGetString(STR_CHEAT_STAFF_SPEED);
         case CheatType::RenewRides:
-            return language_get_string(STR_CHEAT_RENEW_RIDES);
+            return LanguageGetString(STR_CHEAT_RENEW_RIDES);
         case CheatType::MakeDestructible:
-            return language_get_string(STR_CHEAT_MAKE_DESTRUCTABLE);
+            return LanguageGetString(STR_CHEAT_MAKE_DESTRUCTABLE);
         case CheatType::FixRides:
-            return language_get_string(STR_CHEAT_FIX_ALL_RIDES);
+            return LanguageGetString(STR_CHEAT_FIX_ALL_RIDES);
         case CheatType::ResetCrashStatus:
-            return language_get_string(STR_CHEAT_RESET_CRASH_STATUS);
+            return LanguageGetString(STR_CHEAT_RESET_CRASH_STATUS);
         case CheatType::TenMinuteInspections:
-            return language_get_string(STR_CHEAT_10_MINUTE_INSPECTIONS);
+            return LanguageGetString(STR_CHEAT_10_MINUTE_INSPECTIONS);
         case CheatType::WinScenario:
-            return language_get_string(STR_CHEAT_WIN_SCENARIO);
+            return LanguageGetString(STR_CHEAT_WIN_SCENARIO);
         case CheatType::ForceWeather:
-            return language_get_string(STR_CHANGE_WEATHER);
+            return LanguageGetString(STR_CHANGE_WEATHER);
         case CheatType::FreezeWeather:
-            return language_get_string(STR_CHEAT_FREEZE_WEATHER);
+            return LanguageGetString(STR_CHEAT_FREEZE_WEATHER);
         case CheatType::NeverEndingMarketing:
-            return language_get_string(STR_CHEAT_NEVERENDING_MARKETING);
+            return LanguageGetString(STR_CHEAT_NEVERENDING_MARKETING);
         case CheatType::OpenClosePark:
-            return language_get_string(STR_CHEAT_OPEN_PARK);
+            return LanguageGetString(STR_CHEAT_OPEN_PARK);
         case CheatType::HaveFun:
-            return language_get_string(STR_CHEAT_HAVE_FUN);
+            return LanguageGetString(STR_CHEAT_HAVE_FUN);
         case CheatType::SetForcedParkRating:
-            return language_get_string(STR_FORCE_PARK_RATING);
+            return LanguageGetString(STR_FORCE_PARK_RATING);
         case CheatType::AllowArbitraryRideTypeChanges:
-            return language_get_string(STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES);
+            return LanguageGetString(STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES);
         case CheatType::SetMoney:
-            return language_get_string(STR_SET_MONEY);
+            return LanguageGetString(STR_SET_MONEY);
         case CheatType::OwnAllLand:
-            return language_get_string(STR_CHEAT_OWN_ALL_LAND);
+            return LanguageGetString(STR_CHEAT_OWN_ALL_LAND);
         case CheatType::DisableRideValueAging:
-            return language_get_string(STR_CHEAT_DISABLE_RIDE_VALUE_AGING);
+            return LanguageGetString(STR_CHEAT_DISABLE_RIDE_VALUE_AGING);
         case CheatType::IgnoreResearchStatus:
-            return language_get_string(STR_CHEAT_IGNORE_RESEARCH_STATUS);
+            return LanguageGetString(STR_CHEAT_IGNORE_RESEARCH_STATUS);
         case CheatType::EnableAllDrawableTrackPieces:
-            return language_get_string(STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES);
+            return LanguageGetString(STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES);
         case CheatType::AllowTrackPlaceInvalidHeights:
-            return language_get_string(STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS);
+            return LanguageGetString(STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS);
         case CheatType::AllowRegularPathAsQueue:
-            return language_get_string(STR_CHEAT_ALLOW_PATH_AS_QUEUE);
+            return LanguageGetString(STR_CHEAT_ALLOW_PATH_AS_QUEUE);
         default:
             return "Unknown Cheat";
     }

@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui
     private:
         static int32_t Execute(const std::string& command, std::string* output = nullptr)
         {
-            log_verbose("executing \"%s\"...", command.c_str());
+            LOG_VERBOSE("executing \"%s\"...", command.c_str());
             FILE* fpipe = popen(command.c_str(), "r");
             if (fpipe == nullptr)
             {

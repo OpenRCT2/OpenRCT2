@@ -18,7 +18,7 @@
 #include <string_view>
 #include <vector>
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 enum class IMAGE_FORMAT
 {

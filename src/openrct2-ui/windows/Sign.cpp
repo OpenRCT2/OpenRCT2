@@ -131,7 +131,7 @@ public:
 
         // Create viewport
         Widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
@@ -279,13 +279,13 @@ public:
         text_colour_btn->image = GetColourButtonImage(_textColour);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
         }
     }
 
@@ -303,7 +303,7 @@ public:
 
         // Create viewport
         Widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
         if (viewport != nullptr)
@@ -316,9 +316,9 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* WindowSignOpen(rct_windownumber number)
+WindowBase* WindowSignOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
+    auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;
@@ -339,9 +339,9 @@ rct_window* WindowSignOpen(rct_windownumber number)
  *
  *  rct2: 0x6E5F52
  */
-rct_window* WindowSignSmallOpen(rct_windownumber number)
+WindowBase* WindowSignSmallOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
+    auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;

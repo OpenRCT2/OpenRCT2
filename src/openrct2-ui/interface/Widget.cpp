@@ -17,41 +17,42 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 
-static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetText(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
-static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+static void WidgetFrameDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetResizeDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTabDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetFlatButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTextButton(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTextCentred(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetText(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTextInset(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetGroupboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetCaptionDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetCheckboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetCloseboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetScrollDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetHScrollbarDraw(
-    rct_drawpixelinfo* dpi, const rct_scroll& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
+    DrawPixelInfo* dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
 static void WidgetVScrollbarDraw(
-    rct_drawpixelinfo* dpi, const rct_scroll& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
-static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+    DrawPixelInfo* dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
+static void WidgetDrawImage(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
 
 /**
  *
  *  rct2: 0x006EB2A8
  */
-void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+void WidgetDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     const auto* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
     {
-        log_error("Tried drawing an out-of-bounds widget index!");
+        LOG_ERROR("Tried drawing an out-of-bounds widget index!");
         return;
     }
 
@@ -116,7 +117,7 @@ void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006EB6CE
  */
-static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetFrameDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -133,7 +134,7 @@ static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     uint8_t colour = w.colours[widget.colour];
 
     // Draw the frame
-    gfx_fill_rect_inset(dpi, { leftTop, { r, b } }, colour, press);
+    GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, press);
 
     // Check if the window can be resized
     if (!(w.flags & WF_RESIZABLE))
@@ -143,14 +144,14 @@ static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-    gfx_draw_sprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
+    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
 }
 
 /**
  *
  *  rct2: 0x006EB765
  */
-static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetResizeDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -164,7 +165,7 @@ static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
     uint8_t colour = w.colours[widget.colour];
 
     // Draw the panel
-    gfx_fill_rect_inset(dpi, { leftTop, { r, b } }, colour, 0);
+    GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, 0);
 
     // Check if the window can be resized
     if (!(w.flags & WF_RESIZABLE))
@@ -174,14 +175,14 @@ static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-    gfx_draw_sprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
+    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
 }
 
 /**
  *
  *  rct2: 0x006EB8E5
  */
-static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -199,12 +200,12 @@ static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
     if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
     {
         // Draw border with no fill
-        gfx_fill_rect_inset(dpi, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
+        GfxFillRectInset(dpi, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
         return;
     }
 
     // Draw the border with fill
-    gfx_fill_rect_inset(dpi, rect, colour, press);
+    GfxFillRectInset(dpi, rect, colour, press);
 
     WidgetDrawImage(dpi, w, widgetIndex);
 }
@@ -213,7 +214,7 @@ static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
  *
  *  rct2: 0x006EB806
  */
-static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetTabDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     auto& widget = w.widgets[widgetIndex];
@@ -255,14 +256,14 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex wid
     auto image = widget.image.WithIndex(newIndex).WithPrimary(colour);
 
     // Draw disabled image
-    gfx_draw_sprite(dpi, image, leftTop);
+    GfxDrawSprite(dpi, image, leftTop);
 }
 
 /**
  *
  *  rct2: 0x006EB861
  */
-static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetFlatButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     if (!WidgetIsDisabled(w, widgetIndex) && WidgetIsHighlighted(w, widgetIndex))
     {
@@ -286,12 +287,12 @@ static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIn
         if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
         {
             // Draw border with no fill
-            gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
+            GfxFillRectInset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
             return;
         }
 
         // Draw the border with fill
-        gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET);
+        GfxFillRectInset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET);
     }
 
     // Draw image
@@ -302,7 +303,7 @@ static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIn
  *
  *  rct2: 0x006EBBEB
  */
-static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetTextButton(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -316,7 +317,7 @@ static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
 
     // Border
     uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
-    gfx_fill_rect_inset(dpi, rect, colour, press);
+    GfxFillRectInset(dpi, rect, colour, press);
 
     // Button caption
     if (widget.type != WindowWidgetType::TableHeader)
@@ -333,7 +334,7 @@ static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
  *
  *  rct2: 0x006EBC41
  */
-static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetTextCentred(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -379,7 +380,7 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
  *
  *  rct2: 0x006EBD52
  */
-static void WidgetText(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetText(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -428,7 +429,7 @@ static void WidgetText(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widget
  *
  *  rct2: 0x006EBD1F
  */
-static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetTextInset(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -440,7 +441,7 @@ static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
     // Get the colour
     uint8_t colour = w.colours[widget.colour];
 
-    gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_F_60);
+    GfxFillRectInset(dpi, rect, colour, INSET_RECT_F_60);
     WidgetText(dpi, w, widgetIndex);
 }
 
@@ -468,7 +469,7 @@ static std::pair<StringId, void*> WidgetGetStringidAndArgs(const Widget& widget)
  *
  *  rct2: 0x006EB535
  */
-static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetGroupboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -487,11 +488,11 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
             colour |= COLOUR_FLAG_INSET;
 
         utf8 buffer[512] = { 0 };
-        format_string(buffer, sizeof(buffer), stringId, formatArgs);
+        OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), stringId, formatArgs);
         auto ft = Formatter();
         ft.Add<utf8*>(buffer);
         DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
-        textRight = l + gfx_get_string_width(buffer, FontStyle::Medium) + 1;
+        textRight = l + GfxGetStringWidth(buffer, FontStyle::Medium) + 1;
     }
 
     // Border
@@ -505,31 +506,31 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
     uint8_t colour = w.colours[widget.colour] & 0x7F;
 
     // Border left of text
-    gfx_fill_rect(dpi, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
 
     // Border right of text
-    gfx_fill_rect(dpi, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
 
     // Border right
-    gfx_fill_rect(dpi, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
 
     // Border bottom
-    gfx_fill_rect(dpi, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
 
     // Border left
-    gfx_fill_rect(dpi, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
 }
 
 /**
  *
  *  rct2: 0x006EB2F9
  */
-static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetCaptionDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto* widget = &w.widgets[widgetIndex];
@@ -545,14 +546,14 @@ static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     if (w.flags & WF_10)
         press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
 
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, press);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
 
     // Black caption bars look slightly green, this fixes that
     if (colour == 0)
-        gfx_fill_rect(
+        GfxFillRect(
             dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } }, ColourMapA[colour].dark);
     else
-        gfx_filter_rect(
+        GfxFilterRect(
             dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
             FilterPaletteID::PaletteDarken3);
 
@@ -570,14 +571,15 @@ static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     }
     topLeft.x += width / 2;
     DrawTextEllipsised(
-        dpi, topLeft, width, widget->text, Formatter::Common(), { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE });
+        dpi, topLeft, width, widget->text, Formatter::Common(),
+        { COLOUR_WHITE | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
 }
 
 /**
  *
  *  rct2: 0x006EBB85
  */
-static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetCloseboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -597,7 +599,7 @@ static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
     uint8_t colour = w.colours[widget.colour];
 
     // Draw the button
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, press);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
 
     if (widget.text == STR_NONE)
         return;
@@ -614,7 +616,7 @@ static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
  *
  *  rct2: 0x006EBAD9
  */
-static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetCheckboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -628,7 +630,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
     colour_t colour = w.colours[widget.colour];
 
     // checkbox
-    gfx_fill_rect_inset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
+    GfxFillRectInset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
 
     if (WidgetIsDisabled(w, widgetIndex))
     {
@@ -638,7 +640,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
     // fill it when checkbox is pressed
     if (WidgetIsPressed(w, widgetIndex))
     {
-        gfx_draw_string(
+        GfxDrawString(
             dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
             { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) });
     }
@@ -648,17 +650,17 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetInde
         return;
 
     auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
-    gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, { midLeft + ScreenCoordsXY{ 14, 0 } });
+    GfxDrawStringLeftCentred(dpi, stringId, formatArgs, colour, { midLeft + ScreenCoordsXY{ 14, 0 } });
 }
 
 /**
  *
  *  rct2: 0x006EBD96
  */
-static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetScrollDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
-    int32_t scrollIndex = window_get_scroll_data_index(w, widgetIndex);
+    int32_t scrollIndex = WindowGetScrollDataIndex(w, widgetIndex);
     const auto& widget = w.widgets[widgetIndex];
     const auto& scroll = w.scrolls[scrollIndex];
 
@@ -670,7 +672,7 @@ static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
     uint8_t colour = w.colours[widget.colour];
 
     // Draw the border
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
     // Inflate by -1
     topLeft.x++;
@@ -701,7 +703,7 @@ static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
     bottomRight.x++;
 
     // Create a new inner scroll dpi
-    rct_drawpixelinfo scroll_dpi = *dpi;
+    DrawPixelInfo scroll_dpi = *dpi;
 
     // Clip the scroll dpi against the outer dpi
     int32_t cl = std::max<int32_t>(dpi->x, topLeft.x);
@@ -720,27 +722,27 @@ static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex 
 
     // Draw the scroll contents
     if (scroll_dpi.width > 0 && scroll_dpi.height > 0)
-        window_event_scroll_paint_call(&w, &scroll_dpi, scrollIndex);
+        WindowEventScrollPaintCall(&w, &scroll_dpi, scrollIndex);
 }
 
 static void WidgetHScrollbarDraw(
-    rct_drawpixelinfo* dpi, const rct_scroll& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
+    DrawPixelInfo* dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
 {
     colour &= 0x7F;
     // Trough
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, 0x1000000 | ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 2 }, { r - SCROLLBAR_WIDTH, t + 2 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 3 }, { r - SCROLLBAR_WIDTH, t + 3 } }, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 7 }, { r - SCROLLBAR_WIDTH, t + 7 } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 8 }, { r - SCROLLBAR_WIDTH, t + 8 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, 0x1000000 | ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 2 }, { r - SCROLLBAR_WIDTH, t + 2 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 3 }, { r - SCROLLBAR_WIDTH, t + 3 } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 7 }, { r - SCROLLBAR_WIDTH, t + 7 } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + SCROLLBAR_WIDTH, t + 8 }, { r - SCROLLBAR_WIDTH, t + 8 } }, ColourMapA[colour].lighter);
 
     // Left button
     {
         uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
-        gfx_draw_string(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
+        GfxFillRectInset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
+        GfxDrawString(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
     }
 
     // Thumb
@@ -749,55 +751,55 @@ static void WidgetHScrollbarDraw(
         int16_t right = std::min(r - SCROLLBAR_WIDTH, l + scroll.h_thumb_right - 1);
         uint8_t flags = (scroll.flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, { { left, t }, { right, b } }, colour, flags);
+        GfxFillRectInset(dpi, { { left, t }, { right, b } }, colour, flags);
     }
 
     // Right button
     {
         uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
-        gfx_draw_string(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
+        GfxFillRectInset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
+        GfxDrawString(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
     }
 }
 
 static void WidgetVScrollbarDraw(
-    rct_drawpixelinfo* dpi, const rct_scroll& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
+    DrawPixelInfo* dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
 {
     colour &= 0x7F;
     // Trough
-    gfx_fill_rect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, 0x1000000 | ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 2, t + SCROLLBAR_WIDTH }, { l + 2, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 3, t + SCROLLBAR_WIDTH }, { l + 3, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, { { l + 7, t + SCROLLBAR_WIDTH }, { l + 7, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, { { l + 8, t + SCROLLBAR_WIDTH }, { l + 8, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, 0x1000000 | ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 2, t + SCROLLBAR_WIDTH }, { l + 2, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 3, t + SCROLLBAR_WIDTH }, { l + 3, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
+    GfxFillRect(dpi, { { l + 7, t + SCROLLBAR_WIDTH }, { l + 7, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
+    GfxFillRect(dpi, { { l + 8, t + SCROLLBAR_WIDTH }, { l + 8, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
 
     // Up button
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi, { { l, t }, { r, t + (SCROLLBAR_WIDTH - 1) } }, colour,
         ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
+    GfxDrawString(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
 
     // Thumb
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi,
         { { l, std::max(t + SCROLLBAR_WIDTH, t + scroll.v_thumb_top - 1) },
           { r, std::min(b - SCROLLBAR_WIDTH, t + scroll.v_thumb_bottom - 1) } },
         colour, ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Down button
-    gfx_fill_rect_inset(
+    GfxFillRectInset(
         dpi, { { l, b - (SCROLLBAR_WIDTH - 1) }, { r, b } }, colour,
         ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
+    GfxDrawString(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
 }
 
 /**
  *
  *  rct2: 0x006EB951
  */
-static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetDrawImage(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -823,12 +825,12 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
         // Draw greyed out (light border bottom right shadow)
         colour = w.colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-        gfx_draw_sprite_solid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
+        GfxDrawSpriteSolid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
 
         // Draw greyed out (dark)
         colour = w.colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-        gfx_draw_sprite_solid(dpi, image, screenCoords, colour);
+        GfxDrawSpriteSolid(dpi, image, screenCoords, colour);
     }
     else
     {
@@ -842,30 +844,30 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex w
         else
             image = image.WithPrimary(colour);
 
-        gfx_draw_sprite(dpi, image, screenCoords);
+        GfxDrawSprite(dpi, image, screenCoords);
     }
 }
 
-bool WidgetIsDisabled(const rct_window& w, WidgetIndex widgetIndex)
+bool WidgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex)
 {
     if (w.classification == WindowClass::Custom)
         return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_DISABLED;
     return (w.disabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool WidgetIsHoldable(const rct_window& w, WidgetIndex widgetIndex)
+bool WidgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex)
 {
     if (w.classification == WindowClass::Custom)
         return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_HOLDABLE;
     return (w.hold_down_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool WidgetIsVisible(const rct_window& w, WidgetIndex widgetIndex)
+bool WidgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex)
 {
     return w.widgets[widgetIndex].IsVisible();
 }
 
-bool WidgetIsPressed(const rct_window& w, WidgetIndex widgetIndex)
+bool WidgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex)
 {
     if (w.classification == WindowClass::Custom)
     {
@@ -882,9 +884,9 @@ bool WidgetIsPressed(const rct_window& w, WidgetIndex widgetIndex)
         }
     }
 
-    if (input_get_state() == InputState::WidgetPressed || input_get_state() == InputState::DropdownActive)
+    if (InputGetState() == InputState::WidgetPressed || InputGetState() == InputState::DropdownActive)
     {
-        if (!(input_test_flag(INPUT_FLAG_WIDGET_PRESSED)))
+        if (!(InputTestFlag(INPUT_FLAG_WIDGET_PRESSED)))
             return false;
         if (gPressedWidget.window_classification != w.classification)
             return false;
@@ -897,7 +899,7 @@ bool WidgetIsPressed(const rct_window& w, WidgetIndex widgetIndex)
     return false;
 }
 
-bool WidgetIsHighlighted(const rct_window& w, WidgetIndex widgetIndex)
+bool WidgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex)
 {
     if (gHoverWidget.window_classification != w.classification)
         return false;
@@ -908,9 +910,9 @@ bool WidgetIsHighlighted(const rct_window& w, WidgetIndex widgetIndex)
     return true;
 }
 
-bool WidgetIsActiveTool(const rct_window& w, WidgetIndex widgetIndex)
+bool WidgetIsActiveTool(const WindowBase& w, WidgetIndex widgetIndex)
 {
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
     if (gCurrentToolWidget.window_classification != w.classification)
         return false;
@@ -933,7 +935,7 @@ bool WidgetIsActiveTool(const rct_window& w, WidgetIndex widgetIndex)
  *  edi: widget
  */
 void WidgetScrollGetPart(
-    rct_window& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
+    WindowBase& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id)
 {
     *scroll_id = 0;
@@ -1037,7 +1039,7 @@ void WidgetScrollGetPart(
     }
 }
 
-Widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
+Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex)
 {
     // Make sure we don't go out of bounds if we are given a bad widget index
     WidgetIndex index = 0;
@@ -1050,12 +1052,12 @@ Widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex)
         index++;
     }
 
-    log_error("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
+    LOG_ERROR("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
 
     return nullptr;
 }
 
-static void SafeSetWidgetFlag(rct_window& w, WidgetIndex widgetIndex, WidgetFlags mask, bool value)
+static void SafeSetWidgetFlag(WindowBase& w, WidgetIndex widgetIndex, WidgetFlags mask, bool value)
 {
     Widget* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
@@ -1069,12 +1071,12 @@ static void SafeSetWidgetFlag(rct_window& w, WidgetIndex widgetIndex, WidgetFlag
         widget->flags &= ~mask;
 }
 
-void WidgetSetEnabled(rct_window& w, WidgetIndex widgetIndex, bool enabled)
+void WidgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled)
 {
     WidgetSetDisabled(w, widgetIndex, !enabled);
 }
 
-void WidgetSetDisabled(rct_window& w, WidgetIndex widgetIndex, bool value)
+void WidgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_DISABLED, value);
     if (value)
@@ -1087,7 +1089,7 @@ void WidgetSetDisabled(rct_window& w, WidgetIndex widgetIndex, bool value)
     }
 }
 
-void WidgetSetHoldable(rct_window& w, WidgetIndex widgetIndex, bool value)
+void WidgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HOLDABLE, value);
     if (value)
@@ -1100,12 +1102,12 @@ void WidgetSetHoldable(rct_window& w, WidgetIndex widgetIndex, bool value)
     }
 }
 
-void WidgetSetVisible(rct_window& w, WidgetIndex widgetIndex, bool value)
+void WidgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HIDDEN, !value);
 }
 
-void WidgetSetPressed(rct_window& w, WidgetIndex widgetIndex, bool value)
+void WidgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_PRESSED, value);
     if (value)
@@ -1114,12 +1116,12 @@ void WidgetSetPressed(rct_window& w, WidgetIndex widgetIndex, bool value)
         w.pressed_widgets &= ~(1uLL << widgetIndex);
 }
 
-void WidgetSetCheckboxValue(rct_window& w, WidgetIndex widgetIndex, bool value)
+void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value)
 {
     WidgetSetPressed(w, widgetIndex, value);
 }
 
-static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex)
+static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     int32_t no_lines = 0;
     char wrapped_string[TEXT_INPUT_SIZE];
@@ -1137,8 +1139,8 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     bool active = w.classification == gCurrentTextBox.window.classification && w.number == gCurrentTextBox.window.number
         && widgetIndex == gCurrentTextBox.widget_index;
 
-    // gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
-    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
+    // GfxFillRectInset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
     // Figure out where the text should be positioned vertically.
     topLeft.y = w.windowPos.y + widget.textTop();
@@ -1147,28 +1149,27 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
     {
         if (widget.text != 0)
         {
-            safe_strcpy(wrapped_string, widget.string, 512);
-            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &no_lines);
-            gfx_draw_string_no_formatting(
-                dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
+            SafeStrCpy(wrapped_string, widget.string, 512);
+            GfxWrapString(wrapped_string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &no_lines);
+            GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
         }
         return;
     }
 
-    safe_strcpy(wrapped_string, gTextBoxInput, TEXT_INPUT_SIZE);
+    SafeStrCpy(wrapped_string, gTextBoxInput, TEXT_INPUT_SIZE);
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
-    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &no_lines);
+    GfxWrapString(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &no_lines);
 
-    gfx_draw_string_no_formatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
+    GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
 
-    size_t string_length = get_string_size(wrapped_string) - 1;
+    size_t string_length = GetStringSize(wrapped_string) - 1;
 
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
-    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string, FontStyle::Medium) + 3;
+    int32_t cur_x = topLeft.x + GfxGetStringWidthNoFormatting(temp_string, FontStyle::Medium) + 3;
 
     int32_t width = 6;
     if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
@@ -1177,14 +1178,14 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex
         // of the character that the cursor is under.
         temp_string[1] = '\0';
         temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
-        width = std::max(gfx_get_string_width_no_formatting(temp_string, FontStyle::Medium) - 2, 4);
+        width = std::max(GfxGetStringWidthNoFormatting(temp_string, FontStyle::Medium) - 2, 4);
     }
 
     if (gTextBoxFrameNo <= 15)
     {
         colour = ColourMapA[w.colours[1]].mid_light;
         auto y = topLeft.y + (widget.height() - 1);
-        gfx_fill_rect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
+        GfxFillRect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
     }
 }
 

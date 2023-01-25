@@ -78,7 +78,7 @@ protected:
         _context = CreateContext();
         ASSERT_TRUE(_context->Initialise());
 
-        language_open(LANGUAGE_ENGLISH_UK);
+        LanguageOpen(LANGUAGE_ENGLISH_UK);
     }
 
     static void TearDownTestCase()
@@ -317,7 +317,7 @@ TEST_F(FormattingTests, to_fixed_buffer)
 {
     char buffer[16];
     std::memset(buffer, '\xFF', sizeof(buffer));
-    auto len = FormatStringId(buffer, 8, STR_GUEST_X, 123);
+    auto len = FormatStringID(buffer, 8, STR_GUEST_X, 123);
     ASSERT_EQ(len, 9u);
     ASSERT_STREQ("Guest 1", buffer);
 

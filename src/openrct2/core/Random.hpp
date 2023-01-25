@@ -186,10 +186,10 @@ namespace Random
         }
     };
 
-    namespace Rct2
+    namespace RCT2
     {
         using Engine = RotateEngine<uint32_t, 0x1234567F, 7, 3>;
         using Seed = FixedSeedSequence<2>;
         using State = Engine::state_type;
-    } // namespace Rct2
+    } // namespace RCT2
 } // namespace Random

@@ -55,7 +55,7 @@ static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
     return 1;
 }
 
-static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
+static int32_t ScenarioIndexEntryCompareByCategory(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
 {
     // Order by category
     if (entryA.category != entryB.category)
@@ -78,7 +78,7 @@ static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry
     }
 }
 
-static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
+static int32_t ScenarioIndexEntryCompareByIndex(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
 {
     // Order by source game
     if (entryA.source_game != entryB.source_game)
@@ -95,7 +95,7 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& e
             {
                 if (entryA.category == entryB.category)
                 {
-                    return scenario_index_entry_CompareByCategory(entryA, entryB);
+                    return ScenarioIndexEntryCompareByCategory(entryA, entryB);
                 }
 
                 return ScenarioCategoryCompare(entryA.category, entryB.category);
@@ -111,11 +111,11 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& e
             return entryA.source_index - entryB.source_index;
 
         case ScenarioSource::Real:
-            return scenario_index_entry_CompareByCategory(entryA, entryB);
+            return ScenarioIndexEntryCompareByCategory(entryA, entryB);
     }
 }
 
-static void scenario_highscore_free(scenario_highscore_entry* highscore)
+static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 {
     SafeFree(highscore->fileName);
     SafeFree(highscore->name);
@@ -194,7 +194,7 @@ private:
      */
     static bool GetScenarioInfo(const std::string& path, uint64_t timestamp, scenario_index_entry* entry)
     {
-        log_verbose("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
+        LOG_VERBOSE("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
         try
         {
             std::string extension = Path::GetExtension(path);
@@ -246,22 +246,22 @@ private:
             auto chunkReader = SawyerChunkReader(stream.get());
 
             const auto header = chunkReader.ReadChunkAs<RCT2::S6Header>();
-            if (header.type == S6_TYPE_SCENARIO)
+            if (header.Type == S6_TYPE_SCENARIO)
             {
                 auto info = chunkReader.ReadChunkAs<RCT2::S6Info>();
                 // If the name or the details contain a colour code, they might be in UTF-8 already.
                 // This is caused by a bug that was in OpenRCT2 for 3 years.
-                if (!IsLikelyUTF8(info.name) && !IsLikelyUTF8(info.details))
+                if (!IsLikelyUTF8(info.Name) && !IsLikelyUTF8(info.Details))
                 {
-                    rct2_to_utf8_self(info.name, sizeof(info.name));
-                    rct2_to_utf8_self(info.details, sizeof(info.details));
+                    RCT2StringToUTF8Self(info.Name, sizeof(info.Name));
+                    RCT2StringToUTF8Self(info.Details, sizeof(info.Details));
                 }
 
                 *entry = CreateNewScenarioEntry(path, timestamp, &info);
                 return true;
             }
 
-            log_verbose("%s is not a scenario", path.c_str());
+            LOG_VERBOSE("%s is not a scenario", path.c_str());
         }
         catch (const std::exception&)
         {
@@ -277,20 +277,20 @@ private:
         // Set new entry
         String::Set(entry.path, sizeof(entry.path), path.c_str());
         entry.timestamp = timestamp;
-        entry.category = s6Info->category;
-        entry.objective_type = s6Info->objective_type;
-        entry.objective_arg_1 = s6Info->objective_arg_1;
-        entry.objective_arg_2 = s6Info->objective_arg_2;
-        entry.objective_arg_3 = s6Info->objective_arg_3;
+        entry.category = s6Info->Category;
+        entry.objective_type = s6Info->ObjectiveType;
+        entry.objective_arg_1 = s6Info->ObjectiveArg1;
+        entry.objective_arg_2 = s6Info->ObjectiveArg2;
+        entry.objective_arg_3 = s6Info->ObjectiveArg3;
         entry.highscore = nullptr;
-        if (String::IsNullOrEmpty(s6Info->name))
+        if (String::IsNullOrEmpty(s6Info->Name))
         {
             // If the scenario doesn't have a name, set it to the filename
             String::Set(entry.name, sizeof(entry.name), Path::GetFileNameWithoutExtension(entry.path).c_str());
         }
         else
         {
-            String::Set(entry.name, sizeof(entry.name), s6Info->name);
+            String::Set(entry.name, sizeof(entry.name), s6Info->Name);
             // Normalise the name to make the scenario as recognisable as possible.
             ScenarioSources::NormaliseName(entry.name, sizeof(entry.name), entry.name);
         }
@@ -298,10 +298,10 @@ private:
         // entry.name will be translated later so keep the untranslated name here
         String::Set(entry.internal_name, sizeof(entry.internal_name), entry.name);
 
-        String::Set(entry.details, sizeof(entry.details), s6Info->details);
+        String::Set(entry.details, sizeof(entry.details), s6Info->Details);
 
         // Look up and store information regarding the origins of this scenario.
-        source_desc desc;
+        SourceDescriptor desc;
         if (ScenarioSources::TryGetByName(entry.name, &desc))
         {
             entry.sc_id = desc.id;
@@ -323,7 +323,7 @@ private:
             }
         }
 
-        scenario_translate(&entry);
+        ScenarioTranslate(&entry);
         return entry;
     }
 };
@@ -336,7 +336,7 @@ private:
     std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
     std::vector<scenario_index_entry> _scenarios;
-    std::vector<scenario_highscore_entry*> _highscores;
+    std::vector<ScenarioHighscoreEntry*> _highscores;
 
 public:
     explicit ScenarioRepository(const std::shared_ptr<IPlatformEnvironment>& env)
@@ -458,7 +458,7 @@ public:
         if (scenario != nullptr)
         {
             // Check if record company value has been broken or the highscore is the same but no name is registered
-            scenario_highscore_entry* highscore = scenario->highscore;
+            ScenarioHighscoreEntry* highscore = scenario->highscore;
             if (highscore == nullptr || companyValue > highscore->company_value
                 || (String::IsNullOrEmpty(highscore->name) && companyValue == highscore->company_value))
             {
@@ -572,7 +572,7 @@ private:
         }
         else
         {
-            log_error("Tried to add scenario with an empty filename!");
+            LOG_ERROR("Tried to add scenario with an empty filename!");
         }
     }
 
@@ -582,14 +582,14 @@ private:
         {
             std::sort(
                 _scenarios.begin(), _scenarios.end(), [](const scenario_index_entry& a, const scenario_index_entry& b) -> bool {
-                    return scenario_index_entry_CompareByIndex(a, b) < 0;
+                    return ScenarioIndexEntryCompareByIndex(a, b) < 0;
                 });
         }
         else
         {
             std::sort(
                 _scenarios.begin(), _scenarios.end(), [](const scenario_index_entry& a, const scenario_index_entry& b) -> bool {
-                    return scenario_index_entry_CompareByCategory(a, b) < 0;
+                    return ScenarioIndexEntryCompareByCategory(a, b) < 0;
                 });
         }
     }
@@ -617,7 +617,7 @@ private:
             uint32_t numHighscores = fs.ReadValue<uint32_t>();
             for (uint32_t i = 0; i < numHighscores; i++)
             {
-                scenario_highscore_entry* highscore = InsertHighscore();
+                ScenarioHighscoreEntry* highscore = InsertHighscore();
                 highscore->fileName = fs.ReadString();
                 highscore->name = fs.ReadString();
                 highscore->company_value = fileVersion == 1 ? fs.ReadValue<money32>() : fs.ReadValue<money64>();
@@ -680,7 +680,7 @@ private:
                             if (scBasic.CompanyValue > highscore->company_value)
                             {
                                 SafeFree(highscore->name);
-                                std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
+                                std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                                 highscore->name = String::Duplicate(name.c_str());
                                 highscore->company_value = scBasic.CompanyValue;
                                 highscore->timestamp = DATETIME64_MIN;
@@ -690,9 +690,9 @@ private:
                     }
                     if (notFound)
                     {
-                        scenario_highscore_entry* highscore = InsertHighscore();
+                        ScenarioHighscoreEntry* highscore = InsertHighscore();
                         highscore->fileName = String::Duplicate(scBasic.Path);
-                        std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
+                        std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                         highscore->name = String::Duplicate(name.c_str());
                         highscore->company_value = scBasic.CompanyValue;
                         highscore->timestamp = DATETIME64_MIN;
@@ -715,15 +715,15 @@ private:
     {
         for (auto highscore : _highscores)
         {
-            scenario_highscore_free(highscore);
+            ScenarioHighscoreFree(highscore);
         }
         _highscores.clear();
     }
 
-    scenario_highscore_entry* InsertHighscore()
+    ScenarioHighscoreEntry* InsertHighscore()
     {
-        auto highscore = new scenario_highscore_entry();
-        std::memset(highscore, 0, sizeof(scenario_highscore_entry));
+        auto highscore = new ScenarioHighscoreEntry();
+        std::memset(highscore, 0, sizeof(ScenarioHighscoreEntry));
         _highscores.push_back(highscore);
         return highscore;
     }
@@ -750,7 +750,7 @@ private:
             fs.WriteValue<uint32_t>(static_cast<uint32_t>(_highscores.size()));
             for (size_t i = 0; i < _highscores.size(); i++)
             {
-                const scenario_highscore_entry* highscore = _highscores[i];
+                const ScenarioHighscoreEntry* highscore = _highscores[i];
                 fs.WriteString(highscore->fileName);
                 fs.WriteString(highscore->name);
                 fs.WriteValue(highscore->company_value);
@@ -774,25 +774,25 @@ IScenarioRepository* GetScenarioRepository()
     return GetContext()->GetScenarioRepository();
 }
 
-void scenario_repository_scan()
+void ScenarioRepositoryScan()
 {
     IScenarioRepository* repo = GetScenarioRepository();
     repo->Scan(LocalisationService_GetCurrentLanguage());
 }
 
-size_t scenario_repository_get_count()
+size_t ScenarioRepositoryGetCount()
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->GetCount();
 }
 
-const scenario_index_entry* scenario_repository_get_by_index(size_t index)
+const scenario_index_entry* ScenarioRepositoryGetByIndex(size_t index)
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->GetByIndex(index);
 }
 
-bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name)
+bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name)
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);

@@ -37,11 +37,10 @@ using colour_t = uint8_t;
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #    include <unistd.h>
-#    define STUB() log_warning("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__)
+#    define STUB() LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__)
 #    define _strcmpi _stricmp
 #    define _stricmp(x, y) strcasecmp((x), (y))
 #    define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
-#    define _strdup(x) strdup((x))
 
 #    if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #        define RCT2_ENDIANNESS __ORDER_LITTLE_ENDIAN__
@@ -92,18 +91,17 @@ using money64 = fixed64_1dp;
 #define FIXED_1DP(whole, fraction) FIXED_XDP(1, whole, fraction)
 #define FIXED_2DP(whole, fraction) FIXED_XDP(10, whole, fraction)
 
-// User defined literal to convert money literal to money32
-constexpr money32 operator"" _GBP(long double money) noexcept
+constexpr money64 operator"" _GBP(long double money) noexcept
 {
     return money * 10;
 }
 
-constexpr money32 ToMoney32FromGBP(int32_t money) noexcept
+constexpr money64 ToMoney64FromGBP(int32_t money) noexcept
 {
     return money * 10;
 }
 
-constexpr money32 ToMoney32FromGBP(double money) noexcept
+constexpr money64 ToMoney64FromGBP(int64_t money) noexcept
 {
     return money * 10;
 }
@@ -125,16 +123,6 @@ constexpr money64 ToMoney64(money32 value)
 constexpr money64 ToMoney64(money16 value)
 {
     return value == MONEY16_UNDEFINED ? MONEY64_UNDEFINED : value;
-}
-
-constexpr money32 ToMoney32(money64 value)
-{
-    return value == MONEY64_UNDEFINED ? MONEY32_UNDEFINED : static_cast<money32>(value);
-}
-
-constexpr money16 ToMoney16(money64 value)
-{
-    return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : static_cast<money16>(value);
 }
 
 using StringId = uint16_t;

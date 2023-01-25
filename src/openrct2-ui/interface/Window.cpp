@@ -200,8 +200,8 @@ static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t heigh
     return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
 }
 
-rct_window* WindowCreate(
-    std::unique_ptr<rct_window>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
+WindowBase* WindowCreate(
+    std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
 {
     if (flags & WF_AUTO_POSITION)
     {
@@ -224,7 +224,7 @@ rct_window* WindowCreate(
         {
             if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
             {
-                window_close(*w.get());
+                WindowClose(*w.get());
                 break;
             }
         }
@@ -287,27 +287,27 @@ rct_window* WindowCreate(
     return w;
 }
 
-rct_window* WindowCreate(
+WindowBase* WindowCreate(
     const ScreenCoordsXY& pos, int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
 {
-    auto w = std::make_unique<rct_window>();
+    auto w = std::make_unique<WindowBase>();
     w->event_handlers = event_handlers;
     return WindowCreate(std::move(w), cls, pos, width, height, flags);
 }
 
-rct_window* WindowCreateAutoPos(int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
+WindowBase* WindowCreateAutoPos(int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
 {
     auto pos = GetAutoPositionForNewWindow(width, height);
     return WindowCreate(pos, width, height, event_handlers, cls, flags);
 }
 
-rct_window* WindowCreateCentred(int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
+WindowBase* WindowCreateCentred(int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
 {
     auto pos = GetCentrePositionForNewWindow(width, height);
     return WindowCreate(pos, width, height, event_handlers, cls, flags);
 }
 
-static int32_t WindowGetWidgetIndex(const rct_window& w, Widget* widget)
+static int32_t WindowGetWidgetIndex(const WindowBase& w, Widget* widget)
 {
     int32_t i = 0;
     for (Widget* widget2 = w.widgets; widget2->type != WindowWidgetType::Last; widget2++, i++)
@@ -316,7 +316,7 @@ static int32_t WindowGetWidgetIndex(const rct_window& w, Widget* widget)
     return -1;
 }
 
-static int32_t WindowGetScrollIndex(const rct_window& w, int32_t targetWidgetIndex)
+static int32_t WindowGetScrollIndex(const WindowBase& w, int32_t targetWidgetIndex)
 {
     if (w.widgets[targetWidgetIndex].type != WindowWidgetType::Scroll)
         return -1;
@@ -334,7 +334,7 @@ static int32_t WindowGetScrollIndex(const rct_window& w, int32_t targetWidgetInd
     return scrollIndex;
 }
 
-static Widget* WindowGetScrollWidget(const rct_window& w, int32_t scrollIndex)
+static Widget* WindowGetScrollWidget(const WindowBase& w, int32_t scrollIndex)
 {
     for (Widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
     {
@@ -353,7 +353,7 @@ static Widget* WindowGetScrollWidget(const rct_window& w, int32_t scrollIndex)
  *
  *  rct2: 0x006E78E3
  */
-static void WindowScrollWheelInput(rct_window& w, int32_t scrollIndex, int32_t wheel)
+static void WindowScrollWheelInput(WindowBase& w, int32_t scrollIndex, int32_t wheel)
 {
     auto& scroll = w.scrolls[scrollIndex];
     Widget* widget = WindowGetScrollWidget(w, scrollIndex);
@@ -377,14 +377,14 @@ static void WindowScrollWheelInput(rct_window& w, int32_t scrollIndex, int32_t w
     }
 
     WidgetScrollUpdateThumbs(w, widgetIndex);
-    widget_invalidate(w, widgetIndex);
+    WidgetInvalidate(w, widgetIndex);
 }
 
 /**
  *
  *  rct2: 0x006E793B
  */
-static int32_t WindowWheelInput(rct_window& w, int32_t wheel)
+static int32_t WindowWheelInput(WindowBase& w, int32_t wheel)
 {
     int32_t i = 0;
     for (Widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
@@ -409,18 +409,18 @@ static int32_t WindowWheelInput(rct_window& w, int32_t wheel)
  *
  *  rct2: 0x006E79FB
  */
-static void WindowViewportWheelInput(rct_window& w, int32_t wheel)
+static void WindowViewportWheelInput(WindowBase& w, int32_t wheel)
 {
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))
         return;
 
     if (wheel < 0)
-        window_zoom_in(w, true);
+        WindowZoomIn(w, true);
     else if (wheel > 0)
-        window_zoom_out(w, true);
+        WindowZoomOut(w, true);
 }
 
-static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_t wheel)
+static bool WindowOtherWheelInput(WindowBase& w, WidgetIndex widgetIndex, int32_t wheel)
 {
     // HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
     //       this selective approach will have to do.
@@ -466,21 +466,38 @@ static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_
 
     WidgetIndex buttonWidgetIndex;
     WindowWidgetType expectedType;
-    ImageId expectedContent[2];
+
     switch (widgetType)
     {
         case WindowWidgetType::ImgBtn:
+        {
+            auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
+            auto expectedContent2 = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
+
+            auto button1Image = w.widgets[widgetIndex + 1].image;
+            auto button2Image = w.widgets[widgetIndex + 2].image;
+            if (button1Image != expectedContent1 || button2Image != expectedContent2)
+            {
+                return false;
+            }
+
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
             expectedType = WindowWidgetType::TrnBtn;
-            expectedContent[0] = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
-            expectedContent[1] = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
             break;
+        }
         case WindowWidgetType::Spinner:
+        {
+            auto button1StringID = w.widgets[widgetIndex + 1].text;
+            auto button2StringID = w.widgets[widgetIndex + 2].text;
+            if (button1StringID != STR_NUMERIC_UP || button2StringID != STR_NUMERIC_DOWN)
+            {
+                return false;
+            }
+
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
             expectedType = WindowWidgetType::Button;
-            expectedContent[0] = ImageId(STR_NUMERIC_UP, FilterPaletteID::PaletteNull);
-            expectedContent[1] = ImageId(STR_NUMERIC_DOWN, FilterPaletteID::PaletteNull);
             break;
+        }
         default:
             return false;
     }
@@ -491,16 +508,13 @@ static bool WindowOtherWheelInput(rct_window& w, WidgetIndex widgetIndex, int32_
     }
 
     auto button1Type = w.widgets[widgetIndex + 1].type;
-    auto button1Image = w.widgets[widgetIndex + 1].image;
     auto button2Type = w.widgets[widgetIndex + 2].type;
-    auto button2Image = w.widgets[widgetIndex + 2].image;
-    if (button1Type != expectedType || button2Type != expectedType || button1Image != expectedContent[0]
-        || button2Image != expectedContent[1])
+    if (button1Type != expectedType || button2Type != expectedType)
     {
         return false;
     }
 
-    window_event_mouse_down_call(&w, buttonWidgetIndex);
+    WindowEventMouseDownCall(&w, buttonWidgetIndex);
     return true;
 }
 
@@ -521,9 +535,9 @@ void WindowAllWheelInput()
         return;
 
     // Check window cursor is over
-    if (!(input_test_flag(INPUT_FLAG_5)))
+    if (!(InputTestFlag(INPUT_FLAG_5)))
     {
-        rct_window* w = window_find_from_point(cursorState->position);
+        WindowBase* w = WindowFindFromPoint(cursorState->position);
         if (w != nullptr)
         {
             // Check if main window
@@ -534,7 +548,7 @@ void WindowAllWheelInput()
             }
 
             // Check scroll view, cursor is over
-            WidgetIndex widgetIndex = window_find_widget_from_point(*w, cursorState->position);
+            WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*w, cursorState->position);
             if (widgetIndex != -1)
             {
                 const auto& widget = w->widgets[widgetIndex];
@@ -573,7 +587,7 @@ void ApplyScreenSaverLockSetting()
  * Initialises scroll widgets to their virtual size.
  *  rct2: 0x006EAEB8
  */
-void WindowInitScrollWidgets(rct_window& w)
+void WindowInitScrollWidgets(WindowBase& w)
 {
     Widget* widget;
     int32_t widget_index, scroll_index;
@@ -593,7 +607,7 @@ void WindowInitScrollWidgets(rct_window& w)
         scroll.flags = 0;
         width = 0;
         height = 0;
-        window_get_scroll_size(&w, scroll_index, &width, &height);
+        WindowGetScrollSize(&w, scroll_index, &width, &height);
         scroll.h_left = 0;
         scroll.h_right = width + 1;
         scroll.v_top = 0;
@@ -615,13 +629,13 @@ void WindowInitScrollWidgets(rct_window& w)
  *
  *  rct2: 0x006EB15C
  */
-void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
+void WindowDrawWidgets(WindowBase& w, DrawPixelInfo* dpi)
 {
     Widget* widget;
     WidgetIndex widgetIndex;
 
     if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
-        gfx_filter_rect(
+        GfxFilterRect(
             dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
 
     // todo: some code missing here? Between 006EB18C and 006EB260
@@ -650,7 +664,7 @@ void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
 
     if (w.flags & WF_WHITE_BORDER_MASK)
     {
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, COLOUR_WHITE,
             INSET_RECT_FLAG_FILL_NONE);
     }
@@ -660,7 +674,7 @@ void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006EA776
  */
-static void WindowInvalidatePressedImageButton(const rct_window& w)
+static void WindowInvalidatePressedImageButton(const WindowBase& w)
 {
     WidgetIndex widgetIndex;
     Widget* widget;
@@ -672,7 +686,7 @@ static void WindowInvalidatePressedImageButton(const rct_window& w)
             continue;
 
         if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
-            gfx_set_dirty_blocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
+            GfxSetDirtyBlocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
     }
 }
 
@@ -682,10 +696,10 @@ static void WindowInvalidatePressedImageButton(const rct_window& w)
  */
 void InvalidateAllWindowsAfterInput()
 {
-    window_visit_each([](rct_window* w) {
-        window_update_scroll_widgets(*w);
+    WindowVisitEach([](WindowBase* w) {
+        WindowUpdateScrollWidgets(*w);
         WindowInvalidatePressedImageButton(*w);
-        window_event_resize_call(w);
+        WindowEventResizeCall(w);
     });
 }
 
@@ -694,12 +708,12 @@ bool Window::IsLegacy()
     return false;
 }
 
-void Window::OnDraw(rct_drawpixelinfo& dpi)
+void Window::OnDraw(DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*this, &dpi);
 }
 
-void Window::OnDrawWidget(WidgetIndex widgetIndex, rct_drawpixelinfo& dpi)
+void Window::OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
 {
     WidgetDraw(&dpi, *this, widgetIndex);
 }
@@ -711,7 +725,7 @@ void Window::InitScrollWidgets()
 
 void Window::InvalidateWidget(WidgetIndex widgetIndex)
 {
-    widget_invalidate(*this, widgetIndex);
+    WidgetInvalidate(*this, widgetIndex);
 }
 
 bool Window::IsWidgetDisabled(WidgetIndex widgetIndex) const
@@ -739,7 +753,7 @@ void Window::SetCheckboxValue(WidgetIndex widgetIndex, bool value)
     SetWidgetPressed(widgetIndex, value);
 }
 
-void Window::DrawWidgets(rct_drawpixelinfo& dpi)
+void Window::DrawWidgets(DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*this, &dpi);
 }
@@ -758,18 +772,18 @@ void Window::Close()
     }
     else
     {
-        window_close(*this);
+        WindowClose(*this);
     }
 }
 
 void Window::CloseOthers()
 {
-    window_close_all_except_number_and_class(number, classification);
+    WindowCloseAllExceptNumberAndClass(number, classification);
 }
 
 void Window::CloseOthersOfThisClass()
 {
-    window_close_by_class(classification);
+    WindowCloseByClass(classification);
 }
 
 CloseWindowModifier Window::GetCloseModifier()
@@ -793,7 +807,7 @@ void Window::TextInputOpen(
     WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
 }
 
-void window_align_tabs(rct_window* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
+void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
 {
     int32_t i, x = w->widgets[start_tab_id].left;
     int32_t tab_width = w->widgets[start_tab_id].width();

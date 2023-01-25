@@ -30,10 +30,10 @@ public:
     GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result DemolishRide(Ride* ride) const;
+    GameActions::Result DemolishRide(Ride& ride) const;
     money32 MazeRemoveTrack(const CoordsXYZD& coords) const;
     money32 DemolishTracks() const;
-    GameActions::Result RefurbishRide(Ride* ride) const;
-    money32 GetRefurbishPrice(const Ride* ride) const;
-    money32 GetRefundPrice(const Ride* ride) const;
+    GameActions::Result RefurbishRide(Ride& ride) const;
+    money32 GetRefurbishPrice(const Ride& ride) const;
+    money32 GetRefundPrice(const Ride& ride) const;
 };

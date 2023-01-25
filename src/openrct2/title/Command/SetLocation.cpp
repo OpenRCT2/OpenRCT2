@@ -18,7 +18,7 @@ namespace OpenRCT2::Title
 {
     int16_t SetLocationCommand::operator()(int16_t timer)
     {
-        rct_window* w = window_get_main();
+        WindowBase* w = WindowGetMain();
         if (w != nullptr)
         {
             auto loc = TileCoordsXY(Location.X, Location.Y).ToCoordsXY().ToTileCentre();
@@ -30,7 +30,7 @@ namespace OpenRCT2::Title
             w->SetLocation({ loc, z });
             gScreenFlags = oldScreenFlags;
 
-            viewport_update_position(w);
+            ViewportUpdatePosition(w);
         }
 
         return 0;

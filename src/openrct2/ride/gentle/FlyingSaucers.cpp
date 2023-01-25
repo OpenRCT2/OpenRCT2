@@ -34,7 +34,7 @@ static constexpr const uint32_t FlyingSaucersFenceSprites[] = {
 /**
  * rct2: 0x008873D8
  */
-static void paint_flying_saucers(
+static void PaintFlyingSaucers(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -52,7 +52,7 @@ static void paint_flying_saucers(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
     }
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height,
         FlyingSaucersFenceSprites, session.CurrentRotation);
 
@@ -70,5 +70,5 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingSaucers(int32_t trackType)
         return nullptr;
     }
 
-    return paint_flying_saucers;
+    return PaintFlyingSaucers;
 }

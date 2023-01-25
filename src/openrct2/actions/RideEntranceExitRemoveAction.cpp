@@ -66,10 +66,10 @@ static TileElement* FindEntranceElement(
 
 GameActions::Result RideEntranceExitRemoveAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -98,7 +98,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     }
     else if (entranceElement == nullptr)
     {
-        log_warning(
+        LOG_WARNING(
             "Track Element not found. x = %d, y = %d, ride = %u, station = %u", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
             _stationNum.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
@@ -109,19 +109,19 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
 
 GameActions::Result RideEntranceExitRemoveAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
     if (!isGhost)
     {
-        ride_clear_for_construction(ride);
+        RideClearForConstruction(*ride);
         ride->RemovePeeps();
-        invalidate_test_results(ride);
+        InvalidateTestResults(*ride);
     }
 
     auto* entranceElement = FindEntranceElement(
@@ -134,7 +134,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     }
     else if (entranceElement == nullptr)
     {
-        log_warning(
+        LOG_WARNING(
             "Track Element not found. x = %d, y = %d, ride = %u, station = %d", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
             _stationNum);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);

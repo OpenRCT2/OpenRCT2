@@ -52,7 +52,7 @@ static Widget window_scenery_scatter_widgets[] = {
 };
 // clang-format on
 
-class SceneryScatterWindow final : public rct_window
+class SceneryScatterWindow final : public WindowBase
 {
 public:
     void OnOpen() override
@@ -60,7 +60,7 @@ public:
         widgets = window_scenery_scatter_widgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         gWindowSceneryScatterEnabled = true;
         gWindowSceneryScatterSize = 16;
@@ -93,7 +93,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
 
             case WIDX_PREVIEW:
@@ -176,7 +176,7 @@ public:
         widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
 
@@ -192,10 +192,10 @@ public:
     }
 };
 
-rct_window* WindowSceneryScatterOpen()
+WindowBase* WindowSceneryScatterOpen()
 {
     // Check if window is already open
-    auto* window = window_find_by_class(WindowClass::SceneryScatter);
+    auto* window = WindowFindByClass(WindowClass::SceneryScatter);
     if (window == nullptr)
     {
         window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100);

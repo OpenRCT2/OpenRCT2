@@ -189,11 +189,11 @@ enum
     COLOUR_FLAG_8 = (1 << 8)
 };
 
-#define TRANSLUCENT(x) ((x) | COLOUR_FLAG_TRANSLUCENT)
-#define NOT_TRANSLUCENT(x) ((x) & ~COLOUR_FLAG_TRANSLUCENT)
+#define TRANSLUCENT(x) ((x) | static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
+#define NOT_TRANSLUCENT(x) ((x) & ~static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
 #define BASE_COLOUR(x) ((x)&0x1F)
 
-struct rct_colour_map
+struct ColourShadeMap
 {
     uint8_t colour_0;
     uint8_t colour_1;
@@ -209,9 +209,9 @@ struct rct_colour_map
     uint8_t colour_11;
 };
 
-extern rct_colour_map ColourMapA[COLOUR_COUNT];
+extern ColourShadeMap ColourMapA[COLOUR_COUNT];
 
-void colours_init_maps();
+void ColoursInitMaps();
 
 namespace Colour
 {
@@ -219,5 +219,5 @@ namespace Colour
 }
 
 #ifndef NO_TTF
-uint8_t blendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
+uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
 #endif

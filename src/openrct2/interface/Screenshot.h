@@ -18,7 +18,7 @@
 #include <optional>
 #include <string>
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 extern uint8_t gScreenshotCountdown;
 
@@ -52,13 +52,13 @@ struct CaptureOptions
     bool Transparent{};
 };
 
-void screenshot_check();
-std::string screenshot_dump();
-std::string screenshot_dump_png(rct_drawpixelinfo* dpi);
-std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pixels);
+void ScreenshotCheck();
+std::string ScreenshotDump();
+std::string ScreenshotDumpPNG(DrawPixelInfo* dpi);
+std::string ScreenshotDumpPNG32bpp(int32_t width, int32_t height, const void* pixels);
 
-void screenshot_giant();
-int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOptions* options);
-int32_t cmdline_for_gfxbench(const char** argv, int32_t argc);
+void ScreenshotGiant();
+int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options);
+int32_t CmdlineForGfxbench(const char** argv, int32_t argc);
 
 void CaptureImage(const CaptureOptions& options);

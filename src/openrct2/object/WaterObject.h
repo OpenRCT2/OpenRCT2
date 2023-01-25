@@ -17,7 +17,7 @@
 class WaterObject final : public Object
 {
 private:
-    rct_water_type _legacyType = {};
+    WaterObjectEntry _legacyType = {};
 
 public:
     void* GetLegacyData() override
@@ -30,7 +30,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
 private:
     void ReadJsonPalette(json_t& jPalette);

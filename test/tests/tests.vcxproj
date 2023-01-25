@@ -84,7 +84,7 @@
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="RideRatings.cpp" />
     <ClCompile Include="S6ImportExportTests.cpp" />
-    <ClCompile Include="sawyercoding_test.cpp" />
+    <ClCompile Include="SawyerCodingTest.cpp" />
     <ClCompile Include="TestData.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />

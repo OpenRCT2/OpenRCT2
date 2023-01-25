@@ -43,7 +43,7 @@ namespace RCT2
         }
         catch (const std::exception& e)
         {
-            log_error("Unable to save track design: %s", e.what());
+            LOG_ERROR("Unable to save track design: %s", e.what());
             return false;
         }
     }
@@ -88,7 +88,7 @@ namespace RCT2
         tempStream.WriteArray(_trackDesign->track_rail_colour, Limits::NumColourSchemes);
         tempStream.WriteArray(_trackDesign->track_support_colour, Limits::NumColourSchemes);
         tempStream.WriteValue<uint32_t>(_trackDesign->flags2);
-        tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(rct_object_entry));
+        tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
         for (auto& colour : _trackDesign->vehicle_colours)
@@ -135,7 +135,7 @@ namespace RCT2
 
         for (const auto& sceneryElement : _trackDesign->scenery_elements)
         {
-            tempStream.Write(&sceneryElement.scenery_object.Entry, sizeof(rct_object_entry));
+            tempStream.Write(&sceneryElement.scenery_object.Entry, sizeof(RCTObjectEntry));
             tempStream.WriteValue<int8_t>(sceneryElement.loc.x / COORDS_XY_STEP);
             tempStream.WriteValue<int8_t>(sceneryElement.loc.y / COORDS_XY_STEP);
             tempStream.WriteValue<int8_t>(sceneryElement.loc.z / COORDS_Z_STEP);

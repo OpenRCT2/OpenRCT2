@@ -3284,8 +3284,8 @@ STR_6133    :아직 개발되지 않은 놀이기구와 풍경을 사용할 수 
 STR_6134    :조형물 제거
 STR_6135    :클라이언트에서 잘못된 요청을 보냈습니다
 STR_6136    :서버에서 잘못된 요청을 보냈습니다
-STR_6137    :OpenRCT2 - 롤러코스터 타이쿤 2의 자유 공개 소스 복제품
-STR_6138    :OpenRCT2는 많은 분들이 참여한 작품입니다. 모든 참여자의 목록은 “contributors.md” 파일을 참고하세요. 더 많은 정보를 원하시면 http://github.com/OpenRCT2/OpenRCT2 를 방문해주세요.
+STR_6137    :OpenRCT2 - 롤러코스터 타이쿤 2의 자유 오픈 소스 재생산 및 확장판
+STR_6138    :OpenRCT2는 많은 분들이 참여한 작품입니다. 모든 참여자의 목록은 “기여자” 버튼에서 참고할 수 있습니다. 더 많은 정보를 원하시면 http://github.com/OpenRCT2/OpenRCT2 를 방문해주세요.
 STR_6139    :모든 제품과 회사 이름은 해당 소유자의 것입니다. 이러한 제품이나 이름의 사용은 그러한 것들에 대한 제휴나 지지를 뜻하지 않습니다.
 STR_6140    :변경 기록…
 STR_6141    :RCT1 하단 툴바
@@ -3644,6 +3644,10 @@ STR_6535    :{WINDOW_COLOUR_2}멀미도 인수: {BLACK}-{COMMA16}%
 STR_6536    :이 공원은 더 최신 버전의 OpenRCT2에서 저장되었습니다. 이 공원은 v{INT32} 버전에서 저장되었고, 현재 버전은 v{INT32} 입니다.
 STR_6537    :일반 보도를 대기줄로 사용
 STR_6538    :보도 창의 대기줄 메뉴 밑에 일반 보도를 표시합니다.
+STR_6539    :브레이크 닫힘
+STR_6540    :{WINDOW_COLOUR_2}외관 사용을 허락해주신 다음 회사에도 감사를 드립니다:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6544    :대출은 음수일 수 없습니다!
 
 #############
 # Scenarios #
@@ -4397,6 +4401,10 @@ STR_SCNR    :판다 월드
 STR_PARK    :판다 월드
 STR_DTLS    :이 판다 테마의 공원에 놀이기구를 더 지어서 손님들을 더 끌어모으세요.
 
+<Tycoon Park>
+STR_SCNR    :Tycoon Park
+STR_PARK    :타이쿤 공원
+STR_DTLS    :
 
 ###
 <UCES Halloween>
