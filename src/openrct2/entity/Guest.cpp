@@ -4514,7 +4514,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         }
 
         RideObjectEntry* rideEntry = vehicle->GetRideEntry();
-        if (rideEntry == nullptr )
+        if (rideEntry == nullptr)
             return;
 
         if (vehicle->vehicle_type >= std::size(rideEntry->Cars))
