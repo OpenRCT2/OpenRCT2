@@ -19,7 +19,7 @@ public:
     void Initialize(const std::vector<KeyType>& keyDescs, const KeyRange<KeyType>& keyRange);
 
     std::vector<uint32_t> GetParams(const KeyType& key) const;
-    std::vector<KeyType> GenerateKeys(const KeyType& key) const;
+    void GenerateKeys(const KeyType& key, std::vector<KeyType>& newKeys) const;
 private:
     using ElementsType = std::array<std::vector<uint32_t>, KeyType::NumArgs>;
     std::array<bool, KeyType::NumArgs> _fieldPresent;
@@ -43,7 +43,7 @@ void KeyGenerator<KeyType>::Initialize(const std::vector<KeyType>& keys, const K
 }
 
 template<class KeyType>
-std::vector<KeyType> KeyGenerator<KeyType>::GenerateKeys(const KeyType& keyDesc) const
+void KeyGenerator<KeyType>::GenerateKeys(const KeyType& keyDesc, std::vector<KeyType>& newKeys) const
 {
     ElementsType elementValues;
     for (uint32_t index = 0; index < _fieldPresent.size(); index++)
@@ -62,16 +62,16 @@ std::vector<KeyType> KeyGenerator<KeyType>::GenerateKeys(const KeyType& keyDesc)
             values = vector;
     }
 
-    std::vector<KeyType> oldKeys, newKeys;
+    std::vector<KeyType> oldKeys;
     newKeys.push_back(keyDesc);
 
-    for (uint32_t index = 0; index < _fieldPresent.size(); index++)
+    for (uint32_t index = 0; index < _fieldPresent.size(); ++index)
     {
         oldKeys = newKeys;
         newKeys.clear();
         const auto& values = elementValues[index];
 
-        for (auto& oldKey : oldKeys)
+        for (const auto& oldKey : oldKeys)
         {
             const std::optional<uint32_t> arg = oldKey.Get(index);
 
@@ -92,7 +92,6 @@ std::vector<KeyType> KeyGenerator<KeyType>::GenerateKeys(const KeyType& keyDesc)
             }
         }
     }
-    return newKeys;
 }
 
 template<class KeyType>
