@@ -1988,12 +1988,12 @@ declare global {
         /**
          * The slope angle the segment starts with.
          */
-        readonly beginSlope: TrackSlope;
+        readonly beginPitch: TrackSlope;
 
         /**
          * The slope angle the segment ends with.
          */
-        readonly endSlope: TrackSlope;
+        readonly endPitch: TrackSlope;
 
         /**
          * The kind of banking the segment starts with.
