@@ -752,13 +752,13 @@ private:
     bool IsFilterInRideType(const RideObjectEntry& rideEntry)
     {
         auto rideTypeName = GetRideNaming(rideEntry.ride_type[0], rideEntry).Name;
-        return String::Contains(std::string_view(LanguageGetString(rideTypeName)), _filter, true);
+        return String::Contains(u8string_view(LanguageGetString(rideTypeName)), _filter, true);
     }
 
     bool IsFilterInRideName(const RideObjectEntry& rideEntry)
     {
         auto rideName = rideEntry.naming.Name;
-        return String::Contains(std::string_view(LanguageGetString(rideName)), _filter, true);
+        return String::Contains(u8string_view(LanguageGetString(rideName)), _filter, true);
     }
 
     bool IsFilterInAuthors(const RideObjectEntry& rideEntry)
