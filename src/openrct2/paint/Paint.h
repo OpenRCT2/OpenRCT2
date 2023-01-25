@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -214,7 +214,7 @@ struct PaintSessionCore
 
 struct PaintSession : public PaintSessionCore
 {
-    rct_drawpixelinfo DPI;
+    DrawPixelInfo DPI;
     PaintEntryPool::Chain PaintEntryChain;
 
     PaintStruct* AllocateNormalPaintEntry() noexcept
@@ -288,6 +288,7 @@ extern CoordsXY gClipSelectionB;
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
 constexpr const ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
 constexpr const ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
+constexpr const ImageId TrackGhost = ImageId(0, FilterPaletteID::PaletteNull);
 
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
@@ -324,9 +325,9 @@ void PaintFloatingMoneyEffect(
     PaintSession& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
-PaintSession* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
+PaintSession* PaintSessionAlloc(DrawPixelInfo* dpi, uint32_t viewFlags);
 void PaintSessionFree(PaintSession* session);
 void PaintSessionGenerate(PaintSession& session);
 void PaintSessionArrange(PaintSessionCore& session);
 void PaintDrawStructs(PaintSession& session);
-void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, PaintStringStruct* ps);
+void PaintDrawMoneyStructs(DrawPixelInfo* dpi, PaintStringStruct* ps);

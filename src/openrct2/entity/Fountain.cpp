@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../Game.h"
 #include "../core/DataSerialiser.h"
+#include "../object/FootpathItemEntry.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
@@ -103,7 +104,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
             break;
         case PATTERN::BOUNCING_PAIRS:
             // random [0, 2 or 1, 3]
-            randomIndex = scenario_rand() & 1;
+            randomIndex = ScenarioRand() & 1;
             for (int32_t i = randomIndex; i < NumOrthogonalDirections; i += 2)
             {
                 JumpingFountain::Create(
@@ -113,7 +114,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
             break;
         case PATTERN::RACING_PAIRS:
             // random [0 - 3 and 4 - 7]
-            randomIndex = scenario_rand() & 3;
+            randomIndex = ScenarioRand() & 3;
             JumpingFountain::Create(
                 newType, { newLoc + _fountainDirectionsPositive[randomIndex], newZ }, _fountainDirections[randomIndex],
                 _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
@@ -124,7 +125,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
             break;
         default:
             // random [0 - 7]
-            randomIndex = scenario_rand() & 7;
+            randomIndex = ScenarioRand() & 7;
             JumpingFountain::Create(
                 newType, { newLoc + _fountainDirectionsPositive[randomIndex], newZ }, _fountainDirections[randomIndex],
                 _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
@@ -291,7 +292,7 @@ void JumpingFountain::GoToEdge(const CoordsXYZ& newLoc, const int32_t availableD
         return;
     }
 
-    const uint32_t randomIndex = scenario_rand();
+    const uint32_t randomIndex = ScenarioRand();
     if ((randomIndex & 0xFFFF) < _FountainChanceOfStoppingEdgeMode)
     {
         return;
@@ -361,7 +362,7 @@ void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections
 
 void JumpingFountain::Random(const CoordsXYZ& newLoc, int32_t availableDirections) const
 {
-    const uint32_t randomIndex = scenario_rand();
+    const uint32_t randomIndex = ScenarioRand();
     if ((randomIndex & 0xFFFF) >= _FountainChanceOfStoppingRandomMode)
     {
         int32_t direction = randomIndex & 7;
@@ -404,7 +405,7 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
     constexpr uint32_t JumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t JumpingFountainWaterBaseImage = 22973;
 
-    rct_drawpixelinfo& dpi = session.DPI;
+    DrawPixelInfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         return;

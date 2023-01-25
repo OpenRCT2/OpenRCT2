@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,8 @@
 
 namespace Graph
 {
-    void Draw(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos);
+    void Draw(DrawPixelInfo* dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos);
     void Draw(
-        rct_drawpixelinfo* dpi, const money64* history, const int32_t count, const ScreenCoordsXY& coords,
-        const int32_t modifier, const int32_t offset);
+        DrawPixelInfo* dpi, const money64* history, const int32_t count, const ScreenCoordsXY& coords, const int32_t modifier,
+        const int32_t offset);
 } // namespace Graph

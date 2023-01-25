@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,12 +35,12 @@ uint16_t gWindowSceneryScatterSize;
 ScatterToolDensity gWindowSceneryScatterDensity;
 
 // clang-format off
-static rct_widget window_scenery_scatter_widgets[] = {
+static Widget window_scenery_scatter_widgets[] = {
     MakeWidget     ({ 0,  0}, {86, 100}, WindowWidgetType::Frame,    WindowColour::Secondary                                                                ), // panel / background
     MakeWidget     ({ 1,  1}, {84,  14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_SCENERY_SCATTER,           STR_WINDOW_TITLE_TIP           ), // title bar
     MakeWidget     ({73,  2}, {11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary  , STR_CLOSE_X,                   STR_CLOSE_WINDOW_TIP           ), // close x button
 
-    MakeWidget     ({20, 17}, {44,  32}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_LAND_TOOL_SIZE_0                                          ), // preview box
+    MakeWidget     ({20, 17}, {44,  32}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_LAND_TOOL_SIZE_0)                                          ), // preview box
     MakeRemapWidget({21, 18}, {16,  16}, WindowWidgetType::TrnBtn,   WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
     MakeRemapWidget({47, 32}, {16,  16}, WindowWidgetType::TrnBtn,   WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP     ), // increment size
 
@@ -52,7 +52,7 @@ static rct_widget window_scenery_scatter_widgets[] = {
 };
 // clang-format on
 
-class SceneryScatterWindow final : public rct_window
+class SceneryScatterWindow final : public WindowBase
 {
 public:
     void OnOpen() override
@@ -60,7 +60,7 @@ public:
         widgets = window_scenery_scatter_widgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         gWindowSceneryScatterEnabled = true;
         gWindowSceneryScatterSize = 16;
@@ -93,7 +93,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
 
             case WIDX_PREVIEW:
@@ -173,10 +173,10 @@ public:
         }
 
         // Update the preview image (for tool sizes up to 7)
-        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
+        widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
 
@@ -192,10 +192,10 @@ public:
     }
 };
 
-rct_window* WindowSceneryScatterOpen()
+WindowBase* WindowSceneryScatterOpen()
 {
     // Check if window is already open
-    auto* window = window_find_by_class(WindowClass::SceneryScatter);
+    auto* window = WindowFindByClass(WindowClass::SceneryScatter);
     if (window == nullptr)
     {
         window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100);

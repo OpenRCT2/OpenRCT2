@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,7 @@ private:
      *
      *  rct2: 0x00663CB9
      */
-    static int32_t map_set_land_height_clear_func(
+    static int32_t MapSetLandHeightClearFunc(
         TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
         [[maybe_unused]] money32* price);
 };

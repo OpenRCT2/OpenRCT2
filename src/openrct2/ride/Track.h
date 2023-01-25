@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,7 +26,7 @@ using pitch_type_t = uint8_t;
 
 struct ResultWithMessage;
 
-struct rct_trackdefinition
+struct TrackDefinition
 {
     track_type_t type;
     pitch_type_t vangle_end;
@@ -51,7 +51,7 @@ constexpr bool operator!=(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 }
 
 /* size 0x0A */
-struct rct_preview_track
+struct PreviewTrack
 {
     uint8_t index; // 0x00
     int16_t x;     // 0x01
@@ -63,7 +63,7 @@ struct rct_preview_track
 };
 
 /* size 0x0A */
-struct rct_track_coordinates
+struct TrackCoordinates
 {
     int8_t rotation_begin; // 0x00
     int8_t rotation_end;   // 0x01
@@ -94,7 +94,7 @@ enum
     TRACK_ELEMENT_FLAGS2_CABLE_LIFT = 1 << 2,
     TRACK_ELEMENT_FLAGS2_HIGHLIGHT = 1 << 3,
     TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,
-    TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED = 1 << 5,
+    TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED = 1 << 5,
     TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE = 1 << 6,
 };
 
@@ -598,7 +598,7 @@ enum
     GC_SET_MAZE_TRACK_FILL = 2,
 };
 
-struct track_circuit_iterator
+struct TrackCircuitIterator
 {
     CoordsXYE last;
     CoordsXYE current;
@@ -612,27 +612,28 @@ struct track_circuit_iterator
 PitchAndRoll TrackPitchAndRollStart(track_type_t trackType);
 PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType);
 
-int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
+int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b);
 
-void track_circuit_iterator_begin(track_circuit_iterator* it, CoordsXYE first);
-bool track_circuit_iterator_previous(track_circuit_iterator* it);
-bool track_circuit_iterator_next(track_circuit_iterator* it);
-bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const track_circuit_iterator* secondIt);
+void TrackCircuitIteratorBegin(TrackCircuitIterator* it, CoordsXYE first);
+bool TrackCircuitIteratorPrevious(TrackCircuitIterator* it);
+bool TrackCircuitIteratorNext(TrackCircuitIterator* it);
+bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const TrackCircuitIterator* secondIt);
 
-void track_get_back(const CoordsXYE& input, CoordsXYE* output);
-void track_get_front(const CoordsXYE& input, CoordsXYE* output);
+void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
+void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
-bool track_element_is_covered(track_type_t trackElementType);
-bool track_type_is_station(track_type_t trackType);
+bool TrackElementIsCovered(track_type_t trackElementType);
+bool TrackTypeIsStation(track_type_t trackType);
 
-roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank);
-roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank);
-roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement);
+roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank);
+roll_type_t TrackGetActualBank2(int32_t rideType, bool isInverted, roll_type_t bank);
+roll_type_t TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement);
 
-ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
-ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
+ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
+ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
+bool TrackTypeIsHelix(track_type_t trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
 
 /**

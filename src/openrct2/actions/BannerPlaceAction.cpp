@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "BannerPlaceAction.h"
 
 #include "../management/Finance.h"
+#include "../object/BannerSceneryEntry.h"
 #include "../world/Banner.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
@@ -60,7 +61,7 @@ GameActions::Result BannerPlaceAction::Query() const
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
-        log_error("No free map elements.");
+        LOG_ERROR("No free map elements.");
         return GameActions::Result(
             GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
@@ -88,7 +89,7 @@ GameActions::Result BannerPlaceAction::Query() const
 
     if (HasReachedBannerLimit())
     {
-        log_error("No free banners available");
+        LOG_ERROR("No free banners available");
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
     }
@@ -96,7 +97,7 @@ GameActions::Result BannerPlaceAction::Query() const
     auto* bannerEntry = GetBannerEntry(_bannerType);
     if (bannerEntry == nullptr)
     {
-        log_error("Invalid banner object type. bannerType = ", _bannerType);
+        LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
     res.Cost = bannerEntry->price;
@@ -115,7 +116,7 @@ GameActions::Result BannerPlaceAction::Execute() const
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
-        log_error("No free map elements.");
+        LOG_ERROR("No free map elements.");
         return GameActions::Result(
             GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
@@ -123,14 +124,14 @@ GameActions::Result BannerPlaceAction::Execute() const
     auto* bannerEntry = GetBannerEntry(_bannerType);
     if (bannerEntry == nullptr)
     {
-        log_error("Invalid banner object type. bannerType = ", _bannerType);
+        LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto banner = CreateBanner();
     if (banner == nullptr)
     {
-        log_error("No free banners available");
+        LOG_ERROR("No free banners available");
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
     }

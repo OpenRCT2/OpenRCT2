@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ static void Paint3dCinemaDome(
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
         imageTemplate = imageFlags;
     }
@@ -60,9 +60,9 @@ static void Paint3dCinema(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
         session.CurrentRotation);
 
@@ -114,7 +114,7 @@ static void Paint3dCinema(
     PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunction3dCinema(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

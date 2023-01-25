@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -69,7 +69,7 @@ static TrackDesignAddStatus track_design_save_add_tile_element(
 static void track_design_save_remove_tile_element(
     ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
 
-void track_design_save_init()
+void TrackDesignSaveInit()
 {
     _trackSavedTileElements.clear();
     _trackSavedTileElementsDesc.clear();
@@ -79,10 +79,10 @@ void track_design_save_init()
  *
  *  rct2: 0x006D2B07
  */
-void track_design_save_select_tile_element(
+void TrackDesignSaveSelectTileElement(
     ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect)
 {
-    if (track_design_save_contains_tile_element(tileElement))
+    if (TrackDesignSaveContainsTileElement(tileElement))
     {
         if (!collect)
         {
@@ -106,9 +106,9 @@ void track_design_save_select_tile_element(
  *
  *  rct2: 0x006D303D
  */
-void track_design_save_select_nearby_scenery(RideId rideIndex)
+void TrackDesignSaveSelectNearbyScenery(RideId rideIndex)
 {
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {
@@ -118,20 +118,20 @@ void track_design_save_select_nearby_scenery(RideId rideIndex)
         }
     } while (TileElementIteratorNext(&it));
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 /**
  *
  *  rct2: 0x006D3026
  */
-void track_design_save_reset_scenery()
+void TrackDesignSaveResetScenery()
 {
-    track_design_save_init();
-    gfx_invalidate_screen();
+    TrackDesignSaveInit();
+    GfxInvalidateScreen();
 }
 
-bool track_design_save_contains_tile_element(const TileElement* tileElement)
+bool TrackDesignSaveContainsTileElement(const TileElement* tileElement)
 {
     for (auto& tile : _trackSavedTileElements)
     {
@@ -146,7 +146,7 @@ bool track_design_save_contains_tile_element(const TileElement* tileElement)
 static int32_t tile_element_get_total_element_count(TileElement* tileElement)
 {
     int32_t elementCount;
-    rct_large_scenery_tile* tile;
+    LargeSceneryTile* tile;
 
     switch (tileElement->GetType())
     {
@@ -215,7 +215,7 @@ static bool track_design_is_supported_object(const Object* obj)
 }
 
 static void track_design_save_push_tile_element_desc(
-    const rct_object_entry& entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
+    const RCTObjectEntry& entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
     TrackDesignSceneryElement item{};
     item.scenery_object = ObjectEntryDescriptor(entry);
@@ -243,7 +243,7 @@ static void track_design_save_push_tile_element_desc(
 static TrackDesignAddStatus track_design_save_add_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     auto entryIndex = sceneryElement->GetEntryIndex();
-    auto obj = object_entry_get_object(ObjectType::SmallScenery, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr && track_design_is_supported_object(obj))
     {
         uint8_t flags = 0;
@@ -272,7 +272,7 @@ static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& 
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
         auto sceneryTiles = sceneryEntry->tiles;
 
-        int32_t z = tileElement->base_height;
+        int32_t z = tileElement->BaseHeight;
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
@@ -315,7 +315,7 @@ static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& 
 static TrackDesignAddStatus track_design_save_add_wall(const CoordsXY& loc, WallElement* wallElement)
 {
     auto entryIndex = wallElement->GetEntryIndex();
-    auto obj = object_entry_get_object(ObjectType::Walls, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr && track_design_is_supported_object(obj))
     {
         uint8_t flags = 0;
@@ -334,9 +334,9 @@ static TrackDesignAddStatus track_design_save_add_wall(const CoordsXY& loc, Wall
     return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
 }
 
-static std::optional<rct_object_entry> track_design_save_footpath_get_best_entry(PathElement* pathElement)
+static std::optional<RCTObjectEntry> track_design_save_footpath_get_best_entry(PathElement* pathElement)
 {
-    rct_object_entry pathEntry;
+    RCTObjectEntry pathEntry;
     auto legacyPathObj = pathElement->GetLegacyPathEntry();
     if (legacyPathObj != nullptr)
     {
@@ -461,7 +461,7 @@ static void track_design_save_pop_tile_element_desc(const ObjectEntryDescriptor&
 static void track_design_save_remove_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     auto entryIndex = sceneryElement->GetEntryIndex();
-    auto obj = object_entry_get_object(ObjectType::SmallScenery, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr)
     {
         uint8_t flags = 0;
@@ -477,7 +477,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
 {
     if (tileElement == nullptr)
     {
-        log_warning("Null tile element");
+        LOG_WARNING("Null tile element");
         return;
     }
 
@@ -489,7 +489,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
         auto sceneryTiles = sceneryEntry->tiles;
 
-        int32_t z = tileElement->base_height;
+        int32_t z = tileElement->BaseHeight;
         auto direction = tileElement->GetDirection();
         auto sequence = tileElement->GetSequenceIndex();
 
@@ -526,7 +526,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
 static void track_design_save_remove_wall(const CoordsXY& loc, WallElement* wallElement)
 {
     auto entryIndex = wallElement->GetEntryIndex();
-    auto obj = object_entry_get_object(ObjectType::Walls, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr)
     {
         uint8_t flags = 0;
@@ -647,7 +647,7 @@ static void track_design_save_select_nearby_scenery_for_tile(RideId rideIndex, i
 
                 if (interactionType != ViewportInteractionItem::None)
                 {
-                    if (!track_design_save_contains_tile_element(tileElement))
+                    if (!TrackDesignSaveContainsTileElement(tileElement))
                     {
                         track_design_save_add_tile_element(interactionType, TileCoordsXY(x, y).ToCoordsXY(), tileElement);
                     }

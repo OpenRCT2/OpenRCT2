@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,8 +45,8 @@ public:
     GameActions::Result Execute() const override;
 
 private:
-    int16_t GetTotalNumTiles(rct_large_scenery_tile* tiles) const;
-    bool CheckMapCapacity(rct_large_scenery_tile* tiles, int16_t numTiles) const;
-    int16_t GetMaxSurfaceHeight(rct_large_scenery_tile* tiles) const;
+    int16_t GetTotalNumTiles(LargeSceneryTile* tiles) const;
+    bool CheckMapCapacity(LargeSceneryTile* tiles, int16_t numTiles) const;
+    int16_t GetMaxSurfaceHeight(LargeSceneryTile* tiles) const;
     void SetNewLargeSceneryElement(LargeSceneryElement& sceneryElement, uint8_t tileNum) const;
 };

@@ -118,7 +118,7 @@ namespace OpenRCT2::Scripting
 
     RideStation* ScRideStation::GetRideStation() const
     {
-        auto ride = get_ride(_rideId);
+        auto ride = GetRide(_rideId);
         if (ride != nullptr)
         {
             if (_stationIndex.ToUnderlying() < std::size(ride->GetStations()))

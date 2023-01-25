@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../actions/CustomAction.h"
 #    include "../common.h"
 #    include "../core/FileWatcher.h"
 #    include "../management/Finance.h"
@@ -46,11 +47,12 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 66;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 70;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
     static constexpr int32_t API_VERSION_63_G2_REORDER = 63;
+    static constexpr int32_t API_VERSION_68_CUSTOM_ACTION_ARGS = 68;
 
 #    ifndef DISABLE_NETWORK
     class ScSocketBase;
@@ -236,12 +238,12 @@ namespace OpenRCT2::Scripting
         void AddNetworkPlugin(std::string_view code);
         void RemoveNetworkPlugins();
 
-        [[nodiscard]] GameActions::Result QueryOrExecuteCustomGameAction(
-            std::string_view id, std::string_view args, bool isExecute);
+        [[nodiscard]] GameActions::Result QueryOrExecuteCustomGameAction(const CustomAction& action, bool isExecute);
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
         [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
+        [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
 
         void SaveSharedStorage();
 
@@ -275,7 +277,6 @@ namespace OpenRCT2::Scripting
         void ProcessREPL();
         void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
         [[nodiscard]] GameActions::Result DukToGameActionResult(const DukValue& d);
-        [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
         static ExpenditureType StringToExpenditureType(std::string_view expenditureType);
 

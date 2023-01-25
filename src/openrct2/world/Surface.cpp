@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -160,7 +160,7 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
                 if (GrassLength & 8)
                 {
                     // Random growth rate (length nibble)
-                    GrassLength |= scenario_rand() & 0x70;
+                    GrassLength |= ScenarioRand() & 0x70;
                 }
                 else
                 {
@@ -224,12 +224,12 @@ void SurfaceElement::SetSlope(uint8_t newSlope)
 
 bool SurfaceElement::HasTrackThatNeedsWater() const
 {
-    return (type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
+    return (Type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
 }
 
 void SurfaceElement::SetHasTrackThatNeedsWater(bool on)
 {
-    type &= ~SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
+    Type &= ~SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
     if (on)
-        type |= SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
+        Type |= SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
 }

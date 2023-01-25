@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include "../entity/Yaw.hpp"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
+#include "../ride/CarEntry.h"
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
 #include "Track.h"
@@ -27,7 +28,7 @@ using namespace OpenRCT2::Entity::Yaw;
 #pragma region VehicleBoundboxes
 
 // 0x0098E52C:
-const vehicle_boundbox VehicleBoundboxes[16][224] = {
+const VehicleBoundBox VehicleBoundboxes[16][224] = {
     {
         // 0x0099123C:
         { -5, -2, -22, 10, 4, 14 },   { -3, -3, -22, 6, 6, 14 },    { -3, -3, -22, 6, 6, 14 },    { -3, -3, -22, 6, 6, 14 },
@@ -940,7 +941,7 @@ const vehicle_boundbox VehicleBoundboxes[16][224] = {
 
 static void PaintVehicleRiders(
     PaintSession& session, const Vehicle* vehicle, const CarEntry* carEntry, uint32_t baseImageId, int32_t z,
-    const vehicle_boundbox& bb)
+    const VehicleBoundBox& bb)
 {
     baseImageId += carEntry->NumCarImages;
     for (auto i = 0; i < 8; i++)
@@ -971,7 +972,7 @@ static void PaintVehicleRiders(
 
 // 6D5214
 static void vehicle_sprite_paint(
-    PaintSession& session, const Vehicle* vehicle, int32_t spriteNum, const vehicle_boundbox& bb, int32_t z,
+    PaintSession& session, const Vehicle* vehicle, int32_t spriteNum, const VehicleBoundBox& bb, int32_t z,
     const CarEntry* carEntry)
 {
     if (carEntry->draw_order >= std::size(VehicleBoundboxes))
@@ -1003,7 +1004,7 @@ static void vehicle_sprite_paint(
     {
         PaintVehicleRiders(session, vehicle, carEntry, baseImageId, z, bb);
     }
-    vehicle_visual_splash_effect(session, z, vehicle, carEntry);
+    VehicleVisualSplashEffect(session, z, vehicle, carEntry);
 }
 
 // 6D520E
@@ -3620,7 +3621,7 @@ static void vehicle_visual_splash5_effect(PaintSession& session, int32_t z, cons
     {
         return;
     }
-    if (!track_element_is_covered(vehicle->GetTrackType()))
+    if (!TrackElementIsCovered(vehicle->GetTrackType()))
     {
         return;
     }
@@ -3629,7 +3630,7 @@ static void vehicle_visual_splash5_effect(PaintSession& session, int32_t z, cons
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 1, 1, 0 } });
 }
 
-void vehicle_visual_splash_effect(PaintSession& session, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
+void VehicleVisualSplashEffect(PaintSession& session, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
 {
     switch (carEntry->effect_visual)
     {
@@ -3657,7 +3658,7 @@ void vehicle_visual_splash_effect(PaintSession& session, int32_t z, const Vehicl
  *
  *  rct2: 0x006D45F8
  */
-void vehicle_visual_default(
+void VehicleVisualDefault(
     PaintSession& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
 {
     if (vehicle->Pitch < std::size(PaintFunctionsByPitch))
@@ -3707,63 +3708,37 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
     switch (carEntry->PaintStyle)
     {
         case VEHICLE_VISUAL_DEFAULT:
-            vehicle_visual_default(session, imageDirection, z + zOffset, this, carEntry);
+            VehicleVisualDefault(session, imageDirection, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_LAUNCHED_FREEFALL:
-            vehicle_visual_launched_freefall(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            VehicleVisualLaunchedFreefall(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_OBSERVATION_TOWER:
             VehicleVisualObservationTower(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_RIVER_RAPIDS:
-            vehicle_visual_river_rapids(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            VehicleVisualRiverRapids(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_MINI_GOLF_PLAYER:
-            vehicle_visual_mini_golf_player(session, x, imageDirection, y, z + zOffset, this);
+            VehicleVisualMiniGolfPlayer(session, x, imageDirection, y, z + zOffset, this);
             break;
         case VEHICLE_VISUAL_MINI_GOLF_BALL:
             VehicleVisualMiniGolfBall(session, x, imageDirection, y, z + zOffset, this);
             break;
         case VEHICLE_VISUAL_REVERSER:
-            vehicle_visual_reverser(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            VehicleVisualReverser(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:
-            vehicle_visual_splash_boats_or_water_coaster(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            VehicleVisualSplashBoatsOrWaterCoaster(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_ROTO_DROP:
-            vehicle_visual_roto_drop(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            VehicleVisualRotoDrop(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_VIRGINIA_REEL:
-            vehicle_visual_virginia_reel(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            VehicleVisualVirginiaReel(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
         case VEHICLE_VISUAL_SUBMARINE:
-            vehicle_visual_submarine(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            VehicleVisualSubmarine(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
     }
-}
-
-uint32_t CarEntry::NumRotationSprites(SpriteGroupType spriteGroup) const
-{
-    return NumSpritesPrecision(SpriteGroups[static_cast<uint8_t>(spriteGroup)].spritePrecision);
-}
-
-int32_t CarEntry::SpriteByYaw(int32_t yaw, SpriteGroupType spriteGroup) const
-{
-    return YawToPrecision(yaw, SpriteGroups[static_cast<uint8_t>(spriteGroup)].spritePrecision);
-}
-
-bool CarEntry::GroupEnabled(SpriteGroupType spriteGroup) const
-{
-    return SpriteGroups[static_cast<uint8_t>(spriteGroup)].Enabled();
-}
-
-uint32_t CarEntry::GroupImageId(SpriteGroupType spriteGroup) const
-{
-    return SpriteGroups[static_cast<uint8_t>(spriteGroup)].imageId;
-}
-
-uint32_t CarEntry::SpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const
-{
-    return ((SpriteByYaw(imageDirection, spriteGroup) + NumRotationSprites(spriteGroup) * rankIndex) * base_num_frames)
-        + GroupImageId(spriteGroup);
 }

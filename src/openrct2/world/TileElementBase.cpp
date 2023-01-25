@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,29 +12,29 @@
 
 TileElementType TileElementBase::GetType() const
 {
-    return static_cast<TileElementType>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    return static_cast<TileElementType>((this->Type & TILE_ELEMENT_TYPE_MASK) >> 2);
 }
 
 void TileElementBase::SetType(TileElementType newType)
 {
-    this->type &= ~TILE_ELEMENT_TYPE_MASK;
-    this->type |= ((EnumValue(newType) << 2) & TILE_ELEMENT_TYPE_MASK);
+    this->Type &= ~TILE_ELEMENT_TYPE_MASK;
+    this->Type |= ((EnumValue(newType) << 2) & TILE_ELEMENT_TYPE_MASK);
 }
 
 Direction TileElementBase::GetDirection() const
 {
-    return this->type & TILE_ELEMENT_DIRECTION_MASK;
+    return this->Type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
 void TileElementBase::SetDirection(Direction direction)
 {
-    this->type &= ~TILE_ELEMENT_DIRECTION_MASK;
-    this->type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
+    this->Type &= ~TILE_ELEMENT_DIRECTION_MASK;
+    this->Type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
 }
 
 Direction TileElementBase::GetDirectionWithOffset(uint8_t offset) const
 {
-    return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
+    return ((this->Type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }
 
 bool TileElementBase::IsLastForTile() const
@@ -98,31 +98,31 @@ void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
 
 int32_t TileElementBase::GetBaseZ() const
 {
-    return base_height * COORDS_Z_STEP;
+    return BaseHeight * COORDS_Z_STEP;
 }
 
 void TileElementBase::SetBaseZ(int32_t newZ)
 {
-    base_height = (newZ / COORDS_Z_STEP);
+    BaseHeight = (newZ / COORDS_Z_STEP);
 }
 
 int32_t TileElementBase::GetClearanceZ() const
 {
-    return clearance_height * COORDS_Z_STEP;
+    return ClearanceHeight * COORDS_Z_STEP;
 }
 
 void TileElementBase::SetClearanceZ(int32_t newZ)
 {
-    clearance_height = (newZ / COORDS_Z_STEP);
+    ClearanceHeight = (newZ / COORDS_Z_STEP);
 }
 
 uint8_t TileElementBase::GetOwner() const
 {
-    return owner & OWNER_MASK;
+    return Owner & OWNER_MASK;
 }
 
 void TileElementBase::SetOwner(uint8_t newOwner)
 {
-    owner &= ~OWNER_MASK;
-    owner |= (newOwner & OWNER_MASK);
+    Owner &= ~OWNER_MASK;
+    Owner |= (newOwner & OWNER_MASK);
 }

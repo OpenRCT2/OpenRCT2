@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,8 +16,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
-#include <openrct2/actions/SetCheatAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Date.h>
@@ -63,16 +63,16 @@ static constexpr ScreenSize INVISIBLE_SIZE = {24, 12};
 
 #pragma endregion
 
-static rct_widget window_transparency_main_widgets[] =
+static Widget window_transparency_main_widgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_VEGETATION,  STR_SEE_THROUGH_VEGETATION),
-    MakeWidget({ 27, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_SCENERY,     STR_SEE_THROUGH_SCENERY),
-    MakeWidget({ 52, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,         STR_SEE_THROUGH_PATHS),
-    MakeWidget({ 77, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_RIDE,                       STR_SEE_THROUGH_RIDES),
-    MakeWidget({102, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_VEHICLES,    STR_SEE_THROUGH_VEHICLES),
-    MakeWidget({127, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_SUPPORTS,    STR_SEE_THROUGH_SUPPORTS),
-    MakeWidget({152, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_GUESTS,                     STR_SEE_THROUGH_GUESTS),
+    MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
+    MakeWidget({ 27, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_SCENERY),     STR_SEE_THROUGH_SCENERY),
+    MakeWidget({ 52, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_FOOTPATH),         STR_SEE_THROUGH_PATHS),
+    MakeWidget({ 77, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_RIDE),                       STR_SEE_THROUGH_RIDES),
+    MakeWidget({102, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEHICLES),    STR_SEE_THROUGH_VEHICLES),
+    MakeWidget({127, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_SUPPORTS),    STR_SEE_THROUGH_SUPPORTS),
+    MakeWidget({152, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_GUESTS),                     STR_SEE_THROUGH_GUESTS),
     MakeWidget({177, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_SEE_THROUGH_STAFF),
 
     MakeWidget({  2, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEGETATION),
@@ -93,9 +93,9 @@ public:
     void OnOpen() override
     {
         widgets = window_transparency_main_widgets;
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
-        auto* w = window_get_main();
+        auto* w = WindowGetMain();
         if (w != nullptr)
             windowPos.x = ((w->width / 2) - (width / 2));
     }
@@ -116,7 +116,7 @@ public:
     void OnPrepareDraw() override
     {
         uint32_t wflags = 0;
-        rct_window* w = window_get_main();
+        WindowBase* w = WindowGetMain();
 
         pressed_widgets = 0;
         disabled_widgets = 0;
@@ -141,18 +141,18 @@ public:
 
         for (WidgetIndex i = WIDX_INVISIBLE_VEGETATION; i <= WIDX_INVISIBLE_SUPPORTS; i++)
         {
-            widgets[i].image = IsWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL;
+            widgets[i].image = ImageId(IsWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL);
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         // Locate mechanic button image
         const auto& widget = widgets[WIDX_HIDE_STAFF];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
         auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
-        gfx_draw_sprite(&dpi, image, screenCoords);
+        GfxDrawSprite(&dpi, image, screenCoords);
     }
 
 private:
@@ -170,7 +170,7 @@ private:
     void ToggleViewportFlag(WidgetIndex widgetIndex)
     {
         uint32_t wflags = 0;
-        rct_window* w = window_get_main();
+        WindowBase* w = WindowGetMain();
 
         if (w == nullptr)
             return;
@@ -244,9 +244,9 @@ private:
     }
 };
 
-rct_window* WindowTransparencyOpen()
+WindowBase* WindowTransparencyOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::Transparency);
+    auto* window = WindowBringToFrontByClass(WindowClass::Transparency);
     if (window == nullptr)
         window = WindowCreate<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), WW, WH);
 

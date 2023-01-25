@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -63,7 +63,7 @@ namespace Json
         }
         catch (const json_t::exception& e)
         {
-            log_error("Unable to parse JSON string (%.*s)\n\t%s", static_cast<int>(raw.length()), raw.data(), e.what());
+            LOG_ERROR("Unable to parse JSON string (%.*s)\n\t%s", static_cast<int>(raw.length()), raw.data(), e.what());
         }
 
         return json;
@@ -79,7 +79,7 @@ namespace Json
         }
         catch (const json_t::exception& e)
         {
-            log_error("Unable to parse JSON vector (%.*s)\n\t%s", static_cast<int>(vec.size()), vec.data(), e.what());
+            LOG_ERROR("Unable to parse JSON vector (%.*s)\n\t%s", static_cast<int>(vec.size()), vec.data(), e.what());
         }
 
         return json;

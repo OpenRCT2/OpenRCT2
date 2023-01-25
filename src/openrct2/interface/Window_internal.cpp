@@ -5,39 +5,39 @@
 #include "Cursors.h"
 #include "Viewport.h"
 
-void rct_window::SetLocation(const CoordsXYZ& coords)
+void WindowBase::SetLocation(const CoordsXYZ& coords)
 {
-    window_scroll_to_location(*this, coords);
+    WindowScrollToLocation(*this, coords);
     flags &= ~WF_SCROLLING_TO_LOCATION;
 }
 
-void rct_window::ScrollToViewport()
+void WindowBase::ScrollToViewport()
 {
     if (viewport == nullptr || !focus.has_value())
         return;
 
     CoordsXYZ newCoords = focus.value().GetPos();
 
-    auto mainWindow = window_get_main();
+    auto mainWindow = WindowGetMain();
     if (mainWindow != nullptr)
-        window_scroll_to_location(*mainWindow, newCoords);
+        WindowScrollToLocation(*mainWindow, newCoords);
 }
 
-void rct_window::Invalidate()
+void WindowBase::Invalidate()
 {
-    gfx_set_dirty_blocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
+    GfxSetDirtyBlocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
 }
 
-void rct_window::RemoveViewport()
+void WindowBase::RemoveViewport()
 {
     if (viewport == nullptr)
         return;
 
-    viewport_remove(viewport);
+    ViewportRemove(viewport);
     viewport = nullptr;
 }
 
-CursorID rct_window::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
+CursorID WindowBase::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
 {
     return CursorID::Arrow;
 }

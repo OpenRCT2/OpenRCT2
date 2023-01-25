@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,7 +33,7 @@ enum
  *
  *  rct2: 0x006D5DA9
  */
-void vehicle_visual_roto_drop(
+void VehicleVisualRotoDrop(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
@@ -99,7 +99,7 @@ void vehicle_visual_roto_drop(
 }
 
 /** rct2: 0x00886194 */
-static void paint_roto_drop_base(
+static void PaintRotoDropBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -111,10 +111,9 @@ static void paint_roto_drop_base(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(
-        session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
         session.CurrentRotation);
 
@@ -174,7 +173,7 @@ static void paint_roto_drop_base(
 }
 
 /** rct2: 0x008861A4 */
-static void paint_roto_drop_tower_section(
+static void PaintRotoDropTowerSection(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -202,15 +201,15 @@ static void paint_roto_drop_tower_section(
 /**
  * rct2: 0x00886074
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::TowerBase:
-            return paint_roto_drop_base;
+            return PaintRotoDropBase;
 
         case TrackElemType::TowerSection:
-            return paint_roto_drop_tower_section;
+            return PaintRotoDropTowerSection;
     }
 
     return nullptr;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -63,14 +63,14 @@ namespace OpenRCT2::Audio
             _file.emplace();
             if (ov_open_callbacks(_rw, &*_file, NULL, 0, callbacks) < 0)
             {
-                log_verbose("Could not open OGG/Vorbis stream");
+                LOG_VERBOSE("Could not open OGG/Vorbis stream");
                 return false;
             }
 
             auto vi = ov_info(&*_file, -1);
             if (vi == nullptr)
             {
-                log_verbose("Failed to get OGG/Vorbis info");
+                LOG_VERBOSE("Failed to get OGG/Vorbis info");
                 return false;
             }
 

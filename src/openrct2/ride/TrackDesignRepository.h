@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,7 +47,7 @@ struct ITrackDesignRepository
     const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 [[nodiscard]] std::string GetNameFromTrackPath(const std::string& path);
 
-void track_repository_scan();
-bool track_repository_delete(const u8string& path);
-bool track_repository_rename(const u8string& path, const u8string& newName);
-bool track_repository_install(const u8string& srcPath, const u8string& name);
+void TrackRepositoryScan();
+bool TrackRepositoryDelete(const u8string& path);
+bool TrackRepositoryRename(const u8string& path, const u8string& newName);
+bool TrackRepositoryInstall(const u8string& srcPath, const u8string& name);

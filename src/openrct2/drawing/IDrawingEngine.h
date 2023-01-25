@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,7 +39,7 @@ enum DRAWING_ENGINE_FLAGS
     DEF_PARALLEL_DRAWING = 1 << 1,
 };
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 struct GamePalette;
 
 namespace OpenRCT2::Ui
@@ -72,7 +72,7 @@ namespace OpenRCT2::Drawing
         virtual std::string Screenshot() abstract;
 
         virtual IDrawingContext* GetDrawingContext() abstract;
-        virtual rct_drawpixelinfo* GetDrawingPixelInfo() abstract;
+        virtual DrawPixelInfo* GetDrawingPixelInfo() abstract;
 
         virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
 
@@ -92,7 +92,7 @@ namespace OpenRCT2::Drawing
     {
         virtual ~IWeatherDrawer() = default;
         virtual void Draw(
-            rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+            DrawPixelInfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
             const uint8_t* weatherpattern) abstract;
     };
 } // namespace OpenRCT2::Drawing

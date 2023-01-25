@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,7 +59,7 @@ static void PaintTopSpinRiders(
 }
 
 static void PaintTopSpinSeat(
-    PaintSession& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle* vehicle, Direction direction,
+    PaintSession& session, const Ride& ride, const RideObjectEntry& rideEntry, const Vehicle* vehicle, Direction direction,
     uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (armRotation >= std::size(TopSpinSeatHeightOffset))
@@ -103,7 +103,7 @@ static void PaintTopSpinSeat(
 
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
         imageTemplate = imageFlags;
     }
@@ -119,7 +119,7 @@ static void PaintTopSpinVehicle(
     PaintSession& session, int32_t al, int32_t cl, const Ride& ride, uint8_t direction, int32_t height,
     const TrackElement& tileElement)
 {
-    const auto* rideEntry = get_ride_entry(ride.subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
         return;
 
@@ -152,7 +152,7 @@ static void PaintTopSpinVehicle(
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto supportImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].supports);
     auto armImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].additional);
-    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
         supportImageTemplate = imageFlags;
         armImageTemplate = supportImageTemplate;
@@ -193,9 +193,9 @@ static void PaintTopSpin(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
         session.CurrentRotation);
 
@@ -247,7 +247,7 @@ static void PaintTopSpin(
     PaintUtilSetGeneralSupportHeight(session, height + 112, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionTopspin(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

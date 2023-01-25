@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-class FootpathPlaceFromTrackAction final : public GameActionBase<GameCommand::PlacePathFromTrack>
+class FootpathLayoutPlaceAction final : public GameActionBase<GameCommand::PlacePathLayout>
 {
 private:
     CoordsXYZ _loc;
@@ -22,8 +22,8 @@ private:
     PathConstructFlags _constructFlags{};
 
 public:
-    FootpathPlaceFromTrackAction() = default;
-    FootpathPlaceFromTrackAction(
+    FootpathLayoutPlaceAction() = default;
+    FootpathLayoutPlaceAction(
         const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
         PathConstructFlags constructFlags = 0);
 

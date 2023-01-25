@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,9 +40,9 @@ enum WindowPatrolAreaWidgetIdx
 };
 
 // clang-format off
-static rct_widget PatrolAreaWidgets[] = {
+static Widget PatrolAreaWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , SPR_LAND_TOOL_SIZE_0                                           ), // preview box
+    MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0)                                           ), // preview box
     MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_PATROL_AREA_TIP), // decrement size
     MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_PATROL_AREA_TIP ), // increment size
     WIDGETS_END,
@@ -57,7 +57,7 @@ public:
         widgets = PatrolAreaWidgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
         gLandToolSize = 4;
     }
 
@@ -65,7 +65,7 @@ public:
     {
         // If the tool wasn't changed, turn tool off
         if (PatrolAreaToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -128,10 +128,10 @@ public:
     void OnPrepareDraw() override
     {
         SetWidgetPressed(WIDX_PREVIEW, true);
-        PatrolAreaWidgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        PatrolAreaWidgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -189,9 +189,9 @@ public:
 
     void OnToolAbort(WidgetIndex widgetIndex) override
     {
-        hide_gridlines();
+        HideGridlines();
         ClearPatrolAreaToRender();
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -240,16 +240,16 @@ private:
         if (PatrolAreaToolIsActive())
         {
             SetPatrolAreaToRender(_staffId);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
         }
         else
         {
-            if (!tool_set(*this, 0, Tool::WalkDown))
+            if (!ToolSet(*this, 0, Tool::WalkDown))
             {
-                show_gridlines();
-                input_set_flag(INPUT_FLAG_6, true);
+                ShowGridlines();
+                InputSetFlag(INPUT_FLAG_6, true);
                 SetPatrolAreaToRender(_staffId);
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
         }
     }
@@ -264,7 +264,7 @@ private:
 
     bool PatrolAreaToolIsActive()
     {
-        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
         if (gCurrentToolWidget.window_classification != WindowClass::PatrolArea)
             return false;
@@ -274,7 +274,7 @@ private:
     bool IsStaffWindowOpen()
     {
         // If staff window for this patrol area was closed, tool is no longer active
-        auto staffWindow = window_find_by_number(WindowClass::Peep, _staffId);
+        auto staffWindow = WindowFindByNumber(WindowClass::Peep, _staffId);
         return staffWindow != nullptr;
     }
 
@@ -285,7 +285,7 @@ private:
     }
 };
 
-rct_window* WindowPatrolAreaOpen(EntityId staffId)
+WindowBase* WindowPatrolAreaOpen(EntityId staffId)
 {
     auto w = WindowFocusOrCreate<PatrolAreaWindow>(
         WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
@@ -298,6 +298,6 @@ rct_window* WindowPatrolAreaOpen(EntityId staffId)
 
 EntityId WindowPatrolAreaGetCurrentStaffId()
 {
-    auto current = reinterpret_cast<PatrolAreaWindow*>(window_find_by_class(WindowClass::PatrolArea));
+    auto current = reinterpret_cast<PatrolAreaWindow*>(WindowFindByClass(WindowClass::PatrolArea));
     return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
 }

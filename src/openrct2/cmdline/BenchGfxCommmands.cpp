@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@ static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator)
 {
     const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    int32_t result = cmdline_for_gfxbench(argv, argc);
+    int32_t result = CmdlineForGfxbench(argv, argc);
     if (result < 0)
     {
         return EXITCODE_FAIL;

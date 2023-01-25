@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,7 @@
 #include "../core/String.hpp"
 #include "Location.hpp"
 
-struct mapgen_settings
+struct MapGenSettings
 {
     // Base
     TileCoordsXY mapSize;
@@ -38,8 +38,8 @@ struct mapgen_settings
     bool normalize_height;
 };
 
-void MapGenGenerateBlank(mapgen_settings* settings);
-void MapGenGenerate(mapgen_settings* settings);
+void MapGenGenerateBlank(MapGenSettings* settings);
+void MapGenGenerate(MapGenSettings* settings);
 bool MapGenLoadHeightmap(const utf8* path);
 void MapGenUnloadHeightmap();
-void MapGenGenerateFromHeightmap(mapgen_settings* settings);
+void MapGenGenerateFromHeightmap(MapGenSettings* settings);

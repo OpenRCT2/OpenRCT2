@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,8 +46,8 @@ namespace Platform
 #endif // __ANDROID__
 
             InitTicks();
-            bitcount_init();
-            mask_init();
+            BitCountInit();
+            MaskInit();
         }
     }
 
@@ -69,12 +69,12 @@ namespace Platform
         return CurrencyType::Pounds;
     }
 
-    rct2_date GetDateLocal()
+    RealWorldDate GetDateLocal()
     {
         auto time = std::time(nullptr);
         auto localTime = std::localtime(&time);
 
-        rct2_date outDate;
+        RealWorldDate outDate;
         outDate.day = localTime->tm_mday;
         outDate.day_of_week = localTime->tm_wday;
         outDate.month = localTime->tm_mon + 1;
@@ -82,12 +82,12 @@ namespace Platform
         return outDate;
     }
 
-    rct2_time GetTimeLocal()
+    RealWorldTime GetTimeLocal()
     {
         auto time = std::time(nullptr);
         auto localTime = std::localtime(&time);
 
-        rct2_time outTime;
+        RealWorldTime outTime;
         outTime.hour = localTime->tm_hour;
         outTime.minute = localTime->tm_min;
         outTime.second = localTime->tm_sec;

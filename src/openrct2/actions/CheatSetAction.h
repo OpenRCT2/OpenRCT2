@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-class SetCheatAction final : public GameActionBase<GameCommand::Cheat>
+class CheatSetAction final : public GameActionBase<GameCommand::Cheat>
 {
     using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
 
@@ -21,8 +21,8 @@ private:
     int32_t _param2{};
 
 public:
-    SetCheatAction() = default;
-    SetCheatAction(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0);
+    CheatSetAction() = default;
+    CheatSetAction(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

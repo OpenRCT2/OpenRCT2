@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,9 +43,9 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     stream->Seek(6, STREAM_SEEK_CURRENT);
     stream->Seek(0x80 * 2, STREAM_SEEK_CURRENT);
     stream->Seek(1, STREAM_SEEK_CURRENT); // entry_count
-    stream->Seek(1, STREAM_SEEK_CURRENT); // pad_107;
+    stream->Seek(1, STREAM_SEEK_CURRENT); // Pad107;
     _legacyType.priority = stream->ReadValue<uint8_t>();
-    stream->Seek(1, STREAM_SEEK_CURRENT); // pad_109;
+    stream->Seek(1, STREAM_SEEK_CURRENT); // Pad109;
     _legacyType.entertainer_costumes = stream->ReadValue<uint32_t>();
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
@@ -56,26 +56,26 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream
 void SceneryGroupObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.name = LanguageAllocateObjectString(GetName());
+    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.SceneryEntries.clear();
 }
 
 void SceneryGroupObject::Unload()
 {
-    language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.name);
+    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _legacyType.image = 0;
 }
 
-void SceneryGroupObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void SceneryGroupObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     const auto imageId = ImageId(_legacyType.image + 1, COLOUR_DARK_GREEN);
-    gfx_draw_sprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 });
+    GfxDrawSprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 });
 }
 
 static std::optional<uint8_t> GetSceneryType(const ObjectType type)
@@ -139,7 +139,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadItems(IStream* stream
     while (stream->ReadValue<uint8_t>() != 0xFF)
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
-        auto entry = stream->ReadValue<rct_object_entry>();
+        auto entry = stream->ReadValue<RCTObjectEntry>();
         items.emplace_back(entry);
     }
     return items;
@@ -219,7 +219,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
 
             try
             {
-                rct_object_entry entry = {};
+                RCTObjectEntry entry = {};
                 entry.flags = std::stoul(entryName.substr(DatEntryFlagsStart, DatEntryFlagsLength), nullptr, 16);
                 std::memcpy(entry.name, entryName.c_str() + DatEntryNameStart, DAT_NAME_LENGTH);
                 entry.checksum = 0;

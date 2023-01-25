@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/FootpathItemEntry.h"
 #include "../ride/RideConstruction.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
@@ -98,12 +99,12 @@ GameActions::Result FootpathPlaceAction::Query() const
 
     if (_direction != INVALID_DIRECTION && !DirectionValid(_direction))
     {
-        log_error("Direction invalid. direction = %u", _direction);
+        LOG_ERROR("Direction invalid. direction = %u", _direction);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
     }
 
     FootpathProvisionalRemove();
-    auto tileElement = map_get_footpath_element_slope(_loc, _slope);
+    auto tileElement = MapGetFootpathElementSlope(_loc, _slope);
     if (tileElement == nullptr)
     {
         return ElementInsertQuery(std::move(res));
@@ -144,7 +145,7 @@ GameActions::Result FootpathPlaceAction::Execute() const
         }
     }
 
-    auto tileElement = map_get_footpath_element_slope(_loc, _slope);
+    auto tileElement = MapGetFootpathElementSlope(_loc, _slope);
     if (tileElement == nullptr)
     {
         return ElementInsertExecute(std::move(res));
@@ -495,7 +496,7 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
         auto tileElement = MapGetFootpathElement(CoordsXYZ(_loc, z));
         if (tileElement == nullptr)
         {
-            log_error("Something went wrong. Could not refind footpath.");
+            LOG_ERROR("Something went wrong. Could not refind footpath.");
             return;
         }
         pathElement = tileElement->AsPath();
@@ -508,7 +509,7 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
     MapInvalidateTileFull(_loc);
 }
 
-PathElement* FootpathPlaceAction::map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const
+PathElement* FootpathPlaceAction::MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const
 {
     const bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
     const auto slopeDirection = slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;

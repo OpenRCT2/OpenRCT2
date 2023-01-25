@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,7 +91,7 @@ int32_t ClimateCelsiusToFahrenheit(int32_t celsius)
 void ClimateReset(ClimateType climate)
 {
     auto weather = WeatherType::PartiallyCloudy;
-    int32_t month = date_get_month(gDateMonthsElapsed);
+    int32_t month = DateGetMonth(gDateMonthsElapsed);
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(climate)][month];
     const WeatherState* weatherState = &ClimateWeatherData[EnumValue(weather)];
 
@@ -110,7 +110,7 @@ void ClimateReset(ClimateType climate)
         _weatherVolume = 1;
     }
 
-    ClimateDetermineFutureWeather(scenario_rand());
+    ClimateDetermineFutureWeather(ScenarioRand());
 }
 
 /**
@@ -149,7 +149,7 @@ void ClimateUpdate()
                     if (gClimateCurrent.Level == gClimateNext.Level)
                     {
                         gClimateCurrent.Weather = gClimateNext.Weather;
-                        ClimateDetermineFutureWeather(scenario_rand());
+                        ClimateDetermineFutureWeather(ScenarioRand());
                         auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                         ContextBroadcastIntent(&intent);
                     }
@@ -163,7 +163,7 @@ void ClimateUpdate()
                 {
                     gClimateCurrent.WeatherGloom = ClimateStepWeatherLevel(
                         gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
             }
             else
@@ -185,7 +185,7 @@ void ClimateUpdate()
         || gClimateCurrent.WeatherEffect == WeatherEffectType::Blizzard)
     {
         // Create new thunder and lightning
-        uint32_t randomNumber = util_rand();
+        uint32_t randomNumber = UtilRand();
         if ((randomNumber & 0xFFFF) <= 0x1B4)
         {
             randomNumber >>= 16;
@@ -197,7 +197,7 @@ void ClimateUpdate()
 
 void ClimateForceWeather(WeatherType weather)
 {
-    int32_t month = date_get_month(gDateMonthsElapsed);
+    int32_t month = DateGetMonth(gDateMonthsElapsed);
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gClimate)][month];
     const auto weatherState = &ClimateWeatherData[EnumValue(weather)];
 
@@ -211,7 +211,7 @@ void ClimateForceWeather(WeatherType weather)
     ClimateUpdate();
 
     // In case of change in gloom level force a complete redraw
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 void ClimateUpdateSound()
@@ -295,7 +295,7 @@ static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWea
  */
 static void ClimateDetermineFutureWeather(int32_t randomDistribution)
 {
-    int32_t month = date_get_month(gDateMonthsElapsed);
+    int32_t month = DateGetMonth(gDateMonthsElapsed);
 
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
     // accordingly
@@ -399,7 +399,7 @@ static void ClimateUpdateLightning()
     _lightningTimer--;
     if (gClimateLightningFlash == 0)
     {
-        if ((util_rand() & 0xFFFF) <= 0x2000)
+        if ((UtilRand() & 0xFFFF) <= 0x2000)
         {
             gClimateLightningFlash = 1;
         }
@@ -411,7 +411,7 @@ static void ClimateUpdateThunder()
     _thunderTimer--;
     if (_thunderTimer == 0)
     {
-        uint32_t randomNumber = util_rand();
+        uint32_t randomNumber = UtilRand();
         if (randomNumber & 0x10000)
         {
             if (_thunderStatus[0] == THUNDER_STATUS::NONE && _thunderStatus[1] == THUNDER_STATUS::NONE)

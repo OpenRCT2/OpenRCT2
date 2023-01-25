@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,7 @@ enum WindowNetworkStatusWidgetIdx {
     WIDX_PASSWORD
 };
 
-static rct_widget window_network_status_widgets[] = {
+static Widget window_network_status_widgets[] = {
     MakeWidget({  0, 0}, {441, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                   ), // panel / background
     MakeWidget({  1, 1}, {438, 14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({427, 2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button
@@ -84,11 +84,11 @@ public:
         }
         if (text.empty())
         {
-            network_shutdown_client();
+            NetworkShutdownClient();
         }
         else
         {
-            network_send_password(_password);
+            NetworkSendPassword(_password);
         }
     }
 
@@ -97,16 +97,16 @@ public:
         ResizeFrame();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
         thread_local std::string _buffer;
         _buffer.assign("{BLACK}");
         _buffer += _windowNetworkStatusText;
-        gfx_clip_string(_buffer.data(), widgets[WIDX_BACKGROUND].right - 50, FontStyle::Medium);
+        GfxClipString(_buffer.data(), widgets[WIDX_BACKGROUND].right - 50, FontStyle::Medium);
         ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
-        screenCoords.x -= gfx_get_string_width(_buffer, FontStyle::Medium) / 2;
-        gfx_draw_string(&dpi, screenCoords, _buffer.c_str());
+        screenCoords.x -= GfxGetStringWidth(_buffer, FontStyle::Medium) / 2;
+        GfxDrawString(&dpi, screenCoords, _buffer.c_str());
     }
 
     void SetCloseCallBack(close_callback onClose)
@@ -130,7 +130,7 @@ private:
     std::string _password;
 };
 
-rct_window* WindowNetworkStatusOpen(const std::string& text, close_callback onClose)
+WindowBase* WindowNetworkStatusOpen(const std::string& text, close_callback onClose)
 {
     auto window = WindowFocusOrCreate<NetworkStatusWindow>(
         WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
@@ -142,7 +142,7 @@ rct_window* WindowNetworkStatusOpen(const std::string& text, close_callback onCl
 // force close
 void WindowNetworkStatusClose()
 {
-    auto window = window_find_by_class(WindowClass::NetworkStatus);
+    auto window = WindowFindByClass(WindowClass::NetworkStatus);
     if (window == nullptr)
     {
         return;
@@ -152,7 +152,7 @@ void WindowNetworkStatusClose()
     networkWindow->Close();
 }
 
-rct_window* WindowNetworkStatusOpenPassword()
+WindowBase* WindowNetworkStatusOpenPassword()
 {
     auto window = WindowFocusOrCreate<NetworkStatusWindow>(
         WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);

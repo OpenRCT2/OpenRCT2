@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,7 @@
 #include <openrct2/world/Footpath.h>
 
 // clang-format off
-static rct_widget _mainWidgets[] = {
+static Widget _mainWidgets[] = {
     MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
     WIDGETS_END,
 };
@@ -31,7 +31,7 @@ public:
         _mainWidgets[0].bottom = height;
         widgets = _mainWidgets;
 
-        viewport_create(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
+        ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
         if (viewport != nullptr)
         {
             SetViewportFlags();
@@ -43,9 +43,9 @@ public:
         WindowFootpathResetSelectedPath();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
-        viewport_render(&dpi, viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
+        ViewportRender(&dpi, viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
     }
 
 private:
@@ -71,7 +71,7 @@ private:
  * Creates the main window that holds the main viewport.
  *  rct2: 0x0066B3E8
  */
-rct_window* WindowMainOpen()
+WindowBase* WindowMainOpen()
 {
     return WindowCreate<MainWindow>(WindowClass::MainWindow, { 0, 0 }, ContextGetWidth(), ContextGetHeight(), WF_STICK_TO_BACK);
 }

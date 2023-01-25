@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -374,7 +374,7 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
         case RIDE_CATEGORY_NONE:
             break;
     }
-    log_error("Cannot get Research Category of invalid RideCategory");
+    LOG_ERROR("Cannot get Research Category of invalid RideCategory");
     return ResearchCategory::Transport;
 }
 

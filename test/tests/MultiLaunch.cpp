@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,10 +42,10 @@ TEST(MultiLaunchTest, all)
         ASSERT_TRUE(initialised);
 
         GetContext()->LoadParkFromFile(path);
-        game_load_init();
+        GameLoadInit();
 
         // Check ride count to check load was successful
-        ASSERT_EQ(ride_get_count(), 134);
+        ASSERT_EQ(RideGetCount(), 134);
         auto gs = context->GetGameState();
         ASSERT_NE(gs, nullptr);
         auto& date = gs->GetDate();
@@ -59,7 +59,7 @@ TEST(MultiLaunchTest, all)
         ASSERT_EQ(date.GetMonthTicks(), 7862 + updatesToTest);
 
         // Check ride count again
-        ASSERT_EQ(ride_get_count(), 134);
+        ASSERT_EQ(RideGetCount(), 134);
     }
     SUCCEED();
 }

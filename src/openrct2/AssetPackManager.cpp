@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -127,7 +127,7 @@ void AssetPackManager::ClearAssetPacks()
 void AssetPackManager::AddAssetPack(const fs::path& path)
 {
     auto szPath = path.u8string();
-    log_verbose("Scanning asset pack: %s", szPath.c_str());
+    LOG_VERBOSE("Scanning asset pack: %s", szPath.c_str());
     try
     {
         auto ap = std::make_unique<AssetPack>(path);

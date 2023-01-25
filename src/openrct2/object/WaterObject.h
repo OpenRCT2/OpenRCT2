@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@
 class WaterObject final : public Object
 {
 private:
-    rct_water_type _legacyType = {};
+    WaterObjectEntry _legacyType = {};
 
 public:
     void* GetLegacyData() override
@@ -30,7 +30,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
 private:
     void ReadJsonPalette(json_t& jPalette);

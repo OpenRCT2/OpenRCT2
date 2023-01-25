@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,11 +45,11 @@ enum
 static constexpr ScreenSize MenuButtonDims = { 82, 82 };
 static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
 
-static rct_widget window_title_menu_widgets[] = {
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
+static Widget window_title_menu_widgets[] = {
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_NEW_GAME),       STR_START_NEW_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_LOAD_GAME),      STR_CONTINUE_SAVED_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_G2_MENU_MULTIPLAYER), STR_SHOW_MULTIPLAYER_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_TOOLBOX),        STR_GAME_TOOLS_TIP),
     MakeWidget({0,                       0}, UpdateButtonDims, WindowWidgetType::Empty,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
     WIDGETS_END,
 };
@@ -57,10 +57,10 @@ static rct_widget window_title_menu_widgets[] = {
 
 static void WindowTitleMenuScenarioselectCallback(const utf8* path)
 {
-    game_notify_map_change();
+    GameNotifyMapChange();
     OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);
-    game_load_scripts();
-    game_notify_map_changed();
+    GameLoadScripts();
+    GameNotifyMapChanged();
 }
 
 static void InvokeCustomToolboxMenuItem(size_t index)
@@ -97,9 +97,8 @@ public:
         widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
 #endif
 
-        WidgetIndex i = 0;
         int32_t x = 0;
-        for (rct_widget* widget = widgets; widget != &widgets[WIDX_NEW_VERSION]; widget++)
+        for (Widget* widget = widgets; widget != &widgets[WIDX_NEW_VERSION]; widget++)
         {
             if (widget->type != WindowWidgetType::Empty)
             {
@@ -108,7 +107,6 @@ public:
 
                 x += MenuButtonDims.width;
             }
-            i++;
         }
         width = x;
         widgets[WIDX_NEW_VERSION].right = width;
@@ -120,47 +118,47 @@ public:
 
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
-        rct_window* windowToOpen = nullptr;
+        WindowBase* windowToOpen = nullptr;
 
         switch (widgetIndex)
         {
             case WIDX_START_NEW_GAME:
-                windowToOpen = window_find_by_class(WindowClass::ScenarioSelect);
+                windowToOpen = WindowFindByClass(WindowClass::ScenarioSelect);
                 if (windowToOpen != nullptr)
                 {
-                    window_bring_to_front(*windowToOpen);
+                    WindowBringToFront(*windowToOpen);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::Loadsave);
-                    window_close_by_class(WindowClass::ServerList);
+                    WindowCloseByClass(WindowClass::Loadsave);
+                    WindowCloseByClass(WindowClass::ServerList);
                     WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback, false);
                 }
                 break;
             case WIDX_CONTINUE_SAVED_GAME:
-                windowToOpen = window_find_by_class(WindowClass::Loadsave);
+                windowToOpen = WindowFindByClass(WindowClass::Loadsave);
                 if (windowToOpen != nullptr)
                 {
-                    window_bring_to_front(*windowToOpen);
+                    WindowBringToFront(*windowToOpen);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::ScenarioSelect);
-                    window_close_by_class(WindowClass::ServerList);
+                    WindowCloseByClass(WindowClass::ScenarioSelect);
+                    WindowCloseByClass(WindowClass::ServerList);
                     auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
                     GameActions::Execute(&loadOrQuitAction);
                 }
                 break;
             case WIDX_MULTIPLAYER:
-                windowToOpen = window_find_by_class(WindowClass::ServerList);
+                windowToOpen = WindowFindByClass(WindowClass::ServerList);
                 if (windowToOpen != nullptr)
                 {
-                    window_bring_to_front(*windowToOpen);
+                    WindowBringToFront(*windowToOpen);
                 }
                 else
                 {
-                    window_close_by_class(WindowClass::ScenarioSelect);
-                    window_close_by_class(WindowClass::Loadsave);
+                    WindowCloseByClass(WindowClass::ScenarioSelect);
+                    WindowCloseByClass(WindowClass::Loadsave);
                     ContextOpenWindow(WindowClass::ServerList);
                 }
                 break;
@@ -206,7 +204,7 @@ public:
             }
 #endif
 
-            rct_widget* widget = &widgets[widgetIndex];
+            Widget* widget = &widgets[widgetIndex];
             int32_t yOffset = 0;
             if (i > 5)
             {
@@ -269,9 +267,9 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
-        gfx_filter_rect(&dpi, _filterRect, FilterPaletteID::Palette51);
+        GfxFilterRect(&dpi, _filterRect, FilterPaletteID::Palette51);
         DrawWidgets(dpi);
     }
 };
@@ -279,7 +277,7 @@ public:
 /**
  * Creates the window containing the menu buttons on the title screen.
  */
-rct_window* WindowTitleMenuOpen()
+WindowBase* WindowTitleMenuOpen()
 {
     const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
     return WindowCreate<TitleMenuWindow>(

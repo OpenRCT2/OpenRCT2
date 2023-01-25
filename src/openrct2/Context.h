@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,7 @@ struct ITrackDesignRepository;
 struct IGameStateSnapshots;
 
 class Intent;
-struct rct_window;
+struct WindowBase;
 struct NewVersionInfo;
 
 struct TTFFontDescriptor;
@@ -210,11 +210,11 @@ int32_t ContextGetWidth();
 int32_t ContextGetHeight();
 bool ContextHasFocus();
 void ContextSetCursorTrap(bool value);
-rct_window* ContextOpenWindow(WindowClass wc);
-rct_window* ContextOpenDetailWindow(uint8_t type, int32_t id);
-rct_window* ContextOpenWindowView(uint8_t view);
-rct_window* ContextShowError(StringId title, StringId message, const class Formatter& args);
-rct_window* ContextOpenIntent(Intent* intent);
+WindowBase* ContextOpenWindow(WindowClass wc);
+WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
+WindowBase* ContextOpenWindowView(uint8_t view);
+WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args);
+WindowBase* ContextOpenIntent(Intent* intent);
 void ContextBroadcastIntent(Intent* intent);
 void ContextForceCloseWindowByClass(WindowClass wc);
 void ContextUpdateMapTooltip();

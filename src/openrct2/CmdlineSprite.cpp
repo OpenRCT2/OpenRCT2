@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,8 +36,8 @@ using namespace OpenRCT2::Drawing;
 class SpriteFile
 {
 public:
-    rct_g1_header Header{};
-    std::vector<rct_g1_element> Entries;
+    RCTG1Header Header{};
+    std::vector<G1Element> Entries;
     std::vector<uint8_t> Data;
     void AddImage(ImageImporter::ImportResult& image);
     bool Save(const utf8* path);
@@ -115,7 +115,7 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
         OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_OPEN);
 
         SpriteFile spriteFile;
-        stream.Read(&spriteFile.Header, sizeof(rct_g1_header));
+        stream.Read(&spriteFile.Header, sizeof(RCTG1Header));
 
         if (spriteFile.Header.num_entries > 0)
         {
@@ -123,9 +123,9 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
 
             for (uint32_t i = 0; i < spriteFile.Header.num_entries; ++i)
             {
-                rct_g1_element_32bit entry32bit{};
+                RCTG1Element entry32bit{};
                 stream.Read(&entry32bit, sizeof(entry32bit));
-                rct_g1_element entry{};
+                G1Element entry{};
 
                 entry.offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(entry32bit.offset));
                 entry.width = entry32bit.width;
@@ -153,7 +153,7 @@ bool SpriteFile::Save(const utf8* path)
     try
     {
         OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_WRITE);
-        stream.Write(&Header, sizeof(rct_g1_header));
+        stream.Write(&Header, sizeof(RCTG1Header));
 
         if (Header.num_entries > 0)
         {
@@ -161,7 +161,7 @@ bool SpriteFile::Save(const utf8* path)
 
             for (const auto& entry : Entries)
             {
-                rct_g1_element_32bit entry32bit{};
+                RCTG1Element entry32bit{};
 
                 entry32bit.offset = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(const_cast<uint8_t*>(entry.offset)));
                 entry32bit.width = entry.width;
@@ -183,13 +183,13 @@ bool SpriteFile::Save(const utf8* path)
     }
 }
 
-static bool SpriteImageExport(const rct_g1_element& spriteElement, u8string_view outPath)
+static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outPath)
 {
     const size_t pixelBufferSize = static_cast<size_t>(spriteElement.width) * spriteElement.height;
     auto pixelBuffer = std::make_unique<uint8_t[]>(pixelBufferSize);
     auto pixels = pixelBuffer.get();
 
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     dpi.bits = pixels;
     dpi.x = 0;
     dpi.y = 0;
@@ -200,7 +200,7 @@ static bool SpriteImageExport(const rct_g1_element& spriteElement, u8string_view
 
     DrawSpriteArgs args(
         ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
-    gfx_sprite_to_buffer(dpi, args);
+    GfxSpriteToBuffer(dpi, args);
 
     auto const pixels8 = dpi.bits;
     auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
@@ -263,7 +263,7 @@ static std::string PopStr(std::ostringstream& oss)
     return str;
 }
 
-int32_t cmdline_for_sprite(const char** argv, int32_t argc)
+int32_t CmdLineForSprite(const char** argv, int32_t argc)
 {
     gOpenRCT2Headless = true;
     if (argc == 0)
@@ -307,7 +307,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        rct_g1_element* g1 = &spriteFile->Entries[spriteIndex];
+        G1Element* g1 = &spriteFile->Entries[spriteIndex];
         printf("width: %d\n", g1->width);
         printf("height: %d\n", g1->height);
         printf("x offset: %d\n", g1->x_offset);
@@ -408,21 +408,21 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         auto context = OpenRCT2::CreateContext();
         context->Initialise();
 
-        const ObjectRepositoryItem* ori = object_repository_find_object_by_name(datName);
+        const ObjectRepositoryItem* ori = ObjectRepositoryFindObjectByName(datName);
         if (ori == nullptr)
         {
             fprintf(stderr, "Could not find the object.\n");
             return -1;
         }
 
-        const rct_object_entry* entry = &ori->ObjectEntry;
-        const auto* loadedObject = object_manager_load_object(entry);
+        const RCTObjectEntry* entry = &ori->ObjectEntry;
+        const auto* loadedObject = ObjectManagerLoadObject(entry);
         if (loadedObject == nullptr)
         {
             fprintf(stderr, "Unable to load object.\n");
             return -1;
         }
-        auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
         ObjectType objectType = entry->GetType();
 
         auto& objManager = context->GetObjectManager();
@@ -603,7 +603,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         if (!spriteFile.Save(spriteFilePath))
         {
-            log_error("Could not save sprite file, cancelling.");
+            LOG_ERROR("Could not save sprite file, cancelling.");
             return -1;
         }
 

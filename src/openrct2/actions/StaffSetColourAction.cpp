@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,7 +55,7 @@ GameActions::Result StaffSetColourAction::Query() const
 GameActions::Result StaffSetColourAction::Execute() const
 {
     // Update global uniform colour property
-    if (!staff_set_colour(static_cast<StaffType>(_staffType), _colour))
+    if (!StaffSetColour(static_cast<StaffType>(_staffType), _colour))
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
@@ -70,6 +70,6 @@ GameActions::Result StaffSetColourAction::Execute() const
         }
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     return GameActions::Result();
 }

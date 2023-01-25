@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
+#include "../object/WallSceneryEntry.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/Banner.h"
@@ -72,7 +73,7 @@ GameActions::Result WallSetColourAction::Query() const
     auto wallElement = MapGetWallElementAt(_loc);
     if (wallElement == nullptr)
     {
-        log_error(
+        LOG_ERROR(
             "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
@@ -85,19 +86,19 @@ GameActions::Result WallSetColourAction::Query() const
     auto* wallEntry = wallElement->GetEntry();
     if (wallEntry == nullptr)
     {
-        log_error("Could not find wall object");
+        LOG_ERROR("Could not find wall object");
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_primaryColour > 31)
     {
-        log_error("Primary colour invalid: colour = %d", _primaryColour);
+        LOG_ERROR("Primary colour invalid: colour = %d", _primaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_secondaryColour > 31)
     {
-        log_error("Secondary colour invalid: colour = %d", _secondaryColour);
+        LOG_ERROR("Secondary colour invalid: colour = %d", _secondaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -105,7 +106,7 @@ GameActions::Result WallSetColourAction::Query() const
     {
         if (_tertiaryColour > 31)
         {
-            log_error("Tertiary colour invalid: colour = %d", _tertiaryColour);
+            LOG_ERROR("Tertiary colour invalid: colour = %d", _tertiaryColour);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
@@ -124,7 +125,7 @@ GameActions::Result WallSetColourAction::Execute() const
     auto wallElement = MapGetWallElementAt(_loc);
     if (wallElement == nullptr)
     {
-        log_error(
+        LOG_ERROR(
             "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
@@ -137,7 +138,7 @@ GameActions::Result WallSetColourAction::Execute() const
     auto* wallEntry = wallElement->GetEntry();
     if (wallEntry == nullptr)
     {
-        log_error("Could not find wall object");
+        LOG_ERROR("Could not find wall object");
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 

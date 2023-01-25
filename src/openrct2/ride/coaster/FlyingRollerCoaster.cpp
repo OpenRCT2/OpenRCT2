@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,7 @@
 #include "BolligerMabillardTrack.hpp"
 
 /** rct2: 0x007C6FF4 */
-static void flying_rc_track_flat(
+static void FlyingRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -51,7 +51,7 @@ static void flying_rc_track_flat(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -74,7 +74,7 @@ static void flying_rc_track_flat(
                         { 32, 20, 3 }, { 0, 6, height });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -126,7 +126,7 @@ static void flying_rc_track_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -138,7 +138,7 @@ static void flying_rc_track_flat(
 }
 
 /** rct2: 0x007C7244, 0x007C7254, 0x007C7264 */
-static void flying_rc_track_station(
+static void FlyingRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -159,8 +159,8 @@ static void flying_rc_track_station(
         PaintAddImageAsChildRotated(
             session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 24 },
             { 32, 20, 1 }, { 0, 6, height + 24 });
-        track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
-        track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
+        TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
+        TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     }
     else
     {
@@ -186,8 +186,8 @@ static void flying_rc_track_station(
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][2]), { 0, 0, height },
             { 32, 32, 1 });
-        track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
-        track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 9, 11);
+        TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
+        TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -196,7 +196,7 @@ static void flying_rc_track_station(
 }
 
 /** rct2: 0x007C7004 */
-static void flying_rc_track_25_deg_up(
+static void FlyingRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -254,7 +254,7 @@ static void flying_rc_track_25_deg_up(
                     break;
             }
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -328,7 +328,7 @@ static void flying_rc_track_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -364,7 +364,7 @@ static void flying_rc_track_25_deg_up(
 }
 
 /** rct2: 0x007C7014 */
-static void flying_rc_track_60_deg_up(
+static void FlyingRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -393,7 +393,7 @@ static void flying_rc_track_60_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -450,7 +450,7 @@ static void flying_rc_track_60_deg_up(
 }
 
 /** rct2: 0x007C7024 */
-static void flying_rc_track_flat_to_25_deg_up(
+static void FlyingRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -508,7 +508,7 @@ static void flying_rc_track_flat_to_25_deg_up(
                     break;
             }
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -582,7 +582,7 @@ static void flying_rc_track_flat_to_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -618,7 +618,7 @@ static void flying_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x007C7034 */
-static void flying_rc_track_25_deg_up_to_60_deg_up(
+static void FlyingRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -653,7 +653,7 @@ static void flying_rc_track_25_deg_up_to_60_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -716,7 +716,7 @@ static void flying_rc_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x007C7044 */
-static void flying_rc_track_60_deg_up_to_25_deg_up(
+static void FlyingRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -751,7 +751,7 @@ static void flying_rc_track_60_deg_up_to_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -802,7 +802,7 @@ static void flying_rc_track_60_deg_up_to_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -838,7 +838,7 @@ static void flying_rc_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x007C7054 */
-static void flying_rc_track_25_deg_up_to_flat(
+static void FlyingRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -896,7 +896,7 @@ static void flying_rc_track_25_deg_up_to_flat(
                     break;
             }
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -970,7 +970,7 @@ static void flying_rc_track_25_deg_up_to_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -1006,55 +1006,55 @@ static void flying_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x007C7064 */
-static void flying_rc_track_25_deg_down(
+static void FlyingRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7074 */
-static void flying_rc_track_60_deg_down(
+static void FlyingRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7084 */
-static void flying_rc_track_flat_to_25_deg_down(
+static void FlyingRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7094 */
-static void flying_rc_track_25_deg_down_to_60_deg_down(
+static void FlyingRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C70A4 */
-static void flying_rc_track_60_deg_down_to_25_deg_down(
+static void FlyingRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C70B4 */
-static void flying_rc_track_25_deg_down_to_flat(
+static void FlyingRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C70C4 */
-static void flying_rc_track_left_quarter_turn_5(
+static void FlyingRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1417,16 +1417,16 @@ static void flying_rc_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x007C70D4 */
-static void flying_rc_track_right_quarter_turn_5(
+static void FlyingRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    flying_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C70E4 */
-static void flying_rc_track_flat_to_left_bank(
+static void FlyingRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1461,7 +1461,7 @@ static void flying_rc_track_flat_to_left_bank(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1501,7 +1501,7 @@ static void flying_rc_track_flat_to_left_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1513,7 +1513,7 @@ static void flying_rc_track_flat_to_left_bank(
 }
 
 /** rct2: 0x007C70F4 */
-static void flying_rc_track_flat_to_right_bank(
+static void FlyingRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1548,7 +1548,7 @@ static void flying_rc_track_flat_to_right_bank(
                     { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1588,7 +1588,7 @@ static void flying_rc_track_flat_to_right_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1600,7 +1600,7 @@ static void flying_rc_track_flat_to_right_bank(
 }
 
 /** rct2: 0x007C7104 */
-static void flying_rc_track_left_bank_to_flat(
+static void FlyingRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1635,7 +1635,7 @@ static void flying_rc_track_left_bank_to_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1675,7 +1675,7 @@ static void flying_rc_track_left_bank_to_flat(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1687,7 +1687,7 @@ static void flying_rc_track_left_bank_to_flat(
 }
 
 /** rct2: 0x007C7114 */
-static void flying_rc_track_right_bank_to_flat(
+static void FlyingRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1722,7 +1722,7 @@ static void flying_rc_track_right_bank_to_flat(
                     { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1762,7 +1762,7 @@ static void flying_rc_track_right_bank_to_flat(
             session,
             PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1774,7 +1774,7 @@ static void flying_rc_track_right_bank_to_flat(
 }
 
 /** rct2: 0x007C7124 */
-static void flying_rc_track_banked_left_quarter_turn_5(
+static void FlyingRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2143,16 +2143,16 @@ static void flying_rc_track_banked_left_quarter_turn_5(
 }
 
 /** rct2: 0x007C7134 */
-static void flying_rc_track_banked_right_quarter_turn_5(
+static void FlyingRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    flying_rc_track_banked_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7144 */
-static void flying_rc_track_left_bank_to_25_deg_up(
+static void FlyingRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2187,7 +2187,7 @@ static void flying_rc_track_left_bank_to_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2234,7 +2234,7 @@ static void flying_rc_track_left_bank_to_25_deg_up(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -2270,7 +2270,7 @@ static void flying_rc_track_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x007C7154 */
-static void flying_rc_track_right_bank_to_25_deg_up(
+static void FlyingRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2305,7 +2305,7 @@ static void flying_rc_track_right_bank_to_25_deg_up(
                     { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2352,7 +2352,7 @@ static void flying_rc_track_right_bank_to_25_deg_up(
             session,
             PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -2388,7 +2388,7 @@ static void flying_rc_track_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x007C7164 */
-static void flying_rc_track_25_deg_up_to_left_bank(
+static void FlyingRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2423,7 +2423,7 @@ static void flying_rc_track_25_deg_up_to_left_bank(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2470,7 +2470,7 @@ static void flying_rc_track_25_deg_up_to_left_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -2506,7 +2506,7 @@ static void flying_rc_track_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x007C7174 */
-static void flying_rc_track_25_deg_up_to_right_bank(
+static void FlyingRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2541,7 +2541,7 @@ static void flying_rc_track_25_deg_up_to_right_bank(
                     { 0, 27, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2588,7 +2588,7 @@ static void flying_rc_track_25_deg_up_to_right_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -2624,39 +2624,39 @@ static void flying_rc_track_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x007C7184 */
-static void flying_rc_track_left_bank_to_25_deg_down(
+static void FlyingRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_25_deg_up_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7194 */
-static void flying_rc_track_right_bank_to_25_deg_down(
+static void FlyingRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_25_deg_up_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C71A4 */
-static void flying_rc_track_25_deg_down_to_left_bank(
+static void FlyingRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_right_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C71B4 */
-static void flying_rc_track_25_deg_down_to_right_bank(
+static void FlyingRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_left_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C71C4 */
-static void flying_rc_track_left_bank(
+static void FlyingRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2685,7 +2685,7 @@ static void flying_rc_track_left_bank(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2725,7 +2725,7 @@ static void flying_rc_track_left_bank(
             session,
             PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
             0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2737,15 +2737,15 @@ static void flying_rc_track_left_bank(
 }
 
 /** rct2: 0x007C71D4 */
-static void flying_rc_track_right_bank(
+static void FlyingRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C71E4 */
-static void flying_rc_track_left_quarter_turn_5_25_deg_up(
+static void FlyingRCTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3108,7 +3108,7 @@ static void flying_rc_track_left_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x007C71F4 */
-static void flying_rc_track_right_quarter_turn_5_25_deg_up(
+static void FlyingRCTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3471,25 +3471,25 @@ static void flying_rc_track_right_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x007C7204 */
-static void flying_rc_track_left_quarter_turn_5_25_deg_down(
+static void FlyingRCTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    flying_rc_track_right_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    FlyingRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7214 */
-static void flying_rc_track_right_quarter_turn_5_25_deg_down(
+static void FlyingRCTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    flying_rc_track_left_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7224 */
-static void flying_rc_track_s_bend_left(
+static void FlyingRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3816,7 +3816,7 @@ static void flying_rc_track_s_bend_left(
 }
 
 /** rct2: 0x007C7234 */
-static void flying_rc_track_s_bend_right(
+static void FlyingRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4143,7 +4143,7 @@ static void flying_rc_track_s_bend_right(
 }
 
 /** rct2: 0x007C7274 */
-static void flying_rc_track_left_quarter_turn_3(
+static void FlyingRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4376,16 +4376,16 @@ static void flying_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x007C7284 */
-static void flying_rc_track_right_quarter_turn_3(
+static void FlyingRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    flying_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7294 */
-static void flying_rc_track_left_quarter_turn_3_bank(
+static void FlyingRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4624,16 +4624,16 @@ static void flying_rc_track_left_quarter_turn_3_bank(
 }
 
 /** rct2: 0x007C72A4 */
-static void flying_rc_track_right_quarter_turn_3_bank(
+static void FlyingRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    flying_rc_track_left_quarter_turn_3_bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C72B4 */
-static void flying_rc_track_left_quarter_turn_3_25_deg_up(
+static void FlyingRCTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4816,7 +4816,7 @@ static void flying_rc_track_left_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x007C72C4 */
-static void flying_rc_track_right_quarter_turn_3_25_deg_up(
+static void FlyingRCTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5005,25 +5005,25 @@ static void flying_rc_track_right_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x007C72D4 */
-static void flying_rc_track_left_quarter_turn_3_25_deg_down(
+static void FlyingRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    flying_rc_track_right_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    FlyingRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C72E4 */
-static void flying_rc_track_right_quarter_turn_3_25_deg_down(
+static void FlyingRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    flying_rc_track_left_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7314 */
-static void flying_rc_track_left_half_banked_helix_up_small(
+static void FlyingRCTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5257,7 +5257,7 @@ static void flying_rc_track_left_half_banked_helix_up_small(
 }
 
 /** rct2: 0x007C7324 */
-static void flying_rc_track_right_half_banked_helix_up_small(
+static void FlyingRCTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5491,7 +5491,7 @@ static void flying_rc_track_right_half_banked_helix_up_small(
 }
 
 /** rct2: 0x007C7334 */
-static void flying_rc_track_left_half_banked_helix_down_small(
+static void FlyingRCTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5501,11 +5501,11 @@ static void flying_rc_track_left_half_banked_helix_down_small(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    flying_rc_track_right_half_banked_helix_up_small(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    FlyingRCTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7344 */
-static void flying_rc_track_right_half_banked_helix_down_small(
+static void FlyingRCTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5515,11 +5515,11 @@ static void flying_rc_track_right_half_banked_helix_down_small(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    flying_rc_track_left_half_banked_helix_up_small(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7354 */
-static void flying_rc_track_left_half_banked_helix_up_large(
+static void FlyingRCTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5879,7 +5879,7 @@ static void flying_rc_track_left_half_banked_helix_up_large(
 }
 
 /** rct2: 0x007C7364 */
-static void flying_rc_track_right_half_banked_helix_up_large(
+static void FlyingRCTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6239,7 +6239,7 @@ static void flying_rc_track_right_half_banked_helix_up_large(
 }
 
 /** rct2: 0x007C7374 */
-static void flying_rc_track_left_half_banked_helix_down_large(
+static void FlyingRCTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6249,11 +6249,11 @@ static void flying_rc_track_left_half_banked_helix_down_large(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    flying_rc_track_right_half_banked_helix_up_large(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    FlyingRCTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7384 */
-static void flying_rc_track_right_half_banked_helix_down_large(
+static void FlyingRCTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6263,11 +6263,11 @@ static void flying_rc_track_right_half_banked_helix_down_large(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    flying_rc_track_left_half_banked_helix_up_large(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C73B4 */
-static void flying_rc_track_left_quarter_turn_1_60_deg_up(
+static void FlyingRCTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6348,13 +6348,13 @@ static void flying_rc_track_left_quarter_turn_1_60_deg_up(
         }
     }
 
-    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+    TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 /** rct2: 0x007C7394 */
-static void flying_rc_track_right_quarter_turn_1_60_deg_up(
+static void FlyingRCTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6434,29 +6434,29 @@ static void flying_rc_track_right_quarter_turn_1_60_deg_up(
                 break;
         }
     }
-    track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+    TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 /** rct2: 0x007C73A4 */
-static void flying_rc_track_left_quarter_turn_1_60_deg_down(
+static void FlyingRCTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_right_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    FlyingRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C73C4 */
-static void flying_rc_track_right_quarter_turn_1_60_deg_down(
+static void FlyingRCTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_left_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C73D4 */
-static void flying_rc_track_brakes(
+static void FlyingRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6477,7 +6477,7 @@ static void flying_rc_track_brakes(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -6507,7 +6507,7 @@ static void flying_rc_track_brakes(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -6518,13 +6518,13 @@ static void flying_rc_track_brakes(
     }
 }
 
-static void flying_rc_track_booster(
+static void FlyingRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (!trackElement.IsInverted())
     {
-        bolliger_mabillard_track_booster<METAL_SUPPORTS_TUBES_INVERTED>(
+        BolligerMabillardTrackBooster<METAL_SUPPORTS_TUBES_INVERTED>(
             session, ride, trackSequence, direction, height, trackElement);
     }
     else
@@ -6536,7 +6536,7 @@ static void flying_rc_track_booster(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -6548,7 +6548,7 @@ static void flying_rc_track_booster(
 }
 
 /** rct2: 0x007C7674 */
-static void flying_rc_track_left_quarter_banked_helix_large_up(
+static void FlyingRCTrackLeftQuarterBankedHelixLargeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6731,7 +6731,7 @@ static void flying_rc_track_left_quarter_banked_helix_large_up(
 }
 
 /** rct2: 0x007C7684 */
-static void flying_rc_track_right_quarter_banked_helix_large_up(
+static void FlyingRCTrackRightQuarterBankedHelixLargeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6914,7 +6914,7 @@ static void flying_rc_track_right_quarter_banked_helix_large_up(
 }
 
 /** rct2: 0x007C7694 */
-static void flying_rc_track_left_quarter_banked_helix_large_down(
+static void FlyingRCTrackLeftQuarterBankedHelixLargeDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7097,7 +7097,7 @@ static void flying_rc_track_left_quarter_banked_helix_large_down(
 }
 
 /** rct2: 0x007C76A4 */
-static void flying_rc_track_right_quarter_banked_helix_large_down(
+static void FlyingRCTrackRightQuarterBankedHelixLargeDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7280,7 +7280,7 @@ static void flying_rc_track_right_quarter_banked_helix_large_down(
 }
 
 /** rct2: 0x007C78B4 */
-static void flying_rc_track_25_deg_up_left_banked(
+static void FlyingRCTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7309,7 +7309,7 @@ static void flying_rc_track_25_deg_up_left_banked(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -7354,7 +7354,7 @@ static void flying_rc_track_25_deg_up_left_banked(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -7390,7 +7390,7 @@ static void flying_rc_track_25_deg_up_left_banked(
 }
 
 /** rct2: 0x007C78C4 */
-static void flying_rc_track_25_deg_up_right_banked(
+static void FlyingRCTrack25DegUpRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7419,7 +7419,7 @@ static void flying_rc_track_25_deg_up_right_banked(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -7464,7 +7464,7 @@ static void flying_rc_track_25_deg_up_right_banked(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -7500,7 +7500,7 @@ static void flying_rc_track_25_deg_up_right_banked(
 }
 
 /** rct2: 0x007C73E4 */
-static void flying_rc_track_on_ride_photo(
+static void FlyingRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7553,7 +7553,7 @@ static void flying_rc_track_on_ride_photo(
                     { 0, 6, height + 3 });
                 break;
         }
-        track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+        TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -7607,7 +7607,7 @@ static void flying_rc_track_on_ride_photo(
                     { 32, 20, 3 }, { 0, 6, height + 24 });
                 break;
         }
-        track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+        TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
@@ -7615,23 +7615,23 @@ static void flying_rc_track_on_ride_photo(
 }
 
 /** rct2: 0x007C78D4 */
-static void flying_rc_track_25_deg_down_left_banked(
+static void FlyingRCTrack25DegDownLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_25_deg_up_right_banked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C78E4 */
-static void flying_rc_track_25_deg_down_right_banked(
+static void FlyingRCTrack25DegDownRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_25_deg_up_left_banked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7404 */
-static void flying_rc_track_left_eighth_to_diag(
+static void FlyingRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7941,7 +7941,7 @@ static void flying_rc_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x007C7414 */
-static void flying_rc_track_right_eighth_to_diag(
+static void FlyingRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8251,25 +8251,25 @@ static void flying_rc_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x007C7424 */
-static void flying_rc_track_left_eighth_to_orthogonal(
+static void FlyingRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    flying_rc_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7434 */
-static void flying_rc_track_right_eighth_to_orthogonal(
+static void FlyingRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    flying_rc_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    FlyingRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7444 */
-static void flying_rc_track_left_eighth_bank_to_diag(
+static void FlyingRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8579,7 +8579,7 @@ static void flying_rc_track_left_eighth_bank_to_diag(
 }
 
 /** rct2: 0x007C7454 */
-static void flying_rc_track_right_eighth_bank_to_diag(
+static void FlyingRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8889,25 +8889,25 @@ static void flying_rc_track_right_eighth_bank_to_diag(
 }
 
 /** rct2: 0x007C7464 */
-static void flying_rc_track_left_eighth_bank_to_orthogonal(
+static void FlyingRCTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    flying_rc_track_right_eighth_bank_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7474 */
-static void flying_rc_track_right_eighth_bank_to_orthogonal(
+static void FlyingRCTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    flying_rc_track_left_eighth_bank_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    FlyingRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C73F4 */
-static void flying_rc_track_diag_flat(
+static void FlyingRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9191,7 +9191,7 @@ static void flying_rc_track_diag_flat(
 }
 
 /** rct2: 0x007C74A4 */
-static void flying_rc_track_diag_25_deg_up(
+static void FlyingRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9475,7 +9475,7 @@ static void flying_rc_track_diag_25_deg_up(
 }
 
 /** rct2: 0x007C7504 */
-static void flying_rc_track_diag_60_deg_up(
+static void FlyingRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9703,7 +9703,7 @@ static void flying_rc_track_diag_60_deg_up(
 }
 
 /** rct2: 0x007C7484 */
-static void flying_rc_track_diag_flat_to_25_deg_up(
+static void FlyingRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9987,7 +9987,7 @@ static void flying_rc_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x007C74E4 */
-static void flying_rc_track_diag_25_deg_up_to_60_deg_up(
+static void FlyingRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10215,7 +10215,7 @@ static void flying_rc_track_diag_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x007C74F4 */
-static void flying_rc_track_diag_60_deg_up_to_25_deg_up(
+static void FlyingRCTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10443,7 +10443,7 @@ static void flying_rc_track_diag_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x007C7494 */
-static void flying_rc_track_diag_25_deg_up_to_flat(
+static void FlyingRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10727,7 +10727,7 @@ static void flying_rc_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x007C74D4 */
-static void flying_rc_track_diag_25_deg_down(
+static void FlyingRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10955,7 +10955,7 @@ static void flying_rc_track_diag_25_deg_down(
 }
 
 /** rct2: 0x007C7534 */
-static void flying_rc_track_diag_60_deg_down(
+static void FlyingRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11183,7 +11183,7 @@ static void flying_rc_track_diag_60_deg_down(
 }
 
 /** rct2: 0x007C74B4 */
-static void flying_rc_track_diag_flat_to_25_deg_down(
+static void FlyingRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11404,7 +11404,7 @@ static void flying_rc_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x007C7514 */
-static void flying_rc_track_diag_25_deg_down_to_60_deg_down(
+static void FlyingRCTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11632,7 +11632,7 @@ static void flying_rc_track_diag_25_deg_down_to_60_deg_down(
 }
 
 /** rct2: 0x007C7524 */
-static void flying_rc_track_diag_60_deg_down_to_25_deg_down(
+static void FlyingRCTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11860,7 +11860,7 @@ static void flying_rc_track_diag_60_deg_down_to_25_deg_down(
 }
 
 /** rct2: 0x007C74C4 */
-static void flying_rc_track_diag_25_deg_down_to_flat(
+static void FlyingRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12088,7 +12088,7 @@ static void flying_rc_track_diag_25_deg_down_to_flat(
 }
 
 /** rct2: 0x007C7564 */
-static void flying_rc_track_diag_flat_to_left_bank(
+static void FlyingRCTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12250,7 +12250,7 @@ static void flying_rc_track_diag_flat_to_left_bank(
 }
 
 /** rct2: 0x007C7574 */
-static void flying_rc_track_diag_flat_to_right_bank(
+static void FlyingRCTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12412,7 +12412,7 @@ static void flying_rc_track_diag_flat_to_right_bank(
 }
 
 /** rct2: 0x007C7584 */
-static void flying_rc_track_diag_left_bank_to_flat(
+static void FlyingRCTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12574,7 +12574,7 @@ static void flying_rc_track_diag_left_bank_to_flat(
 }
 
 /** rct2: 0x007C7594 */
-static void flying_rc_track_diag_right_bank_to_flat(
+static void FlyingRCTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12736,7 +12736,7 @@ static void flying_rc_track_diag_right_bank_to_flat(
 }
 
 /** rct2: 0x007C75C4 */
-static void flying_rc_track_diag_left_bank_to_25_deg_up(
+static void FlyingRCTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12897,7 +12897,7 @@ static void flying_rc_track_diag_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x007C75D4 */
-static void flying_rc_track_diag_right_bank_to_25_deg_up(
+static void FlyingRCTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13058,7 +13058,7 @@ static void flying_rc_track_diag_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x007C75A4 */
-static void flying_rc_track_diag_25_deg_up_to_left_bank(
+static void FlyingRCTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13219,7 +13219,7 @@ static void flying_rc_track_diag_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x007C75B4 */
-static void flying_rc_track_diag_25_deg_up_to_right_bank(
+static void FlyingRCTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13380,7 +13380,7 @@ static void flying_rc_track_diag_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x007C75E4 */
-static void flying_rc_track_diag_left_bank_to_25_deg_down(
+static void FlyingRCTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13534,7 +13534,7 @@ static void flying_rc_track_diag_left_bank_to_25_deg_down(
 }
 
 /** rct2: 0x007C75F4 */
-static void flying_rc_track_diag_right_bank_to_25_deg_down(
+static void FlyingRCTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13688,7 +13688,7 @@ static void flying_rc_track_diag_right_bank_to_25_deg_down(
 }
 
 /** rct2: 0x007C7604 */
-static void flying_rc_track_diag_25_deg_down_to_left_bank(
+static void FlyingRCTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13849,7 +13849,7 @@ static void flying_rc_track_diag_25_deg_down_to_left_bank(
 }
 
 /** rct2: 0x007C7614 */
-static void flying_rc_track_diag_25_deg_down_to_right_bank(
+static void FlyingRCTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14010,7 +14010,7 @@ static void flying_rc_track_diag_25_deg_down_to_right_bank(
 }
 
 /** rct2: 0x007C7544 */
-static void flying_rc_track_diag_left_bank(
+static void FlyingRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14169,7 +14169,7 @@ static void flying_rc_track_diag_left_bank(
 }
 
 /** rct2: 0x007C7554 */
-static void flying_rc_track_diag_right_bank(
+static void FlyingRCTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14328,7 +14328,7 @@ static void flying_rc_track_diag_right_bank(
 }
 
 /** rct2: 0x007C7624 */
-static void flying_rc_track_left_flyer_twist_up(
+static void FlyingRCTrackLeftFlyerTwistUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14447,7 +14447,7 @@ static void flying_rc_track_left_flyer_twist_up(
 }
 
 /** rct2: 0x007C7634 */
-static void flying_rc_track_right_flyer_twist_up(
+static void FlyingRCTrackRightFlyerTwistUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14566,7 +14566,7 @@ static void flying_rc_track_right_flyer_twist_up(
 }
 
 /** rct2: 0x007C7644 */
-static void flying_rc_track_left_flyer_twist_down(
+static void FlyingRCTrackLeftFlyerTwistDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14685,7 +14685,7 @@ static void flying_rc_track_left_flyer_twist_down(
 }
 
 /** rct2: 0x007C7654 */
-static void flying_rc_track_right_flyer_twist_down(
+static void FlyingRCTrackRightFlyerTwistDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14804,7 +14804,7 @@ static void flying_rc_track_right_flyer_twist_down(
 }
 
 /** rct2: 0x007C72F4 */
-static void flying_rc_track_flyer_half_loop_up(
+static void FlyingRCTrackFlyerHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14945,7 +14945,7 @@ static void flying_rc_track_flyer_half_loop_up(
 }
 
 /** rct2: 0x007C7304 */
-static void flying_rc_track_flyer_half_loop_down(
+static void FlyingRCTrackFlyerHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15086,7 +15086,7 @@ static void flying_rc_track_flyer_half_loop_down(
 }
 
 /** rct2: 0x007C7664 */
-static void flying_rc_track_block_brakes(
+static void FlyingRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15133,7 +15133,7 @@ static void flying_rc_track_block_brakes(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session.TrackColours[SCHEME_SUPPORTS]);
@@ -15145,7 +15145,7 @@ static void flying_rc_track_block_brakes(
 }
 
 /** rct2: 0x007C76B4 */
-static void flying_rc_track_left_banked_quarter_turn_3_25_deg_up(
+static void FlyingRCTrackLeftBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15328,7 +15328,7 @@ static void flying_rc_track_left_banked_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x007C76C4 */
-static void flying_rc_track_right_banked_quarter_turn_3_25_deg_up(
+static void FlyingRCTrackRightBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15517,27 +15517,25 @@ static void flying_rc_track_right_banked_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x007C76D4 */
-static void flying_rc_track_left_banked_quarter_turn_3_25_deg_down(
+static void FlyingRCTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    flying_rc_track_right_banked_quarter_turn_3_25_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    FlyingRCTrackRightBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C76E4 */
-static void flying_rc_track_right_banked_quarter_turn_3_25_deg_down(
+static void FlyingRCTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    flying_rc_track_left_banked_quarter_turn_3_25_deg_up(
-        session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C76F4 */
-static void flying_rc_track_left_banked_quarter_turn_5_25_deg_up(
+static void FlyingRCTrackLeftBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15900,7 +15898,7 @@ static void flying_rc_track_left_banked_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x007C7704 */
-static void flying_rc_track_right_banked_quarter_turn_5_25_deg_up(
+static void FlyingRCTrackRightBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16263,27 +16261,25 @@ static void flying_rc_track_right_banked_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x007C7714 */
-static void flying_rc_track_left_banked_quarter_turn_5_25_deg_down(
+static void FlyingRCTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    flying_rc_track_right_banked_quarter_turn_5_25_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    FlyingRCTrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7724 */
-static void flying_rc_track_right_banked_quarter_turn_5_25_deg_down(
+static void FlyingRCTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    flying_rc_track_left_banked_quarter_turn_5_25_deg_up(
-        session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    FlyingRCTrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7734 */
-static void flying_rc_track_25_deg_up_to_left_banked_25_deg_up(
+static void FlyingRCTrack25DegUpToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16315,7 +16311,7 @@ static void flying_rc_track_25_deg_up_to_left_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16360,7 +16356,7 @@ static void flying_rc_track_25_deg_up_to_left_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16396,7 +16392,7 @@ static void flying_rc_track_25_deg_up_to_left_banked_25_deg_up(
 }
 
 /** rct2: 0x007C7744 */
-static void flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
+static void FlyingRCTrack25DegUpToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16428,7 +16424,7 @@ static void flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16473,7 +16469,7 @@ static void flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16509,7 +16505,7 @@ static void flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
 }
 
 /** rct2: 0x007C7754 */
-static void flying_rc_track_left_banked_25_deg_up_to_25_deg_up(
+static void FlyingRCTrackLeftBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16541,7 +16537,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16586,7 +16582,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16622,7 +16618,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x007C7764 */
-static void flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
+static void FlyingRCTrackRightBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16654,7 +16650,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16699,7 +16695,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16735,41 +16731,39 @@ static void flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x007C7774 */
-static void flying_rc_track_25_deg_down_to_left_banked_25_deg_down(
+static void FlyingRCTrack25DegDownToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7784 */
-static void flying_rc_track_25_deg_down_to_right_banked_25_deg_down(
+static void FlyingRCTrack25DegDownToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_left_banked_25_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7794 */
-static void flying_rc_track_left_banked_25_deg_down_to_25_deg_down(
+static void FlyingRCTrackLeftBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C77A4 */
-static void flying_rc_track_right_banked_25_deg_down_to_25_deg_down(
+static void FlyingRCTrackRightBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_25_deg_up_to_left_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C77B4 */
-static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
+static void FlyingRCTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16798,7 +16792,7 @@ static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16843,7 +16837,7 @@ static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16879,7 +16873,7 @@ static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
 }
 
 /** rct2: 0x007C77C4 */
-static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
+static void FlyingRCTrackRightBankedFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16908,7 +16902,7 @@ static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -16953,7 +16947,7 @@ static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -16989,7 +16983,7 @@ static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
 }
 
 /** rct2: 0x007C77F4 */
-static void flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
+static void FlyingRCTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17018,7 +17012,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17063,7 +17057,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17099,7 +17093,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
 }
 
 /** rct2: 0x007C7804 */
-static void flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
+static void FlyingRCTrackRightBanked25DegUpToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17128,7 +17122,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17173,7 +17167,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17209,43 +17203,39 @@ static void flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
 }
 
 /** rct2: 0x007C7814 */
-static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_down(
+static void FlyingRCTrackLeftBankedFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackRightBanked25DegUpToRightBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7824 */
-static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_down(
+static void FlyingRCTrackRightBankedFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C77D4 */
-static void flying_rc_track_left_banked_25_deg_down_to_left_banked_flat(
+static void FlyingRCTrackLeftBanked25DegDownToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackRightBankedFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C77E4 */
-static void flying_rc_track_right_banked_25_deg_down_to_right_banked_flat(
+static void FlyingRCTrackRightBanked25DegDownToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7834 */
-static void flying_rc_track_flat_to_left_banked_25_deg_up(
+static void FlyingRCTrackFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17277,7 +17267,7 @@ static void flying_rc_track_flat_to_left_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17322,7 +17312,7 @@ static void flying_rc_track_flat_to_left_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17358,7 +17348,7 @@ static void flying_rc_track_flat_to_left_banked_25_deg_up(
 }
 
 /** rct2: 0x007C7844 */
-static void flying_rc_track_flat_to_right_banked_25_deg_up(
+static void FlyingRCTrackFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17390,7 +17380,7 @@ static void flying_rc_track_flat_to_right_banked_25_deg_up(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17435,7 +17425,7 @@ static void flying_rc_track_flat_to_right_banked_25_deg_up(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17471,7 +17461,7 @@ static void flying_rc_track_flat_to_right_banked_25_deg_up(
 }
 
 /** rct2: 0x007C7854 */
-static void flying_rc_track_left_banked_25_deg_up_to_flat(
+static void FlyingRCTrackLeftBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17503,7 +17493,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17548,7 +17538,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17584,7 +17574,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_flat(
 }
 
 /** rct2: 0x007C7864 */
-static void flying_rc_track_right_banked_25_deg_up_to_flat(
+static void FlyingRCTrackRightBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17616,7 +17606,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_flat(
                     { 0, 6, height });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -17661,7 +17651,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_flat(
 
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             switch (direction)
             {
@@ -17697,38 +17687,38 @@ static void flying_rc_track_right_banked_25_deg_up_to_flat(
 }
 
 /** rct2: 0x007C7874 */
-static void flying_rc_track_flat_to_left_banked_25_deg_down(
+static void FlyingRCTrackFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_right_banked_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7884 */
-static void flying_rc_track_flat_to_right_banked_25_deg_down(
+static void FlyingRCTrackFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_left_banked_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C7894 */
-static void flying_rc_track_left_banked_25_deg_down_to_flat(
+static void FlyingRCTrackLeftBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_flat_to_right_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x007C78A4 */
-static void flying_rc_track_right_banked_25_deg_down_to_flat(
+static void FlyingRCTrackRightBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_flat_to_left_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void flying_rc_track_90_deg_up(
+static void FlyingRCTrack90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17772,14 +17762,14 @@ static void flying_rc_track_90_deg_up(
     }
 }
 
-static void flying_rc_track_90_deg_down(
+static void FlyingRCTrack90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_90_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void flying_rc_track_60_deg_up_to_90_deg_up(
+static void FlyingRCTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17825,14 +17815,14 @@ static void flying_rc_track_60_deg_up_to_90_deg_up(
     }
 }
 
-static void flying_rc_track_90_deg_down_to_60_deg_down(
+static void FlyingRCTrack90DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_60_deg_up_to_90_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    FlyingRCTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void flying_rc_track_90_deg_up_to_60_deg_up(
+static void FlyingRCTrack90DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17875,7 +17865,7 @@ static void flying_rc_track_90_deg_up_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
 }
 
-static void flying_rc_track_60_deg_down_to_90_deg_down(
+static void FlyingRCTrack60DegDownTo90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17920,7 +17910,7 @@ static void flying_rc_track_60_deg_down_to_90_deg_down(
     }
 }
 
-static void flying_rc_track_90_deg_to_inverted_flat_quarter_loop_up(
+static void FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -18017,53 +18007,53 @@ static void flying_rc_track_90_deg_to_inverted_flat_quarter_loop_up(
     }
 }
 
-static void flying_rc_track_inverted_flat_to_90_deg_quarter_loop_down(
+static void FlyingRCTrackInvertedFlatTo90DegQuarterLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_90_deg_to_inverted_flat_quarter_loop_up(session, ride, 2 - trackSequence, direction, height, trackElement);
+    FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(session, ride, 2 - trackSequence, direction, height, trackElement);
 }
 
-static void flying_rc_track_flat_to_60_deg_up_long_base(
+static void FlyingRCTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.IsInverted())
         return;
-    bolliger_mabillard_track_flat_to_60_deg_up_long_base<METAL_SUPPORTS_TUBES_INVERTED>(
+    BolligerMabillardTrackFlatTo60DegUpLongBase<METAL_SUPPORTS_TUBES_INVERTED>(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
-static void flying_rc_track_60_deg_up_to_flat_long_base(
+static void FlyingRCTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.IsInverted())
         return;
-    bolliger_mabillard_track_60_deg_up_to_flat_long_base<METAL_SUPPORTS_TUBES_INVERTED>(
+    BolligerMabillardTrack60DegUpToFlatLongBase<METAL_SUPPORTS_TUBES_INVERTED>(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
-static void flying_rc_track_60_deg_down_to_flat_long_base(
+static void FlyingRCTrack60DegDownToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.IsInverted())
         return;
-    bolliger_mabillard_track_flat_to_60_deg_up_long_base<METAL_SUPPORTS_TUBES_INVERTED>(
+    BolligerMabillardTrackFlatTo60DegUpLongBase<METAL_SUPPORTS_TUBES_INVERTED>(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void flying_rc_track_flat_to_60_deg_down_long_base(
+static void FlyingRCTrackFlatTo60DegDownLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackElement.IsInverted())
         return;
-    bolliger_mabillard_track_60_deg_up_to_flat_long_base<METAL_SUPPORTS_TUBES_INVERTED>(
+    BolligerMabillardTrack60DegUpToFlatLongBase<METAL_SUPPORTS_TUBES_INVERTED>(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
-static void flying_rc_track_half_loop_inverted_up(
+static void FlyingRCTrackHalfLoopInvertedUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -18214,14 +18204,14 @@ static void flying_rc_track_half_loop_inverted_up(
     }
 }
 
-static void flying_rc_track_half_loop_uninverted_down(
+static void FlyingRCTrackHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_half_loop_inverted_up(session, ride, 3 - trackSequence, direction, height, trackElement);
+    FlyingRCTrackHalfLoopInvertedUp(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
-static void flying_rc_track_left_flying_large_half_loop_inverted_up(
+static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -18450,7 +18440,7 @@ static void flying_rc_track_left_flying_large_half_loop_inverted_up(
     }
 }
 
-static void flying_rc_track_right_flying_large_half_loop_inverted_up(
+static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -18679,358 +18669,358 @@ static void flying_rc_track_right_flying_large_half_loop_inverted_up(
     }
 }
 
-static void flying_rc_track_left_flying_large_half_loop_uninverted_down(
+static void FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_left_flying_large_half_loop_inverted_up(session, ride, 6 - trackSequence, direction, height, trackElement);
+    FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-static void flying_rc_track_right_flying_large_half_loop_uninverted_down(
+static void FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    flying_rc_track_right_flying_large_half_loop_inverted_up(session, ride, 6 - trackSequence, direction, height, trackElement);
+    FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return flying_rc_track_flat;
+            return FlyingRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return flying_rc_track_station;
+            return FlyingRCTrackStation;
         case TrackElemType::Up25:
-            return flying_rc_track_25_deg_up;
+            return FlyingRCTrack25DegUp;
         case TrackElemType::Up60:
-            return flying_rc_track_60_deg_up;
+            return FlyingRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return flying_rc_track_flat_to_25_deg_up;
+            return FlyingRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return flying_rc_track_25_deg_up_to_60_deg_up;
+            return FlyingRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return flying_rc_track_60_deg_up_to_25_deg_up;
+            return FlyingRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return flying_rc_track_25_deg_up_to_flat;
+            return FlyingRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return flying_rc_track_25_deg_down;
+            return FlyingRCTrack25DegDown;
         case TrackElemType::Down60:
-            return flying_rc_track_60_deg_down;
+            return FlyingRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return flying_rc_track_flat_to_25_deg_down;
+            return FlyingRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return flying_rc_track_25_deg_down_to_60_deg_down;
+            return FlyingRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return flying_rc_track_60_deg_down_to_25_deg_down;
+            return FlyingRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return flying_rc_track_25_deg_down_to_flat;
+            return FlyingRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return flying_rc_track_left_quarter_turn_5;
+            return FlyingRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return flying_rc_track_right_quarter_turn_5;
+            return FlyingRCTrackRightQuarterTurn5;
         case TrackElemType::FlatToLeftBank:
-            return flying_rc_track_flat_to_left_bank;
+            return FlyingRCTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
-            return flying_rc_track_flat_to_right_bank;
+            return FlyingRCTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
-            return flying_rc_track_left_bank_to_flat;
+            return FlyingRCTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
-            return flying_rc_track_right_bank_to_flat;
+            return FlyingRCTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return flying_rc_track_banked_left_quarter_turn_5;
+            return FlyingRCTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return flying_rc_track_banked_right_quarter_turn_5;
+            return FlyingRCTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
-            return flying_rc_track_left_bank_to_25_deg_up;
+            return FlyingRCTrackLeftBankTo25DegUp;
         case TrackElemType::RightBankToUp25:
-            return flying_rc_track_right_bank_to_25_deg_up;
+            return FlyingRCTrackRightBankTo25DegUp;
         case TrackElemType::Up25ToLeftBank:
-            return flying_rc_track_25_deg_up_to_left_bank;
+            return FlyingRCTrack25DegUpToLeftBank;
         case TrackElemType::Up25ToRightBank:
-            return flying_rc_track_25_deg_up_to_right_bank;
+            return FlyingRCTrack25DegUpToRightBank;
         case TrackElemType::LeftBankToDown25:
-            return flying_rc_track_left_bank_to_25_deg_down;
+            return FlyingRCTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
-            return flying_rc_track_right_bank_to_25_deg_down;
+            return FlyingRCTrackRightBankTo25DegDown;
         case TrackElemType::Down25ToLeftBank:
-            return flying_rc_track_25_deg_down_to_left_bank;
+            return FlyingRCTrack25DegDownToLeftBank;
         case TrackElemType::Down25ToRightBank:
-            return flying_rc_track_25_deg_down_to_right_bank;
+            return FlyingRCTrack25DegDownToRightBank;
         case TrackElemType::LeftBank:
-            return flying_rc_track_left_bank;
+            return FlyingRCTrackLeftBank;
         case TrackElemType::RightBank:
-            return flying_rc_track_right_bank;
+            return FlyingRCTrackRightBank;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return flying_rc_track_left_quarter_turn_5_25_deg_up;
+            return FlyingRCTrackLeftQuarterTurn525DegUp;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return flying_rc_track_right_quarter_turn_5_25_deg_up;
+            return FlyingRCTrackRightQuarterTurn525DegUp;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return flying_rc_track_left_quarter_turn_5_25_deg_down;
+            return FlyingRCTrackLeftQuarterTurn525DegDown;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return flying_rc_track_right_quarter_turn_5_25_deg_down;
+            return FlyingRCTrackRightQuarterTurn525DegDown;
         case TrackElemType::SBendLeft:
-            return flying_rc_track_s_bend_left;
+            return FlyingRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return flying_rc_track_s_bend_right;
+            return FlyingRCTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return flying_rc_track_left_quarter_turn_3;
+            return FlyingRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return flying_rc_track_right_quarter_turn_3;
+            return FlyingRCTrackRightQuarterTurn3;
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
-            return flying_rc_track_left_quarter_turn_3_bank;
+            return FlyingRCTrackLeftQuarterTurn3Bank;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
-            return flying_rc_track_right_quarter_turn_3_bank;
+            return FlyingRCTrackRightQuarterTurn3Bank;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return flying_rc_track_left_quarter_turn_3_25_deg_up;
+            return FlyingRCTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return flying_rc_track_right_quarter_turn_3_25_deg_up;
+            return FlyingRCTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return flying_rc_track_left_quarter_turn_3_25_deg_down;
+            return FlyingRCTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return flying_rc_track_right_quarter_turn_3_25_deg_down;
+            return FlyingRCTrackRightQuarterTurn325DegDown;
         case TrackElemType::LeftHalfBankedHelixUpSmall:
-            return flying_rc_track_left_half_banked_helix_up_small;
+            return FlyingRCTrackLeftHalfBankedHelixUpSmall;
         case TrackElemType::RightHalfBankedHelixUpSmall:
-            return flying_rc_track_right_half_banked_helix_up_small;
+            return FlyingRCTrackRightHalfBankedHelixUpSmall;
         case TrackElemType::LeftHalfBankedHelixDownSmall:
-            return flying_rc_track_left_half_banked_helix_down_small;
+            return FlyingRCTrackLeftHalfBankedHelixDownSmall;
         case TrackElemType::RightHalfBankedHelixDownSmall:
-            return flying_rc_track_right_half_banked_helix_down_small;
+            return FlyingRCTrackRightHalfBankedHelixDownSmall;
         case TrackElemType::LeftHalfBankedHelixUpLarge:
-            return flying_rc_track_left_half_banked_helix_up_large;
+            return FlyingRCTrackLeftHalfBankedHelixUpLarge;
         case TrackElemType::RightHalfBankedHelixUpLarge:
-            return flying_rc_track_right_half_banked_helix_up_large;
+            return FlyingRCTrackRightHalfBankedHelixUpLarge;
         case TrackElemType::LeftHalfBankedHelixDownLarge:
-            return flying_rc_track_left_half_banked_helix_down_large;
+            return FlyingRCTrackLeftHalfBankedHelixDownLarge;
         case TrackElemType::RightHalfBankedHelixDownLarge:
-            return flying_rc_track_right_half_banked_helix_down_large;
+            return FlyingRCTrackRightHalfBankedHelixDownLarge;
         case TrackElemType::LeftQuarterTurn1TileUp60:
-            return flying_rc_track_left_quarter_turn_1_60_deg_up;
+            return FlyingRCTrackLeftQuarterTurn160DegUp;
         case TrackElemType::RightQuarterTurn1TileUp60:
-            return flying_rc_track_right_quarter_turn_1_60_deg_up;
+            return FlyingRCTrackRightQuarterTurn160DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            return flying_rc_track_left_quarter_turn_1_60_deg_down;
+            return FlyingRCTrackLeftQuarterTurn160DegDown;
         case TrackElemType::RightQuarterTurn1TileDown60:
-            return flying_rc_track_right_quarter_turn_1_60_deg_down;
+            return FlyingRCTrackRightQuarterTurn160DegDown;
         case TrackElemType::Brakes:
-            return flying_rc_track_brakes;
+            return FlyingRCTrackBrakes;
         case TrackElemType::LeftQuarterBankedHelixLargeUp:
-            return flying_rc_track_left_quarter_banked_helix_large_up;
+            return FlyingRCTrackLeftQuarterBankedHelixLargeUp;
         case TrackElemType::RightQuarterBankedHelixLargeUp:
-            return flying_rc_track_right_quarter_banked_helix_large_up;
+            return FlyingRCTrackRightQuarterBankedHelixLargeUp;
         case TrackElemType::LeftQuarterBankedHelixLargeDown:
-            return flying_rc_track_left_quarter_banked_helix_large_down;
+            return FlyingRCTrackLeftQuarterBankedHelixLargeDown;
         case TrackElemType::RightQuarterBankedHelixLargeDown:
-            return flying_rc_track_right_quarter_banked_helix_large_down;
+            return FlyingRCTrackRightQuarterBankedHelixLargeDown;
         case TrackElemType::Up25LeftBanked:
-            return flying_rc_track_25_deg_up_left_banked;
+            return FlyingRCTrack25DegUpLeftBanked;
         case TrackElemType::Up25RightBanked:
-            return flying_rc_track_25_deg_up_right_banked;
+            return FlyingRCTrack25DegUpRightBanked;
         case TrackElemType::OnRidePhoto:
-            return flying_rc_track_on_ride_photo;
+            return FlyingRCTrackOnRidePhoto;
         case TrackElemType::Down25LeftBanked:
-            return flying_rc_track_25_deg_down_left_banked;
+            return FlyingRCTrack25DegDownLeftBanked;
         case TrackElemType::Down25RightBanked:
-            return flying_rc_track_25_deg_down_right_banked;
+            return FlyingRCTrack25DegDownRightBanked;
         case TrackElemType::LeftEighthToDiag:
-            return flying_rc_track_left_eighth_to_diag;
+            return FlyingRCTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return flying_rc_track_right_eighth_to_diag;
+            return FlyingRCTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return flying_rc_track_left_eighth_to_orthogonal;
+            return FlyingRCTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return flying_rc_track_right_eighth_to_orthogonal;
+            return FlyingRCTrackRightEighthToOrthogonal;
         case TrackElemType::LeftEighthBankToDiag:
-            return flying_rc_track_left_eighth_bank_to_diag;
+            return FlyingRCTrackLeftEighthBankToDiag;
         case TrackElemType::RightEighthBankToDiag:
-            return flying_rc_track_right_eighth_bank_to_diag;
+            return FlyingRCTrackRightEighthBankToDiag;
         case TrackElemType::LeftEighthBankToOrthogonal:
-            return flying_rc_track_left_eighth_bank_to_orthogonal;
+            return FlyingRCTrackLeftEighthBankToOrthogonal;
         case TrackElemType::RightEighthBankToOrthogonal:
-            return flying_rc_track_right_eighth_bank_to_orthogonal;
+            return FlyingRCTrackRightEighthBankToOrthogonal;
         case TrackElemType::DiagFlat:
-            return flying_rc_track_diag_flat;
+            return FlyingRCTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return flying_rc_track_diag_25_deg_up;
+            return FlyingRCTrackDiag25DegUp;
         case TrackElemType::DiagUp60:
-            return flying_rc_track_diag_60_deg_up;
+            return FlyingRCTrackDiag60DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return flying_rc_track_diag_flat_to_25_deg_up;
+            return FlyingRCTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToUp60:
-            return flying_rc_track_diag_25_deg_up_to_60_deg_up;
+            return FlyingRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagUp60ToUp25:
-            return flying_rc_track_diag_60_deg_up_to_25_deg_up;
+            return FlyingRCTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return flying_rc_track_diag_25_deg_up_to_flat;
+            return FlyingRCTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return flying_rc_track_diag_25_deg_down;
+            return FlyingRCTrackDiag25DegDown;
         case TrackElemType::DiagDown60:
-            return flying_rc_track_diag_60_deg_down;
+            return FlyingRCTrackDiag60DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return flying_rc_track_diag_flat_to_25_deg_down;
+            return FlyingRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToDown60:
-            return flying_rc_track_diag_25_deg_down_to_60_deg_down;
+            return FlyingRCTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagDown60ToDown25:
-            return flying_rc_track_diag_60_deg_down_to_25_deg_down;
+            return FlyingRCTrackDiag60DegDownTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return flying_rc_track_diag_25_deg_down_to_flat;
+            return FlyingRCTrackDiag25DegDownToFlat;
         case TrackElemType::DiagFlatToLeftBank:
-            return flying_rc_track_diag_flat_to_left_bank;
+            return FlyingRCTrackDiagFlatToLeftBank;
         case TrackElemType::DiagFlatToRightBank:
-            return flying_rc_track_diag_flat_to_right_bank;
+            return FlyingRCTrackDiagFlatToRightBank;
         case TrackElemType::DiagLeftBankToFlat:
-            return flying_rc_track_diag_left_bank_to_flat;
+            return FlyingRCTrackDiagLeftBankToFlat;
         case TrackElemType::DiagRightBankToFlat:
-            return flying_rc_track_diag_right_bank_to_flat;
+            return FlyingRCTrackDiagRightBankToFlat;
         case TrackElemType::DiagLeftBankToUp25:
-            return flying_rc_track_diag_left_bank_to_25_deg_up;
+            return FlyingRCTrackDiagLeftBankTo25DegUp;
         case TrackElemType::DiagRightBankToUp25:
-            return flying_rc_track_diag_right_bank_to_25_deg_up;
+            return FlyingRCTrackDiagRightBankTo25DegUp;
         case TrackElemType::DiagUp25ToLeftBank:
-            return flying_rc_track_diag_25_deg_up_to_left_bank;
+            return FlyingRCTrackDiag25DegUpToLeftBank;
         case TrackElemType::DiagUp25ToRightBank:
-            return flying_rc_track_diag_25_deg_up_to_right_bank;
+            return FlyingRCTrackDiag25DegUpToRightBank;
         case TrackElemType::DiagLeftBankToDown25:
-            return flying_rc_track_diag_left_bank_to_25_deg_down;
+            return FlyingRCTrackDiagLeftBankTo25DegDown;
         case TrackElemType::DiagRightBankToDown25:
-            return flying_rc_track_diag_right_bank_to_25_deg_down;
+            return FlyingRCTrackDiagRightBankTo25DegDown;
         case TrackElemType::DiagDown25ToLeftBank:
-            return flying_rc_track_diag_25_deg_down_to_left_bank;
+            return FlyingRCTrackDiag25DegDownToLeftBank;
         case TrackElemType::DiagDown25ToRightBank:
-            return flying_rc_track_diag_25_deg_down_to_right_bank;
+            return FlyingRCTrackDiag25DegDownToRightBank;
         case TrackElemType::DiagLeftBank:
-            return flying_rc_track_diag_left_bank;
+            return FlyingRCTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
-            return flying_rc_track_diag_right_bank;
+            return FlyingRCTrackDiagRightBank;
         case TrackElemType::LeftFlyerTwistUp:
-            return flying_rc_track_left_flyer_twist_up;
+            return FlyingRCTrackLeftFlyerTwistUp;
         case TrackElemType::RightFlyerTwistUp:
-            return flying_rc_track_right_flyer_twist_up;
+            return FlyingRCTrackRightFlyerTwistUp;
         case TrackElemType::LeftFlyerTwistDown:
-            return flying_rc_track_left_flyer_twist_down;
+            return FlyingRCTrackLeftFlyerTwistDown;
         case TrackElemType::RightFlyerTwistDown:
-            return flying_rc_track_right_flyer_twist_down;
+            return FlyingRCTrackRightFlyerTwistDown;
         case TrackElemType::FlyerHalfLoopUninvertedUp:
-            return flying_rc_track_flyer_half_loop_up;
+            return FlyingRCTrackFlyerHalfLoopUp;
         case TrackElemType::FlyerHalfLoopInvertedDown:
-            return flying_rc_track_flyer_half_loop_down;
+            return FlyingRCTrackFlyerHalfLoopDown;
         case TrackElemType::BlockBrakes:
-            return flying_rc_track_block_brakes;
+            return FlyingRCTrackBlockBrakes;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-            return flying_rc_track_left_banked_quarter_turn_3_25_deg_up;
+            return FlyingRCTrackLeftBankedQuarterTurn325DegUp;
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
-            return flying_rc_track_right_banked_quarter_turn_3_25_deg_up;
+            return FlyingRCTrackRightBankedQuarterTurn325DegUp;
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-            return flying_rc_track_left_banked_quarter_turn_3_25_deg_down;
+            return FlyingRCTrackLeftBankedQuarterTurn325DegDown;
         case TrackElemType::RightBankedQuarterTurn3TileDown25:
-            return flying_rc_track_right_banked_quarter_turn_3_25_deg_down;
+            return FlyingRCTrackRightBankedQuarterTurn325DegDown;
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-            return flying_rc_track_left_banked_quarter_turn_5_25_deg_up;
+            return FlyingRCTrackLeftBankedQuarterTurn525DegUp;
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
-            return flying_rc_track_right_banked_quarter_turn_5_25_deg_up;
+            return FlyingRCTrackRightBankedQuarterTurn525DegUp;
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-            return flying_rc_track_left_banked_quarter_turn_5_25_deg_down;
+            return FlyingRCTrackLeftBankedQuarterTurn525DegDown;
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
-            return flying_rc_track_right_banked_quarter_turn_5_25_deg_down;
+            return FlyingRCTrackRightBankedQuarterTurn525DegDown;
         case TrackElemType::Up25ToLeftBankedUp25:
-            return flying_rc_track_25_deg_up_to_left_banked_25_deg_up;
+            return FlyingRCTrack25DegUpToLeftBanked25DegUp;
         case TrackElemType::Up25ToRightBankedUp25:
-            return flying_rc_track_25_deg_up_to_right_banked_25_deg_up;
+            return FlyingRCTrack25DegUpToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToUp25:
-            return flying_rc_track_left_banked_25_deg_up_to_25_deg_up;
+            return FlyingRCTrackLeftBanked25DegUpTo25DegUp;
         case TrackElemType::RightBankedUp25ToUp25:
-            return flying_rc_track_right_banked_25_deg_up_to_25_deg_up;
+            return FlyingRCTrackRightBanked25DegUpTo25DegUp;
         case TrackElemType::Down25ToLeftBankedDown25:
-            return flying_rc_track_25_deg_down_to_left_banked_25_deg_down;
+            return FlyingRCTrack25DegDownToLeftBanked25DegDown;
         case TrackElemType::Down25ToRightBankedDown25:
-            return flying_rc_track_25_deg_down_to_right_banked_25_deg_down;
+            return FlyingRCTrack25DegDownToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToDown25:
-            return flying_rc_track_left_banked_25_deg_down_to_25_deg_down;
+            return FlyingRCTrackLeftBanked25DegDownTo25DegDown;
         case TrackElemType::RightBankedDown25ToDown25:
-            return flying_rc_track_right_banked_25_deg_down_to_25_deg_down;
+            return FlyingRCTrackRightBanked25DegDownTo25DegDown;
         case TrackElemType::LeftBankedFlatToLeftBankedUp25:
-            return flying_rc_track_left_banked_flat_to_left_banked_25_deg_up;
+            return FlyingRCTrackLeftBankedFlatToLeftBanked25DegUp;
         case TrackElemType::RightBankedFlatToRightBankedUp25:
-            return flying_rc_track_right_banked_flat_to_right_banked_25_deg_up;
+            return FlyingRCTrackRightBankedFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
-            return flying_rc_track_left_banked_25_deg_up_to_left_banked_flat;
+            return FlyingRCTrackLeftBanked25DegUpToLeftBankedFlat;
         case TrackElemType::RightBankedUp25ToRightBankedFlat:
-            return flying_rc_track_right_banked_25_deg_up_to_right_banked_flat;
+            return FlyingRCTrackRightBanked25DegUpToRightBankedFlat;
         case TrackElemType::LeftBankedFlatToLeftBankedDown25:
-            return flying_rc_track_left_banked_flat_to_left_banked_25_deg_down;
+            return FlyingRCTrackLeftBankedFlatToLeftBanked25DegDown;
         case TrackElemType::RightBankedFlatToRightBankedDown25:
-            return flying_rc_track_right_banked_flat_to_right_banked_25_deg_down;
+            return FlyingRCTrackRightBankedFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
-            return flying_rc_track_left_banked_25_deg_down_to_left_banked_flat;
+            return FlyingRCTrackLeftBanked25DegDownToLeftBankedFlat;
         case TrackElemType::RightBankedDown25ToRightBankedFlat:
-            return flying_rc_track_right_banked_25_deg_down_to_right_banked_flat;
+            return FlyingRCTrackRightBanked25DegDownToRightBankedFlat;
         case TrackElemType::FlatToLeftBankedUp25:
-            return flying_rc_track_flat_to_left_banked_25_deg_up;
+            return FlyingRCTrackFlatToLeftBanked25DegUp;
         case TrackElemType::FlatToRightBankedUp25:
-            return flying_rc_track_flat_to_right_banked_25_deg_up;
+            return FlyingRCTrackFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToFlat:
-            return flying_rc_track_left_banked_25_deg_up_to_flat;
+            return FlyingRCTrackLeftBanked25DegUpToFlat;
         case TrackElemType::RightBankedUp25ToFlat:
-            return flying_rc_track_right_banked_25_deg_up_to_flat;
+            return FlyingRCTrackRightBanked25DegUpToFlat;
         case TrackElemType::FlatToLeftBankedDown25:
-            return flying_rc_track_flat_to_left_banked_25_deg_down;
+            return FlyingRCTrackFlatToLeftBanked25DegDown;
         case TrackElemType::FlatToRightBankedDown25:
-            return flying_rc_track_flat_to_right_banked_25_deg_down;
+            return FlyingRCTrackFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToFlat:
-            return flying_rc_track_left_banked_25_deg_down_to_flat;
+            return FlyingRCTrackLeftBanked25DegDownToFlat;
         case TrackElemType::RightBankedDown25ToFlat:
-            return flying_rc_track_right_banked_25_deg_down_to_flat;
+            return FlyingRCTrackRightBanked25DegDownToFlat;
         // OpenRCT2-specific paint code
         case TrackElemType::Booster:
-            return flying_rc_track_booster;
+            return FlyingRCTrackBooster;
         case TrackElemType::Up60ToUp90:
-            return flying_rc_track_60_deg_up_to_90_deg_up;
+            return FlyingRCTrack60DegUpTo90DegUp;
         case TrackElemType::Up90:
-            return flying_rc_track_90_deg_up;
+            return FlyingRCTrack90DegUp;
         case TrackElemType::Up90ToUp60:
-            return flying_rc_track_90_deg_up_to_60_deg_up;
+            return FlyingRCTrack90DegUpTo60DegUp;
         case TrackElemType::Down60ToDown90:
-            return flying_rc_track_60_deg_down_to_90_deg_down;
+            return FlyingRCTrack60DegDownTo90DegDown;
         case TrackElemType::Down90:
-            return flying_rc_track_90_deg_down;
+            return FlyingRCTrack90DegDown;
         case TrackElemType::Down90ToDown60:
-            return flying_rc_track_90_deg_down_to_60_deg_down;
+            return FlyingRCTrack90DegDownTo60DegDown;
         case TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop:
-            return flying_rc_track_inverted_flat_to_90_deg_quarter_loop_down;
+            return FlyingRCTrackInvertedFlatTo90DegQuarterLoopDown;
         case TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop:
-            return flying_rc_track_90_deg_to_inverted_flat_quarter_loop_up;
+            return FlyingRCTrack90DegToInvertedFlatQuarterLoopUp;
         case TrackElemType::FlatToUp60LongBase:
-            return flying_rc_track_flat_to_60_deg_up_long_base;
+            return FlyingRCTrackFlatTo60DegUpLongBase;
         case TrackElemType::Up60ToFlatLongBase:
-            return flying_rc_track_60_deg_up_to_flat_long_base;
+            return FlyingRCTrack60DegUpToFlatLongBase;
         case TrackElemType::FlatToDown60LongBase:
-            return flying_rc_track_flat_to_60_deg_down_long_base;
+            return FlyingRCTrackFlatTo60DegDownLongBase;
         case TrackElemType::Down60ToFlatLongBase:
-            return flying_rc_track_60_deg_down_to_flat_long_base;
+            return FlyingRCTrack60DegDownToFlatLongBase;
             // OpenRCT2-specific track elements
         case TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp:
-            return bolliger_mabillard_track_left_large_half_loop_up<METAL_SUPPORTS_TUBES_INVERTED>;
+            return BolligerMabillardTrackLeftLargeHalfLoopUp<METAL_SUPPORTS_TUBES_INVERTED>;
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedUp:
-            return bolliger_mabillard_track_right_large_half_loop_up<METAL_SUPPORTS_TUBES_INVERTED>;
+            return BolligerMabillardTrackRightLargeHalfLoopUp<METAL_SUPPORTS_TUBES_INVERTED>;
         case TrackElemType::RightFlyerLargeHalfLoopInvertedDown:
-            return bolliger_mabillard_track_right_large_half_loop_down<METAL_SUPPORTS_TUBES_INVERTED>;
+            return BolligerMabillardTrackRightLargeHalfLoopDown<METAL_SUPPORTS_TUBES_INVERTED>;
         case TrackElemType::LeftFlyerLargeHalfLoopInvertedDown:
-            return bolliger_mabillard_track_left_large_half_loop_down<METAL_SUPPORTS_TUBES_INVERTED>;
+            return BolligerMabillardTrackLeftLargeHalfLoopDown<METAL_SUPPORTS_TUBES_INVERTED>;
         case TrackElemType::FlyerHalfLoopInvertedUp:
-            return flying_rc_track_half_loop_inverted_up;
+            return FlyingRCTrackHalfLoopInvertedUp;
         case TrackElemType::FlyerHalfLoopUninvertedDown:
-            return flying_rc_track_half_loop_uninverted_down;
+            return FlyingRCTrackHalfLoopUninvertedDown;
         case TrackElemType::LeftFlyerLargeHalfLoopInvertedUp:
-            return flying_rc_track_left_flying_large_half_loop_inverted_up;
+            return FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp;
         case TrackElemType::RightFlyerLargeHalfLoopInvertedUp:
-            return flying_rc_track_right_flying_large_half_loop_inverted_up;
+            return FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp;
         case TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown:
-            return flying_rc_track_left_flying_large_half_loop_uninverted_down;
+            return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
-            return flying_rc_track_right_flying_large_half_loop_uninverted_down;
+            return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown;
     }
-    return get_track_paint_function_bolliger_mabillard<METAL_SUPPORTS_TUBES>(trackType);
+    return GetTrackPaintFunctionBolligerMabillard<METAL_SUPPORTS_TUBES>(trackType);
 }

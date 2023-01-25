@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x008A8958 */
-static void suspended_swinging_rc_track_flat(
+static void SuspendedSwingingRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -62,7 +62,7 @@ static void suspended_swinging_rc_track_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -72,7 +72,7 @@ static void suspended_swinging_rc_track_flat(
 }
 
 /** rct2: 0x008A8AA8, 0x008A8AB8, 0x008A8AC8 */
-static void suspended_swinging_rc_track_station(
+static void SuspendedSwingingRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -92,15 +92,15 @@ static void suspended_swinging_rc_track_station(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 29 },
         { 32, 20, 3 }, { 0, 6, height + 29 });
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 0);
-    track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 0);
+    TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A8968 */
-static void suspended_swinging_rc_track_25_deg_up(
+static void SuspendedSwingingRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -159,7 +159,7 @@ static void suspended_swinging_rc_track_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -194,7 +194,7 @@ static void suspended_swinging_rc_track_25_deg_up(
 }
 
 /** rct2: 0x008A8978 */
-static void suspended_swinging_rc_track_60_deg_up(
+static void SuspendedSwingingRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -235,7 +235,7 @@ static void suspended_swinging_rc_track_60_deg_up(
 }
 
 /** rct2: 0x008A8988 */
-static void suspended_swinging_rc_track_flat_to_25_deg_up(
+static void SuspendedSwingingRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -294,7 +294,7 @@ static void suspended_swinging_rc_track_flat_to_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -329,7 +329,7 @@ static void suspended_swinging_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008A8998 */
-static void suspended_swinging_rc_track_25_deg_up_to_60_deg_up(
+static void SuspendedSwingingRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -376,7 +376,7 @@ static void suspended_swinging_rc_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008A89A8 */
-static void suspended_swinging_rc_track_60_deg_up_to_25_deg_up(
+static void SuspendedSwingingRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -447,7 +447,7 @@ static void suspended_swinging_rc_track_60_deg_up_to_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -482,7 +482,7 @@ static void suspended_swinging_rc_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008A89B8 */
-static void suspended_swinging_rc_track_25_deg_up_to_flat(
+static void SuspendedSwingingRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -541,7 +541,7 @@ static void suspended_swinging_rc_track_25_deg_up_to_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -576,55 +576,55 @@ static void suspended_swinging_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A89C8 */
-static void suspended_swinging_rc_track_25_deg_down(
+static void SuspendedSwingingRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    suspended_swinging_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedSwingingRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A89D8 */
-static void suspended_swinging_rc_track_60_deg_down(
+static void SuspendedSwingingRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    suspended_swinging_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedSwingingRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A89E8 */
-static void suspended_swinging_rc_track_flat_to_25_deg_down(
+static void SuspendedSwingingRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    suspended_swinging_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedSwingingRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A89F8 */
-static void suspended_swinging_rc_track_25_deg_down_to_60_deg_down(
+static void SuspendedSwingingRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    suspended_swinging_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedSwingingRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8A08 */
-static void suspended_swinging_rc_track_60_deg_down_to_25_deg_down(
+static void SuspendedSwingingRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    suspended_swinging_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedSwingingRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8A18 */
-static void suspended_swinging_rc_track_25_deg_down_to_flat(
+static void SuspendedSwingingRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    suspended_swinging_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedSwingingRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8A28 */
-static void suspended_swinging_rc_track_left_quarter_turn_5(
+static void SuspendedSwingingRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -805,16 +805,16 @@ static void suspended_swinging_rc_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x008A8A38 */
-static void suspended_swinging_rc_track_right_quarter_turn_5(
+static void SuspendedSwingingRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    suspended_swinging_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SuspendedSwingingRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8A48 */
-static void suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up(
+static void SuspendedSwingingRCTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -995,7 +995,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008A8A58 */
-static void suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up(
+static void SuspendedSwingingRCTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1176,27 +1176,25 @@ static void suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008A8A68 */
-static void suspended_swinging_rc_track_left_quarter_turn_5_25_deg_down(
+static void SuspendedSwingingRCTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    SuspendedSwingingRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8A78 */
-static void suspended_swinging_rc_track_right_quarter_turn_5_25_deg_down(
+static void SuspendedSwingingRCTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up(
-        session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SuspendedSwingingRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8A88 */
-static void suspended_swinging_rc_track_s_bend_left(
+static void SuspendedSwingingRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1367,7 +1365,7 @@ static void suspended_swinging_rc_track_s_bend_left(
 }
 
 /** rct2: 0x008A8A98 */
-static void suspended_swinging_rc_track_s_bend_right(
+static void SuspendedSwingingRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1538,7 +1536,7 @@ static void suspended_swinging_rc_track_s_bend_right(
 }
 
 /** rct2: 0x008A8AD8 */
-static void suspended_swinging_rc_track_left_quarter_turn_3(
+static void SuspendedSwingingRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1656,16 +1654,16 @@ static void suspended_swinging_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x008A8AE8 */
-static void suspended_swinging_rc_track_right_quarter_turn_3(
+static void SuspendedSwingingRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    suspended_swinging_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SuspendedSwingingRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8AF8 */
-static void suspended_swinging_rc_track_left_quarter_turn_3_25_deg_up(
+static void SuspendedSwingingRCTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1758,7 +1756,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008A8B08 */
-static void suspended_swinging_rc_track_right_quarter_turn_3_25_deg_up(
+static void SuspendedSwingingRCTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1851,27 +1849,25 @@ static void suspended_swinging_rc_track_right_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008A8B18 */
-static void suspended_swinging_rc_track_left_quarter_turn_3_25_deg_down(
+static void SuspendedSwingingRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    suspended_swinging_rc_track_right_quarter_turn_3_25_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    SuspendedSwingingRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8B28 */
-static void suspended_swinging_rc_track_right_quarter_turn_3_25_deg_down(
+static void SuspendedSwingingRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    suspended_swinging_rc_track_left_quarter_turn_3_25_deg_up(
-        session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SuspendedSwingingRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8B38 */
-static void suspended_swinging_rc_track_brakes(
+static void SuspendedSwingingRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1893,7 +1889,7 @@ static void suspended_swinging_rc_track_brakes(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1903,7 +1899,7 @@ static void suspended_swinging_rc_track_brakes(
 }
 
 /** rct2: 0x008A8B48 */
-static void suspended_swinging_rc_track_left_quarter_helix_large_up(
+static void SuspendedSwingingRCTrackLeftQuarterHelixLargeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2084,7 +2080,7 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_up(
 }
 
 /** rct2: 0x008A8B58 */
-static void suspended_swinging_rc_track_right_quarter_helix_large_up(
+static void SuspendedSwingingRCTrackRightQuarterHelixLargeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2265,7 +2261,7 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_up(
 }
 
 /** rct2: 0x008A8B68 */
-static void suspended_swinging_rc_track_left_quarter_helix_large_down(
+static void SuspendedSwingingRCTrackLeftQuarterHelixLargeDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2446,7 +2442,7 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_down(
 }
 
 /** rct2: 0x008A8B78 */
-static void suspended_swinging_rc_track_right_quarter_helix_large_down(
+static void SuspendedSwingingRCTrackRightQuarterHelixLargeDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2627,7 +2623,7 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_down(
 }
 
 /** rct2: 0x008A8B88 */
-static void suspended_swinging_rc_track_left_eighth_to_diag(
+static void SuspendedSwingingRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2788,7 +2784,7 @@ static void suspended_swinging_rc_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x008A8B98 */
-static void suspended_swinging_rc_track_right_eighth_to_diag(
+static void SuspendedSwingingRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2949,25 +2945,25 @@ static void suspended_swinging_rc_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x008A8BA8 */
-static void suspended_swinging_rc_track_left_eighth_to_orthogonal(
+static void SuspendedSwingingRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    suspended_swinging_rc_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SuspendedSwingingRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8BB8 */
-static void suspended_swinging_rc_track_right_eighth_to_orthogonal(
+static void SuspendedSwingingRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    suspended_swinging_rc_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    SuspendedSwingingRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A8BC8 */
-static void suspended_swinging_rc_track_diag_flat(
+static void SuspendedSwingingRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3106,7 +3102,7 @@ static void suspended_swinging_rc_track_diag_flat(
 }
 
 /** rct2: 0x008A8BF8 */
-static void suspended_swinging_rc_track_diag_25_deg_up(
+static void SuspendedSwingingRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3245,7 +3241,7 @@ static void suspended_swinging_rc_track_diag_25_deg_up(
 }
 
 /** rct2: 0x008A8C58 */
-static void suspended_swinging_rc_track_diag_60_deg_up(
+static void SuspendedSwingingRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3328,7 +3324,7 @@ static void suspended_swinging_rc_track_diag_60_deg_up(
 }
 
 /** rct2: 0x008A8BD8 */
-static void suspended_swinging_rc_track_diag_flat_to_25_deg_up(
+static void SuspendedSwingingRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3467,7 +3463,7 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008A8C38 */
-static void suspended_swinging_rc_track_diag_25_deg_up_to_60_deg_up(
+static void SuspendedSwingingRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3550,7 +3546,7 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008A8C48 */
-static void suspended_swinging_rc_track_diag_60_deg_up_to_25_deg_up(
+static void SuspendedSwingingRCTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3633,7 +3629,7 @@ static void suspended_swinging_rc_track_diag_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008A8BE8 */
-static void suspended_swinging_rc_track_diag_25_deg_up_to_flat(
+static void SuspendedSwingingRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3772,7 +3768,7 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A8C28 */
-static void suspended_swinging_rc_track_diag_25_deg_down(
+static void SuspendedSwingingRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3911,7 +3907,7 @@ static void suspended_swinging_rc_track_diag_25_deg_down(
 }
 
 /** rct2: 0x008A8C88 */
-static void suspended_swinging_rc_track_diag_60_deg_down(
+static void SuspendedSwingingRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3973,7 +3969,7 @@ static void suspended_swinging_rc_track_diag_60_deg_down(
 }
 
 /** rct2: 0x008A8C08 */
-static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(
+static void SuspendedSwingingRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4109,7 +4105,7 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x008A8C68 */
-static void suspended_swinging_rc_track_diag_25_deg_down_to_60_deg_down(
+static void SuspendedSwingingRCTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4192,7 +4188,7 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_60_deg_down(
 }
 
 /** rct2: 0x008A8C78 */
-static void suspended_swinging_rc_track_diag_60_deg_down_to_25_deg_down(
+static void SuspendedSwingingRCTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4275,7 +4271,7 @@ static void suspended_swinging_rc_track_diag_60_deg_down_to_25_deg_down(
 }
 
 /** rct2: 0x008A8C18 */
-static void suspended_swinging_rc_track_diag_25_deg_down_to_flat(
+static void SuspendedSwingingRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4414,7 +4410,7 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_flat(
 }
 
 /** rct2: 0x008A8B38 */
-static void suspended_swinging_rc_track_block_brakes(
+static void SuspendedSwingingRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4436,7 +4432,7 @@ static void suspended_swinging_rc_track_block_brakes(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -4445,114 +4441,114 @@ static void suspended_swinging_rc_track_block_brakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return suspended_swinging_rc_track_flat;
+            return SuspendedSwingingRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return suspended_swinging_rc_track_station;
+            return SuspendedSwingingRCTrackStation;
         case TrackElemType::Up25:
-            return suspended_swinging_rc_track_25_deg_up;
+            return SuspendedSwingingRCTrack25DegUp;
         case TrackElemType::Up60:
-            return suspended_swinging_rc_track_60_deg_up;
+            return SuspendedSwingingRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return suspended_swinging_rc_track_flat_to_25_deg_up;
+            return SuspendedSwingingRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return suspended_swinging_rc_track_25_deg_up_to_60_deg_up;
+            return SuspendedSwingingRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return suspended_swinging_rc_track_60_deg_up_to_25_deg_up;
+            return SuspendedSwingingRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return suspended_swinging_rc_track_25_deg_up_to_flat;
+            return SuspendedSwingingRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return suspended_swinging_rc_track_25_deg_down;
+            return SuspendedSwingingRCTrack25DegDown;
         case TrackElemType::Down60:
-            return suspended_swinging_rc_track_60_deg_down;
+            return SuspendedSwingingRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return suspended_swinging_rc_track_flat_to_25_deg_down;
+            return SuspendedSwingingRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return suspended_swinging_rc_track_25_deg_down_to_60_deg_down;
+            return SuspendedSwingingRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return suspended_swinging_rc_track_60_deg_down_to_25_deg_down;
+            return SuspendedSwingingRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return suspended_swinging_rc_track_25_deg_down_to_flat;
+            return SuspendedSwingingRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return suspended_swinging_rc_track_left_quarter_turn_5;
+            return SuspendedSwingingRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return suspended_swinging_rc_track_right_quarter_turn_5;
+            return SuspendedSwingingRCTrackRightQuarterTurn5;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up;
+            return SuspendedSwingingRCTrackLeftQuarterTurn525DegUp;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up;
+            return SuspendedSwingingRCTrackRightQuarterTurn525DegUp;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return suspended_swinging_rc_track_left_quarter_turn_5_25_deg_down;
+            return SuspendedSwingingRCTrackLeftQuarterTurn525DegDown;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return suspended_swinging_rc_track_right_quarter_turn_5_25_deg_down;
+            return SuspendedSwingingRCTrackRightQuarterTurn525DegDown;
         case TrackElemType::SBendLeft:
-            return suspended_swinging_rc_track_s_bend_left;
+            return SuspendedSwingingRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return suspended_swinging_rc_track_s_bend_right;
+            return SuspendedSwingingRCTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return suspended_swinging_rc_track_left_quarter_turn_3;
+            return SuspendedSwingingRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return suspended_swinging_rc_track_right_quarter_turn_3;
+            return SuspendedSwingingRCTrackRightQuarterTurn3;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return suspended_swinging_rc_track_left_quarter_turn_3_25_deg_up;
+            return SuspendedSwingingRCTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return suspended_swinging_rc_track_right_quarter_turn_3_25_deg_up;
+            return SuspendedSwingingRCTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return suspended_swinging_rc_track_left_quarter_turn_3_25_deg_down;
+            return SuspendedSwingingRCTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return suspended_swinging_rc_track_right_quarter_turn_3_25_deg_down;
+            return SuspendedSwingingRCTrackRightQuarterTurn325DegDown;
         case TrackElemType::Brakes:
-            return suspended_swinging_rc_track_brakes;
+            return SuspendedSwingingRCTrackBrakes;
         case TrackElemType::LeftQuarterHelixLargeUp:
-            return suspended_swinging_rc_track_left_quarter_helix_large_up;
+            return SuspendedSwingingRCTrackLeftQuarterHelixLargeUp;
         case TrackElemType::RightQuarterHelixLargeUp:
-            return suspended_swinging_rc_track_right_quarter_helix_large_up;
+            return SuspendedSwingingRCTrackRightQuarterHelixLargeUp;
         case TrackElemType::LeftQuarterHelixLargeDown:
-            return suspended_swinging_rc_track_left_quarter_helix_large_down;
+            return SuspendedSwingingRCTrackLeftQuarterHelixLargeDown;
         case TrackElemType::RightQuarterHelixLargeDown:
-            return suspended_swinging_rc_track_right_quarter_helix_large_down;
+            return SuspendedSwingingRCTrackRightQuarterHelixLargeDown;
         case TrackElemType::LeftEighthToDiag:
-            return suspended_swinging_rc_track_left_eighth_to_diag;
+            return SuspendedSwingingRCTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return suspended_swinging_rc_track_right_eighth_to_diag;
+            return SuspendedSwingingRCTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return suspended_swinging_rc_track_left_eighth_to_orthogonal;
+            return SuspendedSwingingRCTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return suspended_swinging_rc_track_right_eighth_to_orthogonal;
+            return SuspendedSwingingRCTrackRightEighthToOrthogonal;
         case TrackElemType::DiagFlat:
-            return suspended_swinging_rc_track_diag_flat;
+            return SuspendedSwingingRCTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return suspended_swinging_rc_track_diag_25_deg_up;
+            return SuspendedSwingingRCTrackDiag25DegUp;
         case TrackElemType::DiagUp60:
-            return suspended_swinging_rc_track_diag_60_deg_up;
+            return SuspendedSwingingRCTrackDiag60DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return suspended_swinging_rc_track_diag_flat_to_25_deg_up;
+            return SuspendedSwingingRCTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToUp60:
-            return suspended_swinging_rc_track_diag_25_deg_up_to_60_deg_up;
+            return SuspendedSwingingRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagUp60ToUp25:
-            return suspended_swinging_rc_track_diag_60_deg_up_to_25_deg_up;
+            return SuspendedSwingingRCTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return suspended_swinging_rc_track_diag_25_deg_up_to_flat;
+            return SuspendedSwingingRCTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return suspended_swinging_rc_track_diag_25_deg_down;
+            return SuspendedSwingingRCTrackDiag25DegDown;
         case TrackElemType::DiagDown60:
-            return suspended_swinging_rc_track_diag_60_deg_down;
+            return SuspendedSwingingRCTrackDiag60DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return suspended_swinging_rc_track_diag_flat_to_25_deg_down;
+            return SuspendedSwingingRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToDown60:
-            return suspended_swinging_rc_track_diag_25_deg_down_to_60_deg_down;
+            return SuspendedSwingingRCTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagDown60ToDown25:
-            return suspended_swinging_rc_track_diag_60_deg_down_to_25_deg_down;
+            return SuspendedSwingingRCTrackDiag60DegDownTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return suspended_swinging_rc_track_diag_25_deg_down_to_flat;
+            return SuspendedSwingingRCTrackDiag25DegDownToFlat;
         case TrackElemType::BlockBrakes:
-            return suspended_swinging_rc_track_block_brakes;
+            return SuspendedSwingingRCTrackBlockBrakes;
     }
     return nullptr;
 }

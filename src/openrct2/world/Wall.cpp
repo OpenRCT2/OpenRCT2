@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -82,13 +82,13 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
 
 uint8_t WallElement::GetSlope() const
 {
-    return (type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 void WallElement::SetSlope(uint8_t newSlope)
 {
-    type &= ~TILE_ELEMENT_QUADRANT_MASK;
-    type |= (newSlope << 6);
+    Type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    Type |= (newSlope << 6);
 }
 
 colour_t WallElement::GetPrimaryColour() const

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -71,7 +71,7 @@ static constexpr const int32_t WW = 320;
 static constexpr const int32_t WH = 107;
 
 // clang-format off
-static rct_widget window_themes_widgets[] = {
+static Widget window_themes_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {320,  64}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                                     ), // tab content panel
     MakeTab   ({  3, 17},                                                                                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
@@ -276,22 +276,22 @@ public:
             if (width < min_width)
             {
                 width = min_width;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (height < min_height)
             {
                 height = min_height;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (width > max_width)
             {
                 width = max_width;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (height > max_height)
             {
                 height = max_height;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
         }
         else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
@@ -304,22 +304,22 @@ public:
             if (width < min_width)
             {
                 width = min_width;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (height < min_height)
             {
                 height = min_height;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (width > max_width)
             {
                 width = max_width;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
             if (height > max_height)
             {
                 height = max_height;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
         }
         else
@@ -358,7 +358,7 @@ public:
         if (frame_no >= window_themes_tab_animation_loops[_selected_tab])
             frame_no = 0;
 
-        widget_invalidate(*this, WIDX_THEMES_SETTINGS_TAB + _selected_tab);
+        WidgetInvalidate(*this, WIDX_THEMES_SETTINGS_TAB + _selected_tab);
     }
 
     void OnPrepareDraw() override
@@ -371,7 +371,7 @@ public:
 
         pressed_widgets = pressedWidgets | (1 << widgetIndex);
 
-        if (window_find_by_class(WindowClass::Dropdown) == nullptr)
+        if (WindowFindByClass(WindowClass::Dropdown) == nullptr)
         {
             _colour_index_1 = -1;
             _colour_index_2 = -1;
@@ -444,7 +444,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         // Widgets
         WindowDrawWidgets(*this, &dpi);
@@ -494,7 +494,7 @@ public:
                 _selected_tab = static_cast<uint8_t>(newSelectedTab);
                 scrolls[0].v_top = 0;
                 frame_no = 0;
-                window_event_resize_call(this);
+                WindowEventResizeCall(this);
                 Invalidate();
                 break;
             case WIDX_THEMES_PRESETS_DROPDOWN:
@@ -523,7 +523,7 @@ public:
                 {
                     ThemeSetFlags(ThemeGetFlags() ^ UITHEME_FLAG_USE_LIGHTS_RIDE);
                     ThemeSave();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
             case WIDX_THEMES_RCT1_PARK_LIGHTS:
@@ -533,9 +533,9 @@ public:
                 }
                 else
                 {
-                    ThemeSetFlags(ThemeGetFlags() ^ UITHEME_FLAG_USE_LIGHTS_PARK);
+                    ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_LIGHTS_PARK));
                     ThemeSave();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
             case WIDX_THEMES_RCT1_SCENARIO_FONT:
@@ -545,9 +545,9 @@ public:
                 }
                 else
                 {
-                    ThemeSetFlags(ThemeGetFlags() ^ UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
+                    ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT));
                     ThemeSave();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
             case WIDX_THEMES_RCT1_BOTTOM_TOOLBAR:
@@ -557,9 +557,9 @@ public:
                 }
                 else
                 {
-                    ThemeSetFlags(ThemeGetFlags() ^ UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+                    ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
                     ThemeSave();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
         }
     }
@@ -620,7 +620,7 @@ public:
                     colour = (colour & COLOUR_FLAG_TRANSLUCENT) | selectedIndex;
                     ThemeSetColour(wc, _colour_index_2, colour);
                     ColourSchemeUpdateAll();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                     _colour_index_1 = -1;
                     _colour_index_2 = -1;
                 }
@@ -727,7 +727,7 @@ public:
                         uint8_t colour = ThemeGetColour(wc, _colour_index_2);
                         WindowDropdownShowColour(
                             this, &(window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]), colours[1], colour);
-                        widget_invalidate(*this, WIDX_THEMES_LIST);
+                        WidgetInvalidate(*this, WIDX_THEMES_LIST);
                     }
                 }
                 else if (
@@ -751,14 +751,14 @@ public:
                         }
                         ThemeSetColour(wc, _colour_index_2, colour);
                         ColourSchemeUpdateAll();
-                        window_invalidate_all();
+                        WindowInvalidateAll();
                     }
                 }
             }
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords;
 
@@ -766,9 +766,9 @@ public:
             return;
 
         if ((colours[1] & 0x80) == 0)
-            // gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
+            // GfxFillRect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
             // ColourMapA[colours[1]].mid_light);
-            gfx_clear(&dpi, ColourMapA[colours[1]].mid_light);
+            GfxClear(&dpi, ColourMapA[colours[1]].mid_light);
         screenCoords.y = 0;
         for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
         {
@@ -789,18 +789,18 @@ public:
 
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
-                        translucent_window_palette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
+                        TranslucentWindowPalette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
-                        gfx_filter_rect(&dpi, { leftTop, rightBottom }, windowPalette.highlight);
-                        gfx_filter_rect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
+                        GfxFilterRect(&dpi, { leftTop, rightBottom }, windowPalette.highlight);
+                        GfxFilterRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                     }
                     else
                     {
                         colour = ColourMapA[colours[1]].mid_dark;
-                        gfx_fill_rect(&dpi, { leftTop, rightBottom }, colour);
+                        GfxFillRect(&dpi, { leftTop, rightBottom }, colour);
 
                         colour = ColourMapA[colours[1]].lightest;
-                        gfx_fill_rect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
+                        GfxFillRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
                     }
                 }
 
@@ -814,14 +814,14 @@ public:
                     const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
                     auto image = ImageId(
                         isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour & ~COLOUR_FLAG_TRANSLUCENT);
-                    gfx_draw_sprite(&dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
+                    GfxDrawSprite(&dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
 
                     ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
                     ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
-                    gfx_fill_rect_inset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
-                        gfx_draw_string(
+                        GfxDrawString(
                             &dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
                             { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, TextDarkness::Dark });
                     }
@@ -867,14 +867,14 @@ public:
         return 0;
     }
 
-    void WindowThemesDrawTabImages(rct_drawpixelinfo* dpi)
+    void WindowThemesDrawTabImages(DrawPixelInfo* dpi)
     {
         for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
         {
             int32_t sprite_idx = window_themes_tab_sprites[i];
             if (_selected_tab == i)
                 sprite_idx += frame_no / window_themes_tab_animation_divisor[_selected_tab];
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 dpi, ImageId(sprite_idx),
                 windowPos
                     + ScreenCoordsXY{ widgets[WIDX_THEMES_SETTINGS_TAB + i].left, widgets[WIDX_THEMES_SETTINGS_TAB + i].top });
@@ -882,12 +882,12 @@ public:
     }
 };
 
-rct_window* WindowThemesOpen()
+WindowBase* WindowThemesOpen()
 {
-    rct_window* window;
+    WindowBase* window;
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WindowClass::Themes);
+    window = WindowBringToFrontByClass(WindowClass::Themes);
     if (window != nullptr)
         return window;
 

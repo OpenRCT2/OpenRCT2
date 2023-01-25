@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -163,7 +163,7 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
         }
         else
         {
-            log_error(
+            LOG_ERROR(
                 u8"Plug-in “%s” does not specify a target API version or specifies it incorrectly. Emulating deprecated APIs.",
                 metadata.Name.c_str());
         }
@@ -200,7 +200,7 @@ PluginType Plugin::ParsePluginType(std::string_view type)
 void Plugin::CheckForLicence(const DukValue& dukLicence, std::string_view pluginName)
 {
     if (dukLicence.type() != DukValue::Type::STRING || dukLicence.as_string().empty())
-        log_error("Plugin %s does not specify a licence", std::string(pluginName).c_str());
+        LOG_ERROR("Plugin %s does not specify a licence", std::string(pluginName).c_str());
 }
 
 int32_t Plugin::GetTargetAPIVersion() const

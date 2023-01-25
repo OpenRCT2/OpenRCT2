@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@ enum WindowSavePromptWidgetIdx {
     WIDX_CANCEL
 };
 
-static rct_widget window_save_prompt_widgets[] = {
+static Widget window_save_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
     MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, STR_EMPTY                ), // question/label
     MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
@@ -53,7 +53,7 @@ enum WindowQuitPromptWidgetIdx {
     WQIDX_CANCEL
 };
 
-static rct_widget window_quit_prompt_widgets[] = {
+static Widget window_quit_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
     MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
     MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
@@ -64,6 +64,7 @@ static constexpr const StringId window_save_prompt_labels[][2] = {
     { STR_LOAD_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_LOADING },
     { STR_QUIT_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_QUITTING },
     { STR_QUIT_GAME_2_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING_2 },
+    { STR_NEW_GAME,                 STR_SAVE_BEFORE_QUITTING },
 };
 // clang-format on
 
@@ -71,7 +72,7 @@ static void WindowSavePromptCallback(int32_t result, const utf8* path)
 {
     if (result == MODAL_RESULT_OK)
     {
-        game_load_or_quit_no_save_prompt();
+        GameLoadOrQuitNoSavePrompt();
     }
 }
 
@@ -99,13 +100,13 @@ public:
         InitScrollWidgets();
 
         // Pause the game if not network play.
-        if (network_get_mode() == NETWORK_MODE_NONE)
+        if (NetworkGetMode() == NETWORK_MODE_NONE)
         {
             gGamePaused |= GAME_PAUSED_MODAL;
             OpenRCT2::Audio::StopAll();
         }
 
-        window_invalidate_by_class(WindowClass::TopToolbar);
+        WindowInvalidateByClass(WindowClass::TopToolbar);
 
         StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
         if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -123,13 +124,13 @@ public:
     void OnClose() override
     {
         // Unpause the game
-        if (network_get_mode() == NETWORK_MODE_NONE)
+        if (NetworkGetMode() == NETWORK_MODE_NONE)
         {
             gGamePaused &= ~GAME_PAUSED_MODAL;
             OpenRCT2::Audio::Resume();
         }
 
-        window_invalidate_by_class(WindowClass::TopToolbar);
+        WindowInvalidateByClass(WindowClass::TopToolbar);
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -139,7 +140,7 @@ public:
             switch (widgetIndex)
             {
                 case WQIDX_OK:
-                    game_load_or_quit_no_save_prompt();
+                    GameLoadOrQuitNoSavePrompt();
                     break;
                 case WQIDX_CLOSE:
                 case WQIDX_CANCEL:
@@ -158,20 +159,20 @@ public:
                 if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
                 {
                     intent = std::make_unique<Intent>(WindowClass::Loadsave);
-                    intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                    intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
+                    intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                    intent->PutExtra(INTENT_EXTRA_PATH, gScenarioName);
                 }
                 else
                 {
-                    intent = create_save_game_as_intent();
+                    intent = CreateSaveGameAsIntent();
                 }
                 Close();
-                intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
+                intent->PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
                 ContextOpenIntent(intent.get());
                 break;
             }
             case WIDX_DONT_SAVE:
-                game_load_or_quit_no_save_prompt();
+                GameLoadOrQuitNoSavePrompt();
                 return;
             case WIDX_CLOSE:
             case WIDX_CANCEL:
@@ -180,13 +181,13 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
 };
 
-rct_window* WindowSavePromptOpen()
+WindowBase* WindowSavePromptOpen()
 {
     PromptMode prompt_mode = gSavePromptMode;
     if (prompt_mode == PromptMode::Quit)
@@ -197,7 +198,7 @@ rct_window* WindowSavePromptOpen()
     // do not show save prompt if we're in the title demo and click on load game
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
-        game_load_or_quit_no_save_prompt();
+        GameLoadOrQuitNoSavePrompt();
         return nullptr;
     }
 
@@ -209,23 +210,23 @@ rct_window* WindowSavePromptOpen()
          * and game_load_or_quit() are not called by the original binary anymore.
          */
 
-        if (gScreenAge < 3840 && network_get_mode() == NETWORK_MODE_NONE)
+        if (gScreenAge < 3840 && NetworkGetMode() == NETWORK_MODE_NONE)
         {
-            game_load_or_quit_no_save_prompt();
+            GameLoadOrQuitNoSavePrompt();
             return nullptr;
         }
     }
 
     // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class(WindowClass::SavePrompt);
+    WindowBase* window = WindowBringToFrontByClass(WindowClass::SavePrompt);
     if (window != nullptr)
     {
-        window_close(*window);
+        WindowClose(*window);
     }
 
     if (EnumValue(prompt_mode) >= std::size(window_save_prompt_labels))
     {
-        log_warning("Invalid save prompt mode %u", prompt_mode);
+        LOG_WARNING("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
 

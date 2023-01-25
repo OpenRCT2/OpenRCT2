@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,7 +30,7 @@ public:
     std::unique_ptr<ITcpSocket> Socket = nullptr;
     NetworkPacket InboundPacket;
     NetworkAuth AuthStatus = NetworkAuth::None;
-    NetworkStats_t Stats = {};
+    NetworkStats Stats = {};
     NetworkPlayer* Player = nullptr;
     uint32_t PingTime = 0;
     NetworkKey Key;

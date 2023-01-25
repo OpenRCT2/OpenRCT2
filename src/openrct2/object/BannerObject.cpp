@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* st
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
-    rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
     SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     GetImageTable().Read(context, stream);
@@ -61,28 +61,28 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* st
 void BannerObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.name = LanguageAllocateObjectString(GetName());
+    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void BannerObject::Unload()
 {
-    language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.name);
+    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _legacyType.image = 0;
 }
 
-void BannerObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void BannerObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     auto image0 = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
     auto image1 = ImageId(_legacyType.image + 1, COLOUR_BORDEAUX_RED);
 
-    gfx_draw_sprite(dpi, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
-    gfx_draw_sprite(dpi, image1, screenCoords + ScreenCoordsXY{ -12, 8 });
+    GfxDrawSprite(dpi, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
+    GfxDrawSprite(dpi, image1, screenCoords + ScreenCoordsXY{ -12, 8 });
 }
 
 void BannerObject::ReadJson(IReadObjectContext* context, json_t& root)

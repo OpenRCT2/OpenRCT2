@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,9 @@
 #include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/FootpathItemEntry.h"
 #include "../../object/FootpathObject.h"
 #include "../../object/FootpathRailingsObject.h"
 #include "../../object/FootpathSurfaceObject.h"
@@ -53,7 +55,7 @@ const uint8_t PathSlopeToLandSlope[] = {
     TILE_ELEMENT_SLOPE_SE_SIDE_UP,
 };
 
-static constexpr const uint8_t byte_98D6E0[] = {
+static constexpr const uint8_t Byte98D6E0[] = {
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 12, 13, 14, 15, 0, 1, 2, 20, 4, 5, 6, 22, 8, 9, 10, 26, 12, 13, 14, 36,
     0, 1, 2, 3, 4, 5, 21, 23, 8, 9,  10, 11, 12, 13, 33, 37, 0, 1, 2, 3,  4, 5, 6, 24, 8, 9, 10, 11, 12, 13, 14, 38,
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 29, 30, 34, 39, 0, 1, 2, 3,  4, 5, 6, 7,  8, 9, 10, 11, 12, 13, 14, 40,
@@ -84,7 +86,7 @@ static constexpr const BoundBoxXY stru_98D804[] = {
     { { 0, 0 }, { 32, 32 } },
 };
 
-static constexpr const uint8_t byte_98D8A4[] = {
+static constexpr const uint8_t Byte98D8A4[] = {
     0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
 // clang-format on
@@ -272,7 +274,7 @@ static void PathBitBenchesPaint(
 
 /* rct2: 0x006A6008 */
 static void PathBitJumpingFountainsPaint(
-    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, rct_drawpixelinfo* dpi)
+    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, DrawPixelInfo* dpi)
 {
     if (dpi->zoom_level > ZoomLevel{ 0 })
         return;
@@ -373,6 +375,14 @@ static void PathPaintFencesAndQueueBanners(
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(26), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
                     break;
+                case 0b0111:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(15), { 0, 4, height }, { 32, 1, 7 }, { 0, 4, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(26), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
+                    break;
                 case 0b1000:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(16), { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
@@ -393,6 +403,14 @@ static void PathPaintFencesAndQueueBanners(
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(14), { 28, 0, height }, { 1, 32, 7 }, { 28, 0, height + 2 });
                     break;
+                case 0b1011:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(14), { 28, 0, height }, { 1, 32, 7 }, { 28, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(24), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
+                    break;
                 case 0b1100:
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(16), { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
@@ -402,9 +420,31 @@ static void PathPaintFencesAndQueueBanners(
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(27), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                     break;
-                default:
-                    // Purposely left empty, queues cannot have 3 or 4 connected edges
+                case 0b1101:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(15), { 0, 28, height }, { 32, 1, 7 }, { 0, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(24), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(27), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                     break;
+                case 0b1110:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(14), { 4, 0, height }, { 1, 32, 7 }, { 4, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(26), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(27), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
+                    break;
+                case 0b1111:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(24), { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(26), { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(27), { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
             }
         }
 
@@ -439,7 +479,7 @@ static void PathPaintFencesAndQueueBanners(
 
         direction--;
         // If text shown
-        auto ride = get_ride(pathElement.GetRideIndex());
+        auto ride = GetRide(pathElement.GetRideIndex());
         if (direction < 2 && ride != nullptr && !imageTemplate.IsRemap())
         {
             uint16_t scrollingMode = pathPaintInfo.ScrollingMode;
@@ -458,19 +498,20 @@ static void PathPaintFencesAndQueueBanners(
             }
             if (gConfigGeneral.UpperCaseBanners)
             {
-                format_string_to_upper(
+                FormatStringToUpper(
                     gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
             else
             {
-                format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
+                FormatStringLegacy(
+                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
 
-            uint16_t stringWidth = gfx_get_string_width(gCommonStringFormatBuffer, FontStyle::Tiny);
+            uint16_t stringWidth = GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Tiny);
             uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
             PaintAddImageAsChild(
-                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),
+                session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),
                 { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
         }
 
@@ -709,7 +750,7 @@ static void PathPaintFencesAndQueueBanners(
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
-static void sub_6A3F61(
+static void Sub6A3F61(
     PaintSession& session, const PathElement& pathElement, uint16_t connectedEdges, uint16_t height,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate, ImageId sceneryImageTemplate, bool hasSupports)
 {
@@ -725,7 +766,7 @@ static void sub_6A3F61(
     // Probably drawing benches etc.
     PROFILED_FUNCTION();
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
 
     if (dpi->zoom_level <= ZoomLevel{ 1 })
     {
@@ -923,7 +964,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
 
         uint32_t baseImageIndex = SPR_HEIGHT_MARKER_BASE;
         baseImageIndex += heightMarkerBaseZ / 16;
-        baseImageIndex += get_height_marker_offset();
+        baseImageIndex += GetHeightMarkerOffset();
         baseImageIndex -= gMapBaseZ;
         auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
         PaintAddImageAsParent(session, imageId, { 16, 16, heightMarkerBaseZ }, { 1, 1, 0 });
@@ -934,7 +975,7 @@ static void PaintLampLightEffects(PaintSession& session, const PathElement& path
 {
     PROFILED_FUNCTION();
 
-    if (lightfx_is_available())
+    if (LightFXIsAvailable())
     {
         if (pathEl.HasAddition() && !(pathEl.IsBroken()))
         {
@@ -943,19 +984,19 @@ static void PaintLampLightEffects(PaintSession& session, const PathElement& path
             {
                 if (!(pathEl.GetEdges() & EDGE_NE))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SE))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SW))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_NW))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
+                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
                 }
             }
         }
@@ -980,7 +1021,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
             return;
         }
 
-        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&tileElement)))
+        if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
         {
             imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
         }
@@ -1063,7 +1104,7 @@ void PathPaintBoxSupport(
     }
     else
     {
-        surfaceBaseImageIndex += byte_98D6E0[edi];
+        surfaceBaseImageIndex += Byte98D6E0[edi];
     }
 
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
@@ -1105,7 +1146,7 @@ void PathPaintBoxSupport(
         }
         else
         {
-            bridgeBaseImageIndex = byte_98D8A4[edges] + pathPaintInfo.BridgeImageId + 49;
+            bridgeBaseImageIndex = Byte98D8A4[edges] + pathPaintInfo.BridgeImageId + 49;
         }
 
         PaintAddImageAsParent(
@@ -1120,7 +1161,7 @@ void PathPaintBoxSupport(
         }
     }
 
-    sub_6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
+    Sub6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
 
     uint16_t ax = 0;
     if (pathElement.IsSloped())
@@ -1128,7 +1169,7 @@ void PathPaintBoxSupport(
         ax = ((pathElement.GetSlopeDirection() + session.CurrentRotation) & 0x3) + 1;
     }
 
-    auto supportType = byte_98D8A4[edges] == 0 ? 0 : 1;
+    auto supportType = Byte98D8A4[edges] == 0 ? 0 : 1;
     PathASupportsPaintSetup(session, supportType, ax, height, imageTemplate, pathPaintInfo, nullptr);
 
     height += 32;
@@ -1201,7 +1242,7 @@ void PathPaintPoleSupport(
     }
     else
     {
-        surfaceBaseImageIndex += byte_98D6E0[edi];
+        surfaceBaseImageIndex += Byte98D6E0[edi];
     }
 
     // Below Surface
@@ -1259,7 +1300,7 @@ void PathPaintPoleSupport(
         }
     }
 
-    sub_6A3F61(
+    Sub6A3F61(
         session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
         hasSupports); // TODO: arguments
 

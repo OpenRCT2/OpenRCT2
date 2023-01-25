@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "PlacePeepSpawnAction.h"
+#include "PeepSpawnPlaceAction.h"
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
@@ -18,29 +18,29 @@
 #include "../world/Park.h"
 #include "../world/Surface.h"
 
-PlacePeepSpawnAction::PlacePeepSpawnAction(const CoordsXYZD& location)
+PeepSpawnPlaceAction::PeepSpawnPlaceAction(const CoordsXYZD& location)
     : _location(location)
 {
 }
 
-void PlacePeepSpawnAction::AcceptParameters(GameActionParameterVisitor& visitor)
+void PeepSpawnPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_location);
 }
 
-uint16_t PlacePeepSpawnAction::GetActionFlags() const
+uint16_t PeepSpawnPlaceAction::GetActionFlags() const
 {
     return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly | GameActions::Flags::AllowWhilePaused;
 }
 
-void PlacePeepSpawnAction::Serialise(DataSerialiser& stream)
+void PeepSpawnPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
 }
 
-GameActions::Result PlacePeepSpawnAction::Query() const
+GameActions::Result PeepSpawnPlaceAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
@@ -83,7 +83,7 @@ GameActions::Result PlacePeepSpawnAction::Query() const
     return res;
 }
 
-GameActions::Result PlacePeepSpawnAction::Execute() const
+GameActions::Result PeepSpawnPlaceAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::LandPurchase;

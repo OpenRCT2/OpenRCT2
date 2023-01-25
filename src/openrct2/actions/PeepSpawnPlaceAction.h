@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,15 +11,14 @@
 
 #include "GameAction.h"
 
-class PlaceParkEntranceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
+class PeepSpawnPlaceAction final : public GameActionBase<GameCommand::PlacePeepSpawn>
 {
 private:
-    CoordsXYZD _loc;
-    ObjectEntryIndex _pathType;
+    CoordsXYZD _location;
 
 public:
-    PlaceParkEntranceAction() = default;
-    PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
+    PeepSpawnPlaceAction() = default;
+    PeepSpawnPlaceAction(const CoordsXYZD& location);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
@@ -28,7 +27,4 @@ public:
     void Serialise(DataSerialiser& stream) override;
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;
-
-private:
-    bool CheckMapCapacity(int16_t numTiles) const;
 };

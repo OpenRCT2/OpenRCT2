@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -442,11 +442,11 @@ static void PrintAbout()
 static void PrintVersion()
 {
     char buffer[256];
-    openrct2_write_full_version_info(buffer, sizeof(buffer));
+    OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
     Console::WriteLine(buffer);
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
     Console::WriteLine();
-    Console::WriteFormat("Network version: %s", network_get_version().c_str());
+    Console::WriteFormat("Network version: %s", NetworkGetVersion().c_str());
     Console::WriteLine();
 #ifdef ENABLE_SCRIPTING
     Console::WriteFormat("Plugin API version: %d", OpenRCT2::Scripting::OPENRCT2_PLUGIN_API_VERSION);
@@ -475,7 +475,7 @@ static void PrintLaunchInformation()
     struct tm* tmInfo;
 
     // Print name and version information
-    openrct2_write_full_version_info(buffer, sizeof(buffer));
+    OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
     Console::WriteFormat("%s", buffer);
     Console::WriteLine();
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);

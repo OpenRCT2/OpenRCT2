@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 
 #ifndef NO_VEHICLES
 // 0x0099279E:
-static constexpr const vehicle_boundbox _riverRapidsBoundbox[] = {
+static constexpr const VehicleBoundBox _riverRapidsBoundbox[] = {
     { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
     { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
     { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
@@ -177,7 +177,7 @@ static constexpr const uint32_t river_rapids_track_pieces_25_deg_down_to_flat[][
  *
  *  rct2: 0x006D5889
  */
-void vehicle_visual_river_rapids(
+void VehicleVisualRiverRapids(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
@@ -263,12 +263,12 @@ void vehicle_visual_river_rapids(
         }
     }
 
-    vehicle_visual_splash_effect(session, z, vehicle, carEntry);
+    VehicleVisualSplashEffect(session, z, vehicle, carEntry);
 }
 #endif
 
 /** rct2: 0x00757650 */
-static void paint_river_rapids_track_flat(
+static void PaintRiverRapidsTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -311,17 +311,16 @@ static void paint_river_rapids_track_flat(
 }
 
 /** rct2: 0x007576C0 */
-static void paint_river_rapids_station(
+static void PaintRiverRapidsStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_river_rapids_track_flat(session, ride, trackSequence, direction, height, trackElement);
-    track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 12, trackElement);
+    PaintRiverRapidsTrackFlat(session, ride, trackSequence, direction, height, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_river_rapids_track_25_deg(
-    PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
+static void PaintRiverRapidsTrack25Deg(PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
 {
     ImageId imageId;
     PaintStruct* ps;
@@ -379,7 +378,7 @@ static void paint_river_rapids_track_25_deg(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void paint_river_rapids_track_25_deg_to_flat_a(
+static void PaintRiverRapidsTrack25DegToFlatA(
     PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
 {
     ImageId imageId;
@@ -439,7 +438,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-static void paint_river_rapids_track_25_deg_to_flat_b(
+static void PaintRiverRapidsTrack25DegToFlatB(
     PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
 {
     ImageId imageId;
@@ -499,57 +498,55 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
 }
 
 /** rct2: 0x00757660 */
-static void paint_river_rapids_track_25_deg_up(
+static void PaintRiverRapidsTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_river_rapids_track_25_deg(session, direction, height, river_rapids_track_pieces_25_deg_up);
+    PaintRiverRapidsTrack25Deg(session, direction, height, river_rapids_track_pieces_25_deg_up);
 }
 
 /** rct2: 0x00757670 */
-static void paint_river_rapids_track_flat_to_25_deg_up(
+static void PaintRiverRapidsTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_river_rapids_track_25_deg_to_flat_b(session, direction, height, river_rapids_track_pieces_flat_to_25_deg_up);
+    PaintRiverRapidsTrack25DegToFlatB(session, direction, height, river_rapids_track_pieces_flat_to_25_deg_up);
 }
 
 /** rct2: 0x00757680 */
-static void paint_river_rapids_track_25_deg_up_to_flat(
+static void PaintRiverRapidsTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_river_rapids_track_25_deg_to_flat_a(session, direction, height, river_rapids_track_pieces_25_deg_up_to_flat);
+    PaintRiverRapidsTrack25DegToFlatA(session, direction, height, river_rapids_track_pieces_25_deg_up_to_flat);
 }
 
 /** rct2: 0x00757690 */
-static void paint_river_rapids_track_25_deg_down(
+static void PaintRiverRapidsTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_river_rapids_track_25_deg(session, (direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down);
+    PaintRiverRapidsTrack25Deg(session, (direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down);
 }
 
 /** rct2: 0x007576A0 */
-static void paint_river_rapids_track_flat_to_25_deg_down(
+static void PaintRiverRapidsTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_river_rapids_track_25_deg_to_flat_a(
-        session, (direction + 2) % 4, height, river_rapids_track_pieces_flat_to_25_deg_down);
+    PaintRiverRapidsTrack25DegToFlatA(session, (direction + 2) % 4, height, river_rapids_track_pieces_flat_to_25_deg_down);
 }
 
 /** rct2: 0x007576B0 */
-static void paint_river_rapids_track_25_deg_down_to_flat(
+static void PaintRiverRapidsTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_river_rapids_track_25_deg_to_flat_b(
-        session, (direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down_to_flat);
+    PaintRiverRapidsTrack25DegToFlatB(session, (direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down_to_flat);
 }
 
 /** rct2: 0x007576F0 */
-static void paint_river_rapids_track_left_quarter_turn_1_tile(
+static void PaintRiverRapidsTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -605,7 +602,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
 }
 
 /** rct2: 0x00757700 */
-static void paint_river_rapids_track_right_quarter_turn_1_tile(
+static void PaintRiverRapidsTrackRightQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -662,7 +659,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
 }
 
 /** rct2: 0x00757710 */
-static void paint_river_rapids_track_waterfall(
+static void PaintRiverRapidsTrackWaterfall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -732,7 +729,7 @@ static void paint_river_rapids_track_waterfall(
 }
 
 /** rct2: 0x00757720 */
-static void paint_river_rapids_track_rapids(
+static void PaintRiverRapidsTrackRapids(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -773,17 +770,17 @@ static void paint_river_rapids_track_rapids(
 }
 
 /** rct2: 0x00757740 */
-static void paint_river_rapids_track_on_ride_photo(
+static void PaintRiverRapidsTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_river_rapids_track_flat(session, ride, trackSequence, direction, height, trackElement);
-    track_paint_util_onride_photo_paint(session, direction, height + 13, trackElement);
+    PaintRiverRapidsTrackFlat(session, ride, trackSequence, direction, height, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 13, trackElement);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x */
-static void paint_river_rapids_track_whirlpool(
+static void PaintRiverRapidsTrackWhirlpool(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -846,48 +843,48 @@ static void paint_river_rapids_track_whirlpool(
 /**
  * rct2: 0x0075745C
  **/
-TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionRiverRapids(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return paint_river_rapids_track_flat;
+            return PaintRiverRapidsTrackFlat;
 
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_river_rapids_station;
+            return PaintRiverRapidsStation;
 
         case TrackElemType::Up25:
-            return paint_river_rapids_track_25_deg_up;
+            return PaintRiverRapidsTrack25DegUp;
         case TrackElemType::FlatToUp25:
-            return paint_river_rapids_track_flat_to_25_deg_up;
+            return PaintRiverRapidsTrackFlatTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return paint_river_rapids_track_25_deg_up_to_flat;
+            return PaintRiverRapidsTrack25DegUpToFlat;
 
         case TrackElemType::Down25:
-            return paint_river_rapids_track_25_deg_down;
+            return PaintRiverRapidsTrack25DegDown;
         case TrackElemType::FlatToDown25:
-            return paint_river_rapids_track_flat_to_25_deg_down;
+            return PaintRiverRapidsTrackFlatTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return paint_river_rapids_track_25_deg_down_to_flat;
+            return PaintRiverRapidsTrack25DegDownToFlat;
 
         case TrackElemType::LeftQuarterTurn1Tile:
-            return paint_river_rapids_track_left_quarter_turn_1_tile;
+            return PaintRiverRapidsTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
-            return paint_river_rapids_track_right_quarter_turn_1_tile;
+            return PaintRiverRapidsTrackRightQuarterTurn1Tile;
 
         case TrackElemType::Waterfall:
-            return paint_river_rapids_track_waterfall;
+            return PaintRiverRapidsTrackWaterfall;
 
         case TrackElemType::Rapids:
-            return paint_river_rapids_track_rapids;
+            return PaintRiverRapidsTrackRapids;
 
         case TrackElemType::OnRidePhoto:
-            return paint_river_rapids_track_on_ride_photo;
+            return PaintRiverRapidsTrackOnRidePhoto;
 
         case TrackElemType::Whirlpool:
-            return paint_river_rapids_track_whirlpool;
+            return PaintRiverRapidsTrackWhirlpool;
     }
 
     return nullptr;

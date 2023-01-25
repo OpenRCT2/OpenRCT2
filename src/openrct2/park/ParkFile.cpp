@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -295,7 +295,7 @@ namespace OpenRCT2
                                         break;
                                     case DESCRIPTOR_DAT:
                                     {
-                                        rct_object_entry datEntry;
+                                        RCTObjectEntry datEntry;
                                         cs.Read(&datEntry, sizeof(datEntry));
                                         ObjectEntryDescriptor desc(datEntry);
                                         if (version <= 2 && datEntry.GetType() == ObjectType::Paths)
@@ -346,7 +346,7 @@ namespace OpenRCT2
                                             }
                                         }
                                         desc.Identifier = identifier;
-                                        desc.Version = cs.Read<std::string>();
+                                        desc.Version = VersionTuple(cs.Read<std::string>());
 
                                         if (version <= 2)
                                         {
@@ -395,12 +395,12 @@ namespace OpenRCT2
                                 {
                                     cs.Write(DESCRIPTOR_JSON);
                                     cs.Write(entry.Identifier);
-                                    cs.Write(entry.Version);
+                                    cs.Write(VersionString(entry.Version));
                                 }
                                 else
                                 {
                                     cs.Write(DESCRIPTOR_DAT);
-                                    cs.Write(&entry.Entry, sizeof(rct_object_entry));
+                                    cs.Write(&entry.Entry, sizeof(RCTObjectEntry));
                                 }
                             }
                             else
@@ -445,7 +445,7 @@ namespace OpenRCT2
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     auto earlyCompletion = cs.Read<bool>();
-                    if (network_get_mode() == NETWORK_MODE_CLIENT)
+                    if (NetworkGetMode() == NETWORK_MODE_CLIENT)
                     {
                         gAllowEarlyCompletionInNetworkPlay = earlyCompletion;
                     }
@@ -486,7 +486,7 @@ namespace OpenRCT2
                     uint32_t s0{}, s1{};
                     cs.ReadWrite(s0);
                     cs.ReadWrite(s1);
-                    Random::Rct2::Seed s{ s0, s1 };
+                    Random::RCT2::Seed s{ s0, s1 };
                     gScenarioRand.seed(s);
                 }
                 else
@@ -646,7 +646,7 @@ namespace OpenRCT2
                         auto type = cs.Read<uint8_t>();
                         if (type == DESCRIPTOR_DAT)
                         {
-                            rct_object_entry entry;
+                            RCTObjectEntry entry;
                             cs.Read(&entry, sizeof(entry));
                             auto size = cs.Read<uint32_t>();
                             std::vector<uint8_t> data;
@@ -694,7 +694,7 @@ namespace OpenRCT2
                         if (String::Equals(extension, ".dat", true))
                         {
                             cs.Write(DESCRIPTOR_DAT);
-                            cs.Write(&ori->ObjectEntry, sizeof(rct_object_entry));
+                            cs.Write(&ori->ObjectEntry, sizeof(RCTObjectEntry));
                         }
                         else if (String::Equals(extension, ".parkobj", true))
                         {
@@ -997,7 +997,7 @@ namespace OpenRCT2
                         cs.Read(tileElements.data(), tileElements.size() * sizeof(TileElement));
                         SetTileElements(std::move(tileElements));
                         {
-                            tile_element_iterator it;
+                            TileElementIterator it;
                             TileElementIteratorBegin(&it);
                             while (TileElementIteratorNext(&it))
                             {
@@ -1060,7 +1060,7 @@ namespace OpenRCT2
                             continue;
 
                         auto* trackElement = tileElement->AsTrack();
-                        const auto* ride = get_ride(trackElement->GetRideIndex());
+                        const auto* ride = GetRide(trackElement->GetRideIndex());
                         if (ride != nullptr)
                         {
                             trackElement->SetRideType(ride->type);
@@ -1156,7 +1156,7 @@ namespace OpenRCT2
                 std::vector<RideId> rideIds;
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    ride_init_all();
+                    RideInitAll();
                 }
                 else
                 {
@@ -2297,21 +2297,21 @@ enum : uint32_t
     S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
 };
 
-int32_t scenario_save(u8string_view path, int32_t flags)
+int32_t ScenarioSave(u8string_view path, int32_t flags)
 {
     if (flags & S6_SAVE_FLAG_SCENARIO)
     {
-        log_verbose("saving scenario");
+        LOG_VERBOSE("saving scenario");
     }
     else
     {
-        log_verbose("saving game");
+        LOG_VERBOSE("saving game");
     }
 
     gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
     if (!gIsAutosave)
     {
-        window_close_construction_windows();
+        WindowCloseConstructionWindows();
     }
 
     PrepareMapForSave();
@@ -2339,12 +2339,12 @@ int32_t scenario_save(u8string_view path, int32_t flags)
     }
     catch (const std::exception& e)
     {
-        log_error(e.what());
+        LOG_ERROR(e.what());
 
         Formatter ft;
         ft.Add<const char*>(e.what());
         ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
 
         auto ctx = OpenRCT2::GetContext();
         auto uictx = ctx->GetUiContext();
@@ -2367,7 +2367,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         }
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
     {
@@ -2425,8 +2425,8 @@ public:
     void Import() override
     {
         _parkFile->Import();
-        research_determine_first_of_type();
-        game_fix_save_vars();
+        ResearchDetermineFirstOfType();
+        GameFixSaveVars();
     }
 
     bool GetDetails(scenario_index_entry* dst) override

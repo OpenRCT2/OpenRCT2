@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "SetParkEntranceFeeAction.h"
+#include "ParkSetEntranceFeeAction.h"
 
 #include "../Cheats.h"
 #include "../core/MemoryStream.h"
@@ -15,29 +15,29 @@
 #include "../localisation/StringIds.h"
 #include "../world/Park.h"
 
-SetParkEntranceFeeAction::SetParkEntranceFeeAction(money16 fee)
+ParkSetEntranceFeeAction::ParkSetEntranceFeeAction(money16 fee)
     : _fee(fee)
 {
 }
 
-void SetParkEntranceFeeAction::AcceptParameters(GameActionParameterVisitor& visitor)
+void ParkSetEntranceFeeAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("value", _fee);
 }
 
-uint16_t SetParkEntranceFeeAction::GetActionFlags() const
+uint16_t ParkSetEntranceFeeAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
-void SetParkEntranceFeeAction::Serialise(DataSerialiser& stream)
+void ParkSetEntranceFeeAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_fee);
 }
 
-GameActions::Result SetParkEntranceFeeAction::Query() const
+GameActions::Result ParkSetEntranceFeeAction::Query() const
 {
     bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
     bool forceFreeEntry = !ParkEntranceFeeUnlocked();
@@ -52,9 +52,9 @@ GameActions::Result SetParkEntranceFeeAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result SetParkEntranceFeeAction::Execute() const
+GameActions::Result ParkSetEntranceFeeAction::Execute() const
 {
     gParkEntranceFee = _fee;
-    window_invalidate_by_class(WindowClass::ParkInformation);
+    WindowInvalidateByClass(WindowClass::ParkInformation);
     return GameActions::Result();
 }

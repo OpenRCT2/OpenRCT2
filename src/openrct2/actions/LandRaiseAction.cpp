@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -102,7 +102,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
             }
             withinOwnership = true;
 
-            uint8_t height = surfaceElement->base_height;
+            uint8_t height = surfaceElement->BaseHeight;
 
             if (height > minHeight)
                 continue;

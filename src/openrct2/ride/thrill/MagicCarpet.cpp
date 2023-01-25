@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -97,7 +97,7 @@ static Vehicle* GetFirstVehicle(const Ride& ride)
 }
 
 static void PaintMagicCarpetRiders(
-    PaintSession& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, Direction direction,
+    PaintSession& session, const RideObjectEntry& rideEntry, const Vehicle& vehicle, Direction direction,
     const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     if (session.DPI.zoom_level > ZoomLevel{ 1 })
@@ -166,7 +166,7 @@ static void PaintMagicCarpetVehicle(
     // Vehicle
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
         imageTemplate = imageFlags;
     }
@@ -260,7 +260,7 @@ static void PaintMagicCarpet(
     PaintUtilSetGeneralSupportHeight(session, height + 176, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(int32_t trackType)
 {
     switch (trackType)
     {

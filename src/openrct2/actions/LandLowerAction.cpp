@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -101,7 +101,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
             }
             withinOwnership = true;
 
-            uint8_t height = surfaceElement->base_height;
+            uint8_t height = surfaceElement->BaseHeight;
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)
                 height += 2;
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG)
@@ -110,7 +110,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
             if (height < maxHeight)
                 continue;
 
-            height = surfaceElement->base_height;
+            height = surfaceElement->BaseHeight;
             uint8_t currentSlope = surfaceElement->GetSlope();
             uint8_t newSlope = tile_element_lower_styles[tableRow][currentSlope];
             if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)

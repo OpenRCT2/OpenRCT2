@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,7 +40,7 @@ enum class WindowWidgetType : uint8_t
     Last = 26,
 };
 
-constexpr const auto WIDGETS_END = rct_widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
+constexpr const auto WIDGETS_END = Widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
 #define BAR_BLINK (1u << 31)
 
 enum
@@ -62,11 +62,11 @@ constexpr uint8_t SCROLLBAR_WIDTH = 10;
 
 constexpr const ScreenSize TAB_SIZE = { 31, 27 };
 
-constexpr rct_widget MakeWidget(
+constexpr Widget MakeWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
     uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
-    rct_widget out = {};
+    Widget out = {};
     out.left = origin.x;
     out.right = origin.x + size.width - 1;
     out.top = origin.y;
@@ -79,19 +79,36 @@ constexpr rct_widget MakeWidget(
     return out;
 }
 
-constexpr rct_widget MakeRemapWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
-    uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
+constexpr Widget MakeWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, ImageId image,
+    StringId tooltip = STR_NONE)
 {
-    return MakeWidget(origin, size, type, colour, IMAGE_TYPE_REMAP | content, tooltip);
+    Widget out = {};
+    out.left = origin.x;
+    out.right = origin.x + size.width - 1;
+    out.top = origin.y;
+    out.bottom = origin.y + size.height - 1;
+    out.type = type;
+    out.colour = static_cast<uint8_t>(colour);
+    out.image = image;
+    out.tooltip = tooltip;
+
+    return out;
 }
 
-constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NONE)
+constexpr Widget MakeRemapWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, ImageIndex content,
+    StringId tooltip = STR_NONE)
+{
+    return MakeWidget(origin, size, type, colour, ImageId(content, FilterPaletteID::PaletteNull), tooltip);
+}
+
+constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = STR_NONE)
 {
     const ScreenSize size = TAB_SIZE;
     const WindowWidgetType type = WindowWidgetType::Tab;
     const WindowColour colour = WindowColour::Secondary;
-    const uint32_t content = 0xFFFFFFFF;
+    const auto content = ImageId(ImageIndexUndefined);
 
     return MakeWidget(origin, size, type, colour, content, tooltip);
 }
@@ -99,7 +116,7 @@ constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = ST
 #define MakeSpinnerWidgets(...)                                                                                                \
     MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
 
-constexpr rct_widget MakeSpinnerDecreaseWidget(
+constexpr Widget MakeSpinnerDecreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
@@ -111,7 +128,7 @@ constexpr rct_widget MakeSpinnerDecreaseWidget(
     return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_DOWN, tooltip);
 }
 
-constexpr rct_widget MakeSpinnerIncreaseWidget(
+constexpr Widget MakeSpinnerIncreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
@@ -125,14 +142,14 @@ constexpr rct_widget MakeSpinnerIncreaseWidget(
 
 #define MakeDropdownWidgets(...) MakeDropdownBoxWidget(__VA_ARGS__), MakeDropdownButtonWidget(__VA_ARGS__)
 
-constexpr rct_widget MakeDropdownBoxWidget(
+constexpr Widget MakeDropdownBoxWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
     return MakeWidget(origin, size, type, colour, content);
 }
 
-constexpr rct_widget MakeDropdownButtonWidget(
+constexpr Widget MakeDropdownButtonWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, StringId tooltip = STR_NONE)
 {
@@ -144,22 +161,22 @@ constexpr rct_widget MakeDropdownButtonWidget(
     return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
 }
 
-void WidgetScrollUpdateThumbs(rct_window& w, WidgetIndex widget_index);
-void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, WidgetIndex widgetIndex);
+void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index);
+void WidgetDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
 
-bool WidgetIsDisabled(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsHoldable(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsVisible(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsPressed(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsHighlighted(const rct_window& w, WidgetIndex widgetIndex);
-bool WidgetIsActiveTool(const rct_window& w, WidgetIndex widgetIndex);
+bool WidgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex);
+bool WidgetIsActiveTool(const WindowBase& w, WidgetIndex widgetIndex);
 void WidgetScrollGetPart(
-    rct_window& w, const rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
+    WindowBase& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id);
 
-void WidgetSetEnabled(rct_window& w, WidgetIndex widgetIndex, bool enabled);
-void WidgetSetDisabled(rct_window& w, WidgetIndex widgetIndex, bool value);
-void WidgetSetHoldable(rct_window& w, WidgetIndex widgetIndex, bool value);
-void WidgetSetVisible(rct_window& w, WidgetIndex widgetIndex, bool value);
-void WidgetSetPressed(rct_window& w, WidgetIndex widgetIndex, bool value);
-void WidgetSetCheckboxValue(rct_window& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled);
+void WidgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value);
+void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);

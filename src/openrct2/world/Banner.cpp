@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/WallSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -39,7 +40,7 @@ std::string Banner::GetText() const
 {
     Formatter ft;
     FormatTextTo(ft);
-    return format_string(STR_STRINGID, ft.Data());
+    return FormatStringID(STR_STRINGID, ft.Data());
 }
 
 void Banner::FormatTextTo(Formatter& ft, bool addColour) const
@@ -63,7 +64,7 @@ void Banner::FormatTextTo(Formatter& ft) const
     }
     else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
-        auto ride = get_ride(ride_index);
+        auto ride = GetRide(ride_index);
         if (ride != nullptr)
         {
             ride->FormatNameTo(ft);
@@ -99,7 +100,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
             continue;
 
         RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
             continue;
 
@@ -274,15 +275,15 @@ void BannerFixDuplicates()
                 const auto index = bannerIndex.ToUnderlying();
                 if (activeBanners[index])
                 {
-                    log_info(
+                    LOG_INFO(
                         "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", index, x, y,
-                        bannerElement->base_height);
+                        bannerElement->BaseHeight);
 
                     // Banner index is already in use by another banner, so duplicate it
                     auto newBanner = CreateBanner();
                     if (newBanner == nullptr)
                     {
-                        log_error("Failed to create new banner.");
+                        LOG_ERROR("Failed to create new banner.");
                         continue;
                     }
                     Guard::Assert(!activeBanners[newBanner->id.ToUnderlying()]);

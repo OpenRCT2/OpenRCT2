@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,7 +45,7 @@ enum
 };
 
 #pragma pack(push, 1)
-struct rct_footpath_entry
+struct FootpathEntry
 {
     StringId string_idx;                  // 0x00
     uint32_t image;                       // 0x02
@@ -77,7 +77,7 @@ struct rct_footpath_entry
         return image + 73;
     }
 };
-assert_struct_size(rct_footpath_entry, 13);
+assert_struct_size(FootpathEntry, 13);
 #pragma pack(pop)
 
 struct PathSurfaceDescriptor

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -2219,7 +2219,7 @@ const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& des
         auto datPathName = GetDATPathName(desc.Identifier);
         if (datPathName.has_value())
         {
-            rct_object_entry objectEntry = {};
+            RCTObjectEntry objectEntry = {};
             objectEntry.SetName(datPathName.value());
             return RCT2::GetFootpathSurfaceId(ObjectEntryDescriptor(objectEntry));
         }

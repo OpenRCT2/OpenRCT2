@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -112,10 +112,10 @@ void RideEntranceExitRemoveGhost()
  *  rct2: 0x006CA28C
  */
 money32 RideEntranceExitPlaceGhost(
-    Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
+    const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
 {
-    ride_construction_remove_ghosts();
-    money32 result = RideEntranceExitPlaceGhost(ride->id, entranceExitCoords, direction, placeType, stationNum);
+    RideConstructionRemoveGhosts();
+    money32 result = RideEntranceExitPlaceGhost(ride.id, entranceExitCoords, direction, placeType, stationNum);
 
     if (result != MONEY32_UNDEFINED)
     {
@@ -221,7 +221,7 @@ void ParkEntranceFixLocations(void)
 void ParkEntranceUpdateLocations()
 {
     gParkEntrances.clear();
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
@@ -229,7 +229,7 @@ void ParkEntranceUpdateLocations()
         if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
             && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
         {
-            auto entrance = TileCoordsXYZD(it.x, it.y, it.element->base_height, it.element->GetDirection()).ToCoordsXYZD();
+            auto entrance = TileCoordsXYZD(it.x, it.y, it.element->BaseHeight, it.element->GetDirection()).ToCoordsXYZD();
             gParkEntrances.push_back(entrance);
         }
     }

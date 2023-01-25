@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,8 +20,8 @@ enum WindowTitleExitWidgetIdx {
     WIDX_EXIT,
 };
 
-static rct_widget window_title_exit_widgets[] = {
-    MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, SPR_MENU_EXIT, STR_EXIT),
+static Widget window_title_exit_widgets[] = {
+    MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT),
     WIDGETS_END,
 };
 // clang-format on
@@ -48,7 +48,7 @@ class TitleExitWindow final : public Window
         };
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
@@ -58,7 +58,7 @@ class TitleExitWindow final : public Window
  * Creates the window containing the exit button on the title screen.
  *  rct2: 0x0066B624 (part of 0x0066B3E8)
  */
-rct_window* WindowTitleExitOpen()
+WindowBase* WindowTitleExitOpen()
 {
     return WindowCreate<TitleExitWindow>(
         WindowClass::TitleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), 40, 64,

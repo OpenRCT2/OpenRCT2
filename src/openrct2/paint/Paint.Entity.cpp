@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,7 +47,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         return;
     }
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     if (dpi->zoom_level > ZoomLevel{ 2 })
     {
         return;
@@ -117,9 +117,9 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         {
             case EntityType::Vehicle:
                 spr->As<Vehicle>()->Paint(session, image_direction);
-                if (lightfx_for_vehicles_is_available())
+                if (LightFXForVehiclesIsAvailable())
                 {
-                    LightfxAddLightsMagicVehicle(spr->As<Vehicle>());
+                    LightFXAddLightsMagicVehicle(spr->As<Vehicle>());
                 }
                 break;
             case EntityType::Guest:

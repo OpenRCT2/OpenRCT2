@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -63,7 +63,7 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
     TileElement* tileElement = MapGetTrackElementAtOfType(_loc, _trackType);
     if (tileElement == nullptr)
     {
-        log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);
+        LOG_WARNING("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 

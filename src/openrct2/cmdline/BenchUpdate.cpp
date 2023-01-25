@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -140,7 +140,7 @@ static exitcode_t HandleBenchUpdate(CommandLineArgEnumerator* argEnumerator)
 #else
 static exitcode_t HandleBenchUpdate(CommandLineArgEnumerator* argEnumerator)
 {
-    log_error("Sorry, Google benchmark not enabled in this build");
+    LOG_ERROR("Sorry, Google benchmark not enabled in this build");
     return EXITCODE_FAIL;
 }
 #endif // USE_BENCHMARK

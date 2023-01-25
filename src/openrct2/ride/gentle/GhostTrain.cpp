@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -187,7 +187,7 @@ static void PaintGhostTrainTrackFlat(
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
     PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -208,7 +208,7 @@ static void PaintGhostTrainTrack25DegUp(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(GhostTrainTrackPieces25DegUp[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 23 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -256,7 +256,7 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(GhostTrainTrackPiecesFlatTo25DegUp[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 15 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -292,7 +292,7 @@ static void PaintGhostTrainTrack25DegUpToFlatShared(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(GhostTrainTrackPieces25DegUpToFlat[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 15 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -399,7 +399,7 @@ static void PaintGhostTrainStation(
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -410,7 +410,7 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_right_quarter_turn_3_tiles_paint(
+    TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         GhostTrainTrackPiecesQuarterTurn3Tiles, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
         defaultRightQuarterTurn3TilesBoundOffsets);
@@ -418,7 +418,7 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     bool isDoorA = (!isBackwards && trackSequence == 0) || (isBackwards && trackSequence == 3);
     auto tunnelType = isDoorA ? DoorOpeningInwardsToImage[trackElement.GetDoorAState()]
                               : DoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, tunnelType);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, tunnelType);
 
     switch (trackSequence)
     {
@@ -473,9 +473,9 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
         tunnelEndImage = DoorOpeningInwardsToImage[trackElement.GetDoorAState()];
     }
 
-    track_paint_util_left_quarter_turn_1_tile_paint(
+    TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 3, height, 0, direction, session.TrackColours[SCHEME_TRACK], GhostTrainTrackPiecesQuarterTurn1Tile);
-    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, tunnelStartImage, 0, tunnelEndImage);
+    TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, tunnelStartImage, 0, tunnelEndImage);
 
     MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -499,7 +499,7 @@ static void PaintGhostTrainTrackSpinningTunnel(
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 28, 20, 3 }, { 2, 6, height });
 
-    track_paint_util_spinning_tunnel_paint(session, 3, height, direction);
+    TrackPaintUtilSpinningTunnelPaint(session, 3, height, direction);
 
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
     PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
@@ -522,7 +522,7 @@ static void PaintGhostTrainTrackBrakes(
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
     PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }

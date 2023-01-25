@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x0087694C */
-static void heartline_twister_rc_track_flat(
+static void HeartlineTwisterRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -96,7 +96,7 @@ static void heartline_twister_rc_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void heartline_twister_rc_track_station(
+static void HeartlineTwisterRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -113,15 +113,15 @@ static void heartline_twister_rc_track_station(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 0);
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 0);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0087695C */
-static void heartline_twister_rc_track_25_deg_up(
+static void HeartlineTwisterRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -222,7 +222,7 @@ static void heartline_twister_rc_track_25_deg_up(
 }
 
 /** rct2: 0x008769FC */
-static void heartline_twister_rc_track_60_deg_up(
+static void HeartlineTwisterRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -323,7 +323,7 @@ static void heartline_twister_rc_track_60_deg_up(
 }
 
 /** rct2: 0x0087696C */
-static void heartline_twister_rc_track_flat_to_25_deg_up(
+static void HeartlineTwisterRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -424,7 +424,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008769BC */
-static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
+static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -525,7 +525,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008769CC */
-static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
+static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -626,7 +626,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x0087697C */
-static void heartline_twister_rc_track_25_deg_up_to_flat(
+static void HeartlineTwisterRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -727,55 +727,55 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x0087698C */
-static void heartline_twister_rc_track_25_deg_down(
+static void HeartlineTwisterRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    heartline_twister_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00876A0C */
-static void heartline_twister_rc_track_60_deg_down(
+static void HeartlineTwisterRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    heartline_twister_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0087699C */
-static void heartline_twister_rc_track_flat_to_25_deg_down(
+static void HeartlineTwisterRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    heartline_twister_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008769DC */
-static void heartline_twister_rc_track_25_deg_down_to_60_deg_down(
+static void HeartlineTwisterRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    heartline_twister_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008769EC */
-static void heartline_twister_rc_track_60_deg_down_to_25_deg_down(
+static void HeartlineTwisterRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    heartline_twister_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008769AC */
-static void heartline_twister_rc_track_25_deg_down_to_flat(
+static void HeartlineTwisterRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    heartline_twister_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00876A6C */
-static void heartline_twister_rc_track_heartline_transfer_up(
+static void HeartlineTwisterRCTrackHeartlineTransferUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -993,7 +993,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
 }
 
 /** rct2: 0x00876A7C */
-static void heartline_twister_rc_track_heartline_transfer_down(
+static void HeartlineTwisterRCTrackHeartlineTransferDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1211,7 +1211,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
 }
 
 /** rct2: 0x00876A4C */
-static void heartline_twister_rc_track_left_heartline_roll(
+static void HeartlineTwisterRCTrackLeftHeartlineRoll(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1481,7 +1481,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
 }
 
 /** rct2: 0x00876A5C */
-static void heartline_twister_rc_track_right_heartline_roll(
+static void HeartlineTwisterRCTrackRightHeartlineRoll(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1750,48 +1750,48 @@ static void heartline_twister_rc_track_right_heartline_roll(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_heartline_twister_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return heartline_twister_rc_track_flat;
+            return HeartlineTwisterRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return heartline_twister_rc_track_station;
+            return HeartlineTwisterRCTrackStation;
         case TrackElemType::Up25:
-            return heartline_twister_rc_track_25_deg_up;
+            return HeartlineTwisterRCTrack25DegUp;
         case TrackElemType::Up60:
-            return heartline_twister_rc_track_60_deg_up;
+            return HeartlineTwisterRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return heartline_twister_rc_track_flat_to_25_deg_up;
+            return HeartlineTwisterRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return heartline_twister_rc_track_25_deg_up_to_60_deg_up;
+            return HeartlineTwisterRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return heartline_twister_rc_track_60_deg_up_to_25_deg_up;
+            return HeartlineTwisterRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return heartline_twister_rc_track_25_deg_up_to_flat;
+            return HeartlineTwisterRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return heartline_twister_rc_track_25_deg_down;
+            return HeartlineTwisterRCTrack25DegDown;
         case TrackElemType::Down60:
-            return heartline_twister_rc_track_60_deg_down;
+            return HeartlineTwisterRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return heartline_twister_rc_track_flat_to_25_deg_down;
+            return HeartlineTwisterRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return heartline_twister_rc_track_25_deg_down_to_60_deg_down;
+            return HeartlineTwisterRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return heartline_twister_rc_track_60_deg_down_to_25_deg_down;
+            return HeartlineTwisterRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return heartline_twister_rc_track_25_deg_down_to_flat;
+            return HeartlineTwisterRCTrack25DegDownToFlat;
         case TrackElemType::HeartLineTransferUp:
-            return heartline_twister_rc_track_heartline_transfer_up;
+            return HeartlineTwisterRCTrackHeartlineTransferUp;
         case TrackElemType::HeartLineTransferDown:
-            return heartline_twister_rc_track_heartline_transfer_down;
+            return HeartlineTwisterRCTrackHeartlineTransferDown;
         case TrackElemType::LeftHeartLineRoll:
-            return heartline_twister_rc_track_left_heartline_roll;
+            return HeartlineTwisterRCTrackLeftHeartlineRoll;
         case TrackElemType::RightHeartLineRoll:
-            return heartline_twister_rc_track_right_heartline_roll;
+            return HeartlineTwisterRCTrackRightHeartlineRoll;
     }
     return nullptr;
 }

@@ -4,7 +4,6 @@ Includes all git commit authors. Aliases are GitHub user names.
 ## Development team
 * Ted John (IntelOrca) - Owner
 * Duncan Frost (duncanspumpkin)
-* Michael Steenbeek (Gymnasiast) - translation management
 * Michał Janiszewski (janisozaur)
 * Hielke Morsink (Broxzier)
 * Tulio Paschoalin Leao (tupaschoal)
@@ -18,6 +17,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Richard Jenkins (rwjuk)
 * Aaron van Geffen (AaronVanGeffen)
 * Matthias Moninger (ZehMatt)
+* Michael Steenbeek (Gymnasiast)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
@@ -101,6 +101,7 @@ The following people are not part of the development team, but have been contrib
 * Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
 * Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, sound effects, misc.
 * (8street) - Misc.
+* Umar Ahmed (umar-ahmed) - MacOS file watcher
 
 ## Bug fixes
 * (KirilAngelov)
@@ -204,6 +205,9 @@ The following people are not part of the development team, but have been contrib
 * Xixiang Chen (jacknull1991)
 * (ReticulatingSplines)
 * Conrad Cash (HouseholdVTuber)
+* Michael Bickerton (mdbckrtn)
+* Nehemiah Negussie (nehemiah-negussie)
+* (zzril)
 
 
 ## Toolchain
@@ -252,7 +256,7 @@ The following people are not part of the development team, but have been contrib
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes), Tulio Paschoalin Leao (tupaschoal)
 * Russian - (Soosisya)
-* Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
+* Spanish - Josué Acevedo (Wirlie), Diego Mateos (dimateos), (frenchiveruti), (mdtrooper), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
 
 ## Graphics

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,7 @@
 
 #include <optional>
 
-struct rct_ride_entry;
+struct RideObjectEntry;
 struct ScenerySelection;
 
 namespace Research
@@ -123,44 +123,44 @@ extern std::vector<ResearchItem> gResearchItemsInvented;
 extern uint8_t gResearchUncompletedCategories;
 extern bool gSilentResearch;
 
-void research_reset_items();
+void ResearchResetItems();
 void ResearchUpdateUncompletedTypes();
-void research_update();
-void research_reset_current_item();
-void research_populate_list_random();
+void ResearchUpdate();
+void ResearchResetCurrentItem();
+void ResearchPopulateListRandom();
 
-void research_finish_item(ResearchItem* researchItem);
-void research_insert(ResearchItem&& item, bool researched);
+void ResearchFinishItem(ResearchItem* researchItem);
+void ResearchInsert(ResearchItem&& item, bool researched);
 void ResearchRemove(const ResearchItem& researchItem);
 
-bool research_insert_ride_entry(ride_type_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
-void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
-bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
+bool ResearchInsertRideEntry(ride_type_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
+void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched);
+bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researched);
 
-void ride_type_set_invented(uint32_t rideType);
-void ride_entry_set_invented(ObjectEntryIndex rideEntryIndex);
-void scenery_set_invented(const ScenerySelection& sceneryItem);
-void scenery_set_not_invented(const ScenerySelection& sceneryItem);
-bool ride_type_is_invented(uint32_t rideType);
-bool ride_entry_is_invented(ObjectEntryIndex rideEntryIndex);
-bool scenery_group_is_invented(int32_t sgIndex);
-void scenery_group_set_invented(int32_t sgIndex);
-bool scenery_is_invented(const ScenerySelection& sceneryItem);
-void set_all_scenery_items_invented();
-void set_all_scenery_items_not_invented();
-void set_all_scenery_groups_not_invented();
-void set_every_ride_type_invented();
-void set_every_ride_type_not_invented();
-void set_every_ride_entry_invented();
-void set_every_ride_entry_not_invented();
-void research_remove_flags();
+void RideTypeSetInvented(uint32_t rideType);
+void RideEntrySetInvented(ObjectEntryIndex rideEntryIndex);
+void ScenerySetInvented(const ScenerySelection& sceneryItem);
+void ScenerySetNotInvented(const ScenerySelection& sceneryItem);
+bool RideTypeIsInvented(uint32_t rideType);
+bool RideEntryIsInvented(ObjectEntryIndex rideEntryIndex);
+bool SceneryGroupIsInvented(int32_t sgIndex);
+void SceneryGroupSetInvented(int32_t sgIndex);
+bool SceneryIsInvented(const ScenerySelection& sceneryItem);
+void SetAllSceneryItemsInvented();
+void SetAllSceneryItemsNotInvented();
+void SetAllSceneryGroupsNotInvented();
+void SetEveryRideTypeInvented();
+void SetEveryRideTypeNotInvented();
+void SetEveryRideEntryInvented();
+void SetEveryRideEntryNotInvented();
+void ResearchRemoveFlags();
 void ResearchFix();
 
-void research_items_make_all_unresearched();
-void research_items_make_all_researched();
-void research_items_shuffle();
+void ResearchItemsMakeAllUnresearched();
+void ResearchItemsMakeAllResearched();
+void ResearchItemsShuffle();
 /**
  * Determines if a newly invented ride entry should be listed as a new ride
  * or as a new vehicle for a pre-existing ride.
  */
-void research_determine_first_of_type();
+void ResearchDetermineFirstOfType();

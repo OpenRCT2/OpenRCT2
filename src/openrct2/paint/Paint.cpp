@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../core/Guard.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
@@ -55,8 +56,8 @@ bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
-static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t viewFlags);
-static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
+static void PaintAttachedPS(DrawPixelInfo* dpi, PaintStruct* ps, uint32_t viewFlags);
+static void PaintPSImageWithBoundingBoxes(DrawPixelInfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const PaintStruct& ps, uint8_t rotation)
@@ -100,7 +101,7 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
-static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const rct_g1_element& g1, const rct_drawpixelinfo& dpi)
+static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
 {
     int32_t left = imagePos.x + g1.x_offset;
     int32_t bottom = imagePos.y + g1.y_offset;
@@ -151,7 +152,7 @@ static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uin
 static PaintStruct* CreateNormalPaintStruct(
     PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
-    auto* const g1 = gfx_get_g1_element(image_id);
+    auto* const g1 = GfxGetG1Element(image_id);
     if (g1 == nullptr)
     {
         return nullptr;
@@ -199,8 +200,8 @@ static PaintStruct* CreateNormalPaintStruct(
 
 template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& session)
 {
-    // Optimised modified version of viewport_coord_to_map_coord
-    ScreenCoordsXY screenCoord = { floor2(session.DPI.x, 32), floor2((session.DPI.y - 16), 32) };
+    // Optimised modified version of ViewportPosToMapPos
+    ScreenCoordsXY screenCoord = { Floor2(session.DPI.x, 32), Floor2((session.DPI.y - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -245,7 +246,7 @@ template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& sessio
  */
 void PaintSessionGenerate(PaintSession& session)
 {
-    session.CurrentRotation = get_current_rotation();
+    session.CurrentRotation = GetCurrentRotation();
     switch (DirectionFlipXAxis(session.CurrentRotation))
     {
         case 0:
@@ -483,7 +484,7 @@ void PaintSessionArrange(PaintSessionCore& session)
 
 static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
 {
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
 
     auto x = ps->x;
     auto y = ps->y;
@@ -492,12 +493,12 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     {
         if (dpi->zoom_level >= ZoomLevel{ 1 })
         {
-            x = floor2(x, 2);
-            y = floor2(y, 2);
+            x = Floor2(x, 2);
+            y = Floor2(y, 2);
             if (dpi->zoom_level >= ZoomLevel{ 2 })
             {
-                x = floor2(x, 4);
-                y = floor2(y, 4);
+                x = Floor2(x, 4);
+                y = Floor2(y, 4);
             }
         }
     }
@@ -509,7 +510,7 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
     else
     {
-        gfx_draw_sprite(dpi, imageId, { x, y });
+        GfxDrawSprite(dpi, imageId, { x, y });
     }
 
     if (ps->children != nullptr)
@@ -545,7 +546,7 @@ void PaintDrawStructs(PaintSession& session)
  *  rct2: 0x00688596
  *  Part of 0x688485
  */
-static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t viewFlags)
+static void PaintAttachedPS(DrawPixelInfo* dpi, PaintStruct* ps, uint32_t viewFlags)
 {
     AttachedPaintStruct* attached_ps = ps->attached_ps;
     for (; attached_ps != nullptr; attached_ps = attached_ps->next)
@@ -555,19 +556,19 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, PaintStruct* ps, uint32_t vi
         auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->IsMasked)
         {
-            gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
+            GfxDrawSpriteRawMasked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
         }
         else
         {
-            gfx_draw_sprite(dpi, imageId, screenCoords);
+            GfxDrawSprite(dpi, imageId, screenCoords);
         }
     }
 }
 
-static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
+static void PaintPSImageWithBoundingBoxes(DrawPixelInfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->sprite_type)];
-    const uint8_t rotation = get_current_rotation();
+    const uint8_t rotation = GetCurrentRotation();
 
     const CoordsXYZ frontTop = {
         ps->bounds.x_end,
@@ -626,28 +627,28 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, PaintStruct* p
     const auto screenCoordBackBottom = Translate3DTo2DWithZ(rotation, backBottom);
 
     // bottom square
-    gfx_draw_line(dpi, { screenCoordFrontBottom, screenCoordLeftBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordBackBottom, screenCoordLeftBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordBackBottom, screenCoordRightBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordFrontBottom, screenCoordRightBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontBottom, screenCoordLeftBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordBackBottom, screenCoordLeftBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordBackBottom, screenCoordRightBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontBottom, screenCoordRightBottom }, colour);
 
     // vertical back + sides
-    gfx_draw_line(dpi, { screenCoordBackTop, screenCoordBackBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordLeftTop, screenCoordLeftBottom }, colour);
-    gfx_draw_line(dpi, { screenCoordRightTop, screenCoordRightBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordBackTop, screenCoordBackBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordLeftTop, screenCoordLeftBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordRightTop, screenCoordRightBottom }, colour);
 
     // top square back
-    gfx_draw_line(dpi, { screenCoordBackTop, screenCoordLeftTop }, colour);
-    gfx_draw_line(dpi, { screenCoordBackTop, screenCoordRightTop }, colour);
+    GfxDrawLine(dpi, { screenCoordBackTop, screenCoordLeftTop }, colour);
+    GfxDrawLine(dpi, { screenCoordBackTop, screenCoordRightTop }, colour);
 
-    gfx_draw_sprite(dpi, imageId, { x, y });
+    GfxDrawSprite(dpi, imageId, { x, y });
 
     // vertical front
-    gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordFrontBottom }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontTop, screenCoordFrontBottom }, colour);
 
     // top square
-    gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordLeftTop }, colour);
-    gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontTop, screenCoordLeftTop }, colour);
+    GfxDrawLine(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
 }
 
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags)
@@ -664,7 +665,7 @@ static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uin
     }
 }
 
-PaintSession* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
+PaintSession* PaintSessionAlloc(DrawPixelInfo* dpi, uint32_t viewFlags)
 {
     return GetContext()->GetPainter()->CreateSession(dpi, viewFlags);
 }
@@ -902,22 +903,22 @@ void PaintFloatingMoneyEffect(
  *
  *  rct2: 0x006860C3
  */
-void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, PaintStringStruct* ps)
+void PaintDrawMoneyStructs(DrawPixelInfo* dpi, PaintStringStruct* ps)
 {
     do
     {
         char buffer[256]{};
-        format_string(buffer, sizeof(buffer), ps->string_id, &ps->args);
+        FormatStringLegacy(buffer, sizeof(buffer), ps->string_id, &ps->args);
 
         // Use sprite font unless the currency contains characters unsupported by the sprite font
         auto forceSpriteFont = false;
         const auto& currencyDesc = CurrencyDescriptors[EnumValue(gConfigGeneral.CurrencyFormat)];
-        if (LocalisationService_UseTrueTypeFont() && font_supports_string_sprite(currencyDesc.symbol_unicode))
+        if (LocalisationService_UseTrueTypeFont() && FontSupportsStringSprite(currencyDesc.symbol_unicode))
         {
             forceSpriteFont = true;
         }
 
-        gfx_draw_string_with_y_offsets(
+        GfxDrawStringWithYOffsets(
             dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::Medium);
     } while ((ps = ps->next) != nullptr);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -115,7 +115,7 @@ uint64_t ShopItemsGetAllContainers()
     return AllContainerFlags;
 }
 
-money32 shop_item_get_common_price(Ride* forRide, const ShopItem shopItem)
+money32 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
 {
     for (const auto& ride : GetRideManager())
     {
@@ -144,7 +144,7 @@ money32 shop_item_get_common_price(Ride* forRide, const ShopItem shopItem)
     return MONEY32_UNDEFINED;
 }
 
-bool shop_item_has_common_price(const ShopItem shopItem)
+bool ShopItemHasCommonPrice(const ShopItem shopItem)
 {
     return (gSamePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
 }

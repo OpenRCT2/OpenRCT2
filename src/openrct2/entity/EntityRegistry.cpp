@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,10 +38,10 @@
 
 union Entity
 {
-    uint8_t pad_00[0x200];
+    uint8_t Pad00[0x200];
     EntityBase base;
     Entity()
-        : pad_00()
+        : Pad00()
     {
     }
 };
@@ -292,7 +292,7 @@ static void AddToFreeList(EntityId index)
 static void RemoveFromEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
-    auto ptr = binary_find(std::begin(list), std::end(list), entity->sprite_index);
+    auto ptr = BinaryFind(std::begin(list), std::end(list), entity->sprite_index);
     if (ptr != std::end(list))
     {
         list.erase(ptr);
@@ -365,7 +365,7 @@ EntityBase* CreateEntity(EntityType type)
 
 EntityBase* CreateEntityAt(const EntityId index, const EntityType type)
 {
-    auto id = binary_find(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
+    auto id = BinaryFind(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
     if (id == std::rend(_freeIdList))
     {
         return nullptr;
@@ -422,14 +422,14 @@ static void EntitySpatialRemove(EntityBase* entity)
 {
     size_t currentIndex = GetSpatialIndexOffset({ entity->x, entity->y });
     auto& spatialVector = gEntitySpatialIndex[currentIndex];
-    auto index = binary_find(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
+    auto index = BinaryFind(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
     if (index != std::end(spatialVector))
     {
         spatialVector.erase(index, index + 1);
     }
     else
     {
-        log_warning("Bad sprite spatial index. Rebuilding the spatial index...");
+        LOG_WARNING("Bad sprite spatial index. Rebuilding the spatial index...");
         ResetEntitySpatialIndices();
     }
 }
@@ -476,7 +476,7 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
 {
-    auto screenCoords = Translate3DTo2DWithZ(get_current_rotation(), entityPos);
+    auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), entityPos);
 
     entity->SpriteRect = ScreenRect(
         screenCoords - ScreenCoordsXY{ entity->sprite_width, entity->sprite_height_negative },

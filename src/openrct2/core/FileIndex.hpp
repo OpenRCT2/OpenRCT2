@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -143,7 +143,7 @@ private:
         for (const auto& directory : SearchPaths)
         {
             auto absoluteDirectory = Path::GetAbsolute(directory);
-            log_verbose("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), absoluteDirectory.c_str());
+            LOG_VERBOSE("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), absoluteDirectory.c_str());
 
             auto pattern = Path::Combine(absoluteDirectory, _pattern);
             auto scanner = Path::ScanDirectory(pattern, true);
@@ -177,7 +177,7 @@ private:
             if (_log_levels[static_cast<uint8_t>(DiagnosticLevel::Verbose)])
             {
                 std::lock_guard<std::mutex> lock(printLock);
-                log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
+                LOG_VERBOSE("FileIndex:Indexing '%s'", filePath.c_str());
             }
 
             if (auto item = Create(language, filePath); item.has_value())
@@ -254,7 +254,7 @@ private:
         {
             try
             {
-                log_verbose("FileIndex:Loading index: '%s'", _indexPath.c_str());
+                LOG_VERBOSE("FileIndex:Loading index: '%s'", _indexPath.c_str());
                 auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_OPEN);
 
                 // Read header, check if we need to re-scan
@@ -294,7 +294,7 @@ private:
     {
         try
         {
-            log_verbose("FileIndex:Writing index: '%s'", _indexPath.c_str());
+            LOG_VERBOSE("FileIndex:Writing index: '%s'", _indexPath.c_str());
             Path::CreateDirectory(Path::GetDirectory(_indexPath));
             auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_WRITE);
 

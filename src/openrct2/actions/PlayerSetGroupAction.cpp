@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,10 +36,10 @@ void PlayerSetGroupAction::Serialise(DataSerialiser& stream)
 }
 GameActions::Result PlayerSetGroupAction::Query() const
 {
-    return network_set_player_group(GetPlayer(), _playerId, _groupId, false);
+    return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, false);
 }
 
 GameActions::Result PlayerSetGroupAction::Execute() const
 {
-    return network_set_player_group(GetPlayer(), _playerId, _groupId, true);
+    return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, true);
 }

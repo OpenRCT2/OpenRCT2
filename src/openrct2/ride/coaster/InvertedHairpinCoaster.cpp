@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x00890CB4 */
-static void inverted_hairpin_rc_track_flat(
+static void InvertedHairpinRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -70,7 +70,7 @@ static void inverted_hairpin_rc_track_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
@@ -81,7 +81,7 @@ static void inverted_hairpin_rc_track_flat(
 }
 
 /** rct2: 0x00890D84, 0x00890D94, 0x00890DA4 */
-static void inverted_hairpin_rc_track_station(
+static void InvertedHairpinRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -101,15 +101,15 @@ static void inverted_hairpin_rc_track_station(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 24 },
         { 32, 20, 1 }, { 0, 6, height + 24 });
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
-    track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
+    TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00890CC4 */
-static void inverted_hairpin_rc_track_25_deg_up(
+static void InvertedHairpinRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -168,7 +168,7 @@ static void inverted_hairpin_rc_track_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -203,7 +203,7 @@ static void inverted_hairpin_rc_track_25_deg_up(
 }
 
 /** rct2: 0x00890CD4 */
-static void inverted_hairpin_rc_track_60_deg_up(
+static void InvertedHairpinRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -273,7 +273,7 @@ static void inverted_hairpin_rc_track_60_deg_up(
 }
 
 /** rct2: 0x00890CE4 */
-static void inverted_hairpin_rc_track_flat_to_25_deg_up(
+static void InvertedHairpinRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -332,7 +332,7 @@ static void inverted_hairpin_rc_track_flat_to_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -367,7 +367,7 @@ static void inverted_hairpin_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x00890CF4 */
-static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(
+static void InvertedHairpinRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -449,7 +449,7 @@ static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x00890D04 */
-static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(
+static void InvertedHairpinRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -520,7 +520,7 @@ static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -555,7 +555,7 @@ static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x00890D14 */
-static void inverted_hairpin_rc_track_25_deg_up_to_flat(
+static void InvertedHairpinRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -614,7 +614,7 @@ static void inverted_hairpin_rc_track_25_deg_up_to_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -649,55 +649,55 @@ static void inverted_hairpin_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x00890D24 */
-static void inverted_hairpin_rc_track_25_deg_down(
+static void InvertedHairpinRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_hairpin_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedHairpinRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890D34 */
-static void inverted_hairpin_rc_track_60_deg_down(
+static void InvertedHairpinRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_hairpin_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedHairpinRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890D44 */
-static void inverted_hairpin_rc_track_flat_to_25_deg_down(
+static void InvertedHairpinRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_hairpin_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedHairpinRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890D54 */
-static void inverted_hairpin_rc_track_25_deg_down_to_60_deg_down(
+static void InvertedHairpinRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedHairpinRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890D64 */
-static void inverted_hairpin_rc_track_60_deg_down_to_25_deg_down(
+static void InvertedHairpinRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedHairpinRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890D74 */
-static void inverted_hairpin_rc_track_25_deg_down_to_flat(
+static void InvertedHairpinRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_hairpin_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedHairpinRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890DB4 */
-static void inverted_hairpin_rc_track_left_quarter_turn_3(
+static void InvertedHairpinRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -817,16 +817,16 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x00890DC4 */
-static void inverted_hairpin_rc_track_right_quarter_turn_3(
+static void InvertedHairpinRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    inverted_hairpin_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedHairpinRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890DD4 */
-static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(
+static void InvertedHairpinRCTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -921,7 +921,7 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x00890DE4 */
-static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(
+static void InvertedHairpinRCTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1016,27 +1016,25 @@ static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x00890DF4 */
-static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_down(
+static void InvertedHairpinRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    InvertedHairpinRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890E04 */
-static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_down(
+static void InvertedHairpinRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(
-        session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedHairpinRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890E64 */
-static void inverted_hairpin_rc_track_left_quarter_turn_1(
+static void InvertedHairpinRCTrackLeftQuarterTurn1(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1085,15 +1083,15 @@ static void inverted_hairpin_rc_track_left_quarter_turn_1(
 }
 
 /** rct2: 0x00890E74 */
-static void inverted_hairpin_rc_track_right_quarter_turn_1(
+static void InvertedHairpinRCTrackRightQuarterTurn1(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_hairpin_rc_track_left_quarter_turn_1(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedHairpinRCTrackLeftQuarterTurn1(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890E24 */
-static void inverted_hairpin_rc_track_flat_to_60_deg_up(
+static void InvertedHairpinRCTrackFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1175,7 +1173,7 @@ static void inverted_hairpin_rc_track_flat_to_60_deg_up(
 }
 
 /** rct2: 0x00890E34 */
-static void inverted_hairpin_rc_track_60_deg_up_to_flat(
+static void InvertedHairpinRCTrack60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1278,23 +1276,23 @@ static void inverted_hairpin_rc_track_60_deg_up_to_flat(
 }
 
 /** rct2: 0x00890E44 */
-static void inverted_hairpin_rc_track_flat_to_60_deg_down(
+static void InvertedHairpinRCTrackFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_hairpin_rc_track_60_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedHairpinRCTrack60DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890E54 */
-static void inverted_hairpin_rc_track_60_deg_down_to_flat(
+static void InvertedHairpinRCTrack60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_hairpin_rc_track_flat_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedHairpinRCTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x00890E14 */
-static void inverted_hairpin_rc_track_brakes(
+static void InvertedHairpinRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1316,7 +1314,7 @@ static void inverted_hairpin_rc_track_brakes(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1327,7 +1325,7 @@ static void inverted_hairpin_rc_track_brakes(
 }
 
 /** rct2: 0x00890E84 */
-static void inverted_hairpin_rc_track_block_brakes(
+static void InvertedHairpinRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1349,7 +1347,7 @@ static void inverted_hairpin_rc_track_block_brakes(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1359,68 +1357,68 @@ static void inverted_hairpin_rc_track_block_brakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_inverted_hairpin_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedHairpinRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return inverted_hairpin_rc_track_flat;
+            return InvertedHairpinRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return inverted_hairpin_rc_track_station;
+            return InvertedHairpinRCTrackStation;
         case TrackElemType::Up25:
-            return inverted_hairpin_rc_track_25_deg_up;
+            return InvertedHairpinRCTrack25DegUp;
         case TrackElemType::Up60:
-            return inverted_hairpin_rc_track_60_deg_up;
+            return InvertedHairpinRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return inverted_hairpin_rc_track_flat_to_25_deg_up;
+            return InvertedHairpinRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return inverted_hairpin_rc_track_25_deg_up_to_60_deg_up;
+            return InvertedHairpinRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return inverted_hairpin_rc_track_60_deg_up_to_25_deg_up;
+            return InvertedHairpinRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return inverted_hairpin_rc_track_25_deg_up_to_flat;
+            return InvertedHairpinRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return inverted_hairpin_rc_track_25_deg_down;
+            return InvertedHairpinRCTrack25DegDown;
         case TrackElemType::Down60:
-            return inverted_hairpin_rc_track_60_deg_down;
+            return InvertedHairpinRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return inverted_hairpin_rc_track_flat_to_25_deg_down;
+            return InvertedHairpinRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return inverted_hairpin_rc_track_25_deg_down_to_60_deg_down;
+            return InvertedHairpinRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return inverted_hairpin_rc_track_60_deg_down_to_25_deg_down;
+            return InvertedHairpinRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return inverted_hairpin_rc_track_25_deg_down_to_flat;
+            return InvertedHairpinRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return inverted_hairpin_rc_track_left_quarter_turn_3;
+            return InvertedHairpinRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return inverted_hairpin_rc_track_right_quarter_turn_3;
+            return InvertedHairpinRCTrackRightQuarterTurn3;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up;
+            return InvertedHairpinRCTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up;
+            return InvertedHairpinRCTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_down;
+            return InvertedHairpinRCTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_down;
+            return InvertedHairpinRCTrackRightQuarterTurn325DegDown;
         case TrackElemType::LeftQuarterTurn1Tile:
-            return inverted_hairpin_rc_track_left_quarter_turn_1;
+            return InvertedHairpinRCTrackLeftQuarterTurn1;
         case TrackElemType::RightQuarterTurn1Tile:
-            return inverted_hairpin_rc_track_right_quarter_turn_1;
+            return InvertedHairpinRCTrackRightQuarterTurn1;
         case TrackElemType::FlatToUp60:
-            return inverted_hairpin_rc_track_flat_to_60_deg_up;
+            return InvertedHairpinRCTrackFlatTo60DegUp;
         case TrackElemType::Up60ToFlat:
-            return inverted_hairpin_rc_track_60_deg_up_to_flat;
+            return InvertedHairpinRCTrack60DegUpToFlat;
         case TrackElemType::FlatToDown60:
-            return inverted_hairpin_rc_track_flat_to_60_deg_down;
+            return InvertedHairpinRCTrackFlatTo60DegDown;
         case TrackElemType::Down60ToFlat:
-            return inverted_hairpin_rc_track_60_deg_down_to_flat;
+            return InvertedHairpinRCTrack60DegDownToFlat;
         case TrackElemType::Brakes:
-            return inverted_hairpin_rc_track_brakes;
+            return InvertedHairpinRCTrackBrakes;
         case TrackElemType::BlockBrakes:
-            return inverted_hairpin_rc_track_block_brakes;
+            return InvertedHairpinRCTrackBlockBrakes;
     }
     return nullptr;
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,8 @@
 
 #include "../Game.h"
 #include "../localisation/Formatter.h"
+#include "../object/SmallSceneryEntry.h"
+#include "../object/WallSceneryEntry.h"
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -95,7 +97,7 @@ static bool MapLoc68BABCShouldContinue(
         crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TileElementType::Track
         && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
     {
-        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+        auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
         if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
         {
             return true;
@@ -206,7 +208,7 @@ GameActions::Result MapCanConstructWithClearAt(
         {
             if (tileElement->GetBaseZ() >= pos.clearanceZ)
             {
-                // loc_68BA81
+                // Loc68BA81
                 groundFlags |= ELEMENT_IS_UNDERGROUND;
                 groundFlags &= ~ELEMENT_IS_ABOVE_GROUND;
             }
@@ -292,7 +294,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             res.ErrorMessage = STR_FOOTPATH_IN_THE_WAY;
             break;
         case TileElementType::Track:
-            ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+            ride = GetRide(tileElement->AsTrack()->GetRideIndex());
             if (ride != nullptr)
             {
                 res.ErrorMessage = STR_X_IN_THE_WAY;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor GhostTrainRTD =
     SET_FIELD(Heights, { 8, 24, 6, 7, }),
     SET_FIELD(MaxMass, 2),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_ghost_train),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateGhostTrain),
     SET_FIELD(RatingsMultipliers, { 70, 10, 10 }),
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 8, 3, 5 }),
     SET_FIELD(BuildCosts, { 13.00_GBP, 2.50_GBP, 30, }),

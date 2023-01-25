@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -48,7 +48,7 @@ GameActions::Result SignSetNameAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
+        LOG_WARNING("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
     return GameActions::Result();
@@ -59,7 +59,7 @@ GameActions::Result SignSetNameAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
+        LOG_WARNING("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
 
@@ -87,7 +87,7 @@ GameActions::Result SignSetNameAction::Execute() const
         }
     }
 
-    scrolling_text_invalidate();
-    gfx_invalidate_screen();
+    ScrollingTextInvalidate();
+    GfxInvalidateScreen();
     return GameActions::Result();
 }

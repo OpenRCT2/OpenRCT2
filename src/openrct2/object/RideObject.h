@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,8 +20,8 @@
 class RideObject final : public Object
 {
 private:
-    rct_ride_entry _legacyType = {};
-    vehicle_colour_preset_list _presetColours = {};
+    RideObjectEntry _legacyType = {};
+    VehicleColourPresetList _presetColours = {};
     std::vector<int8_t> _peepLoadingPositions[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
     std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
 
@@ -36,7 +36,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
     std::string GetDescription() const;
     std::string GetCapacity() const;
@@ -52,11 +52,11 @@ private:
     void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
     std::vector<CarEntry> ReadJsonCars([[maybe_unused]] IReadObjectContext* context, json_t& jCars);
     CarEntry ReadJsonCar([[maybe_unused]] IReadObjectContext* context, json_t& jCar);
-    vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
+    VehicleColourPresetList ReadJsonCarColours(json_t& jCarColours);
     std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
 
-    static uint8_t CalculateNumVerticalFrames(const CarEntry* carEntry);
-    static uint8_t CalculateNumHorizontalFrames(const CarEntry* carEntry);
+    static uint8_t CalculateNumVerticalFrames(const CarEntry& carEntry);
+    static uint8_t CalculateNumHorizontalFrames(const CarEntry& carEntry);
 
     static bool IsRideTypeShopOrFacility(ride_type_t rideType);
     static uint8_t ParseRideCategory(const std::string& s);

@@ -19,7 +19,7 @@
 
 namespace OpenRCT2::Scripting
 {
-    template<> inline DukValue ToDuk(duk_context* ctx, const rct_vehicle_info& value)
+    template<> inline DukValue ToDuk(duk_context* ctx, const VehicleInfo& value)
     {
         DukObject dukSubposition(ctx);
         dukSubposition.Set("x", value.x);
@@ -46,18 +46,28 @@ namespace OpenRCT2::Scripting
         std::string description_get() const;
         int32_t beginZ_get() const;
         int32_t beginDirection_get() const;
-        int32_t beginAngle_get() const;
+        int32_t beginSlope_get() const;
         int32_t beginBank_get() const;
         int32_t endX_get() const;
         int32_t endY_get() const;
         int32_t endZ_get() const;
         int32_t endDirection_get() const;
-        int32_t endAngle_get() const;
+        int32_t endSlope_get() const;
         int32_t endBank_get() const;
         int32_t length_get() const;
         DukValue elements_get() const;
         uint16_t getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const;
         std::vector<DukValue> getSubpositions(uint8_t trackSubposition, uint8_t direction) const;
+        DukValue nextCurveElement_get() const;
+        DukValue previousCurveElement_get() const;
+        DukValue getMirrorElement() const;
+        DukValue getAlternativeElement() const;
+        int32_t getPriceModifier() const;
+        int32_t getPreviewZOffset() const;
+        int32_t getTrackGroup() const;
+        template<uint16_t flag> bool getTrackFlag() const;
+        std::string getTrackCurvature() const;
+        std::string getTrackSlopeDirection() const;
     };
 
 } // namespace OpenRCT2::Scripting

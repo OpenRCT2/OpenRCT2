@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ enum {
     WIDX_NEXT_STEP_BUTTON,      // 8
 };
 
-static rct_widget _editorBottomToolbarWidgets[] = {
+static Widget _editorBottomToolbarWidgets[] = {
     MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
     MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
     MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
@@ -61,7 +61,7 @@ public:
         widgets = _editorBottomToolbarWidgets;
 
         InitScrollWidgets();
-        set_all_scenery_items_invented();
+        SetAllSceneryItemsInvented();
     }
 
     void OnPrepareDraw() override
@@ -107,7 +107,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WindowWidgetType::Empty;
         auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WindowWidgetType::Empty;
@@ -148,54 +148,54 @@ public:
 private:
     void JumpBackToObjectSelection() const
     {
-        window_close_all();
+        WindowCloseAll();
         gEditorStep = EditorStep::ObjectSelection;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpBackToLandscapeEditor() const
     {
-        window_close_all();
-        set_all_scenery_items_invented();
+        WindowCloseAll();
+        SetAllSceneryItemsInvented();
         ScenerySetDefaultPlacementConfiguration();
         gEditorStep = EditorStep::LandscapeEditor;
         ContextOpenWindow(WindowClass::Map);
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpBackToInventionListSetUp() const
     {
-        window_close_all();
+        WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorInventionList);
         gEditorStep = EditorStep::InventionsListSetUp;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpBackToOptionsSelection() const
     {
-        window_close_all();
+        WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     bool CheckObjectSelection() const
     {
-        rct_window* w;
+        WindowBase* w;
 
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
         {
-            window_close_by_class(WindowClass::EditorObjectSelection);
+            WindowCloseByClass(WindowClass::EditorObjectSelection);
             return true;
         }
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-        w = window_find_by_class(WindowClass::EditorObjectSelection);
+        w = WindowFindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {
             // Click tab with missing object
-            window_event_mouse_up_call(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
+            WindowEventMouseUpCall(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
         }
         return false;
     }
@@ -205,7 +205,7 @@ private:
         if (!CheckObjectSelection())
             return;
 
-        finish_object_selection();
+        FinishObjectSelection();
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         {
             ContextOpenWindow(WindowClass::ConstructRide);
@@ -221,7 +221,7 @@ private:
         auto [checksPassed, errorString] = Editor::CheckPark();
         if (checksPassed)
         {
-            window_close_all();
+            WindowCloseAll();
             ContextOpenWindow(WindowClass::EditorInventionList);
             gEditorStep = EditorStep::InventionsListSetUp;
         }
@@ -230,39 +230,39 @@ private:
             ContextShowError(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, errorString, {});
         }
 
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpForwardToOptionsSelection() const
     {
-        window_close_all();
+        WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorScenarioOptions);
         gEditorStep = EditorStep::OptionsSelection;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpForwardToObjectiveSelection() const
     {
-        window_close_all();
+        WindowCloseAll();
         ContextOpenWindow(WindowClass::EditorObjectiveOptions);
         gEditorStep = EditorStep::ObjectiveSelection;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     void JumpForwardToSaveScenario() const
     {
-        const auto savePrepareResult = scenario_prepare_for_save();
+        const auto savePrepareResult = ScenarioPrepareForSave();
         if (!savePrepareResult.Successful)
         {
             ContextShowError(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
             return;
         }
 
-        window_close_all();
+        WindowCloseAll();
         auto intent = Intent(WindowClass::Loadsave);
-        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
-        intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
+        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
+        intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
         ContextOpenIntent(&intent);
     }
 
@@ -278,23 +278,23 @@ private:
         widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
     }
 
-    void DrawLeftButtonBack(rct_drawpixelinfo& dpi)
+    void DrawLeftButtonBack(DrawPixelInfo& dpi)
     {
         auto previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
         auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
-        gfx_filter_rect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
-    void DrawLeftButton(rct_drawpixelinfo& dpi)
+    void DrawLeftButton(DrawPixelInfo& dpi)
     {
         const auto topLeft = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
         const auto bottomRight = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].right - 1, widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
-        gfx_fill_rect_inset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             &dpi, ImageId(SPR_PREVIOUS),
             windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
@@ -316,22 +316,22 @@ private:
         DrawTextBasic(&dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
     }
 
-    void DrawRightButtonBack(rct_drawpixelinfo& dpi)
+    void DrawRightButtonBack(DrawPixelInfo& dpi)
     {
         auto nextWidget = widgets[WIDX_NEXT_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
         auto rightBottom = windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-        gfx_filter_rect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
-    void DrawRightButton(rct_drawpixelinfo& dpi)
+    void DrawRightButton(DrawPixelInfo& dpi)
     {
         const auto topLeft = windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
         const auto bottomRight = windowPos
             + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 1, widgets[WIDX_NEXT_IMAGE].bottom - 1 };
-        gfx_fill_rect_inset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             &dpi, ImageId(SPR_NEXT),
             windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 29, widgets[WIDX_NEXT_IMAGE].top + 6 });
 
@@ -354,7 +354,7 @@ private:
         DrawTextBasic(&dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
     }
 
-    void DrawStepText(rct_drawpixelinfo& dpi)
+    void DrawStepText(DrawPixelInfo& dpi)
     {
         int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
         int16_t stateY = height - 0x0C + windowPos.y;
@@ -390,7 +390,7 @@ private:
  * Creates the main editor top toolbar window.
  * rct2: 0x0066F052 (part of 0x0066EF38)
  */
-rct_window* WindowEditorBottomToolbarOpen()
+WindowBase* WindowEditorBottomToolbarOpen()
 {
     auto* window = WindowCreate<EditorBottomToolbarWindow>(
         WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), ContextGetWidth(), 32,

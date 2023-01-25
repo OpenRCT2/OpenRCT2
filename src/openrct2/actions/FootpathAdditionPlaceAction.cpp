@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/FootpathItemEntry.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"
@@ -73,7 +74,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
     auto tileElement = MapGetFootpathElement(_loc);
     if (tileElement == nullptr)
     {
-        log_error("Could not find path element.");
+        LOG_ERROR("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
@@ -150,7 +151,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
 
     if (pathElement == nullptr)
     {
-        log_error("Could not find path element.");
+        LOG_ERROR("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 

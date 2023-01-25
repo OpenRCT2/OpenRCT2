@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,9 @@
 #include "../entity/EntityList.h"
 #include "../entity/Peep.h"
 #include "../interface/Viewport.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../object/StationObject.h"
+#include "../object/WallSceneryEntry.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -59,7 +61,7 @@ void MapAnimationCreate(int32_t type, const CoordsXYZ& loc)
         }
         else
         {
-            log_error("Exceeded the maximum number of animations");
+            LOG_ERROR("Exceeded the maximum number of animations");
         }
     }
 }
@@ -99,14 +101,14 @@ static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Entrance)
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
 
-        auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+        auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
         if (ride != nullptr)
         {
             auto stationObj = ride->GetStationObject();
@@ -136,7 +138,7 @@ static bool MapAnimationInvalidateQueueBanner(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Path)
             continue;
@@ -145,7 +147,7 @@ static bool MapAnimationInvalidateQueueBanner(const CoordsXYZ& loc)
         if (!tileElement->AsPath()->HasQueueBanner())
             continue;
 
-        int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + get_current_rotation()) & 3;
+        int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + GetCurrentRotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
         {
             MapInvalidateTileZoom1({ loc, loc.z + 16, loc.z + 30 });
@@ -169,7 +171,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::SmallScenery)
             continue;
@@ -191,7 +193,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
         {
             // Peep, looking at scenery
-            if (!(gCurrentTicks & 0x3FF) && game_is_not_paused())
+            if (!(gCurrentTicks & 0x3FF) && GameIsNotPaused())
             {
                 int32_t direction = tileElement->GetDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
@@ -234,7 +236,7 @@ static bool MapAnimationInvalidateParkEntrance(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Entrance)
             continue;
@@ -264,7 +266,7 @@ static bool MapAnimationInvalidateTrackWaterfall(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -293,7 +295,7 @@ static bool MapAnimationInvalidateTrackRapids(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -322,7 +324,7 @@ static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -330,7 +332,7 @@ static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
         {
             MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
-            if (game_is_paused())
+            if (GameIsPaused())
             {
                 return false;
             }
@@ -361,7 +363,7 @@ static bool MapAnimationInvalidateTrackWhirlpool(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -390,7 +392,7 @@ static bool MapAnimationInvalidateTrackSpinningTunnel(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
@@ -428,7 +430,7 @@ static bool MapAnimationInvalidateBanner(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Banner)
             continue;
@@ -454,7 +456,7 @@ static bool MapAnimationInvalidateLargeScenery(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::LargeScenery)
             continue;
@@ -488,7 +490,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
         return removeAnimation;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
@@ -497,7 +499,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
         if (wallEntry == nullptr || !(wallEntry->flags & WALL_SCENERY_IS_DOOR))
             continue;
 
-        if (game_is_paused())
+        if (GameIsPaused())
         {
             return false;
         }
@@ -549,7 +551,7 @@ static bool MapAnimationInvalidateWall(const CoordsXYZ& loc)
         return true;
     do
     {
-        if (tileElement->base_height != tileLoc.z)
+        if (tileElement->BaseHeight != tileLoc.z)
             continue;
         if (tileElement->GetType() != TileElementType::Wall)
             continue;
@@ -605,7 +607,7 @@ void MapAnimationAutoCreate()
 {
     ClearMapAnimations();
 
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {

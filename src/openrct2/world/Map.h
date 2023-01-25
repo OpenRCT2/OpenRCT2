@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -210,19 +210,19 @@ template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupied
     return (element != nullptr) ? element->template as<T>() : nullptr;
 }
 
-struct tile_element_iterator
+struct TileElementIterator
 {
     int32_t x;
     int32_t y;
     TileElement* element;
 };
 #ifdef PLATFORM_32BIT
-assert_struct_size(tile_element_iterator, 12);
+assert_struct_size(TileElementIterator, 12);
 #endif
 
-void TileElementIteratorBegin(tile_element_iterator* it);
-int32_t TileElementIteratorNext(tile_element_iterator* it);
-void TileElementIteratorRestartForTile(tile_element_iterator* it);
+void TileElementIteratorBegin(TileElementIterator* it);
+int32_t TileElementIteratorNext(TileElementIterator* it);
+void TileElementIteratorRestartForTile(TileElementIterator* it);
 
 void MapUpdateTiles();
 int32_t MapGetHighestZ(const CoordsXY& loc);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ enum WindowCustomCurrencyWidgetIdx {
     WIDX_AFFIX_DROPDOWN_BUTTON,
 };
 
-static rct_widget window_custom_currency_widgets[] = {
+static Widget window_custom_currency_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
     MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),
@@ -72,7 +72,7 @@ public:
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
                 gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                 ConfigSaveDefault();
-                window_invalidate_all();
+                WindowInvalidateAll();
                 break;
             case WIDX_RATE_DOWN:
                 if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
@@ -80,7 +80,7 @@ public:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
                     gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     ConfigSaveDefault();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
             case WIDX_AFFIX_DROPDOWN_BUTTON:
@@ -146,7 +146,7 @@ public:
             gConfigGeneral.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
             ConfigSaveDefault();
 
-            window_invalidate_all();
+            WindowInvalidateAll();
         }
     }
 
@@ -160,16 +160,14 @@ public:
         switch (widgetIndex)
         {
             case WIDX_SYMBOL_TEXT:
-                safe_strcpy(
+                SafeStrCpy(
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
                     CURRENCY_SYMBOL_MAX_SIZE);
 
-                safe_strcpy(
-                    gConfigGeneral.CustomCurrencySymbol, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
-                    CURRENCY_SYMBOL_MAX_SIZE);
+                gConfigGeneral.CustomCurrencySymbol = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode;
 
                 ConfigSaveDefault();
-                window_invalidate_all();
+                WindowInvalidateAll();
                 break;
 
             case WIDX_RATE:
@@ -180,13 +178,13 @@ public:
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
                     gConfigGeneral.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     ConfigSaveDefault();
-                    window_invalidate_all();
+                    WindowInvalidateAll();
                 }
                 break;
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto ft = Formatter::Common();
         ft.Add<money64>(10.00_GBP);
@@ -210,8 +208,7 @@ public:
             + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
                               window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
 
-        gfx_draw_string(
-            &dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { colours[1] });
+        GfxDrawString(&dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { colours[1] });
 
         auto drawPos = windowPos
             + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
@@ -223,7 +220,7 @@ public:
     }
 };
 
-rct_window* CustomCurrencyWindowOpen()
+WindowBase* CustomCurrencyWindowOpen()
 {
     return WindowFocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
 }

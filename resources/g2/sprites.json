@@ -2362,6 +2362,78 @@
         "y_offset": 1
     },
     {
+        "path": "track/wooden/25_60_swne_chained.png",
+        "x_offset": -32,
+        "y_offset": -49,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/25_60_senw_chained.png",
+        "x_offset": -32,
+        "y_offset": -49,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/25_60_swne_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/25_60_senw_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_swne_chained.png",
+        "x_offset": -32,
+        "y_offset": -80,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_senw_chained.png",
+        "x_offset": -32,
+        "y_offset": -80,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_swne_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -60,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_senw_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -59,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_25_swne_chained.png",
+        "x_offset": -32,
+        "y_offset": -47,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_25_senw_chained.png",
+        "x_offset": -32,
+        "y_offset": -47,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_25_swne_chained_back.png",
+        "x_offset": 0,
+        "y_offset": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_25_senw_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -30,
+        "palette": "keep"
+    },
+    {
         "path": "track/bm_invert/booster_1.png",
         "x_offset": -25,
         "y_offset": -5

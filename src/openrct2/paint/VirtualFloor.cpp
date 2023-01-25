@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -137,7 +137,7 @@ void VirtualFloorInvalidate()
         if (_virtualFloorLastMinPos != min_position || _virtualFloorLastMaxPos != max_position
             || (_virtualFloorFlags & VIRTUAL_FLOOR_FORCE_INVALIDATION) != 0)
         {
-            log_verbose(
+            LOG_VERBOSE(
                 "Invalidating previous region, Min: %d %d, Max: %d %d", _virtualFloorLastMinPos.x, _virtualFloorLastMinPos.y,
                 _virtualFloorLastMaxPos.x, _virtualFloorLastMaxPos.y);
             MapInvalidateRegion(_virtualFloorLastMinPos, _virtualFloorLastMaxPos);
@@ -155,7 +155,7 @@ void VirtualFloorInvalidate()
         return;
     }
 
-    log_verbose("Min: %d %d, Max: %d %d", min_position.x, min_position.y, max_position.x, max_position.y);
+    LOG_VERBOSE("Min: %d %d, Max: %d %d", min_position.x, min_position.y, max_position.x, max_position.y);
 
     // Invalidate new region if coordinates are set.
     if (min_position.x != std::numeric_limits<int32_t>::max() && min_position.y != std::numeric_limits<int32_t>::max()

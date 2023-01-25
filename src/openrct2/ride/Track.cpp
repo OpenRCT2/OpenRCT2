@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,7 +51,7 @@ PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType)
 /**
  * Helper method to determine if a connects to b by its bank and angle, not location.
  */
-int32_t track_is_connected_by_shape(TileElement* a, TileElement* b)
+int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b)
 {
     int32_t trackType, aBank, aAngle, bBank, bAngle;
 
@@ -59,13 +59,13 @@ int32_t track_is_connected_by_shape(TileElement* a, TileElement* b)
     const auto* ted = &GetTrackElementDescriptor(trackType);
     aBank = ted->Definition.bank_end;
     aAngle = ted->Definition.vangle_end;
-    aBank = track_get_actual_bank(a, aBank);
+    aBank = TrackGetActualBank(a, aBank);
 
     trackType = b->AsTrack()->GetTrackType();
     ted = &GetTrackElementDescriptor(trackType);
     bBank = ted->Definition.bank_start;
     bAngle = ted->Definition.vangle_start;
-    bBank = track_get_actual_bank(b, bBank);
+    bBank = TrackGetActualBank(b, bBank);
 
     return aBank == bBank && aAngle == bAngle;
 }
@@ -93,15 +93,15 @@ static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex
     return nullptr;
 }
 
-static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
+static void ride_remove_station(Ride& ride, const CoordsXYZ& location)
 {
-    for (auto& station : ride->GetStations())
+    for (auto& station : ride.GetStations())
     {
         auto stationStart = station.GetStart();
         if (stationStart == location)
         {
             station.Start.SetNull();
-            ride->num_stations--;
+            ride.num_stations--;
             break;
         }
     }
@@ -111,9 +111,9 @@ static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
  *
  *  rct2: 0x006C4D89
  */
-ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign)
+ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign)
 {
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
         return { false };
 
@@ -129,7 +129,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
         }
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            auto stationIndex = ride_get_first_empty_station_start(ride);
+            auto stationIndex = RideGetFirstEmptyStationStart(*ride);
             assert(!stationIndex.IsNull());
 
             auto& station = ride->GetStation(stationIndex);
@@ -158,7 +158,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
-                    ride_remove_station(ride, loc);
+                    ride_remove_station(*ride, loc);
                 }
             }
 
@@ -180,7 +180,7 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
-                    ride_remove_station(ride, loc);
+                    ride_remove_station(*ride, loc);
                 }
             }
 
@@ -217,10 +217,10 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
                 track_type_t targetTrackType;
                 if (stationFrontLoc == loc)
                 {
-                    auto stationIndex = ride_get_first_empty_station_start(ride);
+                    auto stationIndex = RideGetFirstEmptyStationStart(*ride);
                     if (stationIndex.IsNull())
                     {
-                        log_verbose("No empty station starts, not updating metadata! This can happen with hacked rides.");
+                        LOG_VERBOSE("No empty station starts, not updating metadata! This can happen with hacked rides.");
                     }
                     else
                     {
@@ -261,9 +261,9 @@ ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, in
  *
  *  rct2: 0x006C494B
  */
-ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags)
+ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, int32_t flags)
 {
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
         return { false };
 
@@ -271,7 +271,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
     CoordsXYZD stationBackLoc = loc;
     CoordsXYZD stationFrontLoc = loc;
     int32_t stationLength = 0;
-    int32_t byte_F441D1 = -1;
+    int32_t ByteF441D1 = -1;
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
@@ -280,7 +280,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                ride_remove_station(ride, loc);
+                ride_remove_station(*ride, loc);
             }
         }
         return { true };
@@ -296,12 +296,12 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                ride_remove_station(ride, currentLoc);
+                ride_remove_station(*ride, currentLoc);
             }
         }
 
         stationBackLoc = currentLoc;
-        byte_F441D1++;
+        ByteF441D1++;
 
         currentLoc -= CoordsDirectionDelta[currentLoc.direction];
     }
@@ -319,7 +319,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
-                    ride_remove_station(ride, currentLoc);
+                    ride_remove_station(*ride, currentLoc);
                 }
             }
             stationFrontLoc = currentLoc;
@@ -352,10 +352,10 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
                 track_type_t targetTrackType;
                 if ((currentLoc == stationFrontLoc) || (currentLoc + CoordsDirectionDelta[currentLoc.direction] == removeLoc))
                 {
-                    auto stationIndex = ride_get_first_empty_station_start(ride);
+                    auto stationIndex = RideGetFirstEmptyStationStart(*ride);
                     if (stationIndex.IsNull())
                     {
-                        log_verbose("No empty station starts, not updating metadata! This can happen with hacked rides.");
+                        LOG_VERBOSE("No empty station starts, not updating metadata! This can happen with hacked rides.");
                     }
                     else
                     {
@@ -363,7 +363,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
                         station.Start = currentLoc;
                         station.Height = currentLoc.z / COORDS_Z_STEP;
                         station.Depart = 1;
-                        station.Length = stationLength != 0 ? stationLength : byte_F441D1;
+                        station.Length = stationLength != 0 ? stationLength : ByteF441D1;
                         ride->num_stations++;
                     }
 
@@ -404,7 +404,7 @@ ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rid
     return { true };
 }
 
-void track_circuit_iterator_begin(track_circuit_iterator* it, CoordsXYE first)
+void TrackCircuitIteratorBegin(TrackCircuitIterator* it, CoordsXYE first)
 {
     it->last = first;
     it->first = nullptr;
@@ -412,13 +412,13 @@ void track_circuit_iterator_begin(track_circuit_iterator* it, CoordsXYE first)
     it->looped = false;
 }
 
-bool track_circuit_iterator_previous(track_circuit_iterator* it)
+bool TrackCircuitIteratorPrevious(TrackCircuitIterator* it)
 {
-    track_begin_end trackBeginEnd;
+    TrackBeginEnd trackBeginEnd;
 
     if (it->first == nullptr)
     {
-        if (!track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
+        if (!TrackBlockGetPrevious({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
             return false;
 
         it->current.x = trackBeginEnd.begin_x;
@@ -440,7 +440,7 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it)
     it->firstIteration = false;
     it->last = it->current;
 
-    if (track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
+    if (TrackBlockGetPrevious({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
     {
         it->current.x = trackBeginEnd.end_x;
         it->current.y = trackBeginEnd.end_y;
@@ -453,11 +453,11 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it)
     return false;
 }
 
-bool track_circuit_iterator_next(track_circuit_iterator* it)
+bool TrackCircuitIteratorNext(TrackCircuitIterator* it)
 {
     if (it->first == nullptr)
     {
-        if (!track_block_get_next(&it->last, &it->current, &it->currentZ, &it->currentDirection))
+        if (!TrackBlockGetNext(&it->last, &it->current, &it->currentZ, &it->currentDirection))
             return false;
 
         it->first = it->current.element;
@@ -472,26 +472,26 @@ bool track_circuit_iterator_next(track_circuit_iterator* it)
 
     it->firstIteration = false;
     it->last = it->current;
-    return track_block_get_next(&it->last, &it->current, &it->currentZ, &it->currentDirection);
+    return TrackBlockGetNext(&it->last, &it->current, &it->currentZ, &it->currentDirection);
 }
 
-bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const track_circuit_iterator* secondIt)
+bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const TrackCircuitIterator* secondIt)
 {
     return (
         firstIt->currentZ == secondIt->currentZ && firstIt->currentDirection == secondIt->currentDirection
         && firstIt->current.x == secondIt->current.x && firstIt->current.y == secondIt->current.y);
 }
 
-void track_get_back(const CoordsXYE& input, CoordsXYE* output)
+void TrackGetBack(const CoordsXYE& input, CoordsXYE* output)
 {
     CoordsXYE lastTrack;
-    track_begin_end currentTrack;
+    TrackBeginEnd currentTrack;
     bool result;
 
     lastTrack = input;
     do
     {
-        result = track_block_get_previous(lastTrack, &currentTrack);
+        result = TrackBlockGetPrevious(lastTrack, &currentTrack);
         if (result)
         {
             lastTrack.x = currentTrack.begin_x;
@@ -502,7 +502,7 @@ void track_get_back(const CoordsXYE& input, CoordsXYE* output)
     *output = lastTrack;
 }
 
-void track_get_front(const CoordsXYE& input, CoordsXYE* output)
+void TrackGetFront(const CoordsXYE& input, CoordsXYE* output)
 {
     CoordsXYE lastTrack, currentTrack;
     int32_t z, direction;
@@ -511,7 +511,7 @@ void track_get_front(const CoordsXYE& input, CoordsXYE* output)
     lastTrack = input;
     do
     {
-        result = track_block_get_next(&lastTrack, &currentTrack, &z, &direction);
+        result = TrackBlockGetNext(&lastTrack, &currentTrack, &z, &direction);
         if (result)
         {
             lastTrack = currentTrack;
@@ -563,18 +563,18 @@ bool TrackElement::IsBlockStart() const
     return false;
 }
 
-roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank)
+roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank)
 {
-    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
     if (ride != nullptr)
     {
         bool isInverted = tileElement->AsTrack()->IsInverted();
-        return track_get_actual_bank_2(ride->type, isInverted, bank);
+        return TrackGetActualBank2(ride->type, isInverted, bank);
     }
     return bank;
 }
 
-roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank)
+roll_type_t TrackGetActualBank2(int32_t rideType, bool isInverted, roll_type_t bank)
 {
     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
     {
@@ -593,25 +593,25 @@ roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type
     return bank;
 }
 
-roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement)
+roll_type_t TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
     auto bankStart = ted.Definition.bank_start;
-    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
     if (ride == nullptr)
         return bankStart;
 
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
-    return track_get_actual_bank_2(ride->type, isInverted, bankStart);
+    return TrackGetActualBank2(ride->type, isInverted, bankStart);
 }
 
 bool TrackElement::IsStation() const
 {
-    return track_type_is_station(GetTrackType());
+    return TrackTypeIsStation(GetTrackType());
 }
 
-bool track_type_is_station(track_type_t trackType)
+bool TrackTypeIsStation(track_type_t trackType)
 {
     switch (trackType)
     {
@@ -624,7 +624,7 @@ bool track_type_is_station(track_type_t trackType)
     }
 }
 
-bool track_element_is_covered(track_type_t trackElementType)
+bool TrackElementIsCovered(track_type_t trackElementType)
 {
     switch (trackElementType)
     {
@@ -658,6 +658,17 @@ bool TrackTypeHasSpeedSetting(track_type_t trackType)
     return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster;
 }
 
+bool TrackTypeIsHelix(track_type_t trackType)
+{
+    if (trackType >= TrackElemType::LeftHalfBankedHelixUpSmall && trackType <= TrackElemType::RightHalfBankedHelixDownLarge)
+        return true;
+
+    if (trackType >= TrackElemType::LeftQuarterBankedHelixLargeUp && trackType <= TrackElemType::RightQuarterHelixLargeDown)
+        return true;
+
+    return false;
+}
+
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
 {
     auto trackEl = posEl.element->AsTrack();
@@ -682,7 +693,7 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
 
 uint8_t TrackElement::GetSeatRotation() const
 {
-    const auto* ride = get_ride(GetRideIndex());
+    const auto* ride = GetRide(GetRideIndex());
     if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         return DEFAULT_SEAT_ROTATION;
 
@@ -852,20 +863,20 @@ void TrackElement::SetInverted(bool inverted)
     }
 }
 
-bool TrackElement::BlockBrakeClosed() const
+bool TrackElement::IsBrakeClosed() const
 {
-    return (Flags2 & TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED) != 0;
 }
 
-void TrackElement::SetBlockBrakeClosed(bool isClosed)
+void TrackElement::SetBrakeClosed(bool isClosed)
 {
     if (isClosed)
     {
-        Flags2 |= TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
     }
     else
     {
-        Flags2 &= ~TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED;
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
     }
 }
 

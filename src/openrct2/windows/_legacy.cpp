@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,14 +39,14 @@ RideConstructionState _rideConstructionState2;
  *
  *  rct2: 0x006CA162
  */
-money32 place_provisional_track_piece(
+money32 PlaceProvisionalTrackPiece(
     RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, const CoordsXYZ& trackPos)
 {
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
         return MONEY32_UNDEFINED;
 
-    ride_construction_remove_ghosts();
+    RideConstructionRemoveGhosts();
     const auto& rtd = ride->GetRideTypeDescriptor();
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
@@ -60,14 +60,14 @@ money32 place_provisional_track_piece(
 
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-        viewport_set_visibility(3);
+        ViewportSetVisibility(3);
         if (_currentTrackSlopeEnd != 0)
-            viewport_set_visibility(2);
+            ViewportSetVisibility(2);
 
         // Invalidate previous track piece (we may not be changing height!)
         VirtualFloorInvalidate();
 
-        if (!scenery_tool_is_active())
+        if (!SceneryToolIsActive())
         {
             // Set new virtual floor height.
             VirtualFloorSetHeight(trackPos.z);
@@ -87,7 +87,7 @@ money32 place_provisional_track_piece(
 
     int16_t z_begin, z_end;
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const rct_track_coordinates& coords = ted.Coordinates;
+    const TrackCoordinates& coords = ted.Coordinates;
     if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
     {
         z_begin = coords.z_begin;
@@ -102,14 +102,14 @@ money32 place_provisional_track_piece(
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
 
     const auto resultData = res.GetData<TrackPlaceActionResult>();
-    viewport_set_visibility((resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
+    ViewportSetVisibility((resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
     if (_currentTrackSlopeEnd != 0)
-        viewport_set_visibility(2);
+        ViewportSetVisibility(2);
 
     // Invalidate previous track piece (we may not be changing height!)
     VirtualFloorInvalidate();
 
-    if (!scenery_tool_is_active())
+    if (!SceneryToolIsActive())
     {
         // Set height to where the next track piece would begin
         VirtualFloorSetHeight(trackPos.z - z_begin + z_end);
@@ -155,7 +155,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     {
         for (uint32_t i = 0; i < std::size(gTrackDescriptors); i++)
         {
-            const track_descriptor* trackDescriptor = &gTrackDescriptors[i];
+            const TrackDescriptor* trackDescriptor = &gTrackDescriptors[i];
 
             if (trackDescriptor->track_curve != curve)
                 continue;
@@ -235,7 +235,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
  * @param[out] _properties (edirs16)
  * @return (CF)
  */
-bool window_ride_construction_update_state(
+bool WindowRideConstructionUpdateState(
     int32_t* _trackType, int32_t* _trackDirection, RideId* _rideIndex, int32_t* _liftHillAndInvertedState, CoordsXYZ* _trackPos,
     int32_t* _properties)
 {
@@ -262,7 +262,7 @@ bool window_ride_construction_update_state(
         liftHillAndInvertedState |= CONSTRUCTION_INVERTED_TRACK_SELECTED;
     }
 
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
         return true;
 
@@ -311,7 +311,7 @@ bool window_ride_construction_update_state(
     }
 
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const rct_track_coordinates& trackCoordinates = ted.Coordinates;
+    const TrackCoordinates& trackCoordinates = ted.Coordinates;
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;
@@ -395,7 +395,7 @@ bool window_ride_construction_update_state(
  *
  *  rct2: 0x006C84CE
  */
-void window_ride_construction_update_active_elements()
+void WindowRideConstructionUpdateActiveElements()
 {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
     ContextBroadcastIntent(&intent);
@@ -405,11 +405,11 @@ void window_ride_construction_update_active_elements()
  *
  *  rct2: 0x0066DB3D
  */
-bool scenery_tool_is_active()
+bool SceneryToolIsActive()
 {
     auto toolWindowClassification = gCurrentToolWidget.window_classification;
     WidgetIndex toolWidgetIndex = gCurrentToolWidget.widget_index;
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+    if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         if (toolWindowClassification == WindowClass::TopToolbar && toolWidgetIndex == WC_TOP_TOOLBAR__WIDX_SCENERY)
             return true;
 

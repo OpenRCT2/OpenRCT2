@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,7 @@
 
 enum class ResearchCategory : uint8_t;
 
-using ride_ratings_calculation = void (*)(Ride* ride, RideRatingUpdateState& state);
+using ride_ratings_calculation = void (*)(Ride& ride, RideRatingUpdateState& state);
 
 struct RideComponentName
 {
@@ -110,7 +110,7 @@ struct RideHeights
     uint8_t PlatformHeight;
 };
 
-struct rct_ride_lift_data
+struct RideLiftData
 {
     OpenRCT2::Audio::SoundId sound_id;
     uint8_t minimum_speed;
@@ -158,15 +158,15 @@ struct UpkeepCostsDescriptor
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
 using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
-using RideMusicUpdateFunction = void (*)(Ride*);
-using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
+using RideMusicUpdateFunction = void (*)(Ride&);
+using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride&, CoordsXYZD&);
 using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
 using RideUpdateFunction = void (*)(Ride& ride);
-using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const track_type_t trackType);
+using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const track_type_t trackType);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
-using SpecialElementRatingAdjustmentFunc = void (*)(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
 using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
@@ -186,7 +186,7 @@ struct RideTypeDescriptor
     RideTrackGroup ExtraTrackPieces;
     RideTrackGroup CoveredTrackPieces;
     /** rct2: 0x0097CC68 */
-    uint64_t StartTrackPiece;
+    track_type_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
     /** rct2: 0x0097C8AC */
@@ -202,7 +202,7 @@ struct RideTypeDescriptor
     RideHeights Heights;
     uint8_t MaxMass;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
-    rct_ride_lift_data LiftData;
+    RideLiftData LiftData;
     // rct2: 0x0097E050
     ride_ratings_calculation RatingsCalculationFunction;
     // rct2: 0x0097CD1E
@@ -216,7 +216,7 @@ struct RideTypeDescriptor
     ShopItemIndex PhotoItem;
     /** rct2: 0x0097D21E */
     uint8_t BonusValue;
-    track_colour_preset_list ColourPresets;
+    TrackColourPresetList ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
 

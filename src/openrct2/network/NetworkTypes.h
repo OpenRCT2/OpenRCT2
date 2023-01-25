@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -89,15 +89,15 @@ enum class NetworkCommand : uint32_t
 
 static_assert(NetworkCommand::GameInfo == static_cast<NetworkCommand>(9), "Master server expects this to be 9");
 
-enum class NetworkServerState
+enum class NetworkServerStatus
 {
     Ok,
     Desynced
 };
 
-struct NetworkServerState_t
+struct NetworkServerState
 {
-    NetworkServerState state = NetworkServerState::Ok;
+    NetworkServerStatus state = NetworkServerStatus::Ok;
     uint32_t desyncTick = 0;
     uint32_t tick = 0;
     uint32_t srand0 = 0;
@@ -108,13 +108,13 @@ struct NetworkServerState_t
 // this structure can be used in combination with DataSerialiser
 // to provide extra details with template specialization.
 #pragma pack(push, 1)
-template<typename T, size_t _TypeID> struct NetworkObjectId_t
+template<typename T, size_t _TypeID> struct NetworkObjectId
 {
-    NetworkObjectId_t(T v)
+    NetworkObjectId(T v)
         : id(v)
     {
     }
-    NetworkObjectId_t()
+    NetworkObjectId()
         : id(T(-1))
     {
     }
@@ -128,8 +128,8 @@ template<typename T, size_t _TypeID> struct NetworkObjectId_t
 
 // NOTE: When adding new types make sure to have no duplicate _TypeID's otherwise
 // there is no way to specialize templates if they have the exact symbol.
-using NetworkPlayerId_t = NetworkObjectId_t<int32_t, 0>;
-using NetworkCheatType_t = NetworkObjectId_t<int32_t, 2>;
+using NetworkPlayerId_t = NetworkObjectId<int32_t, 0>;
+using NetworkCheatType_t = NetworkObjectId<int32_t, 2>;
 
 enum class NetworkStatisticsGroup : uint32_t
 {
@@ -140,7 +140,7 @@ enum class NetworkStatisticsGroup : uint32_t
     Max,
 };
 
-struct NetworkStats_t
+struct NetworkStats
 {
     uint64_t bytesReceived[EnumValue(NetworkStatisticsGroup::Max)];
     uint64_t bytesSent[EnumValue(NetworkStatisticsGroup::Max)];

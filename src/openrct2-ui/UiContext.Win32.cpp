@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -221,7 +221,7 @@ namespace OpenRCT2::Ui
                 SDL_VERSION(&wmInfo.version);
                 if (SDL_GetWindowWMInfo(window, &wmInfo) != SDL_TRUE)
                 {
-                    log_error("SDL_GetWindowWMInfo failed %s", SDL_GetError());
+                    LOG_ERROR("SDL_GetWindowWMInfo failed %s", SDL_GetError());
                     exit(-1);
                 }
 

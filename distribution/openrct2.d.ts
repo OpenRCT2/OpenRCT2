@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -234,6 +234,8 @@ declare global {
          */
         getTrackSegment(type: number): TrackSegment | null;
 
+        getAllTrackSegments(): TrackSegment[];
+
         /**
          * Gets the image number for the given icon.
          * @param iconName The name of the icon.
@@ -265,10 +267,10 @@ declare global {
          * @param execute Logic for validating and executing the action.
          * @throws An error if the action has already been registered by this or another plugin.
          */
-        registerAction(
+        registerAction<T = object>(
             action: string,
-            query: (args: object) => GameActionResult,
-            execute: (args: object) => GameActionResult): void;
+            query: (args: GameActionEventArgs<T>) => GameActionResult,
+            execute: (args: GameActionEventArgs<T>) => GameActionResult): void;
 
         /**
          * Query the result of running a game action. This allows you to check the outcome and validity of
@@ -285,7 +287,7 @@ declare global {
         queryAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "changemapsize", args: ChangeMapSizeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -305,6 +307,7 @@ declare global {
         queryAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "mapchangesize", args: MapChangeSizeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
@@ -312,6 +315,7 @@ declare global {
         queryAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetentrancefee", args: ParkSetEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
@@ -321,7 +325,7 @@ declare global {
         queryAction(action: "peepspawnplace", args: PeepSpawnPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "playerkick", args: PlayerKickArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
         queryAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
@@ -334,15 +338,13 @@ declare global {
         queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "setcheat", args: SetCheatArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallsceneryremove", args: SmallSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallscenerysetcolour", args: SmallScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "stafffire", args: StaffFireArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "staffhire", args: StaffHireArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffhire", args: StaffHireArgs, callback?: (result: StaffHireNewActionResult) => void): void;
         queryAction(action: "staffsetcolour", args: StaffSetColourArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "staffsetcostume", args: StaffSetCostumeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "staffsetname", args: StaffSetNameArgs, callback?: (result: GameActionResult) => void): void;
@@ -376,7 +378,7 @@ declare global {
         executeAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "changemapsize", args: ChangeMapSizeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -396,6 +398,7 @@ declare global {
         executeAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "mapchangesize", args: MapChangeSizeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
@@ -403,6 +406,7 @@ declare global {
         executeAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetentrancefee", args: ParkSetEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
@@ -412,7 +416,7 @@ declare global {
         executeAction(action: "peepspawnplace", args: PeepSpawnPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "playerkick", args: PlayerKickArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
         executeAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
@@ -425,15 +429,13 @@ declare global {
         executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "setcheat", args: SetCheatArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "setparkentrancefee", args: SetParkEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallsceneryremove", args: SmallSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallscenerysetcolour", args: SmallScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "stafffire", args: StaffFireArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "staffhire", args: StaffHireArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffhire", args: StaffHireArgs, callback?: (result: StaffHireNewActionResult) => void): void;
         executeAction(action: "staffsetcolour", args: StaffSetColourArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "staffsetcostume", args: StaffSetCostumeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "staffsetname", args: StaffSetNameArgs, callback?: (result: GameActionResult) => void): void;
@@ -609,7 +611,7 @@ declare global {
         "bannersetcolour" |
         "bannersetname" |
         "bannersetstyle" |
-        "changemapsize" |
+        "cheatset" |
         "clearscenery" |
         "climateset" |
         "footpathadditionplace" |
@@ -629,6 +631,7 @@ declare global {
         "largesceneryremove" |
         "largescenerysetcolour" |
         "loadorquit" |
+        "mapchangesize" |
         "mazeplacetrack" |
         "mazesettrack" |
         "networkmodifygroup" |
@@ -636,6 +639,7 @@ declare global {
         "parkentranceremove" |
         "parkmarketing" |
         "parksetdate" |
+        "parksetentrancefee" |
         "parksetloan" |
         "parksetname" |
         "parksetparameter" |
@@ -658,8 +662,6 @@ declare global {
         "ridesetstatus" |
         "ridesetvehicle" |
         "scenariosetsetting" |
-        "setcheat" |
-        "setparkentrancefee" |
         "signsetname" |
         "signsetstyle" |
         "smallsceneryplace" |
@@ -729,9 +731,10 @@ declare global {
         parameter: number; // primary colour | secondary colour | 0: disable, 1: enable
     }
 
-    interface ChangeMapSizeArgs extends GameActionArgs {
-        targetSizeX: number;
-        targetSizeY: number;
+    interface CheatSetArgs extends GameActionArgs {
+        type: number; // see CheatType in openrct2/Cheats.h
+        param1: number; // see openrct2/actions/CheatSetAction.cpp
+        param2: number; // see openrct2/actions/CheatSetAction.cpp
     }
 
     interface ClearSceneryArgs extends GameActionArgs {
@@ -891,6 +894,11 @@ declare global {
         savePromptMode: number; // 0: save before load, 1: save before quit. Only used if mode = 0 (open save prompt).
     }
 
+    interface MapChangeSizeArgs extends GameActionArgs {
+        targetSizeX: number;
+        targetSizeY: number;
+    }
+
     interface MazePlaceTrackArgs extends GameActionArgs {
         x: number;
         y: number;
@@ -941,6 +949,10 @@ declare global {
         year: number;
         month: number;
         day: number;
+    }
+
+    interface ParkSetEntranceFeeArgs extends GameActionArgs {
+        value: number;
     }
 
     interface ParkSetLoanArgs extends GameActionArgs {
@@ -1077,16 +1089,6 @@ declare global {
 
     interface ScenarioSetSettingArgs extends GameActionArgs {
         setting: number; // see ScenarioSetSetting in openrct2/actions/ScenarioSetSettingAction.h
-        value: number;
-    }
-
-    interface SetCheatArgs extends GameActionArgs {
-        type: number; // see CheatType in openrct2/Cheats.h
-        param1: number; // see openrct2/actions/SetCheatAction.cpp
-        param2: number; // see openrct2/actions/SetCheatAction.cpp
-    }
-
-    interface SetParkEntranceFeeArgs extends GameActionArgs {
         value: number;
     }
 
@@ -1278,12 +1280,12 @@ declare global {
         height: number;
     }
 
-    interface GameActionEventArgs {
+    interface GameActionEventArgs<T = object> {
         readonly player: number;
         readonly type: number;
         readonly action: string;
         readonly isClientOnly: boolean;
-        readonly args: object;
+        readonly args: T;
         result: GameActionResult;
     }
 
@@ -1296,8 +1298,12 @@ declare global {
         expenditureType?: ExpenditureType;
     }
 
-    interface RideCreateGameActionResult extends GameActionResult {
-        readonly ride: number;
+    interface RideCreateActionResult extends GameActionResult {
+        readonly ride?: number;
+    }
+
+    interface StaffHireNewActionResult extends GameActionResult {
+        readonly peep?: number;
     }
 
     interface NetworkEventArgs {
@@ -1949,9 +1955,24 @@ declare global {
         readonly description: string;
 
         /**
-         * The relative starting Z position.
+         * The relative starting Z position from the base of the first track sequence block.
          */
         readonly beginZ: number;
+
+        /**
+         * The relative ending Z position from the base of the first track sequence block.
+         */
+        readonly endZ: number;
+
+        /**
+         * The relative ending X position. BeginX is always 0.
+         */
+        readonly endX: number;
+
+        /**
+         * The relative ending Y position. BeginY is always 0.
+         */
+        readonly endY: number;
 
         /**
         * The relative starting direction. Usually 0, but will be 4
@@ -1960,9 +1981,19 @@ declare global {
         readonly beginDirection: Direction8;
 
         /**
+         * The relative ending direction.
+         */
+        readonly endDirection: Direction8;
+
+        /**
          * The slope angle the segment starts with.
          */
-        readonly beginAngle: TrackSlope;
+        readonly beginSlope: TrackSlope;
+
+        /**
+         * The slope angle the segment ends with.
+         */
+        readonly endSlope: TrackSlope;
 
         /**
          * The kind of banking the segment starts with.
@@ -1970,41 +2001,12 @@ declare global {
         readonly beginBank: TrackBanking;
 
         /**
-         * The relative ending X position.
-         */
-        readonly endX: number;
-
-        /**
-         * The relative ending Y position.
-         */
-        readonly endY: number;
-
-        /**
-         * The relative ending Z position. Negative numbers indicate
-         * that the track ends upside down.
-         */
-        readonly endZ: number;
-
-        /**
-         * The relative ending direction.
-         */
-        readonly endDirection: Direction8;
-
-
-        /**
-         * The slope angle the segment ends with.
-         */
-        readonly endAngle: TrackSlope;
-
-        /**
          * The kind of banking the segment ends with.
          */
         readonly endBank: TrackBanking;
 
         /**
-         * The length of the segment in RCT track length units.
-         *
-         * *1 metre = 1 / (2 ^ 16)*
+         * The rough length of the segment.
          */
         readonly length: number;
 
@@ -2013,6 +2015,97 @@ declare global {
          */
         readonly elements: TrackSegmentElement[];
 
+        /**
+         * The curve direction of the suggested following piece, or track segment if it is specified.
+         */
+        readonly nextSuggestedSegment: TrackCurveType | number;
+
+        /**
+         * The curve direction of the suggested preceding piece, or track segment if it is specified.
+         */
+        readonly previousSuggestedSegment: TrackCurveType | number;
+
+        /**
+         * The base price of the track segment.
+         */
+        readonly priceModifier: number;
+
+        /**
+         * Track segment representing the mirror image of the track segment.
+         */
+        readonly mirrorSegment: number | null;
+
+        /**
+         * Track segment representing the covered/flume variant of the track segment.
+         */
+        readonly alternateTypeSegment: number | null;
+
+        /**
+         * The group the track element belongs to. Ride types allow or disallow track groups to limit the
+         * buildable track segments.
+         */
+        readonly trackGroup: number;
+
+        /**
+         * Which direction the track curves towards.
+         */
+        readonly turnDirection: TrackCurveType;
+
+        /**
+         * Which direction the track slopes towards.
+         */
+        readonly slopeDirection: TrackSlopeType;
+
+        readonly onlyAllowedUnderwater: boolean;
+        readonly onlyAllowedAboveGround: boolean;
+        readonly allowsChainLift: boolean;
+
+        /**
+         * The track segment counts as banked for vehicles with "no banked track" behaviour.
+         */
+        readonly isBanked: boolean;
+
+        /**
+         * The track segment counts as an inversion for vehicles with "no inversions" behaviour.
+         */
+        readonly isInversion: boolean;
+
+        /**
+         * Pevents steep forward chainlifts but allows steep reverse chainlifts for reverse incline
+         * shuttle mode for ride types which do not normally allow steep chainlifts.
+         */
+        readonly isSteepUp: boolean;
+
+        /**
+         * The track segment begins one height unit above normal track height units.
+         */
+        readonly startsHalfHeightUp: boolean;
+
+        /**
+         * The track segment adds to golf hole counter.
+         */
+        readonly countsAsGolfHole: boolean;
+
+        /**
+         * The track segment adds to banked turn counter.
+         */
+        readonly isBankedTurn: boolean;
+
+        /**
+         * The track segment adds to sloped turn counter.
+         */
+        readonly isSlopedTurn: boolean;
+
+        /**
+         * The track segment adds to helix counter.
+         */
+        readonly isHelix: boolean;
+
+        /**
+         * The track segment adds to inversion counter. Usually applied to the first half of inversions.
+         */
+        readonly countsAsInversion: boolean;
+        
         /**
          * Gets a length of the subpositions list for this track segment.
          */
@@ -2041,6 +2134,9 @@ declare global {
         Right = 4,
         UpsideDown = 15
     }
+
+    type TrackCurveType = "straight" | "left" | "right";
+    type TrackSlopeType = "flat" | "up" | "down";
 
     interface TrackSegmentElement extends Readonly<CoordsXYZ> {
     }
@@ -2493,7 +2589,172 @@ declare global {
          * Countdown between 0 and 255 that keeps track of how long the guest has been looking for its current destination.
          */
         lostCountdown: number;
+
+        /**
+         * The list of thoughts this guest has.
+         */
+        readonly thoughts: Thought[];
     }
+
+    /**
+     * Represents a guest's thought. This is a copy of a thought at a given time
+     * and its values will not update.
+     */
+    interface Thought {
+        /**
+         * The type of thought.
+         */
+        readonly type: ThoughtType;
+
+        /**
+         * The thought argument.
+         */
+        readonly item: number;
+
+        /**
+         * The freshness of the thought - the larger the number, the less fresh
+         * the thought.
+         */
+        readonly freshness: number;
+
+        /**
+         * The freshness timeout.
+         */
+        readonly freshTimeout: number;
+
+        /**
+         * Get the string for this thought.
+         * The result contains Unicode quotes on either end, e.g. “I feel sick”
+         */
+        toString(): string;
+    }
+
+    type ThoughtType =
+        "cant_afford_ride" |
+        "spent_money" |
+        "sick" |
+        "very_sick" |
+        "more_thrilling" |
+        "intense" |
+        "havent_finished" |
+        "sickening" |
+        "bad_value" |
+        "go_home" |
+        "good_value" |
+        "already_got" |
+        "cant_afford_item" |
+        "not_hungry" |
+        "not_thirsty" |
+        "drowning" |
+        "lost" |
+        "was_great" |
+        "queuing_ages" |
+        "tired" |
+        "hungry" |
+        "thirsty" |
+        "toilet" |
+        "cant_find" |
+        "not_paying" |
+        "not_while_raining" |
+        "bad_litter" |
+        "cant_find_exit" |
+        "get_off" |
+        "get_out" |
+        "not_safe" |
+        "path_disgusting" |
+        "crowded" |
+        "vandalism" |
+        "scenery" |
+        "very_clean" |
+        "fountains" |
+        "music" |
+        "balloon" |
+        "toy" |
+        "map" |
+        "photo" |
+        "umbrella" |
+        "drink" |
+        "burger" |
+        "chips" |
+        "ice_cream" |
+        "candyfloss" |
+        "pizza" |
+        "popcorn" |
+        "hot_dog" |
+        "tentacle" |
+        "hat" |
+        "toffee_apple" |
+        "tshirt" |
+        "doughnut" |
+        "coffee" |
+        "chicken" |
+        "lemonade" |
+        "wow" |
+        "wow2" |
+        "watched" |
+        "balloon_much" |
+        "toy_much" |
+        "map_much" |
+        "photo_much" |
+        "umbrella_much" |
+        "drink_much" |
+        "burger_much" |
+        "chips_much" |
+        "ice_cream_much" |
+        "candyfloss_much" |
+        "pizza_much" |
+        "popcorn_much" |
+        "hot_dog_much" |
+        "tentacle_much" |
+        "hat_much" |
+        "toffee_apple_much" |
+        "tshirt_much" |
+        "doughnut_much" |
+        "coffee_much" |
+        "chicken_much" |
+        "lemonade_much" |
+        "photo2" |
+        "photo3" |
+        "photo4" |
+        "pretzel" |
+        "hot_chocolate" |
+        "iced_tea" |
+        "funnel_cake" |
+        "sunglasses" |
+        "beef_noodles" |
+        "fried_rice_noodles" |
+        "wonton_soup" |
+        "meatball_soup" |
+        "fruit_juice" |
+        "soybean_milk" |
+        "sujongkwa" |
+        "sub_sandwich" |
+        "cookie" |
+        "roast_sausage" |
+        "photo2_much" |
+        "photo3_much" |
+        "photo4_much" |
+        "pretzel_much" |
+        "hot_chocolate_much" |
+        "iced_tea_much" |
+        "funnel_cake_much" |
+        "sunglasses_much" |
+        "beef_noodles_much" |
+        "fried_rice_noodles_much" |
+        "wonton_soup_much" |
+        "meatball_soup_much" |
+        "fruit_juice_much" |
+        "soybean_milk_much" |
+        "sujongkwa_much" |
+        "sub_sandwich_much" |
+        "cookie_much" |
+        "roast_sausage_much" |
+        "help" |
+        "running_out" |
+        "new_ride" |
+        "nice_ride_deprecated" |
+        "excited_deprecated" |
+        "here_we_are";
 
     /**
      * Represents a staff member.
@@ -3306,7 +3567,7 @@ declare global {
     type Widget =
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
         LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
-        
+
     type IconName = "arrow_down" | "arrow_up" | "chat" | "cheats" | "copy" | "empty" | "eyedropper" |
         "fast_forward" | "game_speed_indicator" | "game_speed_indicator_double" | "glassy_recolourable" |
         "hide_full" | "hide_partial" | "hide_scenery" | "hide_supports" | "hide_vegetation" | "hide_vehicles" |
@@ -3316,7 +3577,7 @@ declare global {
         "mountain_tool_even" | "mountain_tool_odd" | "multiplayer" | "multiplayer_desync" | "multiplayer_sync" |
         "multiplayer_toolbar" | "multiplayer_toolbar_pressed" | "mute" | "mute_pressed" | "news_messages" |
         "normal_selection_6x6" | "paste" | "path_railings" | "path_surfaces" | "paths" | "placeholder" |
-        "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed"| "rct1_open_off" |
+        "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed" | "rct1_open_off" |
         "rct1_open_off_pressed" | "rct1_open_on" | "rct1_open_on_pressed" | "rct1_simulate_off" |
         "rct1_simulate_off_pressed" | "rct1_simulate_on" | "rct1_simulate_on_pressed" | "rct1_test_off" |
         "rct1_test_off_pressed" | "rct1_test_on" | "rct1_test_on_pressed" | "reload" | "ride_stations" |
@@ -3408,14 +3669,16 @@ declare global {
         column: number;
     }
 
+    type ListViewItem = ListViewItemSeperator | string[] | string;
+
     interface ListViewWidget extends WidgetBase {
         type: "listview";
         scrollbars: ScrollbarType;
         isStriped: boolean;
         showColumnHeaders: boolean;
         columns: ListViewColumn[];
-        items: string[];
-        selectedCell: RowColumn;
+        items: ListViewItem[];
+        selectedCell: RowColumn | null;
         readonly highlightedCell: RowColumn;
         canSelect: boolean;
     }
@@ -3490,7 +3753,7 @@ declare global {
          * By default, text buttons have borders and image buttons do not but it can be overridden.
          */
         border?: boolean;
-        image?: number;
+        image?: number | IconName;
         isPressed?: boolean;
         text?: string;
         onClick?: () => void;
@@ -3537,8 +3800,6 @@ declare global {
         text?: string;
     }
 
-    type ListViewItem = ListViewItemSeperator | string[];
-
     interface RowColumn {
         row: number;
         column: number;
@@ -3550,7 +3811,7 @@ declare global {
         isStriped?: boolean;
         showColumnHeaders?: boolean;
         columns?: Partial<ListViewColumn>[];
-        items?: string[] | ListViewItem[];
+        items?: ListViewItem[];
         selectedCell?: RowColumn;
         canSelect?: boolean;
         onHighlight?: (item: number, column: number) => void;

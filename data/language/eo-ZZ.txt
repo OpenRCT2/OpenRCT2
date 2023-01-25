@@ -3639,6 +3639,11 @@ STR_6533    :{WINDOW_COLOUR_2}Faktoro de Eksciteco: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Faktoro de Intenseco: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Faktoro de Naŭzo: {BLACK}-{COMMA16}%
 STR_6536    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. La parko estis konservita en v{INT32}, vi nune estas en v{INT32}.
+STR_6537    :Permesi uzante regulajn trotuarojn kiel atendovico
+STR_6538    :Montras regulajn trotuarojn en la atendovicoj-fallisto de la Trotuaroj-fenestro.
+STR_6539    :Bremso Fermita
+STR_6540    :{WINDOW_COLOUR_2}Specialan dankon al la sekvantaj firmaoj por permesi ilian similecon:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
 
 #############
 # Scenarios #

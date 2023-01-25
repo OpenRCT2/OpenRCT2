@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,21 +10,20 @@
 #pragma once
 
 #include "../common.h"
-#include "../interface/Window.h"
 
-enum class TileInspectorPage : int16_t
+using ObjectEntryIndex = uint16_t;
+
+enum
 {
-    Default = 0,
-    Surface,
-    Path,
-    Track,
-    Scenery,
-    Entrance,
-    Wall,
-    LargeScenery,
-    Banner,
+    BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
 };
 
-extern TileCoordsXY windowTileInspectorTile;
-extern int32_t windowTileInspectorElementCount;
-extern int32_t windowTileInspectorSelectedIndex;
+struct BannerSceneryEntry
+{
+    StringId name;
+    uint32_t image;
+    uint8_t scrolling_mode;
+    uint8_t flags;
+    int16_t price;
+    ObjectEntryIndex scenery_tab_id;
+};

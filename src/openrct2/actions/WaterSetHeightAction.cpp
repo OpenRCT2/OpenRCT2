@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -73,7 +73,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
-        log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
+        LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
         return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
@@ -118,11 +118,11 @@ GameActions::Result WaterSetHeightAction::Execute() const
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
     {
-        log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
+        LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
         return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
-    if (_height > surfaceElement->base_height)
+    if (_height > surfaceElement->BaseHeight)
     {
         surfaceElement->SetWaterHeight(_height * COORDS_Z_STEP);
     }

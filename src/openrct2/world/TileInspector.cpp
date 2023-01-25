@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../windows/Intent.h"
-#include "../windows/tile_inspector.h"
+#include "../windows/TileInspectorGlobals.h"
 #include "Banner.h"
 #include "Footpath.h"
 #include "LargeScenery.h"
@@ -48,17 +48,17 @@ namespace OpenRCT2::TileInspector
 
         if (firstElement == nullptr)
         {
-            log_error("First element is out of range for the tile");
+            LOG_ERROR("First element is out of range for the tile");
             return false;
         }
         if (secondElement == nullptr)
         {
-            log_error("Second element is out of range for the tile");
+            LOG_ERROR("Second element is out of range for the tile");
             return false;
         }
         if (firstElement == secondElement)
         {
-            log_error("Can't swap the element with itself");
+            LOG_ERROR("Can't swap the element with itself");
             return false;
         }
 
@@ -75,10 +75,10 @@ namespace OpenRCT2::TileInspector
         return true;
     }
 
-    static rct_window* GetTileInspectorWithPos(const CoordsXY& loc)
+    static WindowBase* GetTileInspectorWithPos(const CoordsXY& loc)
     {
         // Return the tile inspector window for everyone who has the tile selected
-        auto* window = window_find_by_class(WindowClass::TileInspector);
+        auto* window = WindowFindByClass(WindowClass::TileInspector);
         if (window != nullptr && loc == windowTileInspectorTile.ToCoordsXY())
         {
             return window;
@@ -241,7 +241,7 @@ namespace OpenRCT2::TileInspector
                     tileElement->SetDirection(newRotation);
 
                     // Update ride's known entrance/exit rotation
-                    auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                    auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
                     if (ride != nullptr)
                     {
                         auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
@@ -249,7 +249,7 @@ namespace OpenRCT2::TileInspector
                         auto entrance = station.Entrance;
                         auto exit = station.Exit;
                         uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
-                        uint8_t z = tileElement->base_height;
+                        uint8_t z = tileElement->BaseHeight;
 
                         // Make sure this is the correct entrance or exit
                         if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / COORDS_XY_STEP
@@ -313,7 +313,7 @@ namespace OpenRCT2::TileInspector
         MapInvalidateTileFull(loc);
         if (loc == windowTileInspectorTile.ToCoordsXY())
         {
-            window_invalidate_by_class(WindowClass::TileInspector);
+            WindowInvalidateByClass(WindowClass::TileInspector);
         }
 
         return GameActions::Result();
@@ -339,7 +339,7 @@ namespace OpenRCT2::TileInspector
                 auto newBanner = CreateBanner();
                 if (newBanner == nullptr)
                 {
-                    log_error("No free banners available");
+                    LOG_ERROR("No free banners available");
                     return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
                 }
                 // Copy the banners style
@@ -405,9 +405,9 @@ namespace OpenRCT2::TileInspector
                 // While current element's base height is lower, or (when their baseheight is the same) the other map element's
                 // clearance height is lower...
                 while (currentId > 0
-                       && (otherElement->base_height > currentElement->base_height
-                           || (otherElement->base_height == currentElement->base_height
-                               && otherElement->clearance_height > currentElement->clearance_height)))
+                       && (otherElement->BaseHeight > currentElement->BaseHeight
+                           || (otherElement->BaseHeight == currentElement->BaseHeight
+                               && otherElement->ClearanceHeight > currentElement->ClearanceHeight)))
                 {
                     if (!SwapTileElements(loc, currentId - 1, currentId))
                     {
@@ -439,8 +439,8 @@ namespace OpenRCT2::TileInspector
 
     static GameActions::Result ValidateTileHeight(TileElement* const tileElement, int8_t heightOffset)
     {
-        int16_t newBaseHeight = static_cast<int16_t>(tileElement->base_height + heightOffset);
-        int16_t newClearanceHeight = static_cast<int16_t>(tileElement->clearance_height + heightOffset);
+        int16_t newBaseHeight = static_cast<int16_t>(tileElement->BaseHeight + heightOffset);
+        int16_t newClearanceHeight = static_cast<int16_t>(tileElement->ClearanceHeight + heightOffset);
         if (newBaseHeight < 0)
         {
             return GameActions::Result(GameActions::Status::TooLow, STR_CANT_LOWER_ELEMENT_HERE, STR_TOO_LOW);
@@ -478,14 +478,14 @@ namespace OpenRCT2::TileInspector
                 if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
                     // Update the ride's known entrance or exit height
-                    auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                    auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
                     if (ride != nullptr)
                     {
                         auto entranceIndex = tileElement->AsEntrance()->GetStationIndex();
                         auto& station = ride->GetStation(entranceIndex);
                         const auto& entranceLoc = station.Entrance;
                         const auto& exitLoc = station.Exit;
-                        uint8_t z = tileElement->base_height;
+                        uint8_t z = tileElement->BaseHeight;
 
                         // Make sure this is the correct entrance or exit
                         if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entranceLoc == TileCoordsXYZ{ loc, z })
@@ -496,8 +496,8 @@ namespace OpenRCT2::TileInspector
                 }
             }
 
-            tileElement->base_height += heightOffset;
-            tileElement->clearance_height += heightOffset;
+            tileElement->BaseHeight += heightOffset;
+            tileElement->ClearanceHeight += heightOffset;
 
             MapInvalidateTileFull(loc);
 
@@ -572,8 +572,8 @@ namespace OpenRCT2::TileInspector
                     }
                 }
 
-                surfaceElement->base_height += 2;
-                surfaceElement->clearance_height = surfaceElement->base_height;
+                surfaceElement->BaseHeight += 2;
+                surfaceElement->ClearanceHeight = surfaceElement->BaseHeight;
             }
 
             surfaceElement->SetSlope(newSlope);
@@ -683,7 +683,7 @@ namespace OpenRCT2::TileInspector
         if (entranceElement == nullptr || entranceElement->GetType() != TileElementType::Entrance)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
-        auto ride = get_ride(entranceElement->AsEntrance()->GetRideIndex());
+        auto ride = GetRide(entranceElement->AsEntrance()->GetRideIndex());
         if (ride == nullptr)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
@@ -695,10 +695,10 @@ namespace OpenRCT2::TileInspector
             switch (entranceElement->AsEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                    station.Entrance = { loc, entranceElement->base_height, entranceElement->GetDirection() };
+                    station.Entrance = { loc, entranceElement->BaseHeight, entranceElement->GetDirection() };
                     break;
                 case ENTRANCE_TYPE_RIDE_EXIT:
-                    station.Exit = { loc, entranceElement->base_height, entranceElement->GetDirection() };
+                    station.Exit = { loc, entranceElement->BaseHeight, entranceElement->GetDirection() };
                     break;
             }
 
@@ -775,7 +775,7 @@ namespace OpenRCT2::TileInspector
             int16_t originZ = trackElement->GetBaseZ();
             uint8_t rotation = trackElement->GetDirection();
             auto rideIndex = trackElement->AsTrack()->GetRideIndex();
-            auto ride = get_ride(rideIndex);
+            auto ride = GetRide(rideIndex);
             if (ride == nullptr)
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
@@ -804,7 +804,7 @@ namespace OpenRCT2::TileInspector
                 TrackElement* tileElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
                 if (tileElement == nullptr)
                 {
-                    log_error("Track map element part not found!");
+                    LOG_ERROR("Track map element part not found!");
                     return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
                 }
 
@@ -817,8 +817,8 @@ namespace OpenRCT2::TileInspector
                 // Keep?
                 // invalidate_test_results(ride);
 
-                tileElement->base_height += offset;
-                tileElement->clearance_height += offset;
+                tileElement->BaseHeight += offset;
+                tileElement->ClearanceHeight += offset;
             }
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
@@ -859,7 +859,7 @@ namespace OpenRCT2::TileInspector
             int16_t originZ = trackElement->GetBaseZ();
             uint8_t rotation = trackElement->GetDirection();
             auto rideIndex = trackElement->AsTrack()->GetRideIndex();
-            auto ride = get_ride(rideIndex);
+            auto ride = GetRide(rideIndex);
             if (ride == nullptr)
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
@@ -888,7 +888,7 @@ namespace OpenRCT2::TileInspector
                 TrackElement* tileElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
                 if (tileElement == nullptr)
                 {
-                    log_error("Track map element part not found!");
+                    LOG_ERROR("Track map element part not found!");
                     return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
                 }
 
@@ -916,7 +916,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActions::Result TrackSetBlockBrake(const CoordsXY& loc, int32_t elementIndex, bool blockBrake, bool isExecuting)
+    GameActions::Result TrackSetBrakeClosed(const CoordsXY& loc, int32_t elementIndex, bool isClosed, bool isExecuting)
     {
         TileElement* const trackElement = MapGetNthElementAt(loc, elementIndex);
         if (trackElement == nullptr || trackElement->GetType() != TileElementType::Track)
@@ -924,7 +924,7 @@ namespace OpenRCT2::TileInspector
 
         if (isExecuting)
         {
-            trackElement->AsTrack()->SetBlockBrakeClosed(blockBrake);
+            trackElement->AsTrack()->SetBrakeClosed(isClosed);
 
             MapInvalidateTileFull(loc);
 

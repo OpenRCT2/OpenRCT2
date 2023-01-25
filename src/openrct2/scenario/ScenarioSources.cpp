@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -358,7 +358,7 @@ namespace ScenarioSources
 
 #pragma endregion
 
-    bool TryGetByName(const utf8* name, source_desc* outDesc)
+    bool TryGetByName(const utf8* name, SourceDescriptor* outDesc)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
@@ -389,7 +389,7 @@ namespace ScenarioSources
         return false;
     }
 
-    bool TryGetById(uint8_t id, source_desc* outDesc)
+    bool TryGetById(uint8_t id, SourceDescriptor* outDesc)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
@@ -429,7 +429,7 @@ namespace ScenarioSources
         {
             if (nameLength >= 4 && (name[3] == '1' || name[3] == '2'))
             {
-                log_verbose("Stripping RCT/1/2 from name: %s", name);
+                LOG_VERBOSE("Stripping RCT/1/2 from name: %s", name);
                 String::Set(buffer, bufferSize, name + 4);
             }
             else
@@ -447,7 +447,7 @@ namespace ScenarioSources
         {
             if (String::Equals(alias.Alternative, name))
             {
-                log_verbose("Found alias: %s; will treat as: %s", name, alias.Original);
+                LOG_VERBOSE("Found alias: %s; will treat as: %s", name, alias.Original);
                 String::Set(buffer, bufferSize, alias.Original);
             }
         }

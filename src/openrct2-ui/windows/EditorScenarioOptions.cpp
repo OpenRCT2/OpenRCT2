@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -118,7 +118,7 @@ enum {
     WIDX_HARD_GUEST_GENERATION
 };
 
-static rct_widget window_editor_scenario_options_financial_widgets[] = {
+static Widget window_editor_scenario_options_financial_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
     MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
     MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -133,7 +133,7 @@ static rct_widget window_editor_scenario_options_financial_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_editor_scenario_options_guests_widgets[] = {
+static Widget window_editor_scenario_options_guests_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
     MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
     MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
@@ -148,7 +148,7 @@ static rct_widget window_editor_scenario_options_guests_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_editor_scenario_options_park_widgets[] = {
+static Widget window_editor_scenario_options_park_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
     MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
     MakeRemapWidget   ({  3,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -169,7 +169,7 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget *window_editor_scenario_options_widgets[] = {
+static Widget *window_editor_scenario_options_widgets[] = {
     window_editor_scenario_options_financial_widgets,
     window_editor_scenario_options_guests_widgets,
     window_editor_scenario_options_park_widgets,
@@ -284,7 +284,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         switch (page)
         {
@@ -320,9 +320,9 @@ private:
         ResizeFrameWithPage();
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
-        rct_widget* widget;
+        Widget* widget;
         int32_t spriteIndex;
 
         // Tab 1
@@ -331,7 +331,7 @@ private:
         if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
             spriteIndex += (frame_no / 2) % 8;
 
-        gfx_draw_sprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
         // Tab 2
         widget = &widgets[WIDX_TAB_2];
@@ -339,12 +339,12 @@ private:
         if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
             spriteIndex += (frame_no / 4) % 8;
 
-        gfx_draw_sprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
         // Tab 3
         widget = &widgets[WIDX_TAB_3];
         spriteIndex = SPR_TAB_PARK;
-        gfx_draw_sprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 
     void SetPage(int32_t newPage)
@@ -371,7 +371,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
@@ -399,7 +399,7 @@ private:
 
     void FinancialResize()
     {
-        window_set_resize(*this, 280, 149, 280, 149);
+        WindowSetResize(*this, 280, 149, 280, 149);
     }
 
     void ShowClimateDropdown()
@@ -531,8 +531,8 @@ private:
 
         if (gScreenFlags == SCREEN_FLAGS_PLAYING)
         {
-            window_invalidate_by_class(WindowClass::Finances);
-            window_invalidate_by_class(WindowClass::BottomToolbar);
+            WindowInvalidateByClass(WindowClass::Finances);
+            WindowInvalidateByClass(WindowClass::BottomToolbar);
         }
     }
 
@@ -540,12 +540,12 @@ private:
     {
         frame_no++;
         FinancialPrepareDraw();
-        widget_invalidate(*this, WIDX_TAB_1);
+        WidgetInvalidate(*this, WIDX_TAB_1);
     }
 
     void FinancialPrepareDraw()
     {
-        rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
+        Widget* newWidgets = window_editor_scenario_options_widgets[page];
         if (widgets != newWidgets)
         {
             widgets = newWidgets;
@@ -586,7 +586,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void FinancialDraw(rct_drawpixelinfo& dpi)
+    void FinancialDraw(DrawPixelInfo& dpi)
     {
         ScreenCoordsXY screenCoords{};
 
@@ -652,7 +652,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
@@ -680,7 +680,7 @@ private:
 
     void GuestsResize()
     {
-        window_set_resize(*this, 380, 149, 380, 149);
+        WindowSetResize(*this, 380, 149, 380, 149);
     }
 
     void GuestsMouseDown(WidgetIndex widgetIndex)
@@ -798,12 +798,12 @@ private:
     {
         frame_no++;
         GuestsPrepareDraw();
-        widget_invalidate(*this, WIDX_TAB_2);
+        WidgetInvalidate(*this, WIDX_TAB_2);
     }
 
     void GuestsPrepareDraw()
     {
-        rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
+        Widget* newWidgets = window_editor_scenario_options_widgets[page];
         if (widgets != newWidgets)
         {
             widgets = newWidgets;
@@ -834,7 +834,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void GuestsDraw(rct_drawpixelinfo& dpi)
+    void GuestsDraw(DrawPixelInfo& dpi)
     {
         ScreenCoordsXY screenCoords{};
 
@@ -898,7 +898,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
@@ -951,13 +951,13 @@ private:
 
     void ParkResize()
     {
-        window_set_resize(*this, 400, 200, 400, 200);
+        WindowSetResize(*this, 400, 200, 400, 200);
     }
 
     void ParkMouseDown(WidgetIndex widgetIndex)
     {
-        rct_widget* dropdownWidget;
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* dropdownWidget;
+        Widget* widget = &widgets[widgetIndex];
 
         switch (widgetIndex)
         {
@@ -1097,12 +1097,12 @@ private:
     {
         frame_no++;
         ParkPrepareDraw();
-        widget_invalidate(*this, WIDX_TAB_3);
+        WidgetInvalidate(*this, WIDX_TAB_3);
     }
 
     void ParkPrepareDraw()
     {
-        rct_widget* newWidgets = window_editor_scenario_options_widgets[page];
+        Widget* newWidgets = window_editor_scenario_options_widgets[page];
         if (widgets != newWidgets)
         {
             widgets = newWidgets;
@@ -1153,7 +1153,7 @@ private:
         AnchorBorderWidgets();
     }
 
-    void ParkDraw(rct_drawpixelinfo& dpi)
+    void ParkDraw(DrawPixelInfo& dpi)
     {
         ScreenCoordsXY screenCoords{};
 
@@ -1236,7 +1236,7 @@ private:
 #pragma endregion
 };
 
-rct_window* WindowEditorScenarioOptionsOpen()
+WindowBase* WindowEditorScenarioOptionsOpen()
 {
     return WindowFocusOrCreate<EditorScenarioOptionsWindow>(WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
 }

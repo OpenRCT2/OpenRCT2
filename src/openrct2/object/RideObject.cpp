@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,7 @@
 #include "../localisation/Language.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/RCT2.h"
+#include "../ride/CarEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
@@ -47,22 +48,17 @@ static constexpr SpritePrecision PrecisionFromNumFrames(uint8_t numRotationFrame
     if (numRotationFrames == 0)
         return SpritePrecision::None;
     else
-        return static_cast<SpritePrecision>(bitscanforward(numRotationFrames) + 1);
+        return static_cast<SpritePrecision>(UtilBitScanForward(numRotationFrames) + 1);
 }
 
-static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
+static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
 {
-    if (rideEntry == nullptr)
-    {
-        return;
-    }
-
     for (auto i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
-        auto oldRideType = rideEntry->ride_type[i];
+        auto oldRideType = rideEntry.ride_type[i];
         if (oldRideType != RIDE_TYPE_NULL)
         {
-            rideEntry->ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
+            rideEntry.ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
         }
     }
 }
@@ -89,7 +85,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.ThirdCar = stream->ReadValue<uint8_t>();
 
     _legacyType.BuildMenuPriority = 0;
-    // Skip pad_019
+    // Skip Pad019
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
     for (auto& carEntry : _legacyType.Cars)
@@ -199,7 +195,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
     }
-    RideObjectUpdateRideType(&_legacyType);
+    RideObjectUpdateRideType(_legacyType);
 }
 
 void RideObject::Load()
@@ -207,68 +203,68 @@ void RideObject::Load()
     _legacyType.obj = this;
 
     GetStringTable().Sort();
-    _legacyType.naming.Name = language_allocate_object_string(GetName());
-    _legacyType.naming.Description = language_allocate_object_string(GetDescription());
-    _legacyType.capacity = language_allocate_object_string(GetCapacity());
-    _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.naming.Name = LanguageAllocateObjectString(GetName());
+    _legacyType.naming.Description = LanguageAllocateObjectString(GetDescription());
+    _legacyType.capacity = LanguageAllocateObjectString(GetCapacity());
+    _legacyType.images_offset = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
     int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
     for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCarTypesPerRideEntry; i++)
     {
-        CarEntry* carEntry = &_legacyType.Cars[i];
-        if (carEntry->GroupEnabled(SpriteGroupType::SlopeFlat))
+        CarEntry& carEntry = _legacyType.Cars[i];
+        if (carEntry.GroupEnabled(SpriteGroupType::SlopeFlat))
         {
             // RCT2 calculates num_vertical_frames and num_horizontal_frames and overwrites these properties on the car
             // entry. Immediately afterwards, the two were multiplied in order to calculate base_num_frames and were never used
             // again. This has been changed to use the calculation results directly - num_vertical_frames and
             // num_horizontal_frames are no longer set on the car entry.
             // 0x6DE946
-            carEntry->base_num_frames = CalculateNumVerticalFrames(carEntry) * CalculateNumHorizontalFrames(carEntry);
+            carEntry.base_num_frames = CalculateNumVerticalFrames(carEntry) * CalculateNumHorizontalFrames(carEntry);
             uint32_t baseImageId = currentCarImagesOffset;
             uint32_t imageIndex = baseImageId;
-            carEntry->base_image_id = baseImageId;
+            carEntry.base_image_id = baseImageId;
 
             for (uint8_t spriteGroup = 0; spriteGroup < EnumValue(SpriteGroupType::Count); spriteGroup++)
             {
-                if (carEntry->SpriteGroups[spriteGroup].Enabled())
+                if (carEntry.SpriteGroups[spriteGroup].Enabled())
                 {
-                    carEntry->SpriteGroups[spriteGroup].imageId = imageIndex;
-                    const auto spriteCount = carEntry->base_num_frames
-                        * carEntry->NumRotationSprites(static_cast<SpriteGroupType>(spriteGroup))
+                    carEntry.SpriteGroups[spriteGroup].imageId = imageIndex;
+                    const auto spriteCount = carEntry.base_num_frames
+                        * carEntry.NumRotationSprites(static_cast<SpriteGroupType>(spriteGroup))
                         * SpriteGroupMultiplier[spriteGroup];
                     imageIndex += spriteCount;
                 }
             }
 
-            carEntry->NumCarImages = imageIndex - currentCarImagesOffset;
+            carEntry.NumCarImages = imageIndex - currentCarImagesOffset;
 
             // Move the offset over this car’s images. Including peeps
-            currentCarImagesOffset = imageIndex + carEntry->no_seating_rows * carEntry->NumCarImages;
+            currentCarImagesOffset = imageIndex + carEntry.no_seating_rows * carEntry.NumCarImages;
             // 0x6DEB0D
 
-            if (!(carEntry->flags & CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS))
+            if (!(carEntry.flags & CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS))
             {
                 int32_t num_images = currentCarImagesOffset - baseImageId;
-                if (carEntry->flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
+                if (carEntry.flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
                 {
                     num_images *= 2;
                 }
 
                 if (!gOpenRCT2NoGraphics)
                 {
-                    set_vehicle_type_image_max_sizes(carEntry, num_images);
+                    CarEntrySetImageMaxSizes(carEntry, num_images);
                 }
             }
 
             if (!_peepLoadingPositions[i].empty())
             {
-                carEntry->peep_loading_positions = std::move(_peepLoadingPositions[i]);
+                carEntry.peep_loading_positions = std::move(_peepLoadingPositions[i]);
             }
 
             if (!_peepLoadingWaypoints[i].empty())
             {
-                carEntry->peep_loading_waypoints = std::move(_peepLoadingWaypoints[i]);
+                carEntry.peep_loading_waypoints = std::move(_peepLoadingWaypoints[i]);
             }
         }
     }
@@ -276,10 +272,10 @@ void RideObject::Load()
 
 void RideObject::Unload()
 {
-    language_free_object_string(_legacyType.naming.Name);
-    language_free_object_string(_legacyType.naming.Description);
-    language_free_object_string(_legacyType.capacity);
-    gfx_object_free_images(_legacyType.images_offset, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.naming.Name);
+    LanguageFreeObjectString(_legacyType.naming.Description);
+    LanguageFreeObjectString(_legacyType.capacity);
+    GfxObjectFreeImages(_legacyType.images_offset, GetImageTable().GetCount());
 
     _legacyType.naming.Name = 0;
     _legacyType.naming.Description = 0;
@@ -287,7 +283,7 @@ void RideObject::Unload()
     _legacyType.images_offset = 0;
 }
 
-void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
+void RideObject::DrawPreview(DrawPixelInfo* dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
 {
     uint32_t imageId = _legacyType.images_offset;
 
@@ -299,7 +295,7 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
         imageId++;
     }
 
-    gfx_draw_sprite(dpi, ImageId(imageId), { 0, 0 });
+    GfxDrawSprite(dpi, ImageId(imageId), { 0, 0 });
 }
 
 std::string RideObject::GetDescription() const
@@ -374,22 +370,22 @@ void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, ISt
     ReadLegacySpriteGroups(car, spriteGroups);
 }
 
-uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry* carEntry)
+uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry& carEntry)
 {
     // 0x6DE90B
     uint8_t numVerticalFrames;
-    if (carEntry->flags & CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES)
+    if (carEntry.flags & CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES)
     {
-        numVerticalFrames = carEntry->num_vertical_frames_override;
+        numVerticalFrames = carEntry.num_vertical_frames_override;
     }
     else
     {
-        if (!(carEntry->flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
+        if (!(carEntry.flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
         {
-            if (carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION
-                && carEntry->animation != CAR_ENTRY_ANIMATION_OBSERVATION_TOWER)
+            if (carEntry.flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION
+                && carEntry.animation != CAR_ENTRY_ANIMATION_OBSERVATION_TOWER)
             {
-                if (!(carEntry->flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
+                if (!(carEntry.flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
                 {
                     numVerticalFrames = 4;
                 }
@@ -412,14 +408,14 @@ uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry* carEntry)
     return numVerticalFrames;
 }
 
-uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry* carEntry)
+uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry& carEntry)
 {
     uint8_t numHorizontalFrames;
-    if (carEntry->flags & CAR_ENTRY_FLAG_SWINGING)
+    if (carEntry.flags & CAR_ENTRY_FLAG_SWINGING)
     {
-        if (!(carEntry->flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) && !(carEntry->flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+        if (!(carEntry.flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) && !(carEntry.flags & CAR_ENTRY_FLAG_SLIDE_SWING))
         {
-            if (carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
+            if (carEntry.flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
             {
                 numHorizontalFrames = 3;
             }
@@ -428,7 +424,7 @@ uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry* carEntry)
                 numHorizontalFrames = 5;
             }
         }
-        else if (!(carEntry->flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) || !(carEntry->flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+        else if (!(carEntry.flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) || !(carEntry.flags & CAR_ENTRY_FLAG_SLIDE_SWING))
         {
             numHorizontalFrames = 7;
         }
@@ -565,10 +561,11 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "noCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
                 { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
                 { "riderControlsSpeed", RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED },
+                { "hideEmptyTrains", RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS },
             });
     }
 
-    RideObjectUpdateRideType(&_legacyType);
+    RideObjectUpdateRideType(_legacyType);
     PopulateTablesFromJson(context, root);
 }
 
@@ -778,7 +775,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             auto numRotationFrames = Json::GetNumber<uint8_t>(jRotationCount[SpriteGroupNames[i]], 0);
             if (numRotationFrames != 0)
             {
-                if (!is_power_of_2(numRotationFrames))
+                if (!IsPowerOf2(numRotationFrames))
                 {
                     context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
                     continue;
@@ -791,7 +788,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     return car;
 }
 
-vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
+VehicleColourPresetList RideObject::ReadJsonCarColours(json_t& jCarColours)
 {
     Guard::Assert(jCarColours.is_array(), "RideObject::ReadJsonCarColours expects parameter jCarColours to be array");
 
@@ -806,7 +803,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
         {
             // Read all colours from first config
             auto config = ReadJsonColourConfiguration(firstElement);
-            vehicle_colour_preset_list list = {};
+            VehicleColourPresetList list = {};
             list.count = 255;
             std::copy_n(config.data(), std::min<size_t>(numColours, 32), list.list);
             return list;
@@ -814,7 +811,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
     }
 
     // Read first colour for each config
-    vehicle_colour_preset_list list = {};
+    VehicleColourPresetList list = {};
     for (size_t index = 0; index < jCarColours.size(); index++)
     {
         auto config = ReadJsonColourConfiguration(jCarColours[index]);

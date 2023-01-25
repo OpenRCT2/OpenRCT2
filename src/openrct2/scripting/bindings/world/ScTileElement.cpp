@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,12 +91,12 @@ namespace OpenRCT2::Scripting
 
     uint8_t ScTileElement::baseHeight_get() const
     {
-        return _element->base_height;
+        return _element->BaseHeight;
     }
     void ScTileElement::baseHeight_set(uint8_t newBaseHeight)
     {
         ThrowIfGameStateNotMutable();
-        _element->base_height = newBaseHeight;
+        _element->BaseHeight = newBaseHeight;
         Invalidate();
     }
 
@@ -113,12 +113,12 @@ namespace OpenRCT2::Scripting
 
     uint8_t ScTileElement::clearanceHeight_get() const
     {
-        return _element->clearance_height;
+        return _element->ClearanceHeight;
     }
     void ScTileElement::clearanceHeight_set(uint8_t newClearanceHeight)
     {
         ThrowIfGameStateNotMutable();
-        _element->clearance_height = newClearanceHeight;
+        _element->ClearanceHeight = newClearanceHeight;
         Invalidate();
     }
 
@@ -494,7 +494,7 @@ namespace OpenRCT2::Scripting
                 case TileElementType::Track:
                 {
                     auto* el = _element->AsTrack();
-                    auto* ride = get_ride(el->GetRideIndex());
+                    auto* ride = GetRide(el->GetRideIndex());
 
                     if (ride != nullptr)
                     {
@@ -545,7 +545,7 @@ namespace OpenRCT2::Scripting
                 case TileElementType::Track:
                 {
                     auto* el = _element->AsTrack();
-                    auto ride = get_ride(el->GetRideIndex());
+                    auto ride = GetRide(el->GetRideIndex());
 
                     if (ride != nullptr)
                     {
@@ -818,7 +818,7 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot read 'mazeEntry' property, element is not a TrackElement.";
 
-            Ride* ride = get_ride(el->GetRideIndex());
+            Ride* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot read 'mazeEntry' property, ride is invalid.";
 
@@ -848,7 +848,7 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot set 'mazeEntry' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot set 'mazeEntry' property, ride is invalid.";
 
@@ -876,7 +876,7 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot read 'colourScheme' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot read 'colourScheme' property, ride is invalid.";
 
@@ -906,7 +906,7 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot set 'colourScheme' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot set 'colourScheme', ride is invalid.";
 
@@ -934,7 +934,7 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot read 'seatRotation' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot read 'seatRotation' property, ride is invalid.";
 
@@ -964,7 +964,7 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot set 'seatRotation' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot set 'seatRotation' property, ride is invalid.";
 

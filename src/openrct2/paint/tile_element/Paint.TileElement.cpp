@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,7 +94,7 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
     dx -= 16;
     int32_t bx = dx + 32;
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     if (bx <= dpi->y)
         return;
     dx -= 20;
@@ -119,7 +119,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     PROFILED_FUNCTION();
 
     CoordsXY coords = origCoords;
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
 
     if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {

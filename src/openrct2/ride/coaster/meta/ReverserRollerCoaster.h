@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_reverser_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionReverserRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
     SET_FIELD(Heights, { 18, 24, 8, 11, }),
     SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftWood, 3, 4 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_reverser_roller_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateReverserRollerCoaster),
     SET_FIELD(RatingsMultipliers, { 48, 28, 7 }),
     SET_FIELD(UpkeepCosts, { 39, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 27.50_GBP, 3.00_GBP, 37, }),

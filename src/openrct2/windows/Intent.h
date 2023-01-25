@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,16 +91,16 @@ public:
     uint32_t GetUIntExtra(uint32_t key) const;
     int32_t GetSIntExtra(uint32_t key) const;
     close_callback GetCloseCallbackExtra(uint32_t key) const;
-    Intent* putExtra(uint32_t key, uint32_t value);
-    Intent* putExtra(uint32_t key, void* value);
-    Intent* putExtra(uint32_t key, int32_t value);
-    Intent* putExtra(uint32_t key, std::string value);
-    Intent* putExtra(uint32_t key, close_callback value);
+    Intent* PutExtra(uint32_t key, uint32_t value);
+    Intent* PutExtra(uint32_t key, void* value);
+    Intent* PutExtra(uint32_t key, int32_t value);
+    Intent* PutExtra(uint32_t key, std::string value);
+    Intent* PutExtra(uint32_t key, close_callback value);
 
-    template<typename T, T TNull, typename TTag> Intent* putExtra(uint32_t key, const TIdentifier<T, TNull, TTag>& value)
+    template<typename T, T TNull, typename TTag> Intent* PutExtra(uint32_t key, const TIdentifier<T, TNull, TTag>& value)
     {
         const auto val = value.ToUnderlying();
-        return putExtra(key, static_cast<uint32_t>(val));
+        return PutExtra(key, static_cast<uint32_t>(val));
     }
 };
 

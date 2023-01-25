@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -183,11 +183,11 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::TrackSetChain(_loc, elementIndex, false, setChain, isExecuting);
             break;
         }
-        case TileModifyType::TrackSetBlockBrake:
+        case TileModifyType::TrackSetBrake:
         {
             const auto elementIndex = _value1;
-            const bool blockBrake = _value2;
-            res = TileInspector::TrackSetBlockBrake(_loc, elementIndex, blockBrake, isExecuting);
+            const bool isClosed = _value2;
+            res = TileInspector::TrackSetBrakeClosed(_loc, elementIndex, isClosed, isExecuting);
             break;
         }
         case TileModifyType::TrackSetIndestructible:
@@ -219,7 +219,7 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             break;
         }
         default:
-            log_error("invalid instruction");
+            LOG_ERROR("invalid instruction");
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 

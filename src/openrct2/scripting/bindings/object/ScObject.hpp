@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -478,7 +478,7 @@ namespace OpenRCT2::Scripting
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                auto rideEntry = static_cast<rct_ride_entry*>(obj->GetLegacyData());
+                auto rideEntry = static_cast<RideObjectEntry*>(obj->GetLegacyData());
                 if (rideEntry != nullptr && _vehicleIndex < std::size(rideEntry->Cars))
                 {
                     return rideEntry->GetCar(_vehicleIndex);
@@ -758,12 +758,12 @@ namespace OpenRCT2::Scripting
             return static_cast<RideObject*>(ScObject::GetObject());
         }
 
-        const rct_ride_entry* GetLegacyData() const
+        const RideObjectEntry* GetLegacyData() const
         {
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                return static_cast<rct_ride_entry*>(obj->GetLegacyData());
+                return static_cast<RideObjectEntry*>(obj->GetLegacyData());
             }
             return nullptr;
         }

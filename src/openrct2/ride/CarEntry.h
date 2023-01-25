@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -196,3 +196,5 @@ struct CarEntry
     uint32_t GroupImageId(SpriteGroupType spriteGroup) const;
     uint32_t SpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const;
 };
+
+void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages);

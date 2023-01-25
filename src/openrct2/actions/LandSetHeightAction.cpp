@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
@@ -134,7 +135,7 @@ GameActions::Result LandSetHeightAction::Query() const
         }
 
         auto clearResult = MapCanConstructWithClearAt(
-            { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &map_set_land_height_clear_func, { 0b1111, 0 }, 0,
+            { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &MapSetLandHeightClearFunc, { 0b1111, 0 }, 0,
             CREATE_CROSSING_MODE_NONE);
         if (clearResult.Error != GameActions::Status::Ok)
         {
@@ -216,9 +217,9 @@ TileElement* LandSetHeightAction::CheckTreeObstructions() const
 {
     for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
     {
-        if (_height > sceneryElement->clearance_height)
+        if (_height > sceneryElement->ClearanceHeight)
             continue;
-        if (_height + 4 < sceneryElement->base_height)
+        if (_height + 4 < sceneryElement->BaseHeight)
             continue;
 
         auto* sceneryEntry = sceneryElement->GetEntry();
@@ -236,9 +237,9 @@ money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
 
     for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
     {
-        if (_height > sceneryElement->clearance_height)
+        if (_height > sceneryElement->ClearanceHeight)
             continue;
-        if (_height + 4 < sceneryElement->base_height)
+        if (_height + 4 < sceneryElement->BaseHeight)
             continue;
 
         auto* sceneryEntry = sceneryElement->GetEntry();
@@ -260,9 +261,9 @@ void LandSetHeightAction::SmallSceneryRemoval() const
             break;
         if (tileElement->GetType() != TileElementType::SmallScenery)
             continue;
-        if (_height > tileElement->clearance_height)
+        if (_height > tileElement->ClearanceHeight)
             continue;
-        if (_height + 4 < tileElement->base_height)
+        if (_height + 4 < tileElement->BaseHeight)
             continue;
         TileElementRemove(tileElement--);
     } while (!(tileElement++)->IsLastForTile());
@@ -274,11 +275,11 @@ StringId LandSetHeightAction::CheckRideSupports() const
     {
         RideId rideIndex = trackElement->GetRideIndex();
 
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             continue;
 
-        rct_ride_entry* rideEntry = ride->GetRideEntry();
+        RideObjectEntry* rideEntry = ride->GetRideEntry();
         if (rideEntry == nullptr)
             continue;
 
@@ -288,7 +289,7 @@ StringId LandSetHeightAction::CheckRideSupports() const
             maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
         }
 
-        int32_t zDelta = trackElement->clearance_height - _height;
+        int32_t zDelta = trackElement->ClearanceHeight - _height;
         if (zDelta >= 0 && zDelta / 2 > maxHeight)
         {
             return STR_SUPPORTS_CANT_BE_EXTENDED;
@@ -335,8 +336,8 @@ money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
 
 void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
 {
-    surfaceElement->base_height = _height;
-    surfaceElement->clearance_height = _height;
+    surfaceElement->BaseHeight = _height;
+    surfaceElement->ClearanceHeight = _height;
     surfaceElement->AsSurface()->SetSlope(_style);
     int32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
     if (waterHeight != 0 && waterHeight <= _height)
@@ -347,7 +348,7 @@ void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
     MapInvalidateTileFull(_coords);
 }
 
-int32_t LandSetHeightAction::map_set_land_height_clear_func(
+int32_t LandSetHeightAction::MapSetLandHeightClearFunc(
     TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
     [[maybe_unused]] money32* price)
 {

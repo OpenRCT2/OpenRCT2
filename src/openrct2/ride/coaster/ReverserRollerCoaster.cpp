@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,7 +26,7 @@
  *
  *  rct2: 0x006D4453
  */
-void vehicle_visual_reverser(
+void VehicleVisualReverser(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
@@ -41,12 +41,12 @@ void vehicle_visual_reverser(
     z = (v1->z + v2->z) / 2;
     session.SpritePosition.x = x;
     session.SpritePosition.y = y;
-    vehicle_visual_default(session, imageDirection, z, vehicle, carEntry);
+    VehicleVisualDefault(session, imageDirection, z, vehicle, carEntry);
 }
 #endif
 
 /** rct2: 0x0086E65C */
-static void reverser_rc_track_flat(
+static void ReverserRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -95,7 +95,7 @@ static void reverser_rc_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void reverser_rc_track_station(
+static void ReverserRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -113,14 +113,14 @@ static void reverser_rc_track_station(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
         { 32, 27, 2 }, { 0, 2, height });
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 9, 11);
+    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x0086E66C */
-static void reverser_rc_track_25_deg_up(
+static void ReverserRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -197,7 +197,7 @@ static void reverser_rc_track_25_deg_up(
 }
 
 /** rct2: 0x0086E67C */
-static void reverser_rc_track_flat_to_25_deg_up(
+static void ReverserRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -274,7 +274,7 @@ static void reverser_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x0086E68C */
-static void reverser_rc_track_25_deg_up_to_flat(
+static void ReverserRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -351,31 +351,31 @@ static void reverser_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x0086E69C */
-static void reverser_rc_track_25_deg_down(
+static void ReverserRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    reverser_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    ReverserRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0086E6AC */
-static void reverser_rc_track_flat_to_25_deg_down(
+static void ReverserRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    reverser_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    ReverserRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0086E6BC */
-static void reverser_rc_track_25_deg_down_to_flat(
+static void ReverserRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    reverser_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    ReverserRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0086E6CC */
-static void reverser_rc_track_left_quarter_turn_5(
+static void ReverserRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -574,16 +574,16 @@ static void reverser_rc_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x0086E6DC */
-static void reverser_rc_track_right_quarter_turn_5(
+static void ReverserRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    reverser_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    ReverserRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x0086E6EC */
-static void reverser_rc_track_s_bend_left(
+static void ReverserRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -736,7 +736,7 @@ static void reverser_rc_track_s_bend_left(
 }
 
 /** rct2: 0x0086E6FC */
-static void reverser_rc_track_s_bend_right(
+static void ReverserRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -889,7 +889,7 @@ static void reverser_rc_track_s_bend_right(
 }
 
 /** rct2: 0x0086E73C */
-static void reverser_rc_track_left_quarter_turn_3(
+static void ReverserRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1005,16 +1005,16 @@ static void reverser_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x0086E74C */
-static void reverser_rc_track_right_quarter_turn_3(
+static void ReverserRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    reverser_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    ReverserRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x0086E75C */
-static void reverser_rc_track_brakes(
+static void ReverserRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1041,7 +1041,7 @@ static void reverser_rc_track_brakes(
 }
 
 /** rct2: 0x0086E76C */
-static void reverser_rc_track_left_reverser(
+static void ReverserRCTrackLeftReverser(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1250,7 +1250,7 @@ static void reverser_rc_track_left_reverser(
 }
 
 /** rct2: 0x0086E77C */
-static void reverser_rc_track_right_reverser(
+static void ReverserRCTrackRightReverser(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1458,46 +1458,46 @@ static void reverser_rc_track_right_reverser(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_reverser_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return reverser_rc_track_flat;
+            return ReverserRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return reverser_rc_track_station;
+            return ReverserRCTrackStation;
         case TrackElemType::Up25:
-            return reverser_rc_track_25_deg_up;
+            return ReverserRCTrack25DegUp;
         case TrackElemType::FlatToUp25:
-            return reverser_rc_track_flat_to_25_deg_up;
+            return ReverserRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return reverser_rc_track_25_deg_up_to_flat;
+            return ReverserRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return reverser_rc_track_25_deg_down;
+            return ReverserRCTrack25DegDown;
         case TrackElemType::FlatToDown25:
-            return reverser_rc_track_flat_to_25_deg_down;
+            return ReverserRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return reverser_rc_track_25_deg_down_to_flat;
+            return ReverserRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return reverser_rc_track_left_quarter_turn_5;
+            return ReverserRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return reverser_rc_track_right_quarter_turn_5;
+            return ReverserRCTrackRightQuarterTurn5;
         case TrackElemType::SBendLeft:
-            return reverser_rc_track_s_bend_left;
+            return ReverserRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return reverser_rc_track_s_bend_right;
+            return ReverserRCTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return reverser_rc_track_left_quarter_turn_3;
+            return ReverserRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return reverser_rc_track_right_quarter_turn_3;
+            return ReverserRCTrackRightQuarterTurn3;
         case TrackElemType::Brakes:
-            return reverser_rc_track_brakes;
+            return ReverserRCTrackBrakes;
         case TrackElemType::LeftReverser:
-            return reverser_rc_track_left_reverser;
+            return ReverserRCTrackLeftReverser;
         case TrackElemType::RightReverser:
-            return reverser_rc_track_right_reverser;
+            return ReverserRCTrackRightReverser;
     }
     return nullptr;
 }

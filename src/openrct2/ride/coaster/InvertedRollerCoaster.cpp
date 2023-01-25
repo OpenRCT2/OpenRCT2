@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x008A92E8 */
-static void inverted_rc_track_flat(
+static void InvertedRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -62,7 +62,7 @@ static void inverted_rc_track_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -72,7 +72,7 @@ static void inverted_rc_track_flat(
 }
 
 /** rct2: 0x008A9558, 0x008A9568, 0x008A9578 */
-static void inverted_rc_track_station(
+static void InvertedRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -92,15 +92,15 @@ static void inverted_rc_track_station(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 29 },
         { 32, 20, 3 }, { 0, 6, height + 29 });
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
-    track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
+    TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A92F8 */
-static void inverted_rc_track_25_deg_up(
+static void InvertedRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -159,7 +159,7 @@ static void inverted_rc_track_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -194,7 +194,7 @@ static void inverted_rc_track_25_deg_up(
 }
 
 /** rct2: 0x008A9308 */
-static void inverted_rc_track_60_deg_up(
+static void InvertedRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -235,7 +235,7 @@ static void inverted_rc_track_60_deg_up(
 }
 
 /** rct2: 0x008A9318 */
-static void inverted_rc_track_flat_to_25_deg_up(
+static void InvertedRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -294,7 +294,7 @@ static void inverted_rc_track_flat_to_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -329,7 +329,7 @@ static void inverted_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008A9328 */
-static void inverted_rc_track_25_deg_up_to_60_deg_up(
+static void InvertedRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -376,7 +376,7 @@ static void inverted_rc_track_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008A9338 */
-static void inverted_rc_track_60_deg_up_to_25_deg_up(
+static void InvertedRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -412,7 +412,7 @@ static void inverted_rc_track_60_deg_up_to_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -447,7 +447,7 @@ static void inverted_rc_track_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008A9348 */
-static void inverted_rc_track_25_deg_up_to_flat(
+static void InvertedRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -506,7 +506,7 @@ static void inverted_rc_track_25_deg_up_to_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -541,55 +541,55 @@ static void inverted_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A9358 */
-static void inverted_rc_track_25_deg_down(
+static void InvertedRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9368 */
-static void inverted_rc_track_60_deg_down(
+static void InvertedRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9378 */
-static void inverted_rc_track_flat_to_25_deg_down(
+static void InvertedRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9388 */
-static void inverted_rc_track_25_deg_down_to_60_deg_down(
+static void InvertedRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9398 */
-static void inverted_rc_track_60_deg_down_to_25_deg_down(
+static void InvertedRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A93A8 */
-static void inverted_rc_track_25_deg_down_to_flat(
+static void InvertedRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A93B8 */
-static void inverted_rc_track_left_quarter_turn_5(
+static void InvertedRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -770,16 +770,16 @@ static void inverted_rc_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x008A93C8 */
-static void inverted_rc_track_right_quarter_turn_5(
+static void InvertedRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    inverted_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A93D8 */
-static void inverted_rc_track_flat_to_left_bank(
+static void InvertedRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -811,7 +811,7 @@ static void inverted_rc_track_flat_to_left_bank(
         session,
         PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
         0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -821,7 +821,7 @@ static void inverted_rc_track_flat_to_left_bank(
 }
 
 /** rct2: 0x008A93E8 */
-static void inverted_rc_track_flat_to_right_bank(
+static void InvertedRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -853,7 +853,7 @@ static void inverted_rc_track_flat_to_right_bank(
         session,
         PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
         0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -863,7 +863,7 @@ static void inverted_rc_track_flat_to_right_bank(
 }
 
 /** rct2: 0x008A93F8 */
-static void inverted_rc_track_left_bank_to_flat(
+static void InvertedRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -895,7 +895,7 @@ static void inverted_rc_track_left_bank_to_flat(
         session,
         PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
         0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -905,7 +905,7 @@ static void inverted_rc_track_left_bank_to_flat(
 }
 
 /** rct2: 0x008A9408 */
-static void inverted_rc_track_right_bank_to_flat(
+static void InvertedRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -937,7 +937,7 @@ static void inverted_rc_track_right_bank_to_flat(
         session,
         PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
         0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -947,7 +947,7 @@ static void inverted_rc_track_right_bank_to_flat(
 }
 
 /** rct2: 0x008A9418 */
-static void inverted_rc_track_banked_left_quarter_turn_5(
+static void InvertedRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1128,16 +1128,16 @@ static void inverted_rc_track_banked_left_quarter_turn_5(
 }
 
 /** rct2: 0x008A9428 */
-static void inverted_rc_track_banked_right_quarter_turn_5(
+static void InvertedRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    inverted_rc_track_banked_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9438 */
-static void inverted_rc_track_left_bank_to_25_deg_up(
+static void InvertedRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1169,7 +1169,7 @@ static void inverted_rc_track_left_bank_to_25_deg_up(
         session,
         PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
         0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -1204,7 +1204,7 @@ static void inverted_rc_track_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008A9448 */
-static void inverted_rc_track_right_bank_to_25_deg_up(
+static void InvertedRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1236,7 +1236,7 @@ static void inverted_rc_track_right_bank_to_25_deg_up(
         session,
         PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
         0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -1271,7 +1271,7 @@ static void inverted_rc_track_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008A9458 */
-static void inverted_rc_track_25_deg_up_to_left_bank(
+static void InvertedRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1303,7 +1303,7 @@ static void inverted_rc_track_25_deg_up_to_left_bank(
         session,
         PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
         0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -1338,7 +1338,7 @@ static void inverted_rc_track_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x008A9468 */
-static void inverted_rc_track_25_deg_up_to_right_bank(
+static void InvertedRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1370,7 +1370,7 @@ static void inverted_rc_track_25_deg_up_to_right_bank(
         session,
         PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
         0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -1405,39 +1405,39 @@ static void inverted_rc_track_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x008A9478 */
-static void inverted_rc_track_left_bank_to_25_deg_down(
+static void InvertedRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_25_deg_up_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9488 */
-static void inverted_rc_track_right_bank_to_25_deg_down(
+static void InvertedRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_25_deg_up_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9498 */
-static void inverted_rc_track_25_deg_down_to_left_bank(
+static void InvertedRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_right_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A94A8 */
-static void inverted_rc_track_25_deg_down_to_right_bank(
+static void InvertedRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_left_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A94B8 */
-static void inverted_rc_track_left_bank(
+static void InvertedRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1469,7 +1469,7 @@ static void inverted_rc_track_left_bank(
         session,
         PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF,
         0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1479,15 +1479,15 @@ static void inverted_rc_track_left_bank(
 }
 
 /** rct2: 0x008A94C8 */
-static void inverted_rc_track_right_bank(
+static void InvertedRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A94D8 */
-static void inverted_rc_track_left_quarter_turn_5_25_deg_up(
+static void InvertedRCTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1668,7 +1668,7 @@ static void inverted_rc_track_left_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008A94E8 */
-static void inverted_rc_track_right_quarter_turn_5_25_deg_up(
+static void InvertedRCTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1849,25 +1849,25 @@ static void inverted_rc_track_right_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008A94F8 */
-static void inverted_rc_track_left_quarter_turn_5_25_deg_down(
+static void InvertedRCTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    inverted_rc_track_right_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    InvertedRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9508 */
-static void inverted_rc_track_right_quarter_turn_5_25_deg_down(
+static void InvertedRCTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    inverted_rc_track_left_quarter_turn_5_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9518 */
-static void inverted_rc_track_s_bend_left(
+static void InvertedRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2038,7 +2038,7 @@ static void inverted_rc_track_s_bend_left(
 }
 
 /** rct2: 0x008A9528 */
-static void inverted_rc_track_s_bend_right(
+static void InvertedRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2209,7 +2209,7 @@ static void inverted_rc_track_s_bend_right(
 }
 
 /** rct2: 0x008A9538 */
-static void inverted_rc_track_left_vertical_loop(
+static void InvertedRCTrackLeftVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2514,7 +2514,7 @@ static void inverted_rc_track_left_vertical_loop(
 }
 
 /** rct2: 0x008A9548 */
-static void inverted_rc_track_right_vertical_loop(
+static void InvertedRCTrackRightVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2819,7 +2819,7 @@ static void inverted_rc_track_right_vertical_loop(
 }
 
 /** rct2: 0x008A9588 */
-static void inverted_rc_track_left_quarter_turn_3(
+static void InvertedRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2937,16 +2937,16 @@ static void inverted_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x008A9598 */
-static void inverted_rc_track_right_quarter_turn_3(
+static void InvertedRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    inverted_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A95A8 */
-static void inverted_rc_track_left_quarter_turn_3_bank(
+static void InvertedRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3064,16 +3064,16 @@ static void inverted_rc_track_left_quarter_turn_3_bank(
 }
 
 /** rct2: 0x008A95B8 */
-static void inverted_rc_track_right_quarter_turn_3_bank(
+static void InvertedRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    inverted_rc_track_left_quarter_turn_3_bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A95C8 */
-static void inverted_rc_track_left_quarter_turn_3_25_deg_up(
+static void InvertedRCTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3166,7 +3166,7 @@ static void inverted_rc_track_left_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008A95D8 */
-static void inverted_rc_track_right_quarter_turn_3_25_deg_up(
+static void InvertedRCTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3259,25 +3259,25 @@ static void inverted_rc_track_right_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008A95E8 */
-static void inverted_rc_track_left_quarter_turn_3_25_deg_down(
+static void InvertedRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    inverted_rc_track_right_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    InvertedRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A95F8 */
-static void inverted_rc_track_right_quarter_turn_3_25_deg_down(
+static void InvertedRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    inverted_rc_track_left_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9608 */
-static void inverted_rc_track_left_twist_down_to_up(
+static void InvertedRCTrackLeftTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3394,7 +3394,7 @@ static void inverted_rc_track_left_twist_down_to_up(
 }
 
 /** rct2: 0x008A9618 */
-static void inverted_rc_track_right_twist_down_to_up(
+static void InvertedRCTrackRightTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3511,7 +3511,7 @@ static void inverted_rc_track_right_twist_down_to_up(
 }
 
 /** rct2: 0x008A9628 */
-static void inverted_rc_track_left_twist_up_to_down(
+static void InvertedRCTrackLeftTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3628,7 +3628,7 @@ static void inverted_rc_track_left_twist_up_to_down(
 }
 
 /** rct2: 0x008A9638 */
-static void inverted_rc_track_right_twist_up_to_down(
+static void InvertedRCTrackRightTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3745,7 +3745,7 @@ static void inverted_rc_track_right_twist_up_to_down(
 }
 
 /** rct2: 0x008A9648 */
-static void inverted_rc_track_half_loop_up(
+static void InvertedRCTrackHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3897,15 +3897,15 @@ static void inverted_rc_track_half_loop_up(
 }
 
 /** rct2: 0x008A9658 */
-static void inverted_rc_track_half_loop_down(
+static void InvertedRCTrackHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_half_loop_up(session, ride, 3 - trackSequence, direction, height, trackElement);
+    InvertedRCTrackHalfLoopUp(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
 /** rct2: 0x008A9668 */
-static void inverted_rc_track_left_corkscrew_up(
+static void InvertedRCTrackLeftCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4021,7 +4021,7 @@ static void inverted_rc_track_left_corkscrew_up(
 }
 
 /** rct2: 0x008A9678 */
-static void inverted_rc_track_right_corkscrew_up(
+static void InvertedRCTrackRightCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4137,23 +4137,23 @@ static void inverted_rc_track_right_corkscrew_up(
 }
 
 /** rct2: 0x008A9688 */
-static void inverted_rc_track_left_corkscrew_down(
+static void InvertedRCTrackLeftCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_right_corkscrew_up(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
+    InvertedRCTrackRightCorkscrewUp(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9698 */
-static void inverted_rc_track_right_corkscrew_down(
+static void InvertedRCTrackRightCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_left_corkscrew_up(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackLeftCorkscrewUp(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A96D8 */
-static void inverted_rc_track_left_quarter_turn_1_60_deg_up(
+static void InvertedRCTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4192,13 +4192,13 @@ static void inverted_rc_track_left_quarter_turn_1_60_deg_up(
                 { 2, 2, height + 99 });
             break;
     }
-    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_INVERTED_4, +56, TUNNEL_INVERTED_5);
+    TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_INVERTED_4, +56, TUNNEL_INVERTED_5);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 /** rct2: 0x008A96B8 */
-static void inverted_rc_track_right_quarter_turn_1_60_deg_up(
+static void InvertedRCTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4237,30 +4237,29 @@ static void inverted_rc_track_right_quarter_turn_1_60_deg_up(
                 { 2, 2, height + 99 });
             break;
     }
-    track_paint_util_right_quarter_turn_1_tile_tunnel(
-        session, direction, height, -8, TUNNEL_INVERTED_4, +56, TUNNEL_INVERTED_5);
+    TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_INVERTED_4, +56, TUNNEL_INVERTED_5);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 /** rct2: 0x008A96C8 */
-static void inverted_rc_track_left_quarter_turn_1_60_deg_down(
+static void InvertedRCTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_right_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    InvertedRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A96E8 */
-static void inverted_rc_track_right_quarter_turn_1_60_deg_down(
+static void InvertedRCTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_left_quarter_turn_1_60_deg_up(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A96A8 */
-static void inverted_rc_track_brakes(
+static void InvertedRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4282,7 +4281,7 @@ static void inverted_rc_track_brakes(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -4292,7 +4291,7 @@ static void inverted_rc_track_brakes(
 }
 
 /** rct2: 0x008A96F8 */
-static void inverted_rc_track_left_quarter_banked_helix_large_up(
+static void InvertedRCTrackLeftQuarterBankedHelixLargeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4473,7 +4472,7 @@ static void inverted_rc_track_left_quarter_banked_helix_large_up(
 }
 
 /** rct2: 0x008A9708 */
-static void inverted_rc_track_right_quarter_banked_helix_large_up(
+static void InvertedRCTrackRightQuarterBankedHelixLargeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4654,7 +4653,7 @@ static void inverted_rc_track_right_quarter_banked_helix_large_up(
 }
 
 /** rct2: 0x008A9718 */
-static void inverted_rc_track_left_quarter_banked_helix_large_down(
+static void InvertedRCTrackLeftQuarterBankedHelixLargeDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4835,7 +4834,7 @@ static void inverted_rc_track_left_quarter_banked_helix_large_down(
 }
 
 /** rct2: 0x008A9728 */
-static void inverted_rc_track_right_quarter_banked_helix_large_down(
+static void InvertedRCTrackRightQuarterBankedHelixLargeDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5016,7 +5015,7 @@ static void inverted_rc_track_right_quarter_banked_helix_large_down(
 }
 
 /** rct2: 0x008A9A38 */
-static void inverted_rc_track_25_deg_up_left_banked(
+static void InvertedRCTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5046,7 +5045,7 @@ static void inverted_rc_track_25_deg_up_left_banked(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -5081,7 +5080,7 @@ static void inverted_rc_track_25_deg_up_left_banked(
 }
 
 /** rct2: 0x008A9A48 */
-static void inverted_rc_track_25_deg_up_right_banked(
+static void InvertedRCTrack25DegUpRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5111,7 +5110,7 @@ static void inverted_rc_track_25_deg_up_right_banked(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -5146,7 +5145,7 @@ static void inverted_rc_track_25_deg_up_right_banked(
 }
 
 /** rct2: 0x008A9738 */
-static void inverted_rc_track_on_ride_photo(
+static void InvertedRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5189,30 +5188,30 @@ static void inverted_rc_track_on_ride_photo(
                 { 0, 6, height + 29 });
             break;
     }
-    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
 /** rct2: 0x008A9A58 */
-static void inverted_rc_track_25_deg_down_left_banked(
+static void InvertedRCTrack25DegDownLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_25_deg_up_right_banked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9A68 */
-static void inverted_rc_track_25_deg_down_right_banked(
+static void InvertedRCTrack25DegDownRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_25_deg_up_left_banked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9748 */
-static void inverted_rc_track_left_eighth_to_diag(
+static void InvertedRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5372,7 +5371,7 @@ static void inverted_rc_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x008A9758 */
-static void inverted_rc_track_right_eighth_to_diag(
+static void InvertedRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5532,25 +5531,25 @@ static void inverted_rc_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x008A9768 */
-static void inverted_rc_track_left_eighth_to_orthogonal(
+static void InvertedRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    inverted_rc_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9778 */
-static void inverted_rc_track_right_eighth_to_orthogonal(
+static void InvertedRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    inverted_rc_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    InvertedRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9938 */
-static void inverted_rc_track_left_eighth_bank_to_diag(
+static void InvertedRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5711,7 +5710,7 @@ static void inverted_rc_track_left_eighth_bank_to_diag(
 }
 
 /** rct2: 0x008A9948 */
-static void inverted_rc_track_right_eighth_bank_to_diag(
+static void InvertedRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5872,25 +5871,25 @@ static void inverted_rc_track_right_eighth_bank_to_diag(
 }
 
 /** rct2: 0x008A9958 */
-static void inverted_rc_track_left_eighth_bank_to_orthogonal(
+static void InvertedRCTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    inverted_rc_track_right_eighth_bank_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9968 */
-static void inverted_rc_track_right_eighth_bank_to_orthogonal(
+static void InvertedRCTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    inverted_rc_track_left_eighth_bank_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    InvertedRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9788 */
-static void inverted_rc_track_diag_flat(
+static void InvertedRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6029,7 +6028,7 @@ static void inverted_rc_track_diag_flat(
 }
 
 /** rct2: 0x008A97B8 */
-static void inverted_rc_track_diag_25_deg_up(
+static void InvertedRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6168,7 +6167,7 @@ static void inverted_rc_track_diag_25_deg_up(
 }
 
 /** rct2: 0x008A9818 */
-static void inverted_rc_track_diag_60_deg_up(
+static void InvertedRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6251,7 +6250,7 @@ static void inverted_rc_track_diag_60_deg_up(
 }
 
 /** rct2: 0x008A9798 */
-static void inverted_rc_track_diag_flat_to_25_deg_up(
+static void InvertedRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6390,7 +6389,7 @@ static void inverted_rc_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008A97F8 */
-static void inverted_rc_track_diag_25_deg_up_to_60_deg_up(
+static void InvertedRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6473,7 +6472,7 @@ static void inverted_rc_track_diag_25_deg_up_to_60_deg_up(
 }
 
 /** rct2: 0x008A9808 */
-static void inverted_rc_track_diag_60_deg_up_to_25_deg_up(
+static void InvertedRCTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6556,7 +6555,7 @@ static void inverted_rc_track_diag_60_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008A97A8 */
-static void inverted_rc_track_diag_25_deg_up_to_flat(
+static void InvertedRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6695,7 +6694,7 @@ static void inverted_rc_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A97E8 */
-static void inverted_rc_track_diag_25_deg_down(
+static void InvertedRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6834,7 +6833,7 @@ static void inverted_rc_track_diag_25_deg_down(
 }
 
 /** rct2: 0x008A9848 */
-static void inverted_rc_track_diag_60_deg_down(
+static void InvertedRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6917,7 +6916,7 @@ static void inverted_rc_track_diag_60_deg_down(
 }
 
 /** rct2: 0x008A97C8 */
-static void inverted_rc_track_diag_flat_to_25_deg_down(
+static void InvertedRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7053,7 +7052,7 @@ static void inverted_rc_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x008A9828 */
-static void inverted_rc_track_diag_25_deg_down_to_60_deg_down(
+static void InvertedRCTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7136,7 +7135,7 @@ static void inverted_rc_track_diag_25_deg_down_to_60_deg_down(
 }
 
 /** rct2: 0x008A9838 */
-static void inverted_rc_track_diag_60_deg_down_to_25_deg_down(
+static void InvertedRCTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7219,7 +7218,7 @@ static void inverted_rc_track_diag_60_deg_down_to_25_deg_down(
 }
 
 /** rct2: 0x008A97D8 */
-static void inverted_rc_track_diag_25_deg_down_to_flat(
+static void InvertedRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7358,7 +7357,7 @@ static void inverted_rc_track_diag_25_deg_down_to_flat(
 }
 
 /** rct2: 0x008A9878 */
-static void inverted_rc_track_diag_flat_to_left_bank(
+static void InvertedRCTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7442,7 +7441,7 @@ static void inverted_rc_track_diag_flat_to_left_bank(
 }
 
 /** rct2: 0x008A9888 */
-static void inverted_rc_track_diag_flat_to_right_bank(
+static void InvertedRCTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7526,7 +7525,7 @@ static void inverted_rc_track_diag_flat_to_right_bank(
 }
 
 /** rct2: 0x008A9898 */
-static void inverted_rc_track_diag_left_bank_to_flat(
+static void InvertedRCTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7610,7 +7609,7 @@ static void inverted_rc_track_diag_left_bank_to_flat(
 }
 
 /** rct2: 0x008A98A8 */
-static void inverted_rc_track_diag_right_bank_to_flat(
+static void InvertedRCTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7694,7 +7693,7 @@ static void inverted_rc_track_diag_right_bank_to_flat(
 }
 
 /** rct2: 0x008A98D8 */
-static void inverted_rc_track_diag_left_bank_to_25_deg_up(
+static void InvertedRCTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7777,7 +7776,7 @@ static void inverted_rc_track_diag_left_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008A98E8 */
-static void inverted_rc_track_diag_right_bank_to_25_deg_up(
+static void InvertedRCTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7860,7 +7859,7 @@ static void inverted_rc_track_diag_right_bank_to_25_deg_up(
 }
 
 /** rct2: 0x008A98B8 */
-static void inverted_rc_track_diag_25_deg_up_to_left_bank(
+static void InvertedRCTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7943,7 +7942,7 @@ static void inverted_rc_track_diag_25_deg_up_to_left_bank(
 }
 
 /** rct2: 0x008A98C8 */
-static void inverted_rc_track_diag_25_deg_up_to_right_bank(
+static void InvertedRCTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8026,7 +8025,7 @@ static void inverted_rc_track_diag_25_deg_up_to_right_bank(
 }
 
 /** rct2: 0x008A98F8 */
-static void inverted_rc_track_diag_left_bank_to_25_deg_down(
+static void InvertedRCTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8106,7 +8105,7 @@ static void inverted_rc_track_diag_left_bank_to_25_deg_down(
 }
 
 /** rct2: 0x008A9908 */
-static void inverted_rc_track_diag_right_bank_to_25_deg_down(
+static void InvertedRCTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8186,7 +8185,7 @@ static void inverted_rc_track_diag_right_bank_to_25_deg_down(
 }
 
 /** rct2: 0x008A9918 */
-static void inverted_rc_track_diag_25_deg_down_to_left_bank(
+static void InvertedRCTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8269,7 +8268,7 @@ static void inverted_rc_track_diag_25_deg_down_to_left_bank(
 }
 
 /** rct2: 0x008A9928 */
-static void inverted_rc_track_diag_25_deg_down_to_right_bank(
+static void InvertedRCTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8352,7 +8351,7 @@ static void inverted_rc_track_diag_25_deg_down_to_right_bank(
 }
 
 /** rct2: 0x008A9858 */
-static void inverted_rc_track_diag_left_bank(
+static void InvertedRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8436,7 +8435,7 @@ static void inverted_rc_track_diag_left_bank(
 }
 
 /** rct2: 0x008A9868 */
-static void inverted_rc_track_diag_right_bank(
+static void InvertedRCTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8520,7 +8519,7 @@ static void inverted_rc_track_diag_right_bank(
 }
 
 /** rct2: 0x008A9978 */
-static void inverted_rc_track_left_large_half_loop_up(
+static void InvertedRCTrackLeftLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8750,7 +8749,7 @@ static void inverted_rc_track_left_large_half_loop_up(
 }
 
 /** rct2: 0x008A9988 */
-static void inverted_rc_track_right_large_half_loop_up(
+static void InvertedRCTrackRightLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8980,23 +8979,23 @@ static void inverted_rc_track_right_large_half_loop_up(
 }
 
 /** rct2: 0x008A9998 */
-static void inverted_rc_track_right_large_half_loop_down(
+static void InvertedRCTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_right_large_half_loop_up(session, ride, 6 - trackSequence, direction, height, trackElement);
+    InvertedRCTrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
 /** rct2: 0x008A99A8 */
-static void inverted_rc_track_left_large_half_loop_down(
+static void InvertedRCTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_left_large_half_loop_up(session, ride, 6 - trackSequence, direction, height, trackElement);
+    InvertedRCTrackLeftLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
 /** rct2: 0x008A96A8 */
-static void inverted_rc_track_block_brakes(
+static void InvertedRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9018,7 +9017,7 @@ static void inverted_rc_track_block_brakes(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -9028,7 +9027,7 @@ static void inverted_rc_track_block_brakes(
 }
 
 /** rct2: 0x008A9A78 */
-static void inverted_rc_track_left_banked_quarter_turn_3_25_deg_up(
+static void InvertedRCTrackLeftBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9121,7 +9120,7 @@ static void inverted_rc_track_left_banked_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008A9A88 */
-static void inverted_rc_track_right_banked_quarter_turn_3_25_deg_up(
+static void InvertedRCTrackRightBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9214,27 +9213,25 @@ static void inverted_rc_track_right_banked_quarter_turn_3_25_deg_up(
 }
 
 /** rct2: 0x008A9A98 */
-static void inverted_rc_track_left_banked_quarter_turn_3_25_deg_down(
+static void InvertedRCTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    inverted_rc_track_right_banked_quarter_turn_3_25_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    InvertedRCTrackRightBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9AA8 */
-static void inverted_rc_track_right_banked_quarter_turn_3_25_deg_down(
+static void InvertedRCTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    inverted_rc_track_left_banked_quarter_turn_3_25_deg_up(
-        session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackLeftBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9BB8 */
-static void inverted_rc_track_left_banked_quarter_turn_5_25_deg_up(
+static void InvertedRCTrackLeftBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9415,7 +9412,7 @@ static void inverted_rc_track_left_banked_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008A9BC8 */
-static void inverted_rc_track_right_banked_quarter_turn_5_25_deg_up(
+static void InvertedRCTrackRightBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9596,27 +9593,25 @@ static void inverted_rc_track_right_banked_quarter_turn_5_25_deg_up(
 }
 
 /** rct2: 0x008A9BD8 */
-static void inverted_rc_track_left_banked_quarter_turn_5_25_deg_down(
+static void InvertedRCTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    inverted_rc_track_right_banked_quarter_turn_5_25_deg_up(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    InvertedRCTrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9BE8 */
-static void inverted_rc_track_right_banked_quarter_turn_5_25_deg_down(
+static void InvertedRCTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    inverted_rc_track_left_banked_quarter_turn_5_25_deg_up(
-        session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    InvertedRCTrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9AB8 */
-static void inverted_rc_track_25_deg_up_to_left_banked_25_deg_up(
+static void InvertedRCTrack25DegUpToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9646,7 +9641,7 @@ static void inverted_rc_track_25_deg_up_to_left_banked_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -9681,7 +9676,7 @@ static void inverted_rc_track_25_deg_up_to_left_banked_25_deg_up(
 }
 
 /** rct2: 0x008A9AC8 */
-static void inverted_rc_track_25_deg_up_to_right_banked_25_deg_up(
+static void InvertedRCTrack25DegUpToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9711,7 +9706,7 @@ static void inverted_rc_track_25_deg_up_to_right_banked_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -9746,7 +9741,7 @@ static void inverted_rc_track_25_deg_up_to_right_banked_25_deg_up(
 }
 
 /** rct2: 0x008A9AD8 */
-static void inverted_rc_track_left_banked_25_deg_up_to_25_deg_up(
+static void InvertedRCTrackLeftBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9776,7 +9771,7 @@ static void inverted_rc_track_left_banked_25_deg_up_to_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -9811,7 +9806,7 @@ static void inverted_rc_track_left_banked_25_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008A9AE8 */
-static void inverted_rc_track_right_banked_25_deg_up_to_25_deg_up(
+static void InvertedRCTrackRightBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9841,7 +9836,7 @@ static void inverted_rc_track_right_banked_25_deg_up_to_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -9876,43 +9871,39 @@ static void inverted_rc_track_right_banked_25_deg_up_to_25_deg_up(
 }
 
 /** rct2: 0x008A9AF8 */
-static void inverted_rc_track_25_deg_down_to_left_banked_25_deg_down(
+static void InvertedRCTrack25DegDownToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_right_banked_25_deg_up_to_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9B08 */
-static void inverted_rc_track_25_deg_down_to_right_banked_25_deg_down(
+static void InvertedRCTrack25DegDownToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_left_banked_25_deg_up_to_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9B18 */
-static void inverted_rc_track_left_banked_25_deg_down_to_25_deg_down(
+static void InvertedRCTrackLeftBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_25_deg_up_to_right_banked_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9B28 */
-static void inverted_rc_track_right_banked_25_deg_down_to_25_deg_down(
+static void InvertedRCTrackRightBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_25_deg_up_to_left_banked_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9B38 */
-static void inverted_rc_track_left_banked_flat_to_left_banked_25_deg_up(
+static void InvertedRCTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9942,7 +9933,7 @@ static void inverted_rc_track_left_banked_flat_to_left_banked_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -9977,7 +9968,7 @@ static void inverted_rc_track_left_banked_flat_to_left_banked_25_deg_up(
 }
 
 /** rct2: 0x008A9B48 */
-static void inverted_rc_track_right_banked_flat_to_right_banked_25_deg_up(
+static void InvertedRCTrackRightBankedFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10007,7 +9998,7 @@ static void inverted_rc_track_right_banked_flat_to_right_banked_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -10042,7 +10033,7 @@ static void inverted_rc_track_right_banked_flat_to_right_banked_25_deg_up(
 }
 
 /** rct2: 0x008A9B58 */
-static void inverted_rc_track_left_banked_25_deg_up_to_left_banked_flat(
+static void InvertedRCTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10072,7 +10063,7 @@ static void inverted_rc_track_left_banked_25_deg_up_to_left_banked_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -10107,7 +10098,7 @@ static void inverted_rc_track_left_banked_25_deg_up_to_left_banked_flat(
 }
 
 /** rct2: 0x008A9B68 */
-static void inverted_rc_track_right_banked_25_deg_up_to_right_banked_flat(
+static void InvertedRCTrackRightBanked25DegUpToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10137,7 +10128,7 @@ static void inverted_rc_track_right_banked_25_deg_up_to_right_banked_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -10172,43 +10163,39 @@ static void inverted_rc_track_right_banked_25_deg_up_to_right_banked_flat(
 }
 
 /** rct2: 0x008A9B78 */
-static void inverted_rc_track_left_banked_flat_to_left_banked_25_deg_down(
+static void InvertedRCTrackLeftBankedFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_right_banked_25_deg_up_to_right_banked_flat(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackRightBanked25DegUpToRightBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9B88 */
-static void inverted_rc_track_right_banked_flat_to_right_banked_25_deg_down(
+static void InvertedRCTrackRightBankedFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_left_banked_25_deg_up_to_left_banked_flat(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9B98 */
-static void inverted_rc_track_left_banked_25_deg_down_to_left_banked_flat(
+static void InvertedRCTrackLeftBanked25DegDownToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_right_banked_flat_to_right_banked_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackRightBankedFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9BA8 */
-static void inverted_rc_track_right_banked_25_deg_down_to_right_banked_flat(
+static void InvertedRCTrackRightBanked25DegDownToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_left_banked_flat_to_left_banked_25_deg_up(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A99B8 */
-static void inverted_rc_track_flat_to_left_banked_25_deg_up(
+static void InvertedRCTrackFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10238,7 +10225,7 @@ static void inverted_rc_track_flat_to_left_banked_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -10273,7 +10260,7 @@ static void inverted_rc_track_flat_to_left_banked_25_deg_up(
 }
 
 /** rct2: 0x008A99C8 */
-static void inverted_rc_track_flat_to_right_banked_25_deg_up(
+static void InvertedRCTrackFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10303,7 +10290,7 @@ static void inverted_rc_track_flat_to_right_banked_25_deg_up(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -10338,7 +10325,7 @@ static void inverted_rc_track_flat_to_right_banked_25_deg_up(
 }
 
 /** rct2: 0x008A99D8 */
-static void inverted_rc_track_left_banked_25_deg_up_to_flat(
+static void InvertedRCTrackLeftBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10368,7 +10355,7 @@ static void inverted_rc_track_left_banked_25_deg_up_to_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -10403,7 +10390,7 @@ static void inverted_rc_track_left_banked_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A99E8 */
-static void inverted_rc_track_right_banked_25_deg_up_to_flat(
+static void InvertedRCTrackRightBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10433,7 +10420,7 @@ static void inverted_rc_track_right_banked_25_deg_up_to_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -10468,40 +10455,40 @@ static void inverted_rc_track_right_banked_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A99F8 */
-static void inverted_rc_track_flat_to_left_banked_25_deg_down(
+static void InvertedRCTrackFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_right_banked_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9A08 */
-static void inverted_rc_track_flat_to_right_banked_25_deg_down(
+static void InvertedRCTrackFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_left_banked_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9A18 */
-static void inverted_rc_track_left_banked_25_deg_down_to_flat(
+static void InvertedRCTrackLeftBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_flat_to_right_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A9A28 */
-static void inverted_rc_track_right_banked_25_deg_down_to_flat(
+static void InvertedRCTrackRightBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    inverted_rc_track_flat_to_left_banked_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    InvertedRCTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 // Added by OpenRCT2
 
-static void inverted_rc_track_booster(
+static void InvertedRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10512,7 +10499,7 @@ static void inverted_rc_track_booster(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10521,303 +10508,303 @@ static void inverted_rc_track_booster(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return inverted_rc_track_flat;
+            return InvertedRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return inverted_rc_track_station;
+            return InvertedRCTrackStation;
         case TrackElemType::Up25:
-            return inverted_rc_track_25_deg_up;
+            return InvertedRCTrack25DegUp;
         case TrackElemType::Up60:
-            return inverted_rc_track_60_deg_up;
+            return InvertedRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return inverted_rc_track_flat_to_25_deg_up;
+            return InvertedRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return inverted_rc_track_25_deg_up_to_60_deg_up;
+            return InvertedRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return inverted_rc_track_60_deg_up_to_25_deg_up;
+            return InvertedRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return inverted_rc_track_25_deg_up_to_flat;
+            return InvertedRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return inverted_rc_track_25_deg_down;
+            return InvertedRCTrack25DegDown;
         case TrackElemType::Down60:
-            return inverted_rc_track_60_deg_down;
+            return InvertedRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return inverted_rc_track_flat_to_25_deg_down;
+            return InvertedRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return inverted_rc_track_25_deg_down_to_60_deg_down;
+            return InvertedRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return inverted_rc_track_60_deg_down_to_25_deg_down;
+            return InvertedRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return inverted_rc_track_25_deg_down_to_flat;
+            return InvertedRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return inverted_rc_track_left_quarter_turn_5;
+            return InvertedRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return inverted_rc_track_right_quarter_turn_5;
+            return InvertedRCTrackRightQuarterTurn5;
         case TrackElemType::FlatToLeftBank:
-            return inverted_rc_track_flat_to_left_bank;
+            return InvertedRCTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
-            return inverted_rc_track_flat_to_right_bank;
+            return InvertedRCTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
-            return inverted_rc_track_left_bank_to_flat;
+            return InvertedRCTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
-            return inverted_rc_track_right_bank_to_flat;
+            return InvertedRCTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return inverted_rc_track_banked_left_quarter_turn_5;
+            return InvertedRCTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return inverted_rc_track_banked_right_quarter_turn_5;
+            return InvertedRCTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
-            return inverted_rc_track_left_bank_to_25_deg_up;
+            return InvertedRCTrackLeftBankTo25DegUp;
         case TrackElemType::RightBankToUp25:
-            return inverted_rc_track_right_bank_to_25_deg_up;
+            return InvertedRCTrackRightBankTo25DegUp;
         case TrackElemType::Up25ToLeftBank:
-            return inverted_rc_track_25_deg_up_to_left_bank;
+            return InvertedRCTrack25DegUpToLeftBank;
         case TrackElemType::Up25ToRightBank:
-            return inverted_rc_track_25_deg_up_to_right_bank;
+            return InvertedRCTrack25DegUpToRightBank;
         case TrackElemType::LeftBankToDown25:
-            return inverted_rc_track_left_bank_to_25_deg_down;
+            return InvertedRCTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
-            return inverted_rc_track_right_bank_to_25_deg_down;
+            return InvertedRCTrackRightBankTo25DegDown;
         case TrackElemType::Down25ToLeftBank:
-            return inverted_rc_track_25_deg_down_to_left_bank;
+            return InvertedRCTrack25DegDownToLeftBank;
         case TrackElemType::Down25ToRightBank:
-            return inverted_rc_track_25_deg_down_to_right_bank;
+            return InvertedRCTrack25DegDownToRightBank;
         case TrackElemType::LeftBank:
-            return inverted_rc_track_left_bank;
+            return InvertedRCTrackLeftBank;
         case TrackElemType::RightBank:
-            return inverted_rc_track_right_bank;
+            return InvertedRCTrackRightBank;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return inverted_rc_track_left_quarter_turn_5_25_deg_up;
+            return InvertedRCTrackLeftQuarterTurn525DegUp;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return inverted_rc_track_right_quarter_turn_5_25_deg_up;
+            return InvertedRCTrackRightQuarterTurn525DegUp;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return inverted_rc_track_left_quarter_turn_5_25_deg_down;
+            return InvertedRCTrackLeftQuarterTurn525DegDown;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return inverted_rc_track_right_quarter_turn_5_25_deg_down;
+            return InvertedRCTrackRightQuarterTurn525DegDown;
         case TrackElemType::SBendLeft:
-            return inverted_rc_track_s_bend_left;
+            return InvertedRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return inverted_rc_track_s_bend_right;
+            return InvertedRCTrackSBendRight;
         case TrackElemType::LeftVerticalLoop:
-            return inverted_rc_track_left_vertical_loop;
+            return InvertedRCTrackLeftVerticalLoop;
         case TrackElemType::RightVerticalLoop:
-            return inverted_rc_track_right_vertical_loop;
+            return InvertedRCTrackRightVerticalLoop;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return inverted_rc_track_left_quarter_turn_3;
+            return InvertedRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return inverted_rc_track_right_quarter_turn_3;
+            return InvertedRCTrackRightQuarterTurn3;
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
-            return inverted_rc_track_left_quarter_turn_3_bank;
+            return InvertedRCTrackLeftQuarterTurn3Bank;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
-            return inverted_rc_track_right_quarter_turn_3_bank;
+            return InvertedRCTrackRightQuarterTurn3Bank;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return inverted_rc_track_left_quarter_turn_3_25_deg_up;
+            return InvertedRCTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return inverted_rc_track_right_quarter_turn_3_25_deg_up;
+            return InvertedRCTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return inverted_rc_track_left_quarter_turn_3_25_deg_down;
+            return InvertedRCTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return inverted_rc_track_right_quarter_turn_3_25_deg_down;
+            return InvertedRCTrackRightQuarterTurn325DegDown;
         case TrackElemType::LeftTwistDownToUp:
-            return inverted_rc_track_left_twist_down_to_up;
+            return InvertedRCTrackLeftTwistDownToUp;
         case TrackElemType::RightTwistDownToUp:
-            return inverted_rc_track_right_twist_down_to_up;
+            return InvertedRCTrackRightTwistDownToUp;
         case TrackElemType::LeftTwistUpToDown:
-            return inverted_rc_track_left_twist_up_to_down;
+            return InvertedRCTrackLeftTwistUpToDown;
         case TrackElemType::RightTwistUpToDown:
-            return inverted_rc_track_right_twist_up_to_down;
+            return InvertedRCTrackRightTwistUpToDown;
         case TrackElemType::HalfLoopUp:
-            return inverted_rc_track_half_loop_up;
+            return InvertedRCTrackHalfLoopUp;
         case TrackElemType::HalfLoopDown:
-            return inverted_rc_track_half_loop_down;
+            return InvertedRCTrackHalfLoopDown;
         case TrackElemType::LeftCorkscrewUp:
-            return inverted_rc_track_left_corkscrew_up;
+            return InvertedRCTrackLeftCorkscrewUp;
         case TrackElemType::RightCorkscrewUp:
-            return inverted_rc_track_right_corkscrew_up;
+            return InvertedRCTrackRightCorkscrewUp;
         case TrackElemType::LeftCorkscrewDown:
-            return inverted_rc_track_left_corkscrew_down;
+            return InvertedRCTrackLeftCorkscrewDown;
         case TrackElemType::RightCorkscrewDown:
-            return inverted_rc_track_right_corkscrew_down;
+            return InvertedRCTrackRightCorkscrewDown;
         case TrackElemType::LeftQuarterTurn1TileUp60:
-            return inverted_rc_track_left_quarter_turn_1_60_deg_up;
+            return InvertedRCTrackLeftQuarterTurn160DegUp;
         case TrackElemType::RightQuarterTurn1TileUp60:
-            return inverted_rc_track_right_quarter_turn_1_60_deg_up;
+            return InvertedRCTrackRightQuarterTurn160DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            return inverted_rc_track_left_quarter_turn_1_60_deg_down;
+            return InvertedRCTrackLeftQuarterTurn160DegDown;
         case TrackElemType::RightQuarterTurn1TileDown60:
-            return inverted_rc_track_right_quarter_turn_1_60_deg_down;
+            return InvertedRCTrackRightQuarterTurn160DegDown;
         case TrackElemType::Brakes:
-            return inverted_rc_track_brakes;
+            return InvertedRCTrackBrakes;
         case TrackElemType::LeftQuarterBankedHelixLargeUp:
-            return inverted_rc_track_left_quarter_banked_helix_large_up;
+            return InvertedRCTrackLeftQuarterBankedHelixLargeUp;
         case TrackElemType::RightQuarterBankedHelixLargeUp:
-            return inverted_rc_track_right_quarter_banked_helix_large_up;
+            return InvertedRCTrackRightQuarterBankedHelixLargeUp;
         case TrackElemType::LeftQuarterBankedHelixLargeDown:
-            return inverted_rc_track_left_quarter_banked_helix_large_down;
+            return InvertedRCTrackLeftQuarterBankedHelixLargeDown;
         case TrackElemType::RightQuarterBankedHelixLargeDown:
-            return inverted_rc_track_right_quarter_banked_helix_large_down;
+            return InvertedRCTrackRightQuarterBankedHelixLargeDown;
         case TrackElemType::Up25LeftBanked:
-            return inverted_rc_track_25_deg_up_left_banked;
+            return InvertedRCTrack25DegUpLeftBanked;
         case TrackElemType::Up25RightBanked:
-            return inverted_rc_track_25_deg_up_right_banked;
+            return InvertedRCTrack25DegUpRightBanked;
         case TrackElemType::OnRidePhoto:
-            return inverted_rc_track_on_ride_photo;
+            return InvertedRCTrackOnRidePhoto;
         case TrackElemType::Down25LeftBanked:
-            return inverted_rc_track_25_deg_down_left_banked;
+            return InvertedRCTrack25DegDownLeftBanked;
         case TrackElemType::Down25RightBanked:
-            return inverted_rc_track_25_deg_down_right_banked;
+            return InvertedRCTrack25DegDownRightBanked;
         case TrackElemType::LeftEighthToDiag:
-            return inverted_rc_track_left_eighth_to_diag;
+            return InvertedRCTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return inverted_rc_track_right_eighth_to_diag;
+            return InvertedRCTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return inverted_rc_track_left_eighth_to_orthogonal;
+            return InvertedRCTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return inverted_rc_track_right_eighth_to_orthogonal;
+            return InvertedRCTrackRightEighthToOrthogonal;
         case TrackElemType::LeftEighthBankToDiag:
-            return inverted_rc_track_left_eighth_bank_to_diag;
+            return InvertedRCTrackLeftEighthBankToDiag;
         case TrackElemType::RightEighthBankToDiag:
-            return inverted_rc_track_right_eighth_bank_to_diag;
+            return InvertedRCTrackRightEighthBankToDiag;
         case TrackElemType::LeftEighthBankToOrthogonal:
-            return inverted_rc_track_left_eighth_bank_to_orthogonal;
+            return InvertedRCTrackLeftEighthBankToOrthogonal;
         case TrackElemType::RightEighthBankToOrthogonal:
-            return inverted_rc_track_right_eighth_bank_to_orthogonal;
+            return InvertedRCTrackRightEighthBankToOrthogonal;
         case TrackElemType::DiagFlat:
-            return inverted_rc_track_diag_flat;
+            return InvertedRCTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return inverted_rc_track_diag_25_deg_up;
+            return InvertedRCTrackDiag25DegUp;
         case TrackElemType::DiagUp60:
-            return inverted_rc_track_diag_60_deg_up;
+            return InvertedRCTrackDiag60DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return inverted_rc_track_diag_flat_to_25_deg_up;
+            return InvertedRCTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToUp60:
-            return inverted_rc_track_diag_25_deg_up_to_60_deg_up;
+            return InvertedRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagUp60ToUp25:
-            return inverted_rc_track_diag_60_deg_up_to_25_deg_up;
+            return InvertedRCTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return inverted_rc_track_diag_25_deg_up_to_flat;
+            return InvertedRCTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return inverted_rc_track_diag_25_deg_down;
+            return InvertedRCTrackDiag25DegDown;
         case TrackElemType::DiagDown60:
-            return inverted_rc_track_diag_60_deg_down;
+            return InvertedRCTrackDiag60DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return inverted_rc_track_diag_flat_to_25_deg_down;
+            return InvertedRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToDown60:
-            return inverted_rc_track_diag_25_deg_down_to_60_deg_down;
+            return InvertedRCTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagDown60ToDown25:
-            return inverted_rc_track_diag_60_deg_down_to_25_deg_down;
+            return InvertedRCTrackDiag60DegDownTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return inverted_rc_track_diag_25_deg_down_to_flat;
+            return InvertedRCTrackDiag25DegDownToFlat;
         case TrackElemType::DiagFlatToLeftBank:
-            return inverted_rc_track_diag_flat_to_left_bank;
+            return InvertedRCTrackDiagFlatToLeftBank;
         case TrackElemType::DiagFlatToRightBank:
-            return inverted_rc_track_diag_flat_to_right_bank;
+            return InvertedRCTrackDiagFlatToRightBank;
         case TrackElemType::DiagLeftBankToFlat:
-            return inverted_rc_track_diag_left_bank_to_flat;
+            return InvertedRCTrackDiagLeftBankToFlat;
         case TrackElemType::DiagRightBankToFlat:
-            return inverted_rc_track_diag_right_bank_to_flat;
+            return InvertedRCTrackDiagRightBankToFlat;
         case TrackElemType::DiagLeftBankToUp25:
-            return inverted_rc_track_diag_left_bank_to_25_deg_up;
+            return InvertedRCTrackDiagLeftBankTo25DegUp;
         case TrackElemType::DiagRightBankToUp25:
-            return inverted_rc_track_diag_right_bank_to_25_deg_up;
+            return InvertedRCTrackDiagRightBankTo25DegUp;
         case TrackElemType::DiagUp25ToLeftBank:
-            return inverted_rc_track_diag_25_deg_up_to_left_bank;
+            return InvertedRCTrackDiag25DegUpToLeftBank;
         case TrackElemType::DiagUp25ToRightBank:
-            return inverted_rc_track_diag_25_deg_up_to_right_bank;
+            return InvertedRCTrackDiag25DegUpToRightBank;
         case TrackElemType::DiagLeftBankToDown25:
-            return inverted_rc_track_diag_left_bank_to_25_deg_down;
+            return InvertedRCTrackDiagLeftBankTo25DegDown;
         case TrackElemType::DiagRightBankToDown25:
-            return inverted_rc_track_diag_right_bank_to_25_deg_down;
+            return InvertedRCTrackDiagRightBankTo25DegDown;
         case TrackElemType::DiagDown25ToLeftBank:
-            return inverted_rc_track_diag_25_deg_down_to_left_bank;
+            return InvertedRCTrackDiag25DegDownToLeftBank;
         case TrackElemType::DiagDown25ToRightBank:
-            return inverted_rc_track_diag_25_deg_down_to_right_bank;
+            return InvertedRCTrackDiag25DegDownToRightBank;
         case TrackElemType::DiagLeftBank:
-            return inverted_rc_track_diag_left_bank;
+            return InvertedRCTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
-            return inverted_rc_track_diag_right_bank;
+            return InvertedRCTrackDiagRightBank;
         case TrackElemType::LeftLargeHalfLoopUp:
-            return inverted_rc_track_left_large_half_loop_up;
+            return InvertedRCTrackLeftLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopUp:
-            return inverted_rc_track_right_large_half_loop_up;
+            return InvertedRCTrackRightLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopDown:
-            return inverted_rc_track_right_large_half_loop_down;
+            return InvertedRCTrackRightLargeHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return inverted_rc_track_left_large_half_loop_down;
+            return InvertedRCTrackLeftLargeHalfLoopDown;
         case TrackElemType::BlockBrakes:
-            return inverted_rc_track_block_brakes;
+            return InvertedRCTrackBlockBrakes;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-            return inverted_rc_track_left_banked_quarter_turn_3_25_deg_up;
+            return InvertedRCTrackLeftBankedQuarterTurn325DegUp;
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
-            return inverted_rc_track_right_banked_quarter_turn_3_25_deg_up;
+            return InvertedRCTrackRightBankedQuarterTurn325DegUp;
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-            return inverted_rc_track_left_banked_quarter_turn_3_25_deg_down;
+            return InvertedRCTrackLeftBankedQuarterTurn325DegDown;
         case TrackElemType::RightBankedQuarterTurn3TileDown25:
-            return inverted_rc_track_right_banked_quarter_turn_3_25_deg_down;
+            return InvertedRCTrackRightBankedQuarterTurn325DegDown;
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-            return inverted_rc_track_left_banked_quarter_turn_5_25_deg_up;
+            return InvertedRCTrackLeftBankedQuarterTurn525DegUp;
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
-            return inverted_rc_track_right_banked_quarter_turn_5_25_deg_up;
+            return InvertedRCTrackRightBankedQuarterTurn525DegUp;
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-            return inverted_rc_track_left_banked_quarter_turn_5_25_deg_down;
+            return InvertedRCTrackLeftBankedQuarterTurn525DegDown;
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
-            return inverted_rc_track_right_banked_quarter_turn_5_25_deg_down;
+            return InvertedRCTrackRightBankedQuarterTurn525DegDown;
         case TrackElemType::Up25ToLeftBankedUp25:
-            return inverted_rc_track_25_deg_up_to_left_banked_25_deg_up;
+            return InvertedRCTrack25DegUpToLeftBanked25DegUp;
         case TrackElemType::Up25ToRightBankedUp25:
-            return inverted_rc_track_25_deg_up_to_right_banked_25_deg_up;
+            return InvertedRCTrack25DegUpToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToUp25:
-            return inverted_rc_track_left_banked_25_deg_up_to_25_deg_up;
+            return InvertedRCTrackLeftBanked25DegUpTo25DegUp;
         case TrackElemType::RightBankedUp25ToUp25:
-            return inverted_rc_track_right_banked_25_deg_up_to_25_deg_up;
+            return InvertedRCTrackRightBanked25DegUpTo25DegUp;
         case TrackElemType::Down25ToLeftBankedDown25:
-            return inverted_rc_track_25_deg_down_to_left_banked_25_deg_down;
+            return InvertedRCTrack25DegDownToLeftBanked25DegDown;
         case TrackElemType::Down25ToRightBankedDown25:
-            return inverted_rc_track_25_deg_down_to_right_banked_25_deg_down;
+            return InvertedRCTrack25DegDownToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToDown25:
-            return inverted_rc_track_left_banked_25_deg_down_to_25_deg_down;
+            return InvertedRCTrackLeftBanked25DegDownTo25DegDown;
         case TrackElemType::RightBankedDown25ToDown25:
-            return inverted_rc_track_right_banked_25_deg_down_to_25_deg_down;
+            return InvertedRCTrackRightBanked25DegDownTo25DegDown;
         case TrackElemType::LeftBankedFlatToLeftBankedUp25:
-            return inverted_rc_track_left_banked_flat_to_left_banked_25_deg_up;
+            return InvertedRCTrackLeftBankedFlatToLeftBanked25DegUp;
         case TrackElemType::RightBankedFlatToRightBankedUp25:
-            return inverted_rc_track_right_banked_flat_to_right_banked_25_deg_up;
+            return InvertedRCTrackRightBankedFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
-            return inverted_rc_track_left_banked_25_deg_up_to_left_banked_flat;
+            return InvertedRCTrackLeftBanked25DegUpToLeftBankedFlat;
         case TrackElemType::RightBankedUp25ToRightBankedFlat:
-            return inverted_rc_track_right_banked_25_deg_up_to_right_banked_flat;
+            return InvertedRCTrackRightBanked25DegUpToRightBankedFlat;
         case TrackElemType::LeftBankedFlatToLeftBankedDown25:
-            return inverted_rc_track_left_banked_flat_to_left_banked_25_deg_down;
+            return InvertedRCTrackLeftBankedFlatToLeftBanked25DegDown;
         case TrackElemType::RightBankedFlatToRightBankedDown25:
-            return inverted_rc_track_right_banked_flat_to_right_banked_25_deg_down;
+            return InvertedRCTrackRightBankedFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
-            return inverted_rc_track_left_banked_25_deg_down_to_left_banked_flat;
+            return InvertedRCTrackLeftBanked25DegDownToLeftBankedFlat;
         case TrackElemType::RightBankedDown25ToRightBankedFlat:
-            return inverted_rc_track_right_banked_25_deg_down_to_right_banked_flat;
+            return InvertedRCTrackRightBanked25DegDownToRightBankedFlat;
         case TrackElemType::FlatToLeftBankedUp25:
-            return inverted_rc_track_flat_to_left_banked_25_deg_up;
+            return InvertedRCTrackFlatToLeftBanked25DegUp;
         case TrackElemType::FlatToRightBankedUp25:
-            return inverted_rc_track_flat_to_right_banked_25_deg_up;
+            return InvertedRCTrackFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToFlat:
-            return inverted_rc_track_left_banked_25_deg_up_to_flat;
+            return InvertedRCTrackLeftBanked25DegUpToFlat;
         case TrackElemType::RightBankedUp25ToFlat:
-            return inverted_rc_track_right_banked_25_deg_up_to_flat;
+            return InvertedRCTrackRightBanked25DegUpToFlat;
         case TrackElemType::FlatToLeftBankedDown25:
-            return inverted_rc_track_flat_to_left_banked_25_deg_down;
+            return InvertedRCTrackFlatToLeftBanked25DegDown;
         case TrackElemType::FlatToRightBankedDown25:
-            return inverted_rc_track_flat_to_right_banked_25_deg_down;
+            return InvertedRCTrackFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToFlat:
-            return inverted_rc_track_left_banked_25_deg_down_to_flat;
+            return InvertedRCTrackLeftBanked25DegDownToFlat;
         case TrackElemType::RightBankedDown25ToFlat:
-            return inverted_rc_track_right_banked_25_deg_down_to_flat;
+            return InvertedRCTrackRightBanked25DegDownToFlat;
 
         case TrackElemType::Booster:
-            return inverted_rc_track_booster;
+            return InvertedRCTrackBooster;
     }
     return nullptr;
 }

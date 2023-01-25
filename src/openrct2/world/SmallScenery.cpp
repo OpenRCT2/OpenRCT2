@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/ObjectManager.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../ride/TrackDesign.h"
 #include "Footpath.h"
 #include "Map.h"
@@ -26,13 +27,13 @@
 
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
 {
-    return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (this->Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
 {
-    type &= ~TILE_ELEMENT_QUADRANT_MASK;
-    type |= (newQuadrant << 6);
+    Type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    Type |= (newQuadrant << 6);
 }
 
 uint16_t SmallSceneryElement::GetEntryIndex() const
