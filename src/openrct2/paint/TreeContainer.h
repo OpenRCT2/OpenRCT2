@@ -101,15 +101,12 @@ template<class KeyType, class ValueType> void TreeContainer<KeyType, ValueType>:
         keys.push_back(keyValue.first);
 
     _keyGenerator.Initialize(keys, *_keyRange);
-
-    std::vector<KeyType> keysGenerated;
     for (const auto& keyValue : _keyValues)
     {
         const auto& key = keyValue.first;
         const auto& value = keyValue.second;
 
-        keysGenerated.clear();
-        _keyGenerator.GenerateKeys(key, keysGenerated);
+        auto keysGenerated = _keyGenerator.GenerateKeys(key);
         for (const auto& aKey : keysGenerated)
         {
             auto params = _keyGenerator.GetParams(aKey);
