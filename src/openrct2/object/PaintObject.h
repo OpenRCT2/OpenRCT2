@@ -37,6 +37,8 @@ private:
 
     constexpr const uint8_t* GetTrackSequenceMapping(const uint32_t direction, const track_type_t trackElement) const;
 
+
+
 public:
     PaintObject();
 

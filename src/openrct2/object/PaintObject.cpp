@@ -20,6 +20,12 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     try
     {
+        if (root.contains("keyRanges"))
+        {
+            const auto& keyRangesJson = root["keyRanges"];
+            _keyRange.FromJson(keyRangesJson);
+        }
+
         if (root.contains("heightSupportsTables"))
         {
             auto heightTables = root["heightSupportsTables"];
@@ -169,12 +175,6 @@ void PaintObject::ReadJson(IReadObjectContext* context, json_t& root)
                     
                 }
             }
-        }
-
-        if (root.contains("keyRanges"))
-        {
-            const auto& keyRangesJson = root["keyRanges"];
-            _keyRange.FromJson(keyRangesJson);
         }
 
         std::vector<ImageIdOffsetJson> offsetsJson;
