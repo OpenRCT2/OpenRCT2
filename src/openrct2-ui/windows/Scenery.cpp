@@ -39,6 +39,7 @@ constexpr int32_t MaxTabs = 32;
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
 static u8string _filter;
+std::vector<ScenerySelection> _filteredScenery;
 
 enum WindowSceneryListWidgetIdx
 {
@@ -142,8 +143,8 @@ public:
     {
         Init();
 
-        _filter.clear();
         _filter.resize(MAX_PATH);
+        _filter.clear();
         widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
 
         InitScrollWidgets();
@@ -238,6 +239,7 @@ public:
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
                 _filter.clear();
+                ContentUpdateScroll();
                 scrolls->v_top = 0;
                 Invalidate();
                 break;
@@ -466,7 +468,8 @@ public:
             return;
 
         _filter.assign(text);
-        
+        ContentUpdateScroll();
+
         scrolls->v_top = 0;
         Invalidate();
     }
@@ -897,7 +900,7 @@ private:
             return 0;
         }
 
-        const auto totalItems = _tabEntries[tabIndex].Entries.size();
+        const auto totalItems = _filteredScenery.size();
         const auto numColumns = GetNumColumns();
         const auto rows = CountRows(totalItems + numColumns - 1);
         return rows;
@@ -916,6 +919,8 @@ private:
             return;
         }
 
+        SetFilteredScenery(tabIndex);
+
         const int32_t listHeight = height - 14 - widgets[WIDX_SCENERY_LIST].top - 1;
 
         const auto sceneryItem = ContentCountRowsWithSelectedItem(tabIndex);
@@ -926,10 +931,13 @@ private:
         if (sceneryItem.scenerySelection.IsUndefined())
         {
             rowSelected = 0;
-            const auto& scenery = _tabEntries[tabIndex].Entries[0];
-            if (!scenery.IsUndefined())
+            if (_filteredScenery.size() > 0)
             {
-                SetSelectedScenery(tabIndex, scenery);
+                const auto& scenery = _filteredScenery[0];
+                if (!scenery.IsUndefined())
+                {
+                    SetSelectedScenery(tabIndex, scenery);
+                }
             }
         }
 
@@ -943,17 +951,16 @@ private:
     {
         SceneryItem sceneryItem = { 0, 0, ScenerySelection() };
         const auto scenerySelection = GetSelectedScenery(tabIndex);
-        const auto& tabInfo = _tabEntries[tabIndex];
-        for (size_t i = 0; i < tabInfo.Entries.size(); i++)
+        for (size_t i = 0; i < _filteredScenery.size(); i++)
         {
-            const auto& currentEntry = tabInfo.Entries[i];
+            const auto& currentEntry = _filteredScenery[i];
             if (currentEntry == scenerySelection)
             {
                 sceneryItem.selected_item = static_cast<int32_t>(i);
                 sceneryItem.scenerySelection = scenerySelection;
             }
         }
-        sceneryItem.allRows = static_cast<int32_t>(CountRows(tabInfo.Entries.size() + 8));
+        sceneryItem.allRows = static_cast<int32_t>(CountRows(_filteredScenery.size() + 8));
         return sceneryItem;
     }
 
@@ -1036,9 +1043,23 @@ private:
         }
     }
 
+    void SetFilteredScenery(const size_t tabIndex)
+    {
+        auto currentTab = _tabEntries[tabIndex];
+
+        _filteredScenery.clear();
+        for (auto selection : currentTab.Entries)
+        {
+            if (IsFiltered(selection))
+                _filteredScenery.push_back(selection);
+        }
+    }
+
     bool IsFiltered(const ScenerySelection& selection)
     {
-        if (_filter.empty())
+        auto empty = _filter.empty();
+        auto length = _filter.length();
+        if (empty || length == 0)
             return true;
 
         const SceneryEntryBase* sceneryEntry = nullptr;
@@ -1061,21 +1082,21 @@ private:
                 break;
         }
 
-        return IsFilterInName(*sceneryEntry) || IsFilterInIdentifier(*sceneryEntry)
-            || IsFilterInAuthors(*sceneryEntry) || IsFilterInFilename(*sceneryEntry);
+        if (sceneryEntry == nullptr)
+            return false;
+
+        return IsFilterInName(*sceneryEntry) || IsFilterInIdentifier(*sceneryEntry) || IsFilterInAuthors(*sceneryEntry)
+            || IsFilterInFilename(*sceneryEntry);
     }
 
     bool IsFilterInName(const SceneryEntryBase& sceneryEntry)
     {
-        auto sceneryName = sceneryEntry.name;
-        return String::Contains(u8string_view(LanguageGetString(sceneryName)), _filter, true);
+        return String::Contains(sceneryEntry.obj->GetName(), _filter, true);
     }
 
     bool IsFilterInAuthors(const SceneryEntryBase& sceneryEntry)
     {
-        auto authors = sceneryEntry.obj->GetAuthors();
-
-        for (auto author : authors)
+        for (auto author : sceneryEntry.obj->GetAuthors())
             if (String::Contains(author, _filter, true))
                 return true;
 
@@ -1084,8 +1105,7 @@ private:
 
     bool IsFilterInIdentifier(const SceneryEntryBase& sceneryEntry)
     {
-        auto objectName = sceneryEntry.obj->GetName();
-        return String::Contains(objectName, _filter, true);
+        return String::Contains(sceneryEntry.obj->GetIdentifier(), _filter, true);
     }
 
     bool IsFilterInFilename(const SceneryEntryBase& sceneryEntry)
@@ -1154,14 +1174,9 @@ private:
         if (colIndex >= 0 && colIndex < numColumns && rowIndex >= 0)
         {
             const auto tabSceneryIndex = static_cast<size_t>((rowIndex * numColumns) + colIndex);
-            const auto tabIndex = _activeTabIndex;
-            if (tabIndex < _tabEntries.size())
+            if (tabSceneryIndex < _filteredScenery.size())
             {
-                auto& tabInfo = _tabEntries[tabIndex];
-                if (tabSceneryIndex < tabInfo.Entries.size())
-                {
-                    return tabInfo.Entries[tabSceneryIndex];
-                }
+                return _filteredScenery[tabSceneryIndex];
             }
         }
         return scenery;
@@ -1397,10 +1412,9 @@ private:
 
         ScreenCoordsXY topLeft{ 0, 0 };
 
-        const auto& tabInfo = _tabEntries[tabIndex];
-        for (size_t sceneryTabItemIndex = 0; sceneryTabItemIndex < tabInfo.Entries.size(); sceneryTabItemIndex++)
+        for (size_t sceneryTabItemIndex = 0; sceneryTabItemIndex < _filteredScenery.size(); sceneryTabItemIndex++)
         {
-            const auto& currentSceneryGlobal = tabInfo.Entries[sceneryTabItemIndex];
+            const auto& currentSceneryGlobal = _filteredScenery[sceneryTabItemIndex];
             const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
             if (gWindowSceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled)
             {
