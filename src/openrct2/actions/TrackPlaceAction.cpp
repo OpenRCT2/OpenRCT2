@@ -649,9 +649,10 @@ GameActions::Result TrackPlaceAction::Execute() const
         MapInvalidateTileFull(mapLoc);
     }
 
+    // Update ride stats and block brake count if the piece was successfully built
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        invalidate_test_results(ride);
+        InvalidateTestResults(*ride);
         switch (_trackType)
         {
             case TrackElemType::OnRidePhoto:
