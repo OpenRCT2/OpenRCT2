@@ -102,7 +102,7 @@ public:
         param = TIdentifier<T, TNull, TTag>::FromUnderlying(value);
     }
 
-    template<typename T, size_t _TypeID> void Visit(std::string_view name, NetworkObjectId_t<T, _TypeID>& param)
+    template<typename T, size_t _TypeID> void Visit(std::string_view name, NetworkObjectId<T, _TypeID>& param)
     {
         Visit(name, param.id);
     }

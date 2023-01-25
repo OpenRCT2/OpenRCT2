@@ -38,7 +38,7 @@ public:
         WindowNewRideInitVars();
     }
 
-    rct_window* OpenWindow(WindowClass wc) override
+    WindowBase* OpenWindow(WindowClass wc) override
     {
         switch (wc)
         {
@@ -144,7 +144,7 @@ public:
         }
     }
 
-    rct_window* OpenView(uint8_t view) override
+    WindowBase* OpenView(uint8_t view) override
     {
         switch (view)
         {
@@ -174,6 +174,8 @@ public:
                 return WindowChangelogOpen(WV_CHANGELOG);
             case WV_NEW_VERSION_INFO:
                 return WindowChangelogOpen(WV_NEW_VERSION_INFO);
+            case WV_CONTRIBUTORS:
+                return WindowChangelogOpen(WV_CONTRIBUTORS);
             case WV_FINANCE_MARKETING:
                 return WindowFinancesMarketingOpen();
             default:
@@ -181,7 +183,7 @@ public:
         }
     }
 
-    rct_window* OpenDetails(uint8_t type, int32_t id) override
+    WindowBase* OpenDetails(uint8_t type, int32_t id) override
     {
         switch (type)
         {
@@ -190,9 +192,9 @@ public:
             case WD_NEW_CAMPAIGN:
                 return WindowNewCampaignOpen(id);
             case WD_DEMOLISH_RIDE:
-                return WindowRideDemolishPromptOpen(*get_ride(RideId::FromUnderlying(id)));
+                return WindowRideDemolishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
             case WD_REFURBISH_RIDE:
-                return WindowRideRefurbishPromptOpen(*get_ride(RideId::FromUnderlying(id)));
+                return WindowRideRefurbishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
             case WD_SIGN:
                 return WindowSignOpen(id);
             case WD_SIGN_SMALL:
@@ -205,17 +207,17 @@ public:
         }
     }
 
-    rct_window* ShowError(StringId title, StringId message, const Formatter& args) override
+    WindowBase* ShowError(StringId title, StringId message, const Formatter& args) override
     {
         return WindowErrorOpen(title, message, args);
     }
 
-    rct_window* ShowError(std::string_view title, std::string_view message) override
+    WindowBase* ShowError(std::string_view title, std::string_view message) override
     {
         return WindowErrorOpen(title, message);
     }
 
-    rct_window* OpenIntent(Intent* intent) override
+    WindowBase* OpenIntent(Intent* intent) override
     {
         switch (intent->GetWindowClass())
         {
@@ -268,7 +270,7 @@ public:
             case WindowClass::Ride:
             {
                 const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
-                auto ride = get_ride(rideId);
+                auto ride = GetRide(rideId);
                 return ride == nullptr ? nullptr : WindowRideMainOpen(*ride);
             }
             case WindowClass::TrackDesignPlace:
@@ -312,16 +314,16 @@ public:
             case INTENT_ACTION_NEW_SCENERY:
             {
                 // Check if window is already open
-                auto* window = window_bring_to_front_by_class(WindowClass::Scenery);
+                auto* window = WindowBringToFrontByClass(WindowClass::Scenery);
                 if (window == nullptr)
                 {
-                    auto* tlbrWindow = window_find_by_class(WindowClass::TopToolbar);
+                    auto* tlbrWindow = WindowFindByClass(WindowClass::TopToolbar);
                     if (tlbrWindow != nullptr)
                     {
                         tlbrWindow->Invalidate();
-                        if (!tool_set(*tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
+                        if (!ToolSet(*tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
                         {
-                            input_set_flag(INPUT_FLAG_6, true);
+                            InputSetFlag(INPUT_FLAG_6, true);
                             window = WindowSceneryOpen();
                         }
                     }
@@ -381,7 +383,7 @@ public:
 
             case INTENT_ACTION_REFRESH_RIDE_LIST:
             {
-                auto window = window_find_by_class(WindowClass::RideList);
+                auto window = WindowFindByClass(WindowClass::RideList);
                 if (window != nullptr)
                 {
                     WindowRideListRefreshList(window);
@@ -397,16 +399,16 @@ public:
             case INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS:
             {
                 auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
-                auto w = window_find_by_class(WindowClass::RideConstruction);
+                auto w = WindowFindByClass(WindowClass::RideConstruction);
                 if (w == nullptr || w->number != rideIndex)
                 {
-                    window_close_construction_windows();
+                    WindowCloseConstructionWindows();
                     _currentRideIndex = RideId::FromUnderlying(rideIndex);
                     OpenWindow(WindowClass::RideConstruction);
                 }
                 else
                 {
-                    ride_construction_invalidate_current_track();
+                    RideConstructionInvalidateCurrentTrack();
                     _currentRideIndex = RideId::FromUnderlying(rideIndex);
                 }
                 break;
@@ -453,7 +455,7 @@ public:
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
                 auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                auto* w = window_find_by_number(WindowClass::Ride, vehicle->ride.ToUnderlying());
+                auto* w = WindowFindByNumber(WindowClass::Ride, vehicle->ride.ToUnderlying());
                 if (w == nullptr)
                     return;
 
@@ -472,7 +474,7 @@ public:
             case INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE:
             {
                 auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
-                auto w = window_find_by_number(WindowClass::Ride, rideIndex);
+                auto w = WindowFindByNumber(WindowClass::Ride, rideIndex);
                 if (w != nullptr)
                 {
                     if (w->page == 4) // WINDOW_RIDE_PAGE_COLOUR
@@ -486,19 +488,19 @@ public:
 
             case INTENT_ACTION_UPDATE_CLIMATE:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-                window_invalidate_by_class(WindowClass::GuestList);
+                WindowInvalidateByClass(WindowClass::GuestList);
                 break;
 
             case INTENT_ACTION_UPDATE_GUEST_COUNT:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-                window_invalidate_by_class(WindowClass::GuestList);
-                window_invalidate_by_class(WindowClass::ParkInformation);
+                WindowInvalidateByClass(WindowClass::GuestList);
+                WindowInvalidateByClass(WindowClass::ParkInformation);
                 WindowGuestListRefreshList();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
-                window_invalidate_by_class(WindowClass::ParkInformation);
+                WindowInvalidateByClass(WindowClass::ParkInformation);
                 break;
 
             case INTENT_ACTION_UPDATE_DATE:
@@ -506,7 +508,7 @@ public:
                 break;
 
             case INTENT_ACTION_UPDATE_CASH:
-                window_invalidate_by_class(WindowClass::Finances);
+                WindowInvalidateByClass(WindowClass::Finances);
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
                 break;
 
@@ -514,7 +516,7 @@ public:
             {
                 uint8_t bannerIndex = static_cast<uint8_t>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
 
-                rct_window* w = window_find_by_number(WindowClass::Banner, bannerIndex);
+                WindowBase* w = WindowFindByNumber(WindowClass::Banner, bannerIndex);
                 if (w != nullptr)
                 {
                     w->Invalidate();
@@ -522,8 +524,8 @@ public:
                 break;
             }
             case INTENT_ACTION_UPDATE_RESEARCH:
-                window_invalidate_by_class(WindowClass::Finances);
-                window_invalidate_by_class(WindowClass::Research);
+                WindowInvalidateByClass(WindowClass::Finances);
+                WindowInvalidateByClass(WindowClass::Research);
                 break;
 
             case INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL:
@@ -587,10 +589,10 @@ public:
 
     void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) override
     {
-        auto mainWindow = window_get_main();
+        auto mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            auto viewport = window_get_viewport(mainWindow);
+            auto viewport = WindowGetViewport(mainWindow);
             auto zoomDifference = zoom - viewport->zoom;
 
             mainWindow->viewport_target_sprite = EntityId::GetNull();
@@ -607,7 +609,7 @@ public:
             mainWindow->savedViewPos.y -= viewport->view_height >> 1;
 
             // Make sure the viewport has correct coordinates set.
-            viewport_update_position(mainWindow);
+            ViewportUpdatePosition(mainWindow);
 
             mainWindow->Invalidate();
         }
@@ -618,7 +620,7 @@ public:
         WindowAllWheelInput();
     }
 
-    rct_window* GetOwner(const rct_viewport* viewport) override
+    WindowBase* GetOwner(const Viewport* viewport) override
     {
         for (auto& w : g_window_list)
         {

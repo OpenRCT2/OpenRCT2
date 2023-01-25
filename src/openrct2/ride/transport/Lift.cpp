@@ -34,7 +34,7 @@ static constexpr const uint32_t lift_cage_sprites[][2] = {
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
 };
 
-static void paint_lift_cage(PaintSession& session, int8_t index, ImageId colourFlags, int32_t height, uint8_t rotation)
+static void PaintLiftCage(PaintSession& session, int8_t index, ImageId colourFlags, int32_t height, uint8_t rotation)
 {
     ImageId imageId;
 
@@ -46,7 +46,7 @@ static void paint_lift_cage(PaintSession& session, int8_t index, ImageId colourF
 }
 
 /** rct2: 0x0076C6CC */
-static void paint_lift_base(
+static void PaintLiftBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -54,11 +54,11 @@ static void paint_lift_base(
 
     if (trackSequence == 0)
     {
-        paint_lift_cage(session, direction, session.TrackColours[SCHEME_TRACK], height, session.CurrentRotation);
+        PaintLiftCage(session, direction, session.TrackColours[SCHEME_TRACK], height, session.CurrentRotation);
 
-        paint_lift_cage(session, -1, session.TrackColours[SCHEME_TRACK], height + 32, session.CurrentRotation);
+        PaintLiftCage(session, -1, session.TrackColours[SCHEME_TRACK], height + 32, session.CurrentRotation);
 
-        paint_lift_cage(session, -1, session.TrackColours[SCHEME_TRACK], height + 64, session.CurrentRotation);
+        PaintLiftCage(session, -1, session.TrackColours[SCHEME_TRACK], height + 64, session.CurrentRotation);
 
         PaintUtilSetVerticalTunnel(session, height + 96);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -73,7 +73,7 @@ static void paint_lift_base(
     auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL_B);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
         session.CurrentRotation);
 
@@ -111,7 +111,7 @@ static void paint_lift_base(
 }
 
 /** rct2: 0x0076C6DC */
-static void paint_lift_tower_section(
+static void PaintLiftTowerSection(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -120,7 +120,7 @@ static void paint_lift_tower_section(
         return;
     }
 
-    paint_lift_cage(session, -1, session.TrackColours[SCHEME_TRACK], height, session.CurrentRotation);
+    PaintLiftCage(session, -1, session.TrackColours[SCHEME_TRACK], height, session.CurrentRotation);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 
@@ -131,15 +131,15 @@ static void paint_lift_tower_section(
 /**
  * rct2: 0x0076C5BC
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_lift(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLift(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::TowerBase:
-            return paint_lift_base;
+            return PaintLiftBase;
 
         case TrackElemType::TowerSection:
-            return paint_lift_tower_section;
+            return PaintLiftTowerSection;
     }
 
     return nullptr;

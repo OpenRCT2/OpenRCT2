@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor AlpineCoasterRTD =
     SET_FIELD(Heights, {18, 24, 3, 7}),
     SET_FIELD(MaxMass, 4),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 4, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_alpine_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateAlpineCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 35, 20, 80, 8, 3, 10 }),
     SET_FIELD(BuildCosts, { 22.50_GBP, 2.50_GBP, 50}),

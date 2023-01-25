@@ -44,7 +44,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
@@ -53,9 +53,9 @@ public:
 /**
  * Creates the window containing the options button on the title screen.
  */
-rct_window* WindowTitleOptionsOpen()
+WindowBase* WindowTitleOptionsOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::TitleOptions);
+    auto* window = WindowBringToFrontByClass(WindowClass::TitleOptions);
     if (window == nullptr)
     {
         window = WindowCreate<TitleOptionsWindow>(

@@ -14,9 +14,9 @@
 
 #include <memory>
 
-struct rct_object_entry;
+struct RCTObjectEntry;
 
-struct scenario_highscore_entry
+struct ScenarioHighscoreEntry
 {
     utf8* fileName;
     utf8* name;
@@ -54,7 +54,7 @@ struct scenario_index_entry
     uint8_t objective_arg_1;
     int64_t objective_arg_2;
     int16_t objective_arg_3;
-    scenario_highscore_entry* highscore = nullptr;
+    ScenarioHighscoreEntry* highscore = nullptr;
 
     utf8 internal_name[64]; // Untranslated name
     utf8 name[64];          // Translated name
@@ -92,9 +92,8 @@ struct IScenarioRepository
     const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 [[nodiscard]] IScenarioRepository* GetScenarioRepository();
 
-void scenario_repository_scan();
-[[nodiscard]] size_t scenario_repository_get_count();
-[[nodiscard]] const scenario_index_entry* scenario_repository_get_by_index(size_t index);
-[[nodiscard]] bool scenario_repository_try_record_highscore(
-    const utf8* scenarioFileName, money64 companyValue, const utf8* name);
-void scenario_translate(scenario_index_entry* scenarioEntry);
+void ScenarioRepositoryScan();
+[[nodiscard]] size_t ScenarioRepositoryGetCount();
+[[nodiscard]] const scenario_index_entry* ScenarioRepositoryGetByIndex(size_t index);
+[[nodiscard]] bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name);
+void ScenarioTranslate(scenario_index_entry* scenarioEntry);

@@ -74,23 +74,23 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
 
 void RideEntranceExitPlaceProvisionalGhost();
 void RideEntranceExitRemoveGhost();
-void ride_restore_provisional_track_piece();
-void ride_remove_provisional_track_piece();
+void RideRestoreProvisionalTrackPiece();
+void RideRemoveProvisionalTrackPiece();
 
-void ride_construction_remove_ghosts();
+void RideConstructionRemoveGhosts();
 
-void ride_construction_invalidate_current_track();
+void RideConstructionInvalidateCurrentTrack();
 
-void ride_construction_set_default_next_piece();
+void RideConstructionSetDefaultNextPiece();
 
-void ride_select_next_section();
-void ride_select_previous_section();
+void RideSelectNextSection();
+void RideSelectPreviousSection();
 
-bool ride_modify(const CoordsXYE& input);
+bool RideModify(const CoordsXYE& input);
 
-CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenCoordsXY& screenCoords);
+CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords);
 
-bool ride_select_backwards_from_front();
-bool ride_select_forwards_from_back();
+bool RideSelectBackwardsFromFront();
+bool RideSelectForwardsFromBack();
 
 void RideConstructionStart(Ride& ride);

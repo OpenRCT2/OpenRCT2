@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
     SET_FIELD(Heights, { 15, 128, 0, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_spiral_slide),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSpiralSlide),
     SET_FIELD(RatingsMultipliers, { 50, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 82.50_GBP, 1.00_GBP, 1, }),

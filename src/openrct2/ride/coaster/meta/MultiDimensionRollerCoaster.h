@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_multi_dimension_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionMultiDimensionRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES |
@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     SET_FIELD(Heights, { 40, 24, 8, 11, }),
     SET_FIELD(MaxMass, 78),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 6 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_multi_dimension_roller_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateMultiDimensionRollerCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 75, 20, 90, 11, 3, 15 }),
     SET_FIELD(BuildCosts, { 90.00_GBP, 2.50_GBP, 50, }),
@@ -77,7 +77,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     SET_FIELD(Heights, { 40, 24, 8, 11, }),
     SET_FIELD(MaxMass, 78),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 6 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_multi_dimension_roller_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateMultiDimensionRollerCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 75, 20, 90, 11, 3, 15 }),
     SET_FIELD(BuildCosts, { 90.00_GBP, 2.50_GBP, 50, }),

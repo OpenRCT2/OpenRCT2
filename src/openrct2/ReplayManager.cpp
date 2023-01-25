@@ -214,7 +214,7 @@ namespace OpenRCT2
 
             auto& snapshot = snapshots->CreateSnapshot();
             snapshots->Capture(snapshot);
-            snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
+            snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
             DataSerialiser snapShotDs(true, snapshotStream);
             snapshots->SerialiseSnapshot(snapshot, snapShotDs);
         }
@@ -233,7 +233,7 @@ namespace OpenRCT2
             auto replayData = std::make_unique<ReplayRecordData>();
             replayData->magic = ReplayMagic;
             replayData->version = ReplayVersion;
-            replayData->networkId = network_get_version();
+            replayData->networkId = NetworkGetVersion();
             replayData->name = name;
             replayData->tickStart = gCurrentTicks;
             if (maxTicks != k_MaxReplayTicks)
@@ -331,7 +331,7 @@ namespace OpenRCT2
             }
             else
             {
-                log_error("Unable to write to file '%s'", outFile.c_str());
+                LOG_ERROR("Unable to write to file '%s'", outFile.c_str());
                 result = false;
             }
 
@@ -386,15 +386,15 @@ namespace OpenRCT2
 
             auto& localSnapshot = snapshots->CreateSnapshot();
             snapshots->Capture(localSnapshot);
-            snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, scenario_rand_state().s0);
+            snapshots->LinkSnapshot(localSnapshot, gCurrentTicks, ScenarioRandState().s0);
             try
             {
-                GameStateCompareData_t cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
+                GameStateCompareData cmpData = snapshots->Compare(replaySnapshot, localSnapshot);
 
                 // Find out if there are any differences between the two states
                 auto res = std::find_if(
                     cmpData.spriteChanges.begin(), cmpData.spriteChanges.end(),
-                    [](const GameStateSpriteChange_t& diff) { return diff.changeType != GameStateSpriteChange_t::EQUAL; });
+                    [](const GameStateSpriteChange& diff) { return diff.changeType != GameStateSpriteChange::EQUAL; });
 
                 // If there are difference write a log to the desyncs folder
                 if (res != cmpData.spriteChanges.end())
@@ -410,7 +410,7 @@ namespace OpenRCT2
             }
             catch (const std::runtime_error& err)
             {
-                log_warning("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
+                LOG_WARNING("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
             }
         }
 
@@ -423,13 +423,13 @@ namespace OpenRCT2
 
             if (!ReadReplayData(file, *replayData))
             {
-                log_error("Unable to read replay data.");
+                LOG_ERROR("Unable to read replay data.");
                 return false;
             }
 
             if (!LoadReplayDataMap(*replayData))
             {
-                log_error("Unable to load map.");
+                LOG_ERROR("Unable to load map.");
                 return false;
             }
 
@@ -534,12 +534,12 @@ namespace OpenRCT2
                 DataSerialiser parkParamsDs(false, data.parkParams);
                 SerialiseParkParameters(parkParamsDs);
 
-                game_load_init();
-                fix_invalid_vehicle_sprite_sizes();
+                GameLoadInit();
+                FixInvalidVehicleSpriteSizes();
             }
             catch (const std::exception& ex)
             {
-                log_error("Exception: %s", ex.what());
+                LOG_ERROR("Exception: %s", ex.what());
                 return false;
             }
             return true;
@@ -712,24 +712,24 @@ namespace OpenRCT2
             serialiser << data.magic;
             if (data.magic != ReplayMagic)
             {
-                log_error("Magic does not match %08X, expected: %08X", data.magic, ReplayMagic);
+                LOG_ERROR("Magic does not match %08X, expected: %08X", data.magic, ReplayMagic);
                 return false;
             }
             serialiser << data.version;
             if (data.version != ReplayVersion && !Compatible(data))
             {
-                log_error("Invalid version detected %04X, expected: %04X", data.version, ReplayVersion);
+                LOG_ERROR("Invalid version detected %04X, expected: %04X", data.version, ReplayVersion);
                 return false;
             }
 
             serialiser << data.networkId;
 #ifndef DISABLE_NETWORK
             // NOTE: This does not mean the replay will not function, only a warning.
-            if (data.networkId != network_get_version())
+            if (data.networkId != NetworkGetVersion())
             {
-                log_warning(
+                LOG_WARNING(
                     "Replay network version mismatch: '%s', expected: '%s'", data.networkId.c_str(),
-                    network_get_version().c_str());
+                    NetworkGetVersion().c_str());
             }
 #endif
 
@@ -799,7 +799,7 @@ namespace OpenRCT2
                     uint32_t replayTick = gCurrentTicks - _currentReplay->tickStart;
 
                     // Detected different game state.
-                    log_warning(
+                    LOG_WARNING(
                         "Different sprite checksum at tick %u (Replay Tick: %u) ; Saved: %s, Current: %s", gCurrentTicks,
                         replayTick, savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
 
@@ -808,7 +808,7 @@ namespace OpenRCT2
                 else
                 {
                     // Good state.
-                    log_verbose(
+                    LOG_VERBOSE(
                         "Good state at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
                         savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
                 }
@@ -853,9 +853,9 @@ namespace OpenRCT2
                 // Focus camera on event.
                 if (isPositionValid && !result.Position.IsNull())
                 {
-                    auto* mainWindow = window_get_main();
+                    auto* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
-                        window_scroll_to_location(*mainWindow, result.Position);
+                        WindowScrollToLocation(*mainWindow, result.Position);
                 }
 
                 replayQueue.erase(replayQueue.begin());

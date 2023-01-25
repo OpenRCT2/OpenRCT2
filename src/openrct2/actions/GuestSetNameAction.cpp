@@ -64,7 +64,7 @@ GameActions::Result GuestSetNameAction::Query() const
     auto guest = TryGetEntity<Guest>(_spriteIndex);
     if (guest == nullptr)
     {
-        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
     }
 
@@ -76,7 +76,7 @@ GameActions::Result GuestSetNameAction::Execute() const
     auto guest = TryGetEntity<Guest>(_spriteIndex);
     if (guest == nullptr)
     {
-        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
     }
 
@@ -94,7 +94,7 @@ GameActions::Result GuestSetNameAction::Execute() const
     // Easter egg functions are for guests only
     guest->HandleEasterEggName();
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
     ContextBroadcastIntent(&intent);

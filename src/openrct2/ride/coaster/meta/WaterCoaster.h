@@ -24,7 +24,7 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_SLOPE_LONG}),
     SET_FIELD(CoveredTrackPieces, {TrackElemType::Flat, TrackElemType::LeftQuarterTurn5Tiles, TrackElemType::RightQuarterTurn5Tiles, TrackElemType::SBendLeft, TrackElemType::SBendRight}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_water_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionWaterRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES | RIDE_TYPE_FLAG_HAS_LARGE_CURVES | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
     SET_FIELD(Heights, { 18, 24, 4, 7, }),
     SET_FIELD(MaxMass, 13),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 4, 6 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_water_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateWaterCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 60, 20, 80, 8, 3, 10 }),
     SET_FIELD(BuildCosts, { 27.50_GBP, 2.00_GBP, 40, }),

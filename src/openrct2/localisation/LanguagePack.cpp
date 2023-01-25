@@ -87,7 +87,7 @@ public:
         }
         catch (const std::exception& ex)
         {
-            log_error("Unable to open %s: %s", path, ex.what());
+            LOG_ERROR("Unable to open %s: %s", path, ex.what());
             return nullptr;
         }
 
@@ -392,7 +392,7 @@ private:
                 {
                     if (_objectOverrides.size() == MAX_OBJECT_OVERRIDES)
                     {
-                        log_warning("Maximum number of localised object strings exceeded.");
+                        LOG_WARNING("Maximum number of localised object strings exceeded.");
                     }
 
                     _objectOverrides.emplace_back();
@@ -436,7 +436,7 @@ private:
             {
                 if (_scenarioOverrides.size() == MAX_SCENARIO_OVERRIDES)
                 {
-                    log_warning("Maximum number of scenario strings exceeded.");
+                    LOG_WARNING("Maximum number of scenario strings exceeded.");
                 }
 
                 _scenarioOverrides.emplace_back();

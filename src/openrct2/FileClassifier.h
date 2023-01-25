@@ -52,4 +52,4 @@ struct ClassifiedFileInfo
 bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result);
 bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 
-FileExtension get_file_extension_type(u8string_view path);
+FileExtension GetFileExtensionType(u8string_view path);

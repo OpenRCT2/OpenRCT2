@@ -73,7 +73,7 @@ bool TitleScreen::PreviewSequence(size_t value)
     }
     else
     {
-        _currentSequence = title_get_config_sequence();
+        _currentSequence = TitleGetConfigSequence();
         if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         {
             TryLoadSequence();
@@ -86,13 +86,13 @@ void TitleScreen::StopPreviewingSequence()
 {
     if (_previewingSequence)
     {
-        rct_window* mainWindow = window_get_main();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            window_unfollow_sprite(*mainWindow);
+            WindowUnfollowSprite(*mainWindow);
         }
         _previewingSequence = false;
-        _currentSequence = title_get_config_sequence();
+        _currentSequence = TitleGetConfigSequence();
         gPreviewingTitleSequenceInGame = false;
     }
 }
@@ -114,11 +114,11 @@ void TitleScreen::SetHideVersionInfo(bool value)
 
 void TitleScreen::Load()
 {
-    log_verbose("TitleScreen::Load()");
+    LOG_VERBOSE("TitleScreen::Load()");
 
-    if (game_is_paused())
+    if (GameIsPaused())
     {
-        pause_toggle();
+        PauseToggle();
     }
 
     gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
@@ -130,7 +130,7 @@ void TitleScreen::Load()
 #endif
     OpenRCT2::Audio::StopAll();
     GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
-    viewport_init_all();
+    ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
     CreateWindows();
     TitleInitialise();
@@ -152,17 +152,17 @@ void TitleScreen::Load()
         _sequencePlayer->Update();
     }
 
-    log_verbose("TitleScreen::Load() finished");
+    LOG_VERBOSE("TitleScreen::Load() finished");
 }
 
 void TitleScreen::Tick()
 {
     gInUpdateCode = true;
 
-    screenshot_check();
-    title_handle_keyboard_input();
+    ScreenshotCheck();
+    TitleHandleKeyboardInput();
 
-    if (game_is_not_paused())
+    if (GameIsNotPaused())
     {
         TryLoadSequence();
         _sequencePlayer->Update();
@@ -176,14 +176,14 @@ void TitleScreen::Tick()
         {
             _gameState.UpdateLogic();
         }
-        update_palette_effects();
+        UpdatePaletteEffects();
         // update_weather_animation();
     }
 
-    input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+    InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
     ContextUpdateMapTooltip();
-    window_dispatch_update_all();
+    WindowDispatchUpdateAll();
 
     gSavedAge++;
 
@@ -200,12 +200,12 @@ void TitleScreen::ChangePresetSequence(size_t preset)
         return;
     }
 
-    const utf8* configId = title_sequence_manager_get_config_id(preset);
+    const utf8* configId = TitleSequenceManagerGetConfigID(preset);
     gConfigInterface.CurrentTitleSequencePreset = configId;
 
     if (!_previewingSequence)
         _currentSequence = preset;
-    window_invalidate_all();
+    WindowInvalidateAll();
 }
 
 /**
@@ -218,7 +218,7 @@ void TitleScreen::CreateWindows()
     ContextOpenWindow(WindowClass::TitleExit);
     ContextOpenWindow(WindowClass::TitleOptions);
     ContextOpenWindow(WindowClass::TitleLogo);
-    window_resize_gui(ContextGetWidth(), ContextGetHeight());
+    WindowResizeGui(ContextGetWidth(), ContextGetHeight());
     _hideVersionInfo = false;
 }
 
@@ -232,19 +232,19 @@ void TitleScreen::TitleInitialise()
     {
         bool RCT1Installed = false, RCT1AAInstalled = false, RCT1LLInstalled = false;
         int RCT1Count = 0;
-        size_t scenarioCount = scenario_repository_get_count();
+        size_t scenarioCount = ScenarioRepositoryGetCount();
 
         for (size_t s = 0; s < scenarioCount; s++)
         {
-            if (scenario_repository_get_by_index(s)->source_game == ScenarioSource::RCT1)
+            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1)
             {
                 RCT1Count++;
             }
-            if (scenario_repository_get_by_index(s)->source_game == ScenarioSource::RCT1_AA)
+            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1_AA)
             {
                 RCT1AAInstalled = true;
             }
-            if (scenario_repository_get_by_index(s)->source_game == ScenarioSource::RCT1_LL)
+            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1_LL)
             {
                 RCT1LLInstalled = true;
             }
@@ -258,16 +258,16 @@ void TitleScreen::TitleInitialise()
 
         int32_t random = 0;
         bool safeSequence = false;
-        std::string RCT1String = format_string(STR_TITLE_SEQUENCE_RCT1, nullptr);
-        std::string RCT1AAString = format_string(STR_TITLE_SEQUENCE_RCT1_AA, nullptr);
-        std::string RCT1LLString = format_string(STR_TITLE_SEQUENCE_RCT1_AA_LL, nullptr);
+        std::string RCT1String = FormatStringID(STR_TITLE_SEQUENCE_RCT1, nullptr);
+        std::string RCT1AAString = FormatStringID(STR_TITLE_SEQUENCE_RCT1_AA, nullptr);
+        std::string RCT1LLString = FormatStringID(STR_TITLE_SEQUENCE_RCT1_AA_LL, nullptr);
 
         // Ensure the random sequence chosen isn't from RCT1 or expansion if the player doesn't have it installed
         while (!safeSequence)
         {
             size_t total = TitleSequenceManager::GetCount();
-            random = util_rand() % static_cast<int32_t>(total);
-            const utf8* scName = title_sequence_manager_get_name(random);
+            random = UtilRand() % static_cast<int32_t>(total);
+            const utf8* scName = TitleSequenceManagerGetName(random);
             safeSequence = true;
             if (scName == RCT1String)
             {
@@ -284,10 +284,10 @@ void TitleScreen::TitleInitialise()
         }
         ChangePresetSequence(random);
     }
-    size_t seqId = title_get_config_sequence();
+    size_t seqId = TitleGetConfigSequence();
     if (seqId == SIZE_MAX)
     {
-        seqId = title_sequence_manager_get_index_for_config_id("*OPENRCT2");
+        seqId = TitleSequenceManagerGetIndexForConfigID("*OPENRCT2");
         if (seqId == SIZE_MAX)
         {
             seqId = 0;
@@ -317,11 +317,11 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
                     if (targetSequence != _currentSequence && !loadPreview)
                     {
                         // Forcefully change the preset to a preset that works.
-                        const utf8* configId = title_sequence_manager_get_config_id(targetSequence);
+                        const utf8* configId = TitleSequenceManagerGetConfigID(targetSequence);
                         gConfigInterface.CurrentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                     return true;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;
@@ -334,14 +334,14 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
         if (!loadPreview)
         {
             GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
-            game_notify_map_changed();
+            GameNotifyMapChanged();
         }
         return false;
     }
     return true;
 }
 
-void title_load()
+void TitleLoad()
 {
     if (_singleton != nullptr)
     {
@@ -349,7 +349,7 @@ void title_load()
     }
 }
 
-void title_create_windows()
+void TitleCreateWindows()
 {
     if (_singleton != nullptr)
     {
@@ -357,7 +357,7 @@ void title_create_windows()
     }
 }
 
-void* title_get_sequence_player()
+void* TitleGetSequencePlayer()
 {
     void* result = nullptr;
     if (_singleton != nullptr)
@@ -367,7 +367,7 @@ void* title_get_sequence_player()
     return result;
 }
 
-void title_sequence_change_preset(size_t preset)
+void TitleSequenceChangePreset(size_t preset)
 {
     if (_singleton != nullptr)
     {
@@ -375,7 +375,7 @@ void title_sequence_change_preset(size_t preset)
     }
 }
 
-bool title_should_hide_version_info()
+bool TitleShouldHideVersionInfo()
 {
     bool result = false;
     if (_singleton != nullptr)
@@ -385,7 +385,7 @@ bool title_should_hide_version_info()
     return result;
 }
 
-void title_set_hide_version_info(bool value)
+void TitleSetHideVersionInfo(bool value)
 {
     if (_singleton != nullptr)
     {
@@ -393,12 +393,12 @@ void title_set_hide_version_info(bool value)
     }
 }
 
-size_t title_get_config_sequence()
+size_t TitleGetConfigSequence()
 {
-    return title_sequence_manager_get_index_for_config_id(gConfigInterface.CurrentTitleSequencePreset.c_str());
+    return TitleSequenceManagerGetIndexForConfigID(gConfigInterface.CurrentTitleSequencePreset.c_str());
 }
 
-size_t title_get_current_sequence()
+size_t TitleGetCurrentSequence()
 {
     size_t result = 0;
     if (_singleton != nullptr)
@@ -408,7 +408,7 @@ size_t title_get_current_sequence()
     return result;
 }
 
-bool title_preview_sequence(size_t value)
+bool TitlePreviewSequence(size_t value)
 {
     if (_singleton != nullptr)
     {
@@ -417,7 +417,7 @@ bool title_preview_sequence(size_t value)
     return false;
 }
 
-void title_stop_previewing_sequence()
+void TitleStopPreviewingSequence()
 {
     if (_singleton != nullptr)
     {
@@ -425,7 +425,7 @@ void title_stop_previewing_sequence()
     }
 }
 
-bool title_is_previewing_sequence()
+bool TitleIsPreviewingSequence()
 {
     if (_singleton != nullptr)
     {
@@ -434,7 +434,7 @@ bool title_is_previewing_sequence()
     return false;
 }
 
-void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
+void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords)
 {
     thread_local std::string buffer;
     buffer.clear();
@@ -442,11 +442,11 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
 
     // Write name and version information
     buffer += gVersionInfoFull;
-    gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
+    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
 
     // Invalidate screen area
-    int16_t width = static_cast<int16_t>(gfx_get_string_width(buffer, FontStyle::Medium));
-    gfx_set_dirty_blocks(
+    int16_t width = static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium));
+    GfxSetDirtyBlocks(
         { screenCoords, screenCoords + ScreenCoordsXY{ width, 30 } }); // 30 is an arbitrary height to catch both strings
 
     // Write platform information
@@ -455,5 +455,5 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
     buffer.append(" (");
     buffer.append(OPENRCT2_ARCHITECTURE);
     buffer.append(")");
-    gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(5, 5), buffer.c_str(), { COLOUR_BLACK });
+    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5), buffer.c_str(), { COLOUR_BLACK });
 }

@@ -154,7 +154,7 @@ public:
 
         InitScrollWidgets();
 
-        _rotation = get_current_rotation();
+        _rotation = GetCurrentRotation();
 
         InitMap();
         gWindowSceneryRotation = 0;
@@ -171,10 +171,10 @@ public:
     {
         _mapImageData.clear();
         _mapImageData.shrink_to_fit();
-        if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == classification
+        if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == classification
             && gCurrentToolWidget.window_number == number)
         {
-            tool_cancel();
+            ToolCancel();
         }
     }
 
@@ -196,14 +196,14 @@ public:
                 break;
             case WIDX_SET_LAND_RIGHTS:
                 Invalidate();
-                if (tool_set(*this, widgetIndex, Tool::UpArrow))
+                if (ToolSet(*this, widgetIndex, Tool::UpArrow))
                     break;
                 _activeTool = 2;
                 // Prevent mountain tool size.
                 _landRightsToolSize = std::max<uint16_t>(MINIMUM_TOOL_SIZE, _landRightsToolSize);
-                show_gridlines();
-                show_land_rights();
-                show_construction_rights();
+                ShowGridlines();
+                ShowLandRights();
+                ShowConstructionRights();
                 break;
             case WIDX_LAND_OWNED_CHECKBOX:
                 _activeTool ^= 2;
@@ -239,26 +239,26 @@ public:
                 break;
             case WIDX_BUILD_PARK_ENTRANCE:
                 Invalidate();
-                if (tool_set(*this, widgetIndex, Tool::UpArrow))
+                if (ToolSet(*this, widgetIndex, Tool::UpArrow))
                     break;
 
                 gParkEntranceGhostExists = false;
-                input_set_flag(INPUT_FLAG_6, true);
+                InputSetFlag(INPUT_FLAG_6, true);
 
-                show_gridlines();
-                show_land_rights();
-                show_construction_rights();
+                ShowGridlines();
+                ShowLandRights();
+                ShowConstructionRights();
                 break;
             case WIDX_ROTATE_90:
                 gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
                 break;
             case WIDX_PEOPLE_STARTING_POSITION:
-                if (tool_set(*this, widgetIndex, Tool::UpArrow))
+                if (ToolSet(*this, widgetIndex, Tool::UpArrow))
                     break;
 
-                show_gridlines();
-                show_land_rights();
-                show_construction_rights();
+                ShowGridlines();
+                ShowLandRights();
+                ShowConstructionRights();
                 break;
             case WIDX_LAND_TOOL:
                 InputLandSize();
@@ -323,9 +323,9 @@ public:
 
     void OnUpdate() override
     {
-        if (get_current_rotation() != _rotation)
+        if (GetCurrentRotation() != _rotation)
         {
-            _rotation = get_current_rotation();
+            _rotation = GetCurrentRotation();
             InitMap();
             CentreMapOnViewPoint();
         }
@@ -405,22 +405,22 @@ public:
         {
             case WIDX_SET_LAND_RIGHTS:
                 Invalidate();
-                hide_gridlines();
-                hide_land_rights();
-                hide_construction_rights();
+                HideGridlines();
+                HideLandRights();
+                HideConstructionRights();
                 break;
             case WIDX_BUILD_PARK_ENTRANCE:
                 ParkEntranceRemoveGhost();
                 Invalidate();
-                hide_gridlines();
-                hide_land_rights();
-                hide_construction_rights();
+                HideGridlines();
+                HideLandRights();
+                HideConstructionRights();
                 break;
             case WIDX_PEOPLE_STARTING_POSITION:
                 Invalidate();
-                hide_gridlines();
-                hide_land_rights();
-                hide_construction_rights();
+                HideGridlines();
+                HideLandRights();
+                HideConstructionRights();
                 break;
         }
     }
@@ -429,7 +429,7 @@ public:
     {
         MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-        auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
+        auto mapCoords = ScreenGetMapXY(screenCoords, nullptr);
         if (!mapCoords.has_value())
             return;
 
@@ -478,7 +478,7 @@ public:
                 }
             }
         }
-        parkEntranceMapPosition.direction = (gWindowSceneryRotation - get_current_rotation()) & 3;
+        parkEntranceMapPosition.direction = (gWindowSceneryRotation - GetCurrentRotation()) & 3;
         return parkEntranceMapPosition;
     }
 
@@ -650,10 +650,10 @@ public:
         auto mapCoords = CoordsXY{ std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1), std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1) };
         auto mapZ = TileElementHeight(mapCoords);
 
-        rct_window* mainWindow = window_get_main();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow != nullptr)
         {
-            window_scroll_to_location(*mainWindow, { mapCoords, mapZ });
+            WindowScrollToLocation(*mainWindow, { mapCoords, mapZ });
         }
 
         if (LandToolIsActive())
@@ -703,19 +703,19 @@ public:
         OnScrollMouseDown(scrollIndex, screenCoords);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
-        gfx_clear(&dpi, PALETTE_INDEX_10);
+        GfxClear(&dpi, PALETTE_INDEX_10);
 
-        rct_g1_element g1temp = {};
+        G1Element g1temp = {};
         g1temp.offset = _mapImageData.data();
         g1temp.width = MAP_WINDOW_MAP_SIZE;
         g1temp.height = MAP_WINDOW_MAP_SIZE;
         g1temp.x_offset = -8;
         g1temp.y_offset = -8;
-        gfx_set_g1_element(SPR_TEMP, &g1temp);
-        drawing_engine_invalidate_image(SPR_TEMP);
-        gfx_draw_sprite(&dpi, ImageId(SPR_TEMP), { 0, 0 });
+        GfxSetG1Element(SPR_TEMP, &g1temp);
+        DrawingEngineInvalidateImage(SPR_TEMP);
+        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), { 0, 0 });
 
         if (selected_tab == PAGE_PEEPS)
         {
@@ -815,7 +815,7 @@ public:
         if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
         {
             // scenario editor: build park entrance selected, show rotate button
-            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map
+            if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map
                 && gCurrentToolWidget.widget_index == WIDX_BUILD_PARK_ENTRANCE)
             {
                 widgets[WIDX_ROTATE_90].type = WindowWidgetType::FlatBtn;
@@ -825,7 +825,7 @@ public:
             widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
             // If any tool is active
-            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map)
+            if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map)
             {
                 // if not in set land rights mode: show the default scenario editor buttons
                 if (gCurrentToolWidget.widget_index != WIDX_SET_LAND_RIGHTS)
@@ -852,7 +852,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(&dpi);
@@ -875,7 +875,7 @@ public:
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
                                   widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-            gfx_draw_sprite(&dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
+            GfxDrawSprite(&dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -893,7 +893,7 @@ public:
 
                 for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                 {
-                    gfx_fill_rect(
+                    GfxFillRect(
                         &dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                         RideKeyColours[i]);
                     DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
@@ -928,14 +928,14 @@ private:
 
     void CentreMapOnViewPoint()
     {
-        rct_window* mainWindow = window_get_main();
+        WindowBase* mainWindow = WindowGetMain();
         int16_t ax, bx, cx, dx;
         int16_t bp, di;
 
         if (mainWindow == nullptr || mainWindow->viewport == nullptr)
             return;
 
-        auto offset = MiniMapOffsets[get_current_rotation()];
+        auto offset = MiniMapOffsets[GetCurrentRotation()];
 
         // calculate centre view point of viewport and transform it to minimap coordinates
 
@@ -1001,7 +1001,7 @@ private:
         int32_t pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
         auto destinationPosition = ScreenCoordsXY{ pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE };
         auto destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
-        switch (get_current_rotation())
+        switch (GetCurrentRotation())
         {
             case 0:
                 x = _currentLine * COORDS_XY_STEP;
@@ -1131,7 +1131,7 @@ private:
                 {
                     if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                         break;
-                    Ride* targetRide = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                    Ride* targetRide = GetRide(tileElement->AsEntrance()->GetRideIndex());
                     if (targetRide != nullptr)
                     {
                         const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;
@@ -1141,7 +1141,7 @@ private:
                 }
                 case TileElementType::Track:
                 {
-                    Ride* targetRide = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    Ride* targetRide = GetRide(tileElement->AsTrack()->GetRideIndex());
                     if (targetRide != nullptr)
                     {
                         const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;
@@ -1161,7 +1161,7 @@ private:
         return colourB;
     }
 
-    void PaintPeepOverlay(rct_drawpixelinfo* dpi)
+    void PaintPeepOverlay(DrawPixelInfo* dpi)
     {
         auto flashColour = GetGuestFlashColour();
         for (auto guest : EntityList<Guest>())
@@ -1175,7 +1175,7 @@ private:
         }
     }
 
-    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, rct_drawpixelinfo* dpi)
+    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo* dpi)
     {
         if (peep->x == LOCATION_NULL)
             return;
@@ -1194,7 +1194,7 @@ private:
             }
         }
 
-        gfx_fill_rect(dpi, { leftTop, rightBottom }, colour);
+        GfxFillRect(dpi, { leftTop, rightBottom }, colour);
     }
 
     static uint8_t GetGuestFlashColour()
@@ -1221,7 +1221,7 @@ private:
         return colour;
     }
 
-    void PaintTrainOverlay(rct_drawpixelinfo* dpi)
+    void PaintTrainOverlay(DrawPixelInfo* dpi)
     {
         for (auto train : TrainManager::View())
         {
@@ -1232,26 +1232,26 @@ private:
 
                 MapCoordsXY c = TransformToMapCoords({ vehicle->x, vehicle->y });
 
-                gfx_fill_rect(dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
+                GfxFillRect(dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
             }
         }
     }
 
     /**
-     * The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
+     * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
      * but it doesn't look like it's ever necessary here so the call was removed.
      */
-    void PaintHudRectangle(rct_drawpixelinfo* dpi)
+    void PaintHudRectangle(DrawPixelInfo* dpi)
     {
-        rct_window* mainWindow = window_get_main();
+        WindowBase* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
 
-        rct_viewport* mainViewport = mainWindow->viewport;
+        Viewport* mainViewport = mainWindow->viewport;
         if (mainViewport == nullptr)
             return;
 
-        auto offset = MiniMapOffsets[get_current_rotation()];
+        auto offset = MiniMapOffsets[GetCurrentRotation()];
         auto leftTop = ScreenCoordsXY{ (mainViewport->viewPos.x >> 5) + offset.x, (mainViewport->viewPos.y >> 4) + offset.y };
         auto rightBottom = ScreenCoordsXY{ ((mainViewport->viewPos.x + mainViewport->view_width) >> 5) + offset.x,
                                            ((mainViewport->viewPos.y + mainViewport->view_height) >> 4) + offset.y };
@@ -1259,30 +1259,30 @@ private:
         auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
         // top horizontal lines
-        gfx_fill_rect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
-        gfx_fill_rect(dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PALETTE_INDEX_56);
 
         // left vertical lines
-        gfx_fill_rect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
-        gfx_fill_rect(dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PALETTE_INDEX_56);
 
         // bottom horizontal lines
-        gfx_fill_rect(dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
-        gfx_fill_rect(dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PALETTE_INDEX_56);
 
         // right vertical lines
-        gfx_fill_rect(dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
-        gfx_fill_rect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         // Guest tab image (animated)
         uint32_t guestTabImage = SPR_TAB_GUESTS_0;
         if (selected_tab == PAGE_PEEPS)
             guestTabImage += list_information_type / 4;
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(guestTabImage),
             windowPos + ScreenCoordsXY{ widgets[WIDX_PEOPLE_TAB].left, widgets[WIDX_PEOPLE_TAB].top });
 
@@ -1291,7 +1291,7 @@ private:
         if (selected_tab == PAGE_RIDES)
             rideTabImage += list_information_type / 4;
 
-        gfx_draw_sprite(
+        GfxDrawSprite(
             dpi, ImageId(rideTabImage),
             windowPos + ScreenCoordsXY{ widgets[WIDX_RIDES_TAB].left, widgets[WIDX_RIDES_TAB].top });
     }
@@ -1345,7 +1345,7 @@ private:
         screenCoords.y = ((screenCoords.y + 8)) / 2;
         auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).ToCoordsXY();
 
-        switch (get_current_rotation())
+        switch (GetCurrentRotation())
         {
             case 0:
                 return location;
@@ -1364,7 +1364,7 @@ private:
     {
         int32_t x = c.x, y = c.y;
 
-        switch (get_current_rotation())
+        switch (GetCurrentRotation())
         {
             case 3:
                 std::swap(x, y);
@@ -1441,11 +1441,11 @@ private:
     };
 };
 
-rct_window* WindowMapOpen()
+WindowBase* WindowMapOpen()
 {
     try
     {
-        rct_window* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
+        WindowBase* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
         w->selected_tab = 0;
         w->list_information_type = 0;
         return w;
@@ -1458,10 +1458,10 @@ rct_window* WindowMapOpen()
 
 void WindowMapReset()
 {
-    rct_window* w;
+    WindowBase* w;
 
     // Check if window is even opened
-    w = window_bring_to_front_by_class(WindowClass::Map);
+    w = WindowBringToFrontByClass(WindowClass::Map);
     if (w == nullptr)
     {
         return;

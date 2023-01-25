@@ -118,7 +118,7 @@ inline void CheckGLError()
     GLenum error = glGetError();
     while (error != GL_NO_ERROR)
     {
-        log_error("OpenGL Error 0x%04X", error);
+        LOG_ERROR("OpenGL Error 0x%04X", error);
         error = glGetError();
     }
 }

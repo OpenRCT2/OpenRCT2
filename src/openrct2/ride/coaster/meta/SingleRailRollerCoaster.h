@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor SingleRailRollerCoasterRTD =
     SET_FIELD(Heights, { 28, 24, 5, 7}),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftRMC, 5, 8 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_single_rail_roller_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSingleRailRollerCoaster),
     SET_FIELD(RatingsMultipliers, { 52, 36, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 37.50_GBP, 2.50_GBP, 50}),

@@ -145,7 +145,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     // If on water
     if (waterHeight > 0)
     {
-        // base_height2 is now the water height
+        // BaseHeight2 is now the water height
         surfaceHeight = waterHeight;
         if (_loc.z == 0)
         {
@@ -221,7 +221,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + ceil2(sceneryEntry->height, COORDS_Z_STEP);
+    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, COORDS_Z_STEP);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))
@@ -339,7 +339,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     // If on water
     if (waterHeight > 0)
     {
-        // base_height2 is now the water height
+        // BaseHeight2 is now the water height
         surfaceHeight = waterHeight;
     }
     auto targetHeight = _loc.z;
@@ -358,7 +358,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + ceil2(sceneryEntry->height, 8);
+    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, 8);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))

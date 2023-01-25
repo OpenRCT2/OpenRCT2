@@ -134,7 +134,7 @@ static void SpiralSlidePaintTileFront(
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { 8, 16, 108 }, { 8, 0, height + 3 });
     }
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     if (dpi->zoom_level <= ZoomLevel{ 0 } && ride.slide_in_use != 0)
     {
         uint8_t slide_progress = ride.spiral_slide_progress;
@@ -224,7 +224,7 @@ static void PaintSpiralSlide(
         rideEntry->Cars[0].base_image_id + SpiralSlideFenceTopLeft,
     };
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height,
         spiral_slide_fence_sprites, session.CurrentRotation);
 

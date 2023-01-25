@@ -552,7 +552,7 @@ public:
         CommonPrepareDrawAfter();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(&dpi);
@@ -612,7 +612,7 @@ public:
         if (page == WINDOW_OPTIONS_PAGE_ADVANCED)
             return AdvancedTooltip(widgetIndex, fallback);
 
-        return rct_window::OnTooltip(widgetIndex, fallback);
+        return WindowBase::OnTooltip(widgetIndex, fallback);
     }
 
 private:
@@ -622,7 +622,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_TAB_DISPLAY:
             case WIDX_TAB_RENDERING:
@@ -682,13 +682,13 @@ private:
         {
             case WIDX_UNCAP_FPS_CHECKBOX:
                 gConfigGeneral.UncapFPS ^= 1;
-                drawing_engine_set_vsync(gConfigGeneral.UseVSync);
+                DrawingEngineSetVSync(gConfigGeneral.UseVSync);
                 ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_USE_VSYNC_CHECKBOX:
                 gConfigGeneral.UseVSync ^= 1;
-                drawing_engine_set_vsync(gConfigGeneral.UseVSync);
+                DrawingEngineSetVSync(gConfigGeneral.UseVSync);
                 ConfigSaveDefault();
                 Invalidate();
                 break;
@@ -791,7 +791,7 @@ private:
             case WIDX_SCALE_UP:
                 gConfigGeneral.WindowScale += 0.25f;
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 ContextTriggerResize();
                 ContextUpdateCursorScale();
                 break;
@@ -799,7 +799,7 @@ private:
                 gConfigGeneral.WindowScale -= 0.25f;
                 gConfigGeneral.WindowScale = std::max(0.5f, gConfigGeneral.WindowScale);
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 ContextTriggerResize();
                 ContextUpdateCursorScale();
                 break;
@@ -824,7 +824,7 @@ private:
                         ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
 
                     ConfigSaveDefault();
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
             }
             break;
@@ -835,7 +835,7 @@ private:
 
                     gConfigGeneral.FullscreenMode = static_cast<uint8_t>(dropdownIndex);
                     ConfigSaveDefault();
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
                 break;
             case WIDX_DRAWING_ENGINE_DROPDOWN:
@@ -845,7 +845,7 @@ private:
                     DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
 
                     gConfigGeneral.DrawingEngine = dstEngine;
-                    bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
+                    bool recreate_window = DrawingEngineRequiresNewWindow(srcEngine, dstEngine);
                     RefreshVideo(recreate_window);
                     ConfigSaveDefault();
                     Invalidate();
@@ -909,7 +909,7 @@ private:
         widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.DrawingEngine)];
     }
 
-    void DisplayDraw(rct_drawpixelinfo* dpi)
+    void DisplayDraw(DrawPixelInfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.WindowScale * 100));
@@ -927,14 +927,14 @@ private:
             case WIDX_TILE_SMOOTHING_CHECKBOX:
                 gConfigGeneral.LandscapeSmoothing ^= 1;
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_GRIDLINES_CHECKBOX:
             {
                 gConfigGeneral.AlwaysShowGridlines ^= 1;
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
-                rct_window* mainWindow = window_get_main();
+                GfxInvalidateScreen();
+                WindowBase* mainWindow = WindowGetMain();
                 if (mainWindow != nullptr)
                 {
                     if (gConfigGeneral.AlwaysShowGridlines)
@@ -963,7 +963,7 @@ private:
                 gConfigGeneral.UpperCaseBanners ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                scrolling_text_invalidate();
+                ScrollingTextInvalidate();
                 break;
             case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
                 gConfigGeneral.DisableLightningEffect ^= 1;
@@ -975,7 +975,7 @@ private:
                 gConfigGeneral.RenderWeatherGloom = gConfigGeneral.RenderWeatherEffects;
                 ConfigSaveDefault();
                 Invalidate();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
                 gConfigGeneral.ShowGuestPurchases ^= 1;
@@ -1161,7 +1161,7 @@ private:
                 for (size_t i = 0; i < 4; i++)
                 {
                     gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[i].Args = DateFormatStringIds[i];
+                    gDropdownItems[i].Args = DateFormatStringIDs[i];
                 }
                 ShowDropdown(widget, 4);
                 Dropdown::SetChecked(gConfigGeneral.DateFormat, true);
@@ -1195,7 +1195,7 @@ private:
                     gConfigGeneral.CurrencyFormat = static_cast<CurrencyType>(dropdownIndex);
                 }
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_DISTANCE_DROPDOWN:
                 gConfigGeneral.MeasurementFormat = static_cast<MeasurementFormat>(dropdownIndex);
@@ -1207,7 +1207,7 @@ private:
                 {
                     gConfigGeneral.TemperatureFormat = static_cast<TemperatureUnit>(dropdownIndex);
                     ConfigSaveDefault();
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
                 break;
             case WIDX_LANGUAGE_DROPDOWN:
@@ -1215,23 +1215,23 @@ private:
                 auto fallbackLanguage = LocalisationService_GetCurrentLanguage();
                 if (dropdownIndex != LocalisationService_GetCurrentLanguage() - 1)
                 {
-                    if (!language_open(dropdownIndex + 1))
+                    if (!LanguageOpen(dropdownIndex + 1))
                     {
                         // Failed to open language file, try to recover by falling
                         // back to previously used language
-                        if (language_open(fallbackLanguage))
+                        if (LanguageOpen(fallbackLanguage))
                         {
                             // It worked, so we can say it with error message in-game
                             ContextShowError(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
                         }
                         // report error to console regardless
-                        log_error("Failed to open language file.");
+                        LOG_ERROR("Failed to open language file.");
                     }
                     else
                     {
                         gConfigGeneral.Language = dropdownIndex + 1;
                         ConfigSaveDefault();
-                        gfx_invalidate_screen();
+                        GfxInvalidateScreen();
                     }
                 }
             }
@@ -1241,7 +1241,7 @@ private:
                 {
                     gConfigGeneral.DateFormat = static_cast<uint8_t>(dropdownIndex);
                     ConfigSaveDefault();
-                    gfx_invalidate_screen();
+                    GfxInvalidateScreen();
                 }
                 break;
         }
@@ -1275,7 +1275,7 @@ private:
         }
 
         // Date format
-        widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.DateFormat];
+        widgets[WIDX_DATE_FORMAT].text = DateFormatStringIDs[gConfigGeneral.DateFormat];
 
         // Temperature: celsius/fahrenheit
         widgets[WIDX_TEMPERATURE].text = gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit ? STR_FAHRENHEIT
@@ -1304,7 +1304,7 @@ private:
                     OpenRCT2::Audio::Pause();
                 else
                     OpenRCT2::Audio::Resume();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 ConfigSaveDefault();
                 Invalidate();
                 break;
@@ -1360,7 +1360,7 @@ private:
                     ShowDropdown(widget, numItems);
                     if (gConfigSound.TitleMusic == TitleMusicKind::None)
                         Dropdown::SetChecked(0, true);
-                    else if (gConfigSound.TitleMusic == TitleMusicKind::Rct2)
+                    else if (gConfigSound.TitleMusic == TitleMusicKind::RCT2)
                         Dropdown::SetChecked(1, true);
                 }
                 else
@@ -1410,7 +1410,7 @@ private:
                 auto titleMusic = static_cast<TitleMusicKind>(dropdownIndex);
                 if (!IsRCT1TitleMusicAvailable() && dropdownIndex != 0)
                 {
-                    titleMusic = TitleMusicKind::Rct2;
+                    titleMusic = TitleMusicKind::RCT2;
                 }
 
                 gConfigSound.TitleMusic = titleMusic;
@@ -1552,43 +1552,43 @@ private:
                 gConfigInterface.ToolbarShowFinances ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_RESEARCH:
                 gConfigInterface.ToolbarShowResearch ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHEATS:
                 gConfigInterface.ToolbarShowCheats ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_NEWS:
                 gConfigInterface.ToolbarShowNews ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_MUTE:
                 gConfigInterface.ToolbarShowMute ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_CHAT:
                 gConfigInterface.ToolbarShowChat ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_TOOLBAR_SHOW_ZOOM:
                 gConfigInterface.ToolbarShowZoom ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                window_invalidate_by_class(WindowClass::TopToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
             case WIDX_INVERT_DRAG:
                 gConfigGeneral.InvertViewportDrag ^= 1;
@@ -1672,7 +1672,7 @@ private:
                 gConfigGeneral.ShowRealNamesOfGuests ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
-                peep_update_names(gConfigGeneral.ShowRealNamesOfGuests);
+                PeepUpdateNames(gConfigGeneral.ShowRealNamesOfGuests);
                 break;
             case WIDX_AUTO_STAFF_PLACEMENT:
                 gConfigGeneral.AutoStaffPlacement ^= 1;
@@ -1682,7 +1682,7 @@ private:
             case WIDX_SCENARIO_UNLOCKING:
                 gConfigGeneral.ScenarioUnlockingEnabled ^= 1;
                 ConfigSaveDefault();
-                window_close_by_class(WindowClass::ScenarioSelect);
+                WindowCloseByClass(WindowClass::ScenarioSelect);
                 break;
             case WIDX_AUTO_OPEN_SHOPS:
                 gConfigGeneral.AutoOpenShops = !gConfigGeneral.AutoOpenShops;
@@ -1693,7 +1693,7 @@ private:
                 gConfigGeneral.AllowEarlyCompletion ^= 1;
                 // Only the server can control this setting and needs to send the
                 // current value of allow_early_completion to all clients
-                if (network_get_mode() == NETWORK_MODE_SERVER)
+                if (NetworkGetMode() == NETWORK_MODE_SERVER)
                 {
                     auto setAllowEarlyCompletionAction = ScenarioSetSettingAction(
                         ScenarioSetSetting::AllowEarlyCompletion, gConfigGeneral.AllowEarlyCompletion);
@@ -1713,11 +1713,11 @@ private:
         {
             case WIDX_TITLE_SEQUENCE_DROPDOWN:
             {
-                uint32_t numItems = static_cast<int32_t>(title_sequence_manager_get_count());
+                uint32_t numItems = static_cast<int32_t>(TitleSequenceManagerGetCount());
                 for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
+                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(TitleSequenceManagerGetName(i));
                 }
 
                 gDropdownItems[numItems].Format = 0;
@@ -1731,7 +1731,7 @@ private:
                     Dropdown::Flag::StayOpen, numItems);
 
                 auto selectedIndex = gConfigInterface.RandomTitleSequence ? numItems - 1
-                                                                          : static_cast<int32_t>(title_get_current_sequence());
+                                                                          : static_cast<int32_t>(TitleGetCurrentSequence());
                 Dropdown::SetChecked(selectedIndex, true);
                 break;
             }
@@ -1770,11 +1770,11 @@ private:
         {
             case WIDX_TITLE_SEQUENCE_DROPDOWN:
             {
-                auto numItems = static_cast<int32_t>(title_sequence_manager_get_count());
-                if (dropdownIndex < numItems && dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
+                auto numItems = static_cast<int32_t>(TitleSequenceManagerGetCount());
+                if (dropdownIndex < numItems && dropdownIndex != static_cast<int32_t>(TitleGetCurrentSequence()))
                 {
                     gConfigInterface.RandomTitleSequence = false;
-                    title_sequence_change_preset(static_cast<size_t>(dropdownIndex));
+                    TitleSequenceChangePreset(static_cast<size_t>(dropdownIndex));
                     ConfigSaveDefault();
                     Invalidate();
                 }
@@ -1801,7 +1801,7 @@ private:
                     gConfigInterface.ScenarioselectLastTab = 0;
                     ConfigSaveDefault();
                     Invalidate();
-                    window_close_by_class(WindowClass::ScenarioSelect);
+                    WindowCloseByClass(WindowClass::ScenarioSelect);
                 }
                 break;
         }
@@ -1816,21 +1816,21 @@ private:
         }
         else
         {
-            auto name = title_sequence_manager_get_name(title_get_config_sequence());
+            auto name = TitleSequenceManagerGetName(TitleGetConfigSequence());
             ft.Add<StringId>(STR_STRING);
             ft.Add<utf8*>(name);
         }
 
         // The real name setting of clients is fixed to that of the server
         // and the server cannot change the setting during gameplay to prevent desyncs
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             disabled_widgets |= (1uLL << WIDX_REAL_NAME_CHECKBOX);
             widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
             // Disable the use of the allow_early_completion option during network play on clients.
             // This is to prevent confusion on clients because changing this setting during network play wouldn't change
             // the way scenarios are completed during this network-session
-            if (network_get_mode() == NETWORK_MODE_CLIENT)
+            if (NetworkGetMode() == NETWORK_MODE_CLIENT)
             {
                 disabled_widgets |= (1uLL << WIDX_ALLOW_EARLY_COMPLETION);
                 widgets[WIDX_ALLOW_EARLY_COMPLETION].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
@@ -1871,7 +1871,7 @@ private:
             case WIDX_DEBUGGING_TOOLS:
                 gConfigGeneral.DebuggingTools ^= 1;
                 ConfigSaveDefault();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
             case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
                 gConfigGeneral.SavePluginData ^= 1;
@@ -1891,7 +1891,7 @@ private:
             case WIDX_PATH_TO_RCT1_BUTTON:
             {
                 auto rct1path = OpenRCT2::GetContext()->GetUiContext()->ShowDirectoryDialog(
-                    language_get_string(STR_PATH_TO_RCT1_BROWSER));
+                    LanguageGetString(STR_PATH_TO_RCT1_BROWSER));
                 if (!rct1path.empty())
                 {
                     // Check if this directory actually contains RCT1
@@ -1997,7 +1997,7 @@ private:
         widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[gConfigGeneral.AutosaveFrequency];
     }
 
-    void AdvancedDraw(rct_drawpixelinfo* dpi)
+    void AdvancedDraw(DrawPixelInfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.AutosaveAmount));
@@ -2013,7 +2013,7 @@ private:
 
         // Apply vertical alignment if appropriate.
         int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
-        int32_t lineHeight = font_get_line_height(FontStyle::Medium);
+        int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
         uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
         ScreenCoordsXY screenCoords = { windowPos.x + pathWidget.left + 1,
                                         windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
@@ -2047,8 +2047,8 @@ private:
         widgets = window_options_page_widgets[page];
 
         Invalidate();
-        window_event_resize_call(this);
-        window_event_invalidate_call(this);
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
         InitScrollWidgets();
         Invalidate();
     }
@@ -2068,7 +2068,7 @@ private:
             Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_TAB_PAINT_0);
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
@@ -2079,7 +2079,7 @@ private:
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
     }
 
-    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
         Widget* widget = &widgets[widgetIndex];
@@ -2095,7 +2095,7 @@ private:
             }
 
             // Draw normal, enabled sprite.
-            gfx_draw_sprite(dpi, ImageId(spriteIndex), screenCoords);
+            GfxDrawSprite(dpi, ImageId(spriteIndex), screenCoords);
         }
         else
         {
@@ -2103,21 +2103,21 @@ private:
             uint8_t window_colour = NOT_TRANSLUCENT(colours[widget->colour]);
 
             // Draw greyed out (light border bottom right shadow)
-            gfx_draw_sprite_solid(
+            GfxDrawSpriteSolid(
                 dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
 
             // Draw greyed out (dark)
-            gfx_draw_sprite_solid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
+            GfxDrawSpriteSolid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
         }
     }
 
     void UpdateHeightMarkers()
     {
         ConfigSaveDefault();
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
-    uint8_t GetScrollPercentage(const Widget& widget, const rct_scroll& scroll)
+    uint8_t GetScrollPercentage(const Widget& widget, const ScrollBar& scroll)
     {
         uint8_t w = widget.width() - 1;
         return static_cast<float>(scroll.h_left) / (scroll.h_right - w) * 100;
@@ -2184,7 +2184,7 @@ private:
  *
  *  rct2: 0x006BAC5B
  */
-rct_window* WindowOptionsOpen()
+WindowBase* WindowOptionsOpen()
 {
     return WindowFocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
 }

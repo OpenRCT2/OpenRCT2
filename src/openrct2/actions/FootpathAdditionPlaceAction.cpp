@@ -73,7 +73,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
     auto tileElement = MapGetFootpathElement(_loc);
     if (tileElement == nullptr)
     {
-        log_error("Could not find path element.");
+        LOG_ERROR("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
@@ -150,7 +150,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
 
     if (pathElement == nullptr)
     {
-        log_error("Could not find path element.");
+        LOG_ERROR("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 

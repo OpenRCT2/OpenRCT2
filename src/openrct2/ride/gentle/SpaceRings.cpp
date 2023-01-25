@@ -40,7 +40,7 @@ static void PaintSpaceRingsStructure(
 
     if (ride.num_stations == 0 || vehicleIndex < ride.NumTrains)
     {
-        rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
+        RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
 
         int32_t frameNum = direction;
 
@@ -98,24 +98,24 @@ static void PaintSpaceRings(
     WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, session.CurrentRotation))
             {
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSw);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 2 });
             }
-            if (track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, session.CurrentRotation))
             {
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSe);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 2 });
             }
             break;
         default:
-            track_paint_util_paint_fences(
+            TrackPaintUtilPaintFences(
                 session, edges, position, trackElement, ride, session.TrackColours[SCHEME_MISC], height, SpaceRingsFenceSprites,
                 session.CurrentRotation);
             break;

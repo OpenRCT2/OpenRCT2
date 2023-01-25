@@ -83,14 +83,14 @@ money64 gScenarioCompanyValueRecord;
 
 std::string gScenarioFileName;
 
-static void scenario_objective_check();
+static void ScenarioCheckObjective();
 
 using namespace OpenRCT2;
 
-void scenario_begin()
+void ScenarioBegin()
 {
-    game_load_init();
-    scenario_reset();
+    GameLoadInit();
+    ScenarioReset();
 
     if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         ContextOpenWindowView(WV_PARK_OBJECTIVE);
@@ -98,13 +98,13 @@ void scenario_begin()
     gScreenAge = 0;
 }
 
-void scenario_reset()
+void ScenarioReset()
 {
     // Set the scenario pseudo-random seeds
-    Random::Rct2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
+    Random::RCT2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
     gScenarioRand.seed(s);
 
-    research_reset_current_item();
+    ResearchResetCurrentItem();
     ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
@@ -120,19 +120,19 @@ void scenario_reset()
         ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gScenarioName.c_str());
 
         StringId localisedStringIds[3];
-        if (language_get_localised_scenario_strings(normalisedName, localisedStringIds))
+        if (LanguageGetLocalisedScenarioStrings(normalisedName, localisedStringIds))
         {
             if (localisedStringIds[0] != STR_NONE)
             {
-                gScenarioName = language_get_string(localisedStringIds[0]);
+                gScenarioName = LanguageGetString(localisedStringIds[0]);
             }
             if (localisedStringIds[1] != STR_NONE)
             {
-                park.Name = language_get_string(localisedStringIds[1]);
+                park.Name = LanguageGetString(localisedStringIds[1]);
             }
             if (localisedStringIds[2] != STR_NONE)
             {
-                gScenarioDetails = language_get_string(localisedStringIds[2]);
+                gScenarioDetails = LanguageGetString(localisedStringIds[2]);
             }
         }
     }
@@ -154,10 +154,10 @@ void scenario_reset()
     gScenarioCompletedBy = "?";
 
     park.ResetHistories();
-    finance_reset_history();
-    award_reset();
-    reset_all_ride_build_dates();
-    date_reset();
+    FinanceResetHistory();
+    AwardReset();
+    ResetAllRideBuildDates();
+    DateReset();
     Duck::RemoveAll();
     ParkCalculateSize();
     MapCountRemainingLandRights();
@@ -185,11 +185,11 @@ void scenario_reset()
     gGamePaused = false;
 }
 
-static void scenario_end()
+static void ScenarioEnd()
 {
-    game_reset_speed();
-    window_close_by_class(WindowClass::Dropdown);
-    window_close_all_except_flags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
+    GameResetSpeed();
+    WindowCloseByClass(WindowClass::Dropdown);
+    WindowCloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
     ContextOpenWindowView(WV_PARK_OBJECTIVE);
 }
 
@@ -197,39 +197,39 @@ static void scenario_end()
  *
  *  rct2: 0x0066A752
  */
-void scenario_failure()
+void ScenarioFailure()
 {
     gScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
-    scenario_end();
+    ScenarioEnd();
 }
 
 /**
  *
  *  rct2: 0x0066A75E
  */
-void scenario_success()
+void ScenarioSuccess()
 {
     auto companyValue = gCompanyValue;
 
     gScenarioCompletedCompanyValue = companyValue;
-    peep_applause();
+    PeepApplause();
 
-    if (scenario_repository_try_record_highscore(gScenarioFileName.c_str(), companyValue, nullptr))
+    if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gScenarioCompanyValueRecord = companyValue;
     }
-    scenario_end();
+    ScenarioEnd();
 }
 
 /**
  *
  *  rct2: 0x006695E8
  */
-void scenario_success_submit_name(const char* name)
+void ScenarioSuccessSubmitName(const char* name)
 {
-    if (scenario_repository_try_record_highscore(gScenarioFileName.c_str(), gScenarioCompanyValueRecord, name))
+    if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), gScenarioCompanyValueRecord, name))
     {
         gScenarioCompletedBy = name;
     }
@@ -240,9 +240,9 @@ void scenario_success_submit_name(const char* name)
  * Send a warning when entrance price is too high.
  *  rct2: 0x0066A80E
  */
-static void scenario_entrance_fee_too_high_check()
+static void ScenarioCheckEntranceFeeTooHigh()
 {
-    const auto max_fee = add_clamp_money16(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
+    const auto max_fee = AddClamp_money16(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && ParkGetEntranceFee() > max_fee)
     {
@@ -261,7 +261,7 @@ static void scenario_entrance_fee_too_high_check()
     }
 }
 
-void scenario_autosave_check()
+void ScenarioAutosaveCheck()
 {
     if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
         return;
@@ -292,14 +292,14 @@ void scenario_autosave_check()
     if (shouldSave)
     {
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        game_autosave();
+        GameAutosave();
     }
 }
 
-static void scenario_day_update()
+static void ScenarioDayUpdate()
 {
-    finance_update_daily_profit();
-    peep_update_days_in_queue();
+    FinanceUpdateDailyProfit();
+    PeepUpdateDaysInQueue();
     switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_10_ROLLERCOASTERS:
@@ -307,11 +307,11 @@ static void scenario_day_update()
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            scenario_objective_check();
+            ScenarioCheckObjective();
             break;
         default:
             if (AllowEarlyCompletion())
-                scenario_objective_check();
+                ScenarioCheckObjective();
             break;
     }
 
@@ -323,45 +323,45 @@ static void scenario_day_update()
     ContextBroadcastIntent(&intent);
 }
 
-static void scenario_week_update()
+static void ScenarioWeekUpdate()
 {
-    int32_t month = date_get_month(gDateMonthsElapsed);
+    int32_t month = DateGetMonth(gDateMonthsElapsed);
 
-    finance_pay_wages();
-    finance_pay_research();
-    finance_pay_interest();
-    marketing_update();
-    peep_problem_warnings_update();
-    ride_check_all_reachable();
-    ride_update_favourited_stat();
+    FinancePayWages();
+    FinancePayResearch();
+    FinancePayInterest();
+    MarketingUpdate();
+    PeepProblemWarningsUpdate();
+    RideCheckAllReachable();
+    RideUpdateFavouritedStat();
 
-    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
+    auto water_type = static_cast<WaterObjectEntry*>(ObjectEntryGetChunk(ObjectType::Water, 0));
 
     if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
     {
         // 100 attempts at finding some water to create a few ducks at
         for (int32_t i = 0; i < 100; i++)
         {
-            if (scenario_create_ducks())
+            if (ScenarioCreateDucks())
                 break;
         }
     }
 }
 
-static void scenario_fortnight_update()
+static void ScenarioFortnightUpdate()
 {
-    finance_pay_ride_upkeep();
+    FinancePayRideUpkeep();
 }
 
-static void scenario_month_update()
+static void ScenarioMonthUpdate()
 {
-    finance_shift_expenditure_table();
-    scenario_objective_check();
-    scenario_entrance_fee_too_high_check();
-    award_update_all();
+    FinanceShiftExpenditureTable();
+    ScenarioCheckObjective();
+    ScenarioCheckEntranceFeeTooHigh();
+    AwardUpdateAll();
 }
 
-static void scenario_update_daynight_cycle()
+static void ScenarioUpdateDayNightCycle()
 {
     float currentDayNightCycle = gDayNightCycle;
     gDayNightCycle = 0;
@@ -402,36 +402,36 @@ static void scenario_update_daynight_cycle()
  * Scenario and finance related update iteration.
  *  rct2: 0x006C44B1
  */
-void scenario_update()
+void ScenarioUpdate()
 {
     PROFILED_FUNCTION();
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        if (date_is_day_start(gDateMonthTicks))
+        if (DateIsDayStart(gDateMonthTicks))
         {
-            scenario_day_update();
+            ScenarioDayUpdate();
         }
-        if (date_is_week_start(gDateMonthTicks))
+        if (DateIsWeekStart(gDateMonthTicks))
         {
-            scenario_week_update();
+            ScenarioWeekUpdate();
         }
-        if (date_is_fortnight_start(gDateMonthTicks))
+        if (DateIsFortnightStart(gDateMonthTicks))
         {
-            scenario_fortnight_update();
+            ScenarioFortnightUpdate();
         }
-        if (date_is_month_start(gDateMonthTicks))
+        if (DateIsMonthStart(gDateMonthTicks))
         {
-            scenario_month_update();
+            ScenarioMonthUpdate();
         }
     }
-    scenario_update_daynight_cycle();
+    ScenarioUpdateDayNightCycle();
 }
 /**
  *
  *  rct2: 0x006744A9
  */
-bool scenario_create_ducks()
+bool ScenarioCreateDucks()
 {
     // Check NxN area around centre tile defined by SquareSize
     constexpr int32_t SquareSize = 7;
@@ -439,8 +439,8 @@ bool scenario_create_ducks()
     constexpr int32_t SquareRadiusSize = SquareCentre * 32;
 
     CoordsXY centrePos;
-    centrePos.x = SquareRadiusSize + (scenario_rand_max(gMapSize.x - SquareCentre) * 32);
-    centrePos.y = SquareRadiusSize + (scenario_rand_max(gMapSize.y - SquareCentre) * 32);
+    centrePos.x = SquareRadiusSize + (ScenarioRandMax(gMapSize.x - SquareCentre) * 32);
+    centrePos.y = SquareRadiusSize + (ScenarioRandMax(gMapSize.y - SquareCentre) * 32);
 
     Guard::Assert(MapIsLocationValid(centrePos));
 
@@ -481,10 +481,10 @@ bool scenario_create_ducks()
     centrePos.x += 16;
     centrePos.y += 16;
 
-    uint32_t duckCount = (scenario_rand() % 4) + 2;
+    uint32_t duckCount = (ScenarioRand() % 4) + 2;
     for (uint32_t i = 0; i < duckCount; i++)
     {
-        uint32_t r = scenario_rand();
+        uint32_t r = ScenarioRand();
         innerPos.x = (r >> 16) % SquareRadiusSize;
         innerPos.y = (r & 0xFFFF) % SquareRadiusSize;
 
@@ -497,14 +497,14 @@ bool scenario_create_ducks()
     return true;
 }
 
-const random_engine_t::state_type& scenario_rand_state()
+const random_engine_t::state_type& ScenarioRandState()
 {
     return gScenarioRand.state();
 };
 
-void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1)
+void ScenarioRandSeed(random_engine_t::result_type s0, random_engine_t::result_type s1)
 {
-    Random::Rct2::Seed s{ s0, s1 };
+    Random::RCT2::Seed s{ s0, s1 };
     gScenarioRand.seed(s);
 }
 
@@ -514,21 +514,21 @@ void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result
  *
  * @return eax
  */
-random_engine_t::result_type scenario_rand()
+random_engine_t::result_type ScenarioRand()
 {
     return gScenarioRand();
 }
 
-uint32_t scenario_rand_max(uint32_t max)
+uint32_t ScenarioRandMax(uint32_t max)
 {
     if (max < 2)
         return 0;
     if ((max & (max - 1)) == 0)
-        return scenario_rand() & (max - 1);
+        return ScenarioRand() & (max - 1);
     uint32_t rand, cap = ~(static_cast<uint32_t>(0)) - (~(static_cast<uint32_t>(0)) % max) - 1;
     do
     {
-        rand = scenario_rand();
+        rand = ScenarioRand();
     } while (rand > cap);
     return rand % max;
 }
@@ -537,7 +537,7 @@ uint32_t scenario_rand_max(uint32_t max)
  * Prepare rides, for the finish five rollercoasters objective.
  *  rct2: 0x006788F7
  */
-static ResultWithMessage scenario_prepare_rides_for_save()
+static ResultWithMessage ScenarioPrepareRidesForSave()
 {
     int32_t isFiveCoasterObjective = gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
     uint8_t rcs = 0;
@@ -548,7 +548,7 @@ static ResultWithMessage scenario_prepare_rides_for_save()
         if (rideEntry != nullptr)
         {
             // If there are more than 5 roller coasters, only mark the first five.
-            if (isFiveCoasterObjective && (ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+            if (isFiveCoasterObjective && (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
             {
                 ride.lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
                 rcs++;
@@ -566,7 +566,7 @@ static ResultWithMessage scenario_prepare_rides_for_save()
     }
 
     bool markTrackAsIndestructible;
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {
@@ -576,7 +576,7 @@ static ResultWithMessage scenario_prepare_rides_for_save()
 
             if (isFiveCoasterObjective)
             {
-                auto ride = get_ride(it.element->AsTrack()->GetRideIndex());
+                auto ride = GetRide(it.element->AsTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
@@ -596,10 +596,10 @@ static ResultWithMessage scenario_prepare_rides_for_save()
  *
  *  rct2: 0x006726C7
  */
-ResultWithMessage scenario_prepare_for_save()
+ResultWithMessage ScenarioPrepareForSave()
 {
     // This can return false if the goal is 'Finish 5 roller coaster' and there are too few.
-    const auto prepareRidesResult = scenario_prepare_rides_for_save();
+    const auto prepareRidesResult = ScenarioPrepareRidesForSave();
     if (!prepareRidesResult.Successful)
     {
         return { false, prepareRidesResult.Message };
@@ -608,7 +608,7 @@ ResultWithMessage scenario_prepare_for_save()
     if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
         gParkFlags |= PARK_FLAGS_PARK_OPEN;
 
-    scenario_reset();
+    ScenarioReset();
 
     return { true };
 }
@@ -672,7 +672,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
             {
-                if (ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                if (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
                 {
                     type_already_counted[ride.subtype] = true;
                     rcs++;
@@ -772,7 +772,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
             {
-                if (ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                if (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
                 {
                     if ((ride.GetTotalLength() >> 16) >= MinimumLength)
                     {
@@ -804,7 +804,7 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
             if (rideEntry != nullptr)
             {
                 if ((ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                    && ride_entry_has_category(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+                    && RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
                 {
                     rcs++;
                 }
@@ -854,7 +854,7 @@ ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
  */
 bool AllowEarlyCompletion()
 {
-    switch (network_get_mode())
+    switch (NetworkGetMode())
     {
         case NETWORK_MODE_CLIENT:
             return gAllowEarlyCompletionInNetworkPlay;
@@ -865,16 +865,16 @@ bool AllowEarlyCompletion()
     }
 }
 
-static void scenario_objective_check()
+static void ScenarioCheckObjective()
 {
     auto status = gScenarioObjective.Check();
     if (status == ObjectiveStatus::Success)
     {
-        scenario_success();
+        ScenarioSuccess();
     }
     else if (status == ObjectiveStatus::Failure)
     {
-        scenario_failure();
+        ScenarioFailure();
     }
 }
 

@@ -64,7 +64,7 @@ void EntityBase::Invalidate()
             break;
     }
 
-    viewports_invalidate(SpriteRect, maxZoom);
+    ViewportsInvalidate(SpriteRect, maxZoom);
 }
 
 void EntityBase::Serialise(DataSerialiser& stream)

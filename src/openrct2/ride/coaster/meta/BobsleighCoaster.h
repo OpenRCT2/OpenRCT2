@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor BobsleighCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_bobsleigh_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionBobsleighRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES |
                      RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor BobsleighCoasterRTD =
     SET_FIELD(Heights, { 19, 24, 5, 7, }),
     SET_FIELD(MaxMass, 25),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_bobsleigh_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateBobsleighCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 40.00_GBP, 2.50_GBP, 45, }),

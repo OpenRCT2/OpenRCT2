@@ -28,7 +28,7 @@
 
 using namespace OpenRCT2;
 
-ObjectEntryDescriptor::ObjectEntryDescriptor(const rct_object_entry& newEntry)
+ObjectEntryDescriptor::ObjectEntryDescriptor(const RCTObjectEntry& newEntry)
 {
     if (!newEntry.IsEmpty())
     {
@@ -123,7 +123,7 @@ std::string Object::GetOverrideString(uint8_t index) const
     const utf8* result = nullptr;
     if (stringId != STR_NONE)
     {
-        result = language_get_string(stringId);
+        result = LanguageGetString(stringId);
     }
     return String::ToStd(result);
 }
@@ -153,9 +153,9 @@ ObjectEntryDescriptor Object::GetScgPathXHeader() const
     return ObjectEntryDescriptor("rct2.scenery_group.scgpathx");
 }
 
-rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)
+RCTObjectEntry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)
 {
-    rct_object_entry header = {};
+    RCTObjectEntry header = {};
     header.flags = flags;
     std::copy_n(name, DAT_NAME_LENGTH, header.name);
     header.checksum = checksum;
@@ -187,7 +187,7 @@ std::string Object::GetName(int32_t language) const
     return GetString(language, ObjectStringID::NAME);
 }
 
-void rct_object_entry::SetName(std::string_view value)
+void RCTObjectEntry::SetName(std::string_view value)
 {
     std::memset(name, ' ', sizeof(name));
     std::memcpy(name, value.data(), std::min(sizeof(name), value.size()));
@@ -203,7 +203,7 @@ void Object::SetAuthors(std::vector<std::string>&& authors)
     _authors = std::move(authors);
 }
 
-bool rct_object_entry::IsEmpty() const
+bool RCTObjectEntry::IsEmpty() const
 {
     uint64_t a, b;
     std::memcpy(&a, reinterpret_cast<const uint8_t*>(this), 8);
@@ -216,7 +216,7 @@ bool rct_object_entry::IsEmpty() const
     return false;
 }
 
-bool rct_object_entry::operator==(const rct_object_entry& rhs) const
+bool RCTObjectEntry::operator==(const RCTObjectEntry& rhs) const
 {
     const auto a = this;
     const auto b = &rhs;
@@ -253,7 +253,7 @@ bool rct_object_entry::operator==(const rct_object_entry& rhs) const
     return true;
 }
 
-bool rct_object_entry::operator!=(const rct_object_entry& rhs) const
+bool RCTObjectEntry::operator!=(const RCTObjectEntry& rhs) const
 {
     return !(*this == rhs);
 }
@@ -346,11 +346,11 @@ ObjectVersion VersionTuple(std::string_view version)
     uint16_t versions[VersionNumFields] = {};
     if (nums.size() > VersionNumFields)
     {
-        log_warning("%i fields found in version string '%s', expected X.Y.Z", nums.size(), version);
+        LOG_WARNING("%i fields found in version string '%s', expected X.Y.Z", nums.size(), version);
     }
     if (nums.size() == 0)
     {
-        log_warning("No fields found in version string '%s', expected X.Y.Z", version);
+        LOG_WARNING("No fields found in version string '%s', expected X.Y.Z", version);
         return std::make_tuple(0, 0, 0);
     }
     try
@@ -362,7 +362,7 @@ ObjectVersion VersionTuple(std::string_view version)
             constexpr auto maxValue = std::numeric_limits<uint16_t>().max();
             if (value > maxValue)
             {
-                log_warning(
+                LOG_WARNING(
                     "Version value too high in version string '%s', version value will be capped to %i.", version, maxValue);
                 value = maxValue;
             }
@@ -371,7 +371,7 @@ ObjectVersion VersionTuple(std::string_view version)
     }
     catch (const std::exception&)
     {
-        log_warning("Malformed version string '%s', expected X.Y.Z", version);
+        LOG_WARNING("Malformed version string '%s', expected X.Y.Z", version);
     }
 
     return std::make_tuple(versions[0], versions[1], versions[2]);

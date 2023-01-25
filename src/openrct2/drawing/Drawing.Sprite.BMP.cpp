@@ -9,7 +9,7 @@
 
 #include "Drawing.h"
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto& g1 = args.SourceImage;
     auto src = g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX);
@@ -35,7 +35,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(rct_dra
     }
 }
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto& g1 = args.SourceImage;
     auto src = g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX);
@@ -60,7 +60,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(rct_draw
     }
 }
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSprite(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSprite(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     if (dpi.zoom_level < ZoomLevel{ 0 })
     {
@@ -78,7 +78,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSprite(rct_drawpixeli
  *  rct2: 0x0067A690
  * @param imageId Only flags are used.
  */
-void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxBmpSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto imageId = args.Image;
 

@@ -72,7 +72,7 @@ public:
         widgets = window_land_widgets;
         hold_down_widgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         gLandToolSize = 1;
         gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
@@ -89,7 +89,7 @@ public:
     {
         // If the tool wasn't changed, turn tool off
         if (LandToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -230,7 +230,7 @@ public:
         widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords;
         int32_t numTiles;
@@ -252,7 +252,7 @@ public:
         {
             screenCoords = { windowPos.x + previewWidget->left, windowPos.y + previewWidget->top };
             auto sprite = ImageId(gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD);
-            gfx_draw_sprite(&dpi, sprite, screenCoords);
+            GfxDrawSprite(&dpi, sprite, screenCoords);
             WidgetDraw(&dpi, *this, WIDX_DECREMENT);
             WidgetDraw(&dpi, *this, WIDX_INCREMENT);
         }
@@ -306,7 +306,7 @@ public:
     }
 
 private:
-    void DrawDropdownButtons(rct_drawpixelinfo& dpi)
+    void DrawDropdownButtons(DrawPixelInfo& dpi)
     {
         auto& objManager = GetContext()->GetObjectManager();
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -331,14 +331,14 @@ private:
         DrawDropdownButton(dpi, WIDX_WALL, edgeImage);
     }
 
-    void DrawDropdownButton(rct_drawpixelinfo& dpi, WidgetIndex widgetIndex, ImageId image)
+    void DrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageId image)
     {
         const auto& widget = widgets[widgetIndex];
-        gfx_draw_sprite(&dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });
+        GfxDrawSprite(&dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });
     }
 };
 
-rct_window* WindowLandOpen()
+WindowBase* WindowLandOpen()
 {
     return WindowFocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

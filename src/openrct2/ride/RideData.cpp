@@ -374,7 +374,7 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
         case RIDE_CATEGORY_NONE:
             break;
     }
-    log_error("Cannot get Research Category of invalid RideCategory");
+    LOG_ERROR("Cannot get Research Category of invalid RideCategory");
     return ResearchCategory::Transport;
 }
 

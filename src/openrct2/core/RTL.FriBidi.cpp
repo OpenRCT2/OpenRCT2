@@ -59,7 +59,7 @@ std::string FixRTL(std::string& input)
 {
     if (!hasWarned)
     {
-        log_warning("This build of OpenRCT2 cannot properly handle right-to-left text!");
+        LOG_WARNING("This build of OpenRCT2 cannot properly handle right-to-left text!");
         hasWarned = true;
     }
 

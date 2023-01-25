@@ -11,7 +11,7 @@
 
 #include "../common.h"
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 namespace OpenRCT2::Drawing
 {
@@ -37,4 +37,4 @@ static constexpr const uint8_t SnowPattern[] =
 
 // clang-format on
 
-void DrawWeather(rct_drawpixelinfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);
+void DrawWeather(DrawPixelInfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);

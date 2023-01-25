@@ -362,7 +362,7 @@ namespace Config
             model->Device = reader->GetString("audio_device", "");
             model->MasterSoundEnabled = reader->GetBoolean("master_sound", true);
             model->MasterVolume = reader->GetInt32("master_volume", 100);
-            model->TitleMusic = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::Rct2)));
+            model->TitleMusic = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::RCT2)));
             model->SoundEnabled = reader->GetBoolean("sound", true);
             model->SoundVolume = reader->GetInt32("sound_volume", 100);
             model->RideMusicEnabled = reader->GetBoolean("ride_music", true);
@@ -639,7 +639,7 @@ namespace Config
      */
     static u8string FindRCT1Path()
     {
-        log_verbose("config_find_rct1_path(...)");
+        LOG_VERBOSE("config_find_rct1_path(...)");
 
         static constexpr u8string_view searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
@@ -684,7 +684,7 @@ namespace Config
      */
     static u8string FindRCT2Path()
     {
-        log_verbose("config_find_rct2_path(...)");
+        LOG_VERBOSE("config_find_rct2_path(...)");
 
         static constexpr u8string_view searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
@@ -736,9 +736,9 @@ namespace Config
     {
         FileDialogDesc desc{};
         desc.Type = FileDialogType::Open;
-        desc.Title = language_get_string(STR_SELECT_GOG_INSTALLER);
-        desc.Filters.emplace_back(language_get_string(STR_GOG_INSTALLER), "*.exe");
-        desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
+        desc.Title = LanguageGetString(STR_SELECT_GOG_INSTALLER);
+        desc.Filters.emplace_back(LanguageGetString(STR_GOG_INSTALLER), "*.exe");
+        desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
         desc.InitialDirectory = userHomePath;
@@ -753,14 +753,14 @@ namespace Config
 
         if (!Platform::FindApp("innoextract", &path))
         {
-            log_error("Please install innoextract to extract files from GOG.");
+            LOG_ERROR("Please install innoextract to extract files from GOG.");
             return false;
         }
         int32_t exit_status = Platform::Execute(
             String::StdFormat(
                 "%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath.c_str(), targetPath.c_str()),
             &output);
-        log_info("Exit status %d", exit_status);
+        LOG_INFO("Exit status %d", exit_status);
         return exit_status == 0;
     }
 } // namespace Config
@@ -788,7 +788,7 @@ bool ConfigOpen(u8string_view path)
     auto result = Config::ReadFile(path);
     if (result)
     {
-        currency_load_custom_currency_config();
+        CurrencyLoadCustomCurrencyConfig();
     }
     return result;
 }
@@ -827,7 +827,7 @@ bool ConfigFindOrBrowseInstallDirectory()
         auto uiContext = GetContext()->GetUiContext();
         if (!uiContext->HasFilePicker())
         {
-            uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES_MANUAL, nullptr));
+            uiContext->ShowMessageBox(FormatStringID(STR_NEEDS_RCT2_FILES_MANUAL, nullptr));
             return false;
         }
 
@@ -836,9 +836,9 @@ bool ConfigFindOrBrowseInstallDirectory()
             const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
             while (true)
             {
-                uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES, nullptr));
-                std::string gog = language_get_string(STR_OWN_ON_GOG);
-                std::string hdd = language_get_string(STR_INSTALLED_ON_HDD);
+                uiContext->ShowMessageBox(FormatStringID(STR_NEEDS_RCT2_FILES, nullptr));
+                std::string gog = LanguageGetString(STR_OWN_ON_GOG);
+                std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
 
                 std::vector<std::string> options;
                 std::string chosenOption;
@@ -848,7 +848,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     options.push_back(hdd);
                     options.push_back(gog);
                     int optionIndex = uiContext->ShowMenuDialog(
-                        options, language_get_string(STR_OPENRCT2_SETUP), language_get_string(STR_WHICH_APPLIES_BEST));
+                        options, LanguageGetString(STR_OPENRCT2_SETUP), LanguageGetString(STR_WHICH_APPLIES_BEST));
                     if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
                     {
                         // graceful fallback if app errors or user exits out of window
@@ -867,7 +867,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                 std::string installPath;
                 if (chosenOption == hdd)
                 {
-                    installPath = uiContext->ShowDirectoryDialog(language_get_string(STR_PICK_RCT2_DIR));
+                    installPath = uiContext->ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR));
                 }
                 else if (chosenOption == gog)
                 {
@@ -875,7 +875,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     std::string dummy;
                     if (!Platform::FindApp("innoextract", &dummy))
                     {
-                        uiContext->ShowMessageBox(format_string(STR_INSTALL_INNOEXTRACT, nullptr));
+                        uiContext->ShowMessageBox(FormatStringID(STR_INSTALL_INNOEXTRACT, nullptr));
                         return false;
                     }
 
@@ -884,7 +884,7 @@ bool ConfigFindOrBrowseInstallDirectory()
 
                     while (true)
                     {
-                        uiContext->ShowMessageBox(language_get_string(STR_PLEASE_SELECT_GOG_INSTALLER));
+                        uiContext->ShowMessageBox(LanguageGetString(STR_PLEASE_SELECT_GOG_INSTALLER));
                         utf8 gogPath[4096];
                         if (!Config::SelectGogInstaller(gogPath))
                         {
@@ -892,12 +892,12 @@ bool ConfigFindOrBrowseInstallDirectory()
                             return false;
                         }
 
-                        uiContext->ShowMessageBox(language_get_string(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
+                        uiContext->ShowMessageBox(LanguageGetString(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
 
                         if (Config::ExtractGogInstaller(gogPath, dest))
                             break;
 
-                        uiContext->ShowMessageBox(language_get_string(STR_NOT_THE_GOG_INSTALLER));
+                        uiContext->ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
                     }
 
                     installPath = Path::Combine(dest, u8"app");
@@ -913,7 +913,7 @@ bool ConfigFindOrBrowseInstallDirectory()
                     return true;
                 }
 
-                uiContext->ShowMessageBox(format_string(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
+                uiContext->ShowMessageBox(FormatStringID(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
             }
         }
         catch (const std::exception& ex)
@@ -976,7 +976,7 @@ bool RCT1DataPresentAtLocation(u8string_view path)
     return Csg1datPresentAtLocation(path) && Csg1idatPresentAtLocation(path) && CsgAtLocationIsUsable(path);
 }
 
-bool CsgIsUsable(const rct_gx& csg)
+bool CsgIsUsable(const Gx& csg)
 {
     return csg.header.total_size == RCT1::Limits::LL_CSG1_DAT_FileSize
         && csg.header.num_entries == RCT1::Limits::Num_LL_CSG_Entries;
@@ -1001,8 +1001,8 @@ bool CsgAtLocationIsUsable(u8string_view path)
     size_t fileHeaderSize = fileHeader.GetLength();
     size_t fileDataSize = fileData.GetLength();
 
-    rct_gx csg = {};
-    csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(rct_g1_element_32bit));
+    Gx csg = {};
+    csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
     csg.header.total_size = static_cast<uint32_t>(fileDataSize);
     return CsgIsUsable(csg);
 }

@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui
         void Scroll(int32_t linesToScroll);
 
         void Update();
-        void Draw(rct_drawpixelinfo* dpi) const;
+        void Draw(DrawPixelInfo* dpi) const;
 
     private:
         void ClearInput();

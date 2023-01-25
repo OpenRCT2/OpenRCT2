@@ -51,10 +51,10 @@ void WindowDropdownShowImage(
     int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
     int32_t itemHeight, int32_t numColumns);
 void WindowDropdownClose();
-int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w);
-void WindowDropdownShowColour(rct_window* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
+int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w);
+void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
 void WindowDropdownShowColourAvailable(
-    rct_window* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
+    WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 bool WindowDropDownHasMultipleColumns(size_t numItems);
 

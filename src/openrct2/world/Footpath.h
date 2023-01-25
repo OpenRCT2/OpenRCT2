@@ -45,7 +45,7 @@ enum
 };
 
 #pragma pack(push, 1)
-struct rct_footpath_entry
+struct FootpathEntry
 {
     StringId string_idx;                  // 0x00
     uint32_t image;                       // 0x02
@@ -77,7 +77,7 @@ struct rct_footpath_entry
         return image + 73;
     }
 };
-assert_struct_size(rct_footpath_entry, 13);
+assert_struct_size(FootpathEntry, 13);
 #pragma pack(pop)
 
 struct PathSurfaceDescriptor

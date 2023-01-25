@@ -284,7 +284,7 @@ private:
             {
                 return a.RideType < b.RideType;
             }
-            return strlogicalcmp(a.Name.c_str(), b.Name.c_str()) < 0;
+            return StrLogicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
         });
     }
 
@@ -317,26 +317,26 @@ std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(const std::s
     return std::make_unique<TrackDesignRepository>(env);
 }
 
-void track_repository_scan()
+void TrackRepositoryScan()
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     repo->Scan(LocalisationService_GetCurrentLanguage());
 }
 
-bool track_repository_delete(const u8string& path)
+bool TrackRepositoryDelete(const u8string& path)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     return repo->Delete(path);
 }
 
-bool track_repository_rename(const u8string& path, const u8string& newName)
+bool TrackRepositoryRename(const u8string& path, const u8string& newName)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     std::string newPath = repo->Rename(path, newName);
     return !newPath.empty();
 }
 
-bool track_repository_install(const u8string& srcPath, const u8string& name)
+bool TrackRepositoryInstall(const u8string& srcPath, const u8string& name)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     std::string newPath = repo->Install(srcPath, name);

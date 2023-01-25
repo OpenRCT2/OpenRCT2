@@ -40,7 +40,7 @@ void NetworkPlayer::AddMoneySpent(money32 cost)
 {
     MoneySpent += cost;
     CommandsRan++;
-    window_invalidate_by_number(WindowClass::Player, Id);
+    WindowInvalidateByNumber(WindowClass::Player, Id);
 }
 
 #endif

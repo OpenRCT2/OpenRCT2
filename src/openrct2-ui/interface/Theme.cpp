@@ -404,7 +404,7 @@ bool UITheme::WriteToFile(const std::string& path) const
     }
     catch (const std::exception& ex)
     {
-        log_error("Unable to save %s: %s", path.c_str(), ex.what());
+        LOG_ERROR("Unable to save %s: %s", path.c_str(), ex.what());
         result = false;
     }
 
@@ -475,7 +475,7 @@ UITheme* UITheme::FromFile(const std::string& path)
     }
     catch (const std::exception&)
     {
-        log_error("Unable to read theme: %s", path.c_str());
+        LOG_ERROR("Unable to read theme: %s", path.c_str());
         result = nullptr;
     }
     return result;
@@ -569,7 +569,7 @@ namespace ThemeManager
         CurrentTheme = theme;
         CurrentThemePath.clear();
 
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
     static void LoadTheme(const std::string& path)
@@ -682,7 +682,7 @@ const utf8* ThemeManagerGetAvailableThemeConfigName(size_t index)
 const utf8* ThemeManagerGetAvailableThemeName(size_t index)
 {
     if (index < ThemeManager::NumPredefinedThemes)
-        return language_get_string(PredefinedThemes[index].Name);
+        return LanguageGetString(PredefinedThemes[index].Name);
     return ThemeManager::AvailableThemes[index].Name.c_str();
 }
 
@@ -871,15 +871,15 @@ StringId ThemeDescGetName(WindowClass wc)
 
 void ColourSchemeUpdateAll()
 {
-    window_visit_each([](rct_window* w) { ColourSchemeUpdate(w); });
+    WindowVisitEach([](WindowBase* w) { ColourSchemeUpdate(w); });
 }
 
-void ColourSchemeUpdate(rct_window* window)
+void ColourSchemeUpdate(WindowBase* window)
 {
     ColourSchemeUpdateByClass(window, window->classification);
 }
 
-void ColourSchemeUpdateByClass(rct_window* window, WindowClass classification)
+void ColourSchemeUpdateByClass(WindowBase* window, WindowClass classification)
 {
     const WindowTheme* windowTheme;
     const UIThemeWindowEntry* entry = ThemeManager::CurrentTheme->GetEntry(classification);

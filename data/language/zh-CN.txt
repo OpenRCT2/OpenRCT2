@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -2993,7 +2993,7 @@ STR_5832    :高度用通用单位替换“距离和速度单位”中设置的�
 STR_5833    :修改日期格式
 STR_5834    :选择OpenRCT2使用的音频设备
 STR_5835    :当游戏窗口失去焦点时静音
-STR_5836    :选择主菜单使用的音乐.{NEWLINE}若选择过山车大亨1的主题，则需要在杂项选项卡中设定过山车大亨1的路径.
+STR_5836    :选择主菜单使用的音乐.{NEWLINE}若选择过山车大亨1的主题，则需要在高级选项卡中设定过山车大亨1的路径.
 STR_5837    :创建并管理自定义游戏界面配色主题
 STR_5838    :在工具栏上为财务窗口显示一个单独的按钮
 STR_5839    :在工具栏上为研发窗口显示一个单独的按钮
@@ -3593,9 +3593,9 @@ STR_6487    :隐藏雇员切换
 STR_6488    :{RED}游客在抱怨排队区的长度.{NEWLINE}请考虑减少造成问题的队列长度或增加设施的游客接待量(试试增加列车数？)
 STR_6489    :错误: 不兼容的公园版本
 STR_6490    :警告: 半兼容的公园版本
-STR_6491    :这个公园是较新版本的OpenRCT2保存的，版本号: v{INT32} 至少需要将游戏更新至 v{INT32} 才可以运行.
+STR_6491    :这个公园是较新版本的OpenRCT2保存的，存档创建的版本: v{INT32} ,您至少需要将游戏更新至 v{INT32} 才可以运行.您目前正在使用 v{INT32} .
 STR_6492    :这个公园是较早版本的OpenRCT2保存的，无法在此版本的OpenRCT2中打开，版本号: v{INT32} .
-STR_6493    :这个公园是较新版本的OpenRCT2保存的，一些数据或许已经丢失，版本号: v{INT32} 至少需要 v{INT32} 才可以运行.
+STR_6493    :这个公园是较新版本的OpenRCT2保存的，一些数据或许已经丢失，版本号: v{INT32} ,您至少需要将游戏更新至 v{INT32} 才可以运行.您目前正在使用 v{INT32} .
 STR_6494    :按设施类型分类
 STR_6495    :按设施的类型分类显示而不是直接显示各个载具
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3632,6 +3632,118 @@ STR_6526    :（基础图形、音乐及音效）
 STR_6527    :竞赛
 STR_6528    :无效的轨道参数！
 STR_6529    :无效的配色参数！
+STR_6530    :由用户创建的扩展集
+STR_6531    :时间机器
+STR_6532    :凯蒂的幻想世界
+STR_6533    :{WINDOW_COLOUR_2}兴奋度: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}刺激度: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}眩晕度: {BLACK}-{COMMA16}%
+STR_6536    :这个公园是较新版本的OpenRCT2保存的，存档创建的版本: v{INT32} ,您目前正在使用 v{INT32} .
+STR_6537    :允许使用普通道路作为队列道路使用
+STR_6538    :在道路窗口中的队列道路选择框中显示普通道路.
+STR_6539    :关闭制动器
+
+###
+<UCES Halloween>
+STR_SCNR    :坟头蹦车
+STR_PARK    :坟头蹦车
+STR_DTLS    :万圣节到了，UCES万圣节，南瓜在夜深人静时尖叫！这个墓地有麻烦了，由你来拯救它，同时让死者安息！你能把鬼魂留在他们的坟墓里，给你的顾客带来寒意吗？
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :亚历山德里亚的灯塔
+STR_PARK    :亚历山德里亚的灯塔
+STR_DTLS    :亚历山大建造了这座城市;希腊人、罗马人、埃及人纷纷留下了他们的印记。但最大的荣耀是来自古代世界的奇迹——灯塔。建造一个公园！{NEWLINE}作者: Katatude
+
+
+<Cleveland's Luna Park>
+STR_SCNR    :月神公园，克利夫兰
+STR_PARK    :月神公园
+STR_DTLS    :就像它开幕当天一样 —— 1905 年 5 月 18 日。{NEWLINE}作者: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :维苏威火山
+STR_PARK    :维苏威火山
+STR_DTLS    :维苏威火山在公元79年喷发，庞贝古城和赫库兰尼姆被深埋地下。参观挖掘并建造公园！{NEWLINE}作者: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :沙盒
+STR_PARK    :沙盒
+STR_DTLS    :每个人都想拥有的 —— 沙盒！所以拿起你的桶和铲子，建造一个公园吧！{NEWLINE}作者: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :尼亚加拉大瀑布和峡谷
+STR_PARK    :尼亚加拉大瀑布
+STR_DTLS    :美国的瀑布，婚纱样的瀑布，加拿大的瀑布，在尼亚加拉丛林旁，1850年。{NEWLINE}作者: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :落石山矿工
+STR_PARK    :落石山矿工
+STR_DTLS    :泥石流摧毁了你的铁路。通过工人的勘探，过山车中貌似有黄金？{NEWLINE}作者: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :时间机器
+STR_PARK    :时间机器
+STR_DTLS    :时间机器。一个用来去往任何你想去的时间，任何你想去的地点。等待永恒。这都是相对的。{NEWLINE}Author: Katatude
+
+<Tower of Babel>
+STR_SCNR    :吵闹之塔
+STR_PARK    :吵闹之塔
+STR_DTLS    :哇奥！看看这这个时间机器吧我们带到哪里去了！大家都去哪了？{NEWLINE}作者: Fossil
+
+<Transformation>
+STR_SCNR    :做出改变
+STR_PARK    :做出改变
+STR_DTLS    :我们会希望你可以...{NEWLINE}作者: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :罗马人厌倦了无聊的角斗士战斗。给他们更好的刺激，把罗马城市变成有史以来最伟大的游乐园！{NEWLINE}作者: Kaffe
+#### Note By LPR ####
+#未确定正式名称，貌似是一种恐龙
+#no final name
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :圣诞树的下面
+STR_PARK    :冬季仙境
+STR_DTLS    :妈妈在树下创造了这个场景，现在，她想要在这里创造一个游乐园！你能帮忙吗？{NEWLINE}作者: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :巨石镇大爆炸
+STR_PARK    :巨石镇大爆炸
+STR_DTLS    :在巨石镇矿产公司发生爆炸后，巨石镇的人们不得不建造一个游乐园来维持他们的城镇活力。{NEWLINE}作者: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :Camp Mockingbird
+STR_DTLS    :这个夏令营每个月只有500美元！找银行吧，玩的开心就好！建造一个游乐园。{NEWLINE}作者: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :呜呜小镇
+STR_PARK    :呜呜小镇
+STR_DTLS    :妈咪！爸比！我想去呜呜小镇！{NEWLINE}作者: Fossil
+
+<Dragon Islands>
+STR_SCNR    :龙之岛
+STR_PARK    :龙之岛
+STR_DTLS    :龙之岛？我可不确定我会想去那...{NEWLINE}作者: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :基迪嘉年华 II
+STR_PARK    :基迪嘉年华
+STR_DTLS    :嘿！孩子！玩的开心！{NEWLINE}作者: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :梦幻沙丘
+STR_PARK    :梦幻沙丘
+STR_DTLS    :你是一个小公园的拥有者，你买了一大块土地去扩展，希望可以吸引更多的游客来欣赏美丽的沙丘，但是别忘了：你可不能破坏沙丘的生态平衡。{NEWLINE}作者: rbarclay
 
 #############
 # Scenarios #

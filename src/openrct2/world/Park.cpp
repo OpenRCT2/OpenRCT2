@@ -86,7 +86,7 @@ static PeepSpawn* GetRandomPeepSpawn()
 {
     if (!gPeepSpawns.empty())
     {
-        return &gPeepSpawns[scenario_rand() % gPeepSpawns.size()];
+        return &gPeepSpawns[ScenarioRand() % gPeepSpawns.size()];
     }
 
     return nullptr;
@@ -252,7 +252,7 @@ money64 Park::GetCompanyValue() const
 
 void Park::Initialise()
 {
-    Name = format_string(STR_UNNAMED_PARK, nullptr);
+    Name = FormatStringID(STR_UNNAMED_PARK, nullptr);
     PluginStorage = {};
     gStaffHandymanColour = COLOUR_BRIGHT_RED;
     gStaffMechanicColour = COLOUR_LIGHT_BLUE;
@@ -268,12 +268,12 @@ void Park::Initialise()
     gResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
 
-    research_reset_items();
-    finance_init();
+    ResearchResetItems();
+    FinanceInit();
 
-    set_every_ride_type_not_invented();
+    SetEveryRideTypeNotInvented();
 
-    set_all_scenery_items_invented();
+    SetAllSceneryItemsInvented();
 
     gParkEntranceFee = 10.00_GBP;
 
@@ -296,11 +296,11 @@ void Park::Initialise()
     gConstructionRightsPrice = 40.00_GBP;
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
-    finance_reset_history();
-    award_reset();
+    FinanceResetHistory();
+    AwardReset();
 
     gScenarioName.clear();
-    gScenarioDetails = String::ToStd(language_get_string(STR_NO_DETAILS_YET));
+    gScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
 }
 
 void Park::Update(const Date& date)
@@ -323,7 +323,7 @@ void Park::Update(const Date& date)
         _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
         _guestGenerationProbability = CalculateGuestGenerationProbability();
 
-        window_invalidate_by_class(WindowClass::Finances);
+        WindowInvalidateByClass(WindowClass::Finances);
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         ContextBroadcastIntent(&intent);
     }
@@ -332,7 +332,7 @@ void Park::Update(const Date& date)
     if (gCurrentTicks % 4096 == 0)
     {
         gParkSize = CalculateParkSize();
-        window_invalidate_by_class(WindowClass::ParkInformation);
+        WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
     GenerateGuests();
@@ -341,7 +341,7 @@ void Park::Update(const Date& date)
 uint32_t Park::CalculateParkSize() const
 {
     uint32_t tiles = 0;
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     do
     {
@@ -357,7 +357,7 @@ uint32_t Park::CalculateParkSize() const
     if (tiles != gParkSize)
     {
         gParkSize = tiles;
-        window_invalidate_by_class(WindowClass::ParkInformation);
+        WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
     return tiles;
@@ -423,7 +423,7 @@ int32_t Park::CalculateParkRating() const
         for (auto& ride : GetRideManager())
         {
             totalRideUptime += 100 - ride.downtime;
-            if (ride_has_ratings(ride))
+            if (RideHasRatings(ride))
             {
                 totalRideExcitement += ride.excitement / 8;
                 totalRideIntensity += ride.intensity / 8;
@@ -501,7 +501,7 @@ money64 Park::CalculateRideValue(const Ride& ride) const
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
         result = ToMoney64FromGBP(ride.value)
-            * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
+            * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;
 }
@@ -511,7 +511,7 @@ money64 Park::CalculateCompanyValue() const
     auto result = gParkValue - gBankLoan;
 
     // Clamp addition to prevent overflow
-    result = add_clamp_money64(result, finance_get_current_cash());
+    result = AddClamp_money64(result, FinanceGetCurrentCash());
 
     return result;
 }
@@ -631,7 +631,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     for (const auto& award : GetAwards())
     {
         // +/- 0.25% of the probability
-        if (award_is_positive(award.Type))
+        if (AwardIsPositive(award.Type))
         {
             probability += probability / 4;
         }
@@ -669,7 +669,7 @@ uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
 void Park::GenerateGuests()
 {
     // Generate a new guest for some probability
-    if (static_cast<int32_t>(scenario_rand() & 0xFFFF) < _guestGenerationProbability)
+    if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < _guestGenerationProbability)
     {
         bool difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
         if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
@@ -682,8 +682,8 @@ void Park::GenerateGuests()
     for (const auto& campaign : gMarketingCampaigns)
     {
         // Random chance of guest generation
-        auto probability = marketing_get_campaign_guest_generation_probability(campaign.Type);
-        auto random = scenario_rand_max(std::numeric_limits<uint16_t>::max());
+        auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.Type);
+        auto random = ScenarioRandMax(std::numeric_limits<uint16_t>::max());
         if (random < probability)
         {
             GenerateGuestFromCampaign(campaign.Type);
@@ -696,7 +696,7 @@ Guest* Park::GenerateGuestFromCampaign(int32_t campaign)
     auto peep = GenerateGuest();
     if (peep != nullptr)
     {
-        marketing_set_guest_campaign(peep, campaign);
+        MarketingSetGuestCampaign(peep, campaign);
     }
     return peep;
 }
@@ -756,7 +756,7 @@ void Park::UpdateHistories()
     // Update park rating, guests in park and current cash history
     HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gParkRating / 4);
     HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gNumGuestsInPark);
-    HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, finance_get_current_cash() - gBankLoan);
+    HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gBankLoan);
 
     // Update weekly profit history
     auto currentWeeklyProfit = gWeeklyProfitAverageDividend;
@@ -774,8 +774,8 @@ void Park::UpdateHistories()
     // Invalidate relevant windows
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
     ContextBroadcastIntent(&intent);
-    window_invalidate_by_class(WindowClass::ParkInformation);
-    window_invalidate_by_class(WindowClass::Finances);
+    WindowInvalidateByClass(WindowClass::ParkInformation);
+    WindowInvalidateByClass(WindowClass::Finances);
 }
 
 int32_t ParkIsOpen()
@@ -789,7 +789,7 @@ uint32_t ParkCalculateSize()
     if (tiles != gParkSize)
     {
         gParkSize = tiles;
-        window_invalidate_by_class(WindowClass::ParkInformation);
+        WindowInvalidateByClass(WindowClass::ParkInformation);
     }
     return tiles;
 }

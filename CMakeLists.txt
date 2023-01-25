@@ -64,9 +64,9 @@ set(TITLE_SEQUENCE_VERSION "0.4.0")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0")
 
-set(OBJECTS_VERSION "1.3.7")
+set(OBJECTS_VERSION "1.3.8")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "82930d549e0b3c3bce29718d5390c5cd474d0f28")
+set(OBJECTS_SHA1 "2888092aab93df15bb78c4c910b13c33b1e318ef")
 
 set(OPENSFX_VERSION "1.0.1")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
@@ -76,9 +76,9 @@ set(OPENMSX_VERSION "1.0.1")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
 set(OPENMSX_SHA1 "8ff94490180e2fbfdd13a4130eb300da726ca406")
 
-set(REPLAYS_VERSION "0.0.70")
+set(REPLAYS_VERSION "0.0.72")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "09B339E86AAE81580C5AC3E23AC4BC9E030DA076")
+set(REPLAYS_SHA1 "93744627E3F1FE5ED6317D5A292D15B63AA71765")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")

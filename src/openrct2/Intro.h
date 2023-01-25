@@ -11,7 +11,7 @@
 
 #include "common.h"
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 enum class IntroState : uint8_t
 {
@@ -31,5 +31,5 @@ enum class IntroState : uint8_t
 
 extern IntroState gIntroState;
 
-void intro_update();
-void intro_draw(rct_drawpixelinfo* dpi);
+void IntroUpdate();
+void IntroDraw(DrawPixelInfo* dpi);

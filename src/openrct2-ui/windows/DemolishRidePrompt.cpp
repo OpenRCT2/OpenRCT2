@@ -48,7 +48,7 @@ public:
     void SetRide(const Ride& currentRide)
     {
         rideId = currentRide.id;
-        _demolishRideCost = -ride_get_refund_price(currentRide);
+        _demolishRideCost = -RideGetRefundPrice(currentRide);
     }
 
     void OnOpen() override
@@ -74,11 +74,11 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
 
-        auto currentRide = get_ride(rideId);
+        auto currentRide = GetRide(rideId);
         if (currentRide != nullptr)
         {
             auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID : STR_DEMOLISH_RIDE_ID_MONEY;
@@ -92,16 +92,16 @@ public:
     }
 };
 
-rct_window* WindowRideDemolishPromptOpen(const Ride& ride)
+WindowBase* WindowRideDemolishPromptOpen(const Ride& ride)
 {
-    rct_window* w;
+    WindowBase* w;
     DemolishRidePromptWindow* newWindow;
 
-    w = window_find_by_class(WindowClass::DemolishRidePrompt);
+    w = WindowFindByClass(WindowClass::DemolishRidePrompt);
     if (w != nullptr)
     {
         auto windowPos = w->windowPos;
-        window_close(*w);
+        WindowClose(*w);
         newWindow = WindowCreate<DemolishRidePromptWindow>(WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
     }
     else

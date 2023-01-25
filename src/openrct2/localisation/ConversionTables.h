@@ -11,4 +11,4 @@
 
 #include "../common.h"
 
-wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
+wchar_t EncodingConvertRCT2ToUnicode(wchar_t rct2str);

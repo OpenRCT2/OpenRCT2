@@ -28,10 +28,10 @@ static constexpr uint32_t InvalidTick = 0xFFFFFFFF;
 #pragma pack(push, 1)
 union EntitySnapshot
 {
-    uint8_t pad_00[0x200];
+    uint8_t Pad00[0x200];
     EntityBase base;
     EntitySnapshot()
-        : pad_00()
+        : Pad00()
     {
     }
 };
@@ -97,7 +97,7 @@ struct GameStateSnapshot_t
         // can fail gracefully when fields added/removed
         if (!EntitiesSizeCheck<Vehicle, Guest, Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle>(ds))
         {
-            log_error("Entity index corrupted!");
+            LOG_ERROR("Entity index corrupted!");
             return;
         }
         ds << numSavedSprites;
@@ -115,7 +115,7 @@ struct GameStateSnapshot_t
             EntitySnapshot* entity = getEntity(spriteIdx);
             if (entity == nullptr)
             {
-                log_error("Entity index corrupted!");
+                LOG_ERROR("Entity index corrupted!");
                 return;
             }
             auto& sprite = *entity;
@@ -186,7 +186,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         snapshot.SerialiseSprites(
             [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, MAX_ENTITIES, true);
 
-        // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
+        // LOG_INFO("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
 
     virtual const GameStateSnapshot_t* GetLinkedSnapshot(uint32_t tick) const override final
@@ -233,11 +233,11 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         std::memcpy(&valB, &spriteCmp.field, sizeof(struc::field));                                                            \
         uintptr_t offset = reinterpret_cast<uintptr_t>(&spriteBase.field) - reinterpret_cast<uintptr_t>(&spriteBase);          \
         changeData.diffs.push_back(                                                                                            \
-            GameStateSpriteChange_t::Diff_t{ static_cast<size_t>(offset), sizeof(struc::field), #struc, #field, valA, valB }); \
+            GameStateSpriteChange::Diff{ static_cast<size_t>(offset), sizeof(struc::field), #struc, #field, valA, valB });     \
     }
 
     void CompareSpriteDataCommon(
-        const EntityBase& spriteBase, const EntityBase& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const EntityBase& spriteBase, const EntityBase& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(EntityBase, Type);
         COMPARE_FIELD(EntityBase, sprite_index);
@@ -256,7 +256,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(EntityBase, sprite_direction);
     }
 
-    void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(Peep, NextLoc.x);
         COMPARE_FIELD(Peep, NextLoc.y);
@@ -304,7 +304,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, WalkingFrameNum);
     }
 
-    void CompareSpriteDataStaff(const Staff& spriteBase, const Staff& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataStaff(const Staff& spriteBase, const Staff& spriteCmp, GameStateSpriteChange& changeData) const
     {
         CompareSpriteDataPeep(spriteBase, spriteCmp, changeData);
 
@@ -319,7 +319,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Staff, StaffBinsEmptied);
     }
 
-    void CompareSpriteDataGuest(const Guest& spriteBase, const Guest& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataGuest(const Guest& spriteBase, const Guest& spriteCmp, GameStateSpriteChange& changeData) const
     {
         CompareSpriteDataPeep(spriteBase, spriteCmp, changeData);
 
@@ -384,8 +384,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, FavouriteRideRating);
     }
 
-    void CompareSpriteDataVehicle(
-        const Vehicle& spriteBase, const Vehicle& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataVehicle(const Vehicle& spriteBase, const Vehicle& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(Vehicle, Pitch);
         COMPARE_FIELD(Vehicle, bank_rotation);
@@ -437,9 +436,9 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, powered_acceleration);
         COMPARE_FIELD(Vehicle, CollisionDetectionTimer);
         COMPARE_FIELD(Vehicle, animation_frame);
-        for (std::size_t i = 0; i < sizeof(Vehicle::pad_C6) / sizeof(*Vehicle::pad_C6); i++)
+        for (std::size_t i = 0; i < sizeof(Vehicle::PadC6) / sizeof(*Vehicle::PadC6); i++)
         {
-            COMPARE_FIELD(Vehicle, pad_C6[i]);
+            COMPARE_FIELD(Vehicle, PadC6[i]);
         }
         COMPARE_FIELD(Vehicle, animationState);
         COMPARE_FIELD(Vehicle, scream_sound_id);
@@ -459,13 +458,13 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, IsCrashedVehicle);
     }
 
-    void CompareSpriteDataLitter(const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataLitter(const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(Litter, creationTick);
     }
 
     void CompareSpriteDataMoneyEffect(
-        const MoneyEffect& spriteBase, const MoneyEffect& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const MoneyEffect& spriteBase, const MoneyEffect& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(MoneyEffect, frame);
         COMPARE_FIELD(MoneyEffect, MoveDelay);
@@ -477,15 +476,14 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     }
 
     void CompareSpriteDataSteamParticle(
-        const SteamParticle& spriteBase, const SteamParticle& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const SteamParticle& spriteBase, const SteamParticle& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(SteamParticle, frame);
         COMPARE_FIELD(SteamParticle, time_to_move);
     }
 
     void CompareSpriteDataVehicleCrashParticle(
-        const VehicleCrashParticle& spriteBase, const VehicleCrashParticle& spriteCmp,
-        GameStateSpriteChange_t& changeData) const
+        const VehicleCrashParticle& spriteBase, const VehicleCrashParticle& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(VehicleCrashParticle, frame);
         COMPARE_FIELD(VehicleCrashParticle, time_to_live);
@@ -502,7 +500,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(VehicleCrashParticle, acceleration_z);
     }
 
-    void CompareSpriteDataDuck(const Duck& spriteBase, const Duck& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataDuck(const Duck& spriteBase, const Duck& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(Duck, frame);
         COMPARE_FIELD(Duck, target_x);
@@ -510,8 +508,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Duck, state);
     }
 
-    void CompareSpriteDataBalloon(
-        const Balloon& spriteBase, const Balloon& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataBalloon(const Balloon& spriteBase, const Balloon& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(Balloon, frame);
         COMPARE_FIELD(Balloon, popped);
@@ -520,7 +517,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     }
 
     void CompareSpriteDataJumpingFountain(
-        const JumpingFountain& spriteBase, const JumpingFountain& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const JumpingFountain& spriteBase, const JumpingFountain& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(JumpingFountain, frame);
         COMPARE_FIELD(JumpingFountain, NumTicksAlive);
@@ -532,25 +529,25 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     }
 
     void CompareSpriteDataExplosionCloud(
-        const ExplosionCloud& spriteBase, const ExplosionCloud& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const ExplosionCloud& spriteBase, const ExplosionCloud& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(ExplosionCloud, frame);
     }
 
     void CompareSpriteDataCrashSplash(
-        const CrashSplashParticle& spriteBase, const CrashSplashParticle& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const CrashSplashParticle& spriteBase, const CrashSplashParticle& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(CrashSplashParticle, frame);
     }
 
     void CompareSpriteDataExplosionFlare(
-        const ExplosionFlare& spriteBase, const ExplosionFlare& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const ExplosionFlare& spriteBase, const ExplosionFlare& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(ExplosionFlare, frame);
     }
 
     void CompareSpriteData(
-        const EntitySnapshot& spriteBase, const EntitySnapshot& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const EntitySnapshot& spriteBase, const EntitySnapshot& spriteCmp, GameStateSpriteChange& changeData) const
     {
         CompareSpriteDataCommon(spriteBase.base, spriteCmp.base, changeData);
         if (spriteBase.base.Type == spriteCmp.base.Type)
@@ -624,9 +621,9 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         }
     }
 
-    virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const override final
+    virtual GameStateCompareData Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const override final
     {
-        GameStateCompareData_t res;
+        GameStateCompareData res;
         res.tickLeft = base.tick;
         res.tickRight = cmp.tick;
         res.srand0Left = base.srand0;
@@ -637,7 +634,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
 
         for (uint32_t i = 0; i < static_cast<uint32_t>(spritesBase.size()); i++)
         {
-            GameStateSpriteChange_t changeData;
+            GameStateSpriteChange changeData;
             changeData.spriteIndex = i;
 
             const EntitySnapshot& spriteBase = spritesBase[i];
@@ -648,30 +645,30 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             if (spriteBase.base.Type == EntityType::Null && spriteCmp.base.Type != EntityType::Null)
             {
                 // Sprite was added.
-                changeData.changeType = GameStateSpriteChange_t::ADDED;
+                changeData.changeType = GameStateSpriteChange::ADDED;
                 changeData.entityType = spriteCmp.base.Type;
             }
             else if (spriteBase.base.Type != EntityType::Null && spriteCmp.base.Type == EntityType::Null)
             {
                 // Sprite was removed.
-                changeData.changeType = GameStateSpriteChange_t::REMOVED;
+                changeData.changeType = GameStateSpriteChange::REMOVED;
                 changeData.entityType = spriteBase.base.Type;
             }
             else if (spriteBase.base.Type == EntityType::Null && spriteCmp.base.Type == EntityType::Null)
             {
                 // Do nothing.
-                changeData.changeType = GameStateSpriteChange_t::EQUAL;
+                changeData.changeType = GameStateSpriteChange::EQUAL;
             }
             else
             {
                 CompareSpriteData(spriteBase, spriteCmp, changeData);
                 if (changeData.diffs.size() == 0)
                 {
-                    changeData.changeType = GameStateSpriteChange_t::EQUAL;
+                    changeData.changeType = GameStateSpriteChange::EQUAL;
                 }
                 else
                 {
-                    changeData.changeType = GameStateSpriteChange_t::MODIFIED;
+                    changeData.changeType = GameStateSpriteChange::MODIFIED;
                 }
             }
 
@@ -719,7 +716,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         return "Unknown";
     }
 
-    virtual std::string GetCompareDataText(const GameStateCompareData_t& cmpData) const override
+    virtual std::string GetCompareDataText(const GameStateCompareData& cmpData) const override
     {
         std::string outputBuffer;
         char tempBuffer[1024] = {};
@@ -740,22 +737,22 @@ struct GameStateSnapshots final : public IGameStateSnapshots
 
         for (auto& change : cmpData.spriteChanges)
         {
-            if (change.changeType == GameStateSpriteChange_t::EQUAL)
+            if (change.changeType == GameStateSpriteChange::EQUAL)
                 continue;
 
             const char* typeName = GetEntityTypeName(change.entityType);
 
-            if (change.changeType == GameStateSpriteChange_t::ADDED)
+            if (change.changeType == GameStateSpriteChange::ADDED)
             {
                 snprintf(tempBuffer, sizeof(tempBuffer), "Sprite added (%s), index: %u\n", typeName, change.spriteIndex);
                 outputBuffer += tempBuffer;
             }
-            else if (change.changeType == GameStateSpriteChange_t::REMOVED)
+            else if (change.changeType == GameStateSpriteChange::REMOVED)
             {
                 snprintf(tempBuffer, sizeof(tempBuffer), "Sprite removed (%s), index: %u\n", typeName, change.spriteIndex);
                 outputBuffer += tempBuffer;
             }
-            else if (change.changeType == GameStateSpriteChange_t::MODIFIED)
+            else if (change.changeType == GameStateSpriteChange::MODIFIED)
             {
                 snprintf(
                     tempBuffer, sizeof(tempBuffer), "Sprite modifications (%s), index: %u\n", typeName, change.spriteIndex);
@@ -774,7 +771,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         return outputBuffer;
     }
 
-    virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData_t& cmpData) const override
+    virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData& cmpData) const override
     {
         auto outputBuffer = GetCompareDataText(cmpData);
 

@@ -17,7 +17,7 @@
 #include <queue>
 #include <string>
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 struct TextInputSession;
 
 enum class ConsoleInput : uint8_t

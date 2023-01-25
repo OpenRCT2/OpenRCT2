@@ -92,7 +92,7 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
         {
             if (!LocationValid({ x, y }))
                 continue;
-            auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
+            auto result = MapBuyLandRightsForTile({ x, y }, isExecuting);
             if (result.Error == GameActions::Status::Ok)
             {
                 res.Cost += result.Cost;
@@ -106,18 +106,18 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
     return res;
 }
 
-GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
+GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY& loc, bool isExecuting) const
 {
     if (_setting >= LandBuyRightSetting::Count)
     {
-        log_warning("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
+        LOG_WARNING("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
         return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
     }
 
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
     if (surfaceElement == nullptr)
     {
-        log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
+        LOG_ERROR("Could not find surface. x = %d, y = %d", loc.x, loc.y);
         return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_NONE);
     }
 
@@ -167,7 +167,7 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
             return res;
 
         default:
-            log_warning("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
+            LOG_WARNING("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
             return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
     }
 }

@@ -60,7 +60,7 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, O
                 ? RCT2ToOpenRCT2LanguageId[EnumValue(rct2LanguageId)]
                 : static_cast<uint8_t>(LANGUAGE_UNDEFINED);
             std::string stringAsWin1252 = stream->ReadStdString();
-            auto stringAsUtf8 = rct2_to_utf8(stringAsWin1252, rct2LanguageId);
+            auto stringAsUtf8 = RCT2StringToUTF8(stringAsWin1252, rct2LanguageId);
 
             if (!StringIsBlank(stringAsUtf8.data()))
             {
@@ -108,7 +108,7 @@ void StringTable::ReadJson(json_t& root)
         {
             for (auto& [locale, jsonString] : jsonLanguages.items())
             {
-                auto langId = language_get_id_from_locale(locale.c_str());
+                auto langId = LanguageGetIDFromLocale(locale.c_str());
                 if (langId != LANGUAGE_UNDEFINED)
                 {
                     auto string = Json::GetString(jsonString);

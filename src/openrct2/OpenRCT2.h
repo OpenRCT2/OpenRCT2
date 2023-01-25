@@ -62,7 +62,7 @@ extern uint8_t gScreenFlags;
 extern uint32_t gScreenAge;
 extern PromptMode gSavePromptMode;
 
-void openrct2_write_full_version_info(utf8* buffer, size_t bufferSize);
-void openrct2_finish();
+void OpenRCT2WriteFullVersionInfo(utf8* buffer, size_t bufferSize);
+void OpenRCT2Finish();
 
-int32_t cmdline_run(const char** argv, int32_t argc);
+int32_t CmdlineRun(const char** argv, int32_t argc);

@@ -48,10 +48,10 @@ static constexpr SpritePrecision PrecisionFromNumFrames(uint8_t numRotationFrame
     if (numRotationFrames == 0)
         return SpritePrecision::None;
     else
-        return static_cast<SpritePrecision>(bitscanforward(numRotationFrames) + 1);
+        return static_cast<SpritePrecision>(UtilBitScanForward(numRotationFrames) + 1);
 }
 
-static void RideObjectUpdateRideType(rct_ride_entry& rideEntry)
+static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
 {
     for (auto i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
@@ -85,7 +85,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.ThirdCar = stream->ReadValue<uint8_t>();
 
     _legacyType.BuildMenuPriority = 0;
-    // Skip pad_019
+    // Skip Pad019
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
     for (auto& carEntry : _legacyType.Cars)
@@ -203,10 +203,10 @@ void RideObject::Load()
     _legacyType.obj = this;
 
     GetStringTable().Sort();
-    _legacyType.naming.Name = language_allocate_object_string(GetName());
-    _legacyType.naming.Description = language_allocate_object_string(GetDescription());
-    _legacyType.capacity = language_allocate_object_string(GetCapacity());
-    _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.naming.Name = LanguageAllocateObjectString(GetName());
+    _legacyType.naming.Description = LanguageAllocateObjectString(GetDescription());
+    _legacyType.capacity = LanguageAllocateObjectString(GetCapacity());
+    _legacyType.images_offset = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
     int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
@@ -272,10 +272,10 @@ void RideObject::Load()
 
 void RideObject::Unload()
 {
-    language_free_object_string(_legacyType.naming.Name);
-    language_free_object_string(_legacyType.naming.Description);
-    language_free_object_string(_legacyType.capacity);
-    gfx_object_free_images(_legacyType.images_offset, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.naming.Name);
+    LanguageFreeObjectString(_legacyType.naming.Description);
+    LanguageFreeObjectString(_legacyType.capacity);
+    GfxObjectFreeImages(_legacyType.images_offset, GetImageTable().GetCount());
 
     _legacyType.naming.Name = 0;
     _legacyType.naming.Description = 0;
@@ -283,7 +283,7 @@ void RideObject::Unload()
     _legacyType.images_offset = 0;
 }
 
-void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
+void RideObject::DrawPreview(DrawPixelInfo* dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
 {
     uint32_t imageId = _legacyType.images_offset;
 
@@ -295,7 +295,7 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
         imageId++;
     }
 
-    gfx_draw_sprite(dpi, ImageId(imageId), { 0, 0 });
+    GfxDrawSprite(dpi, ImageId(imageId), { 0, 0 });
 }
 
 std::string RideObject::GetDescription() const
@@ -561,6 +561,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "noCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
                 { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
                 { "riderControlsSpeed", RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED },
+                { "hideEmptyTrains", RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS },
             });
     }
 
@@ -774,7 +775,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             auto numRotationFrames = Json::GetNumber<uint8_t>(jRotationCount[SpriteGroupNames[i]], 0);
             if (numRotationFrames != 0)
             {
-                if (!is_power_of_2(numRotationFrames))
+                if (!IsPowerOf2(numRotationFrames))
                 {
                     context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
                     continue;
@@ -787,7 +788,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     return car;
 }
 
-vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
+VehicleColourPresetList RideObject::ReadJsonCarColours(json_t& jCarColours)
 {
     Guard::Assert(jCarColours.is_array(), "RideObject::ReadJsonCarColours expects parameter jCarColours to be array");
 
@@ -802,7 +803,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
         {
             // Read all colours from first config
             auto config = ReadJsonColourConfiguration(firstElement);
-            vehicle_colour_preset_list list = {};
+            VehicleColourPresetList list = {};
             list.count = 255;
             std::copy_n(config.data(), std::min<size_t>(numColours, 32), list.list);
             return list;
@@ -810,7 +811,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
     }
 
     // Read first colour for each config
-    vehicle_colour_preset_list list = {};
+    VehicleColourPresetList list = {};
     for (size_t index = 0; index < jCarColours.size(); index++)
     {
         auto config = ReadJsonColourConfiguration(jCarColours[index]);

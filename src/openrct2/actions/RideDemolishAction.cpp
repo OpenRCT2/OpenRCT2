@@ -57,10 +57,10 @@ void RideDemolishAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result RideDemolishAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
     }
 
@@ -101,10 +101,10 @@ GameActions::Result RideDemolishAction::Query() const
 
 GameActions::Result RideDemolishAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
     }
 
@@ -123,12 +123,12 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
 {
     money32 refundPrice = DemolishTracks();
 
-    ride_clear_for_construction(ride);
+    RideClearForConstruction(ride);
     ride.RemovePeeps();
     ride.StopGuestsQueuing();
 
     ride.ValidateStations();
-    ride_clear_leftover_entrances(ride);
+    RideClearLeftoverEntrances(ride);
 
     const auto rideId = ride.id;
     News::DisableNewsItems(News::ItemType::Ride, rideId.ToUnderlying());
@@ -157,10 +157,10 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
     // Close windows related to the demolished ride
-    window_close_by_number(WindowClass::RideConstruction, rideId.ToUnderlying());
-    window_close_by_number(WindowClass::Ride, rideId.ToUnderlying());
-    window_close_by_number(WindowClass::DemolishRidePrompt, rideId.ToUnderlying());
-    window_close_by_class(WindowClass::NewCampaign);
+    WindowCloseByNumber(WindowClass::RideConstruction, rideId.ToUnderlying());
+    WindowCloseByNumber(WindowClass::Ride, rideId.ToUnderlying());
+    WindowCloseByNumber(WindowClass::DemolishRidePrompt, rideId.ToUnderlying());
+    WindowCloseByClass(WindowClass::NewCampaign);
 
     // Refresh windows that display the ride name
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
@@ -168,8 +168,8 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
-    scrolling_text_invalidate();
-    gfx_invalidate_screen();
+    ScrollingTextInvalidate();
+    GfxInvalidateScreen();
 
     return res;
 }
@@ -284,7 +284,7 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride& ride) const
         res.Position = { location, TileElementHeight(location) };
     }
 
-    window_close_by_number(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());
+    WindowCloseByNumber(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());
 
     return res;
 }
@@ -296,5 +296,5 @@ money32 RideDemolishAction::GetRefurbishPrice(const Ride& ride) const
 
 money32 RideDemolishAction::GetRefundPrice(const Ride& ride) const
 {
-    return ride_get_refund_price(ride);
+    return RideGetRefundPrice(ride);
 }

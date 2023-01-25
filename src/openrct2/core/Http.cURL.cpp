@@ -29,7 +29,7 @@
 
 namespace Http
 {
-    static size_t writeData(const char* src, size_t size, size_t nmemb, void* userdata)
+    static size_t WriteData(const char* src, size_t size, size_t nmemb, void* userdata)
     {
         size_t realsize = size * nmemb;
         Response* res = static_cast<Response*>(userdata);
@@ -38,7 +38,7 @@ namespace Http
         return realsize;
     }
 
-    static size_t header_callback(const char* src, size_t size, size_t nitems, void* userdata)
+    static size_t HeaderCallback(const char* src, size_t size, size_t nitems, void* userdata)
     {
         size_t realsize = nitems * size;
         Response* res = static_cast<Response*>(userdata);
@@ -62,7 +62,7 @@ namespace Http
         size_t sizeleft;
     };
 
-    static size_t read_callback(void* dst, size_t size, size_t nmemb, void* userp)
+    static size_t ReadCallback(void* dst, size_t size, size_t nmemb, void* userp)
     {
         WriteThis* wt = static_cast<WriteThis*>(userp);
         size_t buffer_size = size * nmemb;
@@ -98,7 +98,7 @@ namespace Http
             wt.readptr = req.body.c_str();
             wt.sizeleft = req.body.size();
 
-            curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
+            curl_easy_setopt(curl, CURLOPT_READFUNCTION, ReadCallback);
             curl_easy_setopt(curl, CURLOPT_READDATA, &wt);
             curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, static_cast<long>(wt.sizeleft));
         }
@@ -114,9 +114,9 @@ namespace Http
 
         curl_easy_setopt(curl, CURLOPT_URL, req.url.c_str());
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteData);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, static_cast<void*>(&res));
-        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, header_callback);
+        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, HeaderCallback);
         curl_easy_setopt(curl, CURLOPT_HEADERDATA, static_cast<void*>(&res));
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);

@@ -50,7 +50,7 @@ GameActions::Result SignSetStyleAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_error("Invalid banner id. id = ", _bannerIndex);
+        LOG_ERROR("Invalid banner id. id = ", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -59,12 +59,12 @@ GameActions::Result SignSetStyleAction::Query() const
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
         if (tileElement == nullptr)
         {
-            log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
         if (tileElement->GetType() != TileElementType::LargeScenery)
         {
-            log_warning("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
+            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
@@ -74,7 +74,7 @@ GameActions::Result SignSetStyleAction::Query() const
 
         if (wallElement == nullptr)
         {
-            log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
@@ -87,7 +87,7 @@ GameActions::Result SignSetStyleAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_error("Invalid banner id. id = ", _bannerIndex);
+        LOG_ERROR("Invalid banner id. id = ", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -113,7 +113,7 @@ GameActions::Result SignSetStyleAction::Execute() const
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-    intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
+    intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
     ContextBroadcastIntent(&intent);
 
     return GameActions::Result();

@@ -70,7 +70,7 @@ void TileElement::SetBannerIndex(BannerIndex bannerIndex)
             AsBanner()->SetIndex(bannerIndex);
             break;
         default:
-            log_error("Tried to set banner index on unsuitable tile element!");
+            LOG_ERROR("Tried to set banner index on unsuitable tile element!");
             Guard::Assert(false);
     }
 }
@@ -81,7 +81,7 @@ void TileElement::RemoveBannerEntry()
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
-        window_close_by_number(WindowClass::Banner, bannerIndex.ToUnderlying());
+        WindowCloseByNumber(WindowClass::Banner, bannerIndex.ToUnderlying());
         DeleteBanner(banner->id);
     }
 }
@@ -103,14 +103,14 @@ RideId TileElement::GetRideIndex() const
 
 void TileElement::ClearAs(TileElementType newType)
 {
-    type = 0;
+    Type = 0;
     SetType(newType);
     Flags = 0;
-    base_height = MINIMUM_LAND_HEIGHT;
-    clearance_height = MINIMUM_LAND_HEIGHT;
-    owner = 0;
-    std::fill_n(pad_05, sizeof(pad_05), 0x00);
-    std::fill_n(pad_08, sizeof(pad_08), 0x00);
+    BaseHeight = MINIMUM_LAND_HEIGHT;
+    ClearanceHeight = MINIMUM_LAND_HEIGHT;
+    Owner = 0;
+    std::fill_n(Pad05, sizeof(Pad05), 0x00);
+    std::fill_n(Pad08, sizeof(Pad08), 0x00);
 }
 
 // Rotate both of the values amount
@@ -151,7 +151,7 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
             return QuarterTile{ static_cast<uint8_t>(rotVal1 | rotVal2) };
         }
         default:
-            log_error("Tried to rotate QuarterTile invalid amount.");
+            LOG_ERROR("Tried to rotate QuarterTile invalid amount.");
             return QuarterTile{ 0 };
     }
 }

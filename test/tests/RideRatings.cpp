@@ -31,7 +31,7 @@ protected:
     {
         for (const auto& ride : GetRideManager())
         {
-            ride_ratings_update_ride(ride);
+            RideRatingsUpdateRide(ride);
         }
     }
 
@@ -69,7 +69,7 @@ TEST_F(RideRatings, all)
     GetContext()->LoadParkFromFile(path);
 
     // Check ride count to check load was successful
-    ASSERT_EQ(ride_get_count(), 134);
+    ASSERT_EQ(RideGetCount(), 134);
 
     CalculateRatingsForAllRides();
 

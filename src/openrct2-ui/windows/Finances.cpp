@@ -318,7 +318,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -356,7 +356,7 @@ public:
         return {};
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         if (page != WINDOW_FINANCES_PAGE_SUMMARY)
             return;
@@ -371,7 +371,7 @@ public:
         {
             // Darken every even row
             if (i % 2 == 0)
-                gfx_fill_rect(
+                GfxFillRect(
                     &dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 },
                       screenCoords + ScreenCoordsXY{ row_width, (TABLE_CELL_HEIGHT - 2) } },
@@ -425,7 +425,7 @@ public:
             DrawTextBasic(
                 &dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
 
-            gfx_fill_rect(
+            GfxFillRect(
                 &dpi,
                 { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
                 PALETTE_INDEX_10);
@@ -461,8 +461,8 @@ public:
             width = WW_OTHER_TABS;
             height = WH_OTHER_TABS;
         }
-        window_event_resize_call(this);
-        window_event_invalidate_call(this);
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
 
         WindowInitScrollWidgets(*this);
 
@@ -481,16 +481,29 @@ public:
         {
             case WIDX_LOAN_INCREASE:
             {
+                // If loan can be increased, do so.
+                // If not, action shows error message.
                 auto newLoan = gBankLoan + 1000.00_GBP;
+                if (gBankLoan < gMaxBankLoan)
+                {
+                    newLoan = std::min(gMaxBankLoan, newLoan);
+                }
                 auto gameAction = ParkSetLoanAction(newLoan);
                 GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_LOAN_DECREASE:
             {
-                if (gBankLoan > 0)
+                // If loan is positive, decrease it.
+                // If loan is negative, action shows error message.
+                // If loan is exactly 0, prevent error message.
+                if (gBankLoan != 0)
                 {
                     auto newLoan = gBankLoan - 1000.00_GBP;
+                    if (gBankLoan > 0)
+                    {
+                        newLoan = std::max(static_cast<money64>(0LL), newLoan);
+                    }
                     auto gameAction = ParkSetLoanAction(newLoan);
                     GameActions::Execute(&gameAction);
                 }
@@ -513,7 +526,7 @@ public:
             InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
     }
 
-    void OnDrawSummary(rct_drawpixelinfo& dpi)
+    void OnDrawSummary(DrawPixelInfo& dpi)
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 8, 51 };
 
@@ -528,7 +541,7 @@ public:
         {
             // Darken every even row
             if (i % 2 == 0)
-                gfx_fill_rect(
+                GfxFillRect(
                     &dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
                     ColourMapA[colours[1]].lighter | 0x1000000);
@@ -538,7 +551,7 @@ public:
         }
 
         // Horizontal rule below expenditure / income table
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
@@ -557,7 +570,7 @@ public:
         // Objective related financial information
         if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
         {
-            auto lastMonthProfit = finance_get_last_month_shop_profit();
+            auto lastMonthProfit = FinanceGetLastMonthShopProfit();
             ft = Formatter();
             ft.Add<money64>(lastMonthProfit);
             DrawTextBasic(
@@ -585,7 +598,7 @@ public:
 
 #pragma region Financial Graph Events
 
-    void OnDrawFinancialGraph(rct_drawpixelinfo& dpi)
+    void OnDrawFinancialGraph(DrawPixelInfo& dpi)
     {
         Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
@@ -603,7 +616,7 @@ public:
             ft);
 
         // Graph
-        gfx_fill_rect_inset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -633,7 +646,7 @@ public:
             DrawTextBasic(
                 &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
@@ -648,7 +661,7 @@ public:
 
 #pragma region Park Value Graph Events
 
-    void OnDrawParkValueGraph(rct_drawpixelinfo& dpi)
+    void OnDrawParkValueGraph(DrawPixelInfo& dpi)
     {
         Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
@@ -660,7 +673,7 @@ public:
         DrawTextBasic(&dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
         // Graph
-        gfx_fill_rect_inset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -690,7 +703,7 @@ public:
             DrawTextBasic(
                 &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
@@ -705,7 +718,7 @@ public:
 
 #pragma region Profit Graph Events
 
-    void OnDrawProfitGraph(rct_drawpixelinfo& dpi)
+    void OnDrawProfitGraph(DrawPixelInfo& dpi)
     {
         Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
@@ -719,7 +732,7 @@ public:
             gCurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
 
         // Graph
-        gfx_fill_rect_inset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -749,7 +762,7 @@ public:
             DrawTextBasic(
                 &dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
+            GfxFillRectInset(
                 &dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 39;
@@ -787,8 +800,8 @@ public:
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
             auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
-            auto marketingCampaign = marketing_get_campaign(i);
-            if (marketingCampaign == nullptr && marketing_is_campaign_type_applicable(i))
+            auto marketingCampaign = MarketingGetCampaign(i);
+            if (marketingCampaign == nullptr && MarketingIsCampaignTypeApplicable(i))
             {
                 campaignButton->type = WindowWidgetType::Button;
                 campaignButton->top = y;
@@ -802,13 +815,13 @@ public:
         }
     }
 
-    void OnDrawMarketing(rct_drawpixelinfo& dpi)
+    void OnDrawMarketing(DrawPixelInfo& dpi)
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 8, 62 };
         int32_t noCampaignsActive = 1;
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
-            auto marketingCampaign = marketing_get_campaign(i);
+            auto marketingCampaign = MarketingGetCampaign(i);
             if (marketingCampaign == nullptr)
                 continue;
 
@@ -821,7 +834,7 @@ public:
                 case ADVERTISING_CAMPAIGN_RIDE_FREE:
                 case ADVERTISING_CAMPAIGN_RIDE:
                 {
-                    auto campaignRide = get_ride(marketingCampaign->RideId);
+                    auto campaignRide = GetRide(marketingCampaign->RideId);
                     if (campaignRide != nullptr)
                     {
                         campaignRide->FormatNameTo(ft);
@@ -971,7 +984,7 @@ public:
         }
     }
 
-    void OnDrawResearch(rct_drawpixelinfo& dpi)
+    void OnDrawResearch(DrawPixelInfo& dpi)
     {
         WindowResearchFundingPagePaint(this, &dpi, WIDX_RESEARCH_FUNDING);
     }
@@ -986,7 +999,7 @@ public:
         WidgetScrollUpdateThumbs(*this, widgetIndex);
     }
 
-    void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabPage, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
@@ -998,12 +1011,12 @@ public:
                 spriteIndex += (frame % _windowFinancesTabAnimationFrames[this->page]);
             }
 
-            gfx_draw_sprite(
+            GfxDrawSprite(
                 &dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_SUMMARY, SPR_TAB_FINANCES_SUMMARY_0);
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH, SPR_TAB_FINANCES_FINANCIAL_GRAPH_0);
@@ -1024,17 +1037,17 @@ static FinancesWindow* FinancesWindowOpen(uint8_t page)
     return window;
 }
 
-rct_window* WindowFinancesOpen()
+WindowBase* WindowFinancesOpen()
 {
     return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 }
 
-rct_window* WindowFinancesResearchOpen()
+WindowBase* WindowFinancesResearchOpen()
 {
     return FinancesWindowOpen(WINDOW_FINANCES_PAGE_RESEARCH);
 }
 
-rct_window* WindowFinancesMarketingOpen()
+WindowBase* WindowFinancesMarketingOpen()
 {
     return FinancesWindowOpen(WINDOW_FINANCES_PAGE_MARKETING);
 }

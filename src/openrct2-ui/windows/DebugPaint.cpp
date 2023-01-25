@@ -55,7 +55,7 @@ public:
         widgets = window_debug_paint_widgets;
 
         InitScrollWidgets();
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         colours[0] = TRANSLUCENT(COLOUR_BLACK);
         colours[1] = COLOUR_GREY;
@@ -69,27 +69,27 @@ public:
         {
             case WIDX_TOGGLE_SHOW_WIDE_PATHS:
                 gPaintWidePathsAsGhost = !gPaintWidePathsAsGhost;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
 
             case WIDX_TOGGLE_SHOW_BLOCKED_TILES:
                 gPaintBlockedTiles = !gPaintBlockedTiles;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
 
             case WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS:
                 gShowSupportSegmentHeights = !gShowSupportSegmentHeights;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
 
             case WIDX_TOGGLE_SHOW_BOUND_BOXES:
                 gPaintBoundingBoxes = !gPaintBoundingBoxes;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
 
             case WIDX_TOGGLE_SHOW_DIRTY_VISUALS:
                 gShowDirtyVisuals = !gShowDirtyVisuals;
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
         }
     }
@@ -110,7 +110,7 @@ public:
                 const auto& stringIdx = widgets[widgetIndex].text;
                 auto string = ls.GetString(stringIdx);
                 Guard::ArgumentNotNull(string);
-                const auto strWidth = gfx_get_string_width(string, FontStyle::Medium);
+                const auto strWidth = GfxGetStringWidth(string, FontStyle::Medium);
                 newWidth = std::max<int16_t>(strWidth, newWidth);
             }
 
@@ -137,13 +137,13 @@ public:
         WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
 };
 
-rct_window* WindowDebugPaintOpen()
+WindowBase* WindowDebugPaintOpen()
 {
     auto* window = WindowFocusOrCreate<DebugPaintWindow>(
         WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,

@@ -48,7 +48,7 @@ public:
         widgets = window_water_widgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         gLandToolSize = 1;
         gWaterToolRaiseCost = MONEY64_UNDEFINED;
@@ -60,7 +60,7 @@ public:
         // If the tool wasn't changed, turn tool off
         if (WaterToolIsActive())
         {
-            tool_cancel();
+            ToolCancel();
         }
     }
 
@@ -138,7 +138,7 @@ public:
         widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = ScreenCoordsXY{ windowPos.x + window_water_widgets[WIDX_PREVIEW].midX(),
                                             windowPos.y + window_water_widgets[WIDX_PREVIEW].midY() };
@@ -185,7 +185,7 @@ private:
     }
 };
 
-rct_window* WindowWaterOpen()
+WindowBase* WindowWaterOpen()
 {
     return WindowFocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

@@ -43,22 +43,22 @@ void Painter::Paint(IDrawingEngine& de)
     auto dpi = de.GetDrawingPixelInfo();
     if (gIntroState != IntroState::None)
     {
-        intro_draw(dpi);
+        IntroDraw(dpi);
     }
     else
     {
         de.PaintWindows();
 
-        update_palette_effects();
+        UpdatePaletteEffects();
         _uiContext->Draw(dpi);
 
-        if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !title_should_hide_version_info())
+        if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !TitleShouldHideVersionInfo())
         {
             DrawOpenRCT2(dpi, { 0, _uiContext->GetHeight() - 20 });
         }
 
-        gfx_draw_pickedup_peep(dpi);
-        gfx_invalidate_pickedup_peep();
+        GfxDrawPickedUpPeep(dpi);
+        GfxInvalidatePickedUpPeep();
 
         de.PaintWeather();
     }
@@ -83,24 +83,24 @@ void Painter::Paint(IDrawingEngine& de)
     gCurrentDrawCount++;
 }
 
-void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
+void Painter::PaintReplayNotice(DrawPixelInfo* dpi, const char* text)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
     char buffer[64]{};
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{RED}{STRING}", text);
 
-    auto stringWidth = gfx_get_string_width(buffer, FontStyle::Medium);
+    auto stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((gCurrentTicks >> 1) & 0xF) > 4)
-        gfx_draw_string(dpi, screenCoords, buffer, { COLOUR_SATURATED_RED });
+        GfxDrawString(dpi, screenCoords, buffer, { COLOUR_SATURATED_RED });
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
+    GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
 }
 
-void Painter::PaintFPS(rct_drawpixelinfo* dpi)
+void Painter::PaintFPS(DrawPixelInfo* dpi)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
 
@@ -110,12 +110,12 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
 
     // Draw Text
-    int32_t stringWidth = gfx_get_string_width(buffer, FontStyle::Medium);
+    int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
     screenCoords.x = screenCoords.x - (stringWidth / 2);
-    gfx_draw_string(dpi, screenCoords, buffer);
+    GfxDrawString(dpi, screenCoords, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi->lastStringPos.x + 16, 16 } });
+    GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi->lastStringPos.x + 16, 16 } });
 }
 
 void Painter::MeasureFPS()
@@ -131,7 +131,7 @@ void Painter::MeasureFPS()
     _lastSecond = currentTime;
 }
 
-PaintSession* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags)
+PaintSession* Painter::CreateSession(DrawPixelInfo* dpi, uint32_t viewFlags)
 {
     PROFILED_FUNCTION();
 
