@@ -21,6 +21,7 @@
 #include <openrct2/management/Research.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectList.h>
+#include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/LargeScenery.h>
@@ -37,9 +38,6 @@ constexpr int32_t TabWidth = 31;
 constexpr int32_t MaxTabs = 32;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
-
-static u8string _filter;
-std::vector<ScenerySelection> _filteredScenery;
 
 enum WindowSceneryListWidgetIdx
 {
@@ -131,21 +129,21 @@ private:
             return ::GetSceneryGroupEntry(SceneryGroupIndex);
         }
     };
-
+    
     std::vector<SceneryTabInfo> _tabEntries;
     std::vector<Widget> _widgets;
     int32_t _requiredWidth;
     ScenerySelection _selectedScenery;
     int16_t _hoverCounter;
+    u8string _filter;
+    std::vector<ScenerySelection> _filteredScenery;
 
 public:
     void OnOpen() override
     {
         Init();
 
-        _filter.resize(MAX_PATH);
         _filter.clear();
-        widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
 
         InitScrollWidgets();
         ContentUpdateScroll();
@@ -541,6 +539,7 @@ public:
             }
         }
         widgets[WIDX_SCENERY_TITLE].text = titleStringId;
+        widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
 
         pressed_widgets = 0;
         pressed_widgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
@@ -1062,31 +1061,9 @@ private:
         if (empty || length == 0)
             return true;
 
-        const SceneryEntryBase* sceneryEntry = nullptr;
-        switch (selection.SceneryType)
-        {
-            case SCENERY_TYPE_BANNER:
-                sceneryEntry = GetBannerEntry(selection.EntryIndex);
-                break;
-            case SCENERY_TYPE_LARGE:
-                sceneryEntry = GetLargeSceneryEntry(selection.EntryIndex);
-                break;
-            case SCENERY_TYPE_PATH_ITEM:
-                sceneryEntry = GetFootpathItemEntry(selection.EntryIndex);
-                break;
-            case SCENERY_TYPE_SMALL:
-                sceneryEntry = GetSmallSceneryEntry(selection.EntryIndex);
-                break;
-            case SCENERY_TYPE_WALL:
-                sceneryEntry = GetWallEntry(selection.EntryIndex);
-                break;
-        }
-
-        if (sceneryEntry == nullptr)
-            return false;
-
-        return IsFilterInName(*sceneryEntry) || IsFilterInIdentifier(*sceneryEntry) || IsFilterInAuthors(*sceneryEntry)
-            || IsFilterInFilename(*sceneryEntry);
+        auto& objManager = GetContext()->GetObjectManager();
+        const Object* sceneryObject = objManager.GetLoadedObject();
+        return true;
     }
 
     bool IsFilterInName(const SceneryEntryBase& sceneryEntry)

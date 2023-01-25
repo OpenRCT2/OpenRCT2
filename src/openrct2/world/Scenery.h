@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../object/SceneryObject.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
 #include "TileElement.h"
@@ -29,8 +28,6 @@ struct SceneryEntryBase
 {
     StringId name;
     uint32_t image;
-    SceneryObject* obj;
-    ObjectEntryIndex scenery_tab_id;
 };
 
 struct LargeSceneryTile
@@ -84,6 +81,7 @@ struct LargeSceneryEntry : SceneryEntryBase
     money32 price;
     money32 removal_price;
     LargeSceneryTile* tiles;
+    ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
     LargeSceneryText* text;
     uint32_t text_image;
@@ -132,6 +130,7 @@ struct SmallSceneryEntry : SceneryEntryBase
     uint16_t animation_delay;
     uint16_t animation_mask;
     uint16_t num_frames;
+    ObjectEntryIndex scenery_tab_id;
 
     constexpr bool HasFlag(const uint32_t _flags) const
     {
@@ -146,6 +145,7 @@ struct WallSceneryEntry : SceneryEntryBase
     uint8_t height;
     uint8_t flags2;
     money16 price;
+    ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
 };
 enum class PathBitDrawType : uint8_t;
@@ -156,6 +156,7 @@ struct PathBitEntry : SceneryEntryBase
     PathBitDrawType draw_type;
     CursorID tool_id;
     money16 price;
+    ObjectEntryIndex scenery_tab_id;
 };
 
 struct BannerSceneryEntry : SceneryEntryBase
@@ -163,6 +164,7 @@ struct BannerSceneryEntry : SceneryEntryBase
     uint8_t scrolling_mode;
     uint8_t flags;
     int16_t price;
+    ObjectEntryIndex scenery_tab_id;
 };
 
 #pragma pack(pop)
