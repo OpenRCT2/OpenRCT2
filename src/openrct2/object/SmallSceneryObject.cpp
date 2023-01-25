@@ -73,6 +73,8 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 
 void SmallSceneryObject::Load()
 {
+    _legacyType.obj = this;
+
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
     _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
