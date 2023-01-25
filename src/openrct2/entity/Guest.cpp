@@ -4522,17 +4522,17 @@ void Guest::UpdateRideApproachExitWaypoints()
 
         const CarEntry& carEntry = rideEntry->Cars[vehicle->vehicle_type];
 
-        const size_t fours = Var37 / 4;
-        if (fours >= carEntry.peep_loading_waypoints.size())
+        const size_t carPosition = Var37 / 4;
+        if (carPosition >= carEntry.peep_loading_waypoints.size())
             return;
 
-        const auto remainder = Var37 & 3;
-        Guard::Assert(remainder < 3);
+        const auto waypoint = Var37 & 3;
+        Guard::Assert(waypoint < 3);
 
         const auto& rtd = ride->GetRideTypeDescriptor();
 
         CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
-        targetLoc += carEntry.peep_loading_waypoints[fours][remainder];
+        targetLoc += carEntry.peep_loading_waypoints[carPosition][waypoint];
         SetDestination(targetLoc);
         return;
     }
