@@ -37,7 +37,8 @@ private:
 
     const KeyRange<KeyType>* _keyRange;
 
-    std::vector<std::pair<KeyType, ValueType>> _keyValues;
+    std::vector<KeyType> _keys;
+    std::vector<ValueType> _values;
 };
 
 template<class KeyType, class ValueType>
@@ -79,7 +80,8 @@ void TreeContainer<KeyType, ValueType>::Add(const std::vector<uint32_t>& locatio
 template<class KeyType, class ValueType>
 void TreeContainer<KeyType, ValueType>::Add(const KeyType& location, const ValueType& value)
 {
-    _keyValues.push_back(std::pair<KeyType, ValueType>(location, value));
+    _keys.push_back(location);
+    _values.push_back(value);
 }
 
 template<class KeyType, class ValueType>
@@ -96,15 +98,12 @@ template<class KeyType, class ValueType> void TreeContainer<KeyType, ValueType>:
 
 template<class KeyType, class ValueType> void TreeContainer<KeyType, ValueType>::Build()
 {
-    std::vector<KeyType> keys;
-    for (const auto& keyValue : _keyValues)
-        keys.push_back(keyValue.first);
+    _keyGenerator.Initialize(_keys, *_keyRange);
 
-    _keyGenerator.Initialize(keys, *_keyRange);
-    for (const auto& keyValue : _keyValues)
+    for (size_t index = 0; index < _keys.size(); index++)
     {
-        const auto& key = keyValue.first;
-        const auto& value = keyValue.second;
+        const auto& key = _keys[index];
+        const auto& value = _values[index];
 
         auto keysGenerated = _keyGenerator.GenerateKeys(key);
         for (const auto& aKey : keysGenerated)
@@ -115,5 +114,6 @@ template<class KeyType, class ValueType> void TreeContainer<KeyType, ValueType>:
     }
 
     //clear the keyvalues as we don't need them anymore
-    _keyValues.clear();
+    _keys.clear();
+    _values.clear();
 }
