@@ -14,6 +14,7 @@
 - Improved: [#19044] Added special thanks to RMC and Wiegand to the About page.
 - Change: [#19018] Renamed actions to fit the naming scheme.
 - Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
+- Change: [#19233] Reduce lift speed minimum and maximum values for “Classic Wooden Coaster”.
 - Fix: [#474] Mini golf window shows more players than there actually are (original bug).
 - Fix: [#18467] “Selected only” Object Selection filter is active in Track Designs Manager, and cannot be toggled.
 - Fix: [#18905] Ride Construction window theme is not applied correctly.
