@@ -15,79 +15,20 @@
 #include "../util/Util.h"
 #include "ImageTable.h"
 #include "ObjectAsset.h"
+#include "ObjectType.h"
 #include "StringTable.h"
 
-#include <array>
-#include <limits>
 #include <memory>
 #include <optional>
 #include <string_view>
 #include <vector>
 
-using ObjectEntryIndex = uint16_t;
-constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 struct ObjectRepositoryItem;
 using ride_type_t = uint16_t;
 
 constexpr const size_t VersionNumFields = 3;
 using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
 static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
-
-// First 0xF of RCTObjectEntry->flags
-enum class ObjectType : uint8_t
-{
-    Ride,
-    SmallScenery,
-    LargeScenery,
-    Walls,
-    Banners,
-    Paths,
-    PathBits,
-    SceneryGroup,
-    ParkEntrance,
-    Water,
-    ScenarioText,
-    TerrainSurface,
-    TerrainEdge,
-    Station,
-    Music,
-    FootpathSurface,
-    FootpathRailings,
-    Audio,
-
-    Count,
-    None = 255
-};
-
-constexpr std::array ObjectTypes = {
-    ObjectType::Ride,
-    ObjectType::SmallScenery,
-    ObjectType::LargeScenery,
-    ObjectType::Walls,
-    ObjectType::Banners,
-    ObjectType::Paths,
-    ObjectType::PathBits,
-    ObjectType::SceneryGroup,
-    ObjectType::ParkEntrance,
-    ObjectType::Water,
-    ObjectType::ScenarioText,
-    ObjectType::TerrainSurface,
-    ObjectType::TerrainEdge,
-    ObjectType::Station,
-    ObjectType::Music,
-    ObjectType::FootpathSurface,
-    ObjectType::FootpathRailings,
-    ObjectType::Audio,
-};
-static_assert(ObjectTypes.size() == EnumValue(ObjectType::Count));
-
-// Object types that can be saved in a park file.
-constexpr std::array<ObjectType, 16> TransientObjectTypes = {
-    ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
-    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathBits,        ObjectType::SceneryGroup,
-    ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
-    ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
-};
 
 namespace ObjectSelectionFlags
 {

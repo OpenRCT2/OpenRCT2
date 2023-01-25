@@ -10,8 +10,7 @@
 #pragma once
 
 #include "../common.h"
-
-using ObjectEntryIndex = uint16_t;
+#include "ObjectType.h"
 
 enum
 {

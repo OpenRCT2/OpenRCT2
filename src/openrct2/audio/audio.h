@@ -15,6 +15,7 @@
 #include "AudioMixer.h"
 
 #include <memory>
+#include <string_view>
 #include <vector>
 
 class AudioObject;

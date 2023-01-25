@@ -11,8 +11,7 @@
 
 #include "../common.h"
 #include "../interface/Cursors.h"
-
-using ObjectEntryIndex = uint16_t;
+#include "ObjectType.h"
 
 enum SMALL_SCENERY_FLAGS : uint32_t
 {
