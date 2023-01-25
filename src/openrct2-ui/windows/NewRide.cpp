@@ -46,7 +46,6 @@ static constexpr const int32_t WindowWidth = 601;
 static constexpr const int32_t RideListItemsMax = 384;
 static constexpr const int32_t RideTabCount = 6;
 static constexpr const int32_t GroupByTrackTypeWidth = 172;
-static std::string _filter;
 
 #pragma region Ride type view order
 
@@ -270,6 +269,7 @@ class NewRideWindow final : public Window
 private:
     static NewRideTabId _currentTab;
     static uint_fast16_t _windowNewRideTabScroll[RideTabCount];
+    u8string _filter;
     u8string _vehicleAvailability{};
     RideSelection _lastTrackDesignCountRideType{};
     int32_t _lastTrackDesignCount{};
@@ -291,9 +291,6 @@ public:
         widgets = window_new_ride_widgets;
         PopulateRideList();
         InitScrollWidgets();
-
-        _filter.resize(MAX_PATH);
-        widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
         _filter.clear();
 
         frame_no = 0;
@@ -393,6 +390,8 @@ public:
 
         widgets[WIDX_TITLE].text = RideTitles[_currentTab];
         widgets[WIDX_TAB_7].type = WindowWidgetType::Tab;
+        widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
+
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             widgets[WIDX_TAB_7].type = WindowWidgetType::Empty;
 
