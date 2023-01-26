@@ -304,6 +304,7 @@
     <ClInclude Include="object\FootpathRailingsObject.h" />
     <ClInclude Include="object\FootpathSurfaceObject.h" />
     <ClInclude Include="object\ImageTable.h" />
+    <ClInclude Include="object\LargeSceneryEntry.h" />
     <ClInclude Include="object\LargeSceneryObject.h" />
     <ClInclude Include="object\MusicObject.h" />
     <ClInclude Include="object\Object.h" />

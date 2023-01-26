@@ -22,6 +22,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/FootpathItemEntry.h>
+#include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>

@@ -11,6 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
+#include "../object/LargeSceneryEntry.h"
 #include "../world/Scenery.h"
 
 LargeScenerySetColourAction::LargeScenerySetColourAction(

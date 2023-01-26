@@ -11,11 +11,13 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
+#include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
 #include "../ride/RideConstruction.h"
 #include "../world/Banner.h"
 #include "../world/ConstructionClearance.h"
+#include "../world/LargeScenery.h"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 

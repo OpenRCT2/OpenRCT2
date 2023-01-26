@@ -33,6 +33,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/FootpathItemEntry.h>
+#include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/ride/Ride.h>

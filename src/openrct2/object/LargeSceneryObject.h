@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../world/Scenery.h"
+#include "LargeSceneryEntry.h"
 #include "SceneryObject.h"
 
 #include <memory>
