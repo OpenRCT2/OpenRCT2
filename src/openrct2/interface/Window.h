@@ -11,6 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../common.h"
+#include "../drawing/ImageId.hpp"
 #include "../localisation/Formatter.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"

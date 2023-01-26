@@ -19,15 +19,6 @@
 #define SCENERY_WITHER_AGE_THRESHOLD_1 0x28
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
 
-struct SceneryGroupEntry
-{
-    StringId name;
-    uint32_t image;
-    std::vector<ScenerySelection> SceneryEntries;
-    uint8_t priority;
-    uint32_t entertainer_costumes;
-};
-
 enum
 {
     SCENERY_TYPE_SMALL,
@@ -85,6 +76,7 @@ void ScenerySetDefaultPlacementConfiguration();
 void SceneryRemoveGhostToolPlacement();
 
 struct WallSceneryEntry;
+struct SceneryGroupEntry;
 
 WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex);
 BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex);

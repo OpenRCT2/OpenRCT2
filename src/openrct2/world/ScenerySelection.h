@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../object/Object.h"
+#include "../object/ObjectTypes.h"
 
 #include <cstdint>
 #include <limits>

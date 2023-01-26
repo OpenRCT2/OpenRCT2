@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../world/Scenery.h"
 #include "Object.h"
+#include "SceneryGroupEntry.h"
 
 #include <vector>
 
