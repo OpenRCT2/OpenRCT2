@@ -298,6 +298,7 @@
     <ClInclude Include="object\BannerSceneryEntry.h" />
     <ClInclude Include="object\DefaultObjects.h" />
     <ClInclude Include="object\EntranceObject.h" />
+    <ClInclude Include="object\FootpathEntry.h" />
     <ClInclude Include="object\FootpathItemEntry.h" />
     <ClInclude Include="object\FootpathItemObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
