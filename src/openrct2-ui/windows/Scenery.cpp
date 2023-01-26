@@ -23,10 +23,10 @@
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/ObjectList.h>
-#include <openrct2/object/SmallSceneryEntry.h>
-#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/SmallSceneryEntry.h>
+#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Park.h>
