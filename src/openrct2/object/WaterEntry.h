@@ -16,7 +16,6 @@ enum
     WATER_FLAGS_ALLOW_DUCKS = (1 << 0)
 };
 
-#pragma pack(push, 1)
 struct WaterObjectEntry
 {
     StringId string_idx;      // 0x00
@@ -25,5 +24,3 @@ struct WaterObjectEntry
     uint32_t palette_index_2; // 0x0A
     uint16_t flags;           // 0x0E
 };
-assert_struct_size(WaterObjectEntry, 16);
-#pragma pack(pop)

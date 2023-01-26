@@ -41,6 +41,7 @@
 #include "network/network.h"
 #include "object/Object.h"
 #include "object/ObjectList.h"
+#include "object/WaterEntry.h"
 #include "platform/Platform.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
@@ -65,7 +66,6 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 #include "world/Surface.h"
-#include "world/Water.h"
 
 #include <algorithm>
 #include <cstdio>

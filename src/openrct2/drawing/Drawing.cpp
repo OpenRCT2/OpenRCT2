@@ -16,12 +16,12 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
+#include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
-#include "../world/Water.h"
 #include "LightFX.h"
 
 #include <cstring>

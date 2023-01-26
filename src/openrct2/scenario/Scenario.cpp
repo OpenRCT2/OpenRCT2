@@ -38,6 +38,7 @@
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
@@ -52,7 +53,6 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Water.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
