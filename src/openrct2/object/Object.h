@@ -15,7 +15,7 @@
 #include "../util/Util.h"
 #include "ImageTable.h"
 #include "ObjectAsset.h"
-#include "ObjectType.h"
+#include "ObjectTypes.h"
 #include "StringTable.h"
 
 #include <memory>

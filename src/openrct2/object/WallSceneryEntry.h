@@ -11,7 +11,7 @@
 
 #include "../common.h"
 #include "../interface/Cursors.h"
-#include "ObjectType.h"
+#include "ObjectTypes.h"
 
 enum WALL_SCENERY_FLAGS
 {

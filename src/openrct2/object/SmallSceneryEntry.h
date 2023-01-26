@@ -11,7 +11,7 @@
 
 #include "../common.h"
 #include "../interface/Cursors.h"
-#include "ObjectType.h"
+#include "ObjectTypes.h"
 
 enum SMALL_SCENERY_FLAGS : uint32_t
 {

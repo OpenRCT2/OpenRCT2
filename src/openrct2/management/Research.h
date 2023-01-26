@@ -11,7 +11,7 @@
 
 #include "../common.h"
 #include "../object/ObjectLimits.h"
-#include "../object/ObjectType.h"
+#include "../object/ObjectTypes.h"
 #include "../ride/RideTypes.h"
 #include "../util/Util.h"
 

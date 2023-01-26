@@ -11,7 +11,7 @@
 #include "../common.h"
 #include "../interface/Cursors.h"
 #include "../world/Location.hpp"
-#include "ObjectType.h"
+#include "ObjectTypes.h"
 
 struct LargeSceneryText;
 
