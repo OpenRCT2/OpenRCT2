@@ -24,6 +24,8 @@
 #include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectList.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/sprites.h>
@@ -31,6 +33,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
+
+using namespace OpenRCT2;
 
 static constexpr const StringId WINDOW_TITLE = STR_NONE;
 constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
@@ -56,6 +60,8 @@ enum WindowSceneryListWidgetIdx
     WIDX_SCENERY_TERTIARY_COLOUR_BUTTON,
     WIDX_SCENERY_EYEDROPPER_BUTTON,
     WIDX_SCENERY_BUILD_CLUSTER_BUTTON,
+    WIDX_FILTER_TEXT_BOX,
+    WIDX_FILTER_CLEAR_BUTTON,
     WIDX_SCENERY_TAB_1,
 };
 
@@ -67,7 +73,7 @@ validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 static Widget WindowSceneryBaseWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
     MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
-    MakeWidget     ({  2,  47}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
+    MakeWidget     ({  2,  62}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
     MakeWidget     ({609,  44}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
     MakeWidget     ({609,  68}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
     MakeWidget     ({615,  93}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_COLOUR          ), // 8000000   0x009DE448
@@ -75,6 +81,8 @@ static Widget WindowSceneryBaseWidgets[] = {
     MakeWidget     ({615, 117}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_TERNARY_COLOUR  ), // 20000000  0x009DE468
     MakeWidget     ({609, 130}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_EYEDROPPER),   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
     MakeWidget     ({609, 154}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_SCENERY_CLUSTER), STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
+    MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
+    MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
     WIDGETS_END,
 };
 // clang-format on
@@ -134,12 +142,15 @@ private:
     int32_t _requiredWidth;
     ScenerySelection _selectedScenery;
     int16_t _hoverCounter;
+    u8string _filter;
+    std::vector<ScenerySelection> _filteredScenery;
 
 public:
     void OnOpen() override
     {
         Init();
 
+        _filter.clear();
         InitScrollWidgets();
         ContentUpdateScroll();
         ShowGridlines();
@@ -225,6 +236,15 @@ public:
                 {
                     ContextShowError(STR_CANT_DO_THIS, STR_PERMISSION_DENIED, {});
                 }
+                Invalidate();
+                break;
+            case WIDX_FILTER_TEXT_BOX:
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter.data(), MAX_PATH);
+                break;
+            case WIDX_FILTER_CLEAR_BUTTON:
+                _filter.clear();
+                ContentUpdateScroll();
+                scrolls->v_top = 0;
                 Invalidate();
                 break;
         }
@@ -391,6 +411,12 @@ public:
             }
         }
 
+        if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
+        {
+            WindowUpdateTextboxCaret();
+            WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+        }
+
         Invalidate();
 
         if (!SceneryToolIsActive())
@@ -434,7 +460,26 @@ public:
                     gCurrentToolId = static_cast<Tool>(GetSmallSceneryEntry(tabSelectedScenery.EntryIndex)->tool_id);
                 }
             }
+            else
+            {
+                gCurrentToolId = Tool::Arrow;
+            }
         }
+    }
+
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+    {
+        if (widgetIndex != WIDX_FILTER_TEXT_BOX)
+            return;
+
+        if (text == _filter)
+            return;
+
+        _filter.assign(text);
+        ContentUpdateScroll();
+
+        scrolls->v_top = 0;
+        Invalidate();
     }
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
@@ -504,6 +549,7 @@ public:
             }
         }
         widgets[WIDX_SCENERY_TITLE].text = titleStringId;
+        widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
 
         pressed_widgets = 0;
         pressed_widgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
@@ -865,7 +911,7 @@ private:
             return 0;
         }
 
-        const auto totalItems = _tabEntries[tabIndex].Entries.size();
+        const auto totalItems = _filteredScenery.size();
         const auto numColumns = GetNumColumns();
         const auto rows = CountRows(totalItems + numColumns - 1);
         return rows;
@@ -884,6 +930,8 @@ private:
             return;
         }
 
+        SetFilteredScenery(tabIndex);
+
         const int32_t listHeight = height - 14 - widgets[WIDX_SCENERY_LIST].top - 1;
 
         const auto sceneryItem = ContentCountRowsWithSelectedItem(tabIndex);
@@ -893,11 +941,15 @@ private:
         auto rowSelected = CountRows(sceneryItem.selected_item);
         if (sceneryItem.scenerySelection.IsUndefined())
         {
+            SetSelectedScenery(tabIndex, ScenerySelection());
             rowSelected = 0;
-            const auto& scenery = _tabEntries[tabIndex].Entries[0];
-            if (!scenery.IsUndefined())
+            if (!_filteredScenery.empty())
             {
-                SetSelectedScenery(tabIndex, scenery);
+                const auto& scenery = _filteredScenery[0];
+                if (!scenery.IsUndefined())
+                {
+                    SetSelectedScenery(tabIndex, scenery);
+                }
             }
         }
 
@@ -911,17 +963,16 @@ private:
     {
         SceneryItem sceneryItem = { 0, 0, ScenerySelection() };
         const auto scenerySelection = GetSelectedScenery(tabIndex);
-        const auto& tabInfo = _tabEntries[tabIndex];
-        for (size_t i = 0; i < tabInfo.Entries.size(); i++)
+        for (size_t i = 0; i < _filteredScenery.size(); i++)
         {
-            const auto& currentEntry = tabInfo.Entries[i];
+            const auto& currentEntry = _filteredScenery[i];
             if (currentEntry == scenerySelection)
             {
                 sceneryItem.selected_item = static_cast<int32_t>(i);
                 sceneryItem.scenerySelection = scenerySelection;
             }
         }
-        sceneryItem.allRows = static_cast<int32_t>(CountRows(tabInfo.Entries.size() + 8));
+        sceneryItem.allRows = static_cast<int32_t>(CountRows(_filteredScenery.size() + 8));
         return sceneryItem;
     }
 
@@ -1004,6 +1055,56 @@ private:
         }
     }
 
+    void SetFilteredScenery(const size_t tabIndex)
+    {
+        auto currentTab = _tabEntries[tabIndex];
+
+        _filteredScenery.clear();
+        for (auto selection : currentTab.Entries)
+        {
+            if (IsFiltered(selection))
+                _filteredScenery.push_back(selection);
+        }
+    }
+
+    bool IsFiltered(const ScenerySelection& selection)
+    {
+        if (_filter.empty())
+            return true;
+
+        auto& objManager = GetContext()->GetObjectManager();
+        auto sceneryObjectType = GetObjectTypeFromSceneryType(selection.SceneryType);
+        auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selection.EntryIndex);
+
+        return IsFilterInName(*sceneryObject) || IsFilterInAuthors(*sceneryObject) || IsFilterInIdentifier(*sceneryObject)
+            || IsFilterInFilename(*sceneryObject);
+    }
+
+    bool IsFilterInName(const Object& object)
+    {
+        return String::Contains(object.GetName(), _filter, true);
+    }
+
+    bool IsFilterInAuthors(const Object& object)
+    {
+        for (auto author : object.GetAuthors())
+            if (String::Contains(author, _filter, true))
+                return true;
+
+        return false;
+    }
+
+    bool IsFilterInIdentifier(const Object& object)
+    {
+        return String::Contains(object.GetIdentifier(), _filter, true);
+    }
+
+    bool IsFilterInFilename(const Object& object)
+    {
+        auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
+        return String::Contains(repoItem->Path, _filter, true);
+    }
+
     void SortTabs()
     {
         std::sort(_tabEntries.begin(), _tabEntries.end(), [](const SceneryTabInfo& a, const SceneryTabInfo& b) {
@@ -1064,14 +1165,9 @@ private:
         if (colIndex >= 0 && colIndex < numColumns && rowIndex >= 0)
         {
             const auto tabSceneryIndex = static_cast<size_t>((rowIndex * numColumns) + colIndex);
-            const auto tabIndex = _activeTabIndex;
-            if (tabIndex < _tabEntries.size())
+            if (tabSceneryIndex < _filteredScenery.size())
             {
-                auto& tabInfo = _tabEntries[tabIndex];
-                if (tabSceneryIndex < tabInfo.Entries.size())
-                {
-                    return tabInfo.Entries[tabSceneryIndex];
-                }
+                return _filteredScenery[tabSceneryIndex];
             }
         }
         return scenery;
@@ -1307,10 +1403,9 @@ private:
 
         ScreenCoordsXY topLeft{ 0, 0 };
 
-        const auto& tabInfo = _tabEntries[tabIndex];
-        for (size_t sceneryTabItemIndex = 0; sceneryTabItemIndex < tabInfo.Entries.size(); sceneryTabItemIndex++)
+        for (size_t sceneryTabItemIndex = 0; sceneryTabItemIndex < _filteredScenery.size(); sceneryTabItemIndex++)
         {
-            const auto& currentSceneryGlobal = tabInfo.Entries[sceneryTabItemIndex];
+            const auto& currentSceneryGlobal = _filteredScenery[sceneryTabItemIndex];
             const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
             if (gWindowSceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled)
             {
