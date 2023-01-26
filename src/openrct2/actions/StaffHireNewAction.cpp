@@ -190,8 +190,6 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
 
             // INVESTIGATE: x and y are LOCATION_NULL at this point.
             newPeep->MoveTo(newPeep->GetLocation());
-            NetworkSetPickupPeep(NetworkGetCurrentPlayerId(), newPeep);
-            NetworkSetPickupPeepOldX(NetworkGetCurrentPlayerId(), newPeep->x);
         }
 
         // Staff uses this

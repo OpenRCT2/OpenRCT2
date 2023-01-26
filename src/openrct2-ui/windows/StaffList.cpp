@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/actions/StaffFireAction.h>
 #include <openrct2/actions/StaffHireNewAction.h>
 #include <openrct2/actions/StaffSetColourAction.h>
@@ -535,11 +536,25 @@ private:
             // If autoposition of staff is disabled, set the pickup tool on the newly created staff window
             if (staff->State == PeepState::Picked)
             {
-                auto wind = WindowFindByNumber(WindowClass::Peep, staff->sprite_index.ToUnderlying());
-                if (wind != nullptr)
-                {
-                    ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
-                }
+                picked_peep_old_x = staff->x;
+                CoordsXYZ nullLoc{};
+                nullLoc.SetNull();
+
+                PeepPickupAction pickupAction{ PeepPickupType::Pickup,
+                                               EntityId::FromUnderlying(staff->sprite_index.ToUnderlying()), nullLoc,
+                                               NetworkGetCurrentPlayerId() };
+                pickupAction.SetCallback(
+                    [peepnum = staff->sprite_index.ToUnderlying()](const GameAction* ga, const GameActions::Result* result) {
+                        if (result->Error != GameActions::Status::Ok)
+                            return;
+
+                        WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+                        if (wind != nullptr)
+                        {
+                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                        }
+                    });
+                GameActions::Execute(&pickupAction);
             }
         });
 
