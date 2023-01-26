@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../object/Object.h"
+#include "../object/ObjectTypes.h"
 
 #include <cstdint>
 #include <limits>

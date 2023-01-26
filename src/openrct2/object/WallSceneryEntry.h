@@ -11,8 +11,7 @@
 
 #include "../common.h"
 #include "../interface/Cursors.h"
-
-using ObjectEntryIndex = uint16_t;
+#include "ObjectTypes.h"
 
 enum WALL_SCENERY_FLAGS
 {

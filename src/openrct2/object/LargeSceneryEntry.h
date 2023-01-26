@@ -11,8 +11,7 @@
 #include "../common.h"
 #include "../interface/Cursors.h"
 #include "../world/Location.hpp"
-
-using ObjectEntryIndex = uint16_t;
+#include "ObjectTypes.h"
 
 struct LargeSceneryText;
 
