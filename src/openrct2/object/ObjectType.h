@@ -10,6 +10,7 @@
 #pragma once
 
 #include <array>
+#include <cstdint>
 #include <limits>
 
 using ObjectEntryIndex = uint16_t;
