@@ -65,7 +65,6 @@ enum WindowSceneryListWidgetIdx
     WIDX_SCENERY_BUILD_CLUSTER_BUTTON,
     WIDX_FILTER_TEXT_BOX,
     WIDX_FILTER_CLEAR_BUTTON,
-    WIDX_FILTER_SEARCH_ALL,
     WIDX_SCENERY_TAB_1,
 };
 
@@ -87,7 +86,6 @@ static Widget WindowSceneryBaseWidgets[] = {
     MakeWidget     ({609, 169}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_SCENERY_CLUSTER), STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
     MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
     MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
-    MakeWidget     ({300,  46}, {100, 14}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_SCENERY_FILTER_SEARCH_ALL ),
     WIDGETS_END,
 };
 // clang-format on
@@ -256,12 +254,6 @@ public:
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
                 _tabEntries[_activeTabIndex].Filter.clear();
-                ContentUpdateScroll();
-                scrolls->v_top = 0;
-                Invalidate();
-                break;
-            case WIDX_FILTER_SEARCH_ALL:
-                _filterAllScenery = !_filterAllScenery;
                 ContentUpdateScroll();
                 scrolls->v_top = 0;
                 Invalidate();
@@ -582,8 +574,6 @@ public:
             pressed_widgets |= (1uLL << WIDX_SCENERY_EYEDROPPER_BUTTON);
         if (gWindowSceneryScatterEnabled)
             pressed_widgets |= (1uLL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
-        if (_filterAllScenery)
-            pressed_widgets |= (1uLL << WIDX_FILTER_SEARCH_ALL);
 
         widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
         widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WindowWidgetType::Empty;
