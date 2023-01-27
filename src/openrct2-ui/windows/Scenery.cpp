@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <deque>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -142,15 +143,15 @@ private:
     int32_t _requiredWidth;
     ScenerySelection _selectedScenery;
     int16_t _hoverCounter;
-    u8string _filter;
-    std::vector<ScenerySelection> _filteredScenery;
+    std::vector<u8string> _filters;
+    std::deque<ScenerySelection> _filteredScenery;
 
 public:
     void OnOpen() override
     {
         Init();
 
-        _filter.clear();
+        _filters.clear();
         InitScrollWidgets();
         ContentUpdateScroll();
         ShowGridlines();
@@ -239,10 +240,10 @@ public:
                 Invalidate();
                 break;
             case WIDX_FILTER_TEXT_BOX:
-                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter.data(), MAX_PATH);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, GetFilterString(_activeTabIndex).data(), MAX_PATH);
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
-                _filter.clear();
+                GetFilterString(_activeTabIndex).clear();
                 ContentUpdateScroll();
                 scrolls->v_top = 0;
                 Invalidate();
@@ -472,10 +473,10 @@ public:
         if (widgetIndex != WIDX_FILTER_TEXT_BOX)
             return;
 
-        if (text == _filter)
+        if (text == GetFilterString(_activeTabIndex))
             return;
 
-        _filter.assign(text);
+        GetFilterString(_activeTabIndex).assign(text);
         ContentUpdateScroll();
 
         scrolls->v_top = 0;
@@ -549,7 +550,7 @@ public:
             }
         }
         widgets[WIDX_SCENERY_TITLE].text = titleStringId;
-        widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
+        widgets[WIDX_FILTER_TEXT_BOX].string = GetFilterString(_activeTabIndex).data();
 
         pressed_widgets = 0;
         pressed_widgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
@@ -941,14 +942,23 @@ private:
         auto rowSelected = CountRows(sceneryItem.selected_item);
         if (sceneryItem.scenerySelection.IsUndefined())
         {
-            SetSelectedScenery(tabIndex, ScenerySelection());
-            rowSelected = 0;
-            if (!_filteredScenery.empty())
+            auto& oldScenery = GetSelectedScenery(tabIndex);
+            if (!oldScenery.IsUndefined())
             {
-                const auto& scenery = _filteredScenery[0];
-                if (!scenery.IsUndefined())
+                _filteredScenery.push_front(oldScenery);
+                SetSelectedScenery(tabIndex, oldScenery);
+            }
+            else
+            {
+                SetSelectedScenery(tabIndex, ScenerySelection());
+                rowSelected = 0;
+                if (!_filteredScenery.empty())
                 {
-                    SetSelectedScenery(tabIndex, scenery);
+                    const auto& scenery = _filteredScenery[0];
+                    if (!scenery.IsUndefined())
+                    {
+                        SetSelectedScenery(tabIndex, scenery);
+                    }
                 }
             }
         }
@@ -1055,6 +1065,15 @@ private:
         }
     }
 
+    u8string& GetFilterString(const size_t tabIndex)
+    {
+        if (tabIndex >= _filters.size())
+        {
+            _filters.resize(tabIndex + 1);
+        }
+        return _filters[tabIndex];
+    }
+
     void SetFilteredScenery(const size_t tabIndex)
     {
         auto currentTab = _tabEntries[tabIndex];
@@ -1062,47 +1081,47 @@ private:
         _filteredScenery.clear();
         for (auto selection : currentTab.Entries)
         {
-            if (IsFiltered(selection))
+            if (IsFiltered(selection, tabIndex))
                 _filteredScenery.push_back(selection);
         }
     }
 
-    bool IsFiltered(const ScenerySelection& selection)
+    bool IsFiltered(const ScenerySelection& selection, const size_t tabIndex)
     {
-        if (_filter.empty())
+        if (GetFilterString(tabIndex).empty())
             return true;
 
         auto& objManager = GetContext()->GetObjectManager();
         auto sceneryObjectType = GetObjectTypeFromSceneryType(selection.SceneryType);
         auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selection.EntryIndex);
 
-        return IsFilterInName(*sceneryObject) || IsFilterInAuthors(*sceneryObject) || IsFilterInIdentifier(*sceneryObject)
-            || IsFilterInFilename(*sceneryObject);
+        return IsFilterInName(*sceneryObject, tabIndex) || IsFilterInAuthors(*sceneryObject, tabIndex)
+            || IsFilterInIdentifier(*sceneryObject, tabIndex) || IsFilterInFilename(*sceneryObject, tabIndex);
     }
 
-    bool IsFilterInName(const Object& object)
+    bool IsFilterInName(const Object& object, const size_t tabIndex)
     {
-        return String::Contains(object.GetName(), _filter, true);
+        return String::Contains(object.GetName(), GetFilterString(tabIndex), true);
     }
 
-    bool IsFilterInAuthors(const Object& object)
+    bool IsFilterInAuthors(const Object& object, const size_t tabIndex)
     {
         for (auto author : object.GetAuthors())
-            if (String::Contains(author, _filter, true))
+            if (String::Contains(author, GetFilterString(tabIndex), true))
                 return true;
 
         return false;
     }
 
-    bool IsFilterInIdentifier(const Object& object)
+    bool IsFilterInIdentifier(const Object& object, const size_t tabIndex)
     {
-        return String::Contains(object.GetIdentifier(), _filter, true);
+        return String::Contains(object.GetIdentifier(), GetFilterString(tabIndex), true);
     }
 
-    bool IsFilterInFilename(const Object& object)
+    bool IsFilterInFilename(const Object& object, const size_t tabIndex)
     {
         auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
-        return String::Contains(repoItem->Path, _filter, true);
+        return String::Contains(repoItem->Path, GetFilterString(tabIndex), true);
     }
 
     void SortTabs()
@@ -1185,6 +1204,11 @@ private:
         if (scenery.IsUndefined())
             return;
 
+        auto lastScenery = GetSelectedScenery(_activeTabIndex);
+        if (!(lastScenery == scenery || IsFiltered(lastScenery, _activeTabIndex)))
+        {
+            _filteredScenery.pop_front();
+        }
         SetSelectedScenery(_activeTabIndex, scenery);
 
         gWindowSceneryPaintEnabled &= 0xFE;
