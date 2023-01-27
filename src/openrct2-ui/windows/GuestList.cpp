@@ -627,7 +627,7 @@ public:
                     continue;
 
                 auto& item = _guestList.emplace_back();
-                item.Id = peep->sprite_index;
+                item.Id = peep->Id;
 
                 Formatter ft;
                 peep->FormatNameTo(ft);

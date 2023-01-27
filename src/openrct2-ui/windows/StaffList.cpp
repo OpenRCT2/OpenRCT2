@@ -487,7 +487,7 @@ public:
             if (peep->AssignedStaffType == GetSelectedStaffType())
             {
                 EntitySetFlashing(peep, true);
-                _staffList.push_back(peep->sprite_index);
+                _staffList.push_back(peep->Id);
             }
         }
 
@@ -536,8 +536,7 @@ private:
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
 
-                PeepPickupAction pickupAction{ PeepPickupType::Pickup, staff->sprite_index, nullLoc,
-                                               NetworkGetCurrentPlayerId() };
+                PeepPickupAction pickupAction{ PeepPickupType::Pickup, staff->Id, nullLoc, NetworkGetCurrentPlayerId() };
                 pickupAction.SetCallback([&staff](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;

@@ -2870,8 +2870,8 @@ namespace RCT1
         dst->Angriness = src->Angriness;
         dst->TimeLost = src->TimeLost;
 
-        OpenRCT2::RideUse::GetHistory().Set(dst->sprite_index, RCT12GetRidesBeenOn(src));
-        OpenRCT2::RideUse::GetTypeHistory().Set(dst->sprite_index, RCT12GetRideTypesBeenOn(src));
+        OpenRCT2::RideUse::GetHistory().Set(dst->Id, RCT12GetRidesBeenOn(src));
+        OpenRCT2::RideUse::GetTypeHistory().Set(dst->Id, RCT12GetRideTypesBeenOn(src));
 
         dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);
 

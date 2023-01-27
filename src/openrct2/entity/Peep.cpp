@@ -287,7 +287,7 @@ bool Peep::CheckForPath()
     PROFILED_FUNCTION();
 
     PathCheckOptimisation++;
-    if ((PathCheckOptimisation & 0xF) != (sprite_index.ToUnderlying() & 0xF))
+    if ((PathCheckOptimisation & 0xF) != (Id.ToUnderlying() & 0xF))
     {
         // This condition makes the check happen less often
         // As a side effect peeps hover for a short,
@@ -526,8 +526,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     const auto curLoc = GetLocation();
-    Litter::Create(
-        { curLoc, sprite_direction }, (sprite_index.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    Litter::Create({ curLoc, sprite_direction }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
         OpenRCT2::Audio::SoundId::Cough1,
@@ -565,7 +564,7 @@ void PeepDecrementNumRiders(Peep* peep)
  */
 void PeepWindowStateUpdate(Peep* peep)
 {
-    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying());
+    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
         WindowEventInvalidateCall(w);
 
@@ -581,12 +580,12 @@ void PeepWindowStateUpdate(Peep* peep)
             }
         }
 
-        WindowInvalidateByNumber(WindowClass::Peep, peep->sprite_index);
+        WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
         WindowInvalidateByClass(WindowClass::GuestList);
     }
     else
     {
-        WindowInvalidateByNumber(WindowClass::Peep, peep->sprite_index);
+        WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
         WindowInvalidateByClass(WindowClass::StaffList);
     }
 }
@@ -693,7 +692,7 @@ void PeepEntityRemove(Peep* peep)
     }
     peep->Invalidate();
 
-    WindowCloseByNumber(WindowClass::Peep, peep->sprite_index);
+    WindowCloseByNumber(WindowClass::Peep, peep->Id);
 
     WindowCloseByNumber(WindowClass::FirePrompt, EnumValue(peep->Type));
 
@@ -702,14 +701,14 @@ void PeepEntityRemove(Peep* peep)
     bool wasGuest = staff == nullptr;
     if (wasGuest)
     {
-        News::DisableNewsItems(News::ItemType::PeepOnRide, peep->sprite_index.ToUnderlying());
+        News::DisableNewsItems(News::ItemType::PeepOnRide, peep->Id.ToUnderlying());
     }
     else
     {
         staff->ClearPatrolArea();
         UpdateConsolidatedPatrolAreas();
 
-        News::DisableNewsItems(News::ItemType::Peep, staff->sprite_index.ToUnderlying());
+        News::DisableNewsItems(News::ItemType::Peep, staff->Id.ToUnderlying());
     }
     EntityRemove(peep);
 
@@ -1785,7 +1784,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
 
         auto& station = ride->GetStation(stationNum);
         auto previous_last = station.LastPeepInQueue;
-        station.LastPeepInQueue = guest->sprite_index;
+        station.LastPeepInQueue = guest->Id;
         guest->GuestNextInQueue = previous_last;
         station.QueueLength++;
 
@@ -1802,8 +1801,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             ride->FormatNameTo(ft);
             if (gConfigNotifications.GuestQueuingForRide)
             {
-                News::AddItemToQueue(
-                    News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->sprite_index, ft);
+                News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
             }
         }
     }
@@ -1863,7 +1861,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                 guest->FormatNameTo(ft);
                 if (gConfigNotifications.GuestLeftPark)
                 {
-                    News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->sprite_index, ft);
+                    News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->Id, ft);
                 }
             }
             return true;
@@ -2211,7 +2209,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                     // Add the peep to the ride queue.
                     auto& station = ride->GetStation(stationNum);
                     auto old_last_peep = station.LastPeepInQueue;
-                    station.LastPeepInQueue = guest->sprite_index;
+                    station.LastPeepInQueue = guest->Id;
                     guest->GuestNextInQueue = old_last_peep;
                     station.QueueLength++;
 
@@ -2233,7 +2231,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                         if (gConfigNotifications.GuestQueuingForRide)
                         {
                             News::AddItemToQueue(
-                                News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->sprite_index, ft);
+                                News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
                         }
                     }
 
@@ -2352,7 +2350,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
                                                                                                : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (gConfigNotifications.GuestUsedFacility)
             {
-                News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, guest->sprite_index, ft);
+                News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, guest->Id, ft);
             }
         }
     }

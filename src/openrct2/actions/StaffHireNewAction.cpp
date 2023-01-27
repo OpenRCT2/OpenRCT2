@@ -210,7 +210,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
 
         newPeep->PatrolInfo = nullptr;
 
-        res.SetData(StaffHireNewActionResult{ newPeep->sprite_index });
+        res.SetData(StaffHireNewActionResult{ newPeep->Id });
     }
 
     return res;

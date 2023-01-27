@@ -1323,7 +1323,7 @@ WindowBase* WindowRideOpenVehicle(Vehicle* vehicle)
     if (headVehicle == nullptr)
         return nullptr;
 
-    EntityId headVehicleSpriteIndex = headVehicle->sprite_index;
+    EntityId headVehicleSpriteIndex = headVehicle->Id;
     auto ride = headVehicle->GetRide();
     if (ride == nullptr)
         return nullptr;
@@ -1997,7 +1997,7 @@ static void WindowRideMainFollowRide(WindowBase* w)
                     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
                     if (vehicle != nullptr)
                     {
-                        auto headVehicleSpriteIndex = vehicle->sprite_index;
+                        auto headVehicleSpriteIndex = vehicle->Id;
                         WindowBase* w_main = WindowGetMain();
                         WindowFollowSprite(*w_main, headVehicleSpriteIndex);
                     }

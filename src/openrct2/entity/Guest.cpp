@@ -1423,14 +1423,14 @@ void Guest::CheckCantFindRide()
         return;
 
     GuestHeadingToRideId = RideId::GetNull();
-    WindowBase* w = WindowFindByNumber(WindowClass::Peep, sprite_index);
+    WindowBase* w = WindowFindByNumber(WindowClass::Peep, Id);
 
     if (w != nullptr)
     {
         WindowEventInvalidateCall(w);
     }
 
-    WindowInvalidateByNumber(WindowClass::Peep, sprite_index);
+    WindowInvalidateByNumber(WindowClass::Peep, Id);
 }
 
 /**
@@ -1658,7 +1658,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
         ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
         if (gConfigNotifications.GuestBoughtItem)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, Id, ft);
         }
     }
 
@@ -2297,7 +2297,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
     peep_expend_type += static_cast<money16>(amount);
 
-    WindowInvalidateByNumber(WindowClass::Peep, sprite_index);
+    WindowInvalidateByNumber(WindowClass::Peep, Id);
 
     FinancePayment(-amount, expenditure);
 
@@ -2316,24 +2316,24 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
 void Guest::SetHasRidden(const Ride& ride)
 {
-    OpenRCT2::RideUse::GetHistory().Add(sprite_index, ride.id);
+    OpenRCT2::RideUse::GetHistory().Add(Id, ride.id);
 
     SetHasRiddenRideType(ride.type);
 }
 
 bool Guest::HasRidden(const Ride& ride) const
 {
-    return OpenRCT2::RideUse::GetHistory().Contains(sprite_index, ride.id);
+    return OpenRCT2::RideUse::GetHistory().Contains(Id, ride.id);
 }
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
 {
-    OpenRCT2::RideUse::GetTypeHistory().Add(sprite_index, rideType);
+    OpenRCT2::RideUse::GetTypeHistory().Add(Id, rideType);
 }
 
 bool Guest::HasRiddenRideType(int32_t rideType) const
 {
-    return OpenRCT2::RideUse::GetTypeHistory().Contains(sprite_index, rideType);
+    return OpenRCT2::RideUse::GetTypeHistory().Contains(Id, rideType);
 }
 
 void Guest::SetParkEntryTime(int32_t entryTime)
@@ -2481,7 +2481,7 @@ static void PeepChooseSeatFromCar(Peep* peep, const Ride& ride, Vehicle* vehicle
     peep->CurrentSeat = chosen_seat;
     vehicle->next_free_seat++;
 
-    vehicle->peep[peep->CurrentSeat] = peep->sprite_index;
+    vehicle->peep[peep->CurrentSeat] = peep->Id;
     vehicle->peep_tshirt_colours[peep->CurrentSeat] = peep->TshirtColour;
 }
 
@@ -3113,10 +3113,10 @@ static void PeepLeavePark(Guest* peep)
 
     peep->InsertNewThought(PeepThoughtType::GoHome);
 
-    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->sprite_index);
+    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
         WindowEventInvalidateCall(w);
-    WindowInvalidateByNumber(WindowClass::Peep, peep->sprite_index);
+    WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
 }
 
 template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool considerOnlyCloseRides, T predicate)
@@ -3348,7 +3348,7 @@ void Guest::UpdateBuying()
             {
                 CashInPocket += 50.00_GBP;
             }
-            WindowInvalidateByNumber(WindowClass::Peep, sprite_index);
+            WindowInvalidateByNumber(WindowClass::Peep, Id);
         }
         sprite_direction ^= 0x10;
 
@@ -3860,7 +3860,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
 
         if (gConfigNotifications.GuestOnRide)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index, ft);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, Id, ft);
         }
     }
 
@@ -4685,7 +4685,7 @@ void Guest::UpdateRideOnSpiralSlide()
                     return;
 
                 ride->slide_in_use++;
-                ride->slide_peep = sprite_index;
+                ride->slide_peep = Id;
                 ride->slide_peep_t_shirt_colour = TshirtColour;
                 ride->spiral_slide_progress = 0;
                 destination.x++;
@@ -4974,7 +4974,7 @@ void Guest::UpdateRideLeaveExit()
 
         if (gConfigNotifications.GuestLeftRide)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index, ft);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
         }
     }
 
@@ -5283,7 +5283,7 @@ void Guest::UpdateWalking()
     }
     else if (HasEmptyContainer())
     {
-        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index.ToUnderlying() & 0x1FF) == (gCurrentTicks & 0x1FF))
+        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (gCurrentTicks & 0x1FF))
             && ((0xFFFF & ScenarioRand()) <= 4096))
         {
             int32_t container = UtilBitScanForward(GetEmptyContainerFlags());
@@ -7180,7 +7180,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);
-        obj.Set("id", peep->sprite_index.ToUnderlying());
+        obj.Set("id", peep->Id.ToUnderlying());
 
         // Call the subscriptions
         auto e = obj.Take();
@@ -7386,7 +7386,7 @@ void Guest::RemoveFromQueue()
         station.QueueLength--;
     }
 
-    if (sprite_index == station.LastPeepInQueue)
+    if (Id == station.LastPeepInQueue)
     {
         station.LastPeepInQueue = GuestNextInQueue;
         return;
@@ -7400,7 +7400,7 @@ void Guest::RemoveFromQueue()
     }
     for (; otherGuest != nullptr; otherGuest = GetEntity<Guest>(otherGuest->GuestNextInQueue))
     {
-        if (sprite_index == otherGuest->GuestNextInQueue)
+        if (Id == otherGuest->GuestNextInQueue)
         {
             otherGuest->GuestNextInQueue = GuestNextInQueue;
             return;

@@ -1816,7 +1816,7 @@ namespace RCT2
         {
             dst->Type = GetEntityTypeFromRCT2Sprite(src);
             dst->sprite_height_negative = src->SpriteHeightNegative;
-            dst->sprite_index = EntityId::FromUnderlying(src->EntityIndex);
+            dst->Id = EntityId::FromUnderlying(src->EntityIndex);
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
@@ -2076,8 +2076,8 @@ namespace RCT2
         dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->NauseaTolerance);
         dst->PaidOnDrink = src->PaidOnDrink;
 
-        OpenRCT2::RideUse::GetHistory().Set(dst->sprite_index, RCT12GetRidesBeenOn(src));
-        OpenRCT2::RideUse::GetTypeHistory().Set(dst->sprite_index, RCT12GetRideTypesBeenOn(src));
+        OpenRCT2::RideUse::GetHistory().Set(dst->Id, RCT12GetRidesBeenOn(src));
+        OpenRCT2::RideUse::GetTypeHistory().Set(dst->Id, RCT12GetRideTypesBeenOn(src));
 
         dst->SetItemFlags(src->GetItemFlags());
         dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);

@@ -1983,7 +1983,7 @@ void NetworkBase::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& c
     if (pickup_peep != nullptr)
     {
         PeepPickupAction pickupAction{ PeepPickupType::Cancel,
-                                       pickup_peep->sprite_index,
+                                       pickup_peep->Id,
                                        { NetworkGetPickupPeepOldX(connection_player->Id), 0, 0 },
                                        NetworkGetCurrentPlayerId() };
         auto res = GameActions::Execute(&pickupAction);

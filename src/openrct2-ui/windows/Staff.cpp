@@ -460,8 +460,7 @@ private:
 
                     WindowCloseByClass(WindowClass::PatrolArea);
 
-                    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-                        staff->sprite_index, {}, StaffSetPatrolAreaMode::ClearAll);
+                    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(staff->Id, {}, StaffSetPatrolAreaMode::ClearAll);
                     GameActions::Execute(&staffSetPatrolAreaAction);
                 }
                 else
@@ -499,7 +498,7 @@ private:
         widgets[WIDX_PICKUP].left = width - 25;
         widgets[WIDX_PICKUP].right = width - 2;
 
-        SetWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->sprite_index);
+        SetWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->Id);
 
         widgets[WIDX_PATROL].left = width - 25;
         widgets[WIDX_PATROL].right = width - 2;
@@ -1132,7 +1131,7 @@ private:
         std::optional<Focus> tempFocus;
         if (staff->State != PeepState::Picked)
         {
-            tempFocus = Focus(staff->sprite_index);
+            tempFocus = Focus(staff->Id);
         }
 
         uint16_t viewport_flags;
@@ -1235,7 +1234,7 @@ private:
 
 WindowBase* WindowStaffOpen(Peep* peep)
 {
-    auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
+    auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
 
     if (w != nullptr)
         return w;
@@ -1246,7 +1245,7 @@ WindowBase* WindowStaffOpen(Peep* peep)
         return nullptr;
 
     if (w != nullptr)
-        w->Initialise(peep->sprite_index);
+        w->Initialise(peep->Id);
 
     return w;
 }
