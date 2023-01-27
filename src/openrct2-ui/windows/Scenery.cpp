@@ -1081,6 +1081,15 @@ private:
         }
     }
 
+    u8string& GetFilterString(const size_t tabIndex)
+    {
+        if (tabIndex >= _filters.size())
+        {
+            _filters.resize(tabIndex + 1);
+        }
+        return _filters[tabIndex];
+    }
+
     void SetFilteredScenery(const size_t tabIndex)
     {
         auto currentTab = _tabEntries[tabIndex];
@@ -1104,16 +1113,16 @@ private:
         auto sceneryObjectType = GetObjectTypeFromSceneryType(selection.SceneryType);
         auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selection.EntryIndex);
 
-        return IsFilterInName(*sceneryObject) || IsFilterInAuthors(*sceneryObject) || IsFilterInIdentifier(*sceneryObject)
-            || IsFilterInFilename(*sceneryObject);
+        return IsFilterInName(*sceneryObject, tabIndex) || IsFilterInAuthors(*sceneryObject, tabIndex)
+            || IsFilterInIdentifier(*sceneryObject, tabIndex) || IsFilterInFilename(*sceneryObject, tabIndex);
     }
 
-    bool IsFilterInName(const Object& object)
+    bool IsFilterInName(const Object& object, const size_t tabIndex)
     {
         return String::Contains(object.GetName(), _filteredSceneryTab.Filter, true);
     }
 
-    bool IsFilterInAuthors(const Object& object)
+    bool IsFilterInAuthors(const Object& object, const size_t tabIndex)
     {
         for (auto author : object.GetAuthors())
             if (String::Contains(author, _filteredSceneryTab.Filter, true))
@@ -1122,12 +1131,12 @@ private:
         return false;
     }
 
-    bool IsFilterInIdentifier(const Object& object)
+    bool IsFilterInIdentifier(const Object& object, const size_t tabIndex)
     {
         return String::Contains(object.GetIdentifier(), _filteredSceneryTab.Filter, true);
     }
 
-    bool IsFilterInFilename(const Object& object)
+    bool IsFilterInFilename(const Object& object, const size_t tabIndex)
     {
         auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
         return String::Contains(repoItem->Path, _filteredSceneryTab.Filter, true);
