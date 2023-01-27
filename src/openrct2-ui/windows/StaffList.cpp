@@ -527,34 +527,37 @@ private:
                 return;
 
             auto actionResult = res->GetData<StaffHireNewActionResult>();
-            // Open window for new staff.
             auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
-            auto intent = Intent(WindowClass::Peep);
-            intent.PutExtra(INTENT_EXTRA_PEEP, staff);
-            ContextOpenIntent(&intent);
 
-            // If autoposition of staff is disabled, set the pickup tool on the newly created staff window
+            // If autoposition of staff is disabled, pickup peep and then open the staff window
             if (staff->State == PeepState::Picked)
             {
                 picked_peep_old_x = staff->x;
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
 
-                PeepPickupAction pickupAction{ PeepPickupType::Pickup,
-                                               EntityId::FromUnderlying(staff->sprite_index.ToUnderlying()), nullLoc,
+                PeepPickupAction pickupAction{ PeepPickupType::Pickup, staff->sprite_index, nullLoc,
                                                NetworkGetCurrentPlayerId() };
-                pickupAction.SetCallback(
-                    [peepnum = staff->sprite_index.ToUnderlying()](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error != GameActions::Status::Ok)
-                            return;
+                pickupAction.SetCallback([&staff](const GameAction* ga, const GameActions::Result* result) {
+                    if (result->Error != GameActions::Status::Ok)
+                        return;
 
-                        WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
-                        if (wind != nullptr)
-                        {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
-                        }
-                    });
+                    auto intent = Intent(WindowClass::Peep);
+                    intent.PutExtra(INTENT_EXTRA_PEEP, staff);
+                    auto* wind = ContextOpenIntent(&intent);
+                    if (wind != nullptr)
+                    {
+                        ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                    }
+                });
                 GameActions::Execute(&pickupAction);
+            }
+            else
+            {
+                // Open window for new staff.
+                auto intent = Intent(WindowClass::Peep);
+                intent.PutExtra(INTENT_EXTRA_PEEP, staff);
+                ContextOpenIntent(&intent);
             }
         });
 
