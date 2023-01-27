@@ -152,7 +152,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
                 if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
                     continue;
 
-                if (searchPeep->Id == newStaffId)
+                if (searchPeep->PeepId == newStaffId)
                 {
                     found = true;
                     break;
@@ -163,7 +163,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
                 break;
         }
 
-        newPeep->Id = newStaffId;
+        newPeep->PeepId = newStaffId;
         newPeep->AssignedStaffType = static_cast<StaffType>(_staffType);
 
         PeepSpriteType spriteType = spriteTypes[_staffType];

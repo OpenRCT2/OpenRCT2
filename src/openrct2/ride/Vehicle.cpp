@@ -8359,14 +8359,14 @@ Loc6DC743:
                 {
                     if (animation == MiniGolfAnimation::SwingLeft)
                     {
-                        if (curPeep->Id & 7)
+                        if (curPeep->PeepId & 7)
                         {
                             animation = MiniGolfAnimation::Swing;
                         }
                     }
                     if (animation == MiniGolfAnimation::PuttLeft)
                     {
-                        if (curPeep->Id & 7)
+                        if (curPeep->PeepId & 7)
                         {
                             animation = MiniGolfAnimation::Putt;
                         }

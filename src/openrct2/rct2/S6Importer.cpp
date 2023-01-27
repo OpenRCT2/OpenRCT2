@@ -1717,7 +1717,7 @@ namespace RCT2
             dst->StepProgress = src->StepProgress;
             dst->PeepDirection = src->Direction;
             dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);
-            dst->Id = src->Id;
+            dst->PeepId = src->Id;
             dst->PathCheckOptimisation = src->PathCheckOptimisation;
             dst->PeepFlags = src->PeepFlags;
             if (isNullLocation(src->PathfindGoal))

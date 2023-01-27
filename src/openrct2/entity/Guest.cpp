@@ -7115,7 +7115,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->TimeToConsume = 0;
 
     peep->GuestNumRides = 0;
-    peep->Id = gNextGuestNumber++;
+    peep->PeepId = gNextGuestNumber++;
     peep->Name = nullptr;
 
     money32 cash = (ScenarioRand() & 0x3) * 100 - 100 + gGuestInitialCash;

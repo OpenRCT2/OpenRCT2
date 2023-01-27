@@ -1312,7 +1312,7 @@ namespace RCT1
             dst->CurrentCar = src->CurrentCar;
             dst->CurrentSeat = src->CurrentSeat;
             dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);
-            dst->Id = src->ID;
+            dst->PeepId = src->ID;
             dst->PathCheckOptimisation = 0;
             dst->PeepFlags = 0;
             dst->PathfindGoal.x = 0xFF;

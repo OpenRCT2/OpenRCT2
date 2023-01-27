@@ -1675,7 +1675,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.ReadWrite(entity.Id);
+            cs.ReadWrite(entity.PeepId);
 
             if (version <= 1)
             {

@@ -288,7 +288,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, StepProgress);
         COMPARE_FIELD(Peep, MazeLastEdge);
         COMPARE_FIELD(Peep, InteractionRideIndex);
-        COMPARE_FIELD(Peep, Id);
+        COMPARE_FIELD(Peep, PeepId);
         COMPARE_FIELD(Peep, PathCheckOptimisation);
         COMPARE_FIELD(Peep, PathfindGoal.x);
         COMPARE_FIELD(Peep, PathfindGoal.y);

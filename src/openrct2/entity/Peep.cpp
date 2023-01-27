@@ -1575,16 +1575,16 @@ void Peep::FormatNameTo(Formatter& ft) const
             }
 
             ft.Add<StringId>(_staffNames[staffNameIndex]);
-            ft.Add<uint32_t>(Id);
+            ft.Add<uint32_t>(PeepId);
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
-            auto realNameStringId = GetRealNameStringIDFromPeepID(Id);
+            auto realNameStringId = GetRealNameStringIDFromPeepID(PeepId);
             ft.Add<StringId>(realNameStringId);
         }
         else
         {
-            ft.Add<StringId>(STR_GUEST_X).Add<uint32_t>(Id);
+            ft.Add<StringId>(STR_GUEST_X).Add<uint32_t>(PeepId);
         }
     }
     else
@@ -2600,7 +2600,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
         else
         {
             // Simple ID comparison for when both peeps use a number or a generated name
-            return peep_a->Id - peep_b->Id;
+            return peep_a->PeepId - peep_b->PeepId;
         }
     }
 
@@ -2769,7 +2769,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << StepProgress;
     stream << PeepDirection;
     stream << InteractionRideIndex;
-    stream << Id;
+    stream << PeepId;
     stream << PathCheckOptimisation;
     stream << PathfindGoal;
     stream << PathfindHistory;
