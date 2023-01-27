@@ -169,13 +169,18 @@ public:
 
         auto source = zip_source_buffer(_zip, writeBuffer.data(), writeBuffer.size(), 0);
         auto index = GetIndexFromPath(path);
+        zip_int64_t res = 0;
         if (index.has_value())
         {
-            zip_replace(_zip, index.value(), source);
+            res = zip_replace(_zip, index.value(), source);
         }
         else
         {
-            zip_add(_zip, path.data(), source);
+            res = zip_add(_zip, path.data(), source);
+        }
+        if (res == -1)
+        {
+            zip_source_free(source);
         }
     }
 
