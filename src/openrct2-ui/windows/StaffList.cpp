@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/actions/StaffFireAction.h>
 #include <openrct2/actions/StaffHireNewAction.h>
 #include <openrct2/actions/StaffSetColourAction.h>
@@ -526,11 +527,38 @@ private:
                 return;
 
             auto actionResult = res->GetData<StaffHireNewActionResult>();
-            // Open window for new staff.
             auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
-            auto intent = Intent(WindowClass::Peep);
-            intent.PutExtra(INTENT_EXTRA_PEEP, staff);
-            ContextOpenIntent(&intent);
+
+            // If autoposition of staff is disabled, pickup peep and then open the staff window
+            if (staff->State == PeepState::Picked)
+            {
+                picked_peep_old_x = staff->x;
+                CoordsXYZ nullLoc{};
+                nullLoc.SetNull();
+
+                PeepPickupAction pickupAction{ PeepPickupType::Pickup, staff->sprite_index, nullLoc,
+                                               NetworkGetCurrentPlayerId() };
+                pickupAction.SetCallback([&staff](const GameAction* ga, const GameActions::Result* result) {
+                    if (result->Error != GameActions::Status::Ok)
+                        return;
+
+                    auto intent = Intent(WindowClass::Peep);
+                    intent.PutExtra(INTENT_EXTRA_PEEP, staff);
+                    auto* wind = ContextOpenIntent(&intent);
+                    if (wind != nullptr)
+                    {
+                        ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                    }
+                });
+                GameActions::Execute(&pickupAction);
+            }
+            else
+            {
+                // Open window for new staff.
+                auto intent = Intent(WindowClass::Peep);
+                intent.PutExtra(INTENT_EXTRA_PEEP, staff);
+                ContextOpenIntent(&intent);
+            }
         });
 
         GameActions::Execute(&hireStaffAction);
