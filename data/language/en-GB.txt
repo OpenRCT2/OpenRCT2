@@ -3647,6 +3647,7 @@ STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand G
 STR_6542    :Contributors
 STR_6543    :Contributors…
 STR_6544    :Loan cannot be negative!
+STR_6545    :Search all scenery
 
 #############
 # Scenarios #
