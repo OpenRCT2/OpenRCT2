@@ -23,6 +23,7 @@
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"
 #include "../object/RideObject.h"
+#include "../object/SceneryGroupEntry.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"

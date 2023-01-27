@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../world/Water.h"
 #include "Object.h"
+#include "WaterEntry.h"
 
 #include <tuple>
 

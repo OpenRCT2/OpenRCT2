@@ -13,6 +13,7 @@
 #include <openrct2/common.h>
 #include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/util/Util.h>
 
 namespace Dropdown
 {

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"
 #include "Window.h"
 

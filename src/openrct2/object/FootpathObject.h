@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../world/Footpath.h"
+#include "FootpathEntry.h"
 #include "Object.h"
 
 class FootpathObject final : public Object

@@ -26,6 +26,7 @@
 #include "../object/FootpathItemEntry.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/SceneryGroupEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../paint/tile_element/Paint.TileElement.h"
