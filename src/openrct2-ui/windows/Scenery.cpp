@@ -547,7 +547,7 @@ public:
                 if (tabInfo.IsSearch())
                 {
                     // TODO: Change this string
-                    ft.Add<StringId>(STR_MISCELLANEOUS);
+                    ft.Add<StringId>(STR_THEMES_WINDOW_SCENERY);
                     return { fallback, ft };
                 }
 
@@ -573,7 +573,7 @@ public:
             if (tabInfo.IsSearch())
             {
                 // TODO: Change this string
-                titleStringId = STR_MISCELLANEOUS;
+                titleStringId = STR_THEMES_WINDOW_SCENERY;
             }
             else
             {
@@ -1367,12 +1367,27 @@ private:
         for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
         {
             auto widgetIndex = static_cast<WidgetIndex>(WIDX_SCENERY_TAB_1 + tabIndex);
+            auto widgetCoordsXY = ScreenCoordsXY(widgets[widgetIndex].left, widgets[widgetIndex].top);
             auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
-            if (scgEntry != nullptr)
+            std::optional<ImageId> imageId = std::nullopt;
+
+            if (_tabEntries[tabIndex].IsMisc())
+            {
+                __noop;
+            }
+            else if (_tabEntries[tabIndex].IsSearch())
+            {
+                imageId = ImageId(SPR_G2_SEARCH, colours[1]);
+            }
+            else if(scgEntry != nullptr)
             {
                 auto imageOffset = tabIndex == _activeTabIndex ? 1 : 0;
-                auto imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
-                GfxDrawSprite(&dpi, imageId, offset + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
+                imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
+            }
+
+            if (imageId.has_value())
+            {
+                GfxDrawSprite(&dpi, imageId.value(), offset + widgetCoordsXY);
             }
         }
     }
