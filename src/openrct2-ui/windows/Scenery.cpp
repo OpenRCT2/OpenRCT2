@@ -104,6 +104,13 @@ bool gWindowSceneryEyedropperEnabled;
 class SceneryWindow final : public Window
 {
 private:
+    enum SceneryTabType
+    {
+        SCENERY_TAB_TYPE_GROUP,
+        SCENERY_TAB_TYPE_MISC,
+        SCENERY_TAB_TYPE_SEARCH
+    };
+
     struct SceneryItem
     {
         int32_t allRows;
@@ -113,13 +120,24 @@ private:
 
     struct SceneryTabInfo
     {
+        SceneryTabType Type = SCENERY_TAB_TYPE_GROUP;
         ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
         std::deque<ScenerySelection> Entries;
         u8string Filter = "";
 
         bool IsMisc() const
         {
-            return SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL;
+            return Type == SCENERY_TAB_TYPE_MISC;
+        }
+
+        bool IsSearch() const
+        {
+            return Type == SCENERY_TAB_TYPE_SEARCH;
+        }
+
+        bool IsSceneryGroup() const
+        {
+            return Type == SCENERY_TAB_TYPE_GROUP;
         }
 
         bool Contains(const ScenerySelection& entry) const
@@ -131,7 +149,10 @@ private:
         {
             if (!Contains(entry))
             {
-                Entries.push_back(entry);
+                if (toBack)
+                    Entries.push_back(entry);
+                else
+                    Entries.push_front(entry);
             }
         }
 
@@ -149,7 +170,7 @@ private:
         }
     };
 
-    std::vector<SceneryTabInfo> _tabEntries;
+    std::deque<SceneryTabInfo> _tabEntries;
     std::vector<Widget> _widgets;
     int32_t _requiredWidth;
     int32_t _actualMinHeight;
@@ -529,10 +550,17 @@ public:
             const auto tabIndex = static_cast<size_t>(widgetIndex - WIDX_SCENERY_TAB_1);
             if (_tabEntries.size() > tabIndex)
             {
+                auto ft = Formatter();
                 const auto& tabInfo = _tabEntries[tabIndex];
                 if (tabInfo.IsMisc())
                 {
-                    auto ft = Formatter();
+                    ft.Add<StringId>(STR_MISCELLANEOUS);
+                    return { fallback, ft };
+                }
+
+                if (tabInfo.IsSearch())
+                {
+                    // TODO: Change this string
                     ft.Add<StringId>(STR_MISCELLANEOUS);
                     return { fallback, ft };
                 }
@@ -540,7 +568,6 @@ public:
                 const auto* sceneryEntry = tabInfo.GetSceneryGroupEntry();
                 if (sceneryEntry != nullptr)
                 {
-                    auto ft = Formatter();
                     ft.Add<StringId>(sceneryEntry->name);
                     return { fallback, ft };
                 }
@@ -557,10 +584,18 @@ public:
         if (tabIndex < _tabEntries.size())
         {
             const auto& tabInfo = _tabEntries[tabIndex];
-            const auto* sgEntry = tabInfo.GetSceneryGroupEntry();
-            if (sgEntry != nullptr)
+            if (tabInfo.IsSearch())
             {
-                titleStringId = sgEntry->name;
+                // TODO: Change this string
+                titleStringId = STR_MISCELLANEOUS;
+            }
+            else
+            {
+                const auto* sgEntry = tabInfo.GetSceneryGroupEntry();
+                if (sgEntry != nullptr)
+                {
+                    titleStringId = sgEntry->name;
+                }
             }
         }
         widgets[WIDX_SCENERY_TITLE].text = titleStringId;
@@ -811,7 +846,7 @@ public:
     {
         _tabEntries.clear();
 
-        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - 1; scenerySetIndex++)
+        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - 2; scenerySetIndex++)
         {
             const auto* sceneryGroupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(scenerySetIndex);
             if (sceneryGroupEntry != nullptr && SceneryGroupIsInvented(scenerySetIndex))
@@ -832,8 +867,16 @@ public:
             }
         }
 
+        // Sort tabs before adding search and misc tabs to front/back
+        SortTabs();
+
         // Add misc tab
         _tabEntries.emplace_back();
+        _tabEntries.back().Type = SCENERY_TAB_TYPE_MISC;
+
+        // Add search tab
+        _tabEntries.emplace_front();
+        _tabEntries.front().Type = SCENERY_TAB_TYPE_SEARCH;
 
         // small scenery
         for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
@@ -894,7 +937,6 @@ public:
         // Set required width
         _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), MaxTabsPerRow) * TabWidth + 5;
 
-        SortTabs();
         PrepareWidgets();
         WindowInvalidateByClass(WindowClass::Scenery);
     }
@@ -1020,13 +1062,30 @@ private:
         _tabSelections[tabIndex] = value;
     }
 
-    SceneryTabInfo* GetSceneryTabInfoForGroup(const ObjectEntryIndex sceneryGroupIndex)
+    SceneryTabInfo* GetSceneryTabInfoForMisc()
     {
-        if (sceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+        for (auto& tabEntry : _tabEntries)
         {
-            return &_tabEntries[_tabEntries.size() - 1];
+            if (tabEntry.IsMisc())
+                return &tabEntry;
         }
 
+        return nullptr;
+    }
+
+    SceneryTabInfo* GetSceneryTabInfoForSearch()
+    {
+        for (auto& tabEntry : _tabEntries)
+        {
+            if (tabEntry.IsSearch())
+                return &tabEntry;
+        }
+
+        return nullptr;
+    }
+
+    SceneryTabInfo* GetSceneryTabInfoForGroup(const ObjectEntryIndex sceneryGroupIndex)
+    {
         for (auto& tabEntry : _tabEntries)
         {
             if (tabEntry.SceneryGroupIndex == sceneryGroupIndex)
@@ -1072,11 +1131,18 @@ private:
             // If scenery is no tab, add it to misc
             if (!tabIndex.has_value())
             {
-                auto* tabInfo = GetSceneryTabInfoForGroup(OBJECT_ENTRY_INDEX_NULL);
+                auto* tabInfo = GetSceneryTabInfoForMisc();
                 if (tabInfo != nullptr)
                 {
                     tabInfo->AddEntryToBack(selection);
                 }
+            }
+
+            // Add all scenery to search tab
+            auto tabInfo = GetSceneryTabInfoForSearch();
+            if (tabInfo != nullptr)
+            {
+                tabInfo->AddEntryToBack(selection);
             }
         }
     }
