@@ -875,8 +875,8 @@ public:
         _tabEntries.back().Type = SCENERY_TAB_TYPE_MISC;
 
         // Add search tab
-        _tabEntries.emplace_front();
-        _tabEntries.front().Type = SCENERY_TAB_TYPE_SEARCH;
+        _tabEntries.emplace_back();
+        _tabEntries.back().Type = SCENERY_TAB_TYPE_SEARCH;
 
         // small scenery
         for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
