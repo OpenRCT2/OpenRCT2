@@ -404,7 +404,6 @@
     <ClInclude Include="ride\coaster\meta\TwisterRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\VerticalDropCoaster.h" />
     <ClInclude Include="ride\coaster\meta\VirginiaReel.h" />
-    <ClInclude Include="ride\coaster\meta\WaterCoaster.h" />
     <ClInclude Include="ride\coaster\meta\WoodenRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\WoodenWildMouse.h" />
     <ClInclude Include="ride\coaster\WoodenRollerCoaster.h" />
@@ -479,6 +478,7 @@
     <ClInclude Include="ride\water\meta\RiverRapids.h" />
     <ClInclude Include="ride\water\meta\SplashBoats.h" />
     <ClInclude Include="ride\water\meta\SubmarineRide.h" />
+    <ClInclude Include="ride\water\meta\WaterCoaster.h" />
     <ClInclude Include="scenario\Scenario.h" />
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />

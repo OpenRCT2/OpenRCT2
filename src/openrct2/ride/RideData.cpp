@@ -67,7 +67,6 @@
 #include "coaster/meta/TwisterRollerCoaster.h"
 #include "coaster/meta/VerticalDropCoaster.h"
 #include "coaster/meta/VirginiaReel.h"
-#include "coaster/meta/WaterCoaster.h"
 #include "coaster/meta/WoodenRollerCoaster.h"
 #include "coaster/meta/WoodenWildMouse.h"
 #include "gentle/meta/CarRide.h"
@@ -117,6 +116,7 @@
 #include "water/meta/RiverRapids.h"
 #include "water/meta/SplashBoats.h"
 #include "water/meta/SubmarineRide.h"
+#include "water/meta/WaterCoaster.h"
 
 #include <iterator>
 
