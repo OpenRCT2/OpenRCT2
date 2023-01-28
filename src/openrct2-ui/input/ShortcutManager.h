@@ -62,6 +62,7 @@ namespace OpenRCT2::Ui
         std::vector<ShortcutInput> Default;
         std::vector<ShortcutInput> Current;
         std::function<void()> Action;
+        size_t OrderIndex = static_cast<size_t>(-1);
 
         RegisteredShortcut() = default;
         RegisteredShortcut(std::string_view id, std::string_view name, const std::function<void()>& action)

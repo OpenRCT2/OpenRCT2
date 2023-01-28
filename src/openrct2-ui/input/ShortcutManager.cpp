@@ -122,6 +122,7 @@ void ShortcutManager::RegisterShortcut(RegisteredShortcut&& shortcut)
         auto id = std::make_unique<std::string>(shortcut.Id);
         auto idView = std::string_view(*id);
         _ids.push_back(std::move(id));
+        shortcut.OrderIndex = Shortcuts.size();
         Shortcuts[idView] = shortcut;
     }
 }
@@ -396,12 +397,12 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::ViewScrollLeft,
         ShortcutId::ViewScrollDown,
         ShortcutId::ViewScrollRight,
-        ShortcutId::MultiplayerChat,
+        ShortcutId::InterfaceMultiplayerChat,
         ShortcutId::InterfaceSaveGame,
         ShortcutId::InterfaceShowOptions,
         ShortcutId::InterfaceMute,
-        ShortcutId::ScaleToggleWindowMode,
-        ShortcutId::MultiplayerShow,
+        ShortcutId::InterfaceScaleToggleWindowMode,
+        ShortcutId::InterfaceMultiplayerShow,
         std::string_view(),
         ShortcutId::DebugTogglePaintDebugWindow,
         ShortcutId::ViewToggleFootpaths,
