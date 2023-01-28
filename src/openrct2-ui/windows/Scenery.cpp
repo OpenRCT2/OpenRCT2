@@ -1440,18 +1440,14 @@ private:
             auto widgetCoordsXY = ScreenCoordsXY(widgets[widgetIndex].left, widgets[widgetIndex].top);
             auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
             std::optional<ImageId> imageId = std::nullopt;
+            auto imageOffset = tabIndex == _activeTabIndex ? 1 : 0;
 
-            if (_tabEntries[tabIndex].IsMisc())
+            if (_tabEntries[tabIndex].IsSearch())
             {
-                __noop;
+                imageId = ImageId(SPR_G2_SEARCH_UNSELECTED + imageOffset, colours[1]);
             }
-            else if (_tabEntries[tabIndex].IsSearch())
+            else if (scgEntry != nullptr)
             {
-                imageId = ImageId(SPR_G2_SEARCH, colours[1]);
-            }
-            else if(scgEntry != nullptr)
-            {
-                auto imageOffset = tabIndex == _activeTabIndex ? 1 : 0;
                 imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
             }
 
