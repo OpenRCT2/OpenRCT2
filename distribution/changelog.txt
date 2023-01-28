@@ -7,6 +7,7 @@
 - Feature: [objects#226] Port RCT1 Corkscrew Coaster train.
 - Feature: [objects#229] Port RCT1 go karts with helmets.
 - Improved: [#11473] Hot reload for plug-ins now works on macOS.
+- Improved: [#17288] Reorganise the order of shortcut keys in the Shortcut Keys window.
 - Improved: [#18706] Ability to view the list of contributors in-game.
 - Improved: [#18749] Ability to have 4 active awards for more than one month in a row.
 - Improved: [#18826] [Plugin] Added all actions and their documentation to plugin API.
