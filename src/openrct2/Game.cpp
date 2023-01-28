@@ -440,11 +440,8 @@ void GameFixSaveVars()
 
     ResearchFix();
 
-    // Fix banner list pointing to NULL map elements
-    BannerResetBrokenIndex();
-
     // Fix banners which share their index
-    BannerFixDuplicates();
+    BannerApplyFixes();
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     FixInvalidVehicleSpriteSizes();
