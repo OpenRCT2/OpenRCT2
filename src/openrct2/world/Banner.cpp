@@ -238,7 +238,37 @@ RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
     return rideIndex;
 }
 
-void BannerResetBrokenIndex()
+struct BannerElementWithPos
+{
+    BannerElement* Element;
+    TileCoordsXY Pos;
+};
+
+// Returns a list of BannerElement's with the tile position.
+static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
+{
+    std::vector<BannerElementWithPos> banners;
+    for (int y = 0; y < gMapSize.y; y++)
+    {
+        for (int x = 0; x < gMapSize.x; x++)
+        {
+            const auto tilePos = TileCoordsXY{ x, y };
+            for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(tilePos.ToCoordsXY()))
+            {
+                auto bannerIndex = bannerElement->GetIndex();
+                if (bannerIndex == BannerIndex::GetNull())
+                    continue;
+
+                banners.push_back({ bannerElement, tilePos });
+            }
+        }
+    }
+    return banners;
+}
+
+// Iterates all banners and checks if the tile specified by the position actually
+// has a BannerElement tile, if no tile is found then the banner element will be released.
+static void BannerDeallocateUnlinked()
 {
     for (BannerIndex::UnderlyingType index = 0; index < _banners.size(); index++)
     {
@@ -255,58 +285,81 @@ void BannerResetBrokenIndex()
     }
 }
 
-void BannerFixDuplicates()
+// BannerElement tiles should not share a banner entry, this iterates
+// over all banner elements that shares the index and creates a new entry also
+// copying the data from the current assigned banner entry.
+static void BannerFixDuplicates(std::vector<BannerElementWithPos>& bannerElements)
 {
-    // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
-    std::vector<bool> activeBanners;
-    activeBanners.resize(MAX_BANNERS);
+    // Sort the banners by index
+    std::sort(bannerElements.begin(), bannerElements.end(), [](const BannerElementWithPos& a, const BannerElementWithPos& b) {
+        return a.Element->GetIndex() < b.Element->GetIndex();
+    });
 
-    for (int y = 0; y < gMapSize.y; y++)
+    // Create a list of all banners with duplicate indices.
+    std::vector<BannerElementWithPos> duplicates;
+    for (size_t i = 1; i < bannerElements.size(); i++)
     {
-        for (int x = 0; x < gMapSize.x; x++)
+        if (bannerElements[i - 1].Element->GetIndex() == bannerElements[i].Element->GetIndex())
         {
-            const auto bannerPos = TileCoordsXY{ x, y }.ToCoordsXY();
-            for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(bannerPos))
-            {
-                auto bannerIndex = bannerElement->GetIndex();
-                if (bannerIndex == BannerIndex::GetNull())
-                    continue;
-
-                const auto index = bannerIndex.ToUnderlying();
-                if (activeBanners[index])
-                {
-                    LOG_INFO(
-                        "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", index, x, y,
-                        bannerElement->BaseHeight);
-
-                    // Banner index is already in use by another banner, so duplicate it
-                    auto newBanner = CreateBanner();
-                    if (newBanner == nullptr)
-                    {
-                        LOG_ERROR("Failed to create new banner.");
-                        continue;
-                    }
-                    Guard::Assert(!activeBanners[newBanner->id.ToUnderlying()]);
-
-                    // Copy over the original banner, but update the location
-                    const auto* oldBanner = GetBanner(bannerIndex);
-                    if (oldBanner != nullptr)
-                    {
-                        auto newBannerId = newBanner->id;
-
-                        *newBanner = *oldBanner;
-                        newBanner->id = newBannerId;
-                        newBanner->position = { x, y };
-                    }
-
-                    bannerElement->SetIndex(newBanner->id);
-                }
-
-                // Mark banner index as in-use
-                activeBanners[index] = true;
-            }
+            duplicates.push_back(bannerElements[i]);
         }
     }
+
+    // For each duplicate, create a new banner and copy the old data
+    for (const auto& duplicate : duplicates)
+    {
+        const auto oldIndex = duplicate.Element->GetIndex();
+        const auto* oldBanner = GetBanner(oldIndex);
+        if (oldBanner == nullptr)
+        {
+            LOG_ERROR("Unable to get old banner for index %u.", oldIndex.ToUnderlying());
+            continue;
+        }
+
+        auto newBanner = CreateBanner();
+        if (newBanner == nullptr)
+        {
+            LOG_ERROR("Failed to create new banner.");
+            continue;
+        }
+
+        const auto newBannerId = newBanner->id;
+
+        // Copy the old data to the new banner.
+        *newBanner = *oldBanner;
+        newBanner->id = newBannerId;
+
+        // Assign the new banner index to the tile element.
+        duplicate.Element->SetIndex(newBannerId);
+    }
+}
+
+// Ensures that all banner entries have the correct position based on the element
+// that references the banner entry.
+static void BannerFixPositions(std::vector<BannerElementWithPos>& bannerElements)
+{
+    for (const auto& entry : bannerElements)
+    {
+        const auto index = entry.Element->GetIndex();
+        auto* banner = GetBanner(index);
+        if (banner == nullptr)
+        {
+            LOG_ERROR("Unable to get banner for index %u.", index.ToUnderlying());
+            continue;
+        }
+        banner->position = entry.Pos;
+    }
+}
+
+void BannerApplyFixes()
+{
+    auto bannerElements = GetAllBannerElementsOnMap();
+
+    BannerFixDuplicates(bannerElements);
+
+    BannerFixPositions(bannerElements);
+
+    BannerDeallocateUnlinked();
 }
 
 Banner* BannerElement::GetBanner() const
