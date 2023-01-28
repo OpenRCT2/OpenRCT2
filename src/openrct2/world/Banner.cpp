@@ -267,7 +267,7 @@ static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
 }
 
 // Iterates all banners and checks if the tile specified by the position actually
-// has a BannerElement tile, if no tile is found then the banner element will be released.
+// has a tile with the banner index, if no tile is found then the banner element will be released.
 static void BannerDeallocateUnlinked()
 {
     for (BannerIndex::UnderlyingType index = 0; index < _banners.size(); index++)
