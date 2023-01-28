@@ -627,7 +627,7 @@ public:
                     continue;
 
                 auto& item = _guestList.emplace_back();
-                item.Id = peep->sprite_index;
+                item.Id = peep->Id;
 
                 Formatter ft;
                 peep->FormatNameTo(ft);
@@ -942,7 +942,7 @@ private:
                 if (peepA->Name == nullptr && peepB->Name == nullptr)
                 {
                     // Simple ID comparison for when both peeps use a number or a generated name
-                    return peepA->Id < peepB->Id;
+                    return peepA->PeepId < peepB->PeepId;
                 }
             }
         }

@@ -464,7 +464,7 @@ public:
                 if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->NumTrains)
                     return;
 
-                if (vehicle->sprite_index != ride->vehicles[viewVehicleIndex])
+                if (vehicle->Id != ride->vehicles[viewVehicleIndex])
                     return;
 
                 w->Invalidate();

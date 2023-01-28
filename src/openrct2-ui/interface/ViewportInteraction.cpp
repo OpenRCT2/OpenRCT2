@@ -206,7 +206,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 {
                     if (GameIsNotPaused())
                     {
-                        auto balloonPress = BalloonPressAction(entity->sprite_index);
+                        auto balloonPress = BalloonPressAction(entity->Id);
                         GameActions::Execute(&balloonPress);
                     }
                 }

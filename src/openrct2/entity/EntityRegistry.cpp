@@ -195,7 +195,7 @@ void ResetAllEntities()
             continue;
         }
         spr->Type = EntityType::Null;
-        spr->sprite_index = EntityId::FromUnderlying(i);
+        spr->Id = EntityId::FromUnderlying(i);
 
         _entityFlashingList[i] = false;
     }
@@ -265,13 +265,13 @@ EntitiesChecksum GetAllEntitiesChecksum()
 static void EntityReset(EntityBase* entity)
 {
     // Need to retain how the sprite is linked in lists
-    auto entityIndex = entity->sprite_index;
+    auto entityIndex = entity->Id;
     _entityFlashingList[entityIndex.ToUnderlying()] = false;
 
     Entity* spr = reinterpret_cast<Entity*>(entity);
     *spr = Entity();
 
-    entity->sprite_index = entityIndex;
+    entity->Id = entityIndex;
     entity->Type = EntityType::Null;
 }
 
@@ -280,7 +280,7 @@ static void AddToEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
     // Entity list must be in sprite_index order to prevent desync issues
-    list.insert(std::lower_bound(std::begin(list), std::end(list), entity->sprite_index), entity->sprite_index);
+    list.insert(std::lower_bound(std::begin(list), std::end(list), entity->Id), entity->Id);
 }
 
 static void AddToFreeList(EntityId index)
@@ -292,7 +292,7 @@ static void AddToFreeList(EntityId index)
 static void RemoveFromEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
-    auto ptr = BinaryFind(std::begin(list), std::end(list), entity->sprite_index);
+    auto ptr = BinaryFind(std::begin(list), std::end(list), entity->Id);
     if (ptr != std::end(list))
     {
         list.erase(ptr);
@@ -414,15 +414,15 @@ static void EntitySpatialInsert(EntityBase* entity, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc);
     auto& spatialVector = gEntitySpatialIndex[newIndex];
-    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
-    spatialVector.insert(index, entity->sprite_index);
+    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), entity->Id);
+    spatialVector.insert(index, entity->Id);
 }
 
 static void EntitySpatialRemove(EntityBase* entity)
 {
     size_t currentIndex = GetSpatialIndexOffset({ entity->x, entity->y });
     auto& spatialVector = gEntitySpatialIndex[currentIndex];
-    auto index = BinaryFind(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
+    auto index = BinaryFind(std::begin(spatialVector), std::end(spatialVector), entity->Id);
     if (index != std::end(spatialVector))
     {
         spatialVector.erase(index, index + 1);
@@ -499,8 +499,8 @@ static void FreeEntity(EntityBase& entity)
     else if (guest != nullptr)
     {
         guest->SetName({});
-        OpenRCT2::RideUse::GetHistory().RemoveHandle(guest->sprite_index);
-        OpenRCT2::RideUse::GetTypeHistory().RemoveHandle(guest->sprite_index);
+        OpenRCT2::RideUse::GetHistory().RemoveHandle(guest->Id);
+        OpenRCT2::RideUse::GetTypeHistory().RemoveHandle(guest->Id);
     }
 }
 
@@ -514,7 +514,7 @@ void EntityRemove(EntityBase* entity)
 
     EntityTweener::Get().RemoveEntity(entity);
     RemoveFromEntityList(entity); // remove from existing list
-    AddToFreeList(entity->sprite_index);
+    AddToFreeList(entity->Id);
 
     EntitySpatialRemove(entity);
     EntityReset(entity);
@@ -550,12 +550,12 @@ uint16_t RemoveFloatingEntities()
 
 void EntitySetFlashing(EntityBase* entity, bool flashing)
 {
-    assert(entity->sprite_index.ToUnderlying() < MAX_ENTITIES);
-    _entityFlashingList[entity->sprite_index.ToUnderlying()] = flashing;
+    assert(entity->Id.ToUnderlying() < MAX_ENTITIES);
+    _entityFlashingList[entity->Id.ToUnderlying()] = flashing;
 }
 
 bool EntityGetFlashing(EntityBase* entity)
 {
-    assert(entity->sprite_index.ToUnderlying() < MAX_ENTITIES);
-    return _entityFlashingList[entity->sprite_index.ToUnderlying()];
+    assert(entity->Id.ToUnderlying() < MAX_ENTITIES);
+    return _entityFlashingList[entity->Id.ToUnderlying()];
 }

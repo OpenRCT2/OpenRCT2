@@ -365,7 +365,7 @@ struct Peep : EntityBase
         Direction PeepDirection; // Direction ?
     };
     RideId InteractionRideIndex;
-    uint32_t Id;
+    uint32_t PeepId;
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     TileCoordsXYZD PathfindGoal;
     std::array<TileCoordsXYZD, 4> PathfindHistory;

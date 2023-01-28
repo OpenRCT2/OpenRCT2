@@ -463,7 +463,7 @@ static int32_t ConsoleCommandStaff(InteractiveConsole& console, const arguments_
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", peep->sprite_index, peep->AssignedStaffType, peep->Energy,
+                    "staff id %03d type: %02u energy %03u name %s", peep->Id, peep->AssignedStaffType, peep->Energy,
                     name.c_str());
             }
         }

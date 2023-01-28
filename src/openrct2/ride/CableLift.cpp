@@ -29,7 +29,7 @@ Vehicle* CableLiftSegmentCreate(
     current->ride_subtype = OBJECT_ENTRY_INDEX_NULL;
     if (head)
     {
-        ride.cable_lift = current->sprite_index;
+        ride.cable_lift = current->Id;
     }
     current->SubType = head ? Vehicle::Type::Head : Vehicle::Type::Tail;
     current->var_44 = var_44;
@@ -441,7 +441,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
     uint16_t massTotal = 0;
     int32_t accelerationTotal = 0;
 
-    for (Vehicle* vehicle = GetEntity<Vehicle>(sprite_index); vehicle != nullptr;
+    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
          vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicleCount++;
