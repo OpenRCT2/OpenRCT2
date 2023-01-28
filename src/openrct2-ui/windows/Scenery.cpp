@@ -546,8 +546,7 @@ public:
 
                 if (tabInfo.IsSearch())
                 {
-                    // TODO: Change this string
-                    ft.Add<StringId>(STR_THEMES_WINDOW_SCENERY);
+                    ft.Add<StringId>(STR_ALL_SCENERY);
                     return { fallback, ft };
                 }
 
@@ -572,8 +571,7 @@ public:
             const auto& tabInfo = _tabEntries[tabIndex];
             if (tabInfo.IsSearch())
             {
-                // TODO: Change this string
-                titleStringId = STR_THEMES_WINDOW_SCENERY;
+                titleStringId = STR_ALL_SCENERY;
             }
             else
             {
