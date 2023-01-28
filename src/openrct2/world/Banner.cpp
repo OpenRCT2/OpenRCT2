@@ -273,10 +273,10 @@ static void BannerDeallocateUnlinked()
     for (BannerIndex::UnderlyingType index = 0; index < _banners.size(); index++)
     {
         const auto bannerId = BannerIndex::FromUnderlying(index);
-        auto tileElement = BannerGetTileElement(bannerId);
+        auto* tileElement = BannerGetTileElement(bannerId);
         if (tileElement == nullptr)
         {
-            auto banner = GetBanner(bannerId);
+            auto* banner = GetBanner(bannerId);
             if (banner != nullptr)
             {
                 banner->type = BANNER_NULL;
@@ -316,7 +316,7 @@ static void BannerFixDuplicates(std::vector<BannerElementWithPos>& bannerElement
             continue;
         }
 
-        auto newBanner = CreateBanner();
+        auto* newBanner = CreateBanner();
         if (newBanner == nullptr)
         {
             LOG_ERROR("Failed to create new banner.");
