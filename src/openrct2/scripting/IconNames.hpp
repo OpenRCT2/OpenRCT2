@@ -65,6 +65,8 @@ namespace OpenRCT2::Scripting
         { "unmute", SPR_G2_TOOLBAR_UNMUTE },
         { "unmute_pressed", SPR_G2_TOOLBAR_UNMUTE_PRESSED },
         { "search", SPR_G2_SEARCH },
+        { "search_selected", SPR_G2_SEARCH_SELECTED },
+        { "search_unselected", SPR_G2_SEARCH_UNSELECTED },
         { "eyedropper", SPR_G2_EYEDROPPER },
         { "chat", SPR_G2_CHAT },
         { "map_north", SPR_G2_MAP_NORTH },
