@@ -16,7 +16,8 @@ public:
     {
         std::fill(_fieldPresent.begin(), _fieldPresent.end(), false);
     }
-    void Initialize(const std::vector<KeyType>& keyDescs, const KeyRange<KeyType>& keyRange);
+    void Initialize(const KeyRange<KeyType>& keyRange);
+    void ReadKey(const KeyType& key);
 
     std::vector<uint32_t> GetParams(const KeyType& key) const;
     std::vector<KeyType> GenerateKeys(const KeyType& key) const;
@@ -27,19 +28,20 @@ private:
     const KeyRange<KeyType>* _keysRange;
 };
 
+template<class KeyType> void KeyGenerator<KeyType>::ReadKey(const KeyType& key)
+{
+    for (uint32_t index = 0; index < _fieldPresent.size(); index++)
+    {
+        const std::optional<uint32_t> arg = key.Get(index);
+        if (arg.has_value())
+            _fieldPresent[index] = true;
+    }
+}
+
 template<class KeyType>
-void KeyGenerator<KeyType>::Initialize(const std::vector<KeyType>& keys, const KeyRange<KeyType>& keyRange)
+void KeyGenerator<KeyType>::Initialize(const KeyRange<KeyType>& keyRange)
 {
     _keysRange = &keyRange;
-    for (auto& key : keys)
-    {
-        for (uint32_t index = 0; index < _fieldPresent.size(); index++)
-        {
-            const std::optional<uint32_t> arg = key.Get(index);
-            if (arg.has_value())
-                _fieldPresent[index] = true;
-        }
-    }
 }
 
 template<class KeyType> std::vector<KeyType> KeyGenerator<KeyType>::GenerateKeys(const KeyType& keyDesc) const

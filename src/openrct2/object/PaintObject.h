@@ -21,7 +21,7 @@
 #include <optional>
 #include <vector>
 
-using PaintStructTree = TreeContainer<PaintStructKey, PaintStructDescriptor*>;
+using PaintStructTree = TreeContainer<PaintStructKey, std::shared_ptr<PaintStructDescriptor>>;
 
 struct TrackElement;
 class PaintObject final : public Object

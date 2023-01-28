@@ -28,7 +28,7 @@ public:
     const std::vector<ValueType>* Get(const KeyType& location) const;
 
     void Add(const KeyType& location, const ValueType& value);
-    void Build();
+    void ReadKey(const KeyType& location);
 private:
 
     const std::vector<ValueType>* Get(const std::vector<uint32_t>& location) const;
@@ -36,9 +36,6 @@ private:
     KeyGenerator<KeyType> _keyGenerator;
 
     const KeyRange<KeyType>* _keyRange;
-
-    std::vector<KeyType> _keys;
-    std::vector<ValueType> _values;
 };
 
 template<class KeyType, class ValueType>
@@ -78,10 +75,14 @@ void TreeContainer<KeyType, ValueType>::Add(const std::vector<uint32_t>& locatio
 }
 
 template<class KeyType, class ValueType>
-void TreeContainer<KeyType, ValueType>::Add(const KeyType& location, const ValueType& value)
+void TreeContainer<KeyType, ValueType>::Add(const KeyType& key, const ValueType& value)
 {
-    _keys.push_back(location);
-    _values.push_back(value);
+    auto keysGenerated = _keyGenerator.GenerateKeys(key);
+    for (const auto& aKey : keysGenerated)
+    {
+        auto params = _keyGenerator.GetParams(aKey);
+        Add(params, value);
+    }
 }
 
 template<class KeyType, class ValueType>
@@ -94,26 +95,10 @@ const std::vector<ValueType>* TreeContainer<KeyType, ValueType>::Get(
 template<class KeyType, class ValueType> void TreeContainer<KeyType, ValueType>::Initialize(const KeyRange<KeyType>& keyRange)
 {
     _keyRange = &keyRange;
+    _keyGenerator.Initialize(keyRange);
 }
 
-template<class KeyType, class ValueType> void TreeContainer<KeyType, ValueType>::Build()
+template<class KeyType, class ValueType> void TreeContainer<KeyType, ValueType>::ReadKey(const KeyType& location)
 {
-    _keyGenerator.Initialize(_keys, *_keyRange);
-
-    for (size_t index = 0; index < _keys.size(); index++)
-    {
-        const auto& key = _keys[index];
-        const auto& value = _values[index];
-
-        auto keysGenerated = _keyGenerator.GenerateKeys(key);
-        for (const auto& aKey : keysGenerated)
-        {
-            auto params = _keyGenerator.GetParams(aKey);
-            Add(params, value);
-        }
-    }
-
-    //clear the keyvalues as we don't need them anymore
-    _keys.clear();
-    _values.clear();
+    _keyGenerator.ReadKey(location);
 }
