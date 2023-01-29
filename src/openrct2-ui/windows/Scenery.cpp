@@ -44,6 +44,9 @@ constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
 constexpr int32_t TabWidth = 31;
 constexpr int32_t MaxTabs = 32;
+constexpr int32_t ReservedTabCount = 2;
+constexpr int32_t TabImageOffsetSelected = 1;
+constexpr int32_t TabImageOffsetUnselected = 0;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
@@ -121,6 +124,7 @@ private:
         SceneryTabType Type = SCENERY_TAB_TYPE_GROUP;
         ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
         std::deque<ScenerySelection> Entries;
+        u8string Filter = "";
 
         bool IsMisc() const
         {
@@ -159,12 +163,11 @@ private:
         }
     };
 
-    std::deque<SceneryTabInfo> _tabEntries;
+    std::vector<SceneryTabInfo> _tabEntries;
     std::vector<Widget> _widgets;
     int32_t _requiredWidth;
     ScenerySelection _selectedScenery;
     int16_t _hoverCounter;
-    std::vector<u8string> _filters;
     SceneryTabInfo _filteredSceneryTab;
 
 public:
@@ -172,7 +175,6 @@ public:
     {
         Init();
 
-        _filters.clear();
         InitScrollWidgets();
         ContentUpdateScroll();
         ShowGridlines();
@@ -200,6 +202,7 @@ public:
 
         WindowMovePosition(*this, { ContextGetWidth() - GetRequiredWidth(), 0x1D });
         WindowPushOthersBelow(*this);
+        LOG_INFO("Column count: %d", GetNumColumns());
     }
 
     void OnClose() override
@@ -261,10 +264,10 @@ public:
                 Invalidate();
                 break;
             case WIDX_FILTER_TEXT_BOX:
-                WindowStartTextbox(*this, widgetIndex, STR_STRING, GetFilterString(_activeTabIndex).data(), MAX_PATH);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filteredSceneryTab.Filter.data(), MAX_PATH);
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
-                GetFilterString(_activeTabIndex).clear();
+                _tabEntries[_activeTabIndex].Filter.clear();
                 ContentUpdateScroll();
                 scrolls->v_top = 0;
                 Invalidate();
@@ -494,10 +497,10 @@ public:
         if (widgetIndex != WIDX_FILTER_TEXT_BOX)
             return;
 
-        if (text == GetFilterString(_activeTabIndex))
+        if (text == _tabEntries[_activeTabIndex].Filter)
             return;
 
-        GetFilterString(_activeTabIndex).assign(text);
+        _tabEntries[_activeTabIndex].Filter.assign(text);
         ContentUpdateScroll();
 
         scrolls->v_top = 0;
@@ -583,7 +586,7 @@ public:
             }
         }
         widgets[WIDX_SCENERY_TITLE].text = titleStringId;
-        widgets[WIDX_FILTER_TEXT_BOX].string = GetFilterString(_activeTabIndex).data();
+        widgets[WIDX_FILTER_TEXT_BOX].string = _filteredSceneryTab.Filter.data();
 
         pressed_widgets = 0;
         pressed_widgets |= 1uLL << (tabIndex + WIDX_SCENERY_TAB_1);
@@ -830,7 +833,7 @@ public:
     {
         _tabEntries.clear();
 
-        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - 2; scenerySetIndex++)
+        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - ReservedTabCount; scenerySetIndex++)
         {
             const auto* sceneryGroupEntry = GetSceneryGroupEntry(scenerySetIndex);
             if (sceneryGroupEntry != nullptr && SceneryGroupIsInvented(scenerySetIndex))
@@ -1129,63 +1132,56 @@ private:
         }
     }
 
-    u8string& GetFilterString(const size_t tabIndex)
-    {
-        if (tabIndex >= _filters.size())
-        {
-            _filters.resize(tabIndex + 1);
-        }
-        return _filters[tabIndex];
-    }
-
     void SetFilteredScenery(const size_t tabIndex)
     {
         auto currentTab = _tabEntries[tabIndex];
 
         _filteredSceneryTab.Entries.clear();
+        _filteredSceneryTab.Filter = currentTab.Filter;
+
         for (auto selection : currentTab.Entries)
         {
-            if (IsFiltered(selection, tabIndex))
+            if (IsFiltered(selection))
                 _filteredSceneryTab.AddEntry(selection, true);
         }
     }
 
-    bool IsFiltered(const ScenerySelection& selection, const size_t tabIndex)
+    bool IsFiltered(const ScenerySelection& selection)
     {
-        if (GetFilterString(tabIndex).empty())
+        if (_filteredSceneryTab.Filter.empty())
             return true;
 
         auto& objManager = GetContext()->GetObjectManager();
         auto sceneryObjectType = GetObjectTypeFromSceneryType(selection.SceneryType);
         auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selection.EntryIndex);
 
-        return IsFilterInName(*sceneryObject, tabIndex) || IsFilterInAuthors(*sceneryObject, tabIndex)
-            || IsFilterInIdentifier(*sceneryObject, tabIndex) || IsFilterInFilename(*sceneryObject, tabIndex);
+        return IsFilterInName(*sceneryObject) || IsFilterInAuthors(*sceneryObject) || IsFilterInIdentifier(*sceneryObject)
+            || IsFilterInFilename(*sceneryObject);
     }
 
-    bool IsFilterInName(const Object& object, const size_t tabIndex)
+    bool IsFilterInName(const Object& object)
     {
-        return String::Contains(object.GetName(), GetFilterString(tabIndex), true);
+        return String::Contains(object.GetName(), _filteredSceneryTab.Filter, true);
     }
 
-    bool IsFilterInAuthors(const Object& object, const size_t tabIndex)
+    bool IsFilterInAuthors(const Object& object)
     {
         for (auto author : object.GetAuthors())
-            if (String::Contains(author, GetFilterString(tabIndex), true))
+            if (String::Contains(author, _filteredSceneryTab.Filter, true))
                 return true;
 
         return false;
     }
 
-    bool IsFilterInIdentifier(const Object& object, const size_t tabIndex)
+    bool IsFilterInIdentifier(const Object& object)
     {
-        return String::Contains(object.GetIdentifier(), GetFilterString(tabIndex), true);
+        return String::Contains(object.GetIdentifier(), _filteredSceneryTab.Filter, true);
     }
 
-    bool IsFilterInFilename(const Object& object, const size_t tabIndex)
+    bool IsFilterInFilename(const Object& object)
     {
         auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
-        return String::Contains(repoItem->Path, GetFilterString(tabIndex), true);
+        return String::Contains(repoItem->Path, _filteredSceneryTab.Filter, true);
     }
 
     void SortTabs()
@@ -1269,7 +1265,7 @@ private:
             return;
 
         auto lastScenery = GetSelectedScenery(_activeTabIndex);
-        if (!(lastScenery == scenery || IsFiltered(lastScenery, _activeTabIndex)))
+        if (!(lastScenery == scenery || IsFiltered(lastScenery)))
         {
             _filteredSceneryTab.Entries.pop_front();
         }
@@ -1368,7 +1364,7 @@ private:
             auto widgetCoordsXY = ScreenCoordsXY(widgets[widgetIndex].left, widgets[widgetIndex].top);
             auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
             std::optional<ImageId> imageId = std::nullopt;
-            auto imageOffset = tabIndex == _activeTabIndex ? 1 : 0;
+            auto imageOffset = tabIndex == _activeTabIndex ? TabImageOffsetSelected : TabImageOffsetUnselected;
 
             if (_tabEntries[tabIndex].IsSearch())
             {
