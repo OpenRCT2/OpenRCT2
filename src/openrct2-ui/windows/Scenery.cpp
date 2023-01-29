@@ -170,7 +170,7 @@ private:
         }
     };
 
-    std::deque<SceneryTabInfo> _tabEntries;
+    std::vector<SceneryTabInfo> _tabEntries;
     std::vector<Widget> _widgets;
     int32_t _requiredWidth;
     int32_t _actualMinHeight;
@@ -210,6 +210,7 @@ public:
 
         WindowMovePosition(*this, { ContextGetWidth() - GetRequiredWidth(), 0x1D });
         WindowPushOthersBelow(*this);
+        LOG_INFO("Column count: %d", GetNumColumns());
     }
 
     void OnClose() override
@@ -844,7 +845,7 @@ public:
     {
         _tabEntries.clear();
 
-        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - 2; scenerySetIndex++)
+        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - ReservedTabCount; scenerySetIndex++)
         {
             const auto* sceneryGroupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(scenerySetIndex);
             if (sceneryGroupEntry != nullptr && SceneryGroupIsInvented(scenerySetIndex))
@@ -1145,15 +1146,6 @@ private:
         }
     }
 
-    u8string& GetFilterString(const size_t tabIndex)
-    {
-        if (tabIndex >= _filters.size())
-        {
-            _filters.resize(tabIndex + 1);
-        }
-        return _filters[tabIndex];
-    }
-
     void SetFilteredScenery(const size_t tabIndex)
     {
         auto currentTab = _tabEntries[tabIndex];
@@ -1177,16 +1169,16 @@ private:
         auto sceneryObjectType = GetObjectTypeFromSceneryType(selection.SceneryType);
         auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selection.EntryIndex);
 
-        return IsFilterInName(*sceneryObject, tabIndex) || IsFilterInAuthors(*sceneryObject, tabIndex)
-            || IsFilterInIdentifier(*sceneryObject, tabIndex) || IsFilterInFilename(*sceneryObject, tabIndex);
+        return IsFilterInName(*sceneryObject) || IsFilterInAuthors(*sceneryObject) || IsFilterInIdentifier(*sceneryObject)
+            || IsFilterInFilename(*sceneryObject);
     }
 
-    bool IsFilterInName(const Object& object, const size_t tabIndex)
+    bool IsFilterInName(const Object& object)
     {
         return String::Contains(object.GetName(), _filteredSceneryTab.Filter, true);
     }
 
-    bool IsFilterInAuthors(const Object& object, const size_t tabIndex)
+    bool IsFilterInAuthors(const Object& object)
     {
         for (auto author : object.GetAuthors())
             if (String::Contains(author, _filteredSceneryTab.Filter, true))
@@ -1195,12 +1187,12 @@ private:
         return false;
     }
 
-    bool IsFilterInIdentifier(const Object& object, const size_t tabIndex)
+    bool IsFilterInIdentifier(const Object& object)
     {
         return String::Contains(object.GetIdentifier(), _filteredSceneryTab.Filter, true);
     }
 
-    bool IsFilterInFilename(const Object& object, const size_t tabIndex)
+    bool IsFilterInFilename(const Object& object)
     {
         auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
         return String::Contains(repoItem->Path, _filteredSceneryTab.Filter, true);
@@ -1438,7 +1430,7 @@ private:
             auto widgetCoordsXY = ScreenCoordsXY(widgets[widgetIndex].left, widgets[widgetIndex].top);
             auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
             std::optional<ImageId> imageId = std::nullopt;
-            auto imageOffset = tabIndex == _activeTabIndex ? 1 : 0;
+            auto imageOffset = tabIndex == _activeTabIndex ? TabImageOffsetSelected : TabImageOffsetUnselected;
 
             if (_tabEntries[tabIndex].IsSearch())
             {
