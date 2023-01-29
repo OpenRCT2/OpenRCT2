@@ -95,6 +95,7 @@
 #include "shops/meta/Shop.h"
 #include "shops/meta/Toilets.h"
 #include "thrill/meta/3DCinema.h"
+#include "thrill/meta/Condor.h"
 #include "thrill/meta/Enterprise.h"
 #include "thrill/meta/GoKarts.h"
 #include "thrill/meta/LaunchedFreefall.h"
@@ -336,6 +337,7 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER         */ SingleRailRollerCoasterRTD,
     /* RIDE_TYPE_ALPINE_COASTER                     */ AlpineCoasterRTD,
     /* RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER      */ ClassicWoodenRollerCoasterRTD,
+    CondorRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const

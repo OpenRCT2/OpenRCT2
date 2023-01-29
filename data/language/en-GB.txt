@@ -98,6 +98,7 @@ STR_0093    :Hybrid Coaster
 STR_0094    :Single Rail Roller Coaster
 STR_0095    :Alpine Coaster
 STR_0096    :Classic Wooden Roller Coaster
+STR_0097	:Condor
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -181,6 +182,7 @@ STR_0603    :A wooden style roller coaster with a steel track, allowing for stee
 STR_0604    :Riders ride single file on a narrow monorail track, as they race through tight inversions and direction changes
 STR_0605    :Riders toboggan down a meandering steel track, braking to control their speed
 STR_0606    :An older-style wooden roller coaster with a fast and rough ride, with plenty of air-time, some lateral G’s, and designed to feel ‘out-of-control’
+STR_0607	:Riders are pulled in the air while riding in circular motion, creating some vertical g's due to the centrifugal motion and offering a spectacular view to the riders
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}

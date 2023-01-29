@@ -732,7 +732,6 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             { "isChairlift", CAR_ENTRY_FLAG_CHAIRLIFT },
             { "isWaterRide", CAR_ENTRY_FLAG_WATER_RIDE },
             { "isGoKart", CAR_ENTRY_FLAG_GO_KART },
-            { "useDodgemCarPlacement", CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT },
 
             // Obsolete flag, only used on Boat Hire. Remaining usages have not yet been updated as of 2022-07-11.
             { "VEHICLE_ENTRY_FLAG_11", CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES },

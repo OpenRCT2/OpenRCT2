@@ -3156,8 +3156,10 @@ static Vehicle* vehicle_create_car(
         vehicle->peep[i] = EntityId::GetNull();
     }
 
-    if (carEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.CarPlacement == CarPlacementType::Dodgems)
     {
+        
         // Loc6DDCA4:
         vehicle->TrackSubposition = VehicleTrackSubposition::Default;
         int32_t direction = trackElement->GetDirection();
@@ -3521,9 +3523,8 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
                     continue;
                 }
 
-                auto carEntry = vehicle->Entry();
-
-                if (!(carEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT))
+                const auto& rtd = GetRideTypeDescriptor();
+                if (rtd.CarPlacement != CarPlacementType::Dodgems)
                 {
                     vehicle->UpdateTrackMotion(nullptr);
                 }

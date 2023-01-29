@@ -448,6 +448,7 @@
     <ClInclude Include="ride\shops\meta\Toilets.h" />
     <ClInclude Include="ride\Station.h" />
     <ClInclude Include="ride\thrill\meta\3DCinema.h" />
+    <ClInclude Include="ride\thrill\meta\Condor.h" />
     <ClInclude Include="ride\thrill\meta\Enterprise.h" />
     <ClInclude Include="ride\thrill\meta\GoKarts.h" />
     <ClInclude Include="ride\thrill\meta\LaunchedFreefall.h" />
@@ -925,6 +926,7 @@
     <ClCompile Include="ride\shops\Shop.cpp" />
     <ClCompile Include="ride\Station.cpp" />
     <ClCompile Include="ride\thrill\3dCinema.cpp" />
+    <ClCompile Include="ride\thrill\Condor.cpp" />
     <ClCompile Include="ride\thrill\Enterprise.cpp" />
     <ClCompile Include="ride\thrill\GoKarts.cpp" />
     <ClCompile Include="ride\thrill\LaunchedFreefall.cpp" />

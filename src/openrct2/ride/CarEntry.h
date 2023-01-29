@@ -23,7 +23,7 @@ namespace OpenRCT2::Audio
     enum class SoundId : uint8_t;
 }
 
-enum : uint32_t
+enum : uint64_t
 {
     CAR_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1
         << 0, // Set on powered vehicles that do not slow down when going down a hill.

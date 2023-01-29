@@ -3723,7 +3723,8 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    if (vehicle_type->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.CarPlacement == CarPlacementType::Dodgems)
     {
         SetDestination(vehicle->GetLocation(), 15);
         RideSubState = PeepRideSubState::ApproachVehicle;

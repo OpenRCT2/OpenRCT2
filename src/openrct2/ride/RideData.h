@@ -156,6 +156,13 @@ struct UpkeepCostsDescriptor
     uint8_t CostPerStation;
 };
 
+enum class CarPlacementType
+{
+    Default,
+    Dodgems,
+    Condor
+};
+
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
 using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
 using RideMusicUpdateFunction = void (*)(Ride&);
@@ -246,6 +253,7 @@ struct RideTypeDescriptor
     MusicTrackOffsetLengthFunc MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default;
 
     UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
+    CarPlacementType CarPlacement = CarPlacementType::Default;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
