@@ -30,7 +30,6 @@ static bool _peepPathFindIsStaff;
 static int8_t _peepPathFindNumJunctions;
 static int8_t _peepPathFindMaxJunctions;
 static int32_t _peepPathFindTilesChecked;
-static uint8_t _peepPathFindFewestNumSteps;
 
 TileCoordsXYZ gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
@@ -1461,7 +1460,6 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
                 height += 0x2;
             }
 
-            _peepPathFindFewestNumSteps = 255;
             /* Divide the maxTilesChecked global search limit
              * between the remaining edges to ensure the search
              * covers all of the remaining edges. */
