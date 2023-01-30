@@ -44,9 +44,6 @@ constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
 constexpr int32_t TabWidth = 31;
 constexpr int32_t MaxTabs = 32;
-constexpr int32_t ReservedTabCount = 2;
-constexpr int32_t TabImageOffsetSelected = 1;
-constexpr int32_t TabImageOffsetUnselected = 0;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
@@ -105,13 +102,6 @@ bool gWindowSceneryEyedropperEnabled;
 class SceneryWindow final : public Window
 {
 private:
-    enum SceneryTabType
-    {
-        SCENERY_TAB_TYPE_GROUP,
-        SCENERY_TAB_TYPE_MISC,
-        SCENERY_TAB_TYPE_SEARCH
-    };
-
     struct SceneryItem
     {
         int32_t allRows;
@@ -121,24 +111,13 @@ private:
 
     struct SceneryTabInfo
     {
-        SceneryTabType Type = SCENERY_TAB_TYPE_GROUP;
         ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
         std::deque<ScenerySelection> Entries;
         u8string Filter = "";
 
         bool IsMisc() const
         {
-            return Type == SCENERY_TAB_TYPE_MISC;
-        }
-
-        bool IsSearch() const
-        {
-            return Type == SCENERY_TAB_TYPE_SEARCH;
-        }
-
-        bool IsSceneryGroup() const
-        {
-            return Type == SCENERY_TAB_TYPE_GROUP;
+            return SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL;
         }
 
         bool Contains(const ScenerySelection& entry) const
@@ -202,7 +181,6 @@ public:
 
         WindowMovePosition(*this, { ContextGetWidth() - GetRequiredWidth(), 0x1D });
         WindowPushOthersBelow(*this);
-        LOG_INFO("Column count: %d", GetNumColumns());
     }
 
     void OnClose() override
@@ -539,23 +517,18 @@ public:
             const auto tabIndex = static_cast<size_t>(widgetIndex - WIDX_SCENERY_TAB_1);
             if (_tabEntries.size() > tabIndex)
             {
-                auto ft = Formatter();
                 const auto& tabInfo = _tabEntries[tabIndex];
                 if (tabInfo.IsMisc())
                 {
+                    auto ft = Formatter();
                     ft.Add<StringId>(STR_MISCELLANEOUS);
-                    return { fallback, ft };
-                }
-
-                if (tabInfo.IsSearch())
-                {
-                    ft.Add<StringId>(STR_ALL_SCENERY);
                     return { fallback, ft };
                 }
 
                 const auto* sceneryEntry = tabInfo.GetSceneryGroupEntry();
                 if (sceneryEntry != nullptr)
                 {
+                    auto ft = Formatter();
                     ft.Add<StringId>(sceneryEntry->name);
                     return { fallback, ft };
                 }
@@ -572,17 +545,10 @@ public:
         if (tabIndex < _tabEntries.size())
         {
             const auto& tabInfo = _tabEntries[tabIndex];
-            if (tabInfo.IsSearch())
+            const auto* sgEntry = tabInfo.GetSceneryGroupEntry();
+            if (sgEntry != nullptr)
             {
-                titleStringId = STR_ALL_SCENERY;
-            }
-            else
-            {
-                const auto* sgEntry = tabInfo.GetSceneryGroupEntry();
-                if (sgEntry != nullptr)
-                {
-                    titleStringId = sgEntry->name;
-                }
+                titleStringId = sgEntry->name;
             }
         }
         widgets[WIDX_SCENERY_TITLE].text = titleStringId;
@@ -833,7 +799,7 @@ public:
     {
         _tabEntries.clear();
 
-        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - ReservedTabCount; scenerySetIndex++)
+        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - 1; scenerySetIndex++)
         {
             const auto* sceneryGroupEntry = GetSceneryGroupEntry(scenerySetIndex);
             if (sceneryGroupEntry != nullptr && SceneryGroupIsInvented(scenerySetIndex))
@@ -854,16 +820,8 @@ public:
             }
         }
 
-        // Sort tabs before adding search and misc tabs to front/back
-        SortTabs();
-
         // Add misc tab
         _tabEntries.emplace_back();
-        _tabEntries.back().Type = SCENERY_TAB_TYPE_MISC;
-
-        // Add search tab
-        _tabEntries.emplace_back();
-        _tabEntries.back().Type = SCENERY_TAB_TYPE_SEARCH;
 
         // small scenery
         for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
@@ -924,6 +882,7 @@ public:
         // Set required width
         _requiredWidth = static_cast<int32_t>(_tabEntries.size()) * TabWidth + 5;
 
+        SortTabs();
         PrepareWidgets();
         WindowInvalidateByClass(WindowClass::Scenery);
     }
@@ -988,15 +947,17 @@ private:
             auto& oldScenery = GetSelectedScenery(tabIndex);
             if (!oldScenery.IsUndefined())
             {
+                // Make sure last selected scenery for tab is always present
                 _filteredSceneryTab.AddEntry(oldScenery, false);
-                SetSelectedScenery(tabIndex, oldScenery);
             }
             else
             {
+                // No last selection was made, use blank ScenerySelection
                 SetSelectedScenery(tabIndex, ScenerySelection());
                 rowSelected = 0;
                 if (!_filteredSceneryTab.Entries.empty())
                 {
+                    // Select first item in current filtered tab if available
                     const auto& scenery = _filteredSceneryTab.Entries.front();
                     if (!scenery.IsUndefined())
                     {
@@ -1047,30 +1008,13 @@ private:
         _tabSelections[tabIndex] = value;
     }
 
-    SceneryTabInfo* GetSceneryTabInfoForMisc()
-    {
-        for (auto& tabEntry : _tabEntries)
-        {
-            if (tabEntry.IsMisc())
-                return &tabEntry;
-        }
-
-        return nullptr;
-    }
-
-    SceneryTabInfo* GetSceneryTabInfoForSearch()
-    {
-        for (auto& tabEntry : _tabEntries)
-        {
-            if (tabEntry.IsSearch())
-                return &tabEntry;
-        }
-
-        return nullptr;
-    }
-
     SceneryTabInfo* GetSceneryTabInfoForGroup(const ObjectEntryIndex sceneryGroupIndex)
     {
+        if (sceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+        {
+            return &_tabEntries[_tabEntries.size() - 1];
+        }
+
         for (auto& tabEntry : _tabEntries)
         {
             if (tabEntry.SceneryGroupIndex == sceneryGroupIndex)
@@ -1116,18 +1060,11 @@ private:
             // If scenery is no tab, add it to misc
             if (!tabIndex.has_value())
             {
-                auto* tabInfo = GetSceneryTabInfoForMisc();
+                auto* tabInfo = GetSceneryTabInfoForGroup(OBJECT_ENTRY_INDEX_NULL);
                 if (tabInfo != nullptr)
                 {
                     tabInfo->AddEntry(selection, true);
                 }
-            }
-
-            // Add all scenery to search tab
-            auto tabInfo = GetSceneryTabInfoForSearch();
-            if (tabInfo != nullptr)
-            {
-                tabInfo->AddEntry(selection, true);
             }
         }
     }
@@ -1361,23 +1298,12 @@ private:
         for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
         {
             auto widgetIndex = static_cast<WidgetIndex>(WIDX_SCENERY_TAB_1 + tabIndex);
-            auto widgetCoordsXY = ScreenCoordsXY(widgets[widgetIndex].left, widgets[widgetIndex].top);
             auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
-            std::optional<ImageId> imageId = std::nullopt;
-            auto imageOffset = tabIndex == _activeTabIndex ? TabImageOffsetSelected : TabImageOffsetUnselected;
-
-            if (_tabEntries[tabIndex].IsSearch())
+            if (scgEntry != nullptr)
             {
-                imageId = ImageId(SPR_G2_SEARCH_UNSELECTED + imageOffset, colours[1]);
-            }
-            else if (scgEntry != nullptr)
-            {
-                imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
-            }
-
-            if (imageId.has_value())
-            {
-                GfxDrawSprite(&dpi, imageId.value(), offset + widgetCoordsXY);
+                auto imageOffset = tabIndex == _activeTabIndex ? 1 : 0;
+                auto imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
+                GfxDrawSprite(&dpi, imageId, offset + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
         }
     }
