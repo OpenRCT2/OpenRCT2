@@ -3281,8 +3281,8 @@ STR_6133    :Atingi atrakciojn kaj pejzaĝon, kiuj ne estis jam inventitaj
 STR_6134    :Vakigi Pejzaĝon
 STR_6135    :Kliento sendis nevalidan peton
 STR_6136    :Servilo sendis nevalidan peton
-STR_6137    :OpenRCT2 estas libera kaj malfermitkoda klono de Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 estas la verko de multaj aŭtoroj, kompleta listo troviĝas al “contributors.md”. Por pli da informaĵoj, vizitu http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2 estas libera kaj malfermitkoda aliformigo kaj kompletigo de Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 estas la verko de multaj aŭtoroj, kompleta listo troviĝas ene de la “Kontribuantoj” butono. Por pli da informaĵoj, vizitu http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Ĉiuj produktonomoj kaj firmnomoj apartenas al siaj respektivaj posedantoj. Uzo de ili ne signifas iun ajn filion kun aŭ endosaĵon de ili.
 STR_6140    :Ŝanĝoprotokolo…
 STR_6141    :RCT1 Malsupra Ilobreto
@@ -3644,6 +3644,9 @@ STR_6538    :Montras regulajn trotuarojn en la atendovicoj-fallisto de la Trotua
 STR_6539    :Bremso Fermita
 STR_6540    :{WINDOW_COLOUR_2}Specialan dankon al la sekvantaj firmaoj por permesi ilian similecon:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Kontribuantoj
+STR_6543    :Kontribuantoj…
+STR_6544    :Prunto ne povas esti negativa!
 
 #############
 # Scenarios #
@@ -4397,6 +4400,11 @@ STR_DTLS    :Ĉi tiu maljuniĝa amuzparko vidis pli bonajn tagojn. Helpu la pose
 STR_SCNR    :Pando-Mondo
 STR_PARK    :Pando-Mondo
 STR_DTLS    :Aldonu pli da atrakcioj kaj allogu pli da homoj al ĉi tiu pando-temita amuzparko
+
+<Tycoon Park>
+STR_SCNR    :Magnata Parko
+STR_PARK    :Magnata Parko
+STR_DTLS    :
 
 ###
 <UCES Halloween>
