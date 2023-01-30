@@ -76,4 +76,5 @@ void CondorCreateVehicle(Vehicle* vehicle, Ride* ride, int32_t vehicleIndex, con
 void CondorUpdateDeparting(Vehicle& vehicle);
 void CondorUpdateTravelling(Vehicle& vehicle);
 void CondorUpdateMotion(Vehicle& vehicle);
+
     // clang-format on

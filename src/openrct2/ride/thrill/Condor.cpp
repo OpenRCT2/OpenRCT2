@@ -21,6 +21,7 @@
 #include "../VehiclePaint.h"
 
 #include <cstring>
+#include <algorithm>
 
 enum
 {
@@ -230,6 +231,44 @@ static constexpr const CoordsXY startLocations[] = { { 48, 0 },    { 30, 38 },  
 
 static constexpr const uint32_t startDirections[] = {8, 3, 31, 26, 22, 17, 13};
 
+//this stores the height destination of the cars
+static int32_t towerHeight = 0;
+static int32_t towerBase = 0;
+
+static uint32_t CondorGetTowerHeight(const Vehicle& vehicle)
+{
+    TileCoordsXYZ result;
+
+    TileElement* tileElement = MapGetTrackElementAtOfType(vehicle.TrackLocation, vehicle.GetTrackType());
+    if (tileElement == nullptr)
+        return 0;
+
+    while (!tileElement->IsLastForTile())
+    {
+        tileElement++;
+
+        if (tileElement->IsGhost())
+            continue;
+
+        if (tileElement->GetType() != TileElementType::Track)
+            continue;
+
+        const auto* trackElement = tileElement->AsTrack();
+        if (trackElement->GetRideIndex() != vehicle.ride)
+            continue;
+
+        if (trackElement->GetTrackType() != TrackElemType::TowerSection
+            && trackElement->GetTrackType() != TrackElemType::TowerBase)
+            continue;
+
+        int32_t tileTop = tileElement->ClearanceHeight;
+        if (result.z < tileTop)
+            result.z = tileTop;
+    }
+
+    return result.ToCoordsXYZ().z;
+}
+
 void CondorCreateVehicle(
     Vehicle* vehicle, Ride* ride, int32_t vehicleIndex, const CoordsXYZ& carPosition, TrackElement* trackElement)
 {
@@ -254,10 +293,30 @@ void CondorCreateVehicle(
     vehicle->sprite_direction = startDirections[vehicleIndex % 7];
     //vehicle->sprite_direction = 9;
     vehicle->Pitch = 0;
+
+    //calculate the height destination with vehicleIndex = 0
+    if (vehicleIndex == 0)
+    {
+        towerHeight = CondorGetTowerHeight(*vehicle) - 64;
+        towerBase = vehicle->z;
+    }
+        
 }
 
 void CondorUpdateDeparting(Vehicle& vehicle)
 {
+    if (vehicle.z < towerHeight)
+    {
+        int32_t height = vehicle.GetLocation().z + 1;
+        height = std::min(height, towerHeight);
+
+        auto target = vehicle.GetLocation();
+        target.z = height;
+
+        vehicle.MoveTo(target);
+        vehicle.TrackLocation.z++;
+        return;
+    }
     vehicle.FinishDeparting();
 }
 
