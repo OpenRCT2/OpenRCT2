@@ -62,6 +62,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
+#include "thrill/meta/Condor.h"
 #include "CableLift.h"
 #include "RideAudio.h"
 #include "RideConstruction.h"
@@ -3192,6 +3193,12 @@ static Vehicle* vehicle_create_car(
 
         vehicle->MoveTo({ chosenLoc, dodgemPos.z });
     }
+    else if (rtd.CarPlacement == CarPlacementType::Condor)
+    {
+        CondorCreateVehicle(vehicle, ride, vehicleIndex, carPosition, trackElement);
+        if (vehicle == nullptr)
+            return nullptr;
+    }
     else
     {
         VehicleTrackSubposition subposition = VehicleTrackSubposition::Default;
@@ -3524,7 +3531,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
                 }
 
                 const auto& rtd = GetRideTypeDescriptor();
-                if (rtd.CarPlacement != CarPlacementType::Dodgems)
+                if (rtd.CarPlacement == CarPlacementType::Default)
                 {
                     vehicle->UpdateTrackMotion(nullptr);
                 }

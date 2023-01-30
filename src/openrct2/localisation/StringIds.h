@@ -3942,6 +3942,7 @@ enum : uint16_t
     STR_CONTRIBUTORS_WINDOW_BUTTON = 6543,
 
     STR_LOAN_CANT_BE_NEGATIVE = 6544,
+    STR_RIDE_MODE_CONDOR = 6545,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

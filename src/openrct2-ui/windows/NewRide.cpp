@@ -134,6 +134,7 @@ static constexpr const ride_type_t RideTypeViewOrder[] = {
     RIDE_TYPE_TOP_SPIN,
     RIDE_TYPE_ROTO_DROP,
     RIDE_TYPE_ENTERPRISE,
+    RIDE_TYPE_CONDOR,
 
     // Water rides
     RIDE_TYPE_DINGHY_SLIDE,

@@ -275,6 +275,9 @@ struct Vehicle : EntityBase
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);
+    friend void CondorUpdateDeparting(Vehicle& vehicle);
+    friend void CondorUpdateTravelling(Vehicle& vehicle);
+    friend void CondorUpdateMotion(Vehicle& vehicle);
 
 private:
     bool SoundCanPlay() const;

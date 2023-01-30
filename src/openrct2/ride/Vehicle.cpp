@@ -51,6 +51,7 @@
 #include "TrainManager.h"
 #include "VehicleData.h"
 #include "VehicleSubpositionData.h"
+#include "thrill/meta/Condor.h"
 
 #include <algorithm>
 #include <iterator>
@@ -1995,6 +1996,9 @@ void Vehicle::UpdateMovingToEndOfStation()
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 break;
             [[fallthrough]];
+        case RideMode::Condor:
+            CondorUpdateMotion(*this);
+            break;
         case RideMode::Dodgems:
         case RideMode::Swing:
         case RideMode::Rotation:
@@ -3204,6 +3208,12 @@ void Vehicle::UpdateDeparting()
         }
     }
 
+    if (curRide->mode == RideMode::Condor)
+    {
+        CondorUpdateDeparting(*this);
+        return;
+    }
+
     uint32_t curFlags = UpdateTrackMotion(nullptr);
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_8)
@@ -3633,6 +3643,12 @@ void Vehicle::UpdateTravelling()
         return;
     }
 
+    if (curRide->mode == RideMode::Condor)
+    {
+        CondorUpdateTravelling(*this);
+        return;
+    }
+
     uint32_t curFlags = UpdateTrackMotion(nullptr);
 
     bool skipCheck = false;
@@ -3895,6 +3911,7 @@ void Vehicle::UpdateArriving()
         case RideMode::SpaceRings:
         case RideMode::HauntedHouse:
         case RideMode::CrookedHouse:
+        case RideMode::Condor:
             ClearUpdateFlag(VEHICLE_UPDATE_FLAG_12);
             velocity = 0;
             acceleration = 0;

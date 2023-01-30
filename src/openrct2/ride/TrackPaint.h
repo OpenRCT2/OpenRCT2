@@ -471,6 +471,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineRide(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCondor(int32_t trackType);
+
 namespace HybridRC
 {
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);

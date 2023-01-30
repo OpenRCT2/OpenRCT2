@@ -3724,7 +3724,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.CarPlacement == CarPlacementType::Dodgems)
+    if (rtd.CarPlacement != CarPlacementType::Default)
     {
         SetDestination(vehicle->GetLocation(), 15);
         RideSubState = PeepRideSubState::ApproachVehicle;
