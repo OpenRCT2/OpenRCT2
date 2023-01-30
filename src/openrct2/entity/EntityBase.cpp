@@ -70,7 +70,7 @@ void EntityBase::Invalidate()
 void EntityBase::Serialise(DataSerialiser& stream)
 {
     stream << Type;
-    stream << sprite_index;
+    stream << Id;
     stream << x;
     stream << y;
     stream << z;

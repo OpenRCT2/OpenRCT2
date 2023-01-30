@@ -1834,7 +1834,7 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
         {
             auto ft = Formatter();
-            ft.Add<uint32_t>(peep->sprite_index);
+            ft.Add<uint32_t>(peep->Id);
             DrawTextBasic(&dpi, screenCoords, STR_PEEP_DEBUG_SPRITE_INDEX, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
@@ -1919,7 +1919,7 @@ WindowBase* WindowGuestOpen(Peep* peep)
         return WindowStaffOpen(peep);
     }
 
-    auto* window = static_cast<GuestWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
+    auto* window = static_cast<GuestWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
     if (window == nullptr)
     {
         int32_t windowWidth = 192;
@@ -1933,7 +1933,7 @@ WindowBase* WindowGuestOpen(Peep* peep)
         }
     }
 
-    window->Init(peep->sprite_index);
+    window->Init(peep->Id);
 
     return window;
 }

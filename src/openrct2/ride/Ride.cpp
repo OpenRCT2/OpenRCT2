@@ -328,11 +328,11 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
     auto* queueHeadGuest = GetQueueHeadGuest(peep->CurrentRideStation);
     if (queueHeadGuest == nullptr)
     {
-        GetStation(peep->CurrentRideStation).LastPeepInQueue = peep->sprite_index;
+        GetStation(peep->CurrentRideStation).LastPeepInQueue = peep->Id;
     }
     else
     {
-        queueHeadGuest->GuestNextInQueue = peep->sprite_index;
+        queueHeadGuest->GuestNextInQueue = peep->Id;
     }
     UpdateQueueLength(peep->CurrentRideStation);
 }
@@ -1685,7 +1685,7 @@ static void ride_call_mechanic(Ride& ride, Peep* mechanic, int32_t forInspection
     mechanic->SubState = 0;
     ride.mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
-    ride.mechanic = mechanic->sprite_index;
+    ride.mechanic = mechanic->Id;
     mechanic->CurrentRide = ride.id;
     mechanic->CurrentRideStation = ride.inspection_station;
 }
@@ -3315,9 +3315,9 @@ static TrainReference vehicle_create_train(
             else
             {
                 // Link the previous car with this car
-                train.tail->next_vehicle_on_train = car->sprite_index;
-                train.tail->next_vehicle_on_ride = car->sprite_index;
-                car->prev_vehicle_on_ride = train.tail->sprite_index;
+                train.tail->next_vehicle_on_train = car->Id;
+                train.tail->next_vehicle_on_ride = car->Id;
+                car->prev_vehicle_on_ride = train.tail->Id;
             }
             train.tail = car;
         }
@@ -3356,8 +3356,8 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
         else
         {
             // Link the end of the previous train with the front of this train
-            lastTrain.tail->next_vehicle_on_ride = train.head->sprite_index;
-            train.head->prev_vehicle_on_ride = lastTrain.tail->sprite_index;
+            lastTrain.tail->next_vehicle_on_ride = train.head->Id;
+            train.head->prev_vehicle_on_ride = lastTrain.tail->Id;
         }
         lastTrain = train;
 
@@ -3365,7 +3365,7 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
         {
             if (ride->vehicles[i].IsNull())
             {
-                ride->vehicles[i] = train.head->sprite_index;
+                ride->vehicles[i] = train.head->Id;
                 break;
             }
         }
@@ -3373,9 +3373,9 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
 
     // Link the first train and last train together. Nullptr checks are there to keep Clang happy.
     if (lastTrain.tail != nullptr)
-        firstTrain.head->prev_vehicle_on_ride = lastTrain.tail->sprite_index;
+        firstTrain.head->prev_vehicle_on_ride = lastTrain.tail->Id;
     if (firstTrain.head != nullptr)
-        lastTrain.tail->next_vehicle_on_ride = firstTrain.head->sprite_index;
+        lastTrain.tail->next_vehicle_on_ride = firstTrain.head->Id;
 
     return allTrainsCreated;
 }
@@ -3760,14 +3760,14 @@ static ResultWithMessage ride_create_cable_lift(RideId rideIndex, bool isApplyin
         }
         else
         {
-            tail->next_vehicle_on_train = current->sprite_index;
-            tail->next_vehicle_on_ride = current->sprite_index;
-            current->prev_vehicle_on_ride = tail->sprite_index;
+            tail->next_vehicle_on_train = current->Id;
+            tail->next_vehicle_on_ride = current->Id;
+            current->prev_vehicle_on_ride = tail->Id;
         }
         tail = current;
     }
-    head->prev_vehicle_on_ride = tail->sprite_index;
-    tail->next_vehicle_on_ride = head->sprite_index;
+    head->prev_vehicle_on_ride = tail->Id;
+    tail->next_vehicle_on_ride = head->Id;
 
     ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT;
     head->CableLiftUpdateTrackMotion();

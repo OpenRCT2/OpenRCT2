@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
             if (entity == nullptr)
                 return ToDuk(ctx, nullptr);
 
-            return ToDuk(ctx, entity->sprite_index.ToUnderlying());
+            return ToDuk(ctx, entity->Id.ToUnderlying());
         }
 
         std::string type_get() const

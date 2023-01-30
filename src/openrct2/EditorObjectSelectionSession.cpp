@@ -18,6 +18,7 @@
 #include "localisation/Localisation.h"
 #include "management/Research.h"
 #include "object/DefaultObjects.h"
+#include "object/FootpathEntry.h"
 #include "object/ObjectList.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"

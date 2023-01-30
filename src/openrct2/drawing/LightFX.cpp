@@ -678,7 +678,7 @@ static void LightFXAdd3DLight(const CoordsXYZ& loc, const LightType lightType)
 
 void LightFXAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType)
 {
-    LightFXAdd3DLight(entity.sprite_index.ToUnderlying(), LightFXQualifier::Entity, id, loc, lightType);
+    LightFXAdd3DLight(entity.Id.ToUnderlying(), LightFXQualifier::Entity, id, loc, lightType);
 }
 
 void LightFXAdd3DLightMagicFromDrawingTile(

@@ -79,7 +79,7 @@ GameActions::Result PeepPickupAction::Query() const
             {
                 // already picking up a peep
                 PeepPickupAction existingPickupAction{
-                    PeepPickupType::Cancel, existing->sprite_index, { NetworkGetPickupPeepOldX(_owner), 0, 0 }, _owner
+                    PeepPickupType::Cancel, existing->Id, { NetworkGetPickupPeepOldX(_owner), 0, 0 }, _owner
                 };
                 auto result = GameActions::QueryNested(&existingPickupAction);
 
@@ -134,7 +134,7 @@ GameActions::Result PeepPickupAction::Execute() const
             {
                 // already picking up a peep
                 PeepPickupAction existingPickupAction{
-                    PeepPickupType::Cancel, existing->sprite_index, { NetworkGetPickupPeepOldX(_owner), 0, 0 }, _owner
+                    PeepPickupType::Cancel, existing->Id, { NetworkGetPickupPeepOldX(_owner), 0, 0 }, _owner
                 };
                 auto result = GameActions::ExecuteNested(&existingPickupAction);
 
@@ -163,7 +163,6 @@ GameActions::Result PeepPickupAction::Execute() const
             {
                 pickedUpPeep->PickupAbort(_loc.x);
             }
-
             NetworkSetPickupPeep(_owner, nullptr);
         }
         break;

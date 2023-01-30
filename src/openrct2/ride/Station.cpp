@@ -213,7 +213,7 @@ static void ride_update_station_race(Ride& ride, StationIndex stationIndex)
                     auto* peep = GetEntity<Guest>(vehicle->peep[0]);
                     if (peep != nullptr)
                     {
-                        ride.race_winner = peep->sprite_index;
+                        ride.race_winner = peep->Id;
                         ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                     }
                 }

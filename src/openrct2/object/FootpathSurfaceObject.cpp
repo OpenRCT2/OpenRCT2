@@ -12,7 +12,8 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Image.h"
-#include "../object/ObjectRepository.h"
+#include "FootpathEntry.h"
+#include "ObjectRepository.h"
 
 void FootpathSurfaceObject::Load()
 {

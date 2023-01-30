@@ -728,8 +728,8 @@ void ViewportUpdateSmartFollowEntity(WindowBase* window)
 
 void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep)
 {
-    Focus focus = Focus(peep->sprite_index);
-    window->viewport_target_sprite = peep->sprite_index;
+    Focus focus = Focus(peep->Id);
+    window->viewport_target_sprite = peep->Id;
 
     if (peep->State == PeepState::Picked)
     {
@@ -752,9 +752,9 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep)
                 const auto car = train->GetCar(peep->CurrentCar);
                 if (car != nullptr)
                 {
-                    focus = Focus(car->sprite_index);
+                    focus = Focus(car->Id);
                     overallFocus = false;
-                    window->viewport_target_sprite = car->sprite_index;
+                    window->viewport_target_sprite = car->Id;
                 }
             }
         }

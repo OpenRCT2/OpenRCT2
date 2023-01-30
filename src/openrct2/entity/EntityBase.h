@@ -26,7 +26,7 @@ enum class EntityType : uint8_t
 struct EntityBase
 {
     EntityType Type;
-    EntityId sprite_index;
+    EntityId Id;
     int32_t x;
     int32_t y;
     int32_t z;

@@ -30,7 +30,6 @@ static bool _peepPathFindIsStaff;
 static int8_t _peepPathFindNumJunctions;
 static int8_t _peepPathFindMaxJunctions;
 static int32_t _peepPathFindTilesChecked;
-static uint8_t _peepPathFindFewestNumSteps;
 
 TileCoordsXYZ gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
@@ -1461,7 +1460,6 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
                 height += 0x2;
             }
 
-            _peepPathFindFewestNumSteps = 255;
             /* Divide the maxTilesChecked global search limit
              * between the remaining edges to ensure the search
              * covers all of the remaining edges. */
@@ -2317,7 +2315,7 @@ void PathfindLoggingEnable([[maybe_unused]] Peep& peep)
 {
 #    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
     /* Determine if the pathfinding debugging is wanted for this peep. */
-    FormatStringLegacy(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep.name_string_idx, &(peep.Id));
+    FormatStringLegacy(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep.name_string_idx, &(peep.PeepId));
 
     /* For guests, use the existing PEEP_FLAGS_TRACKING flag to
      * determine for which guest(s) the pathfinding debugging will

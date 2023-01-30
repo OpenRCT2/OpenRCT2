@@ -297,7 +297,9 @@
     <ClInclude Include="object\BannerObject.h" />
     <ClInclude Include="object\BannerSceneryEntry.h" />
     <ClInclude Include="object\DefaultObjects.h" />
+    <ClInclude Include="object\EntranceEntry.h" />
     <ClInclude Include="object\EntranceObject.h" />
+    <ClInclude Include="object\FootpathEntry.h" />
     <ClInclude Include="object\FootpathItemEntry.h" />
     <ClInclude Include="object\FootpathItemObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
@@ -317,6 +319,7 @@
     <ClInclude Include="object\ObjectType.h" />
     <ClInclude Include="object\ResourceTable.h" />
     <ClInclude Include="object\RideObject.h" />
+    <ClInclude Include="object\SceneryGroupEntry.h" />
     <ClInclude Include="object\SceneryGroupObject.h" />
     <ClInclude Include="object\SceneryObject.h" />
     <ClInclude Include="object\SmallSceneryEntry.h" />
@@ -327,6 +330,7 @@
     <ClInclude Include="object\TerrainSurfaceObject.h" />
     <ClInclude Include="object\WallSceneryEntry.h" />
     <ClInclude Include="object\WallObject.h" />
+    <ClInclude Include="object\WaterEntry.h" />
     <ClInclude Include="object\WaterObject.h" />
     <ClInclude Include="OpenRCT2.h" />
     <ClInclude Include="paint\Boundbox.h" />
@@ -563,7 +567,6 @@
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\TilePointerIndex.hpp" />
     <ClInclude Include="world\Wall.h" />
-    <ClInclude Include="world\Water.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resources\OpenRCT2.rc" />

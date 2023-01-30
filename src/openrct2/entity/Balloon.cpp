@@ -65,7 +65,7 @@ void Balloon::Press()
         // There is a random chance that pressing the balloon will not pop it
         // and instead shift it slightly
         uint32_t random = ScenarioRand();
-        if ((sprite_index.ToUnderlying() & 7) || (random & 0xFFFF) < 0x2000)
+        if ((Id.ToUnderlying() & 7) || (random & 0xFFFF) < 0x2000)
         {
             Pop();
         }

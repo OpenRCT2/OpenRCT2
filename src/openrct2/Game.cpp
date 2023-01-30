@@ -41,6 +41,7 @@
 #include "network/network.h"
 #include "object/Object.h"
 #include "object/ObjectList.h"
+#include "object/WaterEntry.h"
 #include "platform/Platform.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
@@ -65,7 +66,6 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 #include "world/Surface.h"
-#include "world/Water.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -374,18 +374,18 @@ void GameFixSaveVars()
             Ride* ride = GetRide(rideIdx);
             if (ride == nullptr)
             {
-                LOG_WARNING("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->sprite_index);
+                LOG_WARNING("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->Id);
                 peep->CurrentRide = RideId::GetNull();
                 continue;
             }
             auto curName = peep->GetName();
             LOG_WARNING(
-                "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(),
-                srcStation.ToUnderlying(), rideIdx);
+                "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->Id, curName.c_str(), srcStation.ToUnderlying(),
+                rideIdx);
             auto station = RideGetFirstValidStationExit(*ride);
             if (station.IsNull())
             {
-                LOG_WARNING("Couldn't find station, removing peep %u", peep->sprite_index);
+                LOG_WARNING("Couldn't find station, removing peep %u", peep->Id);
                 peepsToRemove.push_back(peep);
             }
             else
@@ -440,11 +440,8 @@ void GameFixSaveVars()
 
     ResearchFix();
 
-    // Fix banner list pointing to NULL map elements
-    BannerResetBrokenIndex();
-
     // Fix banners which share their index
-    BannerFixDuplicates();
+    BannerApplyFixes();
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     FixInvalidVehicleSpriteSizes();

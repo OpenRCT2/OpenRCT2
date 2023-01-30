@@ -240,7 +240,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const EntityBase& spriteBase, const EntityBase& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(EntityBase, Type);
-        COMPARE_FIELD(EntityBase, sprite_index);
+        COMPARE_FIELD(EntityBase, Id);
         COMPARE_FIELD(EntityBase, x);
         COMPARE_FIELD(EntityBase, y);
         COMPARE_FIELD(EntityBase, z);
@@ -288,7 +288,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, StepProgress);
         COMPARE_FIELD(Peep, MazeLastEdge);
         COMPARE_FIELD(Peep, InteractionRideIndex);
-        COMPARE_FIELD(Peep, Id);
+        COMPARE_FIELD(Peep, PeepId);
         COMPARE_FIELD(Peep, PathCheckOptimisation);
         COMPARE_FIELD(Peep, PathfindGoal.x);
         COMPARE_FIELD(Peep, PathfindGoal.y);
