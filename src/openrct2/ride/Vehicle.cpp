@@ -3108,6 +3108,12 @@ void Vehicle::UpdateDeparting()
     if (rideEntry == nullptr)
         return;
 
+    if (curRide->mode == RideMode::Condor)
+    {
+        CondorUpdateDeparting(*this);
+        return;
+    }
+
     if (sub_state == 0)
     {
         if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
@@ -3166,6 +3172,7 @@ void Vehicle::UpdateDeparting()
 
     CarEntry* carEntry = &rideEntry->Cars[vehicle_type];
     const auto& rtd = curRide->GetRideTypeDescriptor();
+
     switch (curRide->mode)
     {
         case RideMode::ReverseInclineLaunchedShuttle:
@@ -3206,12 +3213,6 @@ void Vehicle::UpdateDeparting()
             // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
             // in switch [-Werror=switch]"
         }
-    }
-
-    if (curRide->mode == RideMode::Condor)
-    {
-        CondorUpdateDeparting(*this);
-        return;
     }
 
     uint32_t curFlags = UpdateTrackMotion(nullptr);

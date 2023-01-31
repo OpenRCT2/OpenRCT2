@@ -14,6 +14,8 @@
 #include "../../ShopItem.h"
 #include "../../Track.h"
 
+void CondorRideUpdate(Ride& ride);
+
 // clang-format off
 constexpr const RideTypeDescriptor CondorRTD =
 {
@@ -65,19 +67,27 @@ constexpr const RideTypeDescriptor CondorRTD =
     SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
     SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
     SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
-    SET_FIELD(RideUpdate, nullptr),
+    SET_FIELD(RideUpdate, CondorRideUpdate),
     SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_Default),
     SET_FIELD(MusicTrackOffsetLength, OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default),
     SET_FIELD(UpdateRideApproachVehicleWaypoints, UpdateRideApproachVehicleWaypointsDefault),
     SET_FIELD(CarPlacement, CarPlacementType::Condor),
 };
 
+enum CondorRideState
+{
+    Climbing,
+    Falling
+};
 struct CondorRideData : public RideData
 {
     RideDataType GetType() const override;
     int32_t VehiclesZ;
     int32_t TowerTop;
     int32_t TowerBase;
+    CondorRideState State;
+
+    std::vector<Vehicle*> Vehicles;
 };
 
 class CondorVehicleData : public VehicleData
@@ -96,5 +106,7 @@ void CondorCreateVehicle(Vehicle* vehicle, Ride* ride, int32_t vehicleIndex, con
 void CondorUpdateDeparting(Vehicle& vehicle);
 void CondorUpdateTravelling(Vehicle& vehicle);
 void CondorUpdateMotion(Vehicle& vehicle);
+
+
 
     // clang-format on
