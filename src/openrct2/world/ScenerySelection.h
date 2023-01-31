@@ -26,6 +26,11 @@ struct ScenerySelection
         return SceneryType == rhs.SceneryType && EntryIndex == rhs.EntryIndex;
     }
 
+    inline bool operator!=(const ScenerySelection& rhs) const
+    {
+        return !(*this == rhs);
+    }
+
     bool IsUndefined() const
     {
         return EntryIndex == OBJECT_ENTRY_INDEX_NULL;

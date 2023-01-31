@@ -126,7 +126,7 @@ private:
             return std::find(std::begin(Entries), std::end(Entries), entry) != std::end(Entries);
         }
 
-        void AddEntry(const ScenerySelection& entry, const bool toBack)
+        void AddEntry(const ScenerySelection& entry, bool toBack)
         {
             if (!Contains(entry))
             {
@@ -1203,7 +1203,7 @@ private:
             return;
 
         auto lastScenery = GetSelectedScenery(_activeTabIndex);
-        if (!(lastScenery == scenery || IsFiltered(lastScenery)))
+        if (lastScenery != scenery && !IsFiltered(lastScenery))
         {
             _filteredSceneryTab.Entries.pop_front();
         }
