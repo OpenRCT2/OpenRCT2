@@ -1079,12 +1079,12 @@ private:
 
         for (auto selection : currentTab.Entries)
         {
-            if (IsFiltered(selection))
+            if (MatchFilter(selection))
                 _filteredSceneryTab.AddEntry(selection, true);
         }
     }
 
-    bool IsFiltered(const ScenerySelection& selection)
+    bool MatchFilter(const ScenerySelection& selection)
     {
         if (_filteredSceneryTab.Filter.empty())
             return true;
@@ -1203,7 +1203,7 @@ private:
             return;
 
         auto lastScenery = GetSelectedScenery(_activeTabIndex);
-        if (lastScenery != scenery && !IsFiltered(lastScenery))
+        if (lastScenery != scenery && !MatchFilter(lastScenery))
         {
             _filteredSceneryTab.Entries.pop_front();
         }
