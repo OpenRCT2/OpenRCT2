@@ -19,6 +19,7 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
+#include "../../core/DataSerialiser.h"
 
 #include <cstring>
 #include <algorithm>
@@ -231,9 +232,30 @@ static constexpr const CoordsXY startLocations[] = { { 48, 0 },    { 30, 38 },  
 
 static constexpr const uint32_t startDirections[] = {8, 3, 31, 26, 22, 17, 13};
 
-//this stores the height destination of the cars
-static int32_t towerHeight = 0;
-static int32_t towerBase = 0;
+CondorVehicleData::CondorVehicleData()
+    : VehicleIndex(0)
+{
+}
+
+CondorVehicleData ::~CondorVehicleData()
+{
+}
+
+VehicleDataType CondorVehicleData::GetType() const
+{
+    return VehicleDataType::Condor;
+}
+
+void CondorVehicleData::Serialise(DataSerialiser& stream)
+{
+    stream << VehicleIndex;
+}
+
+RideDataType CondorRideData::GetType() const
+{
+    return RideDataType::Condor;
+}
+
 
 static uint32_t CondorGetTowerHeight(const Vehicle& vehicle)
 {
@@ -294,27 +316,44 @@ void CondorCreateVehicle(
     //vehicle->sprite_direction = 9;
     vehicle->Pitch = 0;
 
-    //calculate the height destination with vehicleIndex = 0
+    vehicle->VehicleData = std::make_unique<CondorVehicleData>();
+    auto condorData = static_cast<CondorVehicleData*>(vehicle->VehicleData.get());
+    condorData->VehicleIndex = vehicleIndex;
+
     if (vehicleIndex == 0)
     {
-        towerHeight = CondorGetTowerHeight(*vehicle) - 64;
-        towerBase = vehicle->z;
+        ride->Data = std::make_unique<CondorRideData>();
+
+        auto condorRideData = static_cast<CondorRideData*>(ride->Data.get());
+        condorRideData->TowerTop = CondorGetTowerHeight(*vehicle) - 64;
+        condorRideData->TowerBase = vehicle->z;
+        condorRideData->VehiclesZ = vehicle->z;
     }
-        
 }
 
 void CondorUpdateDeparting(Vehicle& vehicle)
 {
-    if (vehicle.z < towerHeight)
-    {
-        int32_t height = vehicle.GetLocation().z + 1;
-        height = std::min(height, towerHeight);
+    auto condorData = static_cast<CondorVehicleData*>(vehicle.VehicleData.get());
+    auto ride = vehicle.GetRide();
+    auto condorRideData = static_cast<CondorRideData*>(ride->Data.get());
 
+    if (condorData->VehicleIndex == 0)
+    {
+        if (condorRideData->VehiclesZ < condorRideData->TowerTop)
+        {
+            int32_t height = condorRideData->VehiclesZ + 1;
+            condorRideData->VehiclesZ = std::min(height, condorRideData->TowerTop);
+        }
+    }
+
+    if (condorRideData->VehiclesZ < condorRideData->TowerTop)
+    {
         auto target = vehicle.GetLocation();
-        target.z = height;
+        target.z = condorRideData->VehiclesZ;
 
         vehicle.MoveTo(target);
-        vehicle.TrackLocation.z++;
+        vehicle.TrackLocation.z = target.z;
+        vehicle.Invalidate();
         return;
     }
     vehicle.FinishDeparting();

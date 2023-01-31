@@ -9427,4 +9427,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << target_seat_rotation;
     stream << BoatLocation;
     stream << IsCrashedVehicle;
+
+    if (VehicleData != nullptr)
+        VehicleData->Serialise(stream);
 }

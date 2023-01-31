@@ -72,6 +72,26 @@ constexpr const RideTypeDescriptor CondorRTD =
     SET_FIELD(CarPlacement, CarPlacementType::Condor),
 };
 
+struct CondorRideData : public RideData
+{
+    RideDataType GetType() const override;
+    int32_t VehiclesZ;
+    int32_t TowerTop;
+    int32_t TowerBase;
+};
+
+class CondorVehicleData : public VehicleData
+{
+public:
+    CondorVehicleData();
+    virtual ~CondorVehicleData();
+
+    VehicleDataType GetType() const override;
+    void Serialise(DataSerialiser& stream) override;
+
+    uint32_t VehicleIndex;
+};
+
 void CondorCreateVehicle(Vehicle* vehicle, Ride* ride, int32_t vehicleIndex, const CoordsXYZ& carPosition, TrackElement* trackElement);
 void CondorUpdateDeparting(Vehicle& vehicle);
 void CondorUpdateTravelling(Vehicle& vehicle);

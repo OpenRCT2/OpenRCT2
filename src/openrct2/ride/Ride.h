@@ -104,7 +104,18 @@ struct TrackDesignState;
 enum class RideMode : uint8_t;
 enum class RideStatus : uint8_t;
 
-/**
+enum class RideDataType
+{
+    Condor
+};
+
+struct RideData
+{
+    virtual ~RideData() {}
+    virtual RideDataType GetType() const = 0;
+};
+
+    /**
  * Ride structure.
  *
  * This is based on RCT2's ride structure.
@@ -406,6 +417,8 @@ public:
     bool HasStation() const;
 
     bool FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
+
+    std::unique_ptr<RideData> Data;
 };
 void UpdateSpiralSlide(Ride& ride);
 void UpdateChairlift(Ride& ride);

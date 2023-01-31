@@ -56,6 +56,19 @@ constexpr const uint16_t VehicleTrackTypeMask = 0b1111111111111100;
 
 enum class MiniGolfAnimation : uint8_t;
 
+enum class VehicleDataType
+{
+    Condor,
+};
+
+class VehicleData
+{
+public:
+    virtual ~VehicleData(){}
+    virtual VehicleDataType GetType() const = 0;
+    virtual void Serialise(DataSerialiser& stream) = 0;
+};
+
 struct Vehicle : EntityBase
 {
     static constexpr auto cEntityType = EntityType::Vehicle;
@@ -272,6 +285,8 @@ struct Vehicle : EntityBase
     void Serialise(DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
     bool IsCableLift() const;
+
+    std::unique_ptr<VehicleData> VehicleData;
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);
