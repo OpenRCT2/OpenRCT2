@@ -2135,6 +2135,10 @@ namespace OpenRCT2
         {
             cs.ReadWrite(entity.BlockBrakeSpeed);
         }
+        if (os.GetHeader().TargetVersion >= 17)
+        {
+            cs.ReadWrite(entity.is_reversed);
+        }
     }
 
     template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Guest& guest)
