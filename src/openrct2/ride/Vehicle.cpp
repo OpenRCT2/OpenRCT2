@@ -7709,8 +7709,7 @@ Loc6DAEB9:
         {
             if (track_progress == 32)
             {
-                vehicle_type = carEntry->ReversedCarIndex;
-                carEntry = Entry();
+                is_reversed = !is_reversed;
             }
         }
         else
