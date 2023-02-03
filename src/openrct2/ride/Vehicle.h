@@ -112,6 +112,7 @@ struct Vehicle : EntityBase
     int32_t acceleration;
     RideId ride;
     uint8_t vehicle_type;
+    bool is_reversed;
     VehicleColour colours;
     union
     {

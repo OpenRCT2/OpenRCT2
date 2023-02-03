@@ -410,7 +410,7 @@ constexpr const uint64_t AllRideModesAvailable = EnumsToFlags(
     RideMode::SpaceRings, RideMode::Beginners, RideMode::LimPoweredLaunch, RideMode::FilmThrillRiders,
     RideMode::StormChasers3DFilm, RideMode::SpaceRaiders3DFilm, RideMode::Intense, RideMode::Berserk, RideMode::HauntedHouse,
     RideMode::Circus, RideMode::DownwardLaunch, RideMode::CrookedHouse, RideMode::FreefallDrop, RideMode::PoweredLaunch,
-    RideMode::PoweredLaunchBlockSectioned);
+    RideMode::PoweredLaunchBlockSectioned, RideMode::ContinuousCircuitReverseTrains, RideMode::ContinuousCircuitBlockSectionedReverseTrains);
 
 extern const CarEntry CableLiftVehicle;
 

@@ -3131,6 +3131,8 @@ void Vehicle::UpdateDeparting()
             [[fallthrough]];
         case RideMode::ContinuousCircuit:
         case RideMode::ContinuousCircuitBlockSectioned:
+        case RideMode::ContinuousCircuitReverseTrains:
+        case RideMode::ContinuousCircuitBlockSectionedReverseTrains:
         case RideMode::RotatingLift:
         case RideMode::FreefallDrop:
         case RideMode::BoatHire:

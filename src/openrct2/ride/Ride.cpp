@@ -1124,7 +1124,8 @@ void Ride::Update()
     // If ride is simulating but crashed, reset the vehicles
     if (status == RideStatus::Simulating && (lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
-        if (mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned)
+        if (mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned
+            || mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::Closed);
@@ -3182,7 +3183,7 @@ static constexpr const CoordsXY word_9A2A60[] = {
  */
 static Vehicle* VehicleCreateCar(
     Ride& ride, int32_t carEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
-    int32_t* remainingDistance, TrackElement* trackElement)
+    int32_t* remainingDistance, TrackElement* trackElement, bool isReversed)
 {
     if (trackElement == nullptr)
         return nullptr;
@@ -3201,7 +3202,14 @@ static Vehicle* VehicleCreateCar(
     vehicle->ride_subtype = ride.subtype;
 
     vehicle->vehicle_type = carEntryIndex;
-    vehicle->SubType = carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail;
+    if (isReversed)
+    {
+        vehicle->SubType = carIndex == (ride.num_cars_per_train - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
+        vehicle->is_reversed = true;
+    }
+    else {
+        vehicle->SubType = carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail;
+    }
     vehicle->var_44 = Numerics::ror32(carEntry.spacing, 10) & 0xFFFF;
 
     const auto halfSpacing = carEntry.spacing >> 1;
@@ -3387,11 +3395,15 @@ static TrainReference VehicleCreateTrain(
     Ride& ride, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
     TrainReference train = { nullptr, nullptr };
-
+    bool isReversed
+        = (ride.mode == RideMode::ContinuousCircuitReverseTrains ||
+           ride.mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains);
     for (int32_t carIndex = 0; carIndex < ride.num_cars_per_train; carIndex++)
     {
-        auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carIndex);
-        auto car = VehicleCreateCar(ride, vehicle, carIndex, vehicleIndex, trainPos, remainingDistance, trackElement);
+        int32_t carSpawnIndex = (isReversed) ? (ride.num_cars_per_train - 1) - carIndex : carIndex;
+
+        auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carSpawnIndex);
+        auto car = VehicleCreateCar(ride, vehicle, carSpawnIndex, vehicleIndex, trainPos, remainingDistance, trackElement, isReversed);
         if (car == nullptr)
             break;
 
@@ -4554,7 +4566,8 @@ bool Ride::IsPoweredLaunched() const
 
 bool Ride::IsBlockSectioned() const
 {
-    return mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned;
+    return mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned
+        || mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains;
 }
 
 bool RideHasAnyTrackElements(const Ride& ride)
@@ -4661,7 +4674,15 @@ void RideUpdateVehicleColours(const Ride& ride)
                     colours = ride.vehicle_colours[i];
                     break;
                 case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR:
-                    colours = ride.vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    if (vehicle->is_reversed)
+                    {
+                        colours = ride.vehicle_colours[std::min(
+                            (ride.num_cars_per_train - 1) - carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    }
+                    else
+                    {
+                        colours = ride.vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    }
                     break;
             }
 
@@ -5026,6 +5047,7 @@ void Ride::UpdateMaxVehicles()
         {
             case RideMode::ContinuousCircuitBlockSectioned:
             case RideMode::PoweredLaunchBlockSectioned:
+            case RideMode::ContinuousCircuitBlockSectionedReverseTrains:
                 maxNumTrains = std::clamp<int32_t>(num_stations + num_block_brakes - 1, 1, OpenRCT2::Limits::MaxTrainsPerRide);
                 break;
             case RideMode::ReverseInclineLaunchedShuttle:

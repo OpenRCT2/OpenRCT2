@@ -3986,6 +3986,9 @@ enum : uint16_t
 
     STR_SHORTCUT_OPEN_KEYBOARD_SHORTCUTS_WINDOW = 6582,
 
+    STR_RIDE_MODE_CONTINUOUS_CIRCUIT_REVERSED_TRAINS = 6583,
+    STR_RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED_REVERSED_TRAINS = 6584,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

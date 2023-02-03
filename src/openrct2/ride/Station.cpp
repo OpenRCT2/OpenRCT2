@@ -43,6 +43,7 @@ void RideUpdateStation(Ride& ride, StationIndex stationIndex)
             break;
         case RideMode::ContinuousCircuitBlockSectioned:
         case RideMode::PoweredLaunchBlockSectioned:
+        case RideMode::ContinuousCircuitBlockSectionedReverseTrains:
             RideUpdateStationBlockSection(ride, stationIndex);
             break;
         default:

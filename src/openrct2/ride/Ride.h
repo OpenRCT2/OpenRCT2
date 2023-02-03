@@ -655,6 +655,9 @@ enum class RideMode : uint8_t
     PoweredLaunch, // RCT1 style, don't pass through station
     PoweredLaunchBlockSectioned,
 
+    ContinuousCircuitReverseTrains,
+    ContinuousCircuitBlockSectionedReverseTrains,
+
     Count,
     NullMode = 255,
 };
