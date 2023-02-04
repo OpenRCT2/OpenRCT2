@@ -2533,7 +2533,7 @@ bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array
 {
     uint8_t chosen_train = RideStation::NO_TRAIN;
 
-    if (ride.mode == RideMode::Dodgems || ride.mode == RideMode::Race || ride.mode == RideMode::Condor)
+    if (ride.mode == RideMode::Dodgems || ride.mode == RideMode::Race)
     {
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
             return false;

@@ -13,7 +13,12 @@
 #include "Track.h"
 #include "TrackPaint.h"
 
-constexpr const uint8_t MaxSequencesPerPiece = 16;
+#define TRACK_BLOCK_END                                                                                                        \
+{                                                                                                                          \
+    255, 255, 255, 255, 255, { 255, 255 }, 255                                                                             \
+}
+
+constexpr const uint32_t MaxSequencesPerPiece = 256;
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 

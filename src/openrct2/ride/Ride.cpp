@@ -3195,7 +3195,7 @@ static Vehicle* vehicle_create_car(
     }
     else if (rtd.CarPlacement == CarPlacementType::Condor)
     {
-        CondorCreateVehicle(vehicle, ride, vehicleIndex, carPosition, trackElement);
+        CondorCreateVehicle(vehicle, ride, carIndex, carPosition, trackElement);
         if (vehicle == nullptr)
             return nullptr;
     }

@@ -528,6 +528,7 @@ namespace TrackElemType
     constexpr track_type_t FlatTrack1x1B = 264;
     constexpr track_type_t FlatTrack1x4C = 265;
     constexpr track_type_t FlatTrack3x3 = 266;
+    constexpr track_type_t TowerBase9x9 = 267;
 
     // SV6/TD6 element aliases
     constexpr track_type_t InvertedUp90ToFlatQuarterLoopAlias = 101;

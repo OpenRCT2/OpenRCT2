@@ -13,10 +13,60 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
+#include "../../TrackData.h"
 
 void CondorRideUpdate(Ride& ride);
 
+/*static constexpr const PreviewTrack TrackBlocks066[] = { { 0, 0, 0, 0, 64, { 0b1111, 0 }, 0 },
+                                                         { 1, -32, -32, 0, 0, { 0b1111, 0 }, 0 },
+                                                         { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+                                                         { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
+                                                         { 4, 0, -32, 0, 0, { 0b1111, 0 }, 0 },
+                                                         { 5, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
+                                                         { 6, 32, -32, 0, 0, { 0b1111, 0 }, 0 },
+                                                         { 7, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
+                                                         { 8, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+                                                         TRACK_BLOCK_END };*/
+
+static PreviewTrack* GetTrackBlocks9x9()
+{
+    std::vector<PreviewTrack> result;
+    uint32_t index = 0;
+    result.reserve(81);
+
+    for (uint8_t x = 0; x < 9 * 32; x += 32)
+    {
+        for (uint8_t y = 0; y < 9 * 32; y += 32)
+        {
+            PreviewTrack track{ index, x, y, 0, 0, { 0b1111, 0 }, 0 };
+            result[index] = track;
+            index++;
+        }
+    }
+    return result;
+}
+
 // clang-format off
+const TrackElementDescriptor TowerBase9x9TED =
+{
+    SET_FIELD(Description, STR_ENTRY_EXIT_PLATFORM),
+    SET_FIELD(Coordinates, { 0, 0, 0, 96, 128, 128 } ),
+    SET_FIELD(Block, const_cast<PreviewTrack*>(GetTrackBlocks9x9().data())),
+    SET_FIELD(PieceLength, 0),
+    SET_FIELD(CurveChain, { 0, 0 } ),
+    SET_FIELD(AlternativeType, 0),
+    SET_FIELD(PriceModifier, 0),
+    SET_FIELD(MirrorElement, 0),
+    SET_FIELD(HeightMarkerPositions, 0),
+    SET_FIELD(Flags, 0),
+    SET_FIELD(SequenceElementAllowedWallEdges, {} ),
+    SET_FIELD(SequenceProperties, {} ),
+    SET_FIELD(Definition, {0, 0, 0, 0, 0, 0} ),
+    SET_FIELD(SpinFunction, 0),
+    SET_FIELD(VerticalFactor, nullptr),
+    SET_FIELD(LateralFactor, nullptr),
+};
+
 constexpr const RideTypeDescriptor CondorRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -90,8 +140,6 @@ struct CondorRideData : public RideData
     int32_t TowerTop;
     int32_t TowerBase;
     CondorRideState State;
-
-    std::vector<Vehicle*> Vehicles;
 };
 
 class CondorVehicleData : public VehicleData
@@ -107,13 +155,11 @@ public:
 };
 
 void CondorRideUpdate(Ride& ride);
-
-void CondorCreateVehicle(Vehicle* vehicle, Ride* ride, int32_t vehicleIndex, const CoordsXYZ& carPosition, TrackElement* trackElement);
+void CondorRideUpdateWating(Ride& ride);
+void CondorCreateVehicle(Vehicle* vehicle, Ride* ride, int32_t carIndex, const CoordsXYZ& carPosition, TrackElement* trackElement);
 void CondorUpdateWaitingForDepart(Vehicle& vehicle);
 void CondorUpdateDeparting(Vehicle& vehicle);
 void CondorUpdateTravelling(Vehicle& vehicle);
 void CondorUpdateMotion(Vehicle& vehicle);
 
-
-
-    // clang-format on
+// clang-format on

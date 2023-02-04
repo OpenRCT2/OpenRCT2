@@ -293,7 +293,7 @@ struct Vehicle : EntityBase
     friend void CondorUpdateDeparting(Vehicle& vehicle);
     friend void CondorUpdateTravelling(Vehicle& vehicle);
     friend void CondorUpdateMotion(Vehicle& vehicle);
-
+    friend void CondorRideUpdateWating(Ride& ride);
 private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;

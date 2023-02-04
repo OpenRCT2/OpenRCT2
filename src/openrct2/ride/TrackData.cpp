@@ -611,8 +611,6 @@ static constexpr uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
     /* FlyerHalfLoopUninvertedUp             */ { 0 },
 };
 
-#define TRACK_BLOCK_END { 255, 255, 255, 255, 255, {255, 255}, 255 }
-
 static constexpr PreviewTrack TrackBlocks000[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
@@ -7169,7 +7167,7 @@ namespace OpenRCT2
                 desc.VerticalFactor = GetVerticalFunction(i);
                 desc.LateralFactor = GetLateralFunction(i);
 
-                for (uint8_t j = 0; j < MaxSequencesPerPiece; j++)
+                for (uint32_t j = 0; j < MaxSequencesPerPiece; j++)
                 {
                     desc.SequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
                     desc.SequenceProperties[j] = TrackSequenceProperties[i][j];
@@ -7179,7 +7177,7 @@ namespace OpenRCT2
             return res;
         }
 
-        static constexpr auto _trackElementDescriptors = BuildDescriptorTable();
+        static auto _trackElementDescriptors = BuildDescriptorTable();
 
         const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type)
         {
