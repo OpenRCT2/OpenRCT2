@@ -81,7 +81,7 @@ namespace OpenRCT2
 
     private:
         money64 CalculateRideValue(const Ride& ride) const;
-        money16 CalculateTotalRideValueForMoney() const;
+        money64 CalculateTotalRideValueForMoney() const;
         uint32_t CalculateSuggestedMaxGuests() const;
         uint32_t CalculateGuestGenerationProbability() const;
 
