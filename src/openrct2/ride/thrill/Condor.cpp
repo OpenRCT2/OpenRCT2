@@ -227,10 +227,11 @@ static constexpr const CoordsXY word_9A3AB4[4] = {
     { -96, 0 },
 };
 
-static constexpr const CoordsXY startLocations[] = { { 48, 0 },    { 30, 38 },   { -11, 47 }, { -43, 21 },
+static constexpr const CoordsXY StartLocations[] = { { 48, 0 },    { 30, 38 },   { -11, 47 }, { -43, 21 },
                                                    { -43, -21 }, { -11, -47 }, { 30, -38 } };
 
-static constexpr const uint32_t startDirections[] = {8, 3, 31, 26, 22, 17, 13};
+
+static constexpr const uint32_t StartDirections[] = {8, 3, 31, 26, 22, 17, 13};
 
 CondorVehicleData::CondorVehicleData()
     : VehicleIndex(0)
@@ -254,6 +255,14 @@ void CondorVehicleData::Serialise(DataSerialiser& stream)
 RideDataType CondorRideData::GetType() const
 {
     return RideDataType::Condor;
+}
+
+CondorRideData::CondorRideData()
+    : State(CondorRideState::Waiting)
+    , VehiclesZ(0)
+    , TowerTop(0)
+    , TowerBase(0)
+{
 }
 
 
@@ -307,12 +316,12 @@ void CondorCreateVehicle(
 
     //place the car in a circle, centered around the tower
     auto centerOffset = CoordsXY{ 16, 16 };
-    auto chosenLoc = carPosition + CoordsXYZ{ startLocations[vehicleIndex % 7] + centerOffset, 0 };
+    auto chosenLoc = carPosition + CoordsXYZ{ StartLocations[vehicleIndex % 7] + centerOffset, 0 };
     vehicle->MoveTo(chosenLoc);
 
     //set the angle of the vehicle
     //32 sprites for a complete rotation
-    vehicle->sprite_direction = startDirections[vehicleIndex % 7];
+    vehicle->sprite_direction = StartDirections[vehicleIndex % 7];
     //vehicle->sprite_direction = 9;
     vehicle->Pitch = 0;
 
@@ -325,7 +334,7 @@ void CondorCreateVehicle(
         ride->Data = std::make_unique<CondorRideData>();
 
         auto condorRideData = static_cast<CondorRideData*>(ride->Data.get());
-        condorRideData->State = CondorRideState::Climbing;
+        condorRideData->State = CondorRideState::Waiting;
         condorRideData->TowerTop = CondorGetTowerHeight(*vehicle) - 64;
         condorRideData->TowerBase = vehicle->z;
         condorRideData->VehiclesZ = vehicle->z;
@@ -339,22 +348,95 @@ void CondorCreateVehicle(
     }
 }
 
+static void CondorRideUpdateWating(Ride& ride)
+{
+    auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
+
+    //check if all vehicles are departing
+    bool allDeparting = true;
+    const auto& vehicles = ride.vehicles;
+    const auto numVehicles = ride.NumTrains;
+
+    for (uint8_t vehicleIndex = 0; vehicleIndex < numVehicles; ++vehicleIndex)
+    {
+        auto* vehicle = GetEntity<Vehicle>(vehicles[vehicleIndex]);
+        if (vehicle != nullptr)
+        {
+            if (vehicle->status != Vehicle::Status::Departing)
+            {
+                allDeparting = false;
+                break;
+            }
+        }
+    }
+
+    if (allDeparting)
+    {
+        for (uint8_t vehicleIndex = 0; vehicleIndex < numVehicles; ++vehicleIndex)
+        {
+            auto* vehicle = GetEntity<Vehicle>(vehicles[vehicleIndex]);
+            if (vehicle != nullptr)
+            {
+                vehicle->SetState(Vehicle::Status::Travelling);
+            }
+        }
+        condorRideData->State = CondorRideState::Climbing;
+    }
+}
+
+static void CondorRideUpdateClimbing(Ride& ride)
+{
+    auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
+    if (condorRideData != nullptr)
+    {
+        int32_t height = condorRideData->VehiclesZ + 1;
+        if (height > condorRideData->TowerTop)
+        {
+            height = condorRideData->TowerTop;
+            condorRideData->State = CondorRideState::Falling;
+        }
+        condorRideData->VehiclesZ = height;
+    }
+}
+
+static void CondorRideUpdateFalling(Ride& ride)
+{
+    auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
+    if (condorRideData != nullptr)
+    {
+        int32_t height = condorRideData->VehiclesZ - 1;
+        if (height < condorRideData->TowerBase)
+        {
+            height = condorRideData->TowerBase;
+            condorRideData->State = CondorRideState::Waiting;
+        }
+        condorRideData->VehiclesZ = height;
+    }
+}
+
+
+void CondorRideUpdate(Ride& ride)
+{
+    auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
+    if (condorRideData != nullptr)
+    {
+        switch (condorRideData->State)
+        {
+            case CondorRideState::Waiting:
+                CondorRideUpdateWating(ride);
+                break;
+            case CondorRideState::Climbing:
+                CondorRideUpdateClimbing(ride);
+                break;
+            case CondorRideState::Falling:
+                CondorRideUpdateFalling(ride);
+                break;
+        }
+    }
+}
+
 void CondorUpdateDeparting(Vehicle& vehicle)
 {
-    //auto condorVehicleData = static_cast<CondorVehicleData*>(vehicle.VehicleData.get());
-    //if (condorVehicleData->VehicleIndex == 0)
-        //vehicle.FinishDeparting();
-
-    auto condorData = static_cast<CondorVehicleData*>(vehicle.VehicleData.get());
-    if (condorData != nullptr)
-    {
-        //auto ride = vehicle.GetRide();
-        //auto condorRideData = static_cast<CondorRideData*>(ride->Data.get());
-        vehicle.SetState(Vehicle::Status::Travelling);
-
-        /*for (auto v : condorRideData->Vehicles)
-            v->SetState(Vehicle::Status::Travelling);*/
-    }
 }
 
 void CondorUpdateTravelling(Vehicle& vehicle)
@@ -364,63 +446,18 @@ void CondorUpdateTravelling(Vehicle& vehicle)
     auto condorRideData = static_cast<CondorRideData*>(ride->Data.get());
 
 
-    if (condorRideData->State == CondorRideState::Climbing)
+    if (condorRideData->State == CondorRideState::Climbing || condorRideData->State == CondorRideState::Falling)
     {
-        int32_t height = condorRideData->VehiclesZ + 1;
-        if (height > condorRideData->TowerTop)
-        {
-            height = condorRideData->TowerTop;
-            condorRideData->State = CondorRideState::Falling;
-        }
-        condorRideData->VehiclesZ = height;
-
         auto target = vehicle.GetLocation();
         target.z = condorRideData->VehiclesZ;
 
         vehicle.MoveTo(target);
         vehicle.TrackLocation.z = target.z;
         vehicle.Invalidate();
-        /*for (auto v : condorRideData->Vehicles)
-        {
-            auto target = v->GetLocation();
-            target.z = condorRideData->VehiclesZ;
-
-            v->MoveTo(target);
-            v->TrackLocation.z = target.z;
-            v->Invalidate();
-        }*/
     }
     else
     {
-        int32_t height = condorRideData->VehiclesZ - 1;
-        if (height < condorRideData->TowerBase)
-        {
-            height = condorRideData->TowerBase;
-            condorRideData->State = CondorRideState::Climbing;
-        }
-        condorRideData->VehiclesZ = height;
-
-        auto target = vehicle.GetLocation();
-        target.z = condorRideData->VehiclesZ;
-
-        vehicle.MoveTo(target);
-        vehicle.TrackLocation.z = target.z;
-        vehicle.Invalidate();
-
-        if (height == condorRideData->TowerBase)
-            vehicle.SetState(Vehicle::Status::Arriving);
-        /*for (auto v : condorRideData->Vehicles)
-        {
-            auto target = v->GetLocation();
-            target.z = condorRideData->VehiclesZ;
-
-            v->MoveTo(target);
-            v->TrackLocation.z = target.z;
-            v->Invalidate();
-
-            if (height == condorRideData->TowerBase)
-                vehicle.SetState(Vehicle::Status::Arriving);
-        }*/
+        vehicle.SetState(Vehicle::Status::Arriving);
     }
 }
 
@@ -432,7 +469,6 @@ void CondorUpdateMotion(Vehicle& vehicle)
     vehicle.SetState(Vehicle::Status::WaitingForPassengers);
 }
 
-void CondorRideUpdate(Ride& ride)
+void CondorUpdateWaitingForDepart(Vehicle& vehicle)
 {
-    auto station = ride.GetStation();
 }

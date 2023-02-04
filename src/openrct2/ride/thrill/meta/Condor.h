@@ -76,11 +76,15 @@ constexpr const RideTypeDescriptor CondorRTD =
 
 enum CondorRideState
 {
+    Waiting,
     Climbing,
     Falling
 };
+
 struct CondorRideData : public RideData
 {
+    CondorRideData();
+
     RideDataType GetType() const override;
     int32_t VehiclesZ;
     int32_t TowerTop;
@@ -102,7 +106,10 @@ public:
     uint32_t VehicleIndex;
 };
 
+void CondorRideUpdate(Ride& ride);
+
 void CondorCreateVehicle(Vehicle* vehicle, Ride* ride, int32_t vehicleIndex, const CoordsXYZ& carPosition, TrackElement* trackElement);
+void CondorUpdateWaitingForDepart(Vehicle& vehicle);
 void CondorUpdateDeparting(Vehicle& vehicle);
 void CondorUpdateTravelling(Vehicle& vehicle);
 void CondorUpdateMotion(Vehicle& vehicle);
