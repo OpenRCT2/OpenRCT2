@@ -3207,7 +3207,8 @@ static Vehicle* VehicleCreateCar(
         vehicle->SubType = carIndex == (ride.num_cars_per_train - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
         vehicle->isReversed = true;
     }
-    else {
+    else
+    {
         vehicle->SubType = carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail;
     }
     vehicle->var_44 = Numerics::ror32(carEntry.spacing, 10) & 0xFFFF;
@@ -3396,8 +3397,8 @@ static TrainReference VehicleCreateTrain(
 {
     TrainReference train = { nullptr, nullptr };
     bool isReversed
-        = (ride.mode == RideMode::ContinuousCircuitReverseTrains ||
-           ride.mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains);
+        = (ride.mode == RideMode::ContinuousCircuitReverseTrains
+           || ride.mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains);
     for (int32_t carIndex = 0; carIndex < ride.num_cars_per_train; carIndex++)
     {
         auto carSpawnIndex = (isReversed) ? (ride.num_cars_per_train - 1) - carIndex : carIndex;

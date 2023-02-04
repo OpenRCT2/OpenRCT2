@@ -2923,13 +2923,13 @@ void Vehicle::UpdateTestFinish()
     ClearFlag(VehicleFlags::Testing);
 }
 
-//Returns the opposite of the pitch angle (for use with reversed cars)
+// Returns the opposite of the pitch angle (for use with reversed cars)
 uint8_t Vehicle::GetInvertedPitch() const
 {
     return PitchInvertTable[this->Pitch];
 }
 
-//Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
+// Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
 uint8_t Vehicle::GetBankRotationForDrawing() const
 {
     return (this->isReversed) ? BankInvertTable[this->bank_rotation] : this->bank_rotation;
