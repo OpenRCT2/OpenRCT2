@@ -2137,7 +2137,7 @@ namespace OpenRCT2
         }
         if (os.GetHeader().TargetVersion >= 17)
         {
-            cs.ReadWrite(entity.is_reversed);
+            cs.ReadWrite(entity.isReversed);
         }
     }
 

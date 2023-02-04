@@ -112,7 +112,7 @@ struct Vehicle : EntityBase
     int32_t acceleration;
     RideId ride;
     uint8_t vehicle_type;
-    bool is_reversed;
+    bool isReversed;
     VehicleColour colours;
     union
     {
@@ -273,6 +273,8 @@ struct Vehicle : EntityBase
     {
         Flags |= flag;
     }
+    uint8_t GetInvertedPitch() const;
+    uint8_t GetBankRotationForDrawing() const;
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
