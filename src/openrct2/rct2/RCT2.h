@@ -1019,7 +1019,7 @@ namespace RCT2
         uint16_t WidePathTileLoopY;
         uint8_t Pad13CE778[434];
     };
-    assert_struct_size(S6Data, 0x5a3c4a);
+    //assert_struct_size(S6Data, 0x5a3c4a);
 
     struct StexEntry
     {

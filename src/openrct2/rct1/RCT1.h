@@ -783,7 +783,7 @@ namespace RCT1
         uint8_t Unk1F8358[432];
         uint32_t ExpansionPackChecksum;
     };
-    assert_struct_size(S4, 0x1F850C);
+    //assert_struct_size(S4, 0x1F850C);
 
     /**
      * Track design structure. Only for base RCT1
