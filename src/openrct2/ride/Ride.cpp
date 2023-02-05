@@ -3101,7 +3101,7 @@ static Vehicle* VehicleCreateCar(
         return nullptr;
 
     auto& carEntry = rideEntry->Cars[carEntryIndex];
-    
+
     auto* vehicle = CreateEntity<Vehicle>();
     if (vehicle == nullptr)
         return nullptr;
@@ -3112,11 +3112,11 @@ static Vehicle* VehicleCreateCar(
     vehicle->vehicle_type = carEntryIndex;
     vehicle->SubType = carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail;
     vehicle->var_44 = Numerics::ror32(carEntry.spacing, 10) & 0xFFFF;
-    
+
     const auto halfSpacing = carEntry.spacing >> 1;
     *remainingDistance -= halfSpacing;
     vehicle->remaining_distance = *remainingDistance;
-    
+
     if (!(carEntry.flags & CAR_ENTRY_FLAG_GO_KART))
     {
         *remainingDistance -= halfSpacing;
@@ -4872,19 +4872,18 @@ void Ride::UpdateMaxVehicles()
     if (subtype == OBJECT_ENTRY_INDEX_NULL)
         return;
 
-    RideObjectEntry* rideEntry = GetRideEntryByIndex(subtype);
+    const RideObjectEntry* rideEntry = GetRideEntryByIndex(subtype);
     if (rideEntry == nullptr)
     {
         return;
     }
-    CarEntry* carEntry;
+
     uint8_t numCarsPerTrain, numTrains;
     int32_t maxNumTrains;
 
     const auto& rtd = GetRideTypeDescriptor();
     if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
     {
-        int32_t trainLength;
         num_cars_per_train = std::max(rideEntry->min_cars_in_train, num_cars_per_train);
         MinCarsPerTrain = rideEntry->min_cars_in_train;
         MaxCarsPerTrain = rideEntry->max_cars_in_train;
@@ -4899,13 +4898,13 @@ void Ride::UpdateMaxVehicles()
         int32_t maxCarsPerTrain = 1;
         for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
         {
-            trainLength = 0;
+            int32_t trainLength = 0;
             int32_t totalMass = 0;
             for (int32_t i = 0; i < numCars; i++)
             {
-                carEntry = &rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, numCars, i)];
-                trainLength += carEntry->spacing;
-                totalMass += carEntry->car_mass;
+                const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, numCars, i)];
+                trainLength += carEntry.spacing;
+                totalMass += carEntry.car_mass;
             }
 
             if (trainLength <= stationLength && totalMass <= maxMass)
@@ -4938,11 +4937,11 @@ void Ride::UpdateMaxVehicles()
                 break;
             default:
                 // Calculate maximum number of trains
-                trainLength = 0;
+                int32_t trainLength = 0;
                 for (int32_t i = 0; i < newCarsPerTrain; i++)
                 {
-                    carEntry = &rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, i)];
-                    trainLength += carEntry->spacing;
+                    const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, i)];
+                    trainLength += carEntry.spacing;
                 }
 
                 int32_t totalLength = trainLength / 2;
@@ -4963,14 +4962,14 @@ void Ride::UpdateMaxVehicles()
                 }
                 else
                 {
-                    carEntry = &rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, 0)];
-                    int32_t poweredMaxSpeed = carEntry->powered_max_speed;
+                    const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, 0)];
+                    int32_t poweredMaxSpeed = firstCarEntry.powered_max_speed;
 
                     int32_t totalSpacing = 0;
                     for (int32_t i = 0; i < newCarsPerTrain; i++)
                     {
-                        carEntry = &rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, i)];
-                        totalSpacing += carEntry->spacing;
+                        const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, i)];
+                        totalSpacing += carEntry.spacing;
                     }
 
                     totalSpacing >>= 13;
