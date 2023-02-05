@@ -437,21 +437,6 @@ static constexpr const OpenRCT2::Audio::SoundId DoorCloseSoundIds[] = {
     OpenRCT2::Audio::SoundId::Portcullis,
 };
 
-// Opposite Pitch values for reversed cars
-const uint8_t PitchInvertTable[] = {
-    0,                                                                              // Flat Track
-    5,  6,  7,  8,  1,  2,  3,  4,                                                  // Slopes 1
-    17, 18, 19, 20, 21, 22, 23, 16, 9,  10, 11, 12, 13, 14, 15,                     // Vertical Loop
-    29, 30, 31, 32, 33, 24, 25, 26, 27, 28, 39, 40, 41, 42, 43, 34, 35, 36, 37, 38, // Corkscrews
-    0,  0,  0,  0,  0,  0,                                                          // Helices
-    53, 54, 55, 50, 51, 52,                                                         // Slopes 2
-    56, 57, 58,                                                                     // Zero-G Rolls
-    0 // 59 = Spiral Lift. This is the only pitch with no corresponding pitch down, so flat will be used instead
-};
-
-// Opposite Bank values for reversed cars
-const uint8_t BankInvertTable[] = { 0, 3, 4, 1, 2, 10, 11, 12, 13, 14, 5, 6, 7, 8, 9, 15, 18, 19, 16, 17 };
-
 template<> bool EntityBase::Is<Vehicle>() const
 {
     return Type == EntityType::Vehicle;
@@ -2921,18 +2906,6 @@ void Vehicle::UpdateTestFinish()
         return;
     test_finish(*curRide);
     ClearFlag(VehicleFlags::Testing);
-}
-
-// Returns the opposite of the pitch angle (for use with reversed cars)
-uint8_t Vehicle::GetInvertedPitch() const
-{
-    return PitchInvertTable[this->Pitch];
-}
-
-// Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
-uint8_t Vehicle::GetBankRotationForDrawing() const
-{
-    return (this->isReversed) ? BankInvertTable[this->bank_rotation] : this->bank_rotation;
 }
 
 /**
@@ -7736,7 +7709,8 @@ Loc6DAEB9:
         {
             if (track_progress == 32)
             {
-                isReversed = !isReversed;
+                vehicle_type = carEntry->ReversedCarIndex;
+                carEntry = Entry();
             }
         }
         else

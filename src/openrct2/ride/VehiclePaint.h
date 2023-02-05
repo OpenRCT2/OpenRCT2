@@ -58,3 +58,5 @@ void VehicleVisualMiniGolfPlayer(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
 void VehicleVisualMiniGolfBall(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
+
+static uint8_t GetBankRotationForDrawing(const Vehicle* vehicle);

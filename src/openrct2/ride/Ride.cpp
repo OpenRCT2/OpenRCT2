@@ -3183,7 +3183,7 @@ static constexpr const CoordsXY word_9A2A60[] = {
  */
 static Vehicle* VehicleCreateCar(
     Ride& ride, int32_t carEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
-    int32_t* remainingDistance, TrackElement* trackElement, bool isReversed)
+    int32_t* remainingDistance, TrackElement* trackElement, bool IsReversed)
 {
     if (trackElement == nullptr)
         return nullptr;
@@ -3202,10 +3202,10 @@ static Vehicle* VehicleCreateCar(
     vehicle->ride_subtype = ride.subtype;
 
     vehicle->vehicle_type = carEntryIndex;
-    if (isReversed)
+    if (IsReversed)
     {
         vehicle->SubType = carIndex == (ride.num_cars_per_train - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
-        vehicle->isReversed = true;
+        vehicle->IsReversed = true;
     }
     else
     {
@@ -3396,15 +3396,15 @@ static TrainReference VehicleCreateTrain(
     Ride& ride, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
     TrainReference train = { nullptr, nullptr };
-    bool isReversed
+    bool IsReversed
         = (ride.mode == RideMode::ContinuousCircuitReverseTrains
            || ride.mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains);
     for (int32_t carIndex = 0; carIndex < ride.num_cars_per_train; carIndex++)
     {
-        auto carSpawnIndex = (isReversed) ? (ride.num_cars_per_train - 1) - carIndex : carIndex;
+        auto carSpawnIndex = (IsReversed) ? (ride.num_cars_per_train - 1) - carIndex : carIndex;
 
         auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carSpawnIndex);
-        auto car = VehicleCreateCar(ride, vehicle, carSpawnIndex, vehicleIndex, trainPos, remainingDistance, trackElement, isReversed);
+        auto car = VehicleCreateCar(ride, vehicle, carSpawnIndex, vehicleIndex, trainPos, remainingDistance, trackElement, IsReversed);
         if (car == nullptr)
             break;
 
@@ -4675,7 +4675,7 @@ void RideUpdateVehicleColours(const Ride& ride)
                     colours = ride.vehicle_colours[i];
                     break;
                 case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR:
-                    if (vehicle->isReversed)
+                    if (vehicle->IsReversed)
                     {
                         colours = ride.vehicle_colours[std::min(
                             (ride.num_cars_per_train - 1) - carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
