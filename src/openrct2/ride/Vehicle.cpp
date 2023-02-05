@@ -8821,7 +8821,8 @@ static uint8_t modified_speed(uint16_t trackType, VehicleTrackSubposition trackS
     return speed;
 }
 
-int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(const CarEntry* carEntry, uint32_t totalMass, const int32_t curAcceleration)
+int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
+    const CarEntry* carEntry, uint32_t totalMass, const int32_t curAcceleration)
 {
     if (carEntry->flags & CAR_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
     {
