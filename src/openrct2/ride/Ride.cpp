@@ -104,17 +104,17 @@ struct StationIndexWithMessage
 };
 
 // Static function declarations
-Staff* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection);
-static void ride_breakdown_status_update(Ride& ride);
-static void ride_breakdown_update(Ride& ride);
-static void ride_call_closest_mechanic(Ride& ride);
-static void ride_call_mechanic(Ride& ride, Peep* mechanic, int32_t forInspection);
-static void ride_entrance_exit_connected(Ride& ride);
-static int32_t ride_get_new_breakdown_problem(const Ride& ride);
-static void ride_inspection_update(Ride& ride);
-static void ride_mechanic_status_update(Ride& ride, int32_t mechanicStatus);
+Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspection);
+static void RideBreakdownStatusUpdate(Ride& ride);
+static void RideBreakdownUpdate(Ride& ride);
+static void RideCallClosestMechanic(Ride& ride);
+static void RideCallMechanic(Ride& ride, Peep* mechanic, int32_t forInspection);
+static void RideEntranceExitConnected(Ride& ride);
+static int32_t RideGetNewBreakdownProblem(const Ride& ride);
+static void RideInspectionUpdate(Ride& ride);
+static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus);
 static void RideMusicUpdate(Ride& ride);
-static void ride_shop_connected(const Ride& ride);
+static void RideShopConnected(const Ride& ride);
 
 RideManager GetRideManager()
 {
@@ -1070,7 +1070,7 @@ void Ride::Update()
     if (rtd.RideUpdate != nullptr)
         rtd.RideUpdate(*this);
 
-    ride_breakdown_update(*this);
+    RideBreakdownUpdate(*this);
 
     // Various things include news messages
     if (lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
@@ -1080,10 +1080,10 @@ void Ride::Update()
         // for identical balance with vanilla.
         const auto updatingRideByte = static_cast<uint8_t>((gCurrentTicks / 2) & 0xFF);
         if (updatingRideByte == static_cast<uint8_t>(id.ToUnderlying()))
-            ride_breakdown_status_update(*this);
+            RideBreakdownStatusUpdate(*this);
     }
 
-    ride_inspection_update(*this);
+    RideInspectionUpdate(*this);
 
     // If ride is simulating but crashed, reset the vehicles
     if (status == RideStatus::Simulating && (lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
@@ -1260,7 +1260,7 @@ static uint8_t _breakdownProblemProbabilities[] = {
  *
  *  rct2: 0x006AC7C2
  */
-static void ride_inspection_update(Ride& ride)
+static void RideInspectionUpdate(Ride& ride)
 {
     if (gCurrentTicks & 2047)
         return;
@@ -1298,7 +1298,7 @@ static void ride_inspection_update(Ride& ride)
     ride.inspection_station = (!stationIndex.IsNull()) ? stationIndex : StationIndex::FromUnderlying(0);
 }
 
-static int32_t get_age_penalty(const Ride& ride)
+static int32_t GetAgePenalty(const Ride& ride)
 {
     auto years = DateGetYear(ride.GetAge());
     switch (years)
@@ -1325,7 +1325,7 @@ static int32_t get_age_penalty(const Ride& ride)
  *
  *  rct2: 0x006AC622
  */
-static void ride_breakdown_update(Ride& ride)
+static void RideBreakdownUpdate(Ride& ride)
 {
     if (gCurrentTicks & 255)
         return;
@@ -1368,7 +1368,7 @@ static void ride_breakdown_update(Ride& ride)
     }
 
     // Calculate breakdown probability?
-    int32_t unreliabilityAccumulator = ride.unreliability_factor + get_age_penalty(ride);
+    int32_t unreliabilityAccumulator = ride.unreliability_factor + GetAgePenalty(ride);
     ride.reliability = static_cast<uint16_t>(std::max(0, (ride.reliability - unreliabilityAccumulator)));
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
@@ -1382,7 +1382,7 @@ static void ride_breakdown_update(Ride& ride)
          || static_cast<int32_t>(ScenarioRand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride.reliability)
         && !gCheatsDisableAllBreakdowns)
     {
-        int32_t breakdownReason = ride_get_new_breakdown_problem(ride);
+        int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
         if (breakdownReason != -1)
             RidePrepareBreakdown(ride, breakdownReason);
     }
@@ -1392,7 +1392,7 @@ static void ride_breakdown_update(Ride& ride)
  *
  *  rct2: 0x006B7294
  */
-static int32_t ride_get_new_breakdown_problem(const Ride& ride)
+static int32_t RideGetNewBreakdownProblem(const Ride& ride)
 {
     int32_t availableBreakdownProblems, totalProbability, randomProbability, problemBits, breakdownProblem;
 
@@ -1460,7 +1460,7 @@ bool Ride::CanBreakDown() const
     return entry != nullptr && !(entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN);
 }
 
-static void choose_random_train_to_breakdown_safe(Ride& ride)
+static void ChooseRandomTrainToBreakdownSafe(Ride& ride)
 {
     // Prevent integer division by zero in case of hacked ride.
     if (ride.NumTrains == 0)
@@ -1512,7 +1512,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
         case BREAKDOWN_DOORS_STUCK_CLOSED:
         case BREAKDOWN_DOORS_STUCK_OPEN:
             // Choose a random train and car
-            choose_random_train_to_breakdown_safe(ride);
+            ChooseRandomTrainToBreakdownSafe(ride);
             if (ride.num_cars_per_train != 0)
             {
                 ride.broken_car = ScenarioRand() % ride.num_cars_per_train;
@@ -1531,7 +1531,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             break;
         case BREAKDOWN_VEHICLE_MALFUNCTION:
             // Choose a random train
-            choose_random_train_to_breakdown_safe(ride);
+            ChooseRandomTrainToBreakdownSafe(ride);
             ride.broken_car = 0;
 
             // Set flag on broken train, first car
@@ -1571,7 +1571,7 @@ void RideBreakdownAddNewsItem(const Ride& ride)
  *
  *  rct2: 0x006B75C8
  */
-static void ride_breakdown_status_update(Ride& ride)
+static void RideBreakdownStatusUpdate(Ride& ride)
 {
     // Warn player if ride hasn't been fixed for ages
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -1595,14 +1595,14 @@ static void ride_breakdown_status_update(Ride& ride)
         }
     }
 
-    ride_mechanic_status_update(ride, ride.mechanic_status);
+    RideMechanicStatusUpdate(ride, ride.mechanic_status);
 }
 
 /**
  *
  *  rct2: 0x006B762F
  */
-static void ride_mechanic_status_update(Ride& ride, int32_t mechanicStatus)
+static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus)
 {
     // Turn a pending breakdown into a breakdown.
     if ((mechanicStatus == RIDE_MECHANIC_STATUS_UNDEFINED || mechanicStatus == RIDE_MECHANIC_STATUS_CALLING
@@ -1636,7 +1636,7 @@ static void ride_mechanic_status_update(Ride& ride, int32_t mechanicStatus)
                 break;
             }
 
-            ride_call_closest_mechanic(ride);
+            RideCallClosestMechanic(ride);
             break;
         case RIDE_MECHANIC_STATUS_HEADING:
         {
@@ -1648,14 +1648,14 @@ static void ride_mechanic_status_update(Ride& ride, int32_t mechanicStatus)
             {
                 ride.mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
                 ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
-                ride_mechanic_status_update(ride, RIDE_MECHANIC_STATUS_CALLING);
+                RideMechanicStatusUpdate(ride, RIDE_MECHANIC_STATUS_CALLING);
             }
             // if the ride is broken down, but a mechanic was heading for an inspection, update orders to fix
             else if (rideNeedsRepair && mechanic->State == PeepState::HeadingToInspection)
             {
                 // updates orders for mechanic already heading to inspect ride
                 // forInspection == false means start repair (goes to PeepState::Answering)
-                ride_call_mechanic(ride, mechanic, false);
+                RideCallMechanic(ride, mechanic, false);
             }
             break;
         }
@@ -1668,7 +1668,7 @@ static void ride_mechanic_status_update(Ride& ride, int32_t mechanicStatus)
             {
                 ride.mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
                 ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
-                ride_mechanic_status_update(ride, RIDE_MECHANIC_STATUS_CALLING);
+                RideMechanicStatusUpdate(ride, RIDE_MECHANIC_STATUS_CALLING);
             }
             break;
         }
@@ -1679,7 +1679,7 @@ static void ride_mechanic_status_update(Ride& ride, int32_t mechanicStatus)
  *
  *  rct2: 0x006B796C
  */
-static void ride_call_mechanic(Ride& ride, Peep* mechanic, int32_t forInspection)
+static void RideCallMechanic(Ride& ride, Peep* mechanic, int32_t forInspection)
 {
     mechanic->SetState(forInspection ? PeepState::HeadingToInspection : PeepState::Answering);
     mechanic->SubState = 0;
@@ -1694,12 +1694,12 @@ static void ride_call_mechanic(Ride& ride, Peep* mechanic, int32_t forInspection
  *
  *  rct2: 0x006B76AB
  */
-static void ride_call_closest_mechanic(Ride& ride)
+static void RideCallClosestMechanic(Ride& ride)
 {
     auto forInspection = (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) == 0;
     auto mechanic = RideFindClosestMechanic(ride, forInspection);
     if (mechanic != nullptr)
-        ride_call_mechanic(ride, mechanic, forInspection);
+        RideCallMechanic(ride, mechanic, forInspection);
 }
 
 Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection)
@@ -1723,7 +1723,7 @@ Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection)
     // Set x,y to centre of the station exit for the mechanic search.
     auto centreMapLocation = mapLocation.ToTileCentre();
 
-    return find_closest_mechanic(centreMapLocation, forInspection);
+    return FindClosestMechanic(centreMapLocation, forInspection);
 }
 
 /**
@@ -1731,7 +1731,7 @@ Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection)
  *  rct2: 0x006B774B (forInspection = 0)
  *  rct2: 0x006B78C3 (forInspection = 1)
  */
-Staff* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection)
+Staff* FindClosestMechanic(const CoordsXY& entrancePosition, int32_t forInspection)
 {
     Staff* closestMechanic = nullptr;
     uint32_t closestDistance = std::numeric_limits<uint32_t>::max();
@@ -1943,7 +1943,7 @@ static void RideMusicUpdate(Ride& ride)
  *
  *  rct2: 0x006B64F2
  */
-static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
+static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
 {
     if (measurement.vehicle_index >= std::size(ride.vehicles))
         return;
@@ -2032,7 +2032,7 @@ void RideMeasurementsUpdate()
         {
             if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
             {
-                ride_measurement_update(ride, *measurement);
+                RideMeasurementUpdate(ride, *measurement);
             }
             else
             {
@@ -2050,7 +2050,7 @@ void RideMeasurementsUpdate()
                             measurement->current_station = vehicle->current_station;
                             measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
                             measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
-                            ride_measurement_update(ride, *measurement);
+                            RideMeasurementUpdate(ride, *measurement);
                             break;
                         }
                     }
@@ -2063,7 +2063,7 @@ void RideMeasurementsUpdate()
 /**
  * If there are more than the threshold of allowed ride measurements, free the non-LRU one.
  */
-static void ride_free_old_measurements()
+static void RideFreeOldMeasurements()
 {
     size_t numRideMeasurements;
     do
@@ -2107,7 +2107,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
         {
             measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
         }
-        ride_free_old_measurements();
+        RideFreeOldMeasurements();
         assert(measurement != nullptr);
     }
 
@@ -2228,9 +2228,9 @@ void RideCheckAllReachable()
             continue;
 
         if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
-            ride_shop_connected(ride);
+            RideShopConnected(ride);
         else
-            ride_entrance_exit_connected(ride);
+            RideEntranceExitConnected(ride);
     }
 }
 
@@ -2239,7 +2239,7 @@ void RideCheckAllReachable()
  *  rct2: 0x006B7C59
  * @return true if the coordinate is reachable or has no entrance, false otherwise
  */
-static bool ride_entrance_exit_is_reachable(const TileCoordsXYZD& coordinates)
+static bool RideEntranceExitIsReachable(const TileCoordsXYZD& coordinates)
 {
     if (coordinates.IsNull())
         return true;
@@ -2250,7 +2250,7 @@ static bool ride_entrance_exit_is_reachable(const TileCoordsXYZD& coordinates)
     return MapCoordIsConnected(loc, coordinates.direction);
 }
 
-static void ride_entrance_exit_connected(Ride& ride)
+static void RideEntranceExitConnected(Ride& ride)
 {
     for (auto& station : ride.GetStations())
     {
@@ -2260,7 +2260,7 @@ static void ride_entrance_exit_connected(Ride& ride)
 
         if (station_start.IsNull())
             continue;
-        if (!entrance.IsNull() && !ride_entrance_exit_is_reachable(entrance))
+        if (!entrance.IsNull() && !RideEntranceExitIsReachable(entrance))
         {
             // name of ride is parameter of the format string
             Formatter ft;
@@ -2272,7 +2272,7 @@ static void ride_entrance_exit_connected(Ride& ride)
             ride.connected_message_throttle = 3;
         }
 
-        if (!exit.IsNull() && !ride_entrance_exit_is_reachable(exit))
+        if (!exit.IsNull() && !RideEntranceExitIsReachable(exit))
         {
             // name of ride is parameter of the format string
             Formatter ft;
@@ -2286,7 +2286,7 @@ static void ride_entrance_exit_connected(Ride& ride)
     }
 }
 
-static void ride_shop_connected(const Ride& ride)
+static void RideShopConnected(const Ride& ride)
 {
     auto shopLoc = TileCoordsXY(ride.GetStation().Start);
     if (shopLoc.IsNull())
@@ -2358,7 +2358,7 @@ static void ride_shop_connected(const Ride& ride)
 
 #pragma region Interface
 
-static void ride_track_set_map_tooltip(TileElement* tileElement)
+static void RideTrackSetMapTooltip(TileElement* tileElement)
 {
     auto rideIndex = tileElement->AsTrack()->GetRideIndex();
     auto ride = GetRide(rideIndex);
@@ -2374,7 +2374,7 @@ static void ride_track_set_map_tooltip(TileElement* tileElement)
     }
 }
 
-static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
+static void RideQueueBannerSetMapTooltip(TileElement* tileElement)
 {
     auto rideIndex = tileElement->AsPath()->GetRideIndex();
     auto ride = GetRide(rideIndex);
@@ -2390,7 +2390,7 @@ static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
     }
 }
 
-static void ride_station_set_map_tooltip(TileElement* tileElement)
+static void RideStationSetMapTooltip(TileElement* tileElement)
 {
     auto rideIndex = tileElement->AsTrack()->GetRideIndex();
     auto ride = GetRide(rideIndex);
@@ -2414,7 +2414,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
     }
 }
 
-static void ride_entrance_set_map_tooltip(TileElement* tileElement)
+static void RideEntranceSetMapTooltip(TileElement* tileElement)
 {
     auto rideIndex = tileElement->AsEntrance()->GetRideIndex();
     auto ride = GetRide(rideIndex);
@@ -2486,22 +2486,22 @@ void RideSetMapTooltip(TileElement* tileElement)
 {
     if (tileElement->GetType() == TileElementType::Entrance)
     {
-        ride_entrance_set_map_tooltip(tileElement);
+        RideEntranceSetMapTooltip(tileElement);
     }
     else if (tileElement->GetType() == TileElementType::Track)
     {
         if (tileElement->AsTrack()->IsStation())
         {
-            ride_station_set_map_tooltip(tileElement);
+            RideStationSetMapTooltip(tileElement);
         }
         else
         {
-            ride_track_set_map_tooltip(tileElement);
+            RideTrackSetMapTooltip(tileElement);
         }
     }
     else if (tileElement->GetType() == TileElementType::Path)
     {
-        ride_queue_banner_set_map_tooltip(tileElement);
+        RideQueueBannerSetMapTooltip(tileElement);
     }
 }
 
@@ -2511,7 +2511,7 @@ void RideSetMapTooltip(TileElement* tileElement)
  *
  *  rct2: 0x006B4CC1
  */
-static ResultWithMessage ride_mode_check_valid_station_numbers(const Ride& ride)
+static ResultWithMessage RideModeCheckValidStationNumbers(const Ride& ride)
 {
     uint16_t numStations = 0;
     for (const auto& station : ride.GetStations())
@@ -2553,7 +2553,7 @@ static ResultWithMessage ride_mode_check_valid_station_numbers(const Ride& ride)
  * returns stationIndex of first station on success
  * STATION_INDEX_NULL on failure.
  */
-static StationIndexWithMessage ride_mode_check_station_present(const Ride& ride)
+static StationIndexWithMessage RideModeCheckStationPresent(const Ride& ride)
 {
     auto stationIndex = RideGetFirstValidStationStart(ride);
 
@@ -2576,7 +2576,7 @@ static StationIndexWithMessage ride_mode_check_station_present(const Ride& ride)
  *
  *  rct2: 0x006B5872
  */
-static ResultWithMessage ride_check_for_entrance_exit(RideId rideIndex)
+static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
 {
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
@@ -2712,7 +2712,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
  * @returns true if an inversion track piece is found, otherwise false.
  *  rct2: 0x006CB149
  */
-static bool ride_check_track_contains_inversions(const CoordsXYE& input, CoordsXYE* output)
+static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* output)
 {
     if (input.element == nullptr)
         return false;
@@ -2772,7 +2772,7 @@ static bool ride_check_track_contains_inversions(const CoordsXYE& input, CoordsX
  * @returns true if a banked track piece is found, otherwise false.
  *  rct2: 0x006CB1D3
  */
-static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* output)
+static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* output)
 {
     if (input.element == nullptr)
         return false;
@@ -2829,7 +2829,7 @@ static bool ride_check_track_contains_banked(const CoordsXYE& input, CoordsXYE* 
  *
  *  rct2: 0x006CB25D
  */
-static int32_t ride_check_station_length(const CoordsXYE& input, CoordsXYE* output)
+static int32_t RideCheckStationLength(const CoordsXYE& input, CoordsXYE* output)
 {
     WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
@@ -2884,7 +2884,7 @@ static int32_t ride_check_station_length(const CoordsXYE& input, CoordsXYE* outp
  *
  *  rct2: 0x006CB2DA
  */
-static bool ride_check_start_and_end_is_station(const CoordsXYE& input)
+static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
 {
     CoordsXYE trackBack, trackFront;
 
@@ -2927,7 +2927,7 @@ static bool ride_check_start_and_end_is_station(const CoordsXYE& input)
  * station or the last track piece from the end of the direction.
  *  rct2: 0x006B4D39
  */
-static void ride_set_boat_hire_return_point(Ride& ride, const CoordsXYE& startElement)
+static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement)
 {
     int32_t trackType = -1;
     auto returnPos = startElement;
@@ -2960,7 +2960,7 @@ static void ride_set_boat_hire_return_point(Ride& ride, const CoordsXYE& startEl
  *
  *  rct2: 0x006B4D39
  */
-static void ride_set_maze_entrance_exit_points(Ride& ride)
+static void RideSetMazeEntranceExitPoints(Ride& ride)
 {
     // Needs room for an entrance and an exit per station, plus one position for the list terminator.
     TileCoordsXYZD positions[(OpenRCT2::Limits::MaxStationsPerRide * 2) + 1];
@@ -3035,7 +3035,7 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
  *
  *  rct2: 0x006B4D26
  */
-static void ride_set_start_finish_points(RideId rideIndex, const CoordsXYE& startElement)
+static void RideSetStartFinishPoints(RideId rideIndex, const CoordsXYE& startElement)
 {
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
@@ -3043,9 +3043,9 @@ static void ride_set_start_finish_points(RideId rideIndex, const CoordsXYE& star
 
     const auto& rtd = ride->GetRideTypeDescriptor();
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-        ride_set_maze_entrance_exit_points(*ride);
+        RideSetMazeEntranceExitPoints(*ride);
     else if (ride->type == RIDE_TYPE_BOAT_HIRE)
-        ride_set_boat_hire_return_point(*ride, startElement);
+        RideSetBoatHireReturnPoint(*ride, startElement);
 
     if (ride->IsBlockSectioned() && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
@@ -3373,7 +3373,7 @@ static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackEle
  *
  *  rct2: 0x006DDE9E
  */
-static void ride_create_vehicles_find_first_block(const Ride& ride, CoordsXYE* outXYElement)
+static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYElement)
 {
     Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
     if (vehicle == nullptr)
@@ -3497,7 +3497,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
         if (IsBlockSectioned())
         {
             CoordsXYE firstBlock{};
-            ride_create_vehicles_find_first_block(*this, &firstBlock);
+            RideCreateVehiclesFindFirstBlock(*this, &firstBlock);
             MoveTrainsToBlockBrakes(firstBlock.element->AsTrack());
         }
         else
@@ -3590,7 +3590,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
  * appropriate track.
  *  rct2: 0x006D31A6
  */
-static ResultWithMessage ride_initialise_cable_lift_track(const Ride& ride, bool isApplying)
+static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isApplying)
 {
     CoordsXYZ location;
     location.SetNull();
@@ -3692,7 +3692,7 @@ static ResultWithMessage ride_initialise_cable_lift_track(const Ride& ride, bool
  *
  *  rct2: 0x006DF4D4
  */
-static ResultWithMessage ride_create_cable_lift(RideId rideIndex, bool isApplying)
+static ResultWithMessage RideCreateCableLift(RideId rideIndex, bool isApplying)
 {
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
@@ -3713,7 +3713,7 @@ static ResultWithMessage ride_create_cable_lift(RideId rideIndex, bool isApplyin
         return { false, STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES };
     }
 
-    auto cableLiftInitialiseResult = ride_initialise_cable_lift_track(*ride, isApplying);
+    auto cableLiftInitialiseResult = RideInitialiseCableLiftTrack(*ride, isApplying);
     if (!cableLiftInitialiseResult.Successful)
     {
         return { false, cableLiftInitialiseResult.Message };
@@ -3826,7 +3826,7 @@ void Ride::ConstructMissingEntranceOrExit() const
  *
  *  rct2: 0x006B528A
  */
-static void ride_scroll_to_track_error(const CoordsXYE& trackElement)
+static void RideScrollToTrackError(const CoordsXYE& trackElement)
 {
     if (trackElement.element == nullptr)
         return;
@@ -3883,7 +3883,7 @@ ResultWithMessage Ride::Test(bool isApplying)
         return message;
     }
 
-    auto entranceExitCheck = ride_check_for_entrance_exit(id);
+    auto entranceExitCheck = RideCheckForEntranceExit(id);
     if (!entranceExitCheck.Successful)
     {
         ConstructMissingEntranceOrExit();
@@ -3936,7 +3936,7 @@ ResultWithMessage Ride::Simulate(bool isApplying)
 
     if (IsBlockSectioned() && FindTrackGap(trackElement, &problematicTrackElement))
     {
-        ride_scroll_to_track_error(problematicTrackElement);
+        RideScrollToTrackError(problematicTrackElement);
         return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
     }
 
@@ -3972,7 +3972,7 @@ ResultWithMessage Ride::Open(bool isApplying)
         return message;
     }
 
-    auto entranceExitCheck = ride_check_for_entrance_exit(id);
+    auto entranceExitCheck = RideCheckForEntranceExit(id);
     if (!entranceExitCheck.Successful)
     {
         ConstructMissingEntranceOrExit();
@@ -4765,7 +4765,7 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
     return supportedPieces;
 }
 
-static std::optional<int32_t> ride_get_smallest_station_length(const Ride& ride)
+static std::optional<int32_t> RideGetSmallestStationLength(const Ride& ride)
 {
     std::optional<int32_t> result;
     for (const auto& station : ride.GetStations())
@@ -4785,7 +4785,7 @@ static std::optional<int32_t> ride_get_smallest_station_length(const Ride& ride)
  *
  *  rct2: 0x006CB3AA
  */
-static int32_t ride_get_track_length(const Ride& ride)
+static int32_t RideGetTrackLength(const Ride& ride)
 {
     TileElement* tileElement = nullptr;
     track_type_t trackType;
@@ -4884,7 +4884,7 @@ void Ride::UpdateMaxVehicles()
         MaxCarsPerTrain = rideEntry->max_cars_in_train;
 
         // Calculate maximum train length based on smallest station length
-        auto stationNumTiles = ride_get_smallest_station_length(*this);
+        auto stationNumTiles = RideGetSmallestStationLength(*this);
         if (!stationNumTiles.has_value())
             return;
 
@@ -4968,7 +4968,7 @@ void Ride::UpdateMaxVehicles()
                     }
 
                     totalSpacing >>= 13;
-                    int32_t trackLength = ride_get_track_length(*this) / 4;
+                    int32_t trackLength = RideGetTrackLength(*this) / 4;
                     if (poweredMaxSpeed > 10)
                         trackLength = (trackLength * 3) / 4;
                     if (poweredMaxSpeed > 25)
@@ -5196,7 +5196,7 @@ TileElement* GetStationPlatform(const CoordsXYRangedZ& coords)
 /**
  * Check for an adjacent station to x,y,z in direction.
  */
-static bool check_for_adjacent_station(const CoordsXYZ& stationCoords, uint8_t direction)
+static bool CheckForAdjacentStation(const CoordsXYZ& stationCoords, uint8_t direction)
 {
     bool found = false;
     int32_t adjX = stationCoords.x;
@@ -5242,12 +5242,12 @@ bool RideHasAdjacentStation(const Ride& ride)
             }
             /* Check the first side of the station */
             int32_t direction = stationElement->GetDirectionWithOffset(1);
-            found = check_for_adjacent_station(stationStart, direction);
+            found = CheckForAdjacentStation(stationStart, direction);
             if (found)
                 break;
             /* Check the other side of the station */
             direction = DirectionReverse(direction);
-            found = check_for_adjacent_station(stationStart, direction);
+            found = CheckForAdjacentStation(stationStart, direction);
             if (found)
                 break;
         }
@@ -5690,12 +5690,12 @@ std::vector<RideId> GetTracklessRides()
 
 ResultWithMessage Ride::ChangeStatusDoStationChecks(StationIndex& stationIndex)
 {
-    auto stationIndexCheck = ride_mode_check_station_present(*this);
+    auto stationIndexCheck = RideModeCheckStationPresent(*this);
     stationIndex = stationIndexCheck.StationIndex;
     if (stationIndex.IsNull())
         return { false, stationIndexCheck.Message };
 
-    auto stationNumbersCheck = ride_mode_check_valid_station_numbers(*this);
+    auto stationNumbersCheck = RideModeCheckValidStationNumbers(*this);
     if (!stationNumbersCheck.Successful)
         return { false, stationNumbersCheck.Message };
 
@@ -5726,7 +5726,7 @@ ResultWithMessage Ride::ChangeStatusCheckCompleteCircuit(const CoordsXYE& trackE
     {
         if (FindTrackGap(trackElement, &problematicTrackElement))
         {
-            ride_scroll_to_track_error(problematicTrackElement);
+            RideScrollToTrackError(problematicTrackElement);
             return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
         }
     }
@@ -5743,7 +5743,7 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
         auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
         if (!blockBrakeCheck.Successful)
         {
-            ride_scroll_to_track_error(problematicTrackElement);
+            RideScrollToTrackError(problematicTrackElement);
             return { false, blockBrakeCheck.Message };
         }
     }
@@ -5753,17 +5753,17 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
         RideObjectEntry* rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
-            if (ride_check_track_contains_inversions(trackElement, &problematicTrackElement))
+            if (RideCheckTrackContainsInversions(trackElement, &problematicTrackElement))
             {
-                ride_scroll_to_track_error(problematicTrackElement);
+                RideScrollToTrackError(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
         {
-            if (ride_check_track_contains_banked(trackElement, &problematicTrackElement))
+            if (RideCheckTrackContainsBanked(trackElement, &problematicTrackElement))
             {
-                ride_scroll_to_track_error(problematicTrackElement);
+                RideScrollToTrackError(problematicTrackElement);
                 return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
@@ -5776,15 +5776,15 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
 
-        if (!ride_check_station_length(trackElement, &problematicTrackElement))
+        if (!RideCheckStationLength(trackElement, &problematicTrackElement))
         {
-            ride_scroll_to_track_error(problematicTrackElement);
+            RideScrollToTrackError(problematicTrackElement);
             return { false, STR_STATION_NOT_LONG_ENOUGH };
         }
 
-        if (!ride_check_start_and_end_is_station(trackElement))
+        if (!RideCheckStartAndEndIsStation(trackElement))
         {
-            ride_scroll_to_track_error(problematicTrackElement);
+            RideScrollToTrackError(problematicTrackElement);
             return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
     }
@@ -5795,7 +5795,7 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
 ResultWithMessage Ride::ChangeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement)
 {
     if (isApplying)
-        ride_set_start_finish_points(id, trackElement);
+        RideSetStartFinishPoints(id, trackElement);
 
     const auto& rtd = GetRideTypeDescriptor();
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
@@ -5810,7 +5810,7 @@ ResultWithMessage Ride::ChangeStatusCreateVehicles(bool isApplying, const Coords
     if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL) && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
         && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
-        const auto createCableLiftResult = ride_create_cable_lift(id, isApplying);
+        const auto createCableLiftResult = RideCreateCableLift(id, isApplying);
         if (!createCableLiftResult.Successful)
             return { false, createCableLiftResult.Message };
     }
