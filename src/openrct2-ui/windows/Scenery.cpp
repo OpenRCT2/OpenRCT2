@@ -126,14 +126,19 @@ private:
             return std::find(std::begin(Entries), std::end(Entries), entry) != std::end(Entries);
         }
 
-        void AddEntry(const ScenerySelection& entry, bool toBack)
+        void AddEntryToBack(const ScenerySelection& entry)
         {
             if (!Contains(entry))
             {
-                if (toBack)
-                    Entries.push_back(entry);
-                else
-                    Entries.push_front(entry);
+                Entries.push_back(entry);
+            }
+        }
+
+        void AddEntryToFront(const ScenerySelection& entry)
+        {
+            if (!Contains(entry))
+            {
+                Entries.push_front(entry);
             }
         }
 
@@ -811,7 +816,7 @@ public:
                 {
                     if (IsSceneryAvailableToBuild(sceneryEntry))
                     {
-                        tabInfo.AddEntry(sceneryEntry, true);
+                        tabInfo.AddEntryToBack(sceneryEntry);
                     }
                 }
                 if (tabInfo.Entries.size() > 0)
@@ -949,7 +954,7 @@ private:
             if (!oldScenery.IsUndefined())
             {
                 // Make sure last selected scenery for tab is always present
-                _filteredSceneryTab.AddEntry(oldScenery, false);
+                _filteredSceneryTab.AddEntryToFront(oldScenery);
             }
             else
             {
@@ -1053,7 +1058,7 @@ private:
                 auto* tabInfo = GetSceneryTabInfoForGroup(sceneryGroupIndex);
                 if (tabInfo != nullptr)
                 {
-                    tabInfo->AddEntry(selection, true);
+                    tabInfo->AddEntryToBack(selection);
                     return;
                 }
             }
@@ -1064,7 +1069,7 @@ private:
                 auto* tabInfo = GetSceneryTabInfoForGroup(OBJECT_ENTRY_INDEX_NULL);
                 if (tabInfo != nullptr)
                 {
-                    tabInfo->AddEntry(selection, true);
+                    tabInfo->AddEntryToBack(selection);
                 }
             }
         }
@@ -1080,7 +1085,7 @@ private:
         for (auto selection : currentTab.Entries)
         {
             if (MatchFilter(selection))
-                _filteredSceneryTab.AddEntry(selection, true);
+                _filteredSceneryTab.AddEntryToBack(selection);
         }
     }
 
