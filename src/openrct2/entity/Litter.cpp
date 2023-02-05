@@ -64,7 +64,6 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
                         CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
     }
 
-
     if (!IsLocationLitterable(offsetLitterPos))
         return;
 

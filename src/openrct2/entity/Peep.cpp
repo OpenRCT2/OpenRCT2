@@ -555,8 +555,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
             const auto curLoc = GetLocation();
-            Litter::Create(
-                { curLoc, sprite_direction }, (Id.ToUnderlying() & 1) ? Litter::Type::Poop : Litter::Type::PoopAlt);
+            Litter::Create({ curLoc, sprite_direction }, (Id.ToUnderlying() & 1) ? Litter::Type::Poop : Litter::Type::PoopAlt);
         }
     }
 
