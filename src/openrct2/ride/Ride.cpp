@@ -3089,18 +3089,14 @@ static constexpr const CoordsXY word_9A2A60[] = {
  *
  *  rct2: 0x006DD90D
  */
-static Vehicle* vehicle_create_car(
-    RideId rideIndex, int32_t carEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
+static Vehicle* VehicleCreateCar(
+    Ride& ride, int32_t carEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
     int32_t* remainingDistance, TrackElement* trackElement)
 {
     if (trackElement == nullptr)
         return nullptr;
 
-    auto ride = GetRide(rideIndex);
-    if (ride == nullptr)
-        return nullptr;
-
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return nullptr;
 
@@ -3109,8 +3105,8 @@ static Vehicle* vehicle_create_car(
     if (vehicle == nullptr)
         return nullptr;
 
-    vehicle->ride = rideIndex;
-    vehicle->ride_subtype = ride->subtype;
+    vehicle->ride = ride.id;
+    vehicle->ride_subtype = ride.subtype;
 
     vehicle->vehicle_type = carEntryIndex;
     vehicle->SubType = carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail;
@@ -3165,7 +3161,7 @@ static Vehicle* vehicle_create_car(
         vehicle->TrackLocation = dodgemPos;
         vehicle->current_station = trackElement->GetStationIndex();
 
-        dodgemPos.z += ride->GetRideTypeDescriptor().Heights.VehicleZOffset;
+        dodgemPos.z += ride.GetRideTypeDescriptor().Heights.VehicleZOffset;
 
         vehicle->SetTrackDirection(0);
         vehicle->SetTrackType(trackElement->GetTrackType());
@@ -3233,19 +3229,19 @@ static Vehicle* vehicle_create_car(
         int32_t direction = trackElement->GetDirection();
         vehicle->sprite_direction = direction << 3;
 
-        if (ride->type == RIDE_TYPE_SPACE_RINGS)
+        if (ride.type == RIDE_TYPE_SPACE_RINGS)
         {
             direction = 4;
         }
         else
         {
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+            if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
             {
-                if (ride->GetRideTypeDescriptor().StartTrackPiece != TrackElemType::FlatTrack1x4B)
+                if (ride.GetRideTypeDescriptor().StartTrackPiece != TrackElemType::FlatTrack1x4B)
                 {
-                    if (ride->GetRideTypeDescriptor().StartTrackPiece != TrackElemType::FlatTrack1x4A)
+                    if (ride.GetRideTypeDescriptor().StartTrackPiece != TrackElemType::FlatTrack1x4A)
                     {
-                        if (ride->type == RIDE_TYPE_ENTERPRISE)
+                        if (ride.type == RIDE_TYPE_ENTERPRISE)
                         {
                             direction += 5;
                         }
@@ -3258,7 +3254,7 @@ static Vehicle* vehicle_create_car(
             }
         }
 
-        chosenLoc += CoordsXYZ{ word_9A2A60[direction], ride->GetRideTypeDescriptor().Heights.VehicleZOffset };
+        chosenLoc += CoordsXYZ{ word_9A2A60[direction], ride.GetRideTypeDescriptor().Heights.VehicleZOffset };
 
         vehicle->current_station = trackElement->GetStationIndex();
 
@@ -3293,56 +3289,49 @@ static Vehicle* vehicle_create_car(
  *
  *  rct2: 0x006DD84C
  */
-static TrainReference vehicle_create_train(
-    RideId rideIndex, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
+static TrainReference VehicleCreateTrain(
+    Ride& ride, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
     TrainReference train = { nullptr, nullptr };
-    auto ride = GetRide(rideIndex);
-    if (ride != nullptr)
-    {
-        for (int32_t carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++)
-        {
-            auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex);
-            auto car = vehicle_create_car(
-                rideIndex, vehicle, carIndex, vehicleIndex, trainPos, remainingDistance, trackElement);
-            if (car == nullptr)
-                break;
 
-            if (carIndex == 0)
-            {
-                train.head = car;
-            }
-            else
-            {
-                // Link the previous car with this car
-                train.tail->next_vehicle_on_train = car->Id;
-                train.tail->next_vehicle_on_ride = car->Id;
-                car->prev_vehicle_on_ride = train.tail->Id;
-            }
-            train.tail = car;
+    for (int32_t carIndex = 0; carIndex < ride.num_cars_per_train; carIndex++)
+    {
+        auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carIndex);
+        auto car = VehicleCreateCar(ride, vehicle, carIndex, vehicleIndex, trainPos, remainingDistance, trackElement);
+        if (car == nullptr)
+            break;
+
+        if (carIndex == 0)
+        {
+            train.head = car;
         }
+        else
+        {
+            // Link the previous car with this car
+            train.tail->next_vehicle_on_train = car->Id;
+            train.tail->next_vehicle_on_ride = car->Id;
+            car->prev_vehicle_on_ride = train.tail->Id;
+        }
+        train.tail = car;
     }
+
     return train;
 }
 
-static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, TrackElement* trackElement)
+static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackElement* trackElement)
 {
-    auto ride = GetRide(rideIndex);
-    if (ride == nullptr)
-        return false;
-
     TrainReference firstTrain = {};
     TrainReference lastTrain = {};
     int32_t remainingDistance = 0;
     bool allTrainsCreated = true;
 
-    for (int32_t vehicleIndex = 0; vehicleIndex < ride->NumTrains; vehicleIndex++)
+    for (int32_t vehicleIndex = 0; vehicleIndex < ride.NumTrains; vehicleIndex++)
     {
-        if (ride->IsBlockSectioned())
+        if (ride.IsBlockSectioned())
         {
             remainingDistance = 0;
         }
-        TrainReference train = vehicle_create_train(rideIndex, trainsPos, vehicleIndex, &remainingDistance, trackElement);
+        TrainReference train = VehicleCreateTrain(ride, trainsPos, vehicleIndex, &remainingDistance, trackElement);
         if (train.head == nullptr || train.tail == nullptr)
         {
             allTrainsCreated = false;
@@ -3363,9 +3352,9 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
 
         for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
         {
-            if (ride->vehicles[i].IsNull())
+            if (ride.vehicles[i].IsNull())
             {
-                ride->vehicles[i] = train.head->Id;
+                ride.vehicles[i] = train.head->Id;
                 break;
             }
         }
@@ -3485,7 +3474,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
         vehiclePos.z = trackElement->GetBaseZ();
     }
 
-    if (!vehicle_create_trains(id, vehiclePos, trackElement))
+    if (!VehicleCreateTrains(*this, vehiclePos, trackElement))
     {
         // This flag is needed for Ride::RemoveVehicles()
         lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
