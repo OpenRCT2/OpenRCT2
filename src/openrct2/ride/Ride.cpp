@@ -2118,8 +2118,8 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     }
 
     auto ft = Formatter();
-    ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.vehicle).singular);
-    ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.station).singular);
+    ft.Add<StringId>(GetRideComponentName(rtd.NameConvention.vehicle).singular);
+    ft.Add<StringId>(GetRideComponentName(rtd.NameConvention.station).singular);
     return { nullptr, { STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES, ft } };
 }
 
@@ -2559,10 +2559,10 @@ static StationIndexWithMessage RideModeCheckStationPresent(const Ride& ride)
 
     if (stationIndex.IsNull())
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        const auto& rtd = ride.GetRideTypeDescriptor();
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
-        const auto& rtd = ride.GetRideTypeDescriptor();
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
@@ -3152,6 +3152,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->peep[i] = EntityId::GetNull();
     }
 
+    const auto& rtd = ride.GetRideTypeDescriptor();
     if (carEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
     {
         // Loc6DDCA4:
@@ -3161,7 +3162,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->TrackLocation = dodgemPos;
         vehicle->current_station = trackElement->GetStationIndex();
 
-        dodgemPos.z += ride.GetRideTypeDescriptor().Heights.VehicleZOffset;
+        dodgemPos.z += rtd.Heights.VehicleZOffset;
 
         vehicle->SetTrackDirection(0);
         vehicle->SetTrackType(trackElement->GetTrackType());
@@ -3235,11 +3236,11 @@ static Vehicle* VehicleCreateCar(
         }
         else
         {
-            if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
             {
-                if (ride.GetRideTypeDescriptor().StartTrackPiece != TrackElemType::FlatTrack1x4B)
+                if (rtd.StartTrackPiece != TrackElemType::FlatTrack1x4B)
                 {
-                    if (ride.GetRideTypeDescriptor().StartTrackPiece != TrackElemType::FlatTrack1x4A)
+                    if (rtd.StartTrackPiece != TrackElemType::FlatTrack1x4A)
                     {
                         if (ride.type == RIDE_TYPE_ENTERPRISE)
                         {
@@ -3254,7 +3255,7 @@ static Vehicle* VehicleCreateCar(
             }
         }
 
-        chosenLoc += CoordsXYZ{ word_9A2A60[direction], ride.GetRideTypeDescriptor().Heights.VehicleZOffset };
+        chosenLoc += CoordsXYZ{ word_9A2A60[direction], rtd.Heights.VehicleZOffset };
 
         vehicle->current_station = trackElement->GetStationIndex();
 
@@ -4206,9 +4207,10 @@ void Ride::SetNameToDefault()
  */
 RideNaming GetRideNaming(const ride_type_t rideType, const RideObjectEntry& rideEntry)
 {
-    if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    const auto& rtd = GetRideTypeDescriptor(rideType);
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        return GetRideTypeDescriptor(rideType).Naming;
+        return rtd.Naming;
     }
 
     return rideEntry.naming;
@@ -4876,6 +4878,7 @@ void Ride::UpdateMaxVehicles()
     uint8_t numCarsPerTrain, numTrains;
     int32_t maxNumTrains;
 
+    const auto& rtd = GetRideTypeDescriptor();
     if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
     {
         int32_t trainLength;
@@ -4889,7 +4892,7 @@ void Ride::UpdateMaxVehicles()
             return;
 
         auto stationLength = (stationNumTiles.value() * 0x44180) - 0x16B2A;
-        int32_t maxMass = GetRideTypeDescriptor().MaxMass << 8;
+        int32_t maxMass = rtd.MaxMass << 8;
         int32_t maxCarsPerTrain = 1;
         for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
         {
@@ -4951,7 +4954,7 @@ void Ride::UpdateMaxVehicles()
                 } while (totalLength <= stationLength);
 
                 if ((mode != RideMode::StationToStation && mode != RideMode::ContinuousCircuit)
-                    || !(GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)))
+                    || !(rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)))
                 {
                     maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::MaxTrainsPerRide));
                 }
@@ -5552,8 +5555,9 @@ void Ride::FormatNameTo(Formatter& ft) const
     }
     else
     {
-        auto rideTypeName = GetRideTypeDescriptor().Naming.Name;
-        if (GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        const auto& rtd = GetRideTypeDescriptor();
+        auto rideTypeName = rtd.Naming.Name;
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             auto rideEntry = GetRideEntry();
             if (rideEntry != nullptr)
