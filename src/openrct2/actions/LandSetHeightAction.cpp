@@ -279,7 +279,7 @@ StringId LandSetHeightAction::CheckRideSupports() const
         if (ride == nullptr)
             continue;
 
-        RideObjectEntry* rideEntry = ride->GetRideEntry();
+        const auto* rideEntry = ride->GetRideEntry();
         if (rideEntry == nullptr)
             continue;
 

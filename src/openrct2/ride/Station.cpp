@@ -280,7 +280,7 @@ static void ride_race_init_vehicle_speeds(const Ride& ride)
 
         vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
 
-        RideObjectEntry* rideEntry = vehicle->GetRideEntry();
+        const auto* rideEntry = vehicle->GetRideEntry();
 
         vehicle->speed = (ScenarioRand() & 15) - 8 + rideEntry->Cars[vehicle->vehicle_type].powered_max_speed;
 
