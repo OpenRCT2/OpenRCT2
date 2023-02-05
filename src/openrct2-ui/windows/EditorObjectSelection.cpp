@@ -1505,8 +1505,8 @@ private:
         for (; ObjectEntryGetChunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
             ;
 
-        const auto* ride_entry = GetRideEntryByIndex(entry_index);
-        auto rideType = ride_entry->GetFirstNonNullRideType();
+        const auto* rideEntry = GetRideEntryByIndex(entry_index);
+        auto rideType = rideEntry->GetFirstNonNullRideType();
 
         auto intent = Intent(WindowClass::TrackDesignList);
         intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, rideType);

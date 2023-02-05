@@ -1516,8 +1516,8 @@ static void WindowRideInitViewport(WindowBase* w)
     if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->NumTrains && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
         auto vehId = ride->vehicles[viewSelectionIndex];
-        const auto* ride_entry = ride->GetRideEntry();
-        if (ride_entry != nullptr && ride_entry->TabCar != 0)
+        const auto* rideEntry = ride->GetRideEntry();
+        if (rideEntry != nullptr && rideEntry->TabCar != 0)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(vehId);
             if (vehicle == nullptr)

@@ -5982,7 +5982,7 @@ std::optional<EntityId> Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords
  */
 void Vehicle::UpdateTrackMotionUpStopCheck() const
 {
-    auto carEntry = Entry();
+    const auto* carEntry = Entry();
     if (carEntry == nullptr)
     {
         return;
