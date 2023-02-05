@@ -3100,8 +3100,9 @@ static Vehicle* VehicleCreateCar(
     if (rideEntry == nullptr)
         return nullptr;
 
-    auto carEntry = &rideEntry->Cars[carEntryIndex];
-    auto vehicle = CreateEntity<Vehicle>();
+    auto& carEntry = rideEntry->Cars[carEntryIndex];
+    
+    auto* vehicle = CreateEntity<Vehicle>();
     if (vehicle == nullptr)
         return nullptr;
 
@@ -3110,23 +3111,25 @@ static Vehicle* VehicleCreateCar(
 
     vehicle->vehicle_type = carEntryIndex;
     vehicle->SubType = carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail;
-    vehicle->var_44 = Numerics::ror32(carEntry->spacing, 10) & 0xFFFF;
-    auto edx = carEntry->spacing >> 1;
-    *remainingDistance -= edx;
+    vehicle->var_44 = Numerics::ror32(carEntry.spacing, 10) & 0xFFFF;
+    
+    const auto halfSpacing = carEntry.spacing >> 1;
+    *remainingDistance -= halfSpacing;
     vehicle->remaining_distance = *remainingDistance;
-    if (!(carEntry->flags & CAR_ENTRY_FLAG_GO_KART))
+    
+    if (!(carEntry.flags & CAR_ENTRY_FLAG_GO_KART))
     {
-        *remainingDistance -= edx;
+        *remainingDistance -= halfSpacing;
     }
 
     // Loc6DD9A5:
-    vehicle->sprite_width = carEntry->sprite_width;
-    vehicle->sprite_height_negative = carEntry->sprite_height_negative;
-    vehicle->sprite_height_positive = carEntry->sprite_height_positive;
-    vehicle->mass = carEntry->car_mass;
-    vehicle->num_seats = carEntry->num_seats;
-    vehicle->speed = carEntry->powered_max_speed;
-    vehicle->powered_acceleration = carEntry->powered_acceleration;
+    vehicle->sprite_width = carEntry.sprite_width;
+    vehicle->sprite_height_negative = carEntry.sprite_height_negative;
+    vehicle->sprite_height_positive = carEntry.sprite_height_positive;
+    vehicle->mass = carEntry.car_mass;
+    vehicle->num_seats = carEntry.num_seats;
+    vehicle->speed = carEntry.powered_max_speed;
+    vehicle->powered_acceleration = carEntry.powered_acceleration;
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
     vehicle->SwingSprite = 0;
@@ -3153,7 +3156,7 @@ static Vehicle* VehicleCreateCar(
     }
 
     const auto& rtd = ride.GetRideTypeDescriptor();
-    if (carEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
+    if (carEntry.flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
     {
         // Loc6DDCA4:
         vehicle->TrackSubposition = VehicleTrackSubposition::Default;
@@ -3190,12 +3193,12 @@ static Vehicle* VehicleCreateCar(
     else
     {
         VehicleTrackSubposition subposition = VehicleTrackSubposition::Default;
-        if (carEntry->flags & CAR_ENTRY_FLAG_CHAIRLIFT)
+        if (carEntry.flags & CAR_ENTRY_FLAG_CHAIRLIFT)
         {
             subposition = VehicleTrackSubposition::ChairliftGoingOut;
         }
 
-        if (carEntry->flags & CAR_ENTRY_FLAG_GO_KART)
+        if (carEntry.flags & CAR_ENTRY_FLAG_GO_KART)
         {
             // Choose which lane Go Kart should start in
             subposition = VehicleTrackSubposition::GoKartsLeftLane;
@@ -3204,21 +3207,21 @@ static Vehicle* VehicleCreateCar(
                 subposition = VehicleTrackSubposition::GoKartsRightLane;
             }
         }
-        if (carEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF)
+        if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)
         {
             subposition = VehicleTrackSubposition::MiniGolfStart9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = MiniGolfAnimation::Walk;
             vehicle->mini_golf_flags = 0;
         }
-        if (carEntry->flags & CAR_ENTRY_FLAG_REVERSER_BOGIE)
+        if (carEntry.flags & CAR_ENTRY_FLAG_REVERSER_BOGIE)
         {
             if (vehicle->IsHead())
             {
                 subposition = VehicleTrackSubposition::ReverserRCFrontBogie;
             }
         }
-        if (carEntry->flags & CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
+        if (carEntry.flags & CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
         {
             subposition = VehicleTrackSubposition::ReverserRCRearBogie;
         }
@@ -3263,12 +3266,12 @@ static Vehicle* VehicleCreateCar(
         vehicle->SetTrackType(trackElement->GetTrackType());
         vehicle->SetTrackDirection(vehicle->sprite_direction >> 3);
         vehicle->track_progress = 31;
-        if (carEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF)
+        if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)
         {
             vehicle->track_progress = 15;
         }
         vehicle->update_flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
-        if (carEntry->flags & CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
+        if (carEntry.flags & CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
         {
             if (trackElement->IsInverted())
             {
