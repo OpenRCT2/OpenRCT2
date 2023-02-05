@@ -806,7 +806,7 @@ namespace RCT1
                 dst->subtype = _rideTypeToRideEntryMap[EnumValue(src->Type)];
             }
 
-            RideObjectEntry* rideEntry = GetRideEntryByIndex(dst->subtype);
+            const auto* rideEntry = GetRideEntryByIndex(dst->subtype);
             // This can happen with hacked parks
             if (rideEntry == nullptr)
             {
@@ -2229,7 +2229,7 @@ namespace RCT1
 
                 if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
                 {
-                    RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
+                    const auto* rideEntry = GetRideEntryByIndex(entryIndex);
 
                     if (rideEntry != nullptr)
                     {
@@ -2248,7 +2248,7 @@ namespace RCT1
 
                 if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
                 {
-                    RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
+                    const auto* rideEntry = GetRideEntryByIndex(entryIndex);
 
                     if (rideEntry != nullptr)
                     {

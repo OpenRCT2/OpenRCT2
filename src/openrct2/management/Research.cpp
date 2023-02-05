@@ -202,7 +202,7 @@ void ResearchFinishItem(ResearchItem* researchItem)
         // Ride
         auto base_ride_type = researchItem->baseRideType;
         ObjectEntryIndex rideEntryIndex = researchItem->entryIndex;
-        RideObjectEntry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
+        const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
         if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
         {
@@ -234,7 +234,7 @@ void ResearchFinishItem(ResearchItem* researchItem)
             {
                 if (!seenRideEntry[i])
                 {
-                    RideObjectEntry* rideEntry2 = GetRideEntryByIndex(i);
+                    const auto* rideEntry2 = GetRideEntryByIndex(i);
                     if (rideEntry2 != nullptr)
                     {
                         for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
@@ -475,7 +475,7 @@ void ResearchPopulateListRandom()
     // Rides
     for (int32_t i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
-        RideObjectEntry* rideEntry = GetRideEntryByIndex(i);
+        const auto* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry == nullptr)
         {
             continue;
@@ -520,7 +520,7 @@ bool ResearchInsertRideEntry(ride_type_t rideType, ObjectEntryIndex entryIndex, 
 
 void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched)
 {
-    RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
+    const auto* rideEntry = GetRideEntryByIndex(entryIndex);
     if (rideEntry == nullptr)
         return;
 
@@ -707,7 +707,7 @@ StringId ResearchItem::GetName() const
 {
     if (type == Research::EntryType::Ride)
     {
-        RideObjectEntry* rideEntry = GetRideEntryByIndex(entryIndex);
+        const auto* rideEntry = GetRideEntryByIndex(entryIndex);
         if (rideEntry == nullptr)
         {
             return STR_EMPTY;

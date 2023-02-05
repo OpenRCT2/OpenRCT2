@@ -362,7 +362,7 @@ public:
     void OnPrepareDraw() override
     {
         StringId stringId = STR_NONE;
-        RideObjectEntry* entry = GetRideEntryByIndex(_window_track_list_item.EntryIndex);
+        const auto* entry = GetRideEntryByIndex(_window_track_list_item.EntryIndex);
 
         if (entry != nullptr)
         {
