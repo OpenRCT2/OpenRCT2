@@ -895,7 +895,7 @@ namespace RCT2
         uint8_t GuestInitialHappiness;
         uint16_t ParkSize;
         uint16_t GuestGenerationProbability;
-        uint64_t TotalRideValueForMoney;
+        uint16_t TotalRideValueForMoney;
         money32 MaximumLoan;
         money16 GuestInitialCash;
         uint8_t GuestInitialHunger;
