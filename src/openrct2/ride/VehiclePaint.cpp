@@ -1043,6 +1043,12 @@ static void VehicleSpritePaintRestraints(
     vehicle_sprite_paint(session, vehicle, spriteNum, VehicleBoundboxes[carEntry->draw_order][boundingBoxNum], z, carEntry);
 }
 
+// Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
+static uint8_t GetBankRotationForDrawing(const Vehicle* vehicle)
+{
+    return (vehicle->IsReversed) ? BankInvertTable[vehicle->bank_rotation] : vehicle->bank_rotation;
+}
+
 #pragma endregion
 
 #pragma region FlatSlope
@@ -3933,12 +3939,6 @@ void VehicleVisualDefault(
             PaintFunctionsByPitch[vehicle->Pitch](session, vehicle, imageDirection, z, carEntry);
         }
     }
-}
-
-// Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
-static uint8_t GetBankRotationForDrawing(const Vehicle* vehicle)
-{
-    return (vehicle->IsReversed) ? BankInvertTable[vehicle->bank_rotation] : vehicle->bank_rotation;
 }
 
 void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
