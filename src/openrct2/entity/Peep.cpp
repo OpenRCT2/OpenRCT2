@@ -1796,6 +1796,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         // Guest has decided to go on the ride.
+        Console::WriteLine("im goin on the ride");
         guest->ActionSpriteImageOffset = _unk_F1AEF0;
         guest->InteractionRideIndex = rideIndex;
 
@@ -1821,6 +1822,23 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                 News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
             }
         }
+
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_JOIN_QUEUE))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", guest->Id.ToUnderlying());
+            obj.Set("ride", rideIndex.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_JOIN_QUEUE, e, true);
+        }
+#endif
     }
     else
     {
@@ -1881,6 +1899,22 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                     News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->Id, ft);
                 }
             }
+
+#ifdef ENABLE_SCRIPTING
+            auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+            if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEAVE_PARK))
+            {
+                auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+                // Create event args object
+                auto obj = OpenRCT2::Scripting::DukObject(ctx);
+                obj.Set("id", guest->Id.ToUnderlying());
+
+                // Call the subscriptions
+                auto e = obj.Take();
+                hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEAVE_PARK, e, true);
+            }
+#endif
             return true;
         }
 
@@ -1999,6 +2033,22 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
 
         gTotalAdmissions++;
         WindowInvalidateByNumber(WindowClass::ParkInformation, 0);
+
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ENTER_PARK))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", guest->Id.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ENTER_PARK, e, true);
+        }
+#endif
 
         guest->Var37 = 1;
         auto destination = guest->GetDestination();
@@ -2251,6 +2301,23 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                                 News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
                         }
                     }
+
+#ifdef ENABLE_SCRIPTING
+                    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+                    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_JOIN_QUEUE))
+                    {
+                        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+                        // Create event args object
+                        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+                        obj.Set("id", guest->Id.ToUnderlying());
+                        obj.Set("ride", rideIndex.ToUnderlying());
+
+                        // Call the subscriptions
+                        auto e = obj.Take();
+                        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_JOIN_QUEUE, e, true);
+                    }
+#endif
 
                     // Force set centre of tile to prevent issues with guests accidentally skipping the queue
                     auto queueTileCentre = CoordsXY{ CoordsXY{ guest->NextLoc } + CoordsDirectionDelta[guest->PeepDirection] }
