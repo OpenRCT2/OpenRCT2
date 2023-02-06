@@ -1665,7 +1665,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
 
 #ifdef ENABLE_SCRIPTING
     auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_BOUGHT_ITEM))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_BUY_ITEM))
     {
         auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
 
@@ -1677,7 +1677,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
 
         // Call the subscriptions
         auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_BOUGHT_ITEM, e, true);
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_BUY_ITEM, e, true);
     }
 #endif
 
@@ -3885,7 +3885,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
 
 #ifdef ENABLE_SCRIPTING
     auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ON_RIDE))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ENTER_RIDE))
     {
         auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
 
@@ -3896,7 +3896,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
 
         // Call the subscriptions
         auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ON_RIDE, e, true);
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ENTER_RIDE, e, true);
     }
 #endif
 
@@ -5018,7 +5018,7 @@ void Guest::UpdateRideLeaveExit()
     if (ride != nullptr)
     {
         auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
-        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEFT_RIDE))
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEAVE_RIDE))
         {
             auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
 
@@ -5029,7 +5029,7 @@ void Guest::UpdateRideLeaveExit()
 
             // Call the subscriptions
             auto e = obj.Take();
-            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEFT_RIDE, e, true);
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEAVE_RIDE, e, true);
         }
     }
 #endif

@@ -479,10 +479,10 @@ declare global {
         subscribe(hook: "guest.generation", callback: (e: GuestEventArgs) => void): IDisposable;
         subscribe(hook: "guest.removal", callback: (e: GuestEventArgs) => void): IDisposable;
         subscribe(hook: "guest.thought", callback: (e: GuestThoughtArgs) => void): IDisposable;
-        subscribe(hook: "guest.on_ride", callback: (e: GuestRideArgs) => void): IDisposable;
-        subscribe(hook: "guest.left_ride", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.enter_ride", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.leave_ride", callback: (e: GuestRideArgs) => void): IDisposable;
         subscribe(hook: "guest.use_facility", callback: (e: GuestRideArgs) => void): IDisposable;
-        subscribe(hook: "guest.bought_item", callback: (e: GuestShopArgs) => void): IDisposable;
+        subscribe(hook: "guest.buy_item", callback: (e: GuestShopArgs) => void): IDisposable;
         subscribe(hook: "guest.join_queue", callback: (e: GuestRideArgs) => void): IDisposable;
         subscribe(hook: "guest.enter_park", callback: (e: GuestEventArgs) => void): IDisposable;
         subscribe(hook: "guest.leave_park", callback: (e: GuestEventArgs) => void): IDisposable;
