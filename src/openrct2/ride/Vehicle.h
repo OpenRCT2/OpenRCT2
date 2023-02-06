@@ -280,9 +280,6 @@ struct Vehicle : EntityBase
     friend void UpdateRotatingDefault(Vehicle& vehicle);
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);
 
-    bool IsReversed();
-    void SetIsReversed(bool reverse);
-
 private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;

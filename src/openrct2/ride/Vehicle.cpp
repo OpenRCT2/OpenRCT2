@@ -5683,24 +5683,6 @@ Vehicle* Vehicle::TrainTail() const
     return const_cast<Vehicle*>(vehicle);
 }
 
-// Getters and setters for vehicle reversal flag, so that it is modifiable by plugin
-bool Vehicle::IsReversed()
-{
-    return this->HasFlag(VehicleFlags::CarIsReversed);
-}
-
-void Vehicle::SetIsReversed(bool reverse)
-{
-    if (reverse)
-    {
-        this->SetFlag(VehicleFlags::CarIsReversed);
-    }
-    else
-    {
-        this->ClearFlag(VehicleFlags::CarIsReversed);
-    }
-}
-
 int32_t Vehicle::IsUsedInPairs() const
 {
     return num_seats & VEHICLE_SEAT_PAIR_FLAG;
