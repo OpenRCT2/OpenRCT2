@@ -3932,7 +3932,7 @@ void VehicleVisualDefault(
         if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
         {
             auto imagePitch = PitchInvertTable[vehicle->Pitch];
-            auto imageYaw = (imageDirection + (OpenRCT2::Entity::Yaw::BaseRotation / 2)) % OpenRCT2::Entity::Yaw::BaseRotation;
+            auto imageYaw = (imageDirection + (OpenRCT2::Entity::Yaw::BaseRotation / 2)) & (OpenRCT2::Entity::Yaw::BaseRotation - 1);
             PaintFunctionsByPitch[imagePitch](session, vehicle, imageYaw, z, carEntry);
         }
         else
