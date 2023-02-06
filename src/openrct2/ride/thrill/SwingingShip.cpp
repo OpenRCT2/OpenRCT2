@@ -86,7 +86,7 @@ static void PaintSwingingShipRiders(
 static void PaintSwingingShipStructure(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
         return;
 

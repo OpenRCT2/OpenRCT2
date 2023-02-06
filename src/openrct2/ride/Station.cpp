@@ -17,12 +17,12 @@
 #include "Track.h"
 #include "Vehicle.h"
 
-static void ride_update_station_blocksection(Ride& ride, StationIndex stationIndex);
-static void ride_update_station_dodgems(Ride& ride, StationIndex stationIndex);
-static void ride_update_station_normal(Ride& ride, StationIndex stationIndex);
-static void ride_update_station_race(Ride& ride, StationIndex stationIndex);
-static void ride_race_init_vehicle_speeds(const Ride& ride);
-static void ride_invalidate_station_start(Ride& ride, StationIndex stationIndex, bool greenLight);
+static void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex);
+static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex);
+static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex);
+static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex);
+static void RideRaceInitVehicleSpeeds(const Ride& ride);
+static void RideInvalidateStationStart(Ride& ride, StationIndex stationIndex, bool greenLight);
 
 /**
  *
@@ -36,17 +36,17 @@ void RideUpdateStation(Ride& ride, StationIndex stationIndex)
     switch (ride.mode)
     {
         case RideMode::Race:
-            ride_update_station_race(ride, stationIndex);
+            RideUpdateStationRace(ride, stationIndex);
             break;
         case RideMode::Dodgems:
-            ride_update_station_dodgems(ride, stationIndex);
+            RideUpdateStationDodgems(ride, stationIndex);
             break;
         case RideMode::ContinuousCircuitBlockSectioned:
         case RideMode::PoweredLaunchBlockSectioned:
-            ride_update_station_blocksection(ride, stationIndex);
+            RideUpdateStationBlockSection(ride, stationIndex);
             break;
         default:
-            ride_update_station_normal(ride, stationIndex);
+            RideUpdateStationNormal(ride, stationIndex);
             break;
     }
 }
@@ -55,7 +55,7 @@ void RideUpdateStation(Ride& ride, StationIndex stationIndex)
  *
  *  rct2: 0x006AC0A1
  */
-static void ride_update_station_blocksection(Ride& ride, StationIndex stationIndex)
+static void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex)
 {
     TileElement* tileElement = RideGetStationStartTrackElement(ride, stationIndex);
     auto& station = ride.GetStation(stationIndex);
@@ -66,18 +66,18 @@ static void ride_update_station_blocksection(Ride& ride, StationIndex stationInd
         station.Depart &= ~STATION_DEPART_FLAG;
 
         if ((station.Depart & STATION_DEPART_FLAG) || (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight()))
-            ride_invalidate_station_start(ride, stationIndex, false);
+            RideInvalidateStationStart(ride, stationIndex, false);
     }
     else
     {
         if (!(station.Depart & STATION_DEPART_FLAG))
         {
             station.Depart |= STATION_DEPART_FLAG;
-            ride_invalidate_station_start(ride, stationIndex, true);
+            RideInvalidateStationStart(ride, stationIndex, true);
         }
         else if (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight())
         {
-            ride_invalidate_station_start(ride, stationIndex, true);
+            RideInvalidateStationStart(ride, stationIndex, true);
         }
     }
 }
@@ -86,7 +86,7 @@ static void ride_update_station_blocksection(Ride& ride, StationIndex stationInd
  *
  *  rct2: 0x006AC12B
  */
-static void ride_update_station_dodgems(Ride& ride, StationIndex stationIndex)
+static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.GetStation(stationIndex);
 
@@ -147,7 +147,7 @@ static void ride_update_station_dodgems(Ride& ride, StationIndex stationIndex)
  *
  *  rct2: 0x006AC02C
  */
-static void ride_update_station_normal(Ride& ride, StationIndex stationIndex)
+static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.GetStation(stationIndex);
     int32_t time = station.Depart & STATION_DEPART_MASK;
@@ -158,14 +158,14 @@ static void ride_update_station_normal(Ride& ride, StationIndex stationIndex)
             time--;
 
         station.Depart = time;
-        ride_invalidate_station_start(ride, stationIndex, false);
+        RideInvalidateStationStart(ride, stationIndex, false);
     }
     else
     {
         if (time == 0)
         {
             station.Depart |= STATION_DEPART_FLAG;
-            ride_invalidate_station_start(ride, stationIndex, true);
+            RideInvalidateStationStart(ride, stationIndex, true);
         }
         else
         {
@@ -173,7 +173,7 @@ static void ride_update_station_normal(Ride& ride, StationIndex stationIndex)
                 time--;
 
             station.Depart = time;
-            ride_invalidate_station_start(ride, stationIndex, false);
+            RideInvalidateStationStart(ride, stationIndex, false);
         }
     }
 }
@@ -182,7 +182,7 @@ static void ride_update_station_normal(Ride& ride, StationIndex stationIndex)
  *
  *  rct2: 0x006AC1DF
  */
-static void ride_update_station_race(Ride& ride, StationIndex stationIndex)
+static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.GetStation(stationIndex);
     if (ride.status == RideStatus::Closed || (ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
@@ -190,7 +190,7 @@ static void ride_update_station_race(Ride& ride, StationIndex stationIndex)
         if (station.Depart & STATION_DEPART_FLAG)
         {
             station.Depart &= ~STATION_DEPART_FLAG;
-            ride_invalidate_station_start(ride, stationIndex, false);
+            RideInvalidateStationStart(ride, stationIndex, false);
         }
         return;
     }
@@ -223,7 +223,7 @@ static void ride_update_station_race(Ride& ride, StationIndex stationIndex)
                 if (station.Depart & STATION_DEPART_FLAG)
                 {
                     station.Depart &= ~STATION_DEPART_FLAG;
-                    ride_invalidate_station_start(ride, stationIndex, false);
+                    RideInvalidateStationStart(ride, stationIndex, false);
                 }
                 return;
             }
@@ -246,19 +246,19 @@ static void ride_update_station_race(Ride& ride, StationIndex stationIndex)
                 if (station.Depart & STATION_DEPART_FLAG)
                 {
                     station.Depart &= ~STATION_DEPART_FLAG;
-                    ride_invalidate_station_start(ride, stationIndex, false);
+                    RideInvalidateStationStart(ride, stationIndex, false);
                 }
                 return;
             }
         }
 
         // Begin the race
-        ride_race_init_vehicle_speeds(ride);
+        RideRaceInitVehicleSpeeds(ride);
         ride.lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
         if (!(station.Depart & STATION_DEPART_FLAG))
         {
             station.Depart |= STATION_DEPART_FLAG;
-            ride_invalidate_station_start(ride, stationIndex, true);
+            RideInvalidateStationStart(ride, stationIndex, true);
         }
         ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
     }
@@ -270,7 +270,7 @@ static void ride_update_station_race(Ride& ride, StationIndex stationIndex)
  * set the speed of the go kart type vehicle at the start to a random value or alter if peep name is an easter egg
  * @param ride (esi)
  */
-static void ride_race_init_vehicle_speeds(const Ride& ride)
+static void RideRaceInitVehicleSpeeds(const Ride& ride)
 {
     for (size_t i = 0; i < ride.NumTrains; i++)
     {
@@ -280,7 +280,7 @@ static void ride_race_init_vehicle_speeds(const Ride& ride)
 
         vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
 
-        RideObjectEntry* rideEntry = vehicle->GetRideEntry();
+        const auto* rideEntry = vehicle->GetRideEntry();
 
         vehicle->speed = (ScenarioRand() & 15) - 8 + rideEntry->Cars[vehicle->vehicle_type].powered_max_speed;
 
@@ -318,7 +318,7 @@ static void ride_race_init_vehicle_speeds(const Ride& ride)
  *
  *  rct2: 0x006AC2C7
  */
-static void ride_invalidate_station_start(Ride& ride, StationIndex stationIndex, bool greenLight)
+static void RideInvalidateStationStart(Ride& ride, StationIndex stationIndex, bool greenLight)
 {
     auto startPos = ride.GetStation(stationIndex).Start;
     TileElement* tileElement = RideGetStationStartTrackElement(ride, stationIndex);

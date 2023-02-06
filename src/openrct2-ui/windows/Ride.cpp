@@ -858,7 +858,7 @@ struct VehicleTypeLabel
 };
 
 static int32_t VehicleDropdownDataLanguage = LANGUAGE_UNDEFINED;
-static RideObjectEntry* VehicleDropdownRideType = nullptr;
+static const RideObjectEntry* VehicleDropdownRideType = nullptr;
 static bool VehicleDropdownExpanded = false;
 static std::vector<VehicleTypeLabel> VehicleDropdownData;
 
@@ -970,7 +970,7 @@ static void WindowRideDrawTabVehicle(DrawPixelInfo* dpi, WindowBase* w)
         }
 
         const auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, rideEntry->TabCar);
-        CarEntry* carEntry = &rideEntry->Cars[vehicle];
+        const auto& carEntry = rideEntry->Cars[vehicle];
 
         auto vehicleId = ((ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_VEHICLE) ? rideEntry->TabCar : 0;
         VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleId);
@@ -979,10 +979,10 @@ static void WindowRideDrawTabVehicle(DrawPixelInfo* dpi, WindowBase* w)
         auto imageIndex = OpenRCT2::Entity::Yaw::YawFrom4(2) * 2;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             imageIndex += w->frame_no;
-        imageIndex = carEntry->SpriteByYaw(imageIndex / 2, SpriteGroupType::SlopeFlat);
-        imageIndex &= carEntry->TabRotationMask;
-        imageIndex *= carEntry->base_num_frames;
-        imageIndex += carEntry->base_image_id;
+        imageIndex = carEntry.SpriteByYaw(imageIndex / 2, SpriteGroupType::SlopeFlat);
+        imageIndex &= carEntry.TabRotationMask;
+        imageIndex *= carEntry.base_num_frames;
+        imageIndex += carEntry.base_image_id;
         auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
         GfxDrawSprite(&clipDPI, imageId, screenCoords);
     }
@@ -1073,7 +1073,7 @@ static void WindowRideDisableTabs(WindowBase* w)
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
         disabled_tabs |= (1uLL << WIDX_TAB_4 | 1uLL << WIDX_TAB_6 | 1uLL << WIDX_TAB_9 | 1uLL << WIDX_TAB_10); // 0x3280
 
-    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride->subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
 
     if (rideEntry == nullptr)
     {
@@ -1516,8 +1516,8 @@ static void WindowRideInitViewport(WindowBase* w)
     if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->NumTrains && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
         auto vehId = ride->vehicles[viewSelectionIndex];
-        RideObjectEntry* ride_entry = ride->GetRideEntry();
-        if (ride_entry != nullptr && ride_entry->TabCar != 0)
+        const auto* rideEntry = ride->GetRideEntry();
+        if (rideEntry != nullptr && rideEntry->TabCar != 0)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(vehId);
             if (vehicle == nullptr)
@@ -2010,7 +2010,7 @@ static void WindowRideMainFollowRide(WindowBase* w)
 static void PopulateVehicleTypeDropdown(const Ride& ride, bool forceRefresh)
 {
     auto& objManager = GetContext()->GetObjectManager();
-    RideObjectEntry* rideEntry = ride.GetRideEntry();
+    const auto* rideEntry = ride.GetRideEntry();
 
     bool selectionShouldBeExpanded;
     int32_t rideTypeIterator, rideTypeIteratorMax;
@@ -2798,7 +2798,6 @@ static OpenRCT2String WindowRideVehicleTooltip(WindowBase* const w, const Widget
 static void WindowRideVehicleInvalidate(WindowBase* w)
 {
     Widget* widgets;
-    RideObjectEntry* rideEntry;
     StringId stringId;
     int32_t carsPerTrain;
 
@@ -2815,7 +2814,7 @@ static void WindowRideVehicleInvalidate(WindowBase* w)
     if (ride == nullptr)
         return;
 
-    rideEntry = ride->GetRideEntry();
+    const auto* rideEntry = ride->GetRideEntry();
 
     w->widgets[WIDX_TITLE].text = STR_ARG_20_STRINGID;
 
@@ -2970,7 +2969,7 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int3
     if (ride == nullptr)
         return;
 
-    RideObjectEntry* rideEntry = ride->GetRideEntry();
+    const auto* rideEntry = ride->GetRideEntry();
 
     // Background
     GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, PALETTE_INDEX_12);
@@ -2979,8 +2978,8 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int3
     int32_t startX = std::max(2, (widget->width() - ((ride->NumTrains - 1) * 36)) / 2 - 25);
     int32_t startY = widget->height() - 4;
 
-    CarEntry* carEntry = &rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, 0)];
-    startY += carEntry->tab_height;
+    const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, 0)];
+    startY += firstCarEntry.tab_height;
 
     // For each train
     for (int32_t i = 0; i < ride->NumTrains; i++)
@@ -2994,9 +2993,9 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int3
         static_assert(std::numeric_limits<decltype(ride->num_cars_per_train)>::max() <= std::size(trainCarImages));
         for (int32_t j = 0; j < ride->num_cars_per_train; j++)
         {
-            carEntry = &rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, j)];
-            x += carEntry->spacing / 17432;
-            y -= (carEntry->spacing / 2) / 17432;
+            const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, j)];
+            x += carEntry.spacing / 17432;
+            y -= (carEntry.spacing / 2) / 17432;
 
             // Get colour of vehicle
             int32_t vehicleColourIndex = 0;
@@ -3014,10 +3013,10 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int3
             }
             VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleColourIndex);
 
-            ImageIndex imageIndex = carEntry->SpriteByYaw(OpenRCT2::Entity::Yaw::BaseRotation / 2, SpriteGroupType::SlopeFlat);
-            imageIndex &= carEntry->TabRotationMask;
-            imageIndex *= carEntry->base_num_frames;
-            imageIndex += carEntry->base_image_id;
+            ImageIndex imageIndex = carEntry.SpriteByYaw(OpenRCT2::Entity::Yaw::BaseRotation / 2, SpriteGroupType::SlopeFlat);
+            imageIndex &= carEntry.TabRotationMask;
+            imageIndex *= carEntry.base_num_frames;
+            imageIndex += carEntry.base_image_id;
 
             auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
 
@@ -3026,8 +3025,8 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int3
             nextSpriteToDraw->imageId = imageId;
             nextSpriteToDraw++;
 
-            x += carEntry->spacing / 17432;
-            y -= (carEntry->spacing / 2) / 17432;
+            x += carEntry.spacing / 17432;
+            y -= (carEntry.spacing / 2) / 17432;
         }
 
         if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER)
@@ -5021,17 +5020,17 @@ static void WindowRideColourScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
     auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR ? w->vehicleIndex
                                                                                                      : rideEntry->TabCar;
 
-    CarEntry* carEntry = &rideEntry
-                              ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, trainCarIndex)];
+    const auto& carEntry = rideEntry
+                               ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, trainCarIndex)];
 
-    screenCoords.y += carEntry->tab_height;
+    screenCoords.y += carEntry.tab_height;
 
     // Draw the coloured spinning vehicle
     // w->frame_no represents a SpritePrecision of 64
-    ImageIndex imageIndex = carEntry->SpriteByYaw(w->frame_no / 2, SpriteGroupType::SlopeFlat);
-    imageIndex &= carEntry->TabRotationMask;
-    imageIndex *= carEntry->base_num_frames;
-    imageIndex += carEntry->base_image_id;
+    ImageIndex imageIndex = carEntry.SpriteByYaw(w->frame_no / 2, SpriteGroupType::SlopeFlat);
+    imageIndex &= carEntry.TabRotationMask;
+    imageIndex *= carEntry.base_num_frames;
+    imageIndex += carEntry.base_image_id;
     auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
     GfxDrawSprite(dpi, imageId, screenCoords);
 }

@@ -976,7 +976,7 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, const Ride& ri
  */
 static void ride_ratings_apply_adjustments(const Ride& ride, RatingTuple* ratings)
 {
-    RideObjectEntry* rideEntry = GetRideEntryByIndex(ride.subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
 
     if (rideEntry == nullptr)
     {
@@ -1135,7 +1135,7 @@ static ShelteredEights get_num_of_sheltered_eighths(const Ride& ride)
     }
 
     uint8_t trackShelteredEighths = numShelteredEighths;
-    RideObjectEntry* rideType = GetRideEntryByIndex(ride.subtype);
+    const auto* rideType = GetRideEntryByIndex(ride.subtype);
     if (rideType == nullptr)
     {
         return { 0, 0 };

@@ -94,7 +94,7 @@ using namespace OpenRCT2::TrackMetaData;
 static int32_t ride_check_if_construction_allowed(Ride& ride)
 {
     Formatter ft;
-    RideObjectEntry* rideEntry = ride.GetRideEntry();
+    const auto* rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
     {
         ContextShowError(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE, ft);

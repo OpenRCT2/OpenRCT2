@@ -353,7 +353,7 @@ public:
 
     void SetColourPreset(uint8_t index);
 
-    RideObjectEntry* GetRideEntry() const;
+    const RideObjectEntry* GetRideEntry() const;
 
     size_t GetNumPrices() const;
     int32_t GetAge() const;
@@ -996,7 +996,7 @@ struct RideManager
 RideManager GetRideManager();
 RideId GetNextFreeRideId();
 Ride* GetOrAllocateRide(RideId index);
-RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);
+const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);
 std::string_view GetRideEntryName(ObjectEntryIndex index);
 
 extern money64 gTotalRideValueForMoney;

@@ -680,7 +680,7 @@ private:
                 continue;
 
             // Ride entries
-            RideObjectEntry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
+            const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
             // Skip if the vehicle isn't the preferred vehicle for this generic track type
             if (!gConfigInterface.ListRideVehiclesSeparately
@@ -919,7 +919,7 @@ private:
 
     void DrawRideInformation(DrawPixelInfo& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
     {
-        RideObjectEntry* rideEntry = GetRideEntryByIndex(item.EntryIndex);
+        const auto* rideEntry = GetRideEntryByIndex(item.EntryIndex);
         RideNaming rideNaming = GetRideNaming(item.Type, *rideEntry);
         auto ft = Formatter();
 
@@ -1077,7 +1077,7 @@ void WindowNewRideFocus(RideSelection rideItem)
         return;
     }
 
-    RideObjectEntry* rideEntry = GetRideEntryByIndex(rideItem.EntryIndex);
+    const auto* rideEntry = GetRideEntryByIndex(rideItem.EntryIndex);
     if (rideEntry == nullptr)
         return;
 

@@ -97,13 +97,13 @@ GameActions::Result RideCreateAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    RideObjectEntry* rideEntry = GetRideEntryByIndex(rideEntryIndex);
+    const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    VehicleColourPresetList* presetList = rideEntry->vehicle_preset_list;
+    const auto* presetList = rideEntry->vehicle_preset_list;
     if ((presetList->count > 0 && presetList->count != 255) && _colour2 >= presetList->count)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
@@ -117,14 +117,13 @@ GameActions::Result RideCreateAction::Query() const
 
 GameActions::Result RideCreateAction::Execute() const
 {
-    RideObjectEntry* rideEntry;
     auto res = GameActions::Result();
 
     int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);
     auto rideIndex = GetNextFreeRideId();
 
     auto ride = GetOrAllocateRide(rideIndex);
-    rideEntry = GetRideEntryByIndex(rideEntryIndex);
+    const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
         LOG_WARNING("Invalid request for ride %u", rideIndex);
