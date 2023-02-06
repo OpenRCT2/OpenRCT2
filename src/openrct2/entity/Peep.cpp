@@ -1796,7 +1796,6 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         // Guest has decided to go on the ride.
-        Console::WriteLine("im goin on the ride");
         guest->ActionSpriteImageOffset = _unk_F1AEF0;
         guest->InteractionRideIndex = rideIndex;
 
