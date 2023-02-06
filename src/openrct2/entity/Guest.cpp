@@ -1663,6 +1663,24 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
         }
     }
 
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_BOUGHT_ITEM))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("id", Id.ToUnderlying());
+        obj.Set("ride", ride.id.ToUnderlying());
+        obj.Set("shopItem", EnumValue(shopItem));
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_BOUGHT_ITEM, e, true);
+    }
+#endif
+
     if (GetShopItemDescriptor(shopItem).IsFood())
         AmountOfFood++;
 
@@ -3865,6 +3883,23 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         }
     }
 
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ON_RIDE))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("id", Id.ToUnderlying());
+        obj.Set("ride", ride.id.ToUnderlying());
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_ON_RIDE, e, true);
+    }
+#endif
+
     const auto& rtd = ride.GetRideTypeDescriptor();
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE))
     {
@@ -4978,6 +5013,26 @@ void Guest::UpdateRideLeaveExit()
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
         }
     }
+
+#ifdef ENABLE_SCRIPTING
+    if (ride != nullptr)
+    {
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEFT_RIDE))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", Id.ToUnderlying());
+            obj.Set("ride", ride->id.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_LEFT_RIDE, e, true);
+        }
+    }
+#endif
 
     InteractionRideIndex = RideId::GetNull();
     SetState(PeepState::Falling);

@@ -472,6 +472,9 @@ declare global {
         subscribe(hook: "guest.generation", callback: (e: GuestEventArgs) => void): IDisposable;
         subscribe(hook: "guest.removal", callback: (e: GuestEventArgs) => void): IDisposable;
         subscribe(hook: "guest.thought", callback: (e: GuestThoughtArgs) => void): IDisposable;
+        subscribe(hook: "guest.on_ride", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.left_ride", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.bought_item", callback: (e: GuestShopArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
@@ -1343,9 +1346,16 @@ declare global {
         readonly id: number;
     }
 
-    interface GuestThoughtArgs {
-        readonly id: number;
+    interface GuestThoughtArgs extends GuestEventArgs {
         readonly thought: Thought;
+    }
+
+    interface GuestRideArgs extends GuestEventArgs {
+        readonly ride: number;
+    }
+
+    interface GuestShopArgs extends GuestRideArgs {
+        readonly shopItem: number;
     }
 
     type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
