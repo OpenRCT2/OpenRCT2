@@ -41,6 +41,8 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/HookEngine.h"
+#include "../scripting/ScriptEngine.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -688,6 +690,21 @@ void PeepEntityRemove(Peep* peep)
     auto* guest = peep->As<Guest>();
     if (guest != nullptr)
     {
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_REMOVAL))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", guest->Id.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_REMOVAL, e, true);
+        }
+#endif
         guest->RemoveFromRide();
     }
     peep->Invalidate();

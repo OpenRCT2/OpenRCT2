@@ -30,6 +30,7 @@ static const EnumMap<HOOK_TYPE> HooksLookupTable({
     { "ride.ratings.calculate", HOOK_TYPE::RIDE_RATINGS_CALCULATE },
     { "action.location", HOOK_TYPE::ACTION_LOCATION },
     { "guest.generation", HOOK_TYPE::GUEST_GENERATION },
+    { "guest.removal", HOOK_TYPE::GUEST_REMOVAL },
     { "vehicle.crash", HOOK_TYPE::VEHICLE_CRASH },
     { "map.change", HOOK_TYPE::MAP_CHANGE },
     { "map.changed", HOOK_TYPE::MAP_CHANGED },
