@@ -481,8 +481,6 @@ namespace OpenRCT2::Scripting
             {
                 if (thought.type == PeepThoughtType::None)
                     break;
-                if (thought.freshness == 0)
-                    continue;
                 auto scThoughtPtr = std::make_shared<ScThought>(thought);
                 auto dukThought = GetObjectAsDukValue(ctx, scThoughtPtr);
                 dukThought.push();

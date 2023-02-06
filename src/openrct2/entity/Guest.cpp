@@ -45,6 +45,7 @@
 #include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
+#include "../scripting/bindings/entity/ScGuest.hpp"
 #include "../util/Math.hpp"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -6924,6 +6925,27 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
     thought.item = thoughtArguments;
     thought.freshness = 0;
     thought.fresh_timeout = 0;
+
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_THOUGHT))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create thought object
+        auto scThoughtPtr = std::make_shared<OpenRCT2::Scripting::ScThought>(thought);
+        auto dukThought = OpenRCT2::Scripting::GetObjectAsDukValue(ctx, scThoughtPtr);
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("id", Id.ToUnderlying());
+        obj.Set("thought", dukThought);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_THOUGHT, e, true);
+    }
+#endif
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 }

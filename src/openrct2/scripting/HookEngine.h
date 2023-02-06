@@ -40,6 +40,7 @@ namespace OpenRCT2::Scripting
         ACTION_LOCATION,
         GUEST_GENERATION,
         GUEST_REMOVAL,
+        GUEST_THOUGHT,
         VEHICLE_CRASH,
         MAP_CHANGE,
         MAP_CHANGED,
