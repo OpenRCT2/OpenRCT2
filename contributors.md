@@ -208,6 +208,7 @@ The following people are not part of the development team, but have been contrib
 * Michael Bickerton (mdbckrtn)
 * Nehemiah Negussie (nehemiah-negussie)
 * (zzril)
+* Ernest Elgin (eaeiv)
 
 
 ## Toolchain
