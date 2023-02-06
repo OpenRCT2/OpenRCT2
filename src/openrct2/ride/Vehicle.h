@@ -112,7 +112,6 @@ struct Vehicle : EntityBase
     int32_t acceleration;
     RideId ride;
     uint8_t vehicle_type;
-    bool IsReversed;
     VehicleColour colours;
     union
     {
@@ -280,6 +279,9 @@ struct Vehicle : EntityBase
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);
+
+    bool IsReversed();
+    void SetIsReversed(bool reverse);
 
 private:
     bool SoundCanPlay() const;
@@ -451,6 +453,7 @@ namespace VehicleFlags
     constexpr uint32_t MoveSingleCar = (1 << 14); // OpenRCT2 Flag: Used to override UpdateMotion to move the position of
                                                   // an individual car on a train
     constexpr uint32_t Crashed = (1 << 15);       // Car displays as smoke plume
+    constexpr uint32_t CarIsReversed = (1 << 16); // Car is reversed
 } // namespace VehicleFlags
 
 enum

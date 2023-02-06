@@ -1046,7 +1046,8 @@ static void VehicleSpritePaintRestraints(
 // Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
 static uint8_t GetBankRotationForDrawing(const Vehicle* vehicle)
 {
-    return (vehicle->IsReversed) ? BankInvertTable[vehicle->bank_rotation] : vehicle->bank_rotation;
+    return (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? BankInvertTable[vehicle->bank_rotation]
+                                                                     : vehicle->bank_rotation;
 }
 
 #pragma endregion
@@ -3928,7 +3929,7 @@ void VehicleVisualDefault(
 {
     if (vehicle->Pitch < std::size(PaintFunctionsByPitch))
     {
-        if (vehicle->IsReversed)
+        if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
         {
             auto imagePitch = PitchInvertTable[vehicle->Pitch];
             auto imageYaw = (imageDirection + (OpenRCT2::Entity::Yaw::BaseRotation / 2)) % OpenRCT2::Entity::Yaw::BaseRotation;
