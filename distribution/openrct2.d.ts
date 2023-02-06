@@ -261,6 +261,13 @@ declare global {
         formatString(fmt: string, ...args: any[]): string;
 
         /**
+         * Gets a string for for a shop item.
+         * @param shopItem The shop item.
+         * @param stringType The kind of string.
+         */
+        getShopItemString(shopItem: number, stringType: ShopItemStringType): string;
+
+        /**
          * Registers a new game action that allows clients to interact with the game.
          * @param action The unique name of the action.
          * @param query Logic for validating and returning a price for an action.
@@ -1940,6 +1947,8 @@ declare global {
     type RideClassification = "ride" | "stall" | "facility";
 
     type RideStatus = "closed" | "open" | "testing" | "simulating";
+
+    type ShopItemStringType = "singular" | "plural" | "indefinite" | "display";
 
     interface TrackColour {
         main: number;

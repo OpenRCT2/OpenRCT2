@@ -31,6 +31,22 @@
 
 namespace OpenRCT2::Scripting
 {
+    enum class ShopItemStringType
+    {
+        PriceLabel,
+        Singular,
+        Plural,
+        Indefinite,
+        Display
+    };
+
+    static const DukEnumMap<ShopItemStringType> ShopItemStringTypeMap({
+        { "singular", ShopItemStringType::Singular },
+        { "plural", ShopItemStringType::Plural },
+        { "indefinite", ShopItemStringType::Indefinite },
+        { "display", ShopItemStringType::Display },
+    });
+
     class ScContext
     {
     private:
@@ -301,6 +317,36 @@ namespace OpenRCT2::Scripting
             return 1;
         }
 
+        std::string getShopItemString(uint8_t shopItem, const std::string& stringType) const
+        {
+            if (shopItem >= EnumValue(ShopItem::Count))
+            {
+                return "";
+            }
+
+            auto descriptor = GetShopItemDescriptor(static_cast<ShopItem>(shopItem));
+
+            auto t = ShopItemStringTypeMap.find(stringType);
+            if (t == ShopItemStringTypeMap.end())
+            {
+                return "";
+            }
+
+            switch (t->second)
+            {
+                case ShopItemStringType::Singular:
+                    return FormatStringID(descriptor.Naming.Singular);
+                case ShopItemStringType::Plural:
+                    return FormatStringID(descriptor.Naming.Plural);
+                case ShopItemStringType::Indefinite:
+                    return FormatStringID(descriptor.Naming.Indefinite);
+                case ShopItemStringType::Display:
+                    return FormatStringID(descriptor.Naming.Display);
+                default:
+                    return "";
+            }
+        }
+
         std::shared_ptr<ScDisposable> subscribe(const std::string& hook, const DukValue& callback)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -474,6 +520,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::getAllTrackSegments, "getAllTrackSegments");
             dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
             dukglue_register_method_varargs(ctx, &ScContext::formatString, "formatString");
+            dukglue_register_method(ctx, &ScContext::getShopItemString, "getShopItemString");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
             dukglue_register_method(ctx, &ScContext::queryAction, "queryAction");
             dukglue_register_method(ctx, &ScContext::executeAction, "executeAction");
