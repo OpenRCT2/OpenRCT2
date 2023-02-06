@@ -333,7 +333,7 @@ namespace OpenRCT2::Scripting
         }
     }
 
-     bool ScVehicle::reversed_get() const
+    bool ScVehicle::reversed_get() const
     {
         auto vehicle = GetVehicle();
         return vehicle != nullptr ? vehicle->HasFlag(VehicleFlags::CarIsReversed) : false;
