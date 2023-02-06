@@ -34,6 +34,7 @@ static const EnumMap<HOOK_TYPE> HooksLookupTable({
     { "guest.thought", HOOK_TYPE::GUEST_THOUGHT },
     { "guest.on_ride", HOOK_TYPE::GUEST_ON_RIDE },
     { "guest.left_ride", HOOK_TYPE::GUEST_LEFT_RIDE },
+    { "guest.use_facility", HOOK_TYPE::GUEST_USE_FACILITY },
     { "guest.bought_item", HOOK_TYPE::GUEST_BOUGHT_ITEM },
     { "guest.join_queue", HOOK_TYPE::GUEST_JOIN_QUEUE },
     { "guest.enter_park", HOOK_TYPE::GUEST_ENTER_PARK },

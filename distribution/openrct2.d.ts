@@ -481,6 +481,7 @@ declare global {
         subscribe(hook: "guest.thought", callback: (e: GuestThoughtArgs) => void): IDisposable;
         subscribe(hook: "guest.on_ride", callback: (e: GuestRideArgs) => void): IDisposable;
         subscribe(hook: "guest.left_ride", callback: (e: GuestRideArgs) => void): IDisposable;
+        subscribe(hook: "guest.use_facility", callback: (e: GuestRideArgs) => void): IDisposable;
         subscribe(hook: "guest.bought_item", callback: (e: GuestShopArgs) => void): IDisposable;
         subscribe(hook: "guest.join_queue", callback: (e: GuestRideArgs) => void): IDisposable;
         subscribe(hook: "guest.enter_park", callback: (e: GuestEventArgs) => void): IDisposable;

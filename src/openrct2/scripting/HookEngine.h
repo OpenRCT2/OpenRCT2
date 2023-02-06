@@ -43,6 +43,7 @@ namespace OpenRCT2::Scripting
         GUEST_THOUGHT,
         GUEST_ON_RIDE,
         GUEST_LEFT_RIDE,
+        GUEST_USE_FACILITY,
         GUEST_BOUGHT_ITEM,
         GUEST_JOIN_QUEUE,
         GUEST_ENTER_PARK,

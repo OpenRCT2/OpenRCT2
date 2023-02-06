@@ -2437,6 +2437,23 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
                 News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, guest->Id, ft);
             }
         }
+
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_USE_FACILITY))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", guest->Id.ToUnderlying());
+            obj.Set("ride", rideIndex.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_USE_FACILITY, e, true);
+        }
+#endif
     }
     else
     {
