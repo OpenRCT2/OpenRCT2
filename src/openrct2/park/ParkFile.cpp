@@ -828,7 +828,16 @@ namespace OpenRCT2
                 cs.ReadWrite(gWeeklyProfitAverageDivisor);
                 cs.ReadWrite(gTotalAdmissions);
                 cs.ReadWrite(gTotalIncomeFromAdmissions);
-                cs.ReadWrite(gTotalRideValueForMoney);
+                if (version <= 16)
+                {
+                    money16 legacyTotalRideValueForMoney = 0;
+                    cs.ReadWrite(legacyTotalRideValueForMoney);
+                    gTotalRideValueForMoney = legacyTotalRideValueForMoney;
+                }
+                else
+                {
+                    cs.ReadWrite(gTotalRideValueForMoney);
+                }
                 cs.ReadWrite(gNumGuestsInParkLastWeek);
                 cs.ReadWrite(gGuestChangeModifier);
                 cs.ReadWrite(_guestGenerationProbability);
