@@ -3402,7 +3402,8 @@ static TrainReference VehicleCreateTrain(
         auto carSpawnIndex = (isReversed) ? (ride.num_cars_per_train - 1) - carIndex : carIndex;
 
         auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carSpawnIndex);
-        auto car = VehicleCreateCar(ride, vehicle, carSpawnIndex, vehicleIndex, trainPos, remainingDistance, trackElement, isReversed);
+        auto car = VehicleCreateCar(
+            ride, vehicle, carSpawnIndex, vehicleIndex, trainPos, remainingDistance, trackElement, isReversed);
         if (car == nullptr)
             break;
 
