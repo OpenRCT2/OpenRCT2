@@ -36,6 +36,7 @@ const CommandLineCommand CommandLine::SpriteCommands[]
     // Main commands
     DefineCommand("append",       "<spritefile> <input> [x_offset y_offset]", SpriteOptions, HandleSprite),
     DefineCommand("build",        "<spritefile> <json path> [silent]",        SpriteOptions, HandleSprite),
+    DefineCommand("combine",      "<index file> <image file> <output>",       SpriteOptions, HandleSprite),
     DefineCommand("create",       "<spritefile>",                             SpriteOptions, HandleSprite),
     DefineCommand("details",      "<spritefile> [idx]",                       SpriteOptions, HandleSprite),
     DefineCommand("export",       "<spritefile> <idx> <output>",              SpriteOptions, HandleSprite),
