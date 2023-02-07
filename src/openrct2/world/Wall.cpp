@@ -16,6 +16,8 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/ObjectEntryManager.h"
+#include "../object/WallSceneryEntry.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "Banner.h"
@@ -137,9 +139,9 @@ uint16_t WallElement::GetEntryIndex() const
     return entryIndex;
 }
 
-WallSceneryEntry* WallElement::GetEntry() const
+const WallSceneryEntry* WallElement::GetEntry() const
 {
-    return GetWallEntry(entryIndex);
+    return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
 }
 
 void WallElement::SetEntryIndex(uint16_t newIndex)

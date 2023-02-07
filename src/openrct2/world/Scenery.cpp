@@ -23,8 +23,10 @@
 #include "../entity/Fountain.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
+#include "../object/BannerSceneryEntry.h"
 #include "../object/FootpathItemEntry.h"
 #include "../object/LargeSceneryEntry.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/SceneryGroupEntry.h"
@@ -300,30 +302,6 @@ void SceneryRemoveGhostToolPlacement()
     }
 }
 
-WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex)
-{
-    WallSceneryEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Walls, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<WallSceneryEntry*>(obj->GetLegacyData());
-    }
-    return result;
-}
-
-BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex)
-{
-    BannerSceneryEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Banners, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<BannerSceneryEntry*>(obj->GetLegacyData());
-    }
-    return result;
-}
-
 PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex)
 {
     PathBitEntry* result = nullptr;
@@ -408,11 +386,11 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
         case SCENERY_TYPE_PATH_ITEM:
             return GetFootpathItemEntry(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_WALL:
-            return GetWallEntry(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_LARGE:
             return GetLargeSceneryEntry(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_BANNER:
-            return GetBannerEntry(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(item.EntryIndex) != nullptr;
         default:
             return false;
     }

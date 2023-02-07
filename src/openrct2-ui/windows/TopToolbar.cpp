@@ -55,6 +55,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
+#include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
@@ -1068,7 +1069,7 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, WidgetIndex 
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto* bannerEntry = GetBannerEntry(banner->type);
+                auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                 if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                 {
                     auto repaintScenery = BannerSetColourAction(
@@ -1110,7 +1111,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
         case ViewportInteractionItem::Wall:
         {
             auto entryIndex = info.Element->AsWall()->GetEntryIndex();
-            auto* sceneryEntry = GetWallEntry(entryIndex);
+            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 WindowScenerySetSelectedItem(
@@ -1137,7 +1138,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto sceneryEntry = GetBannerEntry(banner->type);
+                auto sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                 if (sceneryEntry != nullptr)
                 {
                     WindowScenerySetSelectedItem(
@@ -1478,7 +1479,7 @@ static void Sub6E1F34Wall(
     auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
-    auto* wallEntry = GetWallEntry(sceneryIndex);
+    auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryIndex);
     if (wallEntry != nullptr)
     {
         maxPossibleHeight -= wallEntry->height;

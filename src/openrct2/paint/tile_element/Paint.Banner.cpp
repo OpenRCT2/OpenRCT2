@@ -19,6 +19,7 @@
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
+#include "../../object/ObjectEntryManager.h"
 #include "../../world/Banner.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
@@ -83,7 +84,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
         return;
     }
 
-    auto* bannerEntry = GetBannerEntry(banner->type);
+    auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
     if (bannerEntry == nullptr)
     {
         return;

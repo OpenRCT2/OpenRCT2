@@ -12,6 +12,7 @@
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../ride/Track.h"
@@ -218,7 +219,7 @@ GameActions::Result WallPlaceAction::Query() const
         }
     }
 
-    auto* wallEntry = GetWallEntry(_wallType);
+    auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -308,7 +309,7 @@ GameActions::Result WallPlaceAction::Execute() const
     }
     auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
-    auto* wallEntry = GetWallEntry(_wallType);
+    auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -400,7 +401,7 @@ GameActions::Result WallPlaceAction::Execute() const
  *  rct2: 0x006E5CBA
  */
 bool WallPlaceAction::WallCheckObstructionWithTrack(
-    WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
+    const WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
 {
     track_type_t trackType = trackElement->GetTrackType();
 
@@ -496,7 +497,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
  *  rct2: 0x006E5C1A
  */
 GameActions::Result WallPlaceAction::WallCheckObstruction(
-    WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
+    const WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
 {
     *wallAcrossTrack = false;
     if (MapIsLocationAtEdge(_loc))
