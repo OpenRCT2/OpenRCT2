@@ -3372,7 +3372,8 @@ static Vehicle* VehicleCreateCar(
         }
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
 
-        if (ride.mode == RideMode::ContinuousCircuitReverseTrains || ride.mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains)
+        if (ride.mode == RideMode::ContinuousCircuitReverseTrains
+            || ride.mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains)
         {
             vehicle->SubType = carIndex == (ride.num_cars_per_train - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
             vehicle->SetFlag(VehicleFlags::CarIsReversed);
@@ -3402,8 +3403,7 @@ static TrainReference VehicleCreateTrain(
         auto carSpawnIndex = (isReversed) ? (ride.num_cars_per_train - 1) - carIndex : carIndex;
 
         auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carSpawnIndex);
-        auto car = VehicleCreateCar(
-            ride, vehicle, carSpawnIndex, vehicleIndex, trainPos, remainingDistance, trackElement);
+        auto car = VehicleCreateCar(ride, vehicle, carSpawnIndex, vehicleIndex, trainPos, remainingDistance, trackElement);
         if (car == nullptr)
             break;
 
