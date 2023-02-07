@@ -20,7 +20,6 @@
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 
 #include <algorithm>
 

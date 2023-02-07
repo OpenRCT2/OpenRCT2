@@ -21,7 +21,6 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/LargeScenery.h"
 #include "../world/MapAnimation.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 

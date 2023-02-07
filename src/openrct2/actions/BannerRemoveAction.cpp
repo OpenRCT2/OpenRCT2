@@ -11,11 +11,11 @@
 
 #include "../management/Finance.h"
 #include "../object/BannerSceneryEntry.h"
+#include "../object/ObjectEntryManager.h"
 #include "../world/Banner.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
-#include "../object/ObjectEntryManager.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;

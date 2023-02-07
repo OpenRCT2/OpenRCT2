@@ -19,7 +19,6 @@
 #include "../../util/Util.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
-#include "../../world/SmallScenery.h"
 #include "../../world/TileInspector.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"

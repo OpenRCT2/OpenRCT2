@@ -38,7 +38,6 @@
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/TileInspector.h>
 

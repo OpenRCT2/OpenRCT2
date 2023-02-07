@@ -20,7 +20,6 @@
 #include "../paint/Painter.h"
 #include "../profiling/Profiling.h"
 #include "../util/Math.hpp"
-#include "../world/SmallScenery.h"
 #include "Boundbox.h"
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"

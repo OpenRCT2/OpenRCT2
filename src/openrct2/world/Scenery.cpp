@@ -38,7 +38,6 @@
 #include "LargeScenery.h"
 #include "Map.h"
 #include "Park.h"
-#include "SmallScenery.h"
 #include "Wall.h"
 
 uint8_t gSceneryQuadrant;
@@ -382,7 +381,7 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
     switch (item.SceneryType)
     {
         case SCENERY_TYPE_SMALL:
-            return GetSmallSceneryEntry(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_PATH_ITEM:
             return GetFootpathItemEntry(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_WALL:

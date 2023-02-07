@@ -41,7 +41,6 @@
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "PatrolArea.h"
 #include "Peep.h"

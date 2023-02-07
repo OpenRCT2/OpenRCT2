@@ -8,4 +8,4 @@ namespace OpenRCT2::ObjectManager
     {
         return reinterpret_cast<const T*>(GetObjectEntry(T::kObjectType, idx));
     }
-}
+} // namespace OpenRCT2::ObjectManager

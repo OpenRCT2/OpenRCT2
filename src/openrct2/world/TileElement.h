@@ -439,7 +439,7 @@ private:
 public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
-    SmallSceneryEntry* GetEntry() const;
+    const SmallSceneryEntry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
     void IncreaseAge(const CoordsXY& sceneryPos);

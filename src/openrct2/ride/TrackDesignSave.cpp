@@ -26,7 +26,6 @@
 #include "../world/Footpath.h"
 #include "../world/LargeScenery.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 #include "../world/Wall.h"
 #include "RideData.h"
 #include "Station.h"
