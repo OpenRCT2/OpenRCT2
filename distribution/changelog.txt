@@ -37,6 +37,7 @@
 - Fix: [#19114] [Plugin] GameActionResult does not comply to API specification.
 - Fix: [#19136] SV6 saves with experimental RCT1 paths not imported correctly.
 - Fix: [#19250] MusicObjects do not free their preview images
+- Fix: [#19292] Overflow in totalRideValue
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
