@@ -1044,7 +1044,7 @@ static void VehicleSpritePaintRestraints(
 }
 
 // Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
-static uint8_t GetBankRotationForDrawing(const Vehicle* vehicle)
+static uint8_t GetPaintBankRotation(const Vehicle* vehicle)
 {
     return (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? BankInvertTable[vehicle->bank_rotation]
                                                                      : vehicle->bank_rotation;
@@ -1371,7 +1371,7 @@ static void VehiclePitchFlat(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3DE4:
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry);
@@ -1528,7 +1528,7 @@ static void VehiclePitchUp12(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3C04:
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchUp12Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -1810,7 +1810,7 @@ static void VehiclePitchUp25(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3CA4:
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchUp25Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -2021,7 +2021,7 @@ static void VehiclePitchUp42BankedRight90(
 static void VehiclePitchUp42(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -2104,7 +2104,7 @@ static void VehiclePitchUp60BankedRight22(
 static void VehiclePitchUp60(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -2211,7 +2211,7 @@ static void VehiclePitchDown12(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3C54:
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -2528,7 +2528,7 @@ static void VehiclePitchDown25(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3CF4:
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchDown25Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -2738,7 +2738,7 @@ static void VehiclePitchDown42BankedRight90(
 static void VehiclePitchDown42(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -2821,7 +2821,7 @@ static void VehiclePitchDown60BankedRight22(
 static void VehiclePitchDown60(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -3247,7 +3247,7 @@ static void VehiclePitchUp8(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3D44:
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchUp8Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -3489,7 +3489,7 @@ static void VehiclePitchDown8(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     // 0x009A3D94:
-    switch (GetBankRotationForDrawing(vehicle))
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchDown8Unbanked(session, vehicle, imageDirection, z, carEntry);
