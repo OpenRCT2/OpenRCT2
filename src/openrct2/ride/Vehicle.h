@@ -131,7 +131,7 @@ struct Vehicle : EntityBase
 
     uint16_t var_44;
     uint16_t mass;
-    uint16_t update_flags;
+    uint32_t update_flags;
     uint8_t SwingSprite;
     StationIndex current_station;
     union

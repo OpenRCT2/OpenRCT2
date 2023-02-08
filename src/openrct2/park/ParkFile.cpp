@@ -1887,7 +1887,16 @@ namespace OpenRCT2
         cs.ReadWrite(entity.next_vehicle_on_ride);
         cs.ReadWrite(entity.var_44);
         cs.ReadWrite(entity.mass);
-        cs.ReadWrite(entity.update_flags);
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < 18)
+        {
+            uint16_t updateFlags = 0;
+            cs.ReadWrite(updateFlags);
+            entity.update_flags = updateFlags;
+        }
+        else
+        {
+            cs.ReadWrite(entity.update_flags);
+        }
         cs.ReadWrite(entity.SwingSprite);
         cs.ReadWrite(entity.current_station);
         cs.ReadWrite(entity.current_time);
