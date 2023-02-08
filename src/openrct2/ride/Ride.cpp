@@ -3281,7 +3281,6 @@ static Vehicle* VehicleCreateCar(
     vehicle->num_peeps = 0;
     vehicle->next_free_seat = 0;
     vehicle->BoatLocation.SetNull();
-    vehicle->IsCrashedVehicle = false;
     return vehicle;
 }
 

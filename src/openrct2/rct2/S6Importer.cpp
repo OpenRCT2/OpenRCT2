@@ -2044,7 +2044,10 @@ namespace RCT2
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->RideSubtype);
         dst->seat_rotation = src->SeatRotation;
         dst->target_seat_rotation = src->TargetSeatRotation;
-        dst->IsCrashedVehicle = src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY;
+        if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
+        {
+            dst->SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
+        }
     }
 
     static uint32_t AdjustScenarioToCurrentTicks(const S6Data& s6, uint32_t tick)

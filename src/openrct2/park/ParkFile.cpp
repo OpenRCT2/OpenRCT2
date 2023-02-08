@@ -1949,7 +1949,15 @@ namespace OpenRCT2
         cs.ReadWrite(entity.colours.Tertiary);
         cs.ReadWrite(entity.seat_rotation);
         cs.ReadWrite(entity.target_seat_rotation);
-        cs.ReadWrite(entity.IsCrashedVehicle);
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < 18)
+        {
+            bool isCrashedVehicle = false;
+            cs.ReadWrite(isCrashedVehicle);
+            if (isCrashedVehicle)
+            {
+                entity.SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
+            }
+        }
     }
 
     template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Guest& guest)

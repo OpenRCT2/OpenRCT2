@@ -3494,7 +3494,7 @@ void Vehicle::UpdateCollisionSetup()
             VehicleCrashParticle::Create(train->colours, trainLoc);
         }
 
-        train->IsCrashedVehicle = true;
+        train->SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
         train->animationState = ScenarioRand() & 0xFFFF;
 
         train->animation_frame = ScenarioRand() & 0x7;
@@ -5275,7 +5275,7 @@ void Vehicle::CrashOnLand()
     while (numParticles-- != 0)
         VehicleCrashParticle::Create(colours, curLoc);
 
-    IsCrashedVehicle = true;
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
     animation_frame = 0;
     animationState = 0;
     sprite_width = 13;
@@ -5344,7 +5344,7 @@ void Vehicle::CrashOnWater()
     for (int32_t i = 0; i < 10; ++i)
         VehicleCrashParticle::Create(colours, curLoc + CoordsXYZ{ -4, 8, 0 });
 
-    IsCrashedVehicle = true;
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
     animation_frame = 0;
     animationState = 0;
     sprite_width = 13;
@@ -9410,5 +9410,4 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << seat_rotation;
     stream << target_seat_rotation;
     stream << BoatLocation;
-    stream << IsCrashedVehicle;
 }

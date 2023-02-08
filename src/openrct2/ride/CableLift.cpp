@@ -78,7 +78,6 @@ Vehicle* CableLiftSegmentCreate(
     current->num_peeps = 0;
     current->next_free_seat = 0;
     current->BoatLocation.SetNull();
-    current->IsCrashedVehicle = false;
     return current;
 }
 

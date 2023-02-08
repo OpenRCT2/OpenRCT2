@@ -2815,7 +2815,10 @@ namespace RCT1
 
         dst->num_peeps = src->NumPeeps;
         dst->next_free_seat = src->NextFreeSeat;
-        dst->IsCrashedVehicle = src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY;
+        if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
+        {
+            dst->SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
+        }
     }
 
     template<> void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)
