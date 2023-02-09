@@ -1995,7 +1995,7 @@ namespace RCT2
         dst->next_vehicle_on_ride = EntityId::FromUnderlying(src->NextVehicleOnRide);
         dst->var_44 = src->Var44;
         dst->mass = src->Mass;
-        dst->update_flags = src->UpdateFlags;
+        dst->Flags = src->UpdateFlags;
         dst->SwingSprite = src->SwingSprite;
         dst->current_station = StationIndex::FromUnderlying(src->CurrentStation);
         dst->current_time = src->CurrentTime;

@@ -1891,11 +1891,11 @@ namespace OpenRCT2
         {
             uint16_t updateFlags = 0;
             cs.ReadWrite(updateFlags);
-            entity.update_flags = updateFlags;
+            entity.Flags = updateFlags;
         }
         else
         {
-            cs.ReadWrite(entity.update_flags);
+            cs.ReadWrite(entity.Flags);
         }
         cs.ReadWrite(entity.SwingSprite);
         cs.ReadWrite(entity.current_station);

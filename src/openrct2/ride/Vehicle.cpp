@@ -3231,7 +3231,7 @@ void Vehicle::UpdateDeparting()
         }
         if (curRide->mode == RideMode::Shuttle)
         {
-            update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
+            Flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
             velocity = 0;
 
             // We have turned, so treat it like entering a new tile
@@ -3676,7 +3676,7 @@ void Vehicle::UpdateTravelling()
             }
             if (curRide->mode == RideMode::Shuttle)
             {
-                update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
+                Flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
                 velocity = 0;
             }
             else
@@ -7559,7 +7559,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     }
     if (trackType == TrackElemType::RotationControlToggle)
     {
-        update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
+        Flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
     }
     // Change from original: this used to check if the vehicle allowed doors.
     UpdateSceneryDoorBackwards();
@@ -9370,7 +9370,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << next_vehicle_on_ride;
     stream << var_44;
     stream << mass;
-    stream << update_flags;
+    stream << Flags;
     stream << SwingSprite;
     stream << current_station;
     stream << SwingPosition;

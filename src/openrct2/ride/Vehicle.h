@@ -131,7 +131,7 @@ struct Vehicle : EntityBase
 
     uint16_t var_44;
     uint16_t mass;
-    uint32_t update_flags;
+    uint32_t Flags;
     uint8_t SwingSprite;
     StationIndex current_station;
     union
@@ -257,15 +257,15 @@ struct Vehicle : EntityBase
     }
     bool HasUpdateFlag(uint32_t flag) const
     {
-        return (update_flags & flag) != 0;
+        return (Flags & flag) != 0;
     }
     void ClearUpdateFlag(uint32_t flag)
     {
-        update_flags &= ~flag;
+        Flags &= ~flag;
     }
     void SetUpdateFlag(uint32_t flag)
     {
-        update_flags |= flag;
+        Flags |= flag;
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);

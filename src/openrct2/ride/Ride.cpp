@@ -3167,7 +3167,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->SetTrackType(trackElement->GetTrackType());
         vehicle->track_progress = 0;
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
-        vehicle->update_flags = 0;
+        vehicle->Flags = 0;
 
         CoordsXY chosenLoc;
         auto numAttempts = 0;
@@ -3266,7 +3266,7 @@ static Vehicle* VehicleCreateCar(
         {
             vehicle->track_progress = 15;
         }
-        vehicle->update_flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
+        vehicle->Flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
         if (carEntry.flags & CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
         {
             if (trackElement->IsInverted())

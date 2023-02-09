@@ -2804,7 +2804,7 @@ namespace RCT1
         dst->track_progress = src->TrackProgress;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->sub_state = src->SubState;
-        dst->update_flags = src->UpdateFlags;
+        dst->Flags = src->UpdateFlags;
 
         SetVehicleColours(dst, src);
 
