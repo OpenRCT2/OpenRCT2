@@ -3765,7 +3765,12 @@ void Vehicle::UpdateTravelling()
     if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
         return;
 
+<<<<<<< HEAD
     if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle && velocity >= 0 && !HasUpdateFlag(VEHICLE_FLAG_REVERSE_INCLINE_COMPLETED_LAP))
+=======
+    if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle && velocity >= 0
+        && !HasUpdateFlag(VEHICLE_FLAG_REVERSE_INCLINE_RELEASED))
+>>>>>>> 96e3e87bd (fix formatting)
     {
         return;
     }
