@@ -2331,7 +2331,7 @@ declare global {
 		/**
 		 * Whether the car sprite is reversed or not.
 		 */ 
-		reversed: boolean;
+		isReversed: boolean;
 
         /**
          * The colour of the car.

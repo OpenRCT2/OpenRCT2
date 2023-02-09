@@ -67,8 +67,8 @@ namespace OpenRCT2::Scripting
         uint8_t bankRotation_get() const;
         void bankRotation_set(uint8_t value);
 
-        bool reversed_get() const;
-        void reversed_set(bool value);
+        bool isReversed_get() const;
+        void isReversed_set(bool value);
 
         DukValue colours_get() const;
         void colours_set(const DukValue& value);
