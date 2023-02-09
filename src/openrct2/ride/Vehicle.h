@@ -444,7 +444,7 @@ enum : uint32_t
     VEHICLE_FLAG_WAIT_ON_ADJACENT = (1 << 2),
     VEHICLE_FLAG_REVERSING_SHUTTLE = (1 << 3), // Shuttle is in reverse
     VEHICLE_FLAG_TRAIN_READY_DEPART = (1 << 4),
-    VEHICLE_UPDATE_FLAG_TESTING = (1 << 5),
+    VEHICLE_FLAG_TESTING = (1 << 5),
     VEHICLE_UPDATE_FLAG_6 = (1 << 6),
     VEHICLE_UPDATE_FLAG_ZERO_VELOCITY = (1 << 7), // Used on rides when safety cutout stops them on a lift
     VEHICLE_UPDATE_FLAG_BROKEN_CAR = (1 << 8),

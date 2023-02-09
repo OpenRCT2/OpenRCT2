@@ -1459,7 +1459,7 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
+        ClearUpdateFlag(VEHICLE_FLAG_TESTING);
         WindowInvalidateByNumber(WindowClass::Ride, ride.ToUnderlying());
         return;
     }
@@ -1871,7 +1871,7 @@ void Vehicle::Update()
     if (curRide->type >= RIDE_TYPE_COUNT)
         return;
 
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING))
+    if (HasUpdateFlag(VEHICLE_FLAG_TESTING))
         UpdateMeasurements();
 
     _vehicleBreakdown = 255;
@@ -2962,7 +2962,7 @@ void Vehicle::UpdateTestFinish()
     if (curRide == nullptr)
         return;
     test_finish(*curRide);
-    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
+    ClearUpdateFlag(VEHICLE_FLAG_TESTING);
 }
 
 /**
@@ -3008,7 +3008,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
 
 void Vehicle::TestReset()
 {
-    SetUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
+    SetUpdateFlag(VEHICLE_FLAG_TESTING);
     auto curRide = GetRide();
     if (curRide == nullptr)
         return;
@@ -3141,7 +3141,7 @@ void Vehicle::UpdateDeparting()
 
         if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         {
-            if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING))
+            if (HasUpdateFlag(VEHICLE_FLAG_TESTING))
             {
                 if (curRide->current_test_segment + 1 < curRide->num_stations)
                 {
@@ -4053,7 +4053,7 @@ void Vehicle::UpdateUnloadingPassengers()
             if (sub_state != 1)
                 return;
 
-            if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && HasUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING)
+            if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && HasUpdateFlag(VEHICLE_FLAG_TESTING)
                 && curRide->current_test_segment + 1 >= curRide->num_stations)
             {
                 UpdateTestFinish();
@@ -4093,7 +4093,7 @@ void Vehicle::UpdateUnloadingPassengers()
             return;
     }
 
-    if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && HasUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING)
+    if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && HasUpdateFlag(VEHICLE_FLAG_TESTING)
         && curRide->current_test_segment + 1 >= curRide->num_stations)
     {
         UpdateTestFinish();
@@ -4155,7 +4155,7 @@ void Vehicle::UpdateTravellingCableLift()
         PeepEasterEggHereWeAre();
         if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         {
-            if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING))
+            if (HasUpdateFlag(VEHICLE_FLAG_TESTING))
             {
                 if (curRide->current_test_segment + 1 < curRide->num_stations)
                 {

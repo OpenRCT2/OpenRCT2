@@ -4492,7 +4492,7 @@ void InvalidateTestResults(Ride& ride)
             Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle != nullptr)
             {
-                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
+                vehicle->ClearUpdateFlag(VEHICLE_FLAG_TESTING);
             }
         }
     }
