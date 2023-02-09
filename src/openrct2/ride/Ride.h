@@ -999,7 +999,7 @@ Ride* GetOrAllocateRide(RideId index);
 const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);
 std::string_view GetRideEntryName(ObjectEntryIndex index);
 
-extern money16 gTotalRideValueForMoney;
+extern money64 gTotalRideValueForMoney;
 
 extern const StringId ColourSchemeNames[4];
 

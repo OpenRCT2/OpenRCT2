@@ -59,7 +59,7 @@ namespace OpenRCT2::Scripting
         money64 companyValue_get() const;
         void companyValue_set(money64 value);
 
-        money16 totalRideValueForMoney_get() const;
+        money64 totalRideValueForMoney_get() const;
 
         uint32_t totalAdmissions_get() const;
         void totalAdmissions_set(uint32_t value);

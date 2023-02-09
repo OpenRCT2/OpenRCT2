@@ -516,9 +516,9 @@ money64 Park::CalculateCompanyValue() const
     return result;
 }
 
-money16 Park::CalculateTotalRideValueForMoney() const
+money64 Park::CalculateTotalRideValueForMoney() const
 {
-    money16 totalRideValue = 0;
+    money64 totalRideValue = 0;
     bool ridePricesUnlocked = ParkRidePricesUnlocked() && !(gParkFlags & PARK_FLAGS_NO_MONEY);
     for (auto& ride : GetRideManager())
     {
@@ -532,7 +532,7 @@ money16 Park::CalculateTotalRideValueForMoney() const
         // Add ride value
         if (ride.value != RIDE_VALUE_UNDEFINED)
         {
-            money16 rideValue = static_cast<money16>(ride.value);
+            money64 rideValue = static_cast<money64>(ride.value);
             if (ridePricesUnlocked)
             {
                 rideValue -= ride.price[0];

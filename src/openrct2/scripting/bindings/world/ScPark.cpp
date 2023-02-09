@@ -191,7 +191,7 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    money16 ScPark::totalRideValueForMoney_get() const
+    money64 ScPark::totalRideValueForMoney_get() const
     {
         return gTotalRideValueForMoney;
     }
