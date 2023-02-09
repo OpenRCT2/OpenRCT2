@@ -2138,7 +2138,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
+    vehicle->ClearUpdateFlag(VEHICLE_FLAG_BROKEN_CAR);
 
     return false;
 }

@@ -1259,7 +1259,7 @@ bool Vehicle::CloseRestraints()
     for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
          vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
-        if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR) && vehicle->restraints_position != 0
+        if (vehicle->HasUpdateFlag(VEHICLE_FLAG_BROKEN_CAR) && vehicle->restraints_position != 0
             && (curRide->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
                 || curRide->breakdown_reason_pending == BREAKDOWN_DOORS_STUCK_OPEN))
         {
@@ -1375,7 +1375,7 @@ bool Vehicle::OpenRestraints()
             continue;
         }
 
-        if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR) && vehicle->restraints_position != 0xFF
+        if (vehicle->HasUpdateFlag(VEHICLE_FLAG_BROKEN_CAR) && vehicle->restraints_position != 0xFF
             && (curRide->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_CLOSED
                 || curRide->breakdown_reason_pending == BREAKDOWN_DOORS_STUCK_CLOSED))
         {

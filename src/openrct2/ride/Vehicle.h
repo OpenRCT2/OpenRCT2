@@ -447,7 +447,7 @@ enum : uint32_t
     VEHICLE_FLAG_TESTING = (1 << 5),
     VEHICLE_FLAG_6 = (1 << 6),
     VEHICLE_FLAG_ZERO_VELOCITY = (1 << 7), // Used on rides when safety cutout stops them on a lift
-    VEHICLE_UPDATE_FLAG_BROKEN_CAR = (1 << 8),
+    VEHICLE_FLAG_BROKEN_CAR = (1 << 8),
     VEHICLE_UPDATE_FLAG_BROKEN_TRAIN = (1 << 9),
     VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP = (1 << 10),
     VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES = (1 << 11), // Used on rides where trains can run for extended periods of time,
