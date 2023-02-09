@@ -452,7 +452,7 @@ enum : uint32_t
     VEHICLE_FLAG_ON_BRAKE_FOR_DROP = (1 << 10),
     VEHICLE_FLAG_USE_INVERTED_SPRITES = (1 << 11), // Used on rides where trains can run for extended periods of time,
                                                           // i.e. the Flying, Lay-down and Multi-dimension RCs.
-    VEHICLE_UPDATE_FLAG_12 = (1 << 12),
+    VEHICLE_FLAG_12 = (1 << 12),
     VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE = (1 << 13), // After passing a rotation toggle track piece this will enable
     VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION = (1 << 14), // OpenRCT2 Flag: Used to override UpdateMotion to move the position of
                                                          // an individual car on a train
