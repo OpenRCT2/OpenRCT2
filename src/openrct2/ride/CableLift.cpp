@@ -73,7 +73,7 @@ Vehicle* CableLiftSegmentCreate(
     current->SetTrackType(TrackElemType::CableLiftHill);
     current->SetTrackDirection(current->sprite_direction >> 3);
     current->track_progress = 164;
-    current->Flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
+    current->Flags = VEHICLE_FLAG_COLLISION_DISABLED;
     current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;

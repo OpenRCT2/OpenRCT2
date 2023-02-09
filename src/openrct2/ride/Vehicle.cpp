@@ -624,9 +624,9 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
 {
     remaining_distance += distance;
 
-    SetUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_FLAG_COLLISION_DISABLED);
     UpdateTrackMotion(nullptr);
-    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_FLAG_COLLISION_DISABLED);
 }
 
 Vehicle* TryGetVehicle(EntityId spriteIndex)
@@ -3253,11 +3253,11 @@ void Vehicle::UpdateDeparting()
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
                         SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
-                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+                        ClearUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED);
                     }
                 }
                 else
-                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+                    ClearUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED);
             }
         }
         else
@@ -3271,11 +3271,11 @@ void Vehicle::UpdateDeparting()
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
                         SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
-                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+                        ClearUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED);
                     }
                 }
                 else
-                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+                    ClearUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED);
             }
         }
     }
@@ -7083,7 +7083,7 @@ bool Vehicle::IsCableLift() const
  */
 bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* otherVehicleIndex)
 {
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED))
+    if (HasUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED))
         return false;
 
     auto carEntry = Entry();
@@ -9346,7 +9346,7 @@ void Vehicle::EnableCollisionsForTrain()
     assert(this->IsHead());
     for (auto vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
-        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+        vehicle->ClearUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED);
     }
 }
 

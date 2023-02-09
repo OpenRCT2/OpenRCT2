@@ -3266,7 +3266,7 @@ static Vehicle* VehicleCreateCar(
         {
             vehicle->track_progress = 15;
         }
-        vehicle->Flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
+        vehicle->Flags = VEHICLE_FLAG_COLLISION_DISABLED;
         if (carEntry.flags & CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
         {
             if (trackElement->IsInverted())
@@ -3574,7 +3574,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
         firstBlock->SetBrakeClosed(true);
         for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
-            car->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+            car->ClearUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED);
             car->SetState(Vehicle::Status::Travelling, car->sub_state);
             if ((car->GetTrackType()) == TrackElemType::EndStation)
             {
