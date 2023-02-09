@@ -718,6 +718,17 @@ public:
             const auto lastTabIndex = GetMaxTabCountInARow() == MaxTabsPerRow ? MaxTabsPerRow - 1 : _tabEntries.size() - 1;
             const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
             windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
+
+            for (size_t index = 0; index < _tabEntries.size(); index++)
+            {
+                if (!_tabEntries[index].IsSearch())
+                    continue;
+
+                auto searchTabWidget = &widgets[WIDX_SCENERY_TAB_1 + index];
+                searchTabWidget->left = windowWidth - TabWidth - 2;
+                searchTabWidget->right = windowWidth - 3;
+                break;
+            }
         }
 
         widgets[WIDX_SCENERY_BACKGROUND].right = windowWidth - 1;
@@ -1251,7 +1262,7 @@ private:
             auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
             pos.x += TabWidth;
 
-            if (tabInfo.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+            if (tabInfo.IsMisc())
             {
                 widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull);
             }
