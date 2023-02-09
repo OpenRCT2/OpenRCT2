@@ -2859,7 +2859,7 @@ static void WindowRideVehicleInvalidate(WindowBase* w)
     }
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS)
-        || (gCheatsShowAllOperatingModes && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE)))
+        || (gCheatsDisableTrainLengthLimit && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE)))
     {
         window_ride_vehicle_widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Checkbox;
         if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
