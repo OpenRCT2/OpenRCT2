@@ -6351,6 +6351,10 @@ static uint8_t GetSwingSprite(int16_t swingPosition)
 void Vehicle::UpdateSwingingCar()
 {
     int32_t dword_F64E08 = abs(_vehicleVelocityF64E08);
+    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_IS_REVERSED))
+    {
+        dword_F64E08 *= -1;
+    }
     SwingSpeed += (-SwingPosition) >> 6;
     int32_t swingAmount = GetSwingAmount();
     if (swingAmount < 0)
