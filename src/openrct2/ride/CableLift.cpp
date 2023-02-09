@@ -202,7 +202,7 @@ void Vehicle::CableLiftUpdateTravelling()
 
     velocity = std::min(passengerVehicle->velocity, 439800);
     acceleration = 0;
-    if (passengerVehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
+    if (passengerVehicle->HasUpdateFlag(VEHICLE_FLAG_BROKEN_TRAIN))
         return;
 
     if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))

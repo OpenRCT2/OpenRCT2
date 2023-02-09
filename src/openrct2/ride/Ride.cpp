@@ -1537,7 +1537,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             vehicle = GetEntity<Vehicle>(ride.vehicles[ride.broken_vehicle]);
             if (vehicle != nullptr)
             {
-                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+                vehicle->SetUpdateFlag(VEHICLE_FLAG_BROKEN_TRAIN);
             }
             break;
         case BREAKDOWN_BRAKES_FAILURE:
@@ -4522,7 +4522,7 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
             {
                 vehicle->ClearUpdateFlag(VEHICLE_FLAG_ZERO_VELOCITY);
                 vehicle->ClearUpdateFlag(VEHICLE_FLAG_BROKEN_CAR);
-                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+                vehicle->ClearUpdateFlag(VEHICLE_FLAG_BROKEN_TRAIN);
             }
         }
     }

@@ -3106,7 +3106,7 @@ void Vehicle::UpdateDeparting()
 
     if (sub_state == 0)
     {
-        if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
+        if (HasUpdateFlag(VEHICLE_FLAG_BROKEN_TRAIN))
         {
             if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 return;
@@ -4134,7 +4134,7 @@ void Vehicle::UpdateTravellingCableLift()
 
     if (sub_state == 0)
     {
-        if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
+        if (HasUpdateFlag(VEHICLE_FLAG_BROKEN_TRAIN))
         {
             if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 return;

@@ -2179,7 +2179,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+    vehicle->ClearUpdateFlag(VEHICLE_FLAG_BROKEN_TRAIN);
 
     return false;
 }
