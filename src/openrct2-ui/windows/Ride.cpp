@@ -2858,7 +2858,6 @@ static void WindowRideVehicleInvalidate(WindowBase* w)
         window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE].type = WindowWidgetType::Empty;
     }
 
-
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS) || gCheatsShowAllOperatingModes)
     {
         window_ride_vehicle_widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Checkbox;
@@ -2871,7 +2870,7 @@ static void WindowRideVehicleInvalidate(WindowBase* w)
             w->pressed_widgets &= ~(1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
         }
     }
-    else 
+    else
     {
         window_ride_vehicle_widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Empty;
     }
@@ -3005,7 +3004,8 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int3
     bool isReversed = ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS);
     int32_t carIndex = (isReversed) ? ride->num_cars_per_train - 1 : 0;
 
-    const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
+    const auto& firstCarEntry = rideEntry
+        ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
     startY += firstCarEntry.tab_height;
 
     // For each train
@@ -3022,7 +3022,8 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int3
         {
             carIndex = (isReversed) ? (ride->num_cars_per_train - 1) - j : j;
 
-            const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
+            const auto& carEntry = rideEntry
+                ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
             x += carEntry.spacing / 17432;
             y -= (carEntry.spacing / 2) / 17432;
 
