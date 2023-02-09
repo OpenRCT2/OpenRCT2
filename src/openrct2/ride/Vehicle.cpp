@@ -6497,7 +6497,7 @@ void Vehicle::UpdateSwingingCar()
  */
 void Vehicle::UpdateSpinningCar()
 {
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE))
+    if (HasUpdateFlag(VEHICLE_FLAG_ROTATION_OFF_WILD_MOUSE))
     {
         spin_speed = 0;
         return;
@@ -7559,7 +7559,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     }
     if (trackType == TrackElemType::RotationControlToggle)
     {
-        Flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
+        Flags ^= VEHICLE_FLAG_ROTATION_OFF_WILD_MOUSE;
     }
     // Change from original: this used to check if the vehicle allowed doors.
     UpdateSceneryDoorBackwards();
