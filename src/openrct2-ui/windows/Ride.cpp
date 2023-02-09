@@ -3005,7 +3005,7 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int3
     int32_t carIndex = (isReversed) ? ride->num_cars_per_train - 1 : 0;
 
     const auto& firstCarEntry = rideEntry
-        ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
+                                    ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
     startY += firstCarEntry.tab_height;
 
     // For each train
@@ -3023,7 +3023,7 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int3
             carIndex = (isReversed) ? (ride->num_cars_per_train - 1) - j : j;
 
             const auto& carEntry = rideEntry
-                ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
+                                       ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
             x += carEntry.spacing / 17432;
             y -= (carEntry.spacing / 2) / 17432;
 
