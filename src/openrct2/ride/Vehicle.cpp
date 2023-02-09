@@ -624,9 +624,9 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
 {
     remaining_distance += distance;
 
-    SetUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_FLAG_COLLISION_DISABLED);
+    SetUpdateFlag(VEHICLE_FLAG_SINGLE_CAR_POSITION | VEHICLE_FLAG_COLLISION_DISABLED);
     UpdateTrackMotion(nullptr);
-    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_FLAG_COLLISION_DISABLED);
+    ClearUpdateFlag(VEHICLE_FLAG_SINGLE_CAR_POSITION | VEHICLE_FLAG_COLLISION_DISABLED);
 }
 
 Vehicle* TryGetVehicle(EntityId spriteIndex)
@@ -8127,7 +8127,7 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideOb
 
     _vehicleUnkF64E10 = 1;
     acceleration = AccelerationFromPitch[Pitch];
-    if (!HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+    if (!HasUpdateFlag(VEHICLE_FLAG_SINGLE_CAR_POSITION))
     {
         remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
     }
@@ -8760,7 +8760,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
         }
-        if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+        if (vehicle->HasUpdateFlag(VEHICLE_FLAG_SINGLE_CAR_POSITION))
         {
             if (outStation != nullptr)
                 *outStation = _vehicleStationIndex.ToUnderlying();
@@ -8927,7 +8927,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     UpdateVelocity();
 
     Vehicle* vehicle = this;
-    if (_vehicleVelocityF64E08 < 0 && !vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+    if (_vehicleVelocityF64E08 < 0 && !vehicle->HasUpdateFlag(VEHICLE_FLAG_SINGLE_CAR_POSITION))
     {
         vehicle = vehicle->TrainTail();
     }
@@ -8967,7 +8967,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         car->acceleration = AccelerationFromPitch[car->Pitch];
         _vehicleUnkF64E10 = 1;
 
-        if (!car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+        if (!car->HasUpdateFlag(VEHICLE_FLAG_SINGLE_CAR_POSITION))
         {
             car->remaining_distance += _vehicleVelocityF64E0C;
         }
@@ -9025,7 +9025,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
         }
-        if (car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+        if (car->HasUpdateFlag(VEHICLE_FLAG_SINGLE_CAR_POSITION))
         {
             if (outStation != nullptr)
                 *outStation = _vehicleStationIndex.ToUnderlying();
