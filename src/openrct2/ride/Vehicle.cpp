@@ -6930,9 +6930,9 @@ static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tile
 void Vehicle::UpdateGoKartAttemptSwitchLanes()
 {
     uint16_t probability = 0x8000;
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_6))
+    if (HasUpdateFlag(VEHICLE_FLAG_6))
     {
-        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
+        ClearUpdateFlag(VEHICLE_FLAG_6);
     }
     else
     {
@@ -7218,7 +7218,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
     CollisionDetectionTimer++;
     if (CollisionDetectionTimer < 200)
     {
-        SetUpdateFlag(VEHICLE_UPDATE_FLAG_6);
+        SetUpdateFlag(VEHICLE_FLAG_6);
         if (otherVehicleIndex != nullptr)
             *otherVehicleIndex = collideVehicle->Id;
         return true;
@@ -7264,7 +7264,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         return false;
     }
 
-    SetUpdateFlag(VEHICLE_UPDATE_FLAG_6);
+    SetUpdateFlag(VEHICLE_FLAG_6);
     if (otherVehicleIndex != nullptr)
         *otherVehicleIndex = collideVehicle->Id;
     return true;
