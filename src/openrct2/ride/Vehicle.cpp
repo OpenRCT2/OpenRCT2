@@ -1532,7 +1532,7 @@ void Vehicle::UpdateMeasurements()
             return;
 
         auto trackElemType = GetTrackType();
-        if (trackElemType == TrackElemType::PoweredLift || HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+        if (trackElemType == TrackElemType::PoweredLift || HasUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL))
         {
             if (!(curRide->testing_flags & RIDE_TESTING_POWERED_LIFT))
             {
@@ -6461,7 +6461,7 @@ void Vehicle::UpdateSwingingCar()
             cx = 0;
         }
 
-        if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+        if (HasUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL))
         {
             dx = 0;
             cx = 0;
@@ -7538,11 +7538,11 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     }
 
     // Loc6DB500
-    // Update VEHICLE_UPDATE_FLAG_ON_LIFT_HILL
-    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
+    // Update VEHICLE_FLAG_ON_LIFT_HILL
+    ClearUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL);
     if (tileElement->AsTrack()->HasChain())
     {
-        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
+        SetUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL);
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
@@ -7932,14 +7932,14 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }
             }
-            SetUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
+            SetUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL);
         }
     }
     else
     {
-        if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+        if (HasUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL))
         {
-            ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
+            ClearUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL);
             if (next_vehicle_on_train.IsNull())
             {
                 if (_vehicleVelocityF64E08 < 0)
@@ -8286,7 +8286,7 @@ Loc6DC476:
         }
     }
 
-    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
+    ClearUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL);
     SetTrackType(tileElement->AsTrack()->GetTrackType());
     SetTrackDirection(direction);
     brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
@@ -8487,9 +8487,9 @@ Loc6DCA9A:
 
     TrackLocation = trackPos;
 
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+    if (HasUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL))
     {
-        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
+        ClearUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL);
         if (next_vehicle_on_train.IsNull())
         {
             if (_vehicleVelocityF64E08 < 0)
@@ -8756,7 +8756,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     for (Vehicle* vehicle = _vehicleFrontVehicle; vehicle != nullptr;)
     {
         vehicle->UpdateTrackMotionMiniGolfVehicle(*curRide, *rideEntry, carEntry);
-        if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+        if (vehicle->HasUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
         }
@@ -9021,7 +9021,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         car->Sub6DBF3E();
 
         // Loc6DC0F7
-        if (car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+        if (car->HasUpdateFlag(VEHICLE_FLAG_ON_LIFT_HILL))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
         }
