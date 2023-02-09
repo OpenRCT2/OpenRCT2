@@ -3231,7 +3231,7 @@ void Vehicle::UpdateDeparting()
         }
         if (curRide->mode == RideMode::Shuttle)
         {
-            Flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
+            Flags ^= VEHICLE_FLAG_REVERSING_SHUTTLE;
             velocity = 0;
 
             // We have turned, so treat it like entering a new tile
@@ -3676,7 +3676,7 @@ void Vehicle::UpdateTravelling()
             }
             if (curRide->mode == RideMode::Shuttle)
             {
-                Flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
+                Flags ^= VEHICLE_FLAG_REVERSING_SHUTTLE;
                 velocity = 0;
             }
             else
@@ -4515,7 +4515,7 @@ void Vehicle::UpdateMotionBoatHire()
         {
             eax = speed << 14;
             int32_t ebx = (speed * curMass) >> 2;
-            if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
+            if (HasUpdateFlag(VEHICLE_FLAG_REVERSING_SHUTTLE))
             {
                 eax = -eax;
             }
@@ -5903,7 +5903,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
     int32_t momentum = (speed * mass) >> 2;
     int32_t _eax = speed << 14;
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
+    if (HasUpdateFlag(VEHICLE_FLAG_REVERSING_SHUTTLE))
     {
         _eax = -_eax;
     }
@@ -7334,7 +7334,7 @@ void Vehicle::Sub6DBF3E()
 
     if (trackType == TrackElemType::TowerBase && this == gCurrentVehicle)
     {
-        if (track_progress > 3 && !HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
+        if (track_progress > 3 && !HasUpdateFlag(VEHICLE_FLAG_REVERSING_SHUTTLE))
         {
             CoordsXYE output;
             int32_t outputZ, outputDirection;
@@ -8688,7 +8688,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& 
     {
         int32_t poweredAcceleration = speed << 14;
         int32_t quarterForce = (speed * totalMass) >> 2;
-        if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
+        if (HasUpdateFlag(VEHICLE_FLAG_REVERSING_SHUTTLE))
         {
             poweredAcceleration = -poweredAcceleration;
         }
@@ -8839,7 +8839,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
     uint8_t modifiedSpeed = modified_speed(GetTrackType(), TrackSubposition, speed);
     int32_t poweredAcceleration = modifiedSpeed << 14;
     int32_t quarterForce = (modifiedSpeed * totalMass) >> 2;
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
+    if (HasUpdateFlag(VEHICLE_FLAG_REVERSING_SHUTTLE))
     {
         poweredAcceleration = -poweredAcceleration;
     }
@@ -9172,7 +9172,7 @@ void Vehicle::UpdateCrossings() const
     const Vehicle* frontVehicle{};
     const Vehicle* backVehicle{};
 
-    bool travellingForwards = !HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE);
+    bool travellingForwards = !HasUpdateFlag(VEHICLE_FLAG_REVERSING_SHUTTLE);
 
     if (travellingForwards)
     {
