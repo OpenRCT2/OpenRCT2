@@ -2046,7 +2046,7 @@ namespace RCT2
         dst->target_seat_rotation = src->TargetSeatRotation;
         if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
         {
-            dst->SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
+            dst->SetUpdateFlag(VEHICLE_FLAG_CRASHED);
         }
     }
 

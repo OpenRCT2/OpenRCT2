@@ -456,7 +456,7 @@ enum : uint32_t
     VEHICLE_FLAG_ROTATION_OFF_WILD_MOUSE = (1 << 13), // After passing a rotation toggle track piece this will enable
     VEHICLE_FLAG_SINGLE_CAR_POSITION = (1 << 14), // OpenRCT2 Flag: Used to override UpdateMotion to move the position of
                                                          // an individual car on a train
-    VEHICLE_UPDATE_FLAG_CRASHED = (1 << 15),
+    VEHICLE_FLAG_CRASHED = (1 << 15),
 };
 
 enum

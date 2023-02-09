@@ -2817,7 +2817,7 @@ namespace RCT1
         dst->next_free_seat = src->NextFreeSeat;
         if (src->Flags & RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY)
         {
-            dst->SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
+            dst->SetUpdateFlag(VEHICLE_FLAG_CRASHED);
         }
     }
 
