@@ -3981,7 +3981,7 @@ static void WindowRideMaintenanceDropdown(WindowBase* w, WidgetIndex widgetIndex
                                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                             {
                                 vehicle->ClearUpdateFlag(
-                                    VEHICLE_UPDATE_FLAG_BROKEN_CAR | VEHICLE_UPDATE_FLAG_ZERO_VELOCITY
+                                    VEHICLE_UPDATE_FLAG_BROKEN_CAR | VEHICLE_FLAG_ZERO_VELOCITY
                                     | VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
                             }
                         }

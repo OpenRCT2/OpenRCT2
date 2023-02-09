@@ -1883,7 +1883,7 @@ void Vehicle::Update()
         {
             if (!(carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE) || (Pitch == 2 && velocity <= 0x20000))
             {
-                SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
+                SetUpdateFlag(VEHICLE_FLAG_ZERO_VELOCITY);
             }
         }
     }
@@ -3252,7 +3252,7 @@ void Vehicle::UpdateDeparting()
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
+                        SetUpdateFlag(VEHICLE_FLAG_ZERO_VELOCITY);
                         ClearUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED);
                     }
                 }
@@ -3270,7 +3270,7 @@ void Vehicle::UpdateDeparting()
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
+                        SetUpdateFlag(VEHICLE_FLAG_ZERO_VELOCITY);
                         ClearUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED);
                     }
                 }
@@ -3734,7 +3734,7 @@ void Vehicle::UpdateTravelling()
                         if (_vehicleBreakdown == 0)
                         {
                             sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-                            SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
+                            SetUpdateFlag(VEHICLE_FLAG_ZERO_VELOCITY);
                         }
                     }
                 }
@@ -3750,7 +3750,7 @@ void Vehicle::UpdateTravelling()
                 {
                     if (_vehicleBreakdown == 0)
                     {
-                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
+                        SetUpdateFlag(VEHICLE_FLAG_ZERO_VELOCITY);
                         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                     }
                 }
@@ -6165,7 +6165,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
 void Vehicle::UpdateVelocity()
 {
     int32_t nextVelocity = acceleration + velocity;
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY))
+    if (HasUpdateFlag(VEHICLE_FLAG_ZERO_VELOCITY))
     {
         nextVelocity = 0;
     }

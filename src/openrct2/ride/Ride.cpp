@@ -4520,7 +4520,7 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
             for (Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
             {
-                vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
+                vehicle->ClearUpdateFlag(VEHICLE_FLAG_ZERO_VELOCITY);
                 vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
                 vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
             }
