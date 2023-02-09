@@ -3725,7 +3725,7 @@ void Vehicle::UpdateTravelling()
                 if (velocity != 0)
                     sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
 
-                if (!HasUpdateFlag(VEHICLE_FLAG_12))
+                if (!HasUpdateFlag(VEHICLE_FLAG_REVERSE_INCLINE_COMPLETED_LAP))
                 {
                     if (velocity >= curRide->lift_hill_speed * -31079)
                     {
@@ -3765,7 +3765,7 @@ void Vehicle::UpdateTravelling()
     if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
         return;
 
-    if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle && velocity >= 0 && !HasUpdateFlag(VEHICLE_FLAG_12))
+    if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle && velocity >= 0 && !HasUpdateFlag(VEHICLE_FLAG_REVERSE_INCLINE_COMPLETED_LAP))
     {
         return;
     }
@@ -3854,7 +3854,7 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
         if (GetRideTypeDescriptor(curRide.type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)
             && curRide.mode != RideMode::Shuttle && curRide.mode != RideMode::PoweredLaunch)
         {
-            SetUpdateFlag(VEHICLE_FLAG_12);
+            SetUpdateFlag(VEHICLE_FLAG_REVERSE_INCLINE_COMPLETED_LAP);
         }
         else
         {
@@ -3895,7 +3895,7 @@ void Vehicle::UpdateArriving()
         case RideMode::SpaceRings:
         case RideMode::HauntedHouse:
         case RideMode::CrookedHouse:
-            ClearUpdateFlag(VEHICLE_FLAG_12);
+            ClearUpdateFlag(VEHICLE_FLAG_REVERSE_INCLINE_COMPLETED_LAP);
             velocity = 0;
             acceleration = 0;
             SetState(Vehicle::Status::UnloadingPassengers);
@@ -3966,7 +3966,7 @@ void Vehicle::UpdateArriving()
             return;
         }
 
-        if (NumLaps == curRide->num_circuits && HasUpdateFlag(VEHICLE_FLAG_12))
+        if (NumLaps == curRide->num_circuits && HasUpdateFlag(VEHICLE_FLAG_REVERSE_INCLINE_COMPLETED_LAP))
         {
             SetState(Vehicle::Status::Departing, 1);
             return;
@@ -3994,7 +3994,7 @@ void Vehicle::UpdateArriving()
         return;
     }
 
-    ClearUpdateFlag(VEHICLE_FLAG_12);
+    ClearUpdateFlag(VEHICLE_FLAG_REVERSE_INCLINE_COMPLETED_LAP);
     velocity = 0;
     acceleration = 0;
     SetState(Vehicle::Status::UnloadingPassengers);
