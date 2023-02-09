@@ -6169,12 +6169,12 @@ void Vehicle::UpdateVelocity()
     {
         nextVelocity = 0;
     }
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP))
+    if (HasUpdateFlag(VEHICLE_FLAG_ON_BRAKE_FOR_DROP))
     {
         vertical_drop_countdown--;
         if (vertical_drop_countdown == -70)
         {
-            ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP);
+            ClearUpdateFlag(VEHICLE_FLAG_ON_BRAKE_FOR_DROP);
         }
         if (vertical_drop_countdown >= 0)
         {
@@ -7637,14 +7637,14 @@ Loc6DAEB9:
     {
         if (IsHead())
         {
-            if (!HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP))
+            if (!HasUpdateFlag(VEHICLE_FLAG_ON_BRAKE_FOR_DROP))
             {
                 if (track_progress >= 8)
                 {
                     acceleration = -_vehicleVelocityF64E08 * 16;
                     if (track_progress >= 24)
                     {
-                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP);
+                        SetUpdateFlag(VEHICLE_FLAG_ON_BRAKE_FOR_DROP);
                         vertical_drop_countdown = 90;
                     }
                 }
