@@ -7485,20 +7485,20 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
             }
         }
 
-        if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement) != pitchAndRollEnd)
+        if (PitchAndRollStart(HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), tileElement) != pitchAndRollEnd)
         {
             return false;
         }
 
-        // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
-        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+        // Update VEHICLE_FLAG_USE_INVERTED_SPRITES flag
+        ClearUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
         {
             int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
             if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
                 if (tileElement->AsTrack()->IsInverted())
                 {
-                    SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+                    SetUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
                 }
             }
         }
@@ -7864,19 +7864,19 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
             return false;
         }
 
-        if (PitchAndRollEnd(curRide, HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), trackType, tileElement)
+        if (PitchAndRollEnd(curRide, HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), trackType, tileElement)
             != pitchAndRollStart)
         {
             return false;
         }
 
-        // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES
-        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+        // Update VEHICLE_FLAG_USE_INVERTED_SPRITES
+        ClearUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
         if (GetRideTypeDescriptor(curRide.type).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {
             if (tileElement->AsTrack()->IsInverted())
             {
-                SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+                SetUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
             }
         }
 
@@ -8253,7 +8253,7 @@ Loc6DC476:
         direction = outDirection;
     }
 
-    if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
+    if (PitchAndRollStart(HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), tileElement)
         != TrackPitchAndRollEnd(GetTrackType()))
     {
         goto Loc6DC9BC;
@@ -8261,12 +8261,12 @@ Loc6DC476:
 
     {
         int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
-        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+        ClearUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {
             if (tileElement->AsTrack()->IsInverted())
             {
-                SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+                SetUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
             }
         }
     }
@@ -8467,7 +8467,7 @@ Loc6DCA9A:
         tileElement = trackBeginEnd.begin_element;
     }
 
-    if (PitchAndRollStart(HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES), tileElement)
+    if (PitchAndRollStart(HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), tileElement)
         != TrackPitchAndRollEnd(GetTrackType()))
     {
         goto Loc6DCD4A;
@@ -8475,12 +8475,12 @@ Loc6DCA9A:
 
     {
         int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
-        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+        ClearUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {
             if (tileElement->AsTrack()->IsInverted())
             {
-                SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
+                SetUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
             }
         }
     }
