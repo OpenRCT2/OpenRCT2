@@ -681,10 +681,6 @@ GameActions::Result TrackPlaceAction::Execute() const
                     else
                         newMode = RideMode::PoweredLaunch;
                 }
-                if (ride->mode == RideMode::ContinuousCircuitReverseTrains)
-                {
-                    newMode = RideMode::ContinuousCircuitBlockSectionedReverseTrains;
-                }
 
                 auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                 GameActions::ExecuteNested(&rideSetSetting);

@@ -1124,8 +1124,7 @@ void Ride::Update()
     // If ride is simulating but crashed, reset the vehicles
     if (status == RideStatus::Simulating && (lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
-        if (mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned
-            || mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains)
+        if (mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::Closed);
@@ -3372,8 +3371,7 @@ static Vehicle* VehicleCreateCar(
         }
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
 
-        if (ride.mode == RideMode::ContinuousCircuitReverseTrains
-            || ride.mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains)
+        if (ride.HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
         {
             vehicle->SubType = carIndex == (ride.num_cars_per_train - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
             vehicle->SetFlag(VehicleFlags::CarIsReversed);
@@ -3395,9 +3393,8 @@ static TrainReference VehicleCreateTrain(
     Ride& ride, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
     TrainReference train = { nullptr, nullptr };
-    bool isReversed
-        = (ride.mode == RideMode::ContinuousCircuitReverseTrains
-           || ride.mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains);
+    bool isReversed = ride.HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS);
+
     for (int32_t carIndex = 0; carIndex < ride.num_cars_per_train; carIndex++)
     {
         auto carSpawnIndex = (isReversed) ? (ride.num_cars_per_train - 1) - carIndex : carIndex;
@@ -4566,8 +4563,8 @@ bool Ride::IsPoweredLaunched() const
 
 bool Ride::IsBlockSectioned() const
 {
-    return mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned
-        || mode == RideMode::ContinuousCircuitBlockSectionedReverseTrains;
+    return mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned;
+    ;
 }
 
 bool RideHasAnyTrackElements(const Ride& ride)
@@ -5047,7 +5044,6 @@ void Ride::UpdateMaxVehicles()
         {
             case RideMode::ContinuousCircuitBlockSectioned:
             case RideMode::PoweredLaunchBlockSectioned:
-            case RideMode::ContinuousCircuitBlockSectionedReverseTrains:
                 maxNumTrains = std::clamp<int32_t>(num_stations + num_block_brakes - 1, 1, OpenRCT2::Limits::MaxTrainsPerRide);
                 break;
             case RideMode::ReverseInclineLaunchedShuttle:
@@ -5165,6 +5161,12 @@ void Ride::SetNumTrains(int32_t numTrains)
 void Ride::SetNumCarsPerVehicle(int32_t numCarsPerVehicle)
 {
     auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
+    GameActions::Execute(&rideSetVehicleAction);
+}
+
+void Ride::SetReversedTrains(bool reverseTrains)
+{
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::TrainsReversed, reverseTrains);
     GameActions::Execute(&rideSetVehicleAction);
 }
 

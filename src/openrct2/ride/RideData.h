@@ -347,6 +347,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_IS_FIRST_AID = (1uLL << 57),
     RIDE_TYPE_FLAG_IS_MAZE = (1uLL << 58),
     RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE = (1uLL << 59),
+    RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS = (1uLL << 60),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -410,8 +411,7 @@ constexpr const uint64_t AllRideModesAvailable = EnumsToFlags(
     RideMode::SpaceRings, RideMode::Beginners, RideMode::LimPoweredLaunch, RideMode::FilmThrillRiders,
     RideMode::StormChasers3DFilm, RideMode::SpaceRaiders3DFilm, RideMode::Intense, RideMode::Berserk, RideMode::HauntedHouse,
     RideMode::Circus, RideMode::DownwardLaunch, RideMode::CrookedHouse, RideMode::FreefallDrop, RideMode::PoweredLaunch,
-    RideMode::PoweredLaunchBlockSectioned, RideMode::ContinuousCircuitReverseTrains,
-    RideMode::ContinuousCircuitBlockSectionedReverseTrains);
+    RideMode::PoweredLaunchBlockSectioned);
 
 extern const CarEntry CableLiftVehicle;
 
