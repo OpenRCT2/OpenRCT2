@@ -2311,11 +2311,11 @@ void Vehicle::UpdateWaitingForPassengers()
         return;
 
     velocity = 0;
-    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT);
+    ClearUpdateFlag(VEHICLE_FLAG_WAIT_ON_ADJACENT);
 
     if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
     {
-        SetUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT);
+        SetUpdateFlag(VEHICLE_FLAG_WAIT_ON_ADJACENT);
     }
 
     SetState(Vehicle::Status::WaitingToDepart);
@@ -2442,7 +2442,7 @@ void Vehicle::UpdateWaitingToDepart()
     {
         if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
         {
-            if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT))
+            if (HasUpdateFlag(VEHICLE_FLAG_WAIT_ON_ADJACENT))
             {
                 if (!CanDepartSynchronised())
                 {
@@ -2676,7 +2676,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
         {
             continue;
         }
-        if (!vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT))
+        if (!vehicle->HasUpdateFlag(VEHICLE_FLAG_WAIT_ON_ADJACENT))
         {
             continue;
         }
@@ -2703,7 +2703,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
  *
  * Permits vehicles to depart in two ways:
  *  Returns true, permitting the vehicle in the param to depart immediately;
- *  The vehicle flag VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT is cleared for those
+ *  The vehicle flag VEHICLE_FLAG_WAIT_ON_ADJACENT is cleared for those
  *  vehicles that depart in sync with the vehicle in the param.
  */
 static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex stationIndex)
@@ -2886,7 +2886,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
         auto v = GetEntity<Vehicle>(sv->vehicle_id);
         if (v != nullptr)
         {
-            v->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT);
+            v->ClearUpdateFlag(VEHICLE_FLAG_WAIT_ON_ADJACENT);
         }
     }
 
