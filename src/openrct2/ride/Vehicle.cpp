@@ -3231,7 +3231,7 @@ void Vehicle::UpdateDeparting()
         }
         if (curRide->mode == RideMode::Shuttle)
         {
-            update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
+            Flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
             velocity = 0;
 
             // We have turned, so treat it like entering a new tile
@@ -3494,7 +3494,7 @@ void Vehicle::UpdateCollisionSetup()
             VehicleCrashParticle::Create(train->colours, trainLoc);
         }
 
-        train->IsCrashedVehicle = true;
+        train->SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
         train->animationState = ScenarioRand() & 0xFFFF;
 
         train->animation_frame = ScenarioRand() & 0x7;
@@ -3676,7 +3676,7 @@ void Vehicle::UpdateTravelling()
             }
             if (curRide->mode == RideMode::Shuttle)
             {
-                update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
+                Flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
                 velocity = 0;
             }
             else
@@ -5275,7 +5275,7 @@ void Vehicle::CrashOnLand()
     while (numParticles-- != 0)
         VehicleCrashParticle::Create(colours, curLoc);
 
-    IsCrashedVehicle = true;
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
     animation_frame = 0;
     animationState = 0;
     sprite_width = 13;
@@ -5344,7 +5344,7 @@ void Vehicle::CrashOnWater()
     for (int32_t i = 0; i < 10; ++i)
         VehicleCrashParticle::Create(colours, curLoc + CoordsXYZ{ -4, 8, 0 });
 
-    IsCrashedVehicle = true;
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
     animation_frame = 0;
     animationState = 0;
     sprite_width = 13;
@@ -7559,7 +7559,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     }
     if (trackType == TrackElemType::RotationControlToggle)
     {
-        update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
+        Flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
     }
     // Change from original: this used to check if the vehicle allowed doors.
     UpdateSceneryDoorBackwards();
@@ -9370,7 +9370,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << next_vehicle_on_ride;
     stream << var_44;
     stream << mass;
-    stream << update_flags;
+    stream << Flags;
     stream << SwingSprite;
     stream << current_station;
     stream << SwingPosition;
@@ -9410,5 +9410,4 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << seat_rotation;
     stream << target_seat_rotation;
     stream << BoatLocation;
-    stream << IsCrashedVehicle;
 }

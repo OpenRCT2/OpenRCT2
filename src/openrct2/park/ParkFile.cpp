@@ -1887,7 +1887,16 @@ namespace OpenRCT2
         cs.ReadWrite(entity.next_vehicle_on_ride);
         cs.ReadWrite(entity.var_44);
         cs.ReadWrite(entity.mass);
-        cs.ReadWrite(entity.update_flags);
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < 18)
+        {
+            uint16_t updateFlags = 0;
+            cs.ReadWrite(updateFlags);
+            entity.Flags = updateFlags;
+        }
+        else
+        {
+            cs.ReadWrite(entity.Flags);
+        }
         cs.ReadWrite(entity.SwingSprite);
         cs.ReadWrite(entity.current_station);
         cs.ReadWrite(entity.current_time);
@@ -1940,7 +1949,15 @@ namespace OpenRCT2
         cs.ReadWrite(entity.colours.Tertiary);
         cs.ReadWrite(entity.seat_rotation);
         cs.ReadWrite(entity.target_seat_rotation);
-        cs.ReadWrite(entity.IsCrashedVehicle);
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < 18)
+        {
+            bool isCrashedVehicle = false;
+            cs.ReadWrite(isCrashedVehicle);
+            if (isCrashedVehicle)
+            {
+                entity.SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
+            }
+        }
     }
 
     template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Guest& guest)

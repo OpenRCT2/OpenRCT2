@@ -131,7 +131,7 @@ struct Vehicle : EntityBase
 
     uint16_t var_44;
     uint16_t mass;
-    uint16_t update_flags;
+    uint32_t Flags;
     uint8_t SwingSprite;
     StationIndex current_station;
     union
@@ -207,7 +207,6 @@ struct Vehicle : EntityBase
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
     CoordsXY BoatLocation;
-    bool IsCrashedVehicle;
 
     constexpr bool IsHead() const
     {
@@ -258,15 +257,15 @@ struct Vehicle : EntityBase
     }
     bool HasUpdateFlag(uint32_t flag) const
     {
-        return (update_flags & flag) != 0;
+        return (Flags & flag) != 0;
     }
     void ClearUpdateFlag(uint32_t flag)
     {
-        update_flags &= ~flag;
+        Flags &= ~flag;
     }
     void SetUpdateFlag(uint32_t flag)
     {
-        update_flags |= flag;
+        Flags |= flag;
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
@@ -457,6 +456,7 @@ enum : uint32_t
     VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE = (1 << 13), // After passing a rotation toggle track piece this will enable
     VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION = (1 << 14), // OpenRCT2 Flag: Used to override UpdateMotion to move the position of
                                                          // an individual car on a train
+    VEHICLE_UPDATE_FLAG_CRASHED = (1 << 15),
 };
 
 enum
