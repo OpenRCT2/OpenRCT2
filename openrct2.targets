@@ -150,6 +150,7 @@
         <![CDATA[
           public override bool Execute()
           {
+              Log.LogMessage(MessageImportance.Normal, "DownloadDependency.Execute Start");
               if (!String.IsNullOrEmpty(CheckFile))
               {
                   string checkSha1 = GetSha1FromCheckFile(CheckFile, Name);
@@ -160,15 +161,18 @@
                   }
               }
 
+              Log.LogMessage(MessageImportance.Normal, "DownloadDependency.Execute Creating temp file");
               string tempFile = Path.GetTempFileName();
               try
               {
                   // Download the file
                   Log.LogMessage(MessageImportance.Normal, String.Format("Downloading '{0}'.", Url));
                   var client = new WebClient();
+                  Log.LogMessage(MessageImportance.Normal, "DownloadDependency.Execute Starting download");
                   client.DownloadFile(Url, tempFile);
 
                   // Check the file matches
+                  Log.LogMessage(MessageImportance.Normal, "DownloadDependency.Execute Verifying hash");
                   string actualSha1;
                   if (!CheckFileSha1(tempFile, Sha1, out actualSha1))
                   {
