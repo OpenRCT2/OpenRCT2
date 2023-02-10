@@ -1116,7 +1116,7 @@ static void VehiclePitchFlatBankedRight45(
 static void VehiclePitchFlatBankedLeft67(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -1136,7 +1136,7 @@ static void VehiclePitchFlatBankedLeft67(
 static void VehiclePitchFlatBankedLeft90(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -1156,7 +1156,7 @@ static void VehiclePitchFlatBankedLeft90(
 static void VehiclePitchFlatBankedLeft112(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -1176,7 +1176,7 @@ static void VehiclePitchFlatBankedLeft112(
 static void VehiclePitchFlatBankedLeft135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -1196,7 +1196,7 @@ static void VehiclePitchFlatBankedLeft135(
 static void VehiclePitchFlatBankedLeft157(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -1216,7 +1216,7 @@ static void VehiclePitchFlatBankedLeft157(
 static void VehiclePitchFlatBankedRight67(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -1236,7 +1236,7 @@ static void VehiclePitchFlatBankedRight67(
 static void VehiclePitchFlatBankedRight90(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -1256,7 +1256,7 @@ static void VehiclePitchFlatBankedRight90(
 static void VehiclePitchFlatBankedRight112(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -1276,7 +1276,7 @@ static void VehiclePitchFlatBankedRight112(
 static void VehiclePitchFlatBankedRight135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -1296,7 +1296,7 @@ static void VehiclePitchFlatBankedRight135(
 static void VehiclePitchFlatBankedRight157(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -2963,7 +2963,7 @@ static void VehiclePitchInverted(
 static void VehiclePitchDown75(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         if (vehicle->GetTrackType() != TrackElemType::Down90ToDown60
             && (vehicle->GetTrackType()) != TrackElemType::Down60ToDown90)
@@ -2987,7 +2987,7 @@ static void VehiclePitchDown75(
 static void VehiclePitchDown90(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         if (vehicle->GetTrackType() != TrackElemType::Down90 && (vehicle->GetTrackType()) != TrackElemType::Down90ToDown60
             && (vehicle->GetTrackType()) != TrackElemType::Down60ToDown90)
@@ -3015,7 +3015,7 @@ static void VehiclePitchDown90(
 static void VehiclePitchDown105(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -3035,7 +3035,7 @@ static void VehiclePitchDown105(
 static void VehiclePitchDown120(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -3055,7 +3055,7 @@ static void VehiclePitchDown120(
 static void VehiclePitchDown135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -3075,7 +3075,7 @@ static void VehiclePitchDown135(
 static void VehiclePitchDown150(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -3095,7 +3095,7 @@ static void VehiclePitchDown150(
 static void VehiclePitchDown165(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -3120,7 +3120,7 @@ template<int32_t corkscrewFrame>
 void VehiclePitchCorkscrew(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (vehicle->HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+    if (vehicle->HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
     {
         carEntry--;
     }
@@ -3671,7 +3671,7 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     const CarEntry* carEntry;
 
-    if (HasUpdateFlag(VEHICLE_FLAG_CRASHED))
+    if (HasFlag(VEHICLE_FLAG_CRASHED))
     {
         PaintAddImageAsParent(
             session, ImageId(SPR_WATER_PARTICLES_DENSE_0 + animation_frame), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
@@ -3692,7 +3692,7 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
         }
 
         auto carEntryIndex = vehicle_type;
-        if (HasUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
+        if (HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES))
         {
             carEntryIndex++;
             zOffset += 16;

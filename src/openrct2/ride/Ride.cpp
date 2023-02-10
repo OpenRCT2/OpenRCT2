@@ -1524,7 +1524,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
                 }
                 if (vehicle != nullptr)
                 {
-                    vehicle->SetUpdateFlag(VEHICLE_FLAG_BROKEN_CAR);
+                    vehicle->SetFlag(VEHICLE_FLAG_BROKEN_CAR);
                 }
             }
             break;
@@ -1537,7 +1537,7 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             vehicle = GetEntity<Vehicle>(ride.vehicles[ride.broken_vehicle]);
             if (vehicle != nullptr)
             {
-                vehicle->SetUpdateFlag(VEHICLE_FLAG_BROKEN_TRAIN);
+                vehicle->SetFlag(VEHICLE_FLAG_BROKEN_TRAIN);
             }
             break;
         case BREAKDOWN_BRAKES_FAILURE:
@@ -3271,7 +3271,7 @@ static Vehicle* VehicleCreateCar(
         {
             if (trackElement->IsInverted())
             {
-                vehicle->SetUpdateFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
+                vehicle->SetFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES);
             }
         }
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
@@ -3574,7 +3574,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
         firstBlock->SetBrakeClosed(true);
         for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
-            car->ClearUpdateFlag(VEHICLE_FLAG_COLLISION_DISABLED);
+            car->ClearFlag(VEHICLE_FLAG_COLLISION_DISABLED);
             car->SetState(Vehicle::Status::Travelling, car->sub_state);
             if ((car->GetTrackType()) == TrackElemType::EndStation)
             {
@@ -4492,7 +4492,7 @@ void InvalidateTestResults(Ride& ride)
             Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle != nullptr)
             {
-                vehicle->ClearUpdateFlag(VEHICLE_FLAG_TESTING);
+                vehicle->ClearFlag(VEHICLE_FLAG_TESTING);
             }
         }
     }
@@ -4520,9 +4520,9 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
             for (Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
             {
-                vehicle->ClearUpdateFlag(VEHICLE_FLAG_ZERO_VELOCITY);
-                vehicle->ClearUpdateFlag(VEHICLE_FLAG_BROKEN_CAR);
-                vehicle->ClearUpdateFlag(VEHICLE_FLAG_BROKEN_TRAIN);
+                vehicle->ClearFlag(VEHICLE_FLAG_ZERO_VELOCITY);
+                vehicle->ClearFlag(VEHICLE_FLAG_BROKEN_CAR);
+                vehicle->ClearFlag(VEHICLE_FLAG_BROKEN_TRAIN);
             }
         }
     }

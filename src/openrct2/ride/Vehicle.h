@@ -255,15 +255,15 @@ struct Vehicle : EntityBase
         TrackTypeAndDirection &= ~VehicleTrackDirectionMask;
         TrackTypeAndDirection |= trackDirection & VehicleTrackDirectionMask;
     }
-    bool HasUpdateFlag(uint32_t flag) const
+    bool HasFlag(uint32_t flag) const
     {
         return (Flags & flag) != 0;
     }
-    void ClearUpdateFlag(uint32_t flag)
+    void ClearFlag(uint32_t flag)
     {
         Flags &= ~flag;
     }
-    void SetUpdateFlag(uint32_t flag)
+    void SetFlag(uint32_t flag)
     {
         Flags |= flag;
     }
