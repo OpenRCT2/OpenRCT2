@@ -196,6 +196,14 @@ void FinanceResetHistory()
         gWeeklyProfitHistory[i] = MONEY64_UNDEFINED;
         gParkValueHistory[i] = MONEY64_UNDEFINED;
     }
+
+    for (uint32_t i = 0; i < EXPENDITURE_TABLE_MONTH_COUNT; ++i)
+    {
+        for (uint32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); ++j)
+        {
+            gExpenditureTable[i][j] = 0;
+        }
+    }
 }
 
 /**
