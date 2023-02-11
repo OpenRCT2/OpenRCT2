@@ -3765,12 +3765,8 @@ void Vehicle::UpdateTravelling()
     if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
         return;
 
-<<<<<<< HEAD
-    if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle && velocity >= 0 && !HasFlag(VEHICLE_FLAG_REVERSE_INCLINE_COMPLETED_LAP))
-=======
     if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle && velocity >= 0
-        && !HasFlag(VEHICLE_FLAG_REVERSE_INCLINE_RELEASED))
->>>>>>> 96e3e87bd (fix formatting)
+        && !HasFlag(VEHICLE_FLAG_REVERSE_INCLINE_COMPLETED_LAP))
     {
         return;
     }
@@ -7869,8 +7865,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
             return false;
         }
 
-        if (PitchAndRollEnd(curRide, HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), trackType, tileElement)
-            != pitchAndRollStart)
+        if (PitchAndRollEnd(curRide, HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), trackType, tileElement) != pitchAndRollStart)
         {
             return false;
         }
@@ -8258,8 +8253,7 @@ Loc6DC476:
         direction = outDirection;
     }
 
-    if (PitchAndRollStart(HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), tileElement)
-        != TrackPitchAndRollEnd(GetTrackType()))
+    if (PitchAndRollStart(HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
     {
         goto Loc6DC9BC;
     }
@@ -8472,8 +8466,7 @@ Loc6DCA9A:
         tileElement = trackBeginEnd.begin_element;
     }
 
-    if (PitchAndRollStart(HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), tileElement)
-        != TrackPitchAndRollEnd(GetTrackType()))
+    if (PitchAndRollStart(HasFlag(VEHICLE_FLAG_USE_INVERTED_SPRITES), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
     {
         goto Loc6DCD4A;
     }
