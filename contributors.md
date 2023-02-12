@@ -102,6 +102,7 @@ The following people are not part of the development team, but have been contrib
 * Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, sound effects, misc.
 * (8street) - Misc.
 * Umar Ahmed (umar-ahmed) - MacOS file watcher
+* Andrew Arnold (fidwell) - Added window support for more scenery groups.
 
 ## Bug fixes
 * (KirilAngelov)

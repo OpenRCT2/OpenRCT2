@@ -44,7 +44,9 @@ constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
 constexpr int32_t TabWidth = 31;
-constexpr int32_t MaxTabs = 32;
+constexpr int32_t TabHeight = 28;
+constexpr int32_t MaxTabs = 257; // 255 selected tabs + misc + search
+constexpr int32_t MaxTabsPerRow = 20;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
@@ -151,6 +153,7 @@ private:
     std::vector<SceneryTabInfo> _tabEntries;
     std::vector<Widget> _widgets;
     int32_t _requiredWidth;
+    int32_t _actualMinHeight;
     ScenerySelection _selectedScenery;
     int16_t _hoverCounter;
     SceneryTabInfo _filteredSceneryTab;
@@ -177,7 +180,7 @@ public:
         width = GetRequiredWidth();
         min_width = width;
         max_width = width;
-        height = WINDOW_SCENERY_MIN_HEIGHT;
+        height = _actualMinHeight;
         min_height = height;
         max_height = height;
         if (_activeTabIndex > _tabSelections.size())
@@ -390,8 +393,8 @@ public:
                     {
                         if (InputGetState() != InputState::ScrollLeft)
                         {
-                            min_height = WINDOW_SCENERY_MIN_HEIGHT;
-                            max_height = WINDOW_SCENERY_MIN_HEIGHT;
+                            min_height = _actualMinHeight;
+                            max_height = _actualMinHeight;
                         }
                     }
                     else
@@ -402,7 +405,7 @@ public:
                         const auto numRows = static_cast<int32_t>(CountRows());
                         const auto maxContentHeight = numRows * SCENERY_BUTTON_HEIGHT;
                         const auto maxWindowHeight = maxContentHeight + nonListHeight;
-                        const auto windowHeight = std::clamp(maxWindowHeight, WINDOW_SCENERY_MIN_HEIGHT, 463);
+                        const auto windowHeight = std::clamp(maxWindowHeight, _actualMinHeight, 463);
 
                         min_height = windowHeight;
                         max_height = windowHeight;
@@ -415,8 +418,8 @@ public:
             _hoverCounter = 0;
             if (InputGetState() != InputState::ScrollLeft)
             {
-                min_height = WINDOW_SCENERY_MIN_HEIGHT;
-                max_height = WINDOW_SCENERY_MIN_HEIGHT;
+                min_height = _actualMinHeight;
+                max_height = _actualMinHeight;
             }
         }
 
@@ -675,7 +678,7 @@ public:
         auto windowWidth = width;
         if (_tabEntries.size() > 0)
         {
-            const auto lastTabIndex = _tabEntries.size() - 1;
+            const auto lastTabIndex = GetMaxTabCountInARow() == MaxTabsPerRow ? MaxTabsPerRow - 1 : _tabEntries.size() - 1;
             const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
             windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
         }
@@ -886,7 +889,7 @@ public:
         }
 
         // Set required width
-        _requiredWidth = static_cast<int32_t>(_tabEntries.size()) * TabWidth + 5;
+        _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), MaxTabsPerRow) * TabWidth + 5;
 
         SortTabs();
         PrepareWidgets();
@@ -1144,6 +1147,18 @@ private:
         });
     }
 
+    int32_t GetTabRowCount()
+    {
+        int32_t tabEntries = static_cast<int32_t>(_tabEntries.size());
+        return std::max<int32_t>((tabEntries + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
+    }
+
+    int32_t GetMaxTabCountInARow()
+    {
+        int32_t tabEntries = static_cast<int32_t>(_tabEntries.size());
+        return std::min(tabEntries, MaxTabsPerRow);
+    }
+
     void PrepareWidgets()
     {
         // Add the base widgets
@@ -1158,7 +1173,11 @@ private:
         _widgets.pop_back();
 
         // Add tabs
-        ScreenCoordsXY pos = { 3, 17 };
+        _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
+        int32_t xInit = 3;
+        int32_t tabsInThisRow = 0;
+
+        ScreenCoordsXY pos = { xInit, 17 };
         for (const auto& tabInfo : _tabEntries)
         {
             auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
@@ -1170,9 +1189,44 @@ private:
             }
 
             _widgets.push_back(widget);
+
+            tabsInThisRow++;
+            if (tabsInThisRow >= MaxTabsPerRow)
+            {
+                pos.x = xInit;
+                pos.y += TabHeight;
+                tabsInThisRow = 0;
+                _actualMinHeight += TabHeight;
+            }
         }
 
         _widgets.push_back(lastWidget);
+
+        // Shift base widgets based on number of tab rows
+        int32_t shiftAmount = (GetTabRowCount() - 1) * TabHeight;
+        if (shiftAmount > 0)
+        {
+            _widgets[WIDX_SCENERY_LIST].top += shiftAmount;
+            _widgets[WIDX_SCENERY_LIST].bottom += shiftAmount;
+            _widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].top += shiftAmount;
+            _widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].bottom += shiftAmount;
+            _widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].top += shiftAmount;
+            _widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].bottom += shiftAmount;
+            _widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].top += shiftAmount;
+            _widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].bottom += shiftAmount;
+            _widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].top += shiftAmount;
+            _widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].bottom += shiftAmount;
+            _widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].top += shiftAmount;
+            _widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].bottom += shiftAmount;
+            _widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].top += shiftAmount;
+            _widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].bottom += shiftAmount;
+            _widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].top += shiftAmount;
+            _widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].bottom += shiftAmount;
+            _widgets[WIDX_FILTER_TEXT_BOX].top += shiftAmount;
+            _widgets[WIDX_FILTER_TEXT_BOX].bottom += shiftAmount;
+            _widgets[WIDX_FILTER_CLEAR_BUTTON].top += shiftAmount;
+            _widgets[WIDX_FILTER_CLEAR_BUTTON].bottom += shiftAmount;
+        }
 
         widgets = _widgets.data();
     }
