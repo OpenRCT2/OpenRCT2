@@ -4,6 +4,7 @@
 - Feature: [#18732] [Plugin] API to get the guests thoughts.
 - Feature: [#18744] Cheat to allow using a regular path as a queue path.
 - Feature: [#19023] Add Canadian French translation.
+- Feature: [#19378] Add command to combine CSG1i.DAT and CSG1.DAT.
 - Feature: [objects#226] Port RCT1 Corkscrew Coaster train.
 - Feature: [objects#229] Port RCT1 go karts with helmets.
 - Improved: [#11473] Hot reload for plug-ins now works on macOS.
