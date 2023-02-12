@@ -3980,9 +3980,8 @@ static void WindowRideMaintenanceDropdown(WindowBase* w, WidgetIndex widgetIndex
                             for (vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
                                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                             {
-                                vehicle->ClearUpdateFlag(
-                                    VEHICLE_UPDATE_FLAG_BROKEN_CAR | VEHICLE_UPDATE_FLAG_ZERO_VELOCITY
-                                    | VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+                                vehicle->ClearFlag(
+                                    VehicleFlags::CarIsBroken | VehicleFlags::StoppedOnLift | VehicleFlags::TrainIsBroken);
                             }
                         }
                         break;
@@ -3993,14 +3992,14 @@ static void WindowRideMaintenanceDropdown(WindowBase* w, WidgetIndex widgetIndex
                         vehicle = GetEntity<Vehicle>(ride->vehicles[ride->broken_vehicle]);
                         if (vehicle != nullptr)
                         {
-                            vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
+                            vehicle->ClearFlag(VehicleFlags::CarIsBroken);
                         }
                         break;
                     case BREAKDOWN_VEHICLE_MALFUNCTION:
                         vehicle = GetEntity<Vehicle>(ride->vehicles[ride->broken_vehicle]);
                         if (vehicle != nullptr)
                         {
-                            vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+                            vehicle->ClearFlag(VehicleFlags::TrainIsBroken);
                         }
                         break;
                 }

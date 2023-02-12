@@ -1955,7 +1955,7 @@ namespace OpenRCT2
             cs.ReadWrite(isCrashedVehicle);
             if (isCrashedVehicle)
             {
-                entity.SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
+                entity.SetFlag(VehicleFlags::Crashed);
             }
         }
     }
