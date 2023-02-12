@@ -13,6 +13,7 @@
 #include "../../interface/Viewport.h"
 #include "../../interface/Window.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
@@ -1839,12 +1840,16 @@ void JuniorRCPaintStation(
     ImageId imageId;
 
     bool isBraked = trackElement.IsBrakeClosed();
+    auto stationObj = ride.GetStationObject();
 
     if (direction == 0 || direction == 2)
     {
-        // height -= 2 (height - 2)
-        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
+        if (stationObj != nullptr && !(stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+        {
+            // height -= 2 (height - 2)
+            imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
+        }
 
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && drawBlockBrake)
@@ -1864,9 +1869,12 @@ void JuniorRCPaintStation(
     }
     else if (direction == 1 || direction == 3)
     {
-        // height -= 2 (height - 2)
-        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
+        if (stationObj != nullptr && !(stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+        {
+            // height -= 2 (height - 2)
+            imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
+        }
 
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && drawBlockBrake)
