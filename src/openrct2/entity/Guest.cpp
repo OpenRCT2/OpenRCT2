@@ -3990,7 +3990,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
     if (ride->status == RideStatus::Open && ++RejoinQueueTimeout != 0
-        && !currentTrain->HasFlag(VEHICLE_FLAG_TRAIN_READY_DEPART))
+        && !currentTrain->HasFlag(VehicleFlags::ReadyToDepart))
     {
         return;
     }
