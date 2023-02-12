@@ -21,7 +21,6 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElementsView.h"
 

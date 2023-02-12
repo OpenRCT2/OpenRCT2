@@ -36,7 +36,6 @@
 #include "../util/Math.hpp"
 #include "../world/Climate.h"
 #include "../world/Map.h"
-#include "../world/SmallScenery.h"
 #include "Colour.h"
 #include "Window.h"
 #include "Window_internal.h"

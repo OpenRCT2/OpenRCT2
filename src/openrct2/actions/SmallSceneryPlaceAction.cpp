@@ -17,13 +17,14 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/SmallScenery.h"
+#include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "GameAction.h"
@@ -112,7 +113,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
-    auto* sceneryEntry = GetSmallSceneryEntry(_sceneryType);
+    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -304,7 +305,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
         res.Position.z = surfaceHeight;
     }
 
-    auto* sceneryEntry = GetSmallSceneryEntry(_sceneryType);
+    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);

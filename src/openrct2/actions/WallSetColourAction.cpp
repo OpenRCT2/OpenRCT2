@@ -18,7 +18,6 @@
 #include "../world/LargeScenery.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 
 WallSetColourAction::WallSetColourAction(

@@ -19,7 +19,6 @@
 #include "../ride/RideData.h"
 #include "Park.h"
 #include "Scenery.h"
-#include "SmallScenery.h"
 #include "Surface.h"
 
 static int32_t MapPlaceClearFunc(

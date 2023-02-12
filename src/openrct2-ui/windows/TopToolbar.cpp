@@ -55,6 +55,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
+#include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
@@ -66,7 +67,6 @@
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 #include <string>
@@ -1068,7 +1068,7 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, WidgetIndex 
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto* bannerEntry = GetBannerEntry(banner->type);
+                auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                 if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                 {
                     auto repaintScenery = BannerSetColourAction(
@@ -1097,7 +1097,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
         {
             SmallSceneryElement* sceneryElement = info.Element->AsSmallScenery();
             auto entryIndex = sceneryElement->GetEntryIndex();
-            auto* sceneryEntry = GetSmallSceneryEntry(entryIndex);
+            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 WindowScenerySetSelectedItem(
@@ -1110,7 +1110,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
         case ViewportInteractionItem::Wall:
         {
             auto entryIndex = info.Element->AsWall()->GetEntryIndex();
-            auto* sceneryEntry = GetWallEntry(entryIndex);
+            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 WindowScenerySetSelectedItem(
@@ -1137,7 +1137,7 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, WidgetInd
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto sceneryEntry = GetBannerEntry(banner->type);
+                auto sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                 if (sceneryEntry != nullptr)
                 {
                     WindowScenerySetSelectedItem(
@@ -1250,7 +1250,7 @@ static void Sub6E1F34SmallScenery(
     uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
     bool can_raise_item = false;
 
-    const auto* sceneryEntry = GetSmallSceneryEntry(sceneryIndex);
+    const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
     if (sceneryEntry == nullptr)
     {
         gridPos.SetNull();
@@ -1478,7 +1478,7 @@ static void Sub6E1F34Wall(
     auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
-    auto* wallEntry = GetWallEntry(sceneryIndex);
+    auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryIndex);
     if (wallEntry != nullptr)
     {
         maxPossibleHeight -= wallEntry->height;
@@ -1762,7 +1762,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, Win
             for (int32_t q = 0; q < quantity; q++)
             {
                 int32_t zCoordinate = gSceneryPlaceZ;
-                auto* sceneryEntry = GetSmallSceneryEntry(selectedScenery);
+                auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery);
 
                 int16_t cur_grid_x = gridPos.x;
                 int16_t cur_grid_y = gridPos.y;
@@ -2665,7 +2665,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
                 gMapSelectPositionB.y = mapTile.y;
             }
 
-            auto* sceneryEntry = GetSmallSceneryEntry(selection.EntryIndex);
+            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
 
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)

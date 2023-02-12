@@ -52,7 +52,6 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "PatrolArea.h"
 #include "Staff.h"

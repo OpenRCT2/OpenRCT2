@@ -21,7 +21,6 @@
 #include "../ride/TrackDesign.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 

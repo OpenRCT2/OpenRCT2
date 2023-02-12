@@ -41,6 +41,7 @@
 #include "../object/FootpathObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/LargeSceneryEntry.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
@@ -54,7 +55,6 @@
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 #include "Ride.h"
@@ -995,7 +995,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
             uint8_t quadrant = (scenery.flags >> 2) + _currentTrackPieceDirection;
             quadrant &= 3;
 
-            auto* sceneryEntry = GetSmallSceneryEntry(entryInfo->Index);
+            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryInfo->Index);
             if (!(!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
                 && sceneryEntry->HasFlag(
                     SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))

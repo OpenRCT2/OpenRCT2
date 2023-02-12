@@ -34,6 +34,7 @@
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
+#include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/ride/Ride.h>
@@ -433,7 +434,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             auto banner = tileElement->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto* bannerEntry = GetBannerEntry(banner->type);
+                auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);

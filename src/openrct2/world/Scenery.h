@@ -10,11 +10,10 @@
 #pragma once
 
 #include "../common.h"
-#include "../world/ScenerySelection.h"
-#include "TileElement.h"
+#include "Location.hpp"
+#include "ScenerySelection.h"
 
-#include <limits>
-#include <string_view>
+#include <vector>
 
 #define SCENERY_WITHER_AGE_THRESHOLD_1 0x28
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
@@ -75,11 +74,10 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos);
 void ScenerySetDefaultPlacementConfiguration();
 void SceneryRemoveGhostToolPlacement();
 
-struct WallSceneryEntry;
 struct SceneryGroupEntry;
+struct PathBitEntry;
+struct WallSceneryEntry;
 
-WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex);
-BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex);
 PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex);
 SceneryGroupEntry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex);
 

@@ -36,6 +36,8 @@ enum WALL_SCENERY_2_FLAGS
 
 struct WallSceneryEntry
 {
+    static constexpr auto kObjectType = ObjectType::Walls;
+
     StringId name;
     uint32_t image;
     CursorID tool_id;
