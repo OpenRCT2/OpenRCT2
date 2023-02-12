@@ -452,13 +452,13 @@ namespace VehicleFlags
     constexpr uint32_t TrainIsBroken = (1 << 9);
     constexpr uint32_t StoppedOnHoldingBrake = (1 << 10);
     constexpr uint32_t CarIsInverted = (1 << 11); // Used on rides where trains can run for extended periods of time,
-                                                    // i.e. the Flying, Lay-down and Multi-dimension RCs.
+                                                  // i.e. the Flying, Lay-down and Multi-dimension RCs.
     constexpr uint32_t ReverseInclineCompletedLap = (1 << 12); // Set when the vehicle travels backwards through the station for
                                                                // the first time
     constexpr uint32_t SpinningIsLocked = (1 << 13);           // After passing a rotation toggle track piece this will enable
     constexpr uint32_t MoveSingleCar = (1 << 14); // OpenRCT2 Flag: Used to override UpdateMotion to move the position of
                                                   // an individual car on a train
-    constexpr uint32_t Crashed = (1 << 15); // Car displays as smoke plume
+    constexpr uint32_t Crashed = (1 << 15);       // Car displays as smoke plume
 } // namespace VehicleFlags
 
 enum
