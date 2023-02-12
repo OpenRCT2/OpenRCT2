@@ -230,59 +230,65 @@ void TitleScreen::TitleInitialise()
     }
     if (gConfigInterface.RandomTitleSequence)
     {
-        bool RCT1Installed = false, RCT1AAInstalled = false, RCT1LLInstalled = false;
-        int RCT1Count = 0;
-        size_t scenarioCount = ScenarioRepositoryGetCount();
-
-        for (size_t s = 0; s < scenarioCount; s++)
+        const size_t total = TitleSequenceManager::GetCount();
+        if (total > 0)
         {
-            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1)
-            {
-                RCT1Count++;
-            }
-            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1_AA)
-            {
-                RCT1AAInstalled = true;
-            }
-            if (ScenarioRepositoryGetByIndex(s)->source_game == ScenarioSource::RCT1_LL)
-            {
-                RCT1LLInstalled = true;
-            }
-        }
+            bool RCT1Installed = false, RCT1AAInstalled = false, RCT1LLInstalled = false;
+            uint32_t RCT1Count = 0;
+            const size_t scenarioCount = ScenarioRepositoryGetCount();
 
-        // Mega Park can show up in the scenario list even if RCT1 has been uninstalled, so it must be greater than 1
-        if (RCT1Count > 1)
-        {
-            RCT1Installed = true;
-        }
+            for (size_t s = 0; s < scenarioCount; s++)
+            {
+                const ScenarioSource sourceGame = ScenarioRepositoryGetByIndex(s)->source_game;
+                switch (sourceGame)
+                {
+                    case ScenarioSource::RCT1:
+                        RCT1Count++;
+                        break;
+                    case ScenarioSource::RCT1_AA:
+                        RCT1AAInstalled = true;
+                        break;
+                    case ScenarioSource::RCT1_LL:
+                        RCT1LLInstalled = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
 
-        int32_t random = 0;
-        bool safeSequence = false;
-        std::string RCT1String = FormatStringID(STR_TITLE_SEQUENCE_RCT1, nullptr);
-        std::string RCT1AAString = FormatStringID(STR_TITLE_SEQUENCE_RCT1_AA, nullptr);
-        std::string RCT1LLString = FormatStringID(STR_TITLE_SEQUENCE_RCT1_AA_LL, nullptr);
+            // Mega Park can show up in the scenario list even if RCT1 has been uninstalled, so it must be greater than 1
+            RCT1Installed = RCT1Count > 1;
 
-        // Ensure the random sequence chosen isn't from RCT1 or expansion if the player doesn't have it installed
-        while (!safeSequence)
-        {
-            size_t total = TitleSequenceManager::GetCount();
-            random = UtilRand() % static_cast<int32_t>(total);
-            const utf8* scName = TitleSequenceManagerGetName(random);
-            safeSequence = true;
-            if (scName == RCT1String)
+            int32_t random = 0;
+            bool safeSequence = false;
+            const std::string RCT1String = FormatStringID(STR_TITLE_SEQUENCE_RCT1, nullptr);
+            const std::string RCT1AAString = FormatStringID(STR_TITLE_SEQUENCE_RCT1_AA, nullptr);
+            const std::string RCT1LLString = FormatStringID(STR_TITLE_SEQUENCE_RCT1_AA_LL, nullptr);
+
+            // Ensure the random sequence chosen isn't from RCT1 or expansion if the player doesn't have it installed
+            while (!safeSequence)
             {
-                safeSequence = RCT1Installed;
+                random = UtilRand() % static_cast<int32_t>(total);
+                const utf8* scName = TitleSequenceManagerGetName(random);
+                if (scName == RCT1String)
+                {
+                    safeSequence = RCT1Installed;
+                }
+                else if (scName == RCT1AAString)
+                {
+                    safeSequence = RCT1AAInstalled;
+                }
+                else if (scName == RCT1LLString)
+                {
+                    safeSequence = RCT1LLInstalled;
+                }
+                else
+                {
+                    safeSequence = true;
+                }
             }
-            if (scName == RCT1AAString)
-            {
-                safeSequence = RCT1AAInstalled;
-            }
-            if (scName == RCT1LLString)
-            {
-                safeSequence = RCT1LLInstalled;
-            }
+            ChangePresetSequence(random);
         }
-        ChangePresetSequence(random);
     }
     size_t seqId = TitleGetConfigSequence();
     if (seqId == SIZE_MAX)
