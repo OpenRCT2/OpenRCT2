@@ -33,7 +33,7 @@ namespace RCT12::Limits
     constexpr const uint8_t FinanceGraphSize = 128;
 
     constexpr const uint16_t MaxUserStrings = 1024;
-    constexpr const uint8_t MaxUserStringLength = 32;
+    constexpr const uint8_t MaxUserStringLength = 64;
 
     constexpr const uint8_t MaxPeepThoughts = 5;
 
