@@ -3271,7 +3271,7 @@ static Vehicle* VehicleCreateCar(
         {
             if (trackElement->IsInverted())
             {
-                vehicle->SetFlag(VehicleFlags::InvertedVehicle);
+                vehicle->SetFlag(VehicleFlags::CarIsInverted);
             }
         }
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
