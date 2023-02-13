@@ -26,16 +26,17 @@ PaintStruct* PaintAddImageAsParentRotated(
 
 PaintStruct* PaintAddImageAsChildRotated(
     PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
+    const BoundBoxXYZ& boundBox)
 {
     if (direction & 1)
     {
         return PaintAddImageAsChild(
             session, image_id, { offset.y, offset.x, offset.z },
-            { { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z } });
+            { { boundBox.offset.y, boundBox.offset.x, boundBox.offset.z },
+              { boundBox.length.y, boundBox.length.x, boundBox.length.z } });
     }
 
-    return PaintAddImageAsChild(session, image_id, offset, { boundBoxOffset, boundBoxSize });
+    return PaintAddImageAsChild(session, image_id, offset, boundBox);
 }
 
 void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type)

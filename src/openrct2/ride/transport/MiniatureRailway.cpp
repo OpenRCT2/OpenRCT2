@@ -648,22 +648,23 @@ static void PaintMiniatureRailwayTrackFlat(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_flat[direction]);
         if (!paintAsGravel)
         {
-            PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height });
+            PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height }, { 32, 20, 2 } });
         }
         else
         {
             imageIdAlt = MiniatureRailwayTrackToGravel(imageId);
-            PaintAddImageAsChildRotated(session, direction, imageIdAlt, { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height });
+            PaintAddImageAsChildRotated(session, direction, imageIdAlt, { 0, 6, height }, { { 0, 6, height }, { 32, 20, 2 } });
         }
         if (paintGrooved)
         {
             imageIdAlt = MiniatureRailwayTrackToGrooved(imageId);
-            PaintAddImageAsChildRotated(session, direction, imageIdAlt, { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height + 2 });
+            PaintAddImageAsChildRotated(
+                session, direction, imageIdAlt, { 0, 6, height }, { { 0, 6, height + 2 }, { 32, 20, 2 } });
             imageIdAlt = MiniatureRailwayTrackToGroovedIndent(
                 session.PathElementOnSameHeight, direction, session.CurrentRotation);
             PaintAddImageAsChildRotated(
                 session, direction, imageIdAlt.WithTransparency(FilterPaletteID::PaletteDarken2), { 0, 6, height },
-                { 32, 20, 2 }, { 0, 6, height + 2 });
+                { { 0, 6, height + 2 }, { 32, 20, 2 } });
         }
     }
     else
@@ -710,7 +711,7 @@ static void PaintMiniatureRailwayStation(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_flat_station[direction]);
-    PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 2 }, { 0, 0, height });
+    PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 2 } });
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -1141,8 +1142,8 @@ static void PaintMiniatureRailwayTrackSBendLeft(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence]);
         PaintAddImageAsChildRotated(
-            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
-            { offset.x, offset.y, height });
+            session, direction, imageId, { offset.x, offset.y, height },
+            { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
     }
     if (direction == 0 || direction == 2)
     {
@@ -1249,8 +1250,8 @@ static void PaintMiniatureRailwayTrackSBendRight(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]);
         PaintAddImageAsChildRotated(
-            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
-            { offset.x, offset.y, height });
+            session, direction, imageId, { offset.x, offset.y, height },
+            { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
     }
 
     if (direction == 0 || direction == 2)

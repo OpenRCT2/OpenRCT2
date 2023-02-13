@@ -51,8 +51,8 @@ PaintStruct* WoodenRCTrackPaint(
           { bound_box_length_x, bound_box_length_y, bound_box_length_z } });
     return PaintAddImageAsChildRotated(
         session, direction, railsImageId, { x_offset, y_offset, z_offset },
-        { bound_box_length_x, bound_box_length_y, bound_box_length_z },
-        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
+        { { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z },
+          { bound_box_length_x, bound_box_length_y, bound_box_length_z } });
 }
 
 template<bool isClassic> void WoodenRCTrackPaintBb(PaintSession& session, const SpriteBoundBox2* bb, int16_t height)

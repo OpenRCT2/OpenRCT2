@@ -111,7 +111,7 @@ static void ReverserRCTrackStation(
         { { 0, 2, height }, { 32, 27, 2 } });
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
-        { 32, 27, 2 }, { 0, 2, height });
+        { { 0, 2, height }, { 32, 27, 2 } });
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
