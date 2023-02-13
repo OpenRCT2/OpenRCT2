@@ -54,6 +54,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
+#include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/SmallSceneryEntry.h>
@@ -1598,7 +1599,7 @@ private:
             case ViewportInteractionItem::FootpathItem:
             {
                 auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
-                auto* pathBitEntry = GetFootpathItemEntry(entryIndex);
+                auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(entryIndex);
                 if (pathBitEntry != nullptr)
                 {
                     WindowScenerySetSelectedItem(

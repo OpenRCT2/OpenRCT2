@@ -75,10 +75,8 @@ void ScenerySetDefaultPlacementConfiguration();
 void SceneryRemoveGhostToolPlacement();
 
 struct SceneryGroupEntry;
-struct PathBitEntry;
 struct WallSceneryEntry;
 
-PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex);
 SceneryGroupEntry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex);
 
 int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry);

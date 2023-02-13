@@ -301,18 +301,6 @@ void SceneryRemoveGhostToolPlacement()
     }
 }
 
-PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex)
-{
-    PathBitEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::PathBits, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<PathBitEntry*>(obj->GetLegacyData());
-    }
-    return result;
-}
-
 SceneryGroupEntry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex)
 {
     SceneryGroupEntry* result = nullptr;
@@ -383,7 +371,7 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
         case SCENERY_TYPE_SMALL:
             return OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_PATH_ITEM:
-            return GetFootpathItemEntry(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_WALL:
             return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_LARGE:
