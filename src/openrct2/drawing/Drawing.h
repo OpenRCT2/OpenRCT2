@@ -524,15 +524,16 @@ void GfxDrawString(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8s
 void GfxDrawStringNoFormatting(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint);
 
 void GfxDrawStringLeftCentred(DrawPixelInfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords);
-void DrawStringCentredRaw(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontStyle fontStyle);
+void DrawStringCentredRaw(
+    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle);
 void DrawNewsTicker(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, void* args,
+    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
     int32_t ticks);
 void GfxDrawStringWithYOffsets(
     DrawPixelInfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont, FontStyle fontStyle);
 
-int32_t GfxWrapString(char* buffer, int32_t width, FontStyle fontStyle, int32_t* num_lines);
+int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines);
 int32_t GfxGetStringWidth(std::string_view text, FontStyle fontStyle);
 int32_t GfxGetStringWidthNewLined(std::string_view text, FontStyle fontStyle);
 int32_t GfxGetStringWidthNoFormatting(std::string_view text, FontStyle fontStyle);

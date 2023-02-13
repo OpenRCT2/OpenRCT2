@@ -218,12 +218,11 @@ public:
 
         screenCoords.y += 25;
 
-        char wrapped_string[TEXT_INPUT_SIZE];
-        SafeStrCpy(wrapped_string, _buffer.data(), _buffer.size());
-
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
-        GfxWrapString(wrapped_string, WW - (24 + 13), FontStyle::Medium, &no_lines);
+        u8string wrappedString;
+        GfxWrapString(
+            u8string_view{ _buffer.data(), _buffer.size() }, WW - (24 + 13), FontStyle::Medium, &wrappedString, &no_lines);
 
         GfxFillRectInset(
             &dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
@@ -231,7 +230,7 @@ public:
 
         screenCoords.y += 1;
 
-        char* wrap_pointer = wrapped_string;
+        const utf8* wrapPointer = wrappedString.data();
         size_t char_count = 0;
         uint8_t cur_drawn = 0;
 
@@ -240,16 +239,16 @@ public:
         for (int32_t line = 0; line <= no_lines; line++)
         {
             screenCoords.x = windowPos.x + 12;
-            GfxDrawStringNoFormatting(&dpi, screenCoords, wrap_pointer, { colours[1], FontStyle::Medium });
+            GfxDrawStringNoFormatting(&dpi, screenCoords, wrapPointer, { colours[1], FontStyle::Medium });
 
-            size_t string_length = GetStringSize(wrap_pointer) - 1;
+            size_t string_length = GetStringSize(wrapPointer) - 1;
 
             if (!cur_drawn && (gTextInput->SelectionStart <= char_count + string_length))
             {
-                // Make a copy of the string for measuring the width.
-                char temp_string[TEXT_INPUT_SIZE] = { 0 };
-                std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
-                cursorX = windowPos.x + 13 + GfxGetStringWidthNoFormatting(temp_string, FontStyle::Medium);
+                // Make a view of the string for measuring the width.
+                cursorX = windowPos.x + 13
+                    + GfxGetStringWidthNoFormatting(
+                              u8string_view{ wrapPointer, gTextInput->SelectionStart - char_count }, FontStyle::Medium);
                 cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
@@ -257,7 +256,7 @@ public:
                 {
                     // Make a 1 utf8-character wide string for measuring the width
                     // of the currently selected character.
-                    utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
+                    utf8 tmp[5] = {}; // This is easier than setting temp_string[0..5]
                     uint32_t codepoint = UTF8GetNext(_buffer.data() + gTextInput->SelectionStart, nullptr);
                     UTF8WriteCodepoint(tmp, codepoint);
                     textWidth = std::max(GfxGetStringWidthNoFormatting(tmp, FontStyle::Medium) - 2, 4);
@@ -274,7 +273,7 @@ public:
                 cur_drawn++;
             }
 
-            wrap_pointer += string_length + 1;
+            wrapPointer += string_length + 1;
 
             if (_buffer[char_count + string_length] == ' ')
                 char_count++;
@@ -305,12 +304,9 @@ public:
 
     static int32_t CalculateWindowHeight(std::string_view text)
     {
-        std::string wrappedString(text);
-        wrappedString.resize(TEXT_INPUT_SIZE);
-
         // String length needs to add 12 either side of box +13 for cursor when max length.
         int32_t numLines{};
-        GfxWrapString(wrappedString.data(), WW - (24 + 13), FontStyle::Medium, &numLines);
+        GfxWrapString(text, WW - (24 + 13), FontStyle::Medium, nullptr, &numLines);
         return numLines * 10 + WH;
     }
 

@@ -22,19 +22,17 @@ static void DrawText(
 class StaticLayout
 {
 private:
-    utf8string Buffer;
+    u8string Buffer;
     TextPaint Paint;
     int32_t LineCount = 0;
     int32_t LineHeight;
     int32_t MaxWidth;
 
 public:
-    StaticLayout(utf8string source, const TextPaint& paint, int32_t width)
+    StaticLayout(u8string_view source, const TextPaint& paint, int32_t width)
+        : Paint(paint)
     {
-        Buffer = source;
-        Paint = paint;
-
-        MaxWidth = GfxWrapString(Buffer, width, paint.FontStyle, &LineCount);
+        MaxWidth = GfxWrapString(source, width, paint.FontStyle, &Buffer, &LineCount);
         LineCount += 1;
         LineHeight = FontGetLineHeight(paint.FontStyle);
     }
@@ -55,7 +53,7 @@ public:
                 lineCoords.x += MaxWidth;
                 break;
         }
-        utf8* buffer = Buffer;
+        const utf8* buffer = Buffer.data();
         for (int32_t line = 0; line < LineCount; ++line)
         {
             DrawText(dpi, lineCoords, tempPaint, buffer);
@@ -175,9 +173,7 @@ int32_t DrawTextWrapped(
 {
     const void* args = ft.Data();
 
-    // TODO: Refactor StaticLayout to take a std::string_view instead. It shouldn't have to write to the buffer.
-    const std::string buffer = FormatStringID(format, args);
-    StaticLayout layout(const_cast<char*>(buffer.c_str()), textPaint, width);
+    StaticLayout layout(FormatStringID(format, args), textPaint, width);
 
     if (textPaint.Alignment == TextAlignment::CENTRE)
     {

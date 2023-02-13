@@ -43,6 +43,7 @@
 - Fix: [#19292] Overflow in totalRideValue.
 - Fix: [#19379] "No platforms" station style shows platforms on the Junior Roller Coaster.
 - Fix: [#19380] Startup crash when no sequences are installed and random sequences are enabled.
+- Fix: [#19391] String corruption caused by an improper buffer handling in GfxWrapString.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
