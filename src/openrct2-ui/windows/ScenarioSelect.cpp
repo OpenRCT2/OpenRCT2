@@ -56,7 +56,7 @@ struct ScenarioListItem
         } heading;
         struct
         {
-            const scenario_index_entry * scenario;
+            const ScenarioIndexEntry * scenario;
             bool is_locked;
         } scenario;
     };
@@ -145,7 +145,7 @@ static WindowEventList window_scenarioselect_events([](auto& events)
 
 static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
 static void InitialiseListItems(WindowBase* w);
-static bool IsScenarioVisible(WindowBase* w, const scenario_index_entry* scenario);
+static bool IsScenarioVisible(WindowBase* w, const ScenarioIndexEntry* scenario);
 static bool IsLockingEnabled(WindowBase* w);
 
 static std::function<void(std::string_view)> _callback;
@@ -206,7 +206,7 @@ static void WindowScenarioselectInitTabs(WindowBase* w)
     size_t numScenarios = ScenarioRepositoryGetCount();
     for (size_t i = 0; i < numScenarios; i++)
     {
-        const scenario_index_entry* scenario = ScenarioRepositoryGetByIndex(i);
+        const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
         if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             if (_titleEditor && scenario->source_game == ScenarioSource::Other)
@@ -366,7 +366,7 @@ static void WindowScenarioselectScrollmouseover(WindowBase* w, int32_t scrollInd
 
     bool originalShowLockedInformation = _showLockedInformation;
     _showLockedInformation = false;
-    const scenario_index_entry* selected = nullptr;
+    const ScenarioIndexEntry* selected = nullptr;
     auto mutableScreenCoords = screenCoords;
     for (const auto& listItem : _listItems)
     {
@@ -426,7 +426,7 @@ static void WindowScenarioselectInvalidate(WindowBase* w)
 static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     int32_t format;
-    const scenario_index_entry* scenario;
+    const ScenarioIndexEntry* scenario;
 
     WindowDrawWidgets(*w, dpi);
 
@@ -589,7 +589,7 @@ static void WindowScenarioselectScrollpaint(WindowBase* w, DrawPixelInfo* dpi, i
             case ListItemType::Scenario:
             {
                 // Draw hover highlight
-                const scenario_index_entry* scenario = listItem.scenario.scenario;
+                const ScenarioIndexEntry* scenario = listItem.scenario.scenario;
                 bool isHighlighted = w->highlighted_scenario == scenario;
                 if (isHighlighted)
                 {
@@ -698,7 +698,7 @@ static void InitialiseListItems(WindowBase* w)
     uint8_t currentHeading = UINT8_MAX;
     for (size_t i = 0; i < numScenarios; i++)
     {
-        const scenario_index_entry* scenario = ScenarioRepositoryGetByIndex(i);
+        const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
 
         if (!IsScenarioVisible(w, scenario))
             continue;
@@ -810,7 +810,7 @@ static void InitialiseListItems(WindowBase* w)
     }
 }
 
-static bool IsScenarioVisible(WindowBase* w, const scenario_index_entry* scenario)
+static bool IsScenarioVisible(WindowBase* w, const ScenarioIndexEntry* scenario)
 {
     if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
     {

@@ -201,9 +201,9 @@ namespace OpenRCT2
             Save(fs);
         }
 
-        scenario_index_entry ReadScenarioChunk()
+        ScenarioIndexEntry ReadScenarioChunk()
         {
-            scenario_index_entry entry{};
+            ScenarioIndexEntry entry{};
             auto& os = *_os;
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&entry](OrcaStream::ChunkStream& cs) {
                 entry.category = cs.Read<uint8_t>();
@@ -2455,7 +2455,7 @@ public:
         GameFixSaveVars();
     }
 
-    bool GetDetails(scenario_index_entry* dst) override
+    bool GetDetails(ScenarioIndexEntry* dst) override
     {
         *dst = _parkFile->ReadScenarioChunk();
         return true;

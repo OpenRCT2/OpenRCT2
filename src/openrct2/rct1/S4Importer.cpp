@@ -202,7 +202,7 @@ namespace RCT1
             RestrictAllMiscScenery();
         }
 
-        bool GetDetails(scenario_index_entry* dst) override
+        bool GetDetails(ScenarioIndexEntry* dst) override
         {
             *dst = {};
 
@@ -333,7 +333,7 @@ namespace RCT1
 
         std::string GetRCT1ScenarioName()
         {
-            const scenario_index_entry* scenarioEntry = _scenarioRepository->GetByInternalName(_s4.ScenarioName);
+            const ScenarioIndexEntry* scenarioEntry = _scenarioRepository->GetByInternalName(_s4.ScenarioName);
             if (scenarioEntry == nullptr)
             {
                 return "";

@@ -55,7 +55,7 @@ static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
     return 1;
 }
 
-static int32_t ScenarioIndexEntryCompareByCategory(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
+static int32_t ScenarioIndexEntryCompareByCategory(const ScenarioIndexEntry& entryA, const ScenarioIndexEntry& entryB)
 {
     // Order by category
     if (entryA.category != entryB.category)
@@ -78,7 +78,7 @@ static int32_t ScenarioIndexEntryCompareByCategory(const scenario_index_entry& e
     }
 }
 
-static int32_t ScenarioIndexEntryCompareByIndex(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
+static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA, const ScenarioIndexEntry& entryB)
 {
     // Order by source game
     if (entryA.source_game != entryB.source_game)
@@ -122,7 +122,7 @@ static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
     SafeDelete(highscore);
 }
 
-class ScenarioFileIndex final : public FileIndex<scenario_index_entry>
+class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
@@ -142,9 +142,9 @@ public:
     }
 
 protected:
-    std::optional<scenario_index_entry> Create(int32_t, const std::string& path) const override
+    std::optional<ScenarioIndexEntry> Create(int32_t, const std::string& path) const override
     {
-        scenario_index_entry entry;
+        ScenarioIndexEntry entry;
         auto timestamp = File::GetLastModified(path);
         if (GetScenarioInfo(path, timestamp, &entry))
         {
@@ -154,7 +154,7 @@ protected:
         return std::nullopt;
     }
 
-    void Serialise(DataSerialiser& ds, const scenario_index_entry& item) const override
+    void Serialise(DataSerialiser& ds, const ScenarioIndexEntry& item) const override
     {
         ds << item.path;
         ds << item.timestamp;
@@ -192,7 +192,7 @@ private:
     /**
      * Reads basic information from a scenario file.
      */
-    static bool GetScenarioInfo(const std::string& path, uint64_t timestamp, scenario_index_entry* entry)
+    static bool GetScenarioInfo(const std::string& path, uint64_t timestamp, ScenarioIndexEntry* entry)
     {
         LOG_VERBOSE("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
         try
@@ -270,9 +270,9 @@ private:
         return false;
     }
 
-    static scenario_index_entry CreateNewScenarioEntry(const std::string& path, uint64_t timestamp, RCT2::S6Info* s6Info)
+    static ScenarioIndexEntry CreateNewScenarioEntry(const std::string& path, uint64_t timestamp, RCT2::S6Info* s6Info)
     {
-        scenario_index_entry entry = {};
+        ScenarioIndexEntry entry = {};
 
         // Set new entry
         String::Set(entry.path, sizeof(entry.path), path.c_str());
@@ -335,7 +335,7 @@ private:
 
     std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
-    std::vector<scenario_index_entry> _scenarios;
+    std::vector<ScenarioIndexEntry> _scenarios;
     std::vector<ScenarioHighscoreEntry*> _highscores;
 
 public:
@@ -374,9 +374,9 @@ public:
         return _scenarios.size();
     }
 
-    const scenario_index_entry* GetByIndex(size_t index) const override
+    const ScenarioIndexEntry* GetByIndex(size_t index) const override
     {
-        const scenario_index_entry* result = nullptr;
+        const ScenarioIndexEntry* result = nullptr;
         if (index < _scenarios.size())
         {
             result = &_scenarios[index];
@@ -384,7 +384,7 @@ public:
         return result;
     }
 
-    const scenario_index_entry* GetByFilename(u8string_view filename) const override
+    const ScenarioIndexEntry* GetByFilename(u8string_view filename) const override
     {
         for (const auto& scenario : _scenarios)
         {
@@ -399,11 +399,11 @@ public:
         return nullptr;
     }
 
-    const scenario_index_entry* GetByInternalName(const utf8* name) const override
+    const ScenarioIndexEntry* GetByInternalName(const utf8* name) const override
     {
         for (size_t i = 0; i < _scenarios.size(); i++)
         {
-            const scenario_index_entry* scenario = &_scenarios[i];
+            const ScenarioIndexEntry* scenario = &_scenarios[i];
 
             if (scenario->source_game == ScenarioSource::Other && scenario->sc_id == SC_UNIDENTIFIED)
                 continue;
@@ -417,7 +417,7 @@ public:
         return nullptr;
     }
 
-    const scenario_index_entry* GetByPath(const utf8* path) const override
+    const ScenarioIndexEntry* GetByPath(const utf8* path) const override
     {
         for (const auto& scenario : _scenarios)
         {
@@ -435,7 +435,7 @@ public:
         // not getting recorded, see #4951.
         Scan(language);
 
-        scenario_index_entry* scenario = GetByFilename(scenarioFileName);
+        ScenarioIndexEntry* scenario = GetByFilename(scenarioFileName);
 
         // Check if this is an RCTC scenario that corresponds to a known RCT1/2 scenario or vice versa, see #12626
         if (scenario == nullptr)
@@ -488,16 +488,16 @@ public:
     }
 
 private:
-    scenario_index_entry* GetByFilename(const utf8* filename)
+    ScenarioIndexEntry* GetByFilename(const utf8* filename)
     {
         const ScenarioRepository* repo = this;
-        return const_cast<scenario_index_entry*>(repo->GetByFilename(filename));
+        return const_cast<ScenarioIndexEntry*>(repo->GetByFilename(filename));
     }
 
-    scenario_index_entry* GetByPath(const utf8* path)
+    ScenarioIndexEntry* GetByPath(const utf8* path)
     {
         const ScenarioRepository* repo = this;
-        return const_cast<scenario_index_entry*>(repo->GetByPath(path));
+        return const_cast<ScenarioIndexEntry*>(repo->GetByPath(path));
     }
 
     /**
@@ -540,7 +540,7 @@ private:
         File::WriteAllBytes(dstPath, mpdat.data(), mpdat.size());
     }
 
-    void AddScenario(const scenario_index_entry& entry)
+    void AddScenario(const ScenarioIndexEntry& entry)
     {
         auto filename = Path::GetFileName(entry.path);
 
@@ -581,14 +581,14 @@ private:
         if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
         {
             std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const scenario_index_entry& a, const scenario_index_entry& b) -> bool {
+                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
                     return ScenarioIndexEntryCompareByIndex(a, b) < 0;
                 });
         }
         else
         {
             std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const scenario_index_entry& a, const scenario_index_entry& b) -> bool {
+                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
                     return ScenarioIndexEntryCompareByCategory(a, b) < 0;
                 });
         }
@@ -732,7 +732,7 @@ private:
     {
         for (auto& highscore : _highscores)
         {
-            scenario_index_entry* scenario = GetByFilename(highscore->fileName);
+            ScenarioIndexEntry* scenario = GetByFilename(highscore->fileName);
             if (scenario != nullptr)
             {
                 scenario->highscore = highscore;
@@ -786,7 +786,7 @@ size_t ScenarioRepositoryGetCount()
     return repo->GetCount();
 }
 
-const scenario_index_entry* ScenarioRepositoryGetByIndex(size_t index)
+const ScenarioIndexEntry* ScenarioRepositoryGetByIndex(size_t index)
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->GetByIndex(index);

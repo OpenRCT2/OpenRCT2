@@ -30,7 +30,7 @@ struct DrawPixelInfo;
 struct WindowBase;
 struct TrackDesignFileRef;
 struct TextInputSession;
-struct scenario_index_entry;
+struct ScenarioIndexEntry;
 struct WindowCloseModifier;
 
 enum class VisibilityCache : uint8_t;

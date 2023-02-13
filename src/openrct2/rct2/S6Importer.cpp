@@ -219,7 +219,7 @@ namespace RCT2
             stream.Read(&_s6.EntityListsHead, postEntitiesSize);
         }
 
-        bool GetDetails(scenario_index_entry* dst) override
+        bool GetDetails(ScenarioIndexEntry* dst) override
         {
             *dst = {};
             return false;

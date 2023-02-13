@@ -687,7 +687,7 @@ std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectE
     return object;
 }
 
-void ScenarioTranslate(scenario_index_entry* scenarioEntry)
+void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry)
 {
     StringId localisedStringIds[3];
     if (LanguageGetLocalisedScenarioStrings(scenarioEntry->name, localisedStringIds))

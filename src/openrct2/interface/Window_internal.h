@@ -85,7 +85,7 @@ struct WindowBase
     union
     {
         uint16_t ride_colour;
-        const scenario_index_entry* highlighted_scenario;
+        const ScenarioIndexEntry* highlighted_scenario;
     };
     int16_t selected_tab{};
     int16_t var_4AE{};

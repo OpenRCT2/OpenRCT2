@@ -26,7 +26,7 @@ namespace OpenRCT2
     struct IStream;
 }
 
-struct scenario_index_entry;
+struct ScenarioIndexEntry;
 
 struct ParkLoadResult final
 {
@@ -57,7 +57,7 @@ public:
         OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
 
     virtual void Import() abstract;
-    virtual bool GetDetails(scenario_index_entry* dst) abstract;
+    virtual bool GetDetails(ScenarioIndexEntry* dst) abstract;
 };
 
 namespace ParkImporter

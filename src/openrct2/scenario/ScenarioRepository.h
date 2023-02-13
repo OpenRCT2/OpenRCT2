@@ -38,7 +38,7 @@ enum class ScenarioSource : uint8_t
     Other
 };
 
-struct scenario_index_entry
+struct ScenarioIndexEntry
 {
     utf8 path[MAX_PATH];
     uint64_t timestamp;
@@ -76,13 +76,13 @@ struct IScenarioRepository
     virtual void Scan(int32_t language) abstract;
 
     virtual size_t GetCount() const abstract;
-    virtual const scenario_index_entry* GetByIndex(size_t index) const abstract;
-    virtual const scenario_index_entry* GetByFilename(u8string_view filename) const abstract;
+    virtual const ScenarioIndexEntry* GetByIndex(size_t index) const abstract;
+    virtual const ScenarioIndexEntry* GetByFilename(u8string_view filename) const abstract;
     /**
      * Does not return custom scenarios due to the fact that they may have the same name.
      */
-    virtual const scenario_index_entry* GetByInternalName(const utf8* name) const abstract;
-    virtual const scenario_index_entry* GetByPath(const utf8* path) const abstract;
+    virtual const ScenarioIndexEntry* GetByInternalName(const utf8* name) const abstract;
+    virtual const ScenarioIndexEntry* GetByPath(const utf8* path) const abstract;
 
     virtual bool TryRecordHighscore(
         int32_t language, const utf8* scenarioFileName, money64 companyValue, const utf8* name) abstract;
@@ -94,6 +94,6 @@ struct IScenarioRepository
 
 void ScenarioRepositoryScan();
 [[nodiscard]] size_t ScenarioRepositoryGetCount();
-[[nodiscard]] const scenario_index_entry* ScenarioRepositoryGetByIndex(size_t index);
+[[nodiscard]] const ScenarioIndexEntry* ScenarioRepositoryGetByIndex(size_t index);
 [[nodiscard]] bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name);
-void ScenarioTranslate(scenario_index_entry* scenarioEntry);
+void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry);
