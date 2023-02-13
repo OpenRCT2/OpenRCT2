@@ -146,7 +146,7 @@ private:
 
         const SceneryGroupEntry* GetSceneryGroupEntry() const
         {
-            return ::GetSceneryGroupEntry(SceneryGroupIndex);
+            return OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(SceneryGroupIndex);
         }
     };
 
@@ -466,7 +466,8 @@ public:
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_PATH_ITEM)
                 { // path bit
-                    gCurrentToolId = static_cast<Tool>(OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(tabSelectedScenery.EntryIndex)->tool_id);
+                    gCurrentToolId = static_cast<Tool>(
+                        OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(tabSelectedScenery.EntryIndex)->tool_id);
                 }
                 else
                 { // small scenery
@@ -812,7 +813,7 @@ public:
 
         for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - 1; scenerySetIndex++)
         {
-            const auto* sceneryGroupEntry = GetSceneryGroupEntry(scenerySetIndex);
+            const auto* sceneryGroupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(scenerySetIndex);
             if (sceneryGroupEntry != nullptr && SceneryGroupIsInvented(scenerySetIndex))
             {
                 SceneryTabInfo tabInfo;

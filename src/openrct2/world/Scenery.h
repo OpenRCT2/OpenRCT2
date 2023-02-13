@@ -74,10 +74,7 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos);
 void ScenerySetDefaultPlacementConfiguration();
 void SceneryRemoveGhostToolPlacement();
 
-struct SceneryGroupEntry;
 struct WallSceneryEntry;
-
-SceneryGroupEntry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex);
 
 int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry);
 

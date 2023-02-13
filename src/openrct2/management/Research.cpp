@@ -21,6 +21,7 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/RideObject.h"
 #include "../object/SceneryGroupEntry.h"
@@ -268,7 +269,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
     else
     {
         // Scenery
-        SceneryGroupEntry* sceneryGroupEntry = GetSceneryGroupEntry(researchItem.entryIndex);
+        const auto* sceneryGroupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(researchItem.entryIndex);
         if (sceneryGroupEntry != nullptr)
         {
             SceneryGroupSetInvented(researchItem.entryIndex);
@@ -465,7 +466,7 @@ void ResearchPopulateListRandom()
     // Scenery
     for (uint32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        SceneryGroupEntry* sceneryGroupEntry = GetSceneryGroupEntry(i);
+        const auto* sceneryGroupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sceneryGroupEntry == nullptr)
         {
             continue;
@@ -581,7 +582,7 @@ void ScenerySetNotInvented(const ScenerySelection& sceneryItem)
 
 bool SceneryGroupIsInvented(int32_t sgIndex)
 {
-    const auto sgEntry = GetSceneryGroupEntry(sgIndex);
+    const auto sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(sgIndex);
     if (sgEntry == nullptr || sgEntry->SceneryEntries.empty())
     {
         return false;
@@ -606,7 +607,7 @@ bool SceneryGroupIsInvented(int32_t sgIndex)
 
 void SceneryGroupSetInvented(int32_t sgIndex)
 {
-    const auto sgEntry = GetSceneryGroupEntry(sgIndex);
+    const auto sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(sgIndex);
     if (sgEntry != nullptr)
     {
         for (const auto& entry : sgEntry->SceneryEntries)
@@ -620,7 +621,7 @@ void SetAllSceneryGroupsNotInvented()
 {
     for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
     {
-        SceneryGroupEntry* scenery_set = GetSceneryGroupEntry(i);
+        const auto* scenery_set = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (scenery_set == nullptr)
         {
             continue;
@@ -686,7 +687,7 @@ StringId ResearchItem::GetName() const
         return rideEntry->naming.Name;
     }
 
-    SceneryGroupEntry* sceneryEntry = GetSceneryGroupEntry(entryIndex);
+    const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(entryIndex);
     if (sceneryEntry == nullptr)
     {
         return STR_EMPTY;
@@ -722,7 +723,7 @@ static void ResearchRemoveNullItems(std::vector<ResearchItem>& items)
         }
         else
         {
-            return GetSceneryGroupEntry(researchItem.entryIndex) == nullptr;
+            return OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(researchItem.entryIndex) == nullptr;
         }
     });
     items.erase(it, std::end(items));
@@ -747,7 +748,7 @@ static void ResearchMarkItemAsResearched(const ResearchItem& item)
     }
     else if (item.type == Research::EntryType::Scenery)
     {
-        const auto sgEntry = GetSceneryGroupEntry(item.entryIndex);
+        const auto sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(item.entryIndex);
         if (sgEntry != nullptr)
         {
             for (const auto& sceneryEntry : sgEntry->SceneryEntries)
@@ -793,7 +794,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
 
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        const auto* groupEntry = GetSceneryGroupEntry(i);
+        const auto* groupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (groupEntry != nullptr)
         {
             ResearchInsertSceneryGroupEntry(i, isResearched);

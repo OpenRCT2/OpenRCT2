@@ -24,6 +24,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/FootpathItemEntry.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/SceneryGroupEntry.h"
@@ -1032,7 +1033,7 @@ uint32_t StaffGetAvailableEntertainerCostumes()
     {
         if (SceneryGroupIsInvented(i))
         {
-            const auto sgEntry = GetSceneryGroupEntry(i);
+            const auto sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
             entertainerCostumes |= sgEntry->entertainer_costumes;
         }
     }
