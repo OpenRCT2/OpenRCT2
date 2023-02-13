@@ -282,7 +282,7 @@ static void PaintReverseFreefallRCSlope(
             {
                 bbHeight = bbHeights03[trackSequence];
                 PaintAddImageAsParentRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
+                    session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
                     session, direction, trackImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
 
@@ -300,7 +300,7 @@ static void PaintReverseFreefallRCSlope(
             {
                 bbHeight = bbHeights12[trackSequence];
                 PaintAddImageAsParentRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
+                    session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
             }
@@ -329,8 +329,8 @@ static void PaintReverseFreefallRCSlope(
             else
             {
                 PaintAddImageAsParentRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { isDirection03 ? 26 : 18, 26, 126 },
-                    { isDirection03 ? 3 : 11, 3, height });
+                    session, direction, supportsImageId, { 0, 0, height },
+                    { { isDirection03 ? 3 : 11, 3, height }, { isDirection03 ? 26 : 18, 26, 126 } });
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence], 0x20);
@@ -339,14 +339,14 @@ static void PaintReverseFreefallRCSlope(
             if (isDirection03)
             {
                 PaintAddImageAsParentRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { 5, 20, 79 }, { 0, 6, height + 128 });
+                    session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height + 128 }, { 5, 20, 79 } });
                 PaintAddImageAsChildRotated(
                     session, direction, trackImageId, { 0, 0, height }, { 5, 20, 79 }, { 0, 6, height + 128 });
             }
             else
             {
                 PaintAddImageAsParentRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 1, 20, 126 }, { 27, 6, height });
+                    session, direction, trackImageId, { 0, 0, height }, { { 27, 6, height }, { 1, 20, 126 } });
                 PaintAddImageAsChildRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { 1, 20, 126 }, { 27, 6, height });
             }
@@ -376,12 +376,12 @@ static void PaintReverseFreefallRCVertical(
             if (direction == 0 || direction == 3)
             {
                 PaintAddImageAsParentRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 2, 20, 79 }, { 0, 6, height });
+                    session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 2, 20, 79 } });
             }
             else
             {
                 PaintAddImageAsParentRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 2, 20, 79 }, { 30, 6, height });
+                    session, direction, trackImageId, { 0, 0, height }, { { 30, 6, height }, { 2, 20, 79 } });
             }
             PaintUtilSetVerticalTunnel(session, height + 80);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -410,7 +410,7 @@ static void PaintReverseFreefallRCOnridePhoto(
     }
 
     PaintAddImageAsParentRotated(
-        session, direction, colour.WithIndex(imageIds[direction]), { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+        session, direction, colour.WithIndex(imageIds[direction]), { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
