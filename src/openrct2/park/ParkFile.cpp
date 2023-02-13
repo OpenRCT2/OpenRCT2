@@ -206,26 +206,26 @@ namespace OpenRCT2
             ScenarioIndexEntry entry{};
             auto& os = *_os;
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&entry](OrcaStream::ChunkStream& cs) {
-                entry.category = cs.Read<uint8_t>();
+                entry.Category = cs.Read<uint8_t>();
 
                 std::string name;
                 ReadWriteStringTable(cs, name, "en-GB");
-                String::Set(entry.name, sizeof(entry.name), name.c_str());
-                String::Set(entry.internal_name, sizeof(entry.internal_name), name.c_str());
+                String::Set(entry.Name, sizeof(entry.Name), name.c_str());
+                String::Set(entry.InternalName, sizeof(entry.InternalName), name.c_str());
 
                 std::string parkName;
                 ReadWriteStringTable(cs, parkName, "en-GB");
 
                 std::string scenarioDetails;
                 ReadWriteStringTable(cs, scenarioDetails, "en-GB");
-                String::Set(entry.details, sizeof(entry.details), scenarioDetails.c_str());
+                String::Set(entry.Details, sizeof(entry.Details), scenarioDetails.c_str());
 
-                entry.objective_type = cs.Read<uint8_t>();
-                entry.objective_arg_1 = cs.Read<uint8_t>();
-                entry.objective_arg_3 = cs.Read<int16_t>();
-                entry.objective_arg_2 = cs.Read<int32_t>();
+                entry.ObjectiveType = cs.Read<uint8_t>();
+                entry.ObjectiveArg1 = cs.Read<uint8_t>();
+                entry.ObjectiveArg3 = cs.Read<int16_t>();
+                entry.ObjectiveArg2 = cs.Read<int32_t>();
 
-                entry.source_game = ScenarioSource::Other;
+                entry.SourceGame = ScenarioSource::Other;
             });
             return entry;
         }

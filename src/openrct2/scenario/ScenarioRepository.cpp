@@ -58,57 +58,57 @@ static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
 static int32_t ScenarioIndexEntryCompareByCategory(const ScenarioIndexEntry& entryA, const ScenarioIndexEntry& entryB)
 {
     // Order by category
-    if (entryA.category != entryB.category)
+    if (entryA.Category != entryB.Category)
     {
-        return ScenarioCategoryCompare(entryA.category, entryB.category);
+        return ScenarioCategoryCompare(entryA.Category, entryB.Category);
     }
 
     // Then by source game / name
-    switch (entryA.category)
+    switch (entryA.Category)
     {
         default:
-            if (entryA.source_game != entryB.source_game)
+            if (entryA.SourceGame != entryB.SourceGame)
             {
-                return static_cast<int32_t>(entryA.source_game) - static_cast<int32_t>(entryB.source_game);
+                return static_cast<int32_t>(entryA.SourceGame) - static_cast<int32_t>(entryB.SourceGame);
             }
-            return strcmp(entryA.name, entryB.name);
+            return strcmp(entryA.Name, entryB.Name);
         case SCENARIO_CATEGORY_REAL:
         case SCENARIO_CATEGORY_OTHER:
-            return strcmp(entryA.name, entryB.name);
+            return strcmp(entryA.Name, entryB.Name);
     }
 }
 
 static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA, const ScenarioIndexEntry& entryB)
 {
     // Order by source game
-    if (entryA.source_game != entryB.source_game)
+    if (entryA.SourceGame != entryB.SourceGame)
     {
-        return static_cast<int32_t>(entryA.source_game) - static_cast<int32_t>(entryB.source_game);
+        return static_cast<int32_t>(entryA.SourceGame) - static_cast<int32_t>(entryB.SourceGame);
     }
 
     // Then by index / category / name
-    ScenarioSource sourceGame = ScenarioSource{ entryA.source_game };
+    ScenarioSource sourceGame = ScenarioSource{ entryA.SourceGame };
     switch (sourceGame)
     {
         default:
-            if (entryA.source_index == -1 && entryB.source_index == -1)
+            if (entryA.SourceIndex == -1 && entryB.SourceIndex == -1)
             {
-                if (entryA.category == entryB.category)
+                if (entryA.Category == entryB.Category)
                 {
                     return ScenarioIndexEntryCompareByCategory(entryA, entryB);
                 }
 
-                return ScenarioCategoryCompare(entryA.category, entryB.category);
+                return ScenarioCategoryCompare(entryA.Category, entryB.Category);
             }
-            if (entryA.source_index == -1)
+            if (entryA.SourceIndex == -1)
             {
                 return 1;
             }
-            if (entryB.source_index == -1)
+            if (entryB.SourceIndex == -1)
             {
                 return -1;
             }
-            return entryA.source_index - entryB.source_index;
+            return entryA.SourceIndex - entryB.SourceIndex;
 
         case ScenarioSource::Real:
             return ScenarioIndexEntryCompareByCategory(entryA, entryB);
@@ -156,20 +156,20 @@ protected:
 
     void Serialise(DataSerialiser& ds, const ScenarioIndexEntry& item) const override
     {
-        ds << item.path;
-        ds << item.timestamp;
-        ds << item.category;
-        ds << item.source_game;
-        ds << item.source_index;
-        ds << item.sc_id;
-        ds << item.objective_type;
-        ds << item.objective_arg_1;
-        ds << item.objective_arg_2;
-        ds << item.objective_arg_3;
+        ds << item.Path;
+        ds << item.Timestamp;
+        ds << item.Category;
+        ds << item.SourceGame;
+        ds << item.SourceIndex;
+        ds << item.ScenarioId;
+        ds << item.ObjectiveType;
+        ds << item.ObjectiveArg1;
+        ds << item.ObjectiveArg2;
+        ds << item.ObjectiveArg3;
 
-        ds << item.internal_name;
-        ds << item.name;
-        ds << item.details;
+        ds << item.InternalName;
+        ds << item.Name;
+        ds << item.Details;
     }
 
 private:
@@ -209,8 +209,8 @@ private:
                     importer->LoadScenario(path.c_str(), true);
                     if (importer->GetDetails(entry))
                     {
-                        String::Set(entry->path, sizeof(entry->path), path.c_str());
-                        entry->timestamp = timestamp;
+                        String::Set(entry->Path, sizeof(entry->Path), path.c_str());
+                        entry->Timestamp = timestamp;
                         result = true;
                     }
                 }
@@ -230,8 +230,8 @@ private:
                     s4Importer->LoadScenario(path.c_str(), true);
                     if (s4Importer->GetDetails(entry))
                     {
-                        String::Set(entry->path, sizeof(entry->path), path.c_str());
-                        entry->timestamp = timestamp;
+                        String::Set(entry->Path, sizeof(entry->Path), path.c_str());
+                        entry->Timestamp = timestamp;
                         result = true;
                     }
                 }
@@ -275,51 +275,51 @@ private:
         ScenarioIndexEntry entry = {};
 
         // Set new entry
-        String::Set(entry.path, sizeof(entry.path), path.c_str());
-        entry.timestamp = timestamp;
-        entry.category = s6Info->Category;
-        entry.objective_type = s6Info->ObjectiveType;
-        entry.objective_arg_1 = s6Info->ObjectiveArg1;
-        entry.objective_arg_2 = s6Info->ObjectiveArg2;
-        entry.objective_arg_3 = s6Info->ObjectiveArg3;
-        entry.highscore = nullptr;
+        String::Set(entry.Path, sizeof(entry.Path), path.c_str());
+        entry.Timestamp = timestamp;
+        entry.Category = s6Info->Category;
+        entry.ObjectiveType = s6Info->ObjectiveType;
+        entry.ObjectiveArg1 = s6Info->ObjectiveArg1;
+        entry.ObjectiveArg2 = s6Info->ObjectiveArg2;
+        entry.ObjectiveArg3 = s6Info->ObjectiveArg3;
+        entry.Highscore = nullptr;
         if (String::IsNullOrEmpty(s6Info->Name))
         {
             // If the scenario doesn't have a name, set it to the filename
-            String::Set(entry.name, sizeof(entry.name), Path::GetFileNameWithoutExtension(entry.path).c_str());
+            String::Set(entry.Name, sizeof(entry.Name), Path::GetFileNameWithoutExtension(entry.Path).c_str());
         }
         else
         {
-            String::Set(entry.name, sizeof(entry.name), s6Info->Name);
+            String::Set(entry.Name, sizeof(entry.Name), s6Info->Name);
             // Normalise the name to make the scenario as recognisable as possible.
-            ScenarioSources::NormaliseName(entry.name, sizeof(entry.name), entry.name);
+            ScenarioSources::NormaliseName(entry.Name, sizeof(entry.Name), entry.Name);
         }
 
         // entry.name will be translated later so keep the untranslated name here
-        String::Set(entry.internal_name, sizeof(entry.internal_name), entry.name);
+        String::Set(entry.InternalName, sizeof(entry.InternalName), entry.Name);
 
-        String::Set(entry.details, sizeof(entry.details), s6Info->Details);
+        String::Set(entry.Details, sizeof(entry.Details), s6Info->Details);
 
         // Look up and store information regarding the origins of this scenario.
         SourceDescriptor desc;
-        if (ScenarioSources::TryGetByName(entry.name, &desc))
+        if (ScenarioSources::TryGetByName(entry.Name, &desc))
         {
-            entry.sc_id = desc.id;
-            entry.source_index = desc.index;
-            entry.source_game = ScenarioSource{ desc.source };
-            entry.category = desc.category;
+            entry.ScenarioId = desc.id;
+            entry.SourceIndex = desc.index;
+            entry.SourceGame = ScenarioSource{ desc.source };
+            entry.Category = desc.category;
         }
         else
         {
-            entry.sc_id = SC_UNIDENTIFIED;
-            entry.source_index = -1;
-            if (entry.category == SCENARIO_CATEGORY_REAL)
+            entry.ScenarioId = SC_UNIDENTIFIED;
+            entry.SourceIndex = -1;
+            if (entry.Category == SCENARIO_CATEGORY_REAL)
             {
-                entry.source_game = ScenarioSource::Real;
+                entry.SourceGame = ScenarioSource::Real;
             }
             else
             {
-                entry.source_game = ScenarioSource::Other;
+                entry.SourceGame = ScenarioSource::Other;
             }
         }
 
@@ -388,7 +388,7 @@ public:
     {
         for (const auto& scenario : _scenarios)
         {
-            const auto scenarioFilename = Path::GetFileName(scenario.path);
+            const auto scenarioFilename = Path::GetFileName(scenario.Path);
 
             // Note: this is always case insensitive search for cross platform consistency
             if (String::Equals(filename, scenarioFilename, true))
@@ -405,11 +405,11 @@ public:
         {
             const ScenarioIndexEntry* scenario = &_scenarios[i];
 
-            if (scenario->source_game == ScenarioSource::Other && scenario->sc_id == SC_UNIDENTIFIED)
+            if (scenario->SourceGame == ScenarioSource::Other && scenario->ScenarioId == SC_UNIDENTIFIED)
                 continue;
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::Equals(name, scenario->internal_name, true))
+            if (String::Equals(name, scenario->InternalName, true))
             {
                 return &_scenarios[i];
             }
@@ -421,7 +421,7 @@ public:
     {
         for (const auto& scenario : _scenarios)
         {
-            if (Path::Equals(path, scenario.path))
+            if (Path::Equals(path, scenario.Path))
             {
                 return &scenario;
             }
@@ -458,7 +458,7 @@ public:
         if (scenario != nullptr)
         {
             // Check if record company value has been broken or the highscore is the same but no name is registered
-            ScenarioHighscoreEntry* highscore = scenario->highscore;
+            ScenarioHighscoreEntry* highscore = scenario->Highscore;
             if (highscore == nullptr || companyValue > highscore->company_value
                 || (String::IsNullOrEmpty(highscore->name) && companyValue == highscore->company_value))
             {
@@ -466,7 +466,7 @@ public:
                 {
                     highscore = InsertHighscore();
                     highscore->timestamp = Platform::GetDatetimeNowUTC();
-                    scenario->highscore = highscore;
+                    scenario->Highscore = highscore;
                 }
                 else
                 {
@@ -477,7 +477,7 @@ public:
                     SafeFree(highscore->fileName);
                     SafeFree(highscore->name);
                 }
-                highscore->fileName = String::Duplicate(Path::GetFileName(scenario->path));
+                highscore->fileName = String::Duplicate(Path::GetFileName(scenario->Path));
                 highscore->name = String::Duplicate(name);
                 highscore->company_value = companyValue;
                 SaveHighscores();
@@ -542,7 +542,7 @@ private:
 
     void AddScenario(const ScenarioIndexEntry& entry)
     {
-        auto filename = Path::GetFileName(entry.path);
+        auto filename = Path::GetFileName(entry.Path);
 
         if (!String::Equals(filename, ""))
         {
@@ -550,10 +550,10 @@ private:
             if (existingEntry != nullptr)
             {
                 std::string conflictPath;
-                if (existingEntry->timestamp > entry.timestamp)
+                if (existingEntry->Timestamp > entry.Timestamp)
                 {
                     // Existing entry is more recent
-                    conflictPath = String::ToStd(existingEntry->path);
+                    conflictPath = String::ToStd(existingEntry->Path);
 
                     // Overwrite existing entry with this one
                     *existingEntry = entry;
@@ -561,7 +561,7 @@ private:
                 else
                 {
                     // This entry is more recent
-                    conflictPath = entry.path;
+                    conflictPath = entry.Path;
                 }
                 Console::WriteLine("Scenario conflict: '%s' ignored because it is newer.", conflictPath.c_str());
             }
@@ -735,7 +735,7 @@ private:
             ScenarioIndexEntry* scenario = GetByFilename(highscore->fileName);
             if (scenario != nullptr)
             {
-                scenario->highscore = highscore;
+                scenario->Highscore = highscore;
             }
         }
     }

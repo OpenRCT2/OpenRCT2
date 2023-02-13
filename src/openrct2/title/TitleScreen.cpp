@@ -239,7 +239,7 @@ void TitleScreen::TitleInitialise()
 
             for (size_t s = 0; s < scenarioCount; s++)
             {
-                const ScenarioSource sourceGame = ScenarioRepositoryGetByIndex(s)->source_game;
+                const ScenarioSource sourceGame = ScenarioRepositoryGetByIndex(s)->SourceGame;
                 switch (sourceGame)
                 {
                     case ScenarioSource::RCT1:

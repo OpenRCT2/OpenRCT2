@@ -156,7 +156,7 @@ namespace OpenRCT2::Title
                         if (scenario != nullptr)
                         {
                             GameNotifyMapChange();
-                            loadSuccess = LoadParkFromFile(scenario->path);
+                            loadSuccess = LoadParkFromFile(scenario->Path);
                         }
 
                         if (!loadSuccess)

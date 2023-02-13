@@ -40,25 +40,25 @@ enum class ScenarioSource : uint8_t
 
 struct ScenarioIndexEntry
 {
-    utf8 path[MAX_PATH];
-    uint64_t timestamp;
+    utf8 Path[MAX_PATH];
+    uint64_t Timestamp;
 
     // Category / sequence
-    uint8_t category;
-    ScenarioSource source_game;
-    int16_t source_index = -1;
-    uint16_t sc_id;
+    uint8_t Category;
+    ScenarioSource SourceGame;
+    int16_t SourceIndex = -1;
+    uint16_t ScenarioId;
 
     // Objective
-    uint8_t objective_type;
-    uint8_t objective_arg_1;
-    int64_t objective_arg_2;
-    int16_t objective_arg_3;
-    ScenarioHighscoreEntry* highscore = nullptr;
+    uint8_t ObjectiveType;
+    uint8_t ObjectiveArg1;
+    int64_t ObjectiveArg2;
+    int16_t ObjectiveArg3;
+    ScenarioHighscoreEntry* Highscore = nullptr;
 
-    utf8 internal_name[64]; // Untranslated name
-    utf8 name[64];          // Translated name
-    utf8 details[256];
+    utf8 InternalName[64]; // Untranslated name
+    utf8 Name[64];          // Translated name
+    utf8 Details[256];
 };
 
 namespace OpenRCT2

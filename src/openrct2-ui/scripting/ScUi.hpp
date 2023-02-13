@@ -406,14 +406,14 @@ namespace OpenRCT2::Scripting
             auto entry = scenarioRepo->GetByPath(std::string(path).c_str());
             if (entry != nullptr)
             {
-                obj.Set("id", entry->sc_id);
-                obj.Set("category", ToDuk(ctx, static_cast<SCENARIO_CATEGORY>(entry->category)));
-                obj.Set("sourceGame", ToDuk(ctx, entry->source_game));
-                obj.Set("internalName", entry->internal_name);
-                obj.Set("name", entry->name);
-                obj.Set("details", entry->details);
+                obj.Set("id", entry->ScenarioId);
+                obj.Set("category", ToDuk(ctx, static_cast<SCENARIO_CATEGORY>(entry->Category)));
+                obj.Set("sourceGame", ToDuk(ctx, entry->SourceGame));
+                obj.Set("internalName", entry->InternalName);
+                obj.Set("name", entry->Name);
+                obj.Set("details", entry->Details);
 
-                auto* highscore = entry->highscore;
+                auto* highscore = entry->Highscore;
                 if (highscore == nullptr)
                 {
                     obj.Set("highscore", nullptr);
