@@ -130,7 +130,7 @@ void ResearchUpdate();
 void ResearchResetCurrentItem();
 void ResearchPopulateListRandom();
 
-void ResearchFinishItem(ResearchItem* researchItem);
+void ResearchFinishItem(const ResearchItem& researchItem);
 void ResearchInsert(ResearchItem&& item, bool researched);
 void ResearchRemove(const ResearchItem& researchItem);
 

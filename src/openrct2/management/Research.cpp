@@ -151,39 +151,22 @@ static void ResearchNextDesign()
         return;
     }
 
-    ResearchItem researchItem;
-
-    bool ignoreActiveResearchTypes = false;
-    auto it = gResearchItemsUninvented.begin();
-    for (;;)
+    // Try to find a research item of a matching type, if none found, use any first item
+    auto it = std::find_if(gResearchItemsUninvented.begin(), gResearchItemsUninvented.end(), [](const auto& e) {
+        return (gResearchPriorities & EnumToFlag(e.category)) != 0;
+    });
+    if (it == gResearchItemsUninvented.end())
     {
-        researchItem = *it;
-        if (it == gResearchItemsUninvented.end())
-        {
-            if (!ignoreActiveResearchTypes)
-            {
-                ignoreActiveResearchTypes = true;
-                it = gResearchItemsUninvented.begin();
-                continue;
-            }
-
-            ResearchMarkAsFullyCompleted();
-            return;
-        }
-
-        if (ignoreActiveResearchTypes || (gResearchPriorities & EnumToFlag(researchItem.category)))
-        {
-            break;
-        }
-        it++;
+        it = gResearchItemsUninvented.begin();
     }
 
+    const ResearchItem researchItem = *it;
     gResearchNextItem = researchItem;
     gResearchProgress = 0;
     gResearchProgressStage = RESEARCH_STAGE_DESIGNING;
 
     gResearchItemsUninvented.erase(it);
-    gResearchItemsInvented.push_back(std::move(researchItem));
+    gResearchItemsInvented.push_back(researchItem);
 
     ResearchInvalidateRelatedWindows();
 }
@@ -192,16 +175,16 @@ static void ResearchNextDesign()
  *
  *  rct2: 0x006848D4
  */
-void ResearchFinishItem(ResearchItem* researchItem)
+void ResearchFinishItem(const ResearchItem& researchItem)
 {
-    gResearchLastItem = *researchItem;
+    gResearchLastItem = researchItem;
     ResearchInvalidateRelatedWindows();
 
-    if (researchItem->type == Research::EntryType::Ride)
+    if (researchItem.type == Research::EntryType::Ride)
     {
         // Ride
-        auto base_ride_type = researchItem->baseRideType;
-        ObjectEntryIndex rideEntryIndex = researchItem->entryIndex;
+        auto base_ride_type = researchItem.baseRideType;
+        ObjectEntryIndex rideEntryIndex = researchItem.entryIndex;
         const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
         if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
@@ -254,7 +237,7 @@ void ResearchFinishItem(ResearchItem* researchItem)
             // If a vehicle is the first to be invented for its ride type, show the ride type/group name.
             // Independently listed vehicles (like all flat rides and shops) should always be announced as such.
             if (GetRideTypeDescriptor(base_ride_type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
-                || researchItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                || researchItem.flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
             {
                 RideNaming naming = GetRideNaming(base_ride_type, *rideEntry);
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
@@ -275,7 +258,7 @@ void ResearchFinishItem(ResearchItem* researchItem)
             {
                 if (gConfigNotifications.RideResearched)
                 {
-                    News::AddItemToQueue(News::ItemType::Research, availabilityString, researchItem->rawValue, ft);
+                    News::AddItemToQueue(News::ItemType::Research, availabilityString, researchItem.rawValue, ft);
                 }
             }
 
@@ -285,10 +268,10 @@ void ResearchFinishItem(ResearchItem* researchItem)
     else
     {
         // Scenery
-        SceneryGroupEntry* sceneryGroupEntry = GetSceneryGroupEntry(researchItem->entryIndex);
+        SceneryGroupEntry* sceneryGroupEntry = GetSceneryGroupEntry(researchItem.entryIndex);
         if (sceneryGroupEntry != nullptr)
         {
-            SceneryGroupSetInvented(researchItem->entryIndex);
+            SceneryGroupSetInvented(researchItem.entryIndex);
 
             Formatter ft;
             ft.Add<StringId>(sceneryGroupEntry->name);
@@ -298,7 +281,7 @@ void ResearchFinishItem(ResearchItem* researchItem)
                 if (gConfigNotifications.RideResearched)
                 {
                     News::AddItemToQueue(
-                        News::ItemType::Research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem->rawValue, ft);
+                        News::ItemType::Research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem.rawValue, ft);
                 }
             }
 
@@ -359,7 +342,7 @@ void ResearchUpdate()
                 ResearchInvalidateRelatedWindows();
                 break;
             case RESEARCH_STAGE_COMPLETING_DESIGN:
-                ResearchFinishItem(&*gResearchNextItem);
+                ResearchFinishItem(*gResearchNextItem);
                 gResearchProgress = 0;
                 gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
                 ResearchCalculateExpectedDate();
@@ -386,9 +369,9 @@ void ResearchResetCurrentItem()
     SetAllSceneryItemsInvented();
     SetAllSceneryGroupsNotInvented();
 
-    for (auto& researchItem : gResearchItemsInvented)
+    for (const auto& researchItem : gResearchItemsInvented)
     {
-        ResearchFinishItem(&researchItem);
+        ResearchFinishItem(researchItem);
     }
 
     gResearchLastItem = std::nullopt;
@@ -432,24 +415,11 @@ static void ResearchInsertResearched(ResearchItem&& item)
  */
 void ResearchRemove(const ResearchItem& researchItem)
 {
-    for (auto it = gResearchItemsUninvented.begin(); it != gResearchItemsUninvented.end(); it++)
-    {
-        auto& researchItem2 = *it;
-        if (researchItem2 == researchItem)
-        {
-            gResearchItemsUninvented.erase(it);
-            return;
-        }
-    }
-    for (auto it = gResearchItemsInvented.begin(); it != gResearchItemsInvented.end(); it++)
-    {
-        auto& researchItem2 = *it;
-        if (researchItem2 == researchItem)
-        {
-            gResearchItemsInvented.erase(it);
-            return;
-        }
-    }
+    gResearchItemsUninvented.erase(
+        std::remove(gResearchItemsUninvented.begin(), gResearchItemsUninvented.end(), researchItem),
+        gResearchItemsUninvented.end());
+    gResearchItemsInvented.erase(
+        std::remove(gResearchItemsInvented.begin(), gResearchItemsInvented.end(), researchItem), gResearchItemsInvented.end());
 }
 
 void ResearchInsert(ResearchItem&& item, bool researched)
