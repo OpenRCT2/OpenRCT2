@@ -24,7 +24,6 @@
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 

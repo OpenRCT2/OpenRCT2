@@ -35,7 +35,6 @@
 #include "../scenario/Scenario.h"
 #include "Climate.h"
 #include "Footpath.h"
-#include "LargeScenery.h"
 #include "Map.h"
 #include "Park.h"
 #include "Wall.h"

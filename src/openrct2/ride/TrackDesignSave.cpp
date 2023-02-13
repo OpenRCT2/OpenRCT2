@@ -24,7 +24,6 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Footpath.h"
-#include "../world/LargeScenery.h"
 #include "../world/Scenery.h"
 #include "../world/Wall.h"
 #include "RideData.h"

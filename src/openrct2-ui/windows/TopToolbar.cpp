@@ -65,7 +65,6 @@
 #include <openrct2/util/Math.hpp>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
-#include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>

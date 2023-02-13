@@ -21,7 +21,6 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "Banner.h"
-#include "LargeScenery.h"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"

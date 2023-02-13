@@ -19,7 +19,6 @@
 #include "../scenario/Scenario.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
-#include "../world/LargeScenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"

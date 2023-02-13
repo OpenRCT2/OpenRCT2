@@ -48,7 +48,6 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
-#include "../world/LargeScenery.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"

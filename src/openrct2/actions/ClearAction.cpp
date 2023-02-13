@@ -14,7 +14,6 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../world/LargeScenery.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "FootpathRemoveAction.h"

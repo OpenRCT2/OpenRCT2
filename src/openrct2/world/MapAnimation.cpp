@@ -25,7 +25,6 @@
 #include "../world/Wall.h"
 #include "Banner.h"
 #include "Footpath.h"
-#include "LargeScenery.h"
 #include "Map.h"
 #include "Scenery.h"
 
