@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "ObjectTypes.h"
 
 enum
 {
