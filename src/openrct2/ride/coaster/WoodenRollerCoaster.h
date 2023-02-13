@@ -38,21 +38,14 @@ ImageId WoodenRCGetRailsColour(PaintSession& session);
 
 template<bool isClassic>
 PaintStruct* WoodenRCTrackPaint(
-    PaintSession& session, uint32_t imageIdTrack, uint32_t imageIdRails, uint8_t direction, int8_t x_offset, int8_t y_offset,
-    int16_t bound_box_length_x, int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset,
-    int16_t bound_box_offset_x, int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    PaintSession& session, uint8_t direction, ImageIndex imageIdTrack, ImageIndex imageIdRails, const CoordsXYZ& offset,
+    const BoundBoxXYZ& boundBox)
 {
     ImageId imageId = WoodenRCGetTrackColour<isClassic>(session).WithIndex(imageIdTrack);
     ImageId railsImageId = WoodenRCGetRailsColour(session).WithIndex(imageIdRails);
 
-    PaintAddImageAsParentRotated(
-        session, direction, imageId, { x_offset, y_offset, z_offset },
-        { { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z },
-          { bound_box_length_x, bound_box_length_y, bound_box_length_z } });
-    return PaintAddImageAsChildRotated(
-        session, direction, railsImageId, { x_offset, y_offset, z_offset },
-        { { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z },
-          { bound_box_length_x, bound_box_length_y, bound_box_length_z } });
+    PaintAddImageAsParentRotated(session, direction, imageId, offset, boundBox);
+    return PaintAddImageAsChildRotated(session, direction, railsImageId, offset, boundBox);
 }
 
 template<bool isClassic> void WoodenRCTrackPaintBb(PaintSession& session, const SpriteBoundBox2* bb, int16_t height)
