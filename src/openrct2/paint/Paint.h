@@ -310,12 +310,24 @@ PaintStruct* PaintAddImageAsChild(
 PaintStruct* PaintAddImageAsChildRotated(
     PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
-PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize);
+
 PaintStruct* PaintAddImageAsParentRotated(
     PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
+    const BoundBoxXYZ& boundBox);
+
+inline PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
+{
+    return PaintAddImageAsParentRotated(session, direction, imageId, offset, { boundBoxOffset, boundBoxSize });
+}
+
+inline PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize)
+{
+    return PaintAddImageAsParentRotated(session, direction, imageId, offset, { offset, boundBoxSize });
+}
 
 void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type);
 
