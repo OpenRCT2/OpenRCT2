@@ -127,7 +127,7 @@ namespace RCT1
         IScenarioRepository* _scenarioRepository = GetScenarioRepository();
 
     public:
-        ParkLoadResult Load(const utf8* path) override
+        ParkLoadResult Load(const u8string& path) override
         {
             const auto extension = Path::GetExtension(path);
             if (String::Equals(extension, ".sc4", true))
@@ -142,14 +142,14 @@ namespace RCT1
             throw std::runtime_error("Invalid RCT1 park extension.");
         }
 
-        ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
+        ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             auto result = LoadFromStream(&fs, false, skipObjectCheck, path);
             return result;
         }
 
-        ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) override
+        ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             auto result = LoadFromStream(&fs, true, skipObjectCheck, path);
@@ -157,7 +157,7 @@ namespace RCT1
         }
 
         ParkLoadResult LoadFromStream(
-            IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck, const utf8* path) override
+            IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck, const u8string& path) override
         {
             _s4 = *ReadAndDecodeS4(stream, isScenario);
             _s4Path = path;

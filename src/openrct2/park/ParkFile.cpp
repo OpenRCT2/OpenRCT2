@@ -2417,7 +2417,7 @@ public:
     {
     }
 
-    ParkLoadResult Load(const utf8* path) override
+    ParkLoadResult Load(const u8string& path) override
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
         _parkFile->Load(path);
@@ -2427,18 +2427,18 @@ public:
         return result;
     }
 
-    ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
+    ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
     {
         return Load(path);
     }
 
-    ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) override
+    ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
     {
         return Load(path);
     }
 
     ParkLoadResult LoadFromStream(
-        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) override
+        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const u8string& path = {}) override
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
         _parkFile->Load(*stream);

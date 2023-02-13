@@ -279,9 +279,9 @@ namespace OpenRCT2::Title
             return _position != entryPosition;
         }
 
-        bool LoadParkFromFile(const utf8* path)
+        bool LoadParkFromFile(const u8string& path)
         {
-            LOG_VERBOSE("TitleSequencePlayer::LoadParkFromFile(%s)", path);
+            LOG_VERBOSE("TitleSequencePlayer::LoadParkFromFile(%s)", path.c_str());
             bool success = false;
             try
             {
@@ -306,7 +306,7 @@ namespace OpenRCT2::Title
             }
             catch (const std::exception&)
             {
-                Console::Error::WriteLine("Unable to load park: %s", path);
+                Console::Error::WriteLine("Unable to load park: %s", path.c_str());
             }
             gLoadKeepWindowsOpen = false;
             return success;

@@ -1,3 +1,4 @@
+
 /*****************************************************************************
  * Copyright (c) 2014-2023 OpenRCT2 developers
  *
@@ -57,7 +58,7 @@ struct ScenarioIndexEntry
     ScenarioHighscoreEntry* Highscore = nullptr;
 
     utf8 InternalName[64]; // Untranslated name
-    utf8 Name[64];          // Translated name
+    utf8 Name[64];         // Translated name
     utf8 Details[256];
 };
 
