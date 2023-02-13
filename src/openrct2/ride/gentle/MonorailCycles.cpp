@@ -159,31 +159,13 @@ static constexpr const uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4
     },
 };
 
-static PaintStruct* PaintMonorailCyclesUtil7C(
-    PaintSession& session, bool flip, ImageId imageId, int8_t xOffset, int8_t yOffset, int16_t boundBoxLengthX,
-    int16_t boundBoxLengthY, int8_t boundBoxLengthZ, int16_t zOffset, int16_t boundBoxOffsetX, int16_t boundBoxOffsetY,
-    int16_t boundBoxOffsetZ, uint32_t rotation)
-{
-    if (flip)
-    {
-        return PaintAddImageAsParent(
-            session, imageId, { yOffset, xOffset, zOffset },
-            { { boundBoxOffsetY, boundBoxOffsetX, boundBoxOffsetZ }, { boundBoxLengthY, boundBoxLengthX, boundBoxLengthZ } });
-    }
-
-    return PaintAddImageAsParent(
-        session, imageId, { xOffset, yOffset, zOffset },
-        { { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ }, { boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ } });
-}
-
 /** rct2: 0x0088AD48 */
 static void PaintMonorailCyclesTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MonorailCyclesTrackPiecesFlat[(direction & 1)]);
-    PaintMonorailCyclesUtil7C(
-        session, static_cast<bool>(direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, session.CurrentRotation);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (direction & 1)
     {
@@ -439,20 +421,16 @@ static void PaintMonorailCyclesTrackSBendLeft(
     switch (trackSequence)
     {
         case 0:
-            PaintMonorailCyclesUtil7C(
-                session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            PaintMonorailCyclesUtil7C(
-                session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, session.CurrentRotation);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
             break;
         case 2:
-            PaintMonorailCyclesUtil7C(
-                session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, session.CurrentRotation);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
             break;
         case 3:
-            PaintMonorailCyclesUtil7C(
-                session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
 
@@ -543,20 +521,16 @@ static void PaintMonorailCyclesTrackSBendRight(
     switch (trackSequence)
     {
         case 0:
-            PaintMonorailCyclesUtil7C(
-                session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            PaintMonorailCyclesUtil7C(
-                session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, session.CurrentRotation);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
             break;
         case 2:
-            PaintMonorailCyclesUtil7C(
-                session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, session.CurrentRotation);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
             break;
         case 3:
-            PaintMonorailCyclesUtil7C(
-                session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
             break;
     }
 
