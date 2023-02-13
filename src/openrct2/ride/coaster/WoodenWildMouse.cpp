@@ -563,13 +563,13 @@ static void WoodenWildMouseTrackLeftQuarterTurn1(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 26, 24, 1 }, { 6, 2, height });
+            PaintAddImageAsParent(session, imageId, { 6, 0, height }, { { 6, 2, height }, { 26, 24, 1 } });
             break;
         case 1:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 26, 1 });
             break;
         case 2:
-            PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 24, 26, 1 }, { 2, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 6, height }, { { 2, 6, height }, { 24, 26, 1 } });
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 6, 6, height }, { 24, 24, 1 });
