@@ -89,7 +89,7 @@ namespace RCT2
     private:
         IObjectRepository& _objectRepository;
 
-        const utf8* _s6Path = nullptr;
+        u8string _s6Path;
         S6Data _s6{};
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
@@ -107,7 +107,7 @@ namespace RCT2
         {
         }
 
-        ParkLoadResult Load(const utf8* path) override
+        ParkLoadResult Load(const u8string& path) override
         {
             const auto extension = Path::GetExtension(path);
             if (String::Equals(extension, ".sc6", true))
@@ -122,7 +122,7 @@ namespace RCT2
             throw std::runtime_error("Invalid RCT2 park extension.");
         }
 
-        ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
+        ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
         {
             auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
             auto result = LoadFromStream(&fs, false, skipObjectCheck);
@@ -130,7 +130,7 @@ namespace RCT2
             return result;
         }
 
-        ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) override
+        ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
         {
             auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
             auto result = LoadFromStream(&fs, true, skipObjectCheck);
@@ -140,7 +140,7 @@ namespace RCT2
 
         ParkLoadResult LoadFromStream(
             OpenRCT2::IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck = false,
-            const utf8* path = String::Empty) override
+            const u8string& path = {}) override
         {
             auto chunkReader = SawyerChunkReader(stream);
             chunkReader.ReadChunk(&_s6.Header, sizeof(_s6.Header));
@@ -169,7 +169,7 @@ namespace RCT2
                 _objectRepository.ExportPackedObject(stream);
             }
 
-            if (path)
+            if (!path.empty())
             {
                 auto extension = Path::GetExtension(path);
                 _isSV7 = _stricmp(extension.c_str(), ".sv7") == 0;
@@ -219,7 +219,7 @@ namespace RCT2
             stream.Read(&_s6.EntityListsHead, postEntitiesSize);
         }
 
-        bool GetDetails(scenario_index_entry* dst) override
+        bool GetDetails(ScenarioIndexEntry* dst) override
         {
             *dst = {};
             return false;

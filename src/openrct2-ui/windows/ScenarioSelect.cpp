@@ -56,7 +56,7 @@ struct ScenarioListItem
         } heading;
         struct
         {
-            const scenario_index_entry * scenario;
+            const ScenarioIndexEntry * scenario;
             bool is_locked;
         } scenario;
     };
@@ -145,7 +145,7 @@ static WindowEventList window_scenarioselect_events([](auto& events)
 
 static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
 static void InitialiseListItems(WindowBase* w);
-static bool IsScenarioVisible(WindowBase* w, const scenario_index_entry* scenario);
+static bool IsScenarioVisible(WindowBase* w, const ScenarioIndexEntry* scenario);
 static bool IsLockingEnabled(WindowBase* w);
 
 static std::function<void(std::string_view)> _callback;
@@ -206,16 +206,16 @@ static void WindowScenarioselectInitTabs(WindowBase* w)
     size_t numScenarios = ScenarioRepositoryGetCount();
     for (size_t i = 0; i < numScenarios; i++)
     {
-        const scenario_index_entry* scenario = ScenarioRepositoryGetByIndex(i);
+        const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
         if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
-            if (_titleEditor && scenario->source_game == ScenarioSource::Other)
+            if (_titleEditor && scenario->SourceGame == ScenarioSource::Other)
                 continue;
-            showPages |= 1 << static_cast<uint8_t>(scenario->source_game);
+            showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
         }
         else
         {
-            int32_t category = scenario->category;
+            int32_t category = scenario->Category;
             if (category > SCENARIO_CATEGORY_OTHER)
             {
                 category = SCENARIO_CATEGORY_OTHER;
@@ -341,7 +341,7 @@ static void WindowScenarioselectScrollmousedown(WindowBase* w, int32_t scrollInd
                 {
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
                     gFirstTimeSaving = true;
-                    _callback(listItem.scenario.scenario->path);
+                    _callback(listItem.scenario.scenario->Path);
                     if (_titleEditor)
                     {
                         WindowClose(*w);
@@ -366,7 +366,7 @@ static void WindowScenarioselectScrollmouseover(WindowBase* w, int32_t scrollInd
 
     bool originalShowLockedInformation = _showLockedInformation;
     _showLockedInformation = false;
-    const scenario_index_entry* selected = nullptr;
+    const ScenarioIndexEntry* selected = nullptr;
     auto mutableScreenCoords = screenCoords;
     for (const auto& listItem : _listItems)
     {
@@ -426,7 +426,7 @@ static void WindowScenarioselectInvalidate(WindowBase* w)
 static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     int32_t format;
-    const scenario_index_entry* scenario;
+    const ScenarioIndexEntry* scenario;
 
     WindowDrawWidgets(*w, dpi);
 
@@ -485,7 +485,7 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
     {
         utf8 path[MAX_PATH];
 
-        ShortenPath(path, sizeof(path), scenario->path, w->width - 6 - TabWidth, FontStyle::Medium);
+        ShortenPath(path, sizeof(path), scenario->Path, w->width - 6 - TabWidth, FontStyle::Medium);
 
         const utf8* pathPtr = path;
         auto ft = Formatter();
@@ -500,7 +500,7 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
                           window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
     auto ft = Formatter();
     ft.Add<StringId>(STR_STRING);
-    ft.Add<const char*>(scenario->name);
+    ft.Add<const char*>(scenario->Name);
     DrawTextEllipsised(
         dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
     screenPos.y += 15;
@@ -508,16 +508,16 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
     // Scenario details
     ft = Formatter();
     ft.Add<StringId>(STR_STRING);
-    ft.Add<const char*>(scenario->details);
+    ft.Add<const char*>(scenario->Details);
     screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_BLACK_STRING, ft) + 5;
 
     // Scenario objective
     ft = Formatter();
-    ft.Add<StringId>(ObjectiveNames[scenario->objective_type]);
-    if (scenario->objective_type == OBJECTIVE_BUILD_THE_BEST)
+    ft.Add<StringId>(ObjectiveNames[scenario->ObjectiveType]);
+    if (scenario->ObjectiveType == OBJECTIVE_BUILD_THE_BEST)
     {
         StringId rideTypeString = STR_NONE;
-        auto rideTypeId = scenario->objective_arg_3;
+        auto rideTypeId = scenario->ObjectiveArg3;
         if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
         {
             rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
@@ -526,28 +526,28 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
     }
     else
     {
-        ft.Add<int16_t>(scenario->objective_arg_3);
-        ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, scenario->objective_arg_1));
-        if (scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-            ft.Add<uint16_t>(scenario->objective_arg_2);
+        ft.Add<int16_t>(scenario->ObjectiveArg3);
+        ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, scenario->ObjectiveArg1));
+        if (scenario->ObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+            ft.Add<uint16_t>(scenario->ObjectiveArg2);
         else
-            ft.Add<money64>(scenario->objective_arg_2);
+            ft.Add<money64>(scenario->ObjectiveArg2);
     }
     screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
     // Scenario score
-    if (scenario->highscore != nullptr)
+    if (scenario->Highscore != nullptr)
     {
         // TODO: Should probably be translatable
         const utf8* completedByName = "???";
-        if (!String::IsNullOrEmpty(scenario->highscore->name))
+        if (!String::IsNullOrEmpty(scenario->Highscore->name))
         {
-            completedByName = scenario->highscore->name;
+            completedByName = scenario->Highscore->name;
         }
         ft = Formatter();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(completedByName);
-        ft.Add<money64>(scenario->highscore->company_value);
+        ft.Add<money64>(scenario->Highscore->company_value);
         screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
     }
 }
@@ -589,19 +589,19 @@ static void WindowScenarioselectScrollpaint(WindowBase* w, DrawPixelInfo* dpi, i
             case ListItemType::Scenario:
             {
                 // Draw hover highlight
-                const scenario_index_entry* scenario = listItem.scenario.scenario;
+                const ScenarioIndexEntry* scenario = listItem.scenario.scenario;
                 bool isHighlighted = w->highlighted_scenario == scenario;
                 if (isHighlighted)
                 {
                     GfxFilterRect(dpi, { 0, y, w->width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
                 }
 
-                bool isCompleted = scenario->highscore != nullptr;
+                bool isCompleted = scenario->Highscore != nullptr;
                 bool isDisabled = listItem.scenario.is_locked;
 
                 // Draw scenario name
                 char buffer[64];
-                SafeStrCpy(buffer, scenario->name, sizeof(buffer));
+                SafeStrCpy(buffer, scenario->Name, sizeof(buffer));
                 StringId format = isDisabled ? static_cast<StringId>(STR_STRINGID)
                                              : (isHighlighted ? highlighted_format : unhighlighted_format);
                 auto ft = Formatter();
@@ -624,9 +624,9 @@ static void WindowScenarioselectScrollpaint(WindowBase* w, DrawPixelInfo* dpi, i
 
                     // Draw completion score
                     const utf8* completedByName = "???";
-                    if (!String::IsNullOrEmpty(scenario->highscore->name))
+                    if (!String::IsNullOrEmpty(scenario->Highscore->name))
                     {
-                        completedByName = scenario->highscore->name;
+                        completedByName = scenario->Highscore->name;
                     }
                     SafeStrCpy(buffer, completedByName, 64);
                     ft = Formatter();
@@ -698,20 +698,20 @@ static void InitialiseListItems(WindowBase* w)
     uint8_t currentHeading = UINT8_MAX;
     for (size_t i = 0; i < numScenarios; i++)
     {
-        const scenario_index_entry* scenario = ScenarioRepositoryGetByIndex(i);
+        const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
 
         if (!IsScenarioVisible(w, scenario))
             continue;
-        if (_titleEditor && scenario->source_game == ScenarioSource::Other)
+        if (_titleEditor && scenario->SourceGame == ScenarioSource::Other)
             continue;
 
         // Category heading
         StringId headingStringId = STR_NONE;
         if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
-            if (w->selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->category)
+            if (w->selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
             {
-                currentHeading = scenario->category;
+                currentHeading = scenario->Category;
                 headingStringId = ScenarioCategoryStringIds[currentHeading];
             }
         }
@@ -719,15 +719,15 @@ static void InitialiseListItems(WindowBase* w)
         {
             if (w->selected_tab <= SCENARIO_CATEGORY_EXPERT)
             {
-                if (currentHeading != static_cast<uint8_t>(scenario->source_game))
+                if (currentHeading != static_cast<uint8_t>(scenario->SourceGame))
                 {
-                    currentHeading = static_cast<uint8_t>(scenario->source_game);
+                    currentHeading = static_cast<uint8_t>(scenario->SourceGame);
                     headingStringId = ScenarioOriginStringIds[currentHeading];
                 }
             }
             else if (w->selected_tab == SCENARIO_CATEGORY_OTHER)
             {
-                int32_t category = scenario->category;
+                int32_t category = scenario->Category;
                 if (category <= SCENARIO_CATEGORY_REAL)
                 {
                     category = SCENARIO_CATEGORY_OTHER;
@@ -755,21 +755,21 @@ static void InitialiseListItems(WindowBase* w)
         if (IsLockingEnabled(w))
         {
             scenarioItem.scenario.is_locked = numUnlocks <= 0;
-            if (scenario->highscore == nullptr)
+            if (scenario->Highscore == nullptr)
             {
                 numUnlocks--;
             }
             else
             {
                 // Mark RCT1 scenario as completed
-                if (scenario->sc_id < SC_MEGA_PARK)
+                if (scenario->ScenarioId < SC_MEGA_PARK)
                 {
-                    rct1CompletedScenarios |= 1 << scenario->sc_id;
+                    rct1CompletedScenarios |= 1 << scenario->ScenarioId;
                 }
             }
 
             // If scenario is Mega Park, keep a reference to it
-            if (scenario->sc_id == SC_MEGA_PARK)
+            if (scenario->ScenarioId == SC_MEGA_PARK)
             {
                 megaParkListItemIndex = _listItems.size() - 1;
             }
@@ -810,18 +810,18 @@ static void InitialiseListItems(WindowBase* w)
     }
 }
 
-static bool IsScenarioVisible(WindowBase* w, const scenario_index_entry* scenario)
+static bool IsScenarioVisible(WindowBase* w, const ScenarioIndexEntry* scenario)
 {
     if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
     {
-        if (static_cast<uint8_t>(scenario->source_game) != w->selected_tab)
+        if (static_cast<uint8_t>(scenario->SourceGame) != w->selected_tab)
         {
             return false;
         }
     }
     else
     {
-        int32_t category = scenario->category;
+        int32_t category = scenario->Category;
         if (category > SCENARIO_CATEGORY_OTHER)
         {
             category = SCENARIO_CATEGORY_OTHER;

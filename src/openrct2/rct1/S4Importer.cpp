@@ -127,7 +127,7 @@ namespace RCT1
         IScenarioRepository* _scenarioRepository = GetScenarioRepository();
 
     public:
-        ParkLoadResult Load(const utf8* path) override
+        ParkLoadResult Load(const u8string& path) override
         {
             const auto extension = Path::GetExtension(path);
             if (String::Equals(extension, ".sc4", true))
@@ -142,14 +142,14 @@ namespace RCT1
             throw std::runtime_error("Invalid RCT1 park extension.");
         }
 
-        ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
+        ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             auto result = LoadFromStream(&fs, false, skipObjectCheck, path);
             return result;
         }
 
-        ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) override
+        ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             auto result = LoadFromStream(&fs, true, skipObjectCheck, path);
@@ -157,7 +157,7 @@ namespace RCT1
         }
 
         ParkLoadResult LoadFromStream(
-            IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck, const utf8* path) override
+            IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck, const u8string& path) override
         {
             _s4 = *ReadAndDecodeS4(stream, isScenario);
             _s4Path = path;
@@ -202,7 +202,7 @@ namespace RCT1
             RestrictAllMiscScenery();
         }
 
-        bool GetDetails(scenario_index_entry* dst) override
+        bool GetDetails(ScenarioIndexEntry* dst) override
         {
             *dst = {};
 
@@ -210,23 +210,23 @@ namespace RCT1
             // If no entry is found, this is a custom scenario.
             bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
-            dst->category = desc.category;
-            dst->source_game = ScenarioSource{ desc.source };
-            dst->source_index = desc.index;
-            dst->sc_id = desc.id;
+            dst->Category = desc.category;
+            dst->SourceGame = ScenarioSource{ desc.source };
+            dst->SourceIndex = desc.index;
+            dst->ScenarioId = desc.id;
 
-            dst->objective_type = _s4.ScenarioObjectiveType;
-            dst->objective_arg_1 = _s4.ScenarioObjectiveYears;
+            dst->ObjectiveType = _s4.ScenarioObjectiveType;
+            dst->ObjectiveArg1 = _s4.ScenarioObjectiveYears;
             // RCT1 used another way of calculating park value.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
-                dst->objective_arg_2 = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
+                dst->ObjectiveArg2 = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
-                dst->objective_arg_2 = _s4.ScenarioObjectiveCurrency;
-            dst->objective_arg_3 = _s4.ScenarioObjectiveNumGuests;
+                dst->ObjectiveArg2 = _s4.ScenarioObjectiveCurrency;
+            dst->ObjectiveArg3 = _s4.ScenarioObjectiveNumGuests;
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
             {
-                dst->objective_arg_3 = GetBuildTheBestRideId();
+                dst->ObjectiveArg3 = GetBuildTheBestRideId();
             }
 
             auto name = RCT2StringToUTF8(_s4.ScenarioName, RCT2LanguageId::EnglishUK);
@@ -239,7 +239,7 @@ namespace RCT1
                 desc.title = name.c_str();
             }
 
-            String::Set(dst->internal_name, sizeof(dst->internal_name), desc.title);
+            String::Set(dst->InternalName, sizeof(dst->InternalName), desc.title);
 
             StringId localisedStringIds[3];
             if (LanguageGetLocalisedScenarioStrings(desc.title, localisedStringIds))
@@ -254,8 +254,8 @@ namespace RCT1
                 }
             }
 
-            String::Set(dst->name, sizeof(dst->name), name.c_str());
-            String::Set(dst->details, sizeof(dst->details), details.c_str());
+            String::Set(dst->Name, sizeof(dst->Name), name.c_str());
+            String::Set(dst->Details, sizeof(dst->Details), details.c_str());
 
             return true;
         }
@@ -333,13 +333,13 @@ namespace RCT1
 
         std::string GetRCT1ScenarioName()
         {
-            const scenario_index_entry* scenarioEntry = _scenarioRepository->GetByInternalName(_s4.ScenarioName);
+            const ScenarioIndexEntry* scenarioEntry = _scenarioRepository->GetByInternalName(_s4.ScenarioName);
             if (scenarioEntry == nullptr)
             {
                 return "";
             }
 
-            return Path::GetFileName(scenarioEntry->path);
+            return Path::GetFileName(scenarioEntry->Path);
         }
 
         void InitialiseEntryMaps()
