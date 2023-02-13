@@ -325,7 +325,7 @@ static void PaintMiniHelicoptersTrackSpinningTunnel(
     ImageId imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
     ImageId underlay = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
 
-    PaintAddImageAsParentRotated(session, direction, underlay, { 0, 6, height - 2 }, { 32, 20, 1 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, underlay, { 0, 6, height - 2 }, { { 0, 6, height }, { 32, 20, 1 } });
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
     TrackPaintUtilSpinningTunnelPaint(session, 1, height, direction);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);

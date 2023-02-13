@@ -528,10 +528,10 @@ static void PaintMiniGolfTrack25DegUp(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSprites25DegUp[direction][1]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 15 }, { 0, 10, height + 2 });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 10, height + 2 }, { 32, 1, 15 } });
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSprites25DegUp[direction][2]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 15 }, { 0, 22, height + 2 });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 22, height + 2 }, { 32, 1, 15 } });
 
     switch (direction)
     {
@@ -560,17 +560,17 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
     ImageId imageId;
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MiniGolfTrackSpritesFlatTo25DegUp[direction][0]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
     MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSpritesFlatTo25DegUp[direction][1]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 11 }, { 0, 10, height + 2 });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 10, height + 2 }, { 32, 1, 11 } });
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSpritesFlatTo25DegUp[direction][2]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 11 }, { 0, 22, height + 2 });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 22, height + 2 }, { 32, 1, 11 } });
 
     switch (direction)
     {
@@ -599,17 +599,17 @@ static void PaintMiniGolfTrack25DegUpToFlat(
     ImageId imageId;
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MiniGolfTrackSprites25DegUpToFlat[direction][0]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
     MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSprites25DegUpToFlat[direction][1]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 11 }, { 0, 10, height + 2 });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 10, height + 2 }, { 32, 1, 11 } });
 
     imageId = session.TrackColours[SCHEME_MISC].WithIndex(MiniGolfTrackSprites25DegUpToFlat[direction][2]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 11 }, { 0, 22, height + 2 });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 22, height + 2 }, { 32, 1, 11 } });
 
     switch (direction)
     {
@@ -664,7 +664,7 @@ static void PaintMiniGolfStation(
     bool hasFence;
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMiniGolfStationFloor);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 28, 1 }, { 0, 0, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 28, 1 } });
 
     if (direction & 1)
     {

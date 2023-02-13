@@ -5848,7 +5848,8 @@ static void JuniorRCTrackOnRidePhoto(
                 session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
+            PaintAddImageAsParentRotated(
+                session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -5858,7 +5859,8 @@ static void JuniorRCTrackOnRidePhoto(
                 session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
+            PaintAddImageAsParentRotated(
+                session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -5868,7 +5870,8 @@ static void JuniorRCTrackOnRidePhoto(
                 session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
+            PaintAddImageAsParentRotated(
+                session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -5878,7 +5881,8 @@ static void JuniorRCTrackOnRidePhoto(
                 session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
                 session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
+            PaintAddImageAsParentRotated(
+                session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
             break;
     }
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3 + photoCameraOffset, trackElement);

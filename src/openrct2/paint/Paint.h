@@ -317,13 +317,6 @@ PaintStruct* PaintAddImageAsParentRotated(
 
 inline PaintStruct* PaintAddImageAsParentRotated(
     PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
-{
-    return PaintAddImageAsParentRotated(session, direction, imageId, offset, { boundBoxOffset, boundBoxSize });
-}
-
-inline PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize)
 {
     return PaintAddImageAsParentRotated(session, direction, imageId, offset, { offset, boundBoxSize });
