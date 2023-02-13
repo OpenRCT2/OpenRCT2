@@ -996,8 +996,8 @@ static void vehicle_sprite_paint(
         imageId = ImageId(baseImageId).WithRemap(FilterPaletteID::Palette44);
     }
     PaintAddImageAsParent(
-        session, imageId, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
-        { bb.offset_x, bb.offset_y, bb.offset_z + z });
+        session, imageId, { 0, 0, z },
+        { { bb.offset_x, bb.offset_y, bb.offset_z + z }, { bb.length_x, bb.length_y, bb.length_z } });
 
     auto* dpi = &session.DPI;
     if (dpi->zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && carEntry->no_seating_rows > 0)
@@ -3674,7 +3674,7 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
     if (HasFlag(VehicleFlags::Crashed))
     {
         PaintAddImageAsParent(
-            session, ImageId(SPR_WATER_PARTICLES_DENSE_0 + animation_frame), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
+            session, ImageId(SPR_WATER_PARTICLES_DENSE_0 + animation_frame), { 0, 0, z }, { { 0, 0, z + 2 }, { 1, 1, 0 } });
         return;
     }
 

@@ -167,13 +167,13 @@ static PaintStruct* PaintMonorailCyclesUtil7C(
     if (flip)
     {
         return PaintAddImageAsParent(
-            session, imageId, { yOffset, xOffset, zOffset }, { boundBoxLengthY, boundBoxLengthX, boundBoxLengthZ },
-            { boundBoxOffsetY, boundBoxOffsetX, boundBoxOffsetZ });
+            session, imageId, { yOffset, xOffset, zOffset },
+            { { boundBoxOffsetY, boundBoxOffsetX, boundBoxOffsetZ }, { boundBoxLengthY, boundBoxLengthX, boundBoxLengthZ } });
     }
 
     return PaintAddImageAsParent(
-        session, imageId, { xOffset, yOffset, zOffset }, { boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ },
-        { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ });
+        session, imageId, { xOffset, yOffset, zOffset },
+        { { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ }, { boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ } });
 }
 
 /** rct2: 0x0088AD48 */
@@ -213,7 +213,7 @@ static void PaintMonorailCyclesStation(
     if (direction == 0 || direction == 2)
     {
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatSwNe);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 1 } });
@@ -225,7 +225,7 @@ static void PaintMonorailCyclesStation(
     else if (direction == 1 || direction == 3)
     {
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatNwSe);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });

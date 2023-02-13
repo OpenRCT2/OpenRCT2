@@ -503,10 +503,10 @@ static void PaintMiniGolfTrackFlat(
         else
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceBackSwNe);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 10, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 10, height + 2 }, { 32, 1, 7 } });
 
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceFrontSwNe);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 22, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 22, height + 2 }, { 32, 1, 7 } });
         }
     }
 
@@ -672,14 +672,14 @@ static void PaintMiniGolfStation(
         if (hasFence)
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceBackNwSe);
-            PaintAddImageAsParent(session, imageId, { -10, 0, height }, { 1, 32, 7 }, { 0, 0, height + 2 });
+            PaintAddImageAsParent(session, imageId, { -10, 0, height }, { { 0, 0, height + 2 }, { 1, 32, 7 } });
         }
 
         bool hasSWFence = TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
         if (hasSWFence)
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceFrontNwSe);
-            PaintAddImageAsParent(session, imageId, { 10, 0, height }, { 1, 32, 7 }, { 31, 0, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 10, 0, height }, { { 31, 0, height + 2 }, { 1, 32, 7 } });
         }
 
         TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
@@ -694,14 +694,14 @@ static void PaintMiniGolfStation(
         if (hasFence)
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceBackSwNe);
-            PaintAddImageAsParent(session, imageId, { 0, -10, height }, { 32, 1, 7 }, { 0, 0, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, -10, height }, { { 0, 0, height + 2 }, { 32, 1, 7 } });
         }
 
         bool hasSEFence = TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
         if (hasSEFence)
         {
             imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfFlatFenceFrontSwNe);
-            PaintAddImageAsParent(session, imageId, { 0, 10, height }, { 32, 1, 7 }, { 0, 31, height + 2 });
+            PaintAddImageAsParent(session, imageId, { 0, 10, height }, { { 0, 31, height + 2 }, { 32, 1, 7 } });
         }
 
         TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
@@ -784,11 +784,11 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
         {
             case 0:
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfQuarterTurn1TileFenceInsideSwNw);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 5, 5, 5 }, { 24, 0, height + 2 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 24, 0, height + 2 }, { 5, 5, 5 } });
                 break;
             case 2:
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprMiniGolfQuarterTurn1TileFenceInsideNeSe);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 5, 5, 5 }, { 0, 24, height + 2 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 24, height + 2 }, { 5, 5, 5 } });
                 break;
         }
     }
@@ -914,16 +914,16 @@ static void PaintMiniGolfHoleC(
     {
         case 0x01:
         case 0x20:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 26, 3 }, { 30, 3, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 26, 3 } });
             break;
         case 0x10:
         case 0x31:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 2, 3 }, { 3, 30, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 30, height + 4 }, { 26, 2, 3 } });
             break;
         default:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 0 },
-                { boundBoxOffset.x, boundBoxOffset.y, height + 24 });
+                session, imageId, { 0, 0, height },
+                { { boundBoxOffset.x, boundBoxOffset.y, height + 24 }, { boundBox.x, boundBox.y, 0 } });
             break;
     }
 
@@ -990,22 +990,22 @@ static void PaintMiniGolfHoleD(
     {
         case 0x01:
         case 0x32:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 26, 3 }, { 30, 3, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 26, 3 } });
             break;
         case 0x02:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 23, 2, 3 }, { 3, 30, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 30, height + 4 }, { 23, 2, 3 } });
             break;
         case 0x10:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 24, 3 }, { 30, 3, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 24, 3 } });
             break;
         case 0x20:
         case 0x31:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 2, 3 }, { 3, 30, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 30, height + 4 }, { 26, 2, 3 } });
             break;
         default:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 0 },
-                { boundBoxOffset.x, boundBoxOffset.y, height + 24 });
+                session, imageId, { 0, 0, height },
+                { { boundBoxOffset.x, boundBoxOffset.y, height + 24 }, { boundBox.x, boundBox.y, 0 } });
             break;
     }
 
@@ -1082,23 +1082,23 @@ static void PaintMiniGolfHoleE(
     switch ((direction << 4) | trackSequence)
     {
         case 0x01:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 26, 3 }, { 30, 3, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 26, 3 } });
             break;
         case 0x02:
         case 0x20:
         case 0x31:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 2, 3 }, { 3, 30, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 30, height + 4 }, { 26, 2, 3 } });
             break;
         case 0x10:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 24, 3 }, { 30, 3, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 24, 3 } });
             break;
         case 0x32:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 23, 3 }, { 30, 3, height + 4 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 23, 3 } });
             break;
         default:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 0 },
-                { boundBoxOffset.x, boundBoxOffset.y, height + 24 });
+                session, imageId, { 0, 0, height },
+                { { boundBoxOffset.x, boundBoxOffset.y, height + 24 }, { boundBox.x, boundBox.y, 0 } });
             break;
     }
 
@@ -1213,7 +1213,7 @@ void VehicleVisualMiniGolfPlayer(
 
     ImageIndex index = rideEntry->Cars[0].base_image_id + 1 + ebx;
     auto image = ImageId(index, peep->TshirtColour, peep->TrousersColour);
-    PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
+    PaintAddImageAsParent(session, image, { 0, 0, z }, { { 0, 0, z + 5 }, { 1, 1, 11 } });
 }
 
 /**
@@ -1242,5 +1242,5 @@ void VehicleVisualMiniGolfBall(
         return;
 
     uint32_t image_id = rideEntry->Cars[0].base_image_id;
-    PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 3 });
+    PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z + 3 }, { 1, 1, 0 } });
 }

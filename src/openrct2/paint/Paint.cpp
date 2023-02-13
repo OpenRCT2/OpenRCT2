@@ -675,31 +675,6 @@ void PaintSessionFree([[maybe_unused]] PaintSession* session)
 }
 
 /**
- *  rct2: 0x006861AC, 0x00686337, 0x006864D0, 0x0068666B, 0x0098196C
- *
- * @param image_id (ebx)
- * @param x_offset (al)
- * @param y_offset (cl)
- * @param bound_box_length_x (di)
- * @param bound_box_length_y (si)
- * @param bound_box_length_z (ah)
- * @param z_offset (dx)
- * @return (ebp) PaintStruct on success (CF == 0), nullptr on failure (CF == 1)
- */
-PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
-{
-    return PaintAddImageAsParent(session, image_id, offset, { offset, boundBoxSize });
-}
-
-PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset)
-{
-    return PaintAddImageAsParent(session, image_id, offset, { boundBoxOffset, boundBoxSize });
-}
-
-/**
  *  rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C
  *
  * @param image_id (ebx)

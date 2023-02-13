@@ -78,21 +78,21 @@ static void PaintMotionSimulatorVehicle(
         case 0:
             PaintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
             PaintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { 20, 2, 44 }, { offset.x, offset.y + 32, offset.z });
+            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x, offset.y + 32, offset.z }, { 20, 2, 44 } });
             break;
         case 1:
             PaintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
             PaintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { 2, 20, 44 }, { offset.x + 34, offset.y, offset.z });
+            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x + 34, offset.y, offset.z }, { 2, 20, 44 } });
             break;
         case 2:
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { 20, 2, 44 }, { offset.x, offset.y - 10, offset.z });
-            PaintAddImageAsParent(session, stairsImageId, offset, { 20, 20, 44 }, { offset.x, offset.y + 5, offset.z });
+            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x, offset.y - 10, offset.z }, { 20, 2, 44 } });
+            PaintAddImageAsParent(session, stairsImageId, offset, { { offset.x, offset.y + 5, offset.z }, { 20, 20, 44 } });
             PaintAddImageAsChild(session, simulatorImageId, offset, { { offset.x, offset.y + 5, offset.z }, { 20, 20, 44 } });
             break;
         case 3:
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { 2, 20, 44 }, { offset.x - 10, offset.y, offset.z });
-            PaintAddImageAsParent(session, stairsImageId, offset, { 20, 20, 44 }, { offset.x + 5, offset.y, offset.z });
+            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x - 10, offset.y, offset.z }, { 2, 20, 44 } });
+            PaintAddImageAsParent(session, stairsImageId, offset, { { offset.x + 5, offset.y, offset.z }, { 20, 20, 44 } });
             PaintAddImageAsChild(session, simulatorImageId, offset, { { offset.x + 5, offset.y, offset.z }, { 20, 20, 44 } });
             break;
     }
