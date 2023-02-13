@@ -475,7 +475,7 @@ private:
 public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
-    LargeSceneryEntry* GetEntry() const;
+    const LargeSceneryEntry* GetEntry() const;
     const LargeSceneryObject* GetObject() const;
 
     uint8_t GetSequenceIndex() const;

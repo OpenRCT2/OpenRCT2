@@ -263,7 +263,7 @@ public:
         }
         else
         {
-            auto* sceneryEntry = GetLargeSceneryEntry(_sceneryEntry);
+            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;

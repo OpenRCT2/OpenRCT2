@@ -1066,7 +1066,7 @@ private:
                     return;
                 }
 
-                auto* sceneryEntry = GetLargeSceneryEntry(selection.EntryIndex);
+                auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
                 gMapSelectionTiles.clear();
 
                 for (auto* tile = sceneryEntry->tiles; tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF));
@@ -1572,7 +1572,7 @@ private:
             case ViewportInteractionItem::LargeScenery:
             {
                 auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
-                auto* sceneryEntry = GetLargeSceneryEntry(entryIndex);
+                auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
                 if (sceneryEntry != nullptr)
                 {
                     WindowScenerySetSelectedItem(
@@ -2021,7 +2021,7 @@ private:
         uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
             std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
-        auto* sceneryEntry = GetLargeSceneryEntry(sceneryIndex);
+        auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryIndex);
         if (sceneryEntry)
         {
             int16_t maxClearZ = 0;

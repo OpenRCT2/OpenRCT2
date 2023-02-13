@@ -363,7 +363,7 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
         case SCENERY_TYPE_WALL:
             return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_LARGE:
-            return GetLargeSceneryEntry(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_BANNER:
             return OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(item.EntryIndex) != nullptr;
         default:
