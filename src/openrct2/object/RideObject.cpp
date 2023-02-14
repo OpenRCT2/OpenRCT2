@@ -196,6 +196,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
     }
     RideObjectUpdateRideType(_legacyType);
+    _legacyType.Clearance = GetDefaultClearance();
 }
 
 void RideObject::Load()
@@ -471,6 +472,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         }
 
         _legacyType.max_height = Json::GetNumber<uint8_t>(properties["maxHeight"]);
+        _legacyType.Clearance = Json::GetNumber<uint8_t>(properties["clearance"], GetDefaultClearance());
 
         // This needs to be set for both shops/facilities _and_ regular rides.
         for (auto& item : _legacyType.shop_item)
@@ -1015,4 +1017,11 @@ void RideObject::ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups
     {
         vehicle->SpriteGroups[EnumValue(SpriteGroupType::CurvedLiftHill)].spritePrecision = baseSpritePrecision;
     }
+}
+
+uint8_t RideObject::GetDefaultClearance() const
+{
+    auto rideType = _legacyType.GetFirstNonNullRideType();
+    const auto& rtd = GetRideTypeDescriptor(rideType);
+    return rtd.Heights.ClearanceHeight;
 }

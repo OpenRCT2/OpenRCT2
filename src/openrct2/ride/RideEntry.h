@@ -73,6 +73,7 @@ struct RideObjectEntry
     ShopItem shop_item[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     StringId capacity;
     void* obj;
+    uint8_t Clearance;
 
     const CarEntry* GetCar(size_t id) const
     {

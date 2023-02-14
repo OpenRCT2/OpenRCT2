@@ -209,6 +209,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     // If that is not the case, then perform the remaining checks
     trackBlock = ted.Block;
+    auto clearanceHeight = rideEntry->Clearance;
 
     money32 costs = 0;
     money64 supportCosts = 0;
@@ -227,14 +228,13 @@ GameActions::Result TrackPlaceAction::Query() const
         int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
 
         int32_t clearanceZ = trackBlock->var_07;
-        if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
-            && ride->GetRideTypeDescriptor().Heights.ClearanceHeight > 24)
+        if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
         }
         else
         {
-            clearanceZ += ride->GetRideTypeDescriptor().Heights.ClearanceHeight;
+            clearanceZ += clearanceHeight;
         }
 
         clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
@@ -441,6 +441,7 @@ GameActions::Result TrackPlaceAction::Execute() const
     money32 costs = 0;
     money64 supportCosts = 0;
     const PreviewTrack* trackBlock = ted.Block;
+    auto clearanceHeight = rideEntry->Clearance;
     CoordsXYZ originLocation = CoordsXYZ{ _origin.x, _origin.y, _origin.z }
         + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
@@ -452,14 +453,13 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
         int32_t clearanceZ = trackBlock->var_07;
-        if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
-            && ride->GetRideTypeDescriptor().Heights.ClearanceHeight > 24)
+        if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
         }
         else
         {
-            clearanceZ += ride->GetRideTypeDescriptor().Heights.ClearanceHeight;
+            clearanceZ += clearanceHeight;
         }
 
         clearanceZ = Floor2(clearanceZ, COORDS_Z_STEP) + baseZ;

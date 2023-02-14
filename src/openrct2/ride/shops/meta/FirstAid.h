@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor FirstAidRTD =
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_FIRST_AID)),
     SET_FIELD(AvailableBreakdowns, 0),
-    SET_FIELD(Heights, { 12, 48, 0, 0, }),
+    SET_FIELD(Heights, { 12, DefaultFirstAidHeight, 0, 0, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateFirstAid),

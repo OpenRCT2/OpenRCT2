@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor ShopRTD =
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SHOP)),
     SET_FIELD(AvailableBreakdowns, 0),
-    SET_FIELD(Heights, { 12, 64, 0, 0, }),
+    SET_FIELD(Heights, { 12, DefaultShopHeight, 0, 0, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateShop),
