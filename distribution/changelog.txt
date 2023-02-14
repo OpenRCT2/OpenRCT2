@@ -26,6 +26,7 @@
 - Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
 - Change: [#19233] Reduce lift speed minimum and maximum values for “Classic Wooden Coaster”.
 - Fix: [#474] Mini golf window shows more players than there actually are (original bug).
+- Fix: [#7210] Land tile smoothing occurs with edge tiles (original bug).
 - Fix: [#17996] Finances window not cleared when starting some .park scenarios
 - Fix: [#18260] Crash opening parks that have multiple tiles referencing the same banner entry.
 - Fix: [#18467] “Selected only” Object Selection filter is active in Track Designs Manager, and cannot be toggled.
