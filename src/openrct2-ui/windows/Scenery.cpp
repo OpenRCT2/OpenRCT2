@@ -939,10 +939,12 @@ public:
         }
 
         // Remove empty tabs
-        for (auto it = _tabEntries.begin(); it != _tabEntries.end(); it++)
+        for (auto it = _tabEntries.begin(); it != _tabEntries.end();)
         {
             if (it->Entries.size() == 0)
-                _tabEntries.erase(it);
+                it = _tabEntries.erase(it);
+            else
+                it++;
         }
 
         // Set required width
