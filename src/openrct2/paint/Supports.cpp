@@ -843,16 +843,11 @@ bool MetalASupportsPaintSetup(
 
         uint8_t ebp = esi[segment * 8 + 1];
 
-        int8_t xOffset = SupportBoundBoxes[segment].x;
-        int8_t yOffset = SupportBoundBoxes[segment].y;
-        xOffset += Loc97B052[ebp].x;
-        yOffset += Loc97B052[ebp].y;
-
-        int16_t boundBoxLengthX = _97B062[ebp].x;
-        int16_t boundBoxLengthY = _97B062[ebp].y;
+        auto offset = CoordsXYZ{ SupportBoundBoxes[segment] + Loc97B052[ebp], height };
+        auto boundBoxLength = CoordsXYZ(_97B062[ebp], 1);
 
         auto image_id = imageTemplate.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]);
-        PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { boundBoxLengthX, boundBoxLengthY, 1 });
+        PaintAddImageAsParent(session, image_id, offset, boundBoxLength);
 
         segment = newSegment;
     }
