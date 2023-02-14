@@ -1123,9 +1123,6 @@ void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value)
 
 static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
-    int32_t no_lines = 0;
-    char wrapped_string[TEXT_INPUT_SIZE];
-
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
 
@@ -1149,43 +1146,42 @@ static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
     {
         if (widget.text != 0)
         {
-            SafeStrCpy(wrapped_string, widget.string, 512);
-            GfxWrapString(wrapped_string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &no_lines);
-            GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
+            u8string wrappedString;
+            GfxWrapString(widget.string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &wrappedString, nullptr);
+            GfxDrawStringNoFormatting(
+                dpi, { topLeft.x + 2, topLeft.y }, wrappedString.c_str(), { w.colours[1], FontStyle::Medium });
         }
         return;
     }
 
-    SafeStrCpy(wrapped_string, gTextBoxInput, TEXT_INPUT_SIZE);
-
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
-    GfxWrapString(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &no_lines);
+    u8string wrappedString;
+    GfxWrapString(gTextBoxInput, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &wrappedString, nullptr);
 
-    GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w.colours[1], FontStyle::Medium });
+    GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrappedString.c_str(), { w.colours[1], FontStyle::Medium });
 
-    size_t string_length = GetStringSize(wrapped_string) - 1;
-
-    // Make a copy of the string for measuring the width.
-    char temp_string[TEXT_INPUT_SIZE] = { 0 };
-    std::memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
-    int32_t cur_x = topLeft.x + GfxGetStringWidthNoFormatting(temp_string, FontStyle::Medium) + 3;
+    // Make a trimmed view of the string for measuring the width.
+    int32_t curX = topLeft.x
+        + GfxGetStringWidthNoFormatting(
+                       u8string_view{ wrappedString.c_str(), std::min(wrappedString.length(), gTextInput->SelectionStart) },
+                       FontStyle::Medium)
+        + 3;
 
     int32_t width = 6;
     if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
     {
         // Make a new 1 character wide string for measuring the width
         // of the character that the cursor is under.
-        temp_string[1] = '\0';
-        temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
-        width = std::max(GfxGetStringWidthNoFormatting(temp_string, FontStyle::Medium) - 2, 4);
+        width = std::max(
+            GfxGetStringWidthNoFormatting(u8string{ gTextBoxInput[gTextInput->SelectionStart] }, FontStyle::Medium) - 2, 4);
     }
 
     if (gTextBoxFrameNo <= 15)
     {
         colour = ColourMapA[w.colours[1]].mid_light;
         auto y = topLeft.y + (widget.height() - 1);
-        GfxFillRect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
+        GfxFillRect(dpi, { { curX, y }, { curX + width, y } }, colour + 5);
     }
 }
 

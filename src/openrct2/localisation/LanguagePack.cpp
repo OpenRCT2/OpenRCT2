@@ -70,7 +70,7 @@ public:
         Guard::ArgumentNotNull(path);
 
         // Load file directly into memory
-        std::vector<utf8> fileData;
+        u8string fileData;
 
         try
         {

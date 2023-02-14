@@ -48,8 +48,7 @@ static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, boo
  */
 int32_t GfxGetStringWidthNewLined(std::string_view text, FontStyle fontStyle)
 {
-    thread_local std::string buffer;
-    buffer.clear();
+    u8string buffer;
 
     std::optional<int32_t> maxWidth;
     FmtString fmt(text);
@@ -174,11 +173,10 @@ int32_t GfxClipString(utf8* text, int32_t width, FontStyle fontStyle)
  * num_lines (edi) - out
  * font_height (ebx) - out
  */
-int32_t GfxWrapString(utf8* text, int32_t width, FontStyle fontStyle, int32_t* outNumLines)
+int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines)
 {
     constexpr size_t NULL_INDEX = std::numeric_limits<size_t>::max();
-    thread_local std::string buffer;
-    buffer.resize(0);
+    u8string buffer;
 
     size_t currentLineIndex = 0;
     size_t splitIndex = NULL_INDEX;
@@ -186,7 +184,7 @@ int32_t GfxWrapString(utf8* text, int32_t width, FontStyle fontStyle, int32_t* o
     size_t numLines = 0;
     int32_t maxWidth = 0;
 
-    FmtString fmt = text;
+    FmtString fmt(text);
     for (const auto& token : fmt)
     {
         if (token.IsLiteral())
@@ -261,8 +259,14 @@ int32_t GfxWrapString(utf8* text, int32_t width, FontStyle fontStyle, int32_t* o
         maxWidth = std::max(maxWidth, lineWidth);
     }
 
-    std::memcpy(text, buffer.data(), buffer.size() + 1);
-    *outNumLines = static_cast<int32_t>(numLines);
+    if (outWrappedText != nullptr)
+    {
+        *outWrappedText = std::move(buffer);
+    }
+    if (outNumLines != nullptr)
+    {
+        *outNumLines = static_cast<int32_t>(numLines);
+    }
     return maxWidth;
 }
 
@@ -333,7 +337,8 @@ static void ColourCharacterWindow(uint8_t colour, const uint16_t* current_font_f
  * text     : esi
  * dpi      : edi
  */
-void DrawStringCentredRaw(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontStyle fontStyle)
+void DrawStringCentredRaw(
+    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle)
 {
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
     GfxDrawString(dpi, screenCoords, "", { COLOUR_BLACK, fontStyle });
@@ -428,22 +433,22 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
  * ticks    : ebp >> 16
  */
 void DrawNewsTicker(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, void* args,
+    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
     int32_t ticks)
 {
     int32_t numLines, lineHeight, lineY;
-    utf8* buffer = gCommonStringFormatBuffer;
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
 
     GfxDrawString(dpi, screenCoords, "", { colour });
-    FormatStringLegacy(buffer, 256, format, args);
 
-    GfxWrapString(buffer, width, FontStyle::Small, &numLines);
+    u8string wrappedString;
+    GfxWrapString(FormatStringID(format, args), width, FontStyle::Small, &wrappedString, &numLines);
     lineHeight = FontGetLineHeight(FontStyle::Small);
 
     int32_t numCharactersDrawn = 0;
     int32_t numCharactersToDraw = ticks;
 
+    const utf8* buffer = wrappedString.data();
     lineY = coords.y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {

@@ -109,7 +109,7 @@ void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
     // Draw chat window
     if (gChatOpen)
     {
-        inputLineHeight = ChatStringWrappedGetHeight(static_cast<void*>(&inputLine), _chatWidth - 10);
+        inputLineHeight = ChatStringWrappedGetHeight(inputLine, _chatWidth - 10);
         _chatTop -= inputLineHeight;
 
         for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++)
@@ -120,8 +120,7 @@ void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
             }
 
             lineBuffer.assign(ChatGetHistory(i));
-            auto lineCh = lineBuffer.c_str();
-            int32_t lineHeight = ChatStringWrappedGetHeight(static_cast<void*>(&lineCh), _chatWidth - 10);
+            int32_t lineHeight = ChatStringWrappedGetHeight(lineBuffer, _chatWidth - 10);
             _chatTop -= (lineHeight + 5);
         }
 
@@ -272,12 +271,9 @@ static void ChatClearInput()
 // But this adjusts the initial Y coordinate depending of the number of lines.
 static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
-    char buffer[CommonTextBufferSize];
-    auto bufferPtr = buffer;
-    FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{STRING}", text);
-
     int32_t numLines;
-    GfxWrapString(bufferPtr, width, FontStyle::Medium, &numLines);
+    u8string wrappedString;
+    GfxWrapString(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::Medium, &wrappedString, &numLines);
     auto lineHeight = FontGetLineHeight(FontStyle::Medium);
 
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
@@ -286,7 +282,8 @@ static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const
         return (numLines * lineHeight); // Skip drawing, return total height.
     }
 
-    auto lineY = screenCoords.y;
+    const utf8* bufferPtr = wrappedString.data();
+    int32_t lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
         GfxDrawString(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { TEXT_COLOUR_254 });
@@ -298,22 +295,10 @@ static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const
 
 // Wrap string without drawing, useful to get the height of a wrapped string.
 // Almost the same as gfx_draw_string_left_wrapped
-int32_t ChatStringWrappedGetHeight(void* args, int32_t width)
+int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width)
 {
-    char buffer[CommonTextBufferSize];
-    auto bufferPtr = buffer;
-    FormatStringLegacy(bufferPtr, 256, STR_STRING, args);
-
     int32_t numLines;
-    GfxWrapString(bufferPtr, width, FontStyle::Medium, &numLines);
-    int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
-
-    int32_t lineY = 0;
-    for (int32_t line = 0; line <= numLines; ++line)
-    {
-        bufferPtr = GetStringEnd(bufferPtr) + 1;
-        lineY += lineHeight;
-    }
-
-    return lineY;
+    GfxWrapString(FormatStringID(STR_STRING, args), width, FontStyle::Medium, nullptr, &numLines);
+    const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+    return lineHeight * numLines;
 }

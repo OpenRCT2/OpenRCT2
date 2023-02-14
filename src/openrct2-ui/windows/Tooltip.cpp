@@ -32,7 +32,7 @@ static Widget window_tooltip_widgets[] = {
 class TooltipWindow final : public Window
 {
 private:
-    utf8 _tooltipText[CommonTextBufferSize]{};
+    u8string _tooltipText;
     int16_t _tooltipNumLines = 1;
 
 public:
@@ -100,25 +100,24 @@ public:
         // Text
         left = windowPos.x + ((width + 1) / 2) - 1;
         top = windowPos.y + 1;
-        DrawStringCentredRaw(&dpi, { left, top }, _tooltipNumLines, _tooltipText, FontStyle::Small);
+        DrawStringCentredRaw(&dpi, { left, top }, _tooltipNumLines, _tooltipText.data(), FontStyle::Small);
     }
 
 private:
     // Returns the width of the new tooltip text
     int32_t FormatTextForTooltip(const OpenRCT2String& message)
     {
-        utf8 tempBuffer[CommonTextBufferSize];
-        OpenRCT2::FormatStringLegacy(tempBuffer, sizeof(tempBuffer), message.str, message.args.Data());
+        const u8string tempString = FormatStringID(message.str, message.args.Data());
 
         OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
-        formattedMessage.args.Add<const char*>(tempBuffer);
-        OpenRCT2::FormatStringLegacy(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
+        formattedMessage.args.Add<const char*>(tempString.c_str());
+        const u8string tooltipTextUnwrapped = FormatStringID(formattedMessage.str, formattedMessage.args.Data());
 
-        auto textWidth = GfxGetStringWidthNewLined(_tooltipText, FontStyle::Small);
+        auto textWidth = GfxGetStringWidthNewLined(tooltipTextUnwrapped, FontStyle::Small);
         textWidth = std::min(textWidth, 196);
 
         int32_t numLines;
-        textWidth = GfxWrapString(_tooltipText, textWidth + 1, FontStyle::Small, &numLines);
+        textWidth = GfxWrapString(tooltipTextUnwrapped, textWidth + 1, FontStyle::Small, &_tooltipText, &numLines);
         _tooltipNumLines = numLines;
         return textWidth;
     }

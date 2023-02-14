@@ -339,22 +339,21 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     // Base dimensions.
     const int32_t width = 450;
     int32_t height = 55;
-    int32_t numLines;
 
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
-        u8string buffer = NetworkGetServerName();
-        GfxWrapString(buffer.data(), width, FontStyle::Medium, &numLines);
-        height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
+        int32_t numLines;
+        GfxWrapString(NetworkGetServerName(), width, FontStyle::Medium, nullptr, &numLines);
+        height += (numLines + 1) * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
     // Likewise, for the optional server description -- which can be a little longer.
     const auto& descString = NetworkGetServerDescription();
     if (!descString.empty())
     {
-        u8string buffer = descString;
-        GfxWrapString(buffer.data(), width, FontStyle::Medium, &numLines);
-        height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
+        int32_t numLines;
+        GfxWrapString(descString, width, FontStyle::Medium, nullptr, &numLines);
+        height += (numLines + 1) * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
     // Finally, account for provider info, if present.

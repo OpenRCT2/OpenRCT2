@@ -567,10 +567,10 @@ static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo* dpi, WindowBase* 
         w->colours[2], INSET_RECT_F_30);
 
     // Text
-    const auto* newsItemText = newsItem->Text.c_str();
     auto screenCoords = w->windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
     width = middleOutsetWidget->width() - 62;
-    DrawNewsTicker(dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->Ticks);
+    DrawNewsTicker(
+        dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->Text, newsItem->Ticks);
 
     screenCoords = w->windowPos
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left,

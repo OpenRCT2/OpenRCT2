@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 
 #include <string_view>
 
@@ -42,4 +43,4 @@ void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColour);
 void ChatAddHistory(std::string_view s);
 void ChatInput(ChatInput input);
 
-int32_t ChatStringWrappedGetHeight(void* args, int32_t width);
+int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width);
