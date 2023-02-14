@@ -841,13 +841,13 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21308), { 0, 0, height + 16 },
-                        { 32, 20, 2 }, { 0, 6, height + 16 });
+                        { { 0, 6, height + 16 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21318), { 0, 0, height + 8 },
                         { { 0, 27, height + 8 }, { 32, 1, 34 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21312), { 0, 0, height + 16 },
-                        { 32, 1, 34 }, { 0, 27, height + 16 });
+                        { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     WoodenASupportsPaintSetup(session, 6, 5, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -856,13 +856,13 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21309), { 0, 0, height + 16 },
-                        { 32, 20, 2 }, { 0, 6, height + 16 });
+                        { { 0, 6, height + 16 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21319), { 0, 0, height + 8 },
                         { { 0, 27, height + 8 }, { 32, 1, 34 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21313), { 0, 0, height + 16 },
-                        { 32, 1, 34 }, { 0, 27, height + 16 });
+                        { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     WoodenASupportsPaintSetup(session, 7, 6, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -871,13 +871,13 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21306), { 0, 0, height + 16 },
-                        { 32, 20, 2 }, { 0, 6, height + 16 });
+                        { { 0, 6, height + 16 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21320), { 0, 0, height + 8 },
                         { { 0, 27, height + 8 }, { 32, 1, 34 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21310), { 0, 0, height + 16 },
-                        { 32, 1, 34 }, { 0, 27, height + 16 });
+                        { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     WoodenASupportsPaintSetup(session, 6, 7, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -886,13 +886,13 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21307), { 0, 0, height + 16 },
-                        { 32, 20, 2 }, { 0, 6, height + 16 });
+                        { { 0, 6, height + 16 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21321), { 0, 0, height + 8 },
                         { { 0, 27, height + 8 }, { 32, 1, 34 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21311), { 0, 0, height + 16 },
-                        { 32, 1, 34 }, { 0, 27, height + 16 });
+                        { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     WoodenASupportsPaintSetup(session, 7, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1055,13 +1055,13 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21308), { 0, 0, height + 16 },
-                        { 32, 20, 2 }, { 0, 6, height + 16 });
+                        { { 0, 6, height + 16 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21318), { 0, 0, height + 8 },
                         { { 0, 27, height + 8 }, { 32, 1, 34 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21312), { 0, 0, height + 16 },
-                        { 32, 1, 34 }, { 0, 27, height + 16 });
+                        { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     WoodenASupportsPaintSetup(session, 6, 5, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -1070,13 +1070,13 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21309), { 0, 0, height + 16 },
-                        { 32, 20, 2 }, { 0, 6, height + 16 });
+                        { { 0, 6, height + 16 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21319), { 0, 0, height + 8 },
                         { { 0, 27, height + 8 }, { 32, 1, 34 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21313), { 0, 0, height + 16 },
-                        { 32, 1, 34 }, { 0, 27, height + 16 });
+                        { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     WoodenASupportsPaintSetup(session, 7, 6, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -1085,13 +1085,13 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21306), { 0, 0, height + 16 },
-                        { 32, 20, 2 }, { 0, 6, height + 16 });
+                        { { 0, 6, height + 16 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21320), { 0, 0, height + 8 },
                         { { 0, 27, height + 8 }, { 32, 1, 34 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21310), { 0, 0, height + 16 },
-                        { 32, 1, 34 }, { 0, 27, height + 16 });
+                        { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     WoodenASupportsPaintSetup(session, 6, 7, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -1100,13 +1100,13 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21307), { 0, 0, height + 16 },
-                        { 32, 20, 2 }, { 0, 6, height + 16 });
+                        { { 0, 6, height + 16 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21321), { 0, 0, height + 8 },
                         { { 0, 27, height + 8 }, { 32, 1, 34 } });
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(21311), { 0, 0, height + 16 },
-                        { 32, 1, 34 }, { 0, 27, height + 16 });
+                        { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     WoodenASupportsPaintSetup(session, 7, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }

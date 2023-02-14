@@ -161,7 +161,7 @@ static void WoodenWildMouseTrackStation(
         { { 0, 2, height }, { 32, 28, 1 } });
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 6, height },
-        { 32, 20, 1 }, { 0, 0, height });
+        { { 0, 0, height }, { 32, 20, 1 } });
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);

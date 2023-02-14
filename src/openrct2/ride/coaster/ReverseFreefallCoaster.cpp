@@ -284,7 +284,7 @@ static void PaintReverseFreefallRCSlope(
                 PaintAddImageAsParentRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
+                    session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
 
                 int32_t tunnelOffset = tunnelOffsets03[trackSequence];
                 if (direction & 1)
@@ -302,7 +302,7 @@ static void PaintReverseFreefallRCSlope(
                 PaintAddImageAsParentRotated(
                     session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
+                    session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
 
             WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -323,8 +323,8 @@ static void PaintReverseFreefallRCSlope(
                 }
                 PaintAddImageAsParent(session, floorImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 126 } });
                 PaintAddImageAsChildRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { isDirection03 ? 26 : 18, 26, 126 },
-                    { isDirection03 ? 3 : 11, 3, height });
+                    session, direction, supportsImageId, { 0, 0, height },
+                    { { isDirection03 ? 3 : 11, 3, height }, { isDirection03 ? 26 : 18, 26, 126 } });
             }
             else
             {
@@ -341,14 +341,14 @@ static void PaintReverseFreefallRCSlope(
                 PaintAddImageAsParentRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height + 128 }, { 5, 20, 79 } });
                 PaintAddImageAsChildRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 5, 20, 79 }, { 0, 6, height + 128 });
+                    session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height + 128 }, { 5, 20, 79 } });
             }
             else
             {
                 PaintAddImageAsParentRotated(
                     session, direction, trackImageId, { 0, 0, height }, { { 27, 6, height }, { 1, 20, 126 } });
                 PaintAddImageAsChildRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { 1, 20, 126 }, { 27, 6, height });
+                    session, direction, supportsImageId, { 0, 0, height }, { { 27, 6, height }, { 1, 20, 126 } });
             }
             WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);

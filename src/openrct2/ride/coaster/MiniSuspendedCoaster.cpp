@@ -103,7 +103,7 @@ static void MiniSuspendedRCTrackStation(
         { 32, 20, 1 });
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 24 },
-        { 32, 20, 1 }, { 0, 2, height });
+        { { 0, 2, height }, { 32, 20, 1 } });
     TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);

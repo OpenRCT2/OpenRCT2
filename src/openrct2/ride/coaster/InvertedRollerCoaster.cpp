@@ -91,7 +91,7 @@ static void InvertedRCTrackStation(
         { { 0, 6, height + 29 }, { 32, 20, 3 } });
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 29 },
-        { 32, 20, 3 }, { 0, 6, height + 29 });
+        { { 0, 6, height + 29 }, { 32, 20, 3 } });
     TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);

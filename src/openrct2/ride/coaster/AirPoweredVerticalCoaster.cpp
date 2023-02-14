@@ -214,7 +214,7 @@ static void AirPoweredVerticalRCTrackStation(
         { { 0, 2, height }, { 32, 28, 1 } });
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
-        { 32, 20, 1 }, { 0, 6, height });
+        { { 0, 6, height }, { 32, 20, 1 } });
 
     WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -660,7 +660,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
             PaintAddImageAsParentRotated(
                 session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 20, 32, bbHeight } });
             PaintAddImageAsChildRotated(
-                session, direction, trackImageId, { 0, 0, height }, { 20, 32, bbHeight }, { 0, 6, height });
+                session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 20, 32, bbHeight } });
 
             WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -679,7 +679,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                 PaintAddImageAsParentRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
+                    session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
             else
             {
@@ -687,7 +687,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                 PaintAddImageAsParentRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
+                    session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
 
             WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -707,7 +707,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                 PaintAddImageAsParentRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
+                    session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
             else
             {
@@ -715,7 +715,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                 PaintAddImageAsParentRotated(
                     session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
                 PaintAddImageAsChildRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { 32, 20, bbHeight }, { 0, 6, height });
+                    session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
 
             WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -736,7 +736,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                 }
                 PaintAddImageAsParent(session, floorImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 126 } });
                 PaintAddImageAsChildRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { 26, 26, 126 }, { 3, 3, height });
+                    session, direction, supportsImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 126 } });
             }
             else
             {
@@ -752,14 +752,14 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                 PaintAddImageAsParentRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height + 128 }, { 5, 20, 79 } });
                 PaintAddImageAsChildRotated(
-                    session, direction, trackImageId, { 0, 0, height }, { 5, 20, 79 }, { 0, 6, height + 128 });
+                    session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height + 128 }, { 5, 20, 79 } });
             }
             else
             {
                 PaintAddImageAsParentRotated(
                     session, direction, trackImageId, { 0, 0, height }, { { 27, 6, height }, { 1, 20, 126 } });
                 PaintAddImageAsChildRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { 1, 20, 126 }, { 27, 6, height });
+                    session, direction, supportsImageId, { 0, 0, height }, { { 27, 6, height }, { 1, 20, 126 } });
             }
             WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -849,13 +849,15 @@ static void AirPoweredVerticalRCTrackVerticalTop(
             {
                 PaintAddImageAsParentRotated(
                     session, direction, imageIdS, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 15 } });
-                PaintAddImageAsChildRotated(session, direction, imageIdT, { 0, 0, height }, { 31, 20, 15 }, { 1, 6, height });
+                PaintAddImageAsChildRotated(
+                    session, direction, imageIdT, { 0, 0, height }, { { 1, 6, height }, { 31, 20, 15 } });
             }
             else
             {
                 PaintAddImageAsParentRotated(
                     session, direction, imageIdS, { 0, 0, height }, { { 24, 6, height }, { 5, 20, 1 } });
-                PaintAddImageAsChildRotated(session, direction, imageIdT, { 0, 0, height }, { 5, 20, 1 }, { 24, 6, height });
+                PaintAddImageAsChildRotated(
+                    session, direction, imageIdT, { 0, 0, height }, { { 24, 6, height }, { 5, 20, 1 } });
             }
             break;
         case 1:
@@ -893,13 +895,15 @@ static void AirPoweredVerticalRCTrackVerticalTop(
             {
                 PaintAddImageAsParentRotated(
                     session, direction, imageIdS, { 0, 0, height }, { { 24, 6, height }, { 5, 20, 1 } });
-                PaintAddImageAsChildRotated(session, direction, imageIdT, { 0, 0, height }, { 5, 20, 1 }, { 24, 6, height });
+                PaintAddImageAsChildRotated(
+                    session, direction, imageIdT, { 0, 0, height }, { { 24, 6, height }, { 5, 20, 1 } });
             }
             else
             {
                 PaintAddImageAsParentRotated(
                     session, direction, imageIdS, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 15 } });
-                PaintAddImageAsChildRotated(session, direction, imageIdT, { 0, 0, height }, { 32, 20, 15 }, { 0, 6, height });
+                PaintAddImageAsChildRotated(
+                    session, direction, imageIdT, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 15 } });
             }
             break;
     }

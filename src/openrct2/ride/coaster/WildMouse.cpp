@@ -209,13 +209,13 @@ static void WildMouseTrackStation(
         PaintAddImageAsChildRotated(
             session, direction,
             session.TrackColours[SCHEME_TRACK].WithIndex(_wild_mouse_block_brakes_image_ids[direction][isClosed]),
-            { 0, 0, height }, { 32, 20, 2 }, { 0, 0, height });
+            { 0, 0, height }, { { 0, 0, height }, { 32, 20, 2 } });
     }
     else
     {
         PaintAddImageAsChildRotated(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_wild_mouse_brakes_image_ids[direction]),
-            { 0, 0, height }, { 32, 20, 2 }, { 0, 0, height });
+            { 0, 0, height }, { { 0, 0, height }, { 32, 20, 2 } });
     }
     TrackPaintUtilDrawStationMetalSupports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS]);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
