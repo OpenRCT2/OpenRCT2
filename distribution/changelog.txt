@@ -42,6 +42,7 @@
 - Fix: [#19136] SV6 saves with experimental RCT1 paths not imported correctly.
 - Fix: [#19250] MusicObjects do not free their preview images.
 - Fix: [#19292] Overflow in totalRideValue.
+- Fix: [#19339] Incorrect import of crashed particles from SV4.
 - Fix: [#19379] "No platforms" station style shows platforms on the Junior Roller Coaster.
 - Fix: [#19380] Startup crash when no sequences are installed and random sequences are enabled.
 - Fix: [#19391] String corruption caused by an improper buffer handling in GfxWrapString.

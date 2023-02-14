@@ -2946,6 +2946,7 @@ namespace RCT1
         ImportEntityCommonProperties(dst, src);
 
         dst->SubType = Litter::Type(src->Type);
+        dst->creationTick = src->CreationTick;
     }
 
     template<> void S4Importer::ImportEntity<SteamParticle>(const RCT12EntityBase& srcBase)
@@ -2955,6 +2956,7 @@ namespace RCT1
 
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
+        dst->time_to_move = src->TimeToMove;
     }
 
     template<> void S4Importer::ImportEntity<MoneyEffect>(const RCT12EntityBase& srcBase)
@@ -2965,6 +2967,7 @@ namespace RCT1
         ImportEntityCommonProperties(dst, src);
         dst->MoveDelay = src->MoveDelay;
         dst->NumMovements = src->NumMovements;
+        dst->Vertical = src->Vertical;
         dst->Value = src->Value;
         dst->OffsetX = src->OffsetX;
         dst->Wiggle = src->Wiggle;
@@ -2975,6 +2978,17 @@ namespace RCT1
         auto* dst = CreateEntityAt<VehicleCrashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
+        dst->frame = src->Frame;
+        dst->time_to_live = src->TimeToLive;
+        dst->colour[0] = RCT1::GetColour(src->Colour[0]);
+        dst->colour[1] = RCT1::GetColour(src->Colour[1]);
+        dst->crashed_sprite_base = src->CrashedEntityBase;
+        dst->velocity_x = src->VelocityX;
+        dst->velocity_y = src->VelocityY;
+        dst->velocity_z = src->VelocityZ;
+        dst->acceleration_x = src->AccelerationX;
+        dst->acceleration_y = src->AccelerationY;
+        dst->acceleration_z = src->AccelerationZ;
     }
 
     template<> void S4Importer::ImportEntity<ExplosionCloud>(const RCT12EntityBase& srcBase)
@@ -2982,6 +2996,7 @@ namespace RCT1
         auto* dst = CreateEntityAt<ExplosionCloud>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
+        dst->frame = src->Frame;
     }
 
     template<> void S4Importer::ImportEntity<ExplosionFlare>(const RCT12EntityBase& srcBase)
@@ -2989,6 +3004,7 @@ namespace RCT1
         auto* dst = CreateEntityAt<ExplosionFlare>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
+        dst->frame = src->Frame;
     }
 
     template<> void S4Importer::ImportEntity<CrashSplashParticle>(const RCT12EntityBase& srcBase)
@@ -2996,6 +3012,7 @@ namespace RCT1
         auto* dst = CreateEntityAt<CrashSplashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
+        dst->frame = src->Frame;
     }
 
     template<> void S4Importer::ImportEntity<JumpingFountain>(const RCT12EntityBase& srcBase)
@@ -3003,12 +3020,18 @@ namespace RCT1
         auto* dst = CreateEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityJumpingFountain*>(&srcBase);
 
+        auto fountainType = JumpingFountainType::Water;
+        if (RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::JumpingFountainSnow)
+            fountainType = JumpingFountainType::Snow;
+
         ImportEntityCommonProperties(dst, src);
-        dst->FountainFlags = src->FountainFlags;
-        dst->Iteration = src->Iteration;
-        dst->NumTicksAlive = src->NumTicksAlive;
         dst->frame = src->Frame;
-        dst->FountainType = JumpingFountainType::Water;
+        dst->FountainType = fountainType;
+        dst->NumTicksAlive = src->NumTicksAlive;
+        dst->FountainFlags = src->FountainFlags;
+        dst->TargetX = src->TargetX;
+        dst->TargetY = src->TargetY;
+        dst->Iteration = src->Iteration;
     }
 
     template<> void S4Importer::ImportEntity<Balloon>(const RCT12EntityBase& srcBase)
@@ -3017,6 +3040,9 @@ namespace RCT1
         auto* src = static_cast<const RCT12EntityBalloon*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
+        dst->frame = src->Frame;
+        dst->popped = src->Popped;
+        dst->time_to_move = src->TimeToMove;
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
         {
@@ -3035,6 +3061,8 @@ namespace RCT1
 
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
+        dst->target_x = src->TargetX;
+        dst->target_y = src->TargetY;
         dst->state = static_cast<Duck::DuckState>(src->State);
     }
 
