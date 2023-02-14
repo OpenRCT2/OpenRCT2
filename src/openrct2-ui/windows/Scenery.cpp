@@ -938,10 +938,11 @@ public:
             }
         }
 
-        // Remove misc tab if empty
-        if (_tabEntries.back().Entries.size() == 0)
+        // Remove empty tabs
+        for (auto it = _tabEntries.begin(); it != _tabEntries.end(); it++)
         {
-            _tabEntries.pop_back();
+            if (it->Entries.size() == 0)
+                _tabEntries.erase(it);
         }
 
         // Set required width
