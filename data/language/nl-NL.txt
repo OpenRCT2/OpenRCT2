@@ -3281,7 +3281,7 @@ STR_6134    :Decor verwijderen
 STR_6135    :Ongeldig verzoek van de client
 STR_6136    :Ongeldig verzoek van de server
 STR_6137    :OpenRCT2, een gratis en open source remake van Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 is het werk van velen, een volledige lijst is te vinden in ‘contributors.md’. Ga naar http://github.com/OpenRCT2/OpenRCT2 voor meer informatie.
+STR_6138    :OpenRCT2 is het werk van velen, een volledige lijst door op de knop ‘Deelnemers’ te klikken. Ga naar http://github.com/OpenRCT2/OpenRCT2 voor meer informatie.
 STR_6139    :Alle product- en bedrijfsnamen zijn eigendom van hun respectieve eigenaren. Het gebruik ervan impliceert geen overeenkomst of goedkeuring.
 STR_6140    :Wijzigingsoverzicht…
 STR_6141    :Onderste werkbalk in RCT1-stijl
@@ -3643,6 +3643,11 @@ STR_6538    :Zorgt ervoor dat je wachtrijen kunt bouwen met paden die daar niet 
 STR_6539    :Rem is gesloten
 STR_6540    :{WINDOW_COLOUR_2}Onze dank gaat uit naar de volgende bedrijven voor hun toestemming om voertuigen op hun ontwerpen te baseren:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Deelnemers
+STR_6543    :Deelnemers…
+STR_6544    :Lening kan niet negatief zijn!
+STR_6545    :Renteberekening van RCT1 gebruiken
+STR_6546    :Gebruik de renteberekening van RollerCoaster Tycoon 1, dat een vast rentepercentage van ongeveer 1,33% hanteerde.
 
 #############
 # Scenarios #
@@ -4379,6 +4384,11 @@ STR_DTLS    :Dit verouderde themapark heeft betere tijden gekend. Geef het park 
 STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Voeg meer attracties toe aan dit park met pandathema, en trek meer bezoekers aan.
+
+<Tycoon Park>
+STR_SCNR    :Tycoon Park
+STR_PARK    :Tycoon Park
+STR_DTLS    :
 
 ###
 <UCES Halloween>

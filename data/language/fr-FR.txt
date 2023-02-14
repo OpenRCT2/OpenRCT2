@@ -3656,6 +3656,8 @@ STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand G
 STR_6542    :Contributions
 STR_6543    :Contributions…
 STR_6544    :Un emprunt ne peut pas être négatif !
+STR_6545    :Calcul des intérêts de RCT1
+STR_6546    :Utilise l’algorithme de calcul des intérêts de RollerCoaster Tycoon 1, qui comporte un pourcentage fixe d’environ 1,33%
 
 #############
 # Scenarios #
