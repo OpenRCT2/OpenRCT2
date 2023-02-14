@@ -439,7 +439,7 @@ private:
 public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
-    SmallSceneryEntry* GetEntry() const;
+    const SmallSceneryEntry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
     void IncreaseAge(const CoordsXY& sceneryPos);
@@ -516,7 +516,7 @@ private:
 public:
     uint16_t GetEntryIndex() const;
     void SetEntryIndex(uint16_t newIndex);
-    WallSceneryEntry* GetEntry() const;
+    const WallSceneryEntry* GetEntry() const;
 
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newslope);
@@ -601,7 +601,7 @@ private:
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;
-    BannerSceneryEntry* GetEntry() const;
+    const BannerSceneryEntry* GetEntry() const;
 
     BannerIndex GetIndex() const;
     void SetIndex(BannerIndex newIndex);

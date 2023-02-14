@@ -311,6 +311,7 @@
     <ClInclude Include="object\MusicObject.h" />
     <ClInclude Include="object\Object.h" />
     <ClInclude Include="object\ObjectAsset.h" />
+    <ClInclude Include="object\ObjectEntryManager.h" />
     <ClInclude Include="object\ObjectFactory.h" />
     <ClInclude Include="object\ObjectLimits.h" />
     <ClInclude Include="object\ObjectList.h" />
@@ -807,6 +808,7 @@
     <ClCompile Include="object\LargeSceneryObject.cpp" />
     <ClCompile Include="object\MusicObject.cpp" />
     <ClCompile Include="object\Object.cpp" />
+    <ClCompile Include="object\ObjectEntryManager.cpp" />
     <ClCompile Include="object\ObjectFactory.cpp" />
     <ClCompile Include="object\ObjectList.cpp" />
     <ClCompile Include="object\ObjectManager.cpp" />

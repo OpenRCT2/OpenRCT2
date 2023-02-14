@@ -11,6 +11,7 @@
 
 #include "../management/Finance.h"
 #include "../object/BannerSceneryEntry.h"
+#include "../object/ObjectEntryManager.h"
 #include "../world/Banner.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
@@ -76,7 +77,7 @@ GameActions::Result BannerRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    auto* bannerEntry = GetBannerEntry(banner->type);
+    auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
     if (bannerEntry != nullptr)
     {
         res.Cost = -((bannerEntry->price * 3) / 4);
@@ -115,7 +116,7 @@ GameActions::Result BannerRemoveAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    auto* bannerEntry = GetBannerEntry(banner->type);
+    auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
     if (bannerEntry != nullptr)
     {
         res.Cost = -((bannerEntry->price * 3) / 4);

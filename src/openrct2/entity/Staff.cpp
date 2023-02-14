@@ -41,7 +41,6 @@
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "PatrolArea.h"
 #include "Peep.h"
@@ -2138,7 +2137,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
+    vehicle->ClearFlag(VehicleFlags::CarIsBroken);
 
     return false;
 }
@@ -2179,7 +2178,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
         return true;
     }
 
-    vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+    vehicle->ClearFlag(VehicleFlags::TrainIsBroken);
 
     return false;
 }

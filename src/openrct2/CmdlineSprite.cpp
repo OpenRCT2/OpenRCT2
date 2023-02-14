@@ -33,6 +33,8 @@
 
 using namespace OpenRCT2::Drawing;
 
+static int32_t CmdLineForSpriteCombine(const char** argv, int32_t argc);
+
 class SpriteFile
 {
 public:
@@ -611,6 +613,57 @@ int32_t CmdLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
+    if (_strcmpi(argv[0], "combine") == 0)
+    {
+        return CmdLineForSpriteCombine(argv, argc);
+    }
+
     fprintf(stderr, "Unknown sprite command.\n");
+    return 1;
+}
+
+static int32_t CmdLineForSpriteCombine(const char** argv, int32_t argc)
+{
+    if (argc < 4)
+    {
+        fprintf(stdout, "usage: sprite combine <index file> <image file> <output>\n");
+        return -1;
+    }
+
+    const utf8* indexFile = argv[1];
+    const utf8* dataFile = argv[2];
+    const utf8* outputPath = argv[3];
+
+    auto fileHeader = OpenRCT2::FileStream(indexFile, OpenRCT2::FILE_MODE_OPEN);
+    auto fileData = OpenRCT2::FileStream(dataFile, OpenRCT2::FILE_MODE_OPEN);
+    auto fileHeaderSize = fileHeader.GetLength();
+    auto fileDataSize = fileData.GetLength();
+
+    uint32_t numEntries = fileHeaderSize / sizeof(RCTG1Element);
+
+    RCTG1Header header = {};
+    header.num_entries = numEntries;
+    header.total_size = fileDataSize;
+    OpenRCT2::FileStream outputStream(outputPath, OpenRCT2::FILE_MODE_WRITE);
+
+    outputStream.Write(&header, sizeof(RCTG1Header));
+    auto g1Elements32 = std::make_unique<RCTG1Element[]>(numEntries);
+    fileHeader.Read(g1Elements32.get(), numEntries * sizeof(RCTG1Element));
+    for (uint32_t i = 0; i < numEntries; i++)
+    {
+        // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
+        if (g1Elements32[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
+        {
+            g1Elements32[i].zoomed_offset = i - g1Elements32[i].zoomed_offset;
+        }
+
+        outputStream.Write(&g1Elements32[i], sizeof(RCTG1Element));
+    }
+
+    std::vector<uint8_t> data;
+    data.resize(fileDataSize);
+    fileData.Read(data.data(), fileDataSize);
+    outputStream.Write(data.data(), fileDataSize);
+
     return 1;
 }

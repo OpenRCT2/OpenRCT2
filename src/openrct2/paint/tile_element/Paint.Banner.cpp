@@ -16,6 +16,7 @@
 #include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/BannerObject.h"
+#include "../../object/ObjectEntryManager.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
@@ -83,7 +84,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
         return;
     }
 
-    auto* bannerEntry = GetBannerEntry(banner->type);
+    auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
     if (bannerEntry == nullptr)
     {
         return;
@@ -114,10 +115,10 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     auto imageIndex = (direction << 1) + bannerEntry->image;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     auto bbOffset = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 21 }, bbOffset);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     bbOffset = CoordsXYZ(BannerBoundBoxes[direction][1], height + 2);
-    PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { 1, 1, 21 }, bbOffset);
+    PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     PaintBannerScrollingText(session, *bannerEntry, *banner, bannerElement, direction, height, bbOffset);
 }

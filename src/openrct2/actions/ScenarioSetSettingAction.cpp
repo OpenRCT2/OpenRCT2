@@ -246,6 +246,18 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         case ScenarioSetSetting::AllowEarlyCompletion:
             gAllowEarlyCompletionInNetworkPlay = _value;
             break;
+        case ScenarioSetSetting::UseRCT1Interest:
+        {
+            if (_value != 0)
+            {
+                gParkFlags |= PARK_FLAGS_RCT1_INTEREST;
+            }
+            else
+            {
+                gParkFlags &= ~PARK_FLAGS_RCT1_INTEREST;
+            }
+            break;
+        }
         default:
             LOG_ERROR("Invalid setting: %u", _setting);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);

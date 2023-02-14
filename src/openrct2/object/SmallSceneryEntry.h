@@ -52,6 +52,8 @@ enum SMALL_SCENERY_FLAGS : uint32_t
 
 struct SmallSceneryEntry
 {
+    static constexpr auto kObjectType = ObjectType::SmallScenery;
+
     StringId name;
     uint32_t image;
     uint32_t flags;

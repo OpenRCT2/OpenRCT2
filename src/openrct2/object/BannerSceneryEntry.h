@@ -19,6 +19,8 @@ enum
 
 struct BannerSceneryEntry
 {
+    static constexpr auto kObjectType = ObjectType::Banners;
+
     StringId name;
     uint32_t image;
     uint8_t scrolling_mode;

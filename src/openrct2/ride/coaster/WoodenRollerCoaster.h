@@ -47,8 +47,8 @@ PaintStruct* WoodenRCTrackPaint(
 
     PaintAddImageAsParentRotated(
         session, direction, imageId, { x_offset, y_offset, z_offset },
-        { bound_box_length_x, bound_box_length_y, bound_box_length_z },
-        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
+        { { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z },
+          { bound_box_length_x, bound_box_length_y, bound_box_length_z } });
     return PaintAddImageAsChildRotated(
         session, direction, railsImageId, { x_offset, y_offset, z_offset },
         { bound_box_length_x, bound_box_length_y, bound_box_length_z },
@@ -62,8 +62,8 @@ template<bool isClassic> void WoodenRCTrackPaintBb(PaintSession& session, const 
 
     ImageId imageId = WoodenRCGetTrackColour<isClassic>(session).WithIndex(bb->sprite_id_a);
     PaintAddImageAsParent(
-        session, imageId, { bb->offset.x, bb->offset.y, height + bb->offset.z }, bb->bb_size,
-        { bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z });
+        session, imageId, { bb->offset.x, bb->offset.y, height + bb->offset.z },
+        { { bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z }, bb->bb_size });
     if (bb->sprite_id_b != 0)
     {
         ImageId railsImageId = WoodenRCGetRailsColour(session).WithIndex(bb->sprite_id_b);

@@ -28,7 +28,6 @@
 #include "LargeScenery.h"
 #include "Map.h"
 #include "Scenery.h"
-#include "SmallScenery.h"
 
 using map_animation_invalidate_event_handler = bool (*)(const CoordsXYZ& loc);
 

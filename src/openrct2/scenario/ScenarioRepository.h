@@ -1,3 +1,4 @@
+
 /*****************************************************************************
  * Copyright (c) 2014-2023 OpenRCT2 developers
  *
@@ -38,27 +39,27 @@ enum class ScenarioSource : uint8_t
     Other
 };
 
-struct scenario_index_entry
+struct ScenarioIndexEntry
 {
-    utf8 path[MAX_PATH];
-    uint64_t timestamp;
+    utf8 Path[MAX_PATH];
+    uint64_t Timestamp;
 
     // Category / sequence
-    uint8_t category;
-    ScenarioSource source_game;
-    int16_t source_index = -1;
-    uint16_t sc_id;
+    uint8_t Category;
+    ScenarioSource SourceGame;
+    int16_t SourceIndex = -1;
+    uint16_t ScenarioId;
 
     // Objective
-    uint8_t objective_type;
-    uint8_t objective_arg_1;
-    int64_t objective_arg_2;
-    int16_t objective_arg_3;
-    ScenarioHighscoreEntry* highscore = nullptr;
+    uint8_t ObjectiveType;
+    uint8_t ObjectiveArg1;
+    int64_t ObjectiveArg2;
+    int16_t ObjectiveArg3;
+    ScenarioHighscoreEntry* Highscore = nullptr;
 
-    utf8 internal_name[64]; // Untranslated name
-    utf8 name[64];          // Translated name
-    utf8 details[256];
+    utf8 InternalName[64]; // Untranslated name
+    utf8 Name[64];         // Translated name
+    utf8 Details[256];
 };
 
 namespace OpenRCT2
@@ -76,13 +77,13 @@ struct IScenarioRepository
     virtual void Scan(int32_t language) abstract;
 
     virtual size_t GetCount() const abstract;
-    virtual const scenario_index_entry* GetByIndex(size_t index) const abstract;
-    virtual const scenario_index_entry* GetByFilename(u8string_view filename) const abstract;
+    virtual const ScenarioIndexEntry* GetByIndex(size_t index) const abstract;
+    virtual const ScenarioIndexEntry* GetByFilename(u8string_view filename) const abstract;
     /**
      * Does not return custom scenarios due to the fact that they may have the same name.
      */
-    virtual const scenario_index_entry* GetByInternalName(const utf8* name) const abstract;
-    virtual const scenario_index_entry* GetByPath(const utf8* path) const abstract;
+    virtual const ScenarioIndexEntry* GetByInternalName(const utf8* name) const abstract;
+    virtual const ScenarioIndexEntry* GetByPath(const utf8* path) const abstract;
 
     virtual bool TryRecordHighscore(
         int32_t language, const utf8* scenarioFileName, money64 companyValue, const utf8* name) abstract;
@@ -94,6 +95,6 @@ struct IScenarioRepository
 
 void ScenarioRepositoryScan();
 [[nodiscard]] size_t ScenarioRepositoryGetCount();
-[[nodiscard]] const scenario_index_entry* ScenarioRepositoryGetByIndex(size_t index);
+[[nodiscard]] const ScenarioIndexEntry* ScenarioRepositoryGetByIndex(size_t index);
 [[nodiscard]] bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name);
-void ScenarioTranslate(scenario_index_entry* scenarioEntry);
+void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry);

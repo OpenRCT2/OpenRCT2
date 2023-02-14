@@ -177,7 +177,7 @@ static void WildMouseTrackFlat(
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -202,7 +202,7 @@ static void WildMouseTrackStation(
     int32_t trackType = trackElement.GetTrackType();
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(baseImageIds[direction]), { 0, 0, height - 2 },
-        { 32, 28, 2 }, { 0, 2, height });
+        { { 0, 2, height }, { 32, 28, 2 } });
     if (trackType == TrackElemType::EndStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
@@ -238,7 +238,7 @@ static void WildMouseTrack25DegUp(
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -272,11 +272,11 @@ static void WildMouseTrack60DegUp(
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     }
     else
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 98 }, { 0, 27, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 98 } });
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -316,7 +316,7 @@ static void WildMouseTrackFlatTo25DegUp(
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -4, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -357,12 +357,12 @@ static void WildMouseTrack25DegUpTo60DegUp(
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(frontImageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     }
     else
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -404,12 +404,12 @@ static void WildMouseTrack60DegUpTo25DegUp(
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(frontImageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     }
     else
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -442,7 +442,7 @@ static void WildMouseTrack25DegUpToFlat(
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isChained]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -7, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -730,16 +730,16 @@ static void WildMouseTrackLeftQuarterTurn1(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 24, 2 }, { 6, 2, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 2, height }, { 26, 24, 2 } });
             break;
         case 1:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 26, 2 });
             break;
         case 2:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 24, 26, 2 }, { 2, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 6, height }, { 24, 26, 2 } });
             break;
         case 3:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 24, 24, 2 }, { 6, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 6, height }, { 24, 24, 2 } });
             break;
     }
     MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -780,12 +780,12 @@ static void WildMouseTrackFlatTo60DegUp(
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(frontImageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
     else
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 1, 24, 43 }, { 29, 4, height + 2 });
-        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 2, 43 }, { 0, 4, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 29, 4, height + 2 }, { 1, 24, 43 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -827,12 +827,12 @@ static void WildMouseTrack60DegUpToFlat(
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(frontImageIds[direction][isChained]);
     if (direction == 0 || direction == 3)
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
     else
     {
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 1, 24, 43 }, { 29, 4, height + 2 });
-        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 2, 43 }, { 0, 4, height });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 29, 4, height + 2 }, { 1, 24, 43 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -880,7 +880,7 @@ static void WildMouseTrackBrakes(
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(_wild_mouse_brakes_image_ids[direction]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -904,7 +904,7 @@ static void WildMouseTrackRotationControlToggle(
     };
 
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -922,7 +922,7 @@ static void WildMouseTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(_wild_mouse_block_brakes_image_ids[direction][isClosed]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);

@@ -557,12 +557,15 @@ public:
 
         // Loan and interest rate
         DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
-        auto ft = Formatter();
-        ft.Add<uint16_t>(gBankLoanInterestRate);
-        DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
+        if (!(gParkFlags & PARK_FLAGS_RCT1_INTEREST))
+        {
+            auto ft = Formatter();
+            ft.Add<uint16_t>(gBankLoanInterestRate);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
+        }
 
         // Current cash
-        ft = Formatter();
+        auto ft = Formatter();
         ft.Add<money64>(gCash);
         StringId stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
         DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);

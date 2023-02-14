@@ -201,31 +201,31 @@ namespace OpenRCT2
             Save(fs);
         }
 
-        scenario_index_entry ReadScenarioChunk()
+        ScenarioIndexEntry ReadScenarioChunk()
         {
-            scenario_index_entry entry{};
+            ScenarioIndexEntry entry{};
             auto& os = *_os;
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&entry](OrcaStream::ChunkStream& cs) {
-                entry.category = cs.Read<uint8_t>();
+                entry.Category = cs.Read<uint8_t>();
 
                 std::string name;
                 ReadWriteStringTable(cs, name, "en-GB");
-                String::Set(entry.name, sizeof(entry.name), name.c_str());
-                String::Set(entry.internal_name, sizeof(entry.internal_name), name.c_str());
+                String::Set(entry.Name, sizeof(entry.Name), name.c_str());
+                String::Set(entry.InternalName, sizeof(entry.InternalName), name.c_str());
 
                 std::string parkName;
                 ReadWriteStringTable(cs, parkName, "en-GB");
 
                 std::string scenarioDetails;
                 ReadWriteStringTable(cs, scenarioDetails, "en-GB");
-                String::Set(entry.details, sizeof(entry.details), scenarioDetails.c_str());
+                String::Set(entry.Details, sizeof(entry.Details), scenarioDetails.c_str());
 
-                entry.objective_type = cs.Read<uint8_t>();
-                entry.objective_arg_1 = cs.Read<uint8_t>();
-                entry.objective_arg_3 = cs.Read<int16_t>();
-                entry.objective_arg_2 = cs.Read<int32_t>();
+                entry.ObjectiveType = cs.Read<uint8_t>();
+                entry.ObjectiveArg1 = cs.Read<uint8_t>();
+                entry.ObjectiveArg3 = cs.Read<int16_t>();
+                entry.ObjectiveArg2 = cs.Read<int32_t>();
 
-                entry.source_game = ScenarioSource::Other;
+                entry.SourceGame = ScenarioSource::Other;
             });
             return entry;
         }
@@ -1955,7 +1955,7 @@ namespace OpenRCT2
             cs.ReadWrite(isCrashedVehicle);
             if (isCrashedVehicle)
             {
-                entity.SetUpdateFlag(VEHICLE_UPDATE_FLAG_CRASHED);
+                entity.SetFlag(VehicleFlags::Crashed);
             }
         }
     }
@@ -2417,7 +2417,7 @@ public:
     {
     }
 
-    ParkLoadResult Load(const utf8* path) override
+    ParkLoadResult Load(const u8string& path) override
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
         _parkFile->Load(path);
@@ -2427,18 +2427,18 @@ public:
         return result;
     }
 
-    ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
+    ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
     {
         return Load(path);
     }
 
-    ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) override
+    ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
     {
         return Load(path);
     }
 
     ParkLoadResult LoadFromStream(
-        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) override
+        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const u8string& path = {}) override
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
         _parkFile->Load(*stream);
@@ -2455,7 +2455,7 @@ public:
         GameFixSaveVars();
     }
 
-    bool GetDetails(scenario_index_entry* dst) override
+    bool GetDetails(ScenarioIndexEntry* dst) override
     {
         *dst = _parkFile->ReadScenarioChunk();
         return true;

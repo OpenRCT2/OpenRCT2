@@ -48,7 +48,6 @@
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
-#include "SmallScenery.h"
 #include "Surface.h"
 #include "TileElementsView.h"
 #include "TileInspector.h"

@@ -3941,6 +3941,9 @@ enum : uint16_t
 
     STR_LOAN_CANT_BE_NEGATIVE = 6544,
 
+    STR_RCT1_INTEREST = 6545,
+    STR_RCT1_INTEREST_TIP = 6546,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

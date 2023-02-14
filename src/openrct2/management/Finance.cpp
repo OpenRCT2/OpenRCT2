@@ -148,8 +148,9 @@ void FinancePayInterest()
     // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
     // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
     const money64 current_loan = gBankLoan;
-    const uint8_t current_interest_rate = gBankLoanInterestRate;
-    const money32 interest_to_pay = (current_loan * 5 * current_interest_rate) >> 14;
+    const auto current_interest_rate = gBankLoanInterestRate;
+    const money32 interest_to_pay = (gParkFlags & PARK_FLAGS_RCT1_INTEREST) ? (current_loan / 2400)
+                                                                            : (current_loan * 5 * current_interest_rate) >> 14;
 
     FinancePayment(interest_to_pay, ExpenditureType::Interest);
 }
@@ -194,6 +195,14 @@ void FinanceResetHistory()
         gCashHistory[i] = MONEY64_UNDEFINED;
         gWeeklyProfitHistory[i] = MONEY64_UNDEFINED;
         gParkValueHistory[i] = MONEY64_UNDEFINED;
+    }
+
+    for (uint32_t i = 0; i < EXPENDITURE_TABLE_MONTH_COUNT; ++i)
+    {
+        for (uint32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); ++j)
+        {
+            gExpenditureTable[i][j] = 0;
+        }
     }
 }
 

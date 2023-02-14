@@ -3647,6 +3647,8 @@ STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand G
 STR_6542    :Contributors
 STR_6543    :Contributors…
 STR_6544    :Loan cannot be negative!
+STR_6545    :Use RCT1 interest calculation
+STR_6546    :Use the interest calculation algorithm of RollerCoaster Tycoon 1, which used a fixed percentage of approximately 1.33%.
 
 #############
 # Scenarios #
