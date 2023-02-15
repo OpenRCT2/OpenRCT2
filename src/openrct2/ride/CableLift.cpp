@@ -115,7 +115,9 @@ void Vehicle::CableLiftUpdate()
 void Vehicle::CableLiftUpdateMovingToEndOfStation()
 {
     if (velocity >= -439800)
+    {
         acceleration = -2932;
+    }
 
     if (velocity < -439800)
     {
@@ -138,7 +140,9 @@ void Vehicle::CableLiftUpdateMovingToEndOfStation()
 void Vehicle::CableLiftUpdateWaitingToDepart()
 {
     if (velocity >= -58640)
+    {
         acceleration = -14660;
+    }
 
     if (velocity < -58640)
     {

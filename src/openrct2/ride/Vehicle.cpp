@@ -1564,7 +1564,7 @@ void Vehicle::UpdateMeasurements()
                 curRide->special_track_elements |= RIDE_ELEMENT_WHIRLPOOL;
                 break;
             case TrackElemType::Watersplash:
-                if (velocity >= 0xB0000)
+                if (velocity >= 11.0_mph)
                 {
                     curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
                 }
@@ -1880,7 +1880,7 @@ void Vehicle::Update()
         auto carEntry = &rideEntry->Cars[vehicle_type];
         if ((carEntry->flags & CAR_ENTRY_FLAG_POWERED) && curRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
         {
-            if (!(carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE) || (Pitch == 2 && velocity <= 0x20000))
+            if (!(carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE) || (Pitch == 2 && velocity <= 2.0_mph))
             {
                 SetFlag(VehicleFlags::StoppedOnLift);
             }
@@ -3796,7 +3796,7 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
         }
 
         int32_t velocity_diff = velocity;
-        if (velocity_diff >= 1572864)
+        if (velocity_diff >= 24.0_mph)
             velocity_diff /= 8;
         else
             velocity_diff /= 16;
@@ -3829,7 +3829,7 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
         }
 
         int32_t velocity_diff = velocity;
-        if (velocity_diff < -1572864)
+        if (velocity_diff < -24.0_mph)
             velocity_diff /= 8;
         else
             velocity_diff /= 16;
@@ -5468,7 +5468,7 @@ void Vehicle::UpdateSound()
 
     const auto& carEntry = rideEntry->Cars[vehicle_type];
 
-    int32_t ecx = abs(velocity) - 0x10000;
+    int32_t ecx = abs(velocity) - 1.0_mph;
     if (ecx >= 0)
     {
         frictionSound.id = carEntry.friction_sound_id;
@@ -5482,7 +5482,7 @@ void Vehicle::UpdateSound()
             screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
-                if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
+                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
                     GetLiftHillSound(*curRide, screamSound);
                     break;
@@ -5504,7 +5504,7 @@ void Vehicle::UpdateSound()
             screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
-                if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
+                if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
                     GetLiftHillSound(*curRide, screamSound);
                     break;
@@ -5569,7 +5569,7 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
 
     if (velocity < 0)
     {
-        if (velocity > -0x2C000)
+        if (velocity > -2.75_mph)
             return OpenRCT2::Audio::SoundId::Null;
 
         for (Vehicle* vehicle2 = GetEntity<Vehicle>(Id); vehicle2 != nullptr;
@@ -5587,7 +5587,7 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
         return OpenRCT2::Audio::SoundId::Null;
     }
 
-    if (velocity < 0x2C000)
+    if (velocity < 2.75_mph)
         return OpenRCT2::Audio::SoundId::Null;
 
     for (Vehicle* vehicle2 = GetEntity<Vehicle>(Id); vehicle2 != nullptr;
@@ -5861,7 +5861,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             {
                 var_34 = (ScenarioRand() & 1) ? 1 : -1;
 
-                if (oldVelocity >= 131072)
+                if (oldVelocity >= 2.0_mph)
                 {
                     collideVehicle->DodgemsCollisionDirection = direction;
                     DodgemsCollisionDirection = direction ^ (1 << 4);
@@ -5871,7 +5871,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             {
                 var_34 = (ScenarioRand() & 1) ? 6 : -6;
 
-                if (oldVelocity >= 131072)
+                if (oldVelocity >= 2.0_mph)
                 {
                     DodgemsCollisionDirection = direction ^ (1 << 4);
                 }
@@ -6085,7 +6085,7 @@ void Vehicle::ApplyStopBlockBrake()
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
     acceleration = 0;
     // If the this is slow enough, stop it. If not, slow it down
-    if (velocity <= 0x20000)
+    if (velocity <= 2.0_mph)
     {
         velocity = 0;
     }
@@ -7479,7 +7479,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::LeftReverser
             || tileElement->AsTrack()->GetTrackType() == TrackElemType::RightReverser)
         {
-            if (IsHead() && velocity <= 0x30000)
+            if (IsHead() && velocity <= 3.0_mph)
             {
                 velocity = 0;
             }
@@ -7653,7 +7653,7 @@ Loc6DAEB9:
     }
     if (trackType == TrackElemType::LogFlumeReverser)
     {
-        if (track_progress != 16 || velocity < 0x40000)
+        if (track_progress != 16 || velocity < 4.0_mph)
         {
             if (track_progress == 32)
             {
@@ -7767,7 +7767,7 @@ Loc6DAEB9:
                     auto velocityDelta = abs(velocity - head->velocity);
                     if (!(rideEntry.flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
                     {
-                        if (velocityDelta > 0xE0000)
+                        if (velocityDelta > 14.0_mph)
                         {
                             if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
                             {
@@ -8073,7 +8073,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
                         if (!(rideEntry.flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
                         {
-                            if (abs(v4->velocity - v3->velocity) > 0xE0000)
+                            if (abs(v4->velocity - v3->velocity) > 14.0_mph)
                             {
                                 if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
                                 {
@@ -8566,7 +8566,7 @@ Loc6DCD6B:
             return;
         }
         Vehicle* vEDI = gCurrentVehicle;
-        if (abs(vEDI->velocity - vEBP->velocity) > 0xE0000)
+        if (abs(vEDI->velocity - vEBP->velocity) > 14.0_mph)
         {
             if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
@@ -8721,7 +8721,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& 
             }
         }
 
-        if (abs(velocity) > 0x10000)
+        if (abs(velocity) > 1.0_mph)
         {
             newAcceleration = 0;
         }
@@ -8826,7 +8826,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
         if (velocity > (speed * 0x4000))
         {
             // Same code as none powered rides
-            if (curAcceleration <= 0 && curAcceleration >= -500 && velocity <= 0x8000)
+            if (curAcceleration <= 0 && curAcceleration >= -500 && velocity <= 0.5_mph)
             {
                 return curAcceleration + 400;
             }
@@ -8883,7 +8883,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
         }
     }
 
-    if (std::abs(velocity) <= 0x10000)
+    if (std::abs(velocity) <= 1.0_mph)
     {
         return poweredAcceleration;
     }
@@ -9079,7 +9079,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     {
         // Probably moving slowly on a flat track piece, low rolling resistance and drag.
 
-        if (vehicle->velocity <= 0x8000 && vehicle->velocity >= 0)
+        if (vehicle->velocity <= 0.5_mph && vehicle->velocity >= 0)
         {
             // Vehicle is creeping forwards very slowly (less than ~2km/h), boost speed a bit.
             curAcceleration += 400;
@@ -9100,7 +9100,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         {
             if (TrackElementIsCovered(vehicle->GetTrackType()))
             {
-                if (vehicle->velocity > 0x20000)
+                if (vehicle->velocity > 2.0_mph)
                 {
                     curAcceleration -= vehicle->velocity >> 6;
                 }
