@@ -23,6 +23,7 @@
 - Improved: [#19067] New Ride window now allows filtering similarly to Object Selection.
 - Improved: [#19272] Scenery window now allows filtering similarly to Object Selection.
 - Improved: [#14635] Scenery window now shows up to 255 scenery groups.
+- Improved: [#19341] Add "All Scenery" tab to scenery window.
 - Change: [#19018] Renamed actions to fit the naming scheme.
 - Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
 - Change: [#19233] Reduce lift speed minimum and maximum values for “Classic Wooden Coaster”.
