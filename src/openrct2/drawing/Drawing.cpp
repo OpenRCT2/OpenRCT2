@@ -16,6 +16,7 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"
@@ -622,7 +623,7 @@ void LoadPalette()
         return;
     }
 
-    auto water_type = static_cast<WaterObjectEntry*>(ObjectEntryGetChunk(ObjectType::Water, 0));
+    auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
 
     uint32_t palette = 0x5FC;
 

@@ -24,7 +24,6 @@
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 
@@ -263,7 +262,7 @@ public:
         }
         else
         {
-            auto* sceneryEntry = GetLargeSceneryEntry(_sceneryEntry);
+            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;

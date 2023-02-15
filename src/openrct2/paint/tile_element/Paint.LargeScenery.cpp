@@ -23,7 +23,6 @@
 #include "../../ride/TrackDesign.h"
 #include "../../util/Util.h"
 #include "../../world/Banner.h"
-#include "../../world/LargeScenery.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"

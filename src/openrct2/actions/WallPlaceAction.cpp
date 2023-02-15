@@ -19,7 +19,6 @@
 #include "../ride/TrackDesign.h"
 #include "../world/Banner.h"
 #include "../world/ConstructionClearance.h"
-#include "../world/LargeScenery.h"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"

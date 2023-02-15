@@ -44,7 +44,6 @@
 #include "Banner.h"
 #include "Climate.h"
 #include "Footpath.h"
-#include "LargeScenery.h"
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"

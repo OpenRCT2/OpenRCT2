@@ -25,7 +25,6 @@
 #include "../windows/TileInspectorGlobals.h"
 #include "Banner.h"
 #include "Footpath.h"
-#include "LargeScenery.h"
 #include "Location.hpp"
 #include "Map.h"
 #include "Park.h"

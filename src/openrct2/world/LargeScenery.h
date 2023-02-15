@@ -9,12 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
-#include "Map.h"
-#include "TileElement.h"
-
-LargeSceneryEntry* GetLargeSceneryEntry(ObjectEntryIndex entryIndex);
-
 enum
 {
     LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED = 1 << 0,

@@ -49,7 +49,6 @@
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
-#include "../world/LargeScenery.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Park.h"

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "ObjectTypes.h"
 
 enum
 {
@@ -18,6 +19,8 @@ enum
 
 struct WaterObjectEntry
 {
+    static constexpr auto kObjectType = ObjectType::Water;
+
     StringId string_idx;      // 0x00
     uint32_t image_id;        // 0x02
     uint32_t palette_index_1; // 0x06

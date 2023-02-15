@@ -306,7 +306,7 @@ public:
     bool HasAddition() const;
     uint8_t GetAddition() const;
     ObjectEntryIndex GetAdditionEntryIndex() const;
-    PathBitEntry* GetAdditionEntry() const;
+    const PathBitEntry* GetAdditionEntry() const;
     void SetAddition(uint8_t newAddition);
 
     bool AdditionIsGhost() const;
@@ -475,7 +475,7 @@ private:
 public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
-    LargeSceneryEntry* GetEntry() const;
+    const LargeSceneryEntry* GetEntry() const;
     const LargeSceneryObject* GetObject() const;
 
     uint8_t GetSequenceIndex() const;

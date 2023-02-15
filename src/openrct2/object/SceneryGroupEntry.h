@@ -17,6 +17,8 @@
 
 struct SceneryGroupEntry
 {
+    static constexpr auto kObjectType = ObjectType::SceneryGroup;
+
     StringId name;
     uint32_t image;
     std::vector<ScenerySelection> SceneryEntries;

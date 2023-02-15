@@ -54,6 +54,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
+#include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/SmallSceneryEntry.h>
@@ -64,7 +65,6 @@
 #include <openrct2/util/Math.hpp>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
-#include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
@@ -1065,7 +1065,7 @@ private:
                     return;
                 }
 
-                auto* sceneryEntry = GetLargeSceneryEntry(selection.EntryIndex);
+                auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
                 gMapSelectionTiles.clear();
 
                 for (auto* tile = sceneryEntry->tiles; tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF));
@@ -1571,7 +1571,7 @@ private:
             case ViewportInteractionItem::LargeScenery:
             {
                 auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
-                auto* sceneryEntry = GetLargeSceneryEntry(entryIndex);
+                auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
                 if (sceneryEntry != nullptr)
                 {
                     WindowScenerySetSelectedItem(
@@ -1598,7 +1598,7 @@ private:
             case ViewportInteractionItem::FootpathItem:
             {
                 auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
-                auto* pathBitEntry = GetFootpathItemEntry(entryIndex);
+                auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(entryIndex);
                 if (pathBitEntry != nullptr)
                 {
                     WindowScenerySetSelectedItem(
@@ -2020,7 +2020,7 @@ private:
         uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
             std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
-        auto* sceneryEntry = GetLargeSceneryEntry(sceneryIndex);
+        auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryIndex);
         if (sceneryEntry)
         {
             int16_t maxClearZ = 0;

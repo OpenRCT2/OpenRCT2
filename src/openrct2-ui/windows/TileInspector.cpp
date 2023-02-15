@@ -25,6 +25,7 @@
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
 #include <openrct2/object/LargeSceneryEntry.h>
+#include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
@@ -35,7 +36,6 @@
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Footpath.h>
-#include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
@@ -1146,8 +1146,7 @@ public:
                     // Path addition
                     if (tileElement->AsPath()->HasAddition())
                     {
-                        const auto pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
-                        const auto* pathBitEntry = GetFootpathItemEntry(pathAdditionType);
+                        const auto pathBitEntry = tileElement->AsPath()->GetAdditionEntry();
                         StringId additionNameId = pathBitEntry != nullptr ? pathBitEntry->name
                                                                           : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
                         auto ft = Formatter();
@@ -1462,7 +1461,7 @@ public:
                         { colours[1] });
 
                     // Banner info
-                    auto* largeSceneryEntry = GetLargeSceneryEntry(largeSceneryType);
+                    auto* largeSceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(largeSceneryType);
                     if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         auto banner = sceneryElement->GetBanner();

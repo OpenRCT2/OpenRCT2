@@ -35,7 +35,6 @@
 #include "../scenario/Scenario.h"
 #include "Climate.h"
 #include "Footpath.h"
-#include "LargeScenery.h"
 #include "Map.h"
 #include "Park.h"
 #include "Wall.h"
@@ -301,30 +300,6 @@ void SceneryRemoveGhostToolPlacement()
     }
 }
 
-PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex)
-{
-    PathBitEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::PathBits, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<PathBitEntry*>(obj->GetLegacyData());
-    }
-    return result;
-}
-
-SceneryGroupEntry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex)
-{
-    SceneryGroupEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::SceneryGroup, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<SceneryGroupEntry*>(obj->GetLegacyData());
-    }
-    return result;
-}
-
 int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry)
 {
     return (wallEntry->flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
@@ -383,11 +358,11 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
         case SCENERY_TYPE_SMALL:
             return OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_PATH_ITEM:
-            return GetFootpathItemEntry(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_WALL:
             return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_LARGE:
-            return GetLargeSceneryEntry(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_BANNER:
             return OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(item.EntryIndex) != nullptr;
         default:
@@ -416,7 +391,7 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
     std::vector<ScenerySelection> nonMiscScenery;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        const auto* sgEntry = GetSceneryGroupEntry(i);
+        const auto* sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sgEntry != nullptr)
         {
             nonMiscScenery.insert(nonMiscScenery.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());
