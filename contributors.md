@@ -103,6 +103,7 @@ The following people are not part of the development team, but have been contrib
 * (8street) - Misc.
 * Umar Ahmed (umar-ahmed) - MacOS file watcher
 * Andrew Arnold (fidwell) - Added window support for more scenery groups.
+* Josh Trzebiatowski (trzejos) - Ride and scenery filtering
 
 ## Bug fixes
 * (KirilAngelov)
