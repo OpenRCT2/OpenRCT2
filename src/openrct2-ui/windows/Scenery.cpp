@@ -108,7 +108,7 @@ private:
     {
         SCENERY_TAB_TYPE_GROUP,
         SCENERY_TAB_TYPE_MISC,
-        SCENERY_TAB_TYPE_SEARCH
+        SCENERY_TAB_TYPE_ALL,
     };
 
     struct SceneryItem
@@ -130,9 +130,9 @@ private:
             return Type == SCENERY_TAB_TYPE_MISC;
         }
 
-        bool IsSearch() const
+        bool IsAll() const
         {
-            return Type == SCENERY_TAB_TYPE_SEARCH;
+            return Type == SCENERY_TAB_TYPE_ALL;
         }
 
         bool IsSceneryGroup() const
@@ -559,7 +559,7 @@ public:
                     return { fallback, ft };
                 }
 
-                if (tabInfo.IsSearch())
+                if (tabInfo.IsAll())
                 {
                     ft.Add<StringId>(STR_ALL_SCENERY);
                     return { fallback, ft };
@@ -584,7 +584,7 @@ public:
         if (tabIndex < _tabEntries.size())
         {
             const auto& tabInfo = _tabEntries[tabIndex];
-            if (tabInfo.IsSearch())
+            if (tabInfo.IsAll())
             {
                 titleStringId = STR_ALL_SCENERY;
             }
@@ -721,7 +721,7 @@ public:
 
             for (size_t index = 0; index < _tabEntries.size(); index++)
             {
-                if (!_tabEntries[index].IsSearch())
+                if (!_tabEntries[index].IsAll())
                     continue;
 
                 auto searchTabWidget = &widgets[WIDX_SCENERY_TAB_1 + index];
@@ -886,7 +886,7 @@ public:
 
         // Add search tab
         _tabEntries.emplace_back();
-        _tabEntries.back().Type = SCENERY_TAB_TYPE_SEARCH;
+        _tabEntries.back().Type = SCENERY_TAB_TYPE_ALL;
 
         // small scenery
         for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
@@ -1090,7 +1090,7 @@ private:
     {
         for (auto& tabEntry : _tabEntries)
         {
-            if (tabEntry.IsSearch())
+            if (tabEntry.IsAll())
                 return &tabEntry;
         }
 
@@ -1446,9 +1446,9 @@ private:
             std::optional<ImageId> imageId = std::nullopt;
             auto imageOffset = tabIndex == _activeTabIndex ? TabImageOffsetSelected : TabImageOffsetUnselected;
 
-            if (_tabEntries[tabIndex].IsSearch())
+            if (_tabEntries[tabIndex].IsAll())
             {
-                imageId = ImageId(SPR_G2_SEARCH_UNSELECTED + imageOffset, colours[1]);
+                imageId = ImageId(SPR_G2_ALL_UNSELECTED + imageOffset, colours[1]);
             }
             else if (scgEntry != nullptr)
             {

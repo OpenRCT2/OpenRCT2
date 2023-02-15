@@ -135,10 +135,10 @@
         "path": "icons/search.png"
     },
     {
-        "path": "icons/search_unselected.png"
+        "path": "icons/all_unselected.png"
     },
     {
-        "path": "icons/search_selected.png"
+        "path": "icons/all_selected.png"
     },
     {
         "path": "icons/eyedropper.png",
