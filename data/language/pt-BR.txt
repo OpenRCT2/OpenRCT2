@@ -3647,6 +3647,8 @@ STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand G
 STR_6542    :Contribuidores
 STR_6543    :Contribuidores…
 STR_6544    :Empréstimo não pode ser negativo!
+STR_6545    :Usar cálculo de juros do RCT1
+STR_6546    :Usar algoritmo de cálculo de juros do RollerCoaster Tycoon 1, que utilizava uma porcentagem fixa de aproximadamente 1,33%.
 
 #############
 # Scenarios #
