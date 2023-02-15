@@ -146,6 +146,8 @@ void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId fo
 void DrawTextEllipsised(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
 int32_t DrawTextWrapped(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
 
+void DrawText(
+    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
 void DrawTextBasic(
     DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint = {});
 void DrawTextEllipsised(

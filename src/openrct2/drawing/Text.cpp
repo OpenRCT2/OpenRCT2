@@ -14,11 +14,6 @@
 #include "../localisation/Localisation.h"
 #include "Drawing.h"
 
-static void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
-static void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, StringId format, const void* args);
-
 class StaticLayout
 {
 private:
@@ -79,7 +74,7 @@ public:
     }
 };
 
-static void DrawText(
+void DrawText(
     DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
 {
     int32_t width = noFormatting ? GfxGetStringWidthNoFormatting(text, paint.FontStyle)
@@ -114,14 +109,6 @@ static void DrawText(
     }
 }
 
-static void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, StringId format, const void* args)
-{
-    utf8 buffer[512];
-    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, args);
-    DrawText(dpi, coords, paint, buffer);
-}
-
 void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format)
 {
     Formatter ft{};
@@ -131,7 +118,9 @@ void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId fo
 
 void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
 {
-    DrawText(dpi, coords, textPaint, format, ft.Data());
+    utf8 buffer[512];
+    OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
+    DrawText(dpi, coords, textPaint, buffer);
 }
 
 void DrawTextEllipsised(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
@@ -154,11 +143,6 @@ void DrawTextEllipsised(
 void GfxDrawString(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
     DrawText(dpi, coords, textPaint, buffer);
-}
-
-void GfxDrawStringNoFormatting(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
-{
-    DrawText(dpi, coords, textPaint, buffer, true);
 }
 
 int32_t DrawTextWrapped(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
