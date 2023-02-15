@@ -947,6 +947,22 @@ public:
                 it++;
         }
 
+        // Move all scenery tab to end of first row
+        if (_tabEntries.size() > MaxTabsPerRow)
+        {
+            auto allSceneryTab = _tabEntries.back();
+            _tabEntries.pop_back();
+            size_t index = 0;
+            for (auto it = _tabEntries.begin(); it != _tabEntries.end(); it++, index++)
+            {
+                if (index == MaxTabsPerRow - 1)
+                {
+                    _tabEntries.insert(it, allSceneryTab);
+                    break;
+                }
+            }
+        }
+
         // Set required width
         _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), MaxTabsPerRow) * TabWidth + 5;
 
