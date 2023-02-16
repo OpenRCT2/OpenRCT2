@@ -403,23 +403,6 @@ namespace String
         return buffer;
     }
 
-    utf8* Duplicate(const std::string& src)
-    {
-        return String::Duplicate(src.c_str());
-    }
-
-    utf8* Duplicate(const utf8* src)
-    {
-        utf8* result = nullptr;
-        if (src != nullptr)
-        {
-            size_t srcSize = SizeOf(src) + 1;
-            result = Memory::Allocate<utf8>(srcSize);
-            std::memcpy(result, src, srcSize);
-        }
-        return result;
-    }
-
     std::vector<std::string> Split(std::string_view s, std::string_view delimiter)
     {
         if (delimiter.empty())

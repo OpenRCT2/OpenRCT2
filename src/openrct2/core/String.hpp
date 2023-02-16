@@ -82,8 +82,6 @@ namespace String
     u8string StdFormat(const utf8* format, ...);
     u8string Format_VA(const utf8* format, va_list args);
     utf8* AppendFormat(utf8* buffer, size_t bufferSize, const utf8* format, ...);
-    utf8* Duplicate(const std::string& src);
-    utf8* Duplicate(const utf8* src);
 
     /**
      * Splits the given string by a delimiter and returns the values as a new string array.
