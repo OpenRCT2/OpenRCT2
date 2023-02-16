@@ -539,14 +539,14 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
     if (scenario->Highscore != nullptr)
     {
         // TODO: Should probably be translatable
-        const utf8* completedByName = "???";
-        if (!String::IsNullOrEmpty(scenario->Highscore->name))
+        u8string completedByName = "???";
+        if (!scenario->Highscore->name.empty())
         {
             completedByName = scenario->Highscore->name;
         }
         ft = Formatter();
         ft.Add<StringId>(STR_STRING);
-        ft.Add<const char*>(completedByName);
+        ft.Add<const char*>(completedByName.c_str());
         ft.Add<money64>(scenario->Highscore->company_value);
         screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
     }
@@ -623,16 +623,15 @@ static void WindowScenarioselectScrollpaint(WindowBase* w, DrawPixelInfo* dpi, i
                         { window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
 
                     // Draw completion score
-                    const utf8* completedByName = "???";
-                    if (!String::IsNullOrEmpty(scenario->Highscore->name))
+                    u8string completedByName = "???";
+                    if (!scenario->Highscore->name.empty())
                     {
                         completedByName = scenario->Highscore->name;
                     }
-                    SafeStrCpy(buffer, completedByName, 64);
                     ft = Formatter();
                     ft.Add<StringId>(STR_COMPLETED_BY);
                     ft.Add<StringId>(STR_STRING);
-                    ft.Add<char*>(buffer);
+                    ft.Add<const char*>(completedByName.c_str());
                     DrawTextBasic(
                         dpi, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
                         { FontStyle::Small, TextAlignment::CENTRE });

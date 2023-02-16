@@ -117,7 +117,6 @@ static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA
 
 static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 {
-    SafeFree(highscore->name);
     SafeDelete(highscore);
 }
 
@@ -464,7 +463,7 @@ public:
             // Check if record company value has been broken or the highscore is the same but no name is registered
             ScenarioHighscoreEntry* highscore = scenario->Highscore;
             if (highscore == nullptr || companyValue > highscore->company_value
-                || (String::IsNullOrEmpty(highscore->name) && companyValue == highscore->company_value))
+                || (highscore->name.empty() && companyValue == highscore->company_value))
             {
                 if (highscore == nullptr)
                 {
@@ -474,14 +473,13 @@ public:
                 }
                 else
                 {
-                    if (!String::IsNullOrEmpty(highscore->name))
+                    if (!highscore->name.empty())
                     {
                         highscore->timestamp = Platform::GetDatetimeNowUTC();
                     }
-                    SafeFree(highscore->name);
                 }
                 highscore->fileName = Path::GetFileName(scenario->Path);
-                highscore->name = String::Duplicate(name);
+                highscore->name = name;
                 highscore->company_value = companyValue;
                 SaveHighscores();
                 return true;
@@ -505,7 +503,7 @@ private:
         }
         return nullptr;
     }
-    
+
     ScenarioIndexEntry* GetByPath(const utf8* path)
     {
         const ScenarioRepository* repo = this;
@@ -631,7 +629,7 @@ private:
             {
                 ScenarioHighscoreEntry* highscore = InsertHighscore();
                 highscore->fileName = fs.ReadStdString();
-                highscore->name = fs.ReadString();
+                highscore->name = fs.ReadStdString();
                 highscore->company_value = fileVersion == 1 ? fs.ReadValue<money32>() : fs.ReadValue<money64>();
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }
@@ -691,9 +689,8 @@ private:
                             // Check if legacy highscore is better
                             if (scBasic.CompanyValue > highscore->company_value)
                             {
-                                SafeFree(highscore->name);
                                 std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
-                                highscore->name = String::Duplicate(name.c_str());
+                                highscore->name = name;
                                 highscore->company_value = scBasic.CompanyValue;
                                 highscore->timestamp = DATETIME64_MIN;
                                 break;
@@ -705,7 +702,7 @@ private:
                         ScenarioHighscoreEntry* highscore = InsertHighscore();
                         highscore->fileName = scBasic.Path;
                         std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
-                        highscore->name = String::Duplicate(name.c_str());
+                        highscore->name = name;
                         highscore->company_value = scBasic.CompanyValue;
                         highscore->timestamp = DATETIME64_MIN;
                     }

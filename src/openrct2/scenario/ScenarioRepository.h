@@ -21,7 +21,7 @@ struct RCTObjectEntry;
 struct ScenarioHighscoreEntry
 {
     u8string fileName;
-    utf8* name;
+    u8string name;
     money64 company_value;
     datetime64 timestamp;
 };
