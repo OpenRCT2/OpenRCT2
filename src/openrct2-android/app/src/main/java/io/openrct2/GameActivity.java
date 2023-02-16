@@ -4,16 +4,10 @@ import android.icu.util.Currency;
 import android.icu.util.LocaleData;
 import android.icu.util.ULocale;
 import android.os.Build;
-import android.os.LocaleList;
 import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.core.os.LocaleListCompat;
 
 import org.libsdl.app.SDLActivity;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 public class GameActivity extends SDLActivity {
