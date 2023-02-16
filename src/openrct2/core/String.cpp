@@ -420,18 +420,6 @@ namespace String
         return result;
     }
 
-    utf8* DiscardUse(utf8** ptr, utf8* replacement)
-    {
-        Memory::Free(*ptr);
-        *ptr = replacement;
-        return replacement;
-    }
-
-    utf8* DiscardDuplicate(utf8** ptr, const utf8* replacement)
-    {
-        return DiscardUse(ptr, String::Duplicate(replacement));
-    }
-
     std::vector<std::string> Split(std::string_view s, std::string_view delimiter)
     {
         if (delimiter.empty())
