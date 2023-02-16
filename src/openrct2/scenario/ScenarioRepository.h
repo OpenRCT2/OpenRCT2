@@ -22,8 +22,8 @@ struct ScenarioHighscoreEntry
 {
     u8string fileName;
     u8string name;
-    money64 company_value;
-    datetime64 timestamp;
+    money64 company_value{};
+    datetime64 timestamp{};
 };
 
 enum class ScenarioSource : uint8_t

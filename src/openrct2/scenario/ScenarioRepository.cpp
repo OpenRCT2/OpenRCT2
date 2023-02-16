@@ -732,7 +732,6 @@ private:
     ScenarioHighscoreEntry* InsertHighscore()
     {
         auto highscore = new ScenarioHighscoreEntry();
-        std::memset(highscore, 0, sizeof(ScenarioHighscoreEntry));
         _highscores.push_back(highscore);
         return highscore;
     }
