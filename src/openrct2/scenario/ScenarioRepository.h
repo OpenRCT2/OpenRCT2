@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 #include "../scenario/Scenario.h"
 
 #include <memory>
@@ -19,7 +20,7 @@ struct RCTObjectEntry;
 
 struct ScenarioHighscoreEntry
 {
-    utf8* fileName;
+    u8string fileName;
     utf8* name;
     money64 company_value;
     datetime64 timestamp;
