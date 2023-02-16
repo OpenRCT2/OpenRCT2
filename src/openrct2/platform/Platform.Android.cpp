@@ -78,7 +78,46 @@ namespace Platform
 
         jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
         jclass activityClass = env->GetObjectClass(activity);
-        jmethodID getDefaultLocale = env->GetMethodID(activityClass, "getDefaultLocale", "()Ljava/lang/String;");
+        jmethodID getDefaultLocale = env->GetMethodID(activityClass, "getDefaultLocale", "([Ljava/lang/String;)Ljava/lang/String;");
+
+        jobjectArray jLanguageTags = env->NewObjectArray(LANGUAGE_COUNT, env->FindClass("java/lang/String"), env->NewStringUTF(""));
+
+        for (int32_t i = 1; i < LANGUAGE_COUNT; ++i)
+        {
+            jstring jTag = env->NewStringUTF(LanguagesDescriptors[i].locale);
+            env->SetObjectArrayElement(jLanguageTags, i, jTag);
+        }
+
+        jstring jniString = (jstring)env->CallObjectMethod(activity, getDefaultLocale, jLanguageTags);
+
+        const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
+
+        utf8* string = (char*)malloc(strlen(jniChars) + 1);
+        std::memcpy((void*)string, jniChars, strlen(jniChars));
+        string[strlen(jniChars)] = 0x00;
+
+        env->ReleaseStringUTFChars(jniString, jniChars);
+        for (int32_t i = 0; i < LANGUAGE_COUNT; ++i)
+        {
+            jobject strToFree = env->GetObjectArrayElement(jLanguageTags, i);
+            env->DeleteLocalRef(strToFree);
+        }
+        env->DeleteLocalRef(jLanguageTags);
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+
+        std::string defaultLocale = string;
+
+        return LanguageGetIDFromLocale(defaultLocale.c_str());
+    }
+
+    CurrencyType GetLocaleCurrency()
+    {
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getDefaultLocale = env->GetMethodID(activityClass, "getLocaleCurrency", "()Ljava/lang/String;");
 
         jstring jniString = (jstring)env->CallObjectMethod(activity, getDefaultLocale);
 
@@ -92,18 +131,27 @@ namespace Platform
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(activityClass);
 
-        std::string defaultLocale = string;
+        std::string localeCurrencyCode = string;
 
-        return LanguageGetIDFromLocale(defaultLocale.c_str());
-    }
-
-    CurrencyType GetLocaleCurrency()
-    {
-        return Platform::GetCurrencyValue(NULL);
+        return Platform::GetCurrencyValue(localeCurrencyCode.c_str());
     }
 
     MeasurementFormat GetLocaleMeasurementFormat()
     {
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getLocaleMeasurementFormat = env->GetMethodID(activityClass, "getLocaleMeasurementFormat", "()Z");
+
+        jboolean isImperial = env->CallBooleanMethod(activity, getLocaleMeasurementFormat);
+
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+        bool result = isImperial == JNI_TRUE;
+        if (result) {
+            return MeasurementFormat::Imperial;
+        }
         return MeasurementFormat::Metric;
     }
 
