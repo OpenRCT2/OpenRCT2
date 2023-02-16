@@ -41,6 +41,7 @@
 - Fix: [#19112] Text boxes not updated with empty strings in Track List, Server List, and Start Server windows.
 - Fix: [#19114] [Plugin] GameActionResult does not comply to API specification.
 - Fix: [#19136] SV6 saves with experimental RCT1 paths not imported correctly.
+- Fix: [#19243] .park scenarios don't complete properly
 - Fix: [#19250] MusicObjects do not free their preview images.
 - Fix: [#19292] Overflow in totalRideValue.
 - Fix: [#19339] Incorrect import of crashed particles from SV4.
