@@ -1046,8 +1046,7 @@ static void VehicleSpritePaintRestraints(
 // Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
 static uint8_t GetPaintBankRotation(const Vehicle* vehicle)
 {
-    return (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? BankInvertTable[vehicle->bank_rotation]
-                                                                     : vehicle->bank_rotation;
+    return (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? BankInvertTable[vehicle->bank_rotation] : vehicle->bank_rotation;
 }
 
 #pragma endregion
