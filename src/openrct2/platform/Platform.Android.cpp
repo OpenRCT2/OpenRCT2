@@ -74,7 +74,27 @@ namespace Platform
 
     uint16_t GetLocaleLanguage()
     {
-        return LANGUAGE_ENGLISH_UK;
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getDefaultLocale = env->GetMethodID(activityClass, "getDefaultLocale", "()Ljava/lang/String;");
+
+        jstring jniString = (jstring)env->CallObjectMethod(activity, getDefaultLocale);
+
+        const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
+
+        utf8* string = (char*)malloc(strlen(jniChars) + 1);
+        std::memcpy((void*)string, jniChars, strlen(jniChars));
+        string[strlen(jniChars)] = 0x00;
+
+        env->ReleaseStringUTFChars(jniString, jniChars);
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+
+        std::string defaultLocale = string;
+
+        return LanguageGetIDFromLocale(defaultLocale.c_str());
     }
 
     CurrencyType GetLocaleCurrency()

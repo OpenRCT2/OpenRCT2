@@ -1,13 +1,32 @@
 package io.openrct2;
 
+import android.os.Build;
+import android.os.LocaleList;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.os.LocaleListCompat;
+
 import org.libsdl.app.SDLActivity;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 public class GameActivity extends SDLActivity {
 
     public float getDefaultScale() {
         return getResources().getDisplayMetrics().density;
+    }
+
+    public String getDefaultLocale() {
+        Locale locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            locale = getResources().getConfiguration().getLocales().get(0);
+        } else {
+            locale = getResources().getConfiguration().locale;
+        }
+        return locale.getLanguage() + "-" + locale.getCountry();
     }
 
     @Override
