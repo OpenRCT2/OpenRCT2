@@ -29,7 +29,7 @@ constexpr static StringId SetVehicleTypeErrorTitle[] = {
     STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
     STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
     STR_RIDE_SET_VEHICLE_TYPE_FAIL,
-    STR_RIDE_SET_VEHICLE_TYPE_FAIL,
+    STR_RIDE_SET_VEHICLE_REVERSED_FAIL,
 };
 
 RideSetVehicleAction::RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint16_t value, uint8_t colour)
