@@ -3647,6 +3647,8 @@ STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand G
 STR_6542    :Kontribuantoj
 STR_6543    :Kontribuantoj…
 STR_6544    :Prunto ne povas esti negativa!
+STR_6545    :Uzi interezan kalkulon de RCT1
+STR_6546    :Uzi la interezan kalkulan algoritmon de RollerCoaster Tycoon 1, kiu uzis fiksitan procenton de proksimume 1.33%.
 
 #############
 # Scenarios #
