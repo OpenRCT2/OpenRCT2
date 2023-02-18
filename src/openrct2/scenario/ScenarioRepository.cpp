@@ -479,7 +479,7 @@ public:
                     }
                 }
                 highscore->fileName = Path::GetFileName(scenario->Path);
-                highscore->name = name;
+                highscore->name = name != nullptr ? name : "";
                 highscore->company_value = companyValue;
                 SaveHighscores();
                 return true;
