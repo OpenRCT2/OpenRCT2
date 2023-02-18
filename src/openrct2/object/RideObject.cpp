@@ -45,17 +45,6 @@ static const uint8_t SpriteGroupMultiplier[EnumValue(SpriteGroupType::Count)] = 
 
 constexpr const uint8_t DefaultSteamSpawnPosition[] = { 11, 22 };
 
-static const EnumMap<VehicleEntryAnimation> AnimationNameLookup{
-    { "none", VehicleEntryAnimation::None },
-    { "simpleVehicle", VehicleEntryAnimation::SimpleVehicle },
-    { "steamLocomotive", VehicleEntryAnimation::SteamLocomotive },
-    { "swanBoat", VehicleEntryAnimation::SwanBoat },
-    { "monorailCycle", VehicleEntryAnimation::MonorailCycle },
-    { "multiDimCoaster", VehicleEntryAnimation::MultiDimCoaster },
-    { "observationTower", VehicleEntryAnimation::ObservationTower },
-    { "animalFlying", VehicleEntryAnimation::AnimalFlying },
-};
-
 static const EnumMap<CarEntryAnimation> AnimationNameLookup{
     { "none", CarEntryAnimation::None },
     { "simpleVehicle", CarEntryAnimation::SimpleVehicle },
@@ -427,8 +416,8 @@ void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, ISt
     car->animation = animationProperties.Alias;
     car->AnimationSpeed = animationProperties.Speed;
     car->AnimationFrames = animationProperties.NumFrames;
-    car->SteamSpawnPosition.Longitudinal = DefaultSteamSpawnPosition[0];
-    car->SteamSpawnPosition.Vertical = DefaultSteamSpawnPosition[1];
+    car->SteamEffect.Longitudinal = DefaultSteamSpawnPosition[0];
+    car->SteamEffect.Vertical = DefaultSteamSpawnPosition[1];
     ReadLegacySpriteGroups(car, spriteGroups);
 }
 
@@ -746,14 +735,14 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     auto jSteamTranslation = jCar["steamPositionModifier"];
     if (jSteamTranslation.is_object())
     {
-        car.SteamSpawnPosition.Longitudinal = Json::GetNumber<int8_t>(
+        car.SteamEffect.Longitudinal = Json::GetNumber<int8_t>(
             jSteamTranslation["longitudinal"], DefaultSteamSpawnPosition[0]);
-        car.SteamSpawnPosition.Vertical = Json::GetNumber<int8_t>(jSteamTranslation["vertical"], DefaultSteamSpawnPosition[1]);
+        car.SteamEffect.Vertical = Json::GetNumber<int8_t>(jSteamTranslation["vertical"], DefaultSteamSpawnPosition[1]);
     }
     else
     {
-        car.SteamSpawnPosition.Longitudinal = DefaultSteamSpawnPosition[0];
-        car.SteamSpawnPosition.Vertical = DefaultSteamSpawnPosition[1];
+        car.SteamEffect.Longitudinal = DefaultSteamSpawnPosition[0];
+        car.SteamEffect.Vertical = DefaultSteamSpawnPosition[1];
     }
 
     auto jLoadingPositions = jCar["loadingPositions"];

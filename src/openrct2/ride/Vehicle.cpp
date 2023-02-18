@@ -6625,7 +6625,7 @@ void Vehicle::UpdateAdditionalAnimation()
                         {
                             int32_t directionIndex = sprite_direction << 1;
                             CoordsXYZ steamOffset = ComputeSteamOffset(
-                                vehicleEntry->SteamSpawnPosition.Vertical, vehicleEntry->SteamSpawnPosition.Longitudinal, Pitch,
+                                carEntry->SteamEffect.Vertical, carEntry->SteamEffect.Longitudinal, Pitch,
                                 directionIndex);
                             SteamParticle::Create(CoordsXYZ(x, y, z) + steamOffset);
                         }
