@@ -20588,5 +20588,77 @@
         "x_offset": -5,
         "y_offset": -20,
         "palette": "keep"
+    },
+    {
+        "path": "palette_map/palette_map_dark_olive_dark.png"
+    },
+    {
+        "path": "palette_map/palette_map_dark_olive_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_saturated_brown_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_bordeaux_red_dark.png"
+    },
+    {
+        "path": "palette_map/palette_map_bordeaux_red_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_grass_green_dark.png"
+    },
+    {
+        "path": "palette_map/palette_map_grass_green_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_olive_dark.png"
+    },
+    {
+        "path": "palette_map/palette_map_olive_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_saturated_green_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_tan_dark.png"
+    },
+    {
+        "path": "palette_map/palette_map_tan_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_dull_purple_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_dull_green_dark.png"
+    },
+    {
+        "path": "palette_map/palette_map_dull_green_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_saturated_purple_dark.png"
+    },
+    {
+        "path": "palette_map/palette_map_saturated_purple_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_orange_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_aqua_dark.png"
+    },
+    {
+        "path": "palette_map/palette_map_magenta_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_dull_brown_dark.png"
+    },
+    {
+        "path": "palette_map/palette_map_dull_brown_light.png"
+    },
+    {
+        "path": "palette_map/palette_map_invisible.png"
+    },
+    {
+        "path": "palette_map/palette_map_void.png"
     }
 ]

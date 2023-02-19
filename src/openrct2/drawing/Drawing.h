@@ -296,6 +296,30 @@ enum class FilterPaletteID : int32_t
     PaletteGlassDarkPink = PaletteGlass + COLOUR_DARK_PINK,
     PaletteGlassBrightPink = PaletteGlass + COLOUR_BRIGHT_PINK,
     PaletteGlassLightPink = PaletteGlass + COLOUR_LIGHT_PINK,
+    PaletteGlassDarkOliveDark = PaletteGlass + COLOUR_DARK_OLIVE_DARK,
+    PaletteGlassDarkOliveLight = PaletteGlass + COLOUR_DARK_OLIVE_LIGHT,
+    PaletteGlassSaturatedBrownLight = PaletteGlass + COLOUR_SATURATED_BROWN_LIGHT,
+    PaletteGlassBordeauxRedDark = PaletteGlass + COLOUR_BORDEAUX_RED_DARK,
+    PaletteGlassBordeauxRedLight = PaletteGlass + COLOUR_BORDEAUX_RED_LIGHT,
+    PaletteGlassGrassGreenDark = PaletteGlass + COLOUR_GRASS_GREEN_DARK,
+    PaletteGlassGrassGreenLight = PaletteGlass + COLOUR_GRASS_GREEN_LIGHT,
+    PaletteGlassOliveDark = PaletteGlass + COLOUR_OLIVE_DARK,
+    PaletteGlassOliveLight = PaletteGlass + COLOUR_OLIVE_LIGHT,
+    PaletteGlassSaturatedGreenLight = PaletteGlass + COLOUR_SATURATED_GREEN_LIGHT,
+    PaletteGlassTanDark = PaletteGlass + COLOUR_TAN_DARK,
+    PaletteGlassTanLight = PaletteGlass + COLOUR_TAN_LIGHT,
+    PaletteGlassDullPurpleLight = PaletteGlass + COLOUR_DULL_PURPLE_LIGHT,
+    PaletteGlassDullGreenDark = PaletteGlass + COLOUR_DULL_GREEN_DARK,
+    PaletteGlassDullGreenLight = PaletteGlass + COLOUR_DULL_GREEN_LIGHT,
+    PaletteGlassSaturatedPurpleDark = PaletteGlass + COLOUR_SATURATED_PURPLE_DARK,
+    PaletteGlassSaturatedPurpleLight = PaletteGlass + COLOUR_SATURATED_PURPLE_LIGHT,
+    PaletteGlassOrangeLight = PaletteGlass + COLOUR_ORANGE_LIGHT,
+    PaletteGlassAquaDark = PaletteGlass + COLOUR_AQUA_DARK,
+    PaletteGlassMagentaLight = PaletteGlass + COLOUR_MAGENTA_LIGHT,
+    PaletteGlassDullBrownDark = PaletteGlass + COLOUR_DULL_BROWN_DARK,
+    PaletteGlassDullBrownLight = PaletteGlass + COLOUR_DULL_BROWN_LIGHT,
+    PaletteGlassInvisible = PaletteGlass + COLOUR_INVISIBLE,
+    PaletteGlassVoid = PaletteGlass + COLOUR_VOID,
 };
 
 struct TranslucentWindowPalette
@@ -446,6 +470,7 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 }
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
+#define PALETTE_TOTAL_OFFSETS 192
 
 #define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
 #define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)
@@ -570,6 +595,7 @@ extern void (*MaskFn)(
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
+std::optional<uint32_t> GetPaletteG2Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
 void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
 

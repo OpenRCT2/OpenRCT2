@@ -37,7 +37,7 @@ enum
 void ColoursInitMaps()
 {
     // Get colour maps from g1
-    for (int32_t i = 0; i < COLOUR_COUNT; i++)
+    for (int32_t i = 0; i < 32; i++)
     {
         const G1Element* g1 = GfxGetG1Element(SPR_PALETTE_2_START + i);
         if (g1 != nullptr)
@@ -93,6 +93,30 @@ namespace Colour
         { "dark_pink", COLOUR_DARK_PINK },
         { "bright_pink", COLOUR_BRIGHT_PINK },
         { "light_pink", COLOUR_LIGHT_PINK },
+        { "dark_olive_dark", COLOUR_DARK_OLIVE_DARK },
+        { "dark_olive_light", COLOUR_DARK_OLIVE_LIGHT },
+        { "saturated_brown_light", COLOUR_SATURATED_BROWN_LIGHT },
+        { "bordeaux_red_dark", COLOUR_BORDEAUX_RED_DARK },
+        { "bordeaux_red_light", COLOUR_BORDEAUX_RED_LIGHT },
+        { "grass_green_dark", COLOUR_GRASS_GREEN_DARK },
+        { "grass_green_light", COLOUR_GRASS_GREEN_LIGHT },
+        { "olive_dark", COLOUR_OLIVE_DARK },
+        { "olive_light", COLOUR_OLIVE_LIGHT },
+        { "saturated_green_light", COLOUR_SATURATED_GREEN_LIGHT },
+        { "tan_dark", COLOUR_TAN_DARK },
+        { "tan_light", COLOUR_TAN_LIGHT },
+        { "dull_purple_light", COLOUR_DULL_PURPLE_LIGHT },
+        { "dull_green_dark", COLOUR_DULL_GREEN_DARK },
+        { "dull_green_light", COLOUR_DULL_GREEN_LIGHT },
+        { "saturated_purple_dark", COLOUR_SATURATED_PURPLE_DARK },
+        { "saturated_purple_light", COLOUR_SATURATED_PURPLE_LIGHT },
+        { "orange_light", COLOUR_ORANGE_LIGHT },
+        { "aqua_dark", COLOUR_AQUA_DARK },
+        { "magenta_light", COLOUR_MAGENTA_LIGHT },
+        { "dull_brown_dark", COLOUR_DULL_BROWN_DARK },
+        { "dull_brown_light", COLOUR_DULL_BROWN_LIGHT },
+        { "invisible", COLOUR_INVISIBLE },
+        { "void", COLOUR_VOID },
     };
 
     colour_t FromString(std::string_view s, colour_t defaultValue)

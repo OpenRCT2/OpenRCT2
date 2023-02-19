@@ -293,6 +293,58 @@ enum
     SPR_PALETTE_GLASS_DARK_PINK = 5045,
     SPR_PALETTE_GLASS_BRIGHT_PINK = 5046,
     SPR_PALETTE_GLASS_LIGHT_PINK = 5047,
+
+    // Start of G2 Palettes
+
+    SPR_PALETTE_DARK_OLIVE_DARK = 32607,
+    SPR_PALETTE_DARK_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_BROWN_LIGHT,
+    SPR_PALETTE_BORDEAUX_RED_DARK,
+    SPR_PALETTE_BORDEAUX_RED_LIGHT,
+    SPR_PALETTE_GRASS_GREEN_DARK,
+    SPR_PALETTE_GRASS_GREEN_LIGHT,
+    SPR_PALETTE_OLIVE_DARK,
+    SPR_PALETTE_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_GREEN_LIGHT,
+    SPR_PALETTE_TAN_DARK,
+    SPR_PALETTE_TAN_LIGHT,
+    SPR_PALETTE_DULL_PURPLE_LIGHT,
+    SPR_PALETTE_DULL_GREEN_DARK,
+    SPR_PALETTE_DULL_GREEN_LIGHT,
+    SPR_PALETTE_SATURATED_PURPLE_DARK,
+    SPR_PALETTE_SATURATED_PURPLE_LIGHT,
+    SPR_PALETTE_ORANGE_LIGHT,
+    SPR_PALETTE_AQUA_DARK,
+    SPR_PALETTE_MAGENTA_LIGHT,
+    SPR_PALETTE_DULL_BROWN_DARK,
+    SPR_PALETTE_DULL_BROWN_LIGHT,
+    SPR_PALETTE_INVISIBLE,
+    SPR_PALETTE_VOID,
+
+    SPR_PALETTE_GLASS_DARK_OLIVE_DARK,
+    SPR_PALETTE_GLASS_DARK_OLIVE_LIGHT,
+    SPR_PALETTE_GLASS_SATURATED_BROWN_LIGHT,
+    SPR_PALETTE_GLASS_BORDEAUX_RED_DARK,
+    SPR_PALETTE_GLASS_BORDEAUX_RED_LIGHT,
+    SPR_PALETTE_GLASS_GRASS_GREEN_DARK,
+    SPR_PALETTE_GLASS_GRASS_GREEN_LIGHT,
+    SPR_PALETTE_GLASS_OLIVE_DARK,
+    SPR_PALETTE_GLASS_OLIVE_LIGHT,
+    SPR_PALETTE_GLASS_SATURATED_GREEN_LIGHT,
+    SPR_PALETTE_GLASS_TAN_DARK,
+    SPR_PALETTE_GLASS_TAN_LIGHT,
+    SPR_PALETTE_GLASS_DULL_PURPLE_LIGHT,
+    SPR_PALETTE_GLASS_DULL_GREEN_DARK,
+    SPR_PALETTE_GLASS_DULL_GREEN_LIGHT,
+    SPR_PALETTE_GLASS_SATURATED_PURPLE_DARK,
+    SPR_PALETTE_GLASS_SATURATED_PURPLE_LIGHT,
+    SPR_PALETTE_GLASS_ORANGE_LIGHT,
+    SPR_PALETTE_GLASS_AQUA_DARK,
+    SPR_PALETTE_GLASS_MAGENTA_LIGHT,
+    SPR_PALETTE_GLASS_DULL_BROWN_DARK,
+    SPR_PALETTE_GLASS_DULL_BROWN_LIGHT,
+    SPR_PALETTE_GLASS_INVISIBLE,
+    SPR_PALETTE_GLASS_VOID,
 };
 
 const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
@@ -328,10 +380,34 @@ const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
     FilterPaletteID::PaletteGlassDarkPink,
     FilterPaletteID::PaletteGlassBrightPink,
     FilterPaletteID::PaletteGlassLightPink,
+    FilterPaletteID::PaletteGlassDarkOliveDark,
+    FilterPaletteID::PaletteGlassDarkOliveLight,
+    FilterPaletteID::PaletteGlassSaturatedBrownLight,
+    FilterPaletteID::PaletteGlassBordeauxRedDark,
+    FilterPaletteID::PaletteGlassBordeauxRedLight,
+    FilterPaletteID::PaletteGlassGrassGreenDark,
+    FilterPaletteID::PaletteGlassGrassGreenLight,
+    FilterPaletteID::PaletteGlassOliveDark,
+    FilterPaletteID::PaletteGlassOliveLight,
+    FilterPaletteID::PaletteGlassSaturatedGreenLight,
+    FilterPaletteID::PaletteGlassTanDark,
+    FilterPaletteID::PaletteGlassTanLight,
+    FilterPaletteID::PaletteGlassDullPurpleLight,
+    FilterPaletteID::PaletteGlassDullGreenDark,
+    FilterPaletteID::PaletteGlassDullGreenLight,
+    FilterPaletteID::PaletteGlassSaturatedPurpleDark,
+    FilterPaletteID::PaletteGlassSaturatedPurpleLight,
+    FilterPaletteID::PaletteGlassOrangeLight,
+    FilterPaletteID::PaletteGlassAquaDark,
+    FilterPaletteID::PaletteGlassMagentaLight,
+    FilterPaletteID::PaletteGlassDullBrownDark,
+    FilterPaletteID::PaletteGlassDullBrownLight,
+    FilterPaletteID::PaletteGlassInvisible,
+    FilterPaletteID::PaletteGlassVoid,
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
-static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
+static const uint16_t palette_to_g1_offset[PALETTE_TOTAL_OFFSETS] = {
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,
@@ -480,6 +556,31 @@ static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
     SPR_PALETTE_GLASS_DARK_PINK,
     SPR_PALETTE_GLASS_BRIGHT_PINK,
     SPR_PALETTE_GLASS_LIGHT_PINK,
+
+    SPR_PALETTE_DARK_OLIVE_DARK,
+    SPR_PALETTE_DARK_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_BROWN_LIGHT,
+    SPR_PALETTE_BORDEAUX_RED_DARK,
+    SPR_PALETTE_BORDEAUX_RED_LIGHT,
+    SPR_PALETTE_GRASS_GREEN_DARK,
+    SPR_PALETTE_GRASS_GREEN_LIGHT,
+    SPR_PALETTE_OLIVE_DARK,
+    SPR_PALETTE_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_GREEN_LIGHT,
+    SPR_PALETTE_TAN_DARK,
+    SPR_PALETTE_TAN_LIGHT,
+    SPR_PALETTE_DULL_PURPLE_LIGHT,
+    SPR_PALETTE_DULL_GREEN_DARK,
+    SPR_PALETTE_DULL_GREEN_LIGHT,
+    SPR_PALETTE_SATURATED_PURPLE_DARK,
+    SPR_PALETTE_SATURATED_PURPLE_LIGHT,
+    SPR_PALETTE_ORANGE_LIGHT,
+    SPR_PALETTE_AQUA_DARK,
+    SPR_PALETTE_MAGENTA_LIGHT,
+    SPR_PALETTE_DULL_BROWN_DARK,
+    SPR_PALETTE_DULL_BROWN_LIGHT,
+    SPR_PALETTE_INVISIBLE,
+    SPR_PALETTE_VOID,
 };
 
 #define WINDOW_PALETTE_GREY                 {FilterPaletteID::PaletteTranslucentGrey,                  FilterPaletteID::PaletteTranslucentGreyHighlight,             FilterPaletteID::PaletteTranslucentGreyShadow}
@@ -747,7 +848,16 @@ void GfxDrawPickedUpPeep(DrawPixelInfo* dpi)
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
 {
-    if (paletteId < std::size(palette_to_g1_offset))
+    if (paletteId < PALETTE_TO_G1_OFFSET_COUNT)
+    {
+        return palette_to_g1_offset[paletteId];
+    }
+    return std::nullopt;
+}
+
+std::optional<uint32_t> GetPaletteG2Index(colour_t paletteId)
+{
+    if (paletteId < PALETTE_TOTAL_OFFSETS)
     {
         return palette_to_g1_offset[paletteId];
     }

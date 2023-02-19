@@ -32,7 +32,7 @@ static constexpr const uint8_t _appropriateImageDropdownItemsPerRow[34] = {
     1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
     5, 4, 4, 5, 5, 5, 4, 5, 6, 5, // 20
     5, 7, 4, 5, 6, 5, 6, 6, 6, 6, // 30
-    6, 8, 8, 8,                   // 34
+    6, 8, 9, 8,                   // 34
 };
 
 enum
@@ -462,7 +462,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
+        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOR_NUM_ORIGINAL]);
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;
