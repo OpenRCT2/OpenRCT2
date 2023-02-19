@@ -528,6 +528,8 @@ private:
 
             auto actionResult = res->GetData<StaffHireNewActionResult>();
             auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
+            if (staff == nullptr)
+                return;
 
             // If autoposition of staff is disabled, pickup peep and then open the staff window
             if (staff->State == PeepState::Picked)
