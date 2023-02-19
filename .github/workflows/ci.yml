@@ -173,7 +173,7 @@ jobs:
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: |
-          HOMEBREW_NO_ANALYTICS=1 brew install ninja
+          HOMEBREW_NO_ANALYTICS=1 brew install ninja pkg-config
           . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on ${{ matrix.build_flags }}
       - name: Run Tests
         if: ${{matrix.run_tests}}
