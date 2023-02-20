@@ -53,6 +53,7 @@ bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
 bool gCheatsAllowTrackPlaceInvalidHeights = false;
 bool gCheatsAllowRegularPathAsQueue = false;
+bool gCheatsAllowSpecialColorSchemes = false;
 
 void CheatsReset()
 {
@@ -79,6 +80,7 @@ void CheatsReset()
     gCheatsEnableAllDrawableTrackPieces = false;
     gCheatsAllowTrackPlaceInvalidHeights = false;
     gCheatsAllowRegularPathAsQueue = false;
+    gCheatsAllowSpecialColorSchemes = false;
 }
 
 void CheatsSet(CheatType cheatType, int32_t param1 /* = 0*/, int32_t param2 /* = 0*/)
@@ -128,6 +130,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gCheatsEnableAllDrawableTrackPieces, count);
         CheatEntrySerialise(ds, CheatType::AllowTrackPlaceInvalidHeights, gCheatsAllowTrackPlaceInvalidHeights, count);
         CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gCheatsAllowRegularPathAsQueue, count);
+        CheatEntrySerialise(ds, CheatType::AllowSpecialColorSchemes, gCheatsAllowSpecialColorSchemes, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -222,6 +225,9 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::AllowRegularPathAsQueue:
                     ds << gCheatsAllowRegularPathAsQueue;
+                    break;
+                case CheatType::AllowSpecialColorSchemes:
+                    ds << gCheatsAllowSpecialColorSchemes;
                     break;
                 default:
                     break;
@@ -328,6 +334,8 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS);
         case CheatType::AllowRegularPathAsQueue:
             return LanguageGetString(STR_CHEAT_ALLOW_PATH_AS_QUEUE);
+        case CheatType::AllowSpecialColorSchemes:
+            return LanguageGetString(STR_CHEAT_ALLOW_SPECIAL_COLOR_SCHEMES);
         default:
             return "Unknown Cheat";
     }

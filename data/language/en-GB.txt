@@ -3677,6 +3677,8 @@ STR_6571    :Umber
 STR_6572    :Beige
 STR_6573    :Invisible
 STR_6574    :Void
+STR_6575    :Allow special color schemes
+STR_6576    :Adds special colors to color dropdown
 
 #############
 # Scenarios #

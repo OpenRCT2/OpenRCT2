@@ -43,6 +43,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(
                 ctx, &ScCheats::allowRegularPathAsQueue_get, &ScCheats::allowRegularPathAsQueue_set, "allowRegularPathAsQueue");
             dukglue_register_property(
+                ctx, &ScCheats::allowSpecialColorSchemes_get, &ScCheats::allowSpecialColorSchemes_set,
+                "allowSpecialColorSchemes");
+            dukglue_register_property(
                 ctx, &ScCheats::disableRideValueAging_get, &ScCheats::disableRideValueAging_set, "disableRideValueAging");
             dukglue_register_property(
                 ctx, &ScCheats::disableSupportLimits_get, &ScCheats::disableSupportLimits_set, "disableSupportLimits");
@@ -170,6 +173,17 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             gCheatsAllowRegularPathAsQueue = value;
+        }
+
+        bool allowSpecialColorSchemes_get()
+        {
+            return gCheatsAllowSpecialColorSchemes;
+        }
+
+        void allowSpecialColorSchemes_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            gCheatsAllowSpecialColorSchemes = value;
         }
 
         bool disableRideValueAging_get()

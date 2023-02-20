@@ -461,8 +461,10 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
 void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
+
+    auto numColors = (gCheatsAllowSpecialColorSchemes) ? COLOUR_NUM_NORMAL : COLOUR_COUNT;
     // Set items
-    for (uint64_t i = 0; i < COLOUR_COUNT; i++)
+    for (uint64_t i = 0; i < numColors; i++)
     {
         if (selectedColour == COLOUR_UI_ORDER[i])
             defaultIndex = selectedColour;

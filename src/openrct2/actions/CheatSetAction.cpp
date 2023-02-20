@@ -244,6 +244,9 @@ GameActions::Result CheatSetAction::Execute() const
         case CheatType::AllowRegularPathAsQueue:
             gCheatsAllowRegularPathAsQueue = _param1 != 0;
             break;
+        case CheatType::AllowSpecialColorSchemes:
+            gCheatsAllowSpecialColorSchemes = _param1 != 0;
+            break;
         default:
         {
             LOG_ERROR("Unabled cheat: %d", _cheatType.id);
