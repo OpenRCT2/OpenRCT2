@@ -3657,7 +3657,7 @@ STR_6551    :Army green
 STR_6552    :Honeydew
 STR_6553    :Tan
 STR_6554    :Maroon
-STR_6555    :Coral Pink
+STR_6555    :Coral pink
 STR_6556    :Forest green
 STR_6557    :Chartreuse
 STR_6558    :Hunter green
@@ -3665,7 +3665,7 @@ STR_6559    :Celadon
 STR_6560    :Lime green
 STR_6561    :Sepia
 STR_6562    :Peach
-STR_6563    :Lilac
+STR_6563    :Periwinkle
 STR_6564    :Viridian
 STR_6565    :Seafoam green
 STR_6566    :Violet

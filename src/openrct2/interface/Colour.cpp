@@ -59,7 +59,7 @@ void ColoursInitMaps()
     // G2 Palette Init
     for (int32_t i = COLOUR_NUM_ORIGINAL; i < COLOUR_COUNT; i++)
     {
-        const G1Element* g1 = GfxGetG1Element(SPR_G2_PAL_REMAP_BEGIN + i - COLOUR_NUM_ORIGINAL);
+        const G1Element* g1 = GfxGetG1Element(SPR_G2_PALETTE_BEGIN + i - COLOUR_NUM_ORIGINAL);
         if (g1 != nullptr)
         {
             ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];
