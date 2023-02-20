@@ -470,7 +470,7 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 }
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
-#define PALETTE_TOTAL_OFFSETS 192
+constexpr uint8_t PALETTE_TOTAL_OFFSETS = 192;
 
 #define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
 #define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)
@@ -595,7 +595,6 @@ extern void (*MaskFn)(
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
-std::optional<uint32_t> GetPaletteG2Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
 void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
 

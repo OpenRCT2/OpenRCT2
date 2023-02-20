@@ -212,7 +212,7 @@ void TextureCache::GeneratePaletteTexture()
         dpi.bits[i] = i;
     }
 
-    for (int i = 0; i < PALETTE_TO_G1_OFFSET_COUNT; ++i)
+    for (int i = 0; i < PALETTE_TOTAL_OFFSETS; ++i)
     {
         GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
 
@@ -221,18 +221,6 @@ void TextureCache::GeneratePaletteTexture()
         {
             auto element = GfxGetG1Element(g1Index.value());
             GfxDrawSpriteSoftware(&dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
-        }
-    }
-    // G2 Palette textures
-    for (int i = PALETTE_TO_G1_OFFSET_COUNT; i < PALETTE_TOTAL_OFFSETS; ++i)
-    {
-        GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
-
-        auto g2Index = GetPaletteG2Index(i);
-        if (g2Index.has_value())
-        {
-            auto element = GfxGetG1Element(g2Index.value());
-            GfxDrawSpriteSoftware(&dpi, ImageId(g2Index.value()), { -element->x_offset, y - element->y_offset });
         }
     }
 

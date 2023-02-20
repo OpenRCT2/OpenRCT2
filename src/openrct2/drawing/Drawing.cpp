@@ -907,15 +907,6 @@ void GfxDrawPickedUpPeep(DrawPixelInfo* dpi)
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
 {
-    if (paletteId < PALETTE_TO_G1_OFFSET_COUNT)
-    {
-        return palette_to_g1_offset[paletteId];
-    }
-    return std::nullopt;
-}
-
-std::optional<uint32_t> GetPaletteG2Index(colour_t paletteId)
-{
     if (paletteId < PALETTE_TOTAL_OFFSETS)
     {
         return palette_to_g1_offset[paletteId];
