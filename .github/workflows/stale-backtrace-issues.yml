@@ -1,7 +1,7 @@
 name: 'Manage stale backtrace reports'
 on:
   schedule:
-    - cron: '30 1 * * *'
+    - cron: '0 * * * *'
 
 jobs:
   stale:
@@ -13,5 +13,6 @@ jobs:
           days-before-issue-close: 1
           only-issue-labels: 'backtrace.io'
           stale-issue-label: 'stale-backtrace'
-          stale-pr-message: 'This issue is stale and will be closed tomorrow if no action is taken. To keep it open, leave a comment or remove the `stale-backtrace` label.'
-          close-pr-message: 'This issue was closed due to inactivity.'
+          stale-issue-message: 'This issue is stale and will be closed tomorrow if no action is taken. To keep it open, leave a comment or remove the `stale-backtrace` label.'
+          close-issue-message: 'This issue was closed due to inactivity.'
+          operations-per-run: 200
