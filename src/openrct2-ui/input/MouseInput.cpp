@@ -1473,7 +1473,12 @@ void InputStateWidgetPressed(
                 STR_COLOUR_INVISIBLE_TIP,
                 STR_COLOUR_VOID_TIP,
             };
-            WindowTooltipShow(OpenRCT2String{ _colourTooltips[COLOUR_UI_ORDER[dropdown_index]], {} }, screenCoords);
+            auto stringId = COLOUR_UI_ORDER[dropdown_index];
+            if (stringId > COLOUR_NUM_ORIGINAL)
+            {
+                stringId -= COLOUR_ID_G2_OFFSET;
+            }
+            WindowTooltipShow(OpenRCT2String{ _colourTooltips[stringId], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))

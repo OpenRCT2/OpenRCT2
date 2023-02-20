@@ -37,13 +37,13 @@ static constexpr const uint8_t _appropriateImageDropdownItemsPerRow[34] = {
 
 // Map of color picker index to true color index
 static constexpr uint8_t COLOUR_UI_ORDER[] = {
-    0,  3,  47, 6,  50, 45, 11, 37, 39,
-    1,  4,  5,  7,  9,  12, 14, 13, 15,
-    2,  44, 48, 8,  10, 46, 41, 38, 40,
-    29, 27, 35, 42, 23, 52, 21, 19, 32,
-    30, 28, 26, 25, 22, 24, 20, 18, 16,
-    51, 31, 36, 43, 34, 53, 49, 17, 33,
-    54, 55
+    0,   3,   159, 6,   162, 157, 11,  149, 151,
+    1,   4,   5,   7,   9,   12,  14,  13,  15,
+    2,   156, 160, 8,   10,  158, 153, 150, 152,
+    29,  27,  147, 154, 23,  164, 21,  19,  144,
+    30,  28,  26,  25,  22,  24,  20,  18,  16,
+    163, 31,  148, 155, 146, 165, 161, 17,  145,
+    166, 167
 };
 
 
@@ -466,12 +466,15 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
     // Set items
     for (uint64_t i = 0; i < numColours; i++)
     {
-        if (selectedColour == COLOUR_UI_ORDER[i])
-            defaultIndex = selectedColour;
+        auto orderedColour = COLOUR_UI_ORDER[i];
+        if (selectedColour == orderedColour)
+            defaultIndex = orderedColour;
 
-        // Use special graphic for Invisible color
-        auto imageId = (i == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_BORDEAUX_RED)
-                                               : ImageId(SPR_PALETTE_BTN, COLOUR_UI_ORDER[i]);
+        // Get palette offset for G2 colours
+
+        // Use special graphic for Invisible colour
+        //auto imageId = (orderedColour == FilterPaletteID::PaletteG2Invisible) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_BORDEAUX_RED)
+        auto imageId = ImageId(SPR_PALETTE_BTN, orderedColour);
 
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
         gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();

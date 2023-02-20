@@ -40,7 +40,7 @@ void ColoursInitMaps()
     for (int32_t i = 0; i < COLOUR_COUNT; i++)
     {
         // Get palette index in g1 / g2
-        auto paletteIndex = (i < COLOUR_NUM_ORIGINAL) ? SPR_PALETTE_2_START : SPR_G2_PALETTE_BEGIN - (COLOUR_NUM_ORIGINAL - 1);
+        auto paletteIndex = (i < COLOUR_NUM_ORIGINAL) ? SPR_PALETTE_2_START : SPR_G2_PALETTE_BEGIN - COLOUR_NUM_ORIGINAL;
         const G1Element* g1 = GfxGetG1Element(paletteIndex + i);
         if (g1 != nullptr)
         {
