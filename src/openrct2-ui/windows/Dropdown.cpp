@@ -462,9 +462,9 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
 {
     int32_t defaultIndex = -1;
 
-    auto numColors = (gCheatsAllowSpecialColorSchemes) ? COLOUR_NUM_NORMAL : COLOUR_COUNT;
+    auto numColours = (gCheatsAllowSpecialColorSchemes) ? COLOUR_COUNT : COLOUR_NUM_NORMAL;
     // Set items
-    for (uint64_t i = 0; i < numColors; i++)
+    for (uint64_t i = 0; i < numColours; i++)
     {
         if (selectedColour == COLOUR_UI_ORDER[i])
             defaultIndex = selectedColour;
@@ -480,7 +480,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_NUM_ORIGINAL]);
+        Dropdown::Flag::StayOpen, numColours, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_NUM_ORIGINAL]);
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;
