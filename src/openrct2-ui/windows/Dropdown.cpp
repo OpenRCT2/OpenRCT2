@@ -474,7 +474,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOR_NUM_ORIGINAL]);
+        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_NUM_ORIGINAL]);
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;

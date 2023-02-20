@@ -37,9 +37,29 @@ enum
 void ColoursInitMaps()
 {
     // Get colour maps from g1
-    for (int32_t i = 0; i < 32; i++)
+    for (int32_t i = 0; i < COLOUR_NUM_ORIGINAL; i++)
     {
         const G1Element* g1 = GfxGetG1Element(SPR_PALETTE_2_START + i);
+        if (g1 != nullptr)
+        {
+            ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];
+            ColourMapA[i].colour_1 = g1->offset[INDEX_COLOUR_1];
+            ColourMapA[i].darkest = g1->offset[INDEX_DARKEST];
+            ColourMapA[i].darker = g1->offset[INDEX_DARKER];
+            ColourMapA[i].dark = g1->offset[INDEX_DARK];
+            ColourMapA[i].mid_dark = g1->offset[INDEX_MID_DARK];
+            ColourMapA[i].mid_light = g1->offset[INDEX_MID_LIGHT];
+            ColourMapA[i].light = g1->offset[INDEX_LIGHT];
+            ColourMapA[i].lighter = g1->offset[INDEX_LIGHTER];
+            ColourMapA[i].lightest = g1->offset[INDEX_LIGHTEST];
+            ColourMapA[i].colour_10 = g1->offset[INDEX_COLOUR_10];
+            ColourMapA[i].colour_11 = g1->offset[INDEX_COLOUR_11];
+        }
+    }
+    // G2 Palette Init
+    for (int32_t i = COLOUR_NUM_ORIGINAL; i < COLOUR_COUNT; i++)
+    {
+        const G1Element* g1 = GfxGetG1Element(SPR_G2_PAL_REMAP_BEGIN + i - COLOUR_NUM_ORIGINAL);
         if (g1 != nullptr)
         {
             ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];

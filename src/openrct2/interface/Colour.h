@@ -203,9 +203,7 @@ constexpr uint8_t PALETTE_LENGTH_REMAP = 12;
 constexpr uint8_t PALETTE_OFFSET_ANIMATED = PALETTE_INDEX_230;
 constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
 
-constexpr uint8_t COLOR_NUM_ORIGINAL = 32;
-constexpr uint8_t COLOR_NUM_EXTENDED = 24;
-constexpr uint8_t COLOR_NUM_SPECIAL = 2;
+constexpr uint8_t COLOUR_NUM_ORIGINAL = 32;
 
 #define TEXT_COLOUR_254 (254)
 #define TEXT_COLOUR_255 (255)
