@@ -20589,6 +20589,9 @@
         "y_offset": -20,
         "palette": "keep"
     },
+	{
+        "path": "icons/colour_invisible.png"
+    },
     {
         "path": "palette_map/palette_map_dark_olive_dark.png"
     },

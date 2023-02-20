@@ -467,8 +467,12 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
         if (selectedColour == COLOUR_UI_ORDER[i])
             defaultIndex = selectedColour;
 
+        // Use special graphic for Invisible color
+        auto imageId = (i == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_BORDEAUX_RED)
+                                               : ImageId(SPR_PALETTE_BTN, COLOUR_UI_ORDER[i]);
+
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
-        gDropdownItems[i].Args = (i << 32) | ImageId(SPR_PALETTE_BTN, COLOUR_UI_ORDER[i]).ToUInt32();
+        gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();
     }
 
     // Show dropdown
