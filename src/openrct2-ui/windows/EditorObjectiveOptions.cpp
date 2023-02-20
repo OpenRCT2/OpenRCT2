@@ -129,7 +129,7 @@ static void WindowEditorObjectiveOptionsMainResize(WindowBase *w);
 static void WindowEditorObjectiveOptionsMainMousedown(WindowBase *w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowEditorObjectiveOptionsMainDropdown(WindowBase *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowEditorObjectiveOptionsMainUpdate(WindowBase *w);
-static void WindowEditorObjectiveOptionsMainTextinput(WindowBase *w, WidgetIndex widgetIndex, char *text);
+static void WindowEditorObjectiveOptionsMainTextinput(WindowBase *w, WidgetIndex widgetIndex, const char *text);
 static void WindowEditorObjectiveOptionsMainInvalidate(WindowBase *w);
 static void WindowEditorObjectiveOptionsMainPaint(WindowBase *w, DrawPixelInfo *dpi);
 
@@ -673,7 +673,7 @@ static void WindowEditorObjectiveOptionsMainUpdate(WindowBase* w)
  *
  *  rct2: 0x00671A73
  */
-static void WindowEditorObjectiveOptionsMainTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
+static void WindowEditorObjectiveOptionsMainTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
     if (text == nullptr)
         return;

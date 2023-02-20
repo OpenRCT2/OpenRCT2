@@ -46,7 +46,7 @@ enum class CloseWindowModifier : uint8_t;
 #define TEXT_INPUT_SIZE 1024
 #define TOP_TOOLBAR_HEIGHT 27
 
-extern char gTextBoxInput[TEXT_INPUT_SIZE];
+extern u8string gTextBoxInput;
 extern int32_t gTextBoxFrameNo;
 extern bool gUsingWidgetTextBox;
 extern struct TextInputSession* gTextInput;
@@ -240,7 +240,7 @@ struct WindowEventList
     void (*scroll_mousedown)(struct WindowBase*, int32_t, const ScreenCoordsXY&){};
     void (*scroll_mousedrag)(struct WindowBase*, int32_t, const ScreenCoordsXY&){};
     void (*scroll_mouseover)(struct WindowBase*, int32_t, const ScreenCoordsXY&){};
-    void (*text_input)(struct WindowBase*, WidgetIndex, char*){};
+    void (*text_input)(struct WindowBase*, WidgetIndex, const char*){};
     void (*viewport_rotate)(struct WindowBase*){};
     void (*scroll_select)(struct WindowBase*, int32_t, int32_t){};
     OpenRCT2String (*tooltip)(struct WindowBase*, const WidgetIndex, const StringId){};
@@ -705,7 +705,7 @@ void WindowGetScrollSize(WindowBase* w, int32_t scrollIndex, int32_t* width, int
 void WindowEventScrollMousedownCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 void WindowEventScrollMousedragCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 void WindowEventScrollMouseoverCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-void WindowEventTextinputCall(WindowBase* w, WidgetIndex widgetIndex, char* text);
+void WindowEventTextinputCall(WindowBase* w, WidgetIndex widgetIndex, const char* text);
 void WindowEventViewportRotateCall(WindowBase* w);
 void WindowEventScrollSelectCall(WindowBase* w, int32_t scrollIndex, int32_t scrollAreaType);
 OpenRCT2String WindowEventTooltipCall(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback);

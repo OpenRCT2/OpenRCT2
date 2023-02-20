@@ -56,7 +56,7 @@ private:
 
     int32_t _cursorBlink{};
     size_t _maxInputLength{};
-    std::vector<utf8> _buffer;
+    u8string _buffer;
 
 public:
     void OnOpen() override
@@ -108,10 +108,13 @@ public:
 
     void SetText(std::string_view text, size_t maxLength)
     {
-        _buffer.resize(maxLength);
-        SafeStrCpy(_buffer.data(), std::string(text).c_str(), maxLength);
+        _buffer = u8string{ text };
+        if (_buffer.size() > maxLength)
+        {
+            _buffer.resize(maxLength);
+        }
         _maxInputLength = maxLength;
-        gTextInput = ContextStartTextInput(_buffer.data(), maxLength);
+        gTextInput = ContextStartTextInput(_buffer, maxLength);
     }
 
     void SetCallback(std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)

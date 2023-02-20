@@ -52,10 +52,9 @@ struct CursorState
 
 struct TextInputSession
 {
-    utf8* Buffer;          // UTF-8 stream
-    size_t BufferSize;     // Maximum number of bytes (excluding null terminator)
-    size_t Size;           // Number of bytes (excluding null terminator)
+    u8string* Buffer;      // UTF-8 string buffer, non-owning.
     size_t Length;         // Number of codepoints
+    size_t MaxLength;      // Maximum length of text, Length can't be larger than this.
     size_t SelectionStart; // Selection start, in bytes
     size_t SelectionSize;  // Selection length in bytes
 
@@ -200,7 +199,7 @@ void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition);
 const CursorState* ContextGetCursorState();
 const uint8_t* ContextGetKeysState();
 const uint8_t* ContextGetKeysPressed();
-TextInputSession* ContextStartTextInput(utf8* buffer, size_t maxLength);
+TextInputSession* ContextStartTextInput(u8string& buffer, size_t maxLength);
 void ContextStopTextInput();
 bool ContextIsInputActive();
 void ContextTriggerResize();

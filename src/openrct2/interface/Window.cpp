@@ -44,7 +44,7 @@ WindowBase* gWindowAudioExclusive;
 
 WidgetIdentifier gCurrentTextBox = { { WindowClass::Null, 0 }, 0 };
 WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::None };
-char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
+u8string gTextBoxInput;
 int32_t gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = false;
 TextInputSession* gTextInput;
@@ -1570,7 +1570,7 @@ void WindowEventScrollMouseoverCall(WindowBase* w, int32_t scrollIndex, const Sc
         w->event_handlers->scroll_mouseover(w, scrollIndex, screenCoords);
 }
 
-void WindowEventTextinputCall(WindowBase* w, WidgetIndex widgetIndex, char* text)
+void WindowEventTextinputCall(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
     if (w->event_handlers == nullptr)
     {
@@ -1988,16 +1988,16 @@ void WindowStartTextbox(
     WindowCloseByClass(WindowClass::Textinput);
 
     // Clear the text input buffer
-    std::fill_n(gTextBoxInput, maxLength, 0x00);
+    gTextBoxInput.clear();
 
     // Enter in the text input buffer any existing
     // text.
     if (existing_text != STR_NONE)
-        OpenRCT2::FormatStringLegacy(gTextBoxInput, TEXT_INPUT_SIZE, existing_text, &existing_args);
-
-    // In order to prevent strings that exceed the maxLength
-    // from crashing the game.
-    gTextBoxInput[maxLength - 1] = '\0';
+    {
+        char tempBuf[TEXT_INPUT_SIZE]{};
+        size_t len = OpenRCT2::FormatStringLegacy(tempBuf, TEXT_INPUT_SIZE, existing_text, &existing_args);
+        gTextBoxInput.assign(tempBuf, len);
+    }
 
     gTextInput = ContextStartTextInput(gTextBoxInput, maxLength);
 }
@@ -2037,7 +2037,7 @@ void WindowUpdateTextbox()
         gTextBoxFrameNo = 0;
         WindowBase* w = WindowFindByNumber(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
         WidgetInvalidate(*w, gCurrentTextBox.widget_index);
-        WindowEventTextinputCall(w, gCurrentTextBox.widget_index, gTextBoxInput);
+        WindowEventTextinputCall(w, gCurrentTextBox.widget_index, gTextBoxInput.c_str());
     }
 }
 

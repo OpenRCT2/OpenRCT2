@@ -76,24 +76,22 @@ void InGameConsole::Input(ConsoleInput input)
             if (_consoleHistoryIndex > 0)
             {
                 _consoleHistoryIndex--;
-                std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
+                _consoleCurrentLine = _consoleHistory[_consoleHistoryIndex];
             }
-            _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
-            _consoleTextInputSession->Length = UTF8Length(_consoleTextInputSession->Buffer);
-            _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
+            _consoleTextInputSession->Length = UTF8Length(_consoleCurrentLine.c_str());
+            _consoleTextInputSession->SelectionStart = _consoleCurrentLine.size();
             break;
         case ConsoleInput::HistoryNext:
-            if (_consoleHistoryIndex < _consoleHistoryCount - 1)
+            if (_consoleHistoryIndex < _consoleHistory.size() - 1)
             {
                 _consoleHistoryIndex++;
-                std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
-                _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
-                _consoleTextInputSession->Length = UTF8Length(_consoleTextInputSession->Buffer);
-                _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
+                _consoleCurrentLine = _consoleHistory[_consoleHistoryIndex];
+                _consoleTextInputSession->Length = UTF8Length(_consoleCurrentLine.c_str());
+                _consoleTextInputSession->SelectionStart = _consoleCurrentLine.size();
             }
             else
             {
-                _consoleHistoryIndex = _consoleHistoryCount;
+                _consoleHistoryIndex = _consoleHistory.size();
                 ClearInput();
             }
             break;
@@ -116,23 +114,21 @@ void InGameConsole::Input(ConsoleInput input)
 
 void InGameConsole::ClearInput()
 {
-    _consoleCurrentLine[0] = 0;
+    _consoleCurrentLine.clear();
     if (_isOpen)
     {
-        ContextStartTextInput(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+        _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, CONSOLE_INPUT_SIZE);
     }
 }
 
-void InGameConsole::HistoryAdd(const utf8* src)
+void InGameConsole::HistoryAdd(const u8string& src)
 {
-    if (_consoleHistoryCount >= CONSOLE_HISTORY_SIZE)
+    if (_consoleHistory.size() >= CONSOLE_HISTORY_SIZE)
     {
-        for (int32_t i = 0; i < _consoleHistoryCount - 1; i++)
-            std::memcpy(_consoleHistory[i], _consoleHistory[i + 1], CONSOLE_INPUT_SIZE);
-        _consoleHistoryCount--;
+        _consoleHistory.pop_front();
     }
-    std::memcpy(_consoleHistory[_consoleHistoryCount++], src, CONSOLE_INPUT_SIZE);
-    _consoleHistoryIndex = _consoleHistoryCount;
+    _consoleHistory.push_back(src);
+    _consoleHistoryIndex = _consoleHistory.size();
 }
 
 void InGameConsole::ScrollToEnd()
@@ -148,9 +144,9 @@ void InGameConsole::RefreshCaret(size_t position)
 {
     _consoleCaretTicks = 0;
     _selectionStart = position;
-    char tempString[TEXT_INPUT_SIZE] = { 0 };
-    std::memcpy(tempString, &_consoleCurrentLine, _selectionStart);
-    _caretScreenPosX = GfxGetStringWidthNoFormatting(tempString, InGameConsoleGetFontStyle());
+
+    auto text = u8string_view{ _consoleCurrentLine }.substr(0, _selectionStart);
+    _caretScreenPosX = GfxGetStringWidthNoFormatting(text, InGameConsoleGetFontStyle());
 }
 
 void InGameConsole::Scroll(int32_t linesToScroll)
@@ -181,7 +177,7 @@ void InGameConsole::Open()
     _isOpen = true;
     ScrollToEnd();
     RefreshCaret();
-    _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+    _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, CONSOLE_INPUT_SIZE);
 }
 
 void InGameConsole::Close()

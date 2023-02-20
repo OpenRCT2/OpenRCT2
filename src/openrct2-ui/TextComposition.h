@@ -32,7 +32,7 @@ namespace OpenRCT2::Ui
 
     public:
         bool IsActive();
-        TextInputSession* Start(utf8* buffer, size_t bufferSize);
+        TextInputSession* Start(u8string& buffer, size_t maxLength);
         void Stop();
         void HandleMessage(const SDL_Event* e);
 

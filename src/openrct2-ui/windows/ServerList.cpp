@@ -81,7 +81,7 @@ static void WindowServerListUpdate(WindowBase* w);
 static void WindowServerListScrollGetsize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height);
 static void WindowServerListScrollMousedown(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowServerListScrollMouseover(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowServerListTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text);
+static void WindowServerListTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text);
 static OpenRCT2String WindowServerListTooltip(WindowBase* const w, const WidgetIndex widgetIndex, StringId fallback);
 static void WindowServerListInvalidate(WindowBase* w);
 static void WindowServerListPaint(WindowBase* w, DrawPixelInfo* dpi);
@@ -303,7 +303,7 @@ static void WindowServerListScrollMouseover(WindowBase* w, int32_t scrollIndex, 
     }
 }
 
-static void WindowServerListTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
+static void WindowServerListTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
     if (text == nullptr)
         return;

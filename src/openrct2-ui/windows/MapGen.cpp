@@ -204,7 +204,7 @@ static void WindowMapgenBaseMouseup(WindowBase* w, WidgetIndex widgetIndex);
 static void WindowMapgenBaseMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowMapgenBaseDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowMapgenBaseUpdate(WindowBase* w);
-static void WindowMapgenTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text);
+static void WindowMapgenTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text);
 static void WindowMapgenBaseInvalidate(WindowBase* w);
 static void WindowMapgenBasePaint(WindowBase* w, DrawPixelInfo* dpi);
 
@@ -623,7 +623,7 @@ static void WindowMapgenBaseUpdate(WindowBase* w)
     WidgetInvalidate(*w, WIDX_TAB_1);
 }
 
-static void WindowMapgenTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
+static void WindowMapgenTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
     int32_t value;
     char* end;

@@ -436,7 +436,7 @@ static void WindowRideMainResize(WindowBase* w);
 static void WindowRideMainMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideMainDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideMainUpdate(WindowBase* w);
-static void WindowRideMainTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text);
+static void WindowRideMainTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text);
 static void WindowRideMainViewportRotate(WindowBase* w);
 static void WindowRideMainInvalidate(WindowBase* w);
 static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo* dpi);
@@ -459,7 +459,7 @@ static void WindowRideOperatingLengthWindow(WindowBase* w, WidgetIndex widgetInd
 static void WindowRideOperatingTweakTextInput(WindowBase* w, const Ride& ride);
 static void WindowRideOperatingDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideOperatingUpdate(WindowBase* w);
-static void WindowRideOperatingTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text);
+static void WindowRideOperatingTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text);
 static void WindowRideOperatingInvalidate(WindowBase* w);
 static void WindowRideOperatingPaint(WindowBase* w, DrawPixelInfo* dpi);
 
@@ -518,7 +518,7 @@ static void WindowRideIncomeMouseup(WindowBase* w, WidgetIndex widgetIndex);
 static void WindowRideIncomeResize(WindowBase* w);
 static void WindowRideIncomeMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowRideIncomeUpdate(WindowBase* w);
-static void WindowRideIncomeTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text);
+static void WindowRideIncomeTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text);
 static void WindowRideIncomeInvalidate(WindowBase* w);
 static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi);
 static bool WindowRideIncomeCanModifyPrimaryPrice(WindowBase* w);
@@ -2273,7 +2273,7 @@ static void WindowRideMainUpdate(WindowBase* w)
  *
  *  rct2: 0x006AF2F9
  */
-static void WindowRideMainTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
+static void WindowRideMainTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
     if (widgetIndex != WIDX_RENAME || text == nullptr)
         return;
@@ -3425,7 +3425,7 @@ static void WindowRideOperatingUpdate(WindowBase* w)
     }
 }
 
-static void WindowRideOperatingTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
+static void WindowRideOperatingTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
     if (text == nullptr)
         return;
@@ -6601,7 +6601,7 @@ static void WindowRideIncomeUpdate(WindowBase* w)
     }
 }
 
-static void WindowRideIncomeTextinput(WindowBase* w, WidgetIndex widgetIndex, char* text)
+static void WindowRideIncomeTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
     if ((widgetIndex != WIDX_PRIMARY_PRICE && widgetIndex != WIDX_SECONDARY_PRICE) || text == nullptr)
         return;

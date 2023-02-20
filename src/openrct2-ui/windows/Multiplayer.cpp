@@ -144,7 +144,7 @@ static void WindowMultiplayerGroupsUpdate(WindowBase *w);
 static void WindowMultiplayerGroupsScrollgetsize(WindowBase *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void WindowMultiplayerGroupsScrollmousedown(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowMultiplayerGroupsScrollmouseover(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowMultiplayerGroupsTextInput(WindowBase *w, WidgetIndex widgetIndex, char *text);
+static void WindowMultiplayerGroupsTextInput(WindowBase *w, WidgetIndex widgetIndex, const char *text);
 static void WindowMultiplayerGroupsInvalidate(WindowBase *w);
 static void WindowMultiplayerGroupsPaint(WindowBase *w, DrawPixelInfo *dpi);
 static void WindowMultiplayerGroupsScrollpaint(WindowBase *w, DrawPixelInfo *dpi, int32_t scrollIndex);
@@ -814,7 +814,7 @@ static void WindowMultiplayerGroupsScrollmouseover(WindowBase* w, int32_t scroll
     w->Invalidate();
 }
 
-static void WindowMultiplayerGroupsTextInput(WindowBase* w, WidgetIndex widgetIndex, char* text)
+static void WindowMultiplayerGroupsTextInput(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
     if (widgetIndex != WIDX_RENAME_GROUP)
         return;

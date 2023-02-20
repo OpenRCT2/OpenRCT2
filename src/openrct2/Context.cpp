@@ -1439,7 +1439,7 @@ const uint8_t* ContextGetKeysPressed()
     return GetContext()->GetUiContext()->GetKeysPressed();
 }
 
-TextInputSession* ContextStartTextInput(utf8* buffer, size_t maxLength)
+TextInputSession* ContextStartTextInput(u8string& buffer, size_t maxLength)
 {
     return GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
 }
