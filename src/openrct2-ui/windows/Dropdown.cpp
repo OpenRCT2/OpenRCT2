@@ -35,6 +35,18 @@ static constexpr const uint8_t _appropriateImageDropdownItemsPerRow[34] = {
     6, 8, 9, 8,                   // 34
 };
 
+// Map of color picker index to true color index
+static constexpr uint8_t COLOUR_UI_ORDER[] = {
+    0,  3,  47, 6,  50, 45, 11, 37, 39,
+    1,  4,  5,  7,  9,  12, 14, 13, 15,
+    2,  44, 48, 8,  10, 46, 41, 38, 40,
+    29, 27, 35, 42, 23, 52, 21, 19, 32,
+    30, 28, 26, 25, 22, 24, 20, 18, 16,
+    51, 31, 36, 43, 34, 53, 49, 17, 33,
+    54, 55
+};
+
+
 enum
 {
     WIDX_BACKGROUND,
@@ -452,11 +464,11 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
     // Set items
     for (uint64_t i = 0; i < COLOUR_COUNT; i++)
     {
-        if (selectedColour == i)
-            defaultIndex = i;
+        if (selectedColour == COLOUR_UI_ORDER[i])
+            defaultIndex = selectedColour;
 
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
-        gDropdownItems[i].Args = (i << 32) | ImageId(SPR_PALETTE_BTN, i).ToUInt32();
+        gDropdownItems[i].Args = (i << 32) | ImageId(SPR_PALETTE_BTN, COLOUR_UI_ORDER[i]).ToUInt32();
     }
 
     // Show dropdown

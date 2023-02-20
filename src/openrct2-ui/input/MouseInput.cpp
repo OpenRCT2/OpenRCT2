@@ -32,6 +32,7 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2-ui/windows/Dropdown.cpp>
 
 struct RCTMouseData
 {
@@ -1341,7 +1342,9 @@ void InputStateWidgetPressed(
                                 dropdown_index = gDropdownDefaultIndex;
                             }
                         }
-                        WindowEventDropdownCall(cursor_w, cursor_widgetIndex, dropdown_index);
+                        WindowEventDropdownCall(
+                            cursor_w, cursor_widgetIndex,
+                            (gDropdownIsColour) ? COLOUR_UI_ORDER[dropdown_index] : dropdown_index);
                     }
                 }
             }
@@ -1470,7 +1473,7 @@ void InputStateWidgetPressed(
                 STR_COLOUR_INVISIBLE_TIP,
                 STR_COLOUR_VOID_TIP,
             };
-            WindowTooltipShow(OpenRCT2String{ _colourTooltips[dropdown_index], {} }, screenCoords);
+            WindowTooltipShow(OpenRCT2String{ _colourTooltips[COLOUR_UI_ORDER[dropdown_index]], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
