@@ -37,6 +37,8 @@ static constexpr const StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
 static constexpr const int32_t WH = 229;
 static constexpr const int32_t WW = 450;
 
+static constexpr const uint16_t MaxObjectiveGuests = 5000;
+
 #pragma region Widgets
 
 // clang-format off
@@ -478,7 +480,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(WindowBase* w)
             }
             break;
         default:
-            if (gScenarioObjective.NumGuests >= 5000)
+            if (gScenarioObjective.NumGuests >= MaxObjectiveGuests)
             {
                 ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
