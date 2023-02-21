@@ -42,7 +42,6 @@ void ColoursInitMaps()
         // Get palette index in g1 / g2
         const auto paletteIndex = (i < COLOUR_NUM_ORIGINAL) ? SPR_PALETTE_2_START : SPR_G2_PALETTE_BEGIN - COLOUR_NUM_ORIGINAL;
         const G1Element* g1 = GfxGetG1Element(paletteIndex + i);
-        //TODO: Integrate themes with G2 palettes
         if (g1 != nullptr)
         {
             ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];
