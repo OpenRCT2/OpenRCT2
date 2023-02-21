@@ -1484,10 +1484,10 @@ namespace RCT2
                     dst2->SetEntryIndex(src2->GetEntryIndex());
                     dst2->SetAge(src2->GetAge());
                     dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
-                    dst2->SetPrimaryColour(src2->GetPrimaryColour());
                     dst2->SetSecondaryColour(src2->GetSecondaryColour());
                     if (src2->NeedsSupports())
                         dst2->SetNeedsSupports();
+                    dst2->SetPrimaryColour(src2->GetPrimaryColour() & RCT12_TILE_ELEMENT_COLOUR_MASK);
 
                     break;
                 }

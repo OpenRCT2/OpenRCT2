@@ -1706,9 +1706,9 @@ namespace RCT1
                     dst2->SetEntryIndex(entryIndex);
                     dst2->SetAge(src2->GetAge());
                     dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
-                    dst2->SetPrimaryColour(RCT1::GetColour(src2->GetPrimaryColour()));
                     if (src2->NeedsSupports())
                         dst2->SetNeedsSupports();
+                    dst2->SetPrimaryColour(RCT1::GetColour(src2->GetPrimaryColour()) & RCT12_TILE_ELEMENT_COLOUR_MASK);
 
                     // Copied from [rct2: 0x006A2956]
                     switch (src2->GetEntryIndex())
