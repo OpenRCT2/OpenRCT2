@@ -1276,6 +1276,11 @@ private:
                 widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull);
             }
 
+            if (tabInfo.IsAll())
+            {
+                widget.image = ImageId(SPR_G2_ALL_UNSELECTED, FilterPaletteID::PaletteNull);
+            }
+
             _widgets.push_back(widget);
 
             tabsInThisRow++;
@@ -1449,21 +1454,12 @@ private:
             auto widgetIndex = static_cast<WidgetIndex>(WIDX_SCENERY_TAB_1 + tabIndex);
             auto widgetCoordsXY = ScreenCoordsXY(widgets[widgetIndex].left, widgets[widgetIndex].top);
             auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
-            std::optional<ImageId> imageId = std::nullopt;
             auto imageOffset = tabIndex == _activeTabIndex ? TabImageOffsetSelected : TabImageOffsetUnselected;
 
-            if (_tabEntries[tabIndex].IsAll())
+            if (scgEntry != nullptr)
             {
-                imageId = ImageId(SPR_G2_ALL_UNSELECTED + imageOffset, colours[1]);
-            }
-            else if (scgEntry != nullptr)
-            {
-                imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
-            }
-
-            if (imageId.has_value())
-            {
-                GfxDrawSprite(&dpi, imageId.value(), offset + widgetCoordsXY);
+                auto imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
+                GfxDrawSprite(&dpi, imageId, offset + widgetCoordsXY);
             }
         }
     }
