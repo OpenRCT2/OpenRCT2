@@ -937,6 +937,7 @@ void RideInitAll()
     std::for_each(std::begin(_rides), std::end(_rides), [](auto& ride) {
         ride.id = RideId::GetNull();
         ride.type = RIDE_TYPE_NULL;
+        ride.custom_name = {};
     });
     _maxRideSize = 0;
 }
