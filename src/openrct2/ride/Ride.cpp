@@ -95,10 +95,14 @@ static constexpr const int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
 
+// Ride storage for all the rides in the park, rides with RideId::Null are considered free.
 static std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> _rides{};
 
 // This is not the real size of rides in use, rather the highest slot used + 1.
 static size_t _maxRideSize = 0;
+
+// A special instance of Ride that is used to draw previews such as the track designs.
+static Ride _previewRide{};
 
 struct StationIndexWithMessage
 {
@@ -172,6 +176,11 @@ Ride* RideAllocateAtIndex(RideId index)
     auto result = &_rides[idx];
     result->id = index;
     return result;
+}
+
+Ride& RideGetTemporaryForPreview()
+{
+    return _previewRide;
 }
 
 void RideDelete(RideId id)

@@ -996,6 +996,7 @@ struct RideManager
 RideManager GetRideManager();
 RideId GetNextFreeRideId();
 Ride* RideAllocateAtIndex(RideId index);
+Ride& RideGetTemporaryForPreview();
 void RideDelete(RideId id);
 
 const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);

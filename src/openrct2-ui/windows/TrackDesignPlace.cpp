@@ -163,7 +163,7 @@ public:
         if (mapCoords == _placementLoc)
         {
             TrackDesignPreviewDrawOutlines(
-                tds, _trackDesign.get(), *RideAllocateAtIndex(PreviewRideId), { mapCoords, 0, _currentTrackPieceDirection });
+                tds, _trackDesign.get(), RideGetTemporaryForPreview(), { mapCoords, 0, _currentTrackPieceDirection });
             return;
         }
 
@@ -203,7 +203,7 @@ public:
             WidgetInvalidate(*this, WIDX_PRICE);
         }
 
-        TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), *RideAllocateAtIndex(PreviewRideId), trackLoc);
+        TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), RideGetTemporaryForPreview(), trackLoc);
     }
 
     void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -425,7 +425,7 @@ private:
 
         return z
             + TrackDesignGetZPlacement(
-                   _trackDesign.get(), *RideAllocateAtIndex(PreviewRideId), { loc, z, _currentTrackPieceDirection });
+                   _trackDesign.get(), RideGetTemporaryForPreview(), { loc, z, _currentTrackPieceDirection });
     }
 
     void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)

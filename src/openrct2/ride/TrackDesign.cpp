@@ -338,8 +338,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         }
     }
 
-    TrackDesignPreviewDrawOutlines(
-        tds, this, *RideAllocateAtIndex(PreviewRideId), { 4096, 4096, 0, _currentTrackPieceDirection });
+    TrackDesignPreviewDrawOutlines(tds, this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection });
 
     // Resave global vars for scenery reasons.
     tds.Origin = startPos;
@@ -458,8 +457,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = tds.Origin.z;
-    TrackDesignPreviewDrawOutlines(
-        tds, this, *RideAllocateAtIndex(PreviewRideId), { 4096, 4096, 0, _currentTrackPieceDirection });
+    TrackDesignPreviewDrawOutlines(tds, this, RideGetTemporaryForPreview(), { 4096, 4096, 0, _currentTrackPieceDirection });
     tds.Origin = { startLoc.x, startLoc.y, startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -2038,7 +2036,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     _currentTrackPieceDirection = 0;
     int32_t z = TrackDesignGetZPlacement(
-        tds, td6, *RideAllocateAtIndex(PreviewRideId), { mapSize.x, mapSize.y, 16, _currentTrackPieceDirection });
+        tds, td6, RideGetTemporaryForPreview(), { mapSize.x, mapSize.y, 16, _currentTrackPieceDirection });
 
     if (tds.HasScenery)
     {
