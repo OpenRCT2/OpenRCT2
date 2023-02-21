@@ -46,7 +46,9 @@ constexpr int32_t TabWidth = 31;
 constexpr int32_t TabHeight = 28;
 constexpr int32_t ReservedTabCount = 2;
 constexpr int32_t MaxTabs = 257; // 255 selected tabs + misc + all
-constexpr int32_t MaxTabsPerRow = 20;
+constexpr int32_t MaxTabsPerRow = 19;
+constexpr int32_t TabImageOffsetSelected = 1;
+constexpr int32_t TabImageOffsetUnselected = 0;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
@@ -211,7 +213,6 @@ public:
 
         WindowMovePosition(*this, { ContextGetWidth() - GetRequiredWidth(), 0x1D });
         WindowPushOthersBelow(*this);
-        LOG_INFO("Column count: %d", GetNumColumns());
     }
 
     void OnClose() override
@@ -728,8 +729,10 @@ public:
                     continue;
 
                 auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + index];
-                allTabWidget->left = windowWidth - TabWidth - 11;
-                allTabWidget->right = windowWidth - 12;
+                allTabWidget->left = windowWidth - TabWidth - 2;
+                allTabWidget->right = windowWidth - 3;
+                allTabWidget->top = widgets[WIDX_SCENERY_TAB_1].top;
+                allTabWidget->bottom = widgets[WIDX_SCENERY_TAB_1].bottom;
                 break;
             }
         }
@@ -946,12 +949,6 @@ public:
             std::remove_if(
                 _tabEntries.begin(), _tabEntries.end(), [](const SceneryTabInfo& tabInfo) { return tabInfo.Entries.empty(); }),
             _tabEntries.end());
-
-        // Move all scenery tab to end of first row
-        if (_tabEntries.size() > MaxTabsPerRow)
-        {
-            std::rotate(_tabEntries.begin() + MaxTabsPerRow - 1, _tabEntries.end() - 1, _tabEntries.end());
-        }
 
         // Set required width
         _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), MaxTabsPerRow) * TabWidth + 5;
