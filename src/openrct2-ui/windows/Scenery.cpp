@@ -1078,10 +1078,10 @@ private:
 
     SceneryTabInfo* GetSceneryTabInfoForMisc()
     {
-        for (auto& tabEntry : _tabEntries)
+        if (_tabEntries.size() >= 2)
         {
-            if (tabEntry.IsMisc())
-                return &tabEntry;
+            if (_tabEntries[_tabEntries.size() - 2].IsMisc())
+                return &_tabEntries[_tabEntries.size() - 2];
         }
 
         return nullptr;
@@ -1089,10 +1089,10 @@ private:
 
     SceneryTabInfo* GetSceneryTabInfoForAll()
     {
-        for (auto& tabEntry : _tabEntries)
+        if (!_tabEntries.empty())
         {
-            if (tabEntry.IsAll())
-                return &tabEntry;
+            if (_tabEntries.back().IsAll())
+                return &_tabEntries.back();
         }
 
         return nullptr;
