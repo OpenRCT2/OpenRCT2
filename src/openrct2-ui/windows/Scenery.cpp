@@ -42,6 +42,8 @@ constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
+constexpr int32_t InitTabPosX = 3;
+constexpr int32_t InitTabPosY = 17;
 constexpr int32_t TabWidth = 31;
 constexpr int32_t TabHeight = 28;
 constexpr int32_t ReservedTabCount = 2;
@@ -726,8 +728,8 @@ public:
                 auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
                 allTabWidget->left = windowWidth - TabWidth - 6;
                 allTabWidget->right = windowWidth - 7;
-                allTabWidget->top = widgets[WIDX_SCENERY_TAB_1].top;
-                allTabWidget->bottom = widgets[WIDX_SCENERY_TAB_1].bottom;
+                allTabWidget->top = InitTabPosY;
+                allTabWidget->bottom = InitTabPosY + TabHeight;
             }
         }
 
@@ -1253,10 +1255,10 @@ private:
 
         // Add tabs
         _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
-        int32_t xInit = 3;
+        int32_t xInit = InitTabPosX;
         int32_t tabsInThisRow = 0;
 
-        ScreenCoordsXY pos = { xInit, 17 };
+        ScreenCoordsXY pos = { xInit, InitTabPosY };
         for (const auto& tabInfo : _tabEntries)
         {
             auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
