@@ -129,7 +129,7 @@ size_t RideManager::size() const
     size_t count = 0;
     for (size_t i = 0; i < _maxRideSize; i++)
     {
-        if (_rides[i].type != RIDE_TYPE_NULL)
+        if (!_rides[i].id.IsNull())
         {
             count++;
         }
@@ -156,7 +156,7 @@ RideId GetNextFreeRideId()
 {
     for (RideId::UnderlyingType i = 0; i < _rides.size(); i++)
     {
-        if (_rides[i].type == RIDE_TYPE_NULL)
+        if (_rides[i].id.IsNull())
         {
             return RideId::FromUnderlying(i);
         }
@@ -182,11 +182,13 @@ void RideDelete(RideId id)
     assert(_rides[idx].type != RIDE_TYPE_NULL);
 
     auto& ride = _rides[idx];
+    ride.id = RideId::GetNull();
     ride.type = RIDE_TYPE_NULL;
     ride.custom_name = {};
     ride.measurement = {};
 
-    while (_maxRideSize > 0 && _rides[_maxRideSize - 1].type == RIDE_TYPE_NULL)
+    // Shrink maximum ride size.
+    while (_maxRideSize > 0 && _rides[_maxRideSize - 1].id.IsNull())
     {
         _maxRideSize--;
     }
@@ -198,14 +200,14 @@ Ride* GetRide(RideId index)
     {
         return nullptr;
     }
-    
+
     const auto idx = index.ToUnderlying();
     assert(idx < _rides.size());
     if (idx >= _rides.size())
     {
         return nullptr;
     }
-    
+
     auto& ride = _rides[idx];
     if (ride.type != RIDE_TYPE_NULL)
     {
@@ -923,7 +925,10 @@ bool Ride::SupportsStatus(RideStatus s) const
  */
 void RideInitAll()
 {
-    std::for_each(std::begin(_rides), std::end(_rides), [](auto& ride) { ride.type = RIDE_TYPE_NULL; });
+    std::for_each(std::begin(_rides), std::end(_rides), [](auto& ride) {
+        ride.id = RideId::GetNull();
+        ride.type = RIDE_TYPE_NULL;
+    });
     _maxRideSize = 0;
 }
 
