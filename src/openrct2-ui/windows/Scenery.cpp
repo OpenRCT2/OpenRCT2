@@ -47,8 +47,6 @@ constexpr int32_t TabHeight = 28;
 constexpr int32_t ReservedTabCount = 2;
 constexpr int32_t MaxTabs = 257; // 255 selected tabs + misc + all
 constexpr int32_t MaxTabsPerRow = 19;
-constexpr int32_t TabImageOffsetSelected = 1;
-constexpr int32_t TabImageOffsetUnselected = 0;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
