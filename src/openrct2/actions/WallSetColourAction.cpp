@@ -88,13 +88,13 @@ GameActions::Result WallSetColourAction::Query() const
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (_primaryColour > 31)
+    if (_primaryColour >= PALETTE_TOTAL_OFFSETS)
     {
         LOG_ERROR("Primary colour invalid: colour = %d", _primaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (_secondaryColour > 31)
+    if (_secondaryColour >= PALETTE_TOTAL_OFFSETS)
     {
         LOG_ERROR("Secondary colour invalid: colour = %d", _secondaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
@@ -102,7 +102,7 @@ GameActions::Result WallSetColourAction::Query() const
 
     if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
     {
-        if (_tertiaryColour > 31)
+        if (_tertiaryColour >= PALETTE_TOTAL_OFFSETS)
         {
             LOG_ERROR("Tertiary colour invalid: colour = %d", _tertiaryColour);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);

@@ -72,19 +72,19 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (_primaryColour >= COLOUR_COUNT)
+    if (_primaryColour >= PALETTE_TOTAL_OFFSETS)
     {
         LOG_ERROR("Invalid primary colour: colour = %u", _primaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (_secondaryColour >= COLOUR_COUNT)
+    if (_secondaryColour >= PALETTE_TOTAL_OFFSETS)
     {
         LOG_ERROR("Invalid secondary colour: colour = %u", _secondaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (_tertiaryColour >= COLOUR_COUNT)
+    if (_tertiaryColour >= PALETTE_TOTAL_OFFSETS)
     {
         LOG_ERROR("Invalid tertiary colour: colour = %u", _tertiaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
