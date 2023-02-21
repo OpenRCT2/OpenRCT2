@@ -950,17 +950,7 @@ public:
         // Move all scenery tab to end of first row
         if (_tabEntries.size() > MaxTabsPerRow)
         {
-            auto allSceneryTab = _tabEntries.back();
-            _tabEntries.pop_back();
-            size_t index = 0;
-            for (auto it = _tabEntries.begin(); it != _tabEntries.end(); it++, index++)
-            {
-                if (index == MaxTabsPerRow - 1)
-                {
-                    _tabEntries.insert(it, allSceneryTab);
-                    break;
-                }
-            }
+            std::rotate(_tabEntries.begin() + MaxTabsPerRow - 1, _tabEntries.end() - 1, _tabEntries.end());
         }
 
         // Set required width
