@@ -43,7 +43,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Lint Commit Messages
-        uses: wagoid/commitlint-github-action@v3
+        uses: wagoid/commitlint-github-action@v5.3.1
         with:
           configFile: .commitlint.json
   check-code-formatting:
