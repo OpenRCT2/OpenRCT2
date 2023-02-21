@@ -551,16 +551,17 @@ public:
             const auto tabIndex = static_cast<size_t>(widgetIndex - WIDX_SCENERY_TAB_1);
             if (_tabEntries.size() > tabIndex)
             {
-                auto ft = Formatter();
                 const auto& tabInfo = _tabEntries[tabIndex];
                 if (tabInfo.IsMisc())
                 {
+                    auto ft = Formatter();
                     ft.Add<StringId>(STR_MISCELLANEOUS);
                     return { fallback, ft };
                 }
 
                 if (tabInfo.IsAll())
                 {
+                    auto ft = Formatter();
                     ft.Add<StringId>(STR_ALL_SCENERY);
                     return { fallback, ft };
                 }
@@ -568,6 +569,7 @@ public:
                 const auto* sceneryEntry = tabInfo.GetSceneryGroupEntry();
                 if (sceneryEntry != nullptr)
                 {
+                    auto ft = Formatter();
                     ft.Add<StringId>(sceneryEntry->name);
                     return { fallback, ft };
                 }
