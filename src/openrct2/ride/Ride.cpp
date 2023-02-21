@@ -174,6 +174,8 @@ Ride* RideAllocateAtIndex(RideId index)
     _maxRideSize = std::max<size_t>(idx + 1, _maxRideSize);
 
     auto result = &_rides[idx];
+    assert(result->id == RideId::GetNull());
+
     result->id = index;
     return result;
 }
