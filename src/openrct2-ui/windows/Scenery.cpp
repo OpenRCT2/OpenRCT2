@@ -44,7 +44,8 @@ constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
 constexpr int32_t TabWidth = 31;
 constexpr int32_t TabHeight = 28;
-constexpr int32_t MaxTabs = 257; // 255 selected tabs + misc + search
+constexpr int32_t ReservedTabCount = 2;
+constexpr int32_t MaxTabs = 257; // 255 selected tabs + misc + all
 constexpr int32_t MaxTabsPerRow = 20;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
@@ -726,9 +727,9 @@ public:
                 if (!_tabEntries[index].IsAll())
                     continue;
 
-                auto searchTabWidget = &widgets[WIDX_SCENERY_TAB_1 + index];
-                searchTabWidget->left = windowWidth - TabWidth - 2;
-                searchTabWidget->right = windowWidth - 3;
+                auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + index];
+                allTabWidget->left = windowWidth - TabWidth - 11;
+                allTabWidget->right = windowWidth - 12;
                 break;
             }
         }
@@ -886,7 +887,7 @@ public:
         _tabEntries.emplace_back();
         _tabEntries.back().Type = SCENERY_TAB_TYPE_MISC;
 
-        // Add search tab
+        // Add all tab
         _tabEntries.emplace_back();
         _tabEntries.back().Type = SCENERY_TAB_TYPE_ALL;
 
@@ -1091,7 +1092,7 @@ private:
         return nullptr;
     }
 
-    SceneryTabInfo* GetSceneryTabInfoForSearch()
+    SceneryTabInfo* GetSceneryTabInfoForAll()
     {
         for (auto& tabEntry : _tabEntries)
         {
@@ -1156,8 +1157,8 @@ private:
                 }
             }
 
-            // Add all scenery to search tab
-            auto tabInfo = GetSceneryTabInfoForSearch();
+            // Add all scenery to all tab
+            auto tabInfo = GetSceneryTabInfoForAll();
             if (tabInfo != nullptr)
             {
                 tabInfo->AddEntryToBack(selection);
