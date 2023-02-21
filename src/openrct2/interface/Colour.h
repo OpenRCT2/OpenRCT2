@@ -182,6 +182,17 @@ enum : PaletteIndex
     PALETTE_INDEX_254 = 254, // Primary remap 11
 };
 
+// Map of color picker index to true color index
+static constexpr uint8_t COLOUR_UI_ORDER[] = {
+    0,   3,   159, 6,   162, 157, 11,  149, 151,
+    1,   4,   5,   7,   9,   12,  14,  13,  15,
+    2,   156, 160, 8,   10,  158, 153, 150, 152,
+    29,  27,  147, 154, 23,  164, 21,  19,  144,
+    30,  28,  26,  25,  22,  24,  20,  18,  16,
+    163, 31,  148, 155, 146, 165, 161, 17,  145,
+    166, 167
+};
+
 constexpr size_t PALETTE_COUNT = 256;
 
 constexpr uint8_t PALETTE_OFFSET_DYNAMIC = PALETTE_INDEX_10;
