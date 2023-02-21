@@ -97,6 +97,12 @@ namespace Path
         return fs::absolute(fs::u8path(relative), ec).u8string();
     }
 
+    u8string GetRelative(u8string_view path, u8string_view base)
+    {
+        std::error_code ec;
+        return fs::relative(fs::u8path(path), fs::u8path(base), ec).u8string();
+    }
+
     bool Equals(u8string_view a, u8string_view b)
     {
         return String::Equals(a, b, Platform::ShouldIgnoreCase());
