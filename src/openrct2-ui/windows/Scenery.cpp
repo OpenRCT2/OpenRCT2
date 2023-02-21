@@ -721,17 +721,13 @@ public:
             const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
             windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
-            for (size_t index = 0; index < _tabEntries.size(); index++)
+            if (_tabEntries.back().IsAll())
             {
-                if (!_tabEntries[index].IsAll())
-                    continue;
-
-                auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + index];
-                allTabWidget->left = windowWidth - TabWidth - 2;
-                allTabWidget->right = windowWidth - 3;
+                auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
+                allTabWidget->left = windowWidth - TabWidth - 6;
+                allTabWidget->right = windowWidth - 7;
                 allTabWidget->top = widgets[WIDX_SCENERY_TAB_1].top;
                 allTabWidget->bottom = widgets[WIDX_SCENERY_TAB_1].bottom;
-                break;
             }
         }
 
