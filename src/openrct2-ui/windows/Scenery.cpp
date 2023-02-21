@@ -1463,7 +1463,7 @@ private:
             if (_tabEntries[tabIndex].IsAll())
             {
                 auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::PaletteNull);
-                GfxDrawSprite(&dpi, imageId, offset + widgetCoordsXY);
+                GfxDrawSprite(&dpi, imageId, offset + widgetCoordsXY + ScreenCoordsXY(2, 6));
             }
         }
     }
