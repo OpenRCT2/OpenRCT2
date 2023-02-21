@@ -37,7 +37,8 @@ static constexpr const StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
 static constexpr const int32_t WH = 229;
 static constexpr const int32_t WW = 450;
 
-static constexpr const uint16_t MaxObjectiveGuests = 5000;
+// The number has to leave a bit of room for other entities like vehicles, litter and balloons.
+static constexpr const uint16_t MaxObjectiveGuests = 50000;
 
 #pragma region Widgets
 
