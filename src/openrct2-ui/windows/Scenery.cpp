@@ -939,13 +939,10 @@ public:
         }
 
         // Remove empty tabs
-        for (auto it = _tabEntries.begin(); it != _tabEntries.end();)
-        {
-            if (it->Entries.size() == 0)
-                it = _tabEntries.erase(it);
-            else
-                it++;
-        }
+        _tabEntries.erase(
+            std::remove_if(
+                _tabEntries.begin(), _tabEntries.end(), [](const SceneryTabInfo& tabInfo) { return tabInfo.Entries.empty(); }),
+            _tabEntries.end());
 
         // Move all scenery tab to end of first row
         if (_tabEntries.size() > MaxTabsPerRow)
