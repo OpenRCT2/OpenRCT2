@@ -995,7 +995,9 @@ struct RideManager
 
 RideManager GetRideManager();
 RideId GetNextFreeRideId();
-Ride* GetOrAllocateRide(RideId index);
+Ride* RideAllocateAtIndex(RideId index);
+void RideDelete(RideId id);
+
 const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);
 std::string_view GetRideEntryName(ObjectEntryIndex index);
 

@@ -703,7 +703,7 @@ namespace RCT2
                 if (src->Type != RIDE_TYPE_NULL)
                 {
                     const auto rideId = RideId::FromUnderlying(index);
-                    auto dst = GetOrAllocateRide(rideId);
+                    auto dst = RideAllocateAtIndex(rideId);
                     ImportRide(dst, src, rideId);
                 }
             }

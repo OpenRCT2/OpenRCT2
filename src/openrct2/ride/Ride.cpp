@@ -95,7 +95,10 @@ static constexpr const int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
 
-static std::vector<Ride> _rides;
+static std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> _rides{};
+
+// This is not the real size of rides in use, rather the highest slot used + 1.
+static size_t _maxRideSize = 0;
 
 struct StationIndexWithMessage
 {
@@ -124,7 +127,7 @@ RideManager GetRideManager()
 size_t RideManager::size() const
 {
     size_t count = 0;
-    for (size_t i = 0; i < _rides.size(); i++)
+    for (size_t i = 0; i < _maxRideSize; i++)
     {
         if (_rides[i].type != RIDE_TYPE_NULL)
         {
@@ -136,64 +139,80 @@ size_t RideManager::size() const
 
 RideManager::Iterator RideManager::begin()
 {
-    const auto endIndex = static_cast<RideId::UnderlyingType>(_rides.size());
-    return RideManager::Iterator(*this, 0u, endIndex);
+    return RideManager::Iterator(*this, 0u, _maxRideSize);
 }
 
 RideManager::Iterator RideManager::end()
 {
-    const auto endIndex = static_cast<RideId::UnderlyingType>(_rides.size());
-    return RideManager::Iterator(*this, endIndex, endIndex);
+    return RideManager::Iterator(*this, _maxRideSize, _maxRideSize);
 }
 
 RideManager::Iterator RideManager::get(RideId rideId)
 {
-    return RideManager::Iterator(*this, rideId.ToUnderlying(), _rides.size());
+    return RideManager::Iterator(*this, rideId.ToUnderlying(), _maxRideSize);
 }
 
 RideId GetNextFreeRideId()
 {
-    auto result = static_cast<RideId::UnderlyingType>(_rides.size());
     for (RideId::UnderlyingType i = 0; i < _rides.size(); i++)
     {
         if (_rides[i].type == RIDE_TYPE_NULL)
         {
-            result = i;
-            break;
+            return RideId::FromUnderlying(i);
         }
     }
-    if (result >= OpenRCT2::Limits::MaxRidesInPark)
-    {
-        return RideId::GetNull();
-    }
-    return RideId::FromUnderlying(result);
+    return RideId::GetNull();
 }
 
-Ride* GetOrAllocateRide(RideId index)
+Ride* RideAllocateAtIndex(RideId index)
 {
     const auto idx = index.ToUnderlying();
-    if (_rides.size() <= idx)
-    {
-        _rides.resize(idx + 1);
-    }
+    _maxRideSize = std::max<size_t>(idx + 1, _maxRideSize);
 
     auto result = &_rides[idx];
     result->id = index;
     return result;
 }
 
+void RideDelete(RideId id)
+{
+    const auto idx = id.ToUnderlying();
+
+    assert(idx < _rides.size());
+    assert(_rides[idx].type != RIDE_TYPE_NULL);
+
+    auto& ride = _rides[idx];
+    ride.type = RIDE_TYPE_NULL;
+    ride.custom_name = {};
+    ride.measurement = {};
+
+    while (_maxRideSize > 0 && _rides[_maxRideSize - 1].type == RIDE_TYPE_NULL)
+    {
+        _maxRideSize--;
+    }
+}
+
 Ride* GetRide(RideId index)
 {
-    const auto idx = index.ToUnderlying();
-    if (idx < _rides.size())
+    if (index.IsNull())
     {
-        auto& ride = _rides[idx];
-        if (ride.type != RIDE_TYPE_NULL)
-        {
-            assert(ride.id == index);
-            return &ride;
-        }
+        return nullptr;
     }
+    
+    const auto idx = index.ToUnderlying();
+    assert(idx < _rides.size());
+    if (idx >= _rides.size())
+    {
+        return nullptr;
+    }
+    
+    auto& ride = _rides[idx];
+    if (ride.type != RIDE_TYPE_NULL)
+    {
+        assert(ride.id == index);
+        return &ride;
+    }
+
     return nullptr;
 }
 
@@ -904,8 +923,8 @@ bool Ride::SupportsStatus(RideStatus s) const
  */
 void RideInitAll()
 {
-    _rides.clear();
-    _rides.shrink_to_fit();
+    std::for_each(std::begin(_rides), std::end(_rides), [](auto& ride) { ride.type = RIDE_TYPE_NULL; });
+    _maxRideSize = 0;
 }
 
 /**
@@ -5119,9 +5138,7 @@ Vehicle* RideGetBrokenVehicle(const Ride& ride)
  */
 void Ride::Delete()
 {
-    custom_name = {};
-    measurement = {};
-    type = RIDE_TYPE_NULL;
+    RideDelete(id);
 }
 
 void Ride::Renew()

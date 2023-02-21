@@ -1193,7 +1193,7 @@ namespace OpenRCT2
                     // Ride ID
                     cs.ReadWrite(rideId);
 
-                    auto& ride = *GetOrAllocateRide(rideId);
+                    auto& ride = *RideAllocateAtIndex(rideId);
 
                     // Status
                     cs.ReadWrite(ride.type);

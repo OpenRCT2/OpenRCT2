@@ -775,7 +775,7 @@ namespace RCT1
                 if (_s4.Rides[i].Type != RideType::Null)
                 {
                     const auto rideId = RideId::FromUnderlying(i);
-                    ImportRide(GetOrAllocateRide(rideId), &_s4.Rides[i], rideId);
+                    ImportRide(RideAllocateAtIndex(rideId), &_s4.Rides[i], rideId);
                 }
             }
         }
