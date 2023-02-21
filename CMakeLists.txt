@@ -86,6 +86,8 @@ option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(APPIMAGE "Create an appimage build (-rpath=$ORIGIN/../lib)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
+option(DOWNLOAD_OPENSFX "Download OpenSoundEffects during installation." OFF)
+option(DOWNLOAD_OPENMSX "Download OpenMusic during installation." OFF)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
     "WITH_TESTS" OFF)
 CMAKE_DEPENDENT_OPTION(MACOS_USE_DEPENDENCIES "Use OpenRCT2 dependencies instead of system libraries" ON
@@ -157,6 +159,11 @@ if (MACOS_USE_DEPENDENCIES)
         endif()
     endif ()
 endif ()
+
+# If OS is Linux, import OpenSoundEffects and OpenMusic
+if(UNIX AND NOT APPLE)
+    set(DOWNLOAD_OPENMSX ON)
+endif()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
 # Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.
