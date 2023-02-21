@@ -295,7 +295,7 @@ enum
     SPR_PALETTE_GLASS_LIGHT_PINK = 5047,
 
     // Start of G2 Palettes
-    SPR_PALETTE_DARK_OLIVE_DARK = SPR_G2_PALETTE_BEGIN - 1,
+    SPR_PALETTE_DARK_OLIVE_DARK = SPR_G2_PALETTE_BEGIN,
     SPR_PALETTE_DARK_OLIVE_LIGHT,
     SPR_PALETTE_SATURATED_BROWN_LIGHT,
     SPR_PALETTE_BORDEAUX_RED_DARK,
@@ -406,7 +406,7 @@ const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
-static const uint16_t palette_to_g1_offset[PALETTE_TOTAL_OFFSETS] = {
+static constexpr uint16_t palette_to_g1_offset[PALETTE_TOTAL_OFFSETS] = {
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,

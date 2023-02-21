@@ -245,7 +245,7 @@ GameActions::Result CheatSetAction::Execute() const
             gCheatsAllowRegularPathAsQueue = _param1 != 0;
             break;
         case CheatType::AllowSpecialColorSchemes:
-            gCheatsAllowSpecialColorSchemes = _param1 != 0;
+            gCheatsAllowSpecialColorSchemes = static_cast<bool>(_param1);
             break;
         default:
         {

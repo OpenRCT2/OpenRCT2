@@ -1188,7 +1188,7 @@ ImageId GetColourButtonImage(colour_t colour)
 {
     if (colour == COLOUR_OFFSET_INVISIBLE)
     {
-        return ImageId(SPR_G2_ICON_PALETTE_INVISIBLE - 1, colour).WithBlended(false);
+        return ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, colour).WithBlended(false);
     }
     else
     {
