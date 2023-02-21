@@ -3,6 +3,9 @@ include(GoogleTest)
 
 find_package(GTest REQUIRED)
 
+file(CREATE_LINK "${CMAKE_CURRENT_LIST_DIR}/testdata" "${CMAKE_BINARY_DIR}/testdata" SYMBOLIC)
+install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E create_symlink \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2\" \"${CMAKE_BINARY_DIR}/data\")")
+
 set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/AssertHelpers.hpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/BitSetTests.cpp"
@@ -34,5 +37,7 @@ set(test_files
 add_executable(OpenRCT2Tests ${test_files})
 target_link_libraries(OpenRCT2Tests GTest::gtest GTest::gtest_main libopenrct2)
 target_include_directories(OpenRCT2Tests PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
-gtest_discover_tests(OpenRCT2Tests)
+set_target_properties(OpenRCT2Tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+gtest_discover_tests(OpenRCT2Tests WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+
 
