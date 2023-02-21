@@ -1275,10 +1275,21 @@ private:
             {
                 widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull);
             }
-
-            if (tabInfo.IsAll())
+            else if (tabInfo.IsAll())
             {
-                widget.image = ImageId(SPR_G2_ALL_UNSELECTED, FilterPaletteID::PaletteNull);
+                widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
+            }
+            else if (tabInfo.IsSceneryGroup())
+            {
+                // Default tab image
+                widget.image = ImageId(SPR_TAB_QUESTION, FilterPaletteID::PaletteNull);
+
+                // Scenery Group image
+                auto scgEntry = tabInfo.GetSceneryGroupEntry();
+                if (scgEntry != nullptr)
+                {
+                    widget.image = ImageId(scgEntry->image, colours[1]);
+                }
             }
 
             _widgets.push_back(widget);
@@ -1453,12 +1464,10 @@ private:
         {
             auto widgetIndex = static_cast<WidgetIndex>(WIDX_SCENERY_TAB_1 + tabIndex);
             auto widgetCoordsXY = ScreenCoordsXY(widgets[widgetIndex].left, widgets[widgetIndex].top);
-            auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
-            auto imageOffset = tabIndex == _activeTabIndex ? TabImageOffsetSelected : TabImageOffsetUnselected;
 
-            if (scgEntry != nullptr)
+            if (_tabEntries[tabIndex].IsAll())
             {
-                auto imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
+                auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::PaletteNull);
                 GfxDrawSprite(&dpi, imageId, offset + widgetCoordsXY);
             }
         }

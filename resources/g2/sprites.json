@@ -135,12 +135,6 @@
         "path": "icons/search.png"
     },
     {
-        "path": "icons/all_unselected.png"
-    },
-    {
-        "path": "icons/all_selected.png"
-    },
-    {
         "path": "icons/eyedropper.png",
         "x_offset": 5,
         "y_offset": 5
@@ -203,6 +197,9 @@
     {
         "path": "icons/rct1_simulate_on_pressed.png"
     },
+	{
+		"path": "icons/infinity.png"
+	},
     {
         "path": "tool/normal_selection_6x6.png",
         "x_offset": 1,
