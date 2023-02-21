@@ -206,6 +206,7 @@ constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
 constexpr uint8_t COLOUR_NUM_ORIGINAL = 32;
 constexpr uint8_t COLOUR_NUM_NORMAL = 54;
 constexpr uint8_t COLOUR_ID_G2_OFFSET = 112;
+constexpr uint8_t COLOUR_OFFSET_INVISIBLE = 166;
 
 #define TEXT_COLOUR_254 (254)
 #define TEXT_COLOUR_255 (255)

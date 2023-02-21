@@ -295,8 +295,7 @@ enum
     SPR_PALETTE_GLASS_LIGHT_PINK = 5047,
 
     // Start of G2 Palettes
-    // For some reason these only load correctly if this is set to the G2 index ONE PRIOR to actual index
-    SPR_PALETTE_DARK_OLIVE_DARK = SPR_G2_ICON_PALETTE_INVISIBLE,
+    SPR_PALETTE_DARK_OLIVE_DARK = SPR_G2_PALETTE_BEGIN - 1,
     SPR_PALETTE_DARK_OLIVE_LIGHT,
     SPR_PALETTE_SATURATED_BROWN_LIGHT,
     SPR_PALETTE_BORDEAUX_RED_DARK,

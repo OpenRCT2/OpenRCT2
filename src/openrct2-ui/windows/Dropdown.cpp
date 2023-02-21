@@ -473,8 +473,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
         // Get palette offset for G2 colours
 
         // Use special graphic for Invisible colour
-        //auto imageId = (orderedColour == FilterPaletteID::PaletteG2Invisible) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_BORDEAUX_RED)
-        auto imageId = ImageId(SPR_PALETTE_BTN, orderedColour);
+        auto imageId = (orderedColour == COLOUR_OFFSET_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE - 1, COLOUR_WHITE) : ImageId(SPR_PALETTE_BTN, orderedColour);
 
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
         gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();
