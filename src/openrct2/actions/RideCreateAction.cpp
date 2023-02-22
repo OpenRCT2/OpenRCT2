@@ -122,7 +122,7 @@ GameActions::Result RideCreateAction::Execute() const
     int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);
     auto rideIndex = GetNextFreeRideId();
 
-    auto ride = GetOrAllocateRide(rideIndex);
+    auto ride = RideAllocateAtIndex(rideIndex);
     const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {

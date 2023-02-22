@@ -95,7 +95,14 @@ static constexpr const int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
 
-static std::vector<Ride> _rides;
+// Ride storage for all the rides in the park, rides with RideId::Null are considered free.
+static std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> _rides{};
+
+// This is the highest used index + 1 of the _rides array.
+static size_t _endOfUsedRange = 0;
+
+// A special instance of Ride that is used to draw previews such as the track designs.
+static Ride _previewRide{};
 
 struct StationIndexWithMessage
 {
@@ -124,9 +131,9 @@ RideManager GetRideManager()
 size_t RideManager::size() const
 {
     size_t count = 0;
-    for (size_t i = 0; i < _rides.size(); i++)
+    for (size_t i = 0; i < _endOfUsedRange; i++)
     {
-        if (_rides[i].type != RIDE_TYPE_NULL)
+        if (!_rides[i].id.IsNull())
         {
             count++;
         }
@@ -136,64 +143,94 @@ size_t RideManager::size() const
 
 RideManager::Iterator RideManager::begin()
 {
-    const auto endIndex = static_cast<RideId::UnderlyingType>(_rides.size());
-    return RideManager::Iterator(*this, 0u, endIndex);
+    return RideManager::Iterator(*this, 0u, _endOfUsedRange);
 }
 
 RideManager::Iterator RideManager::end()
 {
-    const auto endIndex = static_cast<RideId::UnderlyingType>(_rides.size());
-    return RideManager::Iterator(*this, endIndex, endIndex);
+    return RideManager::Iterator(*this, _endOfUsedRange, _endOfUsedRange);
 }
 
 RideManager::Iterator RideManager::get(RideId rideId)
 {
-    return RideManager::Iterator(*this, rideId.ToUnderlying(), _rides.size());
+    return RideManager::Iterator(*this, rideId.ToUnderlying(), _endOfUsedRange);
 }
 
 RideId GetNextFreeRideId()
 {
-    auto result = static_cast<RideId::UnderlyingType>(_rides.size());
     for (RideId::UnderlyingType i = 0; i < _rides.size(); i++)
     {
-        if (_rides[i].type == RIDE_TYPE_NULL)
+        if (_rides[i].id.IsNull())
         {
-            result = i;
-            break;
+            return RideId::FromUnderlying(i);
         }
     }
-    if (result >= OpenRCT2::Limits::MaxRidesInPark)
-    {
-        return RideId::GetNull();
-    }
-    return RideId::FromUnderlying(result);
+    return RideId::GetNull();
 }
 
-Ride* GetOrAllocateRide(RideId index)
+Ride* RideAllocateAtIndex(RideId index)
 {
     const auto idx = index.ToUnderlying();
-    if (_rides.size() <= idx)
-    {
-        _rides.resize(idx + 1);
-    }
+    _endOfUsedRange = std::max<size_t>(idx + 1, _endOfUsedRange);
 
     auto result = &_rides[idx];
+    assert(result->id == RideId::GetNull());
+
     result->id = index;
     return result;
 }
 
+Ride& RideGetTemporaryForPreview()
+{
+    return _previewRide;
+}
+
+static void RideReset(Ride& ride)
+{
+    ride.id = RideId::GetNull();
+    ride.type = RIDE_TYPE_NULL;
+    ride.custom_name = {};
+    ride.measurement = {};
+}
+
+void RideDelete(RideId id)
+{
+    const auto idx = id.ToUnderlying();
+
+    assert(idx < _rides.size());
+    assert(_rides[idx].type != RIDE_TYPE_NULL);
+
+    auto& ride = _rides[idx];
+    RideReset(ride);
+
+    // Shrink maximum ride size.
+    while (_endOfUsedRange > 0 && _rides[_endOfUsedRange - 1].id.IsNull())
+    {
+        _endOfUsedRange--;
+    }
+}
+
 Ride* GetRide(RideId index)
 {
-    const auto idx = index.ToUnderlying();
-    if (idx < _rides.size())
+    if (index.IsNull())
     {
-        auto& ride = _rides[idx];
-        if (ride.type != RIDE_TYPE_NULL)
-        {
-            assert(ride.id == index);
-            return &ride;
-        }
+        return nullptr;
     }
+
+    const auto idx = index.ToUnderlying();
+    assert(idx < _rides.size());
+    if (idx >= _rides.size())
+    {
+        return nullptr;
+    }
+
+    auto& ride = _rides[idx];
+    if (ride.type != RIDE_TYPE_NULL)
+    {
+        assert(ride.id == index);
+        return &ride;
+    }
+
     return nullptr;
 }
 
@@ -904,8 +941,8 @@ bool Ride::SupportsStatus(RideStatus s) const
  */
 void RideInitAll()
 {
-    _rides.clear();
-    _rides.shrink_to_fit();
+    std::for_each(std::begin(_rides), std::end(_rides), RideReset);
+    _endOfUsedRange = 0;
 }
 
 /**
@@ -5119,9 +5156,7 @@ Vehicle* RideGetBrokenVehicle(const Ride& ride)
  */
 void Ride::Delete()
 {
-    custom_name = {};
-    measurement = {};
-    type = RIDE_TYPE_NULL;
+    RideDelete(id);
 }
 
 void Ride::Renew()
