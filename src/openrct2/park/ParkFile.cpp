@@ -1193,7 +1193,12 @@ namespace OpenRCT2
                     // Ride ID
                     cs.ReadWrite(rideId);
 
-                    auto& ride = *RideAllocateAtIndex(rideId);
+                    auto& ride = [&]() -> Ride& {
+                        if (cs.GetMode() == OrcaStream::Mode::WRITING)
+                            return *GetRide(rideId);
+                        else
+                            return *RideAllocateAtIndex(rideId);
+                    }();
 
                     // Status
                     cs.ReadWrite(ride.type);
