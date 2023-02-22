@@ -152,10 +152,7 @@ private:
         {
             if (!Contains(entry))
             {
-                if (toBack)
-                    Entries.push_back(entry);
-                else
-                    Entries.push_front(entry);
+                Entries.push_back(entry);
             }
         }
 
@@ -879,7 +876,7 @@ public:
             }
         }
 
-        // Sort tabs before adding search and misc tabs to front/back
+        // Sort scenery group tabs before adding other tabs
         SortTabs();
 
         // Add misc and all tab
