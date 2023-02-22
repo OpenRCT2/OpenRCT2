@@ -482,7 +482,7 @@ static void BenchgfxRenderScreenshots(const char* inputPath, std::unique_ptr<ICo
         ReleaseDPI(dpi);
 }
 
-int32_t CmdlineForGfxbench(const char** argv, int32_t argc)
+int32_t CommandLineForGfxbench(const char** argv, int32_t argc)
 {
     if (argc != 1 && argc != 2)
     {
@@ -562,7 +562,7 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
     }
 }
 
-int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
+int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
 {
     // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
     for (int32_t i = 0; i < argc; i++)

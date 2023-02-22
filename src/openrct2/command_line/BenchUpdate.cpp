@@ -87,7 +87,7 @@ static void BM_update(benchmark::State& state, const std::string& filename)
     }
 }
 
-static int CmdlineForBenchSpriteSort(int argc, const char* const* argv)
+static int CommandLineForBenchSpriteSort(int argc, const char* const* argv)
 {
     // Add a baseline test on an empty park
     benchmark::RegisterBenchmark("baseline", BM_update, std::string{});
@@ -129,7 +129,7 @@ static exitcode_t HandleBenchUpdate(CommandLineArgEnumerator* argEnumerator)
 {
     const char* const* argv = static_cast<const char* const*>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    int32_t result = CmdlineForBenchSpriteSort(argc, argv);
+    int32_t result = CommandLineForBenchSpriteSort(argc, argv);
     if (result < 0)
     {
         return EXITCODE_FAIL;

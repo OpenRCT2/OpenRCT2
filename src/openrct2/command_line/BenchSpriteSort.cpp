@@ -153,7 +153,7 @@ static void BM_paint_session_arrange(benchmark::State& state, const std::vector<
     delete[] local_s;
 }
 
-static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
+static int command_line_for_bench_sprite_sort(int argc, const char** argv)
 {
     {
         // Register some basic "baseline" benchmark
@@ -204,7 +204,7 @@ static exitcode_t HandleBenchSpriteSort(CommandLineArgEnumerator* argEnumerator)
 {
     const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    int32_t result = cmdline_for_bench_sprite_sort(argc, argv);
+    int32_t result = command_line_for_bench_sprite_sort(argc, argv);
     if (result < 0)
     {
         return EXITCODE_FAIL;
