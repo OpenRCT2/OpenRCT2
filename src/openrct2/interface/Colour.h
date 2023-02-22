@@ -182,7 +182,8 @@ enum : PaletteIndex
     PALETTE_INDEX_254 = 254, // Primary remap 11
 };
 
-// Map of color picker index to true color index
+// clang-format off
+// Map of color picker index to true color index, for color picker dropdown
 static constexpr uint8_t COLOUR_UI_ORDER[] = {
     0,   3,   159, 6,   162, 157, 11,  149, 151,
     1,   4,   5,   7,   9,   12,  14,  13,  15,
@@ -192,6 +193,7 @@ static constexpr uint8_t COLOUR_UI_ORDER[] = {
     163, 31,  148, 155, 146, 165, 161, 17,  145,
     166, 167
 };
+// clang-format on
 
 constexpr size_t PALETTE_COUNT = 256;
 
