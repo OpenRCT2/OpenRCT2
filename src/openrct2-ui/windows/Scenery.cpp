@@ -125,7 +125,7 @@ private:
     {
         SceneryTabType Type = SCENERY_TAB_TYPE_GROUP;
         ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
-        std::deque<ScenerySelection> Entries;
+        std::deque<ScenerySelection> Entries{};
         u8string Filter = "";
 
         bool IsMisc() const
