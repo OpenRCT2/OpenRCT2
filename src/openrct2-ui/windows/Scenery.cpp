@@ -882,13 +882,9 @@ public:
         // Sort tabs before adding search and misc tabs to front/back
         SortTabs();
 
-        // Add misc tab
-        _tabEntries.emplace_back();
-        _tabEntries.back().Type = SCENERY_TAB_TYPE_MISC;
-
-        // Add all tab
-        _tabEntries.emplace_back();
-        _tabEntries.back().Type = SCENERY_TAB_TYPE_ALL;
+        // Add misc and all tab
+        _tabEntries.emplace_back(SceneryWindow::SceneryTabInfo{ SCENERY_TAB_TYPE_MISC });
+        _tabEntries.emplace_back(SceneryWindow::SceneryTabInfo{ SCENERY_TAB_TYPE_ALL });
 
         // small scenery
         for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
