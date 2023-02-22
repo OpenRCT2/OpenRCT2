@@ -408,10 +408,6 @@ static std::optional<PaletteMap> FASTCALL GfxDrawSpriteGetPalette(ImageId imageI
     if (!imageId.HasSecondary())
     {
         uint8_t paletteId = imageId.GetRemap();
-        if (!imageId.IsBlended())
-        {
-            paletteId &= 0x7F;
-        }
         return GetPaletteMapForColour(paletteId);
     }
 
