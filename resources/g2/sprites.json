@@ -198,7 +198,8 @@
         "path": "icons/rct1_simulate_on_pressed.png"
     },
     {
-        "path": "icons/infinity.png"
+        "path": "icons/infinity.png",
+        "palette": "keep"
     },
     {
         "path": "tool/normal_selection_6x6.png",
