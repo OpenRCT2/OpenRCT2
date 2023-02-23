@@ -194,6 +194,10 @@ namespace UnicodeChar
     constexpr char32_t u_ring = 0x16F;
     constexpr char32_t u_double_acute_uc = 0x170;
     constexpr char32_t u_double_acute = 0x171;
+    constexpr char32_t w_circumflex_uc = 0x174;
+    constexpr char32_t w_circumflex = 0x175;
+    constexpr char32_t y_circumflex_uc = 0x176;
+    constexpr char32_t y_circumflex = 0x177;
     constexpr char32_t z_acute_uc = 0x179;
     constexpr char32_t z_acute = 0x17A;
     constexpr char32_t z_dot_uc = 0x17B;

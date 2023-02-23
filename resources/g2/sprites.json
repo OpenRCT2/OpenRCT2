@@ -806,6 +806,30 @@
         "forceBmp": true
     },
     {
+        "path": "font/latin/w-circumflex-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/w-circumflex-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/z-caron-uc-small.png",
         "y_offset": -1,
         "palette": "keep",
@@ -1407,6 +1431,31 @@
     {
         "path": "font/latin/u-ring-bold.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+
+    {
+        "path": "font/latin/w-circumflex-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/w-circumflex-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-bold.png",
+        "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
@@ -2020,6 +2069,30 @@
     {
         "path": "font/latin/u-ring-tiny.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/w-circumflex-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/w-circumflex-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-tiny.png",
+        "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
