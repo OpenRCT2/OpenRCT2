@@ -748,7 +748,17 @@ namespace OpenRCT2
                 cs.ReadWrite(gMaxBankLoan);
                 cs.ReadWrite(gBankLoanInterestRate);
                 cs.ReadWrite(gParkFlags);
-                cs.ReadWrite(gParkEntranceFee);
+                if (version <= 18)
+                {
+                    money16 tempParkEntranceFee{};
+                    cs.ReadWrite(tempParkEntranceFee);
+                    gParkEntranceFee = ToMoney64(tempParkEntranceFee);
+                }
+                else
+                {
+                    cs.ReadWrite(gParkEntranceFee);
+                }
+
                 cs.ReadWrite(gStaffHandymanColour);
                 cs.ReadWrite(gStaffMechanicColour);
                 cs.ReadWrite(gStaffSecurityColour);

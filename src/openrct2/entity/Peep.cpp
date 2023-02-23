@@ -1945,7 +1945,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        money16 entranceFee = ParkGetEntranceFee();
+        auto entranceFee = ParkGetEntranceFee();
         if (entranceFee != 0)
         {
             if (guest->HasItem(ShopItem::Voucher))

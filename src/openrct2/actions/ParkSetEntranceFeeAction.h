@@ -14,11 +14,11 @@
 class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
 {
 private:
-    money16 _fee{ MONEY16_UNDEFINED };
+    money64 _fee{ MONEY64_UNDEFINED };
 
 public:
     ParkSetEntranceFeeAction() = default;
-    ParkSetEntranceFeeAction(money16 fee);
+    ParkSetEntranceFeeAction(money64 fee);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

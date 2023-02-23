@@ -94,7 +94,7 @@ namespace OpenRCT2
 
 extern uint64_t gParkFlags;
 extern uint16_t gParkRating;
-extern money16 gParkEntranceFee;
+extern money64 gParkEntranceFee;
 extern uint32_t gParkSize;
 extern money16 gLandPrice;
 extern money16 gConstructionRightsPrice;
@@ -124,7 +124,7 @@ uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
 
 void ParkSetOpen(bool open);
 int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos);
-money16 ParkGetEntranceFee();
+money64 ParkGetEntranceFee();
 
 bool ParkRidePricesUnlocked();
 bool ParkEntranceFeeUnlocked();

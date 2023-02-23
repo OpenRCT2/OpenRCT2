@@ -36,8 +36,8 @@ namespace OpenRCT2::Scripting
         money64 maxBankLoan_get() const;
         void maxBankLoan_set(money64 value);
 
-        money16 entranceFee_get() const;
-        void entranceFee_set(money16 value);
+        money64 entranceFee_get() const;
+        void entranceFee_set(money64 value);
 
         uint32_t guests_get() const;
 

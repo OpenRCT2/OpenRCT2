@@ -109,11 +109,11 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    money16 ScPark::entranceFee_get() const
+    money64 ScPark::entranceFee_get() const
     {
         return gParkEntranceFee;
     }
-    void ScPark::entranceFee_set(money16 value)
+    void ScPark::entranceFee_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 

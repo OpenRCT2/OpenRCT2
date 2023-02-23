@@ -48,7 +48,7 @@ using namespace OpenRCT2;
 
 uint64_t gParkFlags;
 uint16_t gParkRating;
-money16 gParkEntranceFee;
+money64 gParkEntranceFee;
 uint32_t gParkSize;
 money16 gLandPrice;
 money16 gConstructionRightsPrice;
@@ -191,7 +191,7 @@ int32_t ParkGetForcedRating()
     return _forcedParkRating;
 }
 
-money16 ParkGetEntranceFee()
+money64 ParkGetEntranceFee()
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
@@ -616,7 +616,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     }
 
     // Penalty for overpriced entrance fee relative to total ride value
-    money16 entranceFee = ParkGetEntranceFee();
+    auto entranceFee = ParkGetEntranceFee();
     if (entranceFee > gTotalRideValueForMoney)
     {
         probability /= 4;
