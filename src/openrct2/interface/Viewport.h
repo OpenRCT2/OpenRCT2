@@ -117,7 +117,6 @@ extern ScreenCoordsXY gSavedView;
 extern ZoomLevel gSavedViewZoom;
 extern uint8_t gSavedViewRotation;
 
-extern PaintEntry* gNextFreePaintStruct;
 extern uint8_t gCurrentRotation;
 
 void ViewportInitAll();
