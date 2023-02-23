@@ -384,8 +384,8 @@ namespace RCT2
                 }
             }
 
-            gLandPrice = _s6.LandPrice;
-            gConstructionRightsPrice = _s6.ConstructionRightsPrice;
+            gLandPrice = ToMoney64(_s6.LandPrice);
+            gConstructionRightsPrice = ToMoney64(_s6.ConstructionRightsPrice);
             // unk_01358774
             // Pad01358776
             // _s6.CdKey

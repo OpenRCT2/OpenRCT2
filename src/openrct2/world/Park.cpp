@@ -50,8 +50,8 @@ uint64_t gParkFlags;
 uint16_t gParkRating;
 money64 gParkEntranceFee;
 uint32_t gParkSize;
-money16 gLandPrice;
-money16 gConstructionRightsPrice;
+money64 gLandPrice;
+money64 gConstructionRightsPrice;
 
 uint64_t gTotalAdmissions;
 money64 gTotalIncomeFromAdmissions;

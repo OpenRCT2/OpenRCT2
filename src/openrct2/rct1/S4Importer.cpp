@@ -1392,8 +1392,8 @@ namespace RCT1
         void ImportFinance()
         {
             gParkEntranceFee = _s4.ParkEntranceFee;
-            gLandPrice = _s4.LandPrice;
-            gConstructionRightsPrice = _s4.ConstructionRightsPrice;
+            gLandPrice = ToMoney64(_s4.LandPrice);
+            gConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gCash = ToMoney64(_s4.Cash);
             gBankLoan = ToMoney64(_s4.Loan);

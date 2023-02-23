@@ -519,8 +519,20 @@ namespace OpenRCT2
                     cs.ReadWrite(spawn.direction);
                 });
 
-                cs.ReadWrite(gLandPrice);
-                cs.ReadWrite(gConstructionRightsPrice);
+                if (version <= 18)
+                {
+                    money16 tempLandPrice{};
+                    money16 tempConstructionRightPrice{};
+                    cs.ReadWrite(tempLandPrice);
+                    cs.ReadWrite(tempConstructionRightPrice);
+                    gLandPrice = ToMoney64(tempLandPrice);
+                    gConstructionRightsPrice = ToMoney64(tempConstructionRightPrice);
+                }
+                else
+                {
+                    cs.ReadWrite(gLandPrice);
+                    cs.ReadWrite(gConstructionRightsPrice);
+                }
                 cs.ReadWrite(gGrassSceneryTileLoopPosition);
                 cs.ReadWrite(gWidePathTileLoopPosition);
 

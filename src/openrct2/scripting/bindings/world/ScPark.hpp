@@ -67,11 +67,11 @@ namespace OpenRCT2::Scripting
         money64 totalIncomeFromAdmissions_get() const;
         void totalIncomeFromAdmissions_set(money64 value);
 
-        money32 landPrice_get() const;
-        void landPrice_set(money32 value);
+        money64 landPrice_get() const;
+        void landPrice_set(money64 value);
 
-        money32 constructionRightsPrice_get() const;
-        void constructionRightsPrice_set(money32 value);
+        money64 constructionRightsPrice_get() const;
+        void constructionRightsPrice_set(money64 value);
 
         int16_t casualtyPenalty_get() const;
         void casualtyPenalty_set(int16_t value);
