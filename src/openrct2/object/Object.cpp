@@ -143,11 +143,6 @@ std::string Object::GetString(int32_t language, ObjectStringID index) const
     return GetStringTable().GetString(language, index);
 }
 
-ObjectEntryDescriptor Object::GetScgWallsHeader() const
-{
-    return ObjectEntryDescriptor("rct2.scenery_group.scgwalls");
-}
-
 ObjectEntryDescriptor Object::GetScgPathXHeader() const
 {
     return ObjectEntryDescriptor("rct2.scenery_group.scgpathx");
