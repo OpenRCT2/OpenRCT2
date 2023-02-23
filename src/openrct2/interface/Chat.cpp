@@ -30,7 +30,6 @@ bool gChatOpen = false;
 static u8string _chatCurrentLine;
 static std::deque<u8string> _chatHistory;
 static std::deque<uint32_t> _chatHistoryTime;
-static uint32_t _chatHistoryIndex = 0;
 static uint32_t _chatCaretTicks = 0;
 static int32_t _chatLeft;
 static int32_t _chatTop;
