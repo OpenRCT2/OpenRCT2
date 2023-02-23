@@ -267,11 +267,11 @@ public:
     RideId GuestHeadingToRideId;
     uint8_t GuestIsLostCountdown;
     uint8_t GuestTimeOnRide;
-    money16 PaidToEnter;
-    money16 PaidOnRides;
-    money16 PaidOnFood;
-    money16 PaidOnDrink;
-    money16 PaidOnSouvenirs;
+    money64 PaidToEnter;
+    money64 PaidOnRides;
+    money64 PaidOnFood;
+    money64 PaidOnDrink;
+    money64 PaidOnSouvenirs;
     bool OutsideOfPark;
     uint8_t Happiness;
     uint8_t HappinessTarget;
@@ -342,7 +342,7 @@ public:
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
-    void SpendMoney(money16& peep_expend_type, money64 amount, ExpenditureType type);
+    void SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType type);
     void SpendMoney(money64 amount, ExpenditureType type);
     void SetHasRidden(const Ride& ride);
     bool HasRidden(const Ride& ride) const;

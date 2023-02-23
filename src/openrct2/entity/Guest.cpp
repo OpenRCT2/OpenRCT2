@@ -1670,7 +1670,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     if (GetShopItemDescriptor(shopItem).IsSouvenir())
         AmountOfSouvenirs++;
 
-    money16* expend_type = &PaidOnSouvenirs;
+    money64* expend_type = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
     if (GetShopItemDescriptor(shopItem).IsFood())
@@ -2278,7 +2278,7 @@ bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
 // Used when no logging to an expend type required
 void Guest::SpendMoney(money64 amount, ExpenditureType expenditure)
 {
-    money16 unused;
+    money64 unused;
     SpendMoney(unused, amount, expenditure);
 }
 
@@ -2287,14 +2287,14 @@ void Guest::SpendMoney(money64 amount, ExpenditureType expenditure)
  *  rct2: 0x0069926C
  * Expend type was previously an offset saved in 0x00F1AEC0
  */
-void Guest::SpendMoney(money16& peep_expend_type, money64 amount, ExpenditureType expenditure)
+void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
 {
     assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
     CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - amount);
     CashSpent += amount;
 
-    peep_expend_type += static_cast<money16>(amount);
+    peep_expend_type += amount;
 
     WindowInvalidateByNumber(WindowClass::Peep, Id);
 

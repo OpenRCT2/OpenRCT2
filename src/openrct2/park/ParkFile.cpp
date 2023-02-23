@@ -1674,7 +1674,9 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.ReadWrite(guest->PaidOnDrink);
+                    money16 tempPaidOnDrink{};
+                    cs.ReadWrite(tempPaidOnDrink);
+                    guest->PaidOnDrink = ToMoney64(tempPaidOnDrink);
                     std::array<uint8_t, 16> rideTypeBeenOn;
                     cs.ReadWriteArray(rideTypeBeenOn, [&cs](uint8_t& rideType) {
                         cs.ReadWrite(rideType);
@@ -1843,10 +1845,17 @@ namespace OpenRCT2
                     cs.ReadWrite(guest->LitterCount);
                     cs.ReadWrite(guest->GuestTimeOnRide);
                     cs.ReadWrite(guest->DisgustingCount);
-                    cs.ReadWrite(guest->PaidToEnter);
-                    cs.ReadWrite(guest->PaidOnRides);
-                    cs.ReadWrite(guest->PaidOnFood);
-                    cs.ReadWrite(guest->PaidOnSouvenirs);
+
+                    money16 expenditures[4]{};
+                    cs.ReadWrite(expenditures[0]);
+                    cs.ReadWrite(expenditures[1]);
+                    cs.ReadWrite(expenditures[2]);
+                    cs.ReadWrite(expenditures[3]);
+                    guest->PaidToEnter = ToMoney64(expenditures[0]);
+                    guest->PaidOnRides = ToMoney64(expenditures[1]);
+                    guest->PaidOnFood = ToMoney64(expenditures[2]);
+                    guest->PaidOnSouvenirs = ToMoney64(expenditures[3]);
+
                     cs.ReadWrite(guest->AmountOfFood);
                     cs.ReadWrite(guest->AmountOfDrinks);
                     cs.ReadWrite(guest->AmountOfSouvenirs);
@@ -2032,8 +2041,9 @@ namespace OpenRCT2
     template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Guest& guest)
     {
         ReadWritePeep(os, cs, guest);
+        auto version = os.GetHeader().TargetVersion;
 
-        if (os.GetHeader().TargetVersion <= 1)
+        if (version <= 1)
         {
             return;
         }
@@ -2044,11 +2054,30 @@ namespace OpenRCT2
         cs.ReadWrite(guest.GuestHeadingToRideId);
         cs.ReadWrite(guest.GuestIsLostCountdown);
         cs.ReadWrite(guest.GuestTimeOnRide);
-        cs.ReadWrite(guest.PaidToEnter);
-        cs.ReadWrite(guest.PaidOnRides);
-        cs.ReadWrite(guest.PaidOnFood);
-        cs.ReadWrite(guest.PaidOnDrink);
-        cs.ReadWrite(guest.PaidOnSouvenirs);
+
+        if (version <= 18)
+        {
+            money16 expenditures[5]{};
+            cs.ReadWrite(expenditures[0]);
+            cs.ReadWrite(expenditures[1]);
+            cs.ReadWrite(expenditures[2]);
+            cs.ReadWrite(expenditures[3]);
+            cs.ReadWrite(expenditures[4]);
+            guest.PaidToEnter = ToMoney64(expenditures[0]);
+            guest.PaidOnRides = ToMoney64(expenditures[1]);
+            guest.PaidOnFood = ToMoney64(expenditures[2]);
+            guest.PaidOnDrink = ToMoney64(expenditures[3]);
+            guest.PaidOnSouvenirs = ToMoney64(expenditures[4]);
+        }
+        else
+        {
+            cs.ReadWrite(guest.PaidToEnter);
+            cs.ReadWrite(guest.PaidOnRides);
+            cs.ReadWrite(guest.PaidOnFood);
+            cs.ReadWrite(guest.PaidOnDrink);
+            cs.ReadWrite(guest.PaidOnSouvenirs);
+        }
+
         cs.ReadWrite(guest.OutsideOfPark);
         cs.ReadWrite(guest.Happiness);
         cs.ReadWrite(guest.HappinessTarget);
