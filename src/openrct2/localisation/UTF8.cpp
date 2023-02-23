@@ -50,19 +50,6 @@ uint32_t UTF8GetNext(const utf8* char_ptr, const utf8** nextchar_ptr)
     return result;
 }
 
-/**
- * Inserts the given codepoint at the given address, shifting all characters after along.
- * @returns the size of the inserted codepoint.
- */
-int32_t UTF8InsertCodepoint(utf8* dst, uint32_t codepoint)
-{
-    int32_t shift = UTF8GetCodepointLength(codepoint);
-    utf8* endPoint = GetStringEnd(dst);
-    memmove(dst + shift, dst, endPoint - dst + 1);
-    UTF8WriteCodepoint(dst, codepoint);
-    return shift;
-}
-
 bool UTF8IsCodepointStart(const utf8* text)
 {
     if ((text[0] & 0x80) == 0)

@@ -99,7 +99,6 @@ const char* LanguageGetString(StringId id);
 bool LanguageOpen(int32_t id);
 
 uint32_t UTF8GetNext(const utf8* char_ptr, const utf8** nextchar_ptr);
-int32_t UTF8InsertCodepoint(utf8* dst, uint32_t codepoint);
 bool UTF8IsCodepointStart(const utf8* text);
 int32_t UTF8GetCodepointLength(char32_t codepoint);
 int32_t UTF8Length(const utf8* text);

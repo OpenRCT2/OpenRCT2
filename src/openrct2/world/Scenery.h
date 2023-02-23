@@ -49,7 +49,6 @@ extern uint8_t gSceneryQuadrant;
 
 extern money32 gSceneryPlaceCost;
 extern ScenerySelection gSceneryPlaceObject;
-extern uint16_t gSceneryPlaceObjectEntryIndex;
 extern int16_t gSceneryPlaceZ;
 extern uint8_t gSceneryPlaceRotation;
 

@@ -155,14 +155,13 @@ std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(OpenRCT2::IStream* str
 void SmallSceneryObject::PerformFixes()
 {
     auto identifier = GetLegacyIdentifier();
-    static const auto& scgWalls = Object::GetScgWallsHeader();
 
     // ToonTowner's base blocks. Put them in the Walls and Roofs group.
     if (identifier == "XXBBCL01" ||
         identifier == "XXBBMD01" ||
         identifier == "ARBASE2 ")
     {
-        SetPrimarySceneryGroup(scgWalls);
+        SetPrimarySceneryGroup(ObjectEntryDescriptor("rct2.scenery_group.scgwalls"));
     }
 
     // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
@@ -171,16 +170,10 @@ void SmallSceneryObject::PerformFixes()
         identifier == "TTPRF10 " ||
         identifier == "TTPRF11 ")
     {
-        static const auto& scgPirat = GetScgPiratHeader();
-        SetPrimarySceneryGroup(scgPirat);
+        SetPrimarySceneryGroup(ObjectEntryDescriptor("rct2.scenery_group.scgpirat"));
     }
 }
 // clang-format on
-
-ObjectEntryDescriptor SmallSceneryObject::GetScgPiratHeader() const
-{
-    return ObjectEntryDescriptor("rct2.scenery_group.scgpirat");
-}
 
 void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
 {

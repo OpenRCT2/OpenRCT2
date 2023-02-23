@@ -68,7 +68,6 @@ ScreenCoordsXY gSavedView;
 ZoomLevel gSavedViewZoom;
 uint8_t gSavedViewRotation;
 
-PaintEntry* gNextFreePaintStruct;
 uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;

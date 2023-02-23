@@ -315,7 +315,6 @@ public:
         return _imageTable;
     }
 
-    ObjectEntryDescriptor GetScgWallsHeader() const;
     ObjectEntryDescriptor GetScgPathXHeader() const;
     RCTObjectEntry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
 

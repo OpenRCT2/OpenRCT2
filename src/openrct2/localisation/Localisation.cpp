@@ -46,14 +46,6 @@ bool gDebugStringFormatting = false;
 #endif
 
 // clang-format off
-const StringId SpeedNames[] = {
-    STR_SPEED_NORMAL,
-    STR_SPEED_QUICK,
-    STR_SPEED_FAST,
-    STR_SPEED_TURBO,
-    STR_SPEED_HYPER,
-};
-
 const StringId ObjectiveNames[] = {
     STR_OBJECTIVE_NONE,
     STR_OBJECTIVE_GUESTS_BY,
