@@ -222,7 +222,7 @@ struct Ride
     uint8_t slide_peep_t_shirt_colour;
     uint8_t spiral_slide_progress;
     int32_t build_date;
-    money16 upkeep_cost;
+    money64 upkeep_cost;
     EntityId race_winner;
     uint32_t music_position;
     uint8_t breakdown_reason_pending;

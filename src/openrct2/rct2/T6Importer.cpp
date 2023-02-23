@@ -114,7 +114,7 @@ namespace RCT2
             td->excitement = td6.Excitement;
             td->intensity = td6.Intensity;
             td->nausea = td6.Nausea;
-            td->upkeep_cost = td6.UpkeepCost;
+            td->upkeep_cost = ToMoney64(td6.UpkeepCost);
             for (auto i = 0; i < Limits::NumColourSchemes; ++i)
             {
                 td->track_spine_colour[i] = td6.TrackSpineColour[i];

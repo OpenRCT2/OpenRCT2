@@ -894,12 +894,12 @@ static void RideRatingsCalculateValue(Ride& ride)
  * inputs
  * - edi: ride ptr
  */
-static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, const Ride& ride)
+static money64 ride_compute_upkeep(RideRatingUpdateState& state, const Ride& ride)
 {
     // data stored at 0x0057E3A8, incrementing 18 bytes at a time
-    uint16_t upkeep = ride.GetRideTypeDescriptor().UpkeepCosts.BaseCost;
+    auto upkeep = ride.GetRideTypeDescriptor().UpkeepCosts.BaseCost;
 
-    uint16_t trackCost = ride.GetRideTypeDescriptor().UpkeepCosts.CostPerTrackPiece;
+    auto trackCost = ride.GetRideTypeDescriptor().UpkeepCosts.CostPerTrackPiece;
     uint8_t dropFactor = ride.drops;
 
     dropFactor >>= 6;

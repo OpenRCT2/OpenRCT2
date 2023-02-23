@@ -172,7 +172,7 @@ void FinancePayRideUpkeep()
 
         if (ride.status != RideStatus::Closed && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            int16_t upkeep = ride.upkeep_cost;
+            auto upkeep = ride.upkeep_cost;
             if (upkeep != -1)
             {
                 ride.total_profit -= upkeep;
@@ -252,7 +252,7 @@ void FinanceUpdateDailyProfit()
     gCurrentProfit = 7 * gCurrentExpenditure;
     gCurrentExpenditure = 0; // Reset daily expenditure
 
-    money32 current_profit = 0;
+    money64 current_profit = 0;
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
@@ -267,13 +267,13 @@ void FinanceUpdateDailyProfit()
         current_profit -= research_cost_table[level];
 
         // Loan costs
-        money32 current_loan = gBankLoan;
+        auto current_loan = gBankLoan;
         current_profit -= current_loan / 600;
 
         // Ride costs
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Closed && ride.upkeep_cost != MONEY16_UNDEFINED)
+            if (ride.status != RideStatus::Closed && ride.upkeep_cost != MONEY64_UNDEFINED)
             {
                 current_profit -= 2 * ride.upkeep_cost;
             }

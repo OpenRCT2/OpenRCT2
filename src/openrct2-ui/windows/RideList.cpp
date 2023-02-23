@@ -636,7 +636,7 @@ public:
                     break;
                 case INFORMATION_TYPE_RUNNING_COST:
                     formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
-                    if (ridePtr->upkeep_cost != MONEY16_UNDEFINED)
+                    if (ridePtr->upkeep_cost != MONEY64_UNDEFINED)
                     {
                         formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
                         ft.Add<money64>(ridePtr->upkeep_cost * 16);

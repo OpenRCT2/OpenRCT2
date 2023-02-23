@@ -1098,8 +1098,8 @@ void Ride::Update()
         income_per_hour = CalculateIncomePerHour();
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-        if (upkeep_cost != MONEY16_UNDEFINED)
-            profit = (income_per_hour - (static_cast<money32>(upkeep_cost * 16)));
+        if (upkeep_cost != MONEY64_UNDEFINED)
+            profit = income_per_hour - (upkeep_cost * 16);
     }
 
     // Ride specific updates

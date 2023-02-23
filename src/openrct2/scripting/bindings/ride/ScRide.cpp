@@ -411,12 +411,12 @@ namespace OpenRCT2::Scripting
         return ride != nullptr ? ride->GetAge() : 0;
     }
 
-    int16_t ScRide::runningCost_get() const
+    money64 ScRide::runningCost_get() const
     {
         auto ride = GetRide();
         return ride != nullptr ? ride->upkeep_cost : 0;
     }
-    void ScRide::runningCost_set(int16_t value)
+    void ScRide::runningCost_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
         auto ride = GetRide();

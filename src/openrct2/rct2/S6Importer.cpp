@@ -980,7 +980,7 @@ namespace RCT2
             dst->spiral_slide_progress = src->SpiralSlideProgress;
             // Pad177[0x9];
             dst->build_date = static_cast<int32_t>(src->BuildDate);
-            dst->upkeep_cost = src->UpkeepCost;
+            dst->upkeep_cost = ToMoney64(src->UpkeepCost);
             dst->race_winner = EntityId::FromUnderlying(src->RaceWinner);
             // Pad186[0x02];
             dst->music_position = src->MusicPosition;

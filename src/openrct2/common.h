@@ -111,6 +111,11 @@ constexpr money64 ToMoney64FromGBP(double money) noexcept
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 #define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))
 
+constexpr money16 ToMoney16(money64 value)
+{
+    return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : value;
+}
+
 constexpr money64 ToMoney64(money32 value)
 {
     return value == MONEY32_UNDEFINED ? MONEY64_UNDEFINED : value;

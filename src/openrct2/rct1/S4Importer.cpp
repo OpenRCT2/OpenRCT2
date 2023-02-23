@@ -1030,7 +1030,7 @@ namespace RCT1
             dst->maze_tiles = src->MazeTiles;
 
             // Finance / customers
-            dst->upkeep_cost = src->UpkeepCost;
+            dst->upkeep_cost = ToMoney64(src->UpkeepCost);
             dst->price[0] = src->Price;
             dst->price[1] = src->PriceSecondary;
             dst->income_per_hour = ToMoney64(src->IncomePerHour);

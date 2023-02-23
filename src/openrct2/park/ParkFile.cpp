@@ -1399,7 +1399,17 @@ namespace OpenRCT2
 
                     cs.ReadWrite(ride.num_riders);
                     cs.ReadWrite(ride.build_date);
-                    cs.ReadWrite(ride.upkeep_cost);
+
+                    if (version <= 18)
+                    {
+                        money16 tempUpkeepCost{};
+                        cs.ReadWrite(tempUpkeepCost);
+                        ride.upkeep_cost = ToMoney64(tempUpkeepCost);
+                    }
+                    else
+                    {
+                        cs.ReadWrite(ride.upkeep_cost);
+                    }
 
                     cs.ReadWrite(ride.cur_num_customers);
                     cs.ReadWrite(ride.num_customers_timeout);

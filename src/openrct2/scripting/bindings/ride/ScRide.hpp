@@ -142,8 +142,8 @@ namespace OpenRCT2::Scripting
 
         int32_t age_get() const;
 
-        int16_t runningCost_get() const;
-        void runningCost_set(int16_t value);
+        money64 runningCost_get() const;
+        void runningCost_set(money64 value);
 
         int32_t totalProfit_get() const;
         void totalProfit_set(int32_t value);

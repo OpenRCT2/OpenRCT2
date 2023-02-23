@@ -152,16 +152,16 @@ struct UpkeepCostsDescriptor
      *
      * Data generation script: https://gist.github.com/kevinburke/6bcf4a8fcc95faad7bac
      */
-    uint8_t BaseCost;
+    money64 BaseCost;
     /** rct2: 0x0097E3AC */
     uint8_t TrackLengthMultiplier;
-    uint8_t CostPerTrackPiece;
+    money64 CostPerTrackPiece;
     /** rct2: 0x0097E3B4 */
-    uint8_t CostPerTrain;
+    money64 CostPerTrain;
     /** rct2: 0x0097E3B6 */
-    uint8_t CostPerCar;
+    money64 CostPerCar;
     /** rct2: 0x0097E3B8 */
-    uint8_t CostPerStation;
+    money64 CostPerStation;
 };
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;

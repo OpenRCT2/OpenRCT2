@@ -6820,7 +6820,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
 
     // Running cost per hour
     money64 costPerHour = ride->upkeep_cost * 16;
-    stringId = ride->upkeep_cost == MONEY16_UNDEFINED ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
+    stringId = ride->upkeep_cost == MONEY64_UNDEFINED ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
     auto ft = Formatter();
     ft.Add<money64>(costPerHour);
     DrawTextBasic(dpi, screenCoords, stringId, ft);
