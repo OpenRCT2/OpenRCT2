@@ -20596,147 +20596,195 @@
         "path": "icons/colour_invisible_pressed.png"
     },
     {
-        "path": "palette_map/palette_map_dark_olive_dark.png"
+        "path": "palette_map/palette_map_dark_olive_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_dark_olive_light.png"
+        "path": "palette_map/palette_map_dark_olive_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_saturated_brown_light.png"
+        "path": "palette_map/palette_map_saturated_brown_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_bordeaux_red_dark.png"
+        "path": "palette_map/palette_map_bordeaux_red_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_bordeaux_red_light.png"
+        "path": "palette_map/palette_map_bordeaux_red_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_grass_green_dark.png"
+        "path": "palette_map/palette_map_grass_green_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_grass_green_light.png"
+        "path": "palette_map/palette_map_grass_green_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_olive_dark.png"
+        "path": "palette_map/palette_map_olive_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_olive_light.png"
+        "path": "palette_map/palette_map_olive_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_saturated_green_light.png"
+        "path": "palette_map/palette_map_saturated_green_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_tan_dark.png"
+        "path": "palette_map/palette_map_tan_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_tan_light.png"
+        "path": "palette_map/palette_map_tan_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_dull_purple_light.png"
+        "path": "palette_map/palette_map_dull_purple_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_dull_green_dark.png"
+        "path": "palette_map/palette_map_dull_green_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_dull_green_light.png"
+        "path": "palette_map/palette_map_dull_green_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_saturated_purple_dark.png"
+        "path": "palette_map/palette_map_saturated_purple_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_saturated_purple_light.png"
+        "path": "palette_map/palette_map_saturated_purple_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_orange_light.png"
+        "path": "palette_map/palette_map_orange_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_aqua_dark.png"
+        "path": "palette_map/palette_map_aqua_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_magenta_light.png"
+        "path": "palette_map/palette_map_magenta_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_dull_brown_dark.png"
+        "path": "palette_map/palette_map_dull_brown_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_dull_brown_light.png"
+        "path": "palette_map/palette_map_dull_brown_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_invisible.png"
+        "path": "palette_map/palette_map_invisible.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_void.png"
+        "path": "palette_map/palette_map_void.png",
+		"palette": "keep"
     },
 	{
-        "path": "palette_map/palette_map_glass_dark_olive_dark.png"
+        "path": "palette_map/palette_map_glass_dark_olive_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_dark_olive_light.png"
+        "path": "palette_map/palette_map_glass_dark_olive_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_saturated_brown_light.png"
+        "path": "palette_map/palette_map_glass_saturated_brown_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_bordeaux_red_dark.png"
+        "path": "palette_map/palette_map_glass_bordeaux_red_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_bordeaux_red_light.png"
+        "path": "palette_map/palette_map_glass_bordeaux_red_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_grass_green_dark.png"
+        "path": "palette_map/palette_map_glass_grass_green_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_grass_green_light.png"
+        "path": "palette_map/palette_map_glass_grass_green_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_olive_dark.png"
+        "path": "palette_map/palette_map_glass_olive_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_olive_light.png"
+        "path": "palette_map/palette_map_glass_olive_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_saturated_green_light.png"
+        "path": "palette_map/palette_map_glass_saturated_green_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_tan_dark.png"
+        "path": "palette_map/palette_map_glass_tan_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_tan_light.png"
+        "path": "palette_map/palette_map_glass_tan_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_dull_purple_light.png"
+        "path": "palette_map/palette_map_glass_dull_purple_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_dull_green_dark.png"
+        "path": "palette_map/palette_map_glass_dull_green_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_dull_green_light.png"
+        "path": "palette_map/palette_map_glass_dull_green_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_saturated_purple_dark.png"
+        "path": "palette_map/palette_map_glass_saturated_purple_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_saturated_purple_light.png"
+        "path": "palette_map/palette_map_glass_saturated_purple_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_orange_light.png"
+        "path": "palette_map/palette_map_glass_orange_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_aqua_dark.png"
+        "path": "palette_map/palette_map_glass_aqua_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_magenta_light.png"
+        "path": "palette_map/palette_map_glass_magenta_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_dull_brown_dark.png"
+        "path": "palette_map/palette_map_glass_dull_brown_dark.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_dull_brown_light.png"
+        "path": "palette_map/palette_map_glass_dull_brown_light.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_invisible.png"
+        "path": "palette_map/palette_map_glass_invisible.png",
+		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_glass_void.png"
+        "path": "palette_map/palette_map_glass_void.png",
+		"palette": "keep"
     }
 ]
