@@ -59,8 +59,8 @@ struct SmallSceneryEntry
     uint32_t flags;
     uint8_t height;
     CursorID tool_id;
-    money32 price;
-    money32 removal_price;
+    money64 price;
+    money64 removal_price;
     uint8_t* frame_offsets;
     uint16_t animation_delay;
     uint16_t animation_mask;

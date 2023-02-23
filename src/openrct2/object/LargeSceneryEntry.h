@@ -67,8 +67,8 @@ struct LargeSceneryEntry
     uint32_t image;
     CursorID tool_id;
     uint16_t flags;
-    money32 price;
-    money32 removal_price;
+    money64 price;
+    money64 removal_price;
     LargeSceneryTile* tiles;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;

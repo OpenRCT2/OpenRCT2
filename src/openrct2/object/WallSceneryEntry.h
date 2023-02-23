@@ -44,7 +44,7 @@ struct WallSceneryEntry
     uint8_t flags;
     uint8_t height;
     uint8_t flags2;
-    money16 price;
+    money64 price;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
 };

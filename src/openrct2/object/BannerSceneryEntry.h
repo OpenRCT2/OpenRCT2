@@ -25,6 +25,6 @@ struct BannerSceneryEntry
     uint32_t image;
     uint8_t scrolling_mode;
     uint8_t flags;
-    int16_t price;
+    money64 price;
     ObjectEntryIndex scenery_tab_id;
 };

@@ -51,7 +51,7 @@ public:
 
     colour_t Colour{};
     uint8_t Rotations{};
-    money32 Price{};
+    money64 Price{};
     TERRAIN_SURFACE_FLAGS Flags{};
     PaletteIndex MapColours[2]{};
 
