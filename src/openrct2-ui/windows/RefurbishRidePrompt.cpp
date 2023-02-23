@@ -41,7 +41,7 @@ static Widget window_ride_refurbish_widgets[] =
 
 class RefurbishRidePromptWindow final : public Window
 {
-    money32 _demolishRideCost;
+    money64 _demolishRideCost;
 
 public:
     void SetRide(const Ride& currentRide)

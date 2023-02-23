@@ -78,7 +78,7 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
     auto noValidTiles = true;
     auto error = GameActions::Status::Ok;
     StringId errorMessage = STR_NONE;
-    money32 totalCost = 0;
+    money64 totalCost = 0;
 
     auto validRange = ClampRangeWithinMap(_range);
     for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
@@ -88,7 +88,7 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
             if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
             {
                 auto cost = ClearSceneryFromTile({ x, y }, executing);
-                if (cost != MONEY32_UNDEFINED)
+                if (cost != MONEY64_UNDEFINED)
                 {
                     noValidTiles = false;
                     totalCost += cost;
@@ -117,11 +117,11 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
     return result;
 }
 
-money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const
+money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const
 {
     // Pass down all flags.
     TileElement* tileElement = nullptr;
-    money32 totalCost = 0;
+    money64 totalCost = 0;
     bool tileEdited;
     do
     {

@@ -41,7 +41,7 @@
 
 uint8_t gSceneryQuadrant;
 
-money32 gSceneryPlaceCost;
+money64 gSceneryPlaceCost;
 ScenerySelection gSceneryPlaceObject;
 int16_t gSceneryPlaceZ;
 uint8_t gSceneryPlaceRotation;

@@ -103,7 +103,7 @@ struct TrackDesign
 {
     uint8_t type;
     uint8_t vehicle_type;
-    money32 cost;
+    money64 cost;
     uint32_t flags;
     RideMode ride_mode;
     uint8_t track_flags;

@@ -73,7 +73,7 @@ GameActions::Result LandSetHeightAction::Query() const
         }
     }
 
-    money32 sceneryRemovalCost = 0;
+    money64 sceneryRemovalCost = 0;
     if (!gCheatsDisableClearanceChecks)
     {
         if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
@@ -150,7 +150,7 @@ GameActions::Result LandSetHeightAction::Query() const
 
 GameActions::Result LandSetHeightAction::Execute() const
 {
-    money32 cost = 0.00_GBP;
+    money64 cost = 0.00_GBP;
     auto surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
 
@@ -230,9 +230,9 @@ TileElement* LandSetHeightAction::CheckTreeObstructions() const
     return nullptr;
 }
 
-money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
+money64 LandSetHeightAction::GetSmallSceneryRemovalCost() const
 {
-    money32 cost{ 0 };
+    money64 cost{ 0 };
 
     for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
     {
@@ -321,9 +321,9 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
     return nullptr;
 }
 
-money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const
+money64 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const
 {
-    money32 cost{ 0 };
+    money64 cost{ 0 };
     for (Direction i : ALL_DIRECTIONS)
     {
         int32_t cornerHeight = TileElementGetCornerHeight(surfaceElement, i);
@@ -349,7 +349,7 @@ void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
 
 int32_t LandSetHeightAction::MapSetLandHeightClearFunc(
     TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
-    [[maybe_unused]] money32* price)
+    [[maybe_unused]] money64* price)
 {
     if ((*tile_element)->GetType() == TileElementType::Surface)
         return 0;

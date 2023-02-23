@@ -2570,7 +2570,7 @@ void Staff::UpdateRideInspected(RideId rideIndex)
     }
 }
 
-money32 GetStaffWage(StaffType type)
+money64 GetStaffWage(StaffType type)
 {
     switch (type)
     {

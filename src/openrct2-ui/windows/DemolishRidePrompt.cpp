@@ -42,7 +42,7 @@ static Widget window_ride_demolish_widgets[] =
 
 class DemolishRidePromptWindow final : public Window
 {
-    money32 _demolishRideCost;
+    money64 _demolishRideCost;
 
 public:
     void SetRide(const Ride& currentRide)

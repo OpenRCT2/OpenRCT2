@@ -36,7 +36,7 @@ void NetworkPlayer::Write(NetworkPacket& packet)
            << CommandsRan;
 }
 
-void NetworkPlayer::AddMoneySpent(money32 cost)
+void NetworkPlayer::AddMoneySpent(money64 cost)
 {
     MoneySpent += cost;
     CommandsRan++;

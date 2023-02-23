@@ -141,10 +141,10 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::CostToBuyLand:
-            gLandPrice = std::clamp<money32>(_value, 5.00_GBP, 200.00_GBP);
+            gLandPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::CostToBuyConstructionRights:
-            gConstructionRightsPrice = std::clamp<money32>(_value, 5.00_GBP, 200.00_GBP);
+            gConstructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::ParkChargeMethod:
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -190,7 +190,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::ParkChargeEntryFee:
-            gParkEntranceFee = std::clamp<money32>(_value, 0.00_GBP, MAX_ENTRANCE_FEE);
+            gParkEntranceFee = std::clamp<money64>(_value, 0.00_GBP, MAX_ENTRANCE_FEE);
             WindowInvalidateByClass(WindowClass::ParkInformation);
             break;
         case ScenarioSetSetting::ForbidTreeRemoval:

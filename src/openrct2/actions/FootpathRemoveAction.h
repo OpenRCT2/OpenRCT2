@@ -31,6 +31,6 @@ public:
 
 private:
     TileElement* GetFootpathElement() const;
-    money32 GetRefundPrice(TileElement* footpathElement) const;
+    money64 GetRefundPrice(TileElement* footpathElement) const;
     GameActions::Result RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
 };

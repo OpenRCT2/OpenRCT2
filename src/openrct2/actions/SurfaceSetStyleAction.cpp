@@ -99,8 +99,8 @@ GameActions::Result SurfaceSetStyleAction::Query() const
             GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
 
-    money32 surfaceCost = 0;
-    money32 edgeCost = 0;
+    money64 surfaceCost = 0;
+    money64 edgeCost = 0;
     for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
          coords.x += COORDS_XY_STEP)
     {
@@ -167,8 +167,8 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
     res.Position.y = yMid;
     res.Position.z = heightMid;
 
-    money32 surfaceCost = 0;
-    money32 edgeCost = 0;
+    money64 surfaceCost = 0;
+    money64 edgeCost = 0;
     for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
          coords.x += COORDS_XY_STEP)
     {

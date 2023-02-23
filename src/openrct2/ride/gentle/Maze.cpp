@@ -200,7 +200,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(int32_t trackType)
     return MazePaintSetup;
 }
 
-money64 MazeCalculateCost(money32 constructionCost, const Ride& ride, const CoordsXYZ& loc)
+money64 MazeCalculateCost(money64 constructionCost, const Ride& ride, const CoordsXYZ& loc)
 {
     const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
     money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16;

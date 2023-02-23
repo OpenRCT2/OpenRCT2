@@ -211,7 +211,7 @@ GameActions::Result TrackPlaceAction::Query() const
     trackBlock = ted.Block;
     auto clearanceHeight = rideEntry->Clearance;
 
-    money32 costs = 0;
+    money64 costs = 0;
     money64 supportCosts = 0;
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
@@ -438,7 +438,7 @@ GameActions::Result TrackPlaceAction::Execute() const
     const auto& ted = GetTrackElementDescriptor(_trackType);
     const auto& wallEdges = ted.SequenceElementAllowedWallEdges;
 
-    money32 costs = 0;
+    money64 costs = 0;
     money64 supportCosts = 0;
     const PreviewTrack* trackBlock = ted.Block;
     auto clearanceHeight = rideEntry->Clearance;

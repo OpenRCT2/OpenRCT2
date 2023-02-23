@@ -74,7 +74,7 @@ namespace RCT2
             td->type = td6.Type; // 0x00
             td->vehicle_type = td6.VehicleType;
 
-            td->cost = 0;
+            td->cost = 0.00_GBP;
             td->flags = td6.Flags;
             td->ride_mode = static_cast<RideMode>(td6.RideMode);
             td->track_flags = 0;

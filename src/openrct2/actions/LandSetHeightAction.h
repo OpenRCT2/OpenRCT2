@@ -33,11 +33,11 @@ public:
 private:
     StringId CheckParameters() const;
     TileElement* CheckTreeObstructions() const;
-    money32 GetSmallSceneryRemovalCost() const;
+    money64 GetSmallSceneryRemovalCost() const;
     void SmallSceneryRemoval() const;
     StringId CheckRideSupports() const;
     TileElement* CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const;
-    money32 GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const;
+    money64 GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const;
     void SetSurfaceHeight(TileElement* surfaceElement) const;
 
     /**
@@ -46,5 +46,5 @@ private:
      */
     static int32_t MapSetLandHeightClearFunc(
         TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
-        [[maybe_unused]] money32* price);
+        [[maybe_unused]] money64* price);
 };

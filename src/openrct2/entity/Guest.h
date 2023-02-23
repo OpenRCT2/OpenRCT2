@@ -284,8 +284,8 @@ public:
     IntensityRange Intensity{ 0 };
     PeepNauseaTolerance NauseaTolerance;
     uint16_t TimeInQueue;
-    money32 CashInPocket;
-    money32 CashSpent;
+    money64 CashInPocket;
+    money64 CashSpent;
     RideId Photo1RideRef;
     RideId Photo2RideRef;
     RideId Photo3RideRef;

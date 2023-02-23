@@ -1029,7 +1029,7 @@ void RideSetMapTooltip(TileElement* tileElement);
 void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason);
 TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex);
 TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos);
-int32_t RideGetRefundPrice(const Ride& ride);
+money64 RideGetRefundPrice(const Ride& ride);
 int32_t RideGetRandomColourPresetIndex(ride_type_t rideType);
 money64 RideGetCommonPrice(const Ride& forRide);
 
@@ -1061,7 +1061,7 @@ bool TrackBlockGetPreviousFromZero(
 void RideGetStartOfTrack(CoordsXYE* output);
 
 void WindowRideConstructionUpdateActiveElements();
-money32 RideEntranceExitPlaceGhost(
+money64 RideEntranceExitPlaceGhost(
     const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 
 ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride);
@@ -1073,8 +1073,8 @@ void RideUpdateVehicleColours(const Ride& ride);
 OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry);
 
 enum class RideSetSetting : uint8_t;
-money32 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value);
-money32 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
+money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value);
+money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
 
 void UpdateGhostTrackAndArrow();
 

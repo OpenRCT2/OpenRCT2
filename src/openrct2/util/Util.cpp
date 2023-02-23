@@ -546,14 +546,6 @@ int64_t AddClamp_int64_t(int64_t value, int64_t value_to_add)
     return value;
 }
 
-money32 AddClamp_money32(money32 value, money32 value_to_add)
-{
-    // This function is intended only for clarity, as money32
-    // is technically the same as int32_t
-    assert_struct_size(money32, sizeof(int32_t));
-    return AddClamp_int32_t(value, value_to_add);
-}
-
 money64 AddClamp_money64(money64 value, money64 value_to_add)
 {
     // This function is intended only for clarity, as money64

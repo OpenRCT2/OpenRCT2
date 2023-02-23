@@ -84,7 +84,7 @@ public:
         WindowPushOthersRight(*this);
         ShowGridlines();
         _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
-        _placementCost = MONEY32_UNDEFINED;
+        _placementCost = MONEY64_UNDEFINED;
         _placementLoc.SetNull();
         _currentTrackPieceDirection = (2 - GetCurrentRotation()) & 3;
     }
@@ -167,7 +167,7 @@ public:
             return;
         }
 
-        money32 cost = MONEY32_UNDEFINED;
+        money64 cost = MONEY64_UNDEFINED;
 
         // Get base Z position
         mapZ = GetBaseZ(mapCoords);
@@ -192,7 +192,7 @@ public:
                     }
                 });
                 res = GameActions::Execute(&tdAction);
-                cost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY32_UNDEFINED;
+                cost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
             }
         }
 
@@ -304,7 +304,7 @@ public:
         }
 
         // Price
-        if (_placementCost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (_placementCost != MONEY64_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             ft = Formatter();
             ft.Add<money64>(_placementCost);
@@ -383,7 +383,7 @@ private:
     CoordsXY _placementLoc;
     RideId _placementGhostRideId;
     bool _hasPlacementGhost;
-    money32 _placementCost;
+    money64 _placementCost;
     CoordsXYZD _placementGhostLoc;
 
     std::vector<uint8_t> _miniPreview;

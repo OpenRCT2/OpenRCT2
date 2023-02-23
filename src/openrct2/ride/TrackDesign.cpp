@@ -1055,7 +1055,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
         return GameActions::Result();
     }
 
-    money32 cost = 0;
+    money64 cost = 0;
 
     if (tds.PlaceOperation != PTD_OPERATION_PLACE_QUERY && tds.PlaceOperation != PTD_OPERATION_PLACE
         && tds.PlaceOperation != PTD_OPERATION_PLACE_GHOST && tds.PlaceOperation != PTD_OPERATION_PLACE_TRACK_PREVIEW)
@@ -1310,7 +1310,7 @@ static GameActions::Result TrackDesignPlaceAllScenery(
 {
     const auto& origin = tds.Origin;
 
-    money32 cost = 0;
+    money64 cost = 0;
 
     for (uint8_t mode = 0; mode <= 1; mode++)
     {
@@ -1359,7 +1359,7 @@ static GameActions::Result TrackDesignPlaceMaze(
     }
 
     tds.PlaceZ = 0;
-    money32 totalCost = 0;
+    money64 totalCost = 0;
 
     for (const auto& maze_element : td6->maze_elements)
     {
@@ -1379,7 +1379,7 @@ static GameActions::Result TrackDesignPlaceMaze(
             || tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST || tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
         {
             uint8_t flags;
-            money32 cost = 0;
+            money64 cost = 0;
             uint16_t maze_entry;
             switch (maze_element.type)
             {
@@ -1573,7 +1573,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
     }
 
     tds.PlaceZ = 0;
-    money32 totalCost = 0;
+    money64 totalCost = 0;
     uint8_t rotation = _currentTrackPieceDirection;
 
     // Track elements
@@ -1958,7 +1958,7 @@ int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride& ride, const CoordsXYZD&
     return TrackDesignGetZPlacement(tds, td6, ride, coords);
 }
 
-static money32 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, RideId* outRideIndex)
+static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
     auto gameAction = RideCreateAction(type, subType, 0, 0, gLastEntranceStyle);
@@ -1966,10 +1966,10 @@ static money32 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flag
 
     auto res = GameActions::ExecuteNested(&gameAction);
 
-    // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
+    // Callee's of this function expect MONEY64_UNDEFINED in case of failure.
     if (res.Error != GameActions::Status::Ok)
     {
-        return MONEY32_UNDEFINED;
+        return MONEY64_UNDEFINED;
     }
 
     *outRideIndex = res.GetData<RideId>();
@@ -1983,7 +1983,7 @@ static money32 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flag
  * ebx = ride_id
  * cost = edi
  */
-static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, money32* cost, Ride** outRide, uint8_t* flags)
+static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, money64* cost, Ride** outRide, uint8_t* flags)
 {
     *outRide = nullptr;
     *flags = 0;
@@ -1993,7 +1993,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     RideId rideIndex;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
-    if (TrackDesignCreateRide(td6->type, entry_index, rideCreateFlags, &rideIndex) == MONEY32_UNDEFINED)
+    if (TrackDesignCreateRide(td6->type, entry_index, rideCreateFlags, &rideIndex) == MONEY64_UNDEFINED)
     {
         return false;
     }
@@ -2099,7 +2099,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
 
     TrackDesignState tds{};
 
-    money32 cost;
+    money64 cost;
     Ride* ride;
     uint8_t flags;
     if (!TrackDesignPlacePreview(tds, td6, &cost, &ride, &flags))

@@ -31,9 +31,9 @@ public:
 
 private:
     GameActions::Result DemolishRide(Ride& ride) const;
-    money32 MazeRemoveTrack(const CoordsXYZD& coords) const;
-    money32 DemolishTracks() const;
+    money64 MazeRemoveTrack(const CoordsXYZD& coords) const;
+    money64 DemolishTracks() const;
     GameActions::Result RefurbishRide(Ride& ride) const;
-    money32 GetRefurbishPrice(const Ride& ride) const;
-    money32 GetRefundPrice(const Ride& ride) const;
+    money64 GetRefurbishPrice(const Ride& ride) const;
+    money64 GetRefundPrice(const Ride& ride) const;
 };

@@ -1761,8 +1761,13 @@ namespace OpenRCT2
             {
                 if (guest != nullptr)
                 {
-                    cs.ReadWrite(guest->CashInPocket);
-                    cs.ReadWrite(guest->CashSpent);
+                    money32 tempCashInPocket{};
+                    money32 tempCashSpent{};
+                    cs.ReadWrite(tempCashInPocket);
+                    cs.ReadWrite(tempCashSpent);
+                    guest->CashInPocket = ToMoney64(tempCashInPocket);
+                    guest->CashSpent = ToMoney64(tempCashSpent);
+
                     cs.ReadWrite(guest->ParkEntryTime);
                     cs.ReadWrite(guest->RejoinQueueTimeout);
                     cs.ReadWrite(guest->PreviousRide);
@@ -2152,8 +2157,21 @@ namespace OpenRCT2
                 }
             }
         }
-        cs.ReadWrite(guest.CashInPocket);
-        cs.ReadWrite(guest.CashSpent);
+        if (version <= 18)
+        {
+            money32 tempCashInPocket{};
+            money32 tempCashSpent{};
+            cs.ReadWrite(tempCashInPocket);
+            cs.ReadWrite(tempCashSpent);
+            guest.CashInPocket = ToMoney64(tempCashInPocket);
+            guest.CashSpent = ToMoney64(tempCashSpent);
+        }
+        else
+        {
+            cs.ReadWrite(guest.CashInPocket);
+            cs.ReadWrite(guest.CashSpent);
+        }
+
         cs.ReadWrite(guest.Photo1RideRef);
         cs.ReadWrite(guest.Photo2RideRef);
         cs.ReadWrite(guest.Photo3RideRef);

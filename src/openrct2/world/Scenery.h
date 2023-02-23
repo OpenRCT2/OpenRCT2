@@ -47,7 +47,7 @@ enum class ScatterToolDensity : uint8_t
 
 extern uint8_t gSceneryQuadrant;
 
-extern money32 gSceneryPlaceCost;
+extern money64 gSceneryPlaceCost;
 extern ScenerySelection gSceneryPlaceObject;
 extern int16_t gSceneryPlaceZ;
 extern uint8_t gSceneryPlaceRotation;

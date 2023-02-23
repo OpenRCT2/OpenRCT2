@@ -201,8 +201,8 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 }
                 else
                 {
-                    int32_t res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
-                    if (res == MONEY32_UNDEFINED)
+                    auto res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
+                    if (res == MONEY64_UNDEFINED)
                     {
                         if (!gCheatsAllowArbitraryRideTypeChanges)
                         {
@@ -762,7 +762,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
 
         if (argv[0] == "money" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
-            money32 money = ToMoney64FromGBP(double_val[0]);
+            money64 money = ToMoney64FromGBP(double_val[0]);
             if (gCash != money)
             {
                 auto cheatSetAction = CheatSetAction(CheatType::SetMoney, money);
