@@ -37,10 +37,12 @@ namespace OpenRCT2::Ui
         void HandleMessage(const SDL_Event* e);
 
     private:
-        void CursorHome();
-        void CursorEnd();
-        void CursorLeft();
-        void CursorRight();
+        void CaretMoveToStart();
+        void CaretMoveToEnd();
+        void CaretMoveLeft();
+        void CaretMoveRight();
+        void CaretMoveToLeftToken();
+        void CaretMoveToRightToken();
         void Insert(const utf8* text);
         void InsertCodepoint(codepoint_t codepoint);
         void Clear();

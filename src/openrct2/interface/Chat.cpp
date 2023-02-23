@@ -163,7 +163,7 @@ void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
     {
         if (i >= _chatHistory.size())
             break;
-        
+
         uint32_t expireTime = ChatHistoryGetTime(i) + 10000;
         if (!gChatOpen && Platform::GetTicks() > expireTime)
         {
