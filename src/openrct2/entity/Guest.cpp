@@ -1466,9 +1466,9 @@ void Guest::CheckCantFindExit()
  *
  *  rct2: 0x0069AF1E
  */
-bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
+bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
 {
-    money32 itemValue;
+    money64 itemValue;
 
     bool hasVoucher = false;
 
@@ -1564,7 +1564,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
                     if (Happiness >= 180)
                         itemValue /= 2;
                 }
-                if (itemValue > (static_cast<money16>(ScenarioRand() & 0x07)))
+                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
                     InsertNewThought(GetShopItemDescriptor(shopItem).TooMuchThought, ride.id);
@@ -1575,11 +1575,11 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price)
         else
         {
             itemValue -= price;
-            itemValue = std::max(8, itemValue);
+            itemValue = std::max(0.80_GBP, itemValue);
 
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
-                if (itemValue >= static_cast<money32>(ScenarioRand() & 0x07))
+                if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                 {
                     // "This x is a really good value"
                     InsertNewThought(GetShopItemDescriptor(shopItem).GoodValueThought, ride.id);
@@ -1985,7 +1985,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
         // Assuming the queue conditions are met, peeps will always go on free transport rides.
         // Ride ratings, recent crashes and weather will all be ignored.
-        money16 ridePrice = RideGetPrice(ride);
+        auto ridePrice = RideGetPrice(ride);
         if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride.value == RIDE_VALUE_UNDEFINED
             || ridePrice != 0)
         {
@@ -2141,6 +2141,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 }
             }
 
+            // TODO: Refactor to money64
             uint32_t value = ride.value;
 
             // If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
@@ -2152,7 +2153,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
                 // Peeps won't pay more than twice the value of the ride.
                 ridePrice = RideGetPrice(ride);
-                if (ridePrice > static_cast<money16>(value * 2))
+                if (ridePrice > static_cast<money64>(value * 2))
                 {
                     if (peepAtRide)
                     {
@@ -2168,7 +2169,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 }
 
                 // A ride is good value if the price is 50% or less of the ride value and the peep didn't pay to enter the park.
-                if (ridePrice <= static_cast<money16>(value / 2) && peepAtRide)
+                if (ridePrice <= static_cast<money64>(value / 2) && peepAtRide)
                 {
                     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
                     {
@@ -2276,7 +2277,7 @@ bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
 }
 
 // Used when no logging to an expend type required
-void Guest::SpendMoney(money32 amount, ExpenditureType expenditure)
+void Guest::SpendMoney(money64 amount, ExpenditureType expenditure)
 {
     money16 unused;
     SpendMoney(unused, amount, expenditure);
@@ -2287,11 +2288,11 @@ void Guest::SpendMoney(money32 amount, ExpenditureType expenditure)
  *  rct2: 0x0069926C
  * Expend type was previously an offset saved in 0x00F1AEC0
  */
-void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureType expenditure)
+void Guest::SpendMoney(money16& peep_expend_type, money64 amount, ExpenditureType expenditure)
 {
     assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
-    CashInPocket = std::max(0, CashInPocket - amount);
+    CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - amount);
     CashSpent += amount;
 
     peep_expend_type += static_cast<money16>(amount);
@@ -2606,7 +2607,7 @@ static void PeepUpdateRideAtEntranceTryLeave(Guest* peep)
     }
 }
 
-static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money32 ridePrice)
+static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money64 ridePrice)
 {
     if ((peep->HasItem(ShopItem::Voucher)) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == peep->CurrentRide)
@@ -2716,7 +2717,7 @@ static int16_t PeepCalculateRideValueSatisfaction(Guest* peep, const Ride& ride)
         return -30;
     }
 
-    money16 ridePrice = RideGetPrice(ride);
+    auto ridePrice = RideGetPrice(ride);
     if (ride.value >= ridePrice)
     {
         return -5;
@@ -3392,7 +3393,7 @@ void Guest::UpdateBuying()
             }
             if (ride_type->shop_item[1] != ShopItem::None)
             {
-                money16 price = ride->price[1];
+                auto price = ride->price[1];
 
                 item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[1], price);
                 if (item_bought)
@@ -3403,7 +3404,7 @@ void Guest::UpdateBuying()
 
             if (!item_bought && ride_type->shop_item[0] != ShopItem::None)
             {
-                money16 price = ride->price[0];
+                auto price = ride->price[0];
 
                 item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[0], price);
                 if (item_bought)
@@ -3487,7 +3488,7 @@ void Guest::UpdateRideAtEntrance()
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
         return;
 
-    money16 ridePrice = RideGetPrice(*ride);
+    auto ridePrice = RideGetPrice(*ride);
     if (ridePrice != 0)
     {
         if (!PeepCheckRidePriceAtEntrance(this, *ride, ridePrice))
@@ -3816,7 +3817,7 @@ static void PeepGoToRideExit(Peep* peep, const Ride& ride, int16_t x, int16_t y,
  */
 void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
 {
-    money16 ridePrice = RideGetPrice(ride);
+    auto ridePrice = RideGetPrice(ride);
     if (ridePrice != 0)
     {
         if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE) && (VoucherRideId == CurrentRide))
@@ -3826,7 +3827,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         }
         else
         {
-            ride.total_profit += ridePrice;
+            ride.total_profit = AddClamp_money64(ride.total_profit, ridePrice);
             ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
             SpendMoney(PaidOnRides, ridePrice, ExpenditureType::ParkRideTickets);
         }

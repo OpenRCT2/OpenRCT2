@@ -115,7 +115,7 @@ uint64_t ShopItemsGetAllContainers()
     return AllContainerFlags;
 }
 
-money32 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
+money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
 {
     for (const auto& ride : GetRideManager())
     {
@@ -141,7 +141,7 @@ money32 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
         }
     }
 
-    return MONEY32_UNDEFINED;
+    return MONEY64_UNDEFINED;
 }
 
 bool ShopItemHasCommonPrice(const ShopItem shopItem)

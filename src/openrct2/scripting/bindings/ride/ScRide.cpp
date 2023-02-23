@@ -325,7 +325,7 @@ namespace OpenRCT2::Scripting
             auto numPrices = std::min(value.size(), ride->GetNumPrices());
             for (size_t i = 0; i < numPrices; i++)
             {
-                ride->price[i] = static_cast<money16>(value[i]);
+                ride->price[i] = static_cast<money64>(value[i]);
             }
         }
     }

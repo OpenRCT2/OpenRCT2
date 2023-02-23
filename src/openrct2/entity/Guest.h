@@ -342,8 +342,8 @@ public:
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
-    void SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureType type);
-    void SpendMoney(money32 amount, ExpenditureType type);
+    void SpendMoney(money16& peep_expend_type, money64 amount, ExpenditureType type);
+    void SpendMoney(money64 amount, ExpenditureType type);
     void SetHasRidden(const Ride& ride);
     bool HasRidden(const Ride& ride) const;
     void SetHasRiddenRideType(int32_t rideType);
@@ -353,7 +353,7 @@ public:
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
-    bool DecideAndBuyItem(Ride& ride, ShopItem shopItem, money32 price);
+    bool DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price);
     void SetSpriteType(PeepSpriteType new_sprite_type);
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;

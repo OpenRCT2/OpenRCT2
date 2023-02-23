@@ -187,7 +187,7 @@ struct Ride
     uint16_t num_customers_timeout;
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[OpenRCT2::Limits::CustomerHistorySize];
-    money16 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
+    money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {
@@ -1031,7 +1031,7 @@ TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stat
 TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos);
 int32_t RideGetRefundPrice(const Ride& ride);
 int32_t RideGetRandomColourPresetIndex(ride_type_t rideType);
-money32 RideGetCommonPrice(const Ride& forRide);
+money64 RideGetCommonPrice(const Ride& forRide);
 
 void RideClearForConstruction(Ride& ride);
 void InvalidateTestResults(Ride& ride);
@@ -1083,7 +1083,7 @@ uint32_t RideCustomersInLast5Minutes(const Ride& ride);
 
 Vehicle* RideGetBrokenVehicle(const Ride& ride);
 
-money16 RideGetPrice(const Ride& ride);
+money64 RideGetPrice(const Ride& ride);
 
 TileElement* GetStationPlatform(const CoordsXYRangedZ& coords);
 bool RideHasAdjacentStation(const Ride& ride);

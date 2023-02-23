@@ -431,7 +431,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 else
                 {
                     int32_t rideId = ConsoleParseInt(argv[2], &int_valid[0]);
-                    money16 price = ConsoleParseInt(argv[3], &int_valid[1]);
+                    money64 price = ConsoleParseInt(argv[3], &int_valid[1]);
 
                     if (!int_valid[0] || !int_valid[1])
                     {

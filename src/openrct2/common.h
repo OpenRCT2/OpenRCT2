@@ -77,7 +77,6 @@ using fixed32_2dp = int32_t;
 using fixed64_1dp = int64_t;
 
 // Money is stored as a multiple of 0.10.
-using money8 = fixed8_1dp;
 using money16 = fixed16_1dp;
 using money32 = fixed32_1dp;
 using money64 = fixed64_1dp;

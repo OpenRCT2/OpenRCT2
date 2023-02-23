@@ -1212,10 +1212,23 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.custom_name);
                     cs.ReadWrite(ride.default_name_number);
 
-                    cs.ReadWriteArray(ride.price, [&cs](money16& price) {
-                        cs.ReadWrite(price);
-                        return true;
-                    });
+                    if (version <= 18)
+                    {
+                        money16 prices[2] = {};
+                        cs.ReadWriteArray(prices, [&cs](money16& price) {
+                            cs.ReadWrite(price);
+                            return true;
+                        });
+                        ride.price[0] = prices[0];
+                        ride.price[1] = prices[1];
+                    }
+                    else
+                    {
+                        cs.ReadWriteArray(ride.price, [&cs](money64& price) {
+                            cs.ReadWrite(price);
+                            return true;
+                        });
+                    }
 
                     // Colours
                     cs.ReadWrite(ride.entrance_style);

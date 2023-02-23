@@ -2320,15 +2320,12 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
             return true;
         }
 
-        money16 cost = ride->price[0];
+        auto cost = ride->price[0];
         if (cost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             ride->total_profit += cost;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-            // TODO: Refactor? SpendMoney previously accepted nullptr to not track money, passing a temporary variable as a
-            // workaround
-            money16 money = 0;
-            guest->SpendMoney(money, cost, ExpenditureType::ParkRideTickets);
+            guest->SpendMoney(cost, ExpenditureType::ParkRideTickets);
         }
 
         auto coordsCentre = coords.ToTileCentre();
