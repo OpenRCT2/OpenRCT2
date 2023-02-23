@@ -836,7 +836,7 @@ static void RideRatingsCalculateValue(Ride& ride)
 
     // Start with the base ratings, multiplied by the ride type specific weights for excitement, intensity and nausea.
     const auto& ratingsMultipliers = ride.GetRideTypeDescriptor().RatingsMultipliers;
-    int32_t value = (((ride.excitement * ratingsMultipliers.Excitement) * 32) >> 15)
+    money64 value = (((ride.excitement * ratingsMultipliers.Excitement) * 32) >> 15)
         + (((ride.intensity * ratingsMultipliers.Intensity) * 32) >> 15)
         + (((ride.nausea * ratingsMultipliers.Nausea) * 32) >> 15);
 
@@ -885,7 +885,7 @@ static void RideRatingsCalculateValue(Ride& ride)
     if (otherRidesOfSameType > 1)
         value -= value / 4;
 
-    ride.value = std::max(0, value);
+    ride.value = std::max(0.00_GBP, value);
 }
 
 /**

@@ -220,7 +220,7 @@ namespace RCT1
                 ride_rating Nausea;     // 0x0F4
             };
         };
-        uint16_t Value;                      // 0x0F6
+        money16 Value;                       // 0x0F6
         uint16_t ChairliftBullwheelRotation; // 0x0F8
         uint8_t Satisfaction;                // 0x0FA
         uint8_t SatisfactionTimeOut;         // 0x0FB

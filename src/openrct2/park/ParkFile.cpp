@@ -1395,7 +1395,16 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.intensity);
                     cs.ReadWrite(ride.nausea);
 
-                    cs.ReadWrite(ride.value);
+                    if (version <= 18)
+                    {
+                        uint16_t tempRideValue{};
+                        cs.ReadWrite(tempRideValue);
+                        ride.value = ToMoney64(tempRideValue);
+                    }
+                    else
+                    {
+                        cs.ReadWrite(ride.value);
+                    }
 
                     cs.ReadWrite(ride.num_riders);
                     cs.ReadWrite(ride.build_date);

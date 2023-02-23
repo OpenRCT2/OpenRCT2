@@ -951,7 +951,7 @@ namespace RCT2
             }
 
             dst->ratings = src->Ratings;
-            dst->value = src->Value;
+            dst->value = ToMoney64(src->Value);
 
             dst->chairlift_bullwheel_rotation = src->ChairliftBullwheelRotation;
 

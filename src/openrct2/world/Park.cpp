@@ -500,8 +500,7 @@ money64 Park::CalculateRideValue(const Ride& ride) const
     if (ride.value != RIDE_VALUE_UNDEFINED)
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        result = ToMoney64FromGBP(ride.value)
-            * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
+        result = (ride.value * 10) * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;
 }
@@ -532,7 +531,7 @@ money64 Park::CalculateTotalRideValueForMoney() const
         // Add ride value
         if (ride.value != RIDE_VALUE_UNDEFINED)
         {
-            money64 rideValue = static_cast<money64>(ride.value);
+            money64 rideValue = ride.value;
             if (ridePricesUnlocked)
             {
                 rideValue -= ride.price[0];

@@ -2141,11 +2141,10 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 }
             }
 
-            // TODO: Refactor to money64
-            uint32_t value = ride.value;
+            money64 value = ride.value;
 
             // If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
-            if (value != 0xFFFF && !PeepHasVoucherForFreeRide(this, ride) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+            if (value != RIDE_VALUE_UNDEFINED && !PeepHasVoucherForFreeRide(this, ride) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
                 // The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
                 if (PeepFlags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
@@ -2153,7 +2152,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
                 // Peeps won't pay more than twice the value of the ride.
                 ridePrice = RideGetPrice(ride);
-                if (ridePrice > static_cast<money64>(value * 2))
+                if (ridePrice > (value * 2))
                 {
                     if (peepAtRide)
                     {
@@ -2169,7 +2168,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 }
 
                 // A ride is good value if the price is 50% or less of the ride value and the peep didn't pay to enter the park.
-                if (ridePrice <= static_cast<money64>(value / 2) && peepAtRide)
+                if (ridePrice <= (value / 2) && peepAtRide)
                 {
                     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
                     {
@@ -2633,10 +2632,10 @@ static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money64 
         return false;
     }
 
-    uint16_t value = ride.value;
+    auto value = ride.value;
     if (value != RIDE_VALUE_UNDEFINED)
     {
-        if (value * 2 < ridePrice)
+        if ((value * 2) < ridePrice)
         {
             peep->InsertNewThought(PeepThoughtType::BadValue, peep->CurrentRide);
             PeepUpdateRideAtEntranceTryLeave(peep);

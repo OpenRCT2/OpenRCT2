@@ -199,7 +199,7 @@ struct Ride
             ride_rating nausea;
         };
     };
-    uint16_t value;
+    money64 value;
     uint16_t chairlift_bullwheel_rotation;
     uint8_t satisfaction;
     uint8_t satisfaction_time_out;
@@ -893,7 +893,7 @@ enum
 };
 
 #define MAX_RIDE_MEASUREMENTS 8
-#define RIDE_VALUE_UNDEFINED 0xFFFF
+constexpr money64 RIDE_VALUE_UNDEFINED = MONEY64_UNDEFINED;
 #define RIDE_INITIAL_RELIABILITY ((100 << 8) | 0xFF) // Upper byte is percentage, lower byte is "decimal".
 
 #define STATION_DEPART_FLAG (1 << 7)

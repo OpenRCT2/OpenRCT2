@@ -1037,7 +1037,7 @@ namespace RCT1
             dst->total_customers = src->TotalCustomers;
             dst->profit = ToMoney64(src->Profit);
             dst->total_profit = ToMoney64(src->TotalProfit);
-            dst->value = src->Value;
+            dst->value = ToMoney64(src->Value);
             for (size_t i = 0; i < std::size(src->NumCustomers); i++)
             {
                 dst->num_customers[i] = src->NumCustomers[i];
