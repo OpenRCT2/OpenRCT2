@@ -94,7 +94,7 @@ GameActions::Result ParkMarketingAction::CreateResult() const
     return result;
 }
 
-money32 ParkMarketingAction::CalculatePrice() const
+money64 ParkMarketingAction::CalculatePrice() const
 {
     return _numWeeks * AdvertisingCampaignPricePerWeek[_type];
 }

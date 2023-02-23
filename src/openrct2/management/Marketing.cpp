@@ -24,7 +24,7 @@
 #include "Finance.h"
 #include "NewsItem.h"
 
-const money16 AdvertisingCampaignPricePerWeek[] = {
+const money64 AdvertisingCampaignPricePerWeek[] = {
     50.00_GBP,  // PARK_ENTRY_FREE
     50.00_GBP,  // RIDE_FREE
     50.00_GBP,  // PARK_ENTRY_HALF_PRICE

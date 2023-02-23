@@ -60,7 +60,7 @@ namespace MarketingCampaignFlags
     constexpr uint8_t FIRST_WEEK = 1 << 0;
 }
 
-extern const money16 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
+extern const money64 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
 extern std::vector<MarketingCampaign> gMarketingCampaigns;
 
 uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
