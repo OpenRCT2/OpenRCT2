@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
 
         int32_t guestGenerationProbability_get() const;
 
-        money16 guestInitialCash_get() const;
+        money64 guestInitialCash_get() const;
 
         uint8_t guestInitialHappiness_get() const;
 

@@ -139,7 +139,7 @@ namespace OpenRCT2::Scripting
         return _guestGenerationProbability;
     }
 
-    money16 ScPark::guestInitialCash_get() const
+    money64 ScPark::guestInitialCash_get() const
     {
         return gGuestInitialCash;
     }

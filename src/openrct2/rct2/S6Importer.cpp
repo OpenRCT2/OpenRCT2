@@ -338,7 +338,7 @@ namespace RCT2
             _guestGenerationProbability = _s6.GuestGenerationProbability;
             gTotalRideValueForMoney = _s6.TotalRideValueForMoney;
             gMaxBankLoan = ToMoney64(_s6.MaximumLoan);
-            gGuestInitialCash = _s6.GuestInitialCash;
+            gGuestInitialCash = ToMoney64(_s6.GuestInitialCash);
             gGuestInitialHunger = _s6.GuestInitialHunger;
             gGuestInitialThirst = _s6.GuestInitialThirst;
             gScenarioObjective.Type = _s6.ObjectiveType;

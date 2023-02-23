@@ -464,7 +464,8 @@ namespace OpenRCT2
 
         void ReadWriteGeneralChunk(OrcaStream& os)
         {
-            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this, &os](OrcaStream::ChunkStream& cs) {
+            const auto version = os.GetHeader().TargetVersion;
+            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this, &os, &version](OrcaStream::ChunkStream& cs) {
                 // Only GAME_PAUSED_NORMAL from gGamePaused is relevant.
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -497,7 +498,16 @@ namespace OpenRCT2
                 }
 
                 cs.ReadWrite(gGuestInitialHappiness);
-                cs.ReadWrite(gGuestInitialCash);
+                if (version <= 18)
+                {
+                    money16 tempGuestInitialCash{};
+                    cs.ReadWrite(tempGuestInitialCash);
+                    gGuestInitialCash = ToMoney64(tempGuestInitialCash);
+                }
+                else
+                {
+                    cs.ReadWrite(gGuestInitialCash);
+                }
                 cs.ReadWrite(gGuestInitialHunger);
                 cs.ReadWrite(gGuestInitialThirst);
 

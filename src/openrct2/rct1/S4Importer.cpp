@@ -2187,7 +2187,7 @@ namespace RCT1
             }
 
             // Initial guest status
-            gGuestInitialCash = _s4.GuestInitialCash;
+            gGuestInitialCash = ToMoney64(_s4.GuestInitialCash);
             gGuestInitialHunger = _s4.GuestInitialHunger;
             gGuestInitialThirst = _s4.GuestInitialThirst;
             gGuestInitialHappiness = _s4.GuestInitialHappiness;

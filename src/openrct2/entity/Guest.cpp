@@ -7117,11 +7117,11 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->PeepId = gNextGuestNumber++;
     peep->Name = nullptr;
 
-    money32 cash = (ScenarioRand() & 0x3) * 100 - 100 + gGuestInitialCash;
+    money64 cash = (ScenarioRand() & 0x3) * 100 - 100 + gGuestInitialCash;
     if (cash < 0)
         cash = 0;
 
-    if (gGuestInitialCash == 0)
+    if (gGuestInitialCash == 0.00_GBP)
     {
         cash = 500;
     }
@@ -7131,7 +7131,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
         cash = 0;
     }
 
-    if (gGuestInitialCash == MONEY16_UNDEFINED)
+    if (gGuestInitialCash == MONEY64_UNDEFINED)
     {
         cash = 0;
     }
