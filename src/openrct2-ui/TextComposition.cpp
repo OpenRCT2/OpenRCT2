@@ -264,7 +264,7 @@ void TextComposition::InsertCodepoint(codepoint_t codepoint)
         _session.Buffer->resize(_session.Buffer->size() + codepointLength);
 
         // FIXME: Just insert the codepoint into the string, don't use memmove
-        
+
         utf8* buffer = _session.Buffer->data();
         utf8* insertPtr = buffer + _session.SelectionStart;
         if (_session.SelectionStart < bufSize)
@@ -293,6 +293,8 @@ void TextComposition::Delete()
 {
     size_t selectionOffset = _session.SelectionStart;
     size_t selectionMaxOffset = _session.Buffer->size();
+    if (selectionOffset >= selectionMaxOffset)
+        return;
 
     // Find out how many bytes to delete.
     const utf8* ch = _session.Buffer->c_str() + _session.SelectionStart;
@@ -302,19 +304,13 @@ void TextComposition::Delete()
         selectionOffset++;
     } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
 
-    // FIXME: Just erase the range with iterators.
-    utf8* buffer = _session.Buffer->data();
-    utf8* targetShiftPtr = buffer + _session.SelectionStart;
-    utf8* sourceShiftPtr = targetShiftPtr + _session.SelectionSize;
     size_t bytesToSkip = selectionOffset - _session.SelectionStart;
+    if (bytesToSkip == 0)
+        return;
 
-    // std::min() is used to ensure that shiftSize doesn't underflow; it should be between 0 and _session.Size
-    size_t shiftSize = _session.Buffer->size()
-        - std::min(_session.Buffer->size(), (_session.SelectionStart - _session.SelectionSize + bytesToSkip));
-    memmove(targetShiftPtr, sourceShiftPtr, shiftSize);
+    _session.Buffer->erase(
+        _session.Buffer->begin() + _session.SelectionStart, _session.Buffer->begin() + _session.SelectionStart + bytesToSkip);
     _session.SelectionSize = 0;
-
-    _session.Buffer->resize(_session.Buffer->size() - shiftSize);
 
     RecalculateLength();
 }
