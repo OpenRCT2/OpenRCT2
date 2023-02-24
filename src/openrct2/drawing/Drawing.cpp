@@ -921,7 +921,16 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
         auto g1 = GfxGetG1Element(g1Index.value());
         if (g1 != nullptr)
         {
-            return PaletteMap(g1->offset, g1->height, g1->width);
+            if (paletteId < PALETTE_TO_G1_OFFSET_COUNT)
+            {
+                // G1 Palettes
+                return PaletteMap(g1->offset, g1->height, g1->width);
+            }
+            else
+            {
+                // G2 Palettes
+                return PaletteMap(g1->offset + 5, g1->height, g1->width);
+            }
         }
     }
     return std::nullopt;
