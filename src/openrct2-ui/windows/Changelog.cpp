@@ -197,7 +197,7 @@ public:
             if (screenCoords.y + lineHeight < dpi.y || screenCoords.y >= dpi.y + dpi.height)
                 continue;
 
-            GfxDrawString(&dpi, screenCoords, line.c_str(), { colours[0] });
+            GfxDrawString(dpi, screenCoords, line.c_str(), { colours[0] });
         }
     }
 

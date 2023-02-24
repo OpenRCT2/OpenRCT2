@@ -149,13 +149,13 @@ public:
             auto ft = Formatter();
             ft.Add<StringId>(STR_TITLE_SEQUENCE_OPENRCT2);
             DrawTextWrapped(
-                &dpi, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
+                dpi, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
         }
         {
             auto ft = Formatter();
             ft.Add<StringId>(STR_TITLE_SEQUENCE_RCT2);
             DrawTextWrapped(
-                &dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
+                dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
         }
 
         if (page == WINDOW_ABOUT_PAGE_OPENRCT2)
@@ -214,7 +214,7 @@ private:
         auto centreX = versionPlaceholder.left + versionPlaceHolderWidth / 2;
         auto centreY = (versionPlaceholder.top + versionPlaceholder.bottom - FontGetLineHeight(FontStyle::Medium)) / 2;
         auto centrePos = windowPos + ScreenCoordsXY(centreX, centreY);
-        DrawTextWrapped(&dpi, centrePos, versionPlaceHolderWidth, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, centrePos, versionPlaceHolderWidth, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
 
         // Shows the update available button
         if (OpenRCT2::GetContext()->HasNewVersionInfo())
@@ -236,23 +236,23 @@ private:
         int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
         // Credits
-        DrawTextBasic(&dpi, screenCoords, STR_COPYRIGHT_CS, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_COPYRIGHT_CS, {}, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight + 74;
-        DrawTextBasic(&dpi, screenCoords, STR_DESIGNED_AND_PROGRAMMED_BY_CS, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_DESIGNED_AND_PROGRAMMED_BY_CS, {}, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight;
-        DrawTextBasic(&dpi, screenCoords, STR_GRAPHICS_BY_SF, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_GRAPHICS_BY_SF, {}, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight;
-        DrawTextBasic(&dpi, screenCoords, STR_SOUND_AND_MUSIC_BY_AB, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_SOUND_AND_MUSIC_BY_AB, {}, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight;
-        DrawTextBasic(&dpi, screenCoords, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, {}, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight + 3;
-        DrawTextBasic(&dpi, screenCoords, STR_REPRESENTATION_BY_JL, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_REPRESENTATION_BY_JL, {}, { TextAlignment::CENTRE });
         screenCoords.y += 2 * lineHeight + 5;
-        DrawTextBasic(&dpi, screenCoords, STR_THANKS_TO, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_THANKS_TO, {}, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight;
-        DrawTextBasic(&dpi, screenCoords, STR_THANKS_TO_PEOPLE, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_THANKS_TO_PEOPLE, {}, { TextAlignment::CENTRE });
         screenCoords.y += 2 * lineHeight + 5;
-        DrawTextBasic(&dpi, screenCoords, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, {}, { TextAlignment::CENTRE });
 
         // Images
         GfxDrawSprite(&dpi, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), { windowPos.x + 92, yPage + 24 });

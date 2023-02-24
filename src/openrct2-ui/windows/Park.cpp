@@ -604,7 +604,7 @@ private:
 
         auto* labelWidget = &widgets[WIDX_STATUS];
         DrawTextEllipsised(
-            &dpi, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING,
+            dpi, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING,
             ft, { TextAlignment::CENTRE });
     }
 
@@ -696,7 +696,7 @@ private:
         // Current value
         auto ft = Formatter();
         ft.Add<uint16_t>(gParkRating);
-        DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
         // Graph border
         GfxFillRectInset(
@@ -713,8 +713,7 @@ private:
             ft = Formatter();
             ft.Add<uint32_t>(axisValue);
             DrawTextBasic(
-                &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                { FontStyle::Small, TextAlignment::RIGHT });
+                dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft, { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -769,7 +768,7 @@ private:
         // Current value
         auto ft = Formatter();
         ft.Add<uint32_t>(gNumGuestsInPark);
-        DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
         // Graph border
         GfxFillRectInset(
@@ -786,8 +785,7 @@ private:
             ft = Formatter();
             ft.Add<uint32_t>(axisValue);
             DrawTextBasic(
-                &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                { FontStyle::Small, TextAlignment::RIGHT });
+                dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft, { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
                 &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
@@ -897,14 +895,14 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 30 };
         auto ft = Formatter();
         ft.Add<money64>(gTotalIncomeFromAdmissions);
-        DrawTextBasic(&dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
+        DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
         money64 parkEntranceFee = ParkGetEntranceFee();
         auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
         screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_PRICE].left + 1, widgets[WIDX_PRICE].top + 1 };
         ft = Formatter();
         ft.Add<money64>(parkEntranceFee);
-        DrawTextBasic(&dpi, screenCoords, stringId, ft, { colours[1] });
+        DrawTextBasic(dpi, screenCoords, stringId, ft, { colours[1] });
     }
 #pragma endregion
 
@@ -970,7 +968,7 @@ private:
         }
         auto ft = Formatter();
         ft.Add<uint32_t>(parkSize);
-        DrawTextBasic(&dpi, screenCoords, stringIndex, ft);
+        DrawTextBasic(dpi, screenCoords, stringIndex, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Draw number of rides / attractions
@@ -978,7 +976,7 @@ private:
         {
             ft = Formatter();
             ft.Add<uint32_t>(_numberOfRides);
-            DrawTextBasic(&dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
 
@@ -987,19 +985,19 @@ private:
         {
             ft = Formatter();
             ft.Add<uint32_t>(_numberOfStaff);
-            DrawTextBasic(&dpi, screenCoords, STR_STAFF_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_LABEL, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Draw number of guests in park
         ft = Formatter();
         ft.Add<uint32_t>(gNumGuestsInPark);
-        DrawTextBasic(&dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
+        DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         ft = Formatter();
         ft.Add<uint32_t>(gTotalAdmissions);
-        DrawTextBasic(&dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
+        DrawTextBasic(dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
     }
 #pragma endregion
 
@@ -1072,11 +1070,11 @@ private:
         auto ft = Formatter();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(gScenarioDetails.c_str());
-        screenCoords.y += DrawTextWrapped(&dpi, screenCoords, 222, STR_BLACK_STRING, ft);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 222, STR_BLACK_STRING, ft);
         screenCoords.y += 5;
 
         // Your objective:
-        DrawTextBasic(&dpi, screenCoords, STR_OBJECTIVE_LABEL);
+        DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_LABEL);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Objective
@@ -1101,7 +1099,7 @@ private:
                 ft.Add<money64>(gScenarioObjective.Currency);
         }
 
-        screenCoords.y += DrawTextWrapped(&dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
         screenCoords.y += 5;
 
         // Objective outcome
@@ -1110,14 +1108,14 @@ private:
             if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {
                 // Objective failed
-                DrawTextWrapped(&dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
+                DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
             }
             else
             {
                 // Objective completed
                 ft = Formatter();
                 ft.Add<money64>(gScenarioCompletedCompanyValue);
-                DrawTextWrapped(&dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
+                DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
             }
         }
     }
@@ -1162,13 +1160,13 @@ private:
         for (const auto& award : GetAwards())
         {
             GfxDrawSprite(&dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
-            DrawTextWrapped(&dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
+            DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
 
             screenCoords.y += 32;
         }
 
         if (GetAwards().empty())
-            DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
     }
 #pragma endregion
 

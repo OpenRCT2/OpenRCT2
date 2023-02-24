@@ -893,7 +893,7 @@ void PaintDrawMoneyStructs(DrawPixelInfo* dpi, PaintStringStruct* ps)
         }
 
         GfxDrawStringWithYOffsets(
-            dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
+            *dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::Medium);
     } while ((ps = ps->next) != nullptr);
 }

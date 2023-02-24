@@ -147,5 +147,5 @@ static void WindowMapTooltipPaint(WindowBase* w, DrawPixelInfo* dpi)
     }
 
     ScreenCoordsXY stringCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
-    DrawTextWrapped(dpi, stringCoords, w->width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::CENTRE });
+    DrawTextWrapped(*dpi, stringCoords, w->width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::CENTRE });
 }

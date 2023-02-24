@@ -3223,7 +3223,7 @@ public:
             if (gCheatsDisableClearanceChecks)
             {
                 DrawTextBasic(
-                    &dpi, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
+                    dpi, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
                     { COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
             }
         }
@@ -3288,7 +3288,7 @@ public:
             auto ft = Formatter();
             ft.Add<int32_t>(NetworkGetNumVisiblePlayers());
             DrawTextBasic(
-                &dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft,
+                dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft,
                 { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
         }
     }

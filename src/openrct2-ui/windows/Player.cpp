@@ -324,7 +324,7 @@ void WindowPlayerOverviewPaint(WindowBase* w, DrawPixelInfo* dpi)
         ft.Add<const char*>(_buffer.c_str());
 
         DrawTextEllipsised(
-            dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+            *dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
             { TextAlignment::CENTRE });
     }
 
@@ -333,10 +333,10 @@ void WindowPlayerOverviewPaint(WindowBase* w, DrawPixelInfo* dpi)
 
     auto ft = Formatter();
     ft.Add<StringId>(STR_PING);
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     char ping[64];
     snprintf(ping, 64, "%d ms", NetworkGetPlayerPing(player));
-    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { w->colours[2] });
+    GfxDrawString(*dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { w->colours[2] });
 
     // Draw last action
     screenCoords = w->windowPos + ScreenCoordsXY{ w->width / 2, w->height - 13 };
@@ -351,7 +351,7 @@ void WindowPlayerOverviewPaint(WindowBase* w, DrawPixelInfo* dpi)
     {
         ft.Add<StringId>(STR_ACTION_NA);
     }
-    DrawTextEllipsised(dpi, screenCoords, width, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
+    DrawTextEllipsised(*dpi, screenCoords, width, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
 
     if (w->viewport != nullptr && w->var_492 != -1)
     {
@@ -488,13 +488,13 @@ void WindowPlayerStatisticsPaint(WindowBase* w, DrawPixelInfo* dpi)
 
     auto ft = Formatter();
     ft.Add<uint32_t>(NetworkGetPlayerCommandsRan(player));
-    DrawTextBasic(dpi, screenCoords, STR_COMMANDS_RAN, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_COMMANDS_RAN, ft);
 
     screenCoords.y += LIST_ROW_HEIGHT;
 
     ft = Formatter();
     ft.Add<uint32_t>(NetworkGetPlayerMoneySpent(player));
-    DrawTextBasic(dpi, screenCoords, STR_MONEY_SPENT, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_MONEY_SPENT, ft);
 }
 
 static void WindowPlayerSetPage(WindowBase* w, int32_t page)

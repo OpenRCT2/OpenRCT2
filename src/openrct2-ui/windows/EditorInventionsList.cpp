@@ -111,20 +111,20 @@ static void DrawResearchItem(
         // Draw group name
         auto ft = Formatter();
         ft.Add<StringId>(rideTypeName);
-        DrawTextEllipsised(&dpi, screenCoords, columnSplitOffset - 11, format, ft, textPaint);
+        DrawTextEllipsised(dpi, screenCoords, columnSplitOffset - 11, format, ft, textPaint);
 
         // Draw vehicle name
         ft = Formatter();
         ft.Add<StringId>(itemNameId);
         DrawTextEllipsised(
-            &dpi, { screenCoords + ScreenCoordsXY{ columnSplitOffset, 0 } }, columnSplitOffset - 11, format, ft, textPaint);
+            dpi, { screenCoords + ScreenCoordsXY{ columnSplitOffset, 0 } }, columnSplitOffset - 11, format, ft, textPaint);
     }
     else
     {
         // Scenery group, flat ride or shopdis
         auto ft = Formatter();
         ft.Add<StringId>(itemNameId);
-        DrawTextEllipsised(&dpi, screenCoords, width, format, ft, textPaint);
+        DrawTextEllipsised(dpi, screenCoords, width, format, ft, textPaint);
     }
 }
 
@@ -357,12 +357,12 @@ public:
         // Pre-researched items label
         screenPos = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PRE_RESEARCHED_SCROLL].left, widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11 };
-        DrawTextBasic(&dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
+        DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
 
         // Research order label
         screenPos = windowPos
             + ScreenCoordsXY{ widgets[WIDX_RESEARCH_ORDER_SCROLL].left, widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11 };
-        DrawTextBasic(&dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
+        DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
 
         // Preview background
         auto& bkWidget = widgets[WIDX_PREVIEW];
@@ -424,14 +424,14 @@ public:
             ft.Add<StringId>(stringId);
         }
 
-        DrawTextEllipsised(&dpi, screenPos, itemWidth, drawString, ft, { TextAlignment::CENTRE });
+        DrawTextEllipsised(dpi, screenPos, itemWidth, drawString, ft, { TextAlignment::CENTRE });
         screenPos.y += 15;
 
         // Item category
         screenPos.x = windowPos.x + widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
         ft = Formatter();
         ft.Add<StringId>(researchItem->GetCategoryInventionString());
-        DrawTextBasic(&dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
+        DrawTextBasic(dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
     }
 
     void OnPrepareDraw() override

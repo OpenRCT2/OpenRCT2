@@ -928,7 +928,7 @@ private:
         // Ride name and description
         ft.Add<StringId>(rideNaming.Name);
         ft.Add<StringId>(rideNaming.Description);
-        DrawTextWrapped(&dpi, screenPos, textWidth, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
+        DrawTextWrapped(dpi, screenPos, textWidth, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
 
         if (!_vehicleAvailability.empty())
         {
@@ -936,13 +936,13 @@ private:
             {
                 ft = Formatter();
                 ft.Add<StringId>(rideEntry->naming.Name);
-                DrawTextEllipsised(&dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
+                DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
             }
             else
             {
                 ft = Formatter();
                 ft.Add<const utf8*>(_vehicleAvailability.c_str());
-                DrawTextEllipsised(&dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_AVAILABLE_VEHICLES, ft);
+                DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_AVAILABLE_VEHICLES, ft);
             }
         }
 
@@ -950,7 +950,7 @@ private:
         auto designCountStringId = GetDesignsAvailableStringId(count);
         ft = Formatter();
         ft.Add<int32_t>(count);
-        DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
         // Price
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -969,7 +969,7 @@ private:
 
             ft = Formatter();
             ft.Add<money64>(price);
-            DrawTextBasic(&dpi, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
+            DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
         }
     }
 

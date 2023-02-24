@@ -193,22 +193,22 @@ public:
 
         auto screenCoords = windowPos + ScreenCoordsXY{ 10, 30 };
 
-        DrawTextBasic(&dpi, screenCoords, STR_RATE, {}, { colours[1] });
+        DrawTextBasic(dpi, screenCoords, STR_RATE, {}, { colours[1] });
 
         int32_t baseExchange = CurrencyDescriptors[EnumValue(CurrencyType::Pounds)].rate;
         ft = Formatter();
         ft.Add<int32_t>(baseExchange);
-        DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ 200, 0 }, STR_CUSTOM_CURRENCY_EQUIVALENCY, ft, { colours[1] });
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 200, 0 }, STR_CUSTOM_CURRENCY_EQUIVALENCY, ft, { colours[1] });
 
         screenCoords.y += 20;
 
-        DrawTextBasic(&dpi, screenCoords, STR_CURRENCY_SYMBOL_TEXT, {}, { colours[1] });
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_SYMBOL_TEXT, {}, { colours[1] });
 
         screenCoords = windowPos
             + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
                               window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
 
-        GfxDrawString(&dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { colours[1] });
+        GfxDrawString(dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { colours[1] });
 
         auto drawPos = windowPos
             + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
@@ -216,7 +216,7 @@ public:
         StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
             ? STR_PREFIX
             : STR_SUFFIX;
-        DrawTextBasic(&dpi, drawPos, stringId, {}, { colours[1] });
+        DrawTextBasic(dpi, drawPos, stringId, {}, { colours[1] });
     }
 };
 

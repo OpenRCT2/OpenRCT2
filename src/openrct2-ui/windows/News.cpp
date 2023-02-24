@@ -199,13 +199,13 @@ public:
                 auto ft = Formatter();
                 ft.Add<StringId>(DateDayNames[newsItem.Day - 1]);
                 ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.MonthYear)]);
-                DrawTextBasic(&dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::Small });
+                DrawTextBasic(dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::Small });
             }
             // Item text
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(newsItem.Text.c_str());
-                DrawTextWrapped(&dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontStyle::Small });
+                DrawTextWrapped(dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontStyle::Small });
             }
             // Subject button
             if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))

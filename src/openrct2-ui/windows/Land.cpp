@@ -246,7 +246,7 @@ public:
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
             screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->midY() };
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
         else if (gLandMountainMode)
         {
@@ -266,7 +266,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gLandToolRaiseCost);
-                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
             screenCoords.y += 10;
 
@@ -275,7 +275,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gLandToolLowerCost);
-                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
             screenCoords.y += 50;
 
@@ -300,7 +300,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
-                DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
     }

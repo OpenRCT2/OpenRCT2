@@ -221,7 +221,7 @@ public:
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
 
         // Draw cost amount
@@ -231,7 +231,7 @@ public:
             ft.Add<money64>(_landRightsCost);
             screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + windowPos.x,
                              window_land_rights_widgets[WIDX_PREVIEW].bottom + windowPos.y + 32 };
-            DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
         }
     }
 

@@ -95,7 +95,7 @@ void MusicObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height)
     if (_hasPreview)
         GfxDrawSprite(dpi, ImageId(_previewImageId), { 0, 0 });
     else
-        DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(*dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }
 
 void MusicObject::ReadJson(IReadObjectContext* context, json_t& root)

@@ -248,7 +248,7 @@ private:
             GfxFillRect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
         }
 
-        DrawTextEllipsised(&dpi, { 16, y + 1 }, listWidth, stringId, ft);
+        DrawTextEllipsised(dpi, { 16, y + 1 }, listWidth, stringId, ft);
 
         auto checkboxSize = ItemHeight - 3;
         PaintCheckbox(dpi, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
@@ -262,7 +262,7 @@ private:
             auto checkmark = Formatter();
             checkmark.Add<StringId>(STR_STRING);
             checkmark.Add<char*>(CheckBoxMarkString);
-            DrawTextBasic(&dpi, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
+            DrawTextBasic(dpi, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
         }
     }
 

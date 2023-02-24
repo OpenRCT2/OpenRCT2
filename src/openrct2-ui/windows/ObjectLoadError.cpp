@@ -492,13 +492,13 @@ public:
         // Draw explanatory message
         auto ft = Formatter();
         ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-        DrawTextWrapped(&dpi, windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
+        DrawTextWrapped(dpi, windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
 
         // Draw file name
         ft = Formatter();
         ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_FILE);
         ft.Add<utf8*>(_filePath.c_str());
-        DrawTextEllipsised(&dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
+        DrawTextEllipsised(dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
     }
 
     void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
@@ -536,18 +536,18 @@ public:
             auto name = entry.GetName();
             char buffer[256];
             String::Set(buffer, sizeof(buffer), name.data(), name.size());
-            GfxDrawString(&dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
+            GfxDrawString(dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
 
             if (entry.Generation == ObjectGeneration::DAT)
             {
                 // ... source game ...
                 const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
-                DrawTextBasic(&dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
+                DrawTextBasic(dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
             }
 
             // ... and type
             const auto type = GetStringFromObjectType(entry.GetType());
-            DrawTextBasic(&dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
+            DrawTextBasic(dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
         }
     }
 

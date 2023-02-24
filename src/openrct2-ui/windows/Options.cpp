@@ -914,7 +914,7 @@ private:
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.WindowScale * 100));
         DrawTextBasic(
-            dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
+            *dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
             STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { colours[1] });
     }
 #pragma endregion
@@ -2002,7 +2002,7 @@ private:
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.AutosaveAmount));
         DrawTextBasic(
-            dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
+            *dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
             STR_WINDOW_COLOUR_2_COMMA16, ft, { colours[1] });
 
         const auto normalisedPath = Platform::StrDecompToPrecomp(gConfigGeneral.RCT1Path);
@@ -2017,7 +2017,7 @@ private:
         uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
         ScreenCoordsXY screenCoords = { windowPos.x + pathWidget.left + 1,
                                         windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
-        DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
+        DrawTextEllipsised(*dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
     }
 
     OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)

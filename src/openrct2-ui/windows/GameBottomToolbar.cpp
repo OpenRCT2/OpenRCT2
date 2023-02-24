@@ -412,7 +412,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(DrawPixelInfo* dpi, WindowBase*
         StringId stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
         auto ft = Formatter();
         ft.Add<money64>(gCash);
-        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
+        DrawTextBasic(*dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     static constexpr const StringId _guestCountFormats[] = {
@@ -440,7 +440,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(DrawPixelInfo* dpi, WindowBase*
                    : NOT_TRANSLUCENT(w->colours[0]));
         auto ft = Formatter();
         ft.Add<uint32_t>(gNumGuestsInPark);
-        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
+        DrawTextBasic(*dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     // Draw park rating
@@ -509,7 +509,7 @@ static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo* dpi, WindowBase
     ft.Add<StringId>(DateDayNames[day]);
     ft.Add<int16_t>(month);
     ft.Add<int16_t>(year);
-    DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
+    DrawTextBasic(*dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -527,7 +527,7 @@ static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo* dpi, WindowBase
     }
     ft = Formatter();
     ft.Add<int16_t>(temperature);
-    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 0, 6 }, format, ft);
+    DrawTextBasic(*dpi, screenCoords + ScreenCoordsXY{ 0, 6 }, format, ft);
     screenCoords.x += 30;
 
     // Current weather
@@ -570,7 +570,7 @@ static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo* dpi, WindowBase* 
     auto screenCoords = w->windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
     width = middleOutsetWidget->width() - 62;
     DrawNewsTicker(
-        dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->Text, newsItem->Ticks);
+        *dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->Text, newsItem->Ticks);
 
     screenCoords = w->windowPos
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left,
@@ -675,12 +675,12 @@ static void WindowGameBottomToolbarDrawMiddlePanel(DrawPixelInfo* dpi, WindowBas
     if (stringId == STR_NONE)
     {
         DrawTextWrapped(
-            dpi, middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, ft, { w->colours[0], TextAlignment::CENTRE });
+            *dpi, middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, ft, { w->colours[0], TextAlignment::CENTRE });
     }
     else
     {
         // Show tooltip in bottom toolbar
-        DrawTextWrapped(dpi, middleWidgetCoords, width, STR_STRINGID, ft, { w->colours[0], TextAlignment::CENTRE });
+        DrawTextWrapped(*dpi, middleWidgetCoords, width, STR_STRINGID, ft, { w->colours[0], TextAlignment::CENTRE });
     }
 }
 

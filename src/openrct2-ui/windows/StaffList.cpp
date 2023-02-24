@@ -285,13 +285,13 @@ public:
         {
             auto ft = Formatter();
             ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ width - 155, 32 }, STR_COST_PER_MONTH, ft);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ width - 155, 32 }, STR_COST_PER_MONTH, ft);
         }
 
         if (GetSelectedStaffType() != StaffType::Entertainer)
         {
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 },
+                dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 },
                 STR_UNIFORM_COLOUR);
         }
 
@@ -303,7 +303,7 @@ public:
         ft.Add<StringId>(staffTypeStringId);
 
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_STAFF_LIST_LIST].bottom + 2 }, STR_STAFF_LIST_COUNTER, ft);
+            dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_STAFF_LIST_LIST].bottom + 2 }, STR_STAFF_LIST_COUNTER, ft);
     }
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
@@ -405,11 +405,11 @@ public:
 
                 auto ft = Formatter();
                 peep->FormatNameTo(ft);
-                DrawTextEllipsised(&dpi, { 0, y }, nameColumnSize, format, ft);
+                DrawTextEllipsised(dpi, { 0, y }, nameColumnSize, format, ft);
 
                 ft = Formatter();
                 peep->FormatActionTo(ft);
-                DrawTextEllipsised(&dpi, { actionOffset, y }, actionColumnSize, format, ft);
+                DrawTextEllipsised(dpi, { actionOffset, y }, actionColumnSize, format, ft);
 
                 // True if a patrol path is set for the worker
                 if (peep->HasPatrolArea())

@@ -94,7 +94,7 @@ public:
             FilterPaletteID::PaletteDarken3);
 
         DrawStringCentredRaw(
-            &dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(), FontStyle::Medium);
+            dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(), FontStyle::Medium);
     }
 
     void OnUnknown5() override

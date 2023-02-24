@@ -353,7 +353,7 @@ public:
         auto ft = Formatter();
         ft.Add<int16_t>(campaign.no_weeks);
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
+            dpi, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
             campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, ft, { colours[0] });
 
         screenCoords = windowPos + ScreenCoordsXY{ 14, 60 };
@@ -361,13 +361,13 @@ public:
         // Price per week
         ft = Formatter();
         ft.Add<money64>(AdvertisingCampaignPricePerWeek[campaign.campaign_type]);
-        DrawTextBasic(&dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
+        DrawTextBasic(dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
         screenCoords.y += 13;
 
         // Total price
         ft = Formatter();
         ft.Add<money64>(AdvertisingCampaignPricePerWeek[campaign.campaign_type] * campaign.no_weeks);
-        DrawTextBasic(&dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
+        DrawTextBasic(dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
     }
 };
 

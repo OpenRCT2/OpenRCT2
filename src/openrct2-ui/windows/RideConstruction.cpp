@@ -1520,14 +1520,14 @@ public:
         // Draw cost
         screenCoords = { windowPos.x + widget->midX(), windowPos.y + widget->bottom - 23 };
         if (_rideConstructionState != RideConstructionState::Place)
-            DrawTextBasic(&dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
         screenCoords.y += 11;
         if (_currentTrackPrice != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(_currentTrackPrice);
-            DrawTextBasic(&dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
         }
     }
 

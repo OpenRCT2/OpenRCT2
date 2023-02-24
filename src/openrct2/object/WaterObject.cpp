@@ -58,7 +58,7 @@ void WaterObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height)
 {
     // Write (no image)
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
+    DrawTextBasic(*dpi, screenCoords, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }
 
 void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, json_t& root)

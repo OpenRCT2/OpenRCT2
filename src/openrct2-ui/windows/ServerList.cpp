@@ -376,19 +376,20 @@ static void WindowServerListPaint(WindowBase* w, DrawPixelInfo* dpi)
     WindowDrawWidgets(*w, dpi);
 
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {}, { COLOUR_WHITE });
+        *dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {},
+        { COLOUR_WHITE });
 
     // Draw version number
     std::string version = NetworkGetVersion();
     auto ft = Formatter();
     ft.Add<const char*>(version.c_str());
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
+        *dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
         { COLOUR_WHITE });
 
     ft = Formatter();
     ft.Add<uint32_t>(_numPlayersOnline);
-    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, ft, { COLOUR_WHITE });
+    DrawTextBasic(*dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, ft, { COLOUR_WHITE });
 }
 
 static void WindowServerListScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
@@ -449,7 +450,7 @@ static void WindowServerListScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
         // Finally, draw the server information.
         auto ft = Formatter();
         ft.Add<const char*>(serverInfoToShow);
-        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
+        DrawTextEllipsised(*dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
 
         int32_t right = width - 7 - SCROLLBAR_WIDTH;
 
@@ -480,7 +481,7 @@ static void WindowServerListScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
 
         // Draw number of players
         screenCoords.x = right - numPlayersStringWidth;
-        GfxDrawString(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { w->colours[1] });
+        GfxDrawString(*dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { w->colours[1] });
 
         screenCoords.y += ITEM_HEIGHT;
     }

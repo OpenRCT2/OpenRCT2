@@ -312,8 +312,8 @@ private:
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
-        DrawTextBasic(&dpi, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::CENTRE });
-        DrawTextBasic(&dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
+        DrawTextBasic(dpi, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::CENTRE });
+        DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
     }
 
     void DrawRightButtonBack(DrawPixelInfo& dpi)
@@ -350,8 +350,8 @@ private:
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
-        DrawTextBasic(&dpi, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::CENTRE });
-        DrawTextBasic(&dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
+        DrawTextBasic(dpi, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::CENTRE });
+        DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
     }
 
     void DrawStepText(DrawPixelInfo& dpi)
@@ -359,7 +359,7 @@ private:
         int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
         int16_t stateY = height - 0x0C + windowPos.y;
         DrawTextBasic(
-            &dpi, { stateX, stateY }, _editorStepNames[EnumValue(gEditorStep)], {},
+            dpi, { stateX, stateY }, _editorStepNames[EnumValue(gEditorStep)], {},
             { static_cast<colour_t>(NOT_TRANSLUCENT(colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
     }
 

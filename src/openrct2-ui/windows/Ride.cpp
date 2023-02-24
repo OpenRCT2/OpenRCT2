@@ -2621,7 +2621,7 @@ static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo* dpi)
 
     widget = &window_ride_main_widgets[WIDX_VIEW];
     DrawTextBasic(
-        dpi, { w->windowPos.x + (widget->left + widget->right - 11) / 2, w->windowPos.y + widget->top },
+        *dpi, { w->windowPos.x + (widget->left + widget->right - 11) / 2, w->windowPos.y + widget->top },
         STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
 
     // Status
@@ -2629,7 +2629,7 @@ static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo* dpi)
     widget = &window_ride_main_widgets[WIDX_STATUS];
     StringId rideStatus = WindowRideGetStatus(w, ft);
     DrawTextEllipsised(
-        dpi, w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width(), rideStatus, ft,
+        *dpi, w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width(), rideStatus, ft,
         { TextAlignment::CENTRE });
 }
 
@@ -2903,13 +2903,13 @@ static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
     // Description
     auto ft = Formatter();
     ft.Add<StringId>(rideEntry->naming.Description);
-    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::LEFT });
+    screenCoords.y += DrawTextWrapped(*dpi, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::LEFT });
     screenCoords.y += 2;
 
     // Capacity
     ft = Formatter();
     ft.Add<StringId>(rideEntry->capacity);
-    DrawTextBasic(dpi, screenCoords, STR_CAPACITY, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_CAPACITY, ft);
 
     // Excitement Factor
     if (rideEntry->excitement_multiplier != 0)
@@ -2919,7 +2919,7 @@ static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<int16_t>(abs(rideEntry->excitement_multiplier));
         StringId stringId = rideEntry->excitement_multiplier > 0 ? STR_EXCITEMENT_FACTOR : STR_EXCITEMENT_FACTOR_NEGATIVE;
-        DrawTextBasic(dpi, screenCoords, stringId, ft);
+        DrawTextBasic(*dpi, screenCoords, stringId, ft);
     }
 
     // Intensity Factor
@@ -2934,7 +2934,7 @@ static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<int16_t>(abs(rideEntry->intensity_multiplier));
         StringId stringId = rideEntry->intensity_multiplier > 0 ? STR_INTENSITY_FACTOR : STR_INTENSITY_FACTOR_NEGATIVE;
-        DrawTextBasic(dpi, screenCoords, stringId, ft);
+        DrawTextBasic(*dpi, screenCoords, stringId, ft);
 
         if (lineHeight != 10)
             screenCoords.x -= 150;
@@ -2948,7 +2948,7 @@ static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<int16_t>(abs(rideEntry->nausea_multiplier));
         StringId stringId = rideEntry->nausea_multiplier > 0 ? STR_NAUSEA_FACTOR : STR_NAUSEA_FACTOR_NEGATIVE;
-        DrawTextBasic(dpi, screenCoords, stringId, ft);
+        DrawTextBasic(*dpi, screenCoords, stringId, ft);
     }
 }
 
@@ -3743,7 +3743,7 @@ static void WindowRideOperatingPaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<uint16_t>(ride->num_block_brakes + ride->num_stations);
         DrawTextBasic(
-            dpi, w->windowPos + ScreenCoordsXY{ 21, ride->mode == RideMode::PoweredLaunchBlockSectioned ? 89 : 61 },
+            *dpi, w->windowPos + ScreenCoordsXY{ 21, ride->mode == RideMode::PoweredLaunchBlockSectioned ? 89 : 61 },
             STR_BLOCK_SECTIONS, ft, COLOUR_BLACK);
     }
 }
@@ -4135,7 +4135,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
     // Inspection label
     widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
     screenCoords = w->windowPos + ScreenCoordsXY{ 4, widget->top + 1 };
-    DrawTextBasic(dpi, screenCoords, STR_INSPECTION);
+    DrawTextBasic(*dpi, screenCoords, STR_INSPECTION);
 
     // Reliability
     widget = &window_ride_maintenance_widgets[WIDX_PAGE_BACKGROUND];
@@ -4144,7 +4144,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
     uint16_t reliability = ride->reliability_percentage;
     auto ft = Formatter();
     ft.Add<uint16_t>(reliability);
-    DrawTextBasic(dpi, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
     WindowRideMaintenanceDrawBar(
         w, dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, std::max<int32_t>(10, reliability), COLOUR_BRIGHT_GREEN);
     screenCoords.y += 11;
@@ -4152,7 +4152,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
     uint16_t downTime = ride->downtime;
     ft = Formatter();
     ft.Add<uint16_t>(downTime);
-    DrawTextBasic(dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
     WindowRideMaintenanceDrawBar(w, dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, downTime, COLOUR_BRIGHT_RED);
     screenCoords.y += 26;
 
@@ -4167,7 +4167,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
 
     ft = Formatter();
     ft.Add<uint16_t>(ride->last_inspection);
-    DrawTextBasic(dpi, screenCoords, stringId, ft);
+    DrawTextBasic(*dpi, screenCoords, stringId, ft);
     screenCoords.y += 12;
 
     // Last / current breakdown
@@ -4177,7 +4177,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
     stringId = (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) ? STR_CURRENT_BREAKDOWN : STR_LAST_BREAKDOWN;
     ft = Formatter();
     ft.Add<StringId>(RideBreakdownReasonNames[ride->breakdown_reason]);
-    DrawTextBasic(dpi, screenCoords, stringId, ft);
+    DrawTextBasic(*dpi, screenCoords, stringId, ft);
     screenCoords.y += 12;
 
     // Mechanic status
@@ -4215,7 +4215,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
         {
             if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE)
             {
-                DrawTextWrapped(dpi, screenCoords, 280, stringId, {}, { TextAlignment::LEFT });
+                DrawTextWrapped(*dpi, screenCoords, 280, stringId, {}, { TextAlignment::LEFT });
             }
             else
             {
@@ -4224,7 +4224,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
                 {
                     ft = Formatter();
                     staff->FormatNameTo(ft);
-                    DrawTextWrapped(dpi, screenCoords, 280, stringId, ft, { TextAlignment::LEFT });
+                    DrawTextWrapped(*dpi, screenCoords, 280, stringId, ft, { TextAlignment::LEFT });
                 }
             }
         }
@@ -4988,7 +4988,7 @@ static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo* dpi)
             }
         }
 
-        DrawTextEllipsised(dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, {});
+        DrawTextEllipsised(*dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, {});
     }
 }
 
@@ -5649,7 +5649,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
         Widget* widget = &window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND];
 
         ScreenCoordsXY widgetCoords(w->windowPos.x + widget->width() / 2, w->windowPos.y + widget->top + 40);
-        DrawTextWrapped(dpi, widgetCoords, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
+        DrawTextWrapped(*dpi, widgetCoords, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
 
         widgetCoords.x = w->windowPos.x + 4;
         widgetCoords.y = w->windowPos.y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
@@ -5674,7 +5674,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
             ft.Add<uint32_t>(ride->excitement);
             ft.Add<StringId>(ratingName);
             StringId stringId = !RideHasRatings(*ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
-            DrawTextBasic(dpi, screenCoords, stringId, ft);
+            DrawTextBasic(*dpi, screenCoords, stringId, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             // Intensity
@@ -5689,7 +5689,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
             else if (ride->intensity >= RIDE_RATING(10, 00))
                 stringId = STR_INTENSITY_RATING_RED;
 
-            DrawTextBasic(dpi, screenCoords, stringId, ft);
+            DrawTextBasic(*dpi, screenCoords, stringId, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             // Nausea
@@ -5698,7 +5698,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
             ft.Add<uint32_t>(ride->nausea);
             ft.Add<StringId>(ratingName);
             stringId = !RideHasRatings(*ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
-            DrawTextBasic(dpi, screenCoords, stringId, ft);
+            DrawTextBasic(*dpi, screenCoords, stringId, ft);
             screenCoords.y += 2 * LIST_ROW_HEIGHT;
 
             // Horizontal rule
@@ -5713,7 +5713,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     // Holes
                     ft = Formatter();
                     ft.Add<uint16_t>(ride->holes);
-                    DrawTextBasic(dpi, screenCoords, STR_HOLES, ft);
+                    DrawTextBasic(*dpi, screenCoords, STR_HOLES, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
                 else
@@ -5721,13 +5721,13 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     // Max speed
                     ft = Formatter();
                     ft.Add<int32_t>((ride->max_speed * 9) >> 18);
-                    DrawTextBasic(dpi, screenCoords, STR_MAX_SPEED, ft);
+                    DrawTextBasic(*dpi, screenCoords, STR_MAX_SPEED, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Average speed
                     ft = Formatter();
                     ft.Add<int32_t>((ride->average_speed * 9) >> 18);
-                    DrawTextBasic(dpi, screenCoords, STR_AVERAGE_SPEED, ft);
+                    DrawTextBasic(*dpi, screenCoords, STR_AVERAGE_SPEED, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Ride time
@@ -5764,7 +5764,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
-                    DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_TIME, ft);
+                    DrawTextEllipsised(*dpi, screenCoords, 308, STR_RIDE_TIME, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
@@ -5803,7 +5803,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);
-                DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_LENGTH, ft);
+                DrawTextEllipsised(*dpi, screenCoords, 308, STR_RIDE_LENGTH, ft);
 
                 screenCoords.y += LIST_ROW_HEIGHT;
 
@@ -5814,7 +5814,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
 
                     ft = Formatter();
                     ft.Add<fixed16_2dp>(ride->max_positive_vertical_g);
-                    DrawTextBasic(dpi, screenCoords, stringId, ft);
+                    DrawTextBasic(*dpi, screenCoords, stringId, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Max. negative vertical G's
@@ -5822,20 +5822,20 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                                                                                                : STR_MAX_NEGATIVE_VERTICAL_G;
                     ft = Formatter();
                     ft.Add<int32_t>(ride->max_negative_vertical_g);
-                    DrawTextBasic(dpi, screenCoords, stringId, ft);
+                    DrawTextBasic(*dpi, screenCoords, stringId, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Max lateral G's
                     stringId = ride->max_lateral_g > RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
                     ft = Formatter();
                     ft.Add<fixed16_2dp>(ride->max_lateral_g);
-                    DrawTextBasic(dpi, screenCoords, stringId, ft);
+                    DrawTextBasic(*dpi, screenCoords, stringId, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Total 'air' time
                     ft = Formatter();
                     ft.Add<fixed32_2dp>(ride->total_air_time * 3);
-                    DrawTextBasic(dpi, screenCoords, STR_TOTAL_AIR_TIME, ft);
+                    DrawTextBasic(*dpi, screenCoords, STR_TOTAL_AIR_TIME, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
@@ -5845,14 +5845,14 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     auto drops = ride->drops & 0x3F;
                     ft = Formatter();
                     ft.Add<uint16_t>(drops);
-                    DrawTextBasic(dpi, screenCoords, STR_DROPS, ft);
+                    DrawTextBasic(*dpi, screenCoords, STR_DROPS, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Highest drop height
                     auto highestDropHeight = (ride->highest_drop_height * 3) / 4;
                     ft = Formatter();
                     ft.Add<int32_t>(highestDropHeight);
-                    DrawTextBasic(dpi, screenCoords, STR_HIGHEST_DROP_HEIGHT, ft);
+                    DrawTextBasic(*dpi, screenCoords, STR_HIGHEST_DROP_HEIGHT, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
@@ -5863,7 +5863,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     {
                         ft = Formatter();
                         ft.Add<uint16_t>(ride->inversions);
-                        DrawTextBasic(dpi, screenCoords, STR_INVERSIONS, ft);
+                        DrawTextBasic(*dpi, screenCoords, STR_INVERSIONS, ft);
                         screenCoords.y += LIST_ROW_HEIGHT;
                     }
                 }
@@ -5871,7 +5871,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
         }
         else
         {
-            DrawTextBasic(dpi, screenCoords, STR_NO_TEST_RESULTS_YET);
+            DrawTextBasic(*dpi, screenCoords, STR_NO_TEST_RESULTS_YET);
         }
     }
 }
@@ -6154,7 +6154,7 @@ static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
         // No measurement message
         ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
         int32_t width = widget->width() - 2;
-        DrawTextWrapped(dpi, stringCoords, width, message.str, message.args, { TextAlignment::CENTRE });
+        DrawTextWrapped(*dpi, stringCoords, width, message.str, message.args, { TextAlignment::CENTRE });
         return;
     }
 
@@ -6205,7 +6205,7 @@ static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
         auto ft = Formatter();
         ft.Add<int16_t>(scaled_yUnit);
 
-        DrawTextBasic(dpi, { w->scrolls[0].h_left + 1, y - 4 }, stringID, ft, { FontStyle::Small });
+        DrawTextBasic(*dpi, { w->scrolls[0].h_left + 1, y - 4 }, stringID, ft, { FontStyle::Small });
     }
 
     // Time marks
@@ -6215,7 +6215,7 @@ static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
         auto ft = Formatter();
         ft.Add<int32_t>(time);
         if (x + 80 >= dpi->x)
-            DrawTextBasic(dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::Small });
+            DrawTextBasic(*dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::Small });
         time += 5;
     }
 
@@ -6781,7 +6781,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<money64>(profit);
 
-        DrawTextBasic(dpi, screenCoords, stringId, ft);
+        DrawTextBasic(*dpi, screenCoords, stringId, ft);
     }
     screenCoords.y += 44;
 
@@ -6805,7 +6805,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<money64>(profit);
 
-        DrawTextBasic(dpi, screenCoords, stringId, ft);
+        DrawTextBasic(*dpi, screenCoords, stringId, ft);
     }
     screenCoords.y += 18;
 
@@ -6815,7 +6815,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<money64>(ride->income_per_hour);
 
-        DrawTextBasic(dpi, screenCoords, STR_INCOME_PER_HOUR, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_INCOME_PER_HOUR, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
@@ -6824,7 +6824,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
     stringId = ride->upkeep_cost == MONEY16_UNDEFINED ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
     auto ft = Formatter();
     ft.Add<money64>(costPerHour);
-    DrawTextBasic(dpi, screenCoords, stringId, ft);
+    DrawTextBasic(*dpi, screenCoords, stringId, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Profit per hour
@@ -6832,7 +6832,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
     {
         ft = Formatter();
         ft.Add<money64>(ride->profit);
-        DrawTextBasic(dpi, screenCoords, STR_PROFIT_PER_HOUR, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_PROFIT_PER_HOUR, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     screenCoords.y += 5;
@@ -6840,7 +6840,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
     // Total profit
     ft = Formatter();
     ft.Add<money64>(ride->total_profit);
-    DrawTextBasic(dpi, screenCoords, STR_TOTAL_PROFIT, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_TOTAL_PROFIT, ft);
 }
 
 #pragma endregion
@@ -6992,14 +6992,14 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<int16_t>(ride->num_riders);
-        DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_ON_RIDE, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_CUSTOMERS_ON_RIDE, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
     // Customers per hour
     auto ft = Formatter();
     ft.Add<int32_t>(RideCustomersPerHour(*ride));
-    DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_PER_HOUR, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_CUSTOMERS_PER_HOUR, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Popularity
@@ -7015,7 +7015,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
     }
     ft = Formatter();
     ft.Add<int16_t>(popularity);
-    DrawTextBasic(dpi, screenCoords, stringId, ft);
+    DrawTextBasic(*dpi, screenCoords, stringId, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Satisfaction
@@ -7031,7 +7031,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
     }
     ft = Formatter();
     ft.Add<int16_t>(satisfaction);
-    DrawTextBasic(dpi, screenCoords, stringId, ft);
+    DrawTextBasic(*dpi, screenCoords, stringId, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Queue time
@@ -7041,7 +7041,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
         stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
         ft = Formatter();
         ft.Add<int32_t>(queueTime);
-        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 308, stringId, ft, { TextAlignment::LEFT });
+        screenCoords.y += DrawTextWrapped(*dpi, screenCoords, 308, stringId, ft, { TextAlignment::LEFT });
         screenCoords.y += 5;
     }
 
@@ -7052,7 +7052,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
         ft.Add<uint32_t>(ride->no_primary_items_sold);
-        DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_ITEMS_SOLD, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
@@ -7064,14 +7064,14 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
         ft.Add<uint32_t>(ride->no_secondary_items_sold);
-        DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_ITEMS_SOLD, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
     // Total customers
     ft = Formatter();
     ft.Add<uint32_t>(ride->total_customers);
-    DrawTextBasic(dpi, screenCoords, STR_TOTAL_CUSTOMERS, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_TOTAL_CUSTOMERS, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Guests favourite
@@ -7080,7 +7080,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<uint16_t>(ride->guests_favourite);
         stringId = ride->guests_favourite == 1 ? STR_FAVOURITE_RIDE_OF_GUEST : STR_FAVOURITE_RIDE_OF_GUESTS;
-        DrawTextBasic(dpi, screenCoords, stringId, ft);
+        DrawTextBasic(*dpi, screenCoords, stringId, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     screenCoords.y += 2;
@@ -7091,7 +7091,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
     stringId = age == 0 ? STR_BUILT_THIS_YEAR : age == 1 ? STR_BUILT_LAST_YEAR : STR_BUILT_YEARS_AGO;
     ft = Formatter();
     ft.Add<int16_t>(age);
-    DrawTextBasic(dpi, screenCoords, stringId, ft);
+    DrawTextBasic(*dpi, screenCoords, stringId, ft);
 }
 
 #pragma endregion
