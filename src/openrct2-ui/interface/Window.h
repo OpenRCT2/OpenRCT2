@@ -22,6 +22,7 @@ struct Window : WindowBase
     void InvalidateWidget(WidgetIndex widgetIndex);
     bool IsWidgetDisabled(WidgetIndex widgetIndex) const;
     bool IsWidgetPressed(WidgetIndex widgetIndex) const;
+    void SetWidgetEnabled(WidgetIndex widgetIndex, bool value);
     void SetWidgetDisabled(WidgetIndex widgetIndex, bool value);
     void SetWidgetPressed(WidgetIndex widgetIndex, bool value);
     void SetCheckboxValue(WidgetIndex widgetIndex, bool value);
