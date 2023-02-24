@@ -52,6 +52,7 @@
 - Fix: [#19379] “No platforms” station style shows platforms on the Junior Roller Coaster.
 - Fix: [#19380] Startup crash when no sequences are installed and random sequences are enabled.
 - Fix: [#19391] String corruption caused by an improper buffer handling in ‘GfxWrapString’.
+- Fix: [#19475] Cannot increase loan when more than £1000 in debt.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------

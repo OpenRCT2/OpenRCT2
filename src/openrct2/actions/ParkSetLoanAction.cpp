@@ -40,7 +40,6 @@ void ParkSetLoanAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkSetLoanAction::Query() const
 {
-    auto loanDifference = gBankLoan - _value;
     if (_value > gBankLoan && _value > gMaxBankLoan)
     {
         return GameActions::Result(
@@ -50,7 +49,10 @@ GameActions::Result ParkSetLoanAction::Query() const
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_PAY_BACK_LOAN, STR_LOAN_CANT_BE_NEGATIVE);
     }
-    if (loanDifference > gCash)
+    // The “isPayingBack” check is needed to allow increasing the loan when the player is in debt.
+    const auto isPayingBack = gBankLoan > _value;
+    const auto amountToPayBack = gBankLoan - _value;
+    if (isPayingBack && amountToPayBack > gCash)
     {
         return GameActions::Result(
             GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
