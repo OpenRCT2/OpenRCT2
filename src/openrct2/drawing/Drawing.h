@@ -528,7 +528,6 @@ bool GfxLoadCsg();
 void GfxUnloadG1();
 void GfxUnloadG2();
 void GfxUnloadCsg();
-void GfxLoadG2CorrectPalettes();
 const G1Element* GfxGetG1Element(const ImageId imageId);
 const G1Element* GfxGetG1Element(ImageIndex image_id);
 void GfxSetG1Element(ImageIndex imageId, const G1Element* g1);
