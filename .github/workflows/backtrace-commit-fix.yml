@@ -1,0 +1,26 @@
+name: 'Backtrace issue commit correction'
+on:
+  issues:
+    types:
+      - opened
+jobs:
+  backtrace_commit_correction:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE: ${{ github.event.issue.html_url }}
+    if: |
+      contains(github.event.issue.labels.*.name, 'backtrace.io')
+    steps:
+      - name: Modify issue contents
+        env:
+          BODY: ${{ github.event.issue.body }}
+        id: fix
+        run: |
+          changed_body=$(echo "$BODY" | sed '/<strong>commit<\/strong>/,/<\/li>/ s/\(<code>\)\(.*\)\(<\/code>\)/\2/g')
+          if [[ "$changed_body" == "$BODY" ]]; then
+            echo "Unable to match the Backtrace report format."
+            exit 1
+          fi
+          echo "$changed_body" >> body.txt
+          gh issue edit $ISSUE --body-file body.txt
