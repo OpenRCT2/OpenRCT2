@@ -20684,8 +20684,7 @@
 		"palette": "keep"
     },
     {
-        "path": "palette_map/palette_map_invisible.png",
-		"palette": "keep"
+        "path": "palette_map/palette_map_invisible.png"
     },
     {
         "path": "palette_map/palette_map_void.png",
