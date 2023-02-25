@@ -407,27 +407,8 @@ static std::optional<PaletteMap> FASTCALL GfxDrawSpriteGetPalette(ImageId imageI
 {
     if (!imageId.HasSecondary())
     {
-        if (PaletteIsBlended(imageId.GetPrimary()))
-        {
-            uint8_t paletteId = imageId.GetRemap();
-            return GetPaletteMapForColour(paletteId);
-        }
-        else
-        {
-            auto primaryPaletteMap = GetPaletteMapForColour(imageId.GetPrimary());
-            if (primaryPaletteMap.has_value())
-            {
-                auto paletteMap = PaletteMap(gPeepPalette);
-                paletteMap.Copy(
-                    PALETTE_OFFSET_REMAP_PRIMARY, primaryPaletteMap.value(), PALETTE_OFFSET_REMAP_PRIMARY,
-                    PALETTE_LENGTH_REMAP);
-                return paletteMap;
-            }
-            else
-            {
-                return std::nullopt;
-            }
-        }
+        uint8_t paletteId = imageId.GetRemap();
+        return GetPaletteMapForColour(paletteId);
     }
 
     auto paletteMap = PaletteMap(gPeepPalette);
@@ -860,17 +841,4 @@ size_t G1CalculateDataSize(const G1Element* g1)
     }
 
     return g1->width * g1->height;
-}
-
-bool PaletteIsBlended(uint8_t colourID)
-{
-    if (colourID < COLOUR_NUM_ORIGINAL)
-    {
-        return false;
-    }
-    if (colourID >= PALETTE_TO_G1_OFFSET_COUNT && colourID < PALETTE_TO_G1_OFFSET_COUNT + COLOUR_NUM_EXTENDED)
-    {
-        return false;
-    }
-    return true;
 }

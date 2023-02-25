@@ -547,7 +547,6 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     DrawPixelInfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
-bool PaletteIsBlended(uint8_t colourID);
 
 // string
 void GfxDrawString(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
