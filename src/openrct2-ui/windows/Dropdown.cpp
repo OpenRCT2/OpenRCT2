@@ -456,7 +456,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
     {
         auto orderedColour = COLOUR_UI_ORDER[i];
         if (selectedColour == orderedColour)
-            defaultIndex = orderedColour;
+            defaultIndex = i;
 
         // Use special graphic for Invisible colour
         auto imageId = (orderedColour == COLOUR_OFFSET_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
