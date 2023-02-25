@@ -528,6 +528,7 @@ bool GfxLoadCsg();
 void GfxUnloadG1();
 void GfxUnloadG2();
 void GfxUnloadCsg();
+void GfxLoadG2CorrectPalettes();
 const G1Element* GfxGetG1Element(const ImageId imageId);
 const G1Element* GfxGetG1Element(ImageIndex image_id);
 void GfxSetG1Element(ImageIndex imageId, const G1Element* g1);
@@ -546,6 +547,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     DrawPixelInfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
+bool PaletteIsBlended(uint8_t colourID);
 
 // string
 void GfxDrawString(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
