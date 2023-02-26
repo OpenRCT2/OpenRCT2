@@ -182,7 +182,7 @@ namespace OpenRCT2::Ui
         {
             return false;
         }
-        TextInputSession* StartTextInput([[maybe_unused]] utf8* buffer, [[maybe_unused]] size_t bufferSize) override
+        TextInputSession* StartTextInput([[maybe_unused]] u8string& buffer, [[maybe_unused]] size_t maxLength) override
         {
             return nullptr;
         }

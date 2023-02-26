@@ -310,9 +310,9 @@ public:
         return _textComposition.IsActive();
     }
 
-    TextInputSession* StartTextInput(utf8* buffer, size_t bufferSize) override
+    TextInputSession* StartTextInput(u8string& buffer, size_t maxLength) override
     {
-        return _textComposition.Start(buffer, bufferSize);
+        return _textComposition.Start(buffer, maxLength);
     }
 
     void StopTextInput() override

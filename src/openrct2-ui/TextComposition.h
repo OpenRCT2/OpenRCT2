@@ -32,15 +32,17 @@ namespace OpenRCT2::Ui
 
     public:
         bool IsActive();
-        TextInputSession* Start(utf8* buffer, size_t bufferSize);
+        TextInputSession* Start(u8string& buffer, size_t maxLength);
         void Stop();
         void HandleMessage(const SDL_Event* e);
 
     private:
-        void CursorHome();
-        void CursorEnd();
-        void CursorLeft();
-        void CursorRight();
+        void CaretMoveToStart();
+        void CaretMoveToEnd();
+        void CaretMoveLeft();
+        void CaretMoveRight();
+        void CaretMoveToLeftToken();
+        void CaretMoveToRightToken();
         void Insert(const utf8* text);
         void InsertCodepoint(codepoint_t codepoint);
         void Clear();

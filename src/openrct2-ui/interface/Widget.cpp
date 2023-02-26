@@ -1168,7 +1168,7 @@ static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
         + 3;
 
     int32_t width = 6;
-    if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
+    if (static_cast<uint32_t>(gTextInput->SelectionStart) < gTextBoxInput.size())
     {
         // Make a new 1 character wide string for measuring the width
         // of the character that the cursor is under.

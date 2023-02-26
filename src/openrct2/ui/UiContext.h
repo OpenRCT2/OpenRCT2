@@ -154,7 +154,7 @@ namespace OpenRCT2
 
             // Text input
             virtual bool IsTextInputActive() abstract;
-            virtual TextInputSession* StartTextInput(utf8* buffer, size_t bufferSize) abstract;
+            virtual TextInputSession* StartTextInput(u8string& buffer, size_t maxLength) abstract;
             virtual void StopTextInput() abstract;
 
             // In-game UI

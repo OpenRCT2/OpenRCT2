@@ -36,19 +36,16 @@ bool TextComposition::IsActive()
     return SDL_IsTextInputActive() && _session.Buffer != nullptr;
 }
 
-TextInputSession* TextComposition::Start(utf8* buffer, size_t bufferSize)
+TextInputSession* TextComposition::Start(u8string& buffer, size_t maxLength)
 {
-    Guard::ArgumentNotNull(buffer);
-
     // TODO This doesn't work, and position could be improved to where text entry is
     SDL_Rect rect = { 10, 10, 100, 100 };
     SDL_SetTextInputRect(&rect);
     SDL_StartTextInput();
 
-    _session.Buffer = buffer;
-    _session.BufferSize = bufferSize - 1;
-    _session.Size = strlen(buffer);
-    _session.SelectionStart = _session.Size;
+    _session.Buffer = &buffer;
+    _session.MaxLength = maxLength;
+    _session.SelectionStart = buffer.size();
     _session.SelectionSize = 0;
     _session.ImeBuffer = _imeBuffer;
     RecalculateLength();
@@ -121,14 +118,6 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 break;
             }
 
-            // Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (macOS)
-            if (key == SDLK_BACKSPACE && (modifier & KEYBOARD_PRIMARY_MODIFIER))
-            {
-                Clear();
-                console.RefreshCaret(_session.SelectionStart);
-                WindowUpdateTextbox();
-            }
-
             switch (key)
             {
                 case SDLK_BACKSPACE:
@@ -136,7 +125,10 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     if (_session.SelectionStart > 0)
                     {
                         size_t endOffset = _session.SelectionStart;
-                        CursorLeft();
+                        if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                            CaretMoveToLeftToken();
+                        else
+                            CaretMoveLeft();
                         _session.SelectionSize = endOffset - _session.SelectionStart;
                         Delete();
 
@@ -145,17 +137,20 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     }
                     break;
                 case SDLK_HOME:
-                    CursorHome();
+                    CaretMoveToStart();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_END:
-                    CursorEnd();
+                    CaretMoveToEnd();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_DELETE:
                 {
                     size_t startOffset = _session.SelectionStart;
-                    CursorRight();
+                    if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                        CaretMoveToRightToken();
+                    else
+                        CaretMoveRight();
                     _session.SelectionSize = _session.SelectionStart - startOffset;
                     _session.SelectionStart = startOffset;
                     Delete();
@@ -167,17 +162,23 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     WindowCancelTextbox();
                     break;
                 case SDLK_LEFT:
-                    CursorLeft();
+                    if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                        CaretMoveToLeftToken();
+                    else
+                        CaretMoveLeft();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_RIGHT:
-                    CursorRight();
+                    if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                        CaretMoveToRightToken();
+                    else
+                        CaretMoveRight();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_c:
                     if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && _session.Length)
                     {
-                        SDL_SetClipboardText(_session.Buffer);
+                        SDL_SetClipboardText(_session.Buffer->c_str());
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, STR_NONE, {});
                     }
                     break;
@@ -195,15 +196,15 @@ void TextComposition::HandleMessage(const SDL_Event* e)
     }
 }
 
-void TextComposition::CursorHome()
+void TextComposition::CaretMoveToStart()
 {
     _session.SelectionStart = 0;
 }
 
-void TextComposition::CursorEnd()
+void TextComposition::CaretMoveToEnd()
 {
-    size_t selectionOffset = _session.Size;
-    const utf8* ch = _session.Buffer + _session.SelectionStart;
+    size_t selectionOffset = _session.Buffer->size();
+    const utf8* ch = _session.Buffer->c_str() + _session.SelectionStart;
     while (!UTF8IsCodepointStart(ch) && selectionOffset > 0)
     {
         ch--;
@@ -213,38 +214,166 @@ void TextComposition::CursorEnd()
     _session.SelectionStart = selectionOffset;
 }
 
-void TextComposition::CursorLeft()
+void TextComposition::CaretMoveLeft()
 {
     size_t selectionOffset = _session.SelectionStart;
-    if (selectionOffset > 0)
+    if (selectionOffset == 0)
+        return;
+
+    const utf8* ch = _session.Buffer->c_str() + selectionOffset;
+    do
     {
-        const utf8* ch = _session.Buffer + selectionOffset;
-        do
+        ch--;
+        selectionOffset--;
+    } while (!UTF8IsCodepointStart(ch) && selectionOffset > 0);
+
+    _session.SelectionStart = selectionOffset;
+}
+
+void TextComposition::CaretMoveRight()
+{
+    size_t selectionOffset = _session.SelectionStart;
+    size_t selectionMaxOffset = _session.Buffer->size();
+    if (selectionOffset >= selectionMaxOffset)
+        return;
+
+    const utf8* ch = _session.Buffer->c_str() + _session.SelectionStart;
+    do
+    {
+        ch++;
+        selectionOffset++;
+    } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
+
+    _session.SelectionSize = std::max<size_t>(0, _session.SelectionSize - (selectionOffset - _session.SelectionStart));
+    _session.SelectionStart = selectionOffset;
+}
+
+static bool isWhitespace(uint32_t cp)
+{
+    return cp == ' ' || cp == '\t';
+}
+
+void TextComposition::CaretMoveToLeftToken()
+{
+    if (_session.SelectionStart == 0)
+        return;
+
+    size_t selectionOffset = _session.SelectionStart - 1;
+    size_t lastChar = selectionOffset;
+
+    const utf8* ch = _session.Buffer->c_str() + selectionOffset;
+
+    // Read until first non-whitespace.
+    while (selectionOffset > 0)
+    {
+        while (!UTF8IsCodepointStart(ch) && selectionOffset > 0)
         {
             ch--;
             selectionOffset--;
-        } while (!UTF8IsCodepointStart(ch) && selectionOffset > 0);
+        }
 
-        _session.SelectionStart = selectionOffset;
+        auto cp = UTF8GetNext(ch, nullptr);
+        if (!isWhitespace(cp))
+        {
+            lastChar = selectionOffset;
+            break;
+        }
+
+        ch--;
+        selectionOffset--;
     }
+
+    // Skip white spaces.
+    while (selectionOffset > 0)
+    {
+        while (!UTF8IsCodepointStart(ch) && selectionOffset > 0)
+        {
+            ch--;
+            selectionOffset--;
+        }
+
+        auto cp = UTF8GetNext(ch, nullptr);
+        if (isWhitespace(cp))
+            break;
+
+        lastChar = selectionOffset;
+
+        ch--;
+        selectionOffset--;
+    }
+
+    _session.SelectionSize = std::max<size_t>(0, _session.SelectionSize - (selectionOffset - _session.SelectionStart));
+    _session.SelectionStart = selectionOffset == 0 ? 0 : lastChar;
 }
 
-void TextComposition::CursorRight()
+void TextComposition::CaretMoveToRightToken()
 {
     size_t selectionOffset = _session.SelectionStart;
-    size_t selectionMaxOffset = _session.Size;
-    if (selectionOffset < selectionMaxOffset)
-    {
-        const utf8* ch = _session.Buffer + _session.SelectionStart;
-        do
-        {
-            ch++;
-            selectionOffset++;
-        } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
+    size_t selectionMaxOffset = _session.Buffer->size();
 
-        _session.SelectionSize = std::max<size_t>(0, _session.SelectionSize - (selectionOffset - _session.SelectionStart));
-        _session.SelectionStart = selectionOffset;
+    if (selectionOffset >= selectionMaxOffset)
+        return;
+
+    const utf8* ch = _session.Buffer->c_str() + selectionOffset;
+
+    // Find a valid codepoint start.
+    while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset)
+    {
+        ch++;
+        selectionOffset++;
     }
+    auto cp = UTF8GetNext(ch, nullptr);
+
+    if (isWhitespace(cp))
+    {
+        // Read until first non-whitespace.
+        while (selectionOffset < selectionMaxOffset)
+        {
+            do
+            {
+                ch++;
+                selectionOffset++;
+            } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
+
+            cp = UTF8GetNext(ch, nullptr);
+            if (!isWhitespace(cp))
+                break;
+        }
+    }
+    else
+    {
+        // Read until first non-whitespace.
+        while (selectionOffset < selectionMaxOffset)
+        {
+            do
+            {
+                ch++;
+                selectionOffset++;
+            } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
+
+            cp = UTF8GetNext(ch, nullptr);
+            if (isWhitespace(cp))
+                break;
+        }
+
+        // Skip white spaces.
+        while (selectionOffset < selectionMaxOffset)
+        {
+            // Read until first non-whitespace.
+            do
+            {
+                ch++;
+                selectionOffset++;
+            } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
+
+            cp = UTF8GetNext(ch, nullptr);
+            if (!isWhitespace(cp))
+                break;
+        }
+    }
+
+    _session.SelectionSize = std::max<size_t>(0, _session.SelectionSize - (selectionOffset - _session.SelectionStart));
+    _session.SelectionStart = selectionOffset;
 }
 
 void TextComposition::Insert(const utf8* text)
@@ -260,36 +389,33 @@ void TextComposition::Insert(const utf8* text)
 void TextComposition::InsertCodepoint(codepoint_t codepoint)
 {
     size_t codepointLength = UTF8GetCodepointLength(codepoint);
-    size_t remainingSize = _session.BufferSize - _session.Size;
-    if (codepointLength <= remainingSize)
+    size_t remainingSize = _session.MaxLength - _session.Length;
+    if (remainingSize > 0)
     {
-        utf8* buffer = _session.Buffer;
+        const auto bufSize = _session.Buffer->size();
+        _session.Buffer->resize(_session.Buffer->size() + codepointLength);
+
+        // FIXME: Just insert the codepoint into the string, don't use memmove
+
+        utf8* buffer = _session.Buffer->data();
         utf8* insertPtr = buffer + _session.SelectionStart;
-        if (_session.SelectionStart < _session.Size)
+        if (_session.SelectionStart < bufSize)
         {
-            // Shift bytes (including null terminator) right to make room for new codepoint
+            // Shift bytes to the right to make room for new codepoint
             utf8* targetShiftPtr = insertPtr + codepointLength;
-            size_t shiftSize = _session.Size - _session.SelectionStart + 1;
+            size_t shiftSize = bufSize - _session.SelectionStart;
             memmove(targetShiftPtr, insertPtr, shiftSize);
-        }
-        else
-        {
-            // Character is appended onto the end, so set byte after it to null terminator
-            buffer[_session.Size + codepointLength] = 0;
         }
 
         UTF8WriteCodepoint(insertPtr, codepoint);
         _session.SelectionStart += codepointLength;
-        _session.Size += codepointLength;
         _session.Length++;
     }
 }
 
 void TextComposition::Clear()
 {
-    utf8* buffer = _session.Buffer;
-    buffer[0] = 0;
-    _session.Size = 0;
+    _session.Buffer->clear();
     _session.Length = 0;
     _session.SelectionStart = 0;
     _session.SelectionSize = 0;
@@ -298,31 +424,33 @@ void TextComposition::Clear()
 void TextComposition::Delete()
 {
     size_t selectionOffset = _session.SelectionStart;
-    size_t selectionMaxOffset = _session.Size;
+    size_t selectionMaxOffset = std::min(_session.SelectionStart + _session.SelectionSize, _session.Buffer->size());
+    if (selectionOffset >= selectionMaxOffset)
+        return;
 
     // Find out how many bytes to delete.
-    const utf8* ch = _session.Buffer + _session.SelectionStart;
-    do
+    const utf8* ch = _session.Buffer->c_str() + _session.SelectionStart;
+    while (selectionOffset < selectionMaxOffset)
     {
-        ch++;
-        selectionOffset++;
-    } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
+        do
+        {
+            ch++;
+            selectionOffset++;
+        } while (!UTF8IsCodepointStart(ch) && selectionOffset < selectionMaxOffset);
+    }
 
-    utf8* buffer = _session.Buffer;
-    utf8* targetShiftPtr = buffer + _session.SelectionStart;
-    utf8* sourceShiftPtr = targetShiftPtr + _session.SelectionSize;
     size_t bytesToSkip = selectionOffset - _session.SelectionStart;
+    if (bytesToSkip == 0)
+        return;
 
-    // std::min() is used to ensure that shiftSize doesn't underflow; it should be between 0 and _session.Size
-    size_t shiftSize = _session.Size
-        - std::min(_session.Size, (_session.SelectionStart - _session.SelectionSize + bytesToSkip));
-    memmove(targetShiftPtr, sourceShiftPtr, shiftSize);
+    _session.Buffer->erase(
+        _session.Buffer->begin() + _session.SelectionStart, _session.Buffer->begin() + _session.SelectionStart + bytesToSkip);
     _session.SelectionSize = 0;
+
     RecalculateLength();
 }
 
 void TextComposition::RecalculateLength()
 {
-    _session.Size = String::SizeOf(_session.Buffer);
-    _session.Length = String::LengthOf(_session.Buffer);
+    _session.Length = String::LengthOf(_session.Buffer->c_str());
 }
