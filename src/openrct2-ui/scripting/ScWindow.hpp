@@ -253,7 +253,7 @@ namespace OpenRCT2::Scripting
                     int32_t c = COLOUR_BLACK;
                     if (i < colours.size())
                     {
-                        c = std::clamp<int32_t>(BASE_COLOUR(colours[i]), COLOUR_BLACK, COLOUR_COUNT - 1);
+                        c = std::clamp<int32_t>(BASE_COLOUR(colours[i]), COLOUR_BLACK, PALETTE_TOTAL_OFFSETS - 1);
                         if (colours[i] & COLOUR_FLAG_TRANSLUCENT)
                         {
                             c = TRANSLUCENT(c);

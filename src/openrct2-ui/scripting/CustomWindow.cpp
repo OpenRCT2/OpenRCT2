@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
             else if (result.Type == "colourpicker")
             {
                 auto colour = AsOrDefault(desc["colour"], 0);
-                if (colour < COLOUR_COUNT)
+                if (colour < PALETTE_TOTAL_OFFSETS)
                 {
                     result.Colour = colour;
                 }
@@ -307,7 +307,7 @@ namespace OpenRCT2::Ui::Windows
                     colour_t c = COLOUR_BLACK;
                     if (w.type() == DukValue::Type::NUMBER)
                     {
-                        c = std::clamp<int32_t>(BASE_COLOUR(w.as_int()), COLOUR_BLACK, COLOUR_COUNT - 1);
+                        c = std::clamp<int32_t>(BASE_COLOUR(w.as_int()), COLOUR_BLACK, PALETTE_TOTAL_OFFSETS - 1);
                         if (w.as_int() & COLOUR_FLAG_TRANSLUCENT)
                         {
                             c = TRANSLUCENT(c);
@@ -1234,7 +1234,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& widget = w->widgets[widgetIndex];
 
                 auto lastColour = customWidgetInfo->Colour;
-                if (lastColour != colour && colour < COLOUR_COUNT)
+                if (lastColour != colour && colour < PALETTE_TOTAL_OFFSETS)
                 {
                     customWidgetInfo->Colour = colour;
                     widget.image = GetColourButtonImage(colour);
