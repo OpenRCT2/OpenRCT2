@@ -1223,7 +1223,7 @@ private:
 
     int32_t GetTabRowCount()
     {
-        int32_t tabEntries = static_cast<int32_t>(_tabEntries.size());
+        int32_t tabEntries = static_cast<int32_t>(_tabEntries.size() - 1);
         return std::max<int32_t>((tabEntries + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
     }
 
