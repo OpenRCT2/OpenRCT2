@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../CmdlineSprite.h"
+#include "../CommandLineSprite.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "CommandLine.hpp"
@@ -57,7 +57,7 @@ static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
 
     const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
-    int32_t result = CmdLineForSprite(argv, argc);
+    int32_t result = CommandLineForSprite(argv, argc);
     if (result < 0)
     {
         return EXITCODE_FAIL;

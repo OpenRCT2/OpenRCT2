@@ -58,7 +58,7 @@ std::string ScreenshotDumpPNG(DrawPixelInfo* dpi);
 std::string ScreenshotDumpPNG32bpp(int32_t width, int32_t height, const void* pixels);
 
 void ScreenshotGiant();
-int32_t CmdlineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options);
-int32_t CmdlineForGfxbench(const char** argv, int32_t argc);
+int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options);
+int32_t CommandLineForGfxbench(const char** argv, int32_t argc);
 
 void CaptureImage(const CaptureOptions& options);

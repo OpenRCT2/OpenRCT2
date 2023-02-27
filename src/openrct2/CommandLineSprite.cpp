@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "CmdlineSprite.h"
+#include "CommandLineSprite.h"
 
 #include "Context.h"
 #include "OpenRCT2.h"
@@ -33,7 +33,7 @@
 
 using namespace OpenRCT2::Drawing;
 
-static int32_t CmdLineForSpriteCombine(const char** argv, int32_t argc);
+static int32_t CommandLineForSpriteCombine(const char** argv, int32_t argc);
 
 class SpriteFile
 {
@@ -265,7 +265,7 @@ static std::string PopStr(std::ostringstream& oss)
     return str;
 }
 
-int32_t CmdLineForSprite(const char** argv, int32_t argc)
+int32_t CommandLineForSprite(const char** argv, int32_t argc)
 {
     gOpenRCT2Headless = true;
     if (argc == 0)
@@ -615,14 +615,14 @@ int32_t CmdLineForSprite(const char** argv, int32_t argc)
 
     if (_strcmpi(argv[0], "combine") == 0)
     {
-        return CmdLineForSpriteCombine(argv, argc);
+        return CommandLineForSpriteCombine(argv, argc);
     }
 
     fprintf(stderr, "Unknown sprite command.\n");
     return 1;
 }
 
-static int32_t CmdLineForSpriteCombine(const char** argv, int32_t argc)
+static int32_t CommandLineForSpriteCombine(const char** argv, int32_t argc)
 {
     if (argc < 4)
     {

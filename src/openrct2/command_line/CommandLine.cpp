@@ -524,7 +524,7 @@ namespace CommandLine
     }
 } // namespace CommandLine
 
-int32_t CmdlineRun(const char** argv, int32_t argc)
+int32_t CommandLineRun(const char** argv, int32_t argc)
 {
     auto argEnumerator = CommandLineArgEnumerator(argv, argc);
 

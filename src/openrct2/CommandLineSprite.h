@@ -12,5 +12,5 @@
 #include "common.h"
 #include "drawing/ImageImporter.h"
 
-int32_t CmdLineForSprite(const char** argv, int32_t argc);
+int32_t CommandLineForSprite(const char** argv, int32_t argc);
 extern OpenRCT2::Drawing::ImageImporter::ImportMode gSpriteMode;

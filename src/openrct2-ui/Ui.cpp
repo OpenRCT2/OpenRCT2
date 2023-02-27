@@ -19,7 +19,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/audio/AudioContext.h>
-#include <openrct2/cmdline/CommandLine.hpp>
+#include <openrct2/command_line/CommandLine.hpp>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 
@@ -43,7 +43,7 @@ int main(int argc, const char** argv)
 {
     std::unique_ptr<IContext> context;
     int32_t rc = EXIT_SUCCESS;
-    int runGame = CmdlineRun(argv, argc);
+    int runGame = CommandLineRun(argv, argc);
     Platform::CoreInit();
     RegisterBitmapReader();
     if (runGame == EXITCODE_CONTINUE)
