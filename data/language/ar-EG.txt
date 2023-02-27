@@ -2655,7 +2655,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :الأسم موجود بالفعل
 STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5447    :النوع {STRINGID}
 STR_5448    :رحلة / مركبة {STRINGID}

@@ -2651,7 +2651,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Namnet finns redan
 STR_5440    :Minimera fullskärm vid tappad fokus
-STR_5441    :Identifiera åkturer via spårtyp,{NEWLINE}så att vagnar kan bli ändrade{NEWLINE}efteråt (som i RCT1)
 STR_5442    :Tvinga parkbetyg:
 STR_5447    :Typ {STRINGID}
 STR_5448    :Åktur eller fordon {STRINGID}

@@ -2642,7 +2642,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Name already exists
 STR_5440    :フォーカス損失時に全画面を最小化
-STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5447    :タイプ {STRINGID}
 STR_5448    :ライド／乗り物 {STRINGID}

@@ -2644,7 +2644,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Bu isim kullanılmakda
 STR_5440    :Oyun ön planda değilse oyunu simge durumuna getir
-STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Park değerlendirmesini:
 STR_5447    :Alet {STRINGID}
 STR_5448    :Tür {STRINGID}

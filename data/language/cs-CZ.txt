@@ -2655,7 +2655,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Název již existuje
 STR_5440    :Minimalizovat celoobrazovkový režim při přepnutí ze hry
-STR_5441    :Identifikovat atrakce podle typu,{NEWLINE}aby šly měnit vozy (RCT1 chování)
 STR_5442    :Hodnocení parku:
 STR_5447    :Typ {STRINGID}
 STR_5448    :Atrakce/vůz {STRINGID}

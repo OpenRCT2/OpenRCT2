@@ -2643,7 +2643,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :A név már létezik
 STR_5440    :Teljes képernyőnél minimalizálás fókuszvesztéskor
-STR_5441    :A játékok pályatípus szerinti azonosítása,{NEWLINE}hogy a járműveket később meg lehessen {NEWLINE}változatni (RCT1-beli viselkedés)
 STR_5442    :Értékelés legyen:
 STR_5447    :Típus {STRINGID}
 STR_5448    :Játék / Jármű {STRINGID}

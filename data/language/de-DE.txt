@@ -2651,7 +2651,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Dieser Name existiert bereits
 STR_5440    :Vollbild minimieren, wenn Spiel nicht im Vordergrund
-STR_5441    :Identifiziert Bahnen durch Streckentyp, sodass wie in RCT1 Fahrzeuge anschließend geändert werden können
 STR_5442    :Parkbewertung:
 STR_5447    :Typ {STRINGID}
 STR_5448    :Bahn / Fahrzeug {STRINGID}

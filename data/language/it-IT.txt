@@ -2656,7 +2656,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Il nome è già utilizzato
 STR_5440    :Riduci schermo intero se il gioco perde il focus
-STR_5441    :Identifica le attrazioni in base al percorso{NEWLINE}in modo che si possano sostituirne successivamente{NEWLINE}i veicoli (come in RCT1)
 STR_5442    :Forza valutazione parco:
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Corsa / Veicolo {STRINGID}

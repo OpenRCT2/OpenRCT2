@@ -2653,7 +2653,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :El nombre ya existe
 STR_5440    :Minimizar desde pantalla completa al perder el foco
-STR_5441    :Identifica atracciones por tipo de pista{NEWLINE}por lo que los vehículos pueden modificarse posteriormente.{NEWLINE}(Como en RCT1).
 STR_5442    :Forzar valoración:
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Juego / Vehículo {STRINGID}

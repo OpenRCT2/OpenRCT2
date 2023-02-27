@@ -2659,7 +2659,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Le nom existe déjà
 STR_5440    :Minimiser le plein écran au passage en arrière-plan
-STR_5441    :Identifie les attractions par type de voie, pour que les véhicules puissent être changés plus tard, comme dans RCT1.
 STR_5442    :Eval. du parc :
 STR_5447    :Type {STRINGID}
 STR_5448    :Attraction/véhicule {STRINGID}

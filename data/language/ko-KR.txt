@@ -2654,7 +2654,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :이미 존재하는 이름입니다
 STR_5440    :커서가 게임 밖으로 나가면 전체 화면을 최소화
-STR_5441    :놀이기구를 RCT1처럼 종류별로 구분합니다
 STR_5442    :공원 등급 고정:
 STR_5447    :종류 {STRINGID}
 STR_5448    :놀이기구 / 차량 {STRINGID}
@@ -3647,7 +3646,12 @@ STR_6538    :보도 창의 대기줄 메뉴 밑에 일반 보도를 표시합니
 STR_6539    :브레이크 닫힘
 STR_6540    :{WINDOW_COLOUR_2}외관 사용을 허락해주신 다음 회사에도 감사를 드립니다:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :기여하신 분들
+STR_6543    :기여하신 분들…
 STR_6544    :대출은 음수일 수 없습니다!
+STR_6545    :RCT1의 금리 사용
+STR_6546    :RollerCoaster Tycoon 1의 이자 계산 알고리즘(약 1.33%의 고정 백분율)을 사용합니다.
+STR_6547    :모든 풍경
 
 #############
 # Scenarios #

@@ -2648,7 +2648,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Nazwa już istnieje
 STR_5440    :Zmniejsz utratę ostrości przy pełnym ekranie
-STR_5441    :Identyfikuj rodzaj przejażdżki po trasie{NEWLINE}dzięki czemu mogą zostać zmienione wagoniki{NEWLINE} (zaszłość z RCT1)
 STR_5442    :Wymuś ocenę parku:
 STR_5447    :Typ {STRINGID}
 STR_5448    :Atrakcja {STRINGID}

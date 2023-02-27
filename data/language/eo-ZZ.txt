@@ -2650,7 +2650,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Nomo jam ekzistas
 STR_5440    :Minimumigi plenekranan reĝimon dum defokusigoj
-STR_5441    :Identigas atrakciojn per siaj traktipoj{NEWLINE}do veturiloj fariĝas ŝanĝeblaj{NEWLINE}poste (RCT1-konduto)
 STR_5442    :Devigi pritakson de parko:
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Atrakcio / Veturilo {STRINGID}
@@ -3649,6 +3648,7 @@ STR_6543    :Kontribuantoj…
 STR_6544    :Prunto ne povas esti negativa!
 STR_6545    :Uzi interezan kalkulon de RCT1
 STR_6546    :Uzi la interezan kalkulan algoritmon de RollerCoaster Tycoon 1, kiu uzis fiksitan procenton de proksimume 1.33%.
+STR_6547    :Ĉiuj Pejzaĝoj
 
 #############
 # Scenarios #

@@ -2648,7 +2648,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Navn eksisterer allerede
 STR_5440    :Minimer fuldskærm ved tab af fokus
-STR_5441    :Identificer forlystelser Efter skinne type{NEWLINE}Så køretøjer kan skiftes{NEWLINE}bagefter (RCT1 opførsel)
 STR_5442    :Tving parkvurdering:
 STR_5447    :Type {STRINGID}
 STR_5448    :Forlystelse / Vogn {STRINGID}

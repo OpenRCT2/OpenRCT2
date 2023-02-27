@@ -2655,7 +2655,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Nimi on jo olemassa
 STR_5440    :Pienennä kokonäyttötila kohdistuksen poistuessa
-STR_5441    :Tunnistaa laitteet ratatyypin perusteella, jotta vaunut voi vaihtaa jälkikäteen, kuten RCT1:ssä.
 STR_5442    :Pakota puiston taso:
 STR_5447    :Tyyppi {STRINGID}
 STR_5448    :Laite / Vaunu {STRINGID}

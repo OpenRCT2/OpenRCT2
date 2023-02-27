@@ -2655,7 +2655,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :El nom ja existeix.
 STR_5440    :Minimitza la pantalla completa si es perd el focus
-STR_5441    :Identifica les atraccions per tipus de via.{NEWLINE}Així els vehicles després{NEWLINE}poden modificar-se (com al RCT1).
 STR_5442    :Força la valoració del parc:
 STR_5447    :Tipus {STRINGID}
 STR_5448    :Atracció/Vehicle {STRINGID}

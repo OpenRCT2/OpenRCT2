@@ -2651,7 +2651,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Naam bestaat al
 STR_5440    :Volledig scherm minimaliseren bij focusverlies
-STR_5441    :Sorteert attracties per baantype,{NEWLINE}zodat achteraf wisselen van treintypes mogelijk{NEWLINE}wordt, zoals in RCT1.
 STR_5442    :Parkwaardering forc.:
 STR_5447    :Type {STRINGID}
 STR_5448    :Attractie/voertuig {STRINGID}

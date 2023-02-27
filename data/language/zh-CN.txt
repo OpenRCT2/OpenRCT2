@@ -2650,7 +2650,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :名称已被使用
 STR_5440    :当焦点失去时最小化全屏幕的游戏
-STR_5441    :根据轨道类型区分游乐设施{NEWLINE}使得车辆类型可以在建造后更改{NEWLINE}（过山车大亨1行为）。
 STR_5442    :强制乐园评价：
 STR_5447    :类型{STRINGID}
 STR_5448    :游乐设施/车辆{STRINGID}
@@ -3647,6 +3646,9 @@ STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group，Josef Wiegand 
 STR_6542    :贡献者
 STR_6543    :贡献者…
 STR_6544    :贷款不得为负！
+STR_6545    :使用RCT1的贷款汇率
+STR_6546    :使用过山车大亨1的贷款利率算法，此算法使用固定的1.33%作为贷款利率。
+STR_6547    :全部景物
 
 #############
 # Scenarios #
