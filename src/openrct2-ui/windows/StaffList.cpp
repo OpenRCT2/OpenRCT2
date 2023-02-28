@@ -95,7 +95,13 @@ private:
         StringId ActionHire;
     };
 
-    std::vector<EntityId> _staffList;
+    struct StaffEntry
+    {
+        EntityId Id;
+        u8string Name;
+    };
+
+    std::vector<StaffEntry> _staffList;
     bool _quickFireMode{};
     std::optional<size_t> _highlightedIndex{};
     int32_t _selectedTab{};
@@ -341,18 +347,18 @@ public:
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
         int32_t i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-        for (auto spriteIndex : _staffList)
+        for (const auto& entry : _staffList)
         {
             if (i == 0)
             {
                 if (_quickFireMode)
                 {
-                    auto staffFireAction = StaffFireAction(spriteIndex);
+                    auto staffFireAction = StaffFireAction(entry.Id);
                     GameActions::Execute(&staffFireAction);
                 }
                 else
                 {
-                    auto peep = GetEntity<Staff>(spriteIndex);
+                    auto peep = GetEntity<Staff>(entry.Id);
                     if (peep != nullptr)
                     {
                         auto intent = Intent(WindowClass::Peep);
@@ -381,7 +387,7 @@ public:
 
         auto y = 0;
         size_t i = 0;
-        for (auto spriteIndex : _staffList)
+        for (const auto& entry : _staffList)
         {
             if (y > dpi.y + dpi.height)
             {
@@ -390,7 +396,7 @@ public:
 
             if (y + 11 >= dpi.y)
             {
-                auto peep = GetEntity<Staff>(spriteIndex);
+                const auto* peep = GetEntity<Staff>(entry.Id);
                 if (peep == nullptr)
                 {
                     continue;
@@ -481,17 +487,24 @@ public:
     {
         _staffList.clear();
 
-        for (auto peep : EntityList<Staff>())
+        for (auto* peep : EntityList<Staff>())
         {
             EntitySetFlashing(peep, false);
             if (peep->AssignedStaffType == GetSelectedStaffType())
             {
                 EntitySetFlashing(peep, true);
-                _staffList.push_back(peep->Id);
+
+                StaffEntry entry;
+                entry.Id = peep->Id;
+                entry.Name = peep->GetName();
+
+                _staffList.push_back(std::move(entry));
             }
         }
 
-        std::sort(_staffList.begin(), _staffList.end(), [](const auto a, const auto b) { return PeepCompare(a, b) < 0; });
+        std::sort(_staffList.begin(), _staffList.end(), [](const auto& a, const auto& b) {
+            return StrLogicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
+        });
     }
 
 private:
