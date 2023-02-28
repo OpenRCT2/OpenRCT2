@@ -795,7 +795,7 @@ namespace OpenRCT2
                 // Awards
                 if (version <= 6)
                 {
-                    Award awards[RCT2::Limits::MaxAwards];
+                    Award awards[RCT2::Limits::MaxAwards]{};
                     cs.ReadWriteArray(awards, [&cs](Award& award) {
                         if (award.Time != 0)
                         {
