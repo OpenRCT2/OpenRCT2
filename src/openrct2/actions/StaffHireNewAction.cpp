@@ -26,6 +26,8 @@
 #include "../world/Entrance.h"
 #include "../world/Park.h"
 
+#include <set>
+
 /* rct2: 0x009929FC */
 static constexpr const PeepSpriteType spriteTypes[] = {
     PeepSpriteType::Handyman,
@@ -142,25 +144,20 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->StaffOrders = _staffOrders;
 
         // We search for the first available Id for a given staff type
-        uint32_t newStaffId = 0;
-        for (;;)
+        std::set<uint32_t> usedStaffIds;
+
+        for (auto searchPeep : EntityList<Staff>())
         {
-            bool found = false;
-            ++newStaffId;
-            for (auto searchPeep : EntityList<Staff>())
-            {
-                if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
-                    continue;
+            if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
+                continue;
 
-                if (searchPeep->PeepId == newStaffId)
-                {
-                    found = true;
-                    break;
-                }
-            }
+            usedStaffIds.insert(searchPeep->PeepId);
+        }
 
-            if (!found)
-                break;
+        uint32_t newStaffId = 1;
+        while (usedStaffIds.find(newStaffId) != usedStaffIds.end())
+        {
+            newStaffId++;
         }
 
         newPeep->PeepId = newStaffId;
