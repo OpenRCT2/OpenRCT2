@@ -178,18 +178,18 @@ struct Viewport
  */
 struct ScrollBar
 {
-    uint16_t flags{};          // 0x00
-    uint16_t h_left{};         // 0x02
-    uint16_t h_right{};        // 0x04
-    uint16_t h_thumb_left{};   // 0x06
-    uint16_t h_thumb_right{};  // 0x08
-    uint16_t v_top{};          // 0x0A
-    uint16_t v_bottom{};       // 0x0C
-    uint16_t v_thumb_top{};    // 0x0E
-    uint16_t v_thumb_bottom{}; // 0x10
+    uint16_t flags{};
+    int32_t h_left{};
+    int32_t h_right{};
+    int32_t h_thumb_left{};
+    int32_t h_thumb_right{};
+    int32_t v_top{};
+    int32_t v_bottom{};
+    int32_t v_thumb_top{};
+    int32_t v_thumb_bottom{};
 };
 
-constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
+constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<int32_t>::max();
 
 struct Focus
 {
