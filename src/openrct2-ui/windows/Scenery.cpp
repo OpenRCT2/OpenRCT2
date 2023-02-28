@@ -783,12 +783,12 @@ public:
 
             // -14
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ width - 0x1A, height - 13 }, STR_COST_LABEL, ft, { TextAlignment::RIGHT });
+                dpi, windowPos + ScreenCoordsXY{ width - 0x1A, height - 13 }, STR_COST_LABEL, ft, { TextAlignment::RIGHT });
         }
 
         auto ft = Formatter();
         ft.Add<StringId>(name);
-        DrawTextEllipsised(&dpi, { windowPos.x + 3, windowPos.y + height - 13 }, width - 19, STR_BLACK_STRING, ft);
+        DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + height - 13 }, width - 19, STR_BLACK_STRING, ft);
     }
 
     void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override

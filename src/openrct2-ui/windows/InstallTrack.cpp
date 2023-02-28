@@ -175,7 +175,7 @@ public:
             {
                 // Scenery not available
                 DrawTextEllipsised(
-                    &dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
+                    dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
                 screenPos.y -= LIST_ROW_HEIGHT;
             }
         }
@@ -189,7 +189,7 @@ public:
             auto trackName = _trackName.c_str();
             auto ft = Formatter();
             ft.Add<const char*>(trackName);
-            DrawTextBasic(&dpi, screenPos - ScreenCoordsXY{ 1, 0 }, STR_TRACK_DESIGN_NAME, ft);
+            DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 1, 0 }, STR_TRACK_DESIGN_NAME, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
@@ -210,7 +210,7 @@ public:
                 ft.Add<StringId>(GetRideTypeDescriptor(td6->type).Naming.Name);
             }
 
-            DrawTextBasic(&dpi, screenPos, STR_TRACK_DESIGN_TYPE, ft);
+            DrawTextBasic(dpi, screenPos, STR_TRACK_DESIGN_TYPE, ft);
             screenPos.y += LIST_ROW_HEIGHT + 4;
         }
 
@@ -219,21 +219,21 @@ public:
             fixed32_2dp rating = td6->excitement * 10;
             auto ft = Formatter();
             ft.Add<int32_t>(rating);
-            DrawTextBasic(&dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, ft);
+            DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
         {
             fixed32_2dp rating = td6->intensity * 10;
             auto ft = Formatter();
             ft.Add<int32_t>(rating);
-            DrawTextBasic(&dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, ft);
+            DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
         {
             fixed32_2dp rating = td6->nausea * 10;
             auto ft = Formatter();
             ft.Add<int32_t>(rating);
-            DrawTextBasic(&dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, ft);
+            DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, ft);
             screenPos.y += LIST_ROW_HEIGHT + 4;
         }
 
@@ -246,7 +246,7 @@ public:
                 uint16_t holes = td6->holes & 0x1F;
                 auto ft = Formatter();
                 ft.Add<uint16_t>(holes);
-                DrawTextBasic(&dpi, screenPos, STR_HOLES, ft);
+                DrawTextBasic(dpi, screenPos, STR_HOLES, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
             else
@@ -256,7 +256,7 @@ public:
                     uint16_t speed = ((td6->max_speed << 16) * 9) >> 18;
                     auto ft = Formatter();
                     ft.Add<uint16_t>(speed);
-                    DrawTextBasic(&dpi, screenPos, STR_MAX_SPEED, ft);
+                    DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
                     screenPos.y += LIST_ROW_HEIGHT;
                 }
                 // Average speed
@@ -264,7 +264,7 @@ public:
                     uint16_t speed = ((td6->average_speed << 16) * 9) >> 18;
                     auto ft = Formatter();
                     ft.Add<uint16_t>(speed);
-                    DrawTextBasic(&dpi, screenPos, STR_AVERAGE_SPEED, ft);
+                    DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
                     screenPos.y += LIST_ROW_HEIGHT;
                 }
             }
@@ -273,7 +273,7 @@ public:
             auto ft = Formatter();
             ft.Add<StringId>(STR_RIDE_LENGTH_ENTRY);
             ft.Add<uint16_t>(td6->ride_length);
-            DrawTextEllipsised(&dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
+            DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
@@ -284,7 +284,7 @@ public:
                 int32_t gForces = td6->max_positive_vertical_g * 32;
                 auto ft = Formatter();
                 ft.Add<int32_t>(gForces);
-                DrawTextBasic(&dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
+                DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
             // Maximum negative vertical Gs
@@ -292,7 +292,7 @@ public:
                 int32_t gForces = td6->max_negative_vertical_g * 32;
                 auto ft = Formatter();
                 ft.Add<int32_t>(gForces);
-                DrawTextBasic(&dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
+                DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
             // Maximum lateral Gs
@@ -300,7 +300,7 @@ public:
                 int32_t gForces = td6->max_lateral_g * 32;
                 auto ft = Formatter();
                 ft.Add<int32_t>(gForces);
-                DrawTextBasic(&dpi, screenPos, STR_MAX_LATERAL_G, ft);
+                DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
             if (td6->total_air_time != 0)
@@ -309,7 +309,7 @@ public:
                 int32_t airTime = td6->total_air_time * 25;
                 auto ft = Formatter();
                 ft.Add<int32_t>(airTime);
-                DrawTextBasic(&dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
+                DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
         }
@@ -320,11 +320,11 @@ public:
             uint16_t drops = td6->drops & 0x3F;
             auto ft = Formatter();
             ft.Add<uint16_t>(drops);
-            DrawTextBasic(&dpi, screenPos, STR_DROPS, ft);
+            DrawTextBasic(dpi, screenPos, STR_DROPS, ft);
             screenPos.y += LIST_ROW_HEIGHT;
 
             // Drop height is multiplied by 0.75
-            DrawTextBasic(&dpi, screenPos, STR_HIGHEST_DROP_HEIGHT, ft);
+            DrawTextBasic(dpi, screenPos, STR_HIGHEST_DROP_HEIGHT, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
@@ -336,7 +336,7 @@ public:
                 // Inversions
                 auto ft = Formatter();
                 ft.Add<uint16_t>(inversions);
-                DrawTextBasic(&dpi, screenPos, STR_INVERSIONS, ft);
+                DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
         }
@@ -348,7 +348,7 @@ public:
             auto ft = Formatter();
             ft.Add<uint16_t>(td6->space_required_x);
             ft.Add<uint16_t>(td6->space_required_y);
-            DrawTextBasic(&dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
+            DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
@@ -356,7 +356,7 @@ public:
         {
             auto ft = Formatter();
             ft.Add<money64>(td6->cost);
-            DrawTextBasic(&dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
+            DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
         }
     }
 

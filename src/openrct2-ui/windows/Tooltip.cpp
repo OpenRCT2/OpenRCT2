@@ -100,7 +100,7 @@ public:
         // Text
         left = windowPos.x + ((width + 1) / 2) - 1;
         top = windowPos.y + 1;
-        DrawStringCentredRaw(&dpi, { left, top }, _tooltipNumLines, _tooltipText.data(), FontStyle::Small);
+        DrawStringCentredRaw(dpi, { left, top }, _tooltipNumLines, _tooltipText.data(), FontStyle::Small);
     }
 
 private:

@@ -393,7 +393,7 @@ public:
             ft.Add<StringId>(STR_FINANCES_SUMMARY_MONTH_HEADING);
             ft.Add<uint16_t>(monthyear);
             DrawTextBasic(
-                &dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
+                dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
                 monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft,
                 { TextUnderline::On, TextAlignment::RIGHT });
             screenCoords.y += 14;
@@ -411,7 +411,7 @@ public:
                     ft = Formatter();
                     ft.Add<money64>(expenditure);
                     DrawTextBasic(
-                        &dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
+                        dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
                         { TextAlignment::RIGHT });
                 }
                 screenCoords.y += TABLE_CELL_HEIGHT;
@@ -423,7 +423,7 @@ public:
             ft = Formatter();
             ft.Add<money64>(profit);
             DrawTextBasic(
-                &dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
+                dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
 
             GfxFillRect(
                 &dpi,
@@ -532,7 +532,7 @@ public:
 
         // Expenditure / Income heading
         DrawTextBasic(
-            &dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
+            dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
             { COLOUR_BLACK, TextUnderline::On, TextAlignment::LEFT });
         screenCoords.y += 14;
 
@@ -546,7 +546,7 @@ public:
                     { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
                     ColourMapA[colours[1]].lighter | 0x1000000);
 
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
             screenCoords.y += TABLE_CELL_HEIGHT;
         }
 
@@ -556,19 +556,19 @@ public:
             INSET_RECT_FLAG_BORDER_INSET);
 
         // Loan and interest rate
-        DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
+        DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
         if (!(gParkFlags & PARK_FLAGS_RCT1_INTEREST))
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gBankLoanInterestRate);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
         }
 
         // Current cash
         auto ft = Formatter();
         ft.Add<money64>(gCash);
         StringId stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-        DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
+        DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
 
         // Objective related financial information
         if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
@@ -577,18 +577,17 @@ public:
             ft = Formatter();
             ft.Add<money64>(lastMonthProfit);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL,
-                ft);
+                dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, ft);
         }
         else
         {
             // Park value and company value
             ft = Formatter();
             ft.Add<money64>(gParkValue);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
             ft = Formatter();
             ft.Add<money64>(gCompanyValue);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 280, 294 }, STR_COMPANY_VALUE_LABEL, ft);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 294 }, STR_COMPANY_VALUE_LABEL, ft);
         }
     }
 
@@ -613,7 +612,7 @@ public:
         ft.Add<money64>(cashLessLoan);
 
         DrawTextBasic(
-            &dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
+            dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
             cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                               : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE,
             ft);
@@ -647,7 +646,7 @@ public:
             ft = Formatter();
             ft.Add<money64>(axisValue);
             DrawTextBasic(
-                &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+                dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
                 &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
@@ -673,7 +672,7 @@ public:
         // Park value
         auto ft = Formatter();
         ft.Add<money64>(gParkValue);
-        DrawTextBasic(&dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
+        DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
         // Graph
         GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
@@ -704,7 +703,7 @@ public:
             ft = Formatter();
             ft.Add<money64>(axisValue);
             DrawTextBasic(
-                &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+                dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
                 &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
@@ -731,7 +730,7 @@ public:
         auto ft = Formatter();
         ft.Add<money64>(gCurrentProfit);
         DrawTextBasic(
-            &dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
+            dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
             gCurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
 
         // Graph
@@ -763,7 +762,7 @@ public:
             ft = Formatter();
             ft.Add<money64>(axisValue);
             DrawTextBasic(
-                &dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+                dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
                 &dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
@@ -860,14 +859,14 @@ public:
                 }
             }
             // Advertisement
-            DrawTextEllipsised(&dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft);
+            DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft);
 
             // Duration
             uint16_t weeksRemaining = marketingCampaign->WeeksLeft;
             ft = Formatter();
             ft.Add<uint16_t>(weeksRemaining);
             DrawTextBasic(
-                &dpi, screenCoords + ScreenCoordsXY{ 304, 0 },
+                dpi, screenCoords + ScreenCoordsXY{ 304, 0 },
                 weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, ft);
 
             screenCoords.y += LIST_ROW_HEIGHT;
@@ -875,7 +874,7 @@ public:
 
         if (noCampaignsActive)
         {
-            DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
         screenCoords.y += 34;
@@ -887,10 +886,10 @@ public:
             if (campaignButton->type != WindowWidgetType::Empty)
             {
                 // Draw button text
-                DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
                 auto ft = Formatter();
                 ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
-                DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
 
                 screenCoords.y += BUTTON_FACE_HEIGHT + 2;
             }

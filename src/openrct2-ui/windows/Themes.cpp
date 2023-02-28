@@ -453,7 +453,7 @@ public:
         if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
         {
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ 10, window_themes_widgets[WIDX_THEMES_PRESETS].top + 1 },
+                dpi, windowPos + ScreenCoordsXY{ 10, window_themes_widgets[WIDX_THEMES_PRESETS].top + 1 },
                 STR_THEMES_LABEL_CURRENT_THEME, {}, { colours[1] });
 
             size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
@@ -467,7 +467,7 @@ public:
             auto newWidth = windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left
                 - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4;
 
-            DrawTextEllipsised(&dpi, screenPos, newWidth, STR_STRING, ft, { colours[1] });
+            DrawTextEllipsised(dpi, screenPos, newWidth, STR_STRING, ft, { colours[1] });
         }
     }
 
@@ -808,7 +808,7 @@ public:
                 int32_t numColours = ThemeDescGetNumColours(wc);
                 for (uint8_t j = 0; j < numColours; j++)
                 {
-                    DrawTextBasic(&dpi, { 2, screenCoords.y + 4 }, ThemeDescGetName(wc), {}, { colours[1] });
+                    DrawTextBasic(dpi, { 2, screenCoords.y + 4 }, ThemeDescGetName(wc), {}, { colours[1] });
 
                     uint8_t colour = ThemeGetColour(wc, j);
                     const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
@@ -822,7 +822,7 @@ public:
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
                         GfxDrawString(
-                            &dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
+                            dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
                             { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, TextDarkness::Dark });
                     }
                 }

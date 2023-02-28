@@ -135,7 +135,7 @@ public:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(_shortcutCustomName.c_str());
         }
-        DrawTextWrapped(&dpi, stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, ft, { TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, ft, { TextAlignment::CENTRE });
     }
 
 private:
@@ -523,14 +523,14 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(shortcut.CustomString.c_str());
         }
-        DrawTextEllipsised(&dpi, { 0, y - 1 }, bindingOffset, format, ft);
+        DrawTextEllipsised(dpi, { 0, y - 1 }, bindingOffset, format, ft);
 
         if (!shortcut.Binding.empty())
         {
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(shortcut.Binding.c_str());
-            DrawTextEllipsised(&dpi, { bindingOffset, y - 1 }, 150, format, ft);
+            DrawTextEllipsised(dpi, { bindingOffset, y - 1 }, 150, format, ft);
         }
     }
 };

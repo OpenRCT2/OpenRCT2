@@ -773,7 +773,7 @@ private:
             auto ft = Formatter();
             peep->FormatActionTo(ft);
             int32_t textWidth = actionLabelWidget.width();
-            DrawTextEllipsised(&dpi, screenPos, textWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(dpi, screenPos, textWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
         }
 
         // Draw the marquee thought
@@ -811,7 +811,7 @@ private:
         {
             auto ft = Formatter();
             PeepThoughtSetFormatArgs(&peep->Thoughts[i], ft);
-            DrawTextBasic(&dpiMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontStyle::Small });
+            DrawTextBasic(dpiMarquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontStyle::Small });
         }
     }
 
@@ -1090,7 +1090,7 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
         // Happiness
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
 
         int32_t happiness = NormalizeGuestStatValue(peep->Happiness, PEEP_MAX_HAPPINESS, 10);
         int32_t barColour = COLOUR_BRIGHT_GREEN;
@@ -1099,7 +1099,7 @@ private:
 
         // Energy
         screenCoords.y += LIST_ROW_HEIGHT;
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_ENERGY_LABEL);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_ENERGY_LABEL);
 
         int32_t energy = NormalizeGuestStatValue(peep->Energy - PEEP_MIN_ENERGY, PEEP_MAX_ENERGY - PEEP_MIN_ENERGY, 10);
         barColour = COLOUR_BRIGHT_GREEN;
@@ -1108,7 +1108,7 @@ private:
 
         // Hunger
         screenCoords.y += LIST_ROW_HEIGHT;
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_HUNGER_LABEL);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HUNGER_LABEL);
 
         int32_t hunger = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
         hunger = 255 - hunger; // the bar should be longer when peep->Hunger is low
@@ -1118,7 +1118,7 @@ private:
 
         // Thirst
         screenCoords.y += LIST_ROW_HEIGHT;
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_THIRST_LABEL);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_THIRST_LABEL);
 
         int32_t thirst = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
         thirst = 255 - thirst; // the bar should be longer when peep->Thirst is low
@@ -1128,7 +1128,7 @@ private:
 
         // Nausea
         screenCoords.y += LIST_ROW_HEIGHT;
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_NAUSEA_LABEL);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_LABEL);
 
         int32_t nausea = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
         barColour = COLOUR_BRIGHT_RED;
@@ -1137,7 +1137,7 @@ private:
 
         // Toilet
         screenCoords.y += LIST_ROW_HEIGHT;
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_TOILET_LABEL);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TOILET_LABEL);
 
         int32_t toilet = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
         barColour = COLOUR_BRIGHT_RED;
@@ -1152,7 +1152,7 @@ private:
             int32_t timeInPark = (gCurrentTicks - guestEntryTime) >> 11;
             auto ft = Formatter();
             ft.Add<uint16_t>(timeInPark & 0xFFFF);
-            DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
         }
 
         screenCoords.y += LIST_ROW_HEIGHT + 9;
@@ -1161,7 +1161,7 @@ private:
             INSET_RECT_FLAG_BORDER_INSET);
 
         // Preferred Ride
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_PREFERRED_RIDE);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_PREFERRED_RIDE);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Intensity
@@ -1182,7 +1182,7 @@ private:
                 ft.Add<uint16_t>(maxIntensity);
             }
 
-            DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, string_id, ft);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, string_id, ft);
         }
 
         // Nausea tolerance
@@ -1197,7 +1197,7 @@ private:
             auto nausea_tolerance = EnumValue(peep->NauseaTolerance) & 0x3;
             auto ft = Formatter();
             ft.Add<StringId>(_nauseaTolerances[nausea_tolerance]);
-            DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft);
         }
     }
 
@@ -1333,7 +1333,7 @@ private:
         auto screenCoords = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 2, widgets[WIDX_PAGE_BACKGROUND].top + 2 };
 
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_LABEL_RIDES_BEEN_ON);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_LABEL_RIDES_BEEN_ON);
 
         screenCoords.y = windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
@@ -1348,7 +1348,7 @@ private:
             ft.Add<StringId>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
         }
 
-        DrawTextEllipsised(&dpi, screenCoords, width - 14, STR_FAVOURITE_RIDE, ft);
+        DrawTextEllipsised(dpi, screenCoords, width - 14, STR_FAVOURITE_RIDE, ft);
     }
 
     void OnScrollDrawRides(int32_t scrollIndex, DrawPixelInfo& dpi)
@@ -1372,7 +1372,7 @@ private:
             {
                 auto ft = Formatter();
                 r->FormatNameTo(ft);
-                DrawTextBasic(&dpi, { 0, y - 1 }, stringId, ft);
+                DrawTextBasic(dpi, { 0, y - 1 }, stringId, ft);
             }
         }
     }
@@ -1430,7 +1430,7 @@ private:
         {
             auto ft = Formatter();
             ft.Add<money64>(peep->CashInPocket);
-            DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_CASH_IN_POCKET, ft);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_IN_POCKET, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
@@ -1438,7 +1438,7 @@ private:
         {
             auto ft = Formatter();
             ft.Add<money64>(peep->CashSpent);
-            DrawTextBasic(&dpi, screenCoords, STR_GUEST_STAT_CASH_SPENT, ft);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_SPENT, ft);
             screenCoords.y += LIST_ROW_HEIGHT * 2;
         }
 
@@ -1450,7 +1450,7 @@ private:
         {
             auto ft = Formatter();
             ft.Add<money64>(peep->PaidToEnter);
-            DrawTextBasic(&dpi, screenCoords, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
         // Paid on rides
@@ -1460,11 +1460,11 @@ private:
             ft.Add<uint16_t>(peep->GuestNumRides);
             if (peep->GuestNumRides != 1)
             {
-                DrawTextBasic(&dpi, screenCoords, STR_GUEST_EXPENSES_RIDE_PLURAL, ft);
+                DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_RIDE_PLURAL, ft);
             }
             else
             {
-                DrawTextBasic(&dpi, screenCoords, STR_GUEST_EXPENSES_RIDE, ft);
+                DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_RIDE, ft);
             }
             screenCoords.y += LIST_ROW_HEIGHT;
         }
@@ -1475,11 +1475,11 @@ private:
             ft.Add<uint16_t>(peep->AmountOfFood);
             if (peep->AmountOfFood != 1)
             {
-                DrawTextBasic(&dpi, screenCoords, STR_GUEST_EXPENSES_FOOD_PLURAL, ft);
+                DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_FOOD_PLURAL, ft);
             }
             else
             {
-                DrawTextBasic(&dpi, screenCoords, STR_GUEST_EXPENSES_FOOD, ft);
+                DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_FOOD, ft);
             }
             screenCoords.y += LIST_ROW_HEIGHT;
         }
@@ -1491,11 +1491,11 @@ private:
             ft.Add<uint16_t>(peep->AmountOfDrinks);
             if (peep->AmountOfDrinks != 1)
             {
-                DrawTextBasic(&dpi, screenCoords, STR_GUEST_EXPENSES_DRINK_PLURAL, ft);
+                DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_DRINK_PLURAL, ft);
             }
             else
             {
-                DrawTextBasic(&dpi, screenCoords, STR_GUEST_EXPENSES_DRINK, ft);
+                DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_DRINK, ft);
             }
             screenCoords.y += LIST_ROW_HEIGHT;
         }
@@ -1506,11 +1506,11 @@ private:
             ft.Add<uint16_t>(peep->AmountOfSouvenirs);
             if (peep->AmountOfSouvenirs != 1)
             {
-                DrawTextBasic(&dpi, screenCoords, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, ft);
+                DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, ft);
             }
             else
             {
-                DrawTextBasic(&dpi, screenCoords, STR_GUEST_EXPENSES_SOUVENIR, ft);
+                DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_SOUVENIR, ft);
             }
         }
     }
@@ -1575,7 +1575,7 @@ private:
         auto screenCoords = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
 
         screenCoords.y += 10;
         for (const auto& thought : peep->Thoughts)
@@ -1589,7 +1589,7 @@ private:
 
             auto ft = Formatter();
             PeepThoughtSetFormatArgs(&thought, ft);
-            screenCoords.y += DrawTextWrapped(&dpi, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontStyle::Small });
+            screenCoords.y += DrawTextWrapped(dpi, screenCoords, widgWidth, STR_BLACK_STRING, ft, { FontStyle::Small });
 
             // If this is the last visible line end drawing.
             if (screenCoords.y > windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
@@ -1765,7 +1765,7 @@ private:
         int32_t maxY = windowPos.y + height - 22;
         int32_t numItems = 0;
 
-        DrawTextBasic(&dpi, screenCoords, STR_CARRYING);
+        DrawTextBasic(dpi, screenCoords, STR_CARRYING);
         screenCoords.y += 10;
 
         for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item++)
@@ -1776,13 +1776,13 @@ private:
                 continue;
 
             auto [stringId, ft] = InventoryFormatItem(*guest, item);
-            screenCoords.y += DrawTextWrapped(&dpi, screenCoords, itemNameWidth, stringId, ft);
+            screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, stringId, ft);
             numItems++;
         }
 
         if (numItems == 0)
         {
-            DrawTextBasic(&dpi, screenCoords, STR_NOTHING);
+            DrawTextBasic(dpi, screenCoords, STR_NOTHING);
         }
     }
 #pragma endregion
@@ -1835,7 +1835,7 @@ private:
         {
             auto ft = Formatter();
             ft.Add<uint32_t>(peep->Id);
-            DrawTextBasic(&dpi, screenCoords, STR_PEEP_DEBUG_SPRITE_INDEX, ft);
+            DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_SPRITE_INDEX, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
         {
@@ -1843,7 +1843,7 @@ private:
             ft.Add<int32_t>(peep->x);
             ft.Add<int32_t>(peep->y);
             ft.Add<int32_t>(peep->z);
-            DrawTextBasic(&dpi, screenCoords, STR_PEEP_DEBUG_POSITION, ft);
+            DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_POSITION, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
         {
@@ -1864,7 +1864,7 @@ private:
                 OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
                 SafeStrCat(buffer, buffer2, sizeof(buffer));
             }
-            GfxDrawString(&dpi, screenCoords, buffer, {});
+            GfxDrawString(dpi, screenCoords, buffer, {});
         }
         screenCoords.y += LIST_ROW_HEIGHT;
         {
@@ -1872,7 +1872,7 @@ private:
             ft.Add<int32_t>(peep->DestinationX);
             ft.Add<int32_t>(peep->DestinationY);
             ft.Add<int32_t>(peep->DestinationTolerance);
-            DrawTextBasic(&dpi, screenCoords, STR_PEEP_DEBUG_DEST, ft);
+            DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_DEST, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
         {
@@ -1881,10 +1881,10 @@ private:
             ft.Add<int32_t>(peep->PathfindGoal.y);
             ft.Add<int32_t>(peep->PathfindGoal.z);
             ft.Add<int32_t>(peep->PathfindGoal.direction);
-            DrawTextBasic(&dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_GOAL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_GOAL, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
-        DrawTextBasic(&dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         screenCoords.x += 10;
@@ -1895,7 +1895,7 @@ private:
             ft.Add<int32_t>(point.y);
             ft.Add<int32_t>(point.z);
             ft.Add<int32_t>(point.direction);
-            DrawTextBasic(&dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, ft);
+            DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
         screenCoords.x -= 10;

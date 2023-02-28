@@ -412,7 +412,7 @@ static void WindowMultiplayerInformationPaint(WindowBase* w, DrawPixelInfo* dpi)
         {
             auto ft = Formatter();
             ft.Add<const char*>(name.c_str());
-            screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
+            screenCoords.y += DrawTextWrapped(*dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
@@ -421,7 +421,7 @@ static void WindowMultiplayerInformationPaint(WindowBase* w, DrawPixelInfo* dpi)
         {
             auto ft = Formatter();
             ft.Add<const char*>(description.c_str());
-            screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
+            screenCoords.y += DrawTextWrapped(*dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
@@ -430,7 +430,7 @@ static void WindowMultiplayerInformationPaint(WindowBase* w, DrawPixelInfo* dpi)
         {
             auto ft = Formatter();
             ft.Add<const char*>(providerName.c_str());
-            DrawTextBasic(dpi, screenCoords, STR_PROVIDER_NAME, ft);
+            DrawTextBasic(*dpi, screenCoords, STR_PROVIDER_NAME, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
@@ -439,7 +439,7 @@ static void WindowMultiplayerInformationPaint(WindowBase* w, DrawPixelInfo* dpi)
         {
             auto ft = Formatter();
             ft.Add<const char*>(providerEmail.c_str());
-            DrawTextBasic(dpi, screenCoords, STR_PROVIDER_EMAIL, ft);
+            DrawTextBasic(*dpi, screenCoords, STR_PROVIDER_EMAIL, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
@@ -448,7 +448,7 @@ static void WindowMultiplayerInformationPaint(WindowBase* w, DrawPixelInfo* dpi)
         {
             auto ft = Formatter();
             ft.Add<const char*>(providerWebsite.c_str());
-            DrawTextBasic(dpi, screenCoords, STR_PROVIDER_WEBSITE, ft);
+            DrawTextBasic(*dpi, screenCoords, STR_PROVIDER_WEBSITE, ft);
         }
     }
 }
@@ -569,7 +569,7 @@ static void WindowMultiplayerPlayersPaint(WindowBase* w, DrawPixelInfo* dpi)
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_LIST].bottom + 2 };
     auto ft = Formatter();
     ft.Add<uint16_t>(w->no_list_items);
-    DrawTextBasic(dpi, screenCoords, stringId, ft, { w->colours[2] });
+    DrawTextBasic(*dpi, screenCoords, stringId, ft, { w->colours[2] });
 }
 
 static void WindowMultiplayerPlayersScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
@@ -617,7 +617,7 @@ static void WindowMultiplayerPlayersScrollpaint(WindowBase* w, DrawPixelInfo* dp
             }
             screenCoords.x = 0;
             GfxClipString(_buffer.data(), 230, FontStyle::Medium);
-            GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
+            GfxDrawString(*dpi, screenCoords, _buffer.c_str(), { colour });
 
             // Draw group name
             _buffer.resize(0);
@@ -628,7 +628,7 @@ static void WindowMultiplayerPlayersScrollpaint(WindowBase* w, DrawPixelInfo* dp
                 screenCoords.x = 173;
                 _buffer += NetworkGetGroupName(group);
                 GfxClipString(_buffer.data(), 80, FontStyle::Medium);
-                GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
+                GfxDrawString(*dpi, screenCoords, _buffer.c_str(), { colour });
             }
 
             // Draw last action
@@ -642,7 +642,7 @@ static void WindowMultiplayerPlayersScrollpaint(WindowBase* w, DrawPixelInfo* dp
             {
                 ft.Add<StringId>(STR_ACTION_NA);
             }
-            DrawTextEllipsised(dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft);
+            DrawTextEllipsised(*dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft);
 
             // Draw ping
             _buffer.resize(0);
@@ -665,7 +665,7 @@ static void WindowMultiplayerPlayersScrollpaint(WindowBase* w, DrawPixelInfo* dp
             _buffer += pingBuffer;
 
             screenCoords.x = 356;
-            GfxDrawString(dpi, screenCoords, _buffer.c_str(), { colour });
+            GfxDrawString(*dpi, screenCoords, _buffer.c_str(), { colour });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
         listPosition++;
@@ -858,7 +858,7 @@ static void WindowMultiplayerGroupsPaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<const char*>(_buffer.c_str());
         DrawTextEllipsised(
-            dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+            *dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
             { TextAlignment::CENTRE });
     }
 
@@ -866,7 +866,7 @@ static void WindowMultiplayerGroupsPaint(WindowBase* w, DrawPixelInfo* dpi)
         + ScreenCoordsXY{ window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4,
                           window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4 };
 
-    DrawTextBasic(dpi, screenPos, STR_DEFAULT_GROUP, {}, { w->colours[2] });
+    DrawTextBasic(*dpi, screenPos, STR_DEFAULT_GROUP, {}, { w->colours[2] });
 
     screenPos.y += 20;
 
@@ -883,7 +883,7 @@ static void WindowMultiplayerGroupsPaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<const char*>(_buffer.c_str());
         DrawTextEllipsised(
-            dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+            *dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
             { TextAlignment::CENTRE });
     }
 }
@@ -916,14 +916,14 @@ static void WindowMultiplayerGroupsScrollpaint(WindowBase* w, DrawPixelInfo* dpi
                 if (NetworkCanPerformAction(groupindex, static_cast<NetworkPermission>(i)))
                 {
                     screenCoords.x = 0;
-                    GfxDrawString(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
+                    GfxDrawString(*dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
                 }
             }
 
             // Draw action name
             auto ft = Formatter();
             ft.Add<uint16_t>(NetworkGetActionNameStringID(i));
-            DrawTextBasic(dpi, { 10, screenCoords.y }, STR_WINDOW_COLOUR_2_STRINGID, ft);
+            DrawTextBasic(*dpi, { 10, screenCoords.y }, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }

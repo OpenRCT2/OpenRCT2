@@ -142,17 +142,17 @@ struct TextPaint
     }
 };
 
-void DrawTextBasic(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format);
-void DrawTextEllipsised(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
-int32_t DrawTextWrapped(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
+void DrawTextBasic(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, StringId format);
+void DrawTextEllipsised(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
+int32_t DrawTextWrapped(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
 
 void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
 void DrawTextBasic(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint = {});
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint = {});
 void DrawTextEllipsised(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
     TextPaint textPaint = {});
 int32_t DrawTextWrapped(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
     TextPaint textPaint = {});

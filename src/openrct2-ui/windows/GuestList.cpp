@@ -473,7 +473,7 @@ public:
 
         {
             Formatter ft(_filterArguments.args);
-            DrawTextEllipsised(&dpi, screenCoords, 310, format, ft);
+            DrawTextEllipsised(dpi, screenCoords, 310, format, ft);
         }
 
         // Number of guests (list items)
@@ -483,7 +483,7 @@ public:
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(_guestList.size()));
             DrawTextBasic(
-                &dpi, screenCoords, (_guestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL),
+                dpi, screenCoords, (_guestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL),
                 ft);
         }
     }
@@ -681,7 +681,7 @@ private:
                 }
                 auto ft = Formatter();
                 peep->FormatNameTo(ft);
-                DrawTextEllipsised(&dpi, { 0, y }, 113, format, ft);
+                DrawTextEllipsised(dpi, { 0, y }, 113, format, ft);
 
                 switch (_selectedView)
                 {
@@ -696,7 +696,7 @@ private:
                         // Action
                         ft = Formatter();
                         peep->FormatActionTo(ft);
-                        DrawTextEllipsised(&dpi, { 133, y }, 314, format, ft);
+                        DrawTextEllipsised(dpi, { 133, y }, 314, format, ft);
                         break;
                     case GuestViewType::Thoughts:
                         // For each thought
@@ -711,7 +711,7 @@ private:
 
                             ft = Formatter();
                             PeepThoughtSetFormatArgs(&thought, ft);
-                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, { FontStyle::Small });
+                            DrawTextEllipsised(dpi, { 118, y }, 329, format, ft, { FontStyle::Small });
                             break;
                         }
                         break;
@@ -756,18 +756,18 @@ private:
                 // Draw small font if displaying guests
                 if (_selectedView == GuestViewType::Thoughts)
                 {
-                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, { FontStyle::Small });
+                    DrawTextEllipsised(dpi, { 0, y }, 414, format, ft, { FontStyle::Small });
                 }
                 else
                 {
-                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft);
+                    DrawTextEllipsised(dpi, { 0, y }, 414, format, ft);
                 }
 
                 // Draw guest count
                 ft = Formatter();
                 ft.Add<StringId>(STR_GUESTS_COUNT_COMMA_SEP);
                 ft.Add<uint32_t>(group.NumGuests);
-                DrawTextBasic(&dpi, { 326, y }, format, ft, { TextAlignment::RIGHT });
+                DrawTextBasic(dpi, { 326, y }, format, ft, { TextAlignment::RIGHT });
             }
             y += SUMMARISED_GUEST_ROW_HEIGHT;
             index++;

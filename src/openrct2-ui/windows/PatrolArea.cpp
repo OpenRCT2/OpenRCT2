@@ -142,7 +142,7 @@ public:
                                                 windowPos.y + PatrolAreaWidgets[WIDX_PREVIEW].midY() };
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
     }
 

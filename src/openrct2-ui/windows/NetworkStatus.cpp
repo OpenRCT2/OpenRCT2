@@ -106,7 +106,7 @@ public:
         GfxClipString(_buffer.data(), widgets[WIDX_BACKGROUND].right - 50, FontStyle::Medium);
         ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
         screenCoords.x -= GfxGetStringWidth(_buffer, FontStyle::Medium) / 2;
-        GfxDrawString(&dpi, screenCoords, _buffer.c_str());
+        GfxDrawString(dpi, screenCoords, _buffer.c_str());
     }
 
     void SetCloseCallBack(close_callback onClose)

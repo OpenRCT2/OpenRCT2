@@ -740,26 +740,27 @@ static void WindowMapgenBasePaint(WindowBase* w, DrawPixelInfo* dpi)
     const auto textColour = w->colours[1];
 
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
+        *dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_BASE_HEIGHT].top + 1 }, STR_BASE_HEIGHT_LABEL, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_BASE_HEIGHT].top + 1 }, STR_BASE_HEIGHT_LABEL, {},
         { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
         { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {}, { textColour });
+        *dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {},
+        { textColour });
 
     auto ft = Formatter();
     ft.Add<uint16_t>((_baseHeight - 12) / 2);
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_BASE_HEIGHT].left + 1, w->widgets[WIDX_BASE_HEIGHT].top + 1 },
+        *dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_BASE_HEIGHT].left + 1, w->widgets[WIDX_BASE_HEIGHT].top + 1 },
         STR_COMMA16, ft, { w->colours[1] });
 
     ft = Formatter();
     ft.Add<uint16_t>((_waterLevel - 12) / 2);
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_WATER_LEVEL].left + 1, w->widgets[WIDX_WATER_LEVEL].top + 1 },
+        *dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_WATER_LEVEL].left + 1, w->widgets[WIDX_WATER_LEVEL].top + 1 },
         STR_COMMA16, ft, { w->colours[1] });
 }
 
@@ -1054,57 +1055,58 @@ static void WindowMapgenSimplexPaint(WindowBase* w, DrawPixelInfo* dpi)
     const uint8_t textColour = w->colours[1];
 
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_LOW].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_LOW_, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_LOW].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_LOW_, {},
         { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_HIGH].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_HIGH, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_HIGH].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_HIGH, {},
         { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
         STR_MAPGEN_SIMPLEX_NOISE_BASE_FREQUENCY, {}, { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES,
+        {}, { textColour });
+    DrawTextBasic(
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {},
         { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
         { textColour });
 
     auto ft = Formatter();
     ft.Add<uint16_t>(_simplex_low);
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_LOW].left + 1, w->widgets[WIDX_SIMPLEX_LOW].top + 1 },
+        *dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_LOW].left + 1, w->widgets[WIDX_SIMPLEX_LOW].top + 1 },
         STR_COMMA16, ft, { textColour });
     ft = Formatter();
     ft.Add<uint16_t>(_simplex_high);
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_HIGH].left + 1, w->widgets[WIDX_SIMPLEX_HIGH].top + 1 },
+        *dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_HIGH].left + 1, w->widgets[WIDX_SIMPLEX_HIGH].top + 1 },
         STR_COMMA16, ft, { textColour });
     ft = Formatter();
     ft.Add<uint16_t>(_simplex_base_freq);
     DrawTextBasic(
-        dpi,
+        *dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
         STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { textColour });
     ft = Formatter();
     ft.Add<uint16_t>(_simplex_octaves);
     DrawTextBasic(
-        dpi,
+        *dpi,
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_OCTAVES].left + 1, w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
         STR_COMMA16, ft, { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1 }, STR_TERRAIN_LABEL,
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1 }, STR_TERRAIN_LABEL,
         {}, { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1 },
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1 },
         STR_MAPGEN_OPTION_PLACE_TREES, {}, { textColour });
 
     ft = Formatter();
     ft.Add<uint16_t>((_waterLevel - 12) / 2);
     DrawTextBasic(
-        dpi,
+        *dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_WATER_LEVEL].left + 1, w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 },
         STR_COMMA16, ft, { textColour });
@@ -1261,13 +1263,13 @@ static void WindowMapgenHeightmapPaint(WindowBase* w, DrawPixelInfo* dpi)
     // Smooth strength label and value
     const colour_t strengthColour = _heightmapSmoothMap ? enabledColour : disabledColour;
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
         { strengthColour });
 
     auto ft = Formatter();
     ft.Add<uint16_t>(_heightmapSmoothStrength);
     DrawTextBasic(
-        dpi,
+        *dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1, w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 },
         STR_COMMA16, ft, { strengthColour });
@@ -1275,35 +1277,36 @@ static void WindowMapgenHeightmapPaint(WindowBase* w, DrawPixelInfo* dpi)
     // Low label and value
     const colour_t labelColour = _heightmapLoaded ? enabledColour : disabledColour;
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_LOW_, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_LOW_, {},
         { labelColour });
 
     ft = Formatter();
     ft.Add<uint16_t>(_heightmapLow);
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_LOW].left + 1, w->widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
+        *dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_LOW].left + 1, w->widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
         STR_COMMA16, ft, { labelColour });
 
     // High label and value
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_HIGH, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_HIGH, {},
         { labelColour });
 
     ft = Formatter();
     ft.Add<uint16_t>(_heightmapHigh);
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_HIGH].left + 1, w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
+        *dpi,
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_HIGH].left + 1, w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
         STR_COMMA16, ft, { labelColour });
 
     // Water level label and value
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
+        *dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
         { labelColour });
 
     ft = Formatter();
     ft.Add<uint16_t>(_waterLevel);
     DrawTextBasic(
-        dpi,
+        *dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].left + 1, w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 },
         STR_COMMA16, ft, { labelColour });

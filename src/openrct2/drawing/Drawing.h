@@ -520,16 +520,16 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     DrawPixelInfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
 
 // string
-void GfxDrawString(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
+void GfxDrawString(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
 
-void GfxDrawStringLeftCentred(DrawPixelInfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords);
+void GfxDrawStringLeftCentred(DrawPixelInfo& dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords);
 void DrawStringCentredRaw(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle);
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle);
 void DrawNewsTicker(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
     int32_t ticks);
 void GfxDrawStringWithYOffsets(
-    DrawPixelInfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
+    DrawPixelInfo& dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont, FontStyle fontStyle);
 
 int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines);
@@ -540,7 +540,7 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle);
 int32_t GfxClipString(char* buffer, int32_t width, FontStyle fontStyle);
 void ShortenPath(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontStyle fontStyle);
 void TTFDrawString(
-    DrawPixelInfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
+    DrawPixelInfo& dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness);
 
 // scrolling text

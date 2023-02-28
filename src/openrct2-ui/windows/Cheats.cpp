@@ -532,28 +532,28 @@ public:
                 colour |= COLOUR_FLAG_INSET;
             }
             int32_t actual_month = _monthSpinnerValue - 1;
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_YEAR);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_MONTH);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 240 }, STR_DAY);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_YEAR);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_MONTH);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 240 }, STR_DAY);
             ft = Formatter();
             ft.Add<int32_t>(_yearSpinnerValue);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ _xRcol, 198 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
+                dpi, windowPos + ScreenCoordsXY{ _xRcol, 198 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
             ft = Formatter();
             ft.Add<int32_t>(actual_month);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ _xRcol, 219 }, STR_FORMAT_MONTH, ft, { colours[1], TextAlignment::RIGHT });
+                dpi, windowPos + ScreenCoordsXY{ _xRcol, 219 }, STR_FORMAT_MONTH, ft, { colours[1], TextAlignment::RIGHT });
             ft = Formatter();
             ft.Add<int32_t>(_daySpinnerValue);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ _xRcol, 240 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
+                dpi, windowPos + ScreenCoordsXY{ _xRcol, 240 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
         }
         else if (page == WINDOW_CHEATS_PAGE_MISC)
         {
             {
                 auto& widget = widgets[WIDX_WEATHER];
-                DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
             }
 
             {
@@ -562,25 +562,24 @@ public:
 
                 auto& widget = widgets[WIDX_PARK_RATING_SPINNER];
                 DrawTextBasic(
-                    &dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft,
-                    { colours[1] });
+                    dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, { colours[1] });
             }
 
             {
                 auto& widget = widgets[WIDX_STAFF_SPEED];
-                DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
             }
         }
         else if (page == WINDOW_CHEATS_PAGE_GUESTS)
         {
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 72 }, STR_CHEAT_GUEST_HAPPINESS);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_CHEAT_GUEST_ENERGY);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 114 }, STR_CHEAT_GUEST_HUNGER);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 135 }, STR_CHEAT_GUEST_THIRST);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 156 }, STR_CHEAT_GUEST_NAUSEA);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 177 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_CHEAT_GUEST_TOILET);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 72 }, STR_CHEAT_GUEST_HAPPINESS);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_CHEAT_GUEST_ENERGY);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 114 }, STR_CHEAT_GUEST_HUNGER);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 135 }, STR_CHEAT_GUEST_THIRST);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 156 }, STR_CHEAT_GUEST_NAUSEA);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 177 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_CHEAT_GUEST_TOILET);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
         }
     }
 

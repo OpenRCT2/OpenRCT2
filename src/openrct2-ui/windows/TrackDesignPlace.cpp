@@ -308,7 +308,7 @@ public:
         {
             ft = Formatter();
             ft.Add<money64>(_placementCost);
-            DrawTextBasic(&dpi, this->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, this->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
         }
     }
 

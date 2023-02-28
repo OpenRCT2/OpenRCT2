@@ -773,13 +773,13 @@ static void WindowEditorObjectiveOptionsMainPaint(WindowBase* w, DrawPixelInfo* 
 
     // Objective label
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_OBJECTIVE].top };
-    DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_WINDOW);
+    DrawTextBasic(*dpi, screenCoords, STR_OBJECTIVE_WINDOW);
 
     // Objective value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE].left + 1, w->widgets[WIDX_OBJECTIVE].top };
     auto ft = Formatter();
     ft.Add<StringId>(ObjectiveDropdownOptionNames[gScenarioObjective.Type]);
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WindowWidgetType::Empty)
     {
@@ -808,7 +808,7 @@ static void WindowEditorObjectiveOptionsMainPaint(WindowBase* w, DrawPixelInfo* 
                 stringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
                 break;
         }
-        DrawTextBasic(dpi, screenCoords, stringId);
+        DrawTextBasic(*dpi, screenCoords, stringId);
 
         // Objective argument 1 value
         screenCoords = w->windowPos
@@ -841,21 +841,21 @@ static void WindowEditorObjectiveOptionsMainPaint(WindowBase* w, DrawPixelInfo* 
                 ft.Add<money64>(gScenarioObjective.Currency);
                 break;
         }
-        DrawTextBasic(dpi, screenCoords, stringId, ft, COLOUR_BLACK);
+        DrawTextBasic(*dpi, screenCoords, stringId, ft, COLOUR_BLACK);
     }
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_2].type != WindowWidgetType::Empty)
     {
         // Objective argument 2 label
         screenCoords = w->windowPos + ScreenCoordsXY{ 28, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
-        DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_DATE);
+        DrawTextBasic(*dpi, screenCoords, STR_WINDOW_OBJECTIVE_DATE);
 
         // Objective argument 2 value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
         ft = Formatter();
         ft.Add<uint16_t>((gScenarioObjective.Year * MONTH_COUNT) - 1);
-        DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, ft);
     }
 
     // Park name
@@ -869,7 +869,7 @@ static void WindowEditorObjectiveOptionsMainPaint(WindowBase* w, DrawPixelInfo* 
         ft = Formatter();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(parkName);
-        DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft);
+        DrawTextEllipsised(*dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft);
     }
 
     // Scenario name
@@ -879,11 +879,11 @@ static void WindowEditorObjectiveOptionsMainPaint(WindowBase* w, DrawPixelInfo* 
     ft = Formatter();
     ft.Add<StringId>(STR_STRING);
     ft.Add<const char*>(gScenarioName.c_str());
-    DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft);
+    DrawTextEllipsised(*dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft);
 
     // Scenario details label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_DETAILS].top };
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_PARK_DETAILS);
+    DrawTextBasic(*dpi, screenCoords, STR_WINDOW_PARK_DETAILS);
 
     // Scenario details value
     screenCoords = w->windowPos + ScreenCoordsXY{ 16, w->widgets[WIDX_DETAILS].top + 10 };
@@ -892,17 +892,17 @@ static void WindowEditorObjectiveOptionsMainPaint(WindowBase* w, DrawPixelInfo* 
     ft = Formatter();
     ft.Add<StringId>(STR_STRING);
     ft.Add<const char*>(gScenarioDetails.c_str());
-    DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft);
+    DrawTextWrapped(*dpi, screenCoords, width, STR_BLACK_STRING, ft);
 
     // Scenario category label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CATEGORY].top };
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_SCENARIO_GROUP);
+    DrawTextBasic(*dpi, screenCoords, STR_WINDOW_SCENARIO_GROUP);
 
     // Scenario category value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CATEGORY].left + 1, w->widgets[WIDX_CATEGORY].top };
     ft = Formatter();
     ft.Add<StringId>(ScenarioCategoryStringIds[gScenarioCategory]);
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+    DrawTextBasic(*dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 }
 
 /**
@@ -1044,7 +1044,7 @@ static void WindowEditorObjectiveOptionsRidesPaint(WindowBase* w, DrawPixelInfo*
     WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
 
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PAGE_BACKGROUND].top + 3 }, STR_WINDOW_PRESERVATION_ORDER);
+        *dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PAGE_BACKGROUND].top + 3 }, STR_WINDOW_PRESERVATION_ORDER);
 }
 
 /**
@@ -1083,7 +1083,7 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(WindowBase* w, DrawPixe
             {
                 auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                 GfxDrawString(
-                    dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
+                    *dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
                     { static_cast<colour_t>(w->colours[1] & 0x7F), FontStyle::Medium, darkness });
             }
 
@@ -1091,7 +1091,7 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(WindowBase* w, DrawPixe
 
             Formatter ft;
             ride->FormatNameTo(ft);
-            DrawTextBasic(dpi, { 15, y }, stringId, ft);
+            DrawTextBasic(*dpi, { 15, y }, stringId, ft);
         }
     }
 }

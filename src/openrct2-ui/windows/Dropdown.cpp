@@ -204,7 +204,7 @@ public:
 
                     // Draw item string
                     Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].Args));
-                    DrawTextEllipsised(&dpi, screenCoords, width - 5, item, ft, { colour });
+                    DrawTextEllipsised(dpi, screenCoords, width - 5, item, ft, { colour });
                 }
             }
         }

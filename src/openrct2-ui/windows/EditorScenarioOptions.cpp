@@ -620,49 +620,49 @@ private:
         if (initialCashWidget.type != WindowWidgetType::Empty)
         {
             screenCoords = windowPos + ScreenCoordsXY{ 8, initialCashWidget.top };
-            DrawTextBasic(&dpi, screenCoords, STR_INIT_CASH_LABEL);
+            DrawTextBasic(dpi, screenCoords, STR_INIT_CASH_LABEL);
 
             screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
             auto ft = Formatter();
             ft.Add<money64>(gInitialCash);
-            DrawTextBasic(&dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
         const auto& initialLoanWidget = widgets[WIDX_INITIAL_LOAN];
         if (initialLoanWidget.type != WindowWidgetType::Empty)
         {
             screenCoords = windowPos + ScreenCoordsXY{ 8, initialLoanWidget.top };
-            DrawTextBasic(&dpi, screenCoords, STR_INIT_LOAN_LABEL);
+            DrawTextBasic(dpi, screenCoords, STR_INIT_LOAN_LABEL);
 
             screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
             auto ft = Formatter();
             ft.Add<money64>(gBankLoan);
-            DrawTextBasic(&dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
         const auto& maximumLoanWidget = widgets[WIDX_MAXIMUM_LOAN];
         if (maximumLoanWidget.type != WindowWidgetType::Empty)
         {
             screenCoords = windowPos + ScreenCoordsXY{ 8, maximumLoanWidget.top };
-            DrawTextBasic(&dpi, screenCoords, STR_MAX_LOAN_LABEL);
+            DrawTextBasic(dpi, screenCoords, STR_MAX_LOAN_LABEL);
 
             screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
             auto ft = Formatter();
             ft.Add<money64>(gMaxBankLoan);
-            DrawTextBasic(&dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
         const auto& interestRateWidget = widgets[WIDX_INTEREST_RATE];
         if (interestRateWidget.type != WindowWidgetType::Empty)
         {
             screenCoords = windowPos + ScreenCoordsXY{ 8, interestRateWidget.top };
-            DrawTextBasic(&dpi, screenCoords, STR_INTEREST_RATE_LABEL);
+            DrawTextBasic(dpi, screenCoords, STR_INTEREST_RATE_LABEL);
 
             screenCoords = windowPos + ScreenCoordsXY{ interestRateWidget.left + 1, interestRateWidget.top };
 
             auto ft = Formatter();
             ft.Add<int16_t>(std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX));
-            DrawTextBasic(&dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
         }
     }
 
@@ -869,47 +869,47 @@ private:
         {
             // Cash per guest label
             screenCoords = windowPos + ScreenCoordsXY{ 8, cashPerGuestWidget.top };
-            DrawTextBasic(&dpi, screenCoords, STR_CASH_PER_GUEST_LABEL);
+            DrawTextBasic(dpi, screenCoords, STR_CASH_PER_GUEST_LABEL);
 
             // Cash per guest value
             screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
             auto ft = Formatter();
             ft.Add<money64>(gGuestInitialCash);
-            DrawTextBasic(&dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
         // Guest initial happiness label
         const auto& initialHappinessWidget = widgets[WIDX_GUEST_INITIAL_HAPPINESS];
         screenCoords = windowPos + ScreenCoordsXY{ 8, initialHappinessWidget.top };
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_INIT_HAPPINESS);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HAPPINESS);
 
         // Guest initial happiness value
         screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
         auto ft = Formatter();
         ft.Add<uint16_t>((gGuestInitialHappiness * 100) / 255);
-        DrawTextBasic(&dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
         // Guest initial hunger label
         const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
         screenCoords = windowPos + ScreenCoordsXY{ 8, initialHungerWidget.top };
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_INIT_HUNGER);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HUNGER);
 
         // Guest initial hunger value
         screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
         ft = Formatter();
         ft.Add<uint16_t>(((255 - gGuestInitialHunger) * 100) / 255);
-        DrawTextBasic(&dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
         // Guest initial thirst label
         const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
         screenCoords = windowPos + ScreenCoordsXY{ 8, initialThirstWidget.top };
-        DrawTextBasic(&dpi, screenCoords, STR_GUEST_INIT_THIRST);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_THIRST);
 
         // Guest initial thirst value
         screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
         ft = Formatter();
         ft.Add<uint16_t>(((255 - gGuestInitialThirst) * 100) / 255);
-        DrawTextBasic(&dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
     }
 
 #pragma endregion
@@ -1188,13 +1188,13 @@ private:
         {
             // Cost to buy land label
             screenCoords = windowPos + ScreenCoordsXY{ 8, landCostWidget.top };
-            DrawTextBasic(&dpi, screenCoords, STR_LAND_COST_LABEL);
+            DrawTextBasic(dpi, screenCoords, STR_LAND_COST_LABEL);
 
             // Cost to buy land value
             screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
             auto ft = Formatter();
             ft.Add<money64>(gLandPrice);
-            DrawTextBasic(&dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
         const auto& constructionRightsCostWidget = widgets[WIDX_CONSTRUCTION_RIGHTS_COST];
@@ -1202,14 +1202,14 @@ private:
         {
             // Cost to buy construction rights label
             screenCoords = windowPos + ScreenCoordsXY{ 8, constructionRightsCostWidget.top };
-            DrawTextBasic(&dpi, screenCoords, STR_RIGHTS_COST_LABEL);
+            DrawTextBasic(dpi, screenCoords, STR_RIGHTS_COST_LABEL);
 
             // Cost to buy construction rights value
             screenCoords = windowPos
                 + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
             auto ft = Formatter();
             ft.Add<money64>(gConstructionRightsPrice);
-            DrawTextBasic(&dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
         const auto& payForParkOrRidesWidget = widgets[WIDX_PAY_FOR_PARK_OR_RIDES];
@@ -1227,7 +1227,7 @@ private:
             else
                 ft.Add<StringId>(STR_PAY_PARK_ENTER);
 
-            DrawTextBasic(&dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+            DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 
         const auto& entryPriceWidget = widgets[WIDX_ENTRY_PRICE];
@@ -1235,25 +1235,25 @@ private:
         {
             // Entry price label
             screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.right + 8, entryPriceWidget.top };
-            DrawTextBasic(&dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
+            DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
 
             // Entry price value
             screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
             auto ft = Formatter();
             ft.Add<money64>(gParkEntranceFee);
-            DrawTextBasic(&dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+            DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
         // Climate label
         const auto& climateWidget = widgets[WIDX_CLIMATE];
         screenCoords = windowPos + ScreenCoordsXY{ 8, climateWidget.top };
-        DrawTextBasic(&dpi, screenCoords, STR_CLIMATE_LABEL);
+        DrawTextBasic(dpi, screenCoords, STR_CLIMATE_LABEL);
 
         // Climate value
         screenCoords = windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
         auto ft = Formatter();
         ft.Add<StringId>(ClimateNames[static_cast<uint8_t>(gClimate)]);
-        DrawTextBasic(&dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 
 #pragma endregion

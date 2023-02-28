@@ -451,7 +451,7 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
         }
 
         ScreenCoordsXY stringCoords(widget->midX() + w->windowPos.x, widget->midY() + w->windowPos.y - 3);
-        DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
+        DrawTextWrapped(*dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
     }
 
     // Return if no scenario highlighted
@@ -465,8 +465,8 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
                 + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
                                   window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
             DrawTextEllipsised(
-                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, { TextAlignment::CENTRE });
-            DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC);
+                *dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, { TextAlignment::CENTRE });
+            DrawTextWrapped(*dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC);
         }
         else
         {
@@ -475,7 +475,7 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
                 + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
                                   window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
 
-            DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_HOVER_HINT);
+            DrawTextWrapped(*dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_HOVER_HINT);
         }
         return;
     }
@@ -491,7 +491,7 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<const char*>(pathPtr);
         DrawTextBasic(
-            dpi, w->windowPos + ScreenCoordsXY{ TabWidth + 3, w->height - 3 - 11 }, STR_STRING, ft, { w->colours[1] });
+            *dpi, w->windowPos + ScreenCoordsXY{ TabWidth + 3, w->height - 3 - 11 }, STR_STRING, ft, { w->colours[1] });
     }
 
     // Scenario name
@@ -502,14 +502,14 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
     ft.Add<StringId>(STR_STRING);
     ft.Add<const char*>(scenario->Name);
     DrawTextEllipsised(
-        dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+        *dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
     screenPos.y += 15;
 
     // Scenario details
     ft = Formatter();
     ft.Add<StringId>(STR_STRING);
     ft.Add<const char*>(scenario->Details);
-    screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_BLACK_STRING, ft) + 5;
+    screenPos.y += DrawTextWrapped(*dpi, screenPos, 170, STR_BLACK_STRING, ft) + 5;
 
     // Scenario objective
     ft = Formatter();
@@ -533,7 +533,7 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
         else
             ft.Add<money64>(scenario->ObjectiveArg2);
     }
-    screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
+    screenPos.y += DrawTextWrapped(*dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
     // Scenario score
     if (scenario->Highscore != nullptr)
@@ -548,7 +548,7 @@ static void WindowScenarioselectPaint(WindowBase* w, DrawPixelInfo* dpi)
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(completedByName);
         ft.Add<money64>(scenario->Highscore->company_value);
-        screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
+        screenPos.y += DrawTextWrapped(*dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
     }
 }
 
@@ -612,7 +612,7 @@ static void WindowScenarioselectScrollpaint(WindowBase* w, DrawPixelInfo* dpi, i
                 const auto scrollCentre = window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() / 2;
 
                 DrawTextBasic(
-                    dpi, { scrollCentre, y + 1 }, format, ft, { colour, FontStyle::Medium, TextAlignment::CENTRE, darkness });
+                    *dpi, { scrollCentre, y + 1 }, format, ft, { colour, FontStyle::Medium, TextAlignment::CENTRE, darkness });
 
                 // Check if scenario is completed
                 if (isCompleted)
@@ -634,7 +634,7 @@ static void WindowScenarioselectScrollpaint(WindowBase* w, DrawPixelInfo* dpi, i
                     ft.Add<StringId>(STR_STRING);
                     ft.Add<char*>(buffer);
                     DrawTextBasic(
-                        dpi, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
+                        *dpi, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
                         { FontStyle::Small, TextAlignment::CENTRE });
                 }
 
@@ -653,7 +653,7 @@ static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left,
 
     // Draw string
     int32_t centreX = (left + right) / 2;
-    DrawTextBasic(dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
+    DrawTextBasic(*dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
 
     // Get string dimensions
     utf8 buffer[CommonTextBufferSize];

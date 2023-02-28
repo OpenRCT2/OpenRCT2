@@ -756,7 +756,7 @@ public:
         const auto* normalisedPathC = normalisedPath.c_str();
         auto ft = Formatter();
         ft.Add<const char*>(normalisedPathC);
-        DrawTextEllipsised(&dpi, windowPos + ScreenCoordsXY{ 4, 20 }, width - 8, STR_STRING, ft);
+        DrawTextEllipsised(dpi, windowPos + ScreenCoordsXY{ 4, 20 }, width - 8, STR_STRING, ft);
 
         // Name button text
         StringId id = STR_NONE;
@@ -770,7 +770,7 @@ public:
         ft = Formatter();
         ft.Add<StringId>(id);
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 }, STR_NAME, ft,
+            dpi, windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 }, STR_NAME, ft,
             { COLOUR_GREY });
 
         // Date button text
@@ -785,7 +785,7 @@ public:
         ft = Formatter();
         ft.Add<StringId>(id);
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 }, STR_DATE, ft,
+            dpi, windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 }, STR_DATE, ft,
             { COLOUR_GREY });
     }
 
@@ -1002,7 +1002,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_RIGHTGUILLEMET);
-                DrawTextBasic(&dpi, { 0, y }, stringId, ft);
+                DrawTextBasic(dpi, { 0, y }, stringId, ft);
             }
 
             // Print filename
@@ -1010,7 +1010,7 @@ public:
             ft.Add<StringId>(STR_STRING);
             ft.Add<char*>(_listItems[i].name.c_str());
             int32_t max_file_width = widgets[WIDX_SORT_NAME].width() - 10;
-            DrawTextEllipsised(&dpi, { 10, y }, max_file_width, stringId, ft);
+            DrawTextEllipsised(dpi, { 10, y }, max_file_width, stringId, ft);
 
             // Print formatted modified date, if this is a file
             if (_listItems[i].type == TYPE_FILE)
@@ -1019,12 +1019,12 @@ public:
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(_listItems[i].date_formatted.c_str());
                 DrawTextEllipsised(
-                    &dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
+                    dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
 
                 ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(_listItems[i].time_formatted.c_str());
-                DrawTextEllipsised(&dpi, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth, stringId, ft);
+                DrawTextEllipsised(dpi, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth, stringId, ft);
             }
         }
     }
@@ -1179,7 +1179,7 @@ static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi)
     ft.Add<char*>(_window_overwrite_prompt_name);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
-    DrawTextWrapped(dpi, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
+    DrawTextWrapped(*dpi, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
 }
 
 #pragma endregion

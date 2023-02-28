@@ -865,7 +865,7 @@ public:
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(_landRightsToolSize);
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
         screenCoords.y = windowPos.y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
@@ -896,7 +896,7 @@ public:
                     GfxFillRect(
                         &dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                         RideKeyColours[i]);
-                    DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
+                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
                     screenCoords.y += LIST_ROW_HEIGHT;
                     if (i == 3)
                     {
@@ -908,7 +908,7 @@ public:
         else if (!WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS))
         {
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
+                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
                 { colours[1] });
         }
     }

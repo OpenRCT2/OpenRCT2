@@ -230,7 +230,7 @@ void TrackDeletePromptWindow::OnDraw(DrawPixelInfo& dpi)
     auto ft = Formatter();
     ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
     DrawTextWrapped(
-        &dpi, { windowPos.x + (WW_DELETE_PROMPT / 2), windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
+        dpi, { windowPos.x + (WW_DELETE_PROMPT / 2), windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
         STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
 }
 

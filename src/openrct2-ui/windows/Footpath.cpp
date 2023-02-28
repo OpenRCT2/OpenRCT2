@@ -489,7 +489,7 @@ public:
             screenCoords = this->windowPos
                 + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
                                   window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23 };
-            DrawTextBasic(&dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
         }
 
         // Draw cost
@@ -502,7 +502,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_windowFootpathCost);
-                DrawTextBasic(&dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
             }
         }
     }

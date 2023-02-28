@@ -537,7 +537,7 @@ private:
         const auto& widget = widgets[WIDX_BTM_LABEL];
         auto screenPos = windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
         int32_t widgetWidth = widget.width();
-        DrawTextEllipsised(dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+        DrawTextEllipsised(*dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
     }
 
     void DrawOverviewTabImage(DrawPixelInfo* dpi)
@@ -928,13 +928,13 @@ private:
         {
             auto ft = Formatter();
             ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
-            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
+            DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
         auto ft = Formatter();
         ft.Add<int32_t>(staff->GetHireDate());
-        DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         switch (staff->AssignedStaffType)
@@ -942,37 +942,37 @@ private:
             case StaffType::Handyman:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffLawnsMown);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffGardensWatered);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffLitterSwept);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffBinsEmptied);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
                 break;
             case StaffType::Mechanic:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffRidesInspected);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffRidesFixed);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
                 break;
             case StaffType::Security:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffVandalsStopped);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                 break;
             case StaffType::Entertainer:
             case StaffType::Count:

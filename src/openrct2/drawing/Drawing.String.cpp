@@ -273,7 +273,7 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
 /**
  * Draws text that is left aligned and vertically centred.
  */
-void GfxDrawStringLeftCentred(DrawPixelInfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords)
+void GfxDrawStringLeftCentred(DrawPixelInfo& dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords)
 {
     char buffer[CommonTextBufferSize];
     auto bufferPtr = buffer;
@@ -338,9 +338,9 @@ static void ColourCharacterWindow(uint8_t colour, const uint16_t* current_font_f
  * dpi      : edi
  */
 void DrawStringCentredRaw(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle)
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle)
 {
-    ScreenCoordsXY screenCoords(dpi->x, dpi->y);
+    ScreenCoordsXY screenCoords(dpi.x, dpi.y);
     GfxDrawString(dpi, screenCoords, "", { COLOUR_BLACK, fontStyle });
     screenCoords = coords;
 
@@ -433,11 +433,11 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle)
  * ticks    : ebp >> 16
  */
 void DrawNewsTicker(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
     int32_t ticks)
 {
     int32_t numLines, lineHeight, lineY;
-    ScreenCoordsXY screenCoords(dpi->x, dpi->y);
+    ScreenCoordsXY screenCoords(dpi.x, dpi.y);
 
     GfxDrawString(dpi, screenCoords, "", { colour });
 
@@ -504,7 +504,7 @@ struct TextDrawInfo
     const int8_t* y_offset;
 };
 
-static void TTFDrawCharacterSprite(DrawPixelInfo* dpi, int32_t codepoint, TextDrawInfo* info)
+static void TTFDrawCharacterSprite(DrawPixelInfo& dpi, int32_t codepoint, TextDrawInfo* info)
 {
     int32_t characterWidth = FontSpriteGetCodepointWidth(info->FontStyle, codepoint);
     auto sprite = FontSpriteGetCodepointSprite(info->FontStyle, codepoint);
@@ -518,13 +518,13 @@ static void TTFDrawCharacterSprite(DrawPixelInfo* dpi, int32_t codepoint, TextDr
         }
 
         PaletteMap paletteMap(info->palette);
-        GfxDrawGlyph(dpi, sprite, screenCoords, paletteMap);
+        GfxDrawGlyph(&dpi, sprite, screenCoords, paletteMap);
     }
 
     info->x += characterWidth;
 }
 
-static void TTFDrawStringRawSprite(DrawPixelInfo* dpi, std::string_view text, TextDrawInfo* info)
+static void TTFDrawStringRawSprite(DrawPixelInfo& dpi, std::string_view text, TextDrawInfo* info)
 {
     CodepointView codepoints(text);
     for (auto codepoint : codepoints)
@@ -536,7 +536,7 @@ static void TTFDrawStringRawSprite(DrawPixelInfo* dpi, std::string_view text, Te
 #ifndef NO_TTF
 
 static int _ttfGlId = 0;
-static void TTFDrawStringRawTTF(DrawPixelInfo* dpi, std::string_view text, TextDrawInfo* info)
+static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextDrawInfo* info)
 {
     if (!TTFInitialise())
         return;
@@ -582,10 +582,10 @@ static void TTFDrawStringRawTTF(DrawPixelInfo* dpi, std::string_view text, TextD
 
         auto baseId = uint32_t(0x7FFFF) - 1024;
         auto imageId = baseId + _ttfGlId;
-        auto drawingEngine = dpi->DrawingEngine;
+        auto drawingEngine = dpi.DrawingEngine;
         auto drawingContext = drawingEngine->GetDrawingContext();
         drawingEngine->InvalidateImage(imageId);
-        drawingContext->DrawBitmap(dpi, imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY);
+        drawingContext->DrawBitmap(&dpi, imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY);
 
         _ttfGlId++;
         if (_ttfGlId >= 1023)
@@ -595,18 +595,18 @@ static void TTFDrawStringRawTTF(DrawPixelInfo* dpi, std::string_view text, TextD
         return;
     }
 
-    int32_t overflowX = (dpi->x + dpi->width) - (drawX + width);
-    int32_t overflowY = (dpi->y + dpi->height) - (drawY + height);
+    int32_t overflowX = (dpi.x + dpi.width) - (drawX + width);
+    int32_t overflowY = (dpi.y + dpi.height) - (drawY + height);
     if (overflowX < 0)
         width += overflowX;
     if (overflowY < 0)
         height += overflowY;
-    int32_t skipX = drawX - dpi->x;
-    int32_t skipY = drawY - dpi->y;
+    int32_t skipX = drawX - dpi.x;
+    int32_t skipY = drawY - dpi.y;
     info->x += width;
 
     auto src = static_cast<const uint8_t*>(surface->pixels);
-    uint8_t* dst = dpi->bits;
+    uint8_t* dst = dpi.bits;
 
     if (skipX < 0)
     {
@@ -622,10 +622,10 @@ static void TTFDrawStringRawTTF(DrawPixelInfo* dpi, std::string_view text, TextD
     }
 
     dst += skipX;
-    dst += skipY * (dpi->width + dpi->pitch);
+    dst += skipY * (dpi.width + dpi.pitch);
 
     int32_t srcScanSkip = surface->pitch - width;
-    int32_t dstScanSkip = dpi->width + dpi->pitch - width;
+    int32_t dstScanSkip = dpi.width + dpi.pitch - width;
     uint8_t* dst_orig = dst;
     const uint8_t* src_orig = src;
 
@@ -639,7 +639,7 @@ static void TTFDrawStringRawTTF(DrawPixelInfo* dpi, std::string_view text, TextD
                 if (*src != 0)
                 {
                     // right
-                    if (xx + skipX < dpi->width + dpi->pitch - 1)
+                    if (xx + skipX < dpi.width + dpi.pitch - 1)
                     {
                         *(dst + 1) = info->palette[3];
                     }
@@ -654,7 +654,7 @@ static void TTFDrawStringRawTTF(DrawPixelInfo* dpi, std::string_view text, TextD
                         *(dst - width - dstScanSkip) = info->palette[3];
                     }
                     // bottom
-                    if (yy + skipY < dpi->height - 1)
+                    if (yy + skipY < dpi.height - 1)
                     {
                         *(dst + width + dstScanSkip) = info->palette[3];
                     }
@@ -712,7 +712,7 @@ static void TTFDrawStringRawTTF(DrawPixelInfo* dpi, std::string_view text, TextD
 
 #endif // NO_TTF
 
-static void TTFProcessFormatCode(DrawPixelInfo* dpi, const FmtString::Token& token, TextDrawInfo* info)
+static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& token, TextDrawInfo* info)
 {
     switch (token.kind)
     {
@@ -768,7 +768,7 @@ static void TTFProcessFormatCode(DrawPixelInfo* dpi, const FmtString::Token& tok
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
                 {
-                    GfxDrawSprite(dpi, imageId, { info->x, info->y });
+                    GfxDrawSprite(&dpi, imageId, { info->x, info->y });
                 }
                 info->x += g1->width;
             }
@@ -816,7 +816,7 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
 }
 #endif // NO_TTF
 
-static void TTFProcessStringLiteral(DrawPixelInfo* dpi, std::string_view text, TextDrawInfo* info)
+static void TTFProcessStringLiteral(DrawPixelInfo& dpi, std::string_view text, TextDrawInfo* info)
 {
 #ifndef NO_TTF
     bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
@@ -878,14 +878,14 @@ static void TTFProcessStringLiteral(DrawPixelInfo* dpi, std::string_view text, T
 #endif // NO_TTF
 }
 
-static void TTFProcessStringCodepoint(DrawPixelInfo* dpi, codepoint_t codepoint, TextDrawInfo* info)
+static void TTFProcessStringCodepoint(DrawPixelInfo& dpi, codepoint_t codepoint, TextDrawInfo* info)
 {
     char buffer[8]{};
     UTF8WriteCodepoint(buffer, codepoint);
     TTFProcessStringLiteral(dpi, buffer, info);
 }
 
-static void TTFProcessString(DrawPixelInfo* dpi, std::string_view text, TextDrawInfo* info)
+static void TTFProcessString(DrawPixelInfo& dpi, std::string_view text, TextDrawInfo* info)
 {
     if (info->flags & TEXT_DRAW_FLAG_NO_FORMATTING)
     {
@@ -973,7 +973,7 @@ static void TTFProcessInitialColour(int32_t colour, TextDrawInfo* info)
 }
 
 void TTFDrawString(
-    DrawPixelInfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
+    DrawPixelInfo& dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness)
 {
     if (text == nullptr)
@@ -1011,7 +1011,7 @@ void TTFDrawString(
     TTFProcessString(dpi, text, &info);
     std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
 
-    dpi->lastStringPos = { info.x, info.y };
+    dpi.lastStringPos = { info.x, info.y };
 }
 
 static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, bool noFormatting)
@@ -1037,7 +1037,8 @@ static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, boo
         info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
     }
 
-    TTFProcessString(nullptr, text, &info);
+    DrawPixelInfo dummy{};
+    TTFProcessString(dummy, text, &info);
 
     return info.maxX;
 }
@@ -1047,7 +1048,7 @@ static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, boo
  *  rct2: 0x00682F28
  */
 void GfxDrawStringWithYOffsets(
-    DrawPixelInfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
+    DrawPixelInfo& dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont, FontStyle fontStyle)
 {
     TextDrawInfo info;
@@ -1071,7 +1072,7 @@ void GfxDrawStringWithYOffsets(
     TTFProcessString(dpi, text, &info);
     std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
 
-    dpi->lastStringPos = { info.x, info.y };
+    dpi.lastStringPos = { info.x, info.y };
 }
 
 void ShortenPath(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontStyle fontStyle)

@@ -273,19 +273,19 @@ void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, Widge
         // Research type
         auto ft = Formatter();
         ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
-        DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
+        DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
         screenCoords.y += 25;
 
         // Progress
         ft = Formatter();
         ft.Add<StringId>(STR_RESEARCH_COMPLETED_AL);
-        DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+        DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
         screenCoords.y += 15;
 
         // Expected
         ft = Formatter();
         ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
-        DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
     }
     else
     {
@@ -322,13 +322,13 @@ void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, Widge
         {
             ft.Add<StringId>(gResearchNextItem->GetName());
         }
-        DrawTextWrapped(dpi, screenCoords, 296, label, ft);
+        DrawTextWrapped(*dpi, screenCoords, 296, label, ft);
         screenCoords.y += 25;
 
         // Progress
         ft = Formatter();
         ft.Add<StringId>(ResearchStageNames[gResearchProgressStage]);
-        DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+        DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
         screenCoords.y += 15;
 
         // Expected
@@ -344,7 +344,7 @@ void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, Widge
         {
             ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
         }
-        DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
     }
 
     // Last development
@@ -379,7 +379,7 @@ void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, Widge
             }
         }
 
-        DrawTextWrapped(dpi, screenCoords, 266, lastDevelopmentFormat, ft);
+        DrawTextWrapped(*dpi, screenCoords, 266, lastDevelopmentFormat, ft);
     }
 }
 
@@ -544,7 +544,7 @@ void WindowResearchFundingPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetInd
     int32_t currentResearchLevel = gResearchFundingLevel;
     auto ft = Formatter();
     ft.Add<money64>(research_cost_table[currentResearchLevel]);
-    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 10, 77 }, STR_RESEARCH_COST_PER_MONTH, ft);
+    DrawTextBasic(*dpi, w->windowPos + ScreenCoordsXY{ 10, 77 }, STR_RESEARCH_COST_PER_MONTH, ft);
 }
 
 #pragma endregion

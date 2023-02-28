@@ -516,7 +516,7 @@ public:
         auto ft = Formatter();
         ft.Add<uint16_t>(static_cast<uint16_t>(_rideList.size()));
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[page], ft);
+            dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[page], ft);
     }
 
     /**
@@ -547,7 +547,7 @@ public:
             // Ride name
             auto ft = Formatter();
             ridePtr->FormatNameTo(ft);
-            DrawTextEllipsised(&dpi, { 0, y - 1 }, 159, format, ft);
+            DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft);
 
             // Ride information
             ft = Formatter();
@@ -724,7 +724,7 @@ public:
                 ft.Rewind();
                 ft.Add<StringId>(formatSecondary);
             }
-            DrawTextEllipsised(&dpi, { 160, y - 1 }, 157, format, ft);
+            DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft);
             y += SCROLLABLE_ROW_HEIGHT;
         }
     }

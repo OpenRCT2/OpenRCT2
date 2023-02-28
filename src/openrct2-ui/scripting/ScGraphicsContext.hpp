@@ -235,7 +235,7 @@ namespace OpenRCT2::Scripting
 
         void text(const std::string& text, int32_t x, int32_t y)
         {
-            GfxDrawString(&_dpi, { x, y }, text.c_str(), { _colour.value_or(0) });
+            GfxDrawString(_dpi, { x, y }, text.c_str(), { _colour.value_or(0) });
         }
     };
 } // namespace OpenRCT2::Scripting
