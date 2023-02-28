@@ -11,6 +11,8 @@ jobs:
         with:
           days-before-issue-stale: 60
           days-before-issue-close: 1
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
           only-issue-labels: 'backtrace.io'
           stale-issue-label: 'stale-backtrace'
           stale-issue-message: 'This issue is stale and will be closed tomorrow if no action is taken. To keep it open, leave a comment or remove the `stale-backtrace` label.'
