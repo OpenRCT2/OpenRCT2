@@ -6623,10 +6623,8 @@ void Vehicle::UpdateAdditionalAnimation()
                         if (!RideHasStationShelter(*curRide)
                             || (status != Vehicle::Status::MovingToEndOfStation && status != Vehicle::Status::Arriving))
                         {
-                            int32_t directionIndex = sprite_direction << 1;
                             CoordsXYZ steamOffset = ComputeSteamOffset(
-                                carEntry->SteamEffect.Vertical, carEntry->SteamEffect.Longitudinal, Pitch,
-                                directionIndex);
+                                carEntry->SteamEffect.Vertical, carEntry->SteamEffect.Longitudinal, Pitch, sprite_direction);
                             SteamParticle::Create(CoordsXYZ(x, y, z) + steamOffset);
                         }
                     }

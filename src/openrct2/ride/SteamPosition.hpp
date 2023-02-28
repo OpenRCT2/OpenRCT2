@@ -32,9 +32,7 @@ namespace OpenRCT2::Math::Trigonometry
     };
 
     /**
-     * The cos and sin of vehicle pitch
-     * Calculated using track geometry
-     * X represents vertical component and Y represents horizontal component
+     * The cos and sin of vehicle pitch based on vehicle sprite angles
      * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
      * Where Y1 represents the angle of pitch in degrees
      */
@@ -98,12 +96,12 @@ namespace OpenRCT2::Math::Trigonometry
         { 236, 97 },    // inverting transition slopes down
         { 195, 165 },   // inverting transition slopes down
         { 134, 217 },   // inverting transition slopes down
-        { 252, -44 }    // spiral lift hill up // TODO: calculate this
+        { 252, -44 }    // spiral lift hill up
     };
 
-    constexpr auto ComputeXYMagnitude(int32_t length, uint8_t pitch)
+    constexpr int32_t ComputeHorizontalMagnitude(int32_t length, uint8_t pitch)
     {
-        return (PitchToDirectionVectorFromPhysics[static_cast<uint8_t>(pitch)].y * length) / 256;
+        return (PitchToDirectionVectorFromGeometry[static_cast<uint8_t>(pitch)].y * length) / 256;
     }
 
     constexpr CoordsXY ComputeXYVector(int32_t magnitude, uint8_t yaw)
@@ -112,7 +110,7 @@ namespace OpenRCT2::Math::Trigonometry
     }
     constexpr CoordsXY ComputeXYVector(int32_t length, uint8_t pitch, uint8_t yaw)
     {
-        return ComputeXYVector(ComputeXYMagnitude(length, pitch), yaw);
+        return ComputeXYVector(ComputeHorizontalMagnitude(length, pitch), yaw);
     }
 
 } // namespace OpenRCT2::Math::Trigonometry
@@ -121,8 +119,9 @@ using namespace OpenRCT2::Math::Trigonometry;
 
 constexpr CoordsXYZ ComputeSteamOffset(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
 {
+    uint8_t trueYaw = OpenRCT2::Entity::Yaw::YawTo64(yaw);
     auto offsets = PitchToDirectionVectorFromGeometry[pitch];
     int32_t projectedRun = (offsets.x * length + offsets.y * height) / 256;
     int32_t projectedHeight = (offsets.x * height - offsets.y * length) / 256;
-    return { ComputeXYVector(projectedRun, yaw), projectedHeight };
+    return { ComputeXYVector(projectedRun, trueYaw), projectedHeight };
 }
