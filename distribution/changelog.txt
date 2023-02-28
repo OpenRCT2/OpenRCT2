@@ -29,6 +29,7 @@
 - Change: [#19018] Renamed actions to fit the naming scheme.
 - Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
 - Change: [#19233] Reduce lift speed minimum and maximum values for “Classic Wooden Coaster”.
+- Removed: [#19520] Support for Windows Vista systems.
 - Fix: [#474] Mini golf window shows more players than there actually are (original bug).
 - Fix: [#7210] Land tile smoothing occurs with edge tiles (original bug).
 - Fix: [#17996] Finances window not cleared when starting some .park scenarios.
