@@ -3657,6 +3657,7 @@ STR_6543    :Contributions…
 STR_6544    :Un emprunt ne peut pas être négatif !
 STR_6545    :Calcul des intérêts de RCT1
 STR_6546    :Utilise l’algorithme de calcul des intérêts de RollerCoaster Tycoon 1, qui comporte un pourcentage fixe d’environ 1,33%
+STR_6547    :Tous les décors
 
 #############
 # Scenarios #

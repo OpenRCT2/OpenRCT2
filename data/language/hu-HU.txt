@@ -3268,8 +3268,8 @@ STR_6133    :Hozzáférés a még fel nem fedezett játékokhoz és díszletekhe
 STR_6134    :Díszlet törlése
 STR_6135    :A kliens érvénytelen kérést küldött
 STR_6136    :A szerver érvénytelen kérést küldött
-STR_6137    :OpenRCT2, egy ingyenes és nyílt forráskódú Roller Coaster Tycoon 2 klón.
-STR_6138    :Az OpenRCT2 számos szerző munkája, a teljes lista a „contributors.md”-ben található. További információkért látogass el ide: http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2, a RollerCoaster Tycoon 2 ingyenes és nyílt forráskódú újraalkotása és kibővítése.
+STR_6138    :Az OpenRCT2 számos szerző munkája, a teljes lista a „Közreműködők” gomb alatt található. További információkért látogass el ide: http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Minden termék- és vállalatnév a vonatkozó tulajdonosok birtokában van. A használatuk nem jelent semmiféle kapcsolatot vagy jóváhagyást a részükről.
 STR_6140    :Változási napló…
 STR_6141    :RCT1 alsó eszköztár
@@ -3625,6 +3625,15 @@ STR_6535    :{WINDOW_COLOUR_2}Émelygési faktor: {BLACK}-{COMMA16}%
 STR_6536    :Ezt a parkot az OpenRCT2 egy későbbi verziójában mentették el. A park v{INT32}, a jelenlegi verziód: {INT32}.
 STR_6537    :Normál utak lehetnek várósorok
 STR_6538    :Megjeleníti a normál utakat a várósorok legördülő menüjében az Utak ablakon belül.
+STR_6539    :Fék zárva
+STR_6540    :{WINDOW_COLOUR_2}Külön köszönet a következő vállalatoknak, hogy engedélyezték hasonlóságuk használatát:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Közreműködők
+STR_6543    :Közreműködők…
+STR_6544    :A kölcsön nem lehet negatív!
+STR_6545    :RCT1 kamatszámítás használata
+STR_6546    :A RollerCoaster Tycoon 1 kamatszámítási algoritmusának használata, amely egy rögzített százalékot használ, ami körülbelül 1,33%.
+STR_6547    :Minden díszlet
 
 #############
 # Scenarios #
@@ -4227,6 +4236,11 @@ STR_DTLS    :Építsd meg a hiányzó Six Flags játékokat, vagy készíts saj�
 STR_SCNR    :Panda Világ
 STR_PARK    :Panda Világ
 STR_DTLS    :Szerezz be további játékokat, hogy több ember látogasson el ebbe a panda-témájú parkba
+
+<Tycoon Park>
+STR_SCNR    :Tycoon Park
+STR_PARK    :Tycoon Park
+STR_DTLS    :
 
 ###
 <UCES Halloween>
