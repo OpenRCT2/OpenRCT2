@@ -56,6 +56,7 @@
 - Fix: [#19391] String corruption caused by an improper buffer handling in ‘GfxWrapString’.
 - Fix: [#19475] Cannot increase loan when more than £1000 in debt.
 - Fix: [#19517] Crash when peeps try to exit or enter hacked rides that have no waypoints specified.
+- Fix: [#19524] Staff counter shows incorrect values if there are more than 32767 staff members.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
