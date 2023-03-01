@@ -738,6 +738,11 @@ bool Window::IsWidgetPressed(WidgetIndex widgetIndex) const
     return WidgetIsPressed(*this, widgetIndex);
 }
 
+void Window::SetWidgetEnabled(WidgetIndex widgetIndex, bool value)
+{
+    WidgetSetEnabled(*this, widgetIndex, value);
+}
+
 void Window::SetWidgetDisabled(WidgetIndex widgetIndex, bool value)
 {
     WidgetSetDisabled(*this, widgetIndex, value);
