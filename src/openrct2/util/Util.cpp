@@ -351,7 +351,8 @@ float UtilRandNormalDistributed()
     return _distributor(_prng);
 }
 
-constexpr size_t CHUNK = 128 * 1024;
+// Buffer size used for the inflate/deflate buffers, 5 MiB should be enough for most cases
+constexpr size_t InflateDeflateBufferSize = (1024 * 1024) * 5;
 
 // Compress the source to gzip-compatible stream, write to dest.
 // Mainly used for compressing the crashdumps
@@ -361,25 +362,30 @@ bool UtilGzipCompress(FILE* source, FILE* dest)
     {
         return false;
     }
-    int ret, flush;
+
     size_t have;
     z_stream strm{};
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
-    unsigned char in[CHUNK];
-    unsigned char out[CHUNK];
-    int windowBits = 15;
-    int GZIP_ENCODING = 16;
-    ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | GZIP_ENCODING, 8, Z_DEFAULT_STRATEGY);
-    if (ret != Z_OK)
+
+    std::vector<uint8_t> in(InflateDeflateBufferSize);
+    std::vector<uint8_t> out(InflateDeflateBufferSize);
+
+    const int windowBits = 15;
+    const int gzipEncoding = 16;
+    if (const auto ret = deflateInit2(
+            &strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | gzipEncoding, 8, Z_DEFAULT_STRATEGY);
+        ret != Z_OK)
     {
         LOG_ERROR("Failed to initialise stream");
         return false;
     }
+
+    int flush = 0;
     do
     {
-        strm.avail_in = uInt(fread(in, 1, CHUNK, source));
+        strm.avail_in = uInt(fread(in.data(), 1, InflateDeflateBufferSize, source));
         if (ferror(source))
         {
             deflateEnd(&strm);
@@ -387,19 +393,18 @@ bool UtilGzipCompress(FILE* source, FILE* dest)
             return false;
         }
         flush = feof(source) ? Z_FINISH : Z_NO_FLUSH;
-        strm.next_in = in;
+        strm.next_in = in.data();
         do
         {
-            strm.avail_out = CHUNK;
-            strm.next_out = out;
-            ret = deflate(&strm, flush);
-            if (ret == Z_STREAM_ERROR)
+            strm.avail_out = InflateDeflateBufferSize;
+            strm.next_out = out.data();
+            if (const auto ret = deflate(&strm, flush); ret == Z_STREAM_ERROR)
             {
                 LOG_ERROR("Failed to compress data");
                 return false;
             }
-            have = CHUNK - strm.avail_out;
-            if (fwrite(out, 1, have, dest) != have || ferror(dest))
+            have = InflateDeflateBufferSize - strm.avail_out;
+            if (fwrite(out.data(), 1, have, dest) != have || ferror(dest))
             {
                 deflateEnd(&strm);
                 LOG_ERROR("Failed to write data to destination");
@@ -407,7 +412,9 @@ bool UtilGzipCompress(FILE* source, FILE* dest)
             }
         } while (strm.avail_out == 0);
     } while (flush != Z_FINISH);
+
     deflateEnd(&strm);
+
     return true;
 }
 
@@ -416,46 +423,51 @@ std::vector<uint8_t> Gzip(const void* data, const size_t dataLen)
     assert(data != nullptr);
 
     std::vector<uint8_t> output;
+    std::vector<uint8_t> buffer;
+
     z_stream strm{};
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
 
+    if (const auto ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 | 16, 8, Z_DEFAULT_STRATEGY); ret != Z_OK)
     {
-        const auto ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 | 16, 8, Z_DEFAULT_STRATEGY);
-        if (ret != Z_OK)
-        {
-            throw std::runtime_error("deflateInit2 failed with error " + std::to_string(ret));
-        }
+        throw std::runtime_error("deflateInit2 failed with error " + std::to_string(ret));
     }
+
+    const auto estimatedOutputSize = deflateBound(&strm, static_cast<uLong>(dataLen));
+    output.reserve(estimatedOutputSize);
 
     int flush = 0;
     const auto* src = static_cast<const Bytef*>(data);
     size_t srcRemaining = dataLen;
     do
     {
-        const auto nextBlockSize = std::min(srcRemaining, CHUNK);
+        const auto nextBlockSize = std::min(srcRemaining, InflateDeflateBufferSize);
         srcRemaining -= nextBlockSize;
 
         flush = srcRemaining == 0 ? Z_FINISH : Z_NO_FLUSH;
         strm.avail_in = static_cast<uInt>(nextBlockSize);
         strm.next_in = const_cast<Bytef*>(src);
+
+        buffer.resize(nextBlockSize);
+
         do
         {
-            output.resize(output.size() + nextBlockSize);
             strm.avail_out = static_cast<uInt>(nextBlockSize);
-            strm.next_out = &output[output.size() - nextBlockSize];
-            const auto ret = deflate(&strm, flush);
-            if (ret == Z_STREAM_ERROR)
+            strm.next_out = buffer.data();
+            if (const auto ret = deflate(&strm, flush); ret == Z_STREAM_ERROR)
             {
                 throw std::runtime_error("deflate failed with error " + std::to_string(ret));
             }
-            output.resize(output.size() - strm.avail_out);
+            output.insert(output.end(), buffer.begin(), buffer.begin() + (nextBlockSize - strm.avail_out));
         } while (strm.avail_out == 0);
 
         src += nextBlockSize;
     } while (flush != Z_FINISH);
+
     deflateEnd(&strm);
+
     return output;
 }
 
@@ -464,46 +476,53 @@ std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen)
     assert(data != nullptr);
 
     std::vector<uint8_t> output;
+    std::vector<uint8_t> buffer;
+
     z_stream strm{};
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
 
+    if (const auto ret = inflateInit2(&strm, 15 | 16); ret != Z_OK)
     {
-        const auto ret = inflateInit2(&strm, 15 | 16);
-        if (ret != Z_OK)
-        {
-            throw std::runtime_error("inflateInit2 failed with error " + std::to_string(ret));
-        }
+        throw std::runtime_error("inflateInit2 failed with error " + std::to_string(ret));
     }
+
+    // Reserve at least 3 times the input size, because vector growth is not
+    // linear we can skip some allocations for the first blocks.
+    output.reserve(dataLen * 3U);
 
     int flush = 0;
     const auto* src = static_cast<const Bytef*>(data);
     size_t srcRemaining = dataLen;
     do
     {
-        const auto nextBlockSize = std::min(srcRemaining, CHUNK);
+        const auto nextBlockSize = std::min<size_t>(srcRemaining, InflateDeflateBufferSize);
         srcRemaining -= nextBlockSize;
 
         flush = srcRemaining == 0 ? Z_FINISH : Z_NO_FLUSH;
         strm.avail_in = static_cast<uInt>(nextBlockSize);
         strm.next_in = const_cast<Bytef*>(src);
+
+        buffer.resize(nextBlockSize);
+
         do
         {
-            output.resize(output.size() + nextBlockSize);
             strm.avail_out = static_cast<uInt>(nextBlockSize);
-            strm.next_out = &output[output.size() - nextBlockSize];
-            const auto ret = inflate(&strm, flush);
-            if (ret == Z_STREAM_ERROR)
+            strm.next_out = buffer.data();
+            if (const auto ret = inflate(&strm, flush); ret == Z_STREAM_ERROR)
             {
                 throw std::runtime_error("deflate failed with error " + std::to_string(ret));
             }
-            output.resize(output.size() - strm.avail_out);
+            output.insert(output.end(), buffer.begin(), buffer.begin() + (nextBlockSize - strm.avail_out));
         } while (strm.avail_out == 0);
 
         src += nextBlockSize;
+
     } while (flush != Z_FINISH);
+
     inflateEnd(&strm);
+
     return output;
 }
 
