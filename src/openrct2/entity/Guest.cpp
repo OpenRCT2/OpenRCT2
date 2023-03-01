@@ -3626,10 +3626,13 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     const auto& rtd = ride.GetRideTypeDescriptor();
     CoordsXY waypoint = rtd.GetGuestWaypointLocation(*vehicle, ride, CurrentRideStation);
 
-    const auto waypointIndex = Var37 / 4;
-    Guard::Assert(carEntry->peep_loading_waypoints.size() >= static_cast<size_t>(waypointIndex));
-    waypoint.x += carEntry->peep_loading_waypoints[waypointIndex][0].x;
-    waypoint.y += carEntry->peep_loading_waypoints[waypointIndex][0].y;
+    const auto waypointIndex = Var37 / 4U;
+    if (waypointIndex < carEntry->peep_loading_waypoints.size())
+    {
+        Guard::Assert(carEntry->peep_loading_waypoints.size() >= static_cast<size_t>(waypointIndex));
+        waypoint.x += carEntry->peep_loading_waypoints[waypointIndex][0].x;
+        waypoint.y += carEntry->peep_loading_waypoints[waypointIndex][0].y;
+    }
 
     SetDestination(waypoint);
     RideSubState = PeepRideSubState::ApproachVehicleWaypoints;
@@ -4265,19 +4268,26 @@ void Guest::UpdateRideLeaveVehicle()
         return;
 
     Var37 = ((exitLocation.direction | GetWaypointedSeatLocation(*ride, carEntry, station_direction) * 4) * 4) | 1;
-    Guard::Assert(carEntry->peep_loading_waypoints.size() >= static_cast<size_t>(Var37 / 4));
+
     CoordsXYZ exitWaypointLoc = waypointLoc;
 
-    exitWaypointLoc.x += carEntry->peep_loading_waypoints[Var37 / 4][2].x;
-    exitWaypointLoc.y += carEntry->peep_loading_waypoints[Var37 / 4][2].y;
+    const auto waypointIndex = Var37 / 4U;
+    if (waypointIndex < carEntry->peep_loading_waypoints.size())
+    {
+        exitWaypointLoc.x += carEntry->peep_loading_waypoints[waypointIndex][2].x;
+        exitWaypointLoc.y += carEntry->peep_loading_waypoints[waypointIndex][2].y;
+    }
 
     if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         exitWaypointLoc.z += 15;
 
     MoveTo(exitWaypointLoc);
 
-    waypointLoc.x += carEntry->peep_loading_waypoints[Var37 / 4][1].x;
-    waypointLoc.y += carEntry->peep_loading_waypoints[Var37 / 4][1].y;
+    if (waypointIndex < carEntry->peep_loading_waypoints.size())
+    {
+        waypointLoc.x += carEntry->peep_loading_waypoints[waypointIndex][1].x;
+        waypointLoc.y += carEntry->peep_loading_waypoints[waypointIndex][1].y;
+    }
 
     SetDestination(waypointLoc, 2);
     RideSubState = PeepRideSubState::ApproachExitWaypoints;
@@ -4429,9 +4439,13 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     }
 
     const auto& vehicle_type = rideEntry->Cars[vehicle->vehicle_type];
-    Guard::Assert(waypoint < 3);
-    targetLoc.x += vehicle_type.peep_loading_waypoints[Var37 / 4][waypoint].x;
-    targetLoc.y += vehicle_type.peep_loading_waypoints[Var37 / 4][waypoint].y;
+    const auto waypointIndex = Var37 / 4U;
+    if (waypointIndex < vehicle_type.peep_loading_waypoints.size())
+    {
+        Guard::Assert(waypoint < 3);
+        targetLoc.x += vehicle_type.peep_loading_waypoints[waypointIndex][waypoint].x;
+        targetLoc.y += vehicle_type.peep_loading_waypoints[waypointIndex][waypoint].y;
+    }
 
     SetDestination(targetLoc);
 }
