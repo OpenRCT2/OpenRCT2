@@ -190,8 +190,8 @@ static constexpr const WindowParkAward _parkAwards[] = {
 
 class ParkWindow final : public Window
 {
-    int16_t _numberOfStaff = -1;
-    int16_t _numberOfRides = -1;
+    int32_t _numberOfStaff = -1;
+    int32_t _numberOfRides = -1;
     uint8_t _peepAnimationFrame = 0;
 
 public:
