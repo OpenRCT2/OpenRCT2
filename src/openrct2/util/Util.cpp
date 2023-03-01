@@ -372,10 +372,12 @@ bool UtilGzipCompress(FILE* source, FILE* dest)
     std::vector<uint8_t> in(InflateDeflateBufferSize);
     std::vector<uint8_t> out(InflateDeflateBufferSize);
 
-    const int windowBits = 15;
-    const int gzipEncoding = 16;
+    constexpr int windowBits = 15;
+    constexpr int gzipEncoding = 16;
+    constexpr int memoryUsageLevel = 8;
+
     if (const auto ret = deflateInit2(
-            &strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | gzipEncoding, 8, Z_DEFAULT_STRATEGY);
+            &strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | gzipEncoding, memoryUsageLevel, Z_DEFAULT_STRATEGY);
         ret != Z_OK)
     {
         LOG_ERROR("Failed to initialise stream");
@@ -430,7 +432,13 @@ std::vector<uint8_t> Gzip(const void* data, const size_t dataLen)
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
 
-    if (const auto ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 | 16, 8, Z_DEFAULT_STRATEGY); ret != Z_OK)
+    constexpr int windowBits = 15;
+    constexpr int gzipEncoding = 16;
+    constexpr int memoryUsageLevel = 8;
+
+    if (const auto ret = deflateInit2(
+            &strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | gzipEncoding, memoryUsageLevel, Z_DEFAULT_STRATEGY);
+        ret != Z_OK)
     {
         throw std::runtime_error("deflateInit2 failed with error " + std::to_string(ret));
     }
@@ -483,7 +491,10 @@ std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen)
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
 
-    if (const auto ret = inflateInit2(&strm, 15 | 16); ret != Z_OK)
+    constexpr int windowBits = 15;
+    constexpr int gzipEncoding = 16;
+
+    if (const auto ret = inflateInit2(&strm, windowBits | gzipEncoding); ret != Z_OK)
     {
         throw std::runtime_error("inflateInit2 failed with error " + std::to_string(ret));
     }
