@@ -6394,7 +6394,7 @@ static void WindowRideIncomeToggleSecondaryPrice(WindowBase* w)
     GameActions::Execute(&rideSetPriceAction);
 }
 
-static void WindowRideIncomeSetPrimaryPrice(WindowBase* w, money16 price)
+static void WindowRideIncomeSetPrimaryPrice(WindowBase* w, money64 price)
 {
     auto rideSetPriceAction = RideSetPriceAction(w->rideId, price, true);
     GameActions::Execute(&rideSetPriceAction);
@@ -6413,7 +6413,7 @@ static void WindowRideIncomeIncreasePrimaryPrice(WindowBase* w)
     if (ride == nullptr)
         return;
 
-    money16 price = ride->price[0];
+    auto price = ride->price[0];
     if (price < 20.00_GBP)
         price++;
 
@@ -6433,7 +6433,7 @@ static void WindowRideIncomeDecreasePrimaryPrice(WindowBase* w)
     if (ride == nullptr)
         return;
 
-    money16 price = ride->price[0];
+    auto price = ride->price[0];
     if (price > 0.00_GBP)
         price--;
 
@@ -6449,7 +6449,7 @@ static money64 WindowRideIncomeGetSecondaryPrice(WindowBase* w)
     return ride->price[1];
 }
 
-static void WindowRideIncomeSetSecondaryPrice(WindowBase* w, money16 price)
+static void WindowRideIncomeSetSecondaryPrice(WindowBase* w, money64 price)
 {
     auto rideSetPriceAction = RideSetPriceAction(w->rideId, price, false);
     GameActions::Execute(&rideSetPriceAction);
@@ -6526,7 +6526,7 @@ static void WindowRideIncomeMouseup(WindowBase* w, WidgetIndex widgetIndex)
             auto ride = GetRide(w->rideId);
             if (ride != nullptr)
             {
-                MoneyToString(static_cast<money64>(ride->price[0]), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
+                MoneyToString(ride->price[0], _moneyInputText, MONEY_STRING_MAXLENGTH, true);
                 WindowTextInputRawOpen(
                     w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
                     MONEY_STRING_MAXLENGTH);
@@ -6613,15 +6613,14 @@ static void WindowRideIncomeTextinput(WindowBase* w, WidgetIndex widgetIndex, co
     }
 
     price = std::clamp(price, 0.00_GBP, 20.00_GBP);
-    money16 price16 = static_cast<money16>(price);
 
     if (widgetIndex == WIDX_PRIMARY_PRICE)
     {
-        WindowRideIncomeSetPrimaryPrice(w, price16);
+        WindowRideIncomeSetPrimaryPrice(w, price);
     }
     else
     {
-        WindowRideIncomeSetSecondaryPrice(w, price16);
+        WindowRideIncomeSetSecondaryPrice(w, price);
     }
 }
 
@@ -6675,7 +6674,7 @@ static void WindowRideIncomeInvalidate(WindowBase* w)
     window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Empty;
 
     window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_BOTTOM_TOOLBAR_CASH;
-    money16 ridePrimaryPrice = RideGetPrice(*ride);
+    auto ridePrimaryPrice = RideGetPrice(*ride);
     ft.Rewind();
     ft.Add<money64>(ridePrimaryPrice);
     if (ridePrimaryPrice == 0)
@@ -6821,7 +6820,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
 
     // Running cost per hour
     money64 costPerHour = ride->upkeep_cost * 16;
-    stringId = ride->upkeep_cost == MONEY16_UNDEFINED ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
+    stringId = ride->upkeep_cost == MONEY64_UNDEFINED ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
     auto ft = Formatter();
     ft.Add<money64>(costPerHour);
     DrawTextBasic(*dpi, screenCoords, stringId, ft);

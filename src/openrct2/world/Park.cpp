@@ -48,10 +48,10 @@ using namespace OpenRCT2;
 
 uint64_t gParkFlags;
 uint16_t gParkRating;
-money16 gParkEntranceFee;
+money64 gParkEntranceFee;
 uint32_t gParkSize;
-money16 gLandPrice;
-money16 gConstructionRightsPrice;
+money64 gLandPrice;
+money64 gConstructionRightsPrice;
 
 uint64_t gTotalAdmissions;
 money64 gTotalIncomeFromAdmissions;
@@ -191,7 +191,7 @@ int32_t ParkGetForcedRating()
     return _forcedParkRating;
 }
 
-money16 ParkGetEntranceFee()
+money64 ParkGetEntranceFee()
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
@@ -500,8 +500,7 @@ money64 Park::CalculateRideValue(const Ride& ride) const
     if (ride.value != RIDE_VALUE_UNDEFINED)
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        result = ToMoney64FromGBP(ride.value)
-            * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
+        result = (ride.value * 10) * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;
 }
@@ -532,7 +531,7 @@ money64 Park::CalculateTotalRideValueForMoney() const
         // Add ride value
         if (ride.value != RIDE_VALUE_UNDEFINED)
         {
-            money64 rideValue = static_cast<money64>(ride.value);
+            money64 rideValue = ride.value;
             if (ridePricesUnlocked)
             {
                 rideValue -= ride.price[0];
@@ -616,7 +615,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     }
 
     // Penalty for overpriced entrance fee relative to total ride value
-    money16 entranceFee = ParkGetEntranceFee();
+    auto entranceFee = ParkGetEntranceFee();
     if (entranceFee > gTotalRideValueForMoney)
     {
         probability /= 4;

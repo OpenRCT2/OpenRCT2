@@ -55,11 +55,11 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     GetImageTable().Read(context, stream);
 
     // Validate properties
-    if (_legacyType.price <= 0)
+    if (_legacyType.price <= 0.00_GBP)
     {
         context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
-    if (_legacyType.removal_price <= 0)
+    if (_legacyType.removal_price <= 0.00_GBP)
     {
         // Make sure you don't make a profit when placing then removing.
         const auto reimbursement = _legacyType.removal_price;

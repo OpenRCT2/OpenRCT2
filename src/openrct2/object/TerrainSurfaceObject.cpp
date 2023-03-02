@@ -87,7 +87,7 @@ void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         Colour = Colour::FromString(Json::GetString(properties["colour"]), 255);
         Rotations = Json::GetNumber<int8_t>(properties["rotations"], 1);
-        Price = Json::GetNumber<money32>(properties["price"]);
+        Price = Json::GetNumber<money64>(properties["price"]);
         Flags = Json::GetFlags<TERRAIN_SURFACE_FLAGS>(
             properties,
             { { "smoothWithSelf", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_SELF },

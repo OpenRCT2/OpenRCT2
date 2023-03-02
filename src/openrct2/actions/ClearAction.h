@@ -45,7 +45,7 @@ public:
 private:
     GameActions::Result CreateResult() const;
     GameActions::Result QueryExecute(bool executing) const;
-    money32 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
+    money64 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
 
     /**
      * Function to clear the flag that is set to prevent cost duplication

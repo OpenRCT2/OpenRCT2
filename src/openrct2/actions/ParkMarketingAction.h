@@ -32,5 +32,5 @@ public:
 
 private:
     GameActions::Result CreateResult() const;
-    money32 CalculatePrice() const;
+    money64 CalculatePrice() const;
 };

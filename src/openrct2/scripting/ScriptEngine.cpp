@@ -1161,7 +1161,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
         obj.Set("errorMessage", result.GetErrorMessage());
     }
 
-    if (result.Cost != MONEY32_UNDEFINED)
+    if (result.Cost != MONEY64_UNDEFINED)
     {
         obj.Set("cost", result.Cost);
     }

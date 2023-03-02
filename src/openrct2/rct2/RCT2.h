@@ -195,7 +195,7 @@ namespace RCT2
                 ride_rating Nausea;     // 0x144
             };
         };
-        uint16_t Value;                      // 0x146
+        money16 Value;                       // 0x146
         uint16_t ChairliftBullwheelRotation; // 0x148
         uint8_t Satisfaction;                // 0x14A
         uint8_t SatisfactionTimeOut;         // 0x14B

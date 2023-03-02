@@ -424,7 +424,7 @@ money64 Ride::CalculateIncomePerHour() const
 
     if (currentShopItem != ShopItem::None)
     {
-        const money16 shopItemProfit = price[1] - GetShopItemDescriptor(currentShopItem).Cost;
+        const money64 shopItemProfit = price[1] - GetShopItemDescriptor(currentShopItem).Cost;
 
         if (GetShopItemDescriptor(currentShopItem).IsPhoto())
         {
@@ -1098,8 +1098,8 @@ void Ride::Update()
         income_per_hour = CalculateIncomePerHour();
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-        if (upkeep_cost != MONEY16_UNDEFINED)
-            profit = (income_per_hour - (static_cast<money32>(upkeep_cost * 16)));
+        if (upkeep_cost != MONEY64_UNDEFINED)
+            profit = income_per_hour - (upkeep_cost * 16);
     }
 
     // Ride specific updates
@@ -4208,7 +4208,7 @@ void Ride::SetColourPreset(uint8_t index)
     colour_scheme_type = 0;
 }
 
-money32 RideGetCommonPrice(const Ride& forRide)
+money64 RideGetCommonPrice(const Ride& forRide)
 {
     for (const auto& ride : GetRideManager())
     {
@@ -4218,7 +4218,7 @@ money32 RideGetCommonPrice(const Ride& forRide)
         }
     }
 
-    return MONEY32_UNDEFINED;
+    return MONEY64_UNDEFINED;
 }
 
 void Ride::SetNameToDefault()
@@ -5177,7 +5177,7 @@ bool Ride::IsRide() const
     return GetClassification() == RideClassification::Ride;
 }
 
-money16 RideGetPrice(const Ride& ride)
+money64 RideGetPrice(const Ride& ride)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return 0;

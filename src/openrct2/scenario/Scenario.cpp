@@ -638,8 +638,8 @@ ObjectiveStatus Objective::CheckGuestsBy() const
 ObjectiveStatus Objective::CheckParkValueBy() const
 {
     int32_t currentMonthYear = gDateMonthsElapsed;
-    money32 objectiveParkValue = Currency;
-    money32 parkValue = gParkValue;
+    money64 objectiveParkValue = Currency;
+    money64 parkValue = gParkValue;
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
@@ -748,7 +748,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
 
 ObjectiveStatus Objective::CheckMonthlyRideIncome() const
 {
-    money32 lastMonthRideIncome = gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
+    money64 lastMonthRideIncome = gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
     if (lastMonthRideIncome >= Currency)
     {
         return ObjectiveStatus::Success;
@@ -822,8 +822,8 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
 
 ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 {
-    money32 parkValue = gParkValue;
-    money32 currentLoan = gBankLoan;
+    money64 parkValue = gParkValue;
+    money64 currentLoan = gBankLoan;
 
     if (currentLoan <= 0 && parkValue >= Currency)
     {

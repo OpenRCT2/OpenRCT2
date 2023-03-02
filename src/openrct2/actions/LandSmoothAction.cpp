@@ -94,13 +94,13 @@ GameActions::Result LandSmoothAction::SmoothLandTile(
     return res;
 }
 
-money32 LandSmoothAction::SmoothLandRowByEdge(
+money64 LandSmoothAction::SmoothLandRowByEdge(
     bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
     int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const
 {
     uint8_t shouldContinue = 0xF;
     int32_t landChangePerTile = _isLowering ? 2 : -2;
-    money32 totalCost = 0;
+    money64 totalCost = 0;
 
     // check if we need to start at all
     if (!LocationValid(loc) || !LocationValid({ loc.x + stepX, loc.y + stepY }))
@@ -238,12 +238,12 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
     return totalCost;
 }
 
-money32 LandSmoothAction::SmoothLandRowByCorner(
+money64 LandSmoothAction::SmoothLandRowByCorner(
     bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
     int32_t checkDirection) const
 {
     bool shouldContinue = true;
-    money32 totalCost = 0;
+    money64 totalCost = 0;
     int32_t landChangePerTile;
     if (stepX == 0 || stepY == 0)
     {

@@ -154,7 +154,7 @@ private:
 
     std::vector<std::pair<ObjectType, ObjectEntryIndex>> _dropdownEntries;
 
-    money32 _windowFootpathCost;
+    money64 _windowFootpathCost;
     uint32_t _footpathConstructionNextArrowPulse = 0;
     uint8_t _lastUpdatedCameraRotation = UINT8_MAX;
     bool _footpathErrorOccured = false;
@@ -290,7 +290,7 @@ public:
                     break;
                 }
 
-                _windowFootpathCost = MONEY32_UNDEFINED;
+                _windowFootpathCost = MONEY64_UNDEFINED;
                 ToolCancel();
                 FootpathProvisionalUpdate();
                 MapInvalidateMapSelectionTiles();
@@ -307,7 +307,7 @@ public:
                     break;
                 }
 
-                _windowFootpathCost = MONEY32_UNDEFINED;
+                _windowFootpathCost = MONEY64_UNDEFINED;
                 ToolCancel();
                 FootpathProvisionalUpdate();
                 MapInvalidateMapSelectionTiles();
@@ -363,7 +363,7 @@ public:
         }
 
         FootpathProvisionalUpdate();
-        _windowFootpathCost = MONEY32_UNDEFINED;
+        _windowFootpathCost = MONEY64_UNDEFINED;
         Invalidate();
     }
 
@@ -496,7 +496,7 @@ public:
         screenCoords = this->windowPos
             + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
                               window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
-        if (_windowFootpathCost != MONEY32_UNDEFINED)
+        if (_windowFootpathCost != MONEY64_UNDEFINED)
         {
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
@@ -751,7 +751,7 @@ private:
     {
         FootpathProvisionalUpdate();
         _footpathConstructDirection = (direction - GetCurrentRotation()) & 3;
-        _windowFootpathCost = MONEY32_UNDEFINED;
+        _windowFootpathCost = MONEY64_UNDEFINED;
         WindowFootpathSetEnabledAndPressedWidgets();
     }
 
@@ -763,7 +763,7 @@ private:
     {
         FootpathProvisionalUpdate();
         gFootpathConstructSlope = slope;
-        _windowFootpathCost = MONEY32_UNDEFINED;
+        _windowFootpathCost = MONEY64_UNDEFINED;
         WindowFootpathSetEnabledAndPressedWidgets();
     }
 
@@ -1020,7 +1020,7 @@ private:
      */
     void WindowFootpathConstruct()
     {
-        _windowFootpathCost = MONEY32_UNDEFINED;
+        _windowFootpathCost = MONEY64_UNDEFINED;
         FootpathProvisionalUpdate();
 
         ObjectEntryIndex type;
@@ -1176,7 +1176,7 @@ private:
     {
         TileElement* tileElement;
 
-        _windowFootpathCost = MONEY32_UNDEFINED;
+        _windowFootpathCost = MONEY64_UNDEFINED;
         FootpathProvisionalUpdate();
 
         tileElement = FootpathGetTileElementToRemove();

@@ -137,18 +137,18 @@ TileElement* MapGetFootpathElement(const CoordsXYZ& coords)
  *
  *  rct2: 0x006A76FF
  */
-money32 FootpathProvisionalSet(
+money64 FootpathProvisionalSet(
     ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
     PathConstructFlags constructFlags)
 {
-    money32 cost;
+    money64 cost;
 
     FootpathProvisionalRemove();
 
     auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY32_UNDEFINED;
+    cost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
     if (res.Error == GameActions::Status::Ok)
     {
         gProvisionalFootpath.SurfaceIndex = type;

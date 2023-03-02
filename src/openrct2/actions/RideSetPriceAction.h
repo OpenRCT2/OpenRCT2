@@ -15,12 +15,12 @@ class RideSetPriceAction final : public GameActionBase<GameCommand::SetRidePrice
 {
 private:
     RideId _rideIndex{ RideId::GetNull() };
-    money16 _price{ MONEY16_UNDEFINED };
+    money64 _price{ MONEY64_UNDEFINED };
     bool _primaryPrice{ true };
 
 public:
     RideSetPriceAction() = default;
-    RideSetPriceAction(RideId rideIndex, money16 price, bool primaryPrice);
+    RideSetPriceAction(RideId rideIndex, money64 price, bool primaryPrice);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

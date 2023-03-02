@@ -51,8 +51,8 @@
     <OpenSFXSha1>8f04aea33f8034131c3069f6accacce0d94f80c1</OpenSFXSha1>
     <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.0.1/openmusic.zip</OpenMSXUrl>
     <OpenMSXSha1>8ff94490180e2fbfdd13a4130eb300da726ca406</OpenMSXSha1>
-    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.73/replays.zip</ReplaysUrl>
-    <ReplaysSha1>5AAFEE5DBEFACA454004742CECCC99E5DD3FD4F7</ReplaysSha1>
+    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.74/replays.zip</ReplaysUrl>
+    <ReplaysSha1>7AB14AB3B991BA4214E53BB0B0838D254C1E7BA6</ReplaysSha1>
   </PropertyGroup>
 
   <ItemGroup>

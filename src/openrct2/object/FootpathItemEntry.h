@@ -43,6 +43,6 @@ struct PathBitEntry
     uint16_t flags;
     PathBitDrawType draw_type;
     CursorID tool_id;
-    money16 price;
+    money64 price;
     ObjectEntryIndex scenery_tab_id;
 };

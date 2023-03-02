@@ -21,7 +21,7 @@
 #include "../ride/ShopItem.h"
 #include "../world/Park.h"
 
-RideSetPriceAction::RideSetPriceAction(RideId rideIndex, money16 price, bool primaryPrice)
+RideSetPriceAction::RideSetPriceAction(RideId rideIndex, money64 price, bool primaryPrice)
     : _rideIndex(rideIndex)
     , _price(price)
     , _primaryPrice(primaryPrice)

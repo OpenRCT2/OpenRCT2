@@ -238,10 +238,10 @@ GameActions::Result RideCreateAction::Execute() const
         {
             if (ShopItemHasCommonPrice(ShopItem::Admission))
             {
-                money32 price = RideGetCommonPrice(*ride);
-                if (price != MONEY32_UNDEFINED)
+                auto price = RideGetCommonPrice(*ride);
+                if (price != MONEY64_UNDEFINED)
                 {
-                    ride->price[0] = static_cast<money16>(price);
+                    ride->price[0] = price;
                 }
             }
         }
@@ -252,10 +252,10 @@ GameActions::Result RideCreateAction::Execute() const
             {
                 if (ShopItemHasCommonPrice(rideEntry->shop_item[i]))
                 {
-                    money32 price = ShopItemGetCommonPrice(ride, rideEntry->shop_item[i]);
-                    if (price != MONEY32_UNDEFINED)
+                    auto price = ShopItemGetCommonPrice(ride, rideEntry->shop_item[i]);
+                    if (price != MONEY64_UNDEFINED)
                     {
-                        ride->price[i] = static_cast<money16>(price);
+                        ride->price[i] = price;
                     }
                 }
             }
@@ -264,10 +264,10 @@ GameActions::Result RideCreateAction::Execute() const
         // Set the on-ride photo price, whether the ride has one or not (except shops).
         if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) && ShopItemHasCommonPrice(ShopItem::Photo))
         {
-            money32 price = ShopItemGetCommonPrice(ride, ShopItem::Photo);
-            if (price != MONEY32_UNDEFINED)
+            auto price = ShopItemGetCommonPrice(ride, ShopItem::Photo);
+            if (price != MONEY64_UNDEFINED)
             {
-                ride->price[1] = static_cast<money16>(price);
+                ride->price[1] = price;
             }
         }
     }
@@ -290,7 +290,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->music_tune_id = TUNE_ID_NULL;
 
     ride->breakdown_reason = 255;
-    ride->upkeep_cost = MONEY16_UNDEFINED;
+    ride->upkeep_cost = MONEY64_UNDEFINED;
     ride->reliability = RIDE_INITIAL_RELIABILITY;
     ride->unreliability_factor = 1;
     ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;

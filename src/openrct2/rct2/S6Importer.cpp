@@ -338,7 +338,7 @@ namespace RCT2
             _guestGenerationProbability = _s6.GuestGenerationProbability;
             gTotalRideValueForMoney = _s6.TotalRideValueForMoney;
             gMaxBankLoan = ToMoney64(_s6.MaximumLoan);
-            gGuestInitialCash = _s6.GuestInitialCash;
+            gGuestInitialCash = ToMoney64(_s6.GuestInitialCash);
             gGuestInitialHunger = _s6.GuestInitialHunger;
             gGuestInitialThirst = _s6.GuestInitialThirst;
             gScenarioObjective.Type = _s6.ObjectiveType;
@@ -384,8 +384,8 @@ namespace RCT2
                 }
             }
 
-            gLandPrice = _s6.LandPrice;
-            gConstructionRightsPrice = _s6.ConstructionRightsPrice;
+            gLandPrice = ToMoney64(_s6.LandPrice);
+            gConstructionRightsPrice = ToMoney64(_s6.ConstructionRightsPrice);
             // unk_01358774
             // Pad01358776
             // _s6.CdKey
@@ -951,7 +951,7 @@ namespace RCT2
             }
 
             dst->ratings = src->Ratings;
-            dst->value = src->Value;
+            dst->value = ToMoney64(src->Value);
 
             dst->chairlift_bullwheel_rotation = src->ChairliftBullwheelRotation;
 
@@ -980,7 +980,7 @@ namespace RCT2
             dst->spiral_slide_progress = src->SpiralSlideProgress;
             // Pad177[0x9];
             dst->build_date = static_cast<int32_t>(src->BuildDate);
-            dst->upkeep_cost = src->UpkeepCost;
+            dst->upkeep_cost = ToMoney64(src->UpkeepCost);
             dst->race_winner = EntityId::FromUnderlying(src->RaceWinner);
             // Pad186[0x02];
             dst->music_position = src->MusicPosition;

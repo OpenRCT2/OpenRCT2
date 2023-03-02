@@ -69,7 +69,7 @@ uint32_t gNumGuestsInPark;
 uint32_t gNumGuestsInParkLastWeek;
 uint32_t gNumGuestsHeadingForPark;
 
-money16 gGuestInitialCash;
+money64 gGuestInitialCash;
 uint8_t gGuestInitialHappiness;
 uint8_t gGuestInitialHunger;
 uint8_t gGuestInitialThirst;
@@ -1945,7 +1945,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        money16 entranceFee = ParkGetEntranceFee();
+        auto entranceFee = ParkGetEntranceFee();
         if (entranceFee != 0)
         {
             if (guest->HasItem(ShopItem::Voucher))
@@ -2320,15 +2320,12 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
             return true;
         }
 
-        money16 cost = ride->price[0];
+        auto cost = ride->price[0];
         if (cost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             ride->total_profit += cost;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-            // TODO: Refactor? SpendMoney previously accepted nullptr to not track money, passing a temporary variable as a
-            // workaround
-            money16 money = 0;
-            guest->SpendMoney(money, cost, ExpenditureType::ParkRideTickets);
+            guest->SpendMoney(cost, ExpenditureType::ParkRideTickets);
         }
 
         auto coordsCentre = coords.ToTileCentre();

@@ -121,7 +121,7 @@ GameActions::Result RideDemolishAction::Execute() const
 
 GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
 {
-    money32 refundPrice = DemolishTracks();
+    money64 refundPrice = DemolishTracks();
 
     RideClearForConstruction(ride);
     ride.RemovePeeps();
@@ -174,7 +174,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     return res;
 }
 
-money32 RideDemolishAction::MazeRemoveTrack(const CoordsXYZD& coords) const
+money64 RideDemolishAction::MazeRemoveTrack(const CoordsXYZD& coords) const
 {
     auto setMazeTrack = MazeSetTrackAction(coords, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
     setMazeTrack.SetFlags(GetFlags());
@@ -185,12 +185,12 @@ money32 RideDemolishAction::MazeRemoveTrack(const CoordsXYZD& coords) const
         return execRes.Cost;
     }
 
-    return MONEY32_UNDEFINED;
+    return MONEY64_UNDEFINED;
 }
 
-money32 RideDemolishAction::DemolishTracks() const
+money64 RideDemolishAction::DemolishTracks() const
 {
-    money32 refundPrice = 0;
+    money64 refundPrice = 0;
 
     uint8_t oldpaused = gGamePaused;
     gGamePaused = 0;
@@ -247,8 +247,8 @@ money32 RideDemolishAction::DemolishTracks() const
                     for (Direction dir : ALL_DIRECTIONS)
                     {
                         const CoordsXYZ off = { DirOffsets[dir], 0 };
-                        money32 removePrice = MazeRemoveTrack({ location + off, dir });
-                        if (removePrice != MONEY32_UNDEFINED)
+                        money64 removePrice = MazeRemoveTrack({ location + off, dir });
+                        if (removePrice != MONEY64_UNDEFINED)
                         {
                             refundPrice += removePrice;
                         }
@@ -289,12 +289,12 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride& ride) const
     return res;
 }
 
-money32 RideDemolishAction::GetRefurbishPrice(const Ride& ride) const
+money64 RideDemolishAction::GetRefurbishPrice(const Ride& ride) const
 {
     return -GetRefundPrice(ride) / 2;
 }
 
-money32 RideDemolishAction::GetRefundPrice(const Ride& ride) const
+money64 RideDemolishAction::GetRefundPrice(const Ride& ride) const
 {
     return RideGetRefundPrice(ride);
 }

@@ -43,7 +43,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-#define NETWORK_STREAM_VERSION "7"
+#define NETWORK_STREAM_VERSION "8"
 
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
@@ -3271,7 +3271,7 @@ int32_t NetworkGetPlayerID(uint32_t index)
     return network.player_list[index]->Id;
 }
 
-money32 NetworkGetPlayerMoneySpent(uint32_t index)
+money64 NetworkGetPlayerMoneySpent(uint32_t index)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
@@ -3301,7 +3301,7 @@ std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
     return {};
 }
 
-void NetworkAddPlayerMoneySpent(uint32_t index, money32 cost)
+void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
@@ -4027,7 +4027,7 @@ int32_t NetworkGetPlayerID(uint32_t index)
 {
     return 0;
 }
-money32 NetworkGetPlayerMoneySpent(uint32_t index)
+money64 NetworkGetPlayerMoneySpent(uint32_t index)
 {
     return 0.00_GBP;
 }
@@ -4039,7 +4039,7 @@ std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
 {
     return {};
 }
-void NetworkAddPlayerMoneySpent(uint32_t index, money32 cost)
+void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 {
 }
 int32_t NetworkGetPlayerLastAction(uint32_t index, int32_t time)

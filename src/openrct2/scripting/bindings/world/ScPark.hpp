@@ -36,8 +36,8 @@ namespace OpenRCT2::Scripting
         money64 maxBankLoan_get() const;
         void maxBankLoan_set(money64 value);
 
-        money16 entranceFee_get() const;
-        void entranceFee_set(money16 value);
+        money64 entranceFee_get() const;
+        void entranceFee_set(money64 value);
 
         uint32_t guests_get() const;
 
@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
 
         int32_t guestGenerationProbability_get() const;
 
-        money16 guestInitialCash_get() const;
+        money64 guestInitialCash_get() const;
 
         uint8_t guestInitialHappiness_get() const;
 
@@ -67,11 +67,11 @@ namespace OpenRCT2::Scripting
         money64 totalIncomeFromAdmissions_get() const;
         void totalIncomeFromAdmissions_set(money64 value);
 
-        money32 landPrice_get() const;
-        void landPrice_set(money32 value);
+        money64 landPrice_get() const;
+        void landPrice_set(money64 value);
 
-        money32 constructionRightsPrice_get() const;
-        void constructionRightsPrice_set(money32 value);
+        money64 constructionRightsPrice_get() const;
+        void constructionRightsPrice_set(money64 value);
 
         int16_t casualtyPenalty_get() const;
         void casualtyPenalty_set(int16_t value);

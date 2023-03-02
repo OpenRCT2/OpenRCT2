@@ -36,7 +36,7 @@ enum class ExpenditureType : int32_t
 
 constexpr const uint8_t MaxBankLoanInterestRate = 255;
 
-extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
+extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
 
 extern money64 gInitialCash;
 extern money64 gCash;

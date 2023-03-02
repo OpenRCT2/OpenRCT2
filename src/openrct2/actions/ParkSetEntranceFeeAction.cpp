@@ -15,7 +15,7 @@
 #include "../localisation/StringIds.h"
 #include "../world/Park.h"
 
-ParkSetEntranceFeeAction::ParkSetEntranceFeeAction(money16 fee)
+ParkSetEntranceFeeAction::ParkSetEntranceFeeAction(money64 fee)
     : _fee(fee)
 {
 }

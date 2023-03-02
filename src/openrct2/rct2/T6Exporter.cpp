@@ -83,7 +83,7 @@ namespace RCT2
         tempStream.WriteValue<uint8_t>(_trackDesign->excitement);
         tempStream.WriteValue<uint8_t>(_trackDesign->intensity);
         tempStream.WriteValue<uint8_t>(_trackDesign->nausea);
-        tempStream.WriteValue<money16>(_trackDesign->upkeep_cost);
+        tempStream.WriteValue<money16>(ToMoney16(_trackDesign->upkeep_cost));
         tempStream.WriteArray(_trackDesign->track_spine_colour, Limits::NumColourSchemes);
         tempStream.WriteArray(_trackDesign->track_rail_colour, Limits::NumColourSchemes);
         tempStream.WriteArray(_trackDesign->track_support_colour, Limits::NumColourSchemes);

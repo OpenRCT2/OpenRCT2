@@ -23,7 +23,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* st
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     _legacyType.flags = stream->ReadValue<uint8_t>();
-    _legacyType.price = stream->ReadValue<int16_t>();
+    _legacyType.price = stream->ReadValue<money16>();
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
 
@@ -35,7 +35,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* st
     GetImageTable().Read(context, stream);
 
     // Validate properties
-    if (_legacyType.price <= 0)
+    if (_legacyType.price <= 0.00_GBP)
     {
         context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
@@ -93,7 +93,7 @@ void BannerObject::ReadJson(IReadObjectContext* context, json_t& root)
     if (properties.is_object())
     {
         _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
-        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]);
+        _legacyType.price = Json::GetNumber<money64>(properties["price"]);
         _legacyType.flags = Json::GetFlags<uint8_t>(
             properties,
             {

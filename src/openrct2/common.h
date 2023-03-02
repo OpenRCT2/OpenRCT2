@@ -77,7 +77,6 @@ using fixed32_2dp = int32_t;
 using fixed64_1dp = int64_t;
 
 // Money is stored as a multiple of 0.10.
-using money8 = fixed8_1dp;
 using money16 = fixed16_1dp;
 using money32 = fixed32_1dp;
 using money64 = fixed64_1dp;
@@ -111,6 +110,11 @@ constexpr money64 ToMoney64FromGBP(double money) noexcept
 #define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 #define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))
+
+constexpr money16 ToMoney16(money64 value)
+{
+    return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : value;
+}
 
 constexpr money64 ToMoney64(money32 value)
 {

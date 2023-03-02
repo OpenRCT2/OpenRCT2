@@ -28,7 +28,7 @@ public:
     uint16_t Ping = 0;
     uint8_t Flags = 0;
     uint8_t Group = 0;
-    money32 MoneySpent = 0.00_GBP;
+    money64 MoneySpent = 0.00_GBP;
     uint32_t CommandsRan = 0;
     int32_t LastAction = -999;
     uint32_t LastActionTime = 0;
@@ -45,5 +45,5 @@ public:
 
     void Read(NetworkPacket& packet);
     void Write(NetworkPacket& packet);
-    void AddMoneySpent(money32 cost);
+    void AddMoneySpent(money64 cost);
 };

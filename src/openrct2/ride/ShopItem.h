@@ -88,11 +88,11 @@ struct ShopItemStrings
 
 struct ShopItemDescriptor
 {
-    money16 Cost;
-    money16 BaseValue;
-    money16 HotValue;
-    money16 ColdValue;
-    money8 DefaultPrice;
+    money64 Cost;
+    money64 BaseValue;
+    money64 HotValue;
+    money64 ColdValue;
+    money64 DefaultPrice;
     uint32_t Image;
     ShopItemStrings Naming;
     uint16_t Flags;
@@ -130,7 +130,7 @@ enum
 
 extern uint64_t gSamePriceThroughoutPark;
 
-money32 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem);
+money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem);
 bool ShopItemHasCommonPrice(const ShopItem shopItem);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

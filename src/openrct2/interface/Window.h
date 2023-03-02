@@ -761,7 +761,7 @@ void WindowUnfollowSprite(WindowBase& w);
 bool WindowRideConstructionUpdateState(
     int32_t* trackType, int32_t* trackDirection, RideId* rideIndex, int32_t* _liftHillAndAlternativeState, CoordsXYZ* trackPos,
     int32_t* properties);
-money32 PlaceProvisionalTrackPiece(
+money64 PlaceProvisionalTrackPiece(
     RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
     const CoordsXYZ& trackPos);
 

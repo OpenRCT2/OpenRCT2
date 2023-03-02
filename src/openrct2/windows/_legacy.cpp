@@ -39,12 +39,12 @@ RideConstructionState _rideConstructionState2;
  *
  *  rct2: 0x006CA162
  */
-money32 PlaceProvisionalTrackPiece(
+money64 PlaceProvisionalTrackPiece(
     RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, const CoordsXYZ& trackPos)
 {
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
-        return MONEY32_UNDEFINED;
+        return MONEY64_UNDEFINED;
 
     RideConstructionRemoveGhosts();
     const auto& rtd = ride->GetRideTypeDescriptor();
@@ -56,7 +56,7 @@ money32 PlaceProvisionalTrackPiece(
         auto result = GameActions::Execute(&gameAction);
 
         if (result.Error != GameActions::Status::Ok)
-            return MONEY32_UNDEFINED;
+            return MONEY64_UNDEFINED;
 
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
@@ -83,7 +83,7 @@ money32 PlaceProvisionalTrackPiece(
     // This command must not be sent over the network
     auto res = GameActions::Execute(&trackPlaceAction);
     if (res.Error != GameActions::Status::Ok)
-        return MONEY32_UNDEFINED;
+        return MONEY64_UNDEFINED;
 
     int16_t z_begin, z_end;
     const auto& ted = GetTrackElementDescriptor(trackType);

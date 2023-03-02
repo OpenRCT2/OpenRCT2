@@ -22,7 +22,7 @@
 #include "Surface.h"
 
 static int32_t MapPlaceClearFunc(
-    TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price, bool is_scenery)
+    TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price, bool is_scenery)
 {
     if ((*tile_element)->GetType() != TileElementType::SmallScenery)
         return 1;
@@ -59,7 +59,7 @@ static int32_t MapPlaceClearFunc(
  *
  *  rct2: 0x006E0D6E, 0x006B8D88
  */
-int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
+int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price)
 {
     return MapPlaceClearFunc(tile_element, coords, flags, price, /*is_scenery=*/true);
 }
@@ -68,13 +68,13 @@ int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coo
  *
  *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
  */
-int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
+int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price)
 {
     return MapPlaceClearFunc(tile_element, coords, flags, price, /*is_scenery=*/false);
 }
 
 static bool MapLoc68BABCShouldContinue(
-    TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, uint8_t flags, money32& price,
+    TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, uint8_t flags, money64& price,
     uint8_t crossingMode, bool canBuildCrossing)
 {
     if (clearFunc != nullptr)

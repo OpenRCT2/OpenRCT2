@@ -65,7 +65,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     auto resultData = LargeSceneryPlaceActionResult{};
 
-    money32 supportsCost = 0;
+    money64 supportsCost = 0;
 
     if (_primaryColour >= COLOUR_COUNT || _secondaryColour >= COLOUR_COUNT || _tertiaryColour >= COLOUR_COUNT)
     {
@@ -191,7 +191,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 
     auto resultData = LargeSceneryPlaceActionResult{};
 
-    money32 supportsCost = 0;
+    money64 supportsCost = 0;
 
     auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)

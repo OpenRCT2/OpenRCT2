@@ -232,7 +232,7 @@ namespace RCT1
             td->excitement = td4Base.Excitement;
             td->intensity = td4Base.Intensity;
             td->nausea = td4Base.Nausea;
-            td->upkeep_cost = td4Base.UpkeepCost;
+            td->upkeep_cost = ToMoney64(td4Base.UpkeepCost);
             td->space_required_x = 255;
             td->space_required_y = 255;
             td->lift_hill_speed = 5;

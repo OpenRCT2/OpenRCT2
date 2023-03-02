@@ -25,7 +25,7 @@
 #include "../world/Park.h"
 
 // Monthly research funding costs
-const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
+const money64 research_cost_table[RESEARCH_FUNDING_COUNT] = {
     0.00_GBP,   // No funding
     100.00_GBP, // Minimum funding
     200.00_GBP, // Normal funding
@@ -146,10 +146,10 @@ void FinancePayInterest()
     }
 
     // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
-    // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
+    // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
     const money64 current_loan = gBankLoan;
     const auto current_interest_rate = gBankLoanInterestRate;
-    const money32 interest_to_pay = (gParkFlags & PARK_FLAGS_RCT1_INTEREST) ? (current_loan / 2400)
+    const money64 interest_to_pay = (gParkFlags & PARK_FLAGS_RCT1_INTEREST) ? (current_loan / 2400)
                                                                             : (current_loan * 5 * current_interest_rate) >> 14;
 
     FinancePayment(interest_to_pay, ExpenditureType::Interest);
@@ -172,7 +172,7 @@ void FinancePayRideUpkeep()
 
         if (ride.status != RideStatus::Closed && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            int16_t upkeep = ride.upkeep_cost;
+            auto upkeep = ride.upkeep_cost;
             if (upkeep != -1)
             {
                 ride.total_profit -= upkeep;
@@ -252,7 +252,7 @@ void FinanceUpdateDailyProfit()
     gCurrentProfit = 7 * gCurrentExpenditure;
     gCurrentExpenditure = 0; // Reset daily expenditure
 
-    money32 current_profit = 0;
+    money64 current_profit = 0;
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
@@ -267,13 +267,13 @@ void FinanceUpdateDailyProfit()
         current_profit -= research_cost_table[level];
 
         // Loan costs
-        money32 current_loan = gBankLoan;
+        auto current_loan = gBankLoan;
         current_profit -= current_loan / 600;
 
         // Ride costs
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Closed && ride.upkeep_cost != MONEY16_UNDEFINED)
+            if (ride.status != RideStatus::Closed && ride.upkeep_cost != MONEY64_UNDEFINED)
             {
                 current_profit -= 2 * ride.upkeep_cost;
             }

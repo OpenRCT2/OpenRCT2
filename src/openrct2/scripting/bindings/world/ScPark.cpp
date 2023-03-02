@@ -109,11 +109,11 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    money16 ScPark::entranceFee_get() const
+    money64 ScPark::entranceFee_get() const
     {
         return gParkEntranceFee;
     }
-    void ScPark::entranceFee_set(money16 value)
+    void ScPark::entranceFee_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
@@ -139,7 +139,7 @@ namespace OpenRCT2::Scripting
         return _guestGenerationProbability;
     }
 
-    money16 ScPark::guestInitialCash_get() const
+    money64 ScPark::guestInitialCash_get() const
     {
         return gGuestInitialCash;
     }
@@ -226,21 +226,21 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    money32 ScPark::landPrice_get() const
+    money64 ScPark::landPrice_get() const
     {
         return gLandPrice;
     }
-    void ScPark::landPrice_set(money32 value)
+    void ScPark::landPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
         gLandPrice = value;
     }
 
-    money32 ScPark::constructionRightsPrice_get() const
+    money64 ScPark::constructionRightsPrice_get() const
     {
         return gConstructionRightsPrice;
     }
-    void ScPark::constructionRightsPrice_set(money32 value)
+    void ScPark::constructionRightsPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
         gConstructionRightsPrice = value;

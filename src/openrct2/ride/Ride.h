@@ -187,7 +187,7 @@ struct Ride
     uint16_t num_customers_timeout;
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[OpenRCT2::Limits::CustomerHistorySize];
-    money16 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
+    money64 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {
@@ -199,7 +199,7 @@ struct Ride
             ride_rating nausea;
         };
     };
-    uint16_t value;
+    money64 value;
     uint16_t chairlift_bullwheel_rotation;
     uint8_t satisfaction;
     uint8_t satisfaction_time_out;
@@ -222,7 +222,7 @@ struct Ride
     uint8_t slide_peep_t_shirt_colour;
     uint8_t spiral_slide_progress;
     int32_t build_date;
-    money16 upkeep_cost;
+    money64 upkeep_cost;
     EntityId race_winner;
     uint32_t music_position;
     uint8_t breakdown_reason_pending;
@@ -893,7 +893,7 @@ enum
 };
 
 #define MAX_RIDE_MEASUREMENTS 8
-#define RIDE_VALUE_UNDEFINED 0xFFFF
+constexpr money64 RIDE_VALUE_UNDEFINED = MONEY64_UNDEFINED;
 #define RIDE_INITIAL_RELIABILITY ((100 << 8) | 0xFF) // Upper byte is percentage, lower byte is "decimal".
 
 #define STATION_DEPART_FLAG (1 << 7)
@@ -1029,9 +1029,9 @@ void RideSetMapTooltip(TileElement* tileElement);
 void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason);
 TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex);
 TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos);
-int32_t RideGetRefundPrice(const Ride& ride);
+money64 RideGetRefundPrice(const Ride& ride);
 int32_t RideGetRandomColourPresetIndex(ride_type_t rideType);
-money32 RideGetCommonPrice(const Ride& forRide);
+money64 RideGetCommonPrice(const Ride& forRide);
 
 void RideClearForConstruction(Ride& ride);
 void InvalidateTestResults(Ride& ride);
@@ -1061,7 +1061,7 @@ bool TrackBlockGetPreviousFromZero(
 void RideGetStartOfTrack(CoordsXYE* output);
 
 void WindowRideConstructionUpdateActiveElements();
-money32 RideEntranceExitPlaceGhost(
+money64 RideEntranceExitPlaceGhost(
     const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 
 ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride);
@@ -1073,8 +1073,8 @@ void RideUpdateVehicleColours(const Ride& ride);
 OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry);
 
 enum class RideSetSetting : uint8_t;
-money32 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value);
-money32 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
+money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value);
+money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
 
 void UpdateGhostTrackAndArrow();
 
@@ -1083,7 +1083,7 @@ uint32_t RideCustomersInLast5Minutes(const Ride& ride);
 
 Vehicle* RideGetBrokenVehicle(const Ride& ride);
 
-money16 RideGetPrice(const Ride& ride);
+money64 RideGetPrice(const Ride& ride);
 
 TileElement* GetStationPlatform(const CoordsXYRangedZ& coords);
 bool RideHasAdjacentStation(const Ride& ride);

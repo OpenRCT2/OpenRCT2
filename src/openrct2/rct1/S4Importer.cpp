@@ -259,11 +259,11 @@ namespace RCT1
             return true;
         }
 
-        money32 CorrectRCT1ParkValue(money32 oldParkValue)
+        money64 CorrectRCT1ParkValue(money32 oldParkValue)
         {
             if (oldParkValue == MONEY32_UNDEFINED)
             {
-                return MONEY32_UNDEFINED;
+                return MONEY64_UNDEFINED;
             }
 
             if (_parkValueConversionFactor == 0)
@@ -1030,14 +1030,14 @@ namespace RCT1
             dst->maze_tiles = src->MazeTiles;
 
             // Finance / customers
-            dst->upkeep_cost = src->UpkeepCost;
+            dst->upkeep_cost = ToMoney64(src->UpkeepCost);
             dst->price[0] = src->Price;
             dst->price[1] = src->PriceSecondary;
             dst->income_per_hour = ToMoney64(src->IncomePerHour);
             dst->total_customers = src->TotalCustomers;
             dst->profit = ToMoney64(src->Profit);
             dst->total_profit = ToMoney64(src->TotalProfit);
-            dst->value = src->Value;
+            dst->value = ToMoney64(src->Value);
             for (size_t i = 0; i < std::size(src->NumCustomers); i++)
             {
                 dst->num_customers[i] = src->NumCustomers[i];
@@ -1392,8 +1392,8 @@ namespace RCT1
         void ImportFinance()
         {
             gParkEntranceFee = _s4.ParkEntranceFee;
-            gLandPrice = _s4.LandPrice;
-            gConstructionRightsPrice = _s4.ConstructionRightsPrice;
+            gLandPrice = ToMoney64(_s4.LandPrice);
+            gConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gCash = ToMoney64(_s4.Cash);
             gBankLoan = ToMoney64(_s4.Loan);
@@ -1403,13 +1403,13 @@ namespace RCT1
             gInitialCash = ToMoney64(_s4.Cash);
 
             gCompanyValue = ToMoney64(_s4.CompanyValue);
-            gParkValue = ToMoney64(CorrectRCT1ParkValue(_s4.ParkValue));
+            gParkValue = CorrectRCT1ParkValue(_s4.ParkValue);
             gCurrentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
                 gCashHistory[i] = ToMoney64(_s4.CashHistory[i]);
-                gParkValueHistory[i] = ToMoney64(CorrectRCT1ParkValue(_s4.ParkValueHistory[i]));
+                gParkValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gWeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
@@ -2187,7 +2187,7 @@ namespace RCT1
             }
 
             // Initial guest status
-            gGuestInitialCash = _s4.GuestInitialCash;
+            gGuestInitialCash = ToMoney64(_s4.GuestInitialCash);
             gGuestInitialHunger = _s4.GuestInitialHunger;
             gGuestInitialThirst = _s4.GuestInitialThirst;
             gGuestInitialHappiness = _s4.GuestInitialHappiness;
@@ -2331,7 +2331,7 @@ namespace RCT1
             // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
             // we need to check the goal to avoid affecting scenarios like Volcania.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
-                gScenarioObjective.Currency = ToMoney64(CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency));
+                gScenarioObjective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
                 gScenarioObjective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
 

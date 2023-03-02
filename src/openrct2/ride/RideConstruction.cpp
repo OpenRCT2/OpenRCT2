@@ -52,7 +52,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 money64 gTotalRideValueForMoney;
 
-money32 _currentTrackPrice;
+money64 _currentTrackPrice;
 
 uint32_t _currentTrackCurve;
 RideConstructionState _rideConstructionState;
@@ -633,7 +633,7 @@ void RideConstructionSetDefaultNextPiece()
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
-    _currentTrackPrice = MONEY32_UNDEFINED;
+    _currentTrackPrice = MONEY64_UNDEFINED;
 
     const TrackElementDescriptor* ted;
     switch (_rideConstructionState)
@@ -1134,10 +1134,10 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
  *
  *  rct2: 0x006CB7FB
  */
-int32_t RideGetRefundPrice(const Ride& ride)
+money64 RideGetRefundPrice(const Ride& ride)
 {
     CoordsXYE trackElement;
-    money32 cost = 0;
+    money64 cost = 0;
 
     if (!RideTryGetOriginElement(ride, &trackElement))
     {
@@ -1188,20 +1188,20 @@ int32_t RideGetRefundPrice(const Ride& ride)
     return cost;
 }
 
-money32 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value)
+money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value)
 {
     auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting);
-    return res.Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? 0 : MONEY64_UNDEFINED;
 }
 
-money32 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
+money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
 {
     auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
     rideSetSetting.SetFlags(flags);
     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
                                                : GameActions::QueryNested(&rideSetSetting);
-    return res.Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? 0 : MONEY64_UNDEFINED;
 }
 
 /**

@@ -153,7 +153,7 @@ bool StaffSetColour(StaffType staffType, colour_t value);
 uint32_t StaffGetAvailableEntertainerCostumes();
 int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList);
 
-money32 GetStaffWage(StaffType type);
+money64 GetStaffWage(StaffType type);
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
 
 const PatrolArea& GetMergedPatrolArea(const StaffType type);
