@@ -28,6 +28,7 @@ class ImageTable
 private:
     std::unique_ptr<uint8_t[]> _data;
     std::vector<G1Element> _entries;
+    size_t dataLength;
 
     /**
      * Container for a G1 image, additional information and RAII. Used by ReadJson
@@ -68,4 +69,6 @@ public:
         return static_cast<uint32_t>(_entries.size());
     }
     void AddImage(const G1Element* g1);
+    uintptr_t CopyDataToVector(std::vector<uint8_t>& data) const;
+    void CopyEntriesToVector(std::vector<G1Element>& entries) const;
 };

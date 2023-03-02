@@ -42,6 +42,7 @@ const CommandLineCommand CommandLine::SpriteCommands[]
     DefineCommand("export",       "<spritefile> <idx> <output>",              SpriteOptions, HandleSprite),
     DefineCommand("exportall",    "<spritefile> <output directory>",          SpriteOptions, HandleSprite),
     DefineCommand("exportalldat", "<DAT identifier> <output directory>",      SpriteOptions, HandleSprite),
+    DefineCommand("createfromdat", "<DAT identifier> <spritefile>",            SpriteOptions, HandleSprite),
 
     CommandTableEnd
 };

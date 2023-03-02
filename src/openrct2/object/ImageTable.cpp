@@ -497,6 +497,7 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
         }
 
         _data = std::move(data);
+        dataLength = dataSize;
         _entries.insert(_entries.end(), newEntries.begin(), newEntries.end());
     }
     catch (const std::exception&)
@@ -622,4 +623,14 @@ void ImageTable::AddImage(const G1Element* g1)
         std::copy_n(g1->offset, length, newg1.offset);
     }
     _entries.push_back(std::move(newg1));
+}
+
+uintptr_t ImageTable::CopyDataToVector(std::vector<uint8_t>& data) const
+{
+    data = std::vector<uint8_t>(_data.get(), _data.get() + dataLength);
+    return reinterpret_cast<uintptr_t>(_data.get());
+}
+void ImageTable::CopyEntriesToVector(std::vector<G1Element>& entries) const
+{
+    entries = _entries;
 }

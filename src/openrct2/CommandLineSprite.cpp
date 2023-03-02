@@ -44,6 +44,7 @@ public:
     void AddImage(ImageImporter::ImportResult& image);
     bool Save(const utf8* path);
     static std::optional<SpriteFile> Open(const utf8* path);
+    void CopyImageTable(const ImageTable& imageTable);
 
 private:
     class ScopedRelativeSpriteFile
@@ -185,6 +186,20 @@ bool SpriteFile::Save(const utf8* path)
     }
 }
 
+void SpriteFile::CopyImageTable(const ImageTable& imageTable)
+{
+    imageTable.CopyEntriesToVector(Entries);
+    Header.num_entries = static_cast<uint32_t>(Entries.size());
+    auto dataOffset = imageTable.CopyDataToVector(Data);
+    Header.total_size = static_cast<uint32_t>(Data.size());
+
+    for (auto& entry : Entries)
+    {
+        entry.offset += reinterpret_cast<uintptr_t>(Data.data()) - dataOffset;
+    }
+    isAbsolute = true;
+}
+
 static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outPath)
 {
     const size_t pixelBufferSize = static_cast<size_t>(spriteElement.width) * spriteElement.height;
@@ -263,6 +278,32 @@ static std::string PopStr(std::ostringstream& oss)
     oss.str("");
     oss.clear();
     return str;
+}
+
+Object* GetMetaObjectFromName(const char* datName)
+{
+    auto context = OpenRCT2::CreateContext();
+    context->Initialise();
+
+    const ObjectRepositoryItem* ori = ObjectRepositoryFindObjectByName(datName);
+    if (ori == nullptr)
+    {
+        fprintf(stderr, "Could not find the object.\n");
+        return nullptr;
+    }
+
+    const RCTObjectEntry* entry = &ori->ObjectEntry;
+    const auto* loadedObject = ObjectManagerLoadObject(entry);
+    if (loadedObject == nullptr)
+    {
+        fprintf(stderr, "Unable to load object.\n");
+        return nullptr;
+    }
+    auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
+    ObjectType objectType = entry->GetType();
+
+    auto& objManager = context->GetObjectManager();
+    return objManager.GetLoadedObject(objectType, entryIndex);
 }
 
 int32_t CommandLineForSprite(const char** argv, int32_t argc)
@@ -616,6 +657,51 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
     if (_strcmpi(argv[0], "combine") == 0)
     {
         return CommandLineForSpriteCombine(argv, argc);
+    }
+
+    if (_strcmpi(argv[0], "createfromdat") == 0)
+    {
+        if (argc < 3)
+        {
+            fprintf(stdout, "usage: sprite createfromdat <DAT identifier> <spritefile>\n");
+            return -1;
+        }
+
+        const char* datName = argv[1];
+        const utf8* spriteFilePath = argv[2];
+        auto context = OpenRCT2::CreateContext();
+        context->Initialise();
+
+        const ObjectRepositoryItem* ori = ObjectRepositoryFindObjectByName(datName);
+        if (ori == nullptr)
+        {
+            fprintf(stderr, "Could not find the object.\n");
+            return -1;
+        }
+
+        const RCTObjectEntry* entry = &ori->ObjectEntry;
+        const auto* loadedObject = ObjectManagerLoadObject(entry);
+        if (loadedObject == nullptr)
+        {
+            fprintf(stderr, "Unable to load object.\n");
+            return -1;
+        }
+        auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
+        ObjectType objectType = entry->GetType();
+
+        auto& objManager = context->GetObjectManager();
+        const auto* const metaObject = objManager.GetLoadedObject(objectType, entryIndex);
+
+        SpriteFile spriteFile;
+        spriteFile.CopyImageTable(metaObject->GetImageTable());
+
+        if (!spriteFile.Save(spriteFilePath))
+        {
+            LOG_ERROR("Could not save sprite file, cancelling.");
+            return -1;
+        }
+        fprintf(stdout, "Extracted %d images from %s to %s\n", spriteFile.Header.num_entries, datName, spriteFilePath);
+        return 1;
     }
 
     fprintf(stderr, "Unknown sprite command.\n");
