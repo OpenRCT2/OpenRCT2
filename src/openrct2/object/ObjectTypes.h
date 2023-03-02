@@ -72,3 +72,9 @@ constexpr std::array<ObjectType, 16> TransientObjectTypes = {
     ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
     ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
 };
+
+// Object types that cannot be saved in a park file.
+constexpr std::array<ObjectType, 2> IntransientObjectTypes = { ObjectType::ScenarioText, ObjectType::Audio };
+
+bool ObjectTypeIsTransient(ObjectType type);
+bool ObjectTypeIsIntransient(ObjectType type);

@@ -671,11 +671,13 @@ int32_t EditorRemoveUnusedObjects()
             {
                 const ObjectRepositoryItem* item = &items[i];
                 ObjectType objectType = item->Type;
-
-                if (objectType >= ObjectType::SceneryGroup)
-                {
+                if (ObjectTypeIsIntransient(objectType))
                     continue;
-                }
+
+                // These object types require exactly one object to be selected at all times.
+                // Removing that object can badly break the game state.
+                if (objectType == ObjectType::ParkEntrance || objectType == ObjectType::Water)
+                    continue;
 
                 _numSelectedObjectsForType[EnumValue(objectType)]--;
                 _objectSelectionFlags[i] &= ~ObjectSelectionFlags::Selected;
