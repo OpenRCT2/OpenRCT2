@@ -97,6 +97,9 @@ void PathPaintBoxSupport(
 void PathPaintPoleSupport(
     PaintSession& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate);
+void PathPaintOnlyAddition(
+    PaintSession& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
+    ImageId imageTemplate, ImageId sceneryImageTemplate);
 
 static ImageIndex GetEdgeImageOffset(edge_t edge)
 {
@@ -827,7 +830,10 @@ static void Sub6A3F61(
 
         // Redundant zoom-level check removed
 
-        PathPaintFencesAndQueueBanners(session, pathElement, height, connectedEdges, hasSupports, pathPaintInfo, imageTemplate);
+        // check if image ids were populated to fix #16018
+        if (pathPaintInfo.BridgeImageId != 0 && pathPaintInfo.RailingsImageId != 0 && pathPaintInfo.SurfaceImageId != 0)
+            PathPaintFencesAndQueueBanners(
+                session, pathElement, height, connectedEdges, hasSupports, pathPaintInfo, imageTemplate);
     }
 
     // This is about tunnel drawing
@@ -880,7 +886,7 @@ static void Sub6A3F61(
 static FootpathPaintInfo GetFootpathPaintInfo(const PathElement& pathEl)
 {
     FootpathPaintInfo pathPaintInfo;
-
+    // if surfaceDescriptor or railingsDescriptor are nullptr the game will attempt to draw path anyway, part of cause of #16018
     const auto* surfaceDescriptor = pathEl.GetSurfaceDescriptor();
     if (surfaceDescriptor != nullptr)
     {
@@ -1065,7 +1071,14 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 
     auto hasSupports = ShouldDrawSupports(session, tileElement, height);
     auto pathPaintInfo = GetFootpathPaintInfo(tileElement);
-    if (pathPaintInfo.SupportType == RailingEntrySupportType::Pole)
+
+    // check if image ids were populated to fix #16018
+    // this implementation only works because the path is invisible.
+    if (pathPaintInfo.BridgeImageId == 0 || pathPaintInfo.RailingsImageId == 0 || pathPaintInfo.SurfaceImageId == 0)
+    {
+        PathPaintOnlyAddition(session, tileElement, height, pathPaintInfo, imageTemplate, sceneryImageTemplate);
+    }
+    else if (pathPaintInfo.SupportType == RailingEntrySupportType::Pole)
     {
         PathPaintPoleSupport(session, tileElement, height, pathPaintInfo, hasSupports, imageTemplate, sceneryImageTemplate);
     }
@@ -1372,4 +1385,31 @@ void PathPaintPoleSupport(
     {
         PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8, 0xFFFF, 0);
     }
+}
+
+void PathPaintOnlyAddition(
+    PaintSession& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
+    ImageId imageTemplate, ImageId sceneryImageTemplate)
+{
+    PROFILED_FUNCTION();
+
+    // Rol edges around rotation
+    uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
+        | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
+
+    uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
+        | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
+
+    uint16_t edi = edges | (corners << 4);
+
+    Sub6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, false);
+
+    height += 32;
+    if (pathElement.IsSloped())
+    {
+        height += 16;
+    }
+
+    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENT_C4, 0xFFFF, 0);
 }
