@@ -1260,7 +1260,7 @@ private:
         int32_t xInit = InitTabPosX;
         int32_t tabsInThisRow = 0;
 
-        auto hasMisc = _tabEntries[_tabEntries.size() - 2].IsMisc();
+        auto hasMisc = GetSceneryTabInfoForMisc() != nullptr;
         auto maxTabsInThisRow = MaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
 
         ScreenCoordsXY pos = { xInit, InitTabPosY };
