@@ -305,7 +305,7 @@ public:
         auto staffTypeStringId = _staffList.size() == 1 ? namingConvention.Singular : namingConvention.Plural;
 
         auto ft = Formatter();
-        ft.Add<uint16_t>(_staffList.size());
+        ft.Add<uint32_t>(_staffList.size());
         ft.Add<StringId>(staffTypeStringId);
 
         DrawTextBasic(
@@ -320,7 +320,7 @@ public:
             Invalidate();
         }
 
-        auto scrollHeight = static_cast<int16_t>(_staffList.size()) * SCROLLABLE_ROW_HEIGHT;
+        auto scrollHeight = static_cast<int32_t>(_staffList.size()) * SCROLLABLE_ROW_HEIGHT;
         auto i = scrollHeight - widgets[WIDX_STAFF_LIST_LIST].bottom + widgets[WIDX_STAFF_LIST_LIST].top + 21;
         if (i < 0)
             i = 0;
