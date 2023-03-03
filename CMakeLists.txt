@@ -466,6 +466,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
                 ZIP_VERSION ${OPENMSX_VERSION}
+                SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/assetpack/openrct2.music.alternative.parkap
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/
                 ZIP_URL ${OPENMSX_URL}
                 SHA1 ${OPENMSX_SHA1}
