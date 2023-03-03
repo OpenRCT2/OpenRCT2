@@ -720,7 +720,7 @@ public:
             const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
             windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
-            if (_tabEntries[_tabEntries.size() - 2].IsMisc())
+            if (GetSceneryTabInfoForMisc() != nullptr)
             {
                 auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
                 miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
