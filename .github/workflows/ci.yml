@@ -65,7 +65,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [win32, x64]
+        platform: [win32, x64, arm64]
     env:
       CONFIGURATION: Release
       PLATFORM: ${{ matrix.platform }}
