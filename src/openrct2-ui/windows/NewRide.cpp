@@ -900,7 +900,7 @@ private:
 
     void RestoreScrollPositionForCurrentTab()
     {
-        assert(_currentTab < std::size(_windowNewRideTabScroll));
+        assert(static_cast<size_t>(_currentTab) < std::size(_windowNewRideTabScroll));
         auto& currentTabScroll = _windowNewRideTabScroll[_currentTab];
 
         // Get maximum scroll height
