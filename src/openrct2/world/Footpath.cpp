@@ -2570,3 +2570,15 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
 
     return ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS);
 }
+
+bool PathElement::PathMustBeMadeInvisible(int32_t parkFileVersion)
+{
+    if (parkFileVersion < 17 && IsQueue())
+    {
+        // queues after parkfile 16 have railings drawn for T-junctions and 4-way junctions, necessitating these paths made
+        // invisible
+        static constexpr const bool invisibleEdges[16] = { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1 };
+        return invisibleEdges[GetEdges()] || GetCorners() || IsInvisible();
+    }
+    return IsInvisible();
+}

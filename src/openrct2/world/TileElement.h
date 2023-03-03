@@ -319,6 +319,7 @@ public:
     void SetShouldDrawPathOverSupports(bool on);
 
     bool IsLevelCrossing(const CoordsXY& coords) const;
+    bool PathMustBeMadeInvisible(int32_t parkFileVersion = -1);
 };
 assert_struct_size(PathElement, 16);
 
