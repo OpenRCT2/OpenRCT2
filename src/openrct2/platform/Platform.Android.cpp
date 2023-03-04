@@ -91,10 +91,7 @@ namespace Platform
         jstring jniString = (jstring)env->CallObjectMethod(activity, getDefaultLocale, jLanguageTags);
 
         const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
-
-        utf8* string = (char*)malloc(strlen(jniChars) + 1);
-        std::memcpy((void*)string, jniChars, strlen(jniChars));
-        string[strlen(jniChars)] = 0x00;
+        std::string defaultLocale = jniChars;
 
         env->ReleaseStringUTFChars(jniString, jniChars);
         for (int32_t i = 0; i < LANGUAGE_COUNT; ++i)
@@ -105,8 +102,6 @@ namespace Platform
         env->DeleteLocalRef(jLanguageTags);
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(activityClass);
-
-        std::string defaultLocale = string;
 
         return LanguageGetIDFromLocale(defaultLocale.c_str());
     }
@@ -122,16 +117,11 @@ namespace Platform
         jstring jniString = (jstring)env->CallObjectMethod(activity, getDefaultLocale);
 
         const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
-
-        utf8* string = (char*)malloc(strlen(jniChars) + 1);
-        std::memcpy((void*)string, jniChars, strlen(jniChars));
-        string[strlen(jniChars)] = 0x00;
+        std::string localeCurrencyCode = jniChars;
 
         env->ReleaseStringUTFChars(jniString, jniChars);
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(activityClass);
-
-        std::string localeCurrencyCode = string;
 
         return Platform::GetCurrencyValue(localeCurrencyCode.c_str());
     }
