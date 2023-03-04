@@ -78,9 +78,11 @@ namespace Platform
 
         jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
         jclass activityClass = env->GetObjectClass(activity);
-        jmethodID getDefaultLocale = env->GetMethodID(activityClass, "getDefaultLocale", "([Ljava/lang/String;)Ljava/lang/String;");
+        jmethodID getDefaultLocale = env->GetMethodID(
+            activityClass, "getDefaultLocale", "([Ljava/lang/String;)Ljava/lang/String;");
 
-        jobjectArray jLanguageTags = env->NewObjectArray(LANGUAGE_COUNT, env->FindClass("java/lang/String"), env->NewStringUTF(""));
+        jobjectArray jLanguageTags = env->NewObjectArray(
+            LANGUAGE_COUNT, env->FindClass("java/lang/String"), env->NewStringUTF(""));
 
         for (int32_t i = 1; i < LANGUAGE_COUNT; ++i)
         {
@@ -139,7 +141,8 @@ namespace Platform
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(activityClass);
         bool result = isImperial == JNI_TRUE;
-        if (result) {
+        if (result)
+        {
             return MeasurementFormat::Imperial;
         }
         return MeasurementFormat::Metric;
