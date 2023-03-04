@@ -87,9 +87,17 @@ using money64 = fixed64_1dp;
 #define FIXED_1DP(whole, fraction) FIXED_XDP(1, whole, fraction)
 #define FIXED_2DP(whole, fraction) FIXED_XDP(10, whole, fraction)
 
+// For a user defined floating point literal, the parameter type must be a
+// `long double` which is problematic on ppc64el, as the architecture uses a
+// pair of `doubles` to represent that type. This cannot be converted to a
+// `constexpr`. As a workaround, statically cast the `long double` down to a
+// `double`. All of the uses of _GBP constants fit just fine, and if anyone
+// really tries to use a gigantic constant that can't fit in a double, they are
+// probably going to be breaking other things anyways.
+// For more details, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=26374
 constexpr money64 operator"" _GBP(long double money) noexcept
 {
-    return money * 10;
+    return static_cast<double>(money) * 10;
 }
 
 constexpr money64 ToMoney64FromGBP(int32_t money) noexcept
