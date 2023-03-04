@@ -163,6 +163,7 @@ endif ()
 # If OS is Linux, import OpenSoundEffects and OpenMusic
 if(UNIX AND NOT APPLE)
     set(DOWNLOAD_OPENMSX ON)
+    set(DOWNLOAD_OPENSFX ON)
 endif()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
@@ -456,6 +457,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
                 ZIP_VERSION ${OPENSFX_VERSION}
+                SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/assetpack/openrct2.sound.parkap
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/
                 ZIP_URL ${OPENSFX_URL}
                 SHA1 ${OPENSFX_SHA1}
