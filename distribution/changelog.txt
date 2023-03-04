@@ -26,6 +26,7 @@
 - Improved: [#19272] Scenery window now allows filtering similarly to Object Selection.
 - Improved: [#19447] The control key now enables word jumping in text input fields.
 - Improved: [#19463] Added ‘W’ and ‘Y’ with circumflex to sprite font (for Welsh).
+- Improved: [#19549] Enable large address awareness for 32 bit Windows builds allowing to use 4 GiB of virtual memory.
 - Change: [#19018] Renamed actions to fit the naming scheme.
 - Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
 - Change: [#19233] Reduce lift speed minimum and maximum values for “Classic Wooden Coaster”.
