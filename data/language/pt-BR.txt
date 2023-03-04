@@ -1675,7 +1675,7 @@ STR_2314    :{WINDOW_COLOUR_2}Comprimento da atração: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Custo aproximado: {BLACK}{CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espaço necessário: {BLACK}{COMMA16} x {COMMA16} blocos
 STR_2321    :{WINDOW_COLOUR_2}Número de atrações: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Funcionário: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Funcionário: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Tamanho do parque: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Tamanho do parque: {BLACK}{COMMA32}pés².
 STR_2325    :Comprar terreno para aumentar o tamanho do parque

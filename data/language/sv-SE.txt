@@ -1672,7 +1672,7 @@ STR_2314    :{WINDOW_COLOUR_2}Åktur längd: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kostnad: {BLACK}omkring {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Storlek: {BLACK}{COMMA16} × {COMMA16} block
 STR_2321    :{WINDOW_COLOUR_2}Antal åkturer och attraktioner: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}fot²
 STR_2325    :Köp land för att utöka parken

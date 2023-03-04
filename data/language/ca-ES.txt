@@ -1678,7 +1678,7 @@ STR_2314    :{WINDOW_COLOUR_2}Longitud del recorregut: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}al voltant de {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espai necessari: {BLACK}{COMMA16} × {COMMA16} blocs
 STR_2321    :{WINDOW_COLOUR_2}Nombre d’atraccions: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Empleats: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Empleats: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Extensió del parc: {BLACK}{COMMA32} m²
 STR_2324    :{WINDOW_COLOUR_2}Mida del parc: {BLACK}{COMMA32} ft²
 STR_2325    :Compreu terreny per a ampliar el parc.

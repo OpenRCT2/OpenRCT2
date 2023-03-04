@@ -1670,7 +1670,7 @@ STR_2314    :{WINDOW_COLOUR_2}Pályahossz: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Ár: {BLACK}megközelítőleg {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Szükséges hely: {BLACK}{COMMA16} x {COMMA16} blokk
 STR_2321    :{WINDOW_COLOUR_2}Játékok/épületek száma: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Alkalmazottak: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Alkalmazottak: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Park mérete: {BLACK}{COMMA32} m²
 STR_2324    :{WINDOW_COLOUR_2}Park mérete: {BLACK}{COMMA32} négyzetláb
 STR_2325    :A park bővítése új területek vásárlásával

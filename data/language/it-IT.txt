@@ -1678,7 +1678,7 @@ STR_2314    :{WINDOW_COLOUR_2}Lunghezza: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Costo: {BLACK}circa {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Spazio richiesto: {BLACK}{COMMA16} x {COMMA16} blocchi
 STR_2321    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Compra del terreno per estendere il parco

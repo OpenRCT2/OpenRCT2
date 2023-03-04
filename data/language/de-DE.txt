@@ -1676,7 +1676,7 @@ STR_2314    :{WINDOW_COLOUR_2}Fahrtlänge: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ungefähr {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Erforderlicher Platz: {BLACK}{COMMA16} x {COMMA16} Blöcke
 STR_2321    :{WINDOW_COLOUR_2}Anzahl der Attraktionen: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Parkgröße: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Parkgröße: {BLACK}{COMMA32}Quadratfuß
 STR_2325    :Land für Parkvergrößerung kaufen
@@ -3628,6 +3628,7 @@ STR_6526    :(Basisgrafiken, -musik und -toneffekte)
 STR_6527    :Wettbewerbe
 STR_6528    :Ungültige Streckenparameter!
 STR_6529    :Ungültiger Farbschemaparameter!
+STR_6530    :User Created Expansion Set
 STR_6531    :Die Zeitmaschine
 STR_6532    :Katys Traumwelt
 STR_6533    :{WINDOW_COLOUR_2}Nervenkitzelfaktor: {BLACK}-{COMMA16}%
@@ -3642,6 +3643,9 @@ STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand G
 STR_6542    :Mitwirkende
 STR_6543    :Mitwirkende …
 STR_6544    :Darlehen kann nicht negativ sein!
+STR_6545    :RCT1-Zinsberechnung benutzen
+STR_6546    :Den Zinsberechnungsalgorithmus von RollerCoaster Tycoon 1 verwenden, welcher einen festen Prozentsatz von ca. 1,33% benutzt.
+STR_6547    :Jede Szenerie
 
 
 #############

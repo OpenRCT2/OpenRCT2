@@ -1676,7 +1676,7 @@ STR_2314    :{WINDOW_COLOUR_2}Longitud de vía: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Coste: {BLACK}alrededor de {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espacio requerido: {BLACK}{COMMA16} × {COMMA16} bloques
 STR_2321    :{WINDOW_COLOUR_2}Número de atracciones: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Empleados: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Empleados: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Extensión del parque: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Extensión del parque: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Comprar terreno para extender el parque.
@@ -3652,6 +3652,7 @@ STR_6543    :Colaboradores…
 STR_6544    :¡El préstamo no puede ser negativo!
 STR_6545    :Usar el cálculo de intereses de RCT1
 STR_6546    :Usar el algoritmo de cálculo de intereses de RollerCoaster Tycoon 1, que empleaba un porcentaje fijo de aproximadamente 1,33%.
+STR_6547    :Todos los escenarios
 
 ##############
 # Escenarios #

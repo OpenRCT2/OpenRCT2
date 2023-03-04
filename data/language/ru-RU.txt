@@ -1675,7 +1675,7 @@ STR_2314    :{WINDOW_COLOUR_2}Длина аттр.: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Цена: {BLACK}прим. {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Нужно места: {BLACK}{COMMA16} x {COMMA16} блоков
 STR_2321    :{WINDOW_COLOUR_2}Число аттракционов: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Работники: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Работники: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Размер парка: {BLACK}{COMMA16}m²
 STR_2324    :{WINDOW_COLOUR_2}Размер парка: {BLACK}{COMMA16}кв.фт.
 STR_2325    :Купить землю для расширения

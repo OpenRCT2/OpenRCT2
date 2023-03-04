@@ -1669,7 +1669,7 @@ STR_2314    :{WINDOW_COLOUR_2}Alet uzunluğu: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Maliyet: {BLACK} yaklaşık {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Gerekli alan: {BLACK}{COMMA16} × {COMMA16} blok
 STR_2321    :{WINDOW_COLOUR_2}Alet sayısı: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Işci: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Işci: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Satılık arazi var ise yeni arazi satın alınız

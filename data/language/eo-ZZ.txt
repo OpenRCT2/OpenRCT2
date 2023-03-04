@@ -1675,7 +1675,7 @@ STR_2314    :{WINDOW_COLOUR_2}Longeco de atrakcio: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosto: {BLACK}almenaŭ {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Spaco bezonata: {BLACK}{COMMA16} x {COMMA16} blokoj
 STR_2321    :{WINDOW_COLOUR_2}Nombro de atrakcioj: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Dungitaro: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Dungitaro: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Areo de parko: {BLACK}{COMMA32} kvadrataj metroj
 STR_2324    :{WINDOW_COLOUR_2}Areo de parko: {BLACK}{COMMA32} kvadrataj futoj
 STR_2325    :Aĉeti bienon por etendi parkon

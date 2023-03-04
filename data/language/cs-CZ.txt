@@ -1680,7 +1680,7 @@ STR_2314    :{WINDOW_COLOUR_2}Délka jízdy: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cena: {BLACK}okolo {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Vyžadovaný prostor: {BLACK}{COMMA16} × {COMMA16} dlaždic
 STR_2321    :{WINDOW_COLOUR_2}Celkem atrakcí: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Personál: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personál: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Velikost parku: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Velikost parku: {BLACK}{COMMA32}čtverečních stop
 STR_2325    :Přikoupit k parku pozemky

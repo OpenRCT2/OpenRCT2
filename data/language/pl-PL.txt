@@ -1673,7 +1673,7 @@ STR_2314    :{WINDOW_COLOUR_2}Długość trasy: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Koszt: {BLACK}około {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Zajmowany teren: {BLACK}{COMMA16} × {COMMA16} pól
 STR_2321    :{WINDOW_COLOUR_2}Liczba atrakcji: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Liczba pracowników: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Liczba pracowników: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Rozmiar parku: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Rozmiar parku: {BLACK}{COMMA32} stóp kw.
 STR_2325    :Kup ziemię by powiększyć park

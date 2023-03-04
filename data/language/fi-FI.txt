@@ -1679,7 +1679,7 @@ STR_2314    :{WINDOW_COLOUR_2}Radan pituus: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kustannus: {BLACK}noin {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Tilaa tarvitaan: {BLACK}{COMMA16} x {COMMA16} neliötä
 STR_2321    :{WINDOW_COLOUR_2}Laitteiden/kohteiden määrä: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Henkilöstö: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Henkilöstö: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}ft²
 STR_2325    :Osta maata puiston laajennukseen
