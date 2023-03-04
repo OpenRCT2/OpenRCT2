@@ -201,7 +201,7 @@ FormatToken FormatTokenFromTextColour(size_t textColour)
         FormatToken::ColourPaleLavender, FormatToken::ColourPaleGold,   FormatToken::ColourLightPink,
         FormatToken::ColourPearlAqua,    FormatToken::ColourPaleSilver,
     };
-    if (textColour > std::size(tokens))
+    if (textColour >= std::size(tokens))
         return FormatToken::ColourBlack;
     return tokens[textColour];
 }
