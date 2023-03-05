@@ -117,6 +117,7 @@ namespace OpenRCT2::Math::Trigonometry
 } // namespace OpenRCT2::Math::Trigonometry
 
 using namespace OpenRCT2::Math::Trigonometry;
+using namespace OpenRCT2::Entity::Yaw;
 
 constexpr CoordsXYZ ComputeSteamOffset(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
 {

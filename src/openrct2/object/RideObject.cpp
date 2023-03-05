@@ -282,7 +282,7 @@ void RideObject::Load()
 
             carEntry.NumCarImages = imageIndex - currentCarImagesOffset;
 
-            // Move the offset over this car�s images. Including peeps
+            // Move the offset over this car's images. Including peeps
             currentCarImagesOffset = imageIndex + carEntry.no_seating_rows * carEntry.NumCarImages;
             // 0x6DEB0D
 
