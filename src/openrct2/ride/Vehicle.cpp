@@ -6720,10 +6720,14 @@ static void AnimateMultiDimension(Vehicle& vehicle, const CarEntry& carEntry)
             else
                 vehicle.seat_rotation++;
 
-            int16_t targetSeatRotation = vehicle.seat_rotation - 4;
-            // cpp modulo allows negative values. This is the workaround.
-            while (targetSeatRotation < 0)
+            int16_t targetSeatRotation = (vehicle.seat_rotation - 4) % carEntry.AnimationFrames;
+            if (targetSeatRotation < 0)
+            {
                 targetSeatRotation += carEntry.AnimationFrames;
+                // fix negative values when AnimationFrames is less than 4
+                if (targetSeatRotation < 0)
+                    targetSeatRotation += carEntry.AnimationFrames;
+            }
 
             if (targetSeatRotation != vehicle.animation_frame)
             {
