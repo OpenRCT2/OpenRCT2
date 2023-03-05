@@ -6759,11 +6759,11 @@ void Vehicle::UpdateAdditionalAnimation()
     if (carEntry->AnimationFrames == 0 || carEntry->animation >= CarEntryAnimation::Count)
         return;
     using AnimateFunction = void (*)(Vehicle & vehicle, const CarEntry& carEntry);
-    constexpr static AnimateFunction animationFunctions[static_cast<size_t>(CarEntryAnimation::Count)]{
+    constexpr static AnimateFunction animationFunctions[EnumValue(CarEntryAnimation::Count)]{
         AnimateNone,          AnimateSimpleVehicle,   AnimateSteamLocomotive,  AnimateSwanBoat,
         AnimateMonorailCycle, AnimateMultiDimension, AnimateObservationTower, AnimateAnimalFlying
     };
-    animationFunctions[static_cast<size_t>(carEntry->animation)](*this, *carEntry);
+    animationFunctions[EnumValue(carEntry->animation)](*this, *carEntry);
 }
 
 /**
