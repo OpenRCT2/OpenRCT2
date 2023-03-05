@@ -433,8 +433,7 @@ uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry& carEntry)
     {
         if (!(carEntry.flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
         {
-            if (carEntry.flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION
-                && carEntry.animation != CarEntryAnimation::ObservationTower)
+            if (carEntry.flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION && carEntry.animation != CarEntryAnimation::ObservationTower)
             {
                 if (!(carEntry.flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
                 {
@@ -736,8 +735,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     auto jSteamTranslation = jCar["steamPosition"];
     if (jSteamTranslation.is_object())
     {
-        car.SteamEffect.Longitudinal = Json::GetNumber<int8_t>(
-            jSteamTranslation["longitudinal"], DefaultSteamSpawnPosition[0]);
+        car.SteamEffect.Longitudinal = Json::GetNumber<int8_t>(jSteamTranslation["longitudinal"], DefaultSteamSpawnPosition[0]);
         car.SteamEffect.Vertical = Json::GetNumber<int8_t>(jSteamTranslation["vertical"], DefaultSteamSpawnPosition[1]);
     }
     else
