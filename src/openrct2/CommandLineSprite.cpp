@@ -700,7 +700,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             LOG_ERROR("Could not save sprite file, cancelling.");
             return -1;
         }
-        fprintf(stdout, "Extracted %d images from %s to %s\n", spriteFile.Header.num_entries, datName, spriteFilePath);
+        fprintf(stdout, "Extracted images [0..%d] from %s to %s\n", spriteFile.Header.num_entries - 1, datName, spriteFilePath);
         return 1;
     }
 
