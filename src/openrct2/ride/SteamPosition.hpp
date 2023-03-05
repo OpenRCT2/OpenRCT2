@@ -38,48 +38,48 @@ namespace OpenRCT2::Math::Trigonometry
      */
     constexpr CoordsXY PitchToDirectionVectorFromGeometry[60] = {
         { 256, 0 },     // flat
-        { 251, 49 },   // slopes up
-        { 236, 97 },   // slopes up
-        { 195, 165 },  // slopes up
-        { 134, 217 },  // slopes up
-        { 251, -49 },    // slopes down
-        { 236, -97 },    // slopes down
-        { 195, -165 },   // slopes down
-        { 135, -217 },   // slopes down
-        { 70, 246 },   // slopes vertical up
-        { 0, 256 },    // slopes vertical up
-        { -66, 247 },  // slopes looping up
-        { -128, 221 }, // slopes looping up
-        { -181, 181 }, // slopes looping up
-        { -221, 128 }, // slopes looping up
-        { -247, 66 },  // slopes looping up
+        { 251, 49 },    // slopes up
+        { 236, 97 },    // slopes up
+        { 195, 165 },   // slopes up
+        { 134, 217 },   // slopes up
+        { 251, -49 },   // slopes down
+        { 236, -97 },   // slopes down
+        { 195, -165 },  // slopes down
+        { 135, -217 },  // slopes down
+        { 70, 246 },    // slopes vertical up
+        { 0, 256 },     // slopes vertical up
+        { -66, 247 },   // slopes looping up
+        { -128, 221 },  // slopes looping up
+        { -181, 181 },  // slopes looping up
+        { -221, 128 },  // slopes looping up
+        { -247, 66 },   // slopes looping up
         { -256, 0 },    // inverted
-        { 70, -246 },    // slopes vertical down
-        { 0, -256 },     // slopes vertical down
-        { -66, -247 },   // slopes looping down
-        { -128, -221 },  // slopes looping down
-        { -181, -181 },  // slopes looping down
-        { -221, -128 },  // slopes looping down
-        { -247, -66 },   // slopes looping down
-        { 221, 128 },  // corkscrew up left
-        { 128, 221 },  // corkscrew up left
-        { 0, 256 },    // corkscrew up left
-        { -128, 221 }, // corkscrew up left
-        { -221, 128 }, // corkscrew up left
-        { -221, -128 },  // corkscrew down left
-        { -128, -221 },  // corkscrew down left
-        { 0, -256 },     // corkscrew down left
-        { 128, -221 },   // corkscrew down left
-        { 221, -128 },   // corkscrew down left
-        { 221, 128 },  // corkscrew up right
-        { 128, 221 },  // corkscrew up right
-        { 0, 256 },    // corkscrew up right
-        { -128, 221 }, // corkscrew up right
-        { -221, 128 }, // corkscrew up right
-        { -221, -128 },  // corkscrew down right
-        { -128, -221 },  // corkscrew down right
-        { 0, -256 },     // corkscrew down right
-        { 128, -221 },   // corkscrew down right
+        { 70, -246 },   // slopes vertical down
+        { 0, -256 },    // slopes vertical down
+        { -66, -247 },  // slopes looping down
+        { -128, -221 }, // slopes looping down
+        { -181, -181 }, // slopes looping down
+        { -221, -128 }, // slopes looping down
+        { -247, -66 },  // slopes looping down
+        { 221, 128 },   // corkscrew up left
+        { 128, 221 },   // corkscrew up left
+        { 0, 256 },     // corkscrew up left
+        { -128, 221 },  // corkscrew up left
+        { -221, 128 },  // corkscrew up left
+        { -221, -128 }, // corkscrew down left
+        { -128, -221 }, // corkscrew down left
+        { 0, -256 },    // corkscrew down left
+        { 128, -221 },  // corkscrew down left
+        { 221, -128 },  // corkscrew down left
+        { 221, 128 },   // corkscrew up right
+        { 128, 221 },   // corkscrew up right
+        { 0, 256 },     // corkscrew up right
+        { -128, 221 },  // corkscrew up right
+        { -221, 128 },  // corkscrew up right
+        { -221, -128 }, // corkscrew down right
+        { -128, -221 }, // corkscrew down right
+        { 0, -256 },    // corkscrew down right
+        { 128, -221 },  // corkscrew down right
         { 221, 128 },   // corkscrew down right
         { 256, 0 },     // half helixes
         { 256, 0 },     // half helixes
@@ -87,16 +87,16 @@ namespace OpenRCT2::Math::Trigonometry
         { 256, 0 },     // half helixes
         { 256, 0 },     // quarter helixes
         { 256, 0 },     // quarter helixes
-        { 252, 42 },   // diagonal slopes up
-        { 241, 83 },   // diagonal slopes up
-        { 168, 193 },  // diagonal slopes up
-        { 252, -42 },    // diagonal slopes down
-        { 241, -83 },    // diagonal slopes down
-        { 168, -193 },   // diagonal slopes down
-        { 236, -97 },    // inverting transition slopes down
-        { 195, -165 },   // inverting transition slopes down
-        { 134, -217 },   // inverting transition slopes down
-        { 252, 44 }    // spiral lift hill up
+        { 252, 42 },    // diagonal slopes up
+        { 241, 83 },    // diagonal slopes up
+        { 168, 193 },   // diagonal slopes up
+        { 252, -42 },   // diagonal slopes down
+        { 241, -83 },   // diagonal slopes down
+        { 168, -193 },  // diagonal slopes down
+        { 236, -97 },   // inverting transition slopes down
+        { 195, -165 },  // inverting transition slopes down
+        { 134, -217 },  // inverting transition slopes down
+        { 252, 44 }     // spiral lift hill up
     };
 
     constexpr int32_t ComputeHorizontalMagnitude(int32_t length, uint8_t pitch)
