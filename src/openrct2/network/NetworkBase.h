@@ -162,7 +162,8 @@ public: // Client
     void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_SCRIPTS_HEADER(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_SCRIPTS_DATA(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
 
     std::vector<uint8_t> _challenge;
@@ -217,6 +218,13 @@ private: // Client Data
         std::string spriteHash;
     };
 
+    struct ServerScriptsData
+    {
+        uint32_t pluginCount{};
+        uint32_t dataSize{};
+        OpenRCT2::MemoryStream data;
+    };
+
     std::unordered_map<NetworkCommand, CommandHandler> client_command_handlers;
     std::unique_ptr<NetworkConnection> _serverConnection;
     std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
@@ -239,6 +247,7 @@ private: // Client Data
     SocketStatus _lastConnectStatus = SocketStatus::Closed;
     bool _requireReconnect = false;
     bool _clientMapLoaded = false;
+    ServerScriptsData _serverScriptsData{};
 };
 
 #endif // DISABLE_NETWORK
