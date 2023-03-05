@@ -9,8 +9,8 @@ function(download_openrct2_zip)
     if (NOT EXISTS ${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR})
         set(DOWNLOAD_ZIP 1)
     else ()
-        if (EXISTS "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/zipversion")
-            file(READ "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/zipversion" DOWNLOAD_OPENRCT2_CACHED_VERSION)
+        if (EXISTS "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}.zipversion")
+            file(READ "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}.zipversion" DOWNLOAD_OPENRCT2_CACHED_VERSION)
             if (NOT ${DOWNLOAD_OPENRCT2_CACHED_VERSION} STREQUAL ${DOWNLOAD_OPENRCT2_ZIP_VERSION})
                 message("Cache ${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR} not up to date")
                 set(DOWNLOAD_ZIP 1)
@@ -42,7 +42,7 @@ function(download_openrct2_zip)
             )
         endif()
         file(WRITE
-            "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/zipversion"
+            "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}.zipversion"
             "${DOWNLOAD_OPENRCT2_ZIP_VERSION}"
         )
         file(REMOVE "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}")
