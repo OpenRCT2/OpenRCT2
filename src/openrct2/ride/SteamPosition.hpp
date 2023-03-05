@@ -36,7 +36,7 @@ namespace OpenRCT2::Math::Trigonometry
      * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
      * Where Y1 represents the angle of pitch in degrees
      */
-    constexpr CoordsXY PitchToDirectionVectorFromGeometry[60] = {
+    constexpr CoordsXY PitchToDirectionVectorFromGeometry[] = {
         { 256, 0 },     // flat
         { 251, 49 },    // slopes up
         { 236, 97 },    // slopes up
@@ -96,7 +96,8 @@ namespace OpenRCT2::Math::Trigonometry
         { 236, -97 },   // inverting transition slopes down
         { 195, -165 },  // inverting transition slopes down
         { 134, -217 },  // inverting transition slopes down
-        { 252, 44 }     // spiral lift hill up
+        { 252, 44 },    // spiral lift hill up
+        { 252, -44 }    // spiral lift hill down
     };
 
     constexpr int32_t ComputeHorizontalMagnitude(int32_t length, uint8_t pitch)
