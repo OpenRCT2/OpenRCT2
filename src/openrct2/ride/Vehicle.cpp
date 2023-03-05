@@ -6593,6 +6593,17 @@ static uint8_t GetTargetFrame(const CarEntry& carEntry, uint32_t animationState)
 }
 
 /**
+ * Decide based on current frame and number of frames if a steam particle should be generated on this frame
+ */
+static bool ShouldMakeSteam(uint8_t targetFrame, uint8_t animationFrames)
+{
+    if (animationFrames < 1)
+        return false;
+    // steam is produced twice per wheel revolution
+    return targetFrame == 0 || targetFrame == animationFrames / 2;
+}
+
+/**
  *
  *  rct2: 0x006D63D4
  */
@@ -6608,6 +6619,16 @@ void Vehicle::UpdateAdditionalAnimation()
         return;
     switch (carEntry->animation)
     {
+        // regular animation types
+        case CarEntryAnimation::SimpleVehicle:
+            animationState += _vehicleVelocityF64E08;
+            targetFrame = GetTargetFrame(*carEntry, animationState);
+            if (animation_frame != targetFrame)
+            {
+                animation_frame = targetFrame;
+                Invalidate();
+            }
+            break;
         // similar to a normal animation but produces steam
         case CarEntryAnimation::SteamLocomotive: // loc_6D652B
             animationState += _vehicleVelocityF64E08;
@@ -6615,7 +6636,7 @@ void Vehicle::UpdateAdditionalAnimation()
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
-                if ((targetFrame & 0x01) == 0) // every even frame create a steam particle
+                if (ShouldMakeSteam(targetFrame, carEntry->AnimationFrames)) // every even frame create a steam particle
                 {
                     auto curRide = GetRide();
                     if (curRide != nullptr)
@@ -6638,16 +6659,6 @@ void Vehicle::UpdateAdditionalAnimation()
             // pair of peeps. The animation technically uses 4 frames, but ignores frames 1 and 3.
             animationState += _vehicleVelocityF64E08;
             targetFrame = GetTargetFrame(*carEntry, animationState) * 2;
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
-            break;
-            // regular animation types
-        case CarEntryAnimation::SimpleVehicle:
-            animationState += _vehicleVelocityF64E08;
-            targetFrame = GetTargetFrame(*carEntry, animationState);
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
