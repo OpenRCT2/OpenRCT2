@@ -58,6 +58,13 @@ static const EnumMap<CarEntryAnimation> AnimationNameLookup{
 
 constexpr const auto NumLegacyAnimationTypes = 11;
 
+struct LegacyAnimationParameters
+{
+    uint16_t Speed;
+    uint8_t NumFrames;
+    CarEntryAnimation Alias;
+};
+
 constexpr const LegacyAnimationParameters VehicleEntryDefaultAnimation[NumLegacyAnimationTypes] = {
     { 0, 1, CarEntryAnimation::None },                  // None
     { 1 << 12, 4, CarEntryAnimation::SteamLocomotive }, // Miniature Railway Locomotive

@@ -422,13 +422,6 @@ enum class MiniGolfAnimation : uint8_t
     Putt,
 };
 
-struct LegacyAnimationParameters
-{
-    uint16_t Speed;
-    uint8_t NumFrames;
-    CarEntryAnimation Alias;
-};
-
 namespace VehicleFlags
 {
     constexpr uint32_t OnLiftHill = (1 << 0);
