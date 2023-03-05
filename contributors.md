@@ -211,6 +211,7 @@ The following people are not part of the development team, but have been contrib
 * Nehemiah Negussie (nehemiah-negussie)
 * (zzril)
 * Ernest Elgin (eaeiv)
+* Ernest Wong (ErnWong)
 
 
 ## Toolchain
