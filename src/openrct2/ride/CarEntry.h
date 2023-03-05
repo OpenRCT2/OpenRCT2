@@ -107,6 +107,10 @@ enum : uint32_t
     CAR_SPRITE_FLAG_USE_4_ROTATION_FRAMES = (1 << 15),
 };
 
+/*
+ * When adding a sprite group, add multiplier to SpriteGroupMultiplier in RideObject.cpp and add sprite group data to cable
+ * lifthill vehicle in RideData.cpp
+ */
 enum class SpriteGroupType : uint8_t
 {
     SlopeFlat = 0,
