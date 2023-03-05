@@ -713,15 +713,16 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     car.draw_order = Json::GetNumber<uint8_t>(jCar["drawOrder"]);
     car.num_vertical_frames_override = Json::GetNumber<uint8_t>(jCar["numVerticalFramesOverride"]);
 
-    if (jCar["animation"].is_string())
+    auto jAnimation = jCar["animation"];
+    if (jAnimation.is_object())
     {
-        car.animation = GetAnimationTypeFromString(Json::GetString(jCar["animation"]));
-        car.AnimationSpeed = Json::GetNumber<uint16_t>(jCar["animationSpeed"]);
-        car.AnimationFrames = Json::GetNumber<uint16_t>(jCar["animationFrames"]);
+        car.animation = GetAnimationTypeFromString(Json::GetString(jAnimation["animationType"]));
+        car.AnimationSpeed = Json::GetNumber<uint16_t>(jAnimation["animationSpeed"]);
+        car.AnimationFrames = Json::GetNumber<uint16_t>(jAnimation["animationFrames"]);
     }
     else
     {
-        auto animationProperties = GetDefaultAnimationParameters(Json::GetNumber<uint8_t>(jCar["animation"]));
+        auto animationProperties = GetDefaultAnimationParameters(Json::GetNumber<uint8_t>(jAnimation));
         car.animation = animationProperties.Alias;
         car.AnimationSpeed = animationProperties.Speed;
         car.AnimationFrames = animationProperties.NumFrames;
@@ -732,7 +733,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             car.AnimationFrames = Json::GetNumber<uint16_t>(jCar["animationFrames"]);
     }
 
-    auto jSteamTranslation = jCar["steamPositionModifier"];
+    auto jSteamTranslation = jCar["steamPosition"];
     if (jSteamTranslation.is_object())
     {
         car.SteamEffect.Longitudinal = Json::GetNumber<int8_t>(
