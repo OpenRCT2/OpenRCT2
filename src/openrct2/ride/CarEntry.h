@@ -158,7 +158,7 @@ static const std::string SpriteGroupNames[] = {
     "slopes8Banked45",    "slopes16Banked22", "slopes16Banked45",   "slopes25Banked45",
     "slopes12Banked45",   "slopes25Banked67", "slopes25Banked90",   "slopes25InlineTwists",
     "slopes42Banked22",   "slopes42Banked45", "slopes42Banked67",   "slopes42Banked90",
-    "slopes60Banked22",   "corkscrews",       "restraintAnimation", "curvedLiftHill",
+    "slopes60Banked22",   "corkscrews",       "restraintAnimation", "curvedLiftHillUp",
     "curvedLiftHillDown",
 };
 static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::Count));
