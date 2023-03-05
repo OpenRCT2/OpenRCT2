@@ -6747,7 +6747,7 @@ static void AnimateAnimalFlying(Vehicle& vehicle, const CarEntry& carEntry)
 
 using AnimateFunction = void (*)(Vehicle& vehicle, const CarEntry& carEntry);
 
-constexpr static AnimateFunction animationFunctions[EnumValue(CarEntryAnimation::Count)]{
+constexpr static const AnimateFunction animationFunctions[EnumValue(CarEntryAnimation::Count)]{
     AnimateNone,          AnimateSimpleVehicle,  AnimateSteamLocomotive,  AnimateSwanBoat,
     AnimateMonorailCycle, AnimateMultiDimension, AnimateObservationTower, AnimateAnimalFlying,
 };
