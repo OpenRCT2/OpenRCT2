@@ -6745,6 +6745,13 @@ static void AnimateAnimalFlying(Vehicle& vehicle, const CarEntry& carEntry)
     vehicle.animationState = std::max(vehicle.animationState - targetFrame, 0u);
 }
 
+using AnimateFunction = void (*)(Vehicle& vehicle, const CarEntry& carEntry);
+
+constexpr static AnimateFunction animationFunctions[EnumValue(CarEntryAnimation::Count)]{
+    AnimateNone,          AnimateSimpleVehicle,  AnimateSteamLocomotive,  AnimateSwanBoat,
+    AnimateMonorailCycle, AnimateMultiDimension, AnimateObservationTower, AnimateAnimalFlying,
+};
+
 /**
  *
  *  rct2: 0x006D63D4
@@ -6758,11 +6765,6 @@ void Vehicle::UpdateAdditionalAnimation()
     }
     if (carEntry->AnimationFrames == 0 || carEntry->animation >= CarEntryAnimation::Count)
         return;
-    using AnimateFunction = void (*)(Vehicle & vehicle, const CarEntry& carEntry);
-    constexpr static AnimateFunction animationFunctions[EnumValue(CarEntryAnimation::Count)]{
-        AnimateNone,          AnimateSimpleVehicle,  AnimateSteamLocomotive,  AnimateSwanBoat,
-        AnimateMonorailCycle, AnimateMultiDimension, AnimateObservationTower, AnimateAnimalFlying
-    };
     animationFunctions[EnumValue(carEntry->animation)](*this, *carEntry);
 }
 
