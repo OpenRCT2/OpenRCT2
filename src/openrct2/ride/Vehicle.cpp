@@ -6700,6 +6700,11 @@ static void AnimateObservationTower(Vehicle& vehicle, const CarEntry& carEntry)
     }
 }
 
+static int16_t MultiDimensionTargetAngle(int16_t seatRotation, int16_t animationFrames)
+{
+    return ((seatRotation - 4) % animationFrames + animationFrames) % animationFrames;
+}
+
 /**
  * Multidimension targets a specific animation frame based on track
  */
@@ -6720,15 +6725,7 @@ static void AnimateMultiDimension(Vehicle& vehicle, const CarEntry& carEntry)
             else
                 vehicle.seat_rotation++;
 
-            int16_t targetSeatRotation = (vehicle.seat_rotation - 4) % carEntry.AnimationFrames;
-            if (targetSeatRotation < 0)
-            {
-                targetSeatRotation += carEntry.AnimationFrames;
-                // fix negative values when AnimationFrames is less than 4
-                if (targetSeatRotation < 0)
-                    targetSeatRotation += carEntry.AnimationFrames;
-            }
-
+            int16_t targetSeatRotation = MultiDimensionTargetAngle(vehicle.seat_rotation, carEntry.AnimationFrames);
             if (targetSeatRotation != vehicle.animation_frame)
             {
                 vehicle.animation_frame = targetSeatRotation;
