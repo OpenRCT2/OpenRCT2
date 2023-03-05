@@ -173,7 +173,7 @@ void FinancePayRideUpkeep()
         if (ride.status != RideStatus::Closed && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto upkeep = ride.upkeep_cost;
-            if (upkeep != -1)
+            if (upkeep != MONEY64_UNDEFINED)
             {
                 ride.total_profit -= upkeep;
                 ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
