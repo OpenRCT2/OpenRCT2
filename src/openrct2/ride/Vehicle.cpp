@@ -6703,7 +6703,7 @@ static void AnimateObservationTower(Vehicle& vehicle, const CarEntry& carEntry)
 /**
  * Multidimension targets a specific animation frame based on track
  */
-static void AnimateMultiDimCoaster(Vehicle& vehicle, const CarEntry& carEntry)
+static void AnimateMultiDimension(Vehicle& vehicle, const CarEntry& carEntry)
 {
     if (vehicle.seat_rotation != vehicle.target_seat_rotation)
     {
@@ -6761,7 +6761,7 @@ void Vehicle::UpdateAdditionalAnimation()
     using AnimateFunction = void (*)(Vehicle & vehicle, const CarEntry& carEntry);
     constexpr static AnimateFunction animationFunctions[static_cast<size_t>(CarEntryAnimation::Count)]{
         AnimateNone,          AnimateSimpleVehicle,   AnimateSteamLocomotive,  AnimateSwanBoat,
-        AnimateMonorailCycle, AnimateMultiDimCoaster, AnimateObservationTower, AnimateAnimalFlying
+        AnimateMonorailCycle, AnimateMultiDimension, AnimateObservationTower, AnimateAnimalFlying
     };
     animationFunctions[static_cast<size_t>(carEntry->animation)](*this, *carEntry);
 }

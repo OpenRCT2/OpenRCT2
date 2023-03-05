@@ -30,7 +30,7 @@ enum class CarEntryAnimation : uint8_t
     SteamLocomotive,
     SwanBoat,
     MonorailCycle,
-    MultiDimCoaster,
+    MultiDimension,
     ObservationTower,
     AnimalFlying,
     Count,

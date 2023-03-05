@@ -51,7 +51,7 @@ static const EnumMap<CarEntryAnimation> AnimationNameLookup{
     { "steamLocomotive", CarEntryAnimation::SteamLocomotive },
     { "swanBoat", CarEntryAnimation::SwanBoat },
     { "monorailCycle", CarEntryAnimation::MonorailCycle },
-    { "multiDimCoaster", CarEntryAnimation::MultiDimCoaster },
+    { "MultiDimension", CarEntryAnimation::MultiDimension },
     { "observationTower", CarEntryAnimation::ObservationTower },
     { "animalFlying", CarEntryAnimation::AnimalFlying },
 };
@@ -68,7 +68,7 @@ constexpr const LegacyAnimationParameters VehicleEntryDefaultAnimation[NumLegacy
     { 0x3333, 8, CarEntryAnimation::ObservationTower }, // Observation Tower
     { 1 << 10, 4, CarEntryAnimation::SimpleVehicle },   // Mini Helicopter
     { 1 << 11, 4, CarEntryAnimation::MonorailCycle },   // Monorail Cycle
-    { 0x3333, 8, CarEntryAnimation::MultiDimCoaster },  // Multi Dimension Coaster
+    { 0x3333, 8, CarEntryAnimation::MultiDimension },  // Multi Dimension Coaster
     { 24, 4, CarEntryAnimation::AnimalFlying },         // Animal Flying
 };
 
