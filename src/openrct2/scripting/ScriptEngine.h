@@ -210,6 +210,20 @@ namespace OpenRCT2::Scripting
             return _plugins;
         }
 
+        std::vector<std::shared_ptr<Plugin>> GetRemotePlugins()
+        {
+            std::vector<std::shared_ptr<Plugin>> res;
+            for (const auto& plugin : _plugins)
+            {
+                const auto& metadata = plugin->GetMetadata();
+                if (metadata.Type == OpenRCT2::Scripting::PluginType::Remote)
+                {
+                    res.push_back(plugin);
+                }
+            }
+            return res;
+        }
+
         void ClearParkStorage();
         std::string GetParkStorageAsJSON();
         void SetParkStorageFromJSON(std::string_view value);

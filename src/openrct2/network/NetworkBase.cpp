@@ -1287,32 +1287,15 @@ void NetworkBase::ServerSendObjectsList(
     }
 }
 
-static std::vector<std::shared_ptr<Scripting::Plugin>> GetRemotePlugins(IContext& context)
-{
-    std::vector<std::shared_ptr<Scripting::Plugin>> res;
-
-    // Get a list of plugins to send.
-    auto& scriptEngine = context.GetScriptEngine();
-    const auto& plugins = scriptEngine.GetPlugins();
-    for (const auto& plugin : plugins)
-    {
-        const auto& metadata = plugin->GetMetadata();
-        if (metadata.Type == OpenRCT2::Scripting::PluginType::Remote)
-        {
-            res.push_back(plugin);
-        }
-    }
-
-    return res;
-}
-
 void NetworkBase::ServerSendScripts(NetworkConnection& connection)
 {
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
+    auto& scriptEngine = GetContext().GetScriptEngine();
+
     // Get remote plugin list.
-    const auto remotePlugins = GetRemotePlugins(GetContext());
+    const auto remotePlugins = scriptEngine.GetRemotePlugins();
     LOG_VERBOSE("Server sends %zu scripts", remotePlugins.size());
 
     // Build the data contents for each plugin.
