@@ -247,26 +247,28 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Use `-fno-var-tracking-assignments` to reduce amount of produced debug information. This is necessary due to 100MiB limit of GitHub / openrct2.org API.
+          # For focal the debug information still takes too much space, so reduce amount of debug info to minimum using `-g1` (`-g` means `-g2`), which is enough for backtraces only.
           - platform: x86_64
             distro: bionic
             image: openrct2/openrct2-build:4-bionic
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz" -DWITH_TESTS=off -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON
           - platform: x86_64
             distro: focal
             image: openrct2/openrct2-build:8-focal
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz"
           - platform: x86_64
             distro: jammy
             image: openrct2/openrct2-build:8-jammy
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: bullseye
             image: openrct2/openrct2-build:8-bullseye
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: i686
             distro: focal
             image: openrct2/openrct2-build:8-focal32
-            build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g -gz" -DWITH_TESTS=off
+            build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g1 -gz" -DWITH_TESTS=off
     steps:
       - name: Checkout
         uses: actions/checkout@v3

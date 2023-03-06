@@ -51,7 +51,8 @@ bool NetworkPacket::CommandRequiresAuth() const noexcept
         case NetworkCommand::Token:
         case NetworkCommand::GameInfo:
         case NetworkCommand::ObjectsList:
-        case NetworkCommand::Scripts:
+        case NetworkCommand::ScriptsHeader:
+        case NetworkCommand::ScriptsData:
         case NetworkCommand::MapRequest:
         case NetworkCommand::Heartbeat:
             return false;
