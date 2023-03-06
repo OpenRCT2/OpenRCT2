@@ -23,56 +23,6 @@ version=$3
 sha1=$4
 branch=$5
 
-case "$flavour" in
-    windows-portable-win32)
-        flavour=windows-win32.zip
-        flavourid=1
-        ;;
-    windows-portable-x64)
-        flavour=windows-x64.zip
-        flavourid=6
-        ;;
-    windows-installer-win32)
-        flavour=windows-win32.exe
-        flavourid=2
-        ;;
-    windows-installer-x64)
-        flavour=windows-x64.exe
-        flavourid=7
-        ;;
-    windows-symbols-win32)
-        flavour=windows-win32-symbols.zip
-        flavourid=5
-        ;;
-    windows-symbols-x64)
-        flavour=windows-x64-symbols.zip
-        flavourid=10
-        ;;
-    macos)
-        flavour=macos.zip
-        flavourid=3
-        ;;
-    linux-i686)
-        flavour=linux-i686.tar.gz
-        flavourid=4
-        ;;
-    linux-x86_64)
-        flavour=linux-x86_64.tar.gz
-        flavourid=9
-        ;;
-    android-arm)
-        flavour=android-arm.apk
-        flavourid=11
-        ;;
-    android-x86)
-        flavour=android-x86.apk
-        flavourid=12
-        ;;
-    *)
-        echo -e $"\033[0;31mUnknown flavour: $flavour"
-        exit 1
-esac
-
 if [ -n "$branch" ]; then
     versionextra=-$branch-${sha1::7}
 fi
