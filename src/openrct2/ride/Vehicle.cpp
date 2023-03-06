@@ -6193,6 +6193,7 @@ static void block_brakes_open_previous_section(
         else if (trackType == TrackElemType::BlockBrakes)
         {
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+            BlockBrakeSetLinkedBrakesClosed(location, *trackElement, false);
         }
     }
 }
@@ -7416,6 +7417,10 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
             }
             MapInvalidateElement(TrackLocation, tileElement);
             block_brakes_open_previous_section(curRide, TrackLocation, tileElement);
+            if (trackType == TrackElemType::BlockBrakes)
+            {
+                BlockBrakeSetLinkedBrakesClosed(TrackLocation, *tileElement->AsTrack(), true);
+            }
         }
     }
 
