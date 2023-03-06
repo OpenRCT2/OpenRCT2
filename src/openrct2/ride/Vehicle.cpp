@@ -6184,17 +6184,14 @@ static void block_brakes_open_previous_section(
     MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
     auto trackType = trackElement->GetTrackType();
-    if (ride.IsBlockSectioned())
+    if (trackType == TrackElemType::EndStation)
     {
-        if (trackType == TrackElemType::EndStation)
-        {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
-        }
-        else if (trackType == TrackElemType::BlockBrakes)
-        {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
-            BlockBrakeSetLinkedBrakesClosed(location, *trackElement, false);
-        }
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+    }
+    else if (trackType == TrackElemType::BlockBrakes)
+    {
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+        BlockBrakeSetLinkedBrakesClosed(location, *trackElement, false);
     }
 }
 
