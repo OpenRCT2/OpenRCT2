@@ -403,35 +403,6 @@ namespace String
         return buffer;
     }
 
-    utf8* Duplicate(const std::string& src)
-    {
-        return String::Duplicate(src.c_str());
-    }
-
-    utf8* Duplicate(const utf8* src)
-    {
-        utf8* result = nullptr;
-        if (src != nullptr)
-        {
-            size_t srcSize = SizeOf(src) + 1;
-            result = Memory::Allocate<utf8>(srcSize);
-            std::memcpy(result, src, srcSize);
-        }
-        return result;
-    }
-
-    utf8* DiscardUse(utf8** ptr, utf8* replacement)
-    {
-        Memory::Free(*ptr);
-        *ptr = replacement;
-        return replacement;
-    }
-
-    utf8* DiscardDuplicate(utf8** ptr, const utf8* replacement)
-    {
-        return DiscardUse(ptr, String::Duplicate(replacement));
-    }
-
     std::vector<std::string> Split(std::string_view s, std::string_view delimiter)
     {
         if (delimiter.empty())

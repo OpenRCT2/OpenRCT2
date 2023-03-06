@@ -117,8 +117,6 @@ static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA
 
 static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 {
-    SafeFree(highscore->fileName);
-    SafeFree(highscore->name);
     SafeDelete(highscore);
 }
 
@@ -465,7 +463,7 @@ public:
             // Check if record company value has been broken or the highscore is the same but no name is registered
             ScenarioHighscoreEntry* highscore = scenario->Highscore;
             if (highscore == nullptr || companyValue > highscore->company_value
-                || (String::IsNullOrEmpty(highscore->name) && companyValue == highscore->company_value))
+                || (highscore->name.empty() && companyValue == highscore->company_value))
             {
                 if (highscore == nullptr)
                 {
@@ -475,15 +473,13 @@ public:
                 }
                 else
                 {
-                    if (!String::IsNullOrEmpty(highscore->name))
+                    if (!highscore->name.empty())
                     {
                         highscore->timestamp = Platform::GetDatetimeNowUTC();
                     }
-                    SafeFree(highscore->fileName);
-                    SafeFree(highscore->name);
                 }
-                highscore->fileName = String::Duplicate(Path::GetFileName(scenario->Path));
-                highscore->name = String::Duplicate(name);
+                highscore->fileName = Path::GetFileName(scenario->Path);
+                highscore->name = name != nullptr ? name : "";
                 highscore->company_value = companyValue;
                 SaveHighscores();
                 return true;
@@ -493,10 +489,19 @@ public:
     }
 
 private:
-    ScenarioIndexEntry* GetByFilename(const utf8* filename)
+    ScenarioIndexEntry* GetByFilename(u8string_view filename)
     {
-        const ScenarioRepository* repo = this;
-        return const_cast<ScenarioIndexEntry*>(repo->GetByFilename(filename));
+        for (auto& scenario : _scenarios)
+        {
+            const auto scenarioFilename = Path::GetFileName(scenario.Path);
+
+            // Note: this is always case insensitive search for cross platform consistency
+            if (String::Equals(filename, scenarioFilename, true))
+            {
+                return &scenario;
+            }
+        }
+        return nullptr;
     }
 
     ScenarioIndexEntry* GetByPath(const utf8* path)
@@ -623,8 +628,8 @@ private:
             for (uint32_t i = 0; i < numHighscores; i++)
             {
                 ScenarioHighscoreEntry* highscore = InsertHighscore();
-                highscore->fileName = fs.ReadString();
-                highscore->name = fs.ReadString();
+                highscore->fileName = fs.ReadStdString();
+                highscore->name = fs.ReadStdString();
                 highscore->company_value = fileVersion == 1 ? fs.ReadValue<money32>() : fs.ReadValue<money64>();
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }
@@ -684,9 +689,8 @@ private:
                             // Check if legacy highscore is better
                             if (scBasic.CompanyValue > highscore->company_value)
                             {
-                                SafeFree(highscore->name);
                                 std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
-                                highscore->name = String::Duplicate(name.c_str());
+                                highscore->name = name;
                                 highscore->company_value = scBasic.CompanyValue;
                                 highscore->timestamp = DATETIME64_MIN;
                                 break;
@@ -696,9 +700,9 @@ private:
                     if (notFound)
                     {
                         ScenarioHighscoreEntry* highscore = InsertHighscore();
-                        highscore->fileName = String::Duplicate(scBasic.Path);
+                        highscore->fileName = scBasic.Path;
                         std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
-                        highscore->name = String::Duplicate(name.c_str());
+                        highscore->name = name;
                         highscore->company_value = scBasic.CompanyValue;
                         highscore->timestamp = DATETIME64_MIN;
                     }
@@ -728,7 +732,6 @@ private:
     ScenarioHighscoreEntry* InsertHighscore()
     {
         auto highscore = new ScenarioHighscoreEntry();
-        std::memset(highscore, 0, sizeof(ScenarioHighscoreEntry));
         _highscores.push_back(highscore);
         return highscore;
     }

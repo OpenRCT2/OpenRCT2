@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 #include "../scenario/Scenario.h"
 
 #include <memory>
@@ -19,10 +20,10 @@ struct RCTObjectEntry;
 
 struct ScenarioHighscoreEntry
 {
-    utf8* fileName;
-    utf8* name;
-    money64 company_value;
-    datetime64 timestamp;
+    u8string fileName;
+    u8string name;
+    money64 company_value{};
+    datetime64 timestamp{};
 };
 
 enum class ScenarioSource : uint8_t

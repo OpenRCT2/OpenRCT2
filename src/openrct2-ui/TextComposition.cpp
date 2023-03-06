@@ -85,9 +85,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     break;
                 }
 
-                utf8* newText = String::Duplicate(e->text.text);
-                Insert(newText);
-                Memory::Free(newText);
+                Insert(e->text.text);
 
                 console.RefreshCaret(_session.SelectionStart);
                 WindowUpdateTextbox();
