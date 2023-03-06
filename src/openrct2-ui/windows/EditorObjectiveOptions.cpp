@@ -37,6 +37,16 @@ static constexpr const StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
 static constexpr const int32_t WH = 229;
 static constexpr const int32_t WW = 450;
 
+const money64 ObjectiveMaxCurrency = 2000000.00_GBP;
+const int ObjectiveMaxLength = 5000;
+const money32 ObjectiveMinCurrency = 1000.00_GBP;
+const int ObjectiveMinLength = 1000;
+const int ObjectiveMaxExcitement = FIXED_2DP(9,90);
+const int ObjectiveMinExcitement = FIXED_2DP(4, 00);
+const short ObjectiveMinGuests = 250;
+const short ObjectiveMaxYear = 25;
+const short ObjectiveMinYear = 1;
+
 // The number has to leave a bit of room for other entities like vehicles, litter and balloons.
 static constexpr const uint16_t MaxObjectiveGuests = 50000;
 
@@ -323,7 +333,7 @@ static void WindowEditorObjectiveOptionsSetObjective(WindowBase* w, int32_t obje
             gScenarioObjective.Currency = 50000.00_GBP;
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            gScenarioObjective.Currency = 1000.00_GBP;
+            gScenarioObjective.Currency = ObjectiveMinCurrency;
             break;
     }
 }
@@ -437,18 +447,18 @@ static void WindowEditorObjectiveOptionsArg1Increase(WindowBase* w)
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjective.Currency >= 2000000.00_GBP)
+            if (gScenarioObjective.Currency >= ObjectiveMaxCurrency)
             {
                 ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency += 1000.00_GBP;
+                gScenarioObjective.Currency += ObjectiveMinCurrency;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjective.Currency >= 2000000.00_GBP)
+            if (gScenarioObjective.Currency >= ObjectiveMaxCurrency)
             {
                 ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
@@ -459,7 +469,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(WindowBase* w)
             }
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-            if (gScenarioObjective.MinimumLength >= 5000)
+            if (gScenarioObjective.MinimumLength >= ObjectiveMaxLength)
             {
                 ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
@@ -470,7 +480,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(WindowBase* w)
             }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            if (gScenarioObjective.MinimumExcitement >= FIXED_2DP(9, 90))
+            if (gScenarioObjective.MinimumExcitement >= ObjectiveMaxExitement)
             {
                 ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
@@ -501,18 +511,18 @@ static void WindowEditorObjectiveOptionsArg1Decrease(WindowBase* w)
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjective.Currency <= 1000.00_GBP)
+            if (gScenarioObjective.Currency <= ObjectiveMinCurrency)
             {
                 ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency -= 1000.00_GBP;
+                gScenarioObjective.Currency -= ObjectiveMinCurrency;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjective.Currency <= 1000.00_GBP)
+            if (gScenarioObjective.Currency <= ObjectiveMinCurrency)
             {
                 ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
@@ -523,7 +533,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(WindowBase* w)
             }
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-            if (gScenarioObjective.MinimumLength <= 1000)
+            if (gScenarioObjective.MinimumLength <= ObjectiveMinLength)
             {
                 ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
@@ -534,7 +544,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(WindowBase* w)
             }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            if (gScenarioObjective.MinimumExcitement <= FIXED_2DP(4, 00))
+            if (gScenarioObjective.MinimumExcitement <= ObjectiveMinExcitement)
             {
                 ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
@@ -545,7 +555,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(WindowBase* w)
             }
             break;
         default:
-            if (gScenarioObjective.NumGuests <= 250)
+            if (gScenarioObjective.NumGuests <= ObjectiveMinGuests)
             {
                 ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
@@ -560,7 +570,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(WindowBase* w)
 
 static void WindowEditorObjectiveOptionsArg2Increase(WindowBase* w)
 {
-    if (gScenarioObjective.Year >= 25)
+    if (gScenarioObjective.Year >= ObjectiveMaxYear)
     {
         ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
     }
@@ -573,7 +583,7 @@ static void WindowEditorObjectiveOptionsArg2Increase(WindowBase* w)
 
 static void WindowEditorObjectiveOptionsArg2Decrease(WindowBase* w)
 {
-    if (gScenarioObjective.Year <= 1)
+    if (gScenarioObjective.Year <= ObjecvtiveMinYear)
     {
         ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
     }
