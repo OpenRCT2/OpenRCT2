@@ -480,7 +480,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(WindowBase* w)
             }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            if (gScenarioObjective.MinimumExcitement >= ObjectiveMaxExitement)
+            if (gScenarioObjective.MinimumExcitement >= ObjectiveMaxExcitement)
             {
                 ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
@@ -583,7 +583,7 @@ static void WindowEditorObjectiveOptionsArg2Increase(WindowBase* w)
 
 static void WindowEditorObjectiveOptionsArg2Decrease(WindowBase* w)
 {
-    if (gScenarioObjective.Year <= ObjecvtiveMinYear)
+    if (gScenarioObjective.Year <= ObjectiveMinYear)
     {
         ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
     }
