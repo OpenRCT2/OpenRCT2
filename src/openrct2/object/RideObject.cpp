@@ -320,7 +320,7 @@ ImageIndex RideObject::GetPreviewImage(ride_type_t type)
     return _legacyType.images_offset + std::distance(std::begin(_legacyType.ride_type), it);
 }
 
-void RideObject::GetRepositoryItem(ObjectRepositoryItem* item) const
+void RideObject::GetRepositoryItem(ObjectRepositoryItem& item) const
 {
     // Find the first non-null ride type, to be used when checking the ride group and determining the category.
     auto firstRideType = _legacyType.GetFirstNonNullRideType();
@@ -328,14 +328,14 @@ void RideObject::GetRepositoryItem(ObjectRepositoryItem* item) const
 
     for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
-        item->RideInfo.RideType[i] = _legacyType.ride_type[i];
+        item.RideInfo.RideType[i] = _legacyType.ride_type[i];
     }
     for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCategoriesPerRide; i++)
     {
-        item->RideInfo.RideCategory[i] = category;
+        item.RideInfo.RideCategory[i] = category;
     }
 
-    item->RideInfo.RideFlags = 0;
+    item.RideInfo.RideFlags = 0;
 }
 
 void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, IStream* stream, CarEntry* car)

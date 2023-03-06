@@ -293,7 +293,7 @@ public:
     virtual std::string GetName() const;
     virtual std::string GetName(int32_t language) const;
 
-    virtual void GetRepositoryItem(ObjectRepositoryItem* /*item*/) const
+    virtual void GetRepositoryItem(ObjectRepositoryItem& /*item*/) const
     {
     }
     

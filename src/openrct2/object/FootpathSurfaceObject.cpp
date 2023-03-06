@@ -70,7 +70,7 @@ void FootpathSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
     PopulateTablesFromJson(context, root);
 }
 
-void FootpathSurfaceObject::GetRepositoryItem(ObjectRepositoryItem* item) const
+void FootpathSurfaceObject::GetRepositoryItem(ObjectRepositoryItem& item) const
 {
-    item->FootpathSurfaceInfo.Flags = Flags;
+    item.FootpathSurfaceInfo.Flags = Flags;
 }

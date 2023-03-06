@@ -129,9 +129,9 @@ void SceneryGroupObject::UpdateEntryIndexes()
     }
 }
 
-void SceneryGroupObject::GetRepositoryItem(ObjectRepositoryItem* item) const
+void SceneryGroupObject::GetRepositoryItem(ObjectRepositoryItem& item) const
 {
-    item->SceneryGroupInfo.Entries = _items;
+    item.SceneryGroupInfo.Entries = _items;
 }
 
 std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadItems(IStream* stream)

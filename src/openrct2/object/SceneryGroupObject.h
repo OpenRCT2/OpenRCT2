@@ -38,7 +38,7 @@ public:
 
     void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
 
-    void GetRepositoryItem(ObjectRepositoryItem* item) const override;
+    void GetRepositoryItem(ObjectRepositoryItem& item) const override;
 
     uint16_t GetNumIncludedObjects() const;
 
