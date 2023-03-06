@@ -6004,15 +6004,14 @@ void Vehicle::ApplyNonStopBlockBrake()
     if (velocity >= 0)
     {
         // If the vehicle is below the speed limit
-        if (velocity <= BLOCK_BRAKE_BASE_SPEED)
+        if (velocity <= kBlockBrakeBaseSpeed)
         {
             // Boost it to the fixed block brake speed
-            velocity = BLOCK_BRAKE_BASE_SPEED;
+            velocity = kBlockBrakeBaseSpeed;
             acceleration = 0;
         }
-        else
+        else if (velocity > (brake_speed << 16) + kBlockBrakeSpeedOffset)
         {
-            // Slow it down till the fixed block brake speed
             velocity -= velocity >> 4;
             acceleration = 0;
         }
@@ -6185,9 +6184,13 @@ static void block_brakes_open_previous_section(
     MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
     auto trackType = trackElement->GetTrackType();
-    if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::EndStation)
+    if (ride.IsBlockSectioned())
     {
-        if (ride.IsBlockSectioned())
+        if (trackType == TrackElemType::EndStation)
+        {
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+        }
+        else if (trackType == TrackElemType::BlockBrakes)
         {
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
         }
@@ -6981,7 +6984,7 @@ void Vehicle::UpdateLandscapeDoorBackwards() const
 
 static void vehicle_update_play_water_splash_sound()
 {
-    if (_vehicleVelocityF64E08 <= BLOCK_BRAKE_BASE_SPEED)
+    if (_vehicleVelocityF64E08 <= kBlockBrakeBaseSpeed)
     {
         return;
     }

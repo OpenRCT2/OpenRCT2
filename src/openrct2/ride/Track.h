@@ -18,7 +18,9 @@
 
 constexpr const uint32_t RideConstructionSpecialPieceSelected = 0x10000;
 
-constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
+constexpr const uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
+constexpr const int32_t kBlockBrakeBaseSpeed = 0x20364;
+constexpr const int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
 
 using track_type_t = uint16_t;
 using roll_type_t = uint8_t;
