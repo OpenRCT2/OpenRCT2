@@ -9,6 +9,7 @@
 
 #pragma once
 #include "../world/Location.hpp"
+#include "../entity/Yaw.hpp"
 
 namespace OpenRCT2::Math::Trigonometry
 {
