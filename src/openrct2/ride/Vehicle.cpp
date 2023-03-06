@@ -6764,10 +6764,11 @@ static void AnimateAnimalFlying(Vehicle& vehicle, const CarEntry& carEntry)
 
 using AnimateFunction = void (*)(Vehicle& vehicle, const CarEntry& carEntry);
 
-constexpr static const AnimateFunction animationFunctions[EnumValue(CarEntryAnimation::Count)]{
+constexpr static const AnimateFunction AnimationFunctions[]{
     AnimateNone,          AnimateSimpleVehicle,  AnimateSteamLocomotive,  AnimateSwanBoat,
     AnimateMonorailCycle, AnimateMultiDimension, AnimateObservationTower, AnimateAnimalFlying,
 };
+static_assert(std::size(AnimationFunctions) == EnumValue(CarEntryAnimation::Count));
 
 /**
  *
@@ -6782,7 +6783,7 @@ void Vehicle::UpdateAdditionalAnimation()
     }
     if (carEntry->AnimationFrames == 0 || carEntry->animation >= CarEntryAnimation::Count)
         return;
-    animationFunctions[EnumValue(carEntry->animation)](*this, *carEntry);
+    AnimationFunctions[EnumValue(carEntry->animation)](*this, *carEntry);
 }
 
 /**

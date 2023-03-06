@@ -65,7 +65,7 @@ struct LegacyAnimationParameters
     CarEntryAnimation Alias;
 };
 
-constexpr const LegacyAnimationParameters VehicleEntryDefaultAnimation[NumLegacyAnimationTypes] = {
+constexpr const LegacyAnimationParameters VehicleEntryDefaultAnimation[] = {
     { 0, 1, CarEntryAnimation::None },                  // None
     { 1 << 12, 4, CarEntryAnimation::SteamLocomotive }, // Miniature Railway Locomotive
     { 1 << 10, 2, CarEntryAnimation::SwanBoat },        // Swan Boat
@@ -78,6 +78,7 @@ constexpr const LegacyAnimationParameters VehicleEntryDefaultAnimation[NumLegacy
     { 0x3333, 8, CarEntryAnimation::MultiDimension },   // Multi Dimension Coaster
     { 24, 4, CarEntryAnimation::AnimalFlying },         // Animal Flying
 };
+static_assert(std::size(VehicleEntryDefaultAnimation) == NumLegacyAnimationTypes);
 
 static CarEntryAnimation GetAnimationTypeFromString(const std::string& s)
 {
