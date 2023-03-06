@@ -251,9 +251,10 @@ namespace ObjectFactory
         }
     }
 
-    std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path, bool loadImages)
+    std::unique_ptr<Object> CreateObjectFromLegacyFile(
+        IObjectRepository& objectRepository, const std::string& path, bool loadImages)
     {
-        LOG_VERBOSE("CreateObjectFromLegacyFile(..., \"%s\")", path);
+        LOG_VERBOSE("CreateObjectFromLegacyFile(..., \"%s\")", path.c_str());
 
         std::unique_ptr<Object> result;
         try
@@ -287,7 +288,7 @@ namespace ObjectFactory
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR("Error: %s when processing object %s", e.what(), path);
+            LOG_ERROR("Error: %s when processing object %s", e.what(), path.c_str());
         }
         return result;
     }
@@ -423,7 +424,8 @@ namespace ObjectFactory
         return ObjectType::None;
     }
 
-    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path, bool loadImages)
+    std::unique_ptr<Object> CreateObjectFromZipFile(
+        IObjectRepository& objectRepository, const std::string& path, bool loadImages)
     {
         try
         {

@@ -23,11 +23,11 @@ enum class ObjectType : uint8_t;
 namespace ObjectFactory
 {
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyFile(
-        IObjectRepository& objectRepository, const utf8* path, bool loadImages);
+        IObjectRepository& objectRepository, const std::string& path, bool loadImages);
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyData(
         IObjectRepository& objectRepository, const RCTObjectEntry* entry, const void* data, size_t dataSize);
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromZipFile(
-        IObjectRepository& objectRepository, std::string_view path, bool loadImages);
+        IObjectRepository& objectRepository, const std::string& path, bool loadImages);
     [[nodiscard]] std::unique_ptr<Object> CreateObject(ObjectType type);
 
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromJsonFile(
