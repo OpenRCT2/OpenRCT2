@@ -276,6 +276,7 @@
     <ClInclude Include="management\Marketing.h" />
     <ClInclude Include="management\NewsItem.h" />
     <ClInclude Include="management\Research.h" />
+    <ClInclude Include="math\Trigonometry.hpp" />
     <ClInclude Include="network\DiscordService.h" />
     <ClInclude Include="network\network.h" />
     <ClInclude Include="network\NetworkAction.h" />
@@ -449,7 +450,6 @@
     <ClInclude Include="ride\shops\meta\Shop.h" />
     <ClInclude Include="ride\shops\meta\Toilets.h" />
     <ClInclude Include="ride\Station.h" />
-    <ClInclude Include="ride\SteamPosition.hpp" />
     <ClInclude Include="ride\thrill\meta\3DCinema.h" />
     <ClInclude Include="ride\thrill\meta\Enterprise.h" />
     <ClInclude Include="ride\thrill\meta\GoKarts.h" />

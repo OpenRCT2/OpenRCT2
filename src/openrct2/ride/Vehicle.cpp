@@ -26,6 +26,7 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
+#include "../math/Trigonometry.hpp"
 #include "../object/SmallSceneryEntry.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
@@ -45,7 +46,6 @@
 #include "Ride.h"
 #include "RideData.h"
 #include "Station.h"
-#include "SteamPosition.hpp"
 #include "Track.h"
 #include "TrackData.h"
 #include "TrainManager.h"
@@ -6644,7 +6644,7 @@ static void AnimateSteamLocomotive(Vehicle& vehicle, const CarEntry& carEntry)
                 if (!RideHasStationShelter(*curRide)
                     || (vehicle.status != Vehicle::Status::MovingToEndOfStation && vehicle.status != Vehicle::Status::Arriving))
                 {
-                    CoordsXYZ steamOffset = ComputeSteamOffset(
+                    CoordsXYZ steamOffset = OpenRCT2::Math::Trigonometry::ComputeSteamOffset(
                         carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.Pitch,
                         vehicle.sprite_direction);
                     SteamParticle::Create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
