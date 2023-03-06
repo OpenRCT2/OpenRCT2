@@ -43,7 +43,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-#define NETWORK_STREAM_VERSION "9"
+#define NETWORK_STREAM_VERSION "10"
 
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
@@ -134,7 +134,8 @@ NetworkBase::NetworkBase(OpenRCT2::IContext& context)
     client_command_handlers[NetworkCommand::GameInfo] = &NetworkBase::Client_Handle_GAMEINFO;
     client_command_handlers[NetworkCommand::Token] = &NetworkBase::Client_Handle_TOKEN;
     client_command_handlers[NetworkCommand::ObjectsList] = &NetworkBase::Client_Handle_OBJECTS_LIST;
-    client_command_handlers[NetworkCommand::Scripts] = &NetworkBase::Client_Handle_SCRIPTS;
+    client_command_handlers[NetworkCommand::ScriptsHeader] = &NetworkBase::Client_Handle_SCRIPTS_HEADER;
+    client_command_handlers[NetworkCommand::ScriptsData] = &NetworkBase::Client_Handle_SCRIPTS_DATA;
     client_command_handlers[NetworkCommand::GameState] = &NetworkBase::Client_Handle_GAMESTATE;
 
     server_command_handlers[NetworkCommand::Auth] = &NetworkBase::ServerHandleAuth;
@@ -1288,38 +1289,54 @@ void NetworkBase::ServerSendObjectsList(
 
 void NetworkBase::ServerSendScripts(NetworkConnection& connection)
 {
-    NetworkPacket packet(NetworkCommand::Scripts);
-
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
     auto& scriptEngine = GetContext().GetScriptEngine();
-    const auto& plugins = scriptEngine.GetPlugins();
-    std::vector<std::shared_ptr<Plugin>> pluginsToSend;
-    for (const auto& plugin : plugins)
-    {
-        const auto& metadata = plugin->GetMetadata();
-        if (metadata.Type == OpenRCT2::Scripting::PluginType::Remote)
-        {
-            pluginsToSend.push_back(plugin);
-        }
-    }
 
-    LOG_VERBOSE("Server sends %u scripts", pluginsToSend.size());
-    packet << static_cast<uint32_t>(pluginsToSend.size());
-    for (const auto& plugin : pluginsToSend)
-    {
-        const auto& metadata = plugin->GetMetadata();
-        LOG_VERBOSE("Script %s", metadata.Name.c_str());
+    // Get remote plugin list.
+    const auto remotePlugins = scriptEngine.GetRemotePlugins();
+    LOG_VERBOSE("Server sends %zu scripts", remotePlugins.size());
 
+    // Build the data contents for each plugin.
+    MemoryStream pluginData;
+    for (auto& plugin : remotePlugins)
+    {
         const auto& code = plugin->GetCode();
-        packet << static_cast<uint32_t>(code.size());
-        packet.Write(reinterpret_cast<const uint8_t*>(code.c_str()), code.size());
+
+        const auto codeSize = static_cast<uint32_t>(code.size());
+        pluginData.WriteValue(codeSize);
+        pluginData.WriteArray(code.c_str(), code.size());
     }
+
+    // Send the header packet.
+    NetworkPacket packetScriptHeader(NetworkCommand::ScriptsHeader);
+    packetScriptHeader << static_cast<uint32_t>(remotePlugins.size());
+    packetScriptHeader << static_cast<uint32_t>(pluginData.GetLength());
+    connection.QueuePacket(std::move(packetScriptHeader));
+
+    // Segment the plugin data into chunks and send them.
+    const uint8_t* pluginDataBuffer = static_cast<const uint8_t*>(pluginData.GetData());
+    uint32_t dataOffset = 0;
+    while (dataOffset < pluginData.GetLength())
+    {
+        const uint32_t chunkSize = std::min<uint32_t>(pluginData.GetLength() - dataOffset, CHUNK_SIZE);
+
+        NetworkPacket packet(NetworkCommand::ScriptsData);
+        packet << chunkSize;
+        packet.Write(pluginDataBuffer + dataOffset, chunkSize);
+
+        connection.QueuePacket(std::move(packet));
+
+        dataOffset += chunkSize;
+    }
+    Guard::Assert(dataOffset == pluginData.GetLength());
+
 #    else
-    packet << static_cast<uint32_t>(0);
+    NetworkPacket packetScriptHeader(NetworkCommand::ScriptsHeader);
+    packetScriptHeader << static_cast<uint32_t>(0U);
+    packetScriptHeader << static_cast<uint32_t>(0U);
 #    endif
-    connection.QueuePacket(std::move(packet));
 }
 
 void NetworkBase::Client_Send_HEARTBEAT(NetworkConnection& connection) const
@@ -2381,26 +2398,59 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
     }
 }
 
-void NetworkBase::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet)
+void NetworkBase::Client_Handle_SCRIPTS_HEADER(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t numScripts{};
-    packet >> numScripts;
+    uint32_t dataSize{};
+    packet >> numScripts >> dataSize;
 
 #    ifdef ENABLE_SCRIPTING
-    auto& scriptEngine = GetContext().GetScriptEngine();
-    for (uint32_t i = 0; i < numScripts; i++)
-    {
-        uint32_t codeLength{};
-        packet >> codeLength;
-        auto code = std::string_view(reinterpret_cast<const char*>(packet.Read(codeLength)), codeLength);
-        scriptEngine.AddNetworkPlugin(code);
-    }
+    _serverScriptsData.data.Clear();
+    _serverScriptsData.pluginCount = numScripts;
+    _serverScriptsData.dataSize = dataSize;
 #    else
     if (numScripts > 0)
     {
-        connection.SetLastDisconnectReason("The server requires plugin support.");
+        connection.SetLastDisconnectReason("The client requires plugin support.");
         Close();
     }
+#    endif
+}
+
+void NetworkBase::Client_Handle_SCRIPTS_DATA(NetworkConnection& connection, NetworkPacket& packet)
+{
+#    ifdef ENABLE_SCRIPTING
+    uint32_t dataSize{};
+    packet >> dataSize;
+    Guard::Assert(dataSize > 0);
+
+    const auto* data = packet.Read(dataSize);
+    Guard::Assert(data != nullptr);
+
+    auto& scriptsData = _serverScriptsData.data;
+    scriptsData.Write(data, dataSize);
+
+    if (scriptsData.GetLength() == _serverScriptsData.dataSize)
+    {
+        auto& scriptEngine = GetContext().GetScriptEngine();
+
+        scriptsData.SetPosition(0);
+        for (uint32_t i = 0; i < _serverScriptsData.pluginCount; ++i)
+        {
+            const auto codeSize = scriptsData.ReadValue<uint32_t>();
+            const auto scriptData = scriptsData.ReadArray<char>(codeSize);
+
+            auto code = std::string_view(reinterpret_cast<const char*>(scriptData.get()), codeSize);
+            scriptEngine.AddNetworkPlugin(code);
+        }
+        Guard::Assert(scriptsData.GetPosition() == scriptsData.GetLength());
+
+        // Empty the current buffer.
+        _serverScriptsData = {};
+    }
+#    else
+    connection.SetLastDisconnectReason("The client requires plugin support.");
+    Close();
 #    endif
 }
 
