@@ -1440,11 +1440,17 @@ namespace RCT2
                     dst2->SetInverted(src2->IsInverted());
                     dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
-                    dst2->SetBrakeClosed(src2->BlockBrakeClosed());
+                    // Brakes import as closed to preserve legacy behaviour
+                    dst2->SetBrakeClosed(src2->BlockBrakeClosed() || (trackType == TrackElemType::Brakes));
                     dst2->SetIsIndestructible(src2->IsIndestructible());
                     // Skipping IsHighlighted()
 
-                    if (TrackTypeHasSpeedSetting(trackType))
+                    // Import block brakes to keep legacy behaviour
+                    if (trackType == TrackElemType::BlockBrakes)
+                    {
+                        dst2->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                    }
+                    else if (TrackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
@@ -2009,6 +2015,10 @@ namespace RCT2
                 if (tileElement2 != nullptr)
                     dst->SetTrackType(TrackElemType::RotationControlToggle);
             }
+            else if (src->GetTrackType() == TrackElemType::BlockBrakes)
+            {
+                dst->brake_speed = kRCT2DefaultBlockBrakeSpeed;
+            }
         }
         else
         {
@@ -2075,6 +2085,7 @@ namespace RCT2
         {
             dst->SetFlag(VehicleFlags::Crashed);
         }
+        dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }
 
     static uint32_t AdjustScenarioToCurrentTicks(const S6Data& s6, uint32_t tick)
