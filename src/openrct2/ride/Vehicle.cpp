@@ -6699,7 +6699,10 @@ static void AnimateObservationTower(Vehicle& vehicle, const CarEntry& carEntry)
         vehicle.Invalidate();
     }
 }
-
+/**
+ * seatRotation value of 4 translates to animationFrame value of 0. This function makes that true for any number of animation
+ * frames
+ */
 static int16_t MultiDimensionTargetAngle(int16_t seatRotation, int16_t animationFrames)
 {
     return ((seatRotation - 4) % animationFrames + animationFrames) % animationFrames;
