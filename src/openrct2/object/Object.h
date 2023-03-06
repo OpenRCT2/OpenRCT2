@@ -296,7 +296,7 @@ public:
     virtual void GetRepositoryItem(ObjectRepositoryItem& /*item*/) const
     {
     }
-    
+
     const std::vector<ObjectSourceGame>& GetSourceGames() const;
     void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
