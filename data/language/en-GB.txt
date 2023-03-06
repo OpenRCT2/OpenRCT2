@@ -3679,6 +3679,9 @@ STR_6573    :Invisible
 STR_6574    :Void
 STR_6575    :Allow special colour schemes
 STR_6576    :Adds special colours to colour dropdown
+STR_6577    :Block brake speed
+STR_6578    :Set speed limit for block brakes. In block section mode, adjacent brakes with a slower speed are linked to the block brake.
+STR_6579    :Block brakes will be set to default speed when saved as track design
 
 #############
 # Scenarios #
