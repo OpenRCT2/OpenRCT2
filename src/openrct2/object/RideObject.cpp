@@ -320,7 +320,7 @@ ImageIndex RideObject::GetPreviewImage(ride_type_t type)
     return _legacyType.images_offset + std::distance(std::begin(_legacyType.ride_type), it);
 }
 
-void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
+void RideObject::GetRepositoryItem(ObjectRepositoryItem* item) const
 {
     // Find the first non-null ride type, to be used when checking the ride group and determining the category.
     auto firstRideType = _legacyType.GetFirstNonNullRideType();

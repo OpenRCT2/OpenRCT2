@@ -126,7 +126,7 @@ public:
             item.Name = object->GetName();
             item.Authors = object->GetAuthors();
             item.Sources = object->GetSourceGames();
-            object->SetRepositoryItem(&item);
+            object->GetRepositoryItem(&item);
             return item;
         }
         return std::nullopt;

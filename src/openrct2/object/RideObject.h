@@ -42,7 +42,7 @@ public:
     std::string GetCapacity() const;
     ImageIndex GetPreviewImage(ride_type_t type);
 
-    void SetRepositoryItem(ObjectRepositoryItem* item) const override;
+    void GetRepositoryItem(ObjectRepositoryItem* item) const override;
 
     static ride_type_t ParseRideType(const std::string& s);
 

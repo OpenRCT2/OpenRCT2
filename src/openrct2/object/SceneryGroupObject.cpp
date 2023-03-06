@@ -129,7 +129,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
     }
 }
 
-void SceneryGroupObject::SetRepositoryItem(ObjectRepositoryItem* item) const
+void SceneryGroupObject::GetRepositoryItem(ObjectRepositoryItem* item) const
 {
     item->SceneryGroupInfo.Entries = _items;
 }

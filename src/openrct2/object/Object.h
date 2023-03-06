@@ -293,9 +293,10 @@ public:
     virtual std::string GetName() const;
     virtual std::string GetName(int32_t language) const;
 
-    virtual void SetRepositoryItem(ObjectRepositoryItem* /*item*/) const
+    virtual void GetRepositoryItem(ObjectRepositoryItem* /*item*/) const
     {
     }
+    
     std::vector<ObjectSourceGame> GetSourceGames();
     void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
