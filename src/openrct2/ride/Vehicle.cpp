@@ -57,6 +57,7 @@
 
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::Math::Trigonometry;
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
@@ -6594,6 +6595,18 @@ static uint8_t GetTargetFrame(const CarEntry& carEntry, uint32_t animationState)
 }
 
 /**
+ * Compute the position that steam should be spawned
+ */
+static constexpr CoordsXYZ ComputeSteamOffset(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
+{
+    uint8_t trueYaw = OpenRCT2::Entity::Yaw::YawTo64(yaw);
+    auto offsets = PitchToDirectionVectorFromGeometry[pitch];
+    int32_t projectedRun = (offsets.x * length - offsets.y * height) / 256;
+    int32_t projectedHeight = (offsets.x * height + offsets.y * length) / 256;
+    return { ComputeXYVector(projectedRun, trueYaw), projectedHeight };
+}
+
+/**
  * Decide based on current frame and number of frames if a steam particle should be generated on this frame
  */
 static bool ShouldMakeSteam(uint8_t targetFrame, uint8_t animationFrames)
@@ -6644,7 +6657,7 @@ static void AnimateSteamLocomotive(Vehicle& vehicle, const CarEntry& carEntry)
                 if (!RideHasStationShelter(*curRide)
                     || (vehicle.status != Vehicle::Status::MovingToEndOfStation && vehicle.status != Vehicle::Status::Arriving))
                 {
-                    CoordsXYZ steamOffset = OpenRCT2::Math::Trigonometry::ComputeSteamOffset(
+                    CoordsXYZ steamOffset = ComputeSteamOffset(
                         carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.Pitch,
                         vehicle.sprite_direction);
                     SteamParticle::Create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
