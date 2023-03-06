@@ -157,7 +157,7 @@ RCTObjectEntry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32
     return header;
 }
 
-std::vector<ObjectSourceGame> Object::GetSourceGames()
+const std::vector<ObjectSourceGame>& Object::GetSourceGames() const
 {
     return _sourceGames;
 }

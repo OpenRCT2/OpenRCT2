@@ -297,7 +297,7 @@ public:
     {
     }
     
-    std::vector<ObjectSourceGame> GetSourceGames();
+    const std::vector<ObjectSourceGame>& GetSourceGames() const;
     void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
     const std::vector<std::string>& GetAuthors() const;
