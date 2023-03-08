@@ -252,7 +252,7 @@ namespace ObjectFactory
     }
 
     std::unique_ptr<Object> CreateObjectFromLegacyFile(
-        IObjectRepository& objectRepository, const std::string& path, bool loadImages)
+        IObjectRepository& objectRepository, const u8string& path, bool loadImages)
     {
         LOG_VERBOSE("CreateObjectFromLegacyFile(..., \"%s\")", path.c_str());
 
@@ -424,8 +424,7 @@ namespace ObjectFactory
         return ObjectType::None;
     }
 
-    std::unique_ptr<Object> CreateObjectFromZipFile(
-        IObjectRepository& objectRepository, const std::string& path, bool loadImages)
+    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, const u8string& path, bool loadImages)
     {
         try
         {
@@ -451,8 +450,7 @@ namespace ObjectFactory
         return nullptr;
     }
 
-    std::unique_ptr<Object> CreateObjectFromJsonFile(
-        IObjectRepository& objectRepository, const std::string& path, bool loadImages)
+    std::unique_ptr<Object> CreateObjectFromJsonFile(IObjectRepository& objectRepository, const u8string& path, bool loadImages)
     {
         LOG_VERBOSE("CreateObjectFromJsonFile(\"%s\")", path.c_str());
 
