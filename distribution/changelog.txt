@@ -1,6 +1,6 @@
 0.4.4 (in development)
 ------------------------------------------------------------------------
-- Feature: [#11269] Add properties for speed and length for vehicle animations.
+- Feature: [#11269] Add properties for speed and length of vehicle animations.
 - Feature: [#15849] Objectives can now be set for up to 50000 guests.
 - Feature: [#18537] Add shift/control modifiers to window close buttons, closing all but the given window or all windows of the same type, respectively.
 - Feature: [#18732] [Plugin] API to get the guests thoughts.
