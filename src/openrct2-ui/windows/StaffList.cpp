@@ -552,12 +552,13 @@ private:
                 nullLoc.SetNull();
 
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, staff->Id, nullLoc, NetworkGetCurrentPlayerId() };
-                pickupAction.SetCallback([&staff](const GameAction* ga, const GameActions::Result* result) {
+                pickupAction.SetCallback([staffId = staff->Id](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
 
+                    auto* staff2 = GetEntity<Staff>(staffId);
                     auto intent = Intent(WindowClass::Peep);
-                    intent.PutExtra(INTENT_EXTRA_PEEP, staff);
+                    intent.PutExtra(INTENT_EXTRA_PEEP, staff2);
                     auto* wind = ContextOpenIntent(&intent);
                     if (wind != nullptr)
                     {
