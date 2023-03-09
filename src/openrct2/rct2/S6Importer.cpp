@@ -1392,7 +1392,11 @@ namespace RCT2
                     dst2->SetAdditionStatus(src2->GetAdditionStatus());
                     dst2->SetIsBroken(src2->IsBroken());
                     dst2->SetIsBlockedByVehicle(src2->IsBlockedByVehicle());
-                    dst2->SetInvisible(dst2->PathMustBeMadeInvisible());
+
+                    if (PathMustBeMadeInvisible(dst2->GetEdgesAndCorners(), dst2->IsQueue()))
+                    {
+                        dst2->SetInvisible(true);
+                    }
                     break;
                 }
                 case RCT12TileElementType::Track:

@@ -1058,8 +1058,12 @@ namespace OpenRCT2
                                             pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
                                         }
                                     }
-                                    pathElement->SetInvisible(
-                                        pathElement->PathMustBeMadeInvisible(os.GetHeader().TargetVersion));
+                                    if (PathMustBeMadeInvisible(
+                                            pathElement->GetEdgesAndCorners(), pathElement->IsQueue(),
+                                            os.GetHeader().TargetVersion))
+                                    {
+                                        it.element->SetInvisible(true);
+                                    }
                                 }
                                 else if (it.element->GetType() == TileElementType::Track)
                                 {

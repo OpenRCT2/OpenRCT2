@@ -211,3 +211,5 @@ const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
 
 void FootpathQueueChainReset();
 void FootpathQueueChainPush(RideId rideIndex);
+
+bool PathMustBeMadeInvisible(uint8_t cornersAndEdges, uint8_t isQueue, int32_t parkFileVersion = -1);

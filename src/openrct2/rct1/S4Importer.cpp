@@ -1642,7 +1642,11 @@ namespace RCT1
                         }
                         dst2->SetAddition(entryIndex + 1);
                     }
-                    dst2->SetInvisible(dst2->PathMustBeMadeInvisible());
+
+                    if (PathMustBeMadeInvisible(dst2->GetEdgesAndCorners(), dst2->IsQueue()))
+                    {
+                        dst2->SetInvisible(true);
+                    }
                     return 1;
                 }
                 case TileElementType::Track:
