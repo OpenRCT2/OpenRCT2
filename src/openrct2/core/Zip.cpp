@@ -172,15 +172,16 @@ public:
         zip_int64_t res = 0;
         if (index.has_value())
         {
-            res = zip_replace(_zip, index.value(), source);
+            res = zip_file_replace(_zip, index.value(), source, 0);
         }
         else
         {
-            res = zip_add(_zip, path.data(), source);
+            res = zip_file_add(_zip, path.data(), source, 0);
         }
         if (res == -1)
         {
             zip_source_free(source);
+            throw std::runtime_error("Unable to set file contents.");
         }
     }
 
