@@ -9,6 +9,7 @@
 
 #pragma once
 #include "../entity/Yaw.hpp"
+#include "../ride/Vehicle.h"
 #include "../world/Location.hpp"
 
 namespace OpenRCT2::Math::Trigonometry
@@ -31,6 +32,8 @@ namespace OpenRCT2::Math::Trigonometry
         { -181, -181 }, { -198, -162 }, { -213, -142 }, { -226, -121 }, { -237, -98 },  { -245, -74 },  { -251, -50 },
         { -255, -25 },
     };
+    // Currently OpenRCT2::Entity::Yaw::BaseSpritePrecision is 32, but one day it will be 64.
+    static_assert(std::size(YawToDirectionVector) == 64);
 
     /**
      * The cos and sin of vehicle pitch based on vehicle sprite angles
@@ -98,8 +101,8 @@ namespace OpenRCT2::Math::Trigonometry
         { 195, -165 },  // inverting transition slopes down
         { 134, -217 },  // inverting transition slopes down
         { 252, 44 },    // spiral lift hill up
-        { 252, -44 }    // spiral lift hill down
     };
+    static_assert(std::size(PitchToDirectionVectorFromGeometry) == NumVehiclePitches);
 
     constexpr int32_t ComputeHorizontalMagnitude(int32_t length, uint8_t pitch)
     {

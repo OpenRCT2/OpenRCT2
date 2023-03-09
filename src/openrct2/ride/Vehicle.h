@@ -38,6 +38,9 @@ struct GForces
     int32_t LateralG{};
 };
 
+// How many valid pitch values are currently in the game. Eventually pitch will be enumerated.
+constexpr const uint8_t NumVehiclePitches = 60;
+
 // Size: 0x09
 struct VehicleInfo
 {
