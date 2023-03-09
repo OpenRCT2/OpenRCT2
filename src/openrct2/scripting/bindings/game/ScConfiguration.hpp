@@ -176,6 +176,40 @@ namespace OpenRCT2::Scripting
                         obj.Set("general.language", gConfigGeneral.Language);
                         obj.Set("general.showFps", gConfigGeneral.ShowFPS);
                     }
+                    else if (ns == "localisation")
+                    {
+                        // language
+                        const int32_t languageId = gConfigGeneral.Language;
+                        DukObject languageObj(ctx);
+                        languageObj.Set("id", languageId);
+                        languageObj.Set("code", LanguagesDescriptors[languageId].locale);
+                        languageObj.Set("englishName", LanguagesDescriptors[languageId].english_name);
+                        languageObj.Set("nativeName", LanguagesDescriptors[languageId].native_name);
+                        languageObj.Set("fallback", LanguagesDescriptors[languageId].fallback);
+                        languageObj.Set("isRtl", LanguagesDescriptors[languageId].isRtl);
+                        DukValue languageRef = languageObj.Take();
+
+                        // currency
+                        const int32_t currencyId = static_cast<int32_t>(gConfigGeneral.CurrencyFormat);
+                        DukObject currencyObj(ctx);
+                        currencyObj.Set("id", currencyId);
+                        currencyObj.Set("isoCode", CurrencyDescriptors[currencyId].isoCode);
+                        currencyObj.Set("rate", CurrencyDescriptors[currencyId].rate);
+                        currencyObj.Set("affix", toString(CurrencyDescriptors[currencyId].affix_unicode));
+                        currencyObj.Set("symbol", CurrencyDescriptors[currencyId].symbol_unicode);
+                        currencyObj.Set("asciiAffix", toString(CurrencyDescriptors[currencyId].affix_ascii));
+                        currencyObj.Set("asciiSymbol", CurrencyDescriptors[currencyId].symbol_ascii);
+                        currencyObj.Set("stringId", CurrencyDescriptors[currencyId].stringId);
+                        DukValue currencyRef = currencyObj.Take();
+
+                        // localisation
+                        obj.Set("language", languageRef);
+                        obj.Set("measurementFormat", toString(gConfigGeneral.MeasurementFormat));
+                        obj.Set("temperatureFormat", toString(gConfigGeneral.TemperatureFormat));
+                        obj.Set("showHeightAsUnits", gConfigGeneral.ShowHeightAsUnits);
+                        obj.Set("dateFormat", toString(gConfigGeneral.DateFormat));
+                        obj.Set("currency", currencyRef);
+                    }
                     result = obj.Take();
                 }
                 else
@@ -293,6 +327,86 @@ namespace OpenRCT2::Scripting
         {
             auto val = get(key, DukValue());
             return val.type() != DukValue::Type::UNDEFINED;
+        }
+
+        std::string toString(MeasurementFormat format) const
+        {
+            if (format == MeasurementFormat::Imperial)
+                return "imperial";
+            else if (format == MeasurementFormat::SI)
+                return "si";
+            else
+                return "metric";
+        }
+
+        MeasurementFormat toMeasurementFormat(std::string format) const
+        {
+            if (format == "imperial")
+                return MeasurementFormat::Imperial;
+            else if (format == "si")
+                return MeasurementFormat::SI;
+            else
+                return MeasurementFormat::Metric;
+        }
+
+        std::string toString(TemperatureUnit unit) const
+        {
+            if (unit == TemperatureUnit::Fahrenheit)
+                return "fahrenheit";
+            else
+                return "celsius";
+        }
+
+        TemperatureUnit toTemperatureUnit(std::string unit) const
+        {
+            if (unit == "fahrenheit")
+                return TemperatureUnit::Fahrenheit;
+            else
+                return TemperatureUnit::Celsius;
+        }
+
+        std::string toString(int32_t dateFormat) const
+        {
+            switch (dateFormat)
+            {
+                case 0:
+                    return "DMY";
+                case 1:
+                    return "MDY";
+                case 2:
+                    return "YMD";
+                case 3:
+                default:
+                    return "YDM";
+            }
+        }
+
+        int32_t toDateFormat(std::string dateFormat) const
+        {
+            if (dateFormat == "DMY")
+                return 0;
+            else if (dateFormat == "MDY")
+                return 1;
+            else if (dateFormat == "YMD")
+                return 2;
+            else
+                return 3;
+        }
+
+        std::string toString(CurrencyAffix affix) const
+        {
+            if (affix == CurrencyAffix::Prefix)
+                return "prefix";
+            else
+                return "suffix";
+        }
+
+        CurrencyAffix toCurrencyAffix(std::string affix) const
+        {
+            if (affix == "prefix")
+                return CurrencyAffix::Prefix;
+            else
+                return CurrencyAffix::Suffix;
         }
     };
 } // namespace OpenRCT2::Scripting
