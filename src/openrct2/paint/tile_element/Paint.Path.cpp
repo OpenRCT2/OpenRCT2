@@ -1400,9 +1400,9 @@ void PathPaintOnlyAddition(
     uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
         | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
 
-    uint16_t edi = edges | (corners << 4);
+    uint16_t edgesAndCorners = edges | (corners << 4);
 
-    Sub6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, false);
+    Sub6A3F61(session, pathElement, edgesAndCorners, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, false);
 
     height += 32;
     if (pathElement.IsSloped())
