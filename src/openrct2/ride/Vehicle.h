@@ -38,6 +38,9 @@ struct GForces
     int32_t LateralG{};
 };
 
+// How many valid pitch values are currently in the game. Eventually pitch will be enumerated.
+constexpr const uint8_t NumVehiclePitches = 60;
+
 // Size: 0x09
 struct VehicleInfo
 {
@@ -230,6 +233,7 @@ struct Vehicle : EntityBase
     Ride* GetRide() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
+    void UpdateAnimationAnimalFlying();
     void EnableCollisionsForTrain();
     /**
      * Instantly moves the specific car forward or backwards along the track.
@@ -328,7 +332,6 @@ private:
     void UpdateCrashSetup();
     void UpdateCollisionSetup();
     int32_t UpdateMotionDodgems();
-    void UpdateAnimationAnimalFlying();
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
     bool CurrentTowerElementIsTop();
@@ -420,21 +423,6 @@ enum class MiniGolfAnimation : uint8_t
     PuttLeft,
     Swing,
     Putt,
-};
-
-enum
-{
-    CAR_ENTRY_ANIMATION_NONE,
-    CAR_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE,
-    CAR_ENTRY_ANIMATION_SWAN,
-    CAR_ENTRY_ANIMATION_CANOES,
-    CAR_ENTRY_ANIMATION_ROW_BOATS,
-    CAR_ENTRY_ANIMATION_WATER_TRICYCLES,
-    CAR_ENTRY_ANIMATION_OBSERVATION_TOWER,
-    CAR_ENTRY_ANIMATION_HELICARS,
-    CAR_ENTRY_ANIMATION_MONORAIL_CYCLES,
-    CAR_ENTRY_ANIMATION_MULTI_DIM_COASTER,
-    CAR_ENTRY_ANIMATION_ANIMAL_FLYING // OpenRCT2-specific feature
 };
 
 namespace VehicleFlags

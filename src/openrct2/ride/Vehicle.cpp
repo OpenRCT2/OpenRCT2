@@ -26,6 +26,7 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
+#include "../math/Trigonometry.hpp"
 #include "../object/SmallSceneryEntry.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
@@ -56,6 +57,7 @@
 
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::Math::Trigonometry;
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
@@ -433,66 +435,6 @@ static constexpr const OpenRCT2::Audio::SoundId DoorOpenSoundIds[] = {
 static constexpr const OpenRCT2::Audio::SoundId DoorCloseSoundIds[] = {
     OpenRCT2::Audio::SoundId::DoorClose,
     OpenRCT2::Audio::SoundId::Portcullis,
-};
-
-static const struct
-{
-    int8_t x, y, z;
-} SteamParticleOffsets[][16] = {
-    {
-        { -11, 0, 22 },
-        { -10, 4, 22 },
-        { -8, 8, 22 },
-        { -4, 10, 22 },
-        { 0, 11, 22 },
-        { 4, 10, 22 },
-        { 8, 8, 22 },
-        { 10, 4, 22 },
-        { 11, 0, 22 },
-        { 10, -4, 22 },
-        { 8, -8, 22 },
-        { 4, -10, 22 },
-        { 0, -11, 22 },
-        { -4, -10, 22 },
-        { -8, -8, 22 },
-        { -10, -4, 22 },
-    },
-    {
-        { -9, 0, 27 },
-        { -8, 4, 27 },
-        { -6, 6, 27 },
-        { -4, 8, 27 },
-        { 0, 9, 27 },
-        { 4, 8, 27 },
-        { 6, 6, 27 },
-        { 8, 4, 27 },
-        { 9, 0, 27 },
-        { 8, -4, 27 },
-        { 6, -6, 27 },
-        { 4, -8, 27 },
-        { 0, -9, 27 },
-        { -4, -8, 27 },
-        { -6, -6, 27 },
-        { -8, -4, 27 },
-    },
-    {
-        { -13, 0, 18 },
-        { -12, 4, 17 },
-        { -9, 9, 17 },
-        { -4, 8, 17 },
-        { 0, 13, 18 },
-        { 4, 8, 17 },
-        { 6, 6, 17 },
-        { 8, 4, 17 },
-        { 13, 0, 18 },
-        { 8, -4, 17 },
-        { 6, -6, 17 },
-        { 4, -8, 17 },
-        { 0, -13, 18 },
-        { -4, -8, 17 },
-        { -6, -6, 17 },
-        { -8, -4, 17 },
-    },
 };
 
 template<> bool EntityBase::Is<Vehicle>() const
@@ -1350,23 +1292,23 @@ bool Vehicle::OpenRestraints()
                 continue;
             }
         }
-        if (carEntry.animation == CAR_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
+        if (carEntry.animation == CarEntryAnimation::ObservationTower && vehicle->animation_frame != 0)
         {
             if (vehicle->animationState <= 0xCCCC)
             {
-                vehicle->animationState += 0x3333;
+                vehicle->animationState += carEntry.AnimationSpeed;
             }
             else
             {
                 vehicle->animationState = 0;
                 vehicle->animation_frame++;
-                vehicle->animation_frame &= 7;
+                vehicle->animation_frame %= carEntry.AnimationFrames;
                 vehicle->Invalidate();
             }
             restraintsOpen = false;
             continue;
         }
-        if (carEntry.animation == CAR_ENTRY_ANIMATION_ANIMAL_FLYING
+        if (carEntry.animation == CarEntryAnimation::AnimalFlying
             && (vehicle->animation_frame != 0 || vehicle->animationState > 0))
         {
             vehicle->UpdateAnimationAnimalFlying();
@@ -6638,163 +6580,210 @@ void Vehicle::UpdateAnimationAnimalFlying()
 }
 
 /**
+ * Get the frame of animation for the current animationState based on animation speed and animation frames
+ */
+static uint8_t GetTargetFrame(const CarEntry& carEntry, uint32_t animationState)
+{
+    if (carEntry.AnimationSpeed == 0)
+        return 0;
+    auto targetFrame = animationState / (carEntry.AnimationSpeed << 2);
+    // mask of 0xFF
+    targetFrame &= std::numeric_limits<uint8_t>::max();
+    // multiply by number of frames. After the bitshift 8, the range will be 0 to AnimationFrames - 1
+    targetFrame *= carEntry.AnimationFrames;
+    return targetFrame >> std::numeric_limits<uint8_t>::digits;
+}
+
+/**
+ * Compute the position that steam should be spawned
+ */
+static constexpr CoordsXYZ ComputeSteamOffset(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
+{
+    uint8_t trueYaw = OpenRCT2::Entity::Yaw::YawTo64(yaw);
+    auto offsets = PitchToDirectionVectorFromGeometry[pitch];
+    int32_t projectedRun = (offsets.x * length - offsets.y * height) / 256;
+    int32_t projectedHeight = (offsets.x * height + offsets.y * length) / 256;
+    return { ComputeXYVector(projectedRun, trueYaw), projectedHeight };
+}
+
+/**
+ * Decide based on current frame and number of frames if a steam particle should be generated on this frame
+ */
+static bool ShouldMakeSteam(uint8_t targetFrame, uint8_t animationFrames)
+{
+    if (animationFrames < 1)
+        return false;
+    // steam is produced twice per wheel revolution
+    return targetFrame == 0 || targetFrame == animationFrames / 2;
+}
+
+/**
+ * Dummy function
+ */
+static void AnimateNone(Vehicle& vehicle, const CarEntry& carEntry)
+{
+    return;
+}
+
+/**
+ * Animate the vehicle based on its speed
+ */
+static void AnimateSimpleVehicle(Vehicle& vehicle, const CarEntry& carEntry)
+{
+    vehicle.animationState += _vehicleVelocityF64E08;
+    uint8_t targetFrame = GetTargetFrame(carEntry, vehicle.animationState);
+    if (vehicle.animation_frame != targetFrame)
+    {
+        vehicle.animation_frame = targetFrame;
+        vehicle.Invalidate();
+    }
+}
+
+/**
+ * Animate the vehicle based on its speed plus add steam particles
+ */
+static void AnimateSteamLocomotive(Vehicle& vehicle, const CarEntry& carEntry)
+{
+    vehicle.animationState += _vehicleVelocityF64E08;
+    uint8_t targetFrame = GetTargetFrame(carEntry, vehicle.animationState);
+    if (vehicle.animation_frame != targetFrame)
+    {
+        vehicle.animation_frame = targetFrame;
+        if (ShouldMakeSteam(targetFrame, carEntry.AnimationFrames))
+        {
+            auto curRide = vehicle.GetRide();
+            if (curRide != nullptr)
+            {
+                if (!RideHasStationShelter(*curRide)
+                    || (vehicle.status != Vehicle::Status::MovingToEndOfStation && vehicle.status != Vehicle::Status::Arriving))
+                {
+                    CoordsXYZ steamOffset = ComputeSteamOffset(
+                        carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.Pitch,
+                        vehicle.sprite_direction);
+                    SteamParticle::Create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
+                }
+            }
+        }
+        vehicle.Invalidate();
+    }
+}
+
+/**
+ * Animate the vehicle based on its speed. Specialized animation with exactly 2 frames due to how peep animation works.
+ */
+static void AnimateSwanBoat(Vehicle& vehicle, const CarEntry& carEntry)
+{
+    // The animation of swan boats places frames at 0 and 2 instead of 0 and 1 like Water Tricycles due to the second
+    // pair of peeps. The animation technically uses 4 frames, but ignores frames 1 and 3.
+    vehicle.animationState += _vehicleVelocityF64E08;
+    uint8_t targetFrame = GetTargetFrame(carEntry, vehicle.animationState) * 2;
+    if (vehicle.animation_frame != targetFrame)
+    {
+        vehicle.animation_frame = targetFrame;
+        vehicle.Invalidate();
+    }
+}
+
+/**
+ * Monorail Cycle animation only animates when a peep is present
+ */
+static void AnimateMonorailCycle(Vehicle& vehicle, const CarEntry& carEntry)
+{
+    if (vehicle.num_peeps != 0)
+    {
+        AnimateSimpleVehicle(vehicle, carEntry);
+    }
+}
+
+/**
+ * Observation tower animates at a constant speed continuously
+ */
+static void AnimateObservationTower(Vehicle& vehicle, const CarEntry& carEntry)
+{
+    if (vehicle.animationState <= 0xCCCC)
+    {
+        vehicle.animationState += carEntry.AnimationSpeed;
+    }
+    else
+    {
+        vehicle.animationState = 0;
+        vehicle.animation_frame += 1;
+        vehicle.animation_frame %= carEntry.AnimationFrames;
+        vehicle.Invalidate();
+    }
+}
+/**
+ * seatRotation value of 4 translates to animationFrame value of 0. This function makes that true for any number of animation
+ * frames
+ */
+static int16_t MultiDimensionTargetAngle(int16_t seatRotation, int16_t animationFrames)
+{
+    return ((seatRotation - 4) % animationFrames + animationFrames) % animationFrames;
+}
+
+/**
+ * Multidimension targets a specific animation frame based on track
+ */
+static void AnimateMultiDimension(Vehicle& vehicle, const CarEntry& carEntry)
+{
+    if (vehicle.seat_rotation != vehicle.target_seat_rotation)
+    {
+        if (vehicle.animationState <= 0xCCCC)
+        {
+            vehicle.animationState += carEntry.AnimationSpeed;
+        }
+        else
+        {
+            vehicle.animationState = 0;
+
+            if (vehicle.seat_rotation >= vehicle.target_seat_rotation)
+                vehicle.seat_rotation--;
+            else
+                vehicle.seat_rotation++;
+
+            int16_t targetSeatRotation = MultiDimensionTargetAngle(vehicle.seat_rotation, carEntry.AnimationFrames);
+            if (targetSeatRotation != vehicle.animation_frame)
+            {
+                vehicle.animation_frame = targetSeatRotation;
+                vehicle.Invalidate();
+            }
+        }
+    }
+}
+
+/**
+ * Animal Flying animates only on chainlift and in an unusual way. Made by Spacek531
+ */
+static void AnimateAnimalFlying(Vehicle& vehicle, const CarEntry& carEntry)
+{
+    vehicle.UpdateAnimationAnimalFlying();
+    // makes animation play faster with vehicle speed
+    uint8_t targetFrame = abs(_vehicleVelocityF64E08) >> carEntry.AnimationSpeed;
+    vehicle.animationState = std::max(vehicle.animationState - targetFrame, 0u);
+}
+
+using AnimateFunction = void (*)(Vehicle& vehicle, const CarEntry& carEntry);
+
+constexpr static const AnimateFunction AnimationFunctions[]{
+    AnimateNone,          AnimateSimpleVehicle,  AnimateSteamLocomotive,  AnimateSwanBoat,
+    AnimateMonorailCycle, AnimateMultiDimension, AnimateObservationTower, AnimateAnimalFlying,
+};
+static_assert(std::size(AnimationFunctions) == EnumValue(CarEntryAnimation::Count));
+
+/**
  *
  *  rct2: 0x006D63D4
  */
 void Vehicle::UpdateAdditionalAnimation()
 {
-    uint8_t targetFrame{};
-    uint8_t curFrame{};
-    uint32_t eax{};
-
     auto carEntry = Entry();
     if (carEntry == nullptr)
     {
         return;
     }
-    switch (carEntry->animation)
-    {
-        case CAR_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // Loc6D652B
-            animationState += _vehicleVelocityF64E08;
-            targetFrame = (animationState >> 20) & 3;
-            if (animation_frame != targetFrame)
-            {
-                curFrame = animation_frame;
-                animation_frame = targetFrame;
-                targetFrame &= 0x02;
-                curFrame &= 0x02;
-                if (targetFrame != curFrame)
-                {
-                    auto curRide = GetRide();
-                    if (curRide != nullptr)
-                    {
-                        if (!RideHasStationShelter(*curRide)
-                            || (status != Vehicle::Status::MovingToEndOfStation && status != Vehicle::Status::Arriving))
-                        {
-                            int32_t typeIndex = [&] {
-                                switch (Pitch)
-                                {
-                                    case 2:
-                                        // uphill
-                                        return 1;
-                                    case 6:
-                                        // downhill
-                                        return 2;
-                                    default:
-                                        return 0;
-                                }
-                            }();
-                            int32_t directionIndex = sprite_direction >> 1;
-                            auto offset = SteamParticleOffsets[typeIndex][directionIndex];
-                            SteamParticle::Create({ x + offset.x, y + offset.y, z + offset.z });
-                        }
-                    }
-                }
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_SWAN: // Loc6D6424
-            animationState += _vehicleVelocityF64E08;
-            targetFrame = (animationState >> 18) & 2;
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_CANOES: // Loc6D6482
-            animationState += _vehicleVelocityF64E08;
-            eax = ((animationState >> 13) & 0xFF) * 6;
-            targetFrame = (eax >> 8) & 0xFF;
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_ROW_BOATS: // Loc6D64F7
-            animationState += _vehicleVelocityF64E08;
-            eax = ((animationState >> 13) & 0xFF) * 7;
-            targetFrame = (eax >> 8) & 0xFF;
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_WATER_TRICYCLES: // Loc6D6453
-            animationState += _vehicleVelocityF64E08;
-            targetFrame = (animationState >> 19) & 1;
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_OBSERVATION_TOWER: // Loc6D65C3
-            if (animationState <= 0xCCCC)
-            {
-                animationState += 0x3333;
-            }
-            else
-            {
-                animationState = 0;
-                animation_frame += 1;
-                animation_frame &= 7;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_HELICARS: // Loc6D63F5
-            animationState += _vehicleVelocityF64E08;
-            targetFrame = (animationState >> 18) & 3;
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_MONORAIL_CYCLES: // Loc6D64B6
-            if (num_peeps != 0)
-            {
-                animationState += _vehicleVelocityF64E08;
-                eax = ((animationState >> 13) & 0xFF) << 2;
-                targetFrame = (eax >> 8) & 0xFF;
-                if (animation_frame != targetFrame)
-                {
-                    animation_frame = targetFrame;
-                    Invalidate();
-                }
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_MULTI_DIM_COASTER: // Loc6D65E1
-            if (seat_rotation != target_seat_rotation)
-            {
-                if (animationState <= 0xCCCC)
-                {
-                    animationState += 0x3333;
-                }
-                else
-                {
-                    animationState = 0;
-
-                    if (seat_rotation >= target_seat_rotation)
-                        seat_rotation--;
-
-                    else
-                        seat_rotation++;
-
-                    animation_frame = (seat_rotation - 4) & 7;
-                    Invalidate();
-                }
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_ANIMAL_FLYING:
-            UpdateAnimationAnimalFlying();
-            // makes animation play faster with vehicle speed
-            targetFrame = abs(_vehicleVelocityF64E08) >> 24;
-            animationState = std::max(animationState - targetFrame, 0u);
-            break;
-    }
+    if (carEntry->AnimationFrames == 0 || carEntry->animation >= CarEntryAnimation::Count)
+        return;
+    AnimationFunctions[EnumValue(carEntry->animation)](*this, *carEntry);
 }
 
 /**

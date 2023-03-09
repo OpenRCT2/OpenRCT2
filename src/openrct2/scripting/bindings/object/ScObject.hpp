@@ -274,7 +274,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->animation;
+                return EnumValue(entry->animation);
             }
             return 0;
         }
