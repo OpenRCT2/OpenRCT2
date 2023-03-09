@@ -21,6 +21,7 @@
 #    include "../../HookEngine.h"
 #    include "../../IconNames.hpp"
 #    include "../../ScriptEngine.h"
+#    include "../configuration/ScUserConfiguration.hpp"
 #    include "../game/ScConfiguration.hpp"
 #    include "../game/ScDisposable.hpp"
 #    include "../object/ScObject.hpp"
@@ -50,9 +51,9 @@ namespace OpenRCT2::Scripting
             return OPENRCT2_PLUGIN_API_VERSION;
         }
 
-        std::shared_ptr<ScConfiguration> configuration_get()
+        std::shared_ptr<ScUserConfiguration> configuration_get()
         {
-            return std::make_shared<ScConfiguration>();
+            return std::make_shared<ScUserConfiguration>();
         }
 
         std::shared_ptr<ScConfiguration> sharedStorage_get()

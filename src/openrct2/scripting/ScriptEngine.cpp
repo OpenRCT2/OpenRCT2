@@ -396,6 +396,8 @@ void ScriptEngine::Initialise()
     ScClimate::Register(ctx);
     ScClimateState::Register(ctx);
     ScConfiguration::Register(ctx);
+    ScUserConfiguration::Register(ctx);
+    //ScLocalisation::Register(ctx);
     ScConsole::Register(ctx);
     ScContext::Register(ctx);
     ScDate::Register(ctx);

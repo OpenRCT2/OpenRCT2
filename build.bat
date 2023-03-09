@@ -1,0 +1,1 @@
+msbuild openrct2.proj /t:build /p:platform=x64 /p:configuration=release
