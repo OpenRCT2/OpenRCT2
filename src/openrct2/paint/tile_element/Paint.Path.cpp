@@ -1090,23 +1090,24 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
     PaintLampLightEffects(session, tileElement, height);
 }
 
+static uint8_t RotatePathEdgesAndCorners(uint8_t& edges, uint8_t corners, const uint8_t& currentRotation)
+{
+    edges = (edges << currentRotation & 0xF) | ((edges << currentRotation) >> 4);
+    corners = (corners << currentRotation & 0xF) | ((corners << currentRotation) >> 4);
+    return edges | (corners << 4);
+}
+
 void PathPaintBoxSupport(
     PaintSession& session, const PathElement& pathElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate)
 {
     PROFILED_FUNCTION();
 
-    // Rol edges around rotation
-    uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
-
-    uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
+    uint8_t edges = pathElement.GetEdges();
+    uint8_t edgesAndCorners = RotatePathEdgesAndCorners(edges, pathElement.GetCorners(), session.CurrentRotation);
 
     CoordsXY boundBoxOffset = stru_98D804[edges].offset;
     CoordsXY boundBoxSize = stru_98D804[edges].length;
-
-    uint16_t edi = edges | (corners << 4);
 
     ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
     if (pathElement.IsSloped())
@@ -1117,7 +1118,7 @@ void PathPaintBoxSupport(
     }
     else
     {
-        surfaceBaseImageIndex += Byte98D6E0[edi];
+        surfaceBaseImageIndex += Byte98D6E0[edgesAndCorners];
     }
 
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
@@ -1174,7 +1175,7 @@ void PathPaintBoxSupport(
         }
     }
 
-    Sub6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
+    Sub6A3F61(session, pathElement, edgesAndCorners, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
 
     uint16_t ax = 0;
     if (pathElement.IsSloped())
@@ -1234,17 +1235,11 @@ void PathPaintPoleSupport(
 {
     PROFILED_FUNCTION();
 
-    // Rol edges around rotation
-    uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
+    uint8_t edges = pathElement.GetEdges();
+    uint8_t edgesAndCorners = RotatePathEdgesAndCorners(edges, pathElement.GetCorners(), session.CurrentRotation);
 
     CoordsXY boundBoxOffset = stru_98D804[edges].offset;
     CoordsXY boundBoxSize = stru_98D804[edges].length;
-
-    uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
-
-    uint16_t edi = edges | (corners << 4);
 
     ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
     if (pathElement.IsSloped())
@@ -1255,7 +1250,7 @@ void PathPaintPoleSupport(
     }
     else
     {
-        surfaceBaseImageIndex += Byte98D6E0[edi];
+        surfaceBaseImageIndex += Byte98D6E0[edgesAndCorners];
     }
 
     // Below Surface
@@ -1314,7 +1309,7 @@ void PathPaintPoleSupport(
     }
 
     Sub6A3F61(
-        session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
+        session, pathElement, edgesAndCorners, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
         hasSupports); // TODO: arguments
 
     uint16_t ax = 0;
@@ -1393,14 +1388,8 @@ void PathPaintOnlyAddition(
 {
     PROFILED_FUNCTION();
 
-    // Rol edges around rotation
-    uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
-
-    uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
-
-    uint16_t edgesAndCorners = edges | (corners << 4);
+    uint8_t edges = pathElement.GetEdges();
+    uint8_t edgesAndCorners = RotatePathEdgesAndCorners(edges, pathElement.GetCorners(), session.CurrentRotation);
 
     Sub6A3F61(session, pathElement, edgesAndCorners, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, false);
 
