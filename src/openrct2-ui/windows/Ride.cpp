@@ -4942,7 +4942,7 @@ static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo* dpi)
             if ((gCurrentTicks % 64) == 0)
             {
                 spriteColour++;
-                if (spriteColour >= COLOUR_NUM_ORIGINAL)
+                if (spriteColour >= COLOUR_NUM_NORMAL)
                 {
                     spriteColour = COLOUR_BLACK;
                 }
