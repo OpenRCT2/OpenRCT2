@@ -195,7 +195,7 @@ enum class FilterPaletteID : int32_t
     Palette34 = PaletteWater + 2,
 
     Palette44 = Palette34 + 10, // Construction marker
-    Palette45, // Decolourise + lighten
+    Palette45,                  // Decolourise + lighten
     Palette46,
 
     PaletteDarken3,
