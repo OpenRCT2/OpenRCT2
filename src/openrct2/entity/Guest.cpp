@@ -21,6 +21,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
+#include "../interface/Colour.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"

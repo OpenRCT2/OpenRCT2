@@ -18,6 +18,7 @@
 #include "../entity/Duck.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
+#include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
