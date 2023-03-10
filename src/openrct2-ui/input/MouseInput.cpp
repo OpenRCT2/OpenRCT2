@@ -1344,7 +1344,7 @@ void InputStateWidgetPressed(
                         }
                         WindowEventDropdownCall(
                             cursor_w, cursor_widgetIndex,
-                            (gDropdownIsColour) ? GetPaletteMapIndexForColour(dropdown_index) : dropdown_index);
+                            (gDropdownIsColour) ? ColourToPaletteIndex(dropdown_index) : dropdown_index);
                     }
                 }
             }
@@ -1475,7 +1475,7 @@ void InputStateWidgetPressed(
             };
 
             // Since there is discontinuity between old and new palette indices, need to do some math to get proper array index
-            auto tooltipIndex = GetPaletteMapIndexForColour(dropdown_index);
+            auto tooltipIndex = ColourToPaletteIndex(dropdown_index);
             if (tooltipIndex > COLOUR_NUM_ORIGINAL)
             {
                 tooltipIndex -= COLOUR_ID_EXTENDED_OFFSET;

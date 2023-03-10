@@ -621,12 +621,12 @@ void CheatSetAction::GiveObjectToGuests(int32_t object) const
                 break;
             case OBJECT_BALLOON:
                 peep->GiveItem(ShopItem::Balloon);
-                peep->BalloonColour = GetPaletteMapIndexForColour(ScenarioRandMax(COLOUR_NUM_NORMAL));
+                peep->BalloonColour = ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL));
                 peep->UpdateSpriteType();
                 break;
             case OBJECT_UMBRELLA:
                 peep->GiveItem(ShopItem::Umbrella);
-                peep->UmbrellaColour = GetPaletteMapIndexForColour(ScenarioRandMax(COLOUR_NUM_NORMAL));
+                peep->UmbrellaColour = ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL));
                 peep->UpdateSpriteType();
                 break;
         }

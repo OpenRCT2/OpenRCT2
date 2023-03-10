@@ -455,7 +455,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
     // Set items
     for (uint64_t i = 0; i < numColours; i++)
     {
-        auto orderedColour = GetPaletteMapIndexForColour(i);
+        auto orderedColour = ColourToPaletteIndex(i);
         if (selectedColour == orderedColour)
             defaultIndex = i;
 

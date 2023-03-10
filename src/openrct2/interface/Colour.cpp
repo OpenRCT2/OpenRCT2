@@ -152,7 +152,7 @@ static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
     return closest;
 }
 
-uint8_t GetPaletteMapIndexForColour(colour_t colour)
+uint8_t ColourToPaletteIndex(colour_t colour)
 {
     return COLOUR_USABLE_ORDER[colour];
 }

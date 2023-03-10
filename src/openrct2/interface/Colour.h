@@ -266,7 +266,7 @@ namespace Colour
     colour_t FromString(std::string_view s, colour_t defaultValue = COLOUR_BLACK);
 }
 
-uint8_t GetPaletteMapIndexForColour(colour_t colour);
+uint8_t ColourToPaletteIndex(colour_t colour);
 
 #ifndef NO_TTF
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
