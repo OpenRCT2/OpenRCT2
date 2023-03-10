@@ -951,7 +951,7 @@ DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& s
 
 FilterPaletteID GetGlassPaletteId(colour_t c)
 {
-    return (c > COLOUR_NUM_ORIGINAL) ? GlassPaletteIds[c - COLOUR_ID_G2_OFFSET] : GlassPaletteIds[c];
+    return (c > COLOUR_NUM_ORIGINAL) ? GlassPaletteIds[c - COLOUR_ID_EXTENDED_OFFSET] : GlassPaletteIds[c];
 }
 
 void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours)

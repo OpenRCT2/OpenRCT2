@@ -152,6 +152,11 @@ static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
     return closest;
 }
 
+uint8_t GetPaletteMapIndexForColour(colour_t colour)
+{
+    return COLOUR_USABLE_ORDER[colour];
+}
+
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2)
 {
     const uint8_t cMin = std::min(paletteIndex1, paletteIndex2);

@@ -1343,7 +1343,7 @@ void InputStateWidgetPressed(
                         }
                         WindowEventDropdownCall(
                             cursor_w, cursor_widgetIndex,
-                            (gDropdownIsColour) ? COLOUR_UI_ORDER[dropdown_index] : dropdown_index);
+                            (gDropdownIsColour) ? GetPaletteMapIndexForColour(dropdown_index) : dropdown_index);
                     }
                 }
             }
@@ -1472,12 +1472,15 @@ void InputStateWidgetPressed(
                 STR_COLOUR_INVISIBLE_TIP,
                 STR_COLOUR_VOID_TIP,
             };
-            auto stringId = COLOUR_UI_ORDER[dropdown_index];
-            if (stringId > COLOUR_NUM_ORIGINAL)
+
+            //Since there is discontinuity between old and new palette indices, need to do some math to get proper array index
+            auto tooltipIndex = GetPaletteMapIndexForColour(dropdown_index);
+            if (tooltipIndex > COLOUR_NUM_ORIGINAL)
             {
-                stringId -= COLOUR_ID_G2_OFFSET;
+                tooltipIndex -= COLOUR_ID_EXTENDED_OFFSET;
             }
-            WindowTooltipShow(OpenRCT2String{ _colourTooltips[stringId], {} }, screenCoords);
+
+            WindowTooltipShow(OpenRCT2String{ _colourTooltips[tooltipIndex], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))

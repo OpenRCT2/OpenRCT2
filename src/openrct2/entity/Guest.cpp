@@ -1619,18 +1619,18 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     const auto hasRandomShopColour = ride.HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = hasRandomShopColour ? COLOUR_UI_ORDER[ScenarioRandMax(COLOUR_NUM_NORMAL - 1)]
+        TshirtColour = hasRandomShopColour ? GetPaletteMapIndexForColour(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
                                            : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? COLOUR_UI_ORDER[ScenarioRandMax(COLOUR_NUM_NORMAL - 1)] : ride.track_colour[0].main;
+        HatColour = hasRandomShopColour ? GetPaletteMapIndexForColour(ScenarioRandMax(COLOUR_NUM_NORMAL - 1)) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = hasRandomShopColour ? COLOUR_UI_ORDER[ScenarioRandMax(COLOUR_NUM_NORMAL - 1)]
+        BalloonColour = hasRandomShopColour ? GetPaletteMapIndexForColour(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
                                             : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = hasRandomShopColour ? COLOUR_UI_ORDER[ScenarioRandMax(COLOUR_NUM_NORMAL - 1)]
+        UmbrellaColour = hasRandomShopColour ? GetPaletteMapIndexForColour(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
                                              : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Map)

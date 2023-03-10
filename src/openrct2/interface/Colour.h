@@ -183,8 +183,8 @@ enum : PaletteIndex
 };
 
 // clang-format off
-// Map of color picker index to true color index, for color picker dropdown
-static constexpr uint8_t COLOUR_UI_ORDER[] = {
+// List of palette indices available for player use, as ordered in the color dropdown
+static constexpr uint8_t COLOUR_USABLE_ORDER[] = {
     0,   27,  21,  19,  149, 11,  162, 6,   159, 
     1,   28,  20,  18,  13,  14,  9,   7,   5, 
     2,   31,  161, 17,  150, 153, 10,  8,   160,
@@ -219,8 +219,8 @@ constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
 constexpr uint8_t COLOUR_NUM_ORIGINAL = 32;
 constexpr uint8_t COLOUR_NUM_EXTENDED = 24;
 constexpr uint8_t COLOUR_NUM_NORMAL = 54;
-// COLOUR_ID_G2_OFFSET = PALETTE_TO_G1_OFFSET_COUNT - COLOUR_NUM_ORIGINAL
-constexpr uint8_t COLOUR_ID_G2_OFFSET = 112;
+// COLOUR_ID_EXTENDED_OFFSET = PALETTE_TO_G1_OFFSET_COUNT - COLOUR_NUM_ORIGINAL
+constexpr uint8_t COLOUR_ID_EXTENDED_OFFSET = 112;
 constexpr uint8_t COLOUR_OFFSET_INVISIBLE = 166;
 
 #define TEXT_COLOUR_254 (254)
@@ -262,6 +262,8 @@ namespace Colour
 {
     colour_t FromString(std::string_view s, colour_t defaultValue = COLOUR_BLACK);
 }
+
+uint8_t GetPaletteMapIndexForColour(colour_t colour);
 
 #ifndef NO_TTF
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);

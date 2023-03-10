@@ -773,7 +773,7 @@ void ThemeSetColour(WindowClass wc, uint8_t index, colour_t colour)
 // Quick and dirty mapping for new colors to original colors, until flags are extracted from color upper bits
 colour_t ThemeOverrideExtendedColour(colour_t inputColour)
 {
-    switch (inputColour - COLOUR_ID_G2_OFFSET)
+    switch (inputColour - COLOUR_ID_EXTENDED_OFFSET)
     {
         case COLOUR_DARK_OLIVE_DARK:
         case COLOUR_DARK_OLIVE_LIGHT:
