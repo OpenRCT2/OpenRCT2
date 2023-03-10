@@ -22,7 +22,6 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/Formatter.h>
