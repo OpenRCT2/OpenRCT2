@@ -1623,7 +1623,8 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
                                            : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? GetPaletteMapIndexForColour(ScenarioRandMax(COLOUR_NUM_NORMAL - 1)) : ride.track_colour[0].main;
+        HatColour = hasRandomShopColour ? GetPaletteMapIndexForColour(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
+                                        : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
         BalloonColour = hasRandomShopColour ? GetPaletteMapIndexForColour(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
