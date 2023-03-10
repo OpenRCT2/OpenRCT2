@@ -1473,7 +1473,7 @@ void InputStateWidgetPressed(
                 STR_COLOUR_VOID_TIP,
             };
 
-            //Since there is discontinuity between old and new palette indices, need to do some math to get proper array index
+            // Since there is discontinuity between old and new palette indices, need to do some math to get proper array index
             auto tooltipIndex = GetPaletteMapIndexForColour(dropdown_index);
             if (tooltipIndex > COLOUR_NUM_ORIGINAL)
             {

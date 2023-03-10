@@ -450,7 +450,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
 {
     int32_t defaultIndex = -1;
 
-    auto numColours = (gCheatsAllowSpecialColorSchemes) ? static_cast<uint8_t>(COLOUR_COUNT) : COLOUR_NUM_NORMAL;
+    auto numColours = (gCheatsAllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_NUM_TOTAL) : COLOUR_NUM_NORMAL;
     // Set items
     for (uint64_t i = 0; i < numColours; i++)
     {

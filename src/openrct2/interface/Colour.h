@@ -20,6 +20,7 @@ using PaletteIndex = uint8_t;
  */
 enum : colour_t
 {
+    // Original Colours
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_WHITE,
@@ -52,7 +53,9 @@ enum : colour_t
     COLOUR_DARK_PINK,
     COLOUR_BRIGHT_PINK,
     COLOUR_LIGHT_PINK,
-    COLOUR_DARK_OLIVE_DARK,
+
+    //Extended Colour Set
+    COLOUR_DARK_OLIVE_DARK = 144,
     COLOUR_DARK_OLIVE_LIGHT,
     COLOUR_SATURATED_BROWN_LIGHT,
     COLOUR_BORDEAUX_RED_DARK,
@@ -183,7 +186,7 @@ enum : PaletteIndex
 };
 
 // clang-format off
-// List of palette indices available for player use, as ordered in the color dropdown
+// List of palette indices available for player use, as ordered in the colour dropdown
 static constexpr uint8_t COLOUR_USABLE_ORDER[] = {
     0,   27,  21,  19,  149, 11,  162, 6,   159, 
     1,   28,  20,  18,  13,  14,  9,   7,   5, 
@@ -217,9 +220,9 @@ constexpr uint8_t PALETTE_OFFSET_ANIMATED = PALETTE_INDEX_230;
 constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
 
 constexpr uint8_t COLOUR_NUM_ORIGINAL = 32;
-constexpr uint8_t COLOUR_NUM_EXTENDED = 24;
 constexpr uint8_t COLOUR_NUM_NORMAL = 54;
-// COLOUR_ID_EXTENDED_OFFSET = PALETTE_TO_G1_OFFSET_COUNT - COLOUR_NUM_ORIGINAL
+constexpr uint8_t COLOUR_NUM_TOTAL = 56;
+    // COLOUR_ID_EXTENDED_OFFSET = PALETTE_TO_G1_OFFSET_COUNT - COLOUR_NUM_ORIGINAL
 constexpr uint8_t COLOUR_ID_EXTENDED_OFFSET = 112;
 constexpr uint8_t COLOUR_OFFSET_INVISIBLE = 166;
 
@@ -254,7 +257,7 @@ struct ColourShadeMap
     uint8_t colour_11;
 };
 
-extern ColourShadeMap ColourMapA[COLOUR_COUNT];
+extern ColourShadeMap ColourMapA[COLOUR_NUM_TOTAL];
 
 void ColoursInitMaps();
 

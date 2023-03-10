@@ -770,7 +770,7 @@ void ThemeSetColour(WindowClass wc, uint8_t index, colour_t colour)
     ThemeSave();
 }
 
-// Quick and dirty mapping for new colors to original colors, until flags are extracted from color upper bits
+// Quick and dirty mapping for new colours to original colours, until flags are extracted from colour upper bits
 colour_t ThemeOverrideExtendedColour(colour_t inputColour)
 {
     switch (inputColour - COLOUR_ID_EXTENDED_OFFSET)

@@ -67,8 +67,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     money64 supportsCost = 0;
 
-    if (_primaryColour >= PALETTE_TOTAL_OFFSETS || _secondaryColour >= PALETTE_TOTAL_OFFSETS
-        || _tertiaryColour >= PALETTE_TOTAL_OFFSETS)
+    if (_primaryColour >= COLOUR_COUNT || _secondaryColour >= COLOUR_COUNT || _tertiaryColour >= COLOUR_COUNT)
     {
         LOG_ERROR(
             "Invalid game command for scenery placement, primaryColour = %u, secondaryColour = %u", _primaryColour,

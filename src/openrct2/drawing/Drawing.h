@@ -482,11 +482,11 @@ constexpr uint8_t PALETTE_TOTAL_OFFSETS = 192;
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
-extern const FilterPaletteID GlassPaletteIds[COLOUR_COUNT];
+extern const FilterPaletteID GlassPaletteIds[COLOUR_NUM_TOTAL];
 extern thread_local uint8_t gPeepPalette[256];
 extern thread_local uint8_t gOtherPalette[256];
 extern uint8_t gTextPalette[];
-extern const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT];
+extern const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_NUM_TOTAL];
 
 extern ImageId gPickupPeepImage;
 extern int32_t gPickupPeepX;

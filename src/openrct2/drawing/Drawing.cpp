@@ -346,7 +346,7 @@ enum
     SPR_PALETTE_GLASS_VOID,
 };
 
-const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
+const FilterPaletteID GlassPaletteIds[COLOUR_NUM_TOTAL] = {
     FilterPaletteID::PaletteGlassBlack,
     FilterPaletteID::PaletteGlassGrey,
     FilterPaletteID::PaletteGlassWhite,
@@ -628,7 +628,7 @@ static constexpr uint16_t palette_to_g1_offset[PALETTE_TOTAL_OFFSETS] = {
 #define WINDOW_PALETTE_BRIGHT_RED           {FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow}
 #define WINDOW_PALETTE_BRIGHT_PINK          {FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow}
 
-const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT] = {
+const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_NUM_TOTAL] = {
     WINDOW_PALETTE_GREY,                    // COLOUR_BLACK
     WINDOW_PALETTE_GREY,                    // COLOUR_GREY
     {FilterPaletteID::PaletteTranslucentWhite,             FilterPaletteID::PaletteTranslucentWhiteHighlight,            FilterPaletteID::PaletteTranslucentWhiteShadow},
@@ -906,7 +906,7 @@ void GfxDrawPickedUpPeep(DrawPixelInfo* dpi)
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
 {
-    if (paletteId < PALETTE_TOTAL_OFFSETS)
+    if (paletteId < COLOUR_COUNT)
     {
         return palette_to_g1_offset[paletteId];
     }

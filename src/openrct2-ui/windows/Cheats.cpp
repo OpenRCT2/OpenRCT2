@@ -153,7 +153,7 @@ enum WindowCheatsWidgetIdx
     WIDX_STAFF_SPEED_DROPDOWN_BUTTON,
     WIDX_PARK_CONSTRUCTION_GROUP,
     WIDX_ALLOW_REGULAR_PATH_AS_QUEUE,
-    WIDX_ALLOW_SPECIAL_COLOR_SCHEMES,
+    WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES,
 
     WIDX_FIX_ALL = WIDX_TAB_CONTENT,
     WIDX_RENEW_RIDES,
@@ -290,7 +290,7 @@ static Widget window_cheats_misc_widgets[] =
 
     MakeWidget        ({  5, 392}, {238,  56},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                        ), // Construction group
     MakeWidget        ({ 11, 407}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,   STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP  ), // Allow regular footpaths as queue path
-    MakeWidget        ({ 11, 428}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_SPECIAL_COLOR_SCHEMES,   STR_CHEAT_ALLOW_SPECIAL_COLOR_SCHEMES_TIP  ), // Allow special colors in dropdown
+    MakeWidget        ({ 11, 428}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES,   STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP  ), // Allow special colours in dropdown
 
     WIDGETS_END,
 };
@@ -486,7 +486,7 @@ public:
                 SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
                 SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
                 SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gCheatsAllowRegularPathAsQueue);
-                SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOR_SCHEMES, gCheatsAllowSpecialColorSchemes);
+                SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gCheatsAllowSpecialColourSchemes);
                 break;
             case WINDOW_CHEATS_PAGE_RIDES:
                 SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gCheatsUnlockOperatingLimits);
@@ -914,8 +914,8 @@ private:
             case WIDX_ALLOW_REGULAR_PATH_AS_QUEUE:
                 CheatsSet(CheatType::AllowRegularPathAsQueue, !gCheatsAllowRegularPathAsQueue);
                 break;
-            case WIDX_ALLOW_SPECIAL_COLOR_SCHEMES:
-                CheatsSet(CheatType::AllowSpecialColorSchemes, !gCheatsAllowSpecialColorSchemes);
+            case WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES:
+                CheatsSet(CheatType::AllowSpecialColourSchemes, !gCheatsAllowSpecialColourSchemes);
                 break;
         }
     }
