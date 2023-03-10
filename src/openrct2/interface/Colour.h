@@ -185,6 +185,7 @@ enum : PaletteIndex
     PALETTE_INDEX_254 = 254, // Primary remap 11
 };
 
+// clang-format off
 // colour_t ordered for use in color dropdown
 static constexpr colour_t COLOUR_USABLE_ORDER[] = {
     COLOUR_BLACK,
@@ -250,6 +251,7 @@ static constexpr colour_t COLOUR_USABLE_ORDER[] = {
     COLOUR_INVISIBLE,
     COLOUR_VOID
 };
+// clang-format on
 
 constexpr size_t PALETTE_COUNT = 256;
 
