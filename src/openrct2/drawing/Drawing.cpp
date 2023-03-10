@@ -294,7 +294,6 @@ enum
     SPR_PALETTE_GLASS_BRIGHT_PINK = 5046,
     SPR_PALETTE_GLASS_LIGHT_PINK = 5047,
 
-    // Start of G2 Palettes
     SPR_PALETTE_DARK_OLIVE_DARK = SPR_G2_PALETTE_BEGIN,
     SPR_PALETTE_DARK_OLIVE_LIGHT,
     SPR_PALETTE_SATURATED_BROWN_LIGHT,
@@ -346,7 +345,7 @@ enum
     SPR_PALETTE_GLASS_VOID,
 };
 
-const FilterPaletteID GlassPaletteIds[COLOUR_NUM_TOTAL] = {
+const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
     FilterPaletteID::PaletteGlassBlack,
     FilterPaletteID::PaletteGlassGrey,
     FilterPaletteID::PaletteGlassWhite,
@@ -439,6 +438,30 @@ static constexpr uint16_t palette_to_g1_offset[PALETTE_TOTAL_OFFSETS] = {
     SPR_PALETTE_DARK_PINK,
     SPR_PALETTE_BRIGHT_PINK,
     SPR_PALETTE_LIGHT_PINK,
+    SPR_PALETTE_DARK_OLIVE_DARK,
+    SPR_PALETTE_DARK_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_BROWN_LIGHT,
+    SPR_PALETTE_BORDEAUX_RED_DARK,
+    SPR_PALETTE_BORDEAUX_RED_LIGHT,
+    SPR_PALETTE_GRASS_GREEN_DARK,
+    SPR_PALETTE_GRASS_GREEN_LIGHT,
+    SPR_PALETTE_OLIVE_DARK,
+    SPR_PALETTE_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_GREEN_LIGHT,
+    SPR_PALETTE_TAN_DARK,
+    SPR_PALETTE_TAN_LIGHT,
+    SPR_PALETTE_DULL_PURPLE_LIGHT,
+    SPR_PALETTE_DULL_GREEN_DARK,
+    SPR_PALETTE_DULL_GREEN_LIGHT,
+    SPR_PALETTE_SATURATED_PURPLE_DARK,
+    SPR_PALETTE_SATURATED_PURPLE_LIGHT,
+    SPR_PALETTE_ORANGE_LIGHT,
+    SPR_PALETTE_AQUA_DARK,
+    SPR_PALETTE_MAGENTA_LIGHT,
+    SPR_PALETTE_DULL_BROWN_DARK,
+    SPR_PALETTE_DULL_BROWN_LIGHT,
+    SPR_PALETTE_INVISIBLE,
+    SPR_PALETTE_VOID,
 
 
     SPR_PALETTE_WATER,      // PaletteWater (water)
@@ -555,34 +578,6 @@ static constexpr uint16_t palette_to_g1_offset[PALETTE_TOTAL_OFFSETS] = {
     SPR_PALETTE_GLASS_DARK_PINK,
     SPR_PALETTE_GLASS_BRIGHT_PINK,
     SPR_PALETTE_GLASS_LIGHT_PINK,
-
-    // Start of G2 Palettes
-
-    SPR_PALETTE_DARK_OLIVE_DARK,
-    SPR_PALETTE_DARK_OLIVE_LIGHT,
-    SPR_PALETTE_SATURATED_BROWN_LIGHT,
-    SPR_PALETTE_BORDEAUX_RED_DARK,
-    SPR_PALETTE_BORDEAUX_RED_LIGHT,
-    SPR_PALETTE_GRASS_GREEN_DARK,
-    SPR_PALETTE_GRASS_GREEN_LIGHT,
-    SPR_PALETTE_OLIVE_DARK,
-    SPR_PALETTE_OLIVE_LIGHT,
-    SPR_PALETTE_SATURATED_GREEN_LIGHT,
-    SPR_PALETTE_TAN_DARK,
-    SPR_PALETTE_TAN_LIGHT,
-    SPR_PALETTE_DULL_PURPLE_LIGHT,
-    SPR_PALETTE_DULL_GREEN_DARK,
-    SPR_PALETTE_DULL_GREEN_LIGHT,
-    SPR_PALETTE_SATURATED_PURPLE_DARK,
-    SPR_PALETTE_SATURATED_PURPLE_LIGHT,
-    SPR_PALETTE_ORANGE_LIGHT,
-    SPR_PALETTE_AQUA_DARK,
-    SPR_PALETTE_MAGENTA_LIGHT,
-    SPR_PALETTE_DULL_BROWN_DARK,
-    SPR_PALETTE_DULL_BROWN_LIGHT,
-    SPR_PALETTE_INVISIBLE,
-    SPR_PALETTE_VOID,
-    
     SPR_PALETTE_GLASS_DARK_OLIVE_DARK,
     SPR_PALETTE_GLASS_DARK_OLIVE_LIGHT,
     SPR_PALETTE_GLASS_SATURATED_BROWN_LIGHT,
@@ -628,7 +623,7 @@ static constexpr uint16_t palette_to_g1_offset[PALETTE_TOTAL_OFFSETS] = {
 #define WINDOW_PALETTE_BRIGHT_RED           {FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow}
 #define WINDOW_PALETTE_BRIGHT_PINK          {FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow}
 
-const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_NUM_TOTAL] = {
+const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_GREY,                    // COLOUR_BLACK
     WINDOW_PALETTE_GREY,                    // COLOUR_GREY
     {FilterPaletteID::PaletteTranslucentWhite,             FilterPaletteID::PaletteTranslucentWhiteHighlight,            FilterPaletteID::PaletteTranslucentWhiteShadow},
@@ -951,7 +946,7 @@ DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& s
 
 FilterPaletteID GetGlassPaletteId(colour_t c)
 {
-    return (c > COLOUR_NUM_ORIGINAL) ? GlassPaletteIds[c - COLOUR_ID_EXTENDED_OFFSET] : GlassPaletteIds[c];
+    return GlassPaletteIds[c];
 }
 
 void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours)

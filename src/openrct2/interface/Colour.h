@@ -55,7 +55,7 @@ enum : colour_t
     COLOUR_LIGHT_PINK,
 
     // Extended Colour Set
-    COLOUR_DARK_OLIVE_DARK = 144,
+    COLOUR_DARK_OLIVE_DARK,
     COLOUR_DARK_OLIVE_LIGHT,
     COLOUR_SATURATED_BROWN_LIGHT,
     COLOUR_BORDEAUX_RED_DARK,
@@ -274,10 +274,6 @@ constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
 
 constexpr uint8_t COLOUR_NUM_ORIGINAL = 32;
 constexpr uint8_t COLOUR_NUM_NORMAL = 54;
-constexpr uint8_t COLOUR_NUM_TOTAL = 56;
-// COLOUR_ID_EXTENDED_OFFSET = PALETTE_TO_G1_OFFSET_COUNT - COLOUR_NUM_ORIGINAL
-constexpr uint8_t COLOUR_ID_EXTENDED_OFFSET = 112;
-constexpr uint8_t COLOUR_OFFSET_INVISIBLE = 166;
 
 #define TEXT_COLOUR_254 (254)
 #define TEXT_COLOUR_255 (255)
@@ -310,7 +306,7 @@ struct ColourShadeMap
     uint8_t colour_11;
 };
 
-extern ColourShadeMap ColourMapA[COLOUR_NUM_TOTAL];
+extern ColourShadeMap ColourMapA[COLOUR_COUNT];
 
 void ColoursInitMaps();
 

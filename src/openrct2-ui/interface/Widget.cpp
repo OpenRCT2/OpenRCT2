@@ -1186,7 +1186,7 @@ static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
 
 ImageId GetColourButtonImage(colour_t colour)
 {
-    if (colour == COLOUR_OFFSET_INVISIBLE)
+    if (colour == COLOUR_INVISIBLE)
     {
         return ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, colour).WithBlended(false);
     }

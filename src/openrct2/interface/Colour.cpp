@@ -16,7 +16,7 @@
 #include <algorithm>
 #include <cmath>
 
-ColourShadeMap ColourMapA[COLOUR_NUM_TOTAL] = {};
+ColourShadeMap ColourMapA[COLOUR_COUNT] = {};
 
 enum
 {
@@ -37,7 +37,7 @@ enum
 void ColoursInitMaps()
 {
     // Get colour maps from g1
-    for (int32_t i = 0; i < COLOUR_NUM_TOTAL; i++)
+    for (int32_t i = 0; i < COLOUR_COUNT; i++)
     {
         // Get palette index in g1 / g2
         const auto paletteIndex = (i < COLOUR_NUM_ORIGINAL) ? SPR_PALETTE_2_START : SPR_G2_PALETTE_BEGIN - COLOUR_NUM_ORIGINAL;

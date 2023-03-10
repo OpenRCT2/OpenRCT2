@@ -450,7 +450,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
 {
     int32_t defaultIndex = -1;
 
-    auto numColours = (gCheatsAllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_NUM_TOTAL) : COLOUR_NUM_NORMAL;
+    auto numColours = (gCheatsAllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_COUNT) : COLOUR_NUM_NORMAL;
     // Set items
     for (uint64_t i = 0; i < numColours; i++)
     {
@@ -459,7 +459,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
             defaultIndex = i;
 
         // Use special graphic for Invisible colour
-        auto imageId = (orderedColour == COLOUR_OFFSET_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
+        auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
                                                                   : ImageId(SPR_PALETTE_BTN, orderedColour);
 
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;

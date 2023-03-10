@@ -1472,15 +1472,7 @@ void InputStateWidgetPressed(
                 STR_COLOUR_INVISIBLE_TIP,
                 STR_COLOUR_VOID_TIP,
             };
-
-            // Since there is discontinuity between old and new palette indices, need to do some math to get proper array index
-            auto tooltipIndex = ColourToPaletteIndex(dropdown_index);
-            if (tooltipIndex > COLOUR_NUM_ORIGINAL)
-            {
-                tooltipIndex -= COLOUR_ID_EXTENDED_OFFSET;
-            }
-
-            WindowTooltipShow(OpenRCT2String{ _colourTooltips[tooltipIndex], {} }, screenCoords);
+            WindowTooltipShow(OpenRCT2String{ _colourTooltips[ColourToPaletteIndex(dropdown_index)], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
