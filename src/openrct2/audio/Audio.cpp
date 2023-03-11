@@ -398,11 +398,9 @@ namespace OpenRCT2::Audio
         if (gConfigSound.MasterSoundEnabled)
         {
             Resume();
-            PlayTitleMusic();
         }
         else
         {
-            StopTitleMusic();
             Pause();
         }
 
@@ -416,11 +414,13 @@ namespace OpenRCT2::Audio
         RideAudio::StopAllChannels();
         PeepStopCrowdNoise();
         ClimateStopWeatherSound();
+        StopTitleMusic();
     }
 
     void Resume()
     {
         gGameSoundsOff = false;
+        PlayTitleMusic();
     }
 
     void StopVehicleSounds()
