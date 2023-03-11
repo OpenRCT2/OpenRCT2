@@ -42,6 +42,7 @@
 - Fix: [#18911] Mini Golf station does not draw correctly from all angles.
 - Fix: [#18971] New Game does not prompt for save before quitting.
 - Fix: [#18986] [Plugin] Sending remote scripts larger than 63KiB crashing all clients.
+- Fix: [#18994] Title music doesn’t start after enabling master volume.
 - Fix: [#19025] Park loan behaves inconsistently with non-round and out-of-bounds values.
 - Fix: [#19026] Park loan is clamped to a 32-bit integer.
 - Fix: [#19068] Guests may not join queues correctly.
