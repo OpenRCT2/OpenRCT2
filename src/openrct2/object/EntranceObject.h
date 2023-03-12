@@ -30,7 +30,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
 
     ImageIndex GetImage(uint8_t sequence, Direction direction) const;
     uint8_t GetScrollingMode() const;

@@ -87,15 +87,15 @@ void MusicObject::Unload()
     NameStringId = 0;
 }
 
-void MusicObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
+void MusicObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     // Write (no image)
     int32_t x = width / 2;
     int32_t y = height / 2;
     if (_hasPreview)
-        GfxDrawSprite(dpi, ImageId(_previewImageId), { 0, 0 });
+        GfxDrawSprite(&dpi, ImageId(_previewImageId), { 0, 0 });
     else
-        DrawTextBasic(*dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }
 
 void MusicObject::ReadJson(IReadObjectContext* context, json_t& root)

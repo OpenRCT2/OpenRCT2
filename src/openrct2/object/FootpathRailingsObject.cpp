@@ -47,7 +47,7 @@ void FootpathRailingsObject::Unload()
     RailingsImageId = 0;
 }
 
-void FootpathRailingsObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
+void FootpathRailingsObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto x = width / 2;
     auto y = height / 2;
@@ -61,20 +61,20 @@ void FootpathRailingsObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int3
         for (int i = 0; i < 2; i++)
         {
             auto h = i * 16;
-            GfxDrawSprite(dpi, img, { x - 8, y + 8 + h });
-            GfxDrawSprite(dpi, img, { x + 8, y + 16 + h });
+            GfxDrawSprite(&dpi, img, { x - 8, y + 8 + h });
+            GfxDrawSprite(&dpi, img, { x + 8, y + 16 + h });
         }
 
-        GfxDrawSprite(dpi, helper.WithIndex(BridgeImageId + 5), { x, y - 17 });
-        GfxDrawSprite(dpi, ImageId(RailingsImageId + 1), { x + 4, y - 14 });
-        GfxDrawSprite(dpi, ImageId(RailingsImageId + 1), { x + 27, y - 2 });
+        GfxDrawSprite(&dpi, helper.WithIndex(BridgeImageId + 5), { x, y - 17 });
+        GfxDrawSprite(&dpi, ImageId(RailingsImageId + 1), { x + 4, y - 14 });
+        GfxDrawSprite(&dpi, ImageId(RailingsImageId + 1), { x + 27, y - 2 });
     }
     else
     {
-        GfxDrawSprite(dpi, helper.WithIndex(BridgeImageId + 22), { x + 0, y + 16 });
-        GfxDrawSprite(dpi, helper.WithIndex(BridgeImageId + 49), { x, y - 17 });
-        GfxDrawSprite(dpi, ImageId(RailingsImageId + 1), { x + 4, y - 14 });
-        GfxDrawSprite(dpi, ImageId(RailingsImageId + 1), { x + 27, y - 3 });
+        GfxDrawSprite(&dpi, helper.WithIndex(BridgeImageId + 22), { x + 0, y + 16 });
+        GfxDrawSprite(&dpi, helper.WithIndex(BridgeImageId + 49), { x, y - 17 });
+        GfxDrawSprite(&dpi, ImageId(RailingsImageId + 1), { x + 4, y - 14 });
+        GfxDrawSprite(&dpi, ImageId(RailingsImageId + 1), { x + 27, y - 3 });
     }
 }
 

@@ -68,7 +68,7 @@ void WallObject::Unload()
     _legacyType.image = 0;
 }
 
-void WallObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
+void WallObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
@@ -81,16 +81,16 @@ void WallObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) 
         imageId = imageId.WithSecondary(COLOUR_YELLOW);
     }
 
-    GfxDrawSprite(dpi, imageId, screenCoords);
+    GfxDrawSprite(&dpi, imageId, screenCoords);
 
     if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
     {
         auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
-        GfxDrawSprite(dpi, glassImageId, screenCoords);
+        GfxDrawSprite(&dpi, glassImageId, screenCoords);
     }
     else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
     {
-        GfxDrawSprite(dpi, imageId.WithIndexOffset(1), screenCoords);
+        GfxDrawSprite(&dpi, imageId.WithIndexOffset(1), screenCoords);
     }
 }
 

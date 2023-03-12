@@ -143,7 +143,7 @@ void LargeSceneryObject::Unload()
     _baseImageId = _legacyType.image = 0;
 }
 
-void LargeSceneryObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
+void LargeSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) - 39 };
 
@@ -155,7 +155,7 @@ void LargeSceneryObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t 
     if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
         image = image.WithTertiary(COLOUR_DARK_BROWN);
 
-    GfxDrawSprite(dpi, image, screenCoords);
+    GfxDrawSprite(&dpi, image, screenCoords);
 }
 
 std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)
