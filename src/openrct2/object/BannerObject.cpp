@@ -74,15 +74,15 @@ void BannerObject::Unload()
     _legacyType.image = 0;
 }
 
-void BannerObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
+void BannerObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     auto image0 = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
     auto image1 = ImageId(_legacyType.image + 1, COLOUR_BORDEAUX_RED);
 
-    GfxDrawSprite(dpi, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
-    GfxDrawSprite(dpi, image1, screenCoords + ScreenCoordsXY{ -12, 8 });
+    GfxDrawSprite(&dpi, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
+    GfxDrawSprite(&dpi, image1, screenCoords + ScreenCoordsXY{ -12, 8 });
 }
 
 void BannerObject::ReadJson(IReadObjectContext* context, json_t& root)

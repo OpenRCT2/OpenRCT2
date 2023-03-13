@@ -398,7 +398,7 @@ public:
             const auto clipHeight = bkWidget.height() - 1;
             if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
             {
-                object->DrawPreview(&clipDPI, clipWidth, clipHeight);
+                object->DrawPreview(clipDPI, clipWidth, clipHeight);
             }
         }
 

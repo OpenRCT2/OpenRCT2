@@ -334,7 +334,7 @@ void RideObject::Unload()
     _legacyType.images_offset = 0;
 }
 
-void RideObject::DrawPreview(DrawPixelInfo* dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
+void RideObject::DrawPreview(DrawPixelInfo& dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
 {
     uint32_t imageId = _legacyType.images_offset;
 
@@ -346,7 +346,7 @@ void RideObject::DrawPreview(DrawPixelInfo* dpi, [[maybe_unused]] int32_t width,
         imageId++;
     }
 
-    GfxDrawSprite(dpi, ImageId(imageId), { 0, 0 });
+    GfxDrawSprite(&dpi, ImageId(imageId), { 0, 0 });
 }
 
 std::string RideObject::GetDescription() const

@@ -38,13 +38,13 @@ void TerrainEdgeObject::Unload()
     BaseImageId = 0;
 }
 
-void TerrainEdgeObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
+void TerrainEdgeObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     auto imageId = ImageId(BaseImageId + 5);
-    GfxDrawSprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
-    GfxDrawSprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
+    GfxDrawSprite(&dpi, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
+    GfxDrawSprite(&dpi, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
 }
 
 void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)

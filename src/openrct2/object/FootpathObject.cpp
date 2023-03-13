@@ -69,11 +69,11 @@ void FootpathObject::Unload()
     _legacyType.image = 0;
 }
 
-void FootpathObject::DrawPreview(DrawPixelInfo* dpi, int32_t width, int32_t height) const
+void FootpathObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    GfxDrawSprite(dpi, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
-    GfxDrawSprite(dpi, ImageId(_queueSurfaceDescriptor.PreviewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
+    GfxDrawSprite(&dpi, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
+    GfxDrawSprite(&dpi, ImageId(_queueSurfaceDescriptor.PreviewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
 }
 
 void FootpathObject::ReadJson(IReadObjectContext* context, json_t& root)

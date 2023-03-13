@@ -286,7 +286,7 @@ public:
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual void DrawPreview(DrawPixelInfo* /*dpi*/, int32_t /*width*/, int32_t /*height*/) const
+    virtual void DrawPreview(DrawPixelInfo& /*dpi*/, int32_t /*width*/, int32_t /*height*/) const
     {
     }
 

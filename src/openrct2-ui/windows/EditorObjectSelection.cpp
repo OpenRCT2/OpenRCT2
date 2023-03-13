@@ -1057,7 +1057,7 @@ public:
             int32_t _height = previewWidget.height() - 1;
             if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, _width, _height))
             {
-                _loadedObject->DrawPreview(&clipDPI, _width, _height);
+                _loadedObject->DrawPreview(clipDPI, _width, _height);
             }
         }
 
