@@ -39,6 +39,7 @@
 - Fix: [#17996] Finances window not cleared when starting some .park scenarios.
 - Fix: [#18260] Crash opening parks that have multiple tiles referencing the same banner entry.
 - Fix: [#18467] “Selected only” Object Selection filter is active in Track Designs Manager, and cannot be toggled.
+- Fix: [#18904] OpenRCT2 audio object accidentally exported in saves.
 - Fix: [#18905] Ride Construction window theme is not applied correctly.
 - Fix: [#18911] Mini Golf station does not draw correctly from all angles.
 - Fix: [#18971] New Game does not prompt for save before quitting.
