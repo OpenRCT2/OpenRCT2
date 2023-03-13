@@ -303,5 +303,5 @@ int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width)
     int32_t numLines;
     GfxWrapString(FormatStringID(STR_STRING, args), width, FontStyle::Medium, nullptr, &numLines);
     const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
-    return lineHeight * numLines;
+    return lineHeight * (numLines + 1);
 }
