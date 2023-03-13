@@ -10,6 +10,7 @@
 - Feature: [#19378] Add command to combine CSG1i.DAT and CSG1.DAT.
 - Feature: [objects#226] Port RCT1 Corkscrew Coaster train.
 - Feature: [objects#229] Port RCT1 go karts with helmets.
+- Feature: [OpenMusic#20, OpenMusic#21] Added Blizzard and Extraterresterial ride music styles.
 - Improved: [#11473] Hot reload for plug-ins now works on macOS.
 - Improved: [#12466] RCT1 parks now use RCT1’s interest calculation algorithm.
 - Improved: [#14635] Scenery window now shows up to 255 scenery groups.
