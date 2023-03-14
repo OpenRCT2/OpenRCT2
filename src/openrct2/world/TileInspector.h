@@ -34,7 +34,8 @@ namespace OpenRCT2::TileInspector
     GameActions::Result SurfaceToggleCorner(const CoordsXY& loc, int32_t cornerIndex, bool isExecuting);
     GameActions::Result SurfaceToggleDiagonal(const CoordsXY& loc, bool isExecuting);
     GameActions::Result PathSetSloped(const CoordsXY& loc, int32_t elementIndex, bool sloped, bool isExecuting);
-    GameActions::Result PathSetJunctionRailings(const CoordsXY& loc, int32_t elementIndex, bool hasJunctionRailings, bool isExecuting);
+    GameActions::Result PathSetJunctionRailings(
+        const CoordsXY& loc, int32_t elementIndex, bool hasJunctionRailings, bool isExecuting);
     GameActions::Result PathSetBroken(const CoordsXY& loc, int32_t elementIndex, bool broken, bool isExecuting);
     GameActions::Result PathToggleEdge(const CoordsXY& loc, int32_t elementIndex, int32_t cornerIndex, bool isExecuting);
     GameActions::Result EntranceMakeUsable(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);

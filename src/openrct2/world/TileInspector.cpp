@@ -634,7 +634,8 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActions::Result PathSetJunctionRailings(const CoordsXY& loc, int32_t elementIndex, bool hasJunctionRailings, bool isExecuting)
+    GameActions::Result PathSetJunctionRailings(
+        const CoordsXY& loc, int32_t elementIndex, bool hasJunctionRailings, bool isExecuting)
     {
         TileElement* const pathElement = MapGetNthElementAt(loc, elementIndex);
         if (pathElement == nullptr || pathElement->GetType() != TileElementType::Path)

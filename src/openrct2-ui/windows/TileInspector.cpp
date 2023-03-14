@@ -599,7 +599,8 @@ public:
                         PathSetSloped(windowTileInspectorSelectedIndex, !tileElement->AsPath()->IsSloped());
                         break;
                     case WIDX_PATH_CHECK_JUNCTION_RAILINGS:
-                        PathSetJunctionRailings(windowTileInspectorSelectedIndex, !tileElement->AsPath()->HasJunctionRailings());
+                        PathSetJunctionRailings(
+                            windowTileInspectorSelectedIndex, !tileElement->AsPath()->HasJunctionRailings());
                         break;
 
                     case WIDX_PATH_CHECK_BROKEN:
@@ -1872,10 +1873,11 @@ private:
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::PathSetSlope, elementIndex, sloped);
         GameActions::Execute(&modifyTile);
     }
-    
+
     void PathSetJunctionRailings(int32_t elementIndex, bool hasJunctionRailings)
     {
-        auto modifyTile = TileModifyAction(_toolMap, TileModifyType::PathSetJunctionRailings, elementIndex, hasJunctionRailings);
+        auto modifyTile = TileModifyAction(
+            _toolMap, TileModifyType::PathSetJunctionRailings, elementIndex, hasJunctionRailings);
         GameActions::Execute(&modifyTile);
     }
 
