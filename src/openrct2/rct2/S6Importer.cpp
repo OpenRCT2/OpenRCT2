@@ -507,6 +507,7 @@ namespace RCT2
 
             FixLandOwnership();
             FixAyersRockScenario();
+            FixInfernalViewsScenario();
 
             ResearchDetermineFirstOfType();
             UpdateConsolidatedPatrolAreas();
@@ -693,6 +694,16 @@ namespace RCT2
                     trackElement->SetTrackType(TrackElemType::FlatCovered);
                 } while (!(tileElement++)->IsLastForTile());
             }
+        }
+
+        void FixInfernalViewsScenario() const
+        {
+            if (!_isScenario || !String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6"))
+                return;
+
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 }.ToCoordsXY());
+
+            surfaceElement->SetWaterHeight(96);
         }
 
         void ImportRides()
