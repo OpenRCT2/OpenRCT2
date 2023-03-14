@@ -261,8 +261,8 @@ void Ride::RemovePeeps()
         {
             auto direction = DirectionReverse(location.direction);
             exitPosition = location;
-            exitPosition.x += (DirectionOffsets[direction].x * 20) + COORDS_XY_HALF_TILE;
-            exitPosition.y += (DirectionOffsets[direction].y * 20) + COORDS_XY_HALF_TILE;
+            exitPosition.x += (DirectionOffsets.at(direction).x * 20) + COORDS_XY_HALF_TILE;
+            exitPosition.y += (DirectionOffsets.at(direction).y * 20) + COORDS_XY_HALF_TILE;
             exitPosition.z += 2;
 
             // Reverse direction

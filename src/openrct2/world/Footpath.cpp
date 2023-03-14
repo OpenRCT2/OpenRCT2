@@ -61,8 +61,8 @@ static RideId _footpathQueueChain[64];
 
 // This is the coordinates that a user of the bin should move to
 // rct2: 0x00992A4C
-const CoordsXY BinUseOffsets[4] = {
-    { 11, 16 },
+const std::array<CoordsXY, NumOrthogonalDirections> BinUseOffsets = {
+    CoordsXY{ 11, 16 },
     { 16, 21 },
     { 21, 16 },
     { 16, 11 },
@@ -70,13 +70,13 @@ const CoordsXY BinUseOffsets[4] = {
 
 // These are the offsets for bench positions on footpaths, 2 for each edge
 // rct2: 0x00981F2C, 0x00981F2E
-const CoordsXY BenchUseOffsets[8] = {
-    { 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
+const std::array<CoordsXY, NumOrthogonalDirections* 2> BenchUseOffsets = {
+    CoordsXY{ 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
 };
 
 /** rct2: 0x00981D6C, 0x00981D6E */
-const CoordsXY DirectionOffsets[4] = {
-    { -1, 0 },
+const std::array<CoordsXY, NumOrthogonalDirections> DirectionOffsets = {
+    CoordsXY{ -1, 0 },
     { 0, 1 },
     { 1, 0 },
     { 0, -1 },

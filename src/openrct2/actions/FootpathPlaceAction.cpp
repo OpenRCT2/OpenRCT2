@@ -478,8 +478,8 @@ void FootpathPlaceAction::AutomaticallySetPeepSpawn() const
         gPeepSpawns.emplace_back();
     }
     PeepSpawn* peepSpawn = &gPeepSpawns[0];
-    peepSpawn->x = _loc.x + (DirectionOffsets[direction].x * 15) + 16;
-    peepSpawn->y = _loc.y + (DirectionOffsets[direction].y * 15) + 16;
+    peepSpawn->x = _loc.x + (DirectionOffsets.at(direction).x * 15) + 16;
+    peepSpawn->y = _loc.y + (DirectionOffsets.at(direction).y * 15) + 16;
     peepSpawn->direction = direction;
     peepSpawn->z = _loc.z;
 }
