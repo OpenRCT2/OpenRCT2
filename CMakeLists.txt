@@ -68,9 +68,9 @@ set(OBJECTS_VERSION "1.3.8")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
 set(OBJECTS_SHA1 "2888092aab93df15bb78c4c910b13c33b1e318ef")
 
-set(OPENSFX_VERSION "1.0.1")
+set(OPENSFX_VERSION "1.0.2")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
-set(OPENSFX_SHA1 "8f04aea33f8034131c3069f6accacce0d94f80c1")
+set(OPENSFX_SHA1 "64EF7E0B7785602C91AEC66F005C035B05A2133B")
 
 set(OPENMSX_VERSION "1.1.0")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
