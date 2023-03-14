@@ -273,6 +273,9 @@ public:
     bool IsSloped() const;
     void SetSloped(bool isSloped);
 
+    bool HasJunctionRailings() const;
+    void SetJunctionRailings(bool hasJunctionRailings);
+
     Direction GetSlopeDirection() const;
     void SetSlopeDirection(Direction newSlope);
 

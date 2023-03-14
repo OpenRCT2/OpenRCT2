@@ -109,6 +109,7 @@ enum WindowTileInspectorWidgetIdx
     WIDX_PATH_SPINNER_HEIGHT_DECREASE,
     WIDX_PATH_CHECK_BROKEN,
     WIDX_PATH_CHECK_SLOPED,
+    WIDX_PATH_CHECK_JUNCTION_RAILINGS,
     WIDX_PATH_CHECK_EDGE_NE, // Note: This is NOT named after the world orientation, but after the way
     WIDX_PATH_CHECK_EDGE_E,  // it looks in the window (top corner is north). Their order is important,
     WIDX_PATH_CHECK_EDGE_SE, // as this is the same order paths use for their corners / edges.
@@ -290,7 +291,7 @@ static Widget SurfaceWidgets[] = {
     WIDGETS_END,
 };
 
-constexpr int32_t NumPathProperties = 5;
+constexpr int32_t NumPathProperties = 6;
 constexpr int32_t NumPathDetails = 3;
 constexpr int32_t PathPropertiesHeight = 16 + NumPathProperties * 21;
 constexpr int32_t PathDetailsHeight = 20 + NumPathDetails * 11;
@@ -299,14 +300,15 @@ static Widget PathWidgets[] = {
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(PropertyRowCol({ 12, 0 }, 1, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_PATH_BROKEN), // WIDX_PATH_CHECK_BROKEN
     MakeWidget(PropertyRowCol({ 12, 0 }, 2, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_PATH_SLOPED), // WIDX_PATH_CHECK_SLOPED
-    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 3, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_NE
-    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 4, 2), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_E
-    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 3, 3), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_SE
-    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 2, 4), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_S
-    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 3), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_SW
-    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 0, 2), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_W
-    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_NW
-    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 2, 0), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_N
+    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_PATH_JUNCTION_RAILINGS), // WIDX_PATH_CHECK_JUNCTION_RAILINGS
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 3, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_NE
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 4, 2), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_E
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 3, 3), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_SE
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 2, 4), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_S
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 1, 3), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_SW
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 0, 2), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_W
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 1, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_NW
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 2, 0), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_N
     WIDGETS_END,
 };
 
@@ -595,6 +597,9 @@ public:
                 {
                     case WIDX_PATH_CHECK_SLOPED:
                         PathSetSloped(windowTileInspectorSelectedIndex, !tileElement->AsPath()->IsSloped());
+                        break;
+                    case WIDX_PATH_CHECK_JUNCTION_RAILINGS:
+                        PathSetJunctionRailings(windowTileInspectorSelectedIndex, !tileElement->AsPath()->HasJunctionRailings());
                         break;
 
                     case WIDX_PATH_CHECK_BROKEN:
@@ -1867,6 +1872,12 @@ private:
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::PathSetSlope, elementIndex, sloped);
         GameActions::Execute(&modifyTile);
     }
+    
+    void PathSetJunctionRailings(int32_t elementIndex, bool hasJunctionRailings)
+    {
+        auto modifyTile = TileModifyAction(_toolMap, TileModifyType::PathSetJunctionRailings, elementIndex, hasJunctionRailings);
+        GameActions::Execute(&modifyTile);
+    }
 
     void PathSetBroken(int32_t elementIndex, bool broken)
     {
@@ -2129,23 +2140,26 @@ private:
                 widgets[WIDX_PATH_CHECK_BROKEN].bottom = GBBB(propertiesAnchor, 1);
                 widgets[WIDX_PATH_CHECK_SLOPED].top = GBBT(propertiesAnchor, 2);
                 widgets[WIDX_PATH_CHECK_SLOPED].bottom = GBBB(propertiesAnchor, 2);
-                widgets[WIDX_PATH_CHECK_EDGE_N].top = GBBT(propertiesAnchor, 3) + 7 * 0;
+                widgets[WIDX_PATH_CHECK_JUNCTION_RAILINGS].top = GBBT(propertiesAnchor, 3);
+                widgets[WIDX_PATH_CHECK_JUNCTION_RAILINGS].bottom = GBBB(propertiesAnchor, 3);
+                widgets[WIDX_PATH_CHECK_EDGE_N].top = GBBT(propertiesAnchor, 4) + 7 * 0;
                 widgets[WIDX_PATH_CHECK_EDGE_N].bottom = widgets[WIDX_PATH_CHECK_EDGE_N].top + 13;
-                widgets[WIDX_PATH_CHECK_EDGE_NE].top = GBBT(propertiesAnchor, 3) + 7 * 1;
+                widgets[WIDX_PATH_CHECK_EDGE_NE].top = GBBT(propertiesAnchor, 4) + 7 * 1;
                 widgets[WIDX_PATH_CHECK_EDGE_NE].bottom = widgets[WIDX_PATH_CHECK_EDGE_NE].top + 13;
-                widgets[WIDX_PATH_CHECK_EDGE_E].top = GBBT(propertiesAnchor, 3) + 7 * 2;
+                widgets[WIDX_PATH_CHECK_EDGE_E].top = GBBT(propertiesAnchor, 4) + 7 * 2;
                 widgets[WIDX_PATH_CHECK_EDGE_E].bottom = widgets[WIDX_PATH_CHECK_EDGE_E].top + 13;
-                widgets[WIDX_PATH_CHECK_EDGE_SE].top = GBBT(propertiesAnchor, 3) + 7 * 3;
+                widgets[WIDX_PATH_CHECK_EDGE_SE].top = GBBT(propertiesAnchor, 4) + 7 * 3;
                 widgets[WIDX_PATH_CHECK_EDGE_SE].bottom = widgets[WIDX_PATH_CHECK_EDGE_SE].top + 13;
-                widgets[WIDX_PATH_CHECK_EDGE_S].top = GBBT(propertiesAnchor, 3) + 7 * 4;
+                widgets[WIDX_PATH_CHECK_EDGE_S].top = GBBT(propertiesAnchor, 4) + 7 * 4;
                 widgets[WIDX_PATH_CHECK_EDGE_S].bottom = widgets[WIDX_PATH_CHECK_EDGE_S].top + 13;
-                widgets[WIDX_PATH_CHECK_EDGE_SW].top = GBBT(propertiesAnchor, 3) + 7 * 3;
+                widgets[WIDX_PATH_CHECK_EDGE_SW].top = GBBT(propertiesAnchor, 4) + 7 * 3;
                 widgets[WIDX_PATH_CHECK_EDGE_SW].bottom = widgets[WIDX_PATH_CHECK_EDGE_SW].top + 13;
-                widgets[WIDX_PATH_CHECK_EDGE_W].top = GBBT(propertiesAnchor, 3) + 7 * 2;
+                widgets[WIDX_PATH_CHECK_EDGE_W].top = GBBT(propertiesAnchor, 4) + 7 * 2;
                 widgets[WIDX_PATH_CHECK_EDGE_W].bottom = widgets[WIDX_PATH_CHECK_EDGE_W].top + 13;
-                widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 3) + 7 * 1;
+                widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 4) + 7 * 1;
                 widgets[WIDX_PATH_CHECK_EDGE_NW].bottom = widgets[WIDX_PATH_CHECK_EDGE_NW].top + 13;
                 SetCheckboxValue(WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
+                SetCheckboxValue(WIDX_PATH_CHECK_JUNCTION_RAILINGS, tileElement->AsPath()->HasJunctionRailings());
                 SetCheckboxValue(WIDX_PATH_CHECK_BROKEN, tileElement->AsPath()->IsBroken());
                 SetCheckboxValue(
                     WIDX_PATH_CHECK_EDGE_NE, tileElement->AsPath()->GetEdges() & (1 << ((0 - GetCurrentRotation()) & 3)));
