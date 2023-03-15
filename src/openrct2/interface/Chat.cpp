@@ -222,12 +222,12 @@ void ChatAddHistory(std::string_view s)
 
     if (_chatHistory.size() >= CHAT_HISTORY_SIZE)
     {
-        _chatHistory.pop_front();
-        _chatHistoryTime.pop_front();
+        _chatHistory.pop_back();
+        _chatHistoryTime.pop_back();
     }
 
-    _chatHistory.push_back(buffer);
-    _chatHistoryTime.push_back(Platform::GetTicks());
+    _chatHistory.push_front(buffer);
+    _chatHistoryTime.push_front(Platform::GetTicks());
 
     // Log to file (src only as logging does its own timestamp)
     NetworkAppendChatLog(s);
