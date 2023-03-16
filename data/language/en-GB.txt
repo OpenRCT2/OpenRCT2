@@ -3649,7 +3649,7 @@ STR_6544    :Loan cannot be negative!
 STR_6545    :Use RCT1 interest calculation
 STR_6546    :Use the interest calculation algorithm of RollerCoaster Tycoon 1, which used a fixed percentage of approximately 1.33%.
 STR_6547    :All Scenery
-STR_6548    :Junction Railings
+STR_6548    :Show railings at junction
 
 #############
 # Scenarios #
