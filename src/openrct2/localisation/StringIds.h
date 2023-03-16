@@ -1754,6 +1754,10 @@ enum : StringId
     STR_GAMEPAD_DEADZONE_TOOLTIP_FORMAT = 6790,
     STR_GAMEPAD_SENSITIVITY_TOOLTIP_FORMAT = 6791,
 
+    STR_RIDE_MODE_WATER_SLIDE = 6795,
+    STR_STATUS_WAITING = 6796,
+    STR_UNABLE_TO_OPERATE_WITHOUT_TWO_STATIONS_IN_THIS_MODE = 6797,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
