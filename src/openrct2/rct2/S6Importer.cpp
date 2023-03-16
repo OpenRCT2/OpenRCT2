@@ -506,8 +506,8 @@ namespace RCT2
             park.Name = GetUserString(_s6.ParkName);
 
             FixLandOwnership();
+            FixWater();
             FixAyersRockScenario();
-            FixInfernalViewsScenario();
 
             ResearchDetermineFirstOfType();
             UpdateConsolidatedPatrolAreas();
@@ -642,6 +642,30 @@ namespace RCT2
             }
         }
 
+        void FixWater() const
+        {
+            if (!_isScenario)
+            {
+                return;
+            }
+            if (String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6", true)
+                || String::Equals(_s6.ScenarioFilename, "infernal views.sea", true))
+            {
+                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 }.ToCoordsXY());
+
+                surfaceElement->SetWaterHeight(96);
+            }
+            else if (
+                String::Equals(_s6.ScenarioFilename, "Six Flags Holland.SC6")
+                || String::Equals(_s6.ScenarioFilename, "six flags holland.sea", true))
+
+            {
+                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 126, 73 }.ToCoordsXY());
+
+                surfaceElement->SetWaterHeight(96);
+            }
+        }
+
         void FixAyersRockScenario() const
         {
             if (!_isScenario || !String::Equals(_s6.ScenarioFilename, "Australasia - Ayers Rock.SC6"))
@@ -694,16 +718,6 @@ namespace RCT2
                     trackElement->SetTrackType(TrackElemType::FlatCovered);
                 } while (!(tileElement++)->IsLastForTile());
             }
-        }
-
-        void FixInfernalViewsScenario() const
-        {
-            if (!_isScenario || !String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6"))
-                return;
-
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 }.ToCoordsXY());
-
-            surfaceElement->SetWaterHeight(96);
         }
 
         void ImportRides()
