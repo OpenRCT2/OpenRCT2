@@ -174,6 +174,7 @@ enum : StringId
     STR_RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED = 1095,
     STR_RIDE_MODE_POWERED_LAUNCH = 1096,
     STR_RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED_MODE = 1097,
+    STR_RIDE_MODE_WATER_SLIDE = 6762,
 
     STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION = 1144,
     STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION = 1145,
@@ -1727,6 +1728,9 @@ enum : StringId
 
     STR_OBJECT_SELECTION_CLIMATE = 6743,
     STR_CLIMATE_WEATHER_PERCENT = 6744,
+
+    STR_STATUS_WAITING = 6763,
+    STR_UNABLE_TO_OPERATE_WITHOUT_TWO_STATIONS_IN_THIS_MODE = 6764,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
