@@ -685,6 +685,7 @@ namespace RCT2
                         { 44, 61 }, { 45, 61 }, { 46, 61 }, { 45, 62 },
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, true);
+                // clang-format on
             }
             else if (String::Equals(_s6.ScenarioFilename, "WW Africa - Oasis.SC6"))
             {

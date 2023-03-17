@@ -36,6 +36,7 @@
 - Fix: [#474] Mini golf window shows more players than there actually are (original bug).
 - Fix: [#592] Window scrollbar not able to navigate to the end of large lists.
 - Fix: [#7210] Land tile smoothing occurs with edge tiles (original bug).
+- Fix: [#17774] Misplaced/missing land and construction rights ownership and sale tiles in RCT2 scenarios.
 - Fix: [#17996] Finances window not cleared when starting some .park scenarios.
 - Fix: [#18260] Crash opening parks that have multiple tiles referencing the same banner entry.
 - Fix: [#18467] “Selected only” Object Selection filter is active in Track Designs Manager, and cannot be toggled.
@@ -65,7 +66,8 @@
 - Fix: [#19493] SV4 saves not importing the correct vehicle colours.
 - Fix: [#19517] Crash when peeps try to exit or enter hacked rides that have no waypoints specified.
 - Fix: [#19524] Staff counter shows incorrect values if there are more than 32767 staff members.
-- Fix: [#19641] Missing water tile in Infernal Views' and Six Flags Holland's river.
+- Fix: [#19641] Missing water tile in Infernal Views' river.
+- Fix: [#19643] Missing water tile in Six Flags Holland's river.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
