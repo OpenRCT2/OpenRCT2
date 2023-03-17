@@ -1245,7 +1245,7 @@ STR_1863    :Faktoto
 STR_1864    :Mekanikisto
 STR_1865    :Gardisto
 STR_1866    :Amuzisto
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Ne eblas ŝanĝi nombron de turnadoj…
 STR_1869    :{WINDOW_COLOUR_2}Nombro de turnadoj:
 STR_1870    :Nombro de plenaj turnadoj

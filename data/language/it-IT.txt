@@ -1246,7 +1246,7 @@ STR_1863    :Tuttofare
 STR_1864    :Meccanico
 STR_1865    :Vigilante
 STR_1866    :Intrattenitore
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Impossibile modificare il numero di rotazioni…
 STR_1869    :{WINDOW_COLOUR_2}Numero rotazioni:
 STR_1870    :Numero di rotazioni complete

@@ -1243,7 +1243,7 @@ STR_1863    :dozorca
 STR_1864    :mechanik
 STR_1865    :strażnik
 STR_1866    :komik
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Nie można zmienić liczby obrotów…
 STR_1869    :{WINDOW_COLOUR_2}Liczba obrotów:
 STR_1870    :Liczba pełnych obrotów

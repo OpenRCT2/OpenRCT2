@@ -1246,7 +1246,7 @@ STR_1863    :Encarregat de neteja
 STR_1864    :Mecànic
 STR_1865    :Guarda de seguretat
 STR_1866    :Animador
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :El nombre de voltes no es pot canviar…
 STR_1869    :{WINDOW_COLOUR_2}Nombre de voltes:
 STR_1870    :Nombre de voltes completes

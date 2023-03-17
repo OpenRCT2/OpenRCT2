@@ -1248,7 +1248,7 @@ STR_1863    :Handyman
 STR_1864    :Mechanic
 STR_1865    :Security Guard
 STR_1866    :Entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Can’t change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :Number of complete rotations

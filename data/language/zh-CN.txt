@@ -1245,7 +1245,7 @@ STR_1863    :位清洁工人
 STR_1864    :位维修人员
 STR_1865    :位安保警卫
 STR_1866    :位表演人员
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :不能改变旋转次数…
 STR_1869    :{WINDOW_COLOUR_2}旋转次数：
 STR_1870    :完整旋转次数

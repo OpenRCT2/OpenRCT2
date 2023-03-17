@@ -1250,7 +1250,7 @@ STR_1863    :Agent d’entretien
 STR_1864    :Mécanicien
 STR_1865    :Garde de sécurité
 STR_1866    :Animateur
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Impossible de changer le nombre de rotations…
 STR_1869    :{WINDOW_COLOUR_2}Nombre de rotations :
 STR_1870    :Nombre de rotations complètes

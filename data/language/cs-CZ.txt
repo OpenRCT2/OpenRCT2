@@ -1248,7 +1248,7 @@ STR_1863    :údržbář
 STR_1864    :mechanik
 STR_1865    :hlídač
 STR_1866    :maskot
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Nelze změnit počet otoček…
 STR_1869    :{WINDOW_COLOUR_2}Počet otoček:
 STR_1870    :Počet celých otoček
