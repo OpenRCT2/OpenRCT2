@@ -592,7 +592,7 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-               String::Equals(gScenarioFileName, "Build your own Six Flags Magic Mountain.SC6", true)
+                String::Equals(gScenarioFileName, "Build your own Six Flags Magic Mountain.SC6", true)
                 || String::Equals(gScenarioFileName, "build your own six flags magic mountain.sea", true))
             {
                 // clang-format off
@@ -674,7 +674,7 @@ namespace RCT2
             }
             else if (String::Equals(gScenarioFileName, "South America - Inca Lost City.SC6"))
             {
-                    // clang-format off
+                // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
                         { 55, 60 },
