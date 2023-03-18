@@ -14,5 +14,5 @@ jobs:
           days-before-pr-stale: 14
           days-before-pr-close: 14
           stale-pr-label: 'stale-pr'
-          stale-pr-message: 'This pull request is stale and will be closed in 14 days if no action is taken. To keep it open, leave a comment or remove the `stale-pr` label. If you''re awaiting feedback from a developer, please send us a reminder (either here or on [Discord](https://discord.gg/ZXZd8D8)).'
-          close-pr-message: 'This pull request was closed due to inactivity.'
+          stale-pr-message: 'This pull request has been marked as stale and will be closed in 14 days if no action is taken. To keep it open, leave a comment or remove the `stale-pr` label. If you''re awaiting feedback from a developer, please send us a reminder (either here or on [Discord](https://discord.gg/ZXZd8D8)).'
+          close-pr-message: 'This pull request has been closed due to inactivity. If you do wish to continue with this PR or are still waiting for review, don''t hesitate  to reach out to one of the devs by tagging them here, or on [Discord](https://discord.gg/ZXZd8D8), so we can re-open this PR.'
