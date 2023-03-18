@@ -10,6 +10,7 @@
 #include "InteractiveConsole.h"
 
 #include "../Context.h"
+#include "../Date.h"
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
@@ -18,6 +19,7 @@
 #include "../Version.h"
 #include "../actions/CheatSetAction.h"
 #include "../actions/ClimateSetAction.h"
+#include "../actions/ParkSetDateAction.h"
 #include "../actions/ParkSetParameterAction.h"
 #include "../actions/RideFreezeRatingAction.h"
 #include "../actions/RideSetPriceAction.h"
@@ -1452,7 +1454,7 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
     // YYYY (no month provided, preserve existing month)
     if (argv.size() == 1)
     {
-        month = gDateMonthsElapsed % MONTH_COUNT + 1;
+        month = gDate.GetMonth() + 1;
     }
 
     // YYYY MM or YYYY MM DD (month provided)
@@ -1469,8 +1471,7 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
     // YYYY OR YYYY MM (no day provided, preserve existing day)
     if (argv.size() <= 2)
     {
-        day = std::clamp(
-            gDateMonthTicks / (TICKS_PER_MONTH / days_in_month[month - 1]) + 1, 1, static_cast<int>(days_in_month[month - 1]));
+        day = std::clamp(gDate.GetDay() + 1, 1, static_cast<int>(days_in_month[month - 1]));
     }
 
     // YYYY MM DD (year, month, and day provided)
@@ -1483,7 +1484,8 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
         }
     }
 
-    DateSet(year, month, day);
+    auto setDateAction = ParkSetDateAction(year - 1, month - 1, day - 1);
+    GameActions::Execute(&setDateAction);
     WindowInvalidateByClass(WindowClass::BottomToolbar);
 
     return 1;

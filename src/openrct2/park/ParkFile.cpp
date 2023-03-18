@@ -479,8 +479,19 @@ namespace OpenRCT2
                     cs.Write(isPaused);
                 }
                 cs.ReadWrite(gCurrentTicks);
-                cs.ReadWrite(gDateMonthTicks);
-                cs.ReadWrite(gDateMonthsElapsed);
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    uint16_t monthTicks;
+                    uint32_t monthsElapsed;
+                    cs.ReadWrite(monthTicks);
+                    cs.ReadWrite(monthsElapsed);
+                    gDate = Date(monthsElapsed, monthTicks);
+                }
+                else
+                {
+                    cs.Write(gDate.GetMonthTicks());
+                    cs.Write(gDate.GetMonthsElapsed());
+                }
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {

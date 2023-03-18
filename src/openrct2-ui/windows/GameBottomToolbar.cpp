@@ -190,7 +190,6 @@ static void WindowGameBottomToolbarMouseup(WindowBase* w, WidgetIndex widgetInde
 
 static OpenRCT2String WindowGameBottomToolbarTooltip(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback)
 {
-    int32_t month, day;
     auto ft = Formatter();
 
     switch (widgetIndex)
@@ -201,13 +200,6 @@ static OpenRCT2String WindowGameBottomToolbarTooltip(WindowBase* w, const Widget
             break;
         case WIDX_PARK_RATING:
             ft.Add<int16_t>(gParkRating);
-            break;
-        case WIDX_DATE:
-            month = DateGetMonth(gDateMonthsElapsed);
-            day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
-
-            ft.Add<StringId>(DateDayNames[day]);
-            ft.Add<StringId>(DateGameMonthNames[month]);
             break;
     }
     return { fallback, ft };
@@ -496,9 +488,9 @@ static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo* dpi, WindowBase
                                         window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->windowPos.y + 2 };
 
     // Date
-    int32_t year = DateGetYear(gDateMonthsElapsed) + 1;
-    int32_t month = DateGetMonth(gDateMonthsElapsed);
-    int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
+    int32_t year = gDate.GetYear() + 1;
+    int32_t month = gDate.GetMonth();
+    int32_t day = gDate.GetDay();
 
     colour_t colour
         = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE

@@ -11,6 +11,31 @@
 
 #include "common.h"
 
+constexpr int32_t MAX_YEAR = 8192;
+constexpr int32_t TICKS_PER_MONTH = 0x10000;
+
+enum
+{
+    MONTH_MARCH,
+    MONTH_APRIL,
+    MONTH_MAY,
+    MONTH_JUNE,
+    MONTH_JULY,
+    MONTH_AUGUST,
+    MONTH_SEPTEMBER,
+    MONTH_OCTOBER,
+
+    MONTH_COUNT
+};
+
+enum
+{
+    DATE_FORMAT_DAY_MONTH_YEAR,
+    DATE_FORMAT_MONTH_DAY_YEAR,
+    DATE_FORMAT_YEAR_MONTH_DAY,
+    DATE_FORMAT_YEAR_DAY_MONTH
+};
+
 namespace OpenRCT2
 {
     /**
@@ -44,3 +69,28 @@ namespace OpenRCT2
         static int32_t GetDaysInMonth(int32_t month);
     };
 } // namespace OpenRCT2
+
+struct RealWorldDate
+{
+    uint8_t day;
+    uint8_t month;
+    int16_t year;
+    uint8_t day_of_week;
+};
+
+struct RealWorldTime
+{
+    uint8_t second;
+    uint8_t minute;
+    uint8_t hour;
+};
+
+extern const int16_t days_in_month[MONTH_COUNT];
+extern OpenRCT2::Date gDate;
+extern RealWorldTime gRealTimeOfDay;
+
+int32_t DateGetMonth(int32_t months);
+int32_t DateGetYear(int32_t months);
+int32_t DateGetTotalMonths(int32_t month, int32_t year);
+void DateReset();
+void DateUpdateRealTimeOfDay();

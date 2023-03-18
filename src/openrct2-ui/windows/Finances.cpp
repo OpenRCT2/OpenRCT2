@@ -224,13 +224,13 @@ static_assert(std::size(_windowFinancesPageHoldDownWidgets) == WINDOW_FINANCES_P
 class FinancesWindow final : public Window
 {
 private:
-    int32_t _lastPaintedMonth;
+    uint32_t _lastPaintedMonth;
 
 public:
     void OnOpen() override
     {
         SetPage(WINDOW_FINANCES_PAGE_SUMMARY);
-        _lastPaintedMonth = std::numeric_limits<int32_t>::max();
+        _lastPaintedMonth = std::numeric_limits<uint32_t>::max();
         ResearchUpdateUncompletedTypes();
     }
 
@@ -381,7 +381,7 @@ public:
         }
 
         // Expenditure / Income values for each month
-        uint16_t currentMonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
+        auto currentMonthYear = gDate.GetMonthsElapsed();
         for (int32_t i = SummaryMaxAvailableMonth(); i >= 0; i--)
         {
             screenCoords.y = 0;
@@ -522,7 +522,7 @@ public:
         ft.Add<money64>(gBankLoan);
 
         // Keep up with new months being added in the first two years.
-        if (gDateMonthsElapsed != _lastPaintedMonth)
+        if (gDate.GetMonthsElapsed() != _lastPaintedMonth)
             InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
     }
 
@@ -593,7 +593,7 @@ public:
 
     uint16_t SummaryMaxAvailableMonth()
     {
-        return std::min<uint16_t>(gDateMonthsElapsed, EXPENDITURE_TABLE_MONTH_COUNT - 1);
+        return std::min<uint16_t>(gDate.GetMonthsElapsed(), EXPENDITURE_TABLE_MONTH_COUNT - 1);
     }
 
 #pragma endregion

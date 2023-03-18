@@ -11,6 +11,7 @@
 
 #include "./peep/GuestPathfinding.h"
 #include "Context.h"
+#include "Date.h"
 #include "Editor.h"
 #include "Game.h"
 #include "GameState.h"
@@ -313,8 +314,8 @@ void GameState::UpdateLogic(LogicTimings* timings)
     auto day = _date.GetDay();
 #endif
 
-    DateUpdate();
-    _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
+    gDate.Update();
+    _date = gDate;
     report_time(LogicTimePart::Date);
 
     ScenarioUpdate();

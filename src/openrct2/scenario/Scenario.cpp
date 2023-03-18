@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Date.h"
 #include "../FileClassifier.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -326,7 +327,7 @@ static void ScenarioDayUpdate()
 
 static void ScenarioWeekUpdate()
 {
-    int32_t month = DateGetMonth(gDateMonthsElapsed);
+    int32_t month = gDate.GetMonth();
 
     FinancePayWages();
     FinancePayResearch();
@@ -369,7 +370,7 @@ static void ScenarioUpdateDayNightCycle()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.DayNightCycle)
     {
-        float monthFraction = gDateMonthTicks / static_cast<float>(TICKS_PER_MONTH);
+        float monthFraction = gDate.GetMonthTicks() / static_cast<float>(TICKS_PER_MONTH);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;
@@ -409,19 +410,19 @@ void ScenarioUpdate()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        if (DateIsDayStart(gDateMonthTicks))
+        if (gDate.IsDayStart())
         {
             ScenarioDayUpdate();
         }
-        if (DateIsWeekStart(gDateMonthTicks))
+        if (gDate.IsWeekStart())
         {
             ScenarioWeekUpdate();
         }
-        if (DateIsFortnightStart(gDateMonthTicks))
+        if (gDate.IsFortnightStart())
         {
             ScenarioFortnightUpdate();
         }
-        if (DateIsMonthStart(gDateMonthTicks))
+        if (gDate.IsMonthStart())
         {
             ScenarioMonthUpdate();
         }
@@ -617,7 +618,7 @@ ResultWithMessage ScenarioPrepareForSave()
 ObjectiveStatus Objective::CheckGuestsBy() const
 {
     auto parkRating = gParkRating;
-    auto currentMonthYear = gDateMonthsElapsed;
+    int32_t currentMonthYear = gDate.GetMonthsElapsed();
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
@@ -637,7 +638,7 @@ ObjectiveStatus Objective::CheckGuestsBy() const
 
 ObjectiveStatus Objective::CheckParkValueBy() const
 {
-    int32_t currentMonthYear = gDateMonthsElapsed;
+    int32_t currentMonthYear = gDate.GetMonthsElapsed();
     money64 objectiveParkValue = Currency;
     money64 parkValue = gParkValue;
 
@@ -695,7 +696,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
  */
 ObjectiveStatus Objective::CheckGuestsAndRating() const
 {
-    if (gParkRating < 700 && gDateMonthsElapsed >= 1)
+    if (gParkRating < 700 && gDate.GetMonthsElapsed() >= 1)
     {
         gScenarioParkRatingWarningDays++;
         if (gScenarioParkRatingWarningDays == 1)

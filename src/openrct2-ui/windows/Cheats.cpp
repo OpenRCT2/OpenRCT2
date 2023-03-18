@@ -747,14 +747,14 @@ private:
                 break;
             case WIDX_DATE_SET:
             {
-                auto setDateAction = ParkSetDateAction(_yearSpinnerValue, _monthSpinnerValue, _daySpinnerValue);
+                auto setDateAction = ParkSetDateAction(_yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                 GameActions::Execute(&setDateAction);
                 WindowInvalidateByClass(WindowClass::BottomToolbar);
                 break;
             }
             case WIDX_DATE_RESET:
             {
-                auto setDateAction = ParkSetDateAction(1, 1, 1);
+                auto setDateAction = ParkSetDateAction(0, 0, 0);
                 GameActions::Execute(&setDateAction);
                 WindowInvalidateByClass(WindowClass::BottomToolbar);
                 InvalidateWidget(WIDX_YEAR_BOX);

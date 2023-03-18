@@ -44,7 +44,7 @@ void ParkSetDateAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkSetDateAction::Query() const
 {
-    if (_year <= 0 || _year > MAX_YEAR || _month <= 0 || _month > MONTH_COUNT || _day <= 0 || _day > 31)
+    if (_year < 0 || _year >= MAX_YEAR || _month < 0 || _month >= MONTH_COUNT || _day < 0 || _day >= 31)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
@@ -54,6 +54,6 @@ GameActions::Result ParkSetDateAction::Query() const
 
 GameActions::Result ParkSetDateAction::Execute() const
 {
-    DateSet(_year, _month, _day);
+    gDate = OpenRCT2::Date::FromYMD(_year, _month, _day);
     return GameActions::Result();
 }

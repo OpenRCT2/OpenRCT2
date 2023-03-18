@@ -249,8 +249,7 @@ namespace RCT2
                 gScenarioDetails = loadMaybeUTF8(_s6.ScenarioDescription);
             }
 
-            gDateMonthsElapsed = static_cast<int32_t>(_s6.ElapsedMonths);
-            gDateMonthTicks = _s6.CurrentDay;
+            gDate = OpenRCT2::Date(_s6.ElapsedMonths, _s6.CurrentDay);
             gCurrentTicks = _s6.GameTicks1;
 
             ScenarioRandSeed(_s6.ScenarioSrand0, _s6.ScenarioSrand1);

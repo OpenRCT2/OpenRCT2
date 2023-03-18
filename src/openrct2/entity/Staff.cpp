@@ -265,7 +265,7 @@ void Staff::ResetStats()
 {
     for (auto peep : EntityList<Staff>())
     {
-        peep->SetHireDate(gDateMonthsElapsed);
+        peep->SetHireDate(gDate.GetMonthsElapsed());
         peep->StaffLawnsMown = 0;
         peep->StaffRidesFixed = 0;
         peep->StaffGardensWatered = 0;

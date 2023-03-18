@@ -9,6 +9,7 @@
 
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Context.h>
+#include <openrct2/Date.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -17,8 +18,8 @@ namespace Graph
 {
     static void DrawMonths(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
-        int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
-        int32_t currentDay = gDateMonthTicks;
+        int32_t currentMonth = gDate.GetMonth();
+        int32_t currentDay = gDate.GetMonthTicks();
         int32_t yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
         auto screenCoords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
@@ -154,8 +155,8 @@ namespace Graph
     {
         int32_t i, yearOver32, currentMonth, currentDay;
 
-        currentMonth = DateGetMonth(gDateMonthsElapsed);
-        currentDay = gDateMonthTicks;
+        currentMonth = gDate.GetMonth();
+        currentDay = gDate.GetMonthTicks();
         yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
         auto screenCoords = origCoords;
         for (i = count - 1; i >= 0; i--)

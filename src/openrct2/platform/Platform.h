@@ -40,13 +40,7 @@ enum class SPECIAL_FOLDER
     RCT2_DISCORD,
 };
 
-struct RealWorldDate
-{
-    uint8_t day;
-    uint8_t month;
-    int16_t year;
-    uint8_t day_of_week;
-};
+struct RealWorldDate;
 struct RealWorldTime;
 
 namespace Platform
