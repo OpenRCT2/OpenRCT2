@@ -90,7 +90,7 @@ namespace Platform
             env->SetObjectArrayElement(jLanguageTags, i, jTag);
         }
 
-        jstring jniString = (jstring)env->CallObjectMethod(activity, getDefaultLocale, jLanguageTags);
+        jstring jniString = static_cast<jstring>(env->CallObjectMethod(activity, getDefaultLocale, jLanguageTags));
 
         const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
         std::string defaultLocale = jniChars;
@@ -116,7 +116,7 @@ namespace Platform
         jclass activityClass = env->GetObjectClass(activity);
         jmethodID getDefaultLocale = env->GetMethodID(activityClass, "getLocaleCurrency", "()Ljava/lang/String;");
 
-        jstring jniString = (jstring)env->CallObjectMethod(activity, getDefaultLocale);
+        jstring jniString = static_cast<jstring>(env->CallObjectMethod(activity, getDefaultLocale));
 
         const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
         std::string localeCurrencyCode = jniChars;
@@ -140,12 +140,7 @@ namespace Platform
 
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(activityClass);
-        bool result = isImperial == JNI_TRUE;
-        if (result)
-        {
-            return MeasurementFormat::Imperial;
-        }
-        return MeasurementFormat::Metric;
+        return isImperial == JNI_TRUE ? MeasurementFormat::Imperial : MeasurementFormat::Metric;
     }
 
     std::string GetSteamPath()

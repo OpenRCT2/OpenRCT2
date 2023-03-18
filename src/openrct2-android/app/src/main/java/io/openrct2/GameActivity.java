@@ -61,7 +61,7 @@ public class GameActivity extends SDLActivity {
         }
     }
 
-    public boolean getLocaleMeasurementFormat() {
+    public boolean isImperialLocaleMeasurementFormat() {
         Locale deviceLocale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             return LocaleData.getMeasurementSystem(ULocale.forLocale(getResources().getConfiguration().getLocales().get(0))) == LocaleData.MeasurementSystem.US;
