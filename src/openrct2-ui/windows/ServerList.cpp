@@ -84,7 +84,7 @@ private:
     std::string _version;
 
 public:
-#pragma region Window Override Events
+#    pragma region Window Override Events
 
     void OnOpen() override
     {
@@ -432,7 +432,7 @@ public:
         }
     }
 
-#pragma endregion
+#    pragma endregion
 
 private:
     void JoinServer(std::string address)
