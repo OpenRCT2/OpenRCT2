@@ -801,7 +801,7 @@ namespace RCT2
                         { 75, 85 }, { 76, 85 }, { 76, 86 },
                         { 59, 18 }, { 60, 18 }, { 60, 17 }, { 61, 17 }, 
                     },
-                    OWNERSHIP_OWNED, true);
+                    OWNERSHIP_OWNED);
                 // clang-format on
             }
             else if (String::Equals(_s6.ScenarioFilename, "Mythological - Animatronic Film Set.SC6"))
@@ -864,6 +864,15 @@ namespace RCT2
                         { 104, 25 },
                     },
                     OWNERSHIP_AVAILABLE, true);
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 86, 66 }, { 86, 67 }, { 86, 68 }, { 86, 69 }, { 86, 70 }, { 86, 71 }, { 87, 65 }, { 87, 66 }, { 87, 67 }, { 87, 68 }, { 87, 69 },
+                        { 87, 70 }, { 87, 71 }, { 87, 72 }, { 88, 65 }, { 88, 66 }, { 88, 67 }, { 88, 68 }, { 88, 69 }, { 88, 70 }, { 88, 71 }, { 88, 72 },
+                        { 88, 73 }, { 88, 74 }, { 88, 75 }, { 89, 65 }, { 89, 66 }, { 89, 67 }, { 89, 68 }, { 89, 69 }, { 89, 70 }, { 89, 71 }, { 89, 72 },
+                        { 89, 73 }, { 89, 74 }, { 89, 75 }, { 89, 76 }, { 90, 64 }, { 90, 65 }, { 90, 66 }, { 90, 67 }, { 90, 68 }, { 90, 69 }, { 90, 70 },
+                        { 90, 71 }, { 90, 72 }, { 90, 73 }, { 90, 74 }, { 90, 75 }, { 90, 76 }, { 90, 77 }, { 91, 67 }, { 91, 68 },
+                    },
+                    OWNERSHIP_OWNED);
                 // clang-format on
             }
             else if (String::Equals(gScenarioFileName, "Prehistoric - Stone Age.SC6", true))
