@@ -71,7 +71,7 @@ static Widget window_server_list_widgets[] = {
 };
 // clang-format on
 
-class ServerListWindow : public Window
+class ServerListWindow final : public Window
 {
 private:
     char _playerName[32 + 1] = {};
