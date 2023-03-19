@@ -36,7 +36,7 @@
 - Fix: [#474] Mini golf window shows more players than there actually are (original bug).
 - Fix: [#592] Window scrollbar not able to navigate to the end of large lists.
 - Fix: [#7210] Land tile smoothing occurs with edge tiles (original bug).
-- Fix: [#17774] Misplaced/missing land and construction rights ownership and sale tiles in RCT1 & RCT2 scenarios.
+- Fix: [#17774] Misplaced/missing land and construction rights tiles in RCT1 & RCT2 scenarios.
 - Fix: [#17996] Finances window not cleared when starting some .park scenarios.
 - Fix: [#18260] Crash opening parks that have multiple tiles referencing the same banner entry.
 - Fix: [#18467] “Selected only” Object Selection filter is active in Track Designs Manager, and cannot be toggled.
