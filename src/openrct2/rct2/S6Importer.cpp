@@ -857,7 +857,6 @@ namespace RCT2
             }
             else if (String::Equals(_s6.ScenarioFilename, "Mythological - Cradle of Civilization.SC6"))
             {
-                // Part of the underground pathway crosses outside of the park boundary. Adds the path back into the park boundaries.
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
