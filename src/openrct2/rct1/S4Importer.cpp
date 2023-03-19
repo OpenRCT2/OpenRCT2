@@ -2490,6 +2490,7 @@ namespace RCT1
                     break;
                 case SC_KATIES_DREAMLAND:
                     FixLandOwnershipTiles({ { 74, 70 }, { 75, 70 }, { 76, 70 }, { 77, 73 }, { 80, 77 } });
+                    FixLandOwnershipTilesWithOwnership({ { 115, 63 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                     break;
                 case SC_POKEY_PARK:
                     FixLandOwnershipTiles({ { 64, 102 } });
@@ -2501,10 +2502,17 @@ namespace RCT1
                     FixLandOwnershipTiles({ { 93, 105 }, { 63, 34 }, { 76, 25 }, { 85, 31 }, { 96, 47 }, { 96, 48 } });
                     break;
                 case SC_UTOPIA_PARK:
-                    FixLandOwnershipTiles({ { 85, 73 } });
+                    FixLandOwnershipTiles({ { 85, 73 }, { 71, 75 } });
                     break;
                 case SC_URBAN_PARK:
-                    FixLandOwnershipTiles({ { 64, 77 }, { 61, 66 }, { 61, 67 }, { 39, 20 } });
+                    FixLandOwnershipTiles({ { 64, 77 }, { 61, 66 }, { 61, 67 }, { 39, 20 }, { 46, 47 } });
+                    FixLandOwnershipTilesWithOwnership({ { 46, 47 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
+                    break;
+                case SC_PLEASURE_ISLAND:
+                    FixLandOwnershipTilesWithOwnership({ { 37, 66 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    break;
+                case SC_FORT_ANACHRONISM:
+                    FixLandOwnershipTiles({ { 54, 29 }, { 53, 88 } });
                     break;
             }
         }
