@@ -6,9 +6,6 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-
-#pragma optimize("", off)
-
 #include "RideRatings.h"
 
 #include "../Cheats.h"
@@ -81,6 +78,11 @@ struct ShelteredEights
 
 static RideRatingUpdateStates gRideRatingUpdateStates;
 
+// Amount of updates allowed per updating state on the current tick.
+// The total amount would be MaxRideRatingSubSteps * RideRatingMaxUpdateStates which
+// would be currently 80, this is the worst case of sub-steps and may break out earlier.
+static constexpr size_t MaxRideRatingUpdateSubSteps = 20;
+
 static void ride_ratings_update_state(RideRatingUpdateState& state);
 static void ride_ratings_update_state_0(RideRatingUpdateState& state);
 static void ride_ratings_update_state_1(RideRatingUpdateState& state);
@@ -92,7 +94,6 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state);
 static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride);
 static void RideRatingsCalculateValue(Ride& ride);
 static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, TileElement* inputTileElement);
-
 static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
 
 RideRatingUpdateStates& RideRatingGetUpdateStates()
@@ -147,7 +148,14 @@ void RideRatingsUpdateAll()
 
     for (auto& updateState : gRideRatingUpdateStates)
     {
-        ride_ratings_update_state(updateState);
+        for (size_t i = 0; i < MaxRideRatingUpdateSubSteps; ++i)
+        {
+            ride_ratings_update_state(updateState);
+
+            // We need to abort the loop if the state machine requested to find the next ride.
+            if (updateState.State == RIDE_RATINGS_STATE_FIND_NEXT_RIDE)
+                break;
+        }
     }
 }
 
@@ -176,6 +184,42 @@ static void ride_ratings_update_state(RideRatingUpdateState& state)
     }
 }
 
+static bool RideRatingIsUpdatingRide(RideId id)
+{
+    return std::any_of(gRideRatingUpdateStates.begin(), gRideRatingUpdateStates.end(), [id](auto& state) {
+        return state.CurrentRide == id && state.State != RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+    });
+}
+
+static bool ShouldSkipRatingCalculation(const Ride& ride)
+{
+    // Skip anything that isn't a real ride.
+    if (ride.GetClassification() != RideClassification::Ride)
+    {
+        return true;
+    }
+
+    // Skip rides that are closed.
+    if (ride.status == RideStatus::Closed)
+    {
+        return true;
+    }
+
+    // Skip anything that is already updating.
+    if (RideRatingIsUpdatingRide(ride.id))
+    {
+        return true;
+    }
+
+    // Skip rides that have a fixed rating.
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 static RideId GetNextRideToUpdate(RideId currentRide)
 {
     auto rm = GetRideManager();
@@ -183,22 +227,33 @@ static RideId GetNextRideToUpdate(RideId currentRide)
     {
         return RideId::GetNull();
     }
-    // Skip all empty ride ids
-    auto nextRide = std::next(rm.get(currentRide));
-    // If at end, loop around
-    if (nextRide == rm.end())
+
+    auto it = rm.get(currentRide);
+    if (it == rm.end())
     {
-        nextRide = rm.begin();
+        // Start at the beginning, ride is missing.
+        it = rm.begin();
     }
-    return (*nextRide).id;
+    else
+    {
+        it = std::next(it);
+    }
+
+    // Filter out rides to avoid wasting a tick to find the next ride.
+    while (it != rm.end() && ShouldSkipRatingCalculation(*it))
+    {
+        it++;
+    }
+
+    // If we reached the end of the list we start over,
+    // in case the next ride doesn't pass the filter function it will
+    // look for the next matching ride in the next tick.
+    if (it == rm.end())
+        it = rm.begin();
+
+    return (*it).id;
 }
 
-static bool RideRatingIsUpdatingRide(RideId id)
-{
-    return std::any_of(gRideRatingUpdateStates.begin(), gRideRatingUpdateStates.end(), [id](auto& state) {
-        return state.CurrentRide == id && state.State != RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
-    });
-}
 /**
  *
  *  rct2: 0x006B5A5C
@@ -213,15 +268,12 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
         state.CurrentRide = {};
     }
 
-    auto nextRideId = GetNextRideToUpdate(state.CurrentRide);
-    auto nextRide = GetRide(nextRideId);
-    if (nextRide != nullptr && nextRide->status != RideStatus::Closed
-        && !(nextRide->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
+    const auto nextRideId = GetNextRideToUpdate(state.CurrentRide);
+    const auto* nextRide = GetRide(nextRideId);
+    if (nextRide != nullptr && !ShouldSkipRatingCalculation(*nextRide))
     {
-        if (!RideRatingIsUpdatingRide(nextRideId))
-        {
-            state.State = RIDE_RATINGS_STATE_INITIALISE;
-        }
+        Guard::Assert(!RideRatingIsUpdatingRide(nextRideId));
+        state.State = RIDE_RATINGS_STATE_INITIALISE;
     }
     state.CurrentRide = nextRideId;
 }
