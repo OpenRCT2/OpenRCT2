@@ -54,7 +54,12 @@ struct RideRatingUpdateState
     uint16_t StationFlags;
 };
 
-extern RideRatingUpdateState gRideRatingUpdateState;
+static constexpr size_t RideRatingMaxUpdateStates = 4;
+
+using RideRatingUpdateStates = std::array<RideRatingUpdateState, RideRatingMaxUpdateStates>;
+
+RideRatingUpdateStates& RideRatingGetUpdateStates();
+void RideRatingResetUpdateStates();
 
 void RideRatingsUpdateRide(const Ride& ride);
 void RideRatingsUpdateAll();

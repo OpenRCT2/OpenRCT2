@@ -77,7 +77,7 @@ struct ShelteredEights
     uint8_t TotalShelteredEighths;
 };
 
-RideRatingUpdateState gRideRatingUpdateState;
+static RideRatingUpdateStates gRideRatingUpdateStates;
 
 static void ride_ratings_update_state(RideRatingUpdateState& state);
 static void ride_ratings_update_state_0(RideRatingUpdateState& state);
@@ -92,6 +92,25 @@ static void RideRatingsCalculateValue(Ride& ride);
 static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, TileElement* inputTileElement);
 
 static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
+
+RideRatingUpdateStates& RideRatingGetUpdateStates()
+{
+    return gRideRatingUpdateStates;
+}
+
+void RideRatingResetUpdateStates()
+{
+    RideRatingUpdateState nullState{};
+    nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+
+    std::fill(gRideRatingUpdateStates.begin(), gRideRatingUpdateStates.end(), nullState);
+}
+
+RideRatingUpdateState& RideRatingGetUpdateState(size_t index)
+{
+    Guard::IndexInRange(index, gRideRatingUpdateStates);
+    return gRideRatingUpdateStates[index];
+}
 
 /**
  * This is a small hack function to keep calling the ride rating processor until
@@ -126,7 +145,7 @@ void RideRatingsUpdateAll()
 
     // NOTE: With the new save format more than one ride can be updated at once, but this has not yet been implemented.
     // The SV6 format could store only a single state.
-    ride_ratings_update_state(gRideRatingUpdateState);
+    ride_ratings_update_state(gRideRatingUpdateStates[0]);
 }
 
 static void ride_ratings_update_state(RideRatingUpdateState& state)
