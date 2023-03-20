@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#pragma optimize("", off)
+
 #include "RideRatings.h"
 
 #include "../Cheats.h"
@@ -143,9 +145,10 @@ void RideRatingsUpdateAll()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
-    // NOTE: With the new save format more than one ride can be updated at once, but this has not yet been implemented.
-    // The SV6 format could store only a single state.
-    ride_ratings_update_state(gRideRatingUpdateStates[0]);
+    for (auto& updateState : gRideRatingUpdateStates)
+    {
+        ride_ratings_update_state(updateState);
+    }
 }
 
 static void ride_ratings_update_state(RideRatingUpdateState& state)
@@ -190,6 +193,12 @@ static RideId GetNextRideToUpdate(RideId currentRide)
     return (*nextRide).id;
 }
 
+static bool RideRatingIsUpdatingRide(RideId id)
+{
+    return std::any_of(gRideRatingUpdateStates.begin(), gRideRatingUpdateStates.end(), [id](auto& state) {
+        return state.CurrentRide == id && state.State != RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+    });
+}
 /**
  *
  *  rct2: 0x006B5A5C
@@ -209,7 +218,10 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
     if (nextRide != nullptr && nextRide->status != RideStatus::Closed
         && !(nextRide->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
-        state.State = RIDE_RATINGS_STATE_INITIALISE;
+        if (!RideRatingIsUpdatingRide(nextRideId))
+        {
+            state.State = RIDE_RATINGS_STATE_INITIALISE;
+        }
     }
     state.CurrentRide = nextRideId;
 }
