@@ -488,9 +488,10 @@ static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo* dpi, WindowBase
                                         window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->windowPos.y + 2 };
 
     // Date
-    int32_t year = gDate.GetYear() + 1;
-    int32_t month = gDate.GetMonth();
-    int32_t day = gDate.GetDay();
+    auto& date = GetDate();
+    int32_t year = date.GetYear() + 1;
+    int32_t month = date.GetMonth();
+    int32_t day = date.GetDay();
 
     colour_t colour
         = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_DATE

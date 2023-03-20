@@ -10,6 +10,7 @@
 #include "ParkSetDateAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -54,6 +55,6 @@ GameActions::Result ParkSetDateAction::Query() const
 
 GameActions::Result ParkSetDateAction::Execute() const
 {
-    gDate = OpenRCT2::Date::FromYMD(_year, _month, _day);
+    OpenRCT2::GetContext()->GetGameState()->SetDate(OpenRCT2::Date::FromYMD(_year, _month, _day));
     return GameActions::Result();
 }

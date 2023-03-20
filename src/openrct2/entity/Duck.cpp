@@ -171,7 +171,7 @@ void Duck::UpdateSwim()
     }
     else
     {
-        int32_t currentMonth = gDate.GetMonth();
+        int32_t currentMonth = GetDate().GetMonth();
         if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
         {
             state = DuckState::FlyAway;

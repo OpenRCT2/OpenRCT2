@@ -91,7 +91,7 @@ int32_t ClimateCelsiusToFahrenheit(int32_t celsius)
 void ClimateReset(ClimateType climate)
 {
     auto weather = WeatherType::PartiallyCloudy;
-    int32_t month = gDate.GetMonth();
+    int32_t month = GetDate().GetMonth();
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(climate)][month];
     const WeatherState* weatherState = &ClimateWeatherData[EnumValue(weather)];
 
@@ -197,7 +197,7 @@ void ClimateUpdate()
 
 void ClimateForceWeather(WeatherType weather)
 {
-    int32_t month = gDate.GetMonth();
+    int32_t month = GetDate().GetMonth();
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gClimate)][month];
     const auto weatherState = &ClimateWeatherData[EnumValue(weather)];
 
@@ -295,7 +295,7 @@ static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWea
  */
 static void ClimateDetermineFutureWeather(int32_t randomDistribution)
 {
-    int32_t month = gDate.GetMonth();
+    int32_t month = GetDate().GetMonth();
 
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
     // accordingly

@@ -381,7 +381,7 @@ public:
         }
 
         // Expenditure / Income values for each month
-        auto currentMonthYear = gDate.GetMonthsElapsed();
+        auto currentMonthYear = GetDate().GetMonthsElapsed();
         for (int32_t i = SummaryMaxAvailableMonth(); i >= 0; i--)
         {
             screenCoords.y = 0;
@@ -522,7 +522,7 @@ public:
         ft.Add<money64>(gBankLoan);
 
         // Keep up with new months being added in the first two years.
-        if (gDate.GetMonthsElapsed() != _lastPaintedMonth)
+        if (GetDate().GetMonthsElapsed() != _lastPaintedMonth)
             InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
     }
 
@@ -593,7 +593,7 @@ public:
 
     uint16_t SummaryMaxAvailableMonth()
     {
-        return std::min<uint16_t>(gDate.GetMonthsElapsed(), EXPENDITURE_TABLE_MONTH_COUNT - 1);
+        return std::min<uint16_t>(GetDate().GetMonthsElapsed(), EXPENDITURE_TABLE_MONTH_COUNT - 1);
     }
 
 #pragma endregion

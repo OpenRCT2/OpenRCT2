@@ -85,12 +85,10 @@ struct RealWorldTime
     uint8_t hour;
 };
 
-extern const int16_t days_in_month[MONTH_COUNT];
-extern OpenRCT2::Date gDate;
+OpenRCT2::Date& GetDate();
 extern RealWorldTime gRealTimeOfDay;
 
 int32_t DateGetMonth(int32_t months);
 int32_t DateGetYear(int32_t months);
 int32_t DateGetTotalMonths(int32_t month, int32_t year);
-void DateReset();
 void DateUpdateRealTimeOfDay();

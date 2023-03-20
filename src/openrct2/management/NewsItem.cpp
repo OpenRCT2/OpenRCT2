@@ -323,13 +323,14 @@ News::Item* News::AddItemToQueue(ItemType type, StringId string_id, EntityId ass
 
 News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc)
 {
+    auto& date = GetDate();
     News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
     newsItem->Type = type;
     newsItem->Flags = 0;
     newsItem->Assoc = assoc; // Make optional for Award, Money, Graph and Null
     newsItem->Ticks = 0;
-    newsItem->MonthYear = static_cast<uint16_t>(gDate.GetMonthsElapsed());
-    newsItem->Day = gDate.GetDay() + 1;
+    newsItem->MonthYear = static_cast<uint16_t>(date.GetMonthsElapsed());
+    newsItem->Day = date.GetDay() + 1;
     newsItem->Text = text;
 
     return newsItem;

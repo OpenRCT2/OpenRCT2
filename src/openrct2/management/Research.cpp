@@ -109,16 +109,18 @@ static void ResearchCalculateExpectedDate()
     }
     else
     {
+        auto& date = GetDate();
+
         int32_t progressRemaining = gResearchProgressStage == RESEARCH_STAGE_COMPLETING_DESIGN ? 0x10000 : 0x20000;
         progressRemaining -= gResearchProgress;
         int32_t daysRemaining = (progressRemaining / _researchRate[gResearchFundingLevel]) * 128;
 
-        int32_t expectedDay = gDate.GetMonthTicks() + (daysRemaining & 0xFFFF);
+        int32_t expectedDay = date.GetMonthTicks() + (daysRemaining & 0xFFFF);
         int32_t dayQuotient = expectedDay / 0x10000;
         int32_t dayRemainder = expectedDay % 0x10000;
 
-        int32_t expectedMonth = DateGetMonth(gDate.GetMonthsElapsed() + dayQuotient + (daysRemaining >> 16));
-        expectedDay = (dayRemainder * days_in_month[expectedMonth]) >> 16;
+        int32_t expectedMonth = DateGetMonth(date.GetMonthsElapsed() + dayQuotient + (daysRemaining >> 16));
+        expectedDay = (dayRemainder * Date::GetDaysInMonth(expectedMonth)) >> 16;
 
         gResearchExpectedDay = expectedDay;
         gResearchExpectedMonth = expectedMonth;

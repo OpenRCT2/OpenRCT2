@@ -78,6 +78,7 @@
 #endif
 
 using arguments_t = std::vector<std::string>;
+using OpenRCT2::Date;
 
 static constexpr const char* ClimateNames[] = {
     "cool_and_wet",
@@ -1454,7 +1455,7 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
     // YYYY (no month provided, preserve existing month)
     if (argv.size() == 1)
     {
-        month = gDate.GetMonth() + 1;
+        month = GetDate().GetMonth() + 1;
     }
 
     // YYYY MM or YYYY MM DD (month provided)
@@ -1471,14 +1472,14 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
     // YYYY OR YYYY MM (no day provided, preserve existing day)
     if (argv.size() <= 2)
     {
-        day = std::clamp(gDate.GetDay() + 1, 1, static_cast<int>(days_in_month[month - 1]));
+        day = std::clamp(GetDate().GetDay() + 1, 1, static_cast<int>(Date::GetDaysInMonth(month - 1)));
     }
 
     // YYYY MM DD (year, month, and day provided)
     if (argv.size() == 3)
     {
         day = atoi(argv[2].c_str());
-        if (day < 1 || day > days_in_month[month - 1])
+        if (day < 1 || day > Date::GetDaysInMonth(month - 1))
         {
             return -1;
         }

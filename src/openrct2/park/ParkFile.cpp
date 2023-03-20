@@ -485,12 +485,13 @@ namespace OpenRCT2
                     uint32_t monthsElapsed;
                     cs.ReadWrite(monthTicks);
                     cs.ReadWrite(monthsElapsed);
-                    gDate = Date(monthsElapsed, monthTicks);
+                    GetContext()->GetGameState()->SetDate(Date(monthsElapsed, monthTicks));
                 }
                 else
                 {
-                    cs.Write(gDate.GetMonthTicks());
-                    cs.Write(gDate.GetMonthsElapsed());
+                    auto& date = GetDate();
+                    cs.Write(date.GetMonthTicks());
+                    cs.Write(date.GetMonthsElapsed());
                 }
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)

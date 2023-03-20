@@ -9,8 +9,10 @@
 
 #include "localisation/Date.h"
 
+#include "Context.h"
 #include "Date.h"
 #include "Game.h"
+#include "GameState.h"
 #include "core/Guard.hpp"
 
 #include <algorithm>
@@ -23,11 +25,10 @@ constexpr int32_t MASK_FORTNIGHT_TICKS = 0x7FFF;
 constexpr int32_t MASK_MONTH_TICKS = 0xFFFF;
 
 // rct2: 0x00993988
-const int16_t days_in_month[MONTH_COUNT] = {
+static const int16_t days_in_month[MONTH_COUNT] = {
     31, 30, 31, 30, 31, 31, 30, 31,
 };
 
-Date gDate;
 RealWorldTime gRealTimeOfDay;
 
 Date::Date(uint32_t monthsElapsed, uint16_t monthTicks)
@@ -144,16 +145,6 @@ int32_t DateGetTotalMonths(int32_t month, int32_t year)
     return (year - 1) * MONTH_COUNT + month;
 }
 
-/**
- *
- *  rct2: 0x006C4494
- */
-void DateReset()
-{
-    gDate = OpenRCT2::Date();
-    gCurrentRealTimeTicks = 0;
-}
-
 void DateUpdateRealTimeOfDay()
 {
     time_t timestamp = time(nullptr);
@@ -162,4 +153,9 @@ void DateUpdateRealTimeOfDay()
     gRealTimeOfDay.second = now->tm_sec;
     gRealTimeOfDay.minute = now->tm_min;
     gRealTimeOfDay.hour = now->tm_hour;
+}
+
+Date& GetDate()
+{
+    return OpenRCT2::GetContext()->GetGameState()->GetDate();
 }

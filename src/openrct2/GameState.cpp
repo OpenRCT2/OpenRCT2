@@ -71,7 +71,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     RideInitAll();
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
-    DateReset();
+    ResetDate();
     ClimateReset(ClimateType::CoolAndWet);
     News::InitQueue();
 
@@ -314,8 +314,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     auto day = _date.GetDay();
 #endif
 
-    gDate.Update();
-    _date = gDate;
+    _date.Update();
     report_time(LogicTimePart::Date);
 
     ScenarioUpdate();
@@ -408,4 +407,19 @@ void GameState::CreateStateSnapshot()
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
     snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
+}
+
+void GameState::SetDate(Date newDate)
+{
+    _date = newDate;
+}
+
+/**
+ *
+ *  rct2: 0x006C4494
+ */
+void GameState::ResetDate()
+{
+    _date = OpenRCT2::Date();
+    gCurrentRealTimeTicks = 0;
 }
