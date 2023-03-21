@@ -12,7 +12,7 @@ namespace OpenRCT2
     constexpr uint32_t PARK_FILE_CURRENT_VERSION = 21;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t PARK_FILE_MIN_VERSION = 19;
+    constexpr uint32_t PARK_FILE_MIN_VERSION = 21;
 
     // The minimum version that is backwards compatible with the current version.
     // If this is increased beyond 0, uncomment the checks in ParkFile.cpp and Context.cpp!

@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
 #include "RideRatings.h"
 
 #include "../Cheats.h"
@@ -107,12 +108,6 @@ void RideRatingResetUpdateStates()
     nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 
     std::fill(gRideRatingUpdateStates.begin(), gRideRatingUpdateStates.end(), nullState);
-}
-
-RideRatingUpdateState& RideRatingGetUpdateState(size_t index)
-{
-    Guard::IndexInRange(index, gRideRatingUpdateStates);
-    return gRideRatingUpdateStates[index];
 }
 
 /**
