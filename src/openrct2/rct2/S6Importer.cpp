@@ -715,6 +715,7 @@ namespace RCT2
                     {
                         { 90, 8 },
                         { 83, 117 }, { 84, 117 },
+                        { 96, 2 }, { 97, 2 },
                         { 106, 106 }, { 106, 107 },
                     },
                     OWNERSHIP_AVAILABLE, true);
@@ -731,6 +732,7 @@ namespace RCT2
                  FixLandOwnershipTilesWithOwnership(
                     {
                         { 26, 116 },
+                        { 61, 110 },
                         { 64, 113 }, { 64, 114 }, { 64, 115 },
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE, true);
@@ -753,7 +755,7 @@ namespace RCT2
                 || String::Equals(gScenarioFileName, "n america - extreme hawaiian island.sea", true))
             {
                 FixLandOwnershipTilesWithOwnership(
-                    {
+                   {
                         { 132, 124 },
                         { 133, 124 },
                         { 133, 125 },
@@ -918,7 +920,7 @@ namespace RCT2
                 surfaceElement->SetWaterHeight(96);
             }
             else if (
-                String::Equals(_s6.ScenarioFilename, "Six Flags Holland.SC6")
+                String::Equals(_s6.ScenarioFilename, "Six Flags Holland.SC6", true)
                 || String::Equals(_s6.ScenarioFilename, "six flags holland.sea", true))
 
             {

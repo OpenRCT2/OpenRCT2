@@ -2505,7 +2505,7 @@ namespace RCT1
                     FixLandOwnershipTiles({ { 85, 73 }, { 71, 75 } });
                     break;
                 case SC_URBAN_PARK:
-                    FixLandOwnershipTiles({ { 64, 77 }, { 61, 66 }, { 61, 67 }, { 39, 20 }, { 46, 47 } });
+                    FixLandOwnershipTiles({ { 64, 77 }, { 61, 66 }, { 61, 67 }, { 39, 20 } });
                     FixLandOwnershipTilesWithOwnership({ { 46, 47 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
                     break;
                 case SC_PLEASURE_ISLAND:
