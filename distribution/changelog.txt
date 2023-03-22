@@ -30,6 +30,7 @@
 - Improved: [#19463] Added ‘W’ and ‘Y’ with circumflex to sprite font (for Welsh).
 - Improved: [#19549] Enable large address awareness for 32 bit Windows builds allowing to use 4 GiB of virtual memory.
 - Improved: [#19668] Decreased the minimum map size from 13 to 3.
+- Improved: [#19683] The delays for ride ratings to appear has been reduced drastically.
 - Change: [#19018] Renamed actions to fit the naming scheme.
 - Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
 - Change: [#19233] Reduce lift speed minimum and maximum values for “Classic Wooden Coaster”.
