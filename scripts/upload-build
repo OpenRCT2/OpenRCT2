@@ -33,7 +33,7 @@ if [ -z "$OPENRCT2_ORG_TOKEN" ]; then
     echo -e "\033[0;31mOPENRCT2_ORG_TOKEN not set"
     exit 1
 fi
-curl -m 300 --connect-timeout 5 -o - \
+curl --include -m 300 --connect-timeout 5 -o - \
     --form "key=$OPENRCT2_ORG_TOKEN" \
     --form "fileName=$filename" \
     --form "version=$version" \
