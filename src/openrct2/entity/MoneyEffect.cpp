@@ -9,6 +9,7 @@
 #include "MoneyEffect.h"
 
 #include "../OpenRCT2.h"
+#include "../config/Config.h"
 #include "../core/DataSerialiser.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
@@ -171,6 +172,18 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
 void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
+
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    {
+        // Don't render any money in the title screen.
+        return;
+    }
+
+    if (GuestPurchase && !gConfigGeneral.ShowGuestPurchases)
+    {
+        // Don't show the money effect for guest purchases when the option is disabled.
+        return;
+    }
 
     DrawPixelInfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
