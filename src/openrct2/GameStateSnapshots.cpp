@@ -468,7 +468,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(MoneyEffect, frame);
         COMPARE_FIELD(MoneyEffect, MoveDelay);
         COMPARE_FIELD(MoneyEffect, NumMovements);
-        COMPARE_FIELD(MoneyEffect, Vertical);
+        COMPARE_FIELD(MoneyEffect, GuestPurchase);
         COMPARE_FIELD(MoneyEffect, Value);
         COMPARE_FIELD(MoneyEffect, OffsetX);
         COMPARE_FIELD(MoneyEffect, Wiggle);

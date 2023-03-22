@@ -2300,15 +2300,7 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 
     FinancePayment(-amount, expenditure);
 
-    if (gConfigGeneral.ShowGuestPurchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
-    {
-        // HACK Currently disabled for multiplayer due to limitation of all sprites
-        //      needing to be synchronised
-        if (NetworkGetMode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
-        {
-            MoneyEffect::CreateAt(amount, GetLocation(), true);
-        }
-    }
+    MoneyEffect::CreateAt(amount, GetLocation(), true);
 
     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, GetLocation());
 }
