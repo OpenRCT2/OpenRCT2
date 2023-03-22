@@ -26,6 +26,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='ReleaseLTCG'">
+    <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
 
@@ -87,7 +91,7 @@
       <AdditionalDependencies>bz2d.lib;discord-rpc.lib;flac.lib;freetyped.lib;libpng16d.lib;ogg.lib;speexdsp.lib;SDL2d.lib;vorbis.lib;vorbisfile.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release' or '$(Configuration)'=='ReleaseLTCG'">
     <ClCompile>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -108,7 +112,6 @@
       <AdditionalDependencies>bz2.lib;discord-rpc.lib;flac.lib;freetype.lib;libpng16.lib;ogg.lib;speexdsp.lib;SDL2.lib;vorbis.lib;vorbisfile.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 
   <PropertyGroup>
