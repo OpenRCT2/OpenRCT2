@@ -181,7 +181,7 @@ public:
         if (res == -1)
         {
             zip_source_free(source);
-            throw std::runtime_error("Unable to set file contents.");
+            throw std::runtime_error(std::string(zip_strerror(_zip)));
         }
     }
 
