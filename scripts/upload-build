@@ -39,6 +39,5 @@ curl --include -m 300 --connect-timeout 5 -o - \
     --form "version=$version" \
     --form "gitHash=$sha1" \
     --form "gitBranch=$branch" \
-    --form "flavourId=$flavourid" \
     --form "file=@$path" \
     "https://openrct2.org/altapi/?command=push-build"
