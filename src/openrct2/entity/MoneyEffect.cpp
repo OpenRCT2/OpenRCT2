@@ -37,7 +37,7 @@ template<> bool EntityBase::Is<MoneyEffect>() const
  *
  *  rct2: 0x0067351F
  */
-void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool vertical)
+void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase)
 {
     if (value == 0.00_GBP)
         return;
@@ -47,7 +47,7 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool verti
         return;
 
     moneyEffect->Value = value;
-    moneyEffect->Vertical = (vertical ? 1 : 0);
+    moneyEffect->GuestPurchase = (guestPurchase ? 1 : 0);
     moneyEffect->sprite_width = 64;
     moneyEffect->sprite_height_negative = 20;
     moneyEffect->sprite_height_positive = 30;
@@ -123,7 +123,7 @@ void MoneyEffect::Update()
     int32_t newZ = z;
     MoveDelay = 0;
 
-    if (Vertical)
+    if (GuestPurchase)
     {
         newZ += 1;
     }
@@ -143,8 +143,8 @@ void MoneyEffect::Update()
 
 std::pair<StringId, money64> MoneyEffect::GetStringId() const
 {
-    StringId spentStringId = Vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
-    StringId receiveStringId = Vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
+    StringId spentStringId = GuestPurchase ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
+    StringId receiveStringId = GuestPurchase ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
     StringId stringId = receiveStringId;
     money64 outValue = Value;
     if (Value < 0)
@@ -162,7 +162,7 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
     stream << frame;
     stream << MoveDelay;
     stream << NumMovements;
-    stream << Vertical;
+    stream << GuestPurchase;
     stream << Value;
     stream << OffsetX;
     stream << Wiggle;

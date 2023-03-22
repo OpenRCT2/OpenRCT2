@@ -2311,7 +2311,7 @@ namespace OpenRCT2
         ReadWriteEntityCommon(cs, moneyEffect);
         cs.ReadWrite(moneyEffect.MoveDelay);
         cs.ReadWrite(moneyEffect.NumMovements);
-        cs.ReadWrite(moneyEffect.Vertical);
+        cs.ReadWrite(moneyEffect.GuestPurchase);
         cs.ReadWrite(moneyEffect.Value);
         cs.ReadWrite(moneyEffect.OffsetX);
         cs.ReadWrite(moneyEffect.Wiggle);
