@@ -625,11 +625,13 @@ namespace RCT2
             }
             else if (String::Equals(_s6.ScenarioFilename, "Great Wall of China Tourism Enhancement.SC6"))
             {
+                //clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
                         { 127, 31 },
                     },
                     OWNERSHIP_OWNED);
+                //clang-format on
             }
             else if (String::Equals(_s6.ScenarioFilename, "North America - Grand Canyon.SC6"))
             {
@@ -711,7 +713,6 @@ namespace RCT2
             else if (
                 String::Equals(gScenarioFileName, "Antarctic - Ecological Salvage.SC6", true)
                 || String::Equals(gScenarioFileName, "antarctic - ecological salvage.sea", true))
-
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
