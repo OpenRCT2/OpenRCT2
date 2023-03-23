@@ -1514,6 +1514,18 @@ void PathElement::SetSloped(bool isSloped)
         Flags2 |= FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED;
 }
 
+bool PathElement::HasJunctionRailings() const
+{
+    return Flags2 & FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
+}
+
+void PathElement::SetJunctionRailings(bool hasJunctionRailings)
+{
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
+    if (hasJunctionRailings)
+        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
+}
+
 Direction PathElement::GetSlopeDirection() const
 {
     return SlopeDirection;
