@@ -72,7 +72,7 @@ jobs:
       - name: Setup environment
         run: |
           BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)
-          if [[ $BRANCH == 'develop' ]]; then
+          if [[ $BRANCH == 'develop' || $BRANCH == 'master' ]]; then
              echo "CONFIGURATION=ReleaseLTCG" >> "$GITHUB_ENV"
           else
              echo "CONFIGURATION=Release" >> "$GITHUB_ENV"
