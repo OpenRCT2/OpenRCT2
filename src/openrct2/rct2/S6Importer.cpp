@@ -657,7 +657,7 @@ namespace RCT2
             }
             else if (
                 String::Equals(gScenarioFileName, "Asia - Maharaja Palace.SC6", true)
-                || String::Equals(gScenarioFileName, "asia - maharaja palace.sea", true)) 
+                || String::Equals(gScenarioFileName, "asia - maharaja palace.sea", true))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
