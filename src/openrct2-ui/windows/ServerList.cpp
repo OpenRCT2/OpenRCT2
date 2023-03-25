@@ -89,7 +89,8 @@ void JoinServer(std::string address)
         }
     }
 
-    if (auto beginBracketIndex = address.find('['); beginBracketIndex != std::string::npos && endBracketIndex != std::string::npos)
+    if (auto beginBracketIndex = address.find('[');
+        beginBracketIndex != std::string::npos && endBracketIndex != std::string::npos)
     {
         address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
     }
@@ -99,7 +100,6 @@ void JoinServer(std::string address)
         ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
     }
 }
-
 
 class ServerListWindow final : public Window
 {
@@ -481,6 +481,7 @@ private:
                 allEntries.reserve(entries.size());
                 allEntries.insert(allEntries.end(), entries.begin(), entries.end());
             }
+            // TODO: Stop catching all exceptions
             catch (...)
             {
             }
@@ -496,6 +497,7 @@ private:
             {
                 status = e.StatusText;
             }
+            // TODO: Stop catching all exceptions
             catch (...)
             {
                 status = STR_SERVER_LIST_NO_CONNECTION;
