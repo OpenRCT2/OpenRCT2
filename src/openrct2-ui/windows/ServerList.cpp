@@ -279,10 +279,10 @@ public:
         switch (widgetIndex)
         {
             case WIDX_PLAYER_NAME_INPUT:
-                if (strcmp(_playerName, temp.c_str()) == 0)
+                if (_playerName == text)
                     return;
 
-                SafeStrCpy(_playerName, temp.c_str(), sizeof(_playerName));
+                text.copy(_playerName, sizeof(_playerName));
 
                 // Don't allow empty player names
                 if (_playerName[0] != '\0')
@@ -444,7 +444,7 @@ private:
         auto colonIndex = address.find_last_of(':');
         if (colonIndex != std::string::npos)
         {
-            if (endBracketIndex != std::string::npos || dotIndex != std::string::npos)
+            if (auto dotIndex = address.find('.'); endBracketIndex != std::string::npos || dotIndex != std::string::npos)
             {
                 auto ret = std::sscanf(&address[colonIndex + 1], "%d", &port);
                 assert(ret);
@@ -455,7 +455,7 @@ private:
             }
         }
 
-        if (beginBracketIndex != std::string::npos && endBracketIndex != std::string::npos)
+        if (auto beginBracketIndex = address.find('['); beginBracketIndex != std::string::npos && endBracketIndex != std::string::npos)
         {
             address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
         }
@@ -488,6 +488,7 @@ private:
             try
             {
                 auto entries = lanF.get();
+                allEntries.reserve(entries.size());
                 allEntries.insert(allEntries.end(), entries.begin(), entries.end());
             }
             catch (...)
@@ -498,6 +499,7 @@ private:
             try
             {
                 auto entries = wanF.get();
+                allEntries.reserve(allEntries.capacity() + entries.size());
                 allEntries.insert(allEntries.end(), entries.begin(), entries.end());
             }
             catch (const MasterServerException& e)
@@ -573,10 +575,8 @@ private:
 
 WindowBase* WindowServerListOpen()
 {
-    WindowBase* window;
-
     // Check if window is already open
-    window = WindowBringToFrontByClass(WindowClass::ServerList);
+    auto* window = WindowBringToFrontByClass(WindowClass::ServerList);
     if (window != nullptr)
         return window;
 
