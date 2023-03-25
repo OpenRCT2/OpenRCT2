@@ -797,7 +797,7 @@ namespace RCT2
                           { 64, 97 },
                       },
                       OWNERSHIP_AVAILABLE, true);
-                  // clang-format on
+                // clang-format on
             }
             else if (
                 String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6", true)
