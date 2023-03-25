@@ -553,6 +553,26 @@ namespace RCT2
                     OWNERSHIP_OWNED);
                 // clang-format on
             }
+            else if (String::Equals(gScenarioFileName, "katie's dreamland.sea"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 115, 63 },
+                    },
+                    OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                // clang-format on
+            }
+            else if (String::Equals(gScenarioFileName, "pleasure island.sea"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 37, 66 },
+                    },
+                    OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                // clang-format on
+            }
             else if (String::Equals(_s6.ScenarioFilename, "Six Flags Great Adventure.SC6"))
             {
                 // clang-format off
