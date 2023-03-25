@@ -438,9 +438,7 @@ private:
     void JoinServer(std::string address)
     {
         int32_t port = NETWORK_DEFAULT_PORT;
-        auto beginBracketIndex = address.find('[');
         auto endBracketIndex = address.find(']');
-        auto dotIndex = address.find('.');
         auto colonIndex = address.find_last_of(':');
         if (colonIndex != std::string::npos)
         {
