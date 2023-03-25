@@ -160,16 +160,7 @@ public:
 
     void OnResize() override
     {
-        if (width < min_width)
-        {
-            Invalidate();
-            width = min_width;
-        }
-        if (height < min_height)
-        {
-            Invalidate();
-            height = min_height;
-        }
+        WindowSetResize(*this, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
     }
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
