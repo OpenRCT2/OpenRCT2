@@ -784,7 +784,7 @@ namespace RCT2
             }
             else if (String::Equals(_s6.ScenarioFilename, "Australasia - Fun at the Beach.SC6"))
             {
-                //clang-format off
+                // clang-format off
                   FixLandOwnershipTilesWithOwnership(
                       {
                           { 63, 97 },
@@ -797,7 +797,7 @@ namespace RCT2
                           { 64, 97 },
                       },
                       OWNERSHIP_AVAILABLE, true);
-                  //clang-format on
+                  // clang-format on
             }
             else if (
                 String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6", true)
