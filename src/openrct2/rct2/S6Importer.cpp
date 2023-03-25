@@ -782,6 +782,23 @@ namespace RCT2
                     OWNERSHIP_AVAILABLE, true);
                 // clang-format on
             }
+            else if (String::Equals(_s6.ScenarioFilename, "Australasia - Fun at the Beach.SC6"))
+            {
+                //clang-format off
+                  FixLandOwnershipTilesWithOwnership(
+                      {
+                          { 63, 97 },
+                          { 64, 97 },
+                      },
+                      OWNERSHIP_UNOWNED);
+                  FixLandOwnershipTilesWithOwnership(
+                      {
+                          { 63, 97 },
+                          { 64, 97 },
+                      },
+                      OWNERSHIP_AVAILABLE, true);
+                  //clang-format on
+            }
             else if (
                 String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6", true)
                 || String::Equals(gScenarioFileName, "n america - extreme hawaiian island.sea", true))
