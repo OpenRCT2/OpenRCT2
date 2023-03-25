@@ -71,6 +71,36 @@ static Widget window_server_list_widgets[] = {
 };
 // clang-format on
 
+void JoinServer(std::string address)
+{
+    int32_t port = NETWORK_DEFAULT_PORT;
+    auto endBracketIndex = address.find(']');
+    auto colonIndex = address.find_last_of(':');
+    if (colonIndex != std::string::npos)
+    {
+        if (auto dotIndex = address.find('.'); endBracketIndex != std::string::npos || dotIndex != std::string::npos)
+        {
+            auto ret = std::sscanf(&address[colonIndex + 1], "%d", &port);
+            assert(ret);
+            if (ret > 0)
+            {
+                address = address.substr(0, colonIndex);
+            }
+        }
+    }
+
+    if (auto beginBracketIndex = address.find('['); beginBracketIndex != std::string::npos && endBracketIndex != std::string::npos)
+    {
+        address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
+    }
+
+    if (!NetworkBeginClient(address, port))
+    {
+        ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
+    }
+}
+
+
 class ServerListWindow final : public Window
 {
 private:
@@ -426,35 +456,6 @@ public:
 #    pragma endregion
 
 private:
-    void JoinServer(std::string address)
-    {
-        int32_t port = NETWORK_DEFAULT_PORT;
-        auto endBracketIndex = address.find(']');
-        auto colonIndex = address.find_last_of(':');
-        if (colonIndex != std::string::npos)
-        {
-            if (auto dotIndex = address.find('.'); endBracketIndex != std::string::npos || dotIndex != std::string::npos)
-            {
-                auto ret = std::sscanf(&address[colonIndex + 1], "%d", &port);
-                assert(ret);
-                if (ret > 0)
-                {
-                    address = address.substr(0, colonIndex);
-                }
-            }
-        }
-
-        if (auto beginBracketIndex = address.find('['); beginBracketIndex != std::string::npos && endBracketIndex != std::string::npos)
-        {
-            address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
-        }
-
-        if (!NetworkBeginClient(address, port))
-        {
-            ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
-        }
-    }
-
     void ServerListFetchServersBegin()
     {
         if (_fetchFuture.valid())
