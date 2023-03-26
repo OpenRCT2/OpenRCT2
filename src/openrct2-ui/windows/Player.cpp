@@ -80,49 +80,105 @@ class PlayerWindow final : public Window
 {
 public:
 
-
-    void OnOpen() override
-    {
-
-    }
-
     void Init()
     {
         InitScrollWidgets();
         SetPage(WINDOW_PLAYER_PAGE_OVERVIEW);
     }
 
+# pragma region Events
+
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnMouseUpOverview(widgetIndex);
+                break;
 
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnMouseUpStatistics(widgetIndex);
+                break;
+        }
     }
 
     void OnMouseDown(WidgetIndex widgetIndex) override
     {
-
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnMouseDownOverview(widgetIndex);
+                break;
+        }
     }
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
-
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnDropdownOverview(widgetIndex, selectedIndex);
+                break;
+        }
     }
 
     void OnResize() override
     {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnResizeOverview();
+            break;
 
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnResizeStatistics();
+            break;
+        }
     }
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnDrawOverview(&dpi);
+            break;
 
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnDrawStatistics(&dpi);
+            break;
+        }
     }
 
     void OnUpdate() override
     {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnUpdateOverview();
+            break;
 
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnUpdateStatistics();
+            break;
+        }
     }
 
-    // Invalidate?
+    void OnPrepareDraw() override
+    {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnPrepareDrawOverview();
+            break;
+
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnPrepareDrawStatistics();
+            break;
+        }
+    }
+
+# pragma endregion
 
 private:
     void SetPage(int32_t newPage)
@@ -138,8 +194,8 @@ private:
         pressed_widgets = 0;
         widgets = window_player_page_widgets[newPage];
         Invalidate();
-        OnResize(); // TBC
-        OnPrepareDraw(); // TBC
+        OnResize();
+        OnPrepareDraw();
         InitScrollWidgets();
         Invalidate();
 
@@ -325,8 +381,9 @@ private:
         }
     }
 
-    void OnMouseDownOverview(WidgetIndex widgetIndex, Widget* widget)
+    void OnMouseDownOverview(WidgetIndex widgetIndex)
     {
+        auto* widget = &widgets[widgetIndex];
         switch (widgetIndex)
         {
             case WIDX_GROUP_DROPDOWN:
@@ -526,7 +583,7 @@ private:
         }
     }
 
-    void OnResizeStatistics(WindowBase* w)
+    void OnResizeStatistics()
     {
         WindowSetResize(*this, 210, 80, 210, 80);
     }
