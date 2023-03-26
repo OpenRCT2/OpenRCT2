@@ -203,8 +203,8 @@ private:
         {
             if (viewport == nullptr)
             {
-                const auto focus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
-                ViewportCreate(this, windowPos, width, height, focus);
+                const auto viewportFocus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
+                ViewportCreate(this, windowPos, width, height, viewportFocus);
                 flags |= WF_NO_SCROLLING;
                 OnPrepareDraw();
                 UpdateViewport(false);
@@ -484,7 +484,7 @@ private:
 
         // Draw last action
         screenCoords = windowPos + ScreenCoordsXY{ width / 2, height - 13 };
-        int32_t width = this->width - 8;
+        int32_t updatedWidth = this->width - 8;
         int32_t lastaction = NetworkGetPlayerLastAction(player, 0);
         ft = Formatter();
         if (lastaction != -999)
@@ -495,7 +495,7 @@ private:
         {
             ft.Add<StringId>(STR_ACTION_NA);
         }
-        DrawTextEllipsised(*dpi, screenCoords, width, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
+        DrawTextEllipsised(*dpi, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
 
         if (viewport != nullptr && var_492 != -1)
         {
