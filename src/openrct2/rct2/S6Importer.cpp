@@ -573,6 +573,16 @@ namespace RCT2
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                 // clang-format on
             }
+            else if (String::Equals(_s6.ScenarioFilename, "Extreme Heights.SC6"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 105, 147 }, { 106, 147 }, { 107, 147 },
+                    },
+                    OWNERSHIP_OWNED);
+                // clang-format on
+            }
             else if (String::Equals(_s6.ScenarioFilename, "Six Flags Great Adventure.SC6"))
             {
                 // clang-format off
