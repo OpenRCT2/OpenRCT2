@@ -79,14 +79,93 @@ static Widget *window_player_page_widgets[] = {
 class PlayerWindow final : public Window
 {
 public:
-
     void Init()
     {
         InitScrollWidgets();
         SetPage(WINDOW_PLAYER_PAGE_OVERVIEW);
     }
 
-# pragma region Events
+#pragma region Events
+
+    void OnClose() override
+    {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnCloseOverview();
+                break;
+
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnCloseStatistics();
+                break;
+        }
+    }
+
+    void OnResize() override
+    {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnResizeOverview();
+                break;
+
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnResizeStatistics();
+                break;
+        }
+    }
+
+    void OnUpdate() override
+    {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnUpdateOverview();
+                break;
+
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnUpdateStatistics();
+                break;
+        }
+    }
+
+    void OnPrepareDraw() override
+    {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnPrepareDrawOverview();
+                break;
+
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnPrepareDrawStatistics();
+                break;
+        }
+    }
+
+    void OnDraw(DrawPixelInfo& dpi) override
+    {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnDrawOverview(&dpi);
+                break;
+
+            case WINDOW_PLAYER_PAGE_STATISTICS:
+                OnDrawStatistics(&dpi);
+                break;
+        }
+    }
+
+    void OnMouseDown(WidgetIndex widgetIndex) override
+    {
+        switch (page)
+        {
+            case WINDOW_PLAYER_PAGE_OVERVIEW:
+                OnMouseDownOverview(widgetIndex);
+                break;
+        }
+    }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
@@ -102,16 +181,6 @@ public:
         }
     }
 
-    void OnMouseDown(WidgetIndex widgetIndex) override
-    {
-        switch (page)
-        {
-            case WINDOW_PLAYER_PAGE_OVERVIEW:
-                OnMouseDownOverview(widgetIndex);
-                break;
-        }
-    }
-
     void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         switch (page)
@@ -122,63 +191,7 @@ public:
         }
     }
 
-    void OnResize() override
-    {
-        switch (page)
-        {
-            case WINDOW_PLAYER_PAGE_OVERVIEW:
-                OnResizeOverview();
-            break;
-
-            case WINDOW_PLAYER_PAGE_STATISTICS:
-                OnResizeStatistics();
-            break;
-        }
-    }
-
-    void OnDraw(DrawPixelInfo& dpi) override
-    {
-        switch (page)
-        {
-            case WINDOW_PLAYER_PAGE_OVERVIEW:
-                OnDrawOverview(&dpi);
-            break;
-
-            case WINDOW_PLAYER_PAGE_STATISTICS:
-                OnDrawStatistics(&dpi);
-            break;
-        }
-    }
-
-    void OnUpdate() override
-    {
-        switch (page)
-        {
-            case WINDOW_PLAYER_PAGE_OVERVIEW:
-                OnUpdateOverview();
-            break;
-
-            case WINDOW_PLAYER_PAGE_STATISTICS:
-                OnUpdateStatistics();
-            break;
-        }
-    }
-
-    void OnPrepareDraw() override
-    {
-        switch (page)
-        {
-            case WINDOW_PLAYER_PAGE_OVERVIEW:
-                OnPrepareDrawOverview();
-            break;
-
-            case WINDOW_PLAYER_PAGE_STATISTICS:
-                OnPrepareDrawStatistics();
-            break;
-        }
-    }
-
-# pragma endregion
+#pragma endregion
 
 private:
     void SetPage(int32_t newPage)
@@ -309,111 +322,10 @@ private:
         }
     }
 
-
-# pragma region Overview
-
-    void ShowGroupDropdownOverview(Widget* widget)
-    {
-        Widget* dropdownWidget;
-        int32_t numItems, i;
-        int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
-        if (player == -1)
-        {
-            return;
-        }
-
-        dropdownWidget = widget - 1;
-
-        numItems = NetworkGetNumGroups();
-
-        WindowDropdownShowTextCustomWidth(
-            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-            colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
-
-        for (i = 0; i < NetworkGetNumGroups(); i++)
-        {
-            gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-            gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
-        }
-
-        Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetPlayerGroup(player)), true);
-    }
+#pragma region Overview
 
     void OnCloseOverview()
     {
-    }
-
-    void OnMouseUpOverview(WidgetIndex widgetIndex)
-    {
-        switch (widgetIndex)
-        {
-            case WIDX_CLOSE:
-                Close();
-                break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-                SetPage(widgetIndex - WIDX_TAB_1);
-                break;
-            case WIDX_LOCATE:
-            {
-                WindowBase* mainWindow = WindowGetMain();
-                if (mainWindow != nullptr)
-                {
-                    int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
-                    if (player == -1)
-                    {
-                        return;
-                    }
-                    auto coord = NetworkGetPlayerLastActionCoord(player);
-                    if (coord.x || coord.y || coord.z)
-                    {
-                        WindowScrollToLocation(*mainWindow, coord);
-                    }
-                }
-            }
-            break;
-            case WIDX_KICK:
-            {
-                auto kickPlayerAction = PlayerKickAction(number);
-                GameActions::Execute(&kickPlayerAction);
-            }
-            break;
-        }
-    }
-
-    void OnMouseDownOverview(WidgetIndex widgetIndex)
-    {
-        auto* widget = &widgets[widgetIndex];
-        switch (widgetIndex)
-        {
-            case WIDX_GROUP_DROPDOWN:
-                ShowGroupDropdownOverview(widget);
-                break;
-        }
-    }
-
-    void OnDropdownOverview(WidgetIndex widgetIndex, int32_t dropdownIndex)
-    {
-        const auto playerId = static_cast<uint8_t>(number);
-        const auto playerIdx = NetworkGetPlayerIndex(playerId);
-        if (playerIdx == -1)
-        {
-            return;
-        }
-        if (dropdownIndex == -1)
-        {
-            return;
-        }
-        const auto groupId = NetworkGetGroupID(dropdownIndex);
-        const auto windowHandle = std::make_pair(classification, number);
-        auto playerSetGroupAction = PlayerSetGroupAction(playerId, groupId);
-        playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
-            if (result->Error == GameActions::Status::Ok)
-            {
-                WindowInvalidateByNumber(windowHandle.first, windowHandle.second);
-            }
-        });
-        GameActions::Execute(&playerSetGroupAction);
     }
 
     void OnResizeOverview()
@@ -442,6 +354,60 @@ private:
             scroll = false;
         }
         UpdateViewport(scroll);
+    }
+
+    void OnPrepareDrawOverview()
+    {
+        int32_t playerIndex = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+        if (playerIndex == -1)
+        {
+            return;
+        }
+
+        if (window_player_page_widgets[page] != widgets)
+        {
+            widgets = window_player_page_widgets[page];
+            InitScrollWidgets();
+        }
+
+        pressed_widgets &= ~(WIDX_TAB_1);
+        pressed_widgets &= ~(WIDX_TAB_2);
+        pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
+
+        UpdateTitle();
+
+        ResizeFrameWithPage();
+        widgets[WIDX_LOCATE].right = width - 2;
+        widgets[WIDX_LOCATE].left = width - 25;
+        widgets[WIDX_KICK].right = width - 2;
+        widgets[WIDX_KICK].left = width - 25;
+        widgets[WIDX_VIEWPORT].right = width - 26;
+        widgets[WIDX_VIEWPORT].bottom = height - 14;
+
+        int32_t groupDropdownWidth = widgets[WIDX_GROUP].width();
+        widgets[WIDX_GROUP].left = (width - groupDropdownWidth) / 2;
+        widgets[WIDX_GROUP].right = widgets[WIDX_GROUP].left + groupDropdownWidth;
+        widgets[WIDX_GROUP_DROPDOWN].left = widgets[WIDX_GROUP].right - 10;
+        widgets[WIDX_GROUP_DROPDOWN].right = widgets[WIDX_GROUP].right;
+
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_2);
+
+        if (viewport != nullptr)
+        {
+            Widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
+
+            viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
+            viewport->width = viewportWidget->width();
+            viewport->height = viewportWidget->height();
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
+            viewport->view_height = viewport->zoom.ApplyTo(viewport->height);
+        }
+
+        // Only enable kick button for other players
+        const bool canKick = NetworkCanPerformAction(NetworkGetCurrentPlayerGroupIndex(), NetworkPermission::KickPlayer);
+        const bool isServer = NetworkGetPlayerFlags(playerIndex) & NETWORK_PLAYER_FLAG_ISSERVER;
+        const bool isOwnWindow = (NetworkGetCurrentPlayerId() == number);
+        WidgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
     }
 
     void OnDrawOverview(DrawPixelInfo* dpi)
@@ -503,73 +469,18 @@ private:
         }
     }
 
-    void OnPrepareDrawOverview()
+    void OnMouseDownOverview(WidgetIndex widgetIndex)
     {
-        int32_t playerIndex = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
-        if (playerIndex == -1)
+        auto* widget = &widgets[widgetIndex];
+        switch (widgetIndex)
         {
-            return;
-        }
-
-        if (window_player_page_widgets[page] != widgets)
-        {
-            widgets = window_player_page_widgets[page];
-            InitScrollWidgets();
-        }
-
-        pressed_widgets &= ~(WIDX_TAB_1);
-        pressed_widgets &= ~(WIDX_TAB_2);
-        pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
-
-        UpdateTitle();
-
-        ResizeFrameWithPage();
-        widgets[WIDX_LOCATE].right = width - 2;
-        widgets[WIDX_LOCATE].left = width - 25;
-        widgets[WIDX_KICK].right = width - 2;
-        widgets[WIDX_KICK].left = width - 25;
-        widgets[WIDX_VIEWPORT].right = width - 26;
-        widgets[WIDX_VIEWPORT].bottom = height - 14;
-
-        int32_t groupDropdownWidth = widgets[WIDX_GROUP].width();
-        widgets[WIDX_GROUP].left = (width - groupDropdownWidth) / 2;
-        widgets[WIDX_GROUP].right = widgets[WIDX_GROUP].left + groupDropdownWidth;
-        widgets[WIDX_GROUP_DROPDOWN].left = widgets[WIDX_GROUP].right - 10;
-        widgets[WIDX_GROUP_DROPDOWN].right = widgets[WIDX_GROUP].right;
-
-        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_2);
-
-        if (viewport != nullptr)
-        {
-            Widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
-
-            viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
-            viewport->width = viewportWidget->width();
-            viewport->height = viewportWidget->height();
-            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
-            viewport->view_height = viewport->zoom.ApplyTo(viewport->height);
-        }
-
-        // Only enable kick button for other players
-        const bool canKick = NetworkCanPerformAction(NetworkGetCurrentPlayerGroupIndex(), NetworkPermission::KickPlayer);
-        const bool isServer = NetworkGetPlayerFlags(playerIndex) & NETWORK_PLAYER_FLAG_ISSERVER;
-        const bool isOwnWindow = (NetworkGetCurrentPlayerId() == number);
-        WidgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
-    }
-
-# pragma endregion
-
-# pragma region Statistics
-
-    void OnCloseStatistics()
-    {
-        if (error.var_480)
-        {
-            error.var_480 = 0;
+            case WIDX_GROUP_DROPDOWN:
+                ShowGroupDropdownOverview(widget);
+                break;
         }
     }
 
-    void OnMouseUpStatistics(WidgetIndex widgetIndex)
+    void OnMouseUpOverview(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -580,6 +491,93 @@ private:
             case WIDX_TAB_2:
                 SetPage(widgetIndex - WIDX_TAB_1);
                 break;
+            case WIDX_LOCATE:
+            {
+                WindowBase* mainWindow = WindowGetMain();
+                if (mainWindow != nullptr)
+                {
+                    int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+                    if (player == -1)
+                    {
+                        return;
+                    }
+                    auto coord = NetworkGetPlayerLastActionCoord(player);
+                    if (coord.x || coord.y || coord.z)
+                    {
+                        WindowScrollToLocation(*mainWindow, coord);
+                    }
+                }
+            }
+            break;
+            case WIDX_KICK:
+            {
+                auto kickPlayerAction = PlayerKickAction(number);
+                GameActions::Execute(&kickPlayerAction);
+            }
+            break;
+        }
+    }
+
+    void OnDropdownOverview(WidgetIndex widgetIndex, int32_t dropdownIndex)
+    {
+        const auto playerId = static_cast<uint8_t>(number);
+        const auto playerIdx = NetworkGetPlayerIndex(playerId);
+        if (playerIdx == -1)
+        {
+            return;
+        }
+        if (dropdownIndex == -1)
+        {
+            return;
+        }
+        const auto groupId = NetworkGetGroupID(dropdownIndex);
+        const auto windowHandle = std::make_pair(classification, number);
+        auto playerSetGroupAction = PlayerSetGroupAction(playerId, groupId);
+        playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
+            if (result->Error == GameActions::Status::Ok)
+            {
+                WindowInvalidateByNumber(windowHandle.first, windowHandle.second);
+            }
+        });
+        GameActions::Execute(&playerSetGroupAction);
+    }
+
+    void ShowGroupDropdownOverview(Widget* widget)
+    {
+        Widget* dropdownWidget;
+        int32_t numItems, i;
+        int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+        if (player == -1)
+        {
+            return;
+        }
+
+        dropdownWidget = widget - 1;
+
+        numItems = NetworkGetNumGroups();
+
+        WindowDropdownShowTextCustomWidth(
+            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
+            0, 0, numItems, widget->right - dropdownWidget->left);
+
+        for (i = 0; i < NetworkGetNumGroups(); i++)
+        {
+            gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+            gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
+        }
+
+        Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetPlayerGroup(player)), true);
+    }
+
+#pragma endregion
+
+#pragma region Statistics
+
+    void OnCloseStatistics()
+    {
+        if (error.var_480)
+        {
+            error.var_480 = 0;
         }
     }
 
@@ -644,8 +642,21 @@ private:
         DrawTextBasic(*dpi, screenCoords, STR_MONEY_SPENT, ft);
     }
 
-# pragma endregion
+    void OnMouseUpStatistics(WidgetIndex widgetIndex)
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                Close();
+                break;
+            case WIDX_TAB_1:
+            case WIDX_TAB_2:
+                SetPage(widgetIndex - WIDX_TAB_1);
+                break;
+        }
+    }
 
+#pragma endregion
 };
 
 WindowBase* WindowPlayerOpen(uint8_t id)
