@@ -654,7 +654,7 @@ namespace RCT2
                     { 86, 25 },
                     { 87, 23 },
                     { 87, 25 },
-                    });
+                });
                 FixWaterHeight(
                     {
                         { 86, 24 },
