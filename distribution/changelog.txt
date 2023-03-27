@@ -66,6 +66,7 @@
 - Fix: [#19517] Crash when peeps try to exit or enter hacked rides that have no waypoints specified.
 - Fix: [#19524] Staff counter shows incorrect values if there are more than 32767 staff members.
 - Fix: [#19641] Missing water tile in Infernal Views' and Six Flags Holland's river.
+- Fix: [#19740] Missing water tiles in RCT1 and RCT2 scenarios.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
