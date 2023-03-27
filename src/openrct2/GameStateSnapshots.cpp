@@ -302,6 +302,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             COMPARE_FIELD(Peep, PathfindHistory[i].direction);
         }
         COMPARE_FIELD(Peep, WalkingFrameNum);
+        COMPARE_FIELD(Peep, PeepFlags);
     }
 
     void CompareSpriteDataStaff(const Staff& spriteBase, const Staff& spriteCmp, GameStateSpriteChange& changeData) const
@@ -323,8 +324,18 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         CompareSpriteDataPeep(spriteBase, spriteCmp, changeData);
 
-        COMPARE_FIELD(Guest, OutsideOfPark);
         COMPARE_FIELD(Guest, GuestNumRides);
+        COMPARE_FIELD(Guest, GuestNextInQueue);
+        COMPARE_FIELD(Guest, ParkEntryTime);
+        COMPARE_FIELD(Guest, GuestHeadingToRideId);
+        COMPARE_FIELD(Guest, GuestIsLostCountdown);
+        COMPARE_FIELD(Guest, GuestTimeOnRide);
+        COMPARE_FIELD(Guest, PaidToEnter);
+        COMPARE_FIELD(Guest, PaidOnRides);
+        COMPARE_FIELD(Guest, PaidOnFood);
+        COMPARE_FIELD(Guest, PaidOnDrink);
+        COMPARE_FIELD(Guest, PaidOnSouvenirs);
+        COMPARE_FIELD(Guest, OutsideOfPark);
         COMPARE_FIELD(Guest, Happiness);
         COMPARE_FIELD(Guest, HappinessTarget);
         COMPARE_FIELD(Guest, Nausea);
@@ -335,17 +346,13 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, TimeToConsume);
         COMPARE_FIELD(Guest, Intensity);
         COMPARE_FIELD(Guest, NauseaTolerance);
-        COMPARE_FIELD(Guest, PaidOnDrink);
-        COMPARE_FIELD(Guest, ItemFlags);
+        COMPARE_FIELD(Guest, TimeInQueue);
+        COMPARE_FIELD(Guest, CashInPocket);
+        COMPARE_FIELD(Guest, CashSpent);
+        COMPARE_FIELD(Guest, Photo1RideRef);
         COMPARE_FIELD(Guest, Photo2RideRef);
         COMPARE_FIELD(Guest, Photo3RideRef);
         COMPARE_FIELD(Guest, Photo4RideRef);
-        COMPARE_FIELD(Guest, GuestNextInQueue);
-        COMPARE_FIELD(Guest, TimeInQueue);
-
-        COMPARE_FIELD(Guest, CashInPocket);
-        COMPARE_FIELD(Guest, CashSpent);
-        COMPARE_FIELD(Guest, ParkEntryTime);
         COMPARE_FIELD(Guest, RejoinQueueTimeout);
         COMPARE_FIELD(Guest, PreviousRide);
         COMPARE_FIELD(Guest, PreviousRideTimeOut);
@@ -356,17 +363,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             COMPARE_FIELD(Guest, Thoughts[i].freshness);
             COMPARE_FIELD(Guest, Thoughts[i].fresh_timeout);
         }
-        COMPARE_FIELD(Guest, GuestHeadingToRideId);
-        COMPARE_FIELD(Guest, GuestIsLostCountdown);
-        COMPARE_FIELD(Guest, Photo1RideRef);
-        COMPARE_FIELD(Guest, PeepFlags);
         COMPARE_FIELD(Guest, LitterCount);
-        COMPARE_FIELD(Guest, GuestTimeOnRide);
         COMPARE_FIELD(Guest, DisgustingCount);
-        COMPARE_FIELD(Guest, PaidToEnter);
-        COMPARE_FIELD(Guest, PaidOnRides);
-        COMPARE_FIELD(Guest, PaidOnFood);
-        COMPARE_FIELD(Guest, PaidOnSouvenirs);
         COMPARE_FIELD(Guest, AmountOfFood);
         COMPARE_FIELD(Guest, AmountOfDrinks);
         COMPARE_FIELD(Guest, AmountOfSouvenirs);
@@ -382,10 +380,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, HatColour);
         COMPARE_FIELD(Guest, FavouriteRide);
         COMPARE_FIELD(Guest, FavouriteRideRating);
+        COMPARE_FIELD(Guest, ItemFlags);
     }
 
     void CompareSpriteDataVehicle(const Vehicle& spriteBase, const Vehicle& spriteCmp, GameStateSpriteChange& changeData) const
     {
+        COMPARE_FIELD(Vehicle, SubType);
         COMPARE_FIELD(Vehicle, Pitch);
         COMPARE_FIELD(Vehicle, bank_rotation);
         COMPARE_FIELD(Vehicle, remaining_distance);
@@ -468,7 +468,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(MoneyEffect, frame);
         COMPARE_FIELD(MoneyEffect, MoveDelay);
         COMPARE_FIELD(MoneyEffect, NumMovements);
-        COMPARE_FIELD(MoneyEffect, Vertical);
+        COMPARE_FIELD(MoneyEffect, GuestPurchase);
         COMPARE_FIELD(MoneyEffect, Value);
         COMPARE_FIELD(MoneyEffect, OffsetX);
         COMPARE_FIELD(MoneyEffect, Wiggle);
@@ -519,12 +519,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const JumpingFountain& spriteBase, const JumpingFountain& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(JumpingFountain, frame);
+        COMPARE_FIELD(JumpingFountain, FountainType);
         COMPARE_FIELD(JumpingFountain, NumTicksAlive);
         COMPARE_FIELD(JumpingFountain, FountainFlags);
         COMPARE_FIELD(JumpingFountain, TargetX);
         COMPARE_FIELD(JumpingFountain, TargetY);
         COMPARE_FIELD(JumpingFountain, Iteration);
-        COMPARE_FIELD(JumpingFountain, FountainType);
     }
 
     void CompareSpriteDataExplosionCloud(

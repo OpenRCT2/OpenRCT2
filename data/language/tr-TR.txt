@@ -1239,7 +1239,7 @@ STR_1863    :Temizlikci
 STR_1864    :Tamirci
 STR_1865    :Güvenlik
 STR_1866    :Animatör
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Çevirme miktarı değiştirilemiyor…
 STR_1869    :{WINDOW_COLOUR_2}Çevirme miktarı:
 STR_1870    :Aletin kaç defa çevirme yapacağını seçiniz

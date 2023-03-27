@@ -20,15 +20,18 @@
 - Improved: [#18826] [Plugin] Added all actions and their documentation to plugin API.
 - Improved: [#18945] Languages can now fall back to other languages than English.
 - Improved: [#18970] Trying to load a non-park save will now display a context error.
-- Improved: [#18975] Add lift sprites for 60 steep hills on the wooden roller coaster.
+- Improved: [#18975] Add lift sprites for steep hills on the wooden roller coaster.
 - Improved: [#19044] Added special thanks to RMC and Wiegand to the About page.
 - Improved: [#19131] Track missing objects when selecting scenery groups in console.
-- Improved: [#19253] Queue junctions drawn properly when using regular paths as queue.
+- Improved: [#19253] Queue junctions drawn properly when using regular paths as queue. Note: Requires using tile inspector to indicate railings can be used at T or X junctions.
 - Improved: [#19067] New Ride window now allows filtering similarly to Object Selection.
 - Improved: [#19272] Scenery window now allows filtering similarly to Object Selection.
 - Improved: [#19447] The control key now enables word jumping in text input fields.
 - Improved: [#19463] Added ‘W’ and ‘Y’ with circumflex to sprite font (for Welsh).
 - Improved: [#19549] Enable large address awareness for 32 bit Windows builds allowing to use 4 GiB of virtual memory.
+- Improved: [#19668] Decreased the minimum map size from 13 to 3.
+- Improved: [#19683] The delays for ride ratings to appear has been reduced drastically.
+- Improved: [#19697] “Show guest purchases” will now work in multiplayer.
 - Change: [#19018] Renamed actions to fit the naming scheme.
 - Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
 - Change: [#19233] Reduce lift speed minimum and maximum values for “Classic Wooden Coaster”.
@@ -66,6 +69,7 @@
 - Fix: [#19493] SV4 saves not importing the correct vehicle colours.
 - Fix: [#19517] Crash when peeps try to exit or enter hacked rides that have no waypoints specified.
 - Fix: [#19524] Staff counter shows incorrect values if there are more than 32767 staff members.
+- Fix: [#19574] Handle exits in null locations.
 - Fix: [#19641, #19643] Missing water tile in Infernal Views’ and Six Flags Holland’s river.
 
 0.4.3 (2022-12-14)

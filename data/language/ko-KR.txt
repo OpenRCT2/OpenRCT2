@@ -1247,7 +1247,7 @@ STR_1863    :미화원
 STR_1864    :정비기술자
 STR_1865    :경비원
 STR_1866    :엔터테이너
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :회전 수를 변경할 수 없습니다…
 STR_1869    :{WINDOW_COLOUR_2}회전 수:
 STR_1870    :회전 수를 설정합니다

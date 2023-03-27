@@ -26,6 +26,7 @@ enum class TileModifyType : uint8_t
     PathSetSlope,
     PathSetBroken,
     PathToggleEdge,
+    PathSetJunctionRailings,
     EntranceMakeUsable,
     WallSetSlope,
     WallSetAnimationFrame,

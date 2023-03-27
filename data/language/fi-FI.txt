@@ -1247,7 +1247,7 @@ STR_1863    :yleismies
 STR_1864    :mekaanikko
 STR_1865    :vartija
 STR_1866    :viihdyttäjä
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kierrosten määrää ei voi muuttaa…
 STR_1869    :{WINDOW_COLOUR_2}Kierrosten määrä:
 STR_1870    :Täysien kierrosten määrä

@@ -1243,7 +1243,7 @@ STR_1863    :Handymand
 STR_1864    :Mekaniker
 STR_1865    :Sikkerhedsvagt
 STR_1866    :Entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan ikke ændre antallet af rotationer…
 STR_1869    :{WINDOW_COLOUR_2}Antal rotationer:
 STR_1870    :Komplet antal af rotationer

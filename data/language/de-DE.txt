@@ -1246,7 +1246,7 @@ STR_1863    :Parkpfleger
 STR_1864    :Mechaniker
 STR_1865    :Aufseher
 STR_1866    :Animateur
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Anzahl der Drehungen kann nicht geändert werden…
 STR_1869    :{WINDOW_COLOUR_2}Anzahl der Drehungen:
 STR_1870    :Anzahl kompletter Drehungen

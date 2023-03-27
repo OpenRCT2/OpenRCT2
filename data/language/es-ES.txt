@@ -1246,7 +1246,7 @@ STR_1863    :manita
 STR_1864    :mecánico
 STR_1865    :guardia de seguridad
 STR_1866    :animador
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :No puedes cambiar el número de vueltas…
 STR_1869    :{WINDOW_COLOUR_2}Número de vueltas:
 STR_1870    :Número de vueltas completas

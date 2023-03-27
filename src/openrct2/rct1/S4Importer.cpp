@@ -2974,7 +2974,7 @@ namespace RCT1
         ImportEntityCommonProperties(dst, src);
         dst->MoveDelay = src->MoveDelay;
         dst->NumMovements = src->NumMovements;
-        dst->Vertical = src->Vertical;
+        dst->GuestPurchase = src->Vertical;
         dst->Value = src->Value;
         dst->OffsetX = src->OffsetX;
         dst->Wiggle = src->Wiggle;
