@@ -91,7 +91,7 @@ GameActions::Result PeepSpawnPlaceAction::Execute() const
 
     // Shift the spawn point to the edge of the tile
     auto spawnPos = CoordsXY{ _location.ToTileCentre() }
-        + CoordsXY{ DirectionOffsets.at(_location.direction).x * 15, DirectionOffsets.at(_location.direction).y * 15 };
+        + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
 
     PeepSpawn spawn;
     spawn.x = spawnPos.x;

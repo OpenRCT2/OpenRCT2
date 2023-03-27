@@ -1254,7 +1254,7 @@ void Guest::UpdateSitting()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        auto loc = GetLocation().ToTileStart() + CoordsXYZ{ BenchUseOffsets.at(Var37 & 0x7), 0 };
+        auto loc = GetLocation().ToTileStart() + CoordsXYZ{ BenchUseOffsets[Var37 & 0x7], 0 };
 
         MoveTo(loc);
 
@@ -2490,8 +2490,8 @@ void Guest::GoToRideEntrance(const Ride& ride)
     }
 
     auto location = station.Entrance.ToCoordsXYZD().ToTileCentre();
-    int16_t x_shift = DirectionOffsets.at(location.direction).x;
-    int16_t y_shift = DirectionOffsets.at(location.direction).y;
+    int16_t x_shift = DirectionOffsets[location.direction].x;
+    int16_t y_shift = DirectionOffsets[location.direction].y;
 
     uint8_t shift_multiplier = 21;
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
@@ -3786,7 +3786,7 @@ static void PeepGoToRideExit(Peep* peep, const Ride& ride, int16_t x, int16_t y,
     auto [x_shift, y_shift] = [exit_direction]() {
         if (exit_direction < DirectionOffsets.size())
         {
-            return std::pair(DirectionOffsets.at(exit_direction).x, DirectionOffsets.at(exit_direction).y);
+            return std::pair(DirectionOffsets[exit_direction].x, DirectionOffsets[exit_direction].y);
         }
         else
         {
@@ -3892,8 +3892,8 @@ static void PeepUpdateRideNoFreeVehicleRejoinQueue(Guest* peep, Ride& ride)
     int32_t y = entranceLocation.y * 32;
     if (entranceLocation.direction < DirectionOffsets.size())
     {
-        x += 16 - DirectionOffsets.at(entranceLocation.direction).x * 20;
-        y += 16 - DirectionOffsets.at(entranceLocation.direction).y * 20;
+        x += 16 - DirectionOffsets[entranceLocation.direction].x * 20;
+        y += 16 - DirectionOffsets[entranceLocation.direction].y * 20;
     }
 
     peep->SetDestination({ x, y }, 2);
@@ -4207,7 +4207,7 @@ void Guest::UpdateRideLeaveVehicle()
             auto [xShift, yShift] = [specialDirection]() {
                 if (specialDirection < DirectionOffsets.size())
                 {
-                    return std::pair(DirectionOffsets.at(specialDirection).x, DirectionOffsets.at(specialDirection).y);
+                    return std::pair(DirectionOffsets[specialDirection].x, DirectionOffsets[specialDirection].y);
                 }
                 else
                 {
@@ -4223,8 +4223,8 @@ void Guest::UpdateRideLeaveVehicle()
             return;
         }
 
-        platformLocation.x = vehicle->x + DirectionOffsets.at(platformLocation.direction).x * 12;
-        platformLocation.y = vehicle->y + DirectionOffsets.at(platformLocation.direction).y * 12;
+        platformLocation.x = vehicle->x + DirectionOffsets[platformLocation.direction].x * 12;
+        platformLocation.y = vehicle->y + DirectionOffsets[platformLocation.direction].y * 12;
 
         // This can evaluate to false with buggy custom rides.
         if (CurrentSeat < carEntry->peep_loading_positions.size())
@@ -4328,7 +4328,7 @@ void Guest::UpdateRidePrepareForExit()
     auto [xShift, yShift] = [exit]() {
         if (exit.direction < DirectionOffsets.size())
         {
-            return std::pair(DirectionOffsets.at(exit.direction).x, DirectionOffsets.at(exit.direction).y);
+            return std::pair(DirectionOffsets[exit.direction].x, DirectionOffsets[exit.direction].y);
         }
         else
         {
@@ -4585,8 +4585,8 @@ void Guest::UpdateRideApproachExitWaypoints()
     auto targetLoc = ride->GetStation(CurrentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
     uint8_t exit_direction = DirectionReverse(targetLoc.direction);
 
-    int16_t x_shift = DirectionOffsets.at(exit_direction).x;
-    int16_t y_shift = DirectionOffsets.at(exit_direction).y;
+    int16_t x_shift = DirectionOffsets[exit_direction].x;
+    int16_t y_shift = DirectionOffsets[exit_direction].y;
 
     int16_t shift_multiplier = 20;
 
@@ -4827,8 +4827,8 @@ void Guest::UpdateRideLeaveSpiralSlide()
 
     auto targetLoc = ride->GetStation(CurrentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
 
-    int16_t xShift = DirectionOffsets.at(DirectionReverse(targetLoc.direction)).x;
-    int16_t yShift = DirectionOffsets.at(DirectionReverse(targetLoc.direction)).y;
+    int16_t xShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].x;
+    int16_t yShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].y;
 
     int16_t shiftMultiplier = 20;
 
@@ -6052,8 +6052,8 @@ bool Guest::UpdateWalkingFindBench()
 
     SittingSubState = PeepSittingSubState::TryingToSit;
 
-    int32_t benchX = (x & 0xFFE0) + BenchUseOffsets.at(Var37 & 0x7).x;
-    int32_t benchY = (y & 0xFFE0) + BenchUseOffsets.at(Var37 & 0x7).y;
+    int32_t benchX = (x & 0xFFE0) + BenchUseOffsets[Var37 & 0x7].x;
+    int32_t benchY = (y & 0xFFE0) + BenchUseOffsets[Var37 & 0x7].y;
 
     SetDestination({ benchX, benchY }, 3);
 
@@ -6130,8 +6130,8 @@ bool Guest::UpdateWalkingFindBin()
     peep->SetState(PeepState::UsingBin);
     peep->UsingBinSubState = PeepUsingBinSubState::WalkingToBin;
 
-    int32_t binX = (peep->x & 0xFFE0) + BinUseOffsets.at(peep->Var37 & 0x3).x;
-    int32_t binY = (peep->y & 0xFFE0) + BinUseOffsets.at(peep->Var37 & 0x3).y;
+    int32_t binX = (peep->x & 0xFFE0) + BinUseOffsets[peep->Var37 & 0x3].x;
+    int32_t binY = (peep->y & 0xFFE0) + BinUseOffsets[peep->Var37 & 0x3].y;
 
     peep->SetDestination({ binX, binY }, 3);
 

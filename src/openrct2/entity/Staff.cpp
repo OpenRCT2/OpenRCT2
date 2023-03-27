@@ -1373,7 +1373,7 @@ void Staff::UpdateHeadingToInspect()
 
         PeepDirection = rideEntranceExitElement->GetDirection();
 
-        auto newDestination = CoordsXY{ 16, 16 } + NextLoc + (DirectionOffsets.at(PeepDirection) * 53);
+        auto newDestination = CoordsXY{ 16, 16 } + NextLoc + (DirectionOffsets[PeepDirection] * 53);
         SetDestination(newDestination, 2);
         sprite_direction = PeepDirection << 3;
 
@@ -1481,8 +1481,8 @@ void Staff::UpdateAnswering()
 
         PeepDirection = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = NextLoc.x + 16 + DirectionOffsets.at(PeepDirection).x * 53;
-        int32_t destY = NextLoc.y + 16 + DirectionOffsets.at(PeepDirection).y * 53;
+        int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
+        int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
         SetDestination({ destX, destY }, 2);
         sprite_direction = PeepDirection << 3;
@@ -1644,7 +1644,7 @@ bool Staff::UpdatePatrollingFindBin()
     SetState(PeepState::EmptyingBin);
 
     SubState = 0;
-    auto destination = BinUseOffsets.at(chosen_position) + GetLocation().ToTileStart();
+    auto destination = BinUseOffsets[chosen_position] + GetLocation().ToTileStart();
     SetDestination(destination, 3);
     return true;
 }
@@ -2083,7 +2083,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride)
             }
         }
 
-        CoordsXY offset = DirectionOffsets.at(PeepDirection);
+        CoordsXY offset = DirectionOffsets[PeepDirection];
         auto destination = (offset * -12) + vehicle->GetLocation();
         SetDestination(destination, 2);
     }
@@ -2450,7 +2450,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride& ride)
 
         stationPosition = stationPosition.ToTileCentre();
 
-        CoordsXY stationPlatformDirection = DirectionOffsets.at(PeepDirection);
+        CoordsXY stationPlatformDirection = DirectionOffsets[PeepDirection];
         stationPosition.x += stationPlatformDirection.x * 20;
         stationPosition.y += stationPlatformDirection.y * 20;
 
@@ -2531,7 +2531,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride)
 
         exitPosition = exitPosition.ToTileCentre();
 
-        CoordsXY ebx_direction = DirectionOffsets.at(PeepDirection);
+        CoordsXY ebx_direction = DirectionOffsets[PeepDirection];
         exitPosition.x -= ebx_direction.x * 19;
         exitPosition.y -= ebx_direction.y * 19;
 
