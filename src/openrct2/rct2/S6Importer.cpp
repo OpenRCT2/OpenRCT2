@@ -648,21 +648,118 @@ namespace RCT2
             {
                 return;
             }
-            if (String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6", true)
+            if (String::Equals(gScenarioFileName, "mystic mountain.sea"))
+            {
+                RemoveTileElementsAt({
+                    { 86, 25 },
+                    { 87, 23 },
+                    { 87, 25 },
+                    });
+                FixWaterHeight(
+                    {
+                        { 86, 24 },
+                        { 86, 25 },
+                        { 87, 23 },
+                        { 87, 24 },
+                        { 87, 25 },
+                        { 88, 22 },
+                        { 88, 23 },
+                        { 88, 24 },
+                        { 89, 22 },
+                        { 89, 23 },
+                    },
+                    288);
+            }
+            else if (String::Equals(gScenarioFileName, "crumbly woods.sea"))
+            {
+                FixWaterHeight({ { 13, 83 } }, 96);
+            }
+            else if (String::Equals(gScenarioFileName, "hydro hills.sea"))
+            {
+                RemoveTileElementsAt({ { 82, 7 }, { 82, 8 }, { 83, 9 } });
+                FixWaterHeight({ { 81, 8 }, { 82, 7 }, { 82, 8 }, { 82, 9 }, { 83, 8 }, { 83, 9 } }, 288);
+            }
+            else if (String::Equals(gScenarioFileName, "geoffrey gardens.sea"))
+            {
+                FixWaterHeight({ { 60, 1 }, { 60, 2 } }, 96);
+            }
+            else if (String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6", true)
                 || String::Equals(_s6.ScenarioFilename, "infernal views.sea", true))
             {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 }.ToCoordsXY());
-
-                surfaceElement->SetWaterHeight(96);
+                FixWaterHeight({ { 45, 62 } }, 96);
             }
             else if (
-                String::Equals(_s6.ScenarioFilename, "Six Flags Holland.SC6")
-                || String::Equals(_s6.ScenarioFilename, "six flags holland.sea", true))
+                String::Equals(_s6.ScenarioFilename, "Botany Breakers.SC6", true)
+                || String::Equals(_s6.ScenarioFilename, "botany breakers.sea", true))
 
             {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 126, 73 }.ToCoordsXY());
-
-                surfaceElement->SetWaterHeight(96);
+                RemoveTileElementsAt({
+                    { 39, 51 },
+                    { 40, 54 },
+                    { 41, 52 },
+                    { 41, 53 },
+                    { 42, 54 },
+                    { 43, 55 },
+                    { 44, 51 },
+                    { 44, 54 },
+                    { 44, 54 },
+                    { 45, 55 },
+                    { 45, 56 },
+                    { 46, 56 },
+                    { 46, 57 },
+                    });
+                FixWaterHeight(
+                    { { 39, 50 }, { 39, 51 }, { 39, 52 }, { 39, 53 }, { 39, 54 }, { 39, 55 }, { 40, 51 }, { 40, 52 },
+                      { 40, 53 }, { 40, 54 }, { 41, 52 }, { 41, 53 }, { 41, 54 }, { 41, 55 }, { 42, 51 }, { 42, 52 },
+                      { 42, 53 }, { 42, 54 }, { 42, 55 }, { 43, 50 }, { 43, 51 }, { 43, 52 }, { 43, 53 }, { 43, 54 },
+                      { 43, 55 }, { 44, 50 }, { 44, 51 }, { 44, 52 }, { 44, 54 }, { 44, 55 }, { 44, 56 }, { 45, 55 },
+                      { 45, 56 }, { 45, 57 }, { 46, 55 }, { 46, 56 }, { 46, 57 } },
+                    96);
+                FixTerrainSurface(
+                    { { 39, 50 }, { 39, 51 }, { 39, 52 }, { 39, 53 }, { 39, 54 }, { 39, 55 }, { 40, 51 }, { 40, 52 },
+                      { 40, 53 }, { 40, 54 }, { 41, 47 }, { 41, 48 }, { 41, 49 }, { 41, 50 }, { 41, 51 }, { 41, 52 },
+                      { 41, 53 }, { 41, 54 }, { 41, 55 }, { 41, 56 }, { 41, 57 }, { 41, 58 }, { 41, 59 }, { 41, 60 },
+                      { 42, 48 }, { 42, 49 }, { 42, 50 }, { 42, 51 }, { 42, 52 }, { 42, 53 }, { 42, 54 }, { 42, 55 },
+                      { 42, 56 }, { 42, 57 }, { 42, 58 }, { 42, 59 }, { 43, 48 }, { 43, 49 }, { 43, 50 }, { 43, 51 },
+                      { 43, 52 }, { 43, 53 }, { 43, 54 }, { 43, 55 }, { 43, 56 }, { 43, 57 }, { 43, 58 }, { 44, 49 },
+                      { 44, 50 }, { 44, 51 }, { 44, 52 }, { 44, 53 }, { 44, 54 }, { 44, 55 }, { 44, 56 }, { 44, 57 },
+                      { 44, 58 }, { 45, 49 }, { 45, 50 }, { 45, 51 }, { 45, 52 }, { 45, 53 }, { 45, 54 }, { 45, 55 },
+                      { 45, 56 }, { 45, 57 }, { 45, 58 }, { 46, 51 }, { 46, 52 }, { 46, 53 }, { 46, 54 }, { 46, 55 },
+                      { 46, 56 }, { 46, 57 }, { 46, 58 }, { 47, 54 }, { 47, 55 }, { 47, 56 }, { 47, 57 } },
+                    1);
+            }
+            else if (
+                String::Equals(_s6.ScenarioFilename, "Six Flags Holland.SC6", true)
+                || String::Equals(_s6.ScenarioFilename, "six flags holland.sea", true))
+            {
+                FixWaterHeight({ { 126, 73 } }, 96);
+            }
+            else if (
+                String::Equals(gScenarioFileName, "Six Flags Magic Mountain.SC6", true)
+                || String::Equals(gScenarioFileName, "six flags magic mountain.sea", true))
+            {
+                FixWaterHeight({ { 103, 76 }, { 104, 76 } }, 112);
+            }
+            else if (
+                String::Equals(gScenarioFileName, "Build your own Six Flags Magic Mountain.SC6", true)
+                || String::Equals(gScenarioFileName, "build your own six flags magic mountain.sea", true))
+            {
+                FixWaterHeight({ { 103, 76 }, { 104, 76 } }, 112);
+            }
+            else if (
+                String::Equals(gScenarioFileName, "Antarctic - Ecological Salvage.SC6", true)
+                || String::Equals(gScenarioFileName, "antarctic - ecological salvage.sea", true))
+            {
+                FixWaterHeight(
+                    {
+                        { 66, 96 }, { 65, 96 }, { 65, 95 }, { 64, 95 }, { 63, 95 },  { 62, 95 }, { 61, 95 }, { 61, 96 },
+                        { 60, 96 }, { 59, 96 }, { 58, 96 }, { 58, 97 }, { 57, 97 },  { 56, 97 }, { 56, 98 }, { 55, 98 },
+                        { 55, 99 }, { 54, 99 }, { 53, 99 }, { 52, 99 }, { 52, 100 }, { 51, 99 }, { 50, 99 }, { 50, 98 },
+                        { 49, 98 }, { 49, 97 }, { 48, 97 }, { 47, 97 }, { 47, 96 },  { 46, 96 }, { 46, 95 }, { 45, 95 },
+                        { 45, 94 }, { 44, 94 }, { 43, 94 }, { 43, 93 }, { 42, 94 },  { 41, 94 }, { 41, 93 }, { 40, 93 },
+                        { 40, 92 }, { 39, 92 }, { 39, 91 }, { 38, 91 }, { 37, 91 },  { 37, 90 }, { 36, 90 }, { 35, 90 },
+                        { 35, 91 }, { 34, 91 }, { 33, 91 },
+                    }, 112);
             }
         }
 

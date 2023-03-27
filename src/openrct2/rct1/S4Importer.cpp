@@ -189,6 +189,7 @@ namespace RCT1
             ImportScenarioObjective();
             ImportSavedView();
             FixLandOwnership();
+            FixWater();
             FixUrbanPark();
             CountBlockSections();
             SetDefaultNames();
@@ -2506,6 +2507,68 @@ namespace RCT1
                 case SC_URBAN_PARK:
                     FixLandOwnershipTiles({ { 64, 77 }, { 61, 66 }, { 61, 67 }, { 39, 20 } });
                     break;
+            }
+        }
+
+        void FixWater()
+        {
+            switch (_s4.ScenarioSlotIndex)
+            {
+                case SC_MYSTIC_MOUNTAIN:
+                {
+                    RemoveTileElementsAt({
+                        { 86, 25 },
+                        { 87, 23 },
+                        { 87, 25 },
+                    });
+                    FixWaterHeight({
+                        { 86, 24 },
+                        { 86, 25 },
+                        { 87, 23 },
+                        { 87, 24 },
+                        { 87, 25 },
+                        { 88, 22 },
+                        { 88, 23 },
+                        { 88, 24 },
+                        { 89, 22 },
+                        { 89, 23 },
+                    }, 288);
+                    break;
+                }
+                case SC_CRUMBLY_WOODS:
+                {
+                    FixWaterHeight({ { 13, 83 } }, 96);
+                    break;
+                }
+                case SC_HYDRO_HILLS:
+                {
+                    RemoveTileElementsAt({
+                        { 82, 7 },
+                        { 82, 8 },
+                        { 83, 9 },
+                    });
+                    FixWaterHeight(
+                        {
+                            { 81, 8 },
+                            { 82, 7 },
+                            { 82, 8 },
+                            { 82, 9 },
+                            { 83, 8 },
+                            { 83, 9 },
+                        },
+                        288);
+                    break;
+                }
+                case SC_GEOFFREY_GARDENS:
+                {
+                    FixWaterHeight(
+                        {
+                            { 60, 1 },
+                            { 60, 2 },
+                        },
+                        96);
+                    break;
+                }
             }
         }
 

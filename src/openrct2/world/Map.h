@@ -274,4 +274,7 @@ uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(
     std::initializer_list<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade = false);
+void FixWaterHeight(std::initializer_list<TileCoordsXY> tiles, int waterHeight);
+void RemoveTileElementsAt(std::initializer_list<TileCoordsXY> tiles);
+void FixTerrainSurface(std::initializer_list<TileCoordsXY> tiles, int surfaceIndex);
 MapRange ClampRangeWithinMap(const MapRange& range);

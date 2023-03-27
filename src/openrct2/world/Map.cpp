@@ -2297,6 +2297,39 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
     }
 }
 
+void FixWaterHeight(std::initializer_list<TileCoordsXY> tiles, int waterHeight)
+{
+    for (TileCoordsXY tileCoordinates : tiles)
+    {
+        auto surfaceElement = MapGetSurfaceElementAt(tileCoordinates.ToCoordsXY());
+        if (surfaceElement != nullptr)
+        {
+            surfaceElement->SetWaterHeight(waterHeight);
+        }
+    }
+}
+void RemoveTileElementsAt(std::initializer_list<TileCoordsXY> tiles)
+{
+    for (const TileCoordsXY* tile = tiles.begin(); tile != tiles.end(); ++tile)
+    {
+        TileElement* tileElement = MapGetNthElementAt(tile->ToCoordsXY(), 1);
+        if (tileElement != nullptr)
+        {
+                ClearElementAt(tile->ToCoordsXY(), &tileElement);
+        }
+    }
+}
+void FixTerrainSurface(std::initializer_list<TileCoordsXY> tiles, int surfaceIndex)
+{
+    for (TileCoordsXY tileCoordinates : tiles)
+    {
+        auto surfaceElement = MapGetSurfaceElementAt(tileCoordinates.ToCoordsXY());
+        if (surfaceElement != nullptr)
+        {
+                surfaceElement->SetSurfaceStyle(surfaceIndex);
+        }
+    }
+}
 MapRange ClampRangeWithinMap(const MapRange& range)
 {
     auto mapSizeMax = GetMapSizeMaxXY();
