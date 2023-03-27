@@ -1487,7 +1487,7 @@ private:
     {
         for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
         {
-            pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+            pressed_widgets &= ~(1ull << (WIDX_TAB_1 + i));
         }
         pressed_widgets |= 1LL << (WIDX_TAB_1 + selected_tab);
     }
