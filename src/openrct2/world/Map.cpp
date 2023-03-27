@@ -2315,7 +2315,7 @@ void RemoveTileElementsAt(std::initializer_list<TileCoordsXY> tiles)
         TileElement* tileElement = MapGetNthElementAt(tile->ToCoordsXY(), 1);
         if (tileElement != nullptr)
         {
-                ClearElementAt(tile->ToCoordsXY(), &tileElement);
+            ClearElementAt(tile->ToCoordsXY(), &tileElement);
         }
     }
 }
@@ -2326,7 +2326,7 @@ void FixTerrainSurface(std::initializer_list<TileCoordsXY> tiles, int surfaceInd
         auto surfaceElement = MapGetSurfaceElementAt(tileCoordinates.ToCoordsXY());
         if (surfaceElement != nullptr)
         {
-                surfaceElement->SetSurfaceStyle(surfaceIndex);
+            surfaceElement->SetSurfaceStyle(surfaceIndex);
         }
     }
 }

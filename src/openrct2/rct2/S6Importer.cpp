@@ -683,7 +683,8 @@ namespace RCT2
             {
                 FixWaterHeight({ { 60, 1 }, { 60, 2 } }, 96);
             }
-            else if (String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6", true)
+            else if (
+                String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6", true)
                 || String::Equals(_s6.ScenarioFilename, "infernal views.sea", true))
             {
                 FixWaterHeight({ { 45, 62 } }, 96);
@@ -707,7 +708,7 @@ namespace RCT2
                     { 45, 56 },
                     { 46, 56 },
                     { 46, 57 },
-                    });
+                });
                 FixWaterHeight(
                     { { 39, 50 }, { 39, 51 }, { 39, 52 }, { 39, 53 }, { 39, 54 }, { 39, 55 }, { 40, 51 }, { 40, 52 },
                       { 40, 53 }, { 40, 54 }, { 41, 52 }, { 41, 53 }, { 41, 54 }, { 41, 55 }, { 42, 51 }, { 42, 52 },
@@ -759,7 +760,8 @@ namespace RCT2
                         { 45, 94 }, { 44, 94 }, { 43, 94 }, { 43, 93 }, { 42, 94 },  { 41, 94 }, { 41, 93 }, { 40, 93 },
                         { 40, 92 }, { 39, 92 }, { 39, 91 }, { 38, 91 }, { 37, 91 },  { 37, 90 }, { 36, 90 }, { 35, 90 },
                         { 35, 91 }, { 34, 91 }, { 33, 91 },
-                    }, 112);
+                    },
+                    112);
             }
         }
 
