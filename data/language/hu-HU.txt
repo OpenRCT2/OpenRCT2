@@ -1240,7 +1240,7 @@ STR_1863    :mindenes
 STR_1864    :gépész
 STR_1865    :biztonsági őr
 STR_1866    :szórakoztató
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Nem változtatható meg a forgások száma…
 STR_1869    :{WINDOW_COLOUR_2}Forgások száma:
 STR_1870    :A teljes körforgások száma

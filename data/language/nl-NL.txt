@@ -1244,7 +1244,7 @@ STR_1863    :klusjesman
 STR_1864    :monteur
 STR_1865    :bewaker
 STR_1866    :entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan het aantal rotaties niet aanpassen…
 STR_1869    :{WINDOW_COLOUR_2}Aantal rotaties:
 STR_1870    :Aantal complete rotaties

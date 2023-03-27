@@ -1237,7 +1237,7 @@ STR_1863    :清掃員
 STR_1864    :整備士
 STR_1865    :警備員
 STR_1866    :エンターテイナー
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :回転数が変更できない…
 STR_1869    :{WINDOW_COLOUR_2}回転数:
 STR_1870    :ライドの回転の数です。

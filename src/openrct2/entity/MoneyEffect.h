@@ -22,12 +22,12 @@ struct MoneyEffect : EntityBase
     uint16_t frame;
     uint16_t MoveDelay;
     uint8_t NumMovements;
-    uint8_t Vertical;
+    uint8_t GuestPurchase;
     money64 Value;
     int16_t OffsetX;
     uint16_t Wiggle;
 
-    static void CreateAt(money64 value, const CoordsXYZ& effectPos, bool vertical);
+    static void CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase);
     static void Create(money64 value, const CoordsXYZ& loc);
     void Update();
     std::pair<StringId, money64> GetStringId() const;

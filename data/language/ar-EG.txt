@@ -1246,7 +1246,7 @@ STR_1863    :رجل مُساعد
 STR_1864    :ميكانيكي
 STR_1865    :رجل الأمن
 STR_1866    :مُرفه
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Can’t change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :Number of complete rotations

@@ -536,7 +536,25 @@ namespace OpenRCT2
                 cs.ReadWrite(gGrassSceneryTileLoopPosition);
                 cs.ReadWrite(gWidePathTileLoopPosition);
 
-                ReadWriteRideRatingCalculationData(cs, gRideRatingUpdateState);
+                auto& rideRatings = RideRatingGetUpdateStates();
+                if (os.GetHeader().TargetVersion >= 21)
+                {
+                    cs.ReadWriteArray(rideRatings, [this, &cs](RideRatingUpdateState& calcData) {
+                        ReadWriteRideRatingCalculationData(cs, calcData);
+                        return true;
+                    });
+                }
+                else
+                {
+                    // Only single state was stored prior to version 20.
+                    if (os.GetMode() == OrcaStream::Mode::READING)
+                    {
+                        // Since we read only one state ensure the rest is reset.
+                        RideRatingResetUpdateStates();
+                    }
+                    auto& rideRatingUpdateState = rideRatings[0];
+                    ReadWriteRideRatingCalculationData(cs, rideRatingUpdateState);
+                }
 
                 if (os.GetHeader().TargetVersion >= 14)
                 {
@@ -2293,7 +2311,7 @@ namespace OpenRCT2
         ReadWriteEntityCommon(cs, moneyEffect);
         cs.ReadWrite(moneyEffect.MoveDelay);
         cs.ReadWrite(moneyEffect.NumMovements);
-        cs.ReadWrite(moneyEffect.Vertical);
+        cs.ReadWrite(moneyEffect.GuestPurchase);
         cs.ReadWrite(moneyEffect.Value);
         cs.ReadWrite(moneyEffect.OffsetX);
         cs.ReadWrite(moneyEffect.Wiggle);

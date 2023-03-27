@@ -1242,7 +1242,7 @@ STR_1863    :Vaktmästare
 STR_1864    :Mekaniker
 STR_1865    :Säkerhetsvakt
 STR_1866    :Underhållare
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan inte ändra antal rotationer…
 STR_1869    :{WINDOW_COLOUR_2}Antal rotationer:
 STR_1870    :Antal hela rotationer
