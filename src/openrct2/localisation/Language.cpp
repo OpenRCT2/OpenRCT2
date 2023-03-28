@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,38 +21,39 @@
 #include <stack>
 
 // clang-format off
-const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
+const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 {
-    { "",       "",                     "",                      FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_UNDEFINED
-    { "ar-EG", "Arabic (experimental)", "Arabic (experimental)", FAMILY(&TTFFamilySansSerif),           true  }, // LANGUAGE_ARABIC
-    { "ca-ES", "Catalan",               u8"Català",              FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_CATALAN
-    { "zh-CN", "Chinese (Simplified)",  "Chinese (Simplified)",  FAMILY(&TTFFamilyChineseSimplified),   false }, // LANGUAGE_CHINESE_SIMPLIFIED
-    { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", FAMILY(&TTFFamilyChineseTraditional),  false }, // LANGUAGE_CHINESE_TRADITIONAL
-    { "cs-CZ", "Czech",                 u8"Čeština",             FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_CZECH
-    { "da-DK", "Danish",                "Dansk",                 FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_DANISH
-    { "de-DE", "German",                "Deutsch",               FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_GERMAN
-    { "en-GB", "English (UK)",          "English (UK)",          FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ENGLISH_UK
-    { "en-US", "English (US)",          "English (US)",          FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ENGLISH_US
-    { "eo-ZZ", "Esperanto",             "Esperanto",             FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ESPERANTO
-    { "es-ES", "Spanish",               u8"Español",             FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_SPANISH
-    { "fr-FR", "French",                u8"Français",            FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FRENCH
-    { "it-IT", "Italian",               "Italiano",              FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ITALIAN
-    { "ja-JP", "Japanese",              "Japanese",              FAMILY(&TTFFamilyJapanese),            false }, // LANGUAGE_JAPANESE
-    { "ko-KR", "Korean",                "Korean",                FAMILY(&TTFFamilyKorean),              false }, // LANGUAGE_KOREAN
-    { "hu-HU", "Hungarian",             "Magyar",                FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_HUNGARIAN
-    { "nl-NL", "Dutch",                 "Nederlands",            FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_DUTCH
-    { "nb-NO", "Norwegian",             "Norsk",                 FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_NORWEGIAN
-    { "pl-PL", "Polish",                "Polski",                FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_POLISH
-    { "pt-BR", "Portuguese (BR)",       u8"Português (BR)",      FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_PORTUGUESE_BR
-    { "ru-RU", "Russian",               u8"Русский",             FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_RUSSIAN
-    { "fi-FI", "Finnish",               "Suomi",                 FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FINNISH
-    { "sv-SE", "Swedish",               "Svenska",               FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_SWEDISH
-    { "tr-TR", "Turkish",               "Türkçe",                FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_TURKISH
-    { "vi-VN", "Vietnamese",            "Vietnamese",            FAMILY(&TTFFamilySansSerif),           false }, // LANGUAGE_VIETNAMESE
+    { "",       "",                     "",                      LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_UNDEFINED
+    { "ar-EG", "Arabic (experimental)", "Arabic (experimental)", LANGUAGE_UNDEFINED, FAMILY(&TTFFamilySansSerif),           true  }, // LANGUAGE_ARABIC
+    { "ca-ES", "Catalan",               u8"Català",              LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_CATALAN
+    { "zh-CN", "Chinese (Simplified)",  "Chinese (Simplified)",  LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyChineseSimplified),   false }, // LANGUAGE_CHINESE_SIMPLIFIED
+    { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyChineseTraditional),  false }, // LANGUAGE_CHINESE_TRADITIONAL
+    { "cs-CZ", "Czech",                 u8"Čeština",             LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_CZECH
+    { "da-DK", "Danish",                "Dansk",                 LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_DANISH
+    { "de-DE", "German",                "Deutsch",               LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_GERMAN
+    { "en-GB", "English (UK)",          "English (UK)",          LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ENGLISH_UK
+    { "en-US", "English (US)",          "English (US)",          LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ENGLISH_US
+    { "eo-ZZ", "Esperanto",             "Esperanto",             LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ESPERANTO
+    { "es-ES", "Spanish",               u8"Español",             LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_SPANISH
+    { "fr-FR", "French",                u8"Français",            LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FRENCH
+    { "fr-CA", "French (CA)",           u8"Français (CA)",       LANGUAGE_FRENCH,    FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FRENCH_CA
+    { "it-IT", "Italian",               "Italiano",              LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ITALIAN
+    { "ja-JP", "Japanese",              "Japanese",              LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyJapanese),            false }, // LANGUAGE_JAPANESE
+    { "ko-KR", "Korean",                "Korean",                LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyKorean),              false }, // LANGUAGE_KOREAN
+    { "hu-HU", "Hungarian",             "Magyar",                LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_HUNGARIAN
+    { "nl-NL", "Dutch",                 "Nederlands",            LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_DUTCH
+    { "nb-NO", "Norwegian",             "Norsk",                 LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_NORWEGIAN
+    { "pl-PL", "Polish",                "Polski",                LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_POLISH
+    { "pt-BR", "Portuguese (BR)",       u8"Português (BR)",      LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_PORTUGUESE_BR
+    { "ru-RU", "Russian",               u8"Русский",             LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_RUSSIAN
+    { "fi-FI", "Finnish",               "Suomi",                 LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FINNISH
+    { "sv-SE", "Swedish",               "Svenska",               LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_SWEDISH
+    { "tr-TR", "Turkish",               "Türkçe",                LANGUAGE_UNDEFINED, FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_TURKISH
+    { "vi-VN", "Vietnamese",            "Vietnamese",            LANGUAGE_UNDEFINED, FAMILY(&TTFFamilySansSerif),           false }, // LANGUAGE_VIETNAMESE
 };
 // clang-format on
 
-uint8_t language_get_id_from_locale(const char* locale)
+uint8_t LanguageGetIDFromLocale(const char* locale)
 {
     uint8_t i = 0;
     for (const auto& langDesc : LanguagesDescriptors)
@@ -66,13 +67,13 @@ uint8_t language_get_id_from_locale(const char* locale)
     return LANGUAGE_UNDEFINED;
 }
 
-const char* language_get_string(StringId id)
+const char* LanguageGetString(StringId id)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.GetString(id);
 }
 
-bool language_open(int32_t id)
+bool LanguageOpen(int32_t id)
 {
     auto context = OpenRCT2::GetContext();
     auto& localisationService = context->GetLocalisationService();
@@ -90,7 +91,7 @@ bool language_open(int32_t id)
     }
 }
 
-bool language_get_localised_scenario_strings(const utf8* scenarioFilename, StringId* outStringIds)
+bool LanguageGetLocalisedScenarioStrings(const utf8* scenarioFilename, StringId* outStringIds)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     auto result = localisationService.GetLocalisedScenarioStrings(scenarioFilename);
@@ -100,13 +101,13 @@ bool language_get_localised_scenario_strings(const utf8* scenarioFilename, Strin
     return outStringIds[0] != STR_NONE || outStringIds[1] != STR_NONE || outStringIds[2] != STR_NONE;
 }
 
-void language_free_object_string(StringId stringId)
+void LanguageFreeObjectString(StringId stringId)
 {
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     localisationService.FreeObjectString(stringId);
 }
 
-StringId language_allocate_object_string(const std::string& target)
+StringId LanguageAllocateObjectString(const std::string& target)
 {
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.AllocateObjectString(target);

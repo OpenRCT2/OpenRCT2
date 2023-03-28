@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,17 +11,18 @@
 
 #include <openrct2/actions/RideCreateAction.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideTypes.h>
 
 /**
  *
  *  rct2: 0x006B4800
  */
-void ride_construct_new(RideSelection listItem)
+void RideConstructNew(RideSelection listItem)
 {
-    int32_t rideEntryIndex = ride_get_entry_index(listItem.Type, listItem.EntryIndex);
-    int32_t colour1 = ride_get_random_colour_preset_index(listItem.Type);
-    int32_t colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
+    int32_t rideEntryIndex = RideGetEntryIndex(listItem.Type, listItem.EntryIndex);
+    int32_t colour1 = RideGetRandomColourPresetIndex(listItem.Type);
+    int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
 
     auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2, gLastEntranceStyle);
 
@@ -29,8 +30,8 @@ void ride_construct_new(RideSelection listItem)
         if (result->Error != GameActions::Status::Ok)
             return;
         const auto rideIndex = result->GetData<RideId>();
-        auto ride = get_ride(rideIndex);
-        ride_construct(ride);
+        auto ride = GetRide(rideIndex);
+        RideConstructionStart(*ride);
     });
 
     GameActions::Execute(&gameAction);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -122,6 +122,7 @@ void ShortcutManager::RegisterShortcut(RegisteredShortcut&& shortcut)
         auto id = std::make_unique<std::string>(shortcut.Id);
         auto idView = std::string_view(*id);
         _ids.push_back(std::move(id));
+        shortcut.OrderIndex = Shortcuts.size();
         Shortcuts[idView] = shortcut;
     }
 }
@@ -173,7 +174,7 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
                 shortcut->Current.push_back(std::move(shortcutInput.value()));
             }
             _pendingShortcutChange.clear();
-            window_close_by_class(WindowClass::ChangeKeyboardShortcut);
+            WindowCloseByClass(WindowClass::ChangeKeyboardShortcut);
             SaveUserBindings();
         }
     }
@@ -396,12 +397,12 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::ViewScrollLeft,
         ShortcutId::ViewScrollDown,
         ShortcutId::ViewScrollRight,
-        ShortcutId::MultiplayerChat,
+        ShortcutId::InterfaceMultiplayerChat,
         ShortcutId::InterfaceSaveGame,
         ShortcutId::InterfaceShowOptions,
         ShortcutId::InterfaceMute,
-        ShortcutId::ScaleToggleWindowMode,
-        ShortcutId::MultiplayerShow,
+        ShortcutId::InterfaceScaleToggleWindowMode,
+        ShortcutId::InterfaceMultiplayerShow,
         std::string_view(),
         ShortcutId::DebugTogglePaintDebugWindow,
         ShortcutId::ViewToggleFootpaths,

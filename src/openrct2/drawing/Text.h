@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,7 @@
 #include "Font.h"
 
 struct ScreenCoordsXY;
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 class Formatter;
 
 enum class TextAlignment
@@ -142,15 +142,17 @@ struct TextPaint
     }
 };
 
-void DrawTextBasic(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, StringId format);
-void DrawTextEllipsised(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
-int32_t DrawTextWrapped(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
+void DrawTextBasic(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, StringId format);
+void DrawTextEllipsised(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
+int32_t DrawTextWrapped(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
 
+void DrawText(
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
 void DrawTextBasic(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint = {});
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint = {});
 void DrawTextEllipsised(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
     TextPaint textPaint = {});
 int32_t DrawTextWrapped(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
     TextPaint textPaint = {});

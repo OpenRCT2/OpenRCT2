@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,20 +23,25 @@
 #include "../entity/Fountain.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
+#include "../object/BannerSceneryEntry.h"
+#include "../object/FootpathItemEntry.h"
+#include "../object/LargeSceneryEntry.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/SceneryGroupEntry.h"
+#include "../object/SmallSceneryEntry.h"
+#include "../object/WallSceneryEntry.h"
 #include "../scenario/Scenario.h"
 #include "Climate.h"
 #include "Footpath.h"
-#include "LargeScenery.h"
 #include "Map.h"
 #include "Park.h"
-#include "SmallScenery.h"
 #include "Wall.h"
 
 uint8_t gSceneryQuadrant;
 
-money32 gSceneryPlaceCost;
+money64 gSceneryPlaceCost;
 ScenerySelection gSceneryPlaceObject;
 int16_t gSceneryPlaceZ;
 uint8_t gSceneryPlaceRotation;
@@ -65,7 +70,7 @@ const CoordsXY SceneryQuadrantOffsets[] = {
     { 24, 8 },
 };
 
-LargeSceneryText::LargeSceneryText(const rct_large_scenery_text& original)
+LargeSceneryText::LargeSceneryText(const RCTLargeSceneryText& original)
 {
     for (size_t i = 0; i < std::size(original.offset); i++)
     {
@@ -81,7 +86,7 @@ LargeSceneryText::LargeSceneryText(const rct_large_scenery_text& original)
     }
 }
 
-const rct_large_scenery_text_glyph* LargeSceneryText::GetGlyph(char32_t codepoint) const
+const LargeSceneryTextGlyph* LargeSceneryText::GetGlyph(char32_t codepoint) const
 {
     if (codepoint >= std::size(glyphs))
     {
@@ -90,7 +95,7 @@ const rct_large_scenery_text_glyph* LargeSceneryText::GetGlyph(char32_t codepoin
     return &glyphs[codepoint];
 }
 
-const rct_large_scenery_text_glyph& LargeSceneryText::GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const
+const LargeSceneryTextGlyph& LargeSceneryText::GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const
 {
     auto glyph = GetGlyph(codepoint);
     if (glyph == nullptr)
@@ -131,7 +136,7 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -295,54 +300,6 @@ void SceneryRemoveGhostToolPlacement()
     }
 }
 
-WallSceneryEntry* GetWallEntry(ObjectEntryIndex entryIndex)
-{
-    WallSceneryEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Walls, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<WallSceneryEntry*>(obj->GetLegacyData());
-    }
-    return result;
-}
-
-BannerSceneryEntry* GetBannerEntry(ObjectEntryIndex entryIndex)
-{
-    BannerSceneryEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Banners, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<BannerSceneryEntry*>(obj->GetLegacyData());
-    }
-    return result;
-}
-
-PathBitEntry* GetFootpathItemEntry(ObjectEntryIndex entryIndex)
-{
-    PathBitEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::PathBits, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<PathBitEntry*>(obj->GetLegacyData());
-    }
-    return result;
-}
-
-rct_scenery_group_entry* GetSceneryGroupEntry(ObjectEntryIndex entryIndex)
-{
-    rct_scenery_group_entry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::SceneryGroup, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<rct_scenery_group_entry*>(obj->GetLegacyData());
-    }
-    return result;
-}
-
 int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry)
 {
     return (wallEntry->flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
@@ -358,7 +315,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
 
     if (!gCheatsIgnoreResearchStatus)
     {
-        if (!scenery_is_invented(item))
+        if (!SceneryIsInvented(item))
         {
             return false;
         }
@@ -394,22 +351,22 @@ static size_t GetMaxObjectsForSceneryType(const uint8_t sceneryType)
     }
 }
 
-static SceneryEntryBase* GetSceneryEntry(const ScenerySelection& item)
+static bool IsSceneryEntryValid(const ScenerySelection& item)
 {
     switch (item.SceneryType)
     {
         case SCENERY_TYPE_SMALL:
-            return GetSmallSceneryEntry(item.EntryIndex);
+            return OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_PATH_ITEM:
-            return GetFootpathItemEntry(item.EntryIndex);
+            return OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_WALL:
-            return GetWallEntry(item.EntryIndex);
+            return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_LARGE:
-            return GetLargeSceneryEntry(item.EntryIndex);
+            return OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_BANNER:
-            return GetBannerEntry(item.EntryIndex);
+            return OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(item.EntryIndex) != nullptr;
         default:
-            return nullptr;
+            return false;
     }
 }
 
@@ -434,7 +391,7 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
     std::vector<ScenerySelection> nonMiscScenery;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        const auto* sgEntry = GetSceneryGroupEntry(i);
+        const auto* sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sgEntry != nullptr)
         {
             nonMiscScenery.insert(nonMiscScenery.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());
@@ -446,8 +403,7 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
         for (ObjectEntryIndex i = 0; i < maxObjects; i++)
         {
             const ScenerySelection sceneryItem = { sceneryType, i };
-            const auto* sceneryEntry = GetSceneryEntry(sceneryItem);
-            if (sceneryEntry != nullptr)
+            if (IsSceneryEntryValid(sceneryItem))
             {
                 if (std::find(std::begin(nonMiscScenery), std::end(nonMiscScenery), sceneryItem) == std::end(nonMiscScenery))
                 {
@@ -472,7 +428,7 @@ void MarkAllUnrestrictedSceneryAsInvented()
     {
         if (std::find(_restrictedScenery.begin(), _restrictedScenery.end(), sceneryItem) == _restrictedScenery.end())
         {
-            scenery_set_invented(sceneryItem);
+            ScenerySetInvented(sceneryItem);
         }
     }
 }

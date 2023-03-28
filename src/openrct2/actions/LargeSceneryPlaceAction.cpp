@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,8 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
+#include "../object/LargeSceneryEntry.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
 #include "../ride/RideConstruction.h"
@@ -63,11 +65,11 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     auto resultData = LargeSceneryPlaceActionResult{};
 
-    money32 supportsCost = 0;
+    money64 supportsCost = 0;
 
     if (_primaryColour >= COLOUR_COUNT || _secondaryColour >= COLOUR_COUNT || _tertiaryColour >= COLOUR_COUNT)
     {
-        log_error(
+        LOG_ERROR(
             "Invalid game command for scenery placement, primaryColour = %u, secondaryColour = %u", _primaryColour,
             _secondaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -75,14 +77,14 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     if (_sceneryType >= MAX_LARGE_SCENERY_OBJECTS)
     {
-        log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
+        LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
-    auto* sceneryEntry = GetLargeSceneryEntry(_sceneryType);
+    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
+        LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
@@ -100,14 +102,14 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     {
         if (HasReachedBannerLimit())
         {
-            log_error("No free banners available");
+            LOG_ERROR("No free banners available");
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
     }
 
     uint8_t tileNum = 0;
-    for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
+    for (LargeSceneryTile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 
@@ -162,7 +164,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
     {
-        log_error("No free map elements available");
+        LOG_ERROR("No free map elements available");
         return GameActions::Result(
             GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
@@ -189,18 +191,18 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 
     auto resultData = LargeSceneryPlaceActionResult{};
 
-    money32 supportsCost = 0;
+    money64 supportsCost = 0;
 
-    auto* sceneryEntry = GetLargeSceneryEntry(_sceneryType);
+    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
+        LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     if (sceneryEntry->tiles == nullptr)
     {
-        log_error("Invalid large scenery object, sceneryType = %u", _sceneryType);
+        LOG_ERROR("Invalid large scenery object, sceneryType = %u", _sceneryType);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
@@ -220,7 +222,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         banner = CreateBanner();
         if (banner == nullptr)
         {
-            log_error("No free banners available");
+            LOG_ERROR("No free banners available");
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
@@ -243,7 +245,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     }
 
     uint8_t tileNum = 0;
-    for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
+    for (LargeSceneryTile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 
@@ -310,19 +312,19 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     return res;
 }
 
-int16_t LargeSceneryPlaceAction::GetTotalNumTiles(rct_large_scenery_tile* tiles) const
+int16_t LargeSceneryPlaceAction::GetTotalNumTiles(LargeSceneryTile* tiles) const
 {
     uint32_t totalNumTiles = 0;
-    for (rct_large_scenery_tile* tile = tiles; tile->x_offset != -1; tile++)
+    for (LargeSceneryTile* tile = tiles; tile->x_offset != -1; tile++)
     {
         totalNumTiles++;
     }
     return totalNumTiles;
 }
 
-bool LargeSceneryPlaceAction::CheckMapCapacity(rct_large_scenery_tile* tiles, int16_t numTiles) const
+bool LargeSceneryPlaceAction::CheckMapCapacity(LargeSceneryTile* tiles, int16_t numTiles) const
 {
-    for (rct_large_scenery_tile* tile = tiles; tile->x_offset != -1; tile++)
+    for (LargeSceneryTile* tile = tiles; tile->x_offset != -1; tile++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 
@@ -336,10 +338,10 @@ bool LargeSceneryPlaceAction::CheckMapCapacity(rct_large_scenery_tile* tiles, in
     return true;
 }
 
-int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(rct_large_scenery_tile* tiles) const
+int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(LargeSceneryTile* tiles) const
 {
     int16_t maxHeight = -1;
-    for (rct_large_scenery_tile* tile = tiles; tile->x_offset != -1; tile++)
+    for (LargeSceneryTile* tile = tiles; tile->x_offset != -1; tile++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 

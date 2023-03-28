@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,6 +34,10 @@ public:
     ClearAction() = default;
     ClearAction(MapRange range, ClearableItems itemsToClear);
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
+    uint16_t GetActionFlags() const override;
+
     void Serialise(DataSerialiser& stream) override;
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;
@@ -41,7 +45,7 @@ public:
 private:
     GameActions::Result CreateResult() const;
     GameActions::Result QueryExecute(bool executing) const;
-    money32 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
+    money64 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
 
     /**
      * Function to clear the flag that is set to prevent cost duplication

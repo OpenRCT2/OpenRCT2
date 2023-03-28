@@ -1246,7 +1246,7 @@ STR_1863    :Tuttofare
 STR_1864    :Meccanico
 STR_1865    :Vigilante
 STR_1866    :Intrattenitore
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Impossibile modificare il numero di rotazioni…
 STR_1869    :{WINDOW_COLOUR_2}Numero rotazioni:
 STR_1870    :Numero di rotazioni complete
@@ -1678,7 +1678,7 @@ STR_2314    :{WINDOW_COLOUR_2}Lunghezza: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Costo: {BLACK}circa {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Spazio richiesto: {BLACK}{COMMA16} x {COMMA16} blocchi
 STR_2321    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Compra del terreno per estendere il parco
@@ -2656,7 +2656,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Il nome è già utilizzato
 STR_5440    :Riduci schermo intero se il gioco perde il focus
-STR_5441    :Identifica le attrazioni in base al percorso{NEWLINE}in modo che si possano sostituirne successivamente{NEWLINE}i veicoli (come in RCT1)
 STR_5442    :Forza valutazione parco:
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Corsa / Veicolo {STRINGID}
@@ -3600,7 +3599,9 @@ STR_6487    :Mostra/nascondi personale
 STR_6488    :{RED}I visitatori si lamentano per la lunghezza delle code nel tuo parco.{NEWLINE}Prendi in considerazione di accorciare quelle problematiche o di aumentare il flusso di visitatori delle attrazioni.
 STR_6489    :Errore: versione parco non compatibile
 STR_6490    :Avviso: versione parco semi-compatibile
+STR_6491    :Questo parco è stato salvato in una versione più recente di OpenRCT2. Il parco è v{INT32} e richiede almeno v{INT32}.
 STR_6492    :Questo parco è stato salvato in una versione più vecchia di OpenRCT2 e non può essere aperto con questa versione. Il parco è v{INT32}.
+STR_6493    :Questo parco è stato salvato in una versione più recente di OpenRCT2, alcuni dati potrebbero essere persi. Il parco è v{INT32} e richiede almeno v{INT32}.
 STR_6494    :Raggruppa per tipo attrazione
 STR_6495    :Raggruppa le attrazioni in base al loro tipo anziché mostrare ogni veicolo separatamente.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}

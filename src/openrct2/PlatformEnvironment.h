@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,6 +70,7 @@ namespace OpenRCT2
         SCORES_RCT2,             // Scenario scores, rct2 (\Saved Games\scores.dat).
         CHANGELOG,               // Notable changes to the game between versions, distributed with the game.
         PLUGIN_STORE,            // Shared storage for plugins.
+        CONTRIBUTORS,            // Who has provided work to the game (Contributors.md).
     };
 
     /**

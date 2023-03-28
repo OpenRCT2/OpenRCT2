@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,15 +16,15 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/ObjectEntryManager.h"
+#include "../object/WallSceneryEntry.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "Banner.h"
-#include "LargeScenery.h"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
-#include "SmallScenery.h"
 #include "Surface.h"
 #include "Wall.h"
 
@@ -82,13 +82,13 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
 
 uint8_t WallElement::GetSlope() const
 {
-    return (type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 void WallElement::SetSlope(uint8_t newSlope)
 {
-    type &= ~TILE_ELEMENT_QUADRANT_MASK;
-    type |= (newSlope << 6);
+    Type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    Type |= (newSlope << 6);
 }
 
 colour_t WallElement::GetPrimaryColour() const
@@ -137,9 +137,9 @@ uint16_t WallElement::GetEntryIndex() const
     return entryIndex;
 }
 
-WallSceneryEntry* WallElement::GetEntry() const
+const WallSceneryEntry* WallElement::GetEntry() const
 {
-    return GetWallEntry(entryIndex);
+    return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
 }
 
 void WallElement::SetEntryIndex(uint16_t newIndex)

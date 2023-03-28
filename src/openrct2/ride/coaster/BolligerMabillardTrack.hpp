@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,7 +33,7 @@ static constexpr const uint32_t _BolligerMabillardBlockBrakeImages[NumOrthogonal
 };
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat(
+static void BolligerMabillardTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -47,9 +47,9 @@ static void bolliger_mabillard_track_flat(
         };
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]), { 0, 0, height },
-            { 32, 20, 3 }, { 0, 6, height });
+            { { 0, 6, height }, { 32, 20, 3 } });
 
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -65,9 +65,9 @@ static void bolliger_mabillard_track_flat(
 
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]), { 0, 0, height },
-            { 32, 20, 3 }, { 0, 6, height });
+            { { 0, 6, height }, { 32, 20, 3 } });
 
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -79,7 +79,7 @@ static void bolliger_mabillard_track_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_station(
+static void BolligerMabillardTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -92,25 +92,24 @@ static void bolliger_mabillard_track_station(
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        bool isClosed = trackElement.BlockBrakeClosed();
+        bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours[SCHEME_TRACK].WithIndex(_BolligerMabillardBlockBrakeImages[direction][isClosed]),
-            { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
+            { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
     {
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
-            { 32, 20, 1 }, { 0, 6, height + 3 });
+            { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
-    track_paint_util_draw_station_metal_supports_2(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
 
-    track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 9, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 9, trackElement);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -118,7 +117,7 @@ static void bolliger_mabillard_track_station(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_up(
+static void BolligerMabillardTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -128,26 +127,26 @@ static void bolliger_mabillard_track_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17498), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17498), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17499), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17499), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17500), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17500), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17501), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17501), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -158,26 +157,26 @@ static void bolliger_mabillard_track_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17204), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17204), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17205), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17205), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17206), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17206), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17207), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17207), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -196,7 +195,7 @@ static void bolliger_mabillard_track_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_up(
+static void BolligerMabillardTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -206,26 +205,26 @@ static void bolliger_mabillard_track_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17514), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17514), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17515), { 0, 0, height }, { 32, 1, 98 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17515), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 98 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17516), { 0, 0, height }, { 32, 1, 98 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17516), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 98 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17517), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17517), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -236,26 +235,26 @@ static void bolliger_mabillard_track_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17220), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17220), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17221), { 0, 0, height }, { 32, 1, 98 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17221), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 98 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17222), { 0, 0, height }, { 32, 1, 98 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17222), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 98 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17223), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17223), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -274,7 +273,7 @@ static void bolliger_mabillard_track_60_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_25_deg_up(
+static void BolligerMabillardTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -284,26 +283,26 @@ static void bolliger_mabillard_track_flat_to_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17490), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17490), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17491), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17491), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17492), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17492), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17493), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17493), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -314,26 +313,26 @@ static void bolliger_mabillard_track_flat_to_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17196), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17196), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17197), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17197), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17198), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17198), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17199), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17199), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -352,7 +351,7 @@ static void bolliger_mabillard_track_flat_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_up_to_60_deg_up(
+static void BolligerMabillardTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -362,32 +361,32 @@ static void bolliger_mabillard_track_25_deg_up_to_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17502), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17502), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17503), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17503), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17506), { 0, 0, height }, { 32, 1, 66 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17506), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17504), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17504), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17507), { 0, 0, height }, { 32, 1, 66 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17507), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17505), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17505), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -398,32 +397,32 @@ static void bolliger_mabillard_track_25_deg_up_to_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17208), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17208), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17209), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17209), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17212), { 0, 0, height }, { 32, 1, 66 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17212), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17210), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17210), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17213), { 0, 0, height }, { 32, 1, 66 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17213), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17211), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17211), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -442,7 +441,7 @@ static void bolliger_mabillard_track_25_deg_up_to_60_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_up_to_25_deg_up(
+static void BolligerMabillardTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -452,32 +451,32 @@ static void bolliger_mabillard_track_60_deg_up_to_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17508), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17508), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17509), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17509), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17512), { 0, 0, height }, { 32, 1, 66 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17512), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17510), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17510), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17513), { 0, 0, height }, { 32, 1, 66 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17513), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17511), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17511), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -488,32 +487,32 @@ static void bolliger_mabillard_track_60_deg_up_to_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17214), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17214), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17215), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17215), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17218), { 0, 0, height }, { 32, 1, 66 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17218), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17216), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17216), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17219), { 0, 0, height }, { 32, 1, 66 },
-                    { 0, 27, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17219), { 0, 0, height },
+                    { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17217), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17217), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -532,7 +531,7 @@ static void bolliger_mabillard_track_60_deg_up_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_up_to_flat(
+static void BolligerMabillardTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -542,26 +541,26 @@ static void bolliger_mabillard_track_25_deg_up_to_flat(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17494), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17494), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17495), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17495), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17496), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17496), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17497), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17497), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -572,26 +571,26 @@ static void bolliger_mabillard_track_25_deg_up_to_flat(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17200), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17200), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17201), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17201), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17202), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17202), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17203), { 0, 0, height }, { 32, 20, 3 },
-                    { 0, 6, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17203), { 0, 0, height },
+                    { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (track_paint_util_should_paint_supports(session.MapPosition))
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
@@ -610,59 +609,57 @@ static void bolliger_mabillard_track_25_deg_up_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_down(
+static void BolligerMabillardTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_25_deg_up<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrack25DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_down(
+static void BolligerMabillardTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_60_deg_up<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrack60DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_25_deg_down(
+static void BolligerMabillardTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_flat<supportType>(
+    BolligerMabillardTrack25DegUpToFlat<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+}
+
+template<uint8_t supportType>
+static void BolligerMabillardTrack25DegDownTo60DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    BolligerMabillardTrack60DegUpTo25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_down_to_60_deg_down(
+static void BolligerMabillardTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_60_deg_up_to_25_deg_up<supportType>(
+    BolligerMabillardTrack25DegUpTo60DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_down_to_25_deg_down(
+static void BolligerMabillardTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_60_deg_up<supportType>(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrackFlatTo25DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_down_to_flat(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    bolliger_mabillard_track_flat_to_25_deg_up<supportType>(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
-}
-
-template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_5(
+static void BolligerMabillardTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -674,22 +671,22 @@ static void bolliger_mabillard_track_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17259), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17264), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17269), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17254), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -710,22 +707,22 @@ static void bolliger_mabillard_track_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17258), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17263), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17268), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17253), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -740,22 +737,22 @@ static void bolliger_mabillard_track_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17257), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17262), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17267), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17252), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -771,22 +768,22 @@ static void bolliger_mabillard_track_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17256), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17261), { 0, 0, height },
-                        { 16, 32, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17266), { 0, 0, height },
-                        { 16, 32, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17251), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -801,22 +798,22 @@ static void bolliger_mabillard_track_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17255), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17260), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17265), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17250), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -837,17 +834,17 @@ static void bolliger_mabillard_track_left_quarter_turn_5(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_5(
+static void BolligerMabillardTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bolliger_mabillard_track_left_quarter_turn_5<supportType>(
+    BolligerMabillardTrackLeftQuarterTurn5<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_left_bank(
+static void BolligerMabillardTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -855,32 +852,32 @@ static void bolliger_mabillard_track_flat_to_left_bank(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17156), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17156), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17164), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17164), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17157), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17157), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17165), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17165), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17158), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17158), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17159), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17159), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -891,7 +888,7 @@ static void bolliger_mabillard_track_flat_to_left_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_right_bank(
+static void BolligerMabillardTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -899,32 +896,32 @@ static void bolliger_mabillard_track_flat_to_right_bank(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17160), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17160), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17161), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17161), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17162), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17162), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17166), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17166), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17163), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17163), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17167), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17167), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -935,7 +932,7 @@ static void bolliger_mabillard_track_flat_to_right_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_bank_to_flat(
+static void BolligerMabillardTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -943,32 +940,32 @@ static void bolliger_mabillard_track_left_bank_to_flat(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17162), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17162), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17166), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17166), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17163), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17163), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17167), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17167), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17160), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17160), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17161), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17161), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -979,7 +976,7 @@ static void bolliger_mabillard_track_left_bank_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_bank_to_flat(
+static void BolligerMabillardTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -987,32 +984,32 @@ static void bolliger_mabillard_track_right_bank_to_flat(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17158), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17158), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17159), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17159), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17156), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17156), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17164), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17164), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17157), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17157), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17165), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17165), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1023,7 +1020,7 @@ static void bolliger_mabillard_track_right_bank_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_banked_left_quarter_turn_5(
+static void BolligerMabillardTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1035,28 +1032,28 @@ static void bolliger_mabillard_track_banked_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17279), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17290), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17284), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17289), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17274), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1077,22 +1074,22 @@ static void bolliger_mabillard_track_banked_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17278), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17283), { 0, 0, height },
-                        { 32, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17288), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17273), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1107,22 +1104,22 @@ static void bolliger_mabillard_track_banked_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17277), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17282), { 0, 0, height },
-                        { 16, 16, 1 }, { 16, 16, height + 27 });
+                        { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17287), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17272), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1138,22 +1135,22 @@ static void bolliger_mabillard_track_banked_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17276), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17281), { 0, 0, height },
-                        { 16, 32, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17286), { 0, 0, height },
-                        { 16, 32, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17271), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1168,25 +1165,25 @@ static void bolliger_mabillard_track_banked_left_quarter_turn_5(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17275), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17280), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17285), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17291), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17270), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1207,17 +1204,17 @@ static void bolliger_mabillard_track_banked_left_quarter_turn_5(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_banked_right_quarter_turn_5(
+static void BolligerMabillardTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bolliger_mabillard_track_banked_left_quarter_turn_5<supportType>(
+    BolligerMabillardTrackBankedLeftQuarterTurn5<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_bank_to_25_deg_up(
+static void BolligerMabillardTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1225,32 +1222,32 @@ static void bolliger_mabillard_track_left_bank_to_25_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17168), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17168), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17172), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17172), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17169), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17169), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17173), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17173), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17170), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17170), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17171), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17171), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1268,7 +1265,7 @@ static void bolliger_mabillard_track_left_bank_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_bank_to_25_deg_up(
+static void BolligerMabillardTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1276,32 +1273,32 @@ static void bolliger_mabillard_track_right_bank_to_25_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17174), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17174), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17175), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17175), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17176), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17176), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17178), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17178), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17177), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17177), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17179), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17179), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1319,7 +1316,7 @@ static void bolliger_mabillard_track_right_bank_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_up_to_left_bank(
+static void BolligerMabillardTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1327,32 +1324,32 @@ static void bolliger_mabillard_track_25_deg_up_to_left_bank(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17180), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17180), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17184), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17184), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17181), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17181), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17185), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17185), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17182), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17182), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17183), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17183), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1370,7 +1367,7 @@ static void bolliger_mabillard_track_25_deg_up_to_left_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_up_to_right_bank(
+static void BolligerMabillardTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1378,32 +1375,32 @@ static void bolliger_mabillard_track_25_deg_up_to_right_bank(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17186), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17186), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17187), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17187), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17188), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17188), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17190), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17190), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17189), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17189), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17191), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17191), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1421,43 +1418,43 @@ static void bolliger_mabillard_track_25_deg_up_to_right_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_bank_to_25_deg_down(
+static void BolligerMabillardTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_right_bank<supportType>(
+    BolligerMabillardTrack25DegUpToRightBank<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_bank_to_25_deg_down(
+static void BolligerMabillardTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_left_bank<supportType>(
+    BolligerMabillardTrack25DegUpToLeftBank<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_down_to_left_bank(
+static void BolligerMabillardTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_bank_to_25_deg_up<supportType>(
+    BolligerMabillardTrackRightBankTo25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_down_to_right_bank(
+static void BolligerMabillardTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_bank_to_25_deg_up<supportType>(
+    BolligerMabillardTrackLeftBankTo25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_bank(
+static void BolligerMabillardTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1465,26 +1462,26 @@ static void bolliger_mabillard_track_left_bank(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17192), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17192), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17193), { 0, 0, height }, { 32, 1, 26 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17193), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17194), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17194), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17195), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17195), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1495,15 +1492,15 @@ static void bolliger_mabillard_track_left_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_bank(
+static void BolligerMabillardTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_bank<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrackLeftBank<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
+static void BolligerMabillardTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1515,22 +1512,22 @@ static void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17344), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17349), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17354), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17359), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1561,12 +1558,12 @@ static void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17355), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17360), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1581,17 +1578,17 @@ static void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17346), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17351), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17356), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1612,7 +1609,7 @@ static void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17347), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1627,7 +1624,7 @@ static void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17362), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1642,22 +1639,22 @@ static void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17348), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17353), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17358), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17363), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1678,7 +1675,7 @@ static void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
+static void BolligerMabillardTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1690,22 +1687,22 @@ static void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17324), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17329), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17334), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17339), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1726,12 +1723,12 @@ static void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17325), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17330), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1761,17 +1758,17 @@ static void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17331), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17336), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17341), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1787,7 +1784,7 @@ static void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17327), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1802,7 +1799,7 @@ static void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17342), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1817,22 +1814,22 @@ static void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17328), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17333), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17338), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17343), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1853,27 +1850,27 @@ static void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_5_25_deg_down(
+static void BolligerMabillardTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bolliger_mabillard_track_right_quarter_turn_5_25_deg_up<supportType>(
+    BolligerMabillardTrackRightQuarterTurn525DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_5_25_deg_down(
+static void BolligerMabillardTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bolliger_mabillard_track_left_quarter_turn_5_25_deg_up<supportType>(
+    BolligerMabillardTrackLeftQuarterTurn525DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_s_bend_left(
+static void BolligerMabillardTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1885,22 +1882,22 @@ static void bolliger_mabillard_track_s_bend_left(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17308), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17312), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17311), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17315), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1930,12 +1927,12 @@ static void bolliger_mabillard_track_s_bend_left(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17310), { 0, 0, height },
-                        { 32, 26, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 26, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17314), { 0, 0, height },
-                        { 32, 26, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 26, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1950,12 +1947,12 @@ static void bolliger_mabillard_track_s_bend_left(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17310), { 0, 0, height },
-                        { 32, 26, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 26, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17314), { 0, 0, height },
-                        { 32, 26, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 26, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1982,22 +1979,22 @@ static void bolliger_mabillard_track_s_bend_left(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17311), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17315), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17308), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17312), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2018,7 +2015,7 @@ static void bolliger_mabillard_track_s_bend_left(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_s_bend_right(
+static void BolligerMabillardTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2030,22 +2027,22 @@ static void bolliger_mabillard_track_s_bend_right(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17316), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17320), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17319), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17323), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2063,13 +2060,13 @@ static void bolliger_mabillard_track_s_bend_right(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17317), { 0, 0, height },
-                        { 32, 26, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17321), { 0, 0, height },
-                        { 32, 26, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -2105,13 +2102,13 @@ static void bolliger_mabillard_track_s_bend_right(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17317), { 0, 0, height },
-                        { 32, 26, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17321), { 0, 0, height },
-                        { 32, 26, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2127,22 +2124,22 @@ static void bolliger_mabillard_track_s_bend_right(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17319), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17323), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17316), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17320), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2163,7 +2160,7 @@ static void bolliger_mabillard_track_s_bend_right(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_vertical_loop(
+static void BolligerMabillardTrackLeftVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2247,22 +2244,22 @@ static void bolliger_mabillard_track_left_vertical_loop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17596), { 16, 0, height },
-                        { 3, 16, 119 }, { 16, 0, height });
+                        { { 16, 0, height }, { 3, 16, 119 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17604), { 12, 0, height },
-                        { 3, 16, 119 }, { 12, 0, height });
+                        { { 12, 0, height }, { 3, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17599), { 10, 16, height },
-                        { 4, 16, 119 }, { 10, 16, height });
+                        { { 10, 16, height }, { 4, 16, 119 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17607), { 16, 16, height },
-                        { 2, 16, 119 }, { 16, 16, height });
+                        { { 16, 16, height }, { 2, 16, 119 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2341,22 +2338,22 @@ static void bolliger_mabillard_track_left_vertical_loop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17599), { 10, 16, height },
-                        { 4, 16, 119 }, { 10, 16, height });
+                        { { 10, 16, height }, { 4, 16, 119 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17607), { 16, 16, height },
-                        { 2, 16, 119 }, { 16, 16, height });
+                        { { 16, 16, height }, { 2, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17596), { 16, 0, height },
-                        { 3, 16, 119 }, { 16, 0, height });
+                        { { 16, 0, height }, { 3, 16, 119 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17604), { 12, 0, height },
-                        { 3, 16, 119 }, { 12, 0, height });
+                        { { 12, 0, height }, { 3, 16, 119 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2444,7 +2441,7 @@ static void bolliger_mabillard_track_left_vertical_loop(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_vertical_loop(
+static void BolligerMabillardTrackRightVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2517,22 +2514,22 @@ static void bolliger_mabillard_track_right_vertical_loop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17623), { 16, 16, height },
-                        { 2, 16, 119 }, { 16, 16, height });
+                        { { 16, 16, height }, { 2, 16, 119 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17615), { 10, 16, height },
-                        { 4, 16, 119 }, { 10, 16, height });
+                        { { 10, 16, height }, { 4, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17620), { 12, 0, height },
-                        { 3, 16, 119 }, { 12, 0, height });
+                        { { 12, 0, height }, { 3, 16, 119 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17612), { 16, 0, height },
-                        { 2, 16, 119 }, { 16, 0, height });
+                        { { 16, 0, height }, { 2, 16, 119 } });
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
@@ -2601,22 +2598,22 @@ static void bolliger_mabillard_track_right_vertical_loop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17620), { 12, 0, height },
-                        { 3, 16, 119 }, { 12, 0, height });
+                        { { 12, 0, height }, { 3, 16, 119 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17612), { 16, 0, height },
-                        { 2, 16, 119 }, { 16, 0, height });
+                        { { 16, 0, height }, { 2, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17623), { 16, 16, height },
-                        { 2, 16, 119 }, { 16, 16, height });
+                        { { 16, 16, height }, { 2, 16, 119 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17615), { 10, 16, height },
-                        { 4, 16, 119 }, { 10, 16, height });
+                        { { 10, 16, height }, { 4, 16, 119 } });
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
@@ -2689,11 +2686,11 @@ static void bolliger_mabillard_track_right_vertical_loop(
             break;
     }
 
-    track_paint_util_right_vertical_loop_segments(session, direction, trackSequence);
+    TrackPaintUtilRightVerticalLoopSegments(session, direction, trackSequence);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_3(
+static void BolligerMabillardTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2705,22 +2702,22 @@ static void bolliger_mabillard_track_left_quarter_turn_3(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17229), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17232), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17235), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17226), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2741,22 +2738,22 @@ static void bolliger_mabillard_track_left_quarter_turn_3(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17228), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17231), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17234), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17225), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2769,22 +2766,22 @@ static void bolliger_mabillard_track_left_quarter_turn_3(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17227), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17230), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17233), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17224), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2805,17 +2802,17 @@ static void bolliger_mabillard_track_left_quarter_turn_3(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_3(
+static void BolligerMabillardTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bolliger_mabillard_track_left_quarter_turn_3<supportType>(
+    BolligerMabillardTrackLeftQuarterTurn3<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_3_bank(
+static void BolligerMabillardTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2827,25 +2824,25 @@ static void bolliger_mabillard_track_left_quarter_turn_3_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17241), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17248), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17244), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17247), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17238), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2866,22 +2863,22 @@ static void bolliger_mabillard_track_left_quarter_turn_3_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17240), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17243), { 0, 0, height },
-                        { 16, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17246), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17237), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2894,25 +2891,25 @@ static void bolliger_mabillard_track_left_quarter_turn_3_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17239), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17242), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17245), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17249), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17236), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -2933,17 +2930,17 @@ static void bolliger_mabillard_track_left_quarter_turn_3_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_3_bank(
+static void BolligerMabillardTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bolliger_mabillard_track_left_quarter_turn_3_bank<supportType>(
+    BolligerMabillardTrackLeftQuarterTurn3Bank<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(
+static void BolligerMabillardTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3030,7 +3027,7 @@ static void bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(
+static void BolligerMabillardTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3120,27 +3117,27 @@ static void bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down(
+static void BolligerMabillardTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bolliger_mabillard_track_right_quarter_turn_3_25_deg_up<supportType>(
+    BolligerMabillardTrackRightQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down(
+static void BolligerMabillardTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bolliger_mabillard_track_left_quarter_turn_3_25_deg_up<supportType>(
+    BolligerMabillardTrackLeftQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_half_banked_helix_up_small(
+static void BolligerMabillardTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3152,25 +3149,25 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17399), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17406), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17402), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17405), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17396), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3192,22 +3189,22 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17398), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17401), { 0, 0, height },
-                        { 16, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17404), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17395), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3220,25 +3217,25 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17397), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17400), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17403), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17407), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17394), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 8 });
+                        { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3262,25 +3259,25 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17396), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17399), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17406), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17402), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17405), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3307,22 +3304,22 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17395), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17398), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17401), { 0, 0, height },
-                        { 16, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17404), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3335,25 +3332,25 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17394), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 8 });
+                        { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17397), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17400), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17403), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17407), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3370,7 +3367,7 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_small(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_half_banked_helix_up_small(
+static void BolligerMabillardTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3382,25 +3379,25 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17380), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17383), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17386), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17389), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17393), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3422,22 +3419,22 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17381), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17384), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17387), { 0, 0, height },
-                        { 16, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17390), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3450,25 +3447,25 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17382), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 8 });
+                        { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17385), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17392), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17388), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17391), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3492,25 +3489,25 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17383), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17386), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17389), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17393), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17380), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3537,22 +3534,22 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17384), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17387), { 0, 0, height },
-                        { 16, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17390), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17381), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3565,25 +3562,25 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17385), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17392), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17388), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17391), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17382), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 8 });
+                        { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3600,7 +3597,7 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_small(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_half_banked_helix_down_small(
+static void BolligerMabillardTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3610,12 +3607,12 @@ static void bolliger_mabillard_track_left_half_banked_helix_down_small(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bolliger_mabillard_track_right_half_banked_helix_up_small<supportType>(
+    BolligerMabillardTrackRightHalfBankedHelixUpSmall<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_half_banked_helix_down_small(
+static void BolligerMabillardTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3625,12 +3622,12 @@ static void bolliger_mabillard_track_right_half_banked_helix_down_small(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bolliger_mabillard_track_left_half_banked_helix_up_small<supportType>(
+    BolligerMabillardTrackLeftHalfBankedHelixUpSmall<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_half_banked_helix_up_large(
+static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3642,25 +3639,25 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17439), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17450), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17444), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17449), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17434), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3682,22 +3679,22 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17438), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17443), { 0, 0, height },
-                        { 32, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17448), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17433), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3712,22 +3709,22 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17437), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17442), { 0, 0, height },
-                        { 16, 16, 1 }, { 16, 16, height + 27 });
+                        { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17447), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17432), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3743,22 +3740,22 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17436), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17441), { 0, 0, height },
-                        { 16, 32, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17446), { 0, 0, height },
-                        { 16, 32, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17431), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3773,25 +3770,25 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17435), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17440), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17445), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17451), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17430), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 8 });
+                        { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3815,25 +3812,25 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17434), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17439), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17450), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17444), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17449), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3860,22 +3857,22 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17433), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17438), { 0, 0, height },
-                        { 16, 32, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17443), { 0, 0, height },
-                        { 16, 32, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17448), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3890,22 +3887,22 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17432), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17437), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17442), { 0, 0, height },
-                        { 16, 16, 1 }, { 16, 16, height + 27 });
+                        { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17447), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3921,22 +3918,22 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17431), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17436), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17441), { 0, 0, height },
-                        { 32, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17446), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3951,25 +3948,25 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17430), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 8 });
+                        { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17435), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17440), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17445), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17451), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3986,7 +3983,7 @@ static void bolliger_mabillard_track_left_half_banked_helix_up_large(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_half_banked_helix_up_large(
+static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3998,25 +3995,25 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17408), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17413), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17418), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17423), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17429), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -4038,22 +4035,22 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17409), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17414), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17419), { 0, 0, height },
-                        { 32, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17424), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4068,22 +4065,22 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17410), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17415), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17420), { 0, 0, height },
-                        { 16, 16, 1 }, { 16, 16, height + 27 });
+                        { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17425), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4099,22 +4096,22 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17411), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17416), { 0, 0, height },
-                        { 16, 32, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17421), { 0, 0, height },
-                        { 16, 32, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17426), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4129,28 +4126,28 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17412), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 8 });
+                        { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17417), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17428), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17422), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17427), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -4174,25 +4171,25 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17413), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17418), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17423), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17429), { 0, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17408), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -4219,22 +4216,22 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17414), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17419), { 0, 0, height },
-                        { 16, 32, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 16, 32, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17424), { 0, 0, height },
-                        { 16, 32, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17409), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4249,22 +4246,22 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17415), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17420), { 0, 0, height },
-                        { 16, 16, 1 }, { 16, 16, height + 27 });
+                        { { 16, 16, height + 27 }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17425), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17410), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4280,22 +4277,22 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17416), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17421), { 0, 0, height },
-                        { 32, 16, 1 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 32, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17426), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17411), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4310,28 +4307,28 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17417), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17428), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17422), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17427), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17412), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 8 });
+                        { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -4348,7 +4345,7 @@ static void bolliger_mabillard_track_right_half_banked_helix_up_large(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_half_banked_helix_down_large(
+static void BolligerMabillardTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4358,12 +4355,12 @@ static void bolliger_mabillard_track_left_half_banked_helix_down_large(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bolliger_mabillard_track_right_half_banked_helix_up_large<supportType>(
+    BolligerMabillardTrackRightHalfBankedHelixUpLarge<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_half_banked_helix_down_large(
+static void BolligerMabillardTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4373,12 +4370,12 @@ static void bolliger_mabillard_track_right_half_banked_helix_down_large(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bolliger_mabillard_track_left_half_banked_helix_up_large<supportType>(
+    BolligerMabillardTrackLeftHalfBankedHelixUpLarge<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_1_60_deg_up(
+static void BolligerMabillardTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4386,44 +4383,44 @@ static void bolliger_mabillard_track_left_quarter_turn_1_60_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17301), { 0, 0, height }, { 28, 28, 3 },
-                { 2, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17301), { 0, 0, height },
+                { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17305), { 0, 0, height }, { 28, 28, 1 },
-                { 2, 2, height + 99 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17305), { 0, 0, height },
+                { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17302), { 0, 0, height }, { 28, 28, 3 },
-                { 2, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17302), { 0, 0, height },
+                { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17306), { 0, 0, height }, { 28, 28, 1 },
-                { 2, 2, height + 99 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17306), { 0, 0, height },
+                { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17303), { 0, 0, height }, { 28, 28, 3 },
-                { 2, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17303), { 0, 0, height },
+                { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17307), { 0, 0, height }, { 28, 28, 1 },
-                { 2, 2, height + 99 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17307), { 0, 0, height },
+                { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17300), { 0, 0, height }, { 28, 28, 3 },
-                { 2, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17300), { 0, 0, height },
+                { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17304), { 0, 0, height }, { 28, 28, 1 },
-                { 2, 2, height + 99 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17304), { 0, 0, height },
+                { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
     }
-    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+    TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_1_60_deg_up(
+static void BolligerMabillardTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4431,62 +4428,62 @@ static void bolliger_mabillard_track_right_quarter_turn_1_60_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17292), { 0, 0, height }, { 28, 28, 3 },
-                { 2, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17292), { 0, 0, height },
+                { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17296), { 0, 0, height }, { 28, 28, 1 },
-                { 2, 2, height + 99 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17296), { 0, 0, height },
+                { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17293), { 0, 0, height }, { 28, 28, 3 },
-                { 2, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17293), { 0, 0, height },
+                { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17297), { 0, 0, height }, { 28, 28, 1 },
-                { 2, 2, height + 99 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17297), { 0, 0, height },
+                { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17294), { 0, 0, height }, { 28, 28, 3 },
-                { 2, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17294), { 0, 0, height },
+                { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17298), { 0, 0, height }, { 28, 28, 1 },
-                { 2, 2, height + 99 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17298), { 0, 0, height },
+                { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17295), { 0, 0, height }, { 28, 28, 3 },
-                { 2, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17295), { 0, 0, height },
+                { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17299), { 0, 0, height }, { 28, 28, 1 },
-                { 2, 2, height + 99 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17299), { 0, 0, height },
+                { { 2, 2, height + 99 }, { 28, 28, 1 } });
             break;
     }
-    track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+    TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_1_60_deg_down(
+static void BolligerMabillardTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_quarter_turn_1_60_deg_up<supportType>(
+    BolligerMabillardTrackRightQuarterTurn160DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_1_60_deg_down(
+static void BolligerMabillardTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_quarter_turn_1_60_deg_up<supportType>(
+    BolligerMabillardTrackLeftQuarterTurn160DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_brakes(
+static void BolligerMabillardTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4495,17 +4492,17 @@ static void bolliger_mabillard_track_brakes(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17148), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17148), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17149), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17149), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -4516,7 +4513,7 @@ static void bolliger_mabillard_track_brakes(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_up_left_banked(
+static void BolligerMabillardTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4524,26 +4521,26 @@ static void bolliger_mabillard_track_25_deg_up_left_banked(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17914), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17914), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17915), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17915), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17916), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17916), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17917), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17917), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -4561,7 +4558,7 @@ static void bolliger_mabillard_track_25_deg_up_left_banked(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_up_right_banked(
+static void BolligerMabillardTrack25DegUpRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4569,26 +4566,26 @@ static void bolliger_mabillard_track_25_deg_up_right_banked(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17918), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17918), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17919), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17919), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17920), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17920), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17921), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17921), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -4606,7 +4603,7 @@ static void bolliger_mabillard_track_25_deg_up_right_banked(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_on_ride_photo(
+static void BolligerMabillardTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4618,8 +4615,8 @@ static void bolliger_mabillard_track_on_ride_photo(
             MetalASupportsPaintSetup(session, supportType, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(session, supportType, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17146), { 0, 0, height }, { 32, 20, 0 },
-                { 0, 6, height + 3 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17146), { 0, 0, height },
+                { { 0, 6, height + 3 }, { 32, 20, 0 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -4627,8 +4624,8 @@ static void bolliger_mabillard_track_on_ride_photo(
             MetalASupportsPaintSetup(session, supportType, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(session, supportType, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17147), { 0, 0, height }, { 32, 20, 0 },
-                { 0, 6, height + 3 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17147), { 0, 0, height },
+                { { 0, 6, height + 3 }, { 32, 20, 0 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -4636,8 +4633,8 @@ static void bolliger_mabillard_track_on_ride_photo(
             MetalASupportsPaintSetup(session, supportType, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(session, supportType, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17146), { 0, 0, height }, { 32, 20, 0 },
-                { 0, 6, height + 3 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17146), { 0, 0, height },
+                { { 0, 6, height + 3 }, { 32, 20, 0 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -4645,36 +4642,36 @@ static void bolliger_mabillard_track_on_ride_photo(
             MetalASupportsPaintSetup(session, supportType, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(session, supportType, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17147), { 0, 0, height }, { 32, 20, 0 },
-                { 0, 6, height + 3 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17147), { 0, 0, height },
+                { { 0, 6, height + 3 }, { 32, 20, 0 } });
             break;
     }
-    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_down_left_banked(
+static void BolligerMabillardTrack25DegDownLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_25_deg_up_right_banked<supportType>(
+    BolligerMabillardTrack25DegUpRightBanked<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_down_right_banked(
+static void BolligerMabillardTrack25DegDownRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_25_deg_up_left_banked<supportType>(
+    BolligerMabillardTrack25DegUpLeftBanked<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_90_deg_up(
+static void BolligerMabillardTrack90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4686,22 +4683,22 @@ static void bolliger_mabillard_track_90_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17526), { 0, 0, height },
-                        { 2, 20, 31 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17527), { 0, 0, height },
-                        { 2, 20, 31 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17528), { 0, 0, height },
-                        { 2, 20, 31 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17529), { 0, 0, height },
-                        { 2, 20, 31 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 32);
@@ -4715,15 +4712,15 @@ static void bolliger_mabillard_track_90_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_90_deg_down(
+static void BolligerMabillardTrack90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_90_deg_up<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrack90DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_up_to_90_deg_up(
+static void BolligerMabillardTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4735,22 +4732,22 @@ static void bolliger_mabillard_track_60_deg_up_to_90_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17518), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17519), { 0, 0, height },
-                        { 2, 20, 55 }, { 24, 6, height });
+                        { { 24, 6, height }, { 2, 20, 55 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17520), { 0, 0, height },
-                        { 2, 20, 55 }, { 24, 6, height });
+                        { { 24, 6, height }, { 2, 20, 55 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17521), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -4768,16 +4765,16 @@ static void bolliger_mabillard_track_60_deg_up_to_90_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_90_deg_down_to_60_deg_down(
+static void BolligerMabillardTrack90DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_60_deg_up_to_90_deg_up<supportType>(
+    BolligerMabillardTrack60DegUpTo90DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_90_deg_up_to_60_deg_up(
+static void BolligerMabillardTrack90DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4785,23 +4782,23 @@ static void bolliger_mabillard_track_90_deg_up_to_60_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17522), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height + 8 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17522), { 0, 0, height },
+                { { 0, 6, height + 8 }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17523), { 0, 0, height }, { 2, 20, 31 },
-                { 24, 6, height + 8 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17523), { 0, 0, height },
+                { { 24, 6, height + 8 }, { 2, 20, 31 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17524), { 0, 0, height }, { 2, 20, 31 },
-                { 24, 6, height + 8 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17524), { 0, 0, height },
+                { { 24, 6, height + 8 }, { 2, 20, 31 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17525), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height + 8 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17525), { 0, 0, height },
+                { { 0, 6, height + 8 }, { 32, 20, 3 } });
             break;
     }
     switch (direction)
@@ -4819,7 +4816,7 @@ static void bolliger_mabillard_track_90_deg_up_to_60_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_down_to_90_deg_down(
+static void BolligerMabillardTrack60DegDownTo90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4831,22 +4828,22 @@ static void bolliger_mabillard_track_60_deg_down_to_90_deg_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17524), { 0, 0, height },
-                        { 2, 20, 31 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17525), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 8 });
+                        { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17522), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 8 });
+                        { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17523), { 0, 0, height },
-                        { 2, 20, 31 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -4863,7 +4860,7 @@ static void bolliger_mabillard_track_60_deg_down_to_90_deg_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_eighth_to_diag(
+static void BolligerMabillardTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4875,22 +4872,22 @@ static void bolliger_mabillard_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17546), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17550), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17554), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17558), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -4908,22 +4905,22 @@ static void bolliger_mabillard_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17547), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17551), { 0, 0, height },
-                        { 34, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 34, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17555), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17559), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4938,22 +4935,22 @@ static void bolliger_mabillard_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17548), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17552), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17556), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17560), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4972,25 +4969,25 @@ static void bolliger_mabillard_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17549), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17553), { 0, 0, height },
-                        { 16, 18, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17557), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17561), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5004,7 +5001,7 @@ static void bolliger_mabillard_track_left_eighth_to_diag(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_eighth_to_diag(
+static void BolligerMabillardTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5016,22 +5013,22 @@ static void bolliger_mabillard_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17530), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17534), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17538), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17542), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -5049,22 +5046,22 @@ static void bolliger_mabillard_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17531), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17535), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17539), { 0, 0, height },
-                        { 34, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 34, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17543), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5079,22 +5076,22 @@ static void bolliger_mabillard_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17532), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17536), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17540), { 0, 0, height },
-                        { 28, 28, 3 }, { 4, 4, height });
+                        { { 4, 4, height }, { 28, 28, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17544), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5113,25 +5110,25 @@ static void bolliger_mabillard_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17533), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17537), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17541), { 0, 0, height },
-                        { 16, 18, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17545), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5145,27 +5142,27 @@ static void bolliger_mabillard_track_right_eighth_to_diag(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_eighth_to_orthogonal(
+static void BolligerMabillardTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    bolliger_mabillard_track_right_eighth_to_diag<supportType>(
+    BolligerMabillardTrackRightEighthToDiag<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_eighth_to_orthogonal(
+static void BolligerMabillardTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    bolliger_mabillard_track_left_eighth_to_diag<supportType>(
+    BolligerMabillardTrackLeftEighthToDiag<supportType>(
         session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_eighth_bank_to_diag(
+static void BolligerMabillardTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5177,22 +5174,22 @@ static void bolliger_mabillard_track_left_eighth_bank_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17578), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17582), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17586), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17590), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -5210,22 +5207,22 @@ static void bolliger_mabillard_track_left_eighth_bank_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17579), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17583), { 0, 0, height },
-                        { 34, 16, 0 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 34, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17587), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17591), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5240,22 +5237,22 @@ static void bolliger_mabillard_track_left_eighth_bank_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17580), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17584), { 0, 0, height },
-                        { 16, 16, 0 }, { 16, 16, height + 27 });
+                        { { 16, 16, height + 27 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17588), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17592), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5274,25 +5271,25 @@ static void bolliger_mabillard_track_left_eighth_bank_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17581), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17585), { 0, 0, height },
-                        { 16, 18, 0 }, { 0, 16, height + 27 });
+                        { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17589), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17593), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5306,7 +5303,7 @@ static void bolliger_mabillard_track_left_eighth_bank_to_diag(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_eighth_bank_to_diag(
+static void BolligerMabillardTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5318,22 +5315,22 @@ static void bolliger_mabillard_track_right_eighth_bank_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17562), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17566), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17570), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17574), { 0, 0, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -5351,22 +5348,22 @@ static void bolliger_mabillard_track_right_eighth_bank_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17563), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17567), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17571), { 0, 0, height },
-                        { 34, 16, 0 }, { 0, 0, height + 27 });
+                        { { 0, 0, height + 27 }, { 34, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17575), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5381,22 +5378,22 @@ static void bolliger_mabillard_track_right_eighth_bank_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17564), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17568), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17572), { 0, 0, height },
-                        { 28, 28, 0 }, { 4, 4, height + 27 });
+                        { { 4, 4, height + 27 }, { 28, 28, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17576), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5415,25 +5412,25 @@ static void bolliger_mabillard_track_right_eighth_bank_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17565), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17569), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17573), { 0, 0, height },
-                        { 16, 18, 0 }, { 0, 16, height + 27 });
+                        { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17577), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5447,27 +5444,27 @@ static void bolliger_mabillard_track_right_eighth_bank_to_diag(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_eighth_bank_to_orthogonal(
+static void BolligerMabillardTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    bolliger_mabillard_track_right_eighth_bank_to_diag<supportType>(
+    BolligerMabillardTrackRightEighthBankToDiag<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_eighth_bank_to_orthogonal(
+static void BolligerMabillardTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    bolliger_mabillard_track_left_eighth_bank_to_diag<supportType>(
+    BolligerMabillardTrackLeftEighthBankToDiag<supportType>(
         session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_flat(
+static void BolligerMabillardTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5481,7 +5478,7 @@ static void bolliger_mabillard_track_diag_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17861), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5492,7 +5489,7 @@ static void bolliger_mabillard_track_diag_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17791), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5508,7 +5505,7 @@ static void bolliger_mabillard_track_diag_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17858), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5519,7 +5516,7 @@ static void bolliger_mabillard_track_diag_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17788), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5535,7 +5532,7 @@ static void bolliger_mabillard_track_diag_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17860), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5546,7 +5543,7 @@ static void bolliger_mabillard_track_diag_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17790), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5565,7 +5562,7 @@ static void bolliger_mabillard_track_diag_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17859), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5586,7 +5583,7 @@ static void bolliger_mabillard_track_diag_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17789), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5605,7 +5602,7 @@ static void bolliger_mabillard_track_diag_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_up(
+static void BolligerMabillardTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5619,7 +5616,7 @@ static void bolliger_mabillard_track_diag_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17873), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5630,7 +5627,7 @@ static void bolliger_mabillard_track_diag_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17803), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5646,7 +5643,7 @@ static void bolliger_mabillard_track_diag_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17870), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5657,7 +5654,7 @@ static void bolliger_mabillard_track_diag_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17800), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5673,7 +5670,7 @@ static void bolliger_mabillard_track_diag_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17872), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5684,7 +5681,7 @@ static void bolliger_mabillard_track_diag_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17802), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5703,7 +5700,7 @@ static void bolliger_mabillard_track_diag_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17871), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5724,7 +5721,7 @@ static void bolliger_mabillard_track_diag_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17801), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5743,7 +5740,7 @@ static void bolliger_mabillard_track_diag_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_60_deg_up(
+static void BolligerMabillardTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5757,7 +5754,7 @@ static void bolliger_mabillard_track_diag_60_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17885), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5768,7 +5765,7 @@ static void bolliger_mabillard_track_diag_60_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17815), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5784,7 +5781,7 @@ static void bolliger_mabillard_track_diag_60_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17882), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5795,7 +5792,7 @@ static void bolliger_mabillard_track_diag_60_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17812), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5811,7 +5808,7 @@ static void bolliger_mabillard_track_diag_60_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17884), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5822,7 +5819,7 @@ static void bolliger_mabillard_track_diag_60_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17814), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5841,7 +5838,7 @@ static void bolliger_mabillard_track_diag_60_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17883), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5862,7 +5859,7 @@ static void bolliger_mabillard_track_diag_60_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17813), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5881,7 +5878,7 @@ static void bolliger_mabillard_track_diag_60_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
+static void BolligerMabillardTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5895,7 +5892,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17865), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5906,7 +5903,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17795), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5922,7 +5919,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17862), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5933,7 +5930,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17792), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5949,7 +5946,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17864), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5960,7 +5957,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17794), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -5979,7 +5976,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17863), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6000,7 +5997,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17793), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6019,7 +6016,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
+static void BolligerMabillardTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6033,7 +6030,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17877), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6044,7 +6041,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17807), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6060,7 +6057,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17874), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6071,7 +6068,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17804), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6087,7 +6084,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17876), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6098,7 +6095,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17806), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6117,7 +6114,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17875), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6138,7 +6135,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17805), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6157,7 +6154,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
+static void BolligerMabillardTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6171,7 +6168,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17881), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6182,7 +6179,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17811), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6198,7 +6195,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17878), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6209,7 +6206,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17808), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6225,7 +6222,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17880), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6236,7 +6233,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17810), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6255,7 +6252,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17879), { -16, -16, height },
-                            { 16, 16, 3 }, { 0, 0, height });
+                            { { 0, 0, height }, { 16, 16, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6276,7 +6273,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17809), { -16, -16, height },
-                            { 16, 16, 3 }, { 0, 0, height });
+                            { { 0, 0, height }, { 16, 16, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6295,7 +6292,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
+static void BolligerMabillardTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6309,7 +6306,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17869), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6320,7 +6317,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17799), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6336,7 +6333,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17866), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6347,7 +6344,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17796), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6363,7 +6360,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17868), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6374,7 +6371,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17798), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6393,7 +6390,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17867), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6414,7 +6411,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17797), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6433,7 +6430,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_down(
+static void BolligerMabillardTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6447,7 +6444,7 @@ static void bolliger_mabillard_track_diag_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17871), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6458,7 +6455,7 @@ static void bolliger_mabillard_track_diag_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17801), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6474,7 +6471,7 @@ static void bolliger_mabillard_track_diag_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17872), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6485,7 +6482,7 @@ static void bolliger_mabillard_track_diag_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17802), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6501,7 +6498,7 @@ static void bolliger_mabillard_track_diag_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17870), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6512,7 +6509,7 @@ static void bolliger_mabillard_track_diag_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17800), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6531,7 +6528,7 @@ static void bolliger_mabillard_track_diag_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17873), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6552,7 +6549,7 @@ static void bolliger_mabillard_track_diag_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17803), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6571,7 +6568,7 @@ static void bolliger_mabillard_track_diag_25_deg_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_60_deg_down(
+static void BolligerMabillardTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6585,7 +6582,7 @@ static void bolliger_mabillard_track_diag_60_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17883), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6596,7 +6593,7 @@ static void bolliger_mabillard_track_diag_60_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17813), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6612,7 +6609,7 @@ static void bolliger_mabillard_track_diag_60_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17884), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6623,7 +6620,7 @@ static void bolliger_mabillard_track_diag_60_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17814), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6639,7 +6636,7 @@ static void bolliger_mabillard_track_diag_60_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17882), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6650,7 +6647,7 @@ static void bolliger_mabillard_track_diag_60_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17812), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6669,7 +6666,7 @@ static void bolliger_mabillard_track_diag_60_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17885), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6690,7 +6687,7 @@ static void bolliger_mabillard_track_diag_60_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17815), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6709,7 +6706,7 @@ static void bolliger_mabillard_track_diag_60_deg_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
+static void BolligerMabillardTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6723,7 +6720,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17867), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6734,7 +6731,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17797), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6749,7 +6746,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17868), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6760,7 +6757,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17798), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6775,7 +6772,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17866), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6786,7 +6783,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17796), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6804,7 +6801,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17869), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6825,7 +6822,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17799), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6845,7 +6842,7 @@ static void bolliger_mabillard_track_diag_flat_to_25_deg_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
+static void BolligerMabillardTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6859,7 +6856,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17879), { -16, -16, height },
-                            { 16, 16, 3 }, { 0, 0, height });
+                            { { 0, 0, height }, { 16, 16, 3 } });
                         break;
                 }
             }
@@ -6870,7 +6867,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17809), { -16, -16, height },
-                            { 16, 16, 3 }, { 0, 0, height });
+                            { { 0, 0, height }, { 16, 16, 3 } });
                         break;
                 }
             }
@@ -6886,7 +6883,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17880), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6897,7 +6894,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17810), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6913,7 +6910,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17878), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6924,7 +6921,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17808), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -6943,7 +6940,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17881), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6964,7 +6961,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17811), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -6983,7 +6980,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
+static void BolligerMabillardTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6997,7 +6994,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17875), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7008,7 +7005,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17805), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7024,7 +7021,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17876), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7035,7 +7032,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17806), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7051,7 +7048,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17874), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7062,7 +7059,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17804), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7081,7 +7078,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17877), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7102,7 +7099,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17807), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7121,7 +7118,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
+static void BolligerMabillardTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7135,7 +7132,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17863), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7146,7 +7143,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17793), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7162,7 +7159,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17864), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7173,7 +7170,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17794), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7189,7 +7186,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17862), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7200,7 +7197,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17792), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -7219,7 +7216,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17865), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7240,7 +7237,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17795), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7259,7 +7256,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
+static void BolligerMabillardTrackDiagFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7273,7 +7270,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17889), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7284,7 +7281,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17819), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7300,7 +7297,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17886), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7311,7 +7308,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17816), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7327,7 +7324,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17888), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7338,7 +7335,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17818), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7357,7 +7354,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17887), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7378,7 +7375,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17817), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7397,7 +7394,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
+static void BolligerMabillardTrackDiag60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7411,7 +7408,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17893), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7422,7 +7419,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17823), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7438,7 +7435,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17890), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7449,7 +7446,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17820), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7465,7 +7462,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17892), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7476,7 +7473,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17822), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7495,7 +7492,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17891), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7516,7 +7513,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17821), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7535,7 +7532,7 @@ static void bolliger_mabillard_track_diag_60_deg_up_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
+static void BolligerMabillardTrackDiagFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7549,7 +7546,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17891), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7560,7 +7557,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17821), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7576,7 +7573,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17892), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7587,7 +7584,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17822), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7603,7 +7600,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17890), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7614,7 +7611,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17820), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7633,7 +7630,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17893), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7654,7 +7651,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17823), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7673,7 +7670,7 @@ static void bolliger_mabillard_track_diag_flat_to_60_deg_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
+static void BolligerMabillardTrackDiag60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7687,7 +7684,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17887), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7698,7 +7695,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17817), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7714,7 +7711,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17888), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7725,7 +7722,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17818), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7741,7 +7738,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17886), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7752,7 +7749,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17816), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         break;
                 }
             }
@@ -7771,7 +7768,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17889), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7792,7 +7789,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17819), { -16, -16, height },
-                            { 32, 32, 4 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 4 } });
                         MetalBSupportsPaintSetup(session, supportType, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7811,7 +7808,7 @@ static void bolliger_mabillard_track_diag_60_deg_down_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_flat_to_left_bank(
+static void BolligerMabillardTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7823,7 +7820,7 @@ static void bolliger_mabillard_track_diag_flat_to_left_bank(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17831), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7836,10 +7833,10 @@ static void bolliger_mabillard_track_diag_flat_to_left_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17828), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17832), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 27 });
+                        { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7852,7 +7849,7 @@ static void bolliger_mabillard_track_diag_flat_to_left_bank(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17830), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7868,7 +7865,7 @@ static void bolliger_mabillard_track_diag_flat_to_left_bank(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17829), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -7886,7 +7883,7 @@ static void bolliger_mabillard_track_diag_flat_to_left_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_flat_to_right_bank(
+static void BolligerMabillardTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7898,7 +7895,7 @@ static void bolliger_mabillard_track_diag_flat_to_right_bank(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17836), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7911,7 +7908,7 @@ static void bolliger_mabillard_track_diag_flat_to_right_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17833), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7924,10 +7921,10 @@ static void bolliger_mabillard_track_diag_flat_to_right_bank(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17835), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17837), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 27 });
+                        { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7943,7 +7940,7 @@ static void bolliger_mabillard_track_diag_flat_to_right_bank(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17834), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -7961,7 +7958,7 @@ static void bolliger_mabillard_track_diag_flat_to_right_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_left_bank_to_flat(
+static void BolligerMabillardTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7973,7 +7970,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_flat(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17834), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7986,10 +7983,10 @@ static void bolliger_mabillard_track_diag_left_bank_to_flat(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17835), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17837), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 27 });
+                        { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8002,7 +7999,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_flat(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17833), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8018,7 +8015,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_flat(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17836), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8036,7 +8033,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_right_bank_to_flat(
+static void BolligerMabillardTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8048,7 +8045,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_flat(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17829), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8061,7 +8058,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_flat(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17830), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8074,10 +8071,10 @@ static void bolliger_mabillard_track_diag_right_bank_to_flat(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17828), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17832), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 27 });
+                        { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8093,7 +8090,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_flat(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17831), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8111,7 +8108,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(
+static void BolligerMabillardTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8123,7 +8120,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17851), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8136,10 +8133,10 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17848), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17852), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 35 });
+                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8152,7 +8149,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17850), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8168,7 +8165,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17849), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8186,7 +8183,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(
+static void BolligerMabillardTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8198,7 +8195,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17856), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8211,7 +8208,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17853), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8224,10 +8221,10 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17855), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17857), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 35 });
+                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8243,7 +8240,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17854), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8261,7 +8258,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(
+static void BolligerMabillardTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8273,7 +8270,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17841), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8286,10 +8283,10 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17838), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17842), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 35 });
+                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8302,7 +8299,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17840), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8318,7 +8315,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17839), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(session, supportType, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8336,7 +8333,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(
+static void BolligerMabillardTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8348,7 +8345,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17846), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8361,7 +8358,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17843), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8374,10 +8371,10 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17845), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17847), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 35 });
+                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8393,7 +8390,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17844), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(session, supportType, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8411,7 +8408,7 @@ static void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(
+static void BolligerMabillardTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8423,7 +8420,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17844), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8435,10 +8432,10 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17845), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17847), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 35 });
+                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8450,7 +8447,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17843), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8465,7 +8462,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17846), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(session, supportType, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8484,7 +8481,7 @@ static void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(
+static void BolligerMabillardTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8496,7 +8493,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17839), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8508,7 +8505,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17840), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8520,10 +8517,10 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17838), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17842), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 35 });
+                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8538,7 +8535,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17841), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(session, supportType, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8557,7 +8554,7 @@ static void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(
+static void BolligerMabillardTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8569,7 +8566,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17854), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8582,10 +8579,10 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17855), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17857), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 35 });
+                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8598,7 +8595,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17853), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8614,7 +8611,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17856), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8632,7 +8629,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(
+static void BolligerMabillardTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8644,7 +8641,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17849), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8657,7 +8654,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17850), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8670,10 +8667,10 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17848), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17852), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 35 });
+                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8689,7 +8686,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17851), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8707,7 +8704,7 @@ static void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_left_bank(
+static void BolligerMabillardTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8719,7 +8716,7 @@ static void bolliger_mabillard_track_diag_left_bank(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17827), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8732,7 +8729,7 @@ static void bolliger_mabillard_track_diag_left_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17824), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 27 });
+                        { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8745,7 +8742,7 @@ static void bolliger_mabillard_track_diag_left_bank(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17826), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8761,7 +8758,7 @@ static void bolliger_mabillard_track_diag_left_bank(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17825), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8779,7 +8776,7 @@ static void bolliger_mabillard_track_diag_left_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_diag_right_bank(
+static void BolligerMabillardTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8791,7 +8788,7 @@ static void bolliger_mabillard_track_diag_right_bank(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17825), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8804,7 +8801,7 @@ static void bolliger_mabillard_track_diag_right_bank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17826), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8817,7 +8814,7 @@ static void bolliger_mabillard_track_diag_right_bank(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17824), { -16, -16, height },
-                        { 32, 32, 0 }, { -16, -16, height + 27 });
+                        { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8833,7 +8830,7 @@ static void bolliger_mabillard_track_diag_right_bank(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17827), { -16, -16, height },
-                        { 32, 32, 3 }, { -16, -16, height });
+                        { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -8851,7 +8848,7 @@ static void bolliger_mabillard_track_diag_right_bank(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_bank_to_left_quarter_turn_3_25_deg_up(
+static void BolligerMabillardTrackLeftBankToLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8871,7 +8868,7 @@ static void bolliger_mabillard_track_left_bank_to_left_quarter_turn_3_25_deg_up(
                         { 32, 20, 3 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17731), { 0, 6, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -8941,7 +8938,7 @@ static void bolliger_mabillard_track_left_bank_to_left_quarter_turn_3_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_bank_to_right_quarter_turn_3_25_deg_up(
+static void BolligerMabillardTrackRightBankToRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8966,7 +8963,7 @@ static void bolliger_mabillard_track_right_bank_to_right_quarter_turn_3_25_deg_u
                         { 32, 20, 3 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17730), { 0, 6, height },
-                        { 32, 1, 26 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9034,7 +9031,7 @@ static void bolliger_mabillard_track_right_bank_to_right_quarter_turn_3_25_deg_u
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down_to_left_bank(
+static void BolligerMabillardTrackLeftQuarterTurn325DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9096,7 +9093,7 @@ static void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down_to_left_ban
                         { 20, 32, 3 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17730), { 6, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -9127,7 +9124,7 @@ static void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down_to_left_ban
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down_to_right_bank(
+static void BolligerMabillardTrackRightQuarterTurn325DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9191,7 +9188,7 @@ static void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down_to_right_b
                         { 20, 32, 3 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17731), { 6, 0, height },
-                        { 1, 32, 26 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9217,11 +9214,11 @@ static void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down_to_right_b
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_block_brakes(
+static void BolligerMabillardTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool isClosed = trackElement.BlockBrakeClosed();
+    bool isClosed = trackElement.IsBrakeClosed();
     switch (direction)
     {
         case 0:
@@ -9229,17 +9226,17 @@ static void bolliger_mabillard_track_block_brakes(
             PaintAddImageAsParentRotated(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(_BolligerMabillardBlockBrakeImages[direction][isClosed]),
-                { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction,
                 session.TrackColours[SCHEME_TRACK].WithIndex(_BolligerMabillardBlockBrakeImages[direction][isClosed]),
-                { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -9250,7 +9247,7 @@ static void bolliger_mabillard_track_block_brakes(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(
+static void BolligerMabillardTrackLeftBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9267,7 +9264,7 @@ static void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18027), { 0, 6, height },
-                        { 32, 1, 34 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 34 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -9306,12 +9303,12 @@ static void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18026), { 6, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18028), { 6, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9337,7 +9334,7 @@ static void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(
+static void BolligerMabillardTrackRightBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9359,7 +9356,7 @@ static void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18018), { 0, 6, height },
-                        { 32, 1, 34 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 34 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9394,13 +9391,13 @@ static void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18017), { 6, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18019), { 6, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -9427,27 +9424,27 @@ static void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_down(
+static void BolligerMabillardTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up<supportType>(
+    BolligerMabillardTrackRightBankedQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_down(
+static void BolligerMabillardTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up<supportType>(
+    BolligerMabillardTrackLeftBankedQuarterTurn325DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
+static void BolligerMabillardTrackLeftBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9459,22 +9456,22 @@ static void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17978), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17983), { 0, 0, height },
-                        { 32, 1, 34 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 34 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17988), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17993), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -9499,18 +9496,18 @@ static void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17984), { 0, 0, height }, { 1, 1, 34 },
-                        { 30, 30, height });
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17984), { 0, 0, height },
+                        { { 30, 30, height }, { 1, 1, 34 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17989), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17994), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9525,17 +9522,17 @@ static void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17980), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17985), { 0, 0, height }, { 1, 1, 34 },
-                        { 30, 30, height });
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17985), { 0, 0, height },
+                        { { 30, 30, height }, { 1, 1, 34 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17990), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9556,22 +9553,22 @@ static void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17981), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17986), { 0, 0, height }, { 1, 1, 34 },
-                        { 30, 30, height });
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17986), { 0, 0, height },
+                        { { 30, 30, height }, { 1, 1, 34 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17991), { 0, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17996), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9586,22 +9583,22 @@ static void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17982), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17987), { 0, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17992), { 0, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17997), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -9622,7 +9619,7 @@ static void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
+static void BolligerMabillardTrackRightBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9634,22 +9631,22 @@ static void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17958), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17963), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17968), { 0, 0, height },
-                        { 32, 1, 34 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 34 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17973), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -9670,17 +9667,17 @@ static void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17959), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17964), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17969), { 0, 0, height }, { 1, 1, 34 },
-                        { 30, 30, height });
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17969), { 0, 0, height },
+                        { { 30, 30, height }, { 1, 1, 34 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9705,17 +9702,17 @@ static void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17965), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17970), { 0, 0, height }, { 1, 1, 34 },
-                        { 30, 30, height });
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17970), { 0, 0, height },
+                        { { 30, 30, height }, { 1, 1, 34 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17975), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9731,22 +9728,22 @@ static void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17961), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17966), { 0, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17971), { 0, 0, height }, { 1, 1, 34 },
-                        { 30, 30, height });
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17971), { 0, 0, height },
+                        { { 30, 30, height }, { 1, 1, 34 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17976), { 0, 0, height },
-                        { 16, 32, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9761,22 +9758,22 @@ static void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17962), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17967), { 0, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17972), { 0, 0, height },
-                        { 1, 32, 34 }, { 27, 0, height });
+                        { { 27, 0, height }, { 1, 32, 34 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17977), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height });
+                        { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -9797,27 +9794,27 @@ static void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_down(
+static void BolligerMabillardTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up<supportType>(
+    BolligerMabillardTrackRightBankedQuarterTurn525DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_down(
+static void BolligerMabillardTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up<supportType>(
+    BolligerMabillardTrackLeftBankedQuarterTurn525DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_up_to_left_banked_25_deg_up(
+static void BolligerMabillardTrack25DegUpToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9825,29 +9822,29 @@ static void bolliger_mabillard_track_25_deg_up_to_left_banked_25_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17922), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17922), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17923), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17923), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17930), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17930), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17924), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17924), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17925), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17925), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -9865,7 +9862,7 @@ static void bolliger_mabillard_track_25_deg_up_to_left_banked_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_up_to_right_banked_25_deg_up(
+static void BolligerMabillardTrack25DegUpToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9873,29 +9870,29 @@ static void bolliger_mabillard_track_25_deg_up_to_right_banked_25_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17926), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17926), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17927), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17927), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17928), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17928), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17931), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17931), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17929), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17929), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -9913,7 +9910,7 @@ static void bolliger_mabillard_track_25_deg_up_to_right_banked_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_25_deg_up_to_25_deg_up(
+static void BolligerMabillardTrackLeftBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9921,29 +9918,29 @@ static void bolliger_mabillard_track_left_banked_25_deg_up_to_25_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17932), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17932), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17933), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17933), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17940), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17940), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17934), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17934), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17935), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17935), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -9961,7 +9958,7 @@ static void bolliger_mabillard_track_left_banked_25_deg_up_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_25_deg_up_to_25_deg_up(
+static void BolligerMabillardTrackRightBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9969,29 +9966,29 @@ static void bolliger_mabillard_track_right_banked_25_deg_up_to_25_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17936), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17936), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17937), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17937), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17938), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17938), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17941), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17941), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17939), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17939), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10009,43 +10006,43 @@ static void bolliger_mabillard_track_right_banked_25_deg_up_to_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_down_to_left_banked_25_deg_down(
+static void BolligerMabillardTrack25DegDownToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_banked_25_deg_up_to_25_deg_up<supportType>(
+    BolligerMabillardTrackRightBanked25DegUpTo25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_25_deg_down_to_right_banked_25_deg_down(
+static void BolligerMabillardTrack25DegDownToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_banked_25_deg_up_to_25_deg_up<supportType>(
+    BolligerMabillardTrackLeftBanked25DegUpTo25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_25_deg_down_to_25_deg_down(
+static void BolligerMabillardTrackLeftBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_right_banked_25_deg_up<supportType>(
+    BolligerMabillardTrack25DegUpToRightBanked25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_25_deg_down_to_25_deg_down(
+static void BolligerMabillardTrackRightBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_left_banked_25_deg_up<supportType>(
+    BolligerMabillardTrack25DegUpToLeftBanked25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_up(
+static void BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10053,26 +10050,26 @@ static void bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17942), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17942), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17943), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17943), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17944), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17944), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17945), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17945), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10090,7 +10087,7 @@ static void bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_up(
+static void BolligerMabillardTrackRightBankedFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10098,26 +10095,26 @@ static void bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_up
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17946), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17946), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17947), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17947), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17948), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17948), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17949), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17949), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10135,7 +10132,7 @@ static void bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_up
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_25_deg_up_to_left_banked_flat(
+static void BolligerMabillardTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10143,26 +10140,26 @@ static void bolliger_mabillard_track_left_banked_25_deg_up_to_left_banked_flat(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17950), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17950), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17951), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17951), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17952), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17952), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17953), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17953), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10180,7 +10177,7 @@ static void bolliger_mabillard_track_left_banked_25_deg_up_to_left_banked_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_25_deg_up_to_right_banked_flat(
+static void BolligerMabillardTrackRightBanked25DegUpToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10188,26 +10185,26 @@ static void bolliger_mabillard_track_right_banked_25_deg_up_to_right_banked_flat
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17954), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17954), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17955), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17955), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17956), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17956), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17957), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17957), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10225,43 +10222,43 @@ static void bolliger_mabillard_track_right_banked_25_deg_up_to_right_banked_flat
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_down(
+static void BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_banked_25_deg_up_to_right_banked_flat<supportType>(
+    BolligerMabillardTrackRightBanked25DegUpToRightBankedFlat<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_down(
+static void BolligerMabillardTrackRightBankedFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_banked_25_deg_up_to_left_banked_flat<supportType>(
+    BolligerMabillardTrackLeftBanked25DegUpToLeftBankedFlat<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_25_deg_down_to_left_banked_flat(
+static void BolligerMabillardTrackLeftBanked25DegDownToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_up<supportType>(
+    BolligerMabillardTrackRightBankedFlatToRightBanked25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_25_deg_down_to_right_banked_flat(
+static void BolligerMabillardTrackRightBanked25DegDownToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_up<supportType>(
+    BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_left_banked_25_deg_up(
+static void BolligerMabillardTrackFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10269,29 +10266,29 @@ static void bolliger_mabillard_track_flat_to_left_banked_25_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17894), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17894), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17895), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17895), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17902), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17902), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17896), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17896), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17897), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17897), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10309,7 +10306,7 @@ static void bolliger_mabillard_track_flat_to_left_banked_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_right_banked_25_deg_up(
+static void BolligerMabillardTrackFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10317,29 +10314,29 @@ static void bolliger_mabillard_track_flat_to_right_banked_25_deg_up(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17898), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17898), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17899), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17899), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17900), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17900), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17903), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17903), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17901), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17901), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10357,7 +10354,7 @@ static void bolliger_mabillard_track_flat_to_right_banked_25_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_25_deg_up_to_flat(
+static void BolligerMabillardTrackLeftBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10365,29 +10362,29 @@ static void bolliger_mabillard_track_left_banked_25_deg_up_to_flat(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17904), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17904), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17905), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17905), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17912), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17912), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17906), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17906), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17907), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17907), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10405,7 +10402,7 @@ static void bolliger_mabillard_track_left_banked_25_deg_up_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_25_deg_up_to_flat(
+static void BolligerMabillardTrackRightBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10413,29 +10410,29 @@ static void bolliger_mabillard_track_right_banked_25_deg_up_to_flat(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17908), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17908), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17909), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17909), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17910), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17910), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17913), { 0, 0, height }, { 32, 1, 34 },
-                { 0, 27, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17913), { 0, 0, height },
+                { { 0, 27, height }, { 32, 1, 34 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17911), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17911), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -10453,43 +10450,43 @@ static void bolliger_mabillard_track_right_banked_25_deg_up_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_left_banked_25_deg_down(
+static void BolligerMabillardTrackFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_banked_25_deg_up_to_flat<supportType>(
+    BolligerMabillardTrackRightBanked25DegUpToFlat<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_right_banked_25_deg_down(
+static void BolligerMabillardTrackFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_banked_25_deg_up_to_flat<supportType>(
+    BolligerMabillardTrackLeftBanked25DegUpToFlat<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_banked_25_deg_down_to_flat(
+static void BolligerMabillardTrackLeftBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_flat_to_right_banked_25_deg_up<supportType>(
+    BolligerMabillardTrackFlatToRightBanked25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_banked_25_deg_down_to_flat(
+static void BolligerMabillardTrackRightBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_flat_to_left_banked_25_deg_up<supportType>(
+    BolligerMabillardTrackFlatToLeftBanked25DegUp<supportType>(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_1_90_deg_up(
+static void BolligerMabillardTrackLeftQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10501,28 +10498,28 @@ static void bolliger_mabillard_track_left_quarter_turn_1_90_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17998), { 0, 0, height },
-                        { 2, 20, 63 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17999), { 0, 0, height },
-                        { 2, 20, 63 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18007), { 0, 0, height },
-                        { 2, 20, 63 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18008), { 0, 0, height },
-                        { 2, 20, 63 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18001), { 0, 0, height },
-                        { 2, 20, 63 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18009), { 0, 0, height },
-                        { 2, 20, 63 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 96);
@@ -10536,7 +10533,7 @@ static void bolliger_mabillard_track_left_quarter_turn_1_90_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_1_90_deg_up(
+static void BolligerMabillardTrackRightQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10548,28 +10545,28 @@ static void bolliger_mabillard_track_right_quarter_turn_1_90_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18002), { 0, 0, height },
-                        { 2, 20, 63 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18010), { 0, 0, height },
-                        { 2, 20, 63 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18011), { 0, 0, height },
-                        { 2, 20, 63 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18004), { 0, 0, height },
-                        { 2, 20, 63 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18012), { 0, 0, height },
-                        { 2, 20, 63 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18005), { 0, 0, height },
-                        { 2, 20, 63 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 96);
@@ -10583,26 +10580,26 @@ static void bolliger_mabillard_track_right_quarter_turn_1_90_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_quarter_turn_1_90_deg_down(
+static void BolligerMabillardTrackLeftQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_quarter_turn_1_90_deg_up<supportType>(
+    BolligerMabillardTrackRightQuarterTurn190DegUp<supportType>(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_quarter_turn_1_90_deg_down(
+static void BolligerMabillardTrackRightQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_quarter_turn_1_90_deg_up<supportType>(
+    BolligerMabillardTrackLeftQuarterTurn190DegUp<supportType>(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /* The following track elements used to be specific to the Vertical Roller Coaster */
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_60_deg_up(
+static void BolligerMabillardTrackFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10612,29 +10609,29 @@ static void bolliger_mabillard_track_flat_to_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17464), { 0, 0, height }, { 32, 27, 4 },
-                    { 0, 2, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17464), { 0, 0, height },
+                    { { 0, 2, height }, { 32, 27, 4 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17465), { 0, 0, height }, { 1, 24, 43 },
-                    { 29, 4, height + 2 });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17465), { 0, 0, height },
+                    { { 29, 4, height + 2 }, { 1, 24, 43 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17468), { 0, 0, height }, { 32, 2, 43 },
-                    { 0, 4, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17468), { 0, 0, height },
+                    { { 0, 4, height }, { 32, 2, 43 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17466), { 0, 0, height }, { 1, 24, 43 },
-                    { 29, 4, height + 2 });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17466), { 0, 0, height },
+                    { { 29, 4, height + 2 }, { 1, 24, 43 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17469), { 0, 0, height }, { 32, 2, 43 },
-                    { 0, 4, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17469), { 0, 0, height },
+                    { { 0, 4, height }, { 32, 2, 43 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17467), { 0, 0, height }, { 32, 27, 4 },
-                    { 0, 2, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17467), { 0, 0, height },
+                    { { 0, 2, height }, { 32, 27, 4 } });
                 break;
         }
         MetalASupportsPaintSetup(session, supportType, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -10645,29 +10642,29 @@ static void bolliger_mabillard_track_flat_to_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17452), { 0, 0, height }, { 32, 27, 4 },
-                    { 0, 2, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17452), { 0, 0, height },
+                    { { 0, 2, height }, { 32, 27, 4 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17453), { 0, 0, height }, { 1, 24, 43 },
-                    { 29, 4, height + 2 });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17453), { 0, 0, height },
+                    { { 29, 4, height + 2 }, { 1, 24, 43 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17456), { 0, 0, height }, { 32, 2, 43 },
-                    { 0, 4, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17456), { 0, 0, height },
+                    { { 0, 4, height }, { 32, 2, 43 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17454), { 0, 0, height }, { 1, 24, 43 },
-                    { 29, 4, height + 2 });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17454), { 0, 0, height },
+                    { { 29, 4, height + 2 }, { 1, 24, 43 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17457), { 0, 0, height }, { 32, 2, 43 },
-                    { 0, 4, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17457), { 0, 0, height },
+                    { { 0, 4, height }, { 32, 2, 43 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17455), { 0, 0, height }, { 32, 27, 4 },
-                    { 0, 2, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17455), { 0, 0, height },
+                    { { 0, 2, height }, { 32, 27, 4 } });
                 break;
         }
         MetalASupportsPaintSetup(session, supportType, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -10686,7 +10683,7 @@ static void bolliger_mabillard_track_flat_to_60_deg_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_up_to_flat(
+static void BolligerMabillardTrack60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10696,29 +10693,29 @@ static void bolliger_mabillard_track_60_deg_up_to_flat(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17470), { 0, 0, height }, { 32, 27, 4 },
-                    { 0, 2, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17470), { 0, 0, height },
+                    { { 0, 2, height }, { 32, 27, 4 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17471), { 0, 0, height }, { 1, 24, 43 },
-                    { 29, 4, height + 2 });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17471), { 0, 0, height },
+                    { { 29, 4, height + 2 }, { 1, 24, 43 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17474), { 0, 0, height }, { 32, 2, 43 },
-                    { 0, 4, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17474), { 0, 0, height },
+                    { { 0, 4, height }, { 32, 2, 43 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17472), { 0, 0, height }, { 1, 24, 43 },
-                    { 29, 4, height + 2 });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17472), { 0, 0, height },
+                    { { 29, 4, height + 2 }, { 1, 24, 43 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17475), { 0, 0, height }, { 32, 2, 43 },
-                    { 0, 4, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17475), { 0, 0, height },
+                    { { 0, 4, height }, { 32, 2, 43 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17473), { 0, 0, height }, { 32, 27, 4 },
-                    { 0, 2, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17473), { 0, 0, height },
+                    { { 0, 2, height }, { 32, 27, 4 } });
                 break;
         }
         MetalASupportsPaintSetup(session, supportType, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -10729,29 +10726,29 @@ static void bolliger_mabillard_track_60_deg_up_to_flat(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17458), { 0, 0, height }, { 32, 27, 4 },
-                    { 0, 2, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17458), { 0, 0, height },
+                    { { 0, 2, height }, { 32, 27, 4 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17459), { 0, 0, height }, { 1, 24, 43 },
-                    { 29, 4, height + 2 });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17459), { 0, 0, height },
+                    { { 29, 4, height + 2 }, { 1, 24, 43 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17462), { 0, 0, height }, { 32, 2, 43 },
-                    { 0, 4, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17462), { 0, 0, height },
+                    { { 0, 4, height }, { 32, 2, 43 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17460), { 0, 0, height }, { 1, 24, 43 },
-                    { 29, 4, height + 2 });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17460), { 0, 0, height },
+                    { { 29, 4, height + 2 }, { 1, 24, 43 } });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17463), { 0, 0, height }, { 32, 2, 43 },
-                    { 0, 4, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17463), { 0, 0, height },
+                    { { 0, 4, height }, { 32, 2, 43 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17461), { 0, 0, height }, { 32, 27, 4 },
-                    { 0, 2, height });
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17461), { 0, 0, height },
+                    { { 0, 2, height }, { 32, 27, 4 } });
                 break;
         }
         MetalASupportsPaintSetup(session, supportType, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -10770,25 +10767,23 @@ static void bolliger_mabillard_track_60_deg_up_to_flat(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_60_deg_down(
+static void BolligerMabillardTrackFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_60_deg_up_to_flat<supportType>(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrack60DegUpToFlat<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_down_to_flat(
+static void BolligerMabillardTrack60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_flat_to_60_deg_up<supportType>(
-        session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    BolligerMabillardTrackFlatTo60DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_brake_for_drop(
+static void BolligerMabillardTrackBrakeForDrop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10796,29 +10791,29 @@ static void bolliger_mabillard_track_brake_for_drop(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17482), { 0, 0, height }, { 1, 24, 43 },
-                { 29, 4, height + 2 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17482), { 0, 0, height },
+                { { 29, 4, height + 2 }, { 1, 24, 43 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17485), { 0, 0, height }, { 32, 2, 43 },
-                { 0, 4, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17485), { 0, 0, height },
+                { { 0, 4, height }, { 32, 2, 43 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17483), { 0, 0, height }, { 32, 27, 4 },
-                { 0, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17483), { 0, 0, height },
+                { { 0, 2, height }, { 32, 27, 4 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17480), { 0, 0, height }, { 32, 27, 4 },
-                { 0, 2, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17480), { 0, 0, height },
+                { { 0, 2, height }, { 32, 27, 4 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17481), { 0, 0, height }, { 1, 24, 43 },
-                { 29, 4, height + 2 });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17481), { 0, 0, height },
+                { { 29, 4, height + 2 }, { 1, 24, 43 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17484), { 0, 0, height }, { 32, 2, 43 },
-                { 0, 4, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17484), { 0, 0, height },
+                { { 0, 4, height }, { 32, 2, 43 } });
             break;
     }
     MetalASupportsPaintSetup(session, supportType, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -10837,7 +10832,7 @@ static void bolliger_mabillard_track_brake_for_drop(
 
 /* The following track elements used to be specific to the Steel Twister */
 template<uint8_t supportType>
-static void bolliger_mabillard_track_half_loop_up(
+static void BolligerMabillardTrackHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10882,19 +10877,19 @@ static void bolliger_mabillard_track_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17627), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17635), { 0, 14, height },
-                        { 3, 20, 63 }, { 28, 6, height });
+                        { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17632), { 0, 6, height },
-                        { 3, 20, 63 }, { 28, 6, height });
+                        { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(session, supportType, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -10918,7 +10913,7 @@ static void bolliger_mabillard_track_half_loop_up(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17636), { 12, 0, height },
-                        { 3, 16, 119 }, { 12, 0, height });
+                        { { 12, 0, height }, { 3, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -10928,7 +10923,7 @@ static void bolliger_mabillard_track_half_loop_up(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17639), { 16, 16, height },
-                        { 2, 16, 119 }, { 15, 6, height });
+                        { { 15, 6, height }, { 2, 16, 119 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -10973,15 +10968,15 @@ static void bolliger_mabillard_track_half_loop_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_half_loop_down(
+static void BolligerMabillardTrackHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_half_loop_up<supportType>(session, ride, 3 - trackSequence, direction, height, trackElement);
+    BolligerMabillardTrackHalfLoopUp<supportType>(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_corkscrew_up(
+static void BolligerMabillardTrackLeftCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10993,26 +10988,26 @@ static void bolliger_mabillard_track_left_corkscrew_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17690), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 4 });
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17693), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 4 });
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17696), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 4 });
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17699), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 4 });
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
             }
 
-            track_paint_util_left_corkscrew_up_supports(session, direction, height);
+            TrackPaintUtilLeftCorkscrewUpSupports(session, direction, height);
 
             if (direction == 0 || direction == 3)
             {
@@ -11026,22 +11021,22 @@ static void bolliger_mabillard_track_left_corkscrew_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17691), { 0, 0, height },
-                        { 20, 20, 3 }, { 6, 6, height + 10 });
+                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17694), { 0, 0, height },
-                        { 20, 20, 3 }, { 6, 6, height + 10 });
+                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17697), { 0, 0, height },
-                        { 20, 20, 3 }, { 6, 6, height + 10 });
+                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17700), { 0, 0, height },
-                        { 20, 20, 3 }, { 6, 6, height + 10 });
+                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -11053,22 +11048,22 @@ static void bolliger_mabillard_track_left_corkscrew_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17692), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 24 });
+                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17695), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 24 });
+                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17698), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 24 });
+                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17701), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 24 });
+                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
             }
 
@@ -11092,7 +11087,7 @@ static void bolliger_mabillard_track_left_corkscrew_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_corkscrew_up(
+static void BolligerMabillardTrackRightCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11104,22 +11099,22 @@ static void bolliger_mabillard_track_right_corkscrew_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17702), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 4 });
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17705), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 4 });
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17708), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 4 });
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17711), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 4 });
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -11138,22 +11133,22 @@ static void bolliger_mabillard_track_right_corkscrew_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17703), { 0, 0, height },
-                        { 20, 20, 3 }, { 6, 6, height + 10 });
+                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17706), { 0, 0, height },
-                        { 20, 20, 3 }, { 6, 6, height + 10 });
+                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17709), { 0, 0, height },
-                        { 20, 20, 3 }, { 6, 6, height + 10 });
+                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17712), { 0, 0, height },
-                        { 20, 20, 3 }, { 6, 6, height + 10 });
+                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -11165,22 +11160,22 @@ static void bolliger_mabillard_track_right_corkscrew_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17704), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 24 });
+                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17707), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 24 });
+                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17710), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 24 });
+                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17713), { 0, 0, height },
-                        { 20, 32, 3 }, { 6, 0, height + 24 });
+                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
             }
 
@@ -11204,25 +11199,25 @@ static void bolliger_mabillard_track_right_corkscrew_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_corkscrew_down(
+static void BolligerMabillardTrackLeftCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_corkscrew_up<supportType>(
+    BolligerMabillardTrackRightCorkscrewUp<supportType>(
         session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_corkscrew_down(
+static void BolligerMabillardTrackRightCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_corkscrew_up<supportType>(
+    BolligerMabillardTrackLeftCorkscrewUp<supportType>(
         session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_60_deg_up_long_base(
+static void BolligerMabillardTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11234,25 +11229,25 @@ static void bolliger_mabillard_track_flat_to_60_deg_up_long_base(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18030), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18034), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18038), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18042), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -11270,25 +11265,25 @@ static void bolliger_mabillard_track_flat_to_60_deg_up_long_base(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18031), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18035), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18039), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18043), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(session, supportType, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -11302,25 +11297,25 @@ static void bolliger_mabillard_track_flat_to_60_deg_up_long_base(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18032), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18036), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18040), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18044), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(session, supportType, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -11334,25 +11329,25 @@ static void bolliger_mabillard_track_flat_to_60_deg_up_long_base(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18033), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18037), { 0, 0, height },
-                        { 32, 1, 98 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 98 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18041), { 0, 0, height },
-                        { 32, 1, 98 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 98 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18045), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(session, supportType, 4, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -11374,7 +11369,7 @@ static void bolliger_mabillard_track_flat_to_60_deg_up_long_base(
 
 /** rct2: 0x008AC104 */
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_up_to_flat_long_base(
+static void BolligerMabillardTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11386,25 +11381,25 @@ static void bolliger_mabillard_track_60_deg_up_to_flat_long_base(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18046), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18050), { 0, 0, height },
-                        { 32, 1, 98 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 98 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18054), { 0, 0, height },
-                        { 32, 1, 98 }, { 0, 27, height });
+                        { { 0, 27, height }, { 32, 1, 98 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18058), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(session, supportType, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -11422,25 +11417,25 @@ static void bolliger_mabillard_track_60_deg_up_to_flat_long_base(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18047), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18051), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18055), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18059), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(session, supportType, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -11454,25 +11449,25 @@ static void bolliger_mabillard_track_60_deg_up_to_flat_long_base(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18048), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18052), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18056), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18060), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(session, supportType, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -11486,25 +11481,25 @@ static void bolliger_mabillard_track_60_deg_up_to_flat_long_base(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18049), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18053), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18057), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18061), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (track_paint_util_should_paint_supports(session.MapPosition))
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(session, supportType, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -11525,25 +11520,25 @@ static void bolliger_mabillard_track_60_deg_up_to_flat_long_base(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_60_deg_down_to_flat_long_base(
+static void BolligerMabillardTrack60DegDownToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_flat_to_60_deg_up_long_base<supportType>(
+    BolligerMabillardTrackFlatTo60DegUpLongBase<supportType>(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_flat_to_60_deg_down_long_base(
+static void BolligerMabillardTrackFlatTo60DegDownLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_60_deg_up_to_flat_long_base<supportType>(
+    BolligerMabillardTrack60DegUpToFlatLongBase<supportType>(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_barrel_roll_up_to_down(
+static void BolligerMabillardTrackLeftBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11555,37 +11550,37 @@ static void bolliger_mabillard_track_left_barrel_roll_up_to_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17642), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17666), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 2, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17645), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17669), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 3, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17648), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17672), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17651), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17675), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -11604,34 +11599,34 @@ static void bolliger_mabillard_track_left_barrel_roll_up_to_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17643), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17667), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17646), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17670), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17649), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17673), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17652), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17676), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11646,34 +11641,34 @@ static void bolliger_mabillard_track_left_barrel_roll_up_to_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17644), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17668), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 44 });
+                        { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17647), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17671), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 44 });
+                        { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17650), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17674), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 44 });
+                        { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17653), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17677), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 44 });
+                        { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
             }
             switch (direction)
@@ -11694,7 +11689,7 @@ static void bolliger_mabillard_track_left_barrel_roll_up_to_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_barrel_roll_up_to_down(
+static void BolligerMabillardTrackRightBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11706,37 +11701,37 @@ static void bolliger_mabillard_track_right_barrel_roll_up_to_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17654), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17678), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 0, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17657), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17681), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 2, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17660), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17684), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 3, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17663), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17687), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -11755,34 +11750,34 @@ static void bolliger_mabillard_track_right_barrel_roll_up_to_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17655), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17679), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17658), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17682), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17661), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17685), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17664), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17688), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 28 });
+                        { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11797,34 +11792,34 @@ static void bolliger_mabillard_track_right_barrel_roll_up_to_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17656), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17680), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 44 });
+                        { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17659), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17683), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 44 });
+                        { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17662), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17686), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 44 });
+                        { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17665), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17689), { 0, 0, height },
-                        { 32, 20, 0 }, { 0, 6, height + 44 });
+                        { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
             }
             switch (direction)
@@ -11845,25 +11840,25 @@ static void bolliger_mabillard_track_right_barrel_roll_up_to_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_barrel_roll_down_to_up(
+static void BolligerMabillardTrackLeftBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_barrel_roll_up_to_down<supportType>(
+    BolligerMabillardTrackLeftBarrelRollUpToDown<supportType>(
         session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_barrel_roll_down_to_up(
+static void BolligerMabillardTrackRightBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_barrel_roll_up_to_down<supportType>(
+    BolligerMabillardTrackRightBarrelRollUpToDown<supportType>(
         session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_powered_lift(
+static void BolligerMabillardTrackPoweredLift(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11871,23 +11866,23 @@ static void bolliger_mabillard_track_powered_lift(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17476), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17476), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17477), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17477), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17478), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17478), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17479), { 0, 0, height }, { 32, 20, 3 },
-                { 0, 6, height });
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17479), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
     MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -11905,7 +11900,7 @@ static void bolliger_mabillard_track_powered_lift(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_large_half_loop_up(
+static void BolligerMabillardTrackLeftLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11917,22 +11912,22 @@ static void bolliger_mabillard_track_left_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17732), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17739), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17746), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17753), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -11950,22 +11945,22 @@ static void bolliger_mabillard_track_left_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17733), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17740), { 0, 0, height },
-                        { 32, 20, 9 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 9 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17747), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17754), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -11979,22 +11974,22 @@ static void bolliger_mabillard_track_left_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17734), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17741), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 70 });
+                        { { 0, 0, height + 70 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17748), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 70 });
+                        { { 0, 16, height + 70 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17755), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12009,25 +12004,25 @@ static void bolliger_mabillard_track_left_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17735), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 5, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17742), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 200 });
+                        { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 6, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17749), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 200 });
+                        { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 8, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17756), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 7, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -12043,22 +12038,22 @@ static void bolliger_mabillard_track_left_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17736), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17743), { 0, 0, height },
-                        { 16, 16, 0 }, { 0, 16, height + 110 });
+                        { { 0, 16, height + 110 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17750), { 0, 0, height },
-                        { 16, 16, 0 }, { 0, 0, height + 100 });
+                        { { 0, 0, height + 100 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17757), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12071,22 +12066,22 @@ static void bolliger_mabillard_track_left_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17737), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17744), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 200 });
+                        { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17751), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 200 });
+                        { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17758), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12101,22 +12096,22 @@ static void bolliger_mabillard_track_left_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17738), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 32 });
+                        { { 0, 16, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17745), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 32 });
+                        { { 0, 16, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17752), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 32 });
+                        { { 0, 0, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17759), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 32 });
+                        { { 0, 0, height + 32 }, { 32, 16, 0 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -12133,7 +12128,7 @@ static void bolliger_mabillard_track_left_large_half_loop_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_large_half_loop_up(
+static void BolligerMabillardTrackRightLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12145,22 +12140,22 @@ static void bolliger_mabillard_track_right_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17781), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17774), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17767), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17760), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -12178,22 +12173,22 @@ static void bolliger_mabillard_track_right_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17782), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17775), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17768), { 0, 0, height },
-                        { 32, 20, 9 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 9 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17761), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -12207,22 +12202,22 @@ static void bolliger_mabillard_track_right_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17783), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17776), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 70 });
+                        { { 0, 16, height + 70 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17769), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 70 });
+                        { { 0, 0, height + 70 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17762), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12237,25 +12232,25 @@ static void bolliger_mabillard_track_right_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17784), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 8, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17777), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 200 });
+                        { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 7, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17770), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 200 });
+                        { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(session, supportType, 5, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17763), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(session, supportType, 6, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -12271,22 +12266,22 @@ static void bolliger_mabillard_track_right_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17785), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17778), { 0, 0, height },
-                        { 16, 16, 0 }, { 0, 0, height + 100 });
+                        { { 0, 0, height + 100 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17771), { 0, 0, height },
-                        { 16, 16, 0 }, { 0, 16, height + 110 });
+                        { { 0, 16, height + 110 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17764), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12299,22 +12294,22 @@ static void bolliger_mabillard_track_right_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17786), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17779), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 200 });
+                        { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17772), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 200 });
+                        { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17765), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12329,22 +12324,22 @@ static void bolliger_mabillard_track_right_large_half_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17787), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 32 });
+                        { { 0, 0, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17780), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 0, height + 32 });
+                        { { 0, 0, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17773), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 32 });
+                        { { 0, 16, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17766), { 0, 0, height },
-                        { 32, 16, 0 }, { 0, 16, height + 32 });
+                        { { 0, 16, height + 32 }, { 32, 16, 0 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -12361,25 +12356,23 @@ static void bolliger_mabillard_track_right_large_half_loop_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_large_half_loop_down(
+static void BolligerMabillardTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_right_large_half_loop_up<supportType>(
-        session, ride, 6 - trackSequence, direction, height, trackElement);
+    BolligerMabillardTrackRightLargeHalfLoopUp<supportType>(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_large_half_loop_down(
+static void BolligerMabillardTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_left_large_half_loop_up<supportType>(
-        session, ride, 6 - trackSequence, direction, height, trackElement);
+    BolligerMabillardTrackLeftLargeHalfLoopUp<supportType>(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(
+static void BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12391,22 +12384,22 @@ static void bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18062), { 0, 0, height },
-                        { 2, 20, 31 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18065), { 0, 0, height },
-                        { 2, 20, 31 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18068), { 0, 0, height },
-                        { 2, 20, 31 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18071), { 0, 0, height },
-                        { 2, 20, 31 }, { 4, 6, height + 8 });
+                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12419,22 +12412,22 @@ static void bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18063), { 0, 0, height },
-                        { 2, 20, 31 }, { -8, 6, height });
+                        { { -8, 6, height }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18066), { 0, 0, height },
-                        { 2, 20, 63 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18069), { 0, 0, height },
-                        { 2, 20, 63 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18072), { 0, 0, height },
-                        { 2, 20, 31 }, { -8, 6, height });
+                        { { -8, 6, height }, { 2, 20, 31 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12447,22 +12440,22 @@ static void bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18064), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18067), { 0, 0, height },
-                        { 2, 20, 31 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18070), { 0, 0, height },
-                        { 2, 20, 31 }, { 24, 6, height + 8 });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18073), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 3 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -12477,16 +12470,16 @@ static void bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_inverted_flat_to_90_deg_quarter_loop_down(
+static void BolligerMabillardTrackInvertedFlatTo90DegQuarterLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up<supportType>(
+    BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp<supportType>(
         session, ride, 2 - trackSequence, direction, height, trackElement);
 }
 
 template<uint8_t supportType>
-void bolliger_mabillard_track_booster(
+void BolligerMabillardTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12502,16 +12495,16 @@ void bolliger_mabillard_track_booster(
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_BM_BOOSTER_NE_SW),
-                { ne_sw_offsetX, ne_sw_offsetY, height }, { 32, 20, 3 }, { 0, 6, height });
+                { ne_sw_offsetX, ne_sw_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_BM_BOOSTER_NW_SE),
-                { nw_se_offsetX, nw_se_offsetY, height }, { 32, 20, 3 }, { 0, 6, height });
+                { nw_se_offsetX, nw_se_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -12522,7 +12515,7 @@ void bolliger_mabillard_track_booster(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_twist_down_to_up(
+static void BolligerMabillardTrackLeftTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12534,22 +12527,22 @@ static void bolliger_mabillard_track_left_twist_down_to_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27430), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27436), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27429), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27435), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height - 5, session.TrackColours[SCHEME_SUPPORTS]);
@@ -12638,7 +12631,7 @@ static void bolliger_mabillard_track_left_twist_down_to_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_twist_down_to_up(
+static void BolligerMabillardTrackRightTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12650,22 +12643,22 @@ static void bolliger_mabillard_track_right_twist_down_to_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27442), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27448), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27441), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27447), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height - 5, session.TrackColours[SCHEME_SUPPORTS]);
@@ -12754,7 +12747,7 @@ static void bolliger_mabillard_track_right_twist_down_to_up(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_left_twist_up_to_down(
+static void BolligerMabillardTrackLeftTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12832,22 +12825,22 @@ static void bolliger_mabillard_track_left_twist_up_to_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27429), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27435), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27430), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27436), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height - 5, session.TrackColours[SCHEME_SUPPORTS]);
@@ -12870,7 +12863,7 @@ static void bolliger_mabillard_track_left_twist_up_to_down(
 }
 
 template<uint8_t supportType>
-static void bolliger_mabillard_track_right_twist_up_to_down(
+static void BolligerMabillardTrackRightTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12948,22 +12941,22 @@ static void bolliger_mabillard_track_right_twist_up_to_down(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27441), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27447), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27442), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27448), { 0, 6, height - 5 },
-                        { 32, 20, 3 }, { 0, 0, height + 6 });
+                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType, 4, 0, height - 5, session.TrackColours[SCHEME_SUPPORTS]);
@@ -12985,381 +12978,381 @@ static void bolliger_mabillard_track_right_twist_up_to_down(
     }
 }
 
-template<uint8_t supportType> TRACK_PAINT_FUNCTION get_track_paint_function_bolliger_mabillard(int32_t trackType)
+template<uint8_t supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionBolligerMabillard(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return bolliger_mabillard_track_flat<supportType>;
+            return BolligerMabillardTrackFlat<supportType>;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return bolliger_mabillard_track_station<supportType>;
+            return BolligerMabillardTrackStation<supportType>;
         case TrackElemType::Up25:
-            return bolliger_mabillard_track_25_deg_up<supportType>;
+            return BolligerMabillardTrack25DegUp<supportType>;
         case TrackElemType::Up60:
-            return bolliger_mabillard_track_60_deg_up<supportType>;
+            return BolligerMabillardTrack60DegUp<supportType>;
         case TrackElemType::FlatToUp25:
-            return bolliger_mabillard_track_flat_to_25_deg_up<supportType>;
+            return BolligerMabillardTrackFlatTo25DegUp<supportType>;
         case TrackElemType::Up25ToUp60:
-            return bolliger_mabillard_track_25_deg_up_to_60_deg_up<supportType>;
+            return BolligerMabillardTrack25DegUpTo60DegUp<supportType>;
         case TrackElemType::Up60ToUp25:
-            return bolliger_mabillard_track_60_deg_up_to_25_deg_up<supportType>;
+            return BolligerMabillardTrack60DegUpTo25DegUp<supportType>;
         case TrackElemType::Up25ToFlat:
-            return bolliger_mabillard_track_25_deg_up_to_flat<supportType>;
+            return BolligerMabillardTrack25DegUpToFlat<supportType>;
         case TrackElemType::Down25:
-            return bolliger_mabillard_track_25_deg_down<supportType>;
+            return BolligerMabillardTrack25DegDown<supportType>;
         case TrackElemType::Down60:
-            return bolliger_mabillard_track_60_deg_down<supportType>;
+            return BolligerMabillardTrack60DegDown<supportType>;
         case TrackElemType::FlatToDown25:
-            return bolliger_mabillard_track_flat_to_25_deg_down<supportType>;
+            return BolligerMabillardTrackFlatTo25DegDown<supportType>;
         case TrackElemType::Down25ToDown60:
-            return bolliger_mabillard_track_25_deg_down_to_60_deg_down<supportType>;
+            return BolligerMabillardTrack25DegDownTo60DegDown<supportType>;
         case TrackElemType::Down60ToDown25:
-            return bolliger_mabillard_track_60_deg_down_to_25_deg_down<supportType>;
+            return BolligerMabillardTrack60DegDownTo25DegDown<supportType>;
         case TrackElemType::Down25ToFlat:
-            return bolliger_mabillard_track_25_deg_down_to_flat<supportType>;
+            return BolligerMabillardTrack25DegDownToFlat<supportType>;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return bolliger_mabillard_track_left_quarter_turn_5<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn5<supportType>;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return bolliger_mabillard_track_right_quarter_turn_5<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn5<supportType>;
         case TrackElemType::FlatToLeftBank:
-            return bolliger_mabillard_track_flat_to_left_bank<supportType>;
+            return BolligerMabillardTrackFlatToLeftBank<supportType>;
         case TrackElemType::FlatToRightBank:
-            return bolliger_mabillard_track_flat_to_right_bank<supportType>;
+            return BolligerMabillardTrackFlatToRightBank<supportType>;
         case TrackElemType::LeftBankToFlat:
-            return bolliger_mabillard_track_left_bank_to_flat<supportType>;
+            return BolligerMabillardTrackLeftBankToFlat<supportType>;
         case TrackElemType::RightBankToFlat:
-            return bolliger_mabillard_track_right_bank_to_flat<supportType>;
+            return BolligerMabillardTrackRightBankToFlat<supportType>;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return bolliger_mabillard_track_banked_left_quarter_turn_5<supportType>;
+            return BolligerMabillardTrackBankedLeftQuarterTurn5<supportType>;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return bolliger_mabillard_track_banked_right_quarter_turn_5<supportType>;
+            return BolligerMabillardTrackBankedRightQuarterTurn5<supportType>;
         case TrackElemType::LeftBankToUp25:
-            return bolliger_mabillard_track_left_bank_to_25_deg_up<supportType>;
+            return BolligerMabillardTrackLeftBankTo25DegUp<supportType>;
         case TrackElemType::RightBankToUp25:
-            return bolliger_mabillard_track_right_bank_to_25_deg_up<supportType>;
+            return BolligerMabillardTrackRightBankTo25DegUp<supportType>;
         case TrackElemType::Up25ToLeftBank:
-            return bolliger_mabillard_track_25_deg_up_to_left_bank<supportType>;
+            return BolligerMabillardTrack25DegUpToLeftBank<supportType>;
         case TrackElemType::Up25ToRightBank:
-            return bolliger_mabillard_track_25_deg_up_to_right_bank<supportType>;
+            return BolligerMabillardTrack25DegUpToRightBank<supportType>;
         case TrackElemType::LeftBankToDown25:
-            return bolliger_mabillard_track_left_bank_to_25_deg_down<supportType>;
+            return BolligerMabillardTrackLeftBankTo25DegDown<supportType>;
         case TrackElemType::RightBankToDown25:
-            return bolliger_mabillard_track_right_bank_to_25_deg_down<supportType>;
+            return BolligerMabillardTrackRightBankTo25DegDown<supportType>;
         case TrackElemType::Down25ToLeftBank:
-            return bolliger_mabillard_track_25_deg_down_to_left_bank<supportType>;
+            return BolligerMabillardTrack25DegDownToLeftBank<supportType>;
         case TrackElemType::Down25ToRightBank:
-            return bolliger_mabillard_track_25_deg_down_to_right_bank<supportType>;
+            return BolligerMabillardTrack25DegDownToRightBank<supportType>;
         case TrackElemType::LeftBank:
-            return bolliger_mabillard_track_left_bank<supportType>;
+            return BolligerMabillardTrackLeftBank<supportType>;
         case TrackElemType::RightBank:
-            return bolliger_mabillard_track_right_bank<supportType>;
+            return BolligerMabillardTrackRightBank<supportType>;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return bolliger_mabillard_track_left_quarter_turn_5_25_deg_up<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn525DegUp<supportType>;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return bolliger_mabillard_track_right_quarter_turn_5_25_deg_up<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn525DegUp<supportType>;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return bolliger_mabillard_track_left_quarter_turn_5_25_deg_down<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn525DegDown<supportType>;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return bolliger_mabillard_track_right_quarter_turn_5_25_deg_down<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn525DegDown<supportType>;
         case TrackElemType::SBendLeft:
-            return bolliger_mabillard_track_s_bend_left<supportType>;
+            return BolligerMabillardTrackSBendLeft<supportType>;
         case TrackElemType::SBendRight:
-            return bolliger_mabillard_track_s_bend_right<supportType>;
+            return BolligerMabillardTrackSBendRight<supportType>;
         case TrackElemType::LeftVerticalLoop:
-            return bolliger_mabillard_track_left_vertical_loop<supportType>;
+            return BolligerMabillardTrackLeftVerticalLoop<supportType>;
         case TrackElemType::RightVerticalLoop:
-            return bolliger_mabillard_track_right_vertical_loop<supportType>;
+            return BolligerMabillardTrackRightVerticalLoop<supportType>;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return bolliger_mabillard_track_left_quarter_turn_3<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn3<supportType>;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return bolliger_mabillard_track_right_quarter_turn_3<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn3<supportType>;
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
-            return bolliger_mabillard_track_left_quarter_turn_3_bank<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn3Bank<supportType>;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
-            return bolliger_mabillard_track_right_quarter_turn_3_bank<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn3Bank<supportType>;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return bolliger_mabillard_track_left_quarter_turn_3_25_deg_up<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn325DegUp<supportType>;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return bolliger_mabillard_track_right_quarter_turn_3_25_deg_up<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn325DegUp<supportType>;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return bolliger_mabillard_track_left_quarter_turn_3_25_deg_down<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn325DegDown<supportType>;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return bolliger_mabillard_track_right_quarter_turn_3_25_deg_down<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn325DegDown<supportType>;
         case TrackElemType::LeftHalfBankedHelixUpSmall:
-            return bolliger_mabillard_track_left_half_banked_helix_up_small<supportType>;
+            return BolligerMabillardTrackLeftHalfBankedHelixUpSmall<supportType>;
         case TrackElemType::RightHalfBankedHelixUpSmall:
-            return bolliger_mabillard_track_right_half_banked_helix_up_small<supportType>;
+            return BolligerMabillardTrackRightHalfBankedHelixUpSmall<supportType>;
         case TrackElemType::LeftHalfBankedHelixDownSmall:
-            return bolliger_mabillard_track_left_half_banked_helix_down_small<supportType>;
+            return BolligerMabillardTrackLeftHalfBankedHelixDownSmall<supportType>;
         case TrackElemType::RightHalfBankedHelixDownSmall:
-            return bolliger_mabillard_track_right_half_banked_helix_down_small<supportType>;
+            return BolligerMabillardTrackRightHalfBankedHelixDownSmall<supportType>;
         case TrackElemType::LeftHalfBankedHelixUpLarge:
-            return bolliger_mabillard_track_left_half_banked_helix_up_large<supportType>;
+            return BolligerMabillardTrackLeftHalfBankedHelixUpLarge<supportType>;
         case TrackElemType::RightHalfBankedHelixUpLarge:
-            return bolliger_mabillard_track_right_half_banked_helix_up_large<supportType>;
+            return BolligerMabillardTrackRightHalfBankedHelixUpLarge<supportType>;
         case TrackElemType::LeftHalfBankedHelixDownLarge:
-            return bolliger_mabillard_track_left_half_banked_helix_down_large<supportType>;
+            return BolligerMabillardTrackLeftHalfBankedHelixDownLarge<supportType>;
         case TrackElemType::RightHalfBankedHelixDownLarge:
-            return bolliger_mabillard_track_right_half_banked_helix_down_large<supportType>;
+            return BolligerMabillardTrackRightHalfBankedHelixDownLarge<supportType>;
         case TrackElemType::LeftQuarterTurn1TileUp60:
-            return bolliger_mabillard_track_left_quarter_turn_1_60_deg_up<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn160DegUp<supportType>;
         case TrackElemType::RightQuarterTurn1TileUp60:
-            return bolliger_mabillard_track_right_quarter_turn_1_60_deg_up<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn160DegUp<supportType>;
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            return bolliger_mabillard_track_left_quarter_turn_1_60_deg_down<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn160DegDown<supportType>;
         case TrackElemType::RightQuarterTurn1TileDown60:
-            return bolliger_mabillard_track_right_quarter_turn_1_60_deg_down<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn160DegDown<supportType>;
         case TrackElemType::Brakes:
-            return bolliger_mabillard_track_brakes<supportType>;
+            return BolligerMabillardTrackBrakes<supportType>;
         case TrackElemType::Up25LeftBanked:
-            return bolliger_mabillard_track_25_deg_up_left_banked<supportType>;
+            return BolligerMabillardTrack25DegUpLeftBanked<supportType>;
         case TrackElemType::Up25RightBanked:
-            return bolliger_mabillard_track_25_deg_up_right_banked<supportType>;
+            return BolligerMabillardTrack25DegUpRightBanked<supportType>;
         case TrackElemType::OnRidePhoto:
-            return bolliger_mabillard_track_on_ride_photo<supportType>;
+            return BolligerMabillardTrackOnRidePhoto<supportType>;
         case TrackElemType::Down25LeftBanked:
-            return bolliger_mabillard_track_25_deg_down_left_banked<supportType>;
+            return BolligerMabillardTrack25DegDownLeftBanked<supportType>;
         case TrackElemType::Down25RightBanked:
-            return bolliger_mabillard_track_25_deg_down_right_banked<supportType>;
+            return BolligerMabillardTrack25DegDownRightBanked<supportType>;
         case TrackElemType::Up90:
-            return bolliger_mabillard_track_90_deg_up<supportType>;
+            return BolligerMabillardTrack90DegUp<supportType>;
         case TrackElemType::Down90:
-            return bolliger_mabillard_track_90_deg_down<supportType>;
+            return BolligerMabillardTrack90DegDown<supportType>;
         case TrackElemType::Up60ToUp90:
-            return bolliger_mabillard_track_60_deg_up_to_90_deg_up<supportType>;
+            return BolligerMabillardTrack60DegUpTo90DegUp<supportType>;
         case TrackElemType::Down90ToDown60:
-            return bolliger_mabillard_track_90_deg_down_to_60_deg_down<supportType>;
+            return BolligerMabillardTrack90DegDownTo60DegDown<supportType>;
         case TrackElemType::Up90ToUp60:
-            return bolliger_mabillard_track_90_deg_up_to_60_deg_up<supportType>;
+            return BolligerMabillardTrack90DegUpTo60DegUp<supportType>;
         case TrackElemType::Down60ToDown90:
-            return bolliger_mabillard_track_60_deg_down_to_90_deg_down<supportType>;
+            return BolligerMabillardTrack60DegDownTo90DegDown<supportType>;
         case TrackElemType::LeftEighthToDiag:
-            return bolliger_mabillard_track_left_eighth_to_diag<supportType>;
+            return BolligerMabillardTrackLeftEighthToDiag<supportType>;
         case TrackElemType::RightEighthToDiag:
-            return bolliger_mabillard_track_right_eighth_to_diag<supportType>;
+            return BolligerMabillardTrackRightEighthToDiag<supportType>;
         case TrackElemType::LeftEighthToOrthogonal:
-            return bolliger_mabillard_track_left_eighth_to_orthogonal<supportType>;
+            return BolligerMabillardTrackLeftEighthToOrthogonal<supportType>;
         case TrackElemType::RightEighthToOrthogonal:
-            return bolliger_mabillard_track_right_eighth_to_orthogonal<supportType>;
+            return BolligerMabillardTrackRightEighthToOrthogonal<supportType>;
         case TrackElemType::LeftEighthBankToDiag:
-            return bolliger_mabillard_track_left_eighth_bank_to_diag<supportType>;
+            return BolligerMabillardTrackLeftEighthBankToDiag<supportType>;
         case TrackElemType::RightEighthBankToDiag:
-            return bolliger_mabillard_track_right_eighth_bank_to_diag<supportType>;
+            return BolligerMabillardTrackRightEighthBankToDiag<supportType>;
         case TrackElemType::LeftEighthBankToOrthogonal:
-            return bolliger_mabillard_track_left_eighth_bank_to_orthogonal<supportType>;
+            return BolligerMabillardTrackLeftEighthBankToOrthogonal<supportType>;
         case TrackElemType::RightEighthBankToOrthogonal:
-            return bolliger_mabillard_track_right_eighth_bank_to_orthogonal<supportType>;
+            return BolligerMabillardTrackRightEighthBankToOrthogonal<supportType>;
         case TrackElemType::DiagFlat:
-            return bolliger_mabillard_track_diag_flat<supportType>;
+            return BolligerMabillardTrackDiagFlat<supportType>;
         case TrackElemType::DiagUp25:
-            return bolliger_mabillard_track_diag_25_deg_up<supportType>;
+            return BolligerMabillardTrackDiag25DegUp<supportType>;
         case TrackElemType::DiagUp60:
-            return bolliger_mabillard_track_diag_60_deg_up<supportType>;
+            return BolligerMabillardTrackDiag60DegUp<supportType>;
         case TrackElemType::DiagFlatToUp25:
-            return bolliger_mabillard_track_diag_flat_to_25_deg_up<supportType>;
+            return BolligerMabillardTrackDiagFlatTo25DegUp<supportType>;
         case TrackElemType::DiagUp25ToUp60:
-            return bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up<supportType>;
+            return BolligerMabillardTrackDiag25DegUpTo60DegUp<supportType>;
         case TrackElemType::DiagUp60ToUp25:
-            return bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up<supportType>;
+            return BolligerMabillardTrackDiag60DegUpTo25DegUp<supportType>;
         case TrackElemType::DiagUp25ToFlat:
-            return bolliger_mabillard_track_diag_25_deg_up_to_flat<supportType>;
+            return BolligerMabillardTrackDiag25DegUpToFlat<supportType>;
         case TrackElemType::DiagDown25:
-            return bolliger_mabillard_track_diag_25_deg_down<supportType>;
+            return BolligerMabillardTrackDiag25DegDown<supportType>;
         case TrackElemType::DiagDown60:
-            return bolliger_mabillard_track_diag_60_deg_down<supportType>;
+            return BolligerMabillardTrackDiag60DegDown<supportType>;
         case TrackElemType::DiagFlatToDown25:
-            return bolliger_mabillard_track_diag_flat_to_25_deg_down<supportType>;
+            return BolligerMabillardTrackDiagFlatTo25DegDown<supportType>;
         case TrackElemType::DiagDown25ToDown60:
-            return bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down<supportType>;
+            return BolligerMabillardTrackDiag25DegDownTo60DegDown<supportType>;
         case TrackElemType::DiagDown60ToDown25:
-            return bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down<supportType>;
+            return BolligerMabillardTrackDiag60DegDownTo25DegDown<supportType>;
         case TrackElemType::DiagDown25ToFlat:
-            return bolliger_mabillard_track_diag_25_deg_down_to_flat<supportType>;
+            return BolligerMabillardTrackDiag25DegDownToFlat<supportType>;
         case TrackElemType::DiagFlatToLeftBank:
-            return bolliger_mabillard_track_diag_flat_to_left_bank<supportType>;
+            return BolligerMabillardTrackDiagFlatToLeftBank<supportType>;
         case TrackElemType::DiagFlatToRightBank:
-            return bolliger_mabillard_track_diag_flat_to_right_bank<supportType>;
+            return BolligerMabillardTrackDiagFlatToRightBank<supportType>;
         case TrackElemType::DiagLeftBankToFlat:
-            return bolliger_mabillard_track_diag_left_bank_to_flat<supportType>;
+            return BolligerMabillardTrackDiagLeftBankToFlat<supportType>;
         case TrackElemType::DiagRightBankToFlat:
-            return bolliger_mabillard_track_diag_right_bank_to_flat<supportType>;
+            return BolligerMabillardTrackDiagRightBankToFlat<supportType>;
         case TrackElemType::DiagLeftBankToUp25:
-            return bolliger_mabillard_track_diag_left_bank_to_25_deg_up<supportType>;
+            return BolligerMabillardTrackDiagLeftBankTo25DegUp<supportType>;
         case TrackElemType::DiagRightBankToUp25:
-            return bolliger_mabillard_track_diag_right_bank_to_25_deg_up<supportType>;
+            return BolligerMabillardTrackDiagRightBankTo25DegUp<supportType>;
         case TrackElemType::DiagUp25ToLeftBank:
-            return bolliger_mabillard_track_diag_25_deg_up_to_left_bank<supportType>;
+            return BolligerMabillardTrackDiag25DegUpToLeftBank<supportType>;
         case TrackElemType::DiagUp25ToRightBank:
-            return bolliger_mabillard_track_diag_25_deg_up_to_right_bank<supportType>;
+            return BolligerMabillardTrackDiag25DegUpToRightBank<supportType>;
         case TrackElemType::DiagLeftBankToDown25:
-            return bolliger_mabillard_track_diag_left_bank_to_25_deg_down<supportType>;
+            return BolligerMabillardTrackDiagLeftBankTo25DegDown<supportType>;
         case TrackElemType::DiagRightBankToDown25:
-            return bolliger_mabillard_track_diag_right_bank_to_25_deg_down<supportType>;
+            return BolligerMabillardTrackDiagRightBankTo25DegDown<supportType>;
         case TrackElemType::DiagDown25ToLeftBank:
-            return bolliger_mabillard_track_diag_25_deg_down_to_left_bank<supportType>;
+            return BolligerMabillardTrackDiag25DegDownToLeftBank<supportType>;
         case TrackElemType::DiagDown25ToRightBank:
-            return bolliger_mabillard_track_diag_25_deg_down_to_right_bank<supportType>;
+            return BolligerMabillardTrackDiag25DegDownToRightBank<supportType>;
         case TrackElemType::DiagLeftBank:
-            return bolliger_mabillard_track_diag_left_bank<supportType>;
+            return BolligerMabillardTrackDiagLeftBank<supportType>;
         case TrackElemType::DiagRightBank:
-            return bolliger_mabillard_track_diag_right_bank<supportType>;
+            return BolligerMabillardTrackDiagRightBank<supportType>;
         case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-            return bolliger_mabillard_track_left_bank_to_left_quarter_turn_3_25_deg_up<supportType>;
+            return BolligerMabillardTrackLeftBankToLeftQuarterTurn325DegUp<supportType>;
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-            return bolliger_mabillard_track_right_bank_to_right_quarter_turn_3_25_deg_up<supportType>;
+            return BolligerMabillardTrackRightBankToRightQuarterTurn325DegUp<supportType>;
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-            return bolliger_mabillard_track_left_quarter_turn_3_25_deg_down_to_left_bank<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn325DegDownToLeftBank<supportType>;
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
-            return bolliger_mabillard_track_right_quarter_turn_3_25_deg_down_to_right_bank<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn325DegDownToRightBank<supportType>;
         case TrackElemType::BlockBrakes:
-            return bolliger_mabillard_track_block_brakes<supportType>;
+            return BolligerMabillardTrackBlockBrakes<supportType>;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-            return bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up<supportType>;
+            return BolligerMabillardTrackLeftBankedQuarterTurn325DegUp<supportType>;
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
-            return bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up<supportType>;
+            return BolligerMabillardTrackRightBankedQuarterTurn325DegUp<supportType>;
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-            return bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_down<supportType>;
+            return BolligerMabillardTrackLeftBankedQuarterTurn325DegDown<supportType>;
         case TrackElemType::RightBankedQuarterTurn3TileDown25:
-            return bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_down<supportType>;
+            return BolligerMabillardTrackRightBankedQuarterTurn325DegDown<supportType>;
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-            return bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up<supportType>;
+            return BolligerMabillardTrackLeftBankedQuarterTurn525DegUp<supportType>;
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
-            return bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up<supportType>;
+            return BolligerMabillardTrackRightBankedQuarterTurn525DegUp<supportType>;
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-            return bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_down<supportType>;
+            return BolligerMabillardTrackLeftBankedQuarterTurn525DegDown<supportType>;
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
-            return bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_down<supportType>;
+            return BolligerMabillardTrackRightBankedQuarterTurn525DegDown<supportType>;
         case TrackElemType::Up25ToLeftBankedUp25:
-            return bolliger_mabillard_track_25_deg_up_to_left_banked_25_deg_up<supportType>;
+            return BolligerMabillardTrack25DegUpToLeftBanked25DegUp<supportType>;
         case TrackElemType::Up25ToRightBankedUp25:
-            return bolliger_mabillard_track_25_deg_up_to_right_banked_25_deg_up<supportType>;
+            return BolligerMabillardTrack25DegUpToRightBanked25DegUp<supportType>;
         case TrackElemType::LeftBankedUp25ToUp25:
-            return bolliger_mabillard_track_left_banked_25_deg_up_to_25_deg_up<supportType>;
+            return BolligerMabillardTrackLeftBanked25DegUpTo25DegUp<supportType>;
         case TrackElemType::RightBankedUp25ToUp25:
-            return bolliger_mabillard_track_right_banked_25_deg_up_to_25_deg_up<supportType>;
+            return BolligerMabillardTrackRightBanked25DegUpTo25DegUp<supportType>;
         case TrackElemType::Down25ToLeftBankedDown25:
-            return bolliger_mabillard_track_25_deg_down_to_left_banked_25_deg_down<supportType>;
+            return BolligerMabillardTrack25DegDownToLeftBanked25DegDown<supportType>;
         case TrackElemType::Down25ToRightBankedDown25:
-            return bolliger_mabillard_track_25_deg_down_to_right_banked_25_deg_down<supportType>;
+            return BolligerMabillardTrack25DegDownToRightBanked25DegDown<supportType>;
         case TrackElemType::LeftBankedDown25ToDown25:
-            return bolliger_mabillard_track_left_banked_25_deg_down_to_25_deg_down<supportType>;
+            return BolligerMabillardTrackLeftBanked25DegDownTo25DegDown<supportType>;
         case TrackElemType::RightBankedDown25ToDown25:
-            return bolliger_mabillard_track_right_banked_25_deg_down_to_25_deg_down<supportType>;
+            return BolligerMabillardTrackRightBanked25DegDownTo25DegDown<supportType>;
         case TrackElemType::LeftBankedFlatToLeftBankedUp25:
-            return bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_up<supportType>;
+            return BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegUp<supportType>;
         case TrackElemType::RightBankedFlatToRightBankedUp25:
-            return bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_up<supportType>;
+            return BolligerMabillardTrackRightBankedFlatToRightBanked25DegUp<supportType>;
         case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
-            return bolliger_mabillard_track_left_banked_25_deg_up_to_left_banked_flat<supportType>;
+            return BolligerMabillardTrackLeftBanked25DegUpToLeftBankedFlat<supportType>;
         case TrackElemType::RightBankedUp25ToRightBankedFlat:
-            return bolliger_mabillard_track_right_banked_25_deg_up_to_right_banked_flat<supportType>;
+            return BolligerMabillardTrackRightBanked25DegUpToRightBankedFlat<supportType>;
         case TrackElemType::LeftBankedFlatToLeftBankedDown25:
-            return bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_down<supportType>;
+            return BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegDown<supportType>;
         case TrackElemType::RightBankedFlatToRightBankedDown25:
-            return bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_down<supportType>;
+            return BolligerMabillardTrackRightBankedFlatToRightBanked25DegDown<supportType>;
         case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
-            return bolliger_mabillard_track_left_banked_25_deg_down_to_left_banked_flat<supportType>;
+            return BolligerMabillardTrackLeftBanked25DegDownToLeftBankedFlat<supportType>;
         case TrackElemType::RightBankedDown25ToRightBankedFlat:
-            return bolliger_mabillard_track_right_banked_25_deg_down_to_right_banked_flat<supportType>;
+            return BolligerMabillardTrackRightBanked25DegDownToRightBankedFlat<supportType>;
         case TrackElemType::FlatToLeftBankedUp25:
-            return bolliger_mabillard_track_flat_to_left_banked_25_deg_up<supportType>;
+            return BolligerMabillardTrackFlatToLeftBanked25DegUp<supportType>;
         case TrackElemType::FlatToRightBankedUp25:
-            return bolliger_mabillard_track_flat_to_right_banked_25_deg_up<supportType>;
+            return BolligerMabillardTrackFlatToRightBanked25DegUp<supportType>;
         case TrackElemType::LeftBankedUp25ToFlat:
-            return bolliger_mabillard_track_left_banked_25_deg_up_to_flat<supportType>;
+            return BolligerMabillardTrackLeftBanked25DegUpToFlat<supportType>;
         case TrackElemType::RightBankedUp25ToFlat:
-            return bolliger_mabillard_track_right_banked_25_deg_up_to_flat<supportType>;
+            return BolligerMabillardTrackRightBanked25DegUpToFlat<supportType>;
         case TrackElemType::FlatToLeftBankedDown25:
-            return bolliger_mabillard_track_flat_to_left_banked_25_deg_down<supportType>;
+            return BolligerMabillardTrackFlatToLeftBanked25DegDown<supportType>;
         case TrackElemType::FlatToRightBankedDown25:
-            return bolliger_mabillard_track_flat_to_right_banked_25_deg_down<supportType>;
+            return BolligerMabillardTrackFlatToRightBanked25DegDown<supportType>;
         case TrackElemType::LeftBankedDown25ToFlat:
-            return bolliger_mabillard_track_left_banked_25_deg_down_to_flat<supportType>;
+            return BolligerMabillardTrackLeftBanked25DegDownToFlat<supportType>;
         case TrackElemType::RightBankedDown25ToFlat:
-            return bolliger_mabillard_track_right_banked_25_deg_down_to_flat<supportType>;
+            return BolligerMabillardTrackRightBanked25DegDownToFlat<supportType>;
         case TrackElemType::LeftQuarterTurn1TileUp90:
-            return bolliger_mabillard_track_left_quarter_turn_1_90_deg_up<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn190DegUp<supportType>;
         case TrackElemType::RightQuarterTurn1TileUp90:
-            return bolliger_mabillard_track_right_quarter_turn_1_90_deg_up<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn190DegUp<supportType>;
         case TrackElemType::LeftQuarterTurn1TileDown90:
-            return bolliger_mabillard_track_left_quarter_turn_1_90_deg_down<supportType>;
+            return BolligerMabillardTrackLeftQuarterTurn190DegDown<supportType>;
         case TrackElemType::RightQuarterTurn1TileDown90:
-            return bolliger_mabillard_track_right_quarter_turn_1_90_deg_down<supportType>;
+            return BolligerMabillardTrackRightQuarterTurn190DegDown<supportType>;
         /* The following track elements used to be specific to the vertical RC */
         case TrackElemType::FlatToUp60:
-            return bolliger_mabillard_track_flat_to_60_deg_up<supportType>;
+            return BolligerMabillardTrackFlatTo60DegUp<supportType>;
         case TrackElemType::Up60ToFlat:
-            return bolliger_mabillard_track_60_deg_up_to_flat<supportType>;
+            return BolligerMabillardTrack60DegUpToFlat<supportType>;
         case TrackElemType::FlatToDown60:
-            return bolliger_mabillard_track_flat_to_60_deg_down<supportType>;
+            return BolligerMabillardTrackFlatTo60DegDown<supportType>;
         case TrackElemType::Down60ToFlat:
-            return bolliger_mabillard_track_60_deg_down_to_flat<supportType>;
+            return BolligerMabillardTrack60DegDownToFlat<supportType>;
         case TrackElemType::BrakeForDrop:
-            return bolliger_mabillard_track_brake_for_drop<supportType>;
+            return BolligerMabillardTrackBrakeForDrop<supportType>;
         case TrackElemType::DiagFlatToUp60:
-            return bolliger_mabillard_track_diag_flat_to_60_deg_up<supportType>;
+            return BolligerMabillardTrackDiagFlatTo60DegUp<supportType>;
         case TrackElemType::DiagUp60ToFlat:
-            return bolliger_mabillard_track_diag_60_deg_up_to_flat<supportType>;
+            return BolligerMabillardTrackDiag60DegUpToFlat<supportType>;
         case TrackElemType::DiagFlatToDown60:
-            return bolliger_mabillard_track_diag_flat_to_60_deg_down<supportType>;
+            return BolligerMabillardTrackDiagFlatTo60DegDown<supportType>;
         case TrackElemType::DiagDown60ToFlat:
-            return bolliger_mabillard_track_diag_60_deg_down_to_flat<supportType>;
+            return BolligerMabillardTrackDiag60DegDownToFlat<supportType>;
         /* The following track elements used to be specific to the Twister RC */
         case TrackElemType::HalfLoopUp:
-            return bolliger_mabillard_track_half_loop_up<supportType>;
+            return BolligerMabillardTrackHalfLoopUp<supportType>;
         case TrackElemType::HalfLoopDown:
-            return bolliger_mabillard_track_half_loop_down<supportType>;
+            return BolligerMabillardTrackHalfLoopDown<supportType>;
         case TrackElemType::LeftCorkscrewUp:
-            return bolliger_mabillard_track_left_corkscrew_up<supportType>;
+            return BolligerMabillardTrackLeftCorkscrewUp<supportType>;
         case TrackElemType::RightCorkscrewUp:
-            return bolliger_mabillard_track_right_corkscrew_up<supportType>;
+            return BolligerMabillardTrackRightCorkscrewUp<supportType>;
         case TrackElemType::LeftCorkscrewDown:
-            return bolliger_mabillard_track_left_corkscrew_down<supportType>;
+            return BolligerMabillardTrackLeftCorkscrewDown<supportType>;
         case TrackElemType::RightCorkscrewDown:
-            return bolliger_mabillard_track_right_corkscrew_down<supportType>;
+            return BolligerMabillardTrackRightCorkscrewDown<supportType>;
         case TrackElemType::FlatToUp60LongBase:
-            return bolliger_mabillard_track_flat_to_60_deg_up_long_base<supportType>;
+            return BolligerMabillardTrackFlatTo60DegUpLongBase<supportType>;
         case TrackElemType::Up60ToFlatLongBase:
-            return bolliger_mabillard_track_60_deg_up_to_flat_long_base<supportType>;
+            return BolligerMabillardTrack60DegUpToFlatLongBase<supportType>;
         case TrackElemType::Down60ToFlatLongBase:
-            return bolliger_mabillard_track_60_deg_down_to_flat_long_base<supportType>;
+            return BolligerMabillardTrack60DegDownToFlatLongBase<supportType>;
         case TrackElemType::FlatToDown60LongBase:
-            return bolliger_mabillard_track_flat_to_60_deg_down_long_base<supportType>;
+            return BolligerMabillardTrackFlatTo60DegDownLongBase<supportType>;
         case TrackElemType::LeftBarrelRollUpToDown:
-            return bolliger_mabillard_track_left_barrel_roll_up_to_down<supportType>;
+            return BolligerMabillardTrackLeftBarrelRollUpToDown<supportType>;
         case TrackElemType::RightBarrelRollUpToDown:
-            return bolliger_mabillard_track_right_barrel_roll_up_to_down<supportType>;
+            return BolligerMabillardTrackRightBarrelRollUpToDown<supportType>;
         case TrackElemType::LeftBarrelRollDownToUp:
-            return bolliger_mabillard_track_left_barrel_roll_down_to_up<supportType>;
+            return BolligerMabillardTrackLeftBarrelRollDownToUp<supportType>;
         case TrackElemType::RightBarrelRollDownToUp:
-            return bolliger_mabillard_track_right_barrel_roll_down_to_up<supportType>;
+            return BolligerMabillardTrackRightBarrelRollDownToUp<supportType>;
         case TrackElemType::PoweredLift:
-            return bolliger_mabillard_track_powered_lift<supportType>;
+            return BolligerMabillardTrackPoweredLift<supportType>;
         case TrackElemType::LeftLargeHalfLoopUp:
-            return bolliger_mabillard_track_left_large_half_loop_up<supportType>;
+            return BolligerMabillardTrackLeftLargeHalfLoopUp<supportType>;
         case TrackElemType::RightLargeHalfLoopUp:
-            return bolliger_mabillard_track_right_large_half_loop_up<supportType>;
+            return BolligerMabillardTrackRightLargeHalfLoopUp<supportType>;
         case TrackElemType::RightLargeHalfLoopDown:
-            return bolliger_mabillard_track_right_large_half_loop_down<supportType>;
+            return BolligerMabillardTrackRightLargeHalfLoopDown<supportType>;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return bolliger_mabillard_track_left_large_half_loop_down<supportType>;
+            return BolligerMabillardTrackLeftLargeHalfLoopDown<supportType>;
         case TrackElemType::Up90ToInvertedFlatQuarterLoop:
-            return bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up<supportType>;
+            return BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp<supportType>;
         case TrackElemType::InvertedFlatToDown90QuarterLoop:
-            return bolliger_mabillard_track_inverted_flat_to_90_deg_quarter_loop_down<supportType>;
+            return BolligerMabillardTrackInvertedFlatTo90DegQuarterLoopDown<supportType>;
 
         case TrackElemType::Booster:
-            return bolliger_mabillard_track_booster<supportType>;
+            return BolligerMabillardTrackBooster<supportType>;
         case TrackElemType::LeftTwistDownToUp:
-            return bolliger_mabillard_track_left_twist_down_to_up<supportType>;
+            return BolligerMabillardTrackLeftTwistDownToUp<supportType>;
         case TrackElemType::RightTwistDownToUp:
-            return bolliger_mabillard_track_right_twist_down_to_up<supportType>;
+            return BolligerMabillardTrackRightTwistDownToUp<supportType>;
         case TrackElemType::LeftTwistUpToDown:
-            return bolliger_mabillard_track_left_twist_up_to_down<supportType>;
+            return BolligerMabillardTrackLeftTwistUpToDown<supportType>;
         case TrackElemType::RightTwistUpToDown:
-            return bolliger_mabillard_track_right_twist_up_to_down<supportType>;
+            return BolligerMabillardTrackRightTwistUpToDown<supportType>;
     }
     return nullptr;
 }

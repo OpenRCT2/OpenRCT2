@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -121,7 +121,7 @@ public:
     {
     }
 
-    [[nodiscard]] uint32_t ToUInt32() const
+    [[nodiscard]] constexpr uint32_t ToUInt32() const
     {
         auto result = (_index & MASK_INDEX);
         result |= (_primary << SHIFT_REMAP) & MASK_REMAP;
@@ -286,6 +286,17 @@ public:
         else
             result._flags &= ~NEW_FLAG_BLEND;
         return result;
+    }
+
+    constexpr bool operator==(const ImageId& rhs) const
+    {
+        return _index == rhs._index && _primary == rhs._primary && _secondary == rhs._secondary && _tertiary == rhs._tertiary
+            && _flags == rhs._flags;
+    }
+
+    constexpr bool operator!=(const ImageId& rhs) const
+    {
+        return !(*this == rhs);
     }
 };
 static_assert(sizeof(ImageId) == 8, "The size of this struct is expected to fit in 64 bits for perfomance reasons. See #18555");

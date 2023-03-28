@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,75 +15,20 @@
 #include "../util/Util.h"
 #include "ImageTable.h"
 #include "ObjectAsset.h"
+#include "ObjectTypes.h"
 #include "StringTable.h"
 
-#include <array>
-#include <limits>
 #include <memory>
 #include <optional>
 #include <string_view>
 #include <vector>
 
-using ObjectEntryIndex = uint16_t;
-constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 struct ObjectRepositoryItem;
 using ride_type_t = uint16_t;
 
-// First 0xF of rct_object_entry->flags
-enum class ObjectType : uint8_t
-{
-    Ride,
-    SmallScenery,
-    LargeScenery,
-    Walls,
-    Banners,
-    Paths,
-    PathBits,
-    SceneryGroup,
-    ParkEntrance,
-    Water,
-    ScenarioText,
-    TerrainSurface,
-    TerrainEdge,
-    Station,
-    Music,
-    FootpathSurface,
-    FootpathRailings,
-    Audio,
-
-    Count,
-    None = 255
-};
-
-constexpr std::array ObjectTypes = {
-    ObjectType::Ride,
-    ObjectType::SmallScenery,
-    ObjectType::LargeScenery,
-    ObjectType::Walls,
-    ObjectType::Banners,
-    ObjectType::Paths,
-    ObjectType::PathBits,
-    ObjectType::SceneryGroup,
-    ObjectType::ParkEntrance,
-    ObjectType::Water,
-    ObjectType::ScenarioText,
-    ObjectType::TerrainSurface,
-    ObjectType::TerrainEdge,
-    ObjectType::Station,
-    ObjectType::Music,
-    ObjectType::FootpathSurface,
-    ObjectType::FootpathRailings,
-    ObjectType::Audio,
-};
-static_assert(ObjectTypes.size() == EnumValue(ObjectType::Count));
-
-// Object types that can be saved in a park file.
-constexpr std::array<ObjectType, 16> TransientObjectTypes = {
-    ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
-    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathBits,        ObjectType::SceneryGroup,
-    ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
-    ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
-};
+constexpr const size_t VersionNumFields = 3;
+using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
+static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 
 namespace ObjectSelectionFlags
 {
@@ -114,7 +59,7 @@ enum class ObjectSourceGame : uint8_t
  * Object entry structure.
  * size: 0x10
  */
-struct rct_object_entry
+struct RCTObjectEntry
 {
     union
     {
@@ -155,25 +100,17 @@ struct rct_object_entry
     }
 
     bool IsEmpty() const;
-    bool operator==(const rct_object_entry& rhs) const;
-    bool operator!=(const rct_object_entry& rhs) const;
+    bool operator==(const RCTObjectEntry& rhs) const;
+    bool operator!=(const RCTObjectEntry& rhs) const;
 };
-assert_struct_size(rct_object_entry, 0x10);
+assert_struct_size(RCTObjectEntry, 0x10);
 
 #pragma pack(pop)
 
-struct rct_ride_filters
+struct RideFilters
 {
     uint8_t category[2];
     ride_type_t ride_type;
-};
-
-struct rct_object_filters
-{
-    union
-    {
-        rct_ride_filters ride;
-    };
 };
 
 enum class ObjectGeneration : uint8_t
@@ -187,15 +124,15 @@ struct ObjectEntryDescriptor
     ObjectGeneration Generation = ObjectGeneration::JSON;
 
     // DAT
-    rct_object_entry Entry{};
+    RCTObjectEntry Entry{};
 
     // JSON
     ObjectType Type{};
     std::string Identifier;
-    std::string Version;
+    ObjectVersion Version;
 
     ObjectEntryDescriptor() = default;
-    explicit ObjectEntryDescriptor(const rct_object_entry& newEntry);
+    explicit ObjectEntryDescriptor(const RCTObjectEntry& newEntry);
     explicit ObjectEntryDescriptor(std::string_view newIdentifier);
     explicit ObjectEntryDescriptor(ObjectType type, std::string_view newIdentifier);
     explicit ObjectEntryDescriptor(const ObjectRepositoryItem& ori);
@@ -213,7 +150,7 @@ namespace OpenRCT2
     struct IStream;
 }
 struct ObjectRepositoryItem;
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 enum class ObjectError : uint32_t
 {
@@ -250,7 +187,7 @@ class Object
 {
 private:
     std::string _identifier;
-    std::string _version;
+    ObjectVersion _version;
     ObjectEntryDescriptor _descriptor{};
     StringTable _stringTable;
     ImageTable _imageTable;
@@ -333,7 +270,7 @@ public:
     }
 
     // TODO remove this, we should no longer assume objects have a legacy object entry
-    const rct_object_entry& GetObjectEntry() const
+    const RCTObjectEntry& GetObjectEntry() const
     {
         return _descriptor.Entry;
     }
@@ -349,7 +286,7 @@ public:
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual void DrawPreview(rct_drawpixelinfo* /*dpi*/, int32_t /*width*/, int32_t /*height*/) const
+    virtual void DrawPreview(DrawPixelInfo& /*dpi*/, int32_t /*width*/, int32_t /*height*/) const
     {
     }
 
@@ -364,11 +301,11 @@ public:
 
     const std::vector<std::string>& GetAuthors() const;
     void SetAuthors(std::vector<std::string>&& authors);
-    const std::string& GetVersion() const
+    const ObjectVersion& GetVersion() const
     {
         return _version;
     }
-    void SetVersion(const std::string& version)
+    void SetVersion(const ObjectVersion& version)
     {
         _version = version;
     }
@@ -378,9 +315,8 @@ public:
         return _imageTable;
     }
 
-    ObjectEntryDescriptor GetScgWallsHeader() const;
     ObjectEntryDescriptor GetScgPathXHeader() const;
-    rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
+    RCTObjectEntry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
 
     uint32_t GetNumImages() const
     {
@@ -394,15 +330,18 @@ public:
 extern int32_t object_entry_group_counts[];
 extern int32_t object_entry_group_encoding[];
 
-int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
-void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
+int32_t ObjectCalculateChecksum(const RCTObjectEntry* entry, const void* data, size_t dataLength);
+void ObjectCreateIdentifierName(char* string_buffer, size_t size, const RCTObjectEntry* object);
 
-void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
+void ObjectEntryGetNameFixed(utf8* buffer, size_t bufferSize, const RCTObjectEntry* entry);
 
-void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index);
-const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index);
+void* ObjectEntryGetChunk(ObjectType objectType, ObjectEntryIndex index);
+const Object* ObjectEntryGetObject(ObjectType objectType, ObjectEntryIndex index);
 
 constexpr bool IsIntransientObjectType(ObjectType type)
 {
     return type == ObjectType::Audio;
 }
+
+u8string VersionString(const ObjectVersion& version);
+ObjectVersion VersionTuple(std::string_view version);

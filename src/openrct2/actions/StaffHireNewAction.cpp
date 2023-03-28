@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,6 +25,8 @@
 #include "../ui/WindowManager.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
+
+#include <set>
 
 /* rct2: 0x009929FC */
 static constexpr const PeepSpriteType spriteTypes[] = {
@@ -81,7 +83,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
     if (_staffType >= static_cast<uint8_t>(StaffType::Count))
     {
         // Invalid staff type.
-        log_error("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
+        LOG_ERROR("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
 
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
     }
@@ -96,16 +98,16 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         if (static_cast<uint8_t>(_entertainerType) >= static_cast<uint8_t>(EntertainerCostume::Count))
         {
             // Invalid entertainer costume
-            log_error("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
+            LOG_ERROR("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
         }
 
-        uint32_t availableCostumes = staff_get_available_entertainer_costumes();
+        uint32_t availableCostumes = StaffGetAvailableEntertainerCostumes();
         if (!(availableCostumes & (1 << static_cast<uint8_t>(_entertainerType))))
         {
             // Entertainer costume unavailable
-            log_error("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
+            LOG_ERROR("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
         }
@@ -142,28 +144,23 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->StaffOrders = _staffOrders;
 
         // We search for the first available Id for a given staff type
-        uint32_t newStaffId = 0;
-        for (;;)
+        std::set<uint32_t> usedStaffIds;
+
+        for (auto searchPeep : EntityList<Staff>())
         {
-            bool found = false;
-            ++newStaffId;
-            for (auto searchPeep : EntityList<Staff>())
-            {
-                if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
-                    continue;
+            if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
+                continue;
 
-                if (searchPeep->Id == newStaffId)
-                {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-                break;
+            usedStaffIds.insert(searchPeep->PeepId);
         }
 
-        newPeep->Id = newStaffId;
+        uint32_t newStaffId = 1;
+        while (usedStaffIds.find(newStaffId) != usedStaffIds.end())
+        {
+            newStaffId++;
+        }
+
+        newPeep->PeepId = newStaffId;
         newPeep->AssignedStaffType = static_cast<StaffType>(_staffType);
 
         PeepSpriteType spriteType = spriteTypes[_staffType];
@@ -174,7 +171,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->Name = nullptr;
         newPeep->SpriteType = spriteType;
 
-        const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(spriteType);
+        const SpriteBounds* spriteBounds = &GetSpriteBounds(spriteType);
         newPeep->sprite_width = spriteBounds->sprite_width;
         newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
         newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
@@ -199,7 +196,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->PathfindGoal.z = 0xFF;
         newPeep->PathfindGoal.direction = INVALID_DIRECTION;
 
-        uint8_t colour = staff_get_colour(static_cast<StaffType>(_staffType));
+        uint8_t colour = StaffGetColour(static_cast<StaffType>(_staffType));
         newPeep->TshirtColour = colour;
         newPeep->TrousersColour = colour;
 
@@ -210,7 +207,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
 
         newPeep->PatrolInfo = nullptr;
 
-        res.SetData(StaffHireNewActionResult{ newPeep->sprite_index });
+        res.SetData(StaffHireNewActionResult{ newPeep->Id });
     }
 
     return res;
@@ -242,7 +239,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     if (count > 0)
     {
         // Place staff at a random guest
-        uint32_t rand = scenario_rand_max(count);
+        uint32_t rand = ScenarioRandMax(count);
         Guest* chosenGuest = nullptr;
 
         for (auto guest : EntityList<Guest>())
@@ -278,7 +275,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
         // No walking guests; pick random park entrance
         if (!gParkEntrances.empty())
         {
-            auto rand = scenario_rand_max(static_cast<uint32_t>(gParkEntrances.size()));
+            auto rand = ScenarioRandMax(static_cast<uint32_t>(gParkEntrances.size()));
             const auto& entrance = gParkEntrances[rand];
             auto dir = entrance.direction;
             newLocation = entrance;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,8 @@ static void PaintFacility(
     auto lengthX = (direction & 1) == 0 ? 28 : 2;
     auto lengthY = (direction & 1) == 0 ? 2 : 28;
     CoordsXYZ offset(0, 0, height);
-    BoundBoxXYZ bb = { { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height }, { lengthX, lengthY, 29 } };
+    BoundBoxXYZ bb = { { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height },
+                       { lengthX, lengthY, trackElement.GetClearanceZ() - trackElement.GetBaseZ() - 3 } };
 
     auto imageTemplate = session.TrackColours[SCHEME_TRACK];
     auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
@@ -71,7 +72,7 @@ static void PaintFacility(
 }
 
 /* 0x00762D44 */
-TRACK_PAINT_FUNCTION get_track_paint_function_facility(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFacility(int32_t trackType)
 {
     switch (trackType)
     {

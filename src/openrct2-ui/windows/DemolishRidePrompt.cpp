@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,7 @@ enum WindowRideDemolishWidgetIdx
     WIDX_CANCEL
 };
 
-static rct_widget window_ride_demolish_widgets[] =
+static Widget window_ride_demolish_widgets[] =
 {
     WINDOW_SHIM_WHITE(STR_DEMOLISH_RIDE, WW, WH),
     MakeWidget({     10, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_DEMOLISH          ),
@@ -42,13 +42,13 @@ static rct_widget window_ride_demolish_widgets[] =
 
 class DemolishRidePromptWindow final : public Window
 {
-    money32 _demolishRideCost;
+    money64 _demolishRideCost;
 
 public:
-    void SetRide(Ride* currentRide)
+    void SetRide(const Ride& currentRide)
     {
-        rideId = currentRide->id;
-        _demolishRideCost = -ride_get_refund_price(currentRide);
+        rideId = currentRide.id;
+        _demolishRideCost = -RideGetRefundPrice(currentRide);
     }
 
     void OnOpen() override
@@ -74,11 +74,11 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         WindowDrawWidgets(*this, &dpi);
 
-        auto currentRide = get_ride(rideId);
+        auto currentRide = GetRide(rideId);
         if (currentRide != nullptr)
         {
             auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID : STR_DEMOLISH_RIDE_ID_MONEY;
@@ -87,21 +87,21 @@ public:
             ft.Add<money64>(_demolishRideCost);
 
             ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
-            DrawTextWrapped(&dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
+            DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
         }
     }
 };
 
-rct_window* WindowRideDemolishPromptOpen(Ride* ride)
+WindowBase* WindowRideDemolishPromptOpen(const Ride& ride)
 {
-    rct_window* w;
+    WindowBase* w;
     DemolishRidePromptWindow* newWindow;
 
-    w = window_find_by_class(WindowClass::DemolishRidePrompt);
+    w = WindowFindByClass(WindowClass::DemolishRidePrompt);
     if (w != nullptr)
     {
         auto windowPos = w->windowPos;
-        window_close(*w);
+        WindowClose(*w);
         newWindow = WindowCreate<DemolishRidePromptWindow>(WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
     }
     else

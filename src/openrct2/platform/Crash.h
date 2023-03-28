@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,6 @@
 using CExceptionHandler = void*;
 
 extern bool gOpenRCT2SilentBreakpad;
-CExceptionHandler crash_init();
-void crash_register_additional_file(const std::string& key, const std::string& path);
-void crash_unregister_additional_file(const std::string& key);
+CExceptionHandler CrashInit();
+void CrashRegisterAdditionalFile(const std::string& key, const std::string& path);
+void CrashUnregisterAdditionalFile(const std::string& key);

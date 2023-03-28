@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,8 +24,8 @@
 void TerrainSurfaceObject::Load()
 {
     GetStringTable().Sort();
-    NameStringId = language_allocate_object_string(GetName());
-    IconImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    NameStringId = LanguageAllocateObjectString(GetName());
+    IconImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     if ((Flags & SMOOTH_WITH_SELF) || (Flags & SMOOTH_WITH_OTHER))
     {
         PatternBaseImageId = IconImageId + 1;
@@ -40,8 +40,8 @@ void TerrainSurfaceObject::Load()
 
 void TerrainSurfaceObject::Unload()
 {
-    language_free_object_string(NameStringId);
-    gfx_object_free_images(IconImageId, GetImageTable().GetCount());
+    LanguageFreeObjectString(NameStringId);
+    GfxObjectFreeImages(IconImageId, GetImageTable().GetCount());
 
     NameStringId = 0;
     IconImageId = 0;
@@ -50,7 +50,7 @@ void TerrainSurfaceObject::Unload()
     NumEntries = 0;
 }
 
-void TerrainSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void TerrainSurfaceObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto imageId = ImageId(GetImageId({}, 1, 0, 0, false, false));
     if (Colour != 255)
@@ -70,7 +70,7 @@ void TerrainSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, in
         }
         for (int32_t j = 0; j < 4; j++)
         {
-            gfx_draw_sprite(dpi, imageId, screenCoords);
+            GfxDrawSprite(&dpi, imageId, screenCoords);
             screenCoords.x += 64;
         }
         screenCoords.y += 16;
@@ -87,7 +87,7 @@ void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         Colour = Colour::FromString(Json::GetString(properties["colour"]), 255);
         Rotations = Json::GetNumber<int8_t>(properties["rotations"], 1);
-        Price = Json::GetNumber<money32>(properties["price"]);
+        Price = Json::GetNumber<money64>(properties["price"]);
         Flags = Json::GetFlags<TERRAIN_SURFACE_FLAGS>(
             properties,
             { { "smoothWithSelf", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_SELF },

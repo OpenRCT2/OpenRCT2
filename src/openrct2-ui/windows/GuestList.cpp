@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
@@ -50,16 +51,16 @@ enum WindowGuestListWidgetIdx
 };
 
 // clang-format off
-static rct_widget window_guest_list_widgets[] = {
+static Widget window_guest_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {350, 287}, WindowWidgetType::Resize,   WindowColour::Secondary                                                   ), // tab content panel
     MakeWidget({  5, 59}, { 80,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
     MakeWidget({ 73, 60}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button
     MakeWidget({120, 59}, {142,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
     MakeWidget({250, 60}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
-    MakeWidget({273, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_MAP,            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
-    MakeWidget({297, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SEARCH,      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
-    MakeWidget({321, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_TRACK_PEEP,     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
+    MakeWidget({273, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_MAP),            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
+    MakeWidget({297, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_SEARCH),      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
+    MakeWidget({321, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_TRACK_PEEP),     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
     MakeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
     MakeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
     MakeWidget({  3, 72}, {344, 255}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_BOTH                                      ), // guest list
@@ -183,7 +184,7 @@ public:
         {
             case GuestListFilterType::GuestsOnRide:
             {
-                auto guestRide = get_ride(RideId::FromUnderlying(index));
+                auto guestRide = GetRide(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<StringId>(
@@ -199,7 +200,7 @@ public:
             }
             case GuestListFilterType::GuestsInQueue:
             {
-                auto guestRide = get_ride(RideId::FromUnderlying(index));
+                auto guestRide = GetRide(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<StringId>(STR_QUEUING_FOR);
@@ -214,7 +215,7 @@ public:
             }
             case GuestListFilterType::GuestsThinkingAboutRide:
             {
-                auto guestRide = get_ride(RideId::FromUnderlying(index));
+                auto guestRide = GetRide(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<StringId>(STR_NONE);
@@ -439,7 +440,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -472,7 +473,7 @@ public:
 
         {
             Formatter ft(_filterArguments.args);
-            DrawTextEllipsised(&dpi, screenCoords, 310, format, ft);
+            DrawTextEllipsised(dpi, screenCoords, 310, format, ft);
         }
 
         // Number of guests (list items)
@@ -482,7 +483,7 @@ public:
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(_guestList.size()));
             DrawTextBasic(
-                &dpi, screenCoords, (_guestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL),
+                dpi, screenCoords, (_guestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL),
                 ft);
         }
     }
@@ -585,9 +586,9 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
         switch (_selectedTab)
         {
@@ -626,11 +627,11 @@ public:
                     continue;
 
                 auto& item = _guestList.emplace_back();
-                item.Id = peep->sprite_index;
+                item.Id = peep->Id;
 
                 Formatter ft;
                 peep->FormatNameTo(ft);
-                format_string(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
+                OpenRCT2::FormatStringLegacy(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
             }
 
             std::sort(_guestList.begin(), _guestList.end(), GetGuestCompareFunc());
@@ -638,23 +639,23 @@ public:
     }
 
 private:
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Tab 1 image
         auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
         i += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
-        gfx_draw_sprite(
+        GfxDrawSprite(
             &dpi, ImageId(i, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN),
             windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });
 
         // Tab 2 image
         i = (_selectedTab == TabId::Summarised ? _tabAnimationIndex / 4 : 0);
-        gfx_draw_sprite(
+        GfxDrawSprite(
             &dpi, ImageId(SPR_TAB_GUESTS_0 + i),
             windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
     }
 
-    void DrawScrollIndividual(rct_drawpixelinfo& dpi)
+    void DrawScrollIndividual(DrawPixelInfo& dpi)
     {
         size_t index = 0;
         auto y = static_cast<int32_t>(_selectedPage) * -GUEST_PAGE_HEIGHT;
@@ -668,7 +669,7 @@ private:
                 StringId format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -680,22 +681,22 @@ private:
                 }
                 auto ft = Formatter();
                 peep->FormatNameTo(ft);
-                DrawTextEllipsised(&dpi, { 0, y }, 113, format, ft);
+                DrawTextEllipsised(dpi, { 0, y }, 113, format, ft);
 
                 switch (_selectedView)
                 {
                     case GuestViewType::Actions:
                         // Guest face
-                        gfx_draw_sprite(&dpi, ImageId(get_peep_face_sprite_small(peep)), { 118, y + 1 });
+                        GfxDrawSprite(&dpi, ImageId(GetPeepFaceSpriteSmall(peep)), { 118, y + 1 });
 
                         // Tracking icon
                         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
-                            gfx_draw_sprite(&dpi, ImageId(STR_ENTER_SELECTION_SIZE), { 112, y + 1 });
+                            GfxDrawSprite(&dpi, ImageId(STR_ENTER_SELECTION_SIZE), { 112, y + 1 });
 
                         // Action
                         ft = Formatter();
                         peep->FormatActionTo(ft);
-                        DrawTextEllipsised(&dpi, { 133, y }, 314, format, ft);
+                        DrawTextEllipsised(dpi, { 133, y }, 314, format, ft);
                         break;
                     case GuestViewType::Thoughts:
                         // For each thought
@@ -709,8 +710,8 @@ private:
                                 break;
 
                             ft = Formatter();
-                            peep_thought_set_format_args(&thought, ft);
-                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, { FontStyle::Small });
+                            PeepThoughtSetFormatArgs(&thought, ft);
+                            DrawTextEllipsised(dpi, { 118, y }, 329, format, ft, { FontStyle::Small });
                             break;
                         }
                         break;
@@ -721,7 +722,7 @@ private:
         }
     }
 
-    void DrawScrollSummarised(rct_drawpixelinfo& dpi)
+    void DrawScrollSummarised(DrawPixelInfo& dpi)
     {
         size_t index = 0;
         auto y = 0;
@@ -738,14 +739,14 @@ private:
                 StringId format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(&dpi, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
                 // Draw guest faces
                 for (uint32_t j = 0; j < std::size(group.Faces) && j < group.NumGuests; j++)
                 {
-                    gfx_draw_sprite(
+                    GfxDrawSprite(
                         &dpi, ImageId(group.Faces[j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY),
                         { static_cast<int32_t>(j) * 8, y + 12 });
                 }
@@ -755,18 +756,18 @@ private:
                 // Draw small font if displaying guests
                 if (_selectedView == GuestViewType::Thoughts)
                 {
-                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, { FontStyle::Small });
+                    DrawTextEllipsised(dpi, { 0, y }, 414, format, ft, { FontStyle::Small });
                 }
                 else
                 {
-                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft);
+                    DrawTextEllipsised(dpi, { 0, y }, 414, format, ft);
                 }
 
                 // Draw guest count
                 ft = Formatter();
                 ft.Add<StringId>(STR_GUESTS_COUNT_COMMA_SEP);
                 ft.Add<uint32_t>(group.NumGuests);
-                DrawTextBasic(&dpi, { 326, y }, format, ft, { TextAlignment::RIGHT });
+                DrawTextBasic(dpi, { 326, y }, format, ft, { TextAlignment::RIGHT });
             }
             y += SUMMARISED_GUEST_ROW_HEIGHT;
             index++;
@@ -784,8 +785,8 @@ private:
 
             Formatter ft;
             peep.FormatNameTo(ft);
-            format_string(name, sizeof(name), STR_STRINGID, ft.Data());
-            if (strcasestr(name, _filterName.c_str()) == nullptr)
+            OpenRCT2::FormatStringLegacy(name, sizeof(name), STR_STRINGID, ft.Data());
+            if (!String::Contains(name, _filterName.c_str(), true))
             {
                 return false;
             }
@@ -807,7 +808,7 @@ private:
 
     bool IsRefreshOfGroupsRequired()
     {
-        uint32_t tick256 = floor2(gCurrentTicks, 256);
+        uint32_t tick256 = Floor2(gCurrentTicks, 256);
         if (_selectedView == _lastFindGroupsSelectedView)
         {
             if (_lastFindGroupsWait != 0 || _lastFindGroupsTick == tick256)
@@ -834,7 +835,7 @@ private:
 
     void RefreshGroups()
     {
-        _lastFindGroupsTick = floor2(gCurrentTicks, 256);
+        _lastFindGroupsTick = Floor2(gCurrentTicks, 256);
         _lastFindGroupsSelectedView = _selectedView;
         _lastFindGroupsWait = 320;
         _groups.clear();
@@ -847,7 +848,7 @@ private:
             auto& group = FindOrAddGroup(GetArgumentsFromPeep(*peep, _selectedView));
             if (group.NumGuests < std::size(group.Faces))
             {
-                group.Faces[group.NumGuests] = get_peep_face_sprite_small(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
+                group.Faces[group.NumGuests] = GetPeepFaceSpriteSmall(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
             }
             group.NumGuests++;
         }
@@ -889,7 +890,7 @@ private:
                 const auto& thought = peep.Thoughts[0];
                 if (thought.type != PeepThoughtType::None && thought.freshness <= 5)
                 {
-                    peep_thought_set_format_args(&thought, ft);
+                    PeepThoughtSetFormatArgs(&thought, ft);
                 }
                 break;
             }
@@ -941,11 +942,11 @@ private:
                 if (peepA->Name == nullptr && peepB->Name == nullptr)
                 {
                     // Simple ID comparison for when both peeps use a number or a generated name
-                    return peepA->Id < peepB->Id;
+                    return peepA->PeepId < peepB->PeepId;
                 }
             }
         }
-        return strlogicalcmp(a.Name, b.Name) < 0;
+        return StrLogicalCmp(a.Name, b.Name) < 0;
     }
 
     static GuestItem::CompareFunc GetGuestCompareFunc()
@@ -954,9 +955,9 @@ private:
     }
 };
 
-rct_window* WindowGuestListOpen()
+WindowBase* WindowGuestListOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::GuestList);
+    auto* window = WindowBringToFrontByClass(WindowClass::GuestList);
     if (window == nullptr)
     {
         window = WindowCreate<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
@@ -967,7 +968,7 @@ rct_window* WindowGuestListOpen()
 /**
  * @param index The number of the ride or index of the thought
  */
-rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index)
+WindowBase* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index)
 {
     auto* w = static_cast<GuestListWindow*>(WindowGuestListOpen());
     if (w != nullptr)
@@ -979,7 +980,7 @@ rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t inde
 
 void WindowGuestListRefreshList()
 {
-    auto* w = window_find_by_class(WindowClass::GuestList);
+    auto* w = WindowFindByClass(WindowClass::GuestList);
     if (w != nullptr)
     {
         static_cast<GuestListWindow*>(w)->RefreshList();

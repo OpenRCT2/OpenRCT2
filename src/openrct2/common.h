@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,9 +9,6 @@
 
 #pragma once
 
-#ifndef _USE_MATH_DEFINES
-#    define _USE_MATH_DEFINES
-#endif
 #undef M_PI
 
 #ifdef _MSC_VER
@@ -37,11 +34,10 @@ using colour_t = uint8_t;
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #    include <unistd.h>
-#    define STUB() log_warning("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__)
+#    define STUB() LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__)
 #    define _strcmpi _stricmp
 #    define _stricmp(x, y) strcasecmp((x), (y))
 #    define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
-#    define _strdup(x) strdup((x))
 
 #    if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #        define RCT2_ENDIANNESS __ORDER_LITTLE_ENDIAN__
@@ -81,7 +77,6 @@ using fixed32_2dp = int32_t;
 using fixed64_1dp = int64_t;
 
 // Money is stored as a multiple of 0.10.
-using money8 = fixed8_1dp;
 using money16 = fixed16_1dp;
 using money32 = fixed32_1dp;
 using money64 = fixed64_1dp;
@@ -92,18 +87,25 @@ using money64 = fixed64_1dp;
 #define FIXED_1DP(whole, fraction) FIXED_XDP(1, whole, fraction)
 #define FIXED_2DP(whole, fraction) FIXED_XDP(10, whole, fraction)
 
-// User defined literal to convert money literal to money32
-constexpr money32 operator"" _GBP(long double money) noexcept
+// For a user defined floating point literal, the parameter type must be a
+// `long double` which is problematic on ppc64el, as the architecture uses a
+// pair of `doubles` to represent that type. This cannot be converted to a
+// `constexpr`. As a workaround, statically cast the `long double` down to a
+// `double`. All of the uses of _GBP constants fit just fine, and if anyone
+// really tries to use a gigantic constant that can't fit in a double, they are
+// probably going to be breaking other things anyways.
+// For more details, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=26374
+constexpr money64 operator"" _GBP(long double money) noexcept
+{
+    return static_cast<double>(money) * 10;
+}
+
+constexpr money64 ToMoney64FromGBP(int32_t money) noexcept
 {
     return money * 10;
 }
 
-constexpr money32 ToMoney32FromGBP(int32_t money) noexcept
-{
-    return money * 10;
-}
-
-constexpr money32 ToMoney32FromGBP(double money) noexcept
+constexpr money64 ToMoney64FromGBP(int64_t money) noexcept
 {
     return money * 10;
 }
@@ -117,6 +119,11 @@ constexpr money64 ToMoney64FromGBP(double money) noexcept
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 #define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))
 
+constexpr money16 ToMoney16(money64 value)
+{
+    return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : value;
+}
+
 constexpr money64 ToMoney64(money32 value)
 {
     return value == MONEY32_UNDEFINED ? MONEY64_UNDEFINED : value;
@@ -127,14 +134,12 @@ constexpr money64 ToMoney64(money16 value)
     return value == MONEY16_UNDEFINED ? MONEY64_UNDEFINED : value;
 }
 
-constexpr money32 ToMoney32(money64 value)
+// Note: Only valid for 5 decimal places.
+constexpr int32_t operator"" _mph(long double speedMph)
 {
-    return value == MONEY64_UNDEFINED ? MONEY32_UNDEFINED : static_cast<money32>(value);
-}
-
-constexpr money16 ToMoney16(money64 value)
-{
-    return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : static_cast<money16>(value);
+    uint32_t wholeNumber = speedMph;
+    uint64_t fraction = (speedMph - wholeNumber) * 100000;
+    return wholeNumber << 16 | ((fraction << 16) / 100000);
 }
 
 using StringId = uint16_t;

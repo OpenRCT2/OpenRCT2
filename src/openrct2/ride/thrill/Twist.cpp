@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,10 +20,10 @@
 #include "../Vehicle.h"
 
 /** rct2: 0x0076E5C9 */
-static void paint_twist_structure(
+static void PaintTwistStructure(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
-    rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     Vehicle* vehicle = nullptr;
 
     if (rideEntry == nullptr)
@@ -51,7 +51,7 @@ static void paint_twist_structure(
 
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
         imageTemplate = imageFlags;
     }
@@ -81,7 +81,7 @@ static void paint_twist_structure(
 }
 
 /** rct2: 0x0076D858 */
-static void paint_twist(
+static void PaintTwist(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -94,24 +94,24 @@ static void paint_twist(
     WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_FENCE_ROPE_SW);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 3 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 3 }, { 1, 28, 7 } });
             }
-            if (track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_FENCE_ROPE_SE);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
             }
             break;
         default:
-            track_paint_util_paint_fences(
+            TrackPaintUtilPaintFences(
                 session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height,
                 fenceSpritesRope, session.CurrentRotation);
             break;
@@ -120,22 +120,22 @@ static void paint_twist(
     switch (trackSequence)
     {
         case 1:
-            paint_twist_structure(session, ride, direction, 32, 32, height);
+            PaintTwistStructure(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_twist_structure(session, ride, direction, 32, -32, height);
+            PaintTwistStructure(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_twist_structure(session, ride, direction, 0, -32, height);
+            PaintTwistStructure(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_twist_structure(session, ride, direction, -32, 32, height);
+            PaintTwistStructure(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_twist_structure(session, ride, direction, -32, -32, height);
+            PaintTwistStructure(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_twist_structure(session, ride, direction, -32, 0, height);
+            PaintTwistStructure(session, ride, direction, -32, 0, height);
             break;
     }
 
@@ -164,12 +164,12 @@ static void paint_twist(
 /**
  * rct2: 0x0076D658
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_twist(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwist(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
         return nullptr;
     }
 
-    return paint_twist;
+    return PaintTwist;
 }

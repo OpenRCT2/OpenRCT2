@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -474,15 +474,15 @@ static constexpr const SpriteBb RiverRaftsRightQuarterTurn5_Side[4][5] = {
     },
 };
 
-static void paint_splash_boats_track_25_deg_up(
+static void PaintSplashBoatsTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpImageId[direction]);
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpFrontImageId[direction]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
     WoodenASupportsPaintSetup(session, (direction & 1), 9 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -498,7 +498,7 @@ static void paint_splash_boats_track_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void paint_splash_boats_track_60_deg_up(
+static void PaintSplashBoatsTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -506,8 +506,8 @@ static void paint_splash_boats_track_60_deg_up(
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-        session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 98 }, { 0, 27, height });
+        session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 98 } });
 
     WoodenASupportsPaintSetup(session, (direction & 1), 21 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -523,15 +523,15 @@ static void paint_splash_boats_track_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-static void paint_splash_boats_track_flat_to_25_deg_up(
+static void PaintSplashBoatsTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegUpImageId[direction]);
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegUpFrontImageId[direction]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
     WoodenASupportsPaintSetup(session, (direction & 1), 1 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -547,15 +547,15 @@ static void paint_splash_boats_track_flat_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_up_to_flat(
+static void PaintSplashBoatsTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpToFlatImageId[direction]);
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpToFlatFrontImageId[direction]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
 
     WoodenASupportsPaintSetup(session, (direction & 1), 5 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -571,7 +571,7 @@ static void paint_splash_boats_track_25_deg_up_to_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_up_to_60_deg_up(
+static void PaintSplashBoatsTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -579,8 +579,8 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpTo60DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-        session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
+        session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
     WoodenASupportsPaintSetup(session, (direction & 1), 13 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -596,7 +596,7 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-static void paint_splash_boats_track_60_deg_up_to_25_deg_up(
+static void PaintSplashBoatsTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -604,8 +604,8 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpTo25DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-        session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 66 }, { 0, 27, height });
+        session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
     WoodenASupportsPaintSetup(session, (direction & 1), 17 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -621,15 +621,15 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_down(
+static void PaintSplashBoatsTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownImageId[direction]);
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownFrontImageId[direction]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 50 }, { 0, 27, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
     static constexpr const uint8_t specialSupport[] = { 11, 12, 9, 10 };
     WoodenASupportsPaintSetup(
@@ -647,22 +647,22 @@ static void paint_splash_boats_track_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void paint_splash_boats_track_60_deg_down(
+static void PaintSplashBoatsTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_splash_boats_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    PaintSplashBoatsTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void paint_splash_boats_track_flat_to_25_deg_down(
+static void PaintSplashBoatsTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegDownImageId[direction]);
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegDownFrontImageId[direction]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
 
     static constexpr const uint8_t specialSupport[] = { 7, 8, 5, 6 };
     WoodenASupportsPaintSetup(
@@ -680,29 +680,29 @@ static void paint_splash_boats_track_flat_to_25_deg_down(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-static void paint_splash_boats_track_25_deg_down_to_60_deg_down(
+static void PaintSplashBoatsTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_splash_boats_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    PaintSplashBoatsTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void paint_splash_boats_track_60_deg_down_to_25_deg_down(
+static void PaintSplashBoatsTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_splash_boats_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    PaintSplashBoatsTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void paint_splash_boats_track_25_deg_down_to_flat(
+static void PaintSplashBoatsTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownToFlatImageId[direction]);
     auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownToFlatFrontImageId[direction]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { 32, 1, 42 }, { 0, 27, height });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
     static constexpr const uint8_t specialSupport[] = { 3, 4, 1, 2 };
     WoodenASupportsPaintSetup(
@@ -722,7 +722,7 @@ static void paint_splash_boats_track_25_deg_down_to_flat(
 
 /** Start of elements originally from River Rafts */
 /** rct2: 0x0089B170 */
-static void paint_splash_boats_track_flat(
+static void PaintSplashBoatsTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -732,21 +732,21 @@ static void paint_splash_boats_track_flat(
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 2 }, { 6, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 2 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             (direction == 1 ? SPR_SPLASH_BOATS_FLAT_SIDE_NW_SE : SPR_SPLASH_BOATS_FLAT_SIDE_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
     }
     else
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 2 }, { 0, 6, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             (direction == 0 ? SPR_SPLASH_BOATS_FLAT_SIDE_SW_NE : SPR_SPLASH_BOATS_FLAT_SIDE_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
 
     WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -765,7 +765,7 @@ static void paint_splash_boats_track_flat(
 }
 
 /** rct2: 0x0089B1A0 */
-static void paint_splash_boats_station(
+static void PaintSplashBoatsStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -773,7 +773,7 @@ static void paint_splash_boats_station(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height + 3 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 3 }, { 20, 32, 1 } });
 
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
@@ -782,7 +782,7 @@ static void paint_splash_boats_station(
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
@@ -790,7 +790,7 @@ static void paint_splash_boats_station(
 
     WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 7, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 7, trackElement);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -799,13 +799,13 @@ static void paint_splash_boats_station(
 }
 
 /** rct2: 0x0089B1D0 */
-static void paint_splash_boats_track_left_quarter_turn_5_tiles(
+static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Top);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4)
@@ -878,13 +878,13 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(
 }
 
 /** rct2: 0x0089B1D0 */
-static void paint_splash_boats_track_right_quarter_turn_5_tiles(
+static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Top);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4)
@@ -957,7 +957,7 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(
 }
 
 /** rct2: 0x0089B180 */
-static void paint_splash_boats_track_s_bend_left(
+static void PaintSplashBoatsTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -997,17 +997,17 @@ static void paint_splash_boats_track_s_bend_left(
     switch (trackSequence)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
+                session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 26, 2 }, { 0, bboy, height });
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, bboy, height }, { 32, 26, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, frontImageId, { 0, 0, height }, { 32, 26, 0 }, { 0, bboy, height + 27 });
+                session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
             WoodenASupportsPaintSetup(session, supportTypes1[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -1018,9 +1018,9 @@ static void paint_splash_boats_track_s_bend_left(
             break;
         case 2:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 26, 2 }, { 0, bboy, height });
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, bboy, height }, { 32, 26, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, frontImageId, { 0, 0, height }, { 32, 26, 0 }, { 0, bboy, height + 27 });
+                session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
             WoodenASupportsPaintSetup(session, supportTypes2[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -1030,9 +1030,9 @@ static void paint_splash_boats_track_s_bend_left(
                 0xFFFF, 0);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
+                session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
@@ -1057,7 +1057,7 @@ static void paint_splash_boats_track_s_bend_left(
 }
 
 /** rct2: 0x0089B190 */
-static void paint_splash_boats_track_s_bend_right(
+static void PaintSplashBoatsTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1097,17 +1097,17 @@ static void paint_splash_boats_track_s_bend_right(
     switch (trackSequence)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
+                session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 26, 2 }, { 0, bboy, height });
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, bboy, height }, { 32, 26, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, frontImageId, { 0, 0, height }, { 32, 26, 0 }, { 0, bboy, height + 27 });
+                session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
             WoodenASupportsPaintSetup(session, supportTypes1[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -1118,9 +1118,9 @@ static void paint_splash_boats_track_s_bend_right(
             break;
         case 2:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 26, 2 }, { 0, bboy, height });
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, bboy, height }, { 32, 26, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, frontImageId, { 0, 0, height }, { 32, 26, 0 }, { 0, bboy, height + 27 });
+                session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
             WoodenASupportsPaintSetup(session, supportTypes2[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -1130,9 +1130,9 @@ static void paint_splash_boats_track_s_bend_right(
                 0xFFFF, 0);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 27, 2 }, { 0, 2, height });
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
-                session, direction, frontImageId, { 0, 0, height }, { 32, 27, 0 }, { 0, 2, height + 27 });
+                session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
@@ -1156,7 +1156,7 @@ static void paint_splash_boats_track_s_bend_right(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void paint_splash_boats_track_on_ride_photo(
+static void PaintSplashBoatsTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1180,62 +1180,62 @@ static void paint_splash_boats_track_on_ride_photo(
             break;
     }
 
-    paint_splash_boats_track_flat(session, ride, trackSequence, direction, height, trackElement);
+    PaintSplashBoatsTrackFlat(session, ride, trackSequence, direction, height, trackElement);
 
-    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Up25:
-            return paint_splash_boats_track_25_deg_up;
+            return PaintSplashBoatsTrack25DegUp;
         case TrackElemType::Up60:
-            return paint_splash_boats_track_60_deg_up;
+            return PaintSplashBoatsTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return paint_splash_boats_track_flat_to_25_deg_up;
+            return PaintSplashBoatsTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return paint_splash_boats_track_25_deg_up_to_60_deg_up;
+            return PaintSplashBoatsTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return paint_splash_boats_track_60_deg_up_to_25_deg_up;
+            return PaintSplashBoatsTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return paint_splash_boats_track_25_deg_up_to_flat;
+            return PaintSplashBoatsTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return paint_splash_boats_track_25_deg_down;
+            return PaintSplashBoatsTrack25DegDown;
         case TrackElemType::Down60:
-            return paint_splash_boats_track_60_deg_down;
+            return PaintSplashBoatsTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return paint_splash_boats_track_flat_to_25_deg_down;
+            return PaintSplashBoatsTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return paint_splash_boats_track_25_deg_down_to_60_deg_down;
+            return PaintSplashBoatsTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return paint_splash_boats_track_60_deg_down_to_25_deg_down;
+            return PaintSplashBoatsTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return paint_splash_boats_track_25_deg_down_to_flat;
+            return PaintSplashBoatsTrack25DegDownToFlat;
 
         // Originally taken from River Rafts
         case TrackElemType::Flat:
-            return paint_splash_boats_track_flat;
+            return PaintSplashBoatsTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_splash_boats_station;
+            return PaintSplashBoatsStation;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return paint_splash_boats_track_left_quarter_turn_5_tiles;
+            return PaintSplashBoatsTrackLeftQuarterTurn5Tiles;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return paint_splash_boats_track_right_quarter_turn_5_tiles;
+            return PaintSplashBoatsTrackRightQuarterTurn5Tiles;
         case TrackElemType::SBendLeft:
-            return paint_splash_boats_track_s_bend_left;
+            return PaintSplashBoatsTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return paint_splash_boats_track_s_bend_right;
+            return PaintSplashBoatsTrackSBendRight;
 
         // Added by OpenRCT2
         case TrackElemType::OnRidePhoto:
-            return paint_splash_boats_track_on_ride_photo;
+            return PaintSplashBoatsTrackOnRidePhoto;
     }
 
     return nullptr;
@@ -1246,7 +1246,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
  *
  *  rct2: 0x006D4295
  */
-void vehicle_visual_splash_boats_or_water_coaster(
+void VehicleVisualSplashBoatsOrWaterCoaster(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {

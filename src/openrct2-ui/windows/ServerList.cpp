@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,7 +60,7 @@ enum
 };
 
 // clang-format off
-static rct_widget window_server_list_widgets[] = {
+static Widget window_server_list_widgets[] = {
     MakeWidget({  0,  0}, {341, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
     MakeWidget({  1,  1}, {338, 14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({327,  2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
@@ -73,19 +73,19 @@ static rct_widget window_server_list_widgets[] = {
 };
 // clang-format on
 
-static void WindowServerListClose(rct_window* w);
-static void WindowServerListMouseup(rct_window* w, WidgetIndex widgetIndex);
-static void WindowServerListResize(rct_window* w);
-static void WindowServerListDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowServerListUpdate(rct_window* w);
-static void WindowServerListScrollGetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
-static void WindowServerListScrollMousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowServerListScrollMouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, char* text);
-static OpenRCT2String WindowServerListTooltip(rct_window* const w, const WidgetIndex widgetIndex, StringId fallback);
-static void WindowServerListInvalidate(rct_window* w);
-static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi);
-static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
+static void WindowServerListClose(WindowBase* w);
+static void WindowServerListMouseup(WindowBase* w, WidgetIndex widgetIndex);
+static void WindowServerListResize(WindowBase* w);
+static void WindowServerListDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
+static void WindowServerListUpdate(WindowBase* w);
+static void WindowServerListScrollGetsize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void WindowServerListScrollMousedown(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowServerListScrollMouseover(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowServerListTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text);
+static OpenRCT2String WindowServerListTooltip(WindowBase* const w, const WidgetIndex widgetIndex, StringId fallback);
+static void WindowServerListInvalidate(WindowBase* w);
+static void WindowServerListPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowServerListScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex);
 
 static WindowEventList window_server_list_events([](auto& events) {
     events.close = &WindowServerListClose;
@@ -114,14 +114,14 @@ static std::string _version;
 
 static void JoinServer(std::string address);
 static void ServerListFetchServersBegin();
-static void ServerListFetchServersCheck(rct_window* w);
+static void ServerListFetchServersCheck(WindowBase* w);
 
-rct_window* WindowServerListOpen()
+WindowBase* WindowServerListOpen()
 {
-    rct_window* window;
+    WindowBase* window;
 
     // Check if window is already open
-    window = window_bring_to_front_by_class(WindowClass::ServerList);
+    window = WindowBringToFrontByClass(WindowClass::ServerList);
     if (window != nullptr)
         return window;
 
@@ -142,9 +142,9 @@ rct_window* WindowServerListOpen()
     window->page = 0;
     window->list_information_type = 0;
 
-    window_set_resize(*window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+    WindowSetResize(*window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-    safe_strcpy(_playerName, gConfigNetwork.PlayerName.c_str(), sizeof(_playerName));
+    SafeStrCpy(_playerName, gConfigNetwork.PlayerName.c_str(), sizeof(_playerName));
 
     window->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
@@ -153,21 +153,21 @@ rct_window* WindowServerListOpen()
     return window;
 }
 
-static void WindowServerListClose(rct_window* w)
+static void WindowServerListClose(WindowBase* w)
 {
     _serverList = {};
     _fetchFuture = {};
 }
 
-static void WindowServerListMouseup(rct_window* w, WidgetIndex widgetIndex)
+static void WindowServerListMouseup(WindowBase* w, WidgetIndex widgetIndex)
 {
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(*w);
+            WindowClose(*w);
             break;
         case WIDX_PLAYER_NAME_INPUT:
-            window_start_textbox(*w, widgetIndex, STR_STRING, _playerName, 63);
+            WindowStartTextbox(*w, widgetIndex, STR_STRING, _playerName, 63);
             break;
         case WIDX_LIST:
         {
@@ -200,12 +200,12 @@ static void WindowServerListMouseup(rct_window* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowServerListResize(rct_window* w)
+static void WindowServerListResize(WindowBase* w)
 {
-    window_set_resize(*w, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+    WindowSetResize(*w, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 }
 
-static void WindowServerListDropdown(rct_window* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
+static void WindowServerListDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
     auto serverIndex = w->selected_list_item;
     if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
@@ -235,23 +235,23 @@ static void WindowServerListDropdown(rct_window* w, WidgetIndex widgetIndex, int
     }
 }
 
-static void WindowServerListUpdate(rct_window* w)
+static void WindowServerListUpdate(WindowBase* w)
 {
     if (gCurrentTextBox.window.classification == w->classification && gCurrentTextBox.window.number == w->number)
     {
-        window_update_textbox_caret();
-        widget_invalidate(*w, WIDX_PLAYER_NAME_INPUT);
+        WindowUpdateTextboxCaret();
+        WidgetInvalidate(*w, WIDX_PLAYER_NAME_INPUT);
     }
     ServerListFetchServersCheck(w);
 }
 
-static void WindowServerListScrollGetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+static void WindowServerListScrollGetsize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     *width = 0;
     *height = w->no_list_items * ITEM_HEIGHT;
 }
 
-static void WindowServerListScrollMousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowServerListScrollMousedown(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t serverIndex = w->selected_list_item;
     if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
@@ -275,7 +275,7 @@ static void WindowServerListScrollMousedown(rct_window* w, int32_t scrollIndex, 
     }
 }
 
-static void WindowServerListScrollMouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowServerListScrollMouseover(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     auto& listWidget = w->widgets[WIDX_LIST];
 
@@ -303,9 +303,9 @@ static void WindowServerListScrollMouseover(rct_window* w, int32_t scrollIndex, 
     }
 }
 
-static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, char* text)
+static void WindowServerListTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
-    if (text == nullptr || text[0] == 0)
+    if (text == nullptr)
         return;
 
     switch (widgetIndex)
@@ -314,19 +314,16 @@ static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, ch
             if (strcmp(_playerName, text) == 0)
                 return;
 
-            std::fill_n(_playerName, sizeof(_playerName), 0x00);
-            if (text[0] != '\0')
-            {
-                safe_strcpy(_playerName, text, sizeof(_playerName));
-            }
+            SafeStrCpy(_playerName, text, sizeof(_playerName));
 
+            // Don't allow empty player names
             if (_playerName[0] != '\0')
             {
                 gConfigNetwork.PlayerName = _playerName;
                 ConfigSaveDefault();
             }
 
-            widget_invalidate(*w, WIDX_PLAYER_NAME_INPUT);
+            WidgetInvalidate(*w, WIDX_PLAYER_NAME_INPUT);
             break;
 
         case WIDX_ADD_SERVER:
@@ -343,14 +340,14 @@ static void WindowServerListTextinput(rct_window* w, WidgetIndex widgetIndex, ch
     }
 }
 
-static OpenRCT2String WindowServerListTooltip(rct_window* const w, const WidgetIndex widgetIndex, StringId fallback)
+static OpenRCT2String WindowServerListTooltip(WindowBase* const w, const WidgetIndex widgetIndex, StringId fallback)
 {
     auto ft = Formatter();
     ft.Add<char*>(_version.c_str());
     return { fallback, ft };
 }
 
-static void WindowServerListInvalidate(rct_window* w)
+static void WindowServerListInvalidate(WindowBase* w)
 {
     w->ResizeFrame();
 
@@ -374,30 +371,31 @@ static void WindowServerListInvalidate(rct_window* w)
     w->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 }
 
-static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowServerListPaint(WindowBase* w, DrawPixelInfo* dpi)
 {
     WindowDrawWidgets(*w, dpi);
 
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {}, { COLOUR_WHITE });
+        *dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {},
+        { COLOUR_WHITE });
 
     // Draw version number
-    std::string version = network_get_version();
+    std::string version = NetworkGetVersion();
     auto ft = Formatter();
     ft.Add<const char*>(version.c_str());
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
+        *dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
         { COLOUR_WHITE });
 
     ft = Formatter();
     ft.Add<uint32_t>(_numPlayersOnline);
-    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, ft, { COLOUR_WHITE });
+    DrawTextBasic(*dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, ft, { COLOUR_WHITE });
 }
 
-static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowServerListScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
 {
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
-    gfx_clear(dpi, paletteIndex);
+    GfxClear(dpi, paletteIndex);
 
     auto& listWidget = w->widgets[WIDX_LIST];
     int32_t width = listWidget.width();
@@ -415,7 +413,7 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         // Draw hover highlight
         if (highlighted)
         {
-            gfx_filter_rect(dpi, { 0, screenCoords.y, width, screenCoords.y + ITEM_HEIGHT }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(dpi, { 0, screenCoords.y, width, screenCoords.y + ITEM_HEIGHT }, FilterPaletteID::PaletteDarken1);
             _version = serverDetails.Version;
         }
 
@@ -437,7 +435,7 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         {
             snprintf(players, sizeof(players), "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
         }
-        const int16_t numPlayersStringWidth = gfx_get_string_width(players, FontStyle::Medium);
+        const int16_t numPlayersStringWidth = GfxGetStringWidth(players, FontStyle::Medium);
 
         // How much space we have for the server info depends on the size of everything rendered after.
         const int16_t spaceAvailableForInfo = width - numPlayersStringWidth - SCROLLBAR_WIDTH - 35;
@@ -452,7 +450,7 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         // Finally, draw the server information.
         auto ft = Formatter();
         ft.Add<const char*>(serverInfoToShow);
-        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
+        DrawTextEllipsised(*dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
 
         int32_t right = width - 7 - SCROLLBAR_WIDTH;
 
@@ -467,23 +465,23 @@ static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         else
         {
             // Server online... check version
-            bool correctVersion = serverDetails.Version == network_get_version();
+            bool correctVersion = serverDetails.Version == NetworkGetVersion();
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
-        gfx_draw_sprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
+        GfxDrawSprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
         right -= 4;
 
         // Draw lock icon
         right -= 8;
         if (serverDetails.RequiresPassword)
         {
-            gfx_draw_sprite(dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
+            GfxDrawSprite(dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
         }
         right -= 6;
 
         // Draw number of players
         screenCoords.x = right - numPlayersStringWidth;
-        gfx_draw_string(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { w->colours[1] });
+        GfxDrawString(*dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { w->colours[1] });
 
         screenCoords.y += ITEM_HEIGHT;
     }
@@ -514,7 +512,7 @@ static void JoinServer(std::string address)
         address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
     }
 
-    if (!network_begin_client(address, port))
+    if (!NetworkBeginClient(address, port))
     {
         ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
     }
@@ -566,7 +564,7 @@ static void ServerListFetchServersBegin()
     });
 }
 
-static void ServerListFetchServersCheck(rct_window* w)
+static void ServerListFetchServersCheck(WindowBase* w)
 {
     if (_fetchFuture.valid())
     {
@@ -592,7 +590,7 @@ static void ServerListFetchServersCheck(rct_window* w)
             catch (const std::exception& e)
             {
                 _statusText = STR_SERVER_LIST_NO_CONNECTION;
-                log_warning("Unable to connect to master server: %s", e.what());
+                LOG_WARNING("Unable to connect to master server: %s", e.what());
             }
             _fetchFuture = {};
             w->Invalidate();

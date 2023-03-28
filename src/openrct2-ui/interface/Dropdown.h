@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include <openrct2/common.h>
 #include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/util/Util.h>
 
 namespace Dropdown
 {
@@ -51,10 +52,10 @@ void WindowDropdownShowImage(
     int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
     int32_t itemHeight, int32_t numColumns);
 void WindowDropdownClose();
-int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w);
-void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
+int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w);
+void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
 void WindowDropdownShowColourAvailable(
-    rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
+    WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 bool WindowDropDownHasMultipleColumns(size_t numItems);
 

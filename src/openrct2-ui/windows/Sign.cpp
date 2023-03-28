@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,9 +19,11 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/object/LargeSceneryEntry.h>
+#include <openrct2/object/ObjectEntryManager.h>
+#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 
@@ -42,11 +44,11 @@ enum WindowSignWidgetIdx {
 };
 
 // 0x9AEE00
-static rct_widget window_sign_widgets[] = {
+static Widget window_sign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, STR_VIEWPORT                                 ), // Viewport
-    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_RENAME,   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
-    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_DEMOLISH, STR_DEMOLISH_SIGN_TIP          ), // demolish button
+    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
+    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
     MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
     MakeWidget({     17, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
     WIDGETS_END,
@@ -130,8 +132,8 @@ public:
         }
 
         // Create viewport
-        rct_widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        Widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
@@ -187,7 +189,7 @@ public:
 
     void OnMouseDown(WidgetIndex widgetIndex) override
     {
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* widget = &widgets[widgetIndex];
         switch (widgetIndex)
         {
             case WIDX_MAIN_COLOUR:
@@ -239,12 +241,12 @@ public:
 
     void OnPrepareDraw() override
     {
-        rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
-        rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
+        Widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
+        Widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
         if (_isSmall)
         {
-            auto* wallEntry = GetWallEntry(_sceneryEntry);
+            auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
@@ -260,7 +262,7 @@ public:
         }
         else
         {
-            auto* sceneryEntry = GetLargeSceneryEntry(_sceneryEntry);
+            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
@@ -275,17 +277,17 @@ public:
             }
         }
 
-        main_colour_btn->image = GetColourButtonImage(_mainColour).ToUInt32();
-        text_colour_btn->image = GetColourButtonImage(_textColour).ToUInt32();
+        main_colour_btn->image = GetColourButtonImage(_mainColour);
+        text_colour_btn->image = GetColourButtonImage(_textColour);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, *this);
+            WindowDrawViewport(&dpi, *this);
         }
     }
 
@@ -302,8 +304,8 @@ public:
         auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), frame_no };
 
         // Create viewport
-        rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        Widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
         if (viewport != nullptr)
@@ -316,9 +318,9 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* WindowSignOpen(rct_windownumber number)
+WindowBase* WindowSignOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
+    auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;
@@ -339,9 +341,9 @@ rct_window* WindowSignOpen(rct_windownumber number)
  *
  *  rct2: 0x6E5F52
  */
-rct_window* WindowSignSmallOpen(rct_windownumber number)
+WindowBase* WindowSignSmallOpen(rct_windownumber number)
 {
-    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WindowClass::Banner, number));
+    auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;

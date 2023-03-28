@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,12 +13,12 @@
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
+#include "../../object/SmallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../util/Util.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
-#include "../../world/SmallScenery.h"
 #include "../../world/TileInspector.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
@@ -69,7 +69,7 @@ static void SetSupportHeights(
 {
     height += sceneryEntry.height;
 
-    PaintUtilSetGeneralSupportHeight(session, ceil2(height, 8), 0x20);
+    PaintUtilSetGeneralSupportHeight(session, Ceil2(height, 8), 0x20);
     if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
     {
         if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
@@ -336,7 +336,7 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
     ImageId imageTemplate;
     if (gTrackDesignSaveMode)
     {
-        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&sceneryElement)))
+        if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&sceneryElement)))
         {
             imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
         }

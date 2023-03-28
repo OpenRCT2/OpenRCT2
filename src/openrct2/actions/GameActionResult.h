@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -68,7 +68,7 @@ namespace GameActions
         StringVariant ErrorMessage = STR_NONE;
         std::array<uint8_t, 32> ErrorMessageArgs{};
         CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
-        money32 Cost = 0;
+        money64 Cost = 0;
         ExpenditureType Expenditure = ExpenditureType::Count;
 
 #ifdef __ANDROID__

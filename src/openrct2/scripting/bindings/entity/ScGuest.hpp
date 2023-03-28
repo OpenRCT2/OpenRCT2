@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,10 +11,29 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../../../entity/Guest.h"
 #    include "ScPeep.hpp"
 
 namespace OpenRCT2::Scripting
 {
+    class ScThought
+    {
+    private:
+        PeepThought _backing;
+
+    public:
+        ScThought(PeepThought backing);
+
+        static void Register(duk_context* ctx);
+
+    private:
+        std::string type_get() const;
+        uint16_t item_get() const;
+        uint8_t freshness_get() const;
+        uint8_t freshTimeout_get() const;
+        std::string toString() const;
+    };
+
     class ScGuest : public ScPeep
     {
     public:
@@ -82,6 +101,8 @@ namespace OpenRCT2::Scripting
 
         uint8_t lostCountdown_get() const;
         void lostCountdown_set(uint8_t value);
+
+        DukValue thoughts_get() const;
     };
 
 } // namespace OpenRCT2::Scripting

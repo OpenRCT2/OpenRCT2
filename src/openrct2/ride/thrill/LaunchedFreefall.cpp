@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,7 @@ enum
  *
  *  rct2: 0x006D5FAB
  */
-void vehicle_visual_launched_freefall(
+void VehicleVisualLaunchedFreefall(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
@@ -87,7 +87,7 @@ void vehicle_visual_launched_freefall(
 }
 
 /** rct2: 0x006FD1F8 */
-static void paint_launched_freefall_base(
+static void PaintLaunchedFreefallBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -99,10 +99,9 @@ static void paint_launched_freefall_base(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(
-        session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetal, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetal, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetal,
         session.CurrentRotation);
 
@@ -161,7 +160,7 @@ static void paint_launched_freefall_base(
 }
 
 /** rct2: 0x006FD208 */
-static void paint_launched_freefall_tower_section(
+static void PaintLaunchedFreefallTowerSection(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -189,15 +188,15 @@ static void paint_launched_freefall_tower_section(
 /**
  * rct2: 0x006FD0E8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::TowerBase:
-            return paint_launched_freefall_base;
+            return PaintLaunchedFreefallBase;
 
         case TrackElemType::TowerSection:
-            return paint_launched_freefall_tower_section;
+            return PaintLaunchedFreefallTowerSection;
     }
 
     return nullptr;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,10 @@
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/BannerObject.h"
+#include "../../object/ObjectEntryManager.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
@@ -54,16 +57,16 @@ static void PaintBannerScrollingText(
     char text[256];
     if (gConfigGeneral.UpperCaseBanners)
     {
-        format_string_to_upper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
+        FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     else
     {
-        format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
+        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
 
-    auto stringWidth = gfx_get_string_width(text, FontStyle::Tiny);
+    auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
     auto scroll = (gCurrentTicks / 2) % stringWidth;
-    auto imageId = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
+    auto imageId = ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
 }
 
@@ -81,7 +84,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
         return;
     }
 
-    auto* bannerEntry = GetBannerEntry(banner->type);
+    auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
     if (bannerEntry == nullptr)
     {
         return;
@@ -112,10 +115,10 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     auto imageIndex = (direction << 1) + bannerEntry->image;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     auto bbOffset = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 21 }, bbOffset);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     bbOffset = CoordsXYZ(BannerBoundBoxes[direction][1], height + 2);
-    PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { 1, 1, 21 }, bbOffset);
+    PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     PaintBannerScrollingText(session, *bannerEntry, *banner, bannerElement, direction, height, bbOffset);
 }

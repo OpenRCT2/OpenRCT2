@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -142,10 +142,10 @@ public:
         _inGameConsole.Update();
     }
 
-    void Draw(rct_drawpixelinfo* dpi) override
+    void Draw(DrawPixelInfo* dpi) override
     {
         auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
-        chat_draw(dpi, bgColour);
+        ChatDraw(dpi, bgColour);
         _inGameConsole.Draw(dpi);
     }
 
@@ -196,7 +196,7 @@ public:
 
         if (SDL_SetWindowFullscreen(_window, windowFlags))
         {
-            log_fatal("SDL_SetWindowFullscreen %s", SDL_GetError());
+            LOG_FATAL("SDL_SetWindowFullscreen %s", SDL_GetError());
             exit(1);
 
             // TODO try another display mode rather than just exiting the game
@@ -291,7 +291,7 @@ public:
         return std::make_shared<DrawingEngineFactory>();
     }
 
-    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi, DrawWeatherFunc drawFunc) override
+    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo* dpi, DrawWeatherFunc drawFunc) override
     {
         int32_t left = dpi->x;
         int32_t right = left + dpi->width;
@@ -310,9 +310,9 @@ public:
         return _textComposition.IsActive();
     }
 
-    TextInputSession* StartTextInput(utf8* buffer, size_t bufferSize) override
+    TextInputSession* StartTextInput(u8string& buffer, size_t maxLength) override
     {
-        return _textComposition.Start(buffer, bufferSize);
+        return _textComposition.Start(buffer, maxLength);
     }
 
     void StopTextInput() override
@@ -548,7 +548,7 @@ public:
                         if (abs(gesturePixels) > tolerance)
                         {
                             _gestureRadius = 0;
-                            main_window_zoom(gesturePixels > 0, true);
+                            MainWindowZoom(gesturePixels > 0, true);
                         }
                     }
                     break;
@@ -616,7 +616,7 @@ public:
 
     void CloseWindow() override
     {
-        drawing_engine_dispose();
+        DrawingEngineDispose();
         if (_window != nullptr)
         {
             SDL_DestroyWindow(_window);
@@ -725,7 +725,7 @@ private:
     {
         SDL_version version{};
         SDL_GetVersion(&version);
-        log_verbose("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
+        LOG_VERBOSE("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
     }
 
     void CreateWindow(const ScreenCoordsXY& windowPos)
@@ -758,7 +758,7 @@ private:
         _platformUiContext->SetWindowIcon(_window);
 
         // Initialise the surface, palette and draw buffer
-        drawing_engine_init();
+        DrawingEngineInit();
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
@@ -778,16 +778,16 @@ private:
         _width = static_cast<int32_t>(width / gConfigGeneral.WindowScale);
         _height = static_cast<int32_t>(height / gConfigGeneral.WindowScale);
 
-        drawing_engine_resize();
+        DrawingEngineResize();
 
         uint32_t flags = SDL_GetWindowFlags(_window);
         if ((flags & SDL_WINDOW_MINIMIZED) == 0)
         {
-            window_resize_gui(_width, _height);
-            window_relocate_windows(_width, _height);
+            WindowResizeGui(_width, _height);
+            WindowRelocateWindows(_width, _height);
         }
 
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
 
         // Check if the window has been resized in windowed mode and update the config file accordingly
         int32_t nonWindowFlags =
@@ -887,11 +887,11 @@ private:
     }
 
     static void DrawWeatherWindow(
-        rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top,
+        DrawPixelInfo* dpi, IWeatherDrawer* weatherDrawer, WindowBase* original_w, int16_t left, int16_t right, int16_t top,
         int16_t bottom, DrawWeatherFunc drawFunc)
     {
-        rct_window* w{};
-        auto itStart = window_get_iterator(original_w);
+        WindowBase* w{};
+        auto itStart = WindowGetIterator(original_w);
         for (auto it = std::next(itStart);; it++)
         {
             if (it == g_window_list.end())

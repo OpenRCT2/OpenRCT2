@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,6 @@
 #include "../ride/TrackDesign.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 
@@ -35,6 +34,16 @@ SmallScenerySetColourAction::SmallScenerySetColourAction(
     , _secondaryColour(secondaryColour)
     , _tertiaryColour(tertiaryColour)
 {
+}
+
+void SmallScenerySetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    visitor.Visit("quadrant", _quadrant);
+    visitor.Visit("sceneryType", _sceneryType);
+    visitor.Visit("primaryColour", _primaryColour);
+    visitor.Visit("secondaryColour", _secondaryColour);
+    visitor.Visit("tertiaryColour", _tertiaryColour);
 }
 
 uint16_t SmallScenerySetColourAction::GetActionFlags() const
@@ -85,7 +94,7 @@ GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) 
 
     if (sceneryElement == nullptr)
     {
-        log_error("Small scenery not found at: x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("Small scenery not found at: x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,11 @@
 ParkEntranceRemoveAction::ParkEntranceRemoveAction(const CoordsXYZ& loc)
     : _loc(loc)
 {
+}
+
+void ParkEntranceRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
 }
 
 uint16_t ParkEntranceRemoveAction::GetActionFlags() const
@@ -46,7 +51,7 @@ GameActions::Result ParkEntranceRemoveAction::Query() const
     auto entranceIndex = ParkEntranceGetIndex(_loc);
     if (!LocationValid(_loc) || entranceIndex == -1)
     {
-        log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
     return res;
@@ -62,7 +67,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     auto entranceIndex = ParkEntranceGetIndex(_loc);
     if (entranceIndex == -1)
     {
-        log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 

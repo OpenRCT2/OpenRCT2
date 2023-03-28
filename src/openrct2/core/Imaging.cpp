@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,12 +51,12 @@ namespace Imaging
 
     static void PngWarning(png_structp, const char* b)
     {
-        log_warning(b);
+        LOG_WARNING(b);
     }
 
     static void PngError(png_structp, const char* b)
     {
-        log_error(b);
+        LOG_ERROR(b);
     }
 
     static Image ReadPng(std::istream& istream, bool expandTo32)

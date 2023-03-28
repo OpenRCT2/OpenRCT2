@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x008A59A8 */
-static void steeplechase_track_flat(
+static void SteeplechaseTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -67,7 +67,7 @@ static void steeplechase_track_flat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void steeplechase_track_station(
+static void SteeplechaseTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -80,19 +80,19 @@ static void steeplechase_track_station(
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height - 2 },
-        { 32, 28, 3 }, { 0, 2, height });
+        { { 0, 2, height }, { 32, 28, 3 } });
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 6, height },
-        { 32, 20, 3 }, { 0, 0, height });
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+        { { 0, 0, height }, { 32, 20, 3 } });
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A59B8 */
-static void steeplechase_track_25_deg_up(
+static void SteeplechaseTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -166,7 +166,7 @@ static void steeplechase_track_25_deg_up(
 }
 
 /** rct2: 0x008A59C8 */
-static void steeplechase_track_flat_to_25_deg_up(
+static void SteeplechaseTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -240,7 +240,7 @@ static void steeplechase_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008A59D8 */
-static void steeplechase_track_25_deg_up_to_flat(
+static void SteeplechaseTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -314,31 +314,31 @@ static void steeplechase_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A59E8 */
-static void steeplechase_track_25_deg_down(
+static void SteeplechaseTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    steeplechase_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SteeplechaseTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A59F8 */
-static void steeplechase_track_flat_to_25_deg_down(
+static void SteeplechaseTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    steeplechase_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SteeplechaseTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5A08 */
-static void steeplechase_track_25_deg_down_to_flat(
+static void SteeplechaseTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    steeplechase_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SteeplechaseTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5A18 */
-static void steeplechase_track_left_quarter_turn_5(
+static void SteeplechaseTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -527,16 +527,16 @@ static void steeplechase_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x008A5A28 */
-static void steeplechase_track_right_quarter_turn_5(
+static void SteeplechaseTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    steeplechase_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SteeplechaseTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5A38 */
-static void steeplechase_track_s_bend_left(
+static void SteeplechaseTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -699,7 +699,7 @@ static void steeplechase_track_s_bend_left(
 }
 
 /** rct2: 0x008A5A48 */
-static void steeplechase_track_s_bend_right(
+static void SteeplechaseTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -862,7 +862,7 @@ static void steeplechase_track_s_bend_right(
 }
 
 /** rct2: 0x008A5A88 */
-static void steeplechase_track_left_quarter_turn_3(
+static void SteeplechaseTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -988,16 +988,16 @@ static void steeplechase_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x008A5A98 */
-static void steeplechase_track_right_quarter_turn_3(
+static void SteeplechaseTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    steeplechase_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    SteeplechaseTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5AA8 */
-static void steeplechase_track_brakes(
+static void SteeplechaseTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1023,7 +1023,7 @@ static void steeplechase_track_brakes(
 }
 
 /** rct2: 0x008A5AD8 */
-static void steeplechase_track_left_eighth_to_diag(
+static void SteeplechaseTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1035,28 +1035,28 @@ static void steeplechase_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28725), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28729), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28733), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28737), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -1075,22 +1075,22 @@ static void steeplechase_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28726), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28730), { 0, 0, height },
-                        { 34, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 34, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28734), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28738), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1105,22 +1105,22 @@ static void steeplechase_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28727), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28731), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28735), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28739), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1139,28 +1139,28 @@ static void steeplechase_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28728), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28732), { 0, 0, height },
-                        { 16, 18, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK_ALT, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28736), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28740), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK_ALT, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -1175,7 +1175,7 @@ static void steeplechase_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x008A5AE8 */
-static void steeplechase_track_right_eighth_to_diag(
+static void SteeplechaseTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1187,28 +1187,28 @@ static void steeplechase_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28709), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28713), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28717), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28721), { 0, 0, height },
-                        { 32, 20, 3 }, { 0, 6, height });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -1227,22 +1227,22 @@ static void steeplechase_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28710), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28714), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28718), { 0, 0, height },
-                        { 34, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 34, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28722), { 0, 0, height },
-                        { 32, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1257,22 +1257,22 @@ static void steeplechase_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28711), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28715), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28719), { 0, 0, height },
-                        { 28, 28, 3 }, { 4, 4, height });
+                        { { 4, 4, height }, { 28, 28, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28723), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1291,28 +1291,28 @@ static void steeplechase_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28712), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 0, height });
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28716), { 0, 0, height },
-                        { 16, 16, 3 }, { 0, 0, height });
+                        { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28720), { 0, 0, height },
-                        { 16, 18, 3 }, { 0, 16, height });
+                        { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28724), { 0, 0, height },
-                        { 16, 16, 3 }, { 16, 16, height });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
                         session, METAL_SUPPORTS_STICK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -1327,25 +1327,25 @@ static void steeplechase_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x008A5AF8 */
-static void steeplechase_track_left_eighth_to_orthogonal(
+static void SteeplechaseTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    steeplechase_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    SteeplechaseTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5B08 */
-static void steeplechase_track_right_eighth_to_orthogonal(
+static void SteeplechaseTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    steeplechase_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    SteeplechaseTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008A5AC8 */
-static void steeplechase_track_diag_flat(
+static void SteeplechaseTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1359,7 +1359,7 @@ static void steeplechase_track_diag_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28760), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1370,7 +1370,7 @@ static void steeplechase_track_diag_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28744), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1386,7 +1386,7 @@ static void steeplechase_track_diag_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28757), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1397,7 +1397,7 @@ static void steeplechase_track_diag_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28741), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1413,7 +1413,7 @@ static void steeplechase_track_diag_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28759), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1424,7 +1424,7 @@ static void steeplechase_track_diag_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28743), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1444,7 +1444,7 @@ static void steeplechase_track_diag_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28758), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1469,7 +1469,7 @@ static void steeplechase_track_diag_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28742), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1491,7 +1491,7 @@ static void steeplechase_track_diag_flat(
 }
 
 /** rct2: 0x008A5B38 */
-static void steeplechase_track_diag_25_deg_up(
+static void SteeplechaseTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1505,7 +1505,7 @@ static void steeplechase_track_diag_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28772), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1516,7 +1516,7 @@ static void steeplechase_track_diag_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28756), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1532,7 +1532,7 @@ static void steeplechase_track_diag_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28769), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1543,7 +1543,7 @@ static void steeplechase_track_diag_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28753), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1559,7 +1559,7 @@ static void steeplechase_track_diag_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28771), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1570,7 +1570,7 @@ static void steeplechase_track_diag_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28755), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1590,7 +1590,7 @@ static void steeplechase_track_diag_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28770), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1615,7 +1615,7 @@ static void steeplechase_track_diag_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28754), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1637,7 +1637,7 @@ static void steeplechase_track_diag_25_deg_up(
 }
 
 /** rct2: 0x008A5B18 */
-static void steeplechase_track_diag_flat_to_25_deg_up(
+static void SteeplechaseTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1651,7 +1651,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28764), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1662,7 +1662,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28748), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1678,7 +1678,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28761), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1689,7 +1689,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28745), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1705,7 +1705,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28763), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1716,7 +1716,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28747), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1736,7 +1736,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28762), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1761,7 +1761,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28746), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1783,7 +1783,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008A5B28 */
-static void steeplechase_track_diag_25_deg_up_to_flat(
+static void SteeplechaseTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1797,7 +1797,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28768), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1808,7 +1808,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28752), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1824,7 +1824,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28765), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1835,7 +1835,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28749), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1851,7 +1851,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28767), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1862,7 +1862,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28751), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1882,7 +1882,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28766), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1907,7 +1907,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28750), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1929,7 +1929,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008A5B68 */
-static void steeplechase_track_diag_25_deg_down(
+static void SteeplechaseTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1943,7 +1943,7 @@ static void steeplechase_track_diag_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28770), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1954,7 +1954,7 @@ static void steeplechase_track_diag_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28754), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1970,7 +1970,7 @@ static void steeplechase_track_diag_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28771), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1981,7 +1981,7 @@ static void steeplechase_track_diag_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28755), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -1997,7 +1997,7 @@ static void steeplechase_track_diag_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28769), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2008,7 +2008,7 @@ static void steeplechase_track_diag_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28753), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2028,7 +2028,7 @@ static void steeplechase_track_diag_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28772), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2053,7 +2053,7 @@ static void steeplechase_track_diag_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28756), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2075,7 +2075,7 @@ static void steeplechase_track_diag_25_deg_down(
 }
 
 /** rct2: 0x008A5B48 */
-static void steeplechase_track_diag_flat_to_25_deg_down(
+static void SteeplechaseTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2089,7 +2089,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28766), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2100,7 +2100,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28750), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2115,7 +2115,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28767), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2126,7 +2126,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28751), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2141,7 +2141,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28765), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2152,7 +2152,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28749), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2171,7 +2171,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28768), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2196,7 +2196,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28752), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2219,7 +2219,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x008A5B58 */
-static void steeplechase_track_diag_25_deg_down_to_flat(
+static void SteeplechaseTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2233,7 +2233,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28762), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2244,7 +2244,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28746), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2260,7 +2260,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28763), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2271,7 +2271,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28747), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2287,7 +2287,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28761), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2298,7 +2298,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28745), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
             }
@@ -2318,7 +2318,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28764), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2343,7 +2343,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28748), { -16, -16, height },
-                            { 32, 32, 3 }, { -16, -16, height });
+                            { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2365,7 +2365,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
 }
 
 /** rct2: 0x008A5AB8 */
-static void steeplechase_track_block_brakes(
+static void SteeplechaseTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2390,66 +2390,66 @@ static void steeplechase_track_block_brakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_steeplechase(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return steeplechase_track_flat;
+            return SteeplechaseTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return steeplechase_track_station;
+            return SteeplechaseTrackStation;
         case TrackElemType::Up25:
-            return steeplechase_track_25_deg_up;
+            return SteeplechaseTrack25DegUp;
         case TrackElemType::FlatToUp25:
-            return steeplechase_track_flat_to_25_deg_up;
+            return SteeplechaseTrackFlatTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return steeplechase_track_25_deg_up_to_flat;
+            return SteeplechaseTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return steeplechase_track_25_deg_down;
+            return SteeplechaseTrack25DegDown;
         case TrackElemType::FlatToDown25:
-            return steeplechase_track_flat_to_25_deg_down;
+            return SteeplechaseTrackFlatTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return steeplechase_track_25_deg_down_to_flat;
+            return SteeplechaseTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return steeplechase_track_left_quarter_turn_5;
+            return SteeplechaseTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return steeplechase_track_right_quarter_turn_5;
+            return SteeplechaseTrackRightQuarterTurn5;
         case TrackElemType::SBendLeft:
-            return steeplechase_track_s_bend_left;
+            return SteeplechaseTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return steeplechase_track_s_bend_right;
+            return SteeplechaseTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return steeplechase_track_left_quarter_turn_3;
+            return SteeplechaseTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return steeplechase_track_right_quarter_turn_3;
+            return SteeplechaseTrackRightQuarterTurn3;
         case TrackElemType::Brakes:
-            return steeplechase_track_brakes;
+            return SteeplechaseTrackBrakes;
         case TrackElemType::LeftEighthToDiag:
-            return steeplechase_track_left_eighth_to_diag;
+            return SteeplechaseTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return steeplechase_track_right_eighth_to_diag;
+            return SteeplechaseTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return steeplechase_track_left_eighth_to_orthogonal;
+            return SteeplechaseTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return steeplechase_track_right_eighth_to_orthogonal;
+            return SteeplechaseTrackRightEighthToOrthogonal;
         case TrackElemType::DiagFlat:
-            return steeplechase_track_diag_flat;
+            return SteeplechaseTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return steeplechase_track_diag_25_deg_up;
+            return SteeplechaseTrackDiag25DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return steeplechase_track_diag_flat_to_25_deg_up;
+            return SteeplechaseTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return steeplechase_track_diag_25_deg_up_to_flat;
+            return SteeplechaseTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return steeplechase_track_diag_25_deg_down;
+            return SteeplechaseTrackDiag25DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return steeplechase_track_diag_flat_to_25_deg_down;
+            return SteeplechaseTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return steeplechase_track_diag_25_deg_down_to_flat;
+            return SteeplechaseTrackDiag25DegDownToFlat;
         case TrackElemType::BlockBrakes:
-            return steeplechase_track_block_brakes;
+            return SteeplechaseTrackBlockBrakes;
     }
     return nullptr;
 }

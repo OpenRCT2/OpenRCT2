@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,33 @@
 #include "../world/Park.h"
 
 using namespace OpenRCT2::TrackMetaData;
+
+// clang-format off
+/** rct2: 0x00993CE9 */
+static constexpr const uint8_t Byte993CE9[] = {
+    0xFF, 0xE0, 0xFF,
+    14, 0, 1, 2,
+    6, 2, 4, 5,
+    9, 10, 6, 8,
+    12, 13, 14, 10,
+};
+
+/** rct2: 0x00993CFC */
+static constexpr const uint8_t Byte993CFC[] = {
+    5, 12, 0xFF, 0xFF,
+    9, 0, 0xFF, 0xFF,
+    13, 4, 0xFF, 0xFF,
+    1, 8, 0xFF, 0xFF,
+};
+
+/** rct2: 0x00993D0C */
+static constexpr const uint8_t Byte993D0C[] = {
+    3, 0, 0xFF, 0xFF,
+    0, 1, 0xFF, 0xFF,
+    1, 2, 0xFF, 0xFF,
+    2, 3, 0xFF, 0xFF,
+};
+// clang-format on
 
 MazeSetTrackAction::MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode)
     : _loc(location)
@@ -90,7 +117,7 @@ GameActions::Result MazeSetTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        auto* ride = get_ride(_rideIndex);
+        auto* ride = GetRide(_rideIndex);
         const auto& rtd = ride->GetRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
@@ -131,7 +158,7 @@ GameActions::Result MazeSetTrackAction::Query() const
             return res;
         }
 
-        auto ride = get_ride(_rideIndex);
+        auto ride = GetRide(_rideIndex);
         if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
         {
             res.Error = GameActions::Status::NoClearance;
@@ -155,7 +182,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         res.Error = GameActions::Status::InvalidParameters;
@@ -211,10 +238,10 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
             if (!_initialPlacement)
             {
-                segmentOffset = byte_993CE9[(_loc.direction + segmentOffset)];
+                segmentOffset = Byte993CE9[(_loc.direction + segmentOffset)];
                 tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
-                uint8_t temp_edx = byte_993CFC[segmentOffset];
+                uint8_t temp_edx = Byte993CFC[segmentOffset];
                 if (temp_edx != 0xFF)
                 {
                     auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
@@ -250,7 +277,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 MapInvalidateTileFull(previousSegment.ToTileStart());
                 if (tileElement == nullptr)
                 {
-                    log_error("No surface found");
+                    LOG_ERROR("No surface found");
                     res.Error = GameActions::Status::Unknown;
                     res.ErrorMessage = STR_NONE;
                     return res;
@@ -269,7 +296,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 {
                     tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
 
-                    uint32_t direction1 = byte_993D0C[segmentBit];
+                    uint32_t direction1 = Byte993D0C[segmentBit];
                     auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
                     TileElement* tmp_tileElement = MapGetTrackElementAtOfTypeFromRide(
@@ -277,7 +304,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
                     if (tmp_tileElement != nullptr)
                     {
-                        uint8_t edx11 = byte_993CFC[segmentBit];
+                        uint8_t edx11 = Byte993CFC[segmentBit];
                         tmp_tileElement->AsTrack()->MazeEntryAdd(1 << (edx11));
                     }
 

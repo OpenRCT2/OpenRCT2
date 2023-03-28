@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,12 +20,12 @@
 void StationObject::Load()
 {
     GetStringTable().Sort();
-    NameStringId = language_allocate_object_string(GetName());
+    NameStringId = LanguageAllocateObjectString(GetName());
 
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
     {
-        BaseImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+        BaseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 
         uint32_t shelterOffset = (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT) ? 32 : 16;
         if (numImages > shelterOffset)
@@ -37,15 +37,15 @@ void StationObject::Load()
 
 void StationObject::Unload()
 {
-    language_free_object_string(NameStringId);
-    gfx_object_free_images(BaseImageId, GetImageTable().GetCount());
+    LanguageFreeObjectString(NameStringId);
+    GfxObjectFreeImages(BaseImageId, GetImageTable().GetCount());
 
     NameStringId = 0;
     BaseImageId = ImageIndexUndefined;
     ShelterImageId = ImageIndexUndefined;
 }
 
-void StationObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void StationObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + 16 };
 
@@ -64,16 +64,16 @@ void StationObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t h
         imageId = imageId.WithSecondary(colour1);
     }
 
-    gfx_draw_sprite(dpi, imageId, screenCoords);
+    GfxDrawSprite(&dpi, imageId, screenCoords);
     if (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
     {
-        gfx_draw_sprite(dpi, tImageId, screenCoords);
+        GfxDrawSprite(&dpi, tImageId, screenCoords);
     }
 
-    gfx_draw_sprite(dpi, imageId.WithIndexOffset(4), screenCoords);
+    GfxDrawSprite(&dpi, imageId.WithIndexOffset(4), screenCoords);
     if (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
     {
-        gfx_draw_sprite(dpi, tImageId.WithIndexOffset(4), screenCoords);
+        GfxDrawSprite(&dpi, tImageId.WithIndexOffset(4), screenCoords);
     }
 }
 

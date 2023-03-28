@@ -18,7 +18,7 @@
     InstallDir "$PROGRAMFILES64\OpenRCT2\"
 !endif
 
-!define SUPPORTED_OS        "Windows Vista, 7, 8.1 and 10"
+!define SUPPORTED_OS        "Windows 7 and later"
 
 ; Define root variable relative to installer
 !define PATH_ROOT "..\..\"

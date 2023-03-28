@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@ enum
     DATE_FORMAT_YEAR_DAY_MONTH
 };
 
-struct openrct2_timeofday
+struct RealWorldTime
 {
     uint8_t second;
     uint8_t minute;
@@ -44,22 +44,22 @@ struct openrct2_timeofday
 };
 
 extern const int16_t days_in_month[MONTH_COUNT];
-extern const StringId DateFormatStringIds[];
+extern const StringId DateFormatStringIDs[];
 extern const StringId DateFormatStringFormatIds[];
 
 extern uint16_t gDateMonthTicks;
 extern int32_t gDateMonthsElapsed;
 
-extern openrct2_timeofday gRealTimeOfDay;
+extern RealWorldTime gRealTimeOfDay;
 
-int32_t date_get_month(int32_t months);
-int32_t date_get_year(int32_t months);
-int32_t date_get_total_months(int32_t month, int32_t year);
-void date_reset();
-void date_update();
-void date_set(int32_t year, int32_t month, int32_t day);
-void date_update_real_time_of_day();
-bool date_is_day_start(int32_t monthTicks);
-bool date_is_week_start(int32_t monthTicks);
-bool date_is_fortnight_start(int32_t monthTicks);
-bool date_is_month_start(int32_t monthTicks);
+int32_t DateGetMonth(int32_t months);
+int32_t DateGetYear(int32_t months);
+int32_t DateGetTotalMonths(int32_t month, int32_t year);
+void DateReset();
+void DateUpdate();
+void DateSet(int32_t year, int32_t month, int32_t day);
+void DateUpdateRealTimeOfDay();
+bool DateIsDayStart(int32_t monthTicks);
+bool DateIsWeekStart(int32_t monthTicks);
+bool DateIsFortnightStart(int32_t monthTicks);
+bool DateIsMonthStart(int32_t monthTicks);

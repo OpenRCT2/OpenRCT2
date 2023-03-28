@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -214,7 +214,7 @@ struct PaintSessionCore
 
 struct PaintSession : public PaintSessionCore
 {
-    rct_drawpixelinfo DPI;
+    DrawPixelInfo DPI;
     PaintEntryPool::Chain PaintEntryChain;
 
     PaintStruct* AllocateNormalPaintEntry() noexcept
@@ -288,6 +288,7 @@ extern CoordsXY gClipSelectionB;
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
 constexpr const ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
 constexpr const ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
+constexpr const ImageId TrackGhost = ImageId(0, FilterPaletteID::PaletteNull);
 
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
@@ -295,12 +296,25 @@ extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 
 PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
-PaintStruct* PaintAddImageAsParent(
-    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
-    const CoordsXYZ& boundBoxOffset);
-PaintStruct* PaintAddImageAsParent(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+/**
+ *  rct2: 0x006861AC, 0x00686337, 0x006864D0, 0x0068666B, 0x0098196C
+ *
+ * @param image_id (ebx)
+ * @param x_offset (al)
+ * @param y_offset (cl)
+ * @param bound_box_length_x (di)
+ * @param bound_box_length_y (si)
+ * @param bound_box_length_z (ah)
+ * @param z_offset (dx)
+ * @return (ebp) PaintStruct on success (CF == 0), nullptr on failure (CF == 1)
+ */
+inline PaintStruct* PaintAddImageAsParent(
+    PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
+{
+    return PaintAddImageAsParent(session, image_id, offset, { offset, boundBoxSize });
+}
+
 [[nodiscard]] PaintStruct* PaintAddImageAsOrphan(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 PaintStruct* PaintAddImageAsChild(
@@ -308,13 +322,18 @@ PaintStruct* PaintAddImageAsChild(
 
 PaintStruct* PaintAddImageAsChildRotated(
     PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
-PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize);
+    const BoundBoxXYZ& boundBox);
+
 PaintStruct* PaintAddImageAsParentRotated(
     PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
+    const BoundBoxXYZ& boundBox);
+
+inline PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize)
+{
+    return PaintAddImageAsParentRotated(session, direction, imageId, offset, { offset, boundBoxSize });
+}
 
 void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type);
 
@@ -324,9 +343,9 @@ void PaintFloatingMoneyEffect(
     PaintSession& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
-PaintSession* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
+PaintSession* PaintSessionAlloc(DrawPixelInfo* dpi, uint32_t viewFlags);
 void PaintSessionFree(PaintSession* session);
 void PaintSessionGenerate(PaintSession& session);
 void PaintSessionArrange(PaintSessionCore& session);
 void PaintDrawStructs(PaintSession& session);
-void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, PaintStringStruct* ps);
+void PaintDrawMoneyStructs(DrawPixelInfo* dpi, PaintStringStruct* ps);

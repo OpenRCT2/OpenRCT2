@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,15 @@
 
 enum class ResearchCategory : uint8_t;
 
-using ride_ratings_calculation = void (*)(Ride* ride, RideRatingUpdateState& state);
+using ride_ratings_calculation = void (*)(Ride& ride, RideRatingUpdateState& state);
+
+constexpr const uint8_t DefaultFoodStallHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultDrinksStallHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultShopHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultToiletHeight = 4 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultInformationKioskHeight = 6 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultFirstAidHeight = 6 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultCashMachineHeight = 8 * COORDS_Z_STEP;
 
 struct RideComponentName
 {
@@ -110,7 +118,7 @@ struct RideHeights
     uint8_t PlatformHeight;
 };
 
-struct rct_ride_lift_data
+struct RideLiftData
 {
     OpenRCT2::Audio::SoundId sound_id;
     uint8_t minimum_speed;
@@ -144,29 +152,29 @@ struct UpkeepCostsDescriptor
      *
      * Data generation script: https://gist.github.com/kevinburke/6bcf4a8fcc95faad7bac
      */
-    uint8_t BaseCost;
+    money64 BaseCost;
     /** rct2: 0x0097E3AC */
     uint8_t TrackLengthMultiplier;
-    uint8_t CostPerTrackPiece;
+    money64 CostPerTrackPiece;
     /** rct2: 0x0097E3B4 */
-    uint8_t CostPerTrain;
+    money64 CostPerTrain;
     /** rct2: 0x0097E3B6 */
-    uint8_t CostPerCar;
+    money64 CostPerCar;
     /** rct2: 0x0097E3B8 */
-    uint8_t CostPerStation;
+    money64 CostPerStation;
 };
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
 using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
-using RideMusicUpdateFunction = void (*)(Ride*);
-using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
+using RideMusicUpdateFunction = void (*)(Ride&);
+using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride&, CoordsXYZD&);
 using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
 using RideUpdateFunction = void (*)(Ride& ride);
-using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const track_type_t trackType);
+using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const track_type_t trackType);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
-using SpecialElementRatingAdjustmentFunc = void (*)(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
 using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
@@ -186,7 +194,7 @@ struct RideTypeDescriptor
     RideTrackGroup ExtraTrackPieces;
     RideTrackGroup CoveredTrackPieces;
     /** rct2: 0x0097CC68 */
-    uint64_t StartTrackPiece;
+    track_type_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
     /** rct2: 0x0097C8AC */
@@ -202,7 +210,7 @@ struct RideTypeDescriptor
     RideHeights Heights;
     uint8_t MaxMass;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
-    rct_ride_lift_data LiftData;
+    RideLiftData LiftData;
     // rct2: 0x0097E050
     ride_ratings_calculation RatingsCalculationFunction;
     // rct2: 0x0097CD1E
@@ -210,13 +218,13 @@ struct RideTypeDescriptor
     UpkeepCostsDescriptor UpkeepCosts;
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts;
-    money16 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
+    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     std::string_view DefaultMusic;
     /** rct2: 0x0097D7CB */
     ShopItemIndex PhotoItem;
     /** rct2: 0x0097D21E */
     uint8_t BonusValue;
-    track_colour_preset_list ColourPresets;
+    TrackColourPresetList ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
 
@@ -338,6 +346,8 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_HAS_ONE_STATION = (1uLL << 55),
     RIDE_TYPE_FLAG_HAS_SEAT_ROTATION = (1uLL << 56),
     RIDE_TYPE_FLAG_IS_FIRST_AID = (1uLL << 57),
+    RIDE_TYPE_FLAG_IS_MAZE = (1uLL << 58),
+    RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE = (1uLL << 59),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.

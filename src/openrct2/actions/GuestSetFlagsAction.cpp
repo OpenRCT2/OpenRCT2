@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,7 @@ GuestSetFlagsAction::GuestSetFlagsAction(EntityId peepId, uint32_t flags)
 void GuestSetFlagsAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("peep", _peepId);
-    visitor.Visit("flags", _newFlags);
+    visitor.Visit("guestFlags", _newFlags);
 }
 
 uint16_t GuestSetFlagsAction::GetActionFlags() const
@@ -42,7 +42,7 @@ GameActions::Result GuestSetFlagsAction::Query() const
     auto* peep = TryGetEntity<Guest>(_peepId);
     if (peep == nullptr)
     {
-        log_error("Used invalid sprite index for peep: %u", _peepId.ToUnderlying());
+        LOG_ERROR("Used invalid sprite index for peep: %u", _peepId.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
     }
     return GameActions::Result();
@@ -53,7 +53,7 @@ GameActions::Result GuestSetFlagsAction::Execute() const
     auto* peep = TryGetEntity<Guest>(_peepId);
     if (peep == nullptr)
     {
-        log_error("Used invalid sprite index for peep: %u", _peepId.ToUnderlying());
+        LOG_ERROR("Used invalid sprite index for peep: %u", _peepId.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
     }
 

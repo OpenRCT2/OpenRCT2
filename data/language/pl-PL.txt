@@ -1243,7 +1243,7 @@ STR_1863    :dozorca
 STR_1864    :mechanik
 STR_1865    :strażnik
 STR_1866    :komik
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Nie można zmienić liczby obrotów…
 STR_1869    :{WINDOW_COLOUR_2}Liczba obrotów:
 STR_1870    :Liczba pełnych obrotów
@@ -1673,7 +1673,7 @@ STR_2314    :{WINDOW_COLOUR_2}Długość trasy: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Koszt: {BLACK}około {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Zajmowany teren: {BLACK}{COMMA16} × {COMMA16} pól
 STR_2321    :{WINDOW_COLOUR_2}Liczba atrakcji: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Liczba pracowników: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Liczba pracowników: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Rozmiar parku: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Rozmiar parku: {BLACK}{COMMA32} stóp kw.
 STR_2325    :Kup ziemię by powiększyć park
@@ -2648,7 +2648,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Nazwa już istnieje
 STR_5440    :Zmniejsz utratę ostrości przy pełnym ekranie
-STR_5441    :Identyfikuj rodzaj przejażdżki po trasie{NEWLINE}dzięki czemu mogą zostać zmienione wagoniki{NEWLINE} (zaszłość z RCT1)
 STR_5442    :Wymuś ocenę parku:
 STR_5447    :Typ {STRINGID}
 STR_5448    :Atrakcja {STRINGID}
@@ -2997,11 +2996,11 @@ STR_5838    :Pokaż osobny przycisk dla okienka Finansów w pasku narzędzi
 STR_5839    :Pokaż osobny przycisk dla okienka Badań i Rozwoju w pasku narzędzi
 STR_5840    :Pokaż osobny przycisk dla okienka kodów w pasku narzędzi
 STR_5841    :Pokaż osobny przycisk dla okienka komunikatów w pasku narzędzi
-STR_5842    :Posortuj scenariusze w zakładkach według trudności (zaszłość RCT2) lub ich źródła (zaszłośćRCT1)
+STR_5842    :Posortuj scenariusze w zakładkach według trudności (zaszłość RCT2) lub ich źródła (zaszłość RCT1)
 STR_5843    :Włącz odblokowywanie scenariuszy (zaszłość RCT1)
 STR_5844    :Pozostań podłączony do gry wieloosobowej{NEWLINE}nawet w przypadku desynchronizacji i błędów połączenia
 STR_5845    :Dodaje przełącznik trybu debugowania{NEWLINE}do paska narzędzi.{NEWLINE}Włącza skrót klawiaturowy do konsoli developerskiej
-STR_5846    :Ustaw częstotliwość zapisy gry OpenRCT2
+STR_5846    :Ustaw częstotliwość zapisu gry OpenRCT2
 STR_5847    :Wybierz sekwencje parków na ekran tytułowy.{NEWLINE}Sekwencje tytułowe z RCT1/2 wymagają zaimportowanych odpowiednich scenariuszy
 STR_5849    :Automatycznie rozlokuj{NEWLINE}nowo zatrudniony personel
 STR_5851    :Ustaw domyślną częstotliwość inspekcji{NEWLINE}na nowych atrakcjach
@@ -3189,7 +3188,7 @@ STR_6034    :{BLACK}{STRING}
 STR_6035    :Proszę wybrać katalog z RCT1
 STR_6036    :Wyczyść
 STR_6037    :Proszę wybrać prawidłowy katalog RCT1
-STR_6038    :Jeżeli masz zainstalowane RCT1, ustaw tę opcję na ścieżkę z której załadowane będą scenariusze, muzyka, etc.
+STR_6038    :Jeżeli masz zainstalowane RCT1, ustaw tę opcję na ścieżkę do owej gry, aby załadować scenariusze, muzykę, etc. z pierwszej części
 STR_6039    :Szybkie niszczenie atrakcji
 STR_6040    :Edytuj Opcje Scenariusza
 STR_6041    :{BLACK}Nie masz zatrudnionych mechaników!
@@ -3305,7 +3304,7 @@ STR_6161    :Przełącz widok siatki
 STR_6162    :Spinning Wild Mouse
 STR_6163    :Pojazdy wyglądające jak myszki, szybko jeżdżą po ciasnych zakrętach i krótkich zjazdach, dodatkowo łagodnie się kręcą przez co dezorientują gości
 STR_6164    :{WHITE}❌
-STR_6165    :Użyj synchronizacji pionowej
+STR_6165    :Synchronizacja pionowa
 STR_6166    :Synchronizuje każdą wyświetlaną klatkę z częstotliwością odświeżania monitora, zapobiegając rozrywaniu ekranu.
 STR_6167    :Zaawansowane
 STR_6168    :Sekwencja tytułowa
@@ -3497,7 +3496,7 @@ STR_6392    :Nie można znaleźć {STRING} w tej ścieżce
 STR_6393    :Wybór celu
 STR_6394    :Cel
 STR_6395    :Utrzymanie
-STR_6396    :Wyłącz wygaszacz ekranu i oszczędzanie energii monitora
+STR_6396    :Wyłącz oszczędzanie energii monitora
 STR_6397    :Jeśli zaznaczone, wygaszacz ekranu i inne funkcje oszczędzania ekranu zostaną wyłączone gdy OpenRCT2 jest uruchomione.
 STR_6398    :Plik zawiera niewspierane typy kolejek. Zaktualizuj do nowszej wersji OpenRCT2..
 STR_6399    :OpenRCT2 wmymaga do działania plików z orginalnego Roller Coaster Tycoon 2.  Ustaw wartość “game_path” w config.ini na folder w którym zostało zainstalowane RollerCoaster Tycoon 2, następnie zrestartuj OpenRCT2.
@@ -3591,7 +3590,9 @@ STR_6487    :Przełącznik przezroczystości pracowników
 STR_6488    :{RED}Goście skarżą się na dłogość kolejek w Twoim parku.{NEWLINE}Rozważ skrócenie problematycznych kolejek lub zwiększenie przepustowości przejażdżek.
 STR_6489    :Błąd: Niekompatybilna wersja parku
 STR_6490    :Ostrzeżenie: Częściowo kompatybilna wersja parku
+STR_6491    :Ten park został zapisany w późniejszej wersji OpenRCT2. Park jest v{INT32} i wymaga co najmniej v{INT32}.
 STR_6492    :Ten park został zapisany w starej wersji OpenRCT2 i nie można go otworzyć za pomocą tej wersji programu OpenRCT2. Park ma jest w v{INT32}.
+STR_6493    :Ten park został zapisany w późniejszej wersji OpenRCT2, niektóre dane mogą zostać utracone. Park jest w v{INT32} i wymaga co najmniej v{INT32}.
 STR_6494    :Grupuj po typie atrakcji
 STR_6495    :Grupuj po typie atrakcji zamiast wyświetlić każdą osobno.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,10 +29,10 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view InterfaceMute = "interface.misc.mute";
     constexpr std::string_view InterfaceSceneryPicker = "interface.misc.scenery_picker";
     constexpr std::string_view InterfaceDisableClearance = "interface.misc.disable_clearance";
-    constexpr std::string_view MultiplayerChat = "interface.misc.multiplayer_chat";
+    constexpr std::string_view InterfaceMultiplayerChat = "interface.misc.multiplayer_chat";
 
     // Interface / graphics
-    constexpr std::string_view ScaleToggleWindowMode = "interface.graphics.toggle_window_mode";
+    constexpr std::string_view InterfaceScaleToggleWindowMode = "interface.graphics.toggle_window_mode";
     constexpr std::string_view InterfaceScaleIncrease = "interface.graphics.increase";
     constexpr std::string_view InterfaceScaleDecrease = "interface.graphics.decrease";
 
@@ -55,7 +55,7 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view InterfaceOpenTransparencyOptions = "interface.open.transparency_options";
     constexpr std::string_view InterfaceOpenCheats = "interface.open.cheats";
     constexpr std::string_view InterfaceOpenTileInspector = "interface.open.tileinspector";
-    constexpr std::string_view MultiplayerShow = "interface.open.multiplayer";
+    constexpr std::string_view InterfaceMultiplayerShow = "interface.open.multiplayer";
 
     // View / general
     constexpr std::string_view ViewGeneralZoomOut = "view.general.zoom_out";

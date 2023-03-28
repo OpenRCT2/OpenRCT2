@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,14 @@ TileModifyAction::TileModifyAction(
     , _value2(value2)
     , _pasteElement(pasteElement)
 {
+}
+
+void TileModifyAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    visitor.Visit("setting", _setting);
+    visitor.Visit("value1", _value1);
+    visitor.Visit("value2", _value2);
 }
 
 uint16_t TileModifyAction::GetActionFlags() const
@@ -120,6 +128,13 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::PathSetSloped(_loc, elementIndex, sloped, isExecuting);
             break;
         }
+        case TileModifyType::PathSetJunctionRailings:
+        {
+            const auto elementIndex = _value1;
+            const bool hasJunctionRailing = _value2;
+            res = TileInspector::PathSetJunctionRailings(_loc, elementIndex, hasJunctionRailing, isExecuting);
+            break;
+        }
         case TileModifyType::PathSetBroken:
         {
             const auto elementIndex = _value1;
@@ -175,11 +190,11 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::TrackSetChain(_loc, elementIndex, false, setChain, isExecuting);
             break;
         }
-        case TileModifyType::TrackSetBlockBrake:
+        case TileModifyType::TrackSetBrake:
         {
             const auto elementIndex = _value1;
-            const bool blockBrake = _value2;
-            res = TileInspector::TrackSetBlockBrake(_loc, elementIndex, blockBrake, isExecuting);
+            const bool isClosed = _value2;
+            res = TileInspector::TrackSetBrakeClosed(_loc, elementIndex, isClosed, isExecuting);
             break;
         }
         case TileModifyType::TrackSetIndestructible:
@@ -211,7 +226,7 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             break;
         }
         default:
-            log_error("invalid instruction");
+            LOG_ERROR("invalid instruction");
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 

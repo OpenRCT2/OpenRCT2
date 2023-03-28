@@ -1248,7 +1248,7 @@ STR_1863    :Handyman
 STR_1864    :Mechanic
 STR_1865    :Security Guard
 STR_1866    :Entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Can’t change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :Number of complete rotations
@@ -1680,7 +1680,7 @@ STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} × {COMMA16} blocks
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Buy land to extend park
@@ -2659,7 +2659,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Name already exists
 STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5447    :Type {STRINGID}
 STR_5448    :Ride / Vehicle {STRINGID}
@@ -3605,7 +3604,9 @@ STR_6487    :Skru av/på usynlige ansatte
 STR_6488    :{RED}Gjestene klager på lange køer i parken.{NEWLINE}Prøv å gjøre køer kortere, eller øk kapasiteten til påvirkede attraksjoner.
 STR_6489    :Feil: Inkompatibel parkversjon
 STR_6490    :Advarsel delvis inkompatibel parkversjon
+STR_6491    :Denne parken ble lagret i en nyere versjon av OpenRCT2. Parken er lagret med v{INT32} og krever minst v{INT32} for å lastes inn.
 STR_6492    :Denne parken ble lagret i en eldre versjon av OpenRCT2 og kan ikke åpnes i denne versjonen av OpenRCT2. Parken er lagret med v{INT32}.
+STR_6493    :Denne parken ble lagret i en nyere versjon av OpenRCT2. Noe data kan mangle ved innlasting. Parken er lagret med v{INT32} og krever minst v{INT32} for å lastes inn.
 STR_6494    :Grupper etter attraksjonstype
 STR_6495    :Grupper attraksjoner etter type heller enn å vise hver vogn separat
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}

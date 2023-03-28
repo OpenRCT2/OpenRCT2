@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../world/Scenery.h"
 #include "Object.h"
+#include "SceneryGroupEntry.h"
 
 #include <vector>
 
@@ -21,7 +21,7 @@ enum class EntertainerCostume : uint8_t;
 class SceneryGroupObject final : public Object
 {
 private:
-    rct_scenery_group_entry _legacyType = {};
+    SceneryGroupEntry _legacyType = {};
     std::vector<ObjectEntryDescriptor> _items;
 
 public:
@@ -36,7 +36,7 @@ public:
     void Unload() override;
     void UpdateEntryIndexes();
 
-    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 

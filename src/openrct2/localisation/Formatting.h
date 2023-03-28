@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -154,14 +154,14 @@ namespace OpenRCT2
         std::string _strOwned;
 
     public:
-        struct token
+        struct Token
         {
             FormatToken kind{};
             std::string_view text;
             uint32_t parameter{};
 
-            token() = default;
-            token(FormatToken k, std::string_view s, uint32_t p = 0);
+            Token() = default;
+            Token(FormatToken k, std::string_view s, uint32_t p = 0);
             bool IsLiteral() const;
             bool IsCodepoint() const;
             codepoint_t GetCodepoint() const;
@@ -172,7 +172,7 @@ namespace OpenRCT2
         private:
             std::string_view str;
             size_t index;
-            token current;
+            Token current;
 
             void update();
 
@@ -180,9 +180,9 @@ namespace OpenRCT2
             iterator(std::string_view s, size_t i);
             bool operator==(iterator& rhs);
             bool operator!=(iterator& rhs);
-            token CreateToken(size_t len);
-            const token* operator->() const;
-            const token& operator*();
+            Token CreateToken(size_t len);
+            const Token* operator->() const;
+            const Token& operator*();
             iterator& operator++();
             iterator operator++(int);
             bool eol() const;
@@ -284,22 +284,22 @@ namespace OpenRCT2
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 
-    template<typename... TArgs> static void FormatStringId(FormatBuffer& ss, StringId id, TArgs&&... argN)
+    template<typename... TArgs> static void FormatStringID(FormatBuffer& ss, StringId id, TArgs&&... argN)
     {
         auto fmt = GetFmtStringById(id);
         FormatString(ss, fmt, argN...);
     }
 
-    template<typename... TArgs> std::string FormatStringId(StringId id, TArgs&&... argN)
+    template<typename... TArgs> std::string FormatStringID(StringId id, TArgs&&... argN)
     {
         auto fmt = GetFmtStringById(id);
         return FormatString(fmt, argN...);
     }
 
-    template<typename... TArgs> size_t FormatStringId(char* buffer, size_t bufferLen, StringId id, TArgs&&... argN)
+    template<typename... TArgs> size_t FormatStringID(char* buffer, size_t bufferLen, StringId id, TArgs&&... argN)
     {
         auto& ss = GetThreadFormatStream();
-        FormatStringId(ss, id, argN...);
+        FormatStringID(ss, id, argN...);
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 

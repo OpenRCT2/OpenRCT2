@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,7 @@ namespace OpenRCT2::Ui
         void Tick() override
         {
         }
-        void Draw(rct_drawpixelinfo* /*dpi*/) override
+        void Draw(DrawPixelInfo* /*dpi*/) override
         {
         }
 
@@ -173,7 +173,7 @@ namespace OpenRCT2::Ui
         {
             return std::make_shared<X8DrawingEngineFactory>();
         }
-        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi, DrawWeatherFunc drawFunc) override
+        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo* dpi, DrawWeatherFunc drawFunc) override
         {
         }
 
@@ -182,7 +182,7 @@ namespace OpenRCT2::Ui
         {
             return false;
         }
-        TextInputSession* StartTextInput([[maybe_unused]] utf8* buffer, [[maybe_unused]] size_t bufferSize) override
+        TextInputSession* StartTextInput([[maybe_unused]] u8string& buffer, [[maybe_unused]] size_t maxLength) override
         {
             return nullptr;
         }

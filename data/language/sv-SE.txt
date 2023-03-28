@@ -1242,7 +1242,7 @@ STR_1863    :Vaktmästare
 STR_1864    :Mekaniker
 STR_1865    :Säkerhetsvakt
 STR_1866    :Underhållare
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan inte ändra antal rotationer…
 STR_1869    :{WINDOW_COLOUR_2}Antal rotationer:
 STR_1870    :Antal hela rotationer
@@ -1672,7 +1672,7 @@ STR_2314    :{WINDOW_COLOUR_2}Åktur längd: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kostnad: {BLACK}omkring {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Storlek: {BLACK}{COMMA16} × {COMMA16} block
 STR_2321    :{WINDOW_COLOUR_2}Antal åkturer och attraktioner: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}fot²
 STR_2325    :Köp land för att utöka parken
@@ -2651,7 +2651,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Namnet finns redan
 STR_5440    :Minimera fullskärm vid tappad fokus
-STR_5441    :Identifiera åkturer via spårtyp,{NEWLINE}så att vagnar kan bli ändrade{NEWLINE}efteråt (som i RCT1)
 STR_5442    :Tvinga parkbetyg:
 STR_5447    :Typ {STRINGID}
 STR_5448    :Åktur eller fordon {STRINGID}
@@ -3595,7 +3594,9 @@ STR_6487    :Växla genomskinlig personal
 STR_6488    :{RED}Gästerna klagar på kölängderna i din park. {NEWLINE}Överväg att förkorta problematiska köer, eller öka åkturernas genomströmning.
 STR_6489    :Fel: Inkompatibel parkversion
 STR_6490    :Varning: Halvkompatibel parkversion
+STR_6491    :Denna park sparades i en nyare version av OpenRCT2. Parken är v{INT32} och kräver åtminstone v{INT32}.
 STR_6492    :Denna park sparades i en äldre version av OpenRCT2, och kan inte öppnas med denna version av OpenRCT2. Parken är v{INT32}.
+STR_6493    :Denna park sparades i en nyare version av OpenRCT2, viss data kan gå förlorad. Parken är v{INT32} och kräver åtminstone v{INT32}.
 
 #############
 # Scenarion #

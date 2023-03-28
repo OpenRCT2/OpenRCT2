@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -63,26 +63,26 @@ namespace OpenRCT2::Scripting
         for (ImageIndex i = 0; i < range.Count; i++)
         {
             auto index = range.BaseId + i;
-            auto g1 = gfx_get_g1_element(index);
+            auto g1 = GfxGetG1Element(index);
             if (g1 != nullptr)
             {
                 // Free pixel data
                 delete[] g1->offset;
 
                 // Replace slot with empty element
-                rct_g1_element empty{};
-                gfx_set_g1_element(index, &empty);
+                G1Element empty{};
+                GfxSetG1Element(index, &empty);
             }
         }
-        gfx_object_free_images(range.BaseId, range.Count);
+        GfxObjectFreeImages(range.BaseId, range.Count);
     }
 
     std::optional<ImageList> AllocateCustomImages(const std::shared_ptr<Plugin>& plugin, uint32_t count)
     {
-        std::vector<rct_g1_element> images;
+        std::vector<G1Element> images;
         images.resize(count);
 
-        auto base = gfx_object_allocate_images(images.data(), count);
+        auto base = GfxObjectAllocateImages(images.data(), count);
         if (base == ImageIndexUndefined)
         {
             return {};
@@ -143,7 +143,7 @@ namespace OpenRCT2::Scripting
 
     DukValue DukGetImageInfo(duk_context* ctx, ImageIndex id)
     {
-        auto* g1 = gfx_get_g1_element(id);
+        auto* g1 = GfxGetG1Element(id);
         if (g1 == nullptr)
         {
             return ToDuk(ctx, undefined);
@@ -171,7 +171,7 @@ namespace OpenRCT2::Scripting
         return obj.Take();
     }
 
-    static const char* GetPixelDataTypeForG1(const rct_g1_element& g1)
+    static const char* GetPixelDataTypeForG1(const G1Element& g1)
     {
         if (g1.flags & G1_FLAG_RLE_COMPRESSION)
             return "rle";
@@ -182,12 +182,12 @@ namespace OpenRCT2::Scripting
 
     DukValue DukGetImagePixelData(duk_context* ctx, ImageIndex id)
     {
-        auto* g1 = gfx_get_g1_element(id);
+        auto* g1 = GfxGetG1Element(id);
         if (g1 == nullptr)
         {
             return ToDuk(ctx, undefined);
         }
-        auto dataSize = g1_calculate_data_size(g1);
+        auto dataSize = G1CalculateDataSize(g1);
         auto* type = GetPixelDataTypeForG1(*g1);
 
         // Copy the G1 data to a JS buffer wrapped in a Uint8Array
@@ -376,8 +376,8 @@ namespace OpenRCT2::Scripting
     static void ReplacePixelDataForImage(ImageIndex id, const PixelData& pixelData, std::vector<uint8_t>&& data)
     {
         // Setup the g1 element
-        rct_g1_element el{};
-        auto* lastel = gfx_get_g1_element(id);
+        G1Element el{};
+        auto* lastel = GfxGetG1Element(id);
         if (lastel != nullptr)
         {
             el = *lastel;
@@ -396,8 +396,8 @@ namespace OpenRCT2::Scripting
         {
             el.flags |= G1_FLAG_RLE_COMPRESSION;
         }
-        gfx_set_g1_element(id, &el);
-        drawing_engine_invalidate_image(id);
+        GfxSetG1Element(id, &el);
+        DrawingEngineInvalidateImage(id);
     }
 
     void DukSetPixelData(duk_context* ctx, ImageIndex id, const DukValue& dukPixelData)
@@ -420,13 +420,13 @@ namespace OpenRCT2::Scripting
         auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
 
         auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
-        rct_drawpixelinfo dpi;
+        DrawPixelInfo dpi;
         dpi.DrawingEngine = drawingEngine.get();
         dpi.width = size.width;
         dpi.height = size.height;
 
         auto createNewImage = false;
-        auto g1 = gfx_get_g1_element(id);
+        auto g1 = GfxGetG1Element(id);
         if (g1 == nullptr || g1->width != size.width || g1->height != size.height || (g1->flags & G1_FLAG_RLE_COMPRESSION))
         {
             createNewImage = true;
@@ -439,7 +439,7 @@ namespace OpenRCT2::Scripting
             std::memset(dpi.bits, 0, bufferSize);
 
             // Draw the original image if we are creating a new one
-            gfx_draw_sprite(&dpi, ImageId(id), { 0, 0 });
+            GfxDrawSprite(&dpi, ImageId(id), { 0, 0 });
         }
         else
         {
@@ -451,7 +451,7 @@ namespace OpenRCT2::Scripting
 
         if (createNewImage)
         {
-            rct_g1_element newg1{};
+            G1Element newg1{};
             if (g1 != nullptr)
             {
                 delete[] g1->offset;
@@ -461,10 +461,10 @@ namespace OpenRCT2::Scripting
             newg1.width = size.width;
             newg1.height = size.height;
             newg1.flags = 0;
-            gfx_set_g1_element(id, &newg1);
+            GfxSetG1Element(id, &newg1);
         }
 
-        drawing_engine_invalidate_image(id);
+        DrawingEngineInvalidateImage(id);
     }
 
 } // namespace OpenRCT2::Scripting

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,31 +22,6 @@ namespace OpenRCT2::Audio
 {
     struct AudioFormat;
     struct IAudioContext;
-
-#pragma pack(push, 1)
-    struct WaveFormat
-    {
-        uint16_t encoding;
-        uint16_t channels;
-        uint32_t frequency;
-        uint32_t byterate;
-        uint16_t blockalign;
-        uint16_t bitspersample;
-    };
-    assert_struct_size(WaveFormat, 16);
-
-    struct WaveFormatEx
-    {
-        uint16_t encoding;
-        uint16_t channels;
-        uint32_t frequency;
-        uint32_t byterate;
-        uint16_t blockalign;
-        uint16_t bitspersample;
-        uint16_t extrasize;
-    };
-    assert_struct_size(WaveFormatEx, 18);
-#pragma pack(pop)
 
     struct ISDLAudioChannel : public IAudioChannel
     {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,6 +42,12 @@ StaffSetCostumeAction::StaffSetCostumeAction(EntityId spriteIndex, EntertainerCo
 {
 }
 
+void StaffSetCostumeAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("id", _spriteIndex);
+    visitor.Visit("costume", _costume);
+}
+
 uint16_t StaffSetCostumeAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
@@ -64,14 +70,14 @@ GameActions::Result StaffSetCostumeAction::Query() const
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
-        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto spriteType = EntertainerCostumeToSprite(_costume);
     if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
     {
-        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     return GameActions::Result();
@@ -82,7 +88,7 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
-        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -97,7 +103,7 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     staff->UpdateCurrentActionSpriteType();
     staff->Invalidate();
 
-    window_invalidate_by_number(WindowClass::Peep, _spriteIndex);
+    WindowInvalidateByNumber(WindowClass::Peep, _spriteIndex);
     auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
     ContextBroadcastIntent(&intent);
 

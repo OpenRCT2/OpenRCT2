@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,7 @@ struct ITrackDesignRepository;
 struct IGameStateSnapshots;
 
 class Intent;
-struct rct_window;
+struct WindowBase;
 struct NewVersionInfo;
 
 struct TTFFontDescriptor;
@@ -52,10 +52,9 @@ struct CursorState
 
 struct TextInputSession
 {
-    utf8* Buffer;          // UTF-8 stream
-    size_t BufferSize;     // Maximum number of bytes (excluding null terminator)
-    size_t Size;           // Number of bytes (excluding null terminator)
+    u8string* Buffer;      // UTF-8 string buffer, non-owning.
     size_t Length;         // Number of codepoints
+    size_t MaxLength;      // Maximum length of text, Length can't be larger than this.
     size_t SelectionStart; // Selection start, in bytes
     size_t SelectionSize;  // Selection length in bytes
 
@@ -151,7 +150,7 @@ namespace OpenRCT2
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
         virtual bool LoadParkFromFile(
-            const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
+            const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
         virtual bool LoadParkFromStream(
             IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
             bool asScenario = false) abstract;
@@ -200,7 +199,7 @@ void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition);
 const CursorState* ContextGetCursorState();
 const uint8_t* ContextGetKeysState();
 const uint8_t* ContextGetKeysPressed();
-TextInputSession* ContextStartTextInput(utf8* buffer, size_t maxLength);
+TextInputSession* ContextStartTextInput(u8string& buffer, size_t maxLength);
 void ContextStopTextInput();
 bool ContextIsInputActive();
 void ContextTriggerResize();
@@ -210,11 +209,11 @@ int32_t ContextGetWidth();
 int32_t ContextGetHeight();
 bool ContextHasFocus();
 void ContextSetCursorTrap(bool value);
-rct_window* ContextOpenWindow(WindowClass wc);
-rct_window* ContextOpenDetailWindow(uint8_t type, int32_t id);
-rct_window* ContextOpenWindowView(uint8_t view);
-rct_window* ContextShowError(StringId title, StringId message, const class Formatter& args);
-rct_window* ContextOpenIntent(Intent* intent);
+WindowBase* ContextOpenWindow(WindowClass wc);
+WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
+WindowBase* ContextOpenWindowView(uint8_t view);
+WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args);
+WindowBase* ContextOpenIntent(Intent* intent);
 void ContextBroadcastIntent(Intent* intent);
 void ContextForceCloseWindowByClass(WindowClass wc);
 void ContextUpdateMapTooltip();

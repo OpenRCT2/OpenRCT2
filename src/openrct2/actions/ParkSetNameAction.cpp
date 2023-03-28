@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,8 +59,8 @@ GameActions::Result ParkSetNameAction::Execute() const
     if (_name != park.Name)
     {
         park.Name = _name;
-        scrolling_text_invalidate();
-        gfx_invalidate_screen();
+        ScrollingTextInvalidate();
+        GfxInvalidateScreen();
     }
     return GameActions::Result();
 }

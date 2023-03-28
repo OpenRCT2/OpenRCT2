@@ -1247,7 +1247,7 @@ STR_1863    :yleismies
 STR_1864    :mekaanikko
 STR_1865    :vartija
 STR_1866    :viihdyttäjä
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kierrosten määrää ei voi muuttaa…
 STR_1869    :{WINDOW_COLOUR_2}Kierrosten määrä:
 STR_1870    :Täysien kierrosten määrä
@@ -1679,7 +1679,7 @@ STR_2314    :{WINDOW_COLOUR_2}Radan pituus: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kustannus: {BLACK}noin {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Tilaa tarvitaan: {BLACK}{COMMA16} x {COMMA16} neliötä
 STR_2321    :{WINDOW_COLOUR_2}Laitteiden/kohteiden määrä: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Henkilöstö: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Henkilöstö: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}ft²
 STR_2325    :Osta maata puiston laajennukseen
@@ -2655,7 +2655,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Nimi on jo olemassa
 STR_5440    :Pienennä kokonäyttötila kohdistuksen poistuessa
-STR_5441    :Tunnistaa laitteet ratatyypin perusteella, jotta vaunut voi vaihtaa jälkikäteen, kuten RCT1:ssä.
 STR_5442    :Pakota puiston taso:
 STR_5447    :Tyyppi {STRINGID}
 STR_5448    :Laite / Vaunu {STRINGID}
@@ -3598,7 +3597,9 @@ STR_6487    :Läpinäkyvä henkilöstö -kytkin
 STR_6488    :{RED}Kävijät valittavat pitkistä jonoista puistosi laitteisiin.{NEWLINE}Lyhennä ongelmallisia jonotusalueita, tai korota laitteiden kapasiteettia.
 STR_6489    :Virhe: Yhteensopimaton puistoversio
 STR_6490    :Varoitus: Jokseenkin yhteensopiva puistoversio
+STR_6491    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
 STR_6492    :Tämä puisto on tallennettu vanhemmalla OpenRCT2-versiolla, eikä sitä voi avata tällä peliversiolla. Puisto on v{INT32}.
+STR_6493    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla, ja jotkin tiedot ovat saattaneet kadota. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
 STR_6494    :Ryhmitä laitetyypittäin
 STR_6495    :Ryhmitä laitteet laitetyypin perusteella, yksittäisten kulkuneuvojen sijaan.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}

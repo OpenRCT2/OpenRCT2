@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,6 +27,12 @@ StaffSetNameAction::StaffSetNameAction(EntityId spriteIndex, const std::string& 
 {
 }
 
+void StaffSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("id", _spriteIndex);
+    visitor.Visit("name", _name);
+}
+
 uint16_t StaffSetNameAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
@@ -49,7 +55,7 @@ GameActions::Result StaffSetNameAction::Query() const
     auto staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
-        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }
 
@@ -61,7 +67,7 @@ GameActions::Result StaffSetNameAction::Execute() const
     auto staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
-        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }
 
@@ -76,7 +82,7 @@ GameActions::Result StaffSetNameAction::Execute() const
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
     }
 
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
     ContextBroadcastIntent(&intent);

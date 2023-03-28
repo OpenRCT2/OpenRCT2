@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,20 +25,20 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
     _legacyType.flags = stream->ReadValue<uint8_t>();
     _legacyType.height = stream->ReadValue<uint8_t>();
     _legacyType.flags2 = stream->ReadValue<uint8_t>();
-    _legacyType.price = stream->ReadValue<uint16_t>();
+    _legacyType.price = stream->ReadValue<money16>();
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     stream->Seek(1, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
-    rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
     SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     GetImageTable().Read(context, stream);
 
     // Validate properties
-    if (_legacyType.price <= 0)
+    if (_legacyType.price <= 0.00_GBP)
     {
         context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
@@ -55,20 +55,20 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
 void WallObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.name = LanguageAllocateObjectString(GetName());
+    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void WallObject::Unload()
 {
-    language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.name);
+    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _legacyType.image = 0;
 }
 
-void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void WallObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
@@ -81,16 +81,16 @@ void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t heig
         imageId = imageId.WithSecondary(COLOUR_YELLOW);
     }
 
-    gfx_draw_sprite(dpi, imageId, screenCoords);
+    GfxDrawSprite(&dpi, imageId, screenCoords);
 
     if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
     {
         auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
-        gfx_draw_sprite(dpi, glassImageId, screenCoords);
+        GfxDrawSprite(&dpi, glassImageId, screenCoords);
     }
     else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
     {
-        gfx_draw_sprite(dpi, imageId.WithIndexOffset(1), screenCoords);
+        GfxDrawSprite(&dpi, imageId.WithIndexOffset(1), screenCoords);
     }
 }
 
@@ -104,7 +104,7 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::FenceDown);
         _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
-        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]);
+        _legacyType.price = Json::GetNumber<money64>(properties["price"]);
 
         _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
 

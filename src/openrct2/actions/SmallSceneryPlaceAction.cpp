@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,12 +17,14 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/ObjectEntryManager.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/SmallScenery.h"
+#include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "GameAction.h"
@@ -111,7 +113,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
-    auto* sceneryEntry = GetSmallSceneryEntry(_sceneryType);
+    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -145,7 +147,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     // If on water
     if (waterHeight > 0)
     {
-        // base_height2 is now the water height
+        // BaseHeight2 is now the water height
         surfaceHeight = waterHeight;
         if (_loc.z == 0)
         {
@@ -221,7 +223,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + ceil2(sceneryEntry->height, COORDS_Z_STEP);
+    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, COORDS_Z_STEP);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))
@@ -303,7 +305,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
         res.Position.z = surfaceHeight;
     }
 
-    auto* sceneryEntry = GetSmallSceneryEntry(_sceneryType);
+    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -339,7 +341,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     // If on water
     if (waterHeight > 0)
     {
-        // base_height2 is now the water height
+        // BaseHeight2 is now the water height
         surfaceHeight = waterHeight;
     }
     auto targetHeight = _loc.z;
@@ -358,7 +360,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + ceil2(sceneryEntry->height, 8);
+    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, 8);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))

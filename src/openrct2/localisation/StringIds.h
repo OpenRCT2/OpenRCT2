@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -3927,6 +3927,25 @@ enum : uint16_t
     STR_NAUSEA_FACTOR_NEGATIVE = 6535,
 
     STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE_2 = 6536,
+
+    STR_CHEAT_ALLOW_PATH_AS_QUEUE = 6537,
+    STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP = 6538,
+
+    STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED = 6539,
+
+    STR_ABOUT_SPECIAL_THANKS_1 = 6540,
+    STR_ABOUT_SPECIAL_THANKS_2 = 6541,
+
+    STR_CONTRIBUTORS_WINDOW = 6542,
+    STR_CONTRIBUTORS_WINDOW_BUTTON = 6543,
+
+    STR_LOAN_CANT_BE_NEGATIVE = 6544,
+
+    STR_RCT1_INTEREST = 6545,
+    STR_RCT1_INTEREST_TIP = 6546,
+    STR_ALL_SCENERY = 6547,
+
+    STR_TILE_INSPECTOR_PATH_JUNCTION_RAILINGS = 6548,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

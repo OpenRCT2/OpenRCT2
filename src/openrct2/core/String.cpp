@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -297,7 +297,7 @@ namespace String
 
     size_t LengthOf(const utf8* str)
     {
-        return utf8_length(str);
+        return UTF8Length(str);
     }
 
     size_t SizeOf(const utf8* str)
@@ -307,7 +307,7 @@ namespace String
 
     utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src)
     {
-        return safe_strcpy(buffer, src, bufferSize);
+        return SafeStrCpy(buffer, src, bufferSize);
     }
 
     utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src, size_t srcSize)
@@ -327,7 +327,7 @@ namespace String
 
     utf8* Append(utf8* buffer, size_t bufferSize, const utf8* src)
     {
-        return safe_strcat(buffer, src, bufferSize);
+        return SafeStrCat(buffer, src, bufferSize);
     }
 
     utf8* Format(utf8* buffer, size_t bufferSize, const utf8* format, ...)
@@ -374,7 +374,7 @@ namespace String
             return u8string(buffer, buffer + len);
         }
 
-        log_warning("Encoding error occured");
+        LOG_WARNING("Encoding error occured");
         return u8string{};
     }
 
@@ -401,35 +401,6 @@ namespace String
         }
 
         return buffer;
-    }
-
-    utf8* Duplicate(const std::string& src)
-    {
-        return String::Duplicate(src.c_str());
-    }
-
-    utf8* Duplicate(const utf8* src)
-    {
-        utf8* result = nullptr;
-        if (src != nullptr)
-        {
-            size_t srcSize = SizeOf(src) + 1;
-            result = Memory::Allocate<utf8>(srcSize);
-            std::memcpy(result, src, srcSize);
-        }
-        return result;
-    }
-
-    utf8* DiscardUse(utf8** ptr, utf8* replacement)
-    {
-        Memory::Free(*ptr);
-        *ptr = replacement;
-        return replacement;
-    }
-
-    utf8* DiscardDuplicate(utf8** ptr, const utf8* replacement)
-    {
-        return DiscardUse(ptr, String::Duplicate(replacement));
     }
 
     std::vector<std::string> Split(std::string_view s, std::string_view delimiter)
@@ -478,7 +449,7 @@ namespace String
 
     size_t GetCodepointLength(codepoint_t codepoint)
     {
-        return utf8_get_codepoint_length(codepoint);
+        return UTF8GetCodepointLength(codepoint);
     }
 
     codepoint_t GetNextCodepoint(utf8* ptr, utf8** nextPtr)
@@ -488,18 +459,18 @@ namespace String
 
     codepoint_t GetNextCodepoint(const utf8* ptr, const utf8** nextPtr)
     {
-        return utf8_get_next(ptr, nextPtr);
+        return UTF8GetNext(ptr, nextPtr);
     }
 
     utf8* WriteCodepoint(utf8* dst, codepoint_t codepoint)
     {
-        return utf8_write_codepoint(dst, codepoint);
+        return UTF8WriteCodepoint(dst, codepoint);
     }
 
     void AppendCodepoint(std::string& str, codepoint_t codepoint)
     {
         char buffer[8]{};
-        utf8_write_codepoint(buffer, codepoint);
+        UTF8WriteCodepoint(buffer, codepoint);
         str.append(buffer);
     }
 
@@ -695,7 +666,7 @@ namespace String
         {
             // Check the error
             auto error = GetLastError();
-            log_warning("LCMapStringEx failed with %d", error);
+            LOG_WARNING("LCMapStringEx failed with %d", error);
             return std::string(src);
         }
 
@@ -755,5 +726,5 @@ namespace String
 
 char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)
 {
-    return utf8_get_next(ch, next);
+    return UTF8GetNext(ch, next);
 }

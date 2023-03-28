@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -84,20 +84,20 @@ validate_global_widx(WC_STAFF, WIDX_PICKUP);
     MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP                          ), /* Tab 2 */ \
     MakeTab   ({65, 17}, STR_STAFF_STATS_TIP                            )  /* Tab 3 */
 
-static rct_widget window_staff_overview_widgets[] = {
+static Widget window_staff_overview_widgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
     MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
-    MakeWidget     ({WW - 25,      45}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_PICKUP_BTN, STR_PICKUP_TIP        ), // Pickup Button
-    MakeWidget     ({WW - 25,      69}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_PATROL_BTN, STR_SET_PATROL_TIP    ), // Patrol Button
-    MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_STAFF_TIP    ), // Rename Button
-    MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP), // Locate Button
-    MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_DEMOLISH,   STR_FIRE_STAFF_TIP    ), // Fire Button
+    MakeWidget     ({WW - 25,      45}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP        ), // Pickup Button
+    MakeWidget     ({WW - 25,      69}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PATROL_BTN), STR_SET_PATROL_TIP    ), // Patrol Button
+    MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
+    MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
+    MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    ), // Fire Button
     WIDGETS_END,
 };
 
 //0x9AF910
-static rct_widget window_staff_options_widgets[] = {
+static Widget window_staff_options_widgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
     MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
@@ -110,12 +110,12 @@ static rct_widget window_staff_options_widgets[] = {
 // clang-format on
 
 // 0x9AF9F4
-static rct_widget window_staff_stats_widgets[] = {
+static Widget window_staff_stats_widgets[] = {
     MAIN_STAFF_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget* window_staff_page_widgets[] = {
+static Widget* window_staff_page_widgets[] = {
     window_staff_overview_widgets,
     window_staff_options_widgets,
     window_staff_stats_widgets,
@@ -203,7 +203,7 @@ public:
         CommonPrepareDrawAfter();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(&dpi);
@@ -344,7 +344,7 @@ private:
 
     void CommonPrepareDrawAfter()
     {
-        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_3);
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_3);
     }
 #pragma endregion
 
@@ -365,14 +365,14 @@ private:
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                               network_get_current_player_id() };
+                                               NetworkGetCurrentPlayerId() };
                 pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
                         return;
-                    rct_window* wind = window_find_by_number(WindowClass::Peep, peepnum);
+                    WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
                     if (wind != nullptr)
                     {
-                        tool_set(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                        ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
                     }
                 });
                 GameActions::Execute(&pickupAction);
@@ -381,7 +381,7 @@ private:
             case WIDX_FIRE:
             {
                 auto intent = Intent(WindowClass::FirePrompt);
-                intent.putExtra(INTENT_EXTRA_PEEP, staff);
+                intent.PutExtra(INTENT_EXTRA_PEEP, staff);
                 ContextOpenIntent(&intent);
                 break;
             }
@@ -398,7 +398,7 @@ private:
 
     void OverviewOnMouseDown(WidgetIndex widgetIndex)
     {
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* widget = &widgets[widgetIndex];
 
         switch (widgetIndex)
         {
@@ -458,10 +458,9 @@ private:
                         return;
                     }
 
-                    window_close_by_class(WindowClass::PatrolArea);
+                    WindowCloseByClass(WindowClass::PatrolArea);
 
-                    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-                        staff->sprite_index, {}, StaffSetPatrolAreaMode::ClearAll);
+                    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(staff->Id, {}, StaffSetPatrolAreaMode::ClearAll);
                     GameActions::Execute(&staffSetPatrolAreaAction);
                 }
                 else
@@ -469,7 +468,7 @@ private:
                     auto staffId = EntityId::FromUnderlying(number);
                     if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                     {
-                        window_close_by_class(WindowClass::PatrolArea);
+                        WindowCloseByClass(WindowClass::PatrolArea);
                     }
                     else
                     {
@@ -499,7 +498,7 @@ private:
         widgets[WIDX_PICKUP].left = width - 25;
         widgets[WIDX_PICKUP].right = width - 2;
 
-        SetWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->sprite_index);
+        SetWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->Id);
 
         widgets[WIDX_PATROL].left = width - 25;
         widgets[WIDX_PATROL].right = width - 2;
@@ -514,16 +513,16 @@ private:
         widgets[WIDX_FIRE].right = width - 2;
     }
 
-    void OverviewDraw(rct_drawpixelinfo* dpi)
+    void OverviewDraw(DrawPixelInfo* dpi)
     {
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(dpi, *this);
+            WindowDrawViewport(dpi, *this);
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                gfx_draw_sprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
             }
         }
 
@@ -538,10 +537,10 @@ private:
         const auto& widget = widgets[WIDX_BTM_LABEL];
         auto screenPos = windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
         int32_t widgetWidth = widget.width();
-        DrawTextEllipsised(dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+        DrawTextEllipsised(*dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
     }
 
-    void DrawOverviewTabImage(rct_drawpixelinfo* dpi)
+    void DrawOverviewTabImage(DrawPixelInfo* dpi)
     {
         if (IsWidgetDisabled(WIDX_TAB_1))
             return;
@@ -553,8 +552,8 @@ private:
         if (page == WINDOW_STAFF_OVERVIEW)
             widgetHeight++;
 
-        rct_drawpixelinfo clip_dpi;
-        if (!clip_drawpixelinfo(&clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
+        DrawPixelInfo clip_dpi;
+        if (!ClipDrawPixelInfo(&clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
         {
             return;
         }
@@ -577,11 +576,11 @@ private:
         if (page == WINDOW_STAFF_OVERVIEW)
         {
             offset = _tabAnimationOffset;
-            offset = floor2(offset, 4);
+            offset = Floor2(offset, 4);
         }
         imageIndex += offset;
 
-        gfx_draw_sprite(&clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
+        GfxDrawSprite(&clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
     }
 
     void OverviewResize()
@@ -658,7 +657,7 @@ private:
 
         gPickupPeepImage = ImageId();
 
-        auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionItemAll);
+        auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
         if (info.SpriteType == ViewportInteractionItem::None)
             return;
 
@@ -692,12 +691,12 @@ private:
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
+            PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, NetworkGetCurrentPlayerId()
         };
         pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
                 return;
-            tool_cancel();
+            ToolCancel();
             gPickupPeepImage = ImageId();
         });
         GameActions::Execute(&pickupAction);
@@ -708,10 +707,9 @@ private:
         if (widgetIndex != WIDX_PICKUP)
             return;
 
-        PeepPickupAction pickupAction{ PeepPickupType::Cancel,
-                                       EntityId::FromUnderlying(number),
-                                       { picked_peep_old_x, 0, 0 },
-                                       network_get_current_player_id() };
+        PeepPickupAction pickupAction{
+            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { picked_peep_old_x, 0, 0 }, NetworkGetCurrentPlayerId()
+        };
         GameActions::Execute(&pickupAction);
     }
 
@@ -766,7 +764,7 @@ private:
         // This will be moved below where Items Checked is when all
         // of dropdown related functions are finished. This prevents
         // the dropdown from not working on first click.
-        int32_t numCostumes = staff_get_available_entertainer_costume_list(_availableCostumes);
+        int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(_availableCostumes);
         for (int32_t i = 0; i < numCostumes; i++)
         {
             EntertainerCostume costume = _availableCostumes[i];
@@ -872,7 +870,7 @@ private:
 
         auto staffOrders = staff->StaffOrders;
 
-        for (auto index = bitscanforward(staffOrders); index != -1; index = bitscanforward(staffOrders))
+        for (auto index = UtilBitScanForward(staffOrders); index != -1; index = UtilBitScanForward(staffOrders))
         {
             staffOrders &= ~(1 << index);
             SetCheckboxValue(WIDX_CHECKBOX_1 + index, true);
@@ -916,7 +914,7 @@ private:
 #pragma endregion
 
 #pragma region Statistics tab events
-    void StatsDraw(rct_drawpixelinfo* dpi)
+    void StatsDraw(DrawPixelInfo* dpi)
     {
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -930,13 +928,13 @@ private:
         {
             auto ft = Formatter();
             ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
-            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
+            DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
         auto ft = Formatter();
         ft.Add<int32_t>(staff->GetHireDate());
-        DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
+        DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         switch (staff->AssignedStaffType)
@@ -944,37 +942,37 @@ private:
             case StaffType::Handyman:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffLawnsMown);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffGardensWatered);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffLitterSwept);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffBinsEmptied);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
                 break;
             case StaffType::Mechanic:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffRidesInspected);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffRidesFixed);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
                 break;
             case StaffType::Security:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffVandalsStopped);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
+                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                 break;
             case StaffType::Entertainer:
             case StaffType::Count:
@@ -1062,10 +1060,10 @@ private:
 
     void CancelTools()
     {
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
         {
             if (number == gCurrentToolWidget.window_number && classification == gCurrentToolWidget.window_classification)
-                tool_cancel();
+                ToolCancel();
         }
     }
 
@@ -1089,8 +1087,8 @@ private:
         RemoveViewport();
 
         Invalidate();
-        window_event_resize_call(this);
-        window_event_invalidate_call(this);
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
         InitScrollWidgets();
         ViewportInit();
         Invalidate();
@@ -1133,7 +1131,7 @@ private:
         std::optional<Focus> tempFocus;
         if (staff->State != PeepState::Picked)
         {
-            tempFocus = Focus(staff->sprite_index);
+            tempFocus = Focus(staff->Id);
         }
 
         uint16_t viewport_flags;
@@ -1153,7 +1151,7 @@ private:
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
         }
 
-        window_event_invalidate_call(this);
+        WindowEventInvalidateCall(this);
 
         focus = tempFocus;
 
@@ -1167,7 +1165,7 @@ private:
                 int32_t viewportWidth = viewWidget.width() - 1;
                 int32_t viewportHeight = viewWidget.height() - 1;
 
-                viewport_create(this, screenPos, viewportWidth, viewportHeight, focus.value());
+                ViewportCreate(this, screenPos, viewportWidth, viewportHeight, focus.value());
                 flags |= WF_NO_SCROLLING;
                 Invalidate();
             }
@@ -1178,7 +1176,7 @@ private:
         Invalidate();
     }
 
-    void ShowLocateDropdown(rct_widget* widget)
+    void ShowLocateDropdown(Widget* widget)
     {
         gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
         gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
@@ -1190,21 +1188,21 @@ private:
 
     void FollowPeep()
     {
-        rct_window* main = window_get_main();
-        window_follow_sprite(*main, EntityId::FromUnderlying(number));
+        WindowBase* main = WindowGetMain();
+        WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo* dpi)
     {
         DrawOverviewTabImage(dpi);
         DrawTabImage(dpi, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
         DrawTabImage(dpi, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
     }
 
-    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t baseImageId)
+    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t baseImageId)
     {
         WidgetIndex widgetIndex = WIDX_TAB_1 + p;
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* widget = &widgets[widgetIndex];
 
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
@@ -1217,7 +1215,7 @@ private:
             }
 
             // Draw normal, enabled sprite.
-            gfx_draw_sprite(dpi, ImageId(baseImageId), screenCoords);
+            GfxDrawSprite(dpi, ImageId(baseImageId), screenCoords);
         }
     }
 
@@ -1234,9 +1232,9 @@ private:
     static constexpr int32_t TabAnimationFrames = 7;
 };
 
-rct_window* WindowStaffOpen(Peep* peep)
+WindowBase* WindowStaffOpen(Peep* peep)
 {
-    auto w = static_cast<StaffWindow*>(window_bring_to_front_by_number(WindowClass::Peep, peep->sprite_index.ToUnderlying()));
+    auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
 
     if (w != nullptr)
         return w;
@@ -1247,7 +1245,7 @@ rct_window* WindowStaffOpen(Peep* peep)
         return nullptr;
 
     if (w != nullptr)
-        w->Initialise(peep->sprite_index);
+        w->Initialise(peep->Id);
 
     return w;
 }

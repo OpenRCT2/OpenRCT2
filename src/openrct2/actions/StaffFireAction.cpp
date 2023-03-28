@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,14 +38,14 @@ GameActions::Result StaffFireAction::Query() const
 {
     if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
     {
-        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
-        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -57,12 +57,12 @@ GameActions::Result StaffFireAction::Execute() const
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
-        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
-    window_close_by_class(WindowClass::FirePrompt);
-    peep_sprite_remove(staff);
+    WindowCloseByClass(WindowClass::FirePrompt);
+    PeepEntityRemove(staff);
     // Due to patrol areas best to invalidate the whole screen on removal of staff
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
     return GameActions::Result();
 }

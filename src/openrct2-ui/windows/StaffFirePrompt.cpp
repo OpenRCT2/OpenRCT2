@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ enum WindowStaffFireWidgetIdx {
 };
 
 // 0x9AFB4C
-static rct_widget window_staff_fire_widgets[] = {
+static Widget window_staff_fire_widgets[] = {
     WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
     MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
     MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
@@ -72,7 +72,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -81,15 +81,15 @@ public:
         peep->FormatNameTo(ft);
 
         ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ WW / 2, (WH / 2) - 3 });
-        DrawTextWrapped(&dpi, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
     }
 };
 
-rct_window* WindowStaffFirePromptOpen(Peep* peep)
+WindowBase* WindowStaffFirePromptOpen(Peep* peep)
 {
     // Check if the confirm window already exists
     auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(
         WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
-    window->SetWindowNumber(peep->sprite_index.ToUnderlying());
+    window->SetWindowNumber(peep->Id.ToUnderlying());
     return window;
 }

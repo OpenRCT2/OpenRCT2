@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -77,7 +77,7 @@ const uint32_t chairlift_bullwheel_frames[] = {
     SPR_CHAIRLIFT_BULLWHEEL_FRAME_4,
 };
 
-static void chairlift_paint_util_draw_supports(PaintSession& session, int32_t segments, uint16_t height)
+static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segments, uint16_t height)
 {
     bool success = false;
 
@@ -113,7 +113,7 @@ static void chairlift_paint_util_draw_supports(PaintSession& session, int32_t se
     }
 }
 
-static const TrackElement* chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(
+static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
     int32_t x, int32_t y, int32_t z, const Ride& ride)
 {
     const TileElement* tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
@@ -128,7 +128,7 @@ static const TrackElement* chairlift_paint_util_map_get_track_element_at_from_ri
             continue;
         if (tileElement->GetRideIndex() != ride.id)
             continue;
-        if (tileElement->base_height != z && tileElement->base_height != z - 1)
+        if (tileElement->BaseHeight != z && tileElement->BaseHeight != z - 1)
             continue;
 
         return tileElement->AsTrack();
@@ -137,7 +137,7 @@ static const TrackElement* chairlift_paint_util_map_get_track_element_at_from_ri
     return nullptr;
 };
 
-static bool chairlift_paint_util_is_first_track(
+static bool ChairliftPaintUtilIsFirstTrack(
     const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, track_type_t trackType)
 {
     if (trackElement.GetTrackType() != TrackElemType::BeginStation)
@@ -151,13 +151,13 @@ static bool chairlift_paint_util_is_first_track(
         static_cast<int32_t>(pos.y - delta.y),
     };
 
-    const TrackElement* nextTrack = chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(
-        newPos.x, newPos.y, trackElement.base_height, ride);
+    const TrackElement* nextTrack = ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
+        newPos.x, newPos.y, trackElement.BaseHeight, ride);
 
     return nextTrack == nullptr;
 }
 
-static bool chairlift_paint_util_is_last_track(
+static bool ChairliftPaintUtilIsLastTrack(
     const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, track_type_t trackType)
 {
     if (trackElement.GetTrackType() != TrackElemType::EndStation)
@@ -171,13 +171,13 @@ static bool chairlift_paint_util_is_last_track(
         static_cast<int32_t>(pos.y + delta.y),
     };
 
-    const TrackElement* nextTrack = chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(
-        newPos.x, newPos.y, trackElement.base_height, ride);
+    const TrackElement* nextTrack = ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
+        newPos.x, newPos.y, trackElement.BaseHeight, ride);
 
     return nextTrack == nullptr;
 }
 
-static void chairlift_paint_station_ne_sw(
+static void ChairliftPaintStationNeSw(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -185,8 +185,8 @@ static void chairlift_paint_station_ne_sw(
     auto trackType = trackElement.GetTrackType();
     ImageId imageId;
 
-    bool isStart = chairlift_paint_util_is_first_track(ride, trackElement, pos, trackType);
-    bool isEnd = chairlift_paint_util_is_last_track(ride, trackElement, pos, trackType);
+    bool isStart = ChairliftPaintUtilIsFirstTrack(ride, trackElement, pos, trackType);
+    bool isEnd = ChairliftPaintUtilIsLastTrack(ride, trackElement, pos, trackType);
 
     const auto* stationObj = ride.GetStationObject();
 
@@ -201,13 +201,13 @@ static void chairlift_paint_station_ne_sw(
     imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
-    bool hasFence = track_paint_util_has_fence(EDGE_NW, pos, trackElement, ride, session.CurrentRotation);
+    bool hasFence = TrackPaintUtilHasFence(EDGE_NW, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
-    track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
 
     if ((direction == 2 && isStart) || (direction == 0 && isEnd))
     {
@@ -215,13 +215,13 @@ static void chairlift_paint_station_ne_sw(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 2, height + 4 }, { 1, 28, 7 } });
     }
 
-    hasFence = track_paint_util_has_fence(EDGE_SE, pos, trackElement, ride, session.CurrentRotation);
+    hasFence = TrackPaintUtilHasFence(EDGE_SE, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 30, height + 2 }, { 32, 1, 27 } });
     }
-    track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height);
 
     bool drawFrontColumn = true;
     bool drawBackColumn = true;
@@ -269,7 +269,7 @@ static void chairlift_paint_station_ne_sw(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void chairlift_paint_station_se_nw(
+static void ChairliftPaintStationSeNw(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -277,8 +277,8 @@ static void chairlift_paint_station_se_nw(
     auto trackType = trackElement.GetTrackType();
     ImageId imageId;
 
-    bool isStart = chairlift_paint_util_is_first_track(ride, trackElement, pos, trackType);
-    bool isEnd = chairlift_paint_util_is_last_track(ride, trackElement, pos, trackType);
+    bool isStart = ChairliftPaintUtilIsFirstTrack(ride, trackElement, pos, trackType);
+    bool isEnd = ChairliftPaintUtilIsLastTrack(ride, trackElement, pos, trackType);
 
     const auto* stationObj = ride.GetStationObject();
 
@@ -293,13 +293,13 @@ static void chairlift_paint_station_se_nw(
     imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
-    bool hasFence = track_paint_util_has_fence(EDGE_NE, pos, trackElement, ride, session.CurrentRotation);
+    bool hasFence = TrackPaintUtilHasFence(EDGE_NE, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
-    track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
 
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
@@ -307,13 +307,13 @@ static void chairlift_paint_station_se_nw(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 2, height + 4 }, { 28, 1, 7 } });
     }
 
-    hasFence = track_paint_util_has_fence(EDGE_SW, pos, trackElement, ride, session.CurrentRotation);
+    hasFence = TrackPaintUtilHasFence(EDGE_SW, pos, trackElement, ride, session.CurrentRotation);
     if (hasFence)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 27 } });
     }
-    track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height);
 
     bool drawRightColumn = true;
     bool drawLeftColumn = true;
@@ -365,21 +365,21 @@ static void chairlift_paint_station_se_nw(
 }
 
 /** rct2: 0x00744068 */
-static void chairlift_paint_station(
+static void ChairliftPaintStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction % 2)
     {
-        chairlift_paint_station_se_nw(session, ride, trackSequence, direction, height, trackElement);
+        ChairliftPaintStationSeNw(session, ride, trackSequence, direction, height, trackElement);
     }
     else
     {
-        chairlift_paint_station_ne_sw(session, ride, trackSequence, direction, height, trackElement);
+        ChairliftPaintStationNeSw(session, ride, trackSequence, direction, height, trackElement);
     }
 }
 
-static void chairlift_paint_flat(
+static void ChairliftPaintFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -402,7 +402,7 @@ static void chairlift_paint_flat(
 }
 
 /** rct2: 0x00743FD8 */
-static void chairlift_paint_25_deg_up(
+static void ChairliftPaint25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -440,7 +440,7 @@ static void chairlift_paint_25_deg_up(
 }
 
 /** rct2: 0x00743FD8 */
-static void chairlift_paint_flat_to_25_deg_up(
+static void ChairliftPaintFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -489,13 +489,13 @@ static void chairlift_paint_flat_to_25_deg_up(
             break;
     }
 
-    chairlift_paint_util_draw_supports(session, SEGMENT_C4, height);
+    ChairliftPaintUtilDrawSupports(session, SEGMENT_C4, height);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
 /** rct2: 0x00743FF8 */
-static void chairlift_paint_25_deg_up_to_flat(
+static void ChairliftPaint25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -544,37 +544,37 @@ static void chairlift_paint_25_deg_up_to_flat(
             break;
     }
 
-    chairlift_paint_util_draw_supports(session, SEGMENT_C4, height);
+    ChairliftPaintUtilDrawSupports(session, SEGMENT_C4, height);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
 /** rct2: 0x00744008 */
-static void chairlift_paint_25_deg_down(
+static void ChairliftPaint25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    chairlift_paint_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    ChairliftPaint25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x00744018 */
-static void chairlift_paint_flat_to_25_deg_down(
+static void ChairliftPaintFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    chairlift_paint_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    ChairliftPaint25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x00744028 */
-static void chairlift_paint_25_deg_down_to_flat(
+static void ChairliftPaint25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    chairlift_paint_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    ChairliftPaintFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
 /** rct2: 0x00744038 */
-static void chairlift_paint_left_quarter_turn_1_tile(
+static void ChairliftPaintLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -634,51 +634,51 @@ static void chairlift_paint_left_quarter_turn_1_tile(
             break;
     }
 
-    chairlift_paint_util_draw_supports(session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_D0, direction), height);
+    ChairliftPaintUtilDrawSupports(session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_D0, direction), height);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00744048 */
-static void chairlift_paint_right_quarter_turn_1_tile(
+static void ChairliftPaintRightQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    chairlift_paint_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    ChairliftPaintLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 /* 0x008AAA0C */
-TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionChairlift(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
         case TrackElemType::EndStation:
-            return chairlift_paint_station;
+            return ChairliftPaintStation;
 
         case TrackElemType::Flat:
-            return chairlift_paint_flat;
+            return ChairliftPaintFlat;
 
         case TrackElemType::FlatToUp25:
-            return chairlift_paint_flat_to_25_deg_up;
+            return ChairliftPaintFlatTo25DegUp;
         case TrackElemType::Up25:
-            return chairlift_paint_25_deg_up;
+            return ChairliftPaint25DegUp;
         case TrackElemType::Up25ToFlat:
-            return chairlift_paint_25_deg_up_to_flat;
+            return ChairliftPaint25DegUpToFlat;
 
         case TrackElemType::FlatToDown25:
-            return chairlift_paint_flat_to_25_deg_down;
+            return ChairliftPaintFlatTo25DegDown;
         case TrackElemType::Down25:
-            return chairlift_paint_25_deg_down;
+            return ChairliftPaint25DegDown;
         case TrackElemType::Down25ToFlat:
-            return chairlift_paint_25_deg_down_to_flat;
+            return ChairliftPaint25DegDownToFlat;
 
         case TrackElemType::LeftQuarterTurn1Tile:
-            return chairlift_paint_left_quarter_turn_1_tile;
+            return ChairliftPaintLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
-            return chairlift_paint_right_quarter_turn_1_tile;
+            return ChairliftPaintRightQuarterTurn1Tile;
     }
 
     return nullptr;

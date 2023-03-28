@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ enum WindowTextInputWidgetIdx
     WIDX_OKAY
 };
 
-static rct_widget window_text_input_widgets[] = {
+static Widget window_text_input_widgets[] = {
     WINDOW_SHIM(STR_NONE, WW, WH),
     MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
     MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK),
@@ -42,7 +42,7 @@ static rct_widget window_text_input_widgets[] = {
 class TextInputWindow final : public Window
 {
 private:
-    widget_identifier _parentWidget{};
+    WidgetIdentifier _parentWidget{};
 
     std::string _title;
     StringId _titleStringId = STR_NONE;
@@ -56,7 +56,7 @@ private:
 
     int32_t _cursorBlink{};
     size_t _maxInputLength{};
-    std::vector<utf8> _buffer;
+    u8string _buffer;
 
 public:
     void OnOpen() override
@@ -66,7 +66,7 @@ public:
         SetParentWindow(nullptr, 0);
     }
 
-    void SetParentWindow(rct_window* parentWindow, WidgetIndex widgetIndex)
+    void SetParentWindow(WindowBase* parentWindow, WidgetIndex widgetIndex)
     {
         // Save calling window details so that the information can be passed back to the correct window & widget
         if (parentWindow == nullptr)
@@ -108,10 +108,13 @@ public:
 
     void SetText(std::string_view text, size_t maxLength)
     {
-        _buffer.resize(maxLength);
-        safe_strcpy(_buffer.data(), std::string(text).c_str(), maxLength);
+        _buffer = u8string{ text };
+        if (_buffer.size() > maxLength)
+        {
+            _buffer.resize(maxLength);
+        }
         _maxInputLength = maxLength;
-        gTextInput = ContextStartTextInput(_buffer.data(), maxLength);
+        gTextInput = ContextStartTextInput(_buffer, maxLength);
     }
 
     void SetCallback(std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
@@ -135,7 +138,7 @@ public:
             auto parentWindow = GetParentWindow();
             if (parentWindow == nullptr)
             {
-                window_close(*this);
+                WindowClose(*this);
                 return;
             }
         }
@@ -156,12 +159,12 @@ public:
             case WIDX_CLOSE:
                 ContextStopTextInput();
                 ExecuteCallback(false);
-                window_close(*this);
+                WindowClose(*this);
                 break;
             case WIDX_OKAY:
                 ContextStopTextInput();
                 ExecuteCallback(true);
-                window_close(*this);
+                WindowClose(*this);
         }
     }
 
@@ -171,7 +174,7 @@ public:
         int32_t newHeight = CalculateWindowHeight(_buffer.data());
         if (newHeight != height)
         {
-            window_set_resize(*this, WW, newHeight, WW, newHeight);
+            WindowSetResize(*this, WW, newHeight, WW, newHeight);
         }
 
         widgets[WIDX_OKAY].top = newHeight - 22;
@@ -193,7 +196,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -207,31 +210,30 @@ public:
             auto ft = Formatter();
             ft.Add<const char*>(_description.c_str());
             DrawTextWrapped(
-                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+                dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
         }
         else
         {
             DrawTextWrapped(
-                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, _descriptionArgs,
+                dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, _descriptionArgs,
                 { colours[1], TextAlignment::CENTRE });
         }
 
         screenCoords.y += 25;
 
-        char wrapped_string[TEXT_INPUT_SIZE];
-        safe_strcpy(wrapped_string, _buffer.data(), _buffer.size());
-
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
-        gfx_wrap_string(wrapped_string, WW - (24 + 13), FontStyle::Medium, &no_lines);
+        u8string wrappedString;
+        GfxWrapString(
+            u8string_view{ _buffer.data(), _buffer.size() }, WW - (24 + 13), FontStyle::Medium, &wrappedString, &no_lines);
 
-        gfx_fill_rect_inset(
+        GfxFillRectInset(
             &dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
             colours[1], INSET_RECT_F_60);
 
         screenCoords.y += 1;
 
-        char* wrap_pointer = wrapped_string;
+        const utf8* wrapPointer = wrappedString.data();
         size_t char_count = 0;
         uint8_t cur_drawn = 0;
 
@@ -240,16 +242,16 @@ public:
         for (int32_t line = 0; line <= no_lines; line++)
         {
             screenCoords.x = windowPos.x + 12;
-            gfx_draw_string_no_formatting(&dpi, screenCoords, wrap_pointer, { colours[1], FontStyle::Medium });
+            DrawText(dpi, screenCoords, { colours[1], FontStyle::Medium, TextAlignment::LEFT }, wrapPointer, true);
 
-            size_t string_length = get_string_size(wrap_pointer) - 1;
+            size_t string_length = GetStringSize(wrapPointer) - 1;
 
             if (!cur_drawn && (gTextInput->SelectionStart <= char_count + string_length))
             {
-                // Make a copy of the string for measuring the width.
-                char temp_string[TEXT_INPUT_SIZE] = { 0 };
-                std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
-                cursorX = windowPos.x + 13 + gfx_get_string_width_no_formatting(temp_string, FontStyle::Medium);
+                // Make a view of the string for measuring the width.
+                cursorX = windowPos.x + 13
+                    + GfxGetStringWidthNoFormatting(
+                              u8string_view{ wrapPointer, gTextInput->SelectionStart - char_count }, FontStyle::Medium);
                 cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
@@ -257,24 +259,24 @@ public:
                 {
                     // Make a 1 utf8-character wide string for measuring the width
                     // of the currently selected character.
-                    utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
-                    uint32_t codepoint = utf8_get_next(_buffer.data() + gTextInput->SelectionStart, nullptr);
-                    utf8_write_codepoint(tmp, codepoint);
-                    textWidth = std::max(gfx_get_string_width_no_formatting(tmp, FontStyle::Medium) - 2, 4);
+                    utf8 tmp[5] = {}; // This is easier than setting temp_string[0..5]
+                    uint32_t codepoint = UTF8GetNext(_buffer.data() + gTextInput->SelectionStart, nullptr);
+                    UTF8WriteCodepoint(tmp, codepoint);
+                    textWidth = std::max(GfxGetStringWidthNoFormatting(tmp, FontStyle::Medium) - 2, 4);
                 }
 
                 if (_cursorBlink > 15)
                 {
                     uint8_t colour = ColourMapA[colours[1]].mid_light;
                     // TODO: palette index addition
-                    gfx_fill_rect(
+                    GfxFillRect(
                         &dpi, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);
                 }
 
                 cur_drawn++;
             }
 
-            wrap_pointer += string_length + 1;
+            wrapPointer += string_length + 1;
 
             if (_buffer[char_count + string_length] == ' ')
                 char_count++;
@@ -290,7 +292,7 @@ public:
         }
 
         // IME composition
-        if (!str_is_null_or_empty(gTextInput->ImeBuffer))
+        if (!String::IsNullOrEmpty(gTextInput->ImeBuffer))
         {
             DrawIMEComposition(dpi, cursorX, cursorY);
         }
@@ -300,33 +302,30 @@ public:
     {
         ContextStopTextInput();
         ExecuteCallback(true);
-        window_close(*this);
+        WindowClose(*this);
     }
 
     static int32_t CalculateWindowHeight(std::string_view text)
     {
-        std::string wrappedString(text);
-        wrappedString.resize(TEXT_INPUT_SIZE);
-
         // String length needs to add 12 either side of box +13 for cursor when max length.
         int32_t numLines{};
-        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), FontStyle::Medium, &numLines);
+        GfxWrapString(text, WW - (24 + 13), FontStyle::Medium, nullptr, &numLines);
         return numLines * 10 + WH;
     }
 
 private:
-    static void DrawIMEComposition(rct_drawpixelinfo& dpi, int32_t cursorX, int32_t cursorY)
+    static void DrawIMEComposition(DrawPixelInfo& dpi, int32_t cursorX, int32_t cursorY)
     {
-        int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer, FontStyle::Medium);
+        int compositionWidth = GfxGetStringWidth(gTextInput->ImeBuffer, FontStyle::Medium);
         ScreenCoordsXY screenCoords(cursorX - (compositionWidth / 2), cursorY + 13);
         int width = compositionWidth;
         int height = 10;
 
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
             PALETTE_INDEX_12);
-        gfx_fill_rect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
-        gfx_draw_string(&dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
+        GfxFillRect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
+        GfxDrawString(dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
     }
 
     void ExecuteCallback(bool hasValue)
@@ -337,7 +336,7 @@ private:
             if (w != nullptr)
             {
                 auto value = hasValue ? _buffer.data() : nullptr;
-                window_event_textinput_call(w, _parentWidget.widget_index, value);
+                WindowEventTextinputCall(w, _parentWidget.widget_index, value);
             }
         }
         else
@@ -364,18 +363,18 @@ private:
         return _parentWidget.window.classification != WindowClass::Null;
     }
 
-    rct_window* GetParentWindow() const
+    WindowBase* GetParentWindow() const
     {
-        return HasParentWindow() ? window_find_by_number(_parentWidget.window.classification, _parentWidget.window.number)
+        return HasParentWindow() ? WindowFindByNumber(_parentWidget.window.classification, _parentWidget.window.number)
                                  : nullptr;
     }
 };
 
 void WindowTextInputRawOpen(
-    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    WindowBase* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     const_utf8string existing_text, int32_t maxLength)
 {
-    window_close_by_class(WindowClass::Textinput);
+    WindowCloseByClass(WindowClass::Textinput);
 
     auto height = TextInputWindow::CalculateWindowHeight(existing_text);
     auto w = WindowCreate<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
@@ -402,14 +401,14 @@ void WindowTextInputOpen(
 }
 
 void WindowTextInputOpen(
-    rct_window* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
+    WindowBase* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
     StringId existing_text, uintptr_t existing_args, int32_t maxLength)
 {
-    auto existingText = format_string(existing_text, &existing_args);
+    auto existingText = FormatStringID(existing_text, &existing_args);
     WindowTextInputRawOpen(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
 }
 
-void WindowTextInputKey(rct_window* w, uint32_t keycode)
+void WindowTextInputKey(WindowBase* w, uint32_t keycode)
 {
     const auto wndNumber = w->number;
     const auto wndClass = w->classification;
@@ -425,7 +424,7 @@ void WindowTextInputKey(rct_window* w, uint32_t keycode)
     }
 
     // The window can be potentially closed within a callback, we need to check if its still alive.
-    w = window_find_by_number(wndClass, wndNumber);
+    w = WindowFindByNumber(wndClass, wndNumber);
     if (w != nullptr)
         w->Invalidate();
 }

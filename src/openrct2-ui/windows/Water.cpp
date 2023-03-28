@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,9 +31,9 @@ enum WindowWaterWidgetIdx {
     WIDX_INCREMENT
 };
 
-static rct_widget window_water_widgets[] = {
+static Widget window_water_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , SPR_LAND_TOOL_SIZE_0,   STR_NONE),                     // preview box
+    MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0),   STR_NONE),                     // preview box
     MakeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
     MakeRemapWidget({43, 32}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP),  // increment size
     WIDGETS_END,
@@ -48,7 +48,7 @@ public:
         widgets = window_water_widgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         gLandToolSize = 1;
         gWaterToolRaiseCost = MONEY64_UNDEFINED;
@@ -60,7 +60,7 @@ public:
         // If the tool wasn't changed, turn tool off
         if (WaterToolIsActive())
         {
-            tool_cancel();
+            ToolCancel();
         }
     }
 
@@ -135,10 +135,10 @@ public:
         SetWidgetPressed(WIDX_PREVIEW, true);
 
         // Update the preview image
-        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = ScreenCoordsXY{ windowPos.x + window_water_widgets[WIDX_PREVIEW].midX(),
                                             windowPos.y + window_water_widgets[WIDX_PREVIEW].midY() };
@@ -149,7 +149,7 @@ public:
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
 
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -161,7 +161,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gWaterToolRaiseCost);
-                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
             screenCoords.y += 10;
 
@@ -170,7 +170,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gWaterToolLowerCost);
-                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
     }
@@ -185,7 +185,7 @@ private:
     }
 };
 
-rct_window* WindowWaterOpen()
+WindowBase* WindowWaterOpen()
 {
     return WindowFocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

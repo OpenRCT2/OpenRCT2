@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,13 @@ RideFreezeRatingAction::RideFreezeRatingAction(RideId rideIndex, RideRatingType 
 {
 }
 
+void RideFreezeRatingAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("ride", _rideIndex);
+    visitor.Visit("type", _type);
+    visitor.Visit("value", _value);
+}
+
 void RideFreezeRatingAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
@@ -24,16 +31,16 @@ void RideFreezeRatingAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result RideFreezeRatingAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     if (_value <= 0)
     {
-        log_warning("Rating value must be positive", _rideIndex.ToUnderlying());
+        LOG_WARNING("Rating value must be positive", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -42,7 +49,7 @@ GameActions::Result RideFreezeRatingAction::Query() const
 
 GameActions::Result RideFreezeRatingAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
 
     switch (_type)
     {
@@ -59,7 +66,7 @@ GameActions::Result RideFreezeRatingAction::Execute() const
 
     ride->lifecycle_flags |= RIDE_LIFECYCLE_FIXED_RATINGS;
 
-    window_invalidate_by_number(WindowClass::Ride, _rideIndex.ToUnderlying());
+    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
 
     auto res = GameActions::Result();
     return res;

@@ -198,6 +198,10 @@
         "path": "icons/rct1_simulate_on_pressed.png"
     },
     {
+        "path": "icons/infinity.png",
+        "palette": "keep"
+    },
+    {
         "path": "tool/normal_selection_6x6.png",
         "x_offset": 1,
         "y_offset": 4
@@ -230,22 +234,22 @@
         "y_offset": 1
     },
     {
-        "path": "icons/legacy_path.png",
+        "path": "icons/legacy_paths.png",
         "x_offset": 1,
         "y_offset": 1
     },
     {
-        "path": "icons/path_surface.png",
+        "path": "icons/path_surfaces.png",
         "x_offset": 1,
         "y_offset": 1
     },
     {
-        "path": "icons/ride_station.png",
+        "path": "icons/ride_stations.png",
         "x_offset": 5,
         "y_offset": 1
     },
     {
-        "path": "icons/terrain_edge.png",
+        "path": "icons/terrain_edges.png",
         "x_offset": 1,
         "y_offset": 1
     },
@@ -797,6 +801,30 @@
     },
     {
         "path": "font/latin/u-ring-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/w-circumflex-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/w-circumflex-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
@@ -1403,6 +1431,31 @@
     {
         "path": "font/latin/u-ring-bold.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+
+    {
+        "path": "font/latin/w-circumflex-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/w-circumflex-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-bold.png",
+        "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
@@ -2020,6 +2073,30 @@
         "forceBmp": true
     },
     {
+        "path": "font/latin/w-circumflex-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/w-circumflex-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/y-circumflex-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/z-caron-uc-tiny.png",
         "y_offset": -1,
         "palette": "keep",
@@ -2360,6 +2437,78 @@
         "path": "track/wooden/classic_wooden_preview_supports.png",
         "x_offset": 2,
         "y_offset": 1
+    },
+    {
+        "path": "track/wooden/25_60_swne_chained.png",
+        "x_offset": -32,
+        "y_offset": -49,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/25_60_senw_chained.png",
+        "x_offset": -32,
+        "y_offset": -49,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/25_60_swne_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/25_60_senw_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_swne_chained.png",
+        "x_offset": -32,
+        "y_offset": -80,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_senw_chained.png",
+        "x_offset": -32,
+        "y_offset": -80,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_swne_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -60,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_senw_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -59,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_25_swne_chained.png",
+        "x_offset": -32,
+        "y_offset": -47,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_25_senw_chained.png",
+        "x_offset": -32,
+        "y_offset": -47,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_25_swne_chained_back.png",
+        "x_offset": 0,
+        "y_offset": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/60_25_senw_chained_back.png",
+        "x_offset": -32,
+        "y_offset": -30,
+        "palette": "keep"
     },
     {
         "path": "track/bm_invert/booster_1.png",

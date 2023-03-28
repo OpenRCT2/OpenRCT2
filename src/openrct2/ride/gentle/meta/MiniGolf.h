@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(Heights, { 7, 32, 2, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_mini_golf),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateMiniGolf),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 30, 60, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 25.00_GBP, 3.50_GBP, 20, }),

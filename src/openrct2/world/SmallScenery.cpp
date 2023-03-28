@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,9 @@
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/ObjectManager.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../ride/TrackDesign.h"
 #include "Footpath.h"
 #include "Map.h"
@@ -26,13 +28,13 @@
 
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
 {
-    return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (this->Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
 {
-    type &= ~TILE_ELEMENT_QUADRANT_MASK;
-    type |= (newQuadrant << 6);
+    Type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    Type |= (newQuadrant << 6);
 }
 
 uint16_t SmallSceneryElement::GetEntryIndex() const
@@ -123,19 +125,7 @@ void SmallSceneryElement::SetNeedsSupports()
     Colour[0] |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }
 
-SmallSceneryEntry* SmallSceneryElement::GetEntry() const
+const SmallSceneryEntry* SmallSceneryElement::GetEntry() const
 {
-    return GetSmallSceneryEntry(entryIndex);
-}
-
-SmallSceneryEntry* GetSmallSceneryEntry(ObjectEntryIndex entryIndex)
-{
-    SmallSceneryEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::SmallScenery, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<SmallSceneryEntry*>(obj->GetLegacyData());
-    }
-    return result;
+    return OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
 }

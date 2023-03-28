@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -186,10 +186,10 @@ namespace Random
         }
     };
 
-    namespace Rct2
+    namespace RCT2
     {
         using Engine = RotateEngine<uint32_t, 0x1234567F, 7, 3>;
         using Seed = FixedSeedSequence<2>;
         using State = Engine::state_type;
-    } // namespace Rct2
+    } // namespace RCT2
 } // namespace Random

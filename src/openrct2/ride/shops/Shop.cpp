@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,7 +33,7 @@ static void PaintShop(
         return;
 
     CoordsXYZ offset(0, 0, height);
-    BoundBoxXYZ bb = { { 2, 2, height }, { 28, 28, 45 } };
+    BoundBoxXYZ bb = { { 2, 2, height }, { 28, 28, trackElement.GetClearanceZ() - trackElement.GetBaseZ() - 3 } };
 
     auto imageFlags = session.TrackColours[SCHEME_TRACK].WithoutSecondary();
     auto imageIndex = firstCarEntry->base_image_id + direction;
@@ -57,7 +57,7 @@ static void PaintShop(
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_shop(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(int32_t trackType)
 {
     switch (trackType)
     {

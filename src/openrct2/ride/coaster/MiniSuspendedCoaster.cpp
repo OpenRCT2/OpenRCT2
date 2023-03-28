@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x008AFE9C */
-static void mini_suspended_rc_track_flat(
+static void MiniSuspendedRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -62,7 +62,7 @@ static void mini_suspended_rc_track_flat(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -84,7 +84,7 @@ static void mini_suspended_rc_track_flat(
 }
 
 /** rct2: 0x008AFF4C, 0x008AFF5C, 0x008AFF6C */
-static void mini_suspended_rc_track_station(
+static void MiniSuspendedRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -97,22 +97,22 @@ static void mini_suspended_rc_track_station(
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][0]), { 0, 0, height },
-        { 32, 28, 1 }, { 0, 2, height });
+        { { 0, 2, height }, { 32, 28, 1 } });
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]), { 0, 6, height + 24 },
         { 32, 20, 1 });
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 24 },
-        { 32, 20, 1 }, { 0, 2, height });
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
-    track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
+        { { 0, 2, height }, { 32, 20, 1 } });
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
+    TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AFEAC */
-static void mini_suspended_rc_track_25_deg_up(
+static void MiniSuspendedRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -123,22 +123,22 @@ static void mini_suspended_rc_track_25_deg_up(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28435), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 40 });
+                    { { 0, 6, height + 40 }, { 32, 20, 1 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28441), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 40 });
+                    { { 0, 6, height + 40 }, { 32, 20, 1 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28437), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 40 });
+                    { { 0, 6, height + 40 }, { 32, 20, 1 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28442), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 40 });
+                    { { 0, 6, height + 40 }, { 32, 20, 1 } });
                 break;
         }
     }
@@ -149,29 +149,29 @@ static void mini_suspended_rc_track_25_deg_up(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28385), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 40 });
+                    { { 0, 6, height + 40 }, { 32, 20, 1 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28391), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 40 });
+                    { { 0, 6, height + 40 }, { 32, 20, 1 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28387), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 40 });
+                    { { 0, 6, height + 40 }, { 32, 20, 1 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28392), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 40 });
+                    { { 0, 6, height + 40 }, { 32, 20, 1 } });
                 break;
         }
     }
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -206,7 +206,7 @@ static void mini_suspended_rc_track_25_deg_up(
 }
 
 /** rct2: 0x008AFEBC */
-static void mini_suspended_rc_track_flat_to_25_deg_up(
+static void MiniSuspendedRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -217,22 +217,22 @@ static void mini_suspended_rc_track_flat_to_25_deg_up(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28436), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28443), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28438), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28444), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
         }
     }
@@ -243,29 +243,29 @@ static void mini_suspended_rc_track_flat_to_25_deg_up(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28386), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28393), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28388), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28394), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
         }
     }
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -300,7 +300,7 @@ static void mini_suspended_rc_track_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008AFECC */
-static void mini_suspended_rc_track_25_deg_up_to_flat(
+static void MiniSuspendedRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -311,22 +311,22 @@ static void mini_suspended_rc_track_25_deg_up_to_flat(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28440), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28446), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28439), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28445), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
         }
     }
@@ -337,29 +337,29 @@ static void mini_suspended_rc_track_25_deg_up_to_flat(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28390), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28396), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28389), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28395), { 0, 6, height + 24 },
-                    { 32, 20, 1 }, { 0, 6, height + 32 });
+                    { { 0, 6, height + 32 }, { 32, 20, 1 } });
                 break;
         }
     }
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         switch (direction)
         {
@@ -394,31 +394,31 @@ static void mini_suspended_rc_track_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008AFEDC */
-static void mini_suspended_rc_track_25_deg_down(
+static void MiniSuspendedRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    mini_suspended_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniSuspendedRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AFEEC */
-static void mini_suspended_rc_track_flat_to_25_deg_down(
+static void MiniSuspendedRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    mini_suspended_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniSuspendedRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AFEFC */
-static void mini_suspended_rc_track_25_deg_down_to_flat(
+static void MiniSuspendedRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    mini_suspended_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniSuspendedRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AFF0C */
-static void mini_suspended_rc_track_left_quarter_turn_5(
+static void MiniSuspendedRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -623,16 +623,16 @@ static void mini_suspended_rc_track_left_quarter_turn_5(
 }
 
 /** rct2: 0x008AFF1C */
-static void mini_suspended_rc_track_right_quarter_turn_5(
+static void MiniSuspendedRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    mini_suspended_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniSuspendedRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AFF2C */
-static void mini_suspended_rc_track_s_bend_left(
+static void MiniSuspendedRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -827,7 +827,7 @@ static void mini_suspended_rc_track_s_bend_left(
 }
 
 /** rct2: 0x008AFF3C */
-static void mini_suspended_rc_track_s_bend_right(
+static void MiniSuspendedRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1022,7 +1022,7 @@ static void mini_suspended_rc_track_s_bend_right(
 }
 
 /** rct2: 0x008AFF7C */
-static void mini_suspended_rc_track_left_quarter_turn_3(
+static void MiniSuspendedRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1164,16 +1164,16 @@ static void mini_suspended_rc_track_left_quarter_turn_3(
 }
 
 /** rct2: 0x008AFF8C */
-static void mini_suspended_rc_track_right_quarter_turn_3(
+static void MiniSuspendedRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    mini_suspended_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MiniSuspendedRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AFFAC */
-static void mini_suspended_rc_track_left_eighth_to_diag(
+static void MiniSuspendedRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1185,22 +1185,22 @@ static void mini_suspended_rc_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28475), { 0, 0, height + 24 },
-                        { 32, 20, 1 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28479), { 0, 0, height + 24 },
-                        { 32, 20, 1 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28483), { 0, 0, height + 24 },
-                        { 32, 20, 1 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28487), { 0, 0, height + 24 },
-                        { 32, 20, 1 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 1 } });
                     break;
             }
 
@@ -1232,22 +1232,22 @@ static void mini_suspended_rc_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28476), { 0, 0, height + 24 },
-                        { 32, 16, 1 }, { 0, 0, height + 24 });
+                        { { 0, 0, height + 24 }, { 32, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28480), { 0, 0, height + 24 },
-                        { 34, 16, 1 }, { 0, 0, height + 24 });
+                        { { 0, 0, height + 24 }, { 34, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28484), { 0, 0, height + 24 },
-                        { 32, 16, 1 }, { 0, 16, height + 24 });
+                        { { 0, 16, height + 24 }, { 32, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28488), { 0, 0, height + 24 },
-                        { 32, 16, 1 }, { 0, 16, height + 24 });
+                        { { 0, 16, height + 24 }, { 32, 16, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1262,22 +1262,22 @@ static void mini_suspended_rc_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28477), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 0, 16, height + 24 });
+                        { { 0, 16, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28481), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 16, 16, height + 24 });
+                        { { 16, 16, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28485), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 16, 0, height + 24 });
+                        { { 16, 0, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28489), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 0, 0, height + 24 });
+                        { { 0, 0, height + 24 }, { 16, 16, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1296,22 +1296,22 @@ static void mini_suspended_rc_track_left_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28478), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 16, 16, height + 24 });
+                        { { 16, 16, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28482), { 0, 0, height + 24 },
-                        { 16, 18, 1 }, { 0, 16, height + 24 });
+                        { { 0, 16, height + 24 }, { 16, 18, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28486), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 0, 0, height + 24 });
+                        { { 0, 0, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28490), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 16, 0, height + 24 });
+                        { { 16, 0, height + 24 }, { 16, 16, 1 } });
                     break;
             }
 
@@ -1346,7 +1346,7 @@ static void mini_suspended_rc_track_left_eighth_to_diag(
 }
 
 /** rct2: 0x008AFFBC */
-static void mini_suspended_rc_track_right_eighth_to_diag(
+static void MiniSuspendedRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1358,22 +1358,22 @@ static void mini_suspended_rc_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28459), { 0, 0, height + 24 },
-                        { 32, 20, 1 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28463), { 0, 0, height + 24 },
-                        { 32, 20, 1 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28467), { 0, 0, height + 24 },
-                        { 32, 20, 1 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28471), { 0, 0, height + 24 },
-                        { 32, 20, 1 }, { 0, 6, height + 24 });
+                        { { 0, 6, height + 24 }, { 32, 20, 1 } });
                     break;
             }
 
@@ -1405,22 +1405,22 @@ static void mini_suspended_rc_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28460), { 0, 0, height + 24 },
-                        { 32, 16, 1 }, { 0, 16, height + 24 });
+                        { { 0, 16, height + 24 }, { 32, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28464), { 0, 0, height + 24 },
-                        { 32, 16, 1 }, { 0, 16, height + 24 });
+                        { { 0, 16, height + 24 }, { 32, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28468), { 0, 0, height + 24 },
-                        { 34, 16, 1 }, { 0, 0, height + 24 });
+                        { { 0, 0, height + 24 }, { 34, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28472), { 0, 0, height + 24 },
-                        { 32, 16, 1 }, { 0, 0, height + 24 });
+                        { { 0, 0, height + 24 }, { 32, 16, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1435,22 +1435,22 @@ static void mini_suspended_rc_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28461), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 0, 0, height + 24 });
+                        { { 0, 0, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28465), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 16, 0, height + 24 });
+                        { { 16, 0, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28469), { 0, 0, height + 24 },
-                        { 28, 28, 1 }, { 4, 2, height + 24 });
+                        { { 4, 2, height + 24 }, { 28, 28, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28473), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 0, 16, height + 24 });
+                        { { 0, 16, height + 24 }, { 16, 16, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1469,22 +1469,22 @@ static void mini_suspended_rc_track_right_eighth_to_diag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28462), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 16, 0, height + 24 });
+                        { { 16, 0, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28466), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 0, 0, height + 24 });
+                        { { 0, 0, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28470), { 0, 0, height + 24 },
-                        { 16, 18, 1 }, { 0, 16, height + 24 });
+                        { { 0, 16, height + 24 }, { 16, 18, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28474), { 0, 0, height + 24 },
-                        { 16, 16, 1 }, { 16, 16, height + 24 });
+                        { { 16, 16, height + 24 }, { 16, 16, 1 } });
                     break;
             }
 
@@ -1519,25 +1519,25 @@ static void mini_suspended_rc_track_right_eighth_to_diag(
 }
 
 /** rct2: 0x008AFFCC */
-static void mini_suspended_rc_track_left_eighth_to_orthogonal(
+static void MiniSuspendedRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    mini_suspended_rc_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MiniSuspendedRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AFFDC */
-static void mini_suspended_rc_track_right_eighth_to_orthogonal(
+static void MiniSuspendedRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    mini_suspended_rc_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    MiniSuspendedRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AFF9C */
-static void mini_suspended_rc_track_diag_flat(
+static void MiniSuspendedRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1551,7 +1551,7 @@ static void mini_suspended_rc_track_diag_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28510), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 24 });
+                            { { -16, -16, height + 24 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1562,7 +1562,7 @@ static void mini_suspended_rc_track_diag_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28494), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 24 });
+                            { { -16, -16, height + 24 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1578,7 +1578,7 @@ static void mini_suspended_rc_track_diag_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28507), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 24 });
+                            { { -16, -16, height + 24 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1589,7 +1589,7 @@ static void mini_suspended_rc_track_diag_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28491), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 24 });
+                            { { -16, -16, height + 24 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1605,7 +1605,7 @@ static void mini_suspended_rc_track_diag_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28509), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 24 });
+                            { { -16, -16, height + 24 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1616,7 +1616,7 @@ static void mini_suspended_rc_track_diag_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28493), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 24 });
+                            { { -16, -16, height + 24 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1632,7 +1632,7 @@ static void mini_suspended_rc_track_diag_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28508), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 24 });
+                            { { -16, -16, height + 24 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1643,7 +1643,7 @@ static void mini_suspended_rc_track_diag_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28492), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 24 });
+                            { { -16, -16, height + 24 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1676,7 +1676,7 @@ static void mini_suspended_rc_track_diag_flat(
 }
 
 /** rct2: 0x008B000C */
-static void mini_suspended_rc_track_diag_25_deg_up(
+static void MiniSuspendedRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1690,7 +1690,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28522), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1701,7 +1701,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28506), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1717,7 +1717,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28519), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1728,7 +1728,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28503), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1744,7 +1744,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28521), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1755,7 +1755,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28505), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1771,7 +1771,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28520), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1782,7 +1782,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28504), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1815,7 +1815,7 @@ static void mini_suspended_rc_track_diag_25_deg_up(
 }
 
 /** rct2: 0x008AFFEC */
-static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
+static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1829,7 +1829,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28514), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1840,7 +1840,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28498), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1856,7 +1856,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28511), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1867,7 +1867,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28495), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1883,7 +1883,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28513), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1894,7 +1894,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28497), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1910,7 +1910,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28512), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1921,7 +1921,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28496), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1954,7 +1954,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_up(
 }
 
 /** rct2: 0x008AFFFC */
-static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
+static void MiniSuspendedRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1968,7 +1968,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28518), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1979,7 +1979,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28502), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -1995,7 +1995,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28515), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2006,7 +2006,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28499), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2022,7 +2022,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28517), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2033,7 +2033,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28501), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2049,7 +2049,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28516), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2060,7 +2060,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28500), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2093,7 +2093,7 @@ static void mini_suspended_rc_track_diag_25_deg_up_to_flat(
 }
 
 /** rct2: 0x008B003C */
-static void mini_suspended_rc_track_diag_25_deg_down(
+static void MiniSuspendedRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2107,7 +2107,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28520), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2118,7 +2118,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28504), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2134,7 +2134,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28521), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2145,7 +2145,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28505), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2161,7 +2161,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28519), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2172,7 +2172,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28503), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2188,7 +2188,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28522), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2199,7 +2199,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28506), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 40 });
+                            { { -16, -16, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2232,7 +2232,7 @@ static void mini_suspended_rc_track_diag_25_deg_down(
 }
 
 /** rct2: 0x008B001C */
-static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
+static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2246,7 +2246,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28516), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2257,7 +2257,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28500), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2272,7 +2272,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28517), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2283,7 +2283,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28501), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2298,7 +2298,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28515), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2309,7 +2309,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28499), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2324,7 +2324,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28518), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2335,7 +2335,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28502), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2368,7 +2368,7 @@ static void mini_suspended_rc_track_diag_flat_to_25_deg_down(
 }
 
 /** rct2: 0x008B002C */
-static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
+static void MiniSuspendedRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2382,7 +2382,7 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28512), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2393,7 +2393,7 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28496), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2409,7 +2409,7 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28513), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2420,7 +2420,7 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28497), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2436,7 +2436,7 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28511), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2447,7 +2447,7 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28495), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2463,7 +2463,7 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28514), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2474,7 +2474,7 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28498), { -16, -16, height + 24 },
-                            { 32, 32, 1 }, { -16, -16, height + 32 });
+                            { { -16, -16, height + 32 }, { 32, 32, 1 } });
                         break;
                 }
             }
@@ -2506,62 +2506,62 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_mini_suspended_rc(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return mini_suspended_rc_track_flat;
+            return MiniSuspendedRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return mini_suspended_rc_track_station;
+            return MiniSuspendedRCTrackStation;
         case TrackElemType::Up25:
-            return mini_suspended_rc_track_25_deg_up;
+            return MiniSuspendedRCTrack25DegUp;
         case TrackElemType::FlatToUp25:
-            return mini_suspended_rc_track_flat_to_25_deg_up;
+            return MiniSuspendedRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return mini_suspended_rc_track_25_deg_up_to_flat;
+            return MiniSuspendedRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return mini_suspended_rc_track_25_deg_down;
+            return MiniSuspendedRCTrack25DegDown;
         case TrackElemType::FlatToDown25:
-            return mini_suspended_rc_track_flat_to_25_deg_down;
+            return MiniSuspendedRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return mini_suspended_rc_track_25_deg_down_to_flat;
+            return MiniSuspendedRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return mini_suspended_rc_track_left_quarter_turn_5;
+            return MiniSuspendedRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return mini_suspended_rc_track_right_quarter_turn_5;
+            return MiniSuspendedRCTrackRightQuarterTurn5;
         case TrackElemType::SBendLeft:
-            return mini_suspended_rc_track_s_bend_left;
+            return MiniSuspendedRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return mini_suspended_rc_track_s_bend_right;
+            return MiniSuspendedRCTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return mini_suspended_rc_track_left_quarter_turn_3;
+            return MiniSuspendedRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return mini_suspended_rc_track_right_quarter_turn_3;
+            return MiniSuspendedRCTrackRightQuarterTurn3;
         case TrackElemType::LeftEighthToDiag:
-            return mini_suspended_rc_track_left_eighth_to_diag;
+            return MiniSuspendedRCTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return mini_suspended_rc_track_right_eighth_to_diag;
+            return MiniSuspendedRCTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return mini_suspended_rc_track_left_eighth_to_orthogonal;
+            return MiniSuspendedRCTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return mini_suspended_rc_track_right_eighth_to_orthogonal;
+            return MiniSuspendedRCTrackRightEighthToOrthogonal;
         case TrackElemType::DiagFlat:
-            return mini_suspended_rc_track_diag_flat;
+            return MiniSuspendedRCTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return mini_suspended_rc_track_diag_25_deg_up;
+            return MiniSuspendedRCTrackDiag25DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return mini_suspended_rc_track_diag_flat_to_25_deg_up;
+            return MiniSuspendedRCTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return mini_suspended_rc_track_diag_25_deg_up_to_flat;
+            return MiniSuspendedRCTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return mini_suspended_rc_track_diag_25_deg_down;
+            return MiniSuspendedRCTrackDiag25DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return mini_suspended_rc_track_diag_flat_to_25_deg_down;
+            return MiniSuspendedRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return mini_suspended_rc_track_diag_25_deg_down_to_flat;
+            return MiniSuspendedRCTrackDiag25DegDownToFlat;
     }
     return nullptr;
 }

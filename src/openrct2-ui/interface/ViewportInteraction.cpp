@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,12 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/BannerSceneryEntry.h>
+#include <openrct2/object/FootpathItemEntry.h>
+#include <openrct2/object/LargeSceneryEntry.h>
+#include <openrct2/object/ObjectEntryManager.h>
+#include <openrct2/object/SmallSceneryEntry.h>
+#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
@@ -40,7 +46,6 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Footpath.h>
-#include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -70,7 +75,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
-    info = get_map_coordinates_from_pos(
+    info = GetMapCoordinatesFromPos(
         screenCoords,
         EnumsToFlags(ViewportInteractionItem::Entity, ViewportInteractionItem::Ride, ViewportInteractionItem::ParkEntrance));
     auto tileElement = info.SpriteType != ViewportInteractionItem::Entity ? info.Element : nullptr;
@@ -96,7 +101,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
                 case EntityType::Vehicle:
                 {
                     auto vehicle = sprite->As<Vehicle>();
-                    if (vehicle != nullptr && vehicle->ride_subtype != OBJECT_ENTRY_INDEX_NULL)
+                    if (vehicle != nullptr && !vehicle->IsCableLift())
                         vehicle->SetMapToolbar();
                     else
                         info.SpriteType = ViewportInteractionItem::None;
@@ -108,7 +113,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
                     auto peep = sprite->As<Peep>();
                     if (peep != nullptr)
                     {
-                        peep_set_map_tooltip(peep);
+                        PeepSetMapTooltip(peep);
                     }
                     else
                     {
@@ -121,7 +126,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
             }
             break;
         case ViewportInteractionItem::Ride:
-            ride_set_map_tooltip(tileElement);
+            RideSetMapTooltip(tileElement);
             break;
         case ViewportInteractionItem::ParkEntrance:
         {
@@ -149,7 +154,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
             info.SpriteType = ViewportInteractionItem::Entity;
             info.Loc.x = peep->x;
             info.Loc.y = peep->y;
-            peep_set_map_tooltip(peep);
+            PeepSetMapTooltip(peep);
         }
     }
 
@@ -185,7 +190,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 case EntityType::Vehicle:
                 {
                     auto intent = Intent(WD_VEHICLE);
-                    intent.putExtra(INTENT_EXTRA_VEHICLE, entity);
+                    intent.PutExtra(INTENT_EXTRA_VEHICLE, entity);
                     ContextOpenIntent(&intent);
                     break;
                 }
@@ -193,22 +198,22 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 case EntityType::Staff:
                 {
                     auto intent = Intent(WindowClass::Peep);
-                    intent.putExtra(INTENT_EXTRA_PEEP, entity);
+                    intent.PutExtra(INTENT_EXTRA_PEEP, entity);
                     ContextOpenIntent(&intent);
                     break;
                 }
                 case EntityType::Balloon:
                 {
-                    if (game_is_not_paused())
+                    if (GameIsNotPaused())
                     {
-                        auto balloonPress = BalloonPressAction(entity->sprite_index);
+                        auto balloonPress = BalloonPressAction(entity->Id);
                         GameActions::Execute(&balloonPress);
                     }
                 }
                 break;
                 case EntityType::Duck:
                 {
-                    if (game_is_not_paused())
+                    if (GameIsNotPaused())
                     {
                         auto duck = entity->As<Duck>();
                         if (duck != nullptr)
@@ -226,7 +231,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
         case ViewportInteractionItem::Ride:
         {
             auto intent = Intent(WD_TRACK);
-            intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
+            intent.PutExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
             ContextOpenIntent(&intent);
             return true;
         }
@@ -257,7 +262,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
 
     constexpr auto flags = static_cast<int32_t>(
         ~EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
-    info = get_map_coordinates_from_pos(screenCoords, flags);
+    info = GetMapCoordinatesFromPos(screenCoords, flags);
     auto tileElement = info.Element;
 
     switch (info.SpriteType)
@@ -277,7 +282,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 info.SpriteType = ViewportInteractionItem::None;
                 return info;
             }
-            ride = get_ride(vehicle->ride);
+            ride = GetRide(vehicle->ride);
             if (ride != nullptr && ride->status == RideStatus::Closed)
             {
                 auto ft = Formatter();
@@ -300,7 +305,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 return info;
             }
 
-            ride = get_ride(tileElement->GetRideIndex());
+            ride = GetRide(tileElement->GetRideIndex());
             if (ride == nullptr)
             {
                 info.SpriteType = ViewportInteractionItem::None;
@@ -428,7 +433,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             auto banner = tileElement->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto* bannerEntry = GetBannerEntry(banner->type);
+                auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
@@ -444,10 +449,9 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             break;
     }
 
-    if (!(input_test_flag(INPUT_FLAG_6)) || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (!(InputTestFlag(INPUT_FLAG_6)) || !(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
     {
-        if (window_find_by_class(WindowClass::RideConstruction) == nullptr
-            && window_find_by_class(WindowClass::Footpath) == nullptr)
+        if (WindowFindByClass(WindowClass::RideConstruction) == nullptr && WindowFindByClass(WindowClass::Footpath) == nullptr)
         {
             info.SpriteType = ViewportInteractionItem::None;
             return info;
@@ -556,17 +560,17 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
                 {
                     break;
                 }
-                auto ride = get_ride(vehicle->ride);
+                auto ride = GetRide(vehicle->ride);
                 if (ride != nullptr)
                 {
-                    ride_construct(ride);
+                    RideConstructionStart(*ride);
                 }
             }
         }
         break;
         case ViewportInteractionItem::Ride:
             tileElement = { info.Loc, info.Element };
-            ride_modify(tileElement);
+            RideModify(tileElement);
             break;
         case ViewportInteractionItem::Scenery:
             ViewportInteractionRemoveScenery(info.Element, info.Loc);
@@ -613,12 +617,12 @@ static void ViewportInteractionRemoveScenery(TileElement* tileElement, const Coo
  */
 static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const CoordsXY& mapCoords)
 {
-    rct_window* w;
+    WindowBase* w;
     TileElement* tileElement2;
 
     auto z = tileElement->GetBaseZ();
 
-    w = window_find_by_class(WindowClass::Footpath);
+    w = WindowFindByClass(WindowClass::Footpath);
     if (w != nullptr)
         FootpathProvisionalUpdate();
 
@@ -737,7 +741,7 @@ PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t 
 
 static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
-    auto* w = window_find_from_point(screenCoords);
+    auto* w = WindowFindFromPoint(screenCoords);
     if (w == nullptr)
         return nullptr;
 
@@ -761,7 +765,7 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
  */
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords)
 {
-    rct_window* window = window_find_from_point(screenCoords);
+    WindowBase* window = WindowFindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY ret{};
@@ -769,7 +773,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
         return ret;
     }
     auto viewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(
+    auto info = GetMapCoordinatesFromPosWindow(
         window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
     auto initialPos = info.Loc;
 
@@ -795,7 +799,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
         {
             z = TileElementHeight(mapPos);
         }
-        mapPos = viewport_coord_to_map_coord(initialVPPos, z);
+        mapPos = ViewportPosToMapPos(initialVPPos, z);
         mapPos.x = std::clamp(mapPos.x, initialPos.x, initialPos.x + 31);
         mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
     }

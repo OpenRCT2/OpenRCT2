@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,7 @@ enum
 };
 
 /** rct2: 0x008B0E40 */
-static void paint_boat_hire_track_flat(
+static void PaintBoatHireTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -61,7 +61,7 @@ static void paint_boat_hire_track_flat(
 }
 
 /** rct2: 0x008B0E50 */
-static void paint_boat_hire_station(
+static void PaintBoatHireStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -70,13 +70,13 @@ static void paint_boat_hire_station(
     if (direction & 1)
     {
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
-        track_paint_util_draw_pier(
+        TrackPaintUtilDrawPier(
             session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
     }
     else
     {
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
-        track_paint_util_draw_pier(
+        TrackPaintUtilDrawPier(
             session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
     }
 
@@ -85,7 +85,7 @@ static void paint_boat_hire_station(
 }
 
 /** rct2: 0x008B0E80 */
-static void paint_boat_hire_track_left_quarter_turn_1_tile(
+static void PaintBoatHireTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -129,32 +129,32 @@ static void paint_boat_hire_track_left_quarter_turn_1_tile(
 }
 
 /** rct2: 0x008B0E90 */
-static void paint_boat_hire_track_right_quarter_turn_1_tile(
+static void PaintBoatHireTrackRightQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    paint_boat_hire_track_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintBoatHireTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 /**
  * rct2: 0x008B0D60
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return paint_boat_hire_track_flat;
+            return PaintBoatHireTrackFlat;
 
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return paint_boat_hire_station;
+            return PaintBoatHireStation;
 
         case TrackElemType::LeftQuarterTurn1Tile:
-            return paint_boat_hire_track_left_quarter_turn_1_tile;
+            return PaintBoatHireTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
-            return paint_boat_hire_track_right_quarter_turn_1_tile;
+            return PaintBoatHireTrackRightQuarterTurn1Tile;
     }
 
     return nullptr;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -88,11 +88,11 @@ struct ShopItemStrings
 
 struct ShopItemDescriptor
 {
-    money16 Cost;
-    money16 BaseValue;
-    money16 HotValue;
-    money16 ColdValue;
-    money8 DefaultPrice;
+    money64 Cost;
+    money64 BaseValue;
+    money64 HotValue;
+    money64 ColdValue;
+    money64 DefaultPrice;
     uint32_t Image;
     ShopItemStrings Naming;
     uint16_t Flags;
@@ -130,7 +130,7 @@ enum
 
 extern uint64_t gSamePriceThroughoutPark;
 
-money32 shop_item_get_common_price(Ride* forRide, const ShopItem shopItem);
-bool shop_item_has_common_price(const ShopItem shopItem);
+money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem);
+bool ShopItemHasCommonPrice(const ShopItem shopItem);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,11 @@
 WaterRaiseAction::WaterRaiseAction(MapRange range)
     : _range(range)
 {
+}
+
+void WaterRaiseAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_range);
 }
 
 uint16_t WaterRaiseAction::GetActionFlags() const
@@ -82,7 +87,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
 
             uint8_t height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
 
-            if (surfaceElement->base_height > maxHeight)
+            if (surfaceElement->BaseHeight > maxHeight)
                 continue;
 
             if (height != 0)
@@ -93,7 +98,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             }
             else
             {
-                height = surfaceElement->base_height + 2;
+                height = surfaceElement->BaseHeight + 2;
             }
             auto waterSetHeightAction = WaterSetHeightAction({ x, y }, height);
             waterSetHeightAction.SetFlags(GetFlags());

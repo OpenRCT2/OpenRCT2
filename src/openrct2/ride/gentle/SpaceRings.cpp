@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,7 +40,7 @@ static void PaintSpaceRingsStructure(
 
     if (ride.num_stations == 0 || vehicleIndex < ride.NumTrains)
     {
-        rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
+        const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
 
         int32_t frameNum = direction;
 
@@ -59,13 +59,13 @@ static void PaintSpaceRingsStructure(
             vehicleIndex = 0;
         }
 
-        if (imageColourFlags.ToUInt32() == IMAGE_TYPE_REMAP)
+        if (imageColourFlags == TrackGhost)
         {
             imageColourFlags = ImageId(0, ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
         }
 
         auto imageId = imageColourFlags.WithIndex(baseImageId + frameNum);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 20, 23 }, { -10, -10, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
 
         if (vehicle != nullptr && vehicle->num_peeps > 0)
         {
@@ -98,24 +98,24 @@ static void PaintSpaceRings(
     WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, session.CurrentRotation))
             {
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSw);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 2 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 28, 7 } });
             }
-            if (track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, session.CurrentRotation))
             {
                 imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSe);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 2 });
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 28, 1, 7 } });
             }
             break;
         default:
-            track_paint_util_paint_fences(
+            TrackPaintUtilPaintFences(
                 session, edges, position, trackElement, ride, session.TrackColours[SCHEME_MISC], height, SpaceRingsFenceSprites,
                 session.CurrentRotation);
             break;

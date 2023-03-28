@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,7 +34,7 @@ namespace
 
 static void OnReady([[maybe_unused]] const DiscordUser* request)
 {
-    log_verbose("DiscordService::OnReady()");
+    LOG_VERBOSE("DiscordService::OnReady()");
 }
 
 static void OnDisconnected(int errorCode, const char* message)
@@ -93,13 +93,13 @@ void DiscordService::RefreshPresence() const
     {
         default:
             details = GetParkName();
-            if (network_get_mode() == NETWORK_MODE_NONE)
+            if (NetworkGetMode() == NETWORK_MODE_NONE)
             {
                 state = "Playing Solo";
             }
             else
             {
-                OpenRCT2::FmtString fmtServerName(network_get_server_name());
+                OpenRCT2::FmtString fmtServerName(NetworkGetServerName());
                 std::string serverName;
                 for (const auto& token : fmtServerName)
                 {
@@ -111,15 +111,15 @@ void DiscordService::RefreshPresence() const
                     {
                         auto codepoint = token.GetCodepoint();
                         char buffer[8]{};
-                        utf8_write_codepoint(buffer, codepoint);
+                        UTF8WriteCodepoint(buffer, codepoint);
                         serverName += buffer;
                     }
                 }
                 state = serverName;
 
                 // NOTE: the party size is displayed next to state
-                discordPresence.partyId = network_get_server_name();
-                discordPresence.partySize = network_get_num_players();
+                discordPresence.partyId = NetworkGetServerName().c_str();
+                discordPresence.partySize = NetworkGetNumPlayers();
                 discordPresence.partyMax = 256;
 
                 // TODO generate secrets for the server

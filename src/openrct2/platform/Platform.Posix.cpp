@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -120,7 +120,7 @@ namespace Platform
     int32_t Execute(std::string_view command, std::string* output)
     {
 #    ifndef __EMSCRIPTEN__
-        log_verbose("executing \"%s\"...", std::string(command).c_str());
+        LOG_VERBOSE("executing \"%s\"...", std::string(command).c_str());
         FILE* fpipe = popen(std::string(command).c_str(), "r");
         if (fpipe == nullptr)
         {
@@ -162,7 +162,7 @@ namespace Platform
         // Return exit code
         return pclose(fpipe);
 #    else
-        log_warning("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
+        LOG_WARNING("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
         return -1;
 #    endif // __EMSCRIPTEN__
     }
@@ -320,9 +320,9 @@ namespace Platform
     {
         mode_t mask = openrct2_getumask();
         char buffer[MAX_PATH];
-        safe_strcpy(buffer, u8string(path).c_str(), sizeof(buffer));
+        SafeStrCpy(buffer, u8string(path).c_str(), sizeof(buffer));
 
-        log_verbose("Create directory: %s", buffer);
+        LOG_VERBOSE("Create directory: %s", buffer);
         for (char* p = buffer + 1; *p != '\0'; p++)
         {
             if (*p == '/')
@@ -330,7 +330,7 @@ namespace Platform
                 // Temporarily truncate
                 *p = '\0';
 
-                log_verbose("mkdir(%s)", buffer);
+                LOG_VERBOSE("mkdir(%s)", buffer);
                 if (mkdir(buffer, mask) != 0)
                 {
                     if (errno != EEXIST)
@@ -344,7 +344,7 @@ namespace Platform
             }
         }
 
-        log_verbose("mkdir(%s)", buffer);
+        LOG_VERBOSE("mkdir(%s)", buffer);
         if (mkdir(buffer, mask) != 0)
         {
             if (errno != EEXIST)
@@ -368,7 +368,7 @@ namespace Platform
 
         if (pidFile == -1)
         {
-            log_warning("Cannot open lock file for writing.");
+            LOG_WARNING("Cannot open lock file for writing.");
             return false;
         }
 
@@ -383,10 +383,10 @@ namespace Platform
         {
             if (errno == EWOULDBLOCK)
             {
-                log_warning("Another OpenRCT2 session has been found running.");
+                LOG_WARNING("Another OpenRCT2 session has been found running.");
                 return false;
             }
-            log_error("flock returned an uncatched errno: %d", errno);
+            LOG_ERROR("flock returned an uncatched errno: %d", errno);
             return false;
         }
         return true;
@@ -446,7 +446,7 @@ namespace Platform
         struct timespec ts;
         if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
         {
-            log_fatal("clock_gettime failed");
+            LOG_FATAL("clock_gettime failed");
             exit(-1);
         }
         return static_cast<uint32_t>(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);

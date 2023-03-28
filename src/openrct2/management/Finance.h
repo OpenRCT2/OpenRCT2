@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@ enum class ExpenditureType : int32_t
 
 constexpr const uint8_t MaxBankLoanInterestRate = 255;
 
-extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
+extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
 
 extern money64 gInitialCash;
 extern money64 gCash;
@@ -59,22 +59,22 @@ extern money64 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 extern money64 gParkValueHistory[FINANCE_GRAPH_SIZE];
 extern money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
-bool finance_check_money_required(uint32_t flags);
-bool finance_check_affordability(money64 cost, uint32_t flags);
-void finance_payment(money64 amount, ExpenditureType type);
-void finance_pay_wages();
-void finance_pay_research();
-void finance_pay_interest();
-void finance_pay_ride_upkeep();
-void finance_reset_history();
-void finance_init();
-void finance_update_daily_profit();
-void finance_shift_expenditure_table();
-void finance_reset_cash_to_initial();
+bool FinanceCheckMoneyRequired(uint32_t flags);
+bool FinanceCheckAffordability(money64 cost, uint32_t flags);
+void FinancePayment(money64 amount, ExpenditureType type);
+void FinancePayWages();
+void FinancePayResearch();
+void FinancePayInterest();
+void FinancePayRideUpkeep();
+void FinanceResetHistory();
+void FinanceInit();
+void FinanceUpdateDailyProfit();
+void FinanceShiftExpenditureTable();
+void FinanceResetCashToInitial();
 
-money64 finance_get_initial_cash();
-money64 finance_get_current_loan();
-money64 finance_get_maximum_loan();
-money64 finance_get_current_cash();
+money64 FinanceGetInitialCash();
+money64 FinanceGetCurrentLoan();
+money64 FinanceGetMaximumLoan();
+money64 FinanceGetCurrentCash();
 
-money64 finance_get_last_month_shop_profit();
+money64 FinanceGetLastMonthShopProfit();

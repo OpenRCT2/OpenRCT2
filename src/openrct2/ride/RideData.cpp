@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -133,7 +133,7 @@ const CarEntry CableLiftVehicle = {
     /* .sprite_width = */ 0,
     /* .sprite_height_negative = */ 0,
     /* .sprite_height_positive = */ 0,
-    /* .animation = */ 0,
+    /* .animation = */ CarEntryAnimation::None,
     /* .flags = */ 0,
     /* .base_num_frames = */ 1,
     /* .base_image_id = */ 29110,
@@ -184,7 +184,11 @@ const CarEntry CableLiftVehicle = {
     /* .effect_visual = */ 1,
     /* .draw_order = */ 14,
     /* .num_vertical_frames_override = */ 0,
-    /* .peep_loading_positions = */ 0
+    /* .peep_loading_positions = */ 0,
+    /* .AnimationExponent = */ 0,
+    /* .AnimationFrames = */ 0,
+    /* .SteamEffectType.longitudinal = */ 0,
+    /* .SteamEffectType.vertical = */ 0
 };
 
 /* rct2: 0x009A0AA0 */
@@ -374,7 +378,7 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
         case RIDE_CATEGORY_NONE:
             break;
     }
-    log_error("Cannot get Research Category of invalid RideCategory");
+    LOG_ERROR("Cannot get Research Category of invalid RideCategory");
     return ResearchCategory::Transport;
 }
 

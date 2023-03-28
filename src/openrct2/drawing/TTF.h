@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,8 +13,8 @@
 
 #include <string_view>
 
-bool ttf_initialise();
-void ttf_dispose();
+bool TTFInitialise();
+void TTFDispose();
 
 #ifndef NO_TTF
 
@@ -26,12 +26,12 @@ struct TTFSurface
     int32_t pitch;
 };
 
-TTFFontDescriptor* ttf_get_font_from_sprite_base(FontStyle fontStyle);
-void ttf_toggle_hinting();
-TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, std::string_view text);
-uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, std::string_view text);
-bool ttf_provides_glyph(const TTF_Font* font, codepoint_t codepoint);
-void ttf_free_surface(TTFSurface* surface);
+TTFFontDescriptor* TTFGetFontFromSpriteBase(FontStyle fontStyle);
+void TTFToggleHinting();
+TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text);
+uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text);
+bool TTFProvidesGlyph(const TTF_Font* font, codepoint_t codepoint);
+void TTFFreeSurface(TTFSurface* surface);
 
 // TTF_SDLPORT
 int TTF_Init(void);

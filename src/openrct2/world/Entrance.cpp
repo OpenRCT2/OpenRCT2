@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,7 +39,7 @@ std::vector<CoordsXYZD> gParkEntrances;
 CoordsXYZD gRideEntranceExitGhostPosition;
 StationIndex gRideEntranceExitGhostStationIndex;
 
-static money32 RideEntranceExitPlaceGhost(
+static money64 RideEntranceExitPlaceGhost(
     RideId rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
 {
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
@@ -47,7 +47,7 @@ static money32 RideEntranceExitPlaceGhost(
     rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
 
-    return res.Error == GameActions::Status::Ok ? res.Cost : MONEY32_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
 }
 
 /**
@@ -111,13 +111,13 @@ void RideEntranceExitRemoveGhost()
  *
  *  rct2: 0x006CA28C
  */
-money32 RideEntranceExitPlaceGhost(
-    Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
+money64 RideEntranceExitPlaceGhost(
+    const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
 {
-    ride_construction_remove_ghosts();
-    money32 result = RideEntranceExitPlaceGhost(ride->id, entranceExitCoords, direction, placeType, stationNum);
+    RideConstructionRemoveGhosts();
+    money64 result = RideEntranceExitPlaceGhost(ride.id, entranceExitCoords, direction, placeType, stationNum);
 
-    if (result != MONEY32_UNDEFINED)
+    if (result != MONEY64_UNDEFINED)
     {
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
         gRideEntranceExitGhostPosition.x = entranceExitCoords.x;
@@ -221,7 +221,7 @@ void ParkEntranceFixLocations(void)
 void ParkEntranceUpdateLocations()
 {
     gParkEntrances.clear();
-    tile_element_iterator it;
+    TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
@@ -229,7 +229,7 @@ void ParkEntranceUpdateLocations()
         if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
             && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
         {
-            auto entrance = TileCoordsXYZD(it.x, it.y, it.element->base_height, it.element->GetDirection()).ToCoordsXYZD();
+            auto entrance = TileCoordsXYZD(it.x, it.y, it.element->BaseHeight, it.element->GetDirection()).ToCoordsXYZD();
             gParkEntrances.push_back(entrance);
         }
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,24 +53,24 @@ namespace OpenRCT2
         return std::nullopt;
     }
 
-    FmtString::token::token(FormatToken k, std::string_view s, uint32_t p)
+    FmtString::Token::Token(FormatToken k, std::string_view s, uint32_t p)
         : kind(k)
         , text(s)
         , parameter(p)
     {
     }
 
-    bool FmtString::token::IsLiteral() const
+    bool FmtString::Token::IsLiteral() const
     {
         return kind == FormatToken::Literal;
     }
 
-    bool FmtString::token::IsCodepoint() const
+    bool FmtString::Token::IsCodepoint() const
     {
         return kind == FormatToken::Escaped;
     }
 
-    codepoint_t FmtString::token::GetCodepoint() const
+    codepoint_t FmtString::Token::GetCodepoint() const
     {
         if (kind == FormatToken::Escaped)
         {
@@ -92,7 +92,7 @@ namespace OpenRCT2
         auto i = index;
         if (i >= str.size())
         {
-            current = token();
+            current = Token();
             return;
         }
 
@@ -129,7 +129,7 @@ namespace OpenRCT2
                     {
                         p = *p0;
                     }
-                    current = token(FormatToken::Move, str.substr(startIndex, i - startIndex), p);
+                    current = Token(FormatToken::Move, str.substr(startIndex, i - startIndex), p);
                     return;
                 }
 
@@ -147,7 +147,7 @@ namespace OpenRCT2
                         p |= (*p2) << 16;
                         p |= (*p3) << 24;
                     }
-                    current = token(FormatToken::InlineSprite, str.substr(startIndex, i - startIndex), p);
+                    current = Token(FormatToken::InlineSprite, str.substr(startIndex, i - startIndex), p);
                     return;
                 }
             }
@@ -172,32 +172,32 @@ namespace OpenRCT2
         return index != rhs.index;
     }
 
-    FmtString::token FmtString::iterator::CreateToken(size_t len)
+    FmtString::Token FmtString::iterator::CreateToken(size_t len)
     {
         std::string_view sztoken = str.substr(index, len);
 
         if (sztoken.size() >= 2 && ((sztoken[0] == '{' && sztoken[1] == '{') || (sztoken[0] == '}' && sztoken[1] == '}')))
         {
-            return token(FormatToken::Escaped, sztoken);
+            return Token(FormatToken::Escaped, sztoken);
         }
         if (sztoken.size() >= 2 && sztoken[0] == '{' && sztoken[1] != '{')
         {
             auto kind = FormatTokenFromString(sztoken.substr(1, len - 2));
-            return token(kind, sztoken);
+            return Token(kind, sztoken);
         }
         if (sztoken == "\n" || sztoken == "\r")
         {
-            return token(FormatToken::Newline, sztoken);
+            return Token(FormatToken::Newline, sztoken);
         }
-        return token(FormatToken::Literal, sztoken);
+        return Token(FormatToken::Literal, sztoken);
     }
 
-    const FmtString::token* FmtString::iterator::operator->() const
+    const FmtString::Token* FmtString::iterator::operator->() const
     {
         return &current;
     }
 
-    const FmtString::token& FmtString::iterator::operator*()
+    const FmtString::Token& FmtString::iterator::operator*()
     {
         return current;
     }
@@ -270,13 +270,13 @@ namespace OpenRCT2
 
     static std::string_view GetDigitSeparator()
     {
-        auto sz = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
+        auto sz = LanguageGetString(STR_LOCALE_THOUSANDS_SEPARATOR);
         return sz != nullptr ? sz : std::string_view();
     }
 
     static std::string_view GetDecimalSeparator()
     {
-        auto sz = language_get_string(STR_LOCALE_DECIMAL_POINT);
+        auto sz = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
         return sz != nullptr ? sz : std::string_view();
     }
 
@@ -402,7 +402,7 @@ namespace OpenRCT2
         // Currency symbol
         auto symbol = currencyDesc->symbol_unicode;
         auto affix = currencyDesc->affix_unicode;
-        if (!font_supports_string(symbol, FontStyle::Medium))
+        if (!FontSupportsString(symbol, FontStyle::Medium))
         {
             symbol = currencyDesc->symbol_ascii;
             affix = currencyDesc->affix_ascii;
@@ -449,12 +449,12 @@ namespace OpenRCT2
         if (minutes == 0)
         {
             auto fmt = Formats[0][seconds == 1 ? 0 : 1];
-            FormatStringId(ss, fmt, seconds);
+            FormatStringID(ss, fmt, seconds);
         }
         else
         {
             auto fmt = Formats[minutes == 1 ? 1 : 2][seconds == 1 ? 0 : 1];
-            FormatStringId(ss, fmt, minutes, seconds);
+            FormatStringID(ss, fmt, minutes, seconds);
         }
     }
 
@@ -471,12 +471,12 @@ namespace OpenRCT2
         if (hours == 0)
         {
             auto fmt = Formats[0][minutes == 1 ? 0 : 1];
-            FormatStringId(ss, fmt, minutes);
+            FormatStringID(ss, fmt, minutes);
         }
         else
         {
             auto fmt = Formats[hours == 1 ? 1 : 2][minutes == 1 ? 0 : 1];
-            FormatStringId(ss, fmt, hours, minutes);
+            FormatStringID(ss, fmt, hours, minutes);
         }
     }
 
@@ -537,13 +537,13 @@ namespace OpenRCT2
                     {
                         default:
                         case MeasurementFormat::Imperial:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_MILES_PER_HOUR, arg);
+                            FormatStringID(ss, STR_UNIT_SUFFIX_MILES_PER_HOUR, arg);
                             break;
                         case MeasurementFormat::Metric:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR, mph_to_kmph(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR, MphToKmph(arg));
                             break;
                         case MeasurementFormat::SI:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_METRES_PER_SECOND, mph_to_dmps(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES_PER_SECOND, MphToDmps(arg));
                             break;
                     }
                 }
@@ -567,11 +567,11 @@ namespace OpenRCT2
                     {
                         default:
                         case MeasurementFormat::Imperial:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_FEET, metres_to_feet(arg));
+                            FormatStringID(ss, STR_UNIT_SUFFIX_FEET, MetresToFeet(arg));
                             break;
                         case MeasurementFormat::Metric:
                         case MeasurementFormat::SI:
-                            FormatStringId(ss, STR_UNIT_SUFFIX_METRES, arg);
+                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES, arg);
                             break;
                     }
                 }
@@ -579,15 +579,15 @@ namespace OpenRCT2
             case FormatToken::MonthYear:
                 if constexpr (std::is_integral<T>())
                 {
-                    auto month = date_get_month(arg);
-                    auto year = date_get_year(arg) + 1;
+                    auto month = DateGetMonth(arg);
+                    auto year = DateGetYear(arg) + 1;
                     FormatMonthYear(ss, month, year);
                 }
                 break;
             case FormatToken::Month:
                 if constexpr (std::is_integral<T>())
                 {
-                    auto szMonth = language_get_string(DateGameMonthNames[date_get_month(arg)]);
+                    auto szMonth = LanguageGetString(DateGameMonthNames[DateGetMonth(arg)]);
                     if (szMonth != nullptr)
                     {
                         ss << szMonth;
@@ -629,7 +629,7 @@ namespace OpenRCT2
 
     FmtString GetFmtStringById(StringId id)
     {
-        auto fmtc = language_get_string(id);
+        auto fmtc = LanguageGetString(id);
         return FmtString(fmtc);
     }
 
@@ -832,8 +832,3 @@ namespace OpenRCT2
     }
 
 } // namespace OpenRCT2
-
-void format_string(utf8* dest, size_t size, StringId format, const void* args)
-{
-    OpenRCT2::FormatStringLegacy(dest, size, format, args);
-}

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,7 +94,7 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
     dx -= 16;
     int32_t bx = dx + 32;
 
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
     if (bx <= dpi->y)
         return;
     dx -= 20;
@@ -119,7 +119,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     PROFILED_FUNCTION();
 
     CoordsXY coords = origCoords;
-    rct_drawpixelinfo* dpi = &session.DPI;
+    DrawPixelInfo* dpi = &session.DPI;
 
     if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
@@ -181,7 +181,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         session.SpritePosition.y = coords.y;
         session.InteractionType = ViewportInteractionItem::None;
 
-        PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { 32, 32, -1 }, { 0, 0, arrowZ + 18 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
     }
 
     if (screenMinY + 52 <= dpi->y)
@@ -332,8 +332,8 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             int32_t xOffset = static_cast<int32_t>(sy) * 10;
             int32_t yOffset = -22 + static_cast<int32_t>(sx) * 10;
             PaintStruct* ps = PaintAddImageAsParent(
-                session, imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
-                { xOffset + 1, yOffset + 16, segmentHeight });
+                session, imageColourFlats, { xOffset, yOffset, segmentHeight },
+                { { xOffset + 1, yOffset + 16, segmentHeight }, { 10, 10, 1 } });
             if (ps != nullptr)
             {
                 ps->image_id = ps->image_id.WithTertiary(COLOUR_BORDEAUX_RED);

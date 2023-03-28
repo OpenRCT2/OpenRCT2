@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,12 +16,13 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
+#include "../object/ObjectEntryManager.h"
+#include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
-#include "../world/Water.h"
 #include "LightFX.h"
 
 #include <cstring>
@@ -492,7 +493,7 @@ static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
 #define WINDOW_PALETTE_BRIGHT_RED           {FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow}
 #define WINDOW_PALETTE_BRIGHT_PINK          {FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow}
 
-const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
+const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_GREY,                    // COLOUR_BLACK
     WINDOW_PALETTE_GREY,                    // COLOUR_GREY
     {FilterPaletteID::PaletteTranslucentWhite,             FilterPaletteID::PaletteTranslucentWhiteHighlight,            FilterPaletteID::PaletteTranslucentWhiteShadow},
@@ -554,33 +555,33 @@ ImageCatalogue ImageId::GetCatalogue() const
     return ImageCatalogue::UNKNOWN;
 }
 
-void (*mask_fn)(
+void (*MaskFn)(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
     = nullptr;
 
-void mask_init()
+void MaskInit()
 {
-    if (avx2_available())
+    if (AVX2Available())
     {
-        log_verbose("registering AVX2 mask function");
-        mask_fn = mask_avx2;
+        LOG_VERBOSE("registering AVX2 mask function");
+        MaskFn = MaskAvx2;
     }
-    else if (sse41_available())
+    else if (SSE41Available())
     {
-        log_verbose("registering SSE4.1 mask function");
-        mask_fn = mask_sse4_1;
+        LOG_VERBOSE("registering SSE4.1 mask function");
+        MaskFn = MaskSse4_1;
     }
     else
     {
-        log_verbose("registering scalar mask function");
-        mask_fn = mask_scalar;
+        LOG_VERBOSE("registering scalar mask function");
+        MaskFn = MaskScalar;
     }
 }
 
-void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
+void GfxFilterPixel(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
-    gfx_filter_rect(dpi, { coords, coords }, palette);
+    GfxFilterRect(dpi, { coords, coords }, palette);
 }
 
 /**
@@ -589,9 +590,9 @@ void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, Filt
  * a1 (ebx)
  * product (cl)
  */
-void gfx_transpose_palette(int32_t pal, uint8_t product)
+void GfxTransposePalette(int32_t pal, uint8_t product)
 {
-    const rct_g1_element* g1 = gfx_get_g1_element(pal);
+    const G1Element* g1 = GfxGetG1Element(pal);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -615,14 +616,14 @@ void gfx_transpose_palette(int32_t pal, uint8_t product)
  *
  *  rct2: 0x006837E3
  */
-void load_palette()
+void LoadPalette()
 {
     if (gOpenRCT2NoGraphics)
     {
         return;
     }
 
-    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
+    auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
 
     uint32_t palette = 0x5FC;
 
@@ -632,7 +633,7 @@ void load_palette()
         palette = water_type->image_id;
     }
 
-    const rct_g1_element* g1 = gfx_get_g1_element(palette);
+    const G1Element* g1 = GfxGetG1Element(palette);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -649,16 +650,16 @@ void load_palette()
         }
     }
     UpdatePalette(gGamePalette, 10, 236);
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 /**
  *
  *  rct2: 0x006ED7E5
  */
-void gfx_invalidate_screen()
+void GfxInvalidateScreen()
 {
-    gfx_set_dirty_blocks({ { 0, 0 }, { ContextGetWidth(), ContextGetHeight() } });
+    GfxSetDirtyBlocks({ { 0, 0 }, { ContextGetWidth(), ContextGetHeight() } });
 }
 
 /*
@@ -670,8 +671,7 @@ void gfx_invalidate_screen()
  * height (dx)
  * drawpixelinfo (edi)
  */
-bool clip_drawpixelinfo(
-    rct_drawpixelinfo* dst, rct_drawpixelinfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
+bool ClipDrawPixelInfo(DrawPixelInfo* dst, DrawPixelInfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
     int32_t right = coords.x + width;
     int32_t bottom = coords.y + height;
@@ -720,28 +720,28 @@ bool clip_drawpixelinfo(
     return false;
 }
 
-void gfx_invalidate_pickedup_peep()
+void GfxInvalidatePickedUpPeep()
 {
     auto imageId = gPickupPeepImage;
     if (imageId.HasValue())
     {
-        auto* g1 = gfx_get_g1_element(imageId);
+        auto* g1 = GfxGetG1Element(imageId);
         if (g1 != nullptr)
         {
             int32_t left = gPickupPeepX + g1->x_offset;
             int32_t top = gPickupPeepY + g1->y_offset;
             int32_t right = left + g1->width;
             int32_t bottom = top + g1->height;
-            gfx_set_dirty_blocks({ { left, top }, { right, bottom } });
+            GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
         }
     }
 }
 
-void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi)
+void GfxDrawPickedUpPeep(DrawPixelInfo* dpi)
 {
     if (gPickupPeepImage.HasValue())
     {
-        gfx_draw_sprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
+        GfxDrawSprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
     }
 }
 
@@ -759,7 +759,7 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     auto g1Index = GetPaletteG1Index(paletteId);
     if (g1Index.has_value())
     {
-        auto g1 = gfx_get_g1_element(g1Index.value());
+        auto g1 = GfxGetG1Element(g1Index.value());
         if (g1 != nullptr)
         {
             return PaletteMap(g1->offset, g1->height, g1->width);
@@ -768,19 +768,19 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-size_t rct_drawpixelinfo::GetBytesPerRow() const
+size_t DrawPixelInfo::GetBytesPerRow() const
 {
     return static_cast<size_t>(width) + pitch;
 }
 
-uint8_t* rct_drawpixelinfo::GetBitsOffset(const ScreenCoordsXY& pos) const
+uint8_t* DrawPixelInfo::GetBitsOffset(const ScreenCoordsXY& pos) const
 {
     return bits + pos.x + (pos.y * GetBytesPerRow());
 }
 
-rct_drawpixelinfo rct_drawpixelinfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
+DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
 {
-    rct_drawpixelinfo result = *this;
+    DrawPixelInfo result = *this;
     result.bits = GetBitsOffset(pos);
     result.x = static_cast<int16_t>(pos.x);
     result.y = static_cast<int16_t>(pos.y);
@@ -805,18 +805,18 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
         uint8_t g = colours[1];
         uint8_t b = colours[0];
 
-        if (lightfx_is_available())
+        if (LightFXIsAvailable())
         {
-            lightfx_apply_palette_filter(i, &r, &g, &b);
+            LightFXApplyPaletteFilter(i, &r, &g, &b);
         }
         else
         {
             float night = gDayNightCycle;
             if (night >= 0 && gClimateLightningFlash == 0)
             {
-                r = lerp(r, soft_light(r, 8), night);
-                g = lerp(g, soft_light(g, 8), night);
-                b = lerp(b, soft_light(b, 128), night);
+                r = Lerp(r, SoftLight(r, 8), night);
+                g = Lerp(g, SoftLight(g, 8), night);
+                b = Lerp(b, SoftLight(b, 128), night);
             }
         }
 
@@ -835,7 +835,7 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
 
     if (!gOpenRCT2Headless)
     {
-        drawing_engine_set_palette(gPalette);
+        DrawingEngineSetPalette(gPalette);
     }
 }
 
@@ -847,13 +847,13 @@ void RefreshVideo(bool recreateWindow)
     }
     else
     {
-        drawing_engine_dispose();
-        drawing_engine_init();
-        drawing_engine_resize();
+        DrawingEngineDispose();
+        DrawingEngineInit();
+        DrawingEngineResize();
     }
 
-    drawing_engine_set_palette(gPalette);
-    gfx_invalidate_screen();
+    DrawingEngineSetPalette(gPalette);
+    GfxInvalidateScreen();
 }
 
 void ToggleWindowedMode()

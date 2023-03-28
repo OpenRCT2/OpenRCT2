@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,7 @@ enum
     WIDX_LOGO
 };
 
-static rct_widget window_title_logo_widgets[] = {
+static Widget window_title_logo_widgets[] = {
     MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -57,17 +57,17 @@ public:
      *
      *  rct2: 0x0066B872
      */
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 2, 2 };
-        gfx_draw_sprite(&dpi, ImageId(SPR_G2_LOGO), screenCoords);
-        gfx_draw_sprite(&dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
+        GfxDrawSprite(&dpi, ImageId(SPR_G2_LOGO), screenCoords);
+        GfxDrawSprite(&dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
     }
 };
 
-rct_window* WindowTitleLogoOpen()
+WindowBase* WindowTitleLogoOpen()
 {
-    auto* window = window_bring_to_front_by_class(WindowClass::TitleLogo);
+    auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
     if (window == nullptr)
     {
         window = WindowCreate<TitleLogoWindow>(

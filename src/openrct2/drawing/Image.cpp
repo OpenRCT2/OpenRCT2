@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -162,7 +162,7 @@ static void FreeImageList(uint32_t baseImageId, uint32_t count)
 #ifdef DEBUG_LEVEL_1
     if (!AllocatedListRemove(baseImageId, count))
     {
-        log_error("Cannot unload %u items from offset %u", count, baseImageId);
+        LOG_ERROR("Cannot unload %u items from offset %u", count, baseImageId);
     }
 #endif
     _allocatedImageCount -= count;
@@ -186,7 +186,7 @@ static void FreeImageList(uint32_t baseImageId, uint32_t count)
     _freeLists.push_back({ baseImageId, count });
 }
 
-uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count)
+uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count)
 {
     if (count == 0 || gOpenRCT2NoGraphics)
     {
@@ -196,22 +196,22 @@ uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count
     uint32_t baseImageId = AllocateImageList(count);
     if (baseImageId == INVALID_IMAGE_ID)
     {
-        log_error("Reached maximum image limit.");
+        LOG_ERROR("Reached maximum image limit.");
         return INVALID_IMAGE_ID;
     }
 
     uint32_t imageId = baseImageId;
     for (uint32_t i = 0; i < count; i++)
     {
-        gfx_set_g1_element(imageId, &images[i]);
-        drawing_engine_invalidate_image(imageId);
+        GfxSetG1Element(imageId, &images[i]);
+        DrawingEngineInvalidateImage(imageId);
         imageId++;
     }
 
     return baseImageId;
 }
 
-void gfx_object_free_images(uint32_t baseImageId, uint32_t count)
+void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count)
 {
     if (baseImageId != 0 && baseImageId != INVALID_IMAGE_ID)
     {
@@ -220,16 +220,16 @@ void gfx_object_free_images(uint32_t baseImageId, uint32_t count)
         for (uint32_t i = 0; i < count; i++)
         {
             uint32_t imageId = baseImageId + i;
-            rct_g1_element g1 = {};
-            gfx_set_g1_element(imageId, &g1);
-            drawing_engine_invalidate_image(imageId);
+            G1Element g1 = {};
+            GfxSetG1Element(imageId, &g1);
+            DrawingEngineInvalidateImage(imageId);
         }
 
         FreeImageList(baseImageId, count);
     }
 }
 
-void gfx_object_check_all_images_freed()
+void GfxObjectCheckAllImagesFreed()
 {
     if (_allocatedImageCount != 0)
     {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,44 +12,32 @@
 #include "Paint.h"
 
 PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
+    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     if (direction & 1)
     {
         return PaintAddImageAsParent(
-            session, imageId, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
-            { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
+            session, imageId, { offset.y, offset.x, offset.z },
+            { { boundBox.offset.y, boundBox.offset.x, boundBox.offset.z },
+              { boundBox.length.y, boundBox.length.x, boundBox.length.z } });
     }
 
-    return PaintAddImageAsParent(session, imageId, offset, boundBoxSize, boundBoxOffset);
-}
-
-PaintStruct* PaintAddImageAsParentRotated(
-    PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize)
-{
-    if (direction & 1)
-    {
-        return PaintAddImageAsParent(
-            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z });
-    }
-
-    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize);
+    return PaintAddImageAsParent(session, imageId, offset, boundBox);
 }
 
 PaintStruct* PaintAddImageAsChildRotated(
     PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
+    const BoundBoxXYZ& boundBox)
 {
     if (direction & 1)
     {
         return PaintAddImageAsChild(
             session, image_id, { offset.y, offset.x, offset.z },
-            { { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z } });
+            { { boundBox.offset.y, boundBox.offset.x, boundBox.offset.z },
+              { boundBox.length.y, boundBox.length.x, boundBox.length.z } });
     }
 
-    return PaintAddImageAsChild(session, image_id, offset, { boundBoxOffset, boundBoxSize });
+    return PaintAddImageAsChild(session, image_id, offset, boundBox);
 }
 
 void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, uint8_t type)

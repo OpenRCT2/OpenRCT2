@@ -13,9 +13,9 @@ fi
 
 if [[ "$1" == "-d" ]]; then
     echo -e "\033[0;36mDownloading prebuilt NSIS from GitHub...\033[0m"
-    curl -sSfLO "https://github.com/OpenRCT2/Dependencies/releases/download/v20/nsis.zip"
-    7z -bd -y "-o$2" x nsis.zip
-    rm nsis.zip
+    curl -sSfLO "https://github.com/OpenRCT2/Dependencies/releases/download/v33/nsis-3.08.zip"
+    7z -bd -y "-o$2" x nsis-3.08.zip
+    rm nsis-3.08.zip
     echo -e "\033[0;32mNSIS downloaded, add "$2/bin" to PATH\033[0m"
     exit 0
 fi
@@ -29,17 +29,17 @@ then
 fi
 
 echo -e "\033[0;36mDownloading NSIS from chocolatey...\033[0m"
-cinst nsis.portable --version=3.01-beta1
+cinst nsis.portable --version=3.08
 
 echo -e "\033[0;36mDownloading KillProcDLL for NSIS...\033[0m"
 curl -sSfLo nsisxtra.zip "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip"
 7z x nsisxtra.zip
-cp FindProcDLL.dll "$nsisdir/tools/nsis-3.0b1/Plugins/x86-ansi"
+cp FindProcDLL.dll "$nsisdir/tools/nsis-3.08/Plugins/x86-ansi"
 
 echo -e "\033[0;36mDownloading UAC plugin for NSIS...\033[0m"
 curl -sSfLO "http://nsis.sourceforge.net/mediawiki/images/8/8f/UAC.zip"
 7z x UAC.zip
-cp UAC.nsh "$nsisdir/tools/nsis-3.0b1/Include"
-cp -r Plugins "$nsisdir/tools/nsis-3.0b1"
+cp UAC.nsh "$nsisdir/tools/nsis-3.08/Include"
+cp -r Plugins "$nsisdir/tools/nsis-3.08"
 
 echo -e "\033[0;32mNSIS installed!\033[0m"

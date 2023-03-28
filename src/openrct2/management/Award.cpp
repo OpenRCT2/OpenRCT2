@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -73,7 +73,7 @@ std::vector<Award>& GetAwards()
     return _currentAwards;
 }
 
-bool award_is_positive(AwardType type)
+bool AwardIsPositive(AwardType type)
 {
     return AwardPositiveMap[EnumValue(type)];
 }
@@ -81,7 +81,7 @@ bool award_is_positive(AwardType type)
 #pragma region Award checks
 
 /** More than 1/16 of the total guests must be thinking untidy thoughts. */
-static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
+static bool AwardIsDeservedMostUntidy(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::MostBeautiful))
         return false;
@@ -111,7 +111,7 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 }
 
 /** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
-static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
+static bool AwardIsDeservedMostTidy(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
         return false;
@@ -143,7 +143,7 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 }
 
 /** At least 6 open roller coasters. */
-static bool award_is_deserved_best_rollercoasters([[maybe_unused]] int32_t activeAwardTypes)
+static bool AwardIsDeservedBestRollercoasters([[maybe_unused]] int32_t activeAwardTypes)
 {
     auto rollerCoasters = 0;
     for (const auto& ride : GetRideManager())
@@ -159,7 +159,7 @@ static bool award_is_deserved_best_rollercoasters([[maybe_unused]] int32_t activ
             continue;
         }
 
-        if (!ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
         {
             continue;
         }
@@ -170,7 +170,7 @@ static bool award_is_deserved_best_rollercoasters([[maybe_unused]] int32_t activ
 }
 
 /** Entrance fee is 0.10 less than half of the total ride value. */
-static bool award_is_deserved_best_value(int32_t activeAwardTypes)
+static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::WorstValue))
         return false;
@@ -191,7 +191,7 @@ static bool award_is_deserved_best_value(int32_t activeAwardTypes)
 }
 
 /** More than 1/128 of the total guests must be thinking scenic thoughts and fewer than 16 untidy thoughts. */
-static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
+static bool AwardIsDeservedMostBeautiful(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
         return false;
@@ -224,7 +224,7 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 }
 
 /** Entrance fee is more than total ride value. */
-static bool award_is_deserved_worst_value(int32_t activeAwardTypes)
+static bool AwardIsDeservedWorstValue(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
@@ -240,7 +240,7 @@ static bool award_is_deserved_worst_value(int32_t activeAwardTypes)
 }
 
 /** No more than 2 people who think the vandalism is bad and no crashes. */
-static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
+static bool AwardIsDeservedSafest([[maybe_unused]] int32_t activeAwardTypes)
 {
     auto peepsWhoDislikeVandalism = 0;
     for (auto peep : EntityList<Guest>())
@@ -269,7 +269,7 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
 }
 
 /** All staff types, at least 20 staff, one staff per 32 peeps. */
-static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
+static bool AwardIsDeservedBestStaff(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
         return false;
@@ -281,7 +281,7 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
 }
 
 /** At least 7 shops, 4 unique, one shop per 128 guests and no more than 12 hungry guests. */
-static bool award_is_deserved_best_food(int32_t activeAwardTypes)
+static bool AwardIsDeservedBestFood(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::WorstFood))
         return false;
@@ -297,7 +297,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
             continue;
 
         shops++;
-        auto rideEntry = get_ride_entry(ride.subtype);
+        auto rideEntry = GetRideEntryByIndex(ride.subtype);
         if (rideEntry != nullptr)
         {
             if (!(shopTypes & EnumToFlag(rideEntry->shop_item[0])))
@@ -326,7 +326,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
 }
 
 /** No more than 2 unique shops, less than one shop per 256 guests and more than 15 hungry guests. */
-static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
+static bool AwardIsDeservedWorstFood(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::BestFood))
         return false;
@@ -371,7 +371,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
 }
 
 /** At least 4 toilets, 1 toilet per 128 guests and no more than 16 guests who think they need the toilet. */
-static bool award_is_deserved_best_toilets([[maybe_unused]] int32_t activeAwardTypes)
+static bool AwardIsDeservedBestToilets([[maybe_unused]] int32_t activeAwardTypes)
 {
     // Count open toilets
     const auto& rideManager = GetRideManager();
@@ -403,7 +403,7 @@ static bool award_is_deserved_best_toilets([[maybe_unused]] int32_t activeAwardT
 }
 
 /** More than half of the rides have satisfaction <= 6 and park rating <= 650. */
-static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
+static bool AwardIsDeservedMostDisappointing(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
@@ -415,7 +415,7 @@ static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
     auto disappointingRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride_has_ratings(&ride) && ride.popularity != 0xFF)
+        if (RideHasRatings(ride) && ride.popularity != 0xFF)
         {
             countedRides++;
             if (ride.popularity <= 6)
@@ -430,7 +430,7 @@ static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
 }
 
 /** At least 6 open water rides. */
-static bool award_is_deserved_best_water_rides([[maybe_unused]] int32_t activeAwardTypes)
+static bool AwardIsDeservedBestWaterRides([[maybe_unused]] int32_t activeAwardTypes)
 {
     auto waterRides = 0;
     for (const auto& ride : GetRideManager())
@@ -446,7 +446,7 @@ static bool award_is_deserved_best_water_rides([[maybe_unused]] int32_t activeAw
             continue;
         }
 
-        if (!ride_entry_has_category(rideEntry, RIDE_CATEGORY_WATER))
+        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_WATER))
         {
             continue;
         }
@@ -458,7 +458,7 @@ static bool award_is_deserved_best_water_rides([[maybe_unused]] int32_t activeAw
 }
 
 /** At least 6 custom designed rides. */
-static bool award_is_deserved_best_custom_designed_rides(int32_t activeAwardTypes)
+static bool AwardIsDeservedBestCustomDesignedRides(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
@@ -481,7 +481,7 @@ static bool award_is_deserved_best_custom_designed_rides(int32_t activeAwardType
     return (customDesignedRides >= 6);
 }
 
-static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardTypes)
+static bool AwardIsDeservedMostDazzlingRideColours(int32_t activeAwardTypes)
 {
     /** At least 5 colourful rides and more than half of the rides are colourful. */
     static constexpr const colour_t dazzling_ride_colours[] = {
@@ -518,7 +518,7 @@ static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardType
 }
 
 /** At least 10 peeps and more than 1/64 of total guests are lost or can't find something. */
-static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t activeAwardTypes)
+static bool AwardIsDeservedMostConfusingLayout([[maybe_unused]] int32_t activeAwardTypes)
 {
     uint32_t peepsCounted = 0;
     uint32_t peepsLost = 0;
@@ -537,7 +537,7 @@ static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t act
 }
 
 /** At least 10 open gentle rides. */
-static bool award_is_deserved_best_gentle_rides([[maybe_unused]] int32_t activeAwardTypes)
+static bool AwardIsDeservedBestGentleRides([[maybe_unused]] int32_t activeAwardTypes)
 {
     auto gentleRides = 0;
     for (const auto& ride : GetRideManager())
@@ -553,7 +553,7 @@ static bool award_is_deserved_best_gentle_rides([[maybe_unused]] int32_t activeA
             continue;
         }
 
-        if (!ride_entry_has_category(rideEntry, RIDE_CATEGORY_GENTLE))
+        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_GENTLE))
         {
             continue;
         }
@@ -567,33 +567,33 @@ static bool award_is_deserved_best_gentle_rides([[maybe_unused]] int32_t activeA
 using award_deserved_check = bool (*)(int32_t);
 
 static constexpr const award_deserved_check _awardChecks[] = {
-    award_is_deserved_most_untidy,
-    award_is_deserved_most_tidy,
-    award_is_deserved_best_rollercoasters,
-    award_is_deserved_best_value,
-    award_is_deserved_most_beautiful,
-    award_is_deserved_worst_value,
-    award_is_deserved_safest,
-    award_is_deserved_best_staff,
-    award_is_deserved_best_food,
-    award_is_deserved_worst_food,
-    award_is_deserved_best_toilets,
-    award_is_deserved_most_disappointing,
-    award_is_deserved_best_water_rides,
-    award_is_deserved_best_custom_designed_rides,
-    award_is_deserved_most_dazzling_ride_colours,
-    award_is_deserved_most_confusing_layout,
-    award_is_deserved_best_gentle_rides,
+    AwardIsDeservedMostUntidy,
+    AwardIsDeservedMostTidy,
+    AwardIsDeservedBestRollercoasters,
+    AwardIsDeservedBestValue,
+    AwardIsDeservedMostBeautiful,
+    AwardIsDeservedWorstValue,
+    AwardIsDeservedSafest,
+    AwardIsDeservedBestStaff,
+    AwardIsDeservedBestFood,
+    AwardIsDeservedWorstFood,
+    AwardIsDeservedBestToilets,
+    AwardIsDeservedMostDisappointing,
+    AwardIsDeservedBestWaterRides,
+    AwardIsDeservedBestCustomDesignedRides,
+    AwardIsDeservedMostDazzlingRideColours,
+    AwardIsDeservedMostConfusingLayout,
+    AwardIsDeservedBestGentleRides,
 };
 
-static bool award_is_deserved(AwardType awardType, int32_t activeAwardTypes)
+static bool AwardIsDeserved(AwardType awardType, int32_t activeAwardTypes)
 {
     return _awardChecks[EnumValue(awardType)](activeAwardTypes);
 }
 
 #pragma endregion
 
-void award_reset()
+void AwardReset()
 {
     _currentAwards.clear();
 }
@@ -602,9 +602,23 @@ void award_reset()
  *
  *  rct2: 0x0066A86C
  */
-void award_update_all()
+void AwardUpdateAll()
 {
     PROFILED_FUNCTION();
+
+    // Decrease award times
+    for (auto& award : _currentAwards)
+    {
+        --award.Time;
+    }
+    // Remove any 0 time awards
+    auto res = std::remove_if(
+        std::begin(_currentAwards), std::end(_currentAwards), [](const Award& award) { return award.Time == 0; });
+    if (res != std::end(_currentAwards))
+    {
+        _currentAwards.erase(res, std::end(_currentAwards));
+        WindowInvalidateByClass(WindowClass::ParkInformation);
+    }
 
     // Only add new awards if park is open
     if (gParkFlags & PARK_FLAGS_PARK_OPEN)
@@ -623,11 +637,11 @@ void award_update_all()
             AwardType awardType;
             do
             {
-                awardType = static_cast<AwardType>((((scenario_rand() & 0xFF) * EnumValue(AwardType::Count)) >> 8) & 0xFF);
+                awardType = static_cast<AwardType>((((ScenarioRand() & 0xFF) * EnumValue(AwardType::Count)) >> 8) & 0xFF);
             } while (activeAwardTypes & (1 << EnumValue(awardType)));
 
             // Check if award is deserved
-            if (award_is_deserved(awardType, activeAwardTypes))
+            if (AwardIsDeserved(awardType, activeAwardTypes))
             {
                 // Add award
                 _currentAwards.push_back(Award{ 5u, awardType });
@@ -635,23 +649,8 @@ void award_update_all()
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});
                 }
-                window_invalidate_by_class(WindowClass::ParkInformation);
+                WindowInvalidateByClass(WindowClass::ParkInformation);
             }
         }
-    }
-
-    // Decrease award times
-    for (auto& award : _currentAwards)
-    {
-        --award.Time;
-    }
-
-    // Remove any 0 time awards
-    auto res = std::remove_if(
-        std::begin(_currentAwards), std::end(_currentAwards), [](const Award& award) { return award.Time == 0; });
-    if (res != std::end(_currentAwards))
-    {
-        _currentAwards.erase(res, std::end(_currentAwards));
-        window_invalidate_by_class(WindowClass::ParkInformation);
     }
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,7 @@
 
 struct GameStateSnapshot_t;
 
-struct GameStateSpriteChange_t
+struct GameStateSpriteChange
 {
     enum
     {
@@ -28,7 +28,7 @@ struct GameStateSpriteChange_t
         EQUAL
     };
 
-    struct Diff_t
+    struct Diff
     {
         size_t offset;
         size_t length;
@@ -42,16 +42,16 @@ struct GameStateSpriteChange_t
     EntityType entityType;
     uint32_t spriteIndex;
 
-    std::vector<Diff_t> diffs;
+    std::vector<Diff> diffs;
 };
 
-struct GameStateCompareData_t
+struct GameStateCompareData
 {
     uint32_t tickLeft;
     uint32_t tickRight;
     uint32_t srand0Left;
     uint32_t srand0Right;
-    std::vector<GameStateSpriteChange_t> spriteChanges;
+    std::vector<GameStateSpriteChange> spriteChanges;
 };
 
 /*
@@ -95,19 +95,19 @@ struct IGameStateSnapshots
     virtual void SerialiseSnapshot(GameStateSnapshot_t& snapshot, DataSerialiser& serialiser) const = 0;
 
     /*
-     * Compares two states resulting GameStateCompareData_t with all mismatches stored.
+     * Compares two states resulting GameStateCompareData with all mismatches stored.
      */
-    virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const = 0;
+    virtual GameStateCompareData Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const = 0;
 
     /*
-     * Writes the GameStateCompareData_t into the specified file as readable text.
+     * Writes the GameStateCompareData into the specified file as readable text.
      */
-    virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData_t& cmpData) const = 0;
+    virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData& cmpData) const = 0;
 
     /*
-     * Generates a string of readable text from GameStateCompareData_t
+     * Generates a string of readable text from GameStateCompareData
      */
-    virtual std::string GetCompareDataText(const GameStateCompareData_t& cmpData) const = 0;
+    virtual std::string GetCompareDataText(const GameStateCompareData& cmpData) const = 0;
 };
 
 [[nodiscard]] std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots();

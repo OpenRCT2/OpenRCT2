@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -200,7 +200,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(int32_t trackType)
     return MazePaintSetup;
 }
 
-money64 MazeCalculateCost(money32 constructionCost, const Ride& ride, const CoordsXYZ& loc)
+money64 MazeCalculateCost(money64 constructionCost, const Ride& ride, const CoordsXYZ& loc)
 {
     const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
     money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16;

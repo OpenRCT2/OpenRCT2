@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,7 +26,7 @@ namespace OpenRCT2
     struct IStream;
 }
 
-struct scenario_index_entry;
+struct ScenarioIndexEntry;
 
 struct ParkLoadResult final
 {
@@ -50,14 +50,14 @@ struct IParkImporter
 public:
     virtual ~IParkImporter() = default;
 
-    virtual ParkLoadResult Load(const utf8* path) abstract;
-    virtual ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) abstract;
-    virtual ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult Load(const u8string& path) abstract;
+    virtual ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult LoadFromStream(
-        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
+        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const u8string& path = {}) abstract;
 
     virtual void Import() abstract;
-    virtual bool GetDetails(scenario_index_entry* dst) abstract;
+    virtual bool GetDetails(ScenarioIndexEntry* dst) abstract;
 };
 
 namespace ParkImporter

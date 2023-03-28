@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,4 +13,4 @@
 #include <openrct2/interface/Widget.h>
 
 ImageId GetColourButtonImage(colour_t colour);
-rct_widget* GetWidgetByIndex(const rct_window& w, WidgetIndex widgetIndex);
+Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);

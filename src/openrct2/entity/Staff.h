@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,18 +75,18 @@ private:
     void UpdateWatering();
     void UpdateAnswering();
     void UpdateFixing(int32_t steps);
-    bool UpdateFixingEnterStation(Ride* ride) const;
-    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride);
-    bool UpdateFixingFixVehicle(bool firstRun, const Ride* ride);
-    bool UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride* ride);
-    bool UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride);
+    bool UpdateFixingEnterStation(Ride& ride) const;
+    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride);
+    bool UpdateFixingFixVehicle(bool firstRun, const Ride& ride);
+    bool UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride);
+    bool UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride);
     bool UpdateFixingFixStationEnd(bool firstRun);
-    bool UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride);
-    bool UpdateFixingFixStationStart(bool firstRun, const Ride* ride);
-    bool UpdateFixingFixStationBrakes(bool firstRun, Ride* ride);
-    bool UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride);
-    bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride);
-    bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride);
+    bool UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride);
+    bool UpdateFixingFixStationStart(bool firstRun, const Ride& ride);
+    bool UpdateFixingFixStationBrakes(bool firstRun, Ride& ride);
+    bool UpdateFixingMoveToStationExit(bool firstRun, const Ride& ride);
+    bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& ride);
+    bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride);
     void UpdateRideInspected(RideId rideIndex);
     void UpdateHeadingToInspect();
 
@@ -148,12 +148,12 @@ extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;
 extern colour_t gStaffSecurityColour;
 
-colour_t staff_get_colour(StaffType staffType);
-bool staff_set_colour(StaffType staffType, colour_t value);
-uint32_t staff_get_available_entertainer_costumes();
-int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costumeList);
+colour_t StaffGetColour(StaffType staffType);
+bool StaffSetColour(StaffType staffType, colour_t value);
+uint32_t StaffGetAvailableEntertainerCostumes();
+int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList);
 
-money32 GetStaffWage(StaffType type);
+money64 GetStaffWage(StaffType type);
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
 
 const PatrolArea& GetMergedPatrolArea(const StaffType type);

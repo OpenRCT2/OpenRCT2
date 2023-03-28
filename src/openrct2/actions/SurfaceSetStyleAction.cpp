@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,6 +26,13 @@ SurfaceSetStyleAction::SurfaceSetStyleAction(MapRange range, ObjectEntryIndex su
 {
 }
 
+void SurfaceSetStyleAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_range);
+    visitor.Visit("surfaceStyle", _surfaceStyle);
+    visitor.Visit("edgeStyle", _edgeStyle);
+}
+
 void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
@@ -45,7 +52,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     {
         if (_surfaceStyle > 0x1F)
         {
-            log_error("Invalid surface style.");
+            LOG_ERROR("Invalid surface style.");
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
@@ -54,7 +61,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
         if (surfaceObj == nullptr)
         {
-            log_error("Invalid surface style.");
+            LOG_ERROR("Invalid surface style.");
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
@@ -63,7 +70,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     {
         if (_edgeStyle > 0xF)
         {
-            log_error("Invalid edge style.");
+            LOG_ERROR("Invalid edge style.");
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
@@ -71,7 +78,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
         if (edgeObj == nullptr)
         {
-            log_error("Invalid edge style.");
+            LOG_ERROR("Invalid edge style.");
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
@@ -92,8 +99,8 @@ GameActions::Result SurfaceSetStyleAction::Query() const
             GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
 
-    money32 surfaceCost = 0;
-    money32 edgeCost = 0;
+    money64 surfaceCost = 0;
+    money64 edgeCost = 0;
     for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
          coords.x += COORDS_XY_STEP)
     {
@@ -160,8 +167,8 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
     res.Position.y = yMid;
     res.Position.z = heightMid;
 
-    money32 surfaceCost = 0;
-    money32 edgeCost = 0;
+    money64 surfaceCost = 0;
+    money64 edgeCost = 0;
     for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
          coords.x += COORDS_XY_STEP)
     {

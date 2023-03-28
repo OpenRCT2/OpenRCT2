@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,15 +32,17 @@ namespace OpenRCT2::Ui
 
     public:
         bool IsActive();
-        TextInputSession* Start(utf8* buffer, size_t bufferSize);
+        TextInputSession* Start(u8string& buffer, size_t maxLength);
         void Stop();
         void HandleMessage(const SDL_Event* e);
 
     private:
-        void CursorHome();
-        void CursorEnd();
-        void CursorLeft();
-        void CursorRight();
+        void CaretMoveToStart();
+        void CaretMoveToEnd();
+        void CaretMoveLeft();
+        void CaretMoveRight();
+        void CaretMoveToLeftToken();
+        void CaretMoveToRightToken();
         void Insert(const utf8* text);
         void InsertCodepoint(codepoint_t codepoint);
         void Clear();

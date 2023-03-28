@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,7 +26,7 @@ static void PaintMiniHelicoptersTrackStation(
     if (direction == 0 || direction == 2)
     {
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 1 } });
@@ -38,7 +38,7 @@ static void PaintMiniHelicoptersTrackStation(
     else if (direction == 1 || direction == 3)
     {
         imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
@@ -48,7 +48,7 @@ static void PaintMiniHelicoptersTrackStation(
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -64,17 +64,17 @@ static void PaintMiniHelicoptersTrackFlat(
     if (direction & 1)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
         PaintUtilPushTunnelRight(session, height, TUNNEL_0);
     }
     else
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
         PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
             session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, height,
@@ -98,30 +98,30 @@ static void PaintMiniHelicoptersTrackFlatTo25DegUp(
         case 0:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             PaintUtilPushTunnelLeft(session, height, TUNNEL_0);
             break;
         case 1:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NW_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
             PaintUtilPushTunnelRight(session, height, TUNNEL_2);
             break;
         case 2:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             PaintUtilPushTunnelLeft(session, height, TUNNEL_2);
             break;
         case 3:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SE_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
             PaintUtilPushTunnelRight(session, height, TUNNEL_0);
             break;
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -142,27 +142,27 @@ static void PaintMiniHelicoptersTrack25DegUp(
     {
         case 0:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
             break;
         case 1:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NW_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
             PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
             break;
         case 2:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_2);
             break;
         case 3:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SE_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
             PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
             break;
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -184,30 +184,30 @@ static void PaintMiniHelicoptersTrack25DegUpToFlat(
         case 0:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_0);
             break;
         case 1:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NW_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
             PaintUtilPushTunnelRight(session, height + 8, TUNNEL_12);
             break;
         case 2:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_12);
             break;
         case 3:
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
                 SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SE_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
             PaintUtilPushTunnelRight(session, height - 8, TUNNEL_0);
             break;
     }
 
-    if (track_paint_util_should_paint_supports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, METAL_SUPPORTS_STICK, 4, -7, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -246,10 +246,10 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_left_quarter_turn_3_tiles_paint(
+    TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
-    track_paint_util_left_quarter_turn_3_tiles_tunnel(session, height, TUNNEL_0, direction, trackSequence);
+    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, height, TUNNEL_0, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -293,10 +293,10 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    track_paint_util_left_quarter_turn_1_tile_paint(
+    TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 1, height, 0, direction, session.TrackColours[SCHEME_TRACK],
         trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile);
-    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
+    TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -325,9 +325,9 @@ static void PaintMiniHelicoptersTrackSpinningTunnel(
     ImageId imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
     ImageId underlay = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
 
-    PaintAddImageAsParentRotated(session, direction, underlay, { 0, 6, height - 2 }, { 32, 20, 1 }, { 0, 6, height });
-    PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
-    track_paint_util_spinning_tunnel_paint(session, 1, height, direction);
+    PaintAddImageAsParentRotated(session, direction, underlay, { 0, 6, height - 2 }, { { 0, 6, height }, { 32, 20, 1 } });
+    PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+    TrackPaintUtilSpinningTunnelPaint(session, 1, height, direction);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
 
     WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);

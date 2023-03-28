@@ -1239,7 +1239,7 @@ STR_1863    :Temizlikci
 STR_1864    :Tamirci
 STR_1865    :Güvenlik
 STR_1866    :Animatör
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Çevirme miktarı değiştirilemiyor…
 STR_1869    :{WINDOW_COLOUR_2}Çevirme miktarı:
 STR_1870    :Aletin kaç defa çevirme yapacağını seçiniz
@@ -1669,7 +1669,7 @@ STR_2314    :{WINDOW_COLOUR_2}Alet uzunluğu: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Maliyet: {BLACK} yaklaşık {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Gerekli alan: {BLACK}{COMMA16} × {COMMA16} blok
 STR_2321    :{WINDOW_COLOUR_2}Alet sayısı: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Işci: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Işci: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Satılık arazi var ise yeni arazi satın alınız
@@ -2644,7 +2644,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Bu isim kullanılmakda
 STR_5440    :Oyun ön planda değilse oyunu simge durumuna getir
-STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Park değerlendirmesini:
 STR_5447    :Alet {STRINGID}
 STR_5448    :Tür {STRINGID}

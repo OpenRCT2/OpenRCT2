@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,6 +33,14 @@ LandSmoothAction::LandSmoothAction(const CoordsXY& coords, MapRange range, uint8
 {
 }
 
+void LandSmoothAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_coords);
+    visitor.Visit(_range);
+    visitor.Visit("selectionType", _selectionType);
+    visitor.Visit("isLowering", _isLowering);
+}
+
 uint16_t LandSmoothAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();
@@ -58,7 +66,7 @@ GameActions::Result LandSmoothAction::Execute() const
 GameActions::Result LandSmoothAction::SmoothLandTile(
     int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
 {
-    int32_t targetBaseZ = surfaceElement->base_height;
+    int32_t targetBaseZ = surfaceElement->BaseHeight;
     int32_t slope = surfaceElement->GetSlope();
     if (_isLowering)
     {
@@ -86,13 +94,13 @@ GameActions::Result LandSmoothAction::SmoothLandTile(
     return res;
 }
 
-money32 LandSmoothAction::SmoothLandRowByEdge(
+money64 LandSmoothAction::SmoothLandRowByEdge(
     bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
     int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const
 {
     uint8_t shouldContinue = 0xF;
     int32_t landChangePerTile = _isLowering ? 2 : -2;
-    money32 totalCost = 0;
+    money64 totalCost = 0;
 
     // check if we need to start at all
     if (!LocationValid(loc) || !LocationValid({ loc.x + stepX, loc.y + stepY }))
@@ -169,7 +177,7 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
         expectedLandHeight1 += landChangePerTile;
 
         // change land of current tile
-        int32_t targetBaseZ = surfaceElement->base_height;
+        int32_t targetBaseZ = surfaceElement->BaseHeight;
         int32_t slope = surfaceElement->GetSlope();
         int32_t oldSlope = slope;
         if (_isLowering)
@@ -184,7 +192,7 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
                 }
             }
             if ((shouldContinue & 0x8)
-                && MapGetCornerHeight(surfaceElement->base_height, oldSlope, direction2)
+                && MapGetCornerHeight(surfaceElement->BaseHeight, oldSlope, direction2)
                     == MapGetCornerHeight(targetBaseZ, slope, direction2))
             {
                 slope = tile_element_lower_styles[direction2][slope];
@@ -207,7 +215,7 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
                 }
             }
             if ((shouldContinue & 0x8)
-                && MapGetCornerHeight(surfaceElement->base_height, oldSlope, direction2)
+                && MapGetCornerHeight(surfaceElement->BaseHeight, oldSlope, direction2)
                     == MapGetCornerHeight(targetBaseZ, slope, direction2))
             {
                 slope = tile_element_raise_styles[direction2][slope];
@@ -230,12 +238,12 @@ money32 LandSmoothAction::SmoothLandRowByEdge(
     return totalCost;
 }
 
-money32 LandSmoothAction::SmoothLandRowByCorner(
+money64 LandSmoothAction::SmoothLandRowByCorner(
     bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
     int32_t checkDirection) const
 {
     bool shouldContinue = true;
-    money32 totalCost = 0;
+    money64 totalCost = 0;
     int32_t landChangePerTile;
     if (stepX == 0 || stepY == 0)
     {
@@ -435,7 +443,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
             auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
             if (surfaceElement == nullptr)
                 break;
-            uint8_t newBaseZ = surfaceElement->base_height;
+            uint8_t newBaseZ = surfaceElement->BaseHeight;
             uint8_t newSlope = surfaceElement->GetSlope();
 
             if (raiseLand)
@@ -531,7 +539,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
             auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), validRange.GetTop() });
             if (surfaceElement == nullptr)
                 break;
-            uint8_t newBaseZ = surfaceElement->base_height;
+            uint8_t newBaseZ = surfaceElement->BaseHeight;
             uint8_t oldSlope = surfaceElement->GetSlope();
             int32_t rowIndex = selectionType - (MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1);
             uint8_t newSlope = raiseLand ? tile_element_raise_styles[rowIndex][oldSlope]
@@ -598,7 +606,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
             break;
         }
         default:
-            log_error("Invalid map selection %u", _selectionType);
+            LOG_ERROR("Invalid map selection %u", _selectionType);
             return GameActions::Result(GameActions::Status::InvalidParameters, std::get<StringId>(res.ErrorTitle), STR_NONE);
     } // switch selectionType
 

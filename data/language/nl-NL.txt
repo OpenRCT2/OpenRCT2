@@ -1244,7 +1244,7 @@ STR_1863    :klusjesman
 STR_1864    :monteur
 STR_1865    :bewaker
 STR_1866    :entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan het aantal rotaties niet aanpassen…
 STR_1869    :{WINDOW_COLOUR_2}Aantal rotaties:
 STR_1870    :Aantal complete rotaties
@@ -1676,7 +1676,7 @@ STR_2314    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ongeveer {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Vereiste ruimte: {BLACK}{COMMA16} × {COMMA16} blokken
 STR_2321    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Werknemers: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Werknemers: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Land kopen om het park uit te breiden
@@ -2651,7 +2651,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Naam bestaat al
 STR_5440    :Volledig scherm minimaliseren bij focusverlies
-STR_5441    :Sorteert attracties per baantype,{NEWLINE}zodat achteraf wisselen van treintypes mogelijk{NEWLINE}wordt, zoals in RCT1.
 STR_5442    :Parkwaardering forc.:
 STR_5447    :Type {STRINGID}
 STR_5448    :Attractie/voertuig {STRINGID}
@@ -3281,7 +3280,7 @@ STR_6134    :Decor verwijderen
 STR_6135    :Ongeldig verzoek van de client
 STR_6136    :Ongeldig verzoek van de server
 STR_6137    :OpenRCT2, een gratis en open source remake van Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 is het werk van velen, een volledige lijst is te vinden in ‘contributors.md’. Ga naar http://github.com/OpenRCT2/OpenRCT2 voor meer informatie.
+STR_6138    :OpenRCT2 is het werk van velen, een volledige lijst door op de knop ‘Deelnemers’ te klikken. Ga naar http://github.com/OpenRCT2/OpenRCT2 voor meer informatie.
 STR_6139    :Alle product- en bedrijfsnamen zijn eigendom van hun respectieve eigenaren. Het gebruik ervan impliceert geen overeenkomst of goedkeuring.
 STR_6140    :Wijzigingsoverzicht…
 STR_6141    :Onderste werkbalk in RCT1-stijl
@@ -3638,6 +3637,17 @@ STR_6533    :{WINDOW_COLOUR_2}Plezierfactor: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Misselijkheidsfactor: {BLACK}-{COMMA16}%
 STR_6536    :Dit park is opgeslagen in een latere versie van OpenRCT2. Het park is opgeslagen in v{INT32}, je huidige versie is v{INT32}.
+STR_6537    :Gewone paden als wachtrij bruikbaar maken
+STR_6538    :Zorgt ervoor dat je wachtrijen kunt bouwen met paden die daar niet voor bedoeld zijn.
+STR_6539    :Rem is gesloten
+STR_6540    :{WINDOW_COLOUR_2}Onze dank gaat uit naar de volgende bedrijven voor hun toestemming om voertuigen op hun ontwerpen te baseren:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Deelnemers
+STR_6543    :Deelnemers…
+STR_6544    :Lening kan niet negatief zijn!
+STR_6545    :Renteberekening van RCT1 gebruiken
+STR_6546    :Gebruik de renteberekening van RollerCoaster Tycoon 1, dat een vast rentepercentage van ongeveer 1,33% hanteerde.
+STR_6547    :Alle decorobjecten
 
 #############
 # Scenarios #
@@ -4374,6 +4384,11 @@ STR_DTLS    :Dit verouderde themapark heeft betere tijden gekend. Geef het park 
 STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Voeg meer attracties toe aan dit park met pandathema, en trek meer bezoekers aan.
+
+<Tycoon Park>
+STR_SCNR    :Tycoon Park
+STR_PARK    :Tycoon Park
+STR_DTLS    :
 
 ###
 <UCES Halloween>

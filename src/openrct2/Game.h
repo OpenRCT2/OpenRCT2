@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,7 @@ enum class GameCommand : int32_t
     PlaceScenery,             // GA
     SetWaterHeight,           // GA
     PlacePath,                // GA
-    PlacePathFromTrack,       // GA
+    PlacePathLayout,          // GA
     RemovePath,               // GA
     ChangeSurfaceStyle,       // GA
     SetRidePrice,             // GA
@@ -149,31 +149,31 @@ extern bool gIsAutosaveLoaded;
 
 extern bool gLoadKeepWindowsOpen;
 
-void game_reset_speed();
-void game_increase_game_speed();
-void game_reduce_game_speed();
+void GameResetSpeed();
+void GameIncreaseGameSpeed();
+void GameReduceGameSpeed();
 
-void game_create_windows();
-void reset_all_sprite_quadrant_placements();
-void update_palette_effects();
+void GameCreateWindows();
+void ResetAllSpriteQuadrantPlacements();
+void UpdatePaletteEffects();
 
-void game_load_or_quit_no_save_prompt();
-void game_load_init();
-void game_load_scripts();
-void game_unload_scripts();
-void game_notify_map_change();
-void game_notify_map_changed();
-void pause_toggle();
-bool game_is_paused();
-bool game_is_not_paused();
-void save_game();
-std::unique_ptr<Intent> create_save_game_as_intent();
-void save_game_as();
-void save_game_cmd(u8string_view name = {});
-void save_game_with_name(u8string_view name);
-void game_autosave();
-void rct2_to_utf8_self(char* buffer, size_t length);
-void game_fix_save_vars();
-void start_silent_record();
-bool stop_silent_record();
+void GameLoadOrQuitNoSavePrompt();
+void GameLoadInit();
+void GameLoadScripts();
+void GameUnloadScripts();
+void GameNotifyMapChange();
+void GameNotifyMapChanged();
+void PauseToggle();
+bool GameIsPaused();
+bool GameIsNotPaused();
+void SaveGame();
+std::unique_ptr<Intent> CreateSaveGameAsIntent();
+void SaveGameAs();
+void SaveGameCmd(u8string_view name = {});
+void SaveGameWithName(u8string_view name);
+void GameAutosave();
+void RCT2StringToUTF8Self(char* buffer, size_t length);
+void GameFixSaveVars();
+void StartSilentRecord();
+bool StopSilentRecord();
 void PrepareMapForSave();

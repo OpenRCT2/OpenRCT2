@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@ static constexpr const int32_t WH = 94;
 
 static constexpr ScreenSize CLEAR_SCENERY_BUTTON = { 24, 24 };
 
-static rct_widget window_clear_scenery_widgets[] = {
+static Widget window_clear_scenery_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget(
         { 27, 17 }, { 44, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_LAND_TOOL_SIZE_0, STR_NONE), // preview box
@@ -66,7 +66,7 @@ public:
         widgets = window_clear_scenery_widgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(*this);
+        WindowPushOthersBelow(*this);
 
         gLandToolSize = 2;
         gClearSceneryCost = MONEY64_UNDEFINED;
@@ -81,7 +81,7 @@ public:
     void OnClose() override
     {
         if (ClearSceneryToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
     void OnMouseUp(const WidgetIndex widgetIndex) override
@@ -168,10 +168,10 @@ public:
             | (gClearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
 
         // Update the preview image (for tool sizes up to 7)
-        window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        window_clear_scenery_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -182,7 +182,7 @@ public:
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
 
         // Draw cost amount
@@ -192,14 +192,14 @@ public:
             ft.Add<money64>(gClearSceneryCost);
             screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + windowPos.x;
             screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
-            DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
         }
     }
 };
 
-rct_window* WindowClearSceneryOpen()
+WindowBase* WindowClearSceneryOpen()
 {
-    auto* w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WindowClass::ClearScenery));
+    auto* w = static_cast<CleanSceneryWindow*>(WindowBringToFrontByClass(WindowClass::ClearScenery));
 
     if (w != nullptr)
         return w;

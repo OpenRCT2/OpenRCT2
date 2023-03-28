@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -89,12 +89,12 @@ namespace RCT1
 
             for (int32_t i = 0; i < Limits::NumColourSchemes; i++)
             {
-                td->track_spine_colour[i] = RCT1::GetColour(td4aa.track_spine_colour[i]);
-                td->track_rail_colour[i] = RCT1::GetColour(td4aa.track_rail_colour[i]);
-                td->track_support_colour[i] = RCT1::GetColour(td4aa.track_support_colour[i]);
+                td->track_spine_colour[i] = RCT1::GetColour(td4aa.TrackSpineColour[i]);
+                td->track_rail_colour[i] = RCT1::GetColour(td4aa.TrackRailColour[i]);
+                td->track_support_colour[i] = RCT1::GetColour(td4aa.TrackSupportColour[i]);
             }
 
-            td->flags2 = td4aa.flags2;
+            td->flags2 = td4aa.Flags2;
 
             return ImportTD4Base(std::move(td), td4aa);
         }
@@ -106,16 +106,16 @@ namespace RCT1
             _stream.Read(&td4, sizeof(TD4));
             for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
             {
-                td->track_spine_colour[i] = RCT1::GetColour(td4.track_spine_colour_v0);
-                td->track_rail_colour[i] = RCT1::GetColour(td4.track_rail_colour_v0);
-                td->track_support_colour[i] = RCT1::GetColour(td4.track_support_colour_v0);
+                td->track_spine_colour[i] = RCT1::GetColour(td4.TrackSpineColourV0);
+                td->track_rail_colour[i] = RCT1::GetColour(td4.TrackRailColourV0);
+                td->track_support_colour[i] = RCT1::GetColour(td4.TrackSupportColourV0);
 
                 // Mazes were only hedges
-                if (td4.type == RideType::HedgeMaze)
+                if (td4.Type == RideType::HedgeMaze)
                 {
                     td->track_support_colour[i] = MAZE_WALL_TYPE_HEDGE;
                 }
-                else if (td4.type == RideType::RiverRapids)
+                else if (td4.Type == RideType::RiverRapids)
                 {
                     td->track_spine_colour[i] = COLOUR_WHITE;
                     td->track_rail_colour[i] = COLOUR_WHITE;
@@ -127,45 +127,45 @@ namespace RCT1
 
         std::unique_ptr<TrackDesign> ImportTD4Base(std::unique_ptr<TrackDesign> td, TD4& td4Base)
         {
-            td->type = RCT1::GetRideType(td4Base.type, td4Base.vehicle_type);
+            td->type = RCT1::GetRideType(td4Base.Type, td4Base.VehicleType);
 
             // All TD4s that use powered launch use the type that doesn't pass the station.
-            td->ride_mode = static_cast<RideMode>(td4Base.mode);
-            if (td4Base.mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
+            td->ride_mode = static_cast<RideMode>(td4Base.Mode);
+            if (td4Base.Mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
             {
                 td->ride_mode = RideMode::PoweredLaunch;
             }
 
             // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
             std::string_view vehicleObject;
-            if (td4Base.type == RideType::HedgeMaze)
+            if (td4Base.Type == RideType::HedgeMaze)
             {
-                vehicleObject = RCT1::GetRideTypeObject(td4Base.type);
+                vehicleObject = RCT1::GetRideTypeObject(td4Base.Type);
             }
             else
             {
-                vehicleObject = RCT1::GetVehicleObject(td4Base.vehicle_type);
+                vehicleObject = RCT1::GetVehicleObject(td4Base.VehicleType);
             }
             assert(!vehicleObject.empty());
             td->vehicle_object = ObjectEntryDescriptor(vehicleObject);
-            td->vehicle_type = td4Base.vehicle_type;
+            td->vehicle_type = td4Base.VehicleType;
 
-            td->flags = td4Base.flags;
-            td->colour_scheme = td4Base.version_and_colour_scheme & 0x3;
+            td->flags = td4Base.Flags;
+            td->colour_scheme = td4Base.VersionAndColourScheme & 0x3;
 
             // Vehicle colours
             for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {
                 // RCT1 had no third colour
                 RCT1::VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
-                    td4Base.vehicle_type);
+                    td4Base.VehicleType);
                 if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                 {
-                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.vehicle_colours[i].body_colour);
+                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
                 else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
                 {
-                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.vehicle_colours[i].trim_colour);
+                    td->vehicle_colours[i].Body = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
                 else
                 {
@@ -174,11 +174,11 @@ namespace RCT1
 
                 if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
                 {
-                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.vehicle_colours[i].body_colour);
+                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
                 else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
                 {
-                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.vehicle_colours[i].trim_colour);
+                    td->vehicle_colours[i].Trim = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
                 else
                 {
@@ -187,11 +187,11 @@ namespace RCT1
 
                 if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
                 {
-                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.vehicle_colours[i].body_colour);
+                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].BodyColour);
                 }
                 else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
                 {
-                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.vehicle_colours[i].trim_colour);
+                    td->vehicle_colours[i].Tertiary = RCT1::GetColour(td4Base.VehicleColours[i].TrimColour);
                 }
                 else
                 {
@@ -204,69 +204,70 @@ namespace RCT1
                 td->vehicle_colours[i] = td->vehicle_colours[0];
             }
 
-            td->depart_flags = td4Base.depart_flags;
-            td->number_of_trains = td4Base.number_of_trains;
-            td->number_of_cars_per_train = td4Base.number_of_cars_per_train;
-            td->min_waiting_time = td4Base.min_waiting_time;
-            td->max_waiting_time = td4Base.max_waiting_time;
+            td->depart_flags = td4Base.DepartFlags;
+            td->number_of_trains = td4Base.NumberOfTrains;
+            td->number_of_cars_per_train = td4Base.NumberOfCarsPerTrain;
+            td->min_waiting_time = td4Base.MinWaitingTime;
+            td->max_waiting_time = td4Base.MaxWaitingTime;
             td->operation_setting = std::min(
-                td4Base.operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
-            td->max_speed = td4Base.max_speed;
-            td->average_speed = td4Base.average_speed;
-            td->ride_length = td4Base.ride_length;
-            td->max_positive_vertical_g = td4Base.max_positive_vertical_g;
-            td->max_negative_vertical_g = td4Base.max_negative_vertical_g;
-            td->max_lateral_g = td4Base.max_lateral_g;
+                td4Base.OperationSetting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
+            td->max_speed = td4Base.MaxSpeed;
+            td->average_speed = td4Base.AverageSpeed;
+            td->ride_length = td4Base.RideLength;
+            td->max_positive_vertical_g = td4Base.MaxPositiveVerticalG;
+            td->max_negative_vertical_g = td4Base.MaxNegativeVerticalG;
+            td->max_lateral_g = td4Base.MaxLateralG;
 
             if (td->type == RIDE_TYPE_MINI_GOLF)
             {
-                td->holes = td4Base.num_holes;
+                td->holes = td4Base.NumHoles;
             }
             else
             {
-                td->inversions = td4Base.num_inversions;
+                td->inversions = td4Base.NumInversions;
             }
 
-            td->drops = td4Base.num_drops;
-            td->highest_drop_height = td4Base.highest_drop_height / 2;
-            td->excitement = td4Base.excitement;
-            td->intensity = td4Base.intensity;
-            td->nausea = td4Base.nausea;
-            td->upkeep_cost = td4Base.upkeep_cost;
+            td->drops = td4Base.NumDrops;
+            td->highest_drop_height = td4Base.HighestDropHeight / 2;
+            td->excitement = td4Base.Excitement;
+            td->intensity = td4Base.Intensity;
+            td->nausea = td4Base.Nausea;
+            td->upkeep_cost = ToMoney64(td4Base.UpkeepCost);
             td->space_required_x = 255;
             td->space_required_y = 255;
             td->lift_hill_speed = 5;
             td->num_circuits = 0;
             td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
-            if (td->type == RIDE_TYPE_MAZE)
+            const auto& rtd = GetRideTypeDescriptor(td->type);
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
-                rct_td46_maze_element t4MazeElement{};
-                t4MazeElement.all = !0;
-                while (t4MazeElement.all != 0)
+                TD46MazeElement t4MazeElement{};
+                t4MazeElement.All = !0;
+                while (t4MazeElement.All != 0)
                 {
-                    _stream.Read(&t4MazeElement, sizeof(rct_td46_maze_element));
-                    if (t4MazeElement.all != 0)
+                    _stream.Read(&t4MazeElement, sizeof(TD46MazeElement));
+                    if (t4MazeElement.All != 0)
                     {
                         TrackDesignMazeElement mazeElement{};
                         mazeElement.x = t4MazeElement.x;
                         mazeElement.y = t4MazeElement.y;
-                        mazeElement.direction = t4MazeElement.direction;
-                        mazeElement.type = t4MazeElement.type;
+                        mazeElement.direction = t4MazeElement.Direction;
+                        mazeElement.type = t4MazeElement.Type;
                         td->maze_elements.push_back(mazeElement);
                     }
                 }
             }
             else
             {
-                rct_td46_track_element t4TrackElement{};
+                TD46TrackElement t4TrackElement{};
                 for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
                 {
                     _stream.SetPosition(_stream.GetPosition() - 1);
-                    _stream.Read(&t4TrackElement, sizeof(rct_td46_track_element));
+                    _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
-                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.type, td->type);
-                    trackElement.flags = t4TrackElement.flags;
+                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->type);
+                    trackElement.flags = t4TrackElement.Flags;
                     td->track_elements.push_back(trackElement);
                 }
             }

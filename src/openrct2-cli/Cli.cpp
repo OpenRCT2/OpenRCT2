@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/cmdline/CommandLine.hpp>
+#include <openrct2/command_line/CommandLine.hpp>
 #include <openrct2/platform/Platform.h>
 
 using namespace OpenRCT2;
@@ -20,7 +20,7 @@ using namespace OpenRCT2;
 int main(int argc, const char** argv)
 {
     int32_t rc = EXIT_SUCCESS;
-    int runGame = cmdline_run(argv, argc);
+    int runGame = CommandLineRun(argv, argc);
     Platform::CoreInit();
     if (runGame == EXITCODE_CONTINUE)
     {

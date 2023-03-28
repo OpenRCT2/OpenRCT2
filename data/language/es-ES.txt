@@ -1246,7 +1246,7 @@ STR_1863    :manita
 STR_1864    :mecánico
 STR_1865    :guardia de seguridad
 STR_1866    :animador
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :No puedes cambiar el número de vueltas…
 STR_1869    :{WINDOW_COLOUR_2}Número de vueltas:
 STR_1870    :Número de vueltas completas
@@ -1273,17 +1273,17 @@ STR_1891    :¡Ningún {STRINGID} en el parque todavía!
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} vendidos: {BLACK}{COMMA32}
 STR_1895    :Construir nueva atracción
 STR_1896    :{WINDOW_COLOUR_2}Gastos/Ingresos
-STR_1897    :{WINDOW_COLOUR_2}Construcción
-STR_1898    :{WINDOW_COLOUR_2}Operación de atracciones
-STR_1899    :{WINDOW_COLOUR_2}Compra de terreno
+STR_1897    :{WINDOW_COLOUR_2}Construcción atracc.
+STR_1898    :{WINDOW_COLOUR_2}Operación de atracc.
+STR_1899    :{WINDOW_COLOUR_2}Compra de terrenos
 STR_1900    :{WINDOW_COLOUR_2}Decorado
 STR_1901    :{WINDOW_COLOUR_2}Entradas al parque
 STR_1902    :{WINDOW_COLOUR_2}Entradas a atracciones
 STR_1903    :{WINDOW_COLOUR_2}Ventas de tiendas
 STR_1904    :{WINDOW_COLOUR_2}Gastos de tiendas
-STR_1905    :{WINDOW_COLOUR_2}Ventas de comida y bebida
-STR_1906    :{WINDOW_COLOUR_2}Gastos de comida y bebida
-STR_1907    :{WINDOW_COLOUR_2}Salarios
+STR_1905    :{WINDOW_COLOUR_2}Ventas comida/bebida
+STR_1906    :{WINDOW_COLOUR_2}Gastos comida/bebida
+STR_1907    :{WINDOW_COLOUR_2}Salarios del personal
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Investigación
 STR_1910    :{WINDOW_COLOUR_2}Intereses del crédito
@@ -1676,7 +1676,7 @@ STR_2314    :{WINDOW_COLOUR_2}Longitud de vía: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Coste: {BLACK}alrededor de {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espacio requerido: {BLACK}{COMMA16} × {COMMA16} bloques
 STR_2321    :{WINDOW_COLOUR_2}Número de atracciones: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Empleados: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Empleados: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Extensión del parque: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Extensión del parque: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Comprar terreno para extender el parque.
@@ -2653,7 +2653,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :El nombre ya existe
 STR_5440    :Minimizar desde pantalla completa al perder el foco
-STR_5441    :Identifica atracciones por tipo de pista{NEWLINE}por lo que los vehículos pueden modificarse posteriormente.{NEWLINE}(Como en RCT1).
 STR_5442    :Forzar valoración:
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Juego / Vehículo {STRINGID}
@@ -3285,8 +3284,8 @@ STR_6133    :Acceder a atracciones y escenarios que aún no han sido inventados
 STR_6134    :Limpiar Escenario
 STR_6135    :El cliente envió una solicitud no válida
 STR_6136    :El servidor envió una solicitud no válida
-STR_6137    :OpenRCT2, juego de código abierto basado en Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 es el trabajo de muchos autores, una lista completa se puede encontrar en “contributors.md”. Para más información visita: http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2, juego de código abierto que recrea y expande Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 es el trabajo de muchos autores, una lista completa se puede encontrar a través del botón de "Colaboradores". Para más información visita: http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Todos los nombres de productos y empresas pertenecen a sus respectivos titulares. El uso de ellos no implica ninguna afiliación o respaldo por ellos.
 STR_6140    :Changelog…
 STR_6141    :Barra de herramientas inferior RCT1
@@ -3468,8 +3467,8 @@ STR_6357    :Quitar todos los patos del mapa
 STR_6358    :Página {UINT16}
 STR_6359    :{POP16}{POP16}Página {UINT16}
 STR_6360    :{BLACK}{COMMA32}
-STR_6361    :Habilitar efectos de luz en atracciones (experimental)
-STR_6362    :Si está activado, vehículos para las atracciones con vías estarán iluminados de noche.
+STR_6361    :Efectos de luz en atracciones (experimental)
+STR_6362    :Si está activado, los vehículos para las atracciones con vías estarán iluminados de noche.
 STR_6363    :Copiar texto al portapapeles
 STR_6364    :{RED}{COMMA16} persona ha muerto en un accidente a bordo de {STRINGID}
 STR_6365    :Fallecimientos en la atracción
@@ -3597,7 +3596,9 @@ STR_6487    :Alternar empleados invisibles
 STR_6488    :{RED}Los visitantes se quejan de la longitud de las colas en tu parque.{NEWLINE}Considera acortar las colas problemáticas o aumentar el rendimiento de las atracciones.
 STR_6489    :{RED}ERROR: Versión de parque incompatible
 STR_6490    :{RED}ADVERTENCIA: Versión de parque no del todo compatible
-STR_6492    :Este parque fue guardado en una versión más antigua de OpenRCT2 y no puede abrirse con esta versión de OpenRCT2. Este parque es la versión {INT32}.
+STR_6491    :Este parque fue guardado en una versión más reciente de OpenRCT2. Este parque se guardó en la v{INT32} y requiere al menos la v{INT32}. Actualmente estás en la v{INT32}.
+STR_6492    :Este parque fue guardado en una versión más antigua de OpenRCT2 y no puede abrirse con esta versión de OpenRCT2. Este parque es la versión v{INT32}.
+STR_6493    :Este parque fue guardado en una versión más reciente de OpenRCT2, algunos datos podrían perderse. Este parque se guardó en la v{INT32}, actualmente estás en la v{INT32}.
 STR_6494    :Agrupar por tipo de atracción
 STR_6495    :Agrupar las atracciones por tipo en vez de mostrar cada vehículo por separado.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3640,6 +3641,18 @@ STR_6532    :Mundo de Katy
 STR_6533    :{WINDOW_COLOUR_2}Factor de emoción: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Factor de intensidad: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Factor de náusea: {BLACK}-{COMMA16}%
+STR_6536    :Este parque fue guardado en una versión más reciente de OpenRCT2. Este parque se guardó en la v{INT32}, actualmente estás en la v{INT32}.
+STR_6537    :Permitir usar caminos normales como cola
+STR_6538    :Muestra caminos normales en el menú desplegable de colas de la ventana Senderos.
+STR_6539    :Freno cerrado
+STR_6540    :{WINDOW_COLOUR_2}En especial gracias a las siguientes empresas for permitir el uso de su imagen:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Colaboradores
+STR_6543    :Colaboradores…
+STR_6544    :¡El préstamo no puede ser negativo!
+STR_6545    :Usar el cálculo de intereses de RCT1
+STR_6546    :Usar el algoritmo de cálculo de intereses de RollerCoaster Tycoon 1, que empleaba un porcentaje fijo de aproximadamente 1,33%.
+STR_6547    :Todos los escenarios
 
 ##############
 # Escenarios #
@@ -4397,6 +4410,11 @@ STR_DTLS    :Este antiguo parque temático ha visto tiempos mejores. Ayuda al pr
 STR_SCNR    :Mundo Panda
 STR_PARK    :Mundo Panda
 STR_DTLS    :Añade más atracciones y consigue más visitantes en este parque pandatemático.
+
+<Tycoon Park>
+STR_SCNR    :Parque Tycoon
+STR_PARK    :Parque Tycoon
+STR_DTLS    :
 
 ###
 <UCES Halloween>

@@ -210,7 +210,6 @@ STR_6274    :Can’t set color scheme…
 
 # Strings added by OpenRCT2. Only add strings that differ from UK English!
 STR_5440    :Minimize fullscreen on focus loss
-STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behavior)
 STR_5459    :Rotate counterclockwise
 STR_5460    :Rotate view counterclockwise
 STR_5515    :Stops guests from vandalizing your park when they’re angry

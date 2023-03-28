@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor LoopingRollerCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_SLOPE_VERTICAL, TRACK_TWIST, TRACK_CORKSCREW, TRACK_CURVE_VERTICAL, TRACK_QUARTER_LOOP, TRACK_SLOPE_LONG, TRACK_BARREL_ROLL, TRACK_HALF_LOOP, TRACK_HALF_LOOP_MEDIUM, TRACK_HALF_LOOP_LARGE,TRACK_CORKSCREW_LARGE, TRACK_ZERO_G_ROLL, TRACK_ZERO_G_ROLL_LARGE}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_looping_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionLoopingRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor LoopingRollerCoasterRTD =
     SET_FIELD(Heights, { 35, 24, 5, 7, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 4, 6 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_looping_roller_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateLoopingRollerCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 45.00_GBP, 2.50_GBP, 50, }),

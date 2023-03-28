@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -112,17 +112,17 @@ void InputManager::HandleViewScrolling()
         return;
 
     // Shortcut scrolling
-    auto mainWindow = window_get_main();
+    auto mainWindow = WindowGetMain();
     if (mainWindow != nullptr && (_viewScroll.x != 0 || _viewScroll.y != 0))
     {
-        window_unfollow_sprite(*mainWindow);
+        WindowUnfollowSprite(*mainWindow);
     }
     InputScrollViewport(_viewScroll);
 
     // Mouse edge scrolling
     if (gConfigGeneral.EdgeScrolling)
     {
-        if (input_get_state() != InputState::Normal)
+        if (InputGetState() != InputState::Normal)
             return;
 
         if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))
@@ -197,7 +197,7 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
-            auto w = window_find_by_class(WindowClass::Textinput);
+            auto w = WindowFindByClass(WindowClass::Textinput);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -268,7 +268,7 @@ void InputManager::ProcessChat(const InputEvent& e)
         }
         if (input != ChatInput::None)
         {
-            chat_input(input);
+            ChatInput(input);
         }
     }
 }
@@ -386,7 +386,7 @@ bool InputManager::HasTextInputFocus() const
     if (gUsingWidgetTextBox || gChatOpen)
         return true;
 
-    auto w = window_find_by_class(WindowClass::Textinput);
+    auto w = WindowFindByClass(WindowClass::Textinput);
     if (w != nullptr)
         return true;
 

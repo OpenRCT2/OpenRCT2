@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,7 +79,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        auto* ride = get_ride(_rideIndex);
+        auto* ride = GetRide(_rideIndex);
         const auto& rtd = ride->GetRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
@@ -112,7 +112,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
         return res;
     }
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
     {
         res.Error = GameActions::Status::InvalidParameters;
@@ -133,7 +133,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         res.Error = GameActions::Status::InvalidParameters;

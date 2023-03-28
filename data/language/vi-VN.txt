@@ -1241,7 +1241,7 @@ STR_1863    :Handyman
 STR_1864    :Mechanic
 STR_1865    :Security Guard
 STR_1866    :Entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Can’t change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :Number of complete rotations
@@ -1672,7 +1672,7 @@ STR_2314    :{WINDOW_COLOUR_2}Độ dài: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Tốn: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Diện tích: {BLACK}{COMMA16} x {COMMA16} blocks
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Nhân viên: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Nhân viên: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Buy land to extend park
@@ -2648,7 +2648,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Name already exists
 STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5447    :Type {STRINGID}
 STR_5448    :Ride / Vehicle {STRINGID}

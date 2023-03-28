@@ -1245,7 +1245,7 @@ STR_1863    :Handyman
 STR_1864    :Mechanic
 STR_1865    :Security Guard
 STR_1866    :Entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Can’t change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :Number of complete rotations
@@ -1675,7 +1675,7 @@ STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} × {COMMA16} blocks
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Buy land to extend park
@@ -2650,7 +2650,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Name already exists
 STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5447    :Type {STRINGID}
 STR_5448    :Ride / Vehicle {STRINGID}
@@ -3281,8 +3280,8 @@ STR_6133    :Access rides and scenery that have not yet been invented
 STR_6134    :Clear Scenery
 STR_6135    :Client sent invalid request
 STR_6136    :Server sent invalid request
-STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in “contributors.md”. For more information, visit http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2, a free and open source recreation of and expansion to Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 is the work of many authors, a full list can be found under the “Contributors” button. For more information, visit http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 STR_6140    :Changelog…
 STR_6141    :RCT1 Bottom Toolbar
@@ -3639,6 +3638,18 @@ STR_6533    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}-{COMMA16}%
 STR_6536    :This park was saved in a later version of OpenRCT2. The park was saved in v{INT32}, you are currently on v{INT32}.
+STR_6537    :Allow using regular paths as queue
+STR_6538    :Shows regular paths in the queues dropdown of the Footpaths window.
+STR_6539    :Brake Closed
+STR_6540    :{WINDOW_COLOUR_2}Special thanks to the following companies for allowing their likeness:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Contributors
+STR_6543    :Contributors…
+STR_6544    :Loan cannot be negative!
+STR_6545    :Use RCT1 interest calculation
+STR_6546    :Use the interest calculation algorithm of RollerCoaster Tycoon 1, which used a fixed percentage of approximately 1.33%.
+STR_6547    :All Scenery
+STR_6548    :Show railings at junction
 
 #############
 # Scenarios #
@@ -4394,6 +4405,11 @@ STR_DTLS    :This aging theme park has seen better days. Help the owner give it 
 STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Add more rides and attract more people to this panda-themed park
+
+<Tycoon Park>
+STR_SCNR    :Tycoon Park
+STR_PARK    :Tycoon Park
+STR_DTLS    :
 
 ###
 <UCES Halloween>

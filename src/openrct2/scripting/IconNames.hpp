@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -84,6 +84,7 @@ namespace OpenRCT2::Scripting
         { "rct1_simulate_off_pressed", SPR_G2_RCT1_SIMULATE_BUTTON_1 },
         { "rct1_simulate_on", SPR_G2_RCT1_SIMULATE_BUTTON_2 },
         { "rct1_simulate_on_pressed", SPR_G2_RCT1_SIMULATE_BUTTON_3 },
+        { "infinity", SPR_G2_INFINITY },
         { "normal_selection_6x6", SPR_G2_LAND_TOOL_SIZE_6 },
         { "mountain_tool_even", SPR_G2_MOUNTAIN_TOOL_EVEN },
         { "mountain_tool_odd", SPR_G2_MOUNTAIN_TOOL_ODD },

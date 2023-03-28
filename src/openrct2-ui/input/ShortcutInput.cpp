@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -203,7 +203,7 @@ std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
     {
         if (localised && r->second.second != STR_NONE)
         {
-            return language_get_string(r->second.second);
+            return LanguageGetString(r->second.second);
         }
 
         return r->second.first;
@@ -250,7 +250,7 @@ std::string_view ShortcutInput::GetLocalisedKeyName(uint32_t key)
     auto r = _keys.find(key);
     if (r != _keys.end())
     {
-        return language_get_string(r->second);
+        return LanguageGetString(r->second);
     }
 
     return {};
@@ -301,31 +301,31 @@ std::string ShortcutInput::ToString(bool localised) const
         switch (Button)
         {
             case 0:
-                result += localised ? FormatStringId(STR_SHORTCUT_MOUSE_LEFT, Button + 1) : "LMB";
+                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_LEFT, Button + 1) : "LMB";
                 break;
             case 1:
-                result += localised ? FormatStringId(STR_SHORTCUT_MOUSE_RIGHT, Button + 1) : "RMB";
+                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_RIGHT, Button + 1) : "RMB";
                 break;
             default:
-                result += localised ? FormatStringId(STR_SHORTCUT_MOUSE_NUMBER, Button + 1)
+                result += localised ? FormatStringID(STR_SHORTCUT_MOUSE_NUMBER, Button + 1)
                                     : "MOUSE " + std::to_string(Button + 1);
                 break;
         }
     }
     else if (Kind == InputDeviceKind::JoyButton)
     {
-        result += localised ? FormatStringId(STR_SHORTCUT_JOY_NUMBER, Button + 1) : "JOY " + std::to_string(Button + 1);
+        result += localised ? FormatStringID(STR_SHORTCUT_JOY_NUMBER, Button + 1) : "JOY " + std::to_string(Button + 1);
     }
     else if (Kind == InputDeviceKind::JoyHat)
     {
         if (Button & SDL_HAT_LEFT)
-            result += localised ? language_get_string(STR_SHORTCUT_JOY_LEFT) : "JOY LEFT";
+            result += localised ? LanguageGetString(STR_SHORTCUT_JOY_LEFT) : "JOY LEFT";
         else if (Button & SDL_HAT_RIGHT)
-            result += localised ? language_get_string(STR_SHORTCUT_JOY_RIGHT) : "JOY RIGHT";
+            result += localised ? LanguageGetString(STR_SHORTCUT_JOY_RIGHT) : "JOY RIGHT";
         else if (Button & SDL_HAT_UP)
-            result += localised ? language_get_string(STR_SHORTCUT_JOY_UP) : "JOY UP";
+            result += localised ? LanguageGetString(STR_SHORTCUT_JOY_UP) : "JOY UP";
         else if (Button & SDL_HAT_DOWN)
-            result += localised ? language_get_string(STR_SHORTCUT_JOY_DOWN) : "JOY DOWN";
+            result += localised ? LanguageGetString(STR_SHORTCUT_JOY_DOWN) : "JOY DOWN";
         else
             result += "JOY ?";
     }

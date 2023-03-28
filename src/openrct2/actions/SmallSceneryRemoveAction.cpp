@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,9 +17,10 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/ObjectEntryManager.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../world/Park.h"
-#include "../world/SmallScenery.h"
 #include "../world/TileElementsView.h"
 #include "GameAction.h"
 #include "SmallSceneryPlaceAction.h"
@@ -61,7 +62,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    auto* entry = GetSmallSceneryEntry(_sceneryType);
+    auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (entry == nullptr)
     {
         return GameActions::Result(
@@ -110,7 +111,7 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
 {
     GameActions::Result res = GameActions::Result();
 
-    auto* entry = GetSmallSceneryEntry(_sceneryType);
+    auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (entry == nullptr)
     {
         return GameActions::Result(

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_mini_suspended_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionMiniSuspendedRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
     SET_FIELD(Heights, { 10, 24, 24, 8, }),
     SET_FIELD(MaxMass, 3),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_mini_suspended_coaster),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateMiniSuspendedCoaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 30.00_GBP, 2.50_GBP, 40, }),

@@ -1246,7 +1246,7 @@ STR_1863    :Encarregat de neteja
 STR_1864    :Mecànic
 STR_1865    :Guarda de seguretat
 STR_1866    :Animador
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :El nombre de voltes no es pot canviar…
 STR_1869    :{WINDOW_COLOUR_2}Nombre de voltes:
 STR_1870    :Nombre de voltes completes
@@ -1533,7 +1533,7 @@ STR_2162    :Cartrons de beguda buits
 STR_2163    :Tasses de suc buides
 STR_2164    :Salsitxes rostides
 STR_2165    :Bols buits
-STR_2169    :una galeta Pretzel
+STR_2169    :una galeta pretzel
 STR_2170    :una xocolata calenta
 STR_2171    :un te gelat
 STR_2172    :un xurro
@@ -1678,7 +1678,7 @@ STR_2314    :{WINDOW_COLOUR_2}Longitud del recorregut: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}al voltant de {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espai necessari: {BLACK}{COMMA16} × {COMMA16} blocs
 STR_2321    :{WINDOW_COLOUR_2}Nombre d’atraccions: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Empleats: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Empleats: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Extensió del parc: {BLACK}{COMMA32} m²
 STR_2324    :{WINDOW_COLOUR_2}Mida del parc: {BLACK}{COMMA32} ft²
 STR_2325    :Compreu terreny per a ampliar el parc.
@@ -2209,7 +2209,7 @@ STR_3134    :{RED}(El disseny inclou algun decorat no disponible)
 STR_3135    :{RED}(Disseny de vehicle no disponible - Això pot afectar al rendiment de l’atracció)
 STR_3136    :Avís: Aquest disseny es construirà amb un tipus de vehicle alternatiu i potser no funcionarà com s’espera.
 STR_3137    :Trieu decorat proper
-STR_3138    :Reestableix la selecció
+STR_3138    :Restableix la selecció
 STR_3139    :El cable d’elevació no pot funcionar en aquest mode.
 STR_3140    :El cable d’elevació ha de començar immediatament després de l’andana.
 STR_3141    :No es pot establir un multicircuit si l’atracció té cable d’elevació.
@@ -2655,7 +2655,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :El nom ja existeix.
 STR_5440    :Minimitza la pantalla completa si es perd el focus
-STR_5441    :Identifica les atraccions per tipus de via.{NEWLINE}Així els vehicles després{NEWLINE}poden modificar-se (com al RCT1).
 STR_5442    :Força la valoració del parc:
 STR_5447    :Tipus {STRINGID}
 STR_5448    :Atracció/Vehicle {STRINGID}
@@ -2998,7 +2997,7 @@ STR_5832    :Mostra les alçades com a unitats genèriques (-2, -1, 0, +1, +2…
 STR_5833    :Canvia el format de les dates.
 STR_5834    :Trieu quin dispositiu de so ha de fer servir l’OpenRCT2.
 STR_5835    :Silencia el joc si la finestra perd el focus.
-STR_5836    :Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema del RCT1, cal que establiu correctament la carpeta del RCT1 a la pestanya d’altres opcions.
+STR_5836    :Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema del RCT1, cal que establiu correctament la carpeta del RCT1 a la pestanya d’opcions avançades.
 STR_5837    :Crea i gestiona els temes de la interfície personalitzats.
 STR_5838    :Mostra el botó de la finestra de finances a la barra d’eines.
 STR_5839    :Mostra el botó de la finestra de recerques a la barra d’eines.
@@ -3313,7 +3312,7 @@ STR_6162    :«Wild Mouse» giratori
 STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument que desorienten els passatgers.
 STR_6164    :{WHITE}❌
 STR_6165    :Sincronització vertical
-STR_6166    :Sincronitza cada fotograma anb la freqüència del monitor, evitant l’efecte de pantalla partida.
+STR_6166    :Sincronitza cada fotograma amb la freqüència del monitor, evitant l’efecte de pantalla partida.
 STR_6167    :Avançat
 STR_6168    :Seqüència inicial
 STR_6169    :Selecció d’escenari
@@ -3346,7 +3345,7 @@ STR_6221    :Establirà la casella actualment seleccionada com a entrada o sorti
 STR_6222    :No es pot situar aquest punt com a entrada dels visitants…
 STR_6223    :Ha d’estar fora dels límits del parc!
 STR_6224    :{STRING} ha situat un punt d’entrada dels visitants.
-STR_6225    :Funció no soportada amb l’OpenGL com a renderitzador
+STR_6225    :Funció no suportada amb l’OpenGL com a renderitzador
 STR_6226    :Activa la finalització avançada de l’escenari
 STR_6227    :Permet completar l’escenari abans de la data límit si es compleixen tots els objectius.
 STR_6228    :Opcions d’escenari
@@ -3431,7 +3430,7 @@ STR_6318    :S’ha detectat una dessincronització amb la xarxa.{NEWLINE}Fitxer
 STR_6319    :Frens de bloc tancats
 STR_6320    :Indestructible
 STR_6321    :L’addició està trencada
-STR_6322    :{WINDOW_COLOUR_2}ID de l’sprite: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}ID de l’entitat: {BLACK}{INT32}
 STR_6323    :Es simula
 STR_6324    :Simula
 STR_6325    :Simula l’atracció
@@ -3455,8 +3454,8 @@ STR_6343    :Inspecció de casella: Augmenta la coordenada Y
 STR_6344    :Inspecció de casella: Redueix la coordenada Y
 STR_6345    :Inspecció de casella: Augmenta l’alçada de l’element
 STR_6346    :Inspecció de casella: Redueix l’alçada de l’element
-STR_6347    :No es poden posar elements adicionals en camins en passos a nivell!
-STR_6348    :Treieu el pas de nivell abans!
+STR_6347    :No es poden posar elements addicionals en camins en passos a nivell!
+STR_6348    :Traieu el pas de nivell abans!
 STR_6349    :Seqüència de títol aleatòria
 STR_6350    :Escampa
 STR_6351    :Eina d’escenari d’escampar
@@ -3598,7 +3597,9 @@ STR_6487    :Alterna veure a través dels treballadors
 STR_6488    :{RED}Els visitants es queixen de les llargues cues del parc.{NEWLINE}Considereu escurçar les més problemàtiques o augmentar el rendiment de les atraccions.
 STR_6489    :Error: Versió de parc no compatible
 STR_6490    :Avís: Versió de parc parcialment compatible
+STR_6491    :Aquest parc es va desar amb una versió de l’OpenRCT2 posterior. Es va desar amb la versió v{INT32} i es requereix almenys la versió v{INT32}. Ara mateix, feu servir la versió v{INT32}.
 STR_6492    :Aquest parc es va desar amb una versió antiga de l’OpenRCT2 i no es pot obrir amb aquesta versió. La versió del parc és v{INT32}.
+STR_6493    :Aquest parc es va desar amb una versió de l’OpenRCT2 posterior i es poden perdre dades. La versió del parc és v{INT32}. Ara mateix, feu servir la versió v{INT32}.
 STR_6494    :Agrupa per tipus d’atracció
 STR_6495    :Agrupa les atraccions per tipus en lloc de mostrar els vehicles per separat.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3624,9 +3625,9 @@ STR_6511    :Volta de gravetat zero (a la dreta)
 STR_6512    :Volta de gravetat zero gran (a l’esquerra)
 STR_6513    :Volta de gravetat zero gran (a la dreta)
 STR_6514    :Altura no vàlida!
-STR_6515    :{BLACK}No s’ha enllaçat el RCT1. S’empraran imatges alternatives.
-STR_6516    :Un o més objectes que s’han afegit necessiten l’enllaç al RCT1 per a veure’ls correctament. Es faran servir imatges alternatives.
-STR_6517    :Un o més objectes d’aquest parc necessiten l’enllaç al RCT1 per a veure’ls correctament. Es faran servir imatges alternatives.
+STR_6515    :{BLACK}No s’ha enllaçat el RollerCoaster Tycoon 1. S’empraran imatges alternatives.
+STR_6516    :Un o més objectes que s’han afegit necessiten l’enllaç al RollerCoaster Tycoon 1 per a veure’ls correctament. Es faran servir imatges alternatives.
+STR_6517    :Un o més objectes d’aquest parc necessiten l’enllaç al RollerCoaster Tycoon 1 per a veure’ls correctament. Es faran servir imatges alternatives.
 STR_6518    :{BLACK}Situeu el ratolí damunt d’un escenari per a veure la seva descripció i els seus objectius. Feu clic per a començar a jugar.
 STR_6519    :Extres
 STR_6520    :Paquets de recursos
@@ -3637,6 +3638,20 @@ STR_6524    :Augmenta la prioritat del paquet de recursos.
 STR_6525    :Recarrega tots els recursos del joc amb els paquets de recursos activats.
 STR_6526    :(gràfics base, música i efectes de so)
 STR_6527    :Competicions
+STR_6528    :Paràmetres de via no vàlids!
+STR_6529    :Paràmetre d’esquema de color no vàlid!
+STR_6530    :Expansió creada pels usuaris
+STR_6531    :La màquina del temps
+STR_6532    :El món de fantasia de la Katy
+STR_6533    :{WINDOW_COLOUR_2}Factor d’emoció: {BLACK}-{COMMA16} %
+STR_6534    :{WINDOW_COLOUR_2}Factor d’intensitat: {BLACK}-{COMMA16} %
+STR_6535    :{WINDOW_COLOUR_2}Factor de nàusea: {BLACK}-{COMMA16} %
+STR_6536    :Aquest parc es va desar en una versió posterior de l’OpenRCT2. Es va desar amb la versió v{INT32} i ara mateix esteu fent servir la v{INT32}.
+STR_6537    :Permet fer servir els camins normals per a fer cues
+STR_6538    :Mostra els camins normals al menú desplegable de les cues de la finestra de construcció corresponent.
+STR_6539    :Fre tancat
+STR_6540    :{WINDOW_COLOUR_2}Donem les gràcies a les companyies següents per permetre fer servir les seves imatges:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
 
 #############
 # Scenarios #
@@ -3679,8 +3694,8 @@ STR_PARK    :Les illes Trinitat
 STR_DTLS    :La base d’aquest parc la formen diverses illes.
 
 <Katie's Dreamland>
-STR_SCNR    :El món dels somnis de la Katie
-STR_PARK    :El món dels somnis de la Katie
+STR_SCNR    :El món de fantasia de la Katie
+STR_PARK    :El món de fantasia de la Katie
 STR_DTLS    :Un parc temàtic petit amb unes quantes atraccions i espai per a expandir-lo. El vostre objectiu és duplicar-ne el valor.
 
 <Pokey Park>
@@ -4243,7 +4258,7 @@ STR_DTLS    :S’ha construït una presa que ofereix energia hidroelèctrica bar
 <Antarctic - Ecological Salvage>
 STR_SCNR    :Antàrtida - Rescat ecològic
 STR_PARK    :Aventures gèlides
-STR_DTLS    :L’agència mediambiental us ha delegat la tasca de transformar aquesta monstruositat ecològica en forma de refineria de petroli en una atracció turística capdavantera. El terreny és barat però el tipus d’interès del prèstec és alt. Podeu vendre els vells edificis per a treure’n profit.
+STR_DTLS    :L’agència mediambiental us ha delegat la tasca de transformar aquesta monstruositat ecològica en forma de refineria de petroli en una atracció turística capdavantera. El terreny és barat però el tipus d’interès del préstec és alt. Podeu vendre els vells edificis per a treure’n profit.
 
 <Asia - Great Wall of China Tourism Enhancement>
 STR_SCNR    :Àsia - Millores turístiques a la Gran Muralla
@@ -4263,7 +4278,7 @@ STR_DTLS    :El maharajà us ha destinat aquí per tal que proporcioneu entreten
 <Australasia - Ayers Rock>
 STR_SCNR    :Austràlia - Uluru
 STR_PARK    :L’aventura Uluru
-STR_DTLS    :Esteu ajudant els aborígens a construir un parc dins del programa de conciencació cultural. Necessiteu un gran nombre de visitants per a instruir-los en l’herència cultural única de la població indígena.
+STR_DTLS    :Esteu ajudant els aborígens a construir un parc dins del programa de conscienciació cultural. Necessiteu un gran nombre de visitants per a instruir-los en l’herència cultural única de la població indígena.
 
 <Australasia - Fun at the Beach>
 STR_SCNR    :Austràlia - Diversió a la platja
@@ -4356,7 +4371,7 @@ STR_DTLS    :Us han assignat la tasca de construir un parc de l’era juràssica
 <Prehistoric - Stone Age>
 STR_SCNR    :Prehistòric - L’edat de pedra
 STR_PARK    :Passeig rocós
-STR_DTLS    :Per a frustrar els plans dels constructors d’una autopista i per a ajudar a preservar els misteriosos i antics cercles de pedra, haureu de construir un parc temàtic amb l’edat de pedra com a principal motiu i aconseguir treure’n beneficis. No obstant, atreure visitants pot suposar un repte, ja que el terrny és un poc inhòspit.
+STR_DTLS    :Per a frustrar els plans dels constructors d’una autopista i per a ajudar a preservar els misteriosos i antics cercles de pedra, haureu de construir un parc temàtic amb l’edat de pedra com a principal motiu i aconseguir treure’n beneficis. No obstant, atreure visitants pot suposar un repte, ja que el terreny és un poc inhòspit.
 
 <Roaring Twenties - Prison Island>
 STR_SCNR    :Roaring Twenties - L’illa presó
@@ -4390,3 +4405,100 @@ STR_DTLS    :Aquest parc temàtic ha vist millors dies. Ajudeu al propietari a d
 STR_SCNR    :Món Panda
 STR_PARK    :Món Panda
 STR_DTLS    :Afegiu més atraccions i atraieu més visitants a aquest parc temàtic inspirat en els pandes.
+
+<UCES Halloween>
+STR_SCNR    :La cresta del cementiri
+STR_PARK    :La cresta del cementiri
+STR_DTLS    :Aquest Halloween, el Halloween UCES, les carabasses cridaran durant les hores més fosques de la nit! Aquest cementiri té problemes i l’heu de salvar, al mateix temps que heu de permetre que els morts descansin en pau. Podeu deixar tranquils els fantasmes a les seves tombes i fer que els visitants s’estremeixin?{NEWLINE}Autor: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :El Far d’Alexandria
+STR_PARK    :El Far d’Alexandria
+STR_DTLS    :Alexandre el Gran construí la ciutat; els grecs, els romans i els egipcis hi van deixar la seva petjada. Però l’honor més gran és una meravella del món antic: el Far d’Alexandria. Visiteu-lo i construïu-hi un parc!{NEWLINE}Autor: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Tal i com era el dia de la seva inauguració, el dia 18 de maig de 1.905.{NEWLINE}Autor: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :El Mont Vesuvi
+STR_PARK    :El Mont Vesuvi
+STR_DTLS    :Pompeia i Herculà van quedar soterrades pel mont Vesuvi l’any 79 dC. Visiteu les excavacions i construïu-hi un parc!{NEWLINE}Autor: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :The Sandbox
+STR_PARK    :The Sandbox
+STR_DTLS    :Tot el que tothom desitja: una caixa d’arena. Així que agafeu la vostra petita pala i a construir-hi un parc!{NEWLINE}Autor: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Falls & Gorge
+STR_PARK    :Niagara Falls
+STR_DTLS    :Les Cascades Americanes, les del Vel de la Núvia i les cataractes Horseshoe canadenques a la frontera del Niàgara, 1850.{NEWLINE}Autor: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Els miners de les Muntanyes Rocoses
+STR_PARK    :Els miners de les Muntanyes Rocoses
+STR_DTLS    :Un despreniment ha fet malbé el ferrocarril. Els treballadors ara mateix no hi són. Hi ha or a les muntanyes russes?{NEWLINE}Autors: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :La màquina del temps
+STR_PARK    :La màquina del temps
+STR_DTLS    :La màquina del temps. Construïda per a anar on vulgueu quan vulgueu. L’eternitat us espera. Tot és relatiu.{NEWLINE}Autor: Katatude
+
+<Tower of Babel>
+STR_SCNR    :La Torre de Babel
+STR_PARK    :La Torre de Babel
+STR_DTLS    :Ua! Mireu on ens ha dut la màquina del temps! On ha anat tothom?{NEWLINE}Autor: Fossil
+
+<Transformation>
+STR_SCNR    :Transformació
+STR_PARK    :Transformació
+STR_DTLS    :Us estàvem esperant…{NEWLINE}Autor: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :Els romans estan cansats de lluites avorrides de gladiadors. Doneu-los altres entreteniments i convertiu la ciutat romana en el parc d’atraccions més gran de tots els temps!{NEWLINE}Autor: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Sota l’arbre de Nadal
+STR_PARK    :El món de fantasia hivernal
+STR_DTLS    :La meva mare ha construït aquesta escena a sota de l’arbre de Nadal. Ara vol que hi construïm un parc a dins! Ens podeu ajudar?{NEWLINE}Autor: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Explosió a Rocagrossa
+STR_PARK    :Explosió a Rocagrossa
+STR_DTLS    :Després de l’explosió de la Companyia Minera Rocagrossa, la gent de Rocagrossa han de construir un parc d’atraccions per a mantenir el seu poble amb vida.{NEWLINE}Autors: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Rossinyol
+STR_PARK    :Camp Rossinyol
+STR_DTLS    :Només 500 $ per setmana per aquest campament d’estiu! Obriu el banc, divertiu-vos i construïu-hi un parc.{NEWLINE}Autor: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Poblet Xu-xu-xú
+STR_PARK    :Poblet Xu-xu-xú
+STR_DTLS    :Mamà! Papa! Vull anar al Poblet Xu-xu-xú!{NEWLINE}Autor: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Arxipèlag del Drac
+STR_PARK    :Arxipèlag del Drac
+STR_DTLS    :Illes del Drac? No estic segur que hi vulgui anar…{NEWLINE}Autor: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Carnaval infantil II
+STR_PARK    :Carnaval infantil
+STR_DTLS    :Ei, nens! Divertiu-vos!{NEWLINE}Autors: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Les dunes d’arena
+STR_PARK    :Les dunes d’arena
+STR_DTLS    :Com a propietari d’un parc petit, heu comprat una parcel·la enorme al costat de la platja per a expandir i atraure més visitants a les dunes de sorra precioses. Però, aneu amb compte: no podeu pertorbar l’ecologia fràgil de les dunes d’arena.{NEWLINE}Autor: rbarclay

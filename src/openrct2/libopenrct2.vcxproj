@@ -15,6 +15,18 @@
       <Configuration>Debug</Configuration>
       <Platform>arm64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|arm64">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|Win32">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|x64">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -67,12 +79,12 @@
     <ClInclude Include="actions\BannerSetColourAction.h" />
     <ClInclude Include="actions\BannerSetNameAction.h" />
     <ClInclude Include="actions\BannerSetStyleAction.h" />
-    <ClInclude Include="actions\ChangeMapSizeAction.h" />
+    <ClInclude Include="actions\CheatSetAction.h" />
     <ClInclude Include="actions\ClearAction.h" />
     <ClInclude Include="actions\ClimateSetAction.h" />
     <ClInclude Include="actions\CustomAction.h" />
+    <ClInclude Include="actions\FootpathLayoutPlaceAction.h" />
     <ClInclude Include="actions\FootpathPlaceAction.h" />
-    <ClInclude Include="actions\FootpathPlaceFromTrackAction.h" />
     <ClInclude Include="actions\FootpathRemoveAction.h" />
     <ClInclude Include="actions\FootpathAdditionPlaceAction.h" />
     <ClInclude Include="actions\FootpathAdditionRemoveAction.h" />
@@ -90,20 +102,22 @@
     <ClInclude Include="actions\LargeSceneryRemoveAction.h" />
     <ClInclude Include="actions\LargeScenerySetColourAction.h" />
     <ClInclude Include="actions\LoadOrQuitAction.h" />
+    <ClInclude Include="actions\MapChangeSizeAction.h" />
     <ClInclude Include="actions\MazePlaceTrackAction.h" />
     <ClInclude Include="actions\MazeSetTrackAction.h" />
     <ClInclude Include="actions\NetworkModifyGroupAction.h" />
+    <ClInclude Include="actions\ParkEntrancePlaceAction.h" />
     <ClInclude Include="actions\ParkEntranceRemoveAction.h" />
     <ClInclude Include="actions\ParkMarketingAction.h" />
     <ClInclude Include="actions\ParkSetDateAction.h" />
+    <ClInclude Include="actions\ParkSetEntranceFeeAction.h" />
     <ClInclude Include="actions\ParkSetLoanAction.h" />
     <ClInclude Include="actions\ParkSetNameAction.h" />
     <ClInclude Include="actions\ParkSetParameterAction.h" />
     <ClInclude Include="actions\ParkSetResearchFundingAction.h" />
     <ClInclude Include="actions\PauseToggleAction.h" />
     <ClInclude Include="actions\PeepPickupAction.h" />
-    <ClInclude Include="actions\PlaceParkEntranceAction.h" />
-    <ClInclude Include="actions\PlacePeepSpawnAction.h" />
+    <ClInclude Include="actions\PeepSpawnPlaceAction.h" />
     <ClInclude Include="actions\PlayerKickAction.h" />
     <ClInclude Include="actions\PlayerSetGroupAction.h" />
     <ClInclude Include="actions\ResultWithMessage.h" />
@@ -120,8 +134,6 @@
     <ClInclude Include="actions\RideSetStatusAction.h" />
     <ClInclude Include="actions\RideSetVehicleAction.h" />
     <ClInclude Include="actions\ScenarioSetSettingAction.h" />
-    <ClInclude Include="actions\SetCheatAction.h" />
-    <ClInclude Include="actions\SetParkEntranceFeeAction.h" />
     <ClInclude Include="actions\SignSetNameAction.h" />
     <ClInclude Include="actions\SignSetStyleAction.h" />
     <ClInclude Include="actions\SmallSceneryPlaceAction.h" />
@@ -154,8 +166,8 @@
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\AudioSource.h" />
     <ClInclude Include="Cheats.h" />
-    <ClInclude Include="CmdlineSprite.h" />
-    <ClInclude Include="cmdline\CommandLine.hpp" />
+    <ClInclude Include="CommandLineSprite.h" />
+    <ClInclude Include="command_line\CommandLine.hpp" />
     <ClInclude Include="common.h" />
     <ClInclude Include="config\Config.h" />
     <ClInclude Include="config\ConfigEnum.hpp" />
@@ -197,6 +209,7 @@
     <ClInclude Include="core\OrcaStream.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
+    <ClInclude Include="core\Range.hpp" />
     <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\FixedVector.h" />
     <ClInclude Include="core\String.hpp" />
@@ -211,6 +224,8 @@
     <ClInclude Include="drawing\Font.h" />
     <ClInclude Include="drawing\IDrawingContext.h" />
     <ClInclude Include="drawing\IDrawingEngine.h" />
+    <ClInclude Include="drawing\Image.h" />
+    <ClInclude Include="drawing\ImageId.hpp" />
     <ClInclude Include="drawing\ImageImporter.h" />
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
@@ -273,6 +288,7 @@
     <ClInclude Include="management\Marketing.h" />
     <ClInclude Include="management\NewsItem.h" />
     <ClInclude Include="management\Research.h" />
+    <ClInclude Include="math\Trigonometry.hpp" />
     <ClInclude Include="network\DiscordService.h" />
     <ClInclude Include="network\network.h" />
     <ClInclude Include="network\NetworkAction.h" />
@@ -292,37 +308,50 @@
     <ClInclude Include="object\AudioObject.h" />
     <ClInclude Include="object\AudioSampleTable.h" />
     <ClInclude Include="object\BannerObject.h" />
+    <ClInclude Include="object\BannerSceneryEntry.h" />
     <ClInclude Include="object\DefaultObjects.h" />
+    <ClInclude Include="object\EntranceEntry.h" />
     <ClInclude Include="object\EntranceObject.h" />
+    <ClInclude Include="object\FootpathEntry.h" />
+    <ClInclude Include="object\FootpathItemEntry.h" />
     <ClInclude Include="object\FootpathItemObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
     <ClInclude Include="object\FootpathRailingsObject.h" />
     <ClInclude Include="object\FootpathSurfaceObject.h" />
     <ClInclude Include="object\ImageTable.h" />
+    <ClInclude Include="object\LargeSceneryEntry.h" />
     <ClInclude Include="object\LargeSceneryObject.h" />
     <ClInclude Include="object\MusicObject.h" />
     <ClInclude Include="object\Object.h" />
     <ClInclude Include="object\ObjectAsset.h" />
+    <ClInclude Include="object\ObjectEntryManager.h" />
     <ClInclude Include="object\ObjectFactory.h" />
     <ClInclude Include="object\ObjectLimits.h" />
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
     <ClInclude Include="object\ObjectRepository.h" />
+    <ClInclude Include="object\ObjectType.h" />
+    <ClInclude Include="object\ObjectTypes.h" />
     <ClInclude Include="object\ResourceTable.h" />
     <ClInclude Include="object\RideObject.h" />
+    <ClInclude Include="object\SceneryGroupEntry.h" />
     <ClInclude Include="object\SceneryGroupObject.h" />
     <ClInclude Include="object\SceneryObject.h" />
+    <ClInclude Include="object\SmallSceneryEntry.h" />
     <ClInclude Include="object\SmallSceneryObject.h" />
     <ClInclude Include="object\StationObject.h" />
     <ClInclude Include="object\StringTable.h" />
     <ClInclude Include="object\TerrainEdgeObject.h" />
     <ClInclude Include="object\TerrainSurfaceObject.h" />
+    <ClInclude Include="object\WallSceneryEntry.h" />
     <ClInclude Include="object\WallObject.h" />
+    <ClInclude Include="object\WaterEntry.h" />
     <ClInclude Include="object\WaterObject.h" />
     <ClInclude Include="OpenRCT2.h" />
     <ClInclude Include="paint\Boundbox.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
+    <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\Supports.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
@@ -458,7 +487,7 @@
     <ClInclude Include="ride\Vehicle.h" />
     <ClInclude Include="ride\VehicleColour.h" />
     <ClInclude Include="ride\VehicleData.h" />
-    <ClInclude Include="ride\VehicleEntry.h" />
+    <ClInclude Include="ride\CarEntry.h" />
     <ClInclude Include="ride\VehiclePaint.h" />
     <ClInclude Include="ride\VehicleRiderControl.h" />
     <ClInclude Include="ride\VehicleSubpositionData.h" />
@@ -525,11 +554,12 @@
     <ClInclude Include="TrackImporter.h" />
     <ClInclude Include="ui\UiContext.h" />
     <ClInclude Include="ui\WindowManager.h" />
+    <ClInclude Include="util\Math.hpp" />
     <ClInclude Include="util\SawyerCoding.h" />
     <ClInclude Include="util\Util.h" />
     <ClInclude Include="Version.h" />
     <ClInclude Include="windows\Intent.h" />
-    <ClInclude Include="windows\tile_inspector.h" />
+    <ClInclude Include="windows\TileInspectorGlobals.h" />
     <ClInclude Include="world\tile_element\TileElementType.h" />
     <ClInclude Include="world\Banner.h" />
     <ClInclude Include="world\Climate.h" />
@@ -552,7 +582,6 @@
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\TilePointerIndex.hpp" />
     <ClInclude Include="world\Wall.h" />
-    <ClInclude Include="world\Water.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resources\OpenRCT2.rc" />
@@ -567,14 +596,14 @@
     <ClCompile Include="actions\BannerSetColourAction.cpp" />
     <ClCompile Include="actions\BannerSetNameAction.cpp" />
     <ClCompile Include="actions\BannerSetStyleAction.cpp" />
-    <ClCompile Include="actions\ChangeMapSizeAction.cpp" />
+    <ClCompile Include="actions\CheatSetAction.cpp" />
     <ClCompile Include="actions\ClearAction.cpp" />
     <ClCompile Include="actions\ClimateSetAction.cpp" />
     <ClCompile Include="actions\CustomAction.cpp" />
     <ClCompile Include="actions\FootpathAdditionPlaceAction.cpp" />
     <ClCompile Include="actions\FootpathAdditionRemoveAction.cpp" />
+    <ClCompile Include="actions\FootpathLayoutPlaceAction.cpp" />
     <ClCompile Include="actions\FootpathPlaceAction.cpp" />
-    <ClCompile Include="actions\FootpathPlaceFromTrackAction.cpp" />
     <ClCompile Include="actions\FootpathRemoveAction.cpp" />
     <ClCompile Include="actions\GameAction.cpp" />
     <ClCompile Include="actions\GameActionRegistry.cpp" />
@@ -591,20 +620,22 @@
     <ClCompile Include="actions\LargeSceneryRemoveAction.cpp" />
     <ClCompile Include="actions\LargeScenerySetColourAction.cpp" />
     <ClCompile Include="actions\LoadOrQuitAction.cpp" />
+    <ClCompile Include="actions\MapChangeSizeAction.cpp" />
     <ClCompile Include="actions\MazePlaceTrackAction.cpp" />
     <ClCompile Include="actions\MazeSetTrackAction.cpp" />
     <ClCompile Include="actions\NetworkModifyGroupAction.cpp" />
     <ClCompile Include="actions\ParkEntranceRemoveAction.cpp" />
     <ClCompile Include="actions\ParkMarketingAction.cpp" />
     <ClCompile Include="actions\ParkSetDateAction.cpp" />
+    <ClCompile Include="actions\ParkSetEntranceFeeAction.cpp" />
     <ClCompile Include="actions\ParkSetLoanAction.cpp" />
     <ClCompile Include="actions\ParkSetNameAction.cpp" />
     <ClCompile Include="actions\ParkSetParameterAction.cpp" />
     <ClCompile Include="actions\ParkSetResearchFundingAction.cpp" />
     <ClCompile Include="actions\PauseToggleAction.cpp" />
     <ClCompile Include="actions\PeepPickupAction.cpp" />
-    <ClCompile Include="actions\PlaceParkEntranceAction.cpp" />
-    <ClCompile Include="actions\PlacePeepSpawnAction.cpp" />
+    <ClCompile Include="actions\ParkEntrancePlaceAction.cpp" />
+    <ClCompile Include="actions\PeepSpawnPlaceAction.cpp" />
     <ClCompile Include="actions\PlayerKickAction.cpp" />
     <ClCompile Include="actions\PlayerSetGroupAction.cpp" />
     <ClCompile Include="actions\RideCreateAction.cpp" />
@@ -620,8 +651,6 @@
     <ClCompile Include="actions\RideSetStatusAction.cpp" />
     <ClCompile Include="actions\RideSetVehicleAction.cpp" />
     <ClCompile Include="actions\ScenarioSetSettingAction.cpp" />
-    <ClCompile Include="actions\SetCheatAction.cpp" />
-    <ClCompile Include="actions\SetParkEntranceFeeAction.cpp" />
     <ClCompile Include="actions\SignSetNameAction.cpp" />
     <ClCompile Include="actions\SignSetStyleAction.cpp" />
     <ClCompile Include="actions\SmallSceneryPlaceAction.cpp" />
@@ -651,18 +680,18 @@
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />
     <ClCompile Include="Cheats.cpp" />
-    <ClCompile Include="CmdlineSprite.cpp" />
-    <ClCompile Include="cmdline\BenchGfxCommmands.cpp" />
-    <ClCompile Include="cmdline\BenchSpriteSort.cpp" />
-    <ClCompile Include="cmdline/BenchUpdate.cpp" />
-    <ClCompile Include="cmdline\CommandLine.cpp" />
-    <ClCompile Include="cmdline\ConvertCommand.cpp" />
-    <ClCompile Include="cmdline\ParkInfoCommands.cpp" />
-    <ClCompile Include="cmdline\RootCommands.cpp" />
-    <ClCompile Include="cmdline\ScreenshotCommands.cpp" />
-    <ClCompile Include="cmdline\SimulateCommands.cpp" />
-    <ClCompile Include="cmdline\SpriteCommands.cpp" />
-    <ClCompile Include="cmdline\UriHandler.cpp" />
+    <ClCompile Include="CommandLineSprite.cpp" />
+    <ClCompile Include="command_line\BenchGfxCommmands.cpp" />
+    <ClCompile Include="command_line\BenchSpriteSort.cpp" />
+    <ClCompile Include="command_line/BenchUpdate.cpp" />
+    <ClCompile Include="command_line\CommandLine.cpp" />
+    <ClCompile Include="command_line\ConvertCommand.cpp" />
+    <ClCompile Include="command_line\ParkInfoCommands.cpp" />
+    <ClCompile Include="command_line\RootCommands.cpp" />
+    <ClCompile Include="command_line\ScreenshotCommands.cpp" />
+    <ClCompile Include="command_line\SimulateCommands.cpp" />
+    <ClCompile Include="command_line\SpriteCommands.cpp" />
+    <ClCompile Include="command_line\UriHandler.cpp" />
     <ClCompile Include="config\Config.cpp" />
     <ClCompile Include="config\IniReader.cpp" />
     <ClCompile Include="config\IniWriter.cpp" />
@@ -793,14 +822,15 @@
     <ClCompile Include="object\LargeSceneryObject.cpp" />
     <ClCompile Include="object\MusicObject.cpp" />
     <ClCompile Include="object\Object.cpp" />
+    <ClCompile Include="object\ObjectEntryManager.cpp" />
     <ClCompile Include="object\ObjectFactory.cpp" />
     <ClCompile Include="object\ObjectList.cpp" />
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
+    <ClCompile Include="object\ObjectTypes.cpp" />
     <ClCompile Include="object\ResourceTable.cpp" />
     <ClCompile Include="object\RideObject.cpp" />
     <ClCompile Include="object\SceneryGroupObject.cpp" />
-    <ClCompile Include="object\SceneryObject.cpp" />
     <ClCompile Include="object\SmallSceneryObject.cpp" />
     <ClCompile Include="object\StationObject.cpp" />
     <ClCompile Include="object\StringTable.cpp" />
@@ -851,6 +881,7 @@
     <ClCompile Include="rct2\T6Importer.cpp" />
     <ClCompile Include="ReplayManager.cpp" />
     <ClCompile Include="ride\CableLift.cpp" />
+    <ClCompile Include="ride\CarEntry.cpp" />
     <ClCompile Include="ride\coaster\AirPoweredVerticalCoaster.cpp" />
     <ClCompile Include="ride\coaster\AlpineCoaster.cpp" />
     <ClCompile Include="ride\coaster\BobsleighCoaster.cpp" />

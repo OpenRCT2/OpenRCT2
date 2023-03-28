@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
+#include "../object/LargeSceneryEntry.h"
 #include "../world/Scenery.h"
 
 LargeScenerySetColourAction::LargeScenerySetColourAction(
@@ -21,6 +22,15 @@ LargeScenerySetColourAction::LargeScenerySetColourAction(
     , _secondaryColour(secondaryColour)
     , _tertiaryColour(tertiaryColour)
 {
+}
+
+void LargeScenerySetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    visitor.Visit("tileIndex", _tileIndex);
+    visitor.Visit("primaryColour", _primaryColour);
+    visitor.Visit("secondaryColour", _secondaryColour);
+    visitor.Visit("tertiaryColour", _tertiaryColour);
 }
 
 uint16_t LargeScenerySetColourAction::GetActionFlags() const
@@ -58,25 +68,25 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
     auto mapSizeMax = GetMapSizeMaxXY();
     if (_loc.x < 0 || _loc.y < 0 || _loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y)
     {
-        log_error("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
+        LOG_ERROR("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_primaryColour >= COLOUR_COUNT)
     {
-        log_error("Invalid primary colour: colour = %u", _primaryColour);
+        LOG_ERROR("Invalid primary colour: colour = %u", _primaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_secondaryColour >= COLOUR_COUNT)
     {
-        log_error("Invalid secondary colour: colour = %u", _secondaryColour);
+        LOG_ERROR("Invalid secondary colour: colour = %u", _secondaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_tertiaryColour >= COLOUR_COUNT)
     {
-        log_error("Invalid tertiary colour: colour = %u", _tertiaryColour);
+        LOG_ERROR("Invalid tertiary colour: colour = %u", _tertiaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -84,7 +94,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
 
     if (largeElement == nullptr)
     {
-        log_error(
+        LOG_ERROR(
             "Could not find large scenery at: x = %d, y = %d, z = %d, direction = %d, tileIndex = %u", _loc.x, _loc.y, _loc.z,
             _loc.direction, _tileIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
@@ -99,7 +109,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
 
     if (sceneryEntry == nullptr)
     {
-        log_error("Could not find scenery object. type = %u", largeElement->GetEntryIndex());
+        LOG_ERROR("Could not find scenery object. type = %u", largeElement->GetEntryIndex());
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
     // Work out the base tile coordinates (Tile with index 0)
@@ -134,7 +144,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
 
         if (tileElement == nullptr)
         {
-            log_error(
+            LOG_ERROR(
                 "Large scenery element not found at: x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z,
                 _loc.direction);
             return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);

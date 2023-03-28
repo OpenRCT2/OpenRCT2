@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,7 +46,7 @@ enum {
     WIDX_RANDOM_SHUFFLE
 };
 
-static rct_widget _inventionListWidgets[] = {
+static Widget _inventionListWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
     MakeTab   ({  3,  17}                                                                                               ),
@@ -59,7 +59,7 @@ static rct_widget _inventionListWidgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget _inventionListDragWidgets[] = {
+static Widget _inventionListDragWidgets[] = {
     MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -96,7 +96,7 @@ static void ResearchRidesSetup()
 }
 
 static void DrawResearchItem(
-    rct_drawpixelinfo& dpi, const ResearchItem& researchItem, const int16_t& width, const ScreenCoordsXY& screenCoords,
+    DrawPixelInfo& dpi, const ResearchItem& researchItem, const int16_t& width, const ScreenCoordsXY& screenCoords,
     StringId format, TextPaint textPaint)
 {
     const StringId itemNameId = researchItem.GetName();
@@ -105,25 +105,26 @@ static void DrawResearchItem(
     if (researchItem.type == Research::EntryType::Ride
         && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        const StringId rideTypeName = get_ride_naming(researchItem.baseRideType, get_ride_entry(researchItem.entryIndex)).Name;
+        const StringId rideTypeName = GetRideNaming(researchItem.baseRideType, *GetRideEntryByIndex(researchItem.entryIndex))
+                                          .Name;
 
         // Draw group name
         auto ft = Formatter();
         ft.Add<StringId>(rideTypeName);
-        DrawTextEllipsised(&dpi, screenCoords, columnSplitOffset - 11, format, ft, textPaint);
+        DrawTextEllipsised(dpi, screenCoords, columnSplitOffset - 11, format, ft, textPaint);
 
         // Draw vehicle name
         ft = Formatter();
         ft.Add<StringId>(itemNameId);
         DrawTextEllipsised(
-            &dpi, { screenCoords + ScreenCoordsXY{ columnSplitOffset, 0 } }, columnSplitOffset - 11, format, ft, textPaint);
+            dpi, { screenCoords + ScreenCoordsXY{ columnSplitOffset, 0 } }, columnSplitOffset - 11, format, ft, textPaint);
     }
     else
     {
         // Scenery group, flat ride or shopdis
         auto ft = Formatter();
         ft.Add<StringId>(itemNameId);
-        DrawTextEllipsised(&dpi, screenCoords, width, format, ft, textPaint);
+        DrawTextEllipsised(dpi, screenCoords, width, format, ft, textPaint);
     }
 }
 
@@ -156,13 +157,13 @@ public:
 
     void OnClose() override
     {
-        research_remove_flags();
+        ResearchRemoveFlags();
 
         // When used in-game (as a cheat)
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
         {
             gSilentResearch = true;
-            research_reset_current_item();
+            ResearchResetCurrentItem();
             gSilentResearch = false;
         }
     }
@@ -175,16 +176,16 @@ public:
                 Close();
                 break;
             case WIDX_RANDOM_SHUFFLE:
-                research_items_shuffle();
+                ResearchItemsShuffle();
                 Invalidate();
                 break;
             case WIDX_MOVE_ITEMS_TO_TOP:
-                research_items_make_all_researched();
+                ResearchItemsMakeAllResearched();
                 InitScrollWidgets();
                 Invalidate();
                 break;
             case WIDX_MOVE_ITEMS_TO_BOTTOM:
-                research_items_make_all_unresearched();
+                ResearchItemsMakeAllUnresearched();
                 InitScrollWidgets();
                 Invalidate();
                 break;
@@ -209,7 +210,7 @@ public:
     {
         frame_no++;
         OnPrepareDraw();
-        widget_invalidate(*this, WIDX_TAB_1);
+        WidgetInvalidate(*this, WIDX_TAB_1);
 
         if (WindowEditorInventionsListDragGetItem() != nullptr)
             return;
@@ -262,11 +263,11 @@ public:
         WindowEditorInventionsListDragOpen(researchItem, windowPos, widgets[WIDX_PRE_RESEARCHED_SCROLL].right);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         // Draw background
         uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
-        gfx_clear(&dpi, paletteIndex);
+        GfxClear(&dpi, paletteIndex);
 
         int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
         int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
@@ -295,7 +296,7 @@ public:
                     bottom = itemY;
                 }
 
-                gfx_filter_rect(&dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(&dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
             }
 
             if (dragItem != nullptr && researchItem == *dragItem)
@@ -345,27 +346,27 @@ public:
         return fallback;
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
         // Tab image
         auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top };
-        gfx_draw_sprite(&dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
+        GfxDrawSprite(&dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
 
         // Pre-researched items label
         screenPos = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PRE_RESEARCHED_SCROLL].left, widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11 };
-        DrawTextBasic(&dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
+        DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
 
         // Research order label
         screenPos = windowPos
             + ScreenCoordsXY{ widgets[WIDX_RESEARCH_ORDER_SCROLL].left, widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11 };
-        DrawTextBasic(&dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
+        DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
 
         // Preview background
         auto& bkWidget = widgets[WIDX_PREVIEW];
-        gfx_fill_rect(
+        GfxFillRect(
             &dpi,
             { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
               windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },
@@ -383,21 +384,21 @@ public:
         if (researchItem->type == Research::EntryType::Ride)
             objectEntryType = ObjectType::Ride;
 
-        auto chunk = object_entry_get_chunk(objectEntryType, researchItem->entryIndex);
+        auto chunk = ObjectEntryGetChunk(objectEntryType, researchItem->entryIndex);
         if (chunk == nullptr)
             return;
 
         // Draw preview
-        const auto* object = object_entry_get_object(objectEntryType, researchItem->entryIndex);
+        const auto* object = ObjectEntryGetObject(objectEntryType, researchItem->entryIndex);
         if (object != nullptr)
         {
-            rct_drawpixelinfo clipDPI;
+            DrawPixelInfo clipDPI;
             screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
             const auto clipWidth = bkWidget.width() - 1;
             const auto clipHeight = bkWidget.height() - 1;
-            if (clip_drawpixelinfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
+            if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
             {
-                object->DrawPreview(&clipDPI, clipWidth, clipHeight);
+                object->DrawPreview(clipDPI, clipWidth, clipHeight);
             }
         }
 
@@ -413,7 +414,8 @@ public:
             && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             drawString = STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-            StringId rideTypeName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).Name;
+            StringId rideTypeName = GetRideNaming(researchItem->baseRideType, *GetRideEntryByIndex(researchItem->entryIndex))
+                                        .Name;
             ft.Add<StringId>(rideTypeName);
             ft.Add<StringId>(stringId);
         }
@@ -422,14 +424,14 @@ public:
             ft.Add<StringId>(stringId);
         }
 
-        DrawTextEllipsised(&dpi, screenPos, itemWidth, drawString, ft, { TextAlignment::CENTRE });
+        DrawTextEllipsised(dpi, screenPos, itemWidth, drawString, ft, { TextAlignment::CENTRE });
         screenPos.y += 15;
 
         // Item category
         screenPos.x = windowPos.x + widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
         ft = Formatter();
         ft.Add<StringId>(researchItem->GetCategoryInventionString());
-        DrawTextBasic(&dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
+        DrawTextBasic(dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
     }
 
     void OnPrepareDraw() override
@@ -476,7 +478,7 @@ public:
         if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
             && windowPos.y + height > screenCoords.y)
         {
-            WidgetIndex widgetIndex = window_find_widget_from_point(*this, screenCoords);
+            WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*this, screenCoords);
             auto& widget = widgets[widgetIndex];
             if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
             {
@@ -574,7 +576,7 @@ private:
  *
  *  rct2: 0x00684E04
  */
-rct_window* WindowEditorInventionsListOpen()
+WindowBase* WindowEditorInventionsListOpen()
 {
     return WindowFocusOrCreate<InventionListWindow>(
         WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
@@ -596,7 +598,7 @@ public:
 
     CursorID OnCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
     {
-        auto* inventionListWindow = static_cast<InventionListWindow*>(window_find_by_class(WindowClass::EditorInventionList));
+        auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
         if (inventionListWindow != nullptr)
         {
             auto res = inventionListWindow->GetResearchItemAt(screenCoords);
@@ -613,10 +615,11 @@ public:
 
     void OnMoved(const ScreenCoordsXY& screenCoords) override
     {
-        auto* inventionListWindow = static_cast<InventionListWindow*>(window_find_by_class(WindowClass::EditorInventionList));
+        auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
         if (inventionListWindow == nullptr)
         {
             Close();
+            return;
         }
         std::optional<InventionListItem> res;
         // Skip always researched items, so that the dragged item gets placed underneath them
@@ -632,16 +635,17 @@ public:
             inventionListWindow->MoveResearchItem(_draggedItem, res->research, res->isInvented);
         }
 
-        window_invalidate_by_class(WindowClass::EditorInventionList);
+        WindowInvalidateByClass(WindowClass::EditorInventionList);
         Close();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
         DrawResearchItem(
-            dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, { COLOUR_BLACK | COLOUR_FLAG_OUTLINE });
+            dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID,
+            { COLOUR_BLACK | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE) });
     }
 
     void Init(ResearchItem& researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
@@ -666,7 +670,7 @@ public:
 static void WindowEditorInventionsListDragOpen(
     ResearchItem* researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
 {
-    window_close_by_class(WindowClass::EditorInventionListDrag);
+    WindowCloseByClass(WindowClass::EditorInventionListDrag);
     auto* wnd = WindowCreate<InventionDragWindow>(
         WindowClass::EditorInventionListDrag, 10, 14, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     if (wnd != nullptr)
@@ -677,7 +681,7 @@ static void WindowEditorInventionsListDragOpen(
 
 static const ResearchItem* WindowEditorInventionsListDragGetItem()
 {
-    auto* wnd = static_cast<InventionDragWindow*>(window_find_by_class(WindowClass::EditorInventionListDrag));
+    auto* wnd = static_cast<InventionDragWindow*>(WindowFindByClass(WindowClass::EditorInventionListDrag));
     if (wnd == nullptr)
     {
         return nullptr;

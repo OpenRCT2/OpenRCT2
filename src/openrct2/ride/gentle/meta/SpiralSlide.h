@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,7 +27,7 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
                      RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | 
-                     RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
+                     RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY | RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission)),
     SET_FIELD(DefaultMode, RideMode::SingleRidePerAdmission),
     SET_FIELD(OperatingSettings, { 1, 5, 0, 0, 0, 0 }),
@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
     SET_FIELD(Heights, { 15, 128, 0, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_spiral_slide),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSpiralSlide),
     SET_FIELD(RatingsMultipliers, { 50, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 82.50_GBP, 1.00_GBP, 1, }),

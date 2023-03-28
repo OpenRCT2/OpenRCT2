@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -66,7 +66,7 @@ static void PaintMotionSimulatorVehicle(
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags.ToUInt32() != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
         imageTemplate = imageFlags;
     }
@@ -78,21 +78,21 @@ static void PaintMotionSimulatorVehicle(
         case 0:
             PaintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
             PaintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { 20, 2, 44 }, { offset.x, offset.y + 32, offset.z });
+            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x, offset.y + 32, offset.z }, { 20, 2, 44 } });
             break;
         case 1:
             PaintAddImageAsParent(session, simulatorImageId, offset, { offset, { 20, 20, 44 } });
             PaintAddImageAsChild(session, stairsImageId, offset, { offset, { 20, 20, 44 } });
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { 2, 20, 44 }, { offset.x + 34, offset.y, offset.z });
+            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x + 34, offset.y, offset.z }, { 2, 20, 44 } });
             break;
         case 2:
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { 20, 2, 44 }, { offset.x, offset.y - 10, offset.z });
-            PaintAddImageAsParent(session, stairsImageId, offset, { 20, 20, 44 }, { offset.x, offset.y + 5, offset.z });
+            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x, offset.y - 10, offset.z }, { 20, 2, 44 } });
+            PaintAddImageAsParent(session, stairsImageId, offset, { { offset.x, offset.y + 5, offset.z }, { 20, 20, 44 } });
             PaintAddImageAsChild(session, simulatorImageId, offset, { { offset.x, offset.y + 5, offset.z }, { 20, 20, 44 } });
             break;
         case 3:
-            PaintAddImageAsParent(session, stairsRailImageId, offset, { 2, 20, 44 }, { offset.x - 10, offset.y, offset.z });
-            PaintAddImageAsParent(session, stairsImageId, offset, { 20, 20, 44 }, { offset.x + 5, offset.y, offset.z });
+            PaintAddImageAsParent(session, stairsRailImageId, offset, { { offset.x - 10, offset.y, offset.z }, { 2, 20, 44 } });
+            PaintAddImageAsParent(session, stairsImageId, offset, { { offset.x + 5, offset.y, offset.z }, { 20, 20, 44 } });
             PaintAddImageAsChild(session, simulatorImageId, offset, { { offset.x + 5, offset.y, offset.z }, { 20, 20, 44 } });
             break;
     }
@@ -113,9 +113,9 @@ static void PaintMotionSimulator(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_SUPPORTS], height,
         fenceSpritesRope, session.CurrentRotation);
 
@@ -140,7 +140,7 @@ static void PaintMotionSimulator(
  *
  *  rct2: 0x00763520
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMotionsimulator(int32_t trackType)
 {
     switch (trackType)
     {

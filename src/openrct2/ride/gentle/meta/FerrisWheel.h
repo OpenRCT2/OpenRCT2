@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
     SET_FIELD(Heights, { 16, 176, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_ferris_wheel),
+    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateFerrisWheel),
     SET_FIELD(RatingsMultipliers, { 60, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 112.50_GBP, 1.00_GBP, 1, }),

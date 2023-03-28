@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.9)
 
 find_package(GTest REQUIRED)
 
@@ -43,7 +43,7 @@ endif ()
 # sawyercoding test
 
 set(SAWYERCODING_TEST_SOURCES
-        "${CMAKE_CURRENT_LIST_DIR}/sawyercoding_test.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/SawyerCodingTest.cpp"
         )
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
 target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
