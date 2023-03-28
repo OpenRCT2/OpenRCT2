@@ -578,43 +578,65 @@ private:
         std::vector<Object*> newLoadedObjects;
         std::vector<ObjectEntryDescriptor> badObjects;
 
-        // Read objects
-        std::mutex commonMutex;
-        ParallelFor(requiredObjects, [&](size_t i) {
-            auto& otl = requiredObjects[i];
+        // Create a list of objects that are currently not loaded but required.
+        std::vector<const ObjectRepositoryItem*> objectsToLoad;
+        for (auto& otl : requiredObjects)
+        {
             auto* requiredObject = otl.RepositoryItem;
-            if (requiredObject != nullptr)
+            if (requiredObject == nullptr)
             {
-                auto* loadedObject = requiredObject->LoadedObject.get();
-                if (loadedObject == nullptr)
-                {
-                    // Object requires to be loaded, if the object successfully loads it will register it
-                    // as a loaded object otherwise placed into the badObjects list.
-                    auto newObject = _objectRepository.LoadObject(requiredObject);
-                    std::lock_guard<std::mutex> guard(commonMutex);
-                    if (newObject == nullptr)
-                    {
-                        badObjects.push_back(ObjectEntryDescriptor(requiredObject->ObjectEntry));
-                        ReportObjectLoadProblem(&requiredObject->ObjectEntry);
-                    }
-                    else
-                    {
-                        otl.LoadedObject = newObject.get();
-                        newLoadedObjects.push_back(otl.LoadedObject);
-                        // Connect the ori to the registered object
-                        _objectRepository.RegisterLoadedObject(requiredObject, std::move(newObject));
-                    }
-                }
-                else
-                {
-                    otl.LoadedObject = loadedObject;
-                }
-                {
-                    std::lock_guard<std::mutex> guard(commonMutex);
-                    objects.push_back(loadedObject);
-                }
+                continue;
+            }
+
+            auto* loadedObject = requiredObject->LoadedObject.get();
+            if (loadedObject == nullptr)
+            {
+                objectsToLoad.push_back(requiredObject);
+            }
+        }
+
+        // De-duplicate the list, since loading happens in parallel we can't have it race the repository item.
+        std::sort(objectsToLoad.begin(), objectsToLoad.end());
+        objectsToLoad.erase(std::unique(objectsToLoad.begin(), objectsToLoad.end()), objectsToLoad.end());
+
+        // Load the objects.
+        std::mutex commonMutex;
+        ParallelFor(objectsToLoad, [&](size_t i) {
+            const auto* requiredObject = objectsToLoad[i];
+
+            // Object requires to be loaded, if the object successfully loads it will register it
+            // as a loaded object otherwise placed into the badObjects list.
+            auto newObject = _objectRepository.LoadObject(requiredObject);
+
+            std::lock_guard<std::mutex> guard(commonMutex);
+            if (newObject == nullptr)
+            {
+                badObjects.push_back(ObjectEntryDescriptor(requiredObject->ObjectEntry));
+                ReportObjectLoadProblem(&requiredObject->ObjectEntry);
+            }
+            else
+            {
+                newLoadedObjects.push_back(newObject.get());
+                // Connect the ori to the registered object
+                _objectRepository.RegisterLoadedObject(requiredObject, std::move(newObject));
             }
         });
+
+        // Assign the loaded objects to the required objects
+        for (auto& requiredObject : requiredObjects)
+        {
+            auto* repositoryItem = requiredObject.RepositoryItem;
+            if (repositoryItem == nullptr)
+            {
+                continue;
+            }
+            auto* loadedObject = repositoryItem->LoadedObject.get();
+            if (loadedObject == nullptr)
+            {
+                continue;
+            }
+            requiredObject.LoadedObject = loadedObject;
+        }
 
         // Load objects
         for (auto* obj : newLoadedObjects)
