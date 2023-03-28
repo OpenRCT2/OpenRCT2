@@ -580,18 +580,18 @@ private:
 
         // Create a list of objects that are currently not loaded but required.
         std::vector<const ObjectRepositoryItem*> objectsToLoad;
-        for (auto& otl : requiredObjects)
+        for (auto& requiredObject : requiredObjects)
         {
-            auto* requiredObject = otl.RepositoryItem;
-            if (requiredObject == nullptr)
+            auto* repositoryItem = requiredObject.RepositoryItem;
+            if (repositoryItem == nullptr)
             {
                 continue;
             }
 
-            auto* loadedObject = requiredObject->LoadedObject.get();
+            auto* loadedObject = repositoryItem->LoadedObject.get();
             if (loadedObject == nullptr)
             {
-                objectsToLoad.push_back(requiredObject);
+                objectsToLoad.push_back(repositoryItem);
             }
         }
 
