@@ -1,4 +1,4 @@
-0.4.4 (in development)
+0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
 - Feature: [#11269] Add properties for speed and length of vehicle animations.
 - Feature: [#15849] Objectives can now be set for up to 50000 guests.
