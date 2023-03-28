@@ -1858,7 +1858,7 @@ namespace RCT2
 
         std::string GetUserString(StringId stringId)
         {
-            const auto originalString = _s6.CustomStrings[(stringId - USER_STRING_START) % 1024];
+            const auto originalString = _s6.CustomStrings[stringId % 1024];
             auto originalStringView = std::string_view(
                 originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
