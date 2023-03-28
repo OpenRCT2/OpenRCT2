@@ -4564,7 +4564,6 @@ bool Ride::IsPoweredLaunched() const
 bool Ride::IsBlockSectioned() const
 {
     return mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned;
-    ;
 }
 
 bool RideHasAnyTrackElements(const Ride& ride)

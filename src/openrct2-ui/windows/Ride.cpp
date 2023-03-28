@@ -3047,8 +3047,9 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int3
             ImageIndex imageIndex = carEntry.SpriteByYaw(OpenRCT2::Entity::Yaw::BaseRotation / 2, SpriteGroupType::SlopeFlat);
             if (isReversed)
             {
-                imageIndex = (imageIndex + (OpenRCT2::Entity::Yaw::BaseRotation / 2))
-                    & (OpenRCT2::Entity::Yaw::BaseRotation - 1);
+                auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::SlopeFlat);
+                imageIndex = carEntry.SpriteByYaw(
+                    (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::SlopeFlat);
             }
 
             imageIndex &= carEntry.TabRotationMask;
