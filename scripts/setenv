@@ -6,7 +6,7 @@ set -e
 # It should be dot sourced into your environment
 if [[ "$GITHUB_ACTIONS" != "true" ]]; then
     export OPENRCT2_BUILD_SERVER=$(hostname)
-    export OPENRCT2_VERSION=0.4.3
+    export OPENRCT2_VERSION=0.4.4
     GITHUB_REF=$(git rev-parse --symbolic-full-name HEAD)
     GITHUB_SHA=$(git rev-parse HEAD)
 fi
