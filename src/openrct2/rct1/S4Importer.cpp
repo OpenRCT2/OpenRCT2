@@ -2470,7 +2470,7 @@ namespace RCT1
 
         std::string GetUserString(StringId stringId)
         {
-            const auto originalString = _s4.StringTable[(stringId - USER_STRING_START) % 1024];
+            const auto originalString = _s4.StringTable[stringId % 1024];
             auto originalStringView = std::string_view(
                 originalString, RCT2::GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
@@ -2966,7 +2966,7 @@ namespace RCT1
         ImportEntityCommonProperties(dst, src);
         dst->MoveDelay = src->MoveDelay;
         dst->NumMovements = src->NumMovements;
-        dst->Vertical = src->Vertical;
+        dst->GuestPurchase = src->Vertical;
         dst->Value = src->Value;
         dst->OffsetX = src->OffsetX;
         dst->Wiggle = src->Wiggle;

@@ -1097,7 +1097,10 @@ namespace RCT2
         void ImportRideRatingsCalcData()
         {
             const auto& src = _s6.RideRatingsCalcData;
-            auto& dst = gRideRatingUpdateState;
+            // S6 has only one state, ensure we reset all states before reading the first one.
+            RideRatingResetUpdateStates();
+            auto& rideRatingStates = RideRatingGetUpdateStates();
+            auto& dst = rideRatingStates[0];
             dst = {};
             dst.Proximity = { src.ProximityX, src.ProximityY, src.ProximityZ };
             dst.ProximityStart = { src.ProximityStartX, src.ProximityStartY, src.ProximityStartZ };
@@ -1855,7 +1858,7 @@ namespace RCT2
 
         std::string GetUserString(StringId stringId)
         {
-            const auto originalString = _s6.CustomStrings[(stringId - USER_STRING_START) % 1024];
+            const auto originalString = _s6.CustomStrings[stringId % 1024];
             auto originalStringView = std::string_view(
                 originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
@@ -2194,7 +2197,7 @@ namespace RCT2
         ImportEntityCommonProperties(dst, src);
         dst->MoveDelay = src->MoveDelay;
         dst->NumMovements = src->NumMovements;
-        dst->Vertical = src->Vertical;
+        dst->GuestPurchase = src->Vertical;
         dst->Value = src->Value;
         dst->OffsetX = src->OffsetX;
         dst->Wiggle = src->Wiggle;

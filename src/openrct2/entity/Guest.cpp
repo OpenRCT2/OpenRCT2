@@ -2300,15 +2300,7 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 
     FinancePayment(-amount, expenditure);
 
-    if (gConfigGeneral.ShowGuestPurchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
-    {
-        // HACK Currently disabled for multiplayer due to limitation of all sprites
-        //      needing to be synchronised
-        if (NetworkGetMode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
-        {
-            MoneyEffect::CreateAt(amount, GetLocation(), true);
-        }
-    }
+    MoneyEffect::CreateAt(amount, GetLocation(), true);
 
     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, GetLocation());
 }
@@ -3605,7 +3597,10 @@ uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehic
 void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
 {
     const auto& station = ride.GetStation(CurrentRideStation);
-    Guard::Assert(!station.Entrance.IsNull());
+    if (station.Entrance.IsNull())
+    {
+        return;
+    }
     uint8_t direction_entrance = station.Entrance.direction;
 
     TileElement* tile_element = RideGetStationStartTrackElement(ride, CurrentRideStation);
@@ -3692,7 +3687,10 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     {
         const auto& station = ride->GetStation(CurrentRideStation);
         auto entranceLocation = station.Entrance.ToCoordsXYZD();
-        Guard::Assert(!entranceLocation.IsNull());
+        if (entranceLocation.IsNull())
+        {
+            return;
+        }
 
         const auto& rtd = GetRideTypeDescriptor(ride->type);
         rtd.UpdateLeaveEntrance(this, *ride, entranceLocation);
@@ -3778,7 +3776,6 @@ static void PeepGoToRideExit(Peep* peep, const Ride& ride, int16_t x, int16_t y,
 
     Guard::Assert(peep->CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
     auto exit = ride.GetStation(peep->CurrentRideStation).Exit;
-    Guard::Assert(!exit.IsNull());
     x = exit.x;
     y = exit.y;
     x *= 32;
@@ -3786,8 +3783,16 @@ static void PeepGoToRideExit(Peep* peep, const Ride& ride, int16_t x, int16_t y,
     x += 16;
     y += 16;
 
-    int16_t x_shift = DirectionOffsets[exit_direction].x;
-    int16_t y_shift = DirectionOffsets[exit_direction].y;
+    auto [x_shift, y_shift] = [exit_direction]() {
+        if (exit_direction < DirectionOffsets.size())
+        {
+            return std::pair(DirectionOffsets[exit_direction].x, DirectionOffsets[exit_direction].y);
+        }
+        else
+        {
+            return std::pair(0, 0);
+        }
+    }();
 
     int16_t shift_multiplier = 20;
 
@@ -3885,8 +3890,11 @@ static void PeepUpdateRideNoFreeVehicleRejoinQueue(Guest* peep, Ride& ride)
 
     int32_t x = entranceLocation.x * 32;
     int32_t y = entranceLocation.y * 32;
-    x += 16 - DirectionOffsets[entranceLocation.direction].x * 20;
-    y += 16 - DirectionOffsets[entranceLocation.direction].y * 20;
+    if (entranceLocation.direction < DirectionOffsets.size())
+    {
+        x += 16 - DirectionOffsets[entranceLocation.direction].x * 20;
+        y += 16 - DirectionOffsets[entranceLocation.direction].y * 20;
+    }
 
     peep->SetDestination({ x, y }, 2);
     peep->SetState(PeepState::QueuingFront);
@@ -4196,8 +4204,16 @@ void Guest::UpdateRideLeaveVehicle()
                 }
             }
 
-            int16_t xShift = DirectionOffsets[specialDirection].x;
-            int16_t yShift = DirectionOffsets[specialDirection].y;
+            auto [xShift, yShift] = [specialDirection]() {
+                if (specialDirection < DirectionOffsets.size())
+                {
+                    return std::pair(DirectionOffsets[specialDirection].x, DirectionOffsets[specialDirection].y);
+                }
+                else
+                {
+                    return std::pair(0, 0);
+                }
+            }();
 
             platformLocation.x = vehicle->x + xShift * shiftMultiplier;
             platformLocation.y = vehicle->y + yShift * shiftMultiplier;
@@ -4245,7 +4261,10 @@ void Guest::UpdateRideLeaveVehicle()
     }
 
     auto exitLocation = station.Exit.ToCoordsXYZD();
-    Guard::Assert(!exitLocation.IsNull());
+    if (exitLocation.IsNull())
+    {
+        return;
+    }
 
     TileElement* trackElement = RideGetStationStartTrackElement(*ride, CurrentRideStation);
 
@@ -4305,8 +4324,17 @@ void Guest::UpdateRidePrepareForExit()
 
     auto exit = ride->GetStation(CurrentRideStation).Exit;
     auto newDestination = exit.ToCoordsXY().ToTileCentre();
-    auto xShift = DirectionOffsets[exit.direction].x;
-    auto yShift = DirectionOffsets[exit.direction].y;
+
+    auto [xShift, yShift] = [exit]() {
+        if (exit.direction < DirectionOffsets.size())
+        {
+            return std::pair(DirectionOffsets[exit.direction].x, DirectionOffsets[exit.direction].y);
+        }
+        else
+        {
+            return std::pair(0, 0);
+        }
+    }();
 
     int16_t shiftMultiplier = 20;
 
@@ -4626,7 +4654,12 @@ void Guest::UpdateRideApproachSpiralSlide()
         {
             auto exit = ride->GetStation(CurrentRideStation).Exit;
             waypoint = 1;
-            Var37 = (exit.direction * 4) | (Var37 & 0x30) | waypoint;
+            auto directionTemp = exit.direction;
+            if (exit.direction == INVALID_DIRECTION)
+            {
+                directionTemp = 0;
+            }
+            Var37 = (directionTemp * 4) | (Var37 & 0x30) | waypoint;
             CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
             assert(rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE));

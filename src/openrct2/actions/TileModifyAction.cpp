@@ -128,6 +128,13 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::PathSetSloped(_loc, elementIndex, sloped, isExecuting);
             break;
         }
+        case TileModifyType::PathSetJunctionRailings:
+        {
+            const auto elementIndex = _value1;
+            const bool hasJunctionRailing = _value2;
+            res = TileInspector::PathSetJunctionRailings(_loc, elementIndex, hasJunctionRailing, isExecuting);
+            break;
+        }
         case TileModifyType::PathSetBroken:
         {
             const auto elementIndex = _value1;
