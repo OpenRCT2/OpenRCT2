@@ -636,6 +636,7 @@ private:
                 continue;
             }
             requiredObject.LoadedObject = loadedObject;
+            objects.push_back(loadedObject);
         }
 
         // Load objects
