@@ -16,5 +16,5 @@ jobs:
           only-issue-labels: 'backtrace.io'
           stale-issue-label: 'stale-backtrace'
           stale-issue-message: 'This issue is stale and will be closed tomorrow if no action is taken. To keep it open, leave a comment or remove the `stale-backtrace` label.'
-          close-issue-message: 'This issue was closed due to inactivity.'
+          close-issue-message: 'This issue was closed due to inactivity. If this issue does recur, please let a developer know.'
           operations-per-run: 200
