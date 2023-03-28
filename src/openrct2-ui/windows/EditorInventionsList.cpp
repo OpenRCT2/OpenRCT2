@@ -619,6 +619,7 @@ public:
         if (inventionListWindow == nullptr)
         {
             Close();
+            return;
         }
         std::optional<InventionListItem> res;
         // Skip always researched items, so that the dragged item gets placed underneath them

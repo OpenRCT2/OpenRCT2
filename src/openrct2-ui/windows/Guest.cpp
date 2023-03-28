@@ -207,7 +207,7 @@ public:
         {
             case WIDX_CLOSE:
                 Close();
-                break;
+                return;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
             case WIDX_TAB_3:
@@ -216,7 +216,7 @@ public:
             case WIDX_TAB_6:
             case WIDX_TAB_7:
                 SetPage(widx - WIDX_TAB_1);
-                break;
+                return;
         }
 
         switch (page)
