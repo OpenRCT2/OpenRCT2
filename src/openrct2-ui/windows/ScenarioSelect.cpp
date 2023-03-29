@@ -62,7 +62,7 @@ struct ScenarioListItem
     };
 };
 
-static std::vector<ScenarioListItem> _listItems;
+static std::list<ScenarioListItem> _listItems;
 
 enum {
     WIDX_BACKGROUND,
@@ -257,7 +257,6 @@ static void WindowScenarioselectInitTabs(WindowBase* w)
 static void WindowScenarioselectClose(WindowBase* w)
 {
     _listItems.clear();
-    _listItems.shrink_to_fit();
 }
 
 static void WindowScenarioselectMouseup(WindowBase* w, WidgetIndex widgetIndex)
@@ -691,7 +690,7 @@ static void InitialiseListItems(WindowBase* w)
     // Mega park unlock
     const uint32_t rct1RequiredCompletedScenarios = (1 << SC_MEGA_PARK) - 1;
     uint32_t rct1CompletedScenarios = 0;
-    size_t megaParkListItemIndex = SIZE_MAX;
+    auto megaParkListItem = _listItems.end();
 
     int32_t numUnlocks = INITIAL_NUM_UNLOCKED_SCENARIOS;
     uint8_t currentHeading = UINT8_MAX;
@@ -766,29 +765,30 @@ static void InitialiseListItems(WindowBase* w)
                     rct1CompletedScenarios |= 1 << scenario->ScenarioId;
                 }
             }
-
-            // If scenario is Mega Park, keep a reference to it
-            if (scenario->ScenarioId == SC_MEGA_PARK)
-            {
-                megaParkListItemIndex = _listItems.size();
-            }
         }
         else
         {
             scenarioItem.scenario.is_locked = false;
         }
         _listItems.push_back(std::move(scenarioItem));
+
+        // If scenario is Mega Park, keep a reference to it
+        if (scenario->ScenarioId == SC_MEGA_PARK)
+        {
+            megaParkListItem = _listItems.end();
+            megaParkListItem--;
+        }
     }
 
     // Mega park handling
-    if (megaParkListItemIndex != SIZE_MAX)
+    if (IsLockingEnabled(w) && megaParkListItem != _listItems.end())
     {
         bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
-        _listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
+        megaParkListItem->scenario.is_locked = megaParkLocked;
         if (megaParkLocked && gConfigGeneral.ScenarioHideMegaPark)
         {
             // Remove mega park
-            _listItems.erase(_listItems.begin() + megaParkListItemIndex);
+            _listItems.erase(megaParkListItem);
 
             // Remove empty headings
             for (auto it = _listItems.begin(); it != _listItems.end();)
