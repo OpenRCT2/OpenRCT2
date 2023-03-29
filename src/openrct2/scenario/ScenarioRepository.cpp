@@ -124,7 +124,7 @@ class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
-    static constexpr uint16_t VERSION = 8;
+    static constexpr uint16_t VERSION = 9;
     static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
@@ -306,6 +306,13 @@ private:
             entry.SourceIndex = desc.index;
             entry.SourceGame = ScenarioSource{ desc.source };
             entry.Category = desc.category;
+
+            // Put remakes of RCT1 scenarios in the other category if RCT1 is installed.
+            if (entry.SourceGame < ScenarioSource::RCT2 && !gConfigGeneral.RCT1Path.empty())
+            {
+                entry.SourceIndex = -1;
+                entry.Category = SCENARIO_CATEGORY_OTHER;
+            }
         }
         else
         {
