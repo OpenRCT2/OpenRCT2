@@ -770,7 +770,7 @@ static void InitialiseListItems(WindowBase* w)
             // If scenario is Mega Park, keep a reference to it
             if (scenario->ScenarioId == SC_MEGA_PARK)
             {
-                megaParkListItemIndex = _listItems.size() - 1;
+                megaParkListItemIndex = _listItems.size();
             }
         }
         else
@@ -788,7 +788,7 @@ static void InitialiseListItems(WindowBase* w)
         if (megaParkLocked && gConfigGeneral.ScenarioHideMegaPark)
         {
             // Remove mega park
-            _listItems.pop_back();
+            _listItems.erase(_listItems.begin() + megaParkListItemIndex);
 
             // Remove empty headings
             for (auto it = _listItems.begin(); it != _listItems.end();)
