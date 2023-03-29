@@ -1,5 +1,6 @@
 0.4.5 (in development)
 ------------------------------------------------------------------------
+- Fix: [#19740] Missing water tiles in RCT1 and RCT2 scenarios.
 - Fix: [#19756] Crash with title sequences containing no commands.
 
 0.4.4 (2023-03-28)
@@ -73,7 +74,7 @@
 - Fix: [#19517] Crash when peeps try to exit or enter hacked rides that have no waypoints specified.
 - Fix: [#19524] Staff counter shows incorrect values if there are more than 32767 staff members.
 - Fix: [#19574] Handle exits in null locations.
-- Fix: [#19641, #19643, #19740] Missing water tiles in RCT1 and RCT2 scenarios.
+- Fix: [#19641, #19643] Missing water tile in Infernal Views' and Six Flags Holland's river.
 
 0.4.3 (2022-12-14)
 ------------------------------------------------------------------------
