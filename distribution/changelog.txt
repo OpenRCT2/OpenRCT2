@@ -1,6 +1,6 @@
 0.4.5 (in development)
 ------------------------------------------------------------------------
-- Fix: [#19756] Crash with title sequences containing no commands
+- Fix: [#19756] Crash with title sequences containing no commands.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
