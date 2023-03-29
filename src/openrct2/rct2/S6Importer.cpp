@@ -553,7 +553,7 @@ namespace RCT2
                     OWNERSHIP_OWNED);
                 // clang-format on
             }
-            /*else if (String::Equals(gScenarioFileName, "trinity islands.sea"))
+            else if (String::Equals(gScenarioFileName, "trinity islands.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -562,7 +562,7 @@ namespace RCT2
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                 // clang-format on
-            }*/
+            }
             else if (String::Equals(gScenarioFileName, "katie's dreamland.sea"))
             {
                 // clang-format off
@@ -571,14 +571,14 @@ namespace RCT2
                         { 115, 63 }, /*{ 118, 67 }*/
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                 /*FixLandOwnershipTilesWithOwnership(
+                 FixLandOwnershipTilesWithOwnership(
                      {
                          { 45, 69 }, { 59, 74 }
                      },
-                     OWNERSHIP_OWNED);*/
+                     OWNERSHIP_OWNED);
                 // clang-format on
             }
-            /*else if (String::Equals(gScenarioFileName, "white water park.sea"))
+            else if (String::Equals(gScenarioFileName, "white water park.sea"))
             {
                  // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -597,7 +597,7 @@ namespace RCT2
                     },
                     OWNERSHIP_OWNED);
                 // clang-format on
-            }*/
+            }
             else if (String::Equals(gScenarioFileName, "three monkeys park.sea"))
             {
                 // clang-format off
@@ -613,7 +613,7 @@ namespace RCT2
                     OWNERSHIP_UNOWNED);
                 // clang-format on
             }
-            /*else if (String::Equals(gScenarioFileName, "coaster canyon.sea"))
+            else if (String::Equals(gScenarioFileName, "coaster canyon.sea"))
             {
                  // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -632,7 +632,7 @@ namespace RCT2
                     },
                     OWNERSHIP_OWNED);
                 // clang-format on
-            }*/
+            }
             else if (String::Equals(gScenarioFileName, "grand glacier.sea"))
             {
                 // clang-format off
@@ -643,7 +643,7 @@ namespace RCT2
                     OWNERSHIP_OWNED);
                 // clang-format on
             }
-            /*else if (String::Equals(gScenarioFileName, "woodworm park.sea"))
+            else if (String::Equals(gScenarioFileName, "woodworm park.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -652,7 +652,7 @@ namespace RCT2
                     },
                     OWNERSHIP_OWNED);
                 // clang-format on
-            }*/
+            }
             else if (String::Equals(gScenarioFileName, "pleasure island.sea"))
             {
                 // clang-format off
@@ -668,7 +668,7 @@ namespace RCT2
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
-                        { 2, 62 }, { 2, 63 }, { 2, 83 }, { 2, 84 }, { 9, 4 }
+                        { 2, 4 }, { 2, 62 }, { 2, 63 }, { 2, 83 }, { 2, 84 }, { 9, 4 }
                     },
                     OWNERSHIP_AVAILABLE);
                 // clang-format on
@@ -683,7 +683,7 @@ namespace RCT2
                     OWNERSHIP_OWNED);
                 // clang-format on
             }
-            /*else if (String::Equals(_s6.ScenarioFilename, "Ghost Town.SC6"))
+            else if (String::Equals(_s6.ScenarioFilename, "Ghost Town.SC6"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -692,7 +692,7 @@ namespace RCT2
                     },
                     OWNERSHIP_OWNED);
                 // clang-format on
-            }*/
+            }
             else if (String::Equals(_s6.ScenarioFilename, "Six Flags Great Adventure.SC6"))
             {
                 // clang-format off
@@ -701,11 +701,11 @@ namespace RCT2
                         { 241, 59 }, { 242, 59 },
                     },
                     OWNERSHIP_UNOWNED);
-                 /*FixLandOwnershipTilesWithOwnership(
+                 FixLandOwnershipTilesWithOwnership(
                     {
                         { 145, 31 }
                     },
-                    OWNERSHIP_OWNED);*/
+                    OWNERSHIP_OWNED);
                 // clang-format on
             }
             else if (String::Equals(_s6.ScenarioFilename, "Six Flags Holland.SC6"))
@@ -732,7 +732,7 @@ namespace RCT2
                         { 92, 57 }, { 93, 57 },
                         { 89, 40 }, { 89, 41 }, { 89, 42 }, { 88, 42 }, 
                         { 168, 20 }, { 169, 20 },
-                        /*{ 46, 51 }, { 58, 159 }, { 71, 201 }, { 126, 15 }, { 190, 6 }*/
+                        { 46, 51 }, { 58, 159 }, { 71, 201 }, { 126, 15 }, { 190, 6 }
                     },
                     OWNERSHIP_AVAILABLE, true);
                 // clang-format on
@@ -750,7 +750,7 @@ namespace RCT2
                         { 92, 57 }, { 93, 57 },
                         { 89, 40 }, { 89, 41 }, { 89, 42 }, { 88, 42 }, 
                         { 168, 20 }, { 169, 20 },
-                        /*{ 46, 51 }, { 58, 159 }, { 71, 201 }, { 126, 15 }, { 190, 6 }*/
+                        { 46, 51 }, { 58, 159 }, { 71, 201 }, { 126, 15 }, { 190, 6 }
                     },
                     OWNERSHIP_AVAILABLE, true);
                 // clang-format on
