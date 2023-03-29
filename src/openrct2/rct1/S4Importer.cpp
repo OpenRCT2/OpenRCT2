@@ -2486,7 +2486,7 @@ namespace RCT1
                     FixLandOwnershipTiles({ { 97, 18 }, { 99, 19 }, { 83, 34 } });
                     break;
                 case SC_LEAFY_LAKE:
-                    FixLandOwnershipTiles({ /*{ 49, 66 },*/ { 74, 96 } });
+                    FixLandOwnershipTiles({ { 49, 66 }, /*{ 74, 96 }*/ });
                     break;
                 /*case SC_TRINITY_ISLANDS:
                     FixLandOwnershipTilesWithOwnership({ { 80, 60 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
