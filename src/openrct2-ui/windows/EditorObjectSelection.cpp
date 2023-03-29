@@ -599,12 +599,14 @@ public:
             if (!objectSelectResult.Successful)
                 return;
 
-            // Close any other open windows such as options/colour schemes to prevent a crash.
-            WindowCloseAll();
-            // WindowClose(*w);
+            auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+            _loadedObject = objRepository.LoadObject(listItem->repositoryItem);
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            objManager.LoadObject(_loadedObject.get()->GetIdentifier());
 
             // This function calls window_track_list_open
             ManageTracks();
+            Close();
             return;
         }
 
@@ -1485,7 +1487,7 @@ private:
     {
         for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
         {
-            pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+            pressed_widgets &= ~(1ull << (WIDX_TAB_1 + i));
         }
         pressed_widgets |= 1LL << (WIDX_TAB_1 + selected_tab);
     }
