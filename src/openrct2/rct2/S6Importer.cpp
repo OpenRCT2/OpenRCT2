@@ -580,13 +580,13 @@ namespace RCT2
             }
             else if (String::Equals(gScenarioFileName, "white water park.sea"))
             {
-                 // clang-format off
+                // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
                         { 42, 85 }, { 89, 42 }
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                 // clang-format on
+                // clang-format on
             }
             else if (String::Equals(gScenarioFileName, "mel's world.sea"))
             {
@@ -615,13 +615,13 @@ namespace RCT2
             }
             else if (String::Equals(gScenarioFileName, "coaster canyon.sea"))
             {
-                 // clang-format off
+                // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
                         { 21, 55 }
                     },
                     OWNERSHIP_OWNED);
-                 // clang-format on
+                // clang-format on
             }
             else if (String::Equals(gScenarioFileName, "rotting heights.sea"))
             {

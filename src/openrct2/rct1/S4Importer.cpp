@@ -2522,7 +2522,7 @@ namespace RCT1
                     FixLandOwnershipTilesWithOwnership({ { 21, 55 } }, OWNERSHIP_OWNED);
                     break;
                 case SC_UTOPIA_PARK:
-                    FixLandOwnershipTiles({ { 85, 73 }, { 71, 75 } , { 90, 73 } });
+                    FixLandOwnershipTiles({ { 85, 73 }, { 71, 75 }, { 90, 73 } });
                     break;
                 case SC_ROTTING_HEIGHTS:
                     FixLandOwnershipTilesWithOwnership({ { 35, 20 } }, OWNERSHIP_OWNED);
