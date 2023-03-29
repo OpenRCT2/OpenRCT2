@@ -751,7 +751,7 @@ static void InitialiseListItems(WindowBase* w)
         ScenarioListItem scenarioItem;
         scenarioItem.type = ListItemType::Scenario;
         scenarioItem.scenario.scenario = scenario;
-        if (IsLockingEnabled(w))
+        if (IsLockingEnabled(w) && scenario->Category <= SCENARIO_CATEGORY_EXPERT)
         {
             scenarioItem.scenario.is_locked = numUnlocks <= 0;
             if (scenario->Highscore == nullptr)
