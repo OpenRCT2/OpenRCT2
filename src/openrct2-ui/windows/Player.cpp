@@ -186,14 +186,21 @@ public:
 
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
+        switch(widgetIndex)
+        {
+            case WIDX_CLOSE:
+                Close();
+                break;
+            case WIDX_TAB_1:
+            case WIDX_TAB_2:
+                SetPage(widgetIndex - WIDX_TAB_1);
+                break;
+        }
+
         switch (page)
         {
             case WINDOW_PLAYER_PAGE_OVERVIEW:
                 OnMouseUpOverview(widgetIndex);
-                break;
-
-            case WINDOW_PLAYER_PAGE_STATISTICS:
-                OnMouseUpStatistics(widgetIndex);
                 break;
         }
     }
@@ -497,13 +504,6 @@ private:
     {
         switch (widgetIndex)
         {
-            case WIDX_CLOSE:
-                Close();
-                break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-                SetPage(widgetIndex - WIDX_TAB_1);
-                break;
             case WIDX_LOCATE:
             {
                 WindowBase* mainWindow = WindowGetMain();
@@ -653,20 +653,6 @@ private:
         ft = Formatter();
         ft.Add<uint32_t>(NetworkGetPlayerMoneySpent(player));
         DrawTextBasic(*dpi, screenCoords, STR_MONEY_SPENT, ft);
-    }
-
-    void OnMouseUpStatistics(WidgetIndex widgetIndex)
-    {
-        switch (widgetIndex)
-        {
-            case WIDX_CLOSE:
-                Close();
-                break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-                SetPage(widgetIndex - WIDX_TAB_1);
-                break;
-        }
     }
 
 #pragma endregion
