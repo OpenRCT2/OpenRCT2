@@ -45,7 +45,6 @@ bool IsUserStringID(StringId stringId);
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
 
-#define USER_STRING_START 0x8000
 #define USER_STRING_END 0x8FFF
 #define REAL_NAME_START 0xA000
 #define REAL_NAME_END 0xDFFF

@@ -110,6 +110,11 @@ namespace OpenRCT2::Title
                 return false;
             }
 
+            if (_sequence->Commands.empty())
+            {
+                return false;
+            }
+
             // Run commands in order, until we reach one that is not instantly done
             int32_t entryPosition = _position;
             while (true)
