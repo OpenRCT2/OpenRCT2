@@ -2486,33 +2486,68 @@ namespace RCT1
                     FixLandOwnershipTiles({ { 97, 18 }, { 99, 19 }, { 83, 34 } });
                     break;
                 case SC_LEAFY_LAKE:
-                    FixLandOwnershipTiles({ { 49, 66 } });
+                    FixLandOwnershipTiles({ /*{ 49, 66 },*/ { 74, 96 } });
                     break;
+                /*case SC_TRINITY_ISLANDS:
+                    FixLandOwnershipTilesWithOwnership({ { 80, 60 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    break;*/
                 case SC_KATIES_DREAMLAND:
                     FixLandOwnershipTiles({ { 74, 70 }, { 75, 70 }, { 76, 70 }, { 77, 73 }, { 80, 77 } });
-                    FixLandOwnershipTilesWithOwnership({ { 115, 63 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    FixLandOwnershipTilesWithOwnership({ { 115, 63 } /*, { 118, 67 }*/ }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    /*FixLandOwnershipTilesWithOwnership({ { 45, 69 }, { 59, 74 } }, OWNERSHIP_OWNED);*/
                     break;
                 case SC_POKEY_PARK:
-                    FixLandOwnershipTiles({ { 64, 102 } });
+                    FixLandOwnershipTiles({ /*{ 84, 71 },*/ { 64, 102 } });
                     break;
+                /*case SC_WHITE_WATER_PARK:
+                    FixLandOwnershipTilesWithOwnership({ { 42, 85 }, { 89, 42 } }, OWNERSHIP_OWNED);
+                    break;*/
+                /*case SC_MELS_WORLD:
+                    FixLandOwnershipTilesWithOwnership({ { 93, 76 }, { 93, 77 } }, OWNERSHIP_OWNED);
+                    break;*/
                 case SC_MYSTIC_MOUNTAIN:
                     FixLandOwnershipTiles({ { 98, 69 }, { 98, 70 }, { 103, 64 }, { 53, 79 }, { 86, 93 }, { 87, 93 } });
                     break;
                 case SC_PACIFIC_PYRAMIDS:
                     FixLandOwnershipTiles({ { 93, 105 }, { 63, 34 }, { 76, 25 }, { 85, 31 }, { 96, 47 }, { 96, 48 } });
                     break;
-                case SC_UTOPIA_PARK:
-                    FixLandOwnershipTiles({ { 85, 73 }, { 71, 75 } });
+                case SC_THREE_MONKEYS_PARK:
+                    FixLandOwnershipTilesWithOwnership({ { 89, 92 } }, OWNERSHIP_UNOWNED);
+                    FixLandOwnershipTilesWithOwnership({ { 46, 22 } }, OWNERSHIP_OWNED);
                     break;
+                /*case SC_HAUNTED_HARBOUR:
+                    FixLandOwnershipTiles({ { 49, 42 } });
+                    break;
+                case SC_COASTER_CANYON:
+                    FixLandOwnershipTilesWithOwnership({ { 21, 55 } }, OWNERSHIP_OWNED);
+                    break;*/
+                case SC_UTOPIA_PARK:
+                    FixLandOwnershipTiles({ { 85, 73 }, { 71, 75 } /*, { 90, 73 }*/ });
+                    break;
+                /*case SC_ROTTING_HEIGHTS:
+                    FixLandOwnershipTilesWithOwnership({ { 35, 20 } }, OWNERSHIP_OWNED);
+                    break;*/
                 case SC_URBAN_PARK:
                     FixLandOwnershipTiles({ { 64, 77 }, { 61, 66 }, { 61, 67 }, { 39, 20 } });
                     FixLandOwnershipTilesWithOwnership({ { 46, 47 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
                     break;
+                case SC_GRAND_GLACIER:
+                    FixLandOwnershipTilesWithOwnership({ { 99, 58 } }, OWNERSHIP_OWNED);
+                    break;
+                /*case SC_WOODWORM_PARK:
+                    FixLandOwnershipTilesWithOwnership({ { 62, 105 }, { 101, 55 } }, OWNERSHIP_OWNED);
+                    break;*/
                 case SC_PLEASURE_ISLAND:
                     FixLandOwnershipTilesWithOwnership({ { 37, 66 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                     break;
+                case SC_NEVERMORE_PARK:
+                    FixLandOwnershipTilesWithOwnership({ { 9, 74 } }, OWNERSHIP_OWNED);
+                    break;
+                case SC_ALTON_TOWERS:
+                    FixLandOwnershipTilesWithOwnership({ /*{ 11, 31 },*/ { 68, 112 }, /*{ 72, 118 }*/ }, OWNERSHIP_OWNED);
+                    break;
                 case SC_FORT_ANACHRONISM:
-                    FixLandOwnershipTiles({ { 54, 29 }, { 53, 88 } });
+                    FixLandOwnershipTiles({ /*{ 36, 87 },*/ { 54, 29 }, { 53, 88 } });
                     break;
             }
         }

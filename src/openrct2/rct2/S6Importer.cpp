@@ -553,16 +553,106 @@ namespace RCT2
                     OWNERSHIP_OWNED);
                 // clang-format on
             }
+            /*else if (String::Equals(gScenarioFileName, "trinity islands.sea"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 80, 60 },
+                    },
+                    OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                // clang-format on
+            }*/
             else if (String::Equals(gScenarioFileName, "katie's dreamland.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
-                        { 115, 63 },
+                        { 115, 63 }, /*{ 118, 67 }*/
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                 /*FixLandOwnershipTilesWithOwnership(
+                     {
+                         { 45, 69 }, { 59, 74 }
+                     },
+                     OWNERSHIP_OWNED);*/
                 // clang-format on
             }
+            /*else if (String::Equals(gScenarioFileName, "white water park.sea"))
+            {
+                 // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 42, 85 }, { 89, 42 }
+                    },
+                    OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                 // clang-format on
+            }
+            else if (String::Equals(gScenarioFileName, "mel's world.sea"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 93, 76 }, { 93, 77 }
+                    },
+                    OWNERSHIP_OWNED);
+                // clang-format on
+            }*/
+            else if (String::Equals(gScenarioFileName, "three monkeys park.sea"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 46, 22 }
+                    },
+                    OWNERSHIP_OWNED);
+                 FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 89, 92 }
+                    },
+                    OWNERSHIP_UNOWNED);
+                // clang-format on
+            }
+            /*else if (String::Equals(gScenarioFileName, "coaster canyon.sea"))
+            {
+                 // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 21, 55 }
+                    },
+                    OWNERSHIP_OWNED);
+                 // clang-format on
+            }
+            else if (String::Equals(gScenarioFileName, "rotting heights.sea"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 35, 20 }
+                    },
+                    OWNERSHIP_OWNED);
+                // clang-format on
+            }*/
+            else if (String::Equals(gScenarioFileName, "grand glacier.sea"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 99, 58 }
+                    },
+                    OWNERSHIP_OWNED);
+                // clang-format on
+            }
+            /*else if (String::Equals(gScenarioFileName, "woodworm park.sea"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 62, 105 }, { 101, 55 }
+                    },
+                    OWNERSHIP_OWNED);
+                // clang-format on
+            }*/
             else if (String::Equals(gScenarioFileName, "pleasure island.sea"))
             {
                 // clang-format off
@@ -571,6 +661,16 @@ namespace RCT2
                         { 37, 66 },
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                // clang-format on
+            }
+            else if (String::Equals(_s6.ScenarioFilename, "Crazy Castle.SC6"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 2, 62 }, { 2, 63 }, { 2, 83 }, { 2, 84 }, { 9, 4 }
+                    },
+                    OWNERSHIP_AVAILABLE);
                 // clang-format on
             }
             else if (String::Equals(_s6.ScenarioFilename, "Extreme Heights.SC6"))
@@ -583,6 +683,16 @@ namespace RCT2
                     OWNERSHIP_OWNED);
                 // clang-format on
             }
+            /*else if (String::Equals(_s6.ScenarioFilename, "Ghost Town.SC6"))
+            {
+                // clang-format off
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 43, 79 }, { 42, 80 }, { 43, 80 },
+                    },
+                    OWNERSHIP_OWNED);
+                // clang-format on
+            }*/
             else if (String::Equals(_s6.ScenarioFilename, "Six Flags Great Adventure.SC6"))
             {
                 // clang-format off
@@ -591,6 +701,11 @@ namespace RCT2
                         { 241, 59 }, { 242, 59 },
                     },
                     OWNERSHIP_UNOWNED);
+                 /*FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 145, 31 }
+                    },
+                    OWNERSHIP_OWNED);*/
                 // clang-format on
             }
             else if (String::Equals(_s6.ScenarioFilename, "Six Flags Holland.SC6"))
@@ -617,6 +732,7 @@ namespace RCT2
                         { 92, 57 }, { 93, 57 },
                         { 89, 40 }, { 89, 41 }, { 89, 42 }, { 88, 42 }, 
                         { 168, 20 }, { 169, 20 },
+                        /*{ 46, 51 }, { 58, 159 }, { 71, 201 }, { 126, 15 }, { 190, 6 }*/
                     },
                     OWNERSHIP_AVAILABLE, true);
                 // clang-format on
@@ -634,6 +750,7 @@ namespace RCT2
                         { 92, 57 }, { 93, 57 },
                         { 89, 40 }, { 89, 41 }, { 89, 42 }, { 88, 42 }, 
                         { 168, 20 }, { 169, 20 },
+                        /*{ 46, 51 }, { 58, 159 }, { 71, 201 }, { 126, 15 }, { 190, 6 }*/
                     },
                     OWNERSHIP_AVAILABLE, true);
                 // clang-format on
@@ -668,6 +785,11 @@ namespace RCT2
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
+                        { 42, 147 }, { 58, 122 }, { 87, 147 }
+                    },
+                    OWNERSHIP_AVAILABLE, true);
+                FixLandOwnershipTilesWithOwnership(
+                    {
                         { 128, 90 },
                         { 135, 91 }, { 136, 91 },
                         { 129, 90 }, { 130, 90 }, { 131, 90 }, { 132, 90 }, 
@@ -694,6 +816,7 @@ namespace RCT2
                     {
                         { 43, 65 },
                         { 69, 41 },
+                        { 74, 2 },
                         { 90, 19 }, { 90, 20 },
                         { 65, 40 }, { 66, 40 }, { 67, 40 },
                         { 62, 24 }, { 63, 24 }, { 64, 24 }, { 65, 24 }, { 65, 25 },
@@ -754,6 +877,7 @@ namespace RCT2
                 FixLandOwnershipTilesWithOwnership(
                     {
                         { 90, 8 },
+                        { 2, 26 }, { 2, 27 },
                         { 83, 117 }, { 84, 117 },
                         { 96, 2 }, { 97, 2 },
                         { 106, 106 }, { 106, 107 },
@@ -930,6 +1054,7 @@ namespace RCT2
                     {
                         { 103, 24 },
                         { 104, 25 },
+                        { 116, 42 }, { 116, 43 }, { 116, 44 }, { 116, 45 }, { 116, 46 }, { 117, 41 }, { 117, 42 }, { 117, 43 }, { 117, 44 }, { 117, 45 }, { 117, 46 }
                     },
                     OWNERSHIP_AVAILABLE, true);
                 FixLandOwnershipTilesWithOwnership(
