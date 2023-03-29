@@ -190,11 +190,11 @@ public:
         {
             case WIDX_CLOSE:
                 Close();
-                break;
+                return;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
                 SetPage(widgetIndex - WIDX_TAB_1);
-                break;
+                return;
         }
 
         switch (page)
