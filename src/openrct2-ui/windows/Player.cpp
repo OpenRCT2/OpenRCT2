@@ -186,7 +186,7 @@ public:
 
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
-        switch(widgetIndex)
+        switch (widgetIndex)
         {
             case WIDX_CLOSE:
                 Close();
