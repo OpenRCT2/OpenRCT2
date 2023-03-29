@@ -79,22 +79,39 @@ static Widget *window_player_page_widgets[] = {
 class PlayerWindow final : public Window
 {
 public:
-    void Init()
+    void Init(const uint8_t id)
     {
+        number = id;
         InitScrollWidgets();
         SetPage(WINDOW_PLAYER_PAGE_OVERVIEW);
     }
 
 #pragma region Events
 
+    void OnOpen() override
+    {
+        page = 0;
+        frame_no = 0;
+        list_information_type = 0;
+        picked_peep_frame = 0;
+        min_width = 210;
+        min_height = 134;
+        max_width = 500;
+        max_height = 450;
+        no_list_items = 0;
+        selected_list_item = -1;
+
+        Invalidate();
+
+        widgets = window_player_page_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
+        hold_down_widgets = 0;
+        pressed_widgets = 0;
+    }
+
     void OnClose() override
     {
         switch (page)
         {
-            case WINDOW_PLAYER_PAGE_OVERVIEW:
-                OnCloseOverview();
-                break;
-
             case WINDOW_PLAYER_PAGE_STATISTICS:
                 OnCloseStatistics();
                 break;
@@ -323,10 +340,6 @@ private:
     }
 
 #pragma region Overview
-
-    void OnCloseOverview()
-    {
-    }
 
     void OnResizeOverview()
     {
@@ -665,28 +678,9 @@ WindowBase* WindowPlayerOpen(uint8_t id)
     if (window == nullptr)
     {
         window = WindowCreate<PlayerWindow>(WindowClass::Player, 240, 170, WF_RESIZABLE);
-        window->number = id;
-        window->page = 0;
-        window->frame_no = 0;
-        window->list_information_type = 0;
-        window->picked_peep_frame = 0;
-        window->min_width = 210;
-        window->min_height = 134;
-        window->max_width = 500;
-        window->max_height = 450;
-
-        window->no_list_items = 0;
-        window->selected_list_item = -1;
     }
 
-    window->page = 0;
-    window->Invalidate();
-
-    window->widgets = window_player_page_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
-    window->hold_down_widgets = 0;
-    window->pressed_widgets = 0;
-
-    window->Init();
+    window->Init(id);
 
     return window;
 }
