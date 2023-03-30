@@ -38,6 +38,7 @@ add_executable(OpenRCT2Tests ${test_files})
 target_link_libraries(OpenRCT2Tests GTest::gtest GTest::gtest_main libopenrct2)
 target_include_directories(OpenRCT2Tests PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
 set_target_properties(OpenRCT2Tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-gtest_discover_tests(OpenRCT2Tests WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-
+gtest_discover_tests(OpenRCT2Tests
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    DISCOVERY_MODE PRE_TEST)
 
