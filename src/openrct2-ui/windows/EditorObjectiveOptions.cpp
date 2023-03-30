@@ -118,61 +118,6 @@ static Widget *window_editor_objective_options_widgets[] = {
 
 #pragma endregion
 
-#pragma region Events
-
-static void WindowEditorObjectiveOptionsMainMouseup(WindowBase *w, WidgetIndex widgetIndex);
-static void WindowEditorObjectiveOptionsMainResize(WindowBase *w);
-static void WindowEditorObjectiveOptionsMainMousedown(WindowBase *w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowEditorObjectiveOptionsMainDropdown(WindowBase *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowEditorObjectiveOptionsMainUpdate(WindowBase *w);
-static void WindowEditorObjectiveOptionsMainTextinput(WindowBase *w, WidgetIndex widgetIndex, const char *text);
-static void WindowEditorObjectiveOptionsMainInvalidate(WindowBase *w);
-static void WindowEditorObjectiveOptionsMainPaint(WindowBase *w, DrawPixelInfo *dpi);
-
-static void WindowEditorObjectiveOptionsRidesMouseup(WindowBase *w, WidgetIndex widgetIndex);
-static void WindowEditorObjectiveOptionsRidesResize(WindowBase *w);
-static void WindowEditorObjectiveOptionsRidesUpdate(WindowBase *w);
-static void WindowEditorObjectiveOptionsRidesScrollgetheight(WindowBase *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void WindowEditorObjectiveOptionsRidesScrollmousedown(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowEditorObjectiveOptionsRidesScrollmouseover(WindowBase *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowEditorObjectiveOptionsRidesInvalidate(WindowBase *w);
-static void WindowEditorObjectiveOptionsRidesPaint(WindowBase *w, DrawPixelInfo *dpi);
-static void WindowEditorObjectiveOptionsRidesScrollpaint(WindowBase *w, DrawPixelInfo *dpi, int32_t scrollIndex);
-
-// 0x009A9DF4
-static WindowEventList window_objective_options_main_events([](auto& events)
-{
-    events.mouse_up = &WindowEditorObjectiveOptionsMainMouseup;
-    events.resize = &WindowEditorObjectiveOptionsMainResize;
-    events.mouse_down = &WindowEditorObjectiveOptionsMainMousedown;
-    events.dropdown = &WindowEditorObjectiveOptionsMainDropdown;
-    events.update = &WindowEditorObjectiveOptionsMainUpdate;
-    events.text_input = &WindowEditorObjectiveOptionsMainTextinput;
-    events.invalidate = &WindowEditorObjectiveOptionsMainInvalidate;
-    events.paint = &WindowEditorObjectiveOptionsMainPaint;
-});
-
-// 0x009A9F58
-static WindowEventList window_objective_options_rides_events([](auto& events)
-{
-    events.mouse_up = &WindowEditorObjectiveOptionsRidesMouseup;
-    events.resize = &WindowEditorObjectiveOptionsRidesResize;
-    events.update = &WindowEditorObjectiveOptionsRidesUpdate;
-    events.get_scroll_size = &WindowEditorObjectiveOptionsRidesScrollgetheight;
-    events.scroll_mousedown = &WindowEditorObjectiveOptionsRidesScrollmousedown;
-    events.scroll_mouseover = &WindowEditorObjectiveOptionsRidesScrollmouseover;
-    events.invalidate = &WindowEditorObjectiveOptionsRidesInvalidate;
-    events.paint = &WindowEditorObjectiveOptionsRidesPaint;
-    events.scroll_paint = &WindowEditorObjectiveOptionsRidesScrollpaint;
-});
-
-static WindowEventList *window_editor_objective_options_page_events[] = {
-    &window_objective_options_main_events,
-    &window_objective_options_rides_events,
-};
-
-#pragma endregion
-
 #pragma region Enabled widgets
 
 static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
@@ -202,12 +147,123 @@ public:
         UpdateDisabledWidgets();
     }
 
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                Close();
+                break;
+            case WIDX_TAB_1:
+            case WIDX_TAB_2:
+                SetPage(widgetIndex - WIDX_TAB_1);
+                break;
+        }
+
+        if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
+        {
+            OnMouseUpMain(widgetIndex);
+        }
+    }
+
     void OnResize() override
     {
+        switch (page)
+        {
+            case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN:
+                OnResizeMain();
+                break;
+            case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES:
+                OnResizeRides();
+                break;
+        }
     }
 
     void OnPrepareDraw() override
     {
+        switch (page)
+        {
+            case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN:
+                OnPrepareDrawMain();
+                break;
+            case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES:
+                OnPrepareDrawRides();
+                break;
+        }
+    }
+
+    void OnUpdate() override
+    {
+        switch (page)
+        {
+            case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN:
+                OnUpdateMain();
+                break;
+            case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES:
+                OnUpdateRides();
+                break;
+        }
+    }
+
+    void OnDraw(DrawPixelInfo& dpi) override
+    {
+        switch (page)
+        {
+            case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN:
+                OnDrawMain(&dpi);
+                break;
+            case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES:
+                OnDrawRides(&dpi);
+                break;
+        }
+    }
+
+    void OnMouseDown(WidgetIndex widgetIndex) override
+    {
+        if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
+        {
+            OnMouseDownMain(widgetIndex);
+        }
+    }
+
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+    {
+        if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
+        {
+            OnDropdownMain(widgetIndex, selectedIndex);
+        }
+    }
+
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+    {
+        if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
+        {
+            OnTextInputMain(widgetIndex, text);
+        }
+    }
+
+    void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
+        {
+            OnScrollMouseDownRides(scrollIndex, screenCoords);
+        }
+    }
+
+    void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
+        {
+            OnScrollMouseOver(scrollIndex, screenCoords);
+        }
+    }
+
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+    {
+        if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
+        {
+            OnScrollDraw(scrollIndex, dpi);
+        }
     }
 
 private:
@@ -226,7 +282,6 @@ private:
         no_list_items = 0;
         selected_list_item = -1;
         hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[newPage];
-        event_handlers = window_editor_objective_options_page_events[newPage];
         widgets = window_editor_objective_options_widgets[newPage];
         Invalidate();
         UpdateDisabledWidgets();
@@ -561,13 +616,6 @@ private:
     {
         switch (widgetIndex)
         {
-            case WIDX_CLOSE:
-                Close();
-                break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-                SetPage(widgetIndex - WIDX_TAB_1);
-                break;
             case WIDX_PARK_NAME:
             {
                 auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
@@ -687,16 +735,16 @@ private:
      *
      *  rct2: 0x00671A73
      */
-    void OnTextInputMain(WidgetIndex widgetIndex, const char* text)
+    void OnTextInputMain(WidgetIndex widgetIndex, std::string_view text)
     {
-        if (text == nullptr)
+        if (text.empty())
             return;
 
         switch (widgetIndex)
         {
             case WIDX_PARK_NAME:
             {
-                auto action = ParkSetNameAction(text);
+                auto action = ParkSetNameAction(std::string(text));
                 GameActions::Execute(&action);
 
                 if (gScenarioName.empty())
@@ -922,24 +970,6 @@ private:
 #pragma endregion
 
 #pragma region Rides
-
-    /**
-     *
-     *  rct2: 0x006724A4
-     */
-    void OnMouseUpRides(WidgetIndex widgetIndex)
-    {
-        switch (widgetIndex)
-        {
-            case WIDX_CLOSE:
-                Close();
-                break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-                SetPage(widgetIndex - WIDX_TAB_1);
-                break;
-        }
-    }
 
     /**
      *
