@@ -1232,8 +1232,7 @@ private:
 
     int32_t GetTabRowCount()
     {
-        int32_t tabEntries = static_cast<int32_t>(_tabEntries.size());
-        return std::max<int32_t>((tabEntries + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
+        return std::max<int32_t>((_tabEntries.size() + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
     }
 
     int32_t GetMaxTabCountInARow()
