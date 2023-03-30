@@ -6,6 +6,7 @@ on:
 jobs:
   stale:
     runs-on: ubuntu-latest
+    if: github.repository == 'OpenRCT2/OpenRCT2'
     steps:
       - uses: actions/stale@v7
         with:
