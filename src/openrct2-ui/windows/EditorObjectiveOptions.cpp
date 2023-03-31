@@ -132,7 +132,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-class EditorObjectiveOptionsWindow : public Window
+class EditorObjectiveOptionsWindow final : public Window
 {
 public:
     void OnOpen() override
