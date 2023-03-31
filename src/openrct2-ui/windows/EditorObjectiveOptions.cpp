@@ -299,7 +299,7 @@ private:
     {
         // Check if there are any rides (not shops or facilities)
         const auto& rideManager = GetRideManager();
-        if (std::any_of(rideManager.begin(), rideManager.end(), [](const Ride& ride) { return ride.IsRide(); }))
+        if (std::any_of(rideManager.begin(), rideManager.end(), [](const Ride& rideToCheck) { return rideToCheck.IsRide(); }))
         {
             disabled_widgets &= ~(1uLL << WIDX_TAB_2);
         }
@@ -827,7 +827,7 @@ private:
      */
     void OnDrawMain(DrawPixelInfo* dpi)
     {
-        int32_t width;
+        int32_t widthToSet;
         StringId stringId;
 
         DrawWidgets(*dpi);
@@ -922,7 +922,7 @@ private:
 
         // Park name
         screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_PARK_NAME].top };
-        width = widgets[WIDX_PARK_NAME].left - 16;
+        widthToSet = widgets[WIDX_PARK_NAME].left - 16;
 
         {
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
@@ -931,17 +931,17 @@ private:
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
-            DrawTextEllipsised(*dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft);
+            DrawTextEllipsised(*dpi, screenCoords, widthToSet, STR_WINDOW_PARK_NAME, ft);
         }
 
         // Scenario name
         screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_SCENARIO_NAME].top };
-        width = widgets[WIDX_SCENARIO_NAME].left - 16;
+        widthToSet = widgets[WIDX_SCENARIO_NAME].left - 16;
 
         ft = Formatter();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(gScenarioName.c_str());
-        DrawTextEllipsised(*dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft);
+        DrawTextEllipsised(*dpi, screenCoords, widthToSet, STR_WINDOW_SCENARIO_NAME, ft);
 
         // Scenario details label
         screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_DETAILS].top };
@@ -949,12 +949,12 @@ private:
 
         // Scenario details value
         screenCoords = windowPos + ScreenCoordsXY{ 16, widgets[WIDX_DETAILS].top + 10 };
-        width = widgets[WIDX_DETAILS].left - 4;
+        widthToSet = widgets[WIDX_DETAILS].left - 4;
 
         ft = Formatter();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(gScenarioDetails.c_str());
-        DrawTextWrapped(*dpi, screenCoords, width, STR_BLACK_STRING, ft);
+        DrawTextWrapped(*dpi, screenCoords, widthToSet, STR_BLACK_STRING, ft);
 
         // Scenario category label
         screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_CATEGORY].top };
@@ -992,11 +992,11 @@ private:
         InvalidateWidget(WIDX_TAB_2);
 
         auto numItems = 0;
-        for (auto& ride : GetRideManager())
+        for (auto& currentRide : GetRideManager())
         {
-            if (ride.IsRide())
+            if (currentRide.IsRide())
             {
-                list_item_positions[numItems] = ride.id.ToUnderlying();
+                list_item_positions[numItems] = currentRide.id.ToUnderlying();
                 numItems++;
             }
         }
@@ -1012,9 +1012,9 @@ private:
      *
      *  rct2: 0x006724BF
      */
-    void OnScrollGetHeightRides(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+    void OnScrollGetHeightRides(WindowBase* w, int32_t scrollIndex, int32_t* widthToSet, int32_t* heightToSet)
     {
-        *height = no_list_items * 12;
+        *heightToSet = no_list_items * 12;
     }
 
     /**
@@ -1027,11 +1027,11 @@ private:
         if (i < 0 || i >= no_list_items)
             return;
 
-        const auto rideId = RideId::FromUnderlying(list_item_positions[i]);
-        auto ride = GetRide(rideId);
-        if (ride != nullptr)
+        const auto currentRideId = RideId::FromUnderlying(list_item_positions[i]);
+        auto currentRide = GetRide(currentRideId);
+        if (currentRide != nullptr)
         {
-            ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+            currentRide->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
         }
         Invalidate();
     }
@@ -1118,11 +1118,11 @@ private:
             }
 
             // Checkbox mark
-            const auto rideId = RideId::FromUnderlying(list_item_positions[i]);
-            auto ride = GetRide(rideId);
-            if (ride != nullptr)
+            const auto currentRideId = RideId::FromUnderlying(list_item_positions[i]);
+            auto currentRide = GetRide(currentRideId);
+            if (currentRide != nullptr)
             {
-                if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+                if (currentRide->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
                 {
                     auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                     GfxDrawString(
@@ -1133,7 +1133,7 @@ private:
                 // Ride name
 
                 Formatter ft;
-                ride->FormatNameTo(ft);
+                currentRide->FormatNameTo(ft);
                 DrawTextBasic(*dpi, { 15, y }, stringId, ft);
             }
         }
@@ -1148,11 +1148,12 @@ private:
  */
 WindowBase* WindowEditorObjectiveOptionsOpen()
 {
-    auto w = WindowBringToFrontByClass(WindowClass::EditorObjectiveOptions);
-    if (w != nullptr)
-        return w;
+    auto window = WindowBringToFrontByClass(WindowClass::EditorObjectiveOptions);
+    if (window != nullptr)
+        return window;
 
-    w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WindowClass::EditorObjectiveOptions, WF_10);
+    window = WindowCreate<EditorObjectiveOptionsWindow>(
+        WindowClass::EditorObjectiveOptions, 450, 225, WF_10 | WF_CENTRE_SCREEN);
 
-    return w;
+    return window;
 }
