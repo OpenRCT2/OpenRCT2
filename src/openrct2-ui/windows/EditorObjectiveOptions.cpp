@@ -1010,15 +1010,6 @@ private:
 
     /**
      *
-     *  rct2: 0x006724BF
-     */
-    void OnScrollGetHeightRides(WindowBase* w, int32_t scrollIndex, int32_t* widthToSet, int32_t* heightToSet)
-    {
-        *heightToSet = no_list_items * 12;
-    }
-
-    /**
-     *
      *  rct2: 0x006724FC
      */
     void OnScrollMouseDownRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
