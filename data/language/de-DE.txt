@@ -269,8 +269,8 @@ STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP
 STR_0876    :{BLACK}▼
 STR_0877    :Zu niedrig!
 STR_0878    :Zu hoch!
-STR_0879    :Gelände kann hier nicht gesenkt werden…
-STR_0880    :Gelände kann hier nicht erhöht werden…
+STR_0879    :Gelände kann hier nicht gesenkt werden …
+STR_0880    :Gelände kann hier nicht erhöht werden …
 STR_0881    :Objekt ist im Weg
 STR_0882    :Spiel laden
 STR_0883    :Spiel speichern
@@ -314,8 +314,8 @@ STR_0922    :Steiler Anstieg
 STR_0923    :Vertikaler Anstieg
 STR_0924    :Spirale nach unten
 STR_0925    :Spirale nach oben
-STR_0926    :Dies kann nicht entfernt werden…
-STR_0927    :Dies kann hier nicht gebaut werden…
+STR_0926    :Dies kann nicht entfernt werden …
+STR_0927    :Dies kann hier nicht gebaut werden …
 STR_0928    :Kettenlift, um Wagen einen{NEWLINE}Anstieg hinaufzuziehen
 STR_0929    :S-Kurve (links)
 STR_0930    :S-Kurve (rechts)
@@ -375,7 +375,7 @@ STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Zu viele Attraktionen
-STR_0988    :Neue Attraktion kann nicht erstellt werden…
+STR_0988    :Neue Attraktion kann nicht erstellt werden …
 STR_0989    :{STRINGID}
 STR_0990    :Konstruktion
 STR_0991    :Stationsplattform
@@ -389,10 +389,10 @@ STR_0998    :Keine weiteren Stationen mehr bei dieser Bahn zulässig
 STR_0999    :Erfordert eine Stationsplattform
 STR_1000    :Strecke ist nicht in sich geschlossen
 STR_1001    :Strecke ist für diese Zugart ungeeignet
-STR_1002    :Kann {STRINGID} nicht öffnen…
-STR_1003    :Kann {STRINGID} nicht testen…
-STR_1004    :Kann {STRINGID} nicht schließen…
-STR_1005    :Kann {STRINGID} nicht bauen…
+STR_1002    :Kann {STRINGID} nicht öffnen …
+STR_1003    :Kann {STRINGID} nicht testen …
+STR_1004    :Kann {STRINGID} nicht schließen …
+STR_1005    :Kann {STRINGID} nicht bauen …
 STR_1006    :Muss zuerst geschlossen werden
 STR_1007    :Es können nicht genügend Fahrzeuge erstellt werden
 STR_1008    :Attraktion öffnen, schließen oder testen
@@ -404,10 +404,10 @@ STR_1013    :Park schließen
 STR_1014    :Park öffnen
 STR_1015    :Es kann nicht mehr als eine Stationsplattform in diesem Modus verwendet werden
 STR_1016    :Es können nicht weniger als zwei Stationsplattformen in diesem Modus verwendet werden
-STR_1017    :Betriebsmodus kann nicht geändert werden…
-STR_1018    :Änderungen können nicht durchgeführt werden…
-STR_1019    :Änderungen können nicht durchgeführt werden…
-STR_1020    :Änderungen können nicht durchgeführt werden…
+STR_1017    :Betriebsmodus kann nicht geändert werden …
+STR_1018    :Änderungen können nicht durchgeführt werden …
+STR_1019    :Änderungen können nicht durchgeführt werden …
+STR_1020    :Änderungen können nicht durchgeführt werden …
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :{POP16}{POP16}{POP16}{COMMA16} Wagen pro Zug
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16} Wagen pro Zug
@@ -446,7 +446,7 @@ STR_1055    :Person benennen
 STR_1056    :Mitarbeiter benennen
 STR_1057    :Name der Attraktion
 STR_1058    :Neuen Namen für diese Attraktion eingeben:
-STR_1059    :Attraktion kann nicht umbenannt werden…
+STR_1059    :Attraktion kann nicht umbenannt werden …
 STR_1060    :Ungültiger Attraktionsname
 STR_1061    :Normaler Modus
 STR_1062    :Durchgängiger Rundenmodus
@@ -531,8 +531,8 @@ STR_1140    :Schemaoption für Fahrzeugfarbe auswählen
 STR_1141    :Zu modifizierendes Fahrzeug auswählen
 STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
-STR_1144    :Eingang für diese Attraktion kann nicht gebaut/verschoben werden…
-STR_1145    :Ausgang für diese Attraktion kann nicht gebaut/verschoben werden…
+STR_1144    :Eingang für diese Attraktion kann nicht gebaut/verschoben werden …
+STR_1145    :Ausgang für diese Attraktion kann nicht gebaut/verschoben werden …
 STR_1146    :Eingang noch nicht gebaut
 STR_1147    :Ausgang noch nicht gebaut
 STR_1148    :Viertelvoll
@@ -545,16 +545,16 @@ STR_1154    :Höhenmarkierungen auf dem Gelände
 STR_1155    :Höhenmarkierungen an Fußwegen
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
-STR_1158    :Kann nicht entfernt werden…
+STR_1158    :Kann nicht entfernt werden …
 STR_1159    :Platzieren Sie Szenerien, Beete{NEWLINE}und andere Objekte
 STR_1160    :Seen & Wasseranlagen erstellen/anpassen
-STR_1161    :Kann hier nicht positioniert werden…
+STR_1161    :Kann hier nicht positioniert werden …
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Rechter Mausklick zum Modifizieren)
 STR_1164    :{STRINGID}{NEWLINE}(Rechter Mausklick zum Entfernen)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Wasserspiegel kann hier nicht gesenkt werden…
-STR_1167    :Wasserspiegel kann hier nicht erhöht werden…
+STR_1166    :Wasserspiegel kann hier nicht gesenkt werden …
+STR_1167    :Wasserspiegel kann hier nicht erhöht werden …
 STR_1168    :Optionen
 STR_1169    :(Keine)
 STR_1170    :{STRING}
@@ -563,8 +563,8 @@ STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Fußwege und Warteschlangenreihen anlegen
 STR_1174    :Banner im Weg
 STR_1175    :Kann nicht auf Fußweg mit Neigung angelegt werden
-STR_1176    :Fußweg kann hier nicht angelegt werden…
-STR_1177    :Fußweg kann hier nicht entfernt werden…
+STR_1176    :Fußweg kann hier nicht angelegt werden …
+STR_1177    :Fußweg kann hier nicht entfernt werden …
 STR_1178    :Landneigung unpassend
 STR_1179    :Fußweg im Weg
 STR_1180    :Kann nicht unter Wasser gebaut werden!
@@ -726,7 +726,7 @@ STR_1335    :{STRINGID} - Eingang{POP16}{POP16}
 STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Eingang
 STR_1337    :{STRINGID} - Ausgang{POP16}{POP16}
 STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Ausgang
-STR_1339    :{BLACK}Noch keine Testergebnisse…
+STR_1339    :{BLACK}Noch keine Testergebnisse …
 STR_1340    :{WINDOW_COLOUR_2}Max. Geschwindigkeit: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Fahrtdauer: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
@@ -748,8 +748,8 @@ STR_1357    :{WINDOW_COLOUR_2}Löcher: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Gesamtzeit „in der Luft“: {BLACK}{COMMA2DP32}Sek.
 STR_1359    :{WINDOW_COLOUR_2}Wartezeit: {BLACK}{COMMA16} Minute
 STR_1360    :{WINDOW_COLOUR_2}Wartezeit: {BLACK}{COMMA16} Minuten
-STR_1361    :Geschwindigkeit kann nicht geändert werden…
-STR_1362    :Startgeschwindigkeit kann nicht geändert werden…
+STR_1361    :Geschwindigkeit kann nicht geändert werden …
+STR_1362    :Startgeschwindigkeit kann nicht geändert werden …
 STR_1363    :Zu hoch für Stützen!
 STR_1364    :Die Stützen für die darüber liegende Strecke können nicht weiter verlängert werden!
 STR_1365    :Inline-Twist (links)
@@ -773,8 +773,8 @@ STR_1382    :Gebogener Lifthügel (r.)
 STR_1383    :Viertelschleife
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Andere Streckenkonfigurationen
-STR_1386    :Speziell…
-STR_1387    :Geländeart kann nicht geändert werden…
+STR_1386    :Speziell …
+STR_1387    :Geländeart kann nicht geändert werden …
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
@@ -794,7 +794,7 @@ STR_1403    :Ausgang von Attraktion bauen oder verlegen
 STR_1404    :Um 90° drehen
 STR_1405    :Spiegelbild
 STR_1406    :Szenerie ein-/ausschalten (falls{NEWLINE}für diesen Entwurf verfügbar)
-STR_1407    :{WINDOW_COLOUR_2}Dies bauen…
+STR_1407    :{WINDOW_COLOUR_2}Dies bauen …
 STR_1408    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY}
 STR_1409    :Ein-/Ausgangsplattform
 STR_1410    :Vertikaler Turm
@@ -841,7 +841,7 @@ STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRING
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :Name des Besuchers
 STR_1453    :Neuen Namen für diesen Besucher eingeben:
-STR_1454    :Besucher kann nicht benannt werden…
+STR_1454    :Besucher kann nicht benannt werden …
 STR_1455    :Ungültiger Name für Besucher
 STR_1456    :{WINDOW_COLOUR_2}Ausgegebenes Geld: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Geld in Brieftasche: {BLACK}{CURRENCY2DP}
@@ -1039,7 +1039,7 @@ STR_1648    :„Hilfe! Lasst mich runter!“
 STR_1649    :„Mir geht das Geld aus!“
 STR_1650    :„Wow! Eine neue Bahn im Bau!“
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :„…und hier sind wir bei d. {STRINGID}!“
+STR_1653    :„… und hier sind wir auf {STRINGID}!“
 STR_1654    :{WINDOW_COLOUR_2}Aktuelle Gedanken:
 STR_1655    :Fußweg auf Gelände anlegen
 STR_1656    :Brücke bauen oder Tunnel anlegen
@@ -1090,7 +1090,7 @@ STR_1700    :Neuen Parkpfleger einst.
 STR_1701    :Neuen Mechaniker einst.
 STR_1702    :Neuen Aufseher einstellen
 STR_1703    :Neuen Animateur einstellen
-STR_1704    :Es kann kein neuer Mitarbeiter eingestellt werden…
+STR_1704    :Es kann kein neuer Mitarbeiter eingestellt werden …
 STR_1705    :Diesen Mitarbeiter entlassen
 STR_1706    :Diese Person an einen anderen Ort befördern
 STR_1707    :Zu viele Mitarbeiter im Spiel
@@ -1103,18 +1103,18 @@ STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Beete bewässern
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Mülleimer leeren
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Gras mähen
 STR_1716    :Ungültiger Name für Park
-STR_1717    :Park kann nicht umbenannt werden…
+STR_1717    :Park kann nicht umbenannt werden …
 STR_1718    :Parkname
 STR_1719    :Geben Sie einen Parknamen ein:
 STR_1720    :Park benennen
 STR_1721    :Park geschlossen
 STR_1722    :Park geöffnet
-STR_1723    :Park kann nicht eröffnet werden…
-STR_1724    :Park kann nicht geschlossen werden…
-STR_1725    :Land kann nicht gekauft werden…
+STR_1723    :Park kann nicht eröffnet werden …
+STR_1724    :Park kann nicht geschlossen werden …
+STR_1725    :Land kann nicht gekauft werden …
 STR_1726    :Land nicht zum Verkauf!
 STR_1727    :Baurechte nicht zum Verkauf!
-STR_1728    :Erwerb von Baurechten hier nicht möglich…
+STR_1728    :Erwerb von Baurechten hier nicht möglich …
 STR_1729    :Land gehört nicht dem Park!
 STR_1730    :{RED}Geschlossen
 STR_1731    :{WHITE}{STRINGID} - - 
@@ -1123,18 +1123,18 @@ STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Anzahl der Runden:
 STR_1735    :Rundenanzahl
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1738    :Rundenanzahl kann nicht geändert werden…
+STR_1738    :Rundenanzahl kann nicht geändert werden …
 STR_1739    :Rennen gewonnen von Besucher {INT32}
 STR_1740    :Rennen wurde gewonnen von {STRINGID}
 STR_1741    :Noch nicht gebaut!
 STR_1742    :{WINDOW_COLOUR_2}Max. Besucherzahl:
 STR_1743    :Max. Anzahl von Personen zur selben Zeit auf dieser Bahn
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1746    :Dies kann nicht geändert werden…
+STR_1746    :Dies kann nicht geändert werden …
 STR_1747    :{WINDOW_COLOUR_2}Zeitlimit:
 STR_1748    :Zeitlimit für Fahrt
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1751    :Zeitlimit für Fahrt kann nicht geändert werden…
+STR_1751    :Zeitlimit für Fahrt kann nicht geändert werden …
 STR_1752    :Liste einzelner Parkbesucher anzeigen
 STR_1753    :Gesamtliste von Parkbesuchern anzeigen
 STR_1754    :{BLACK}{COMMA32} Besucher
@@ -1151,7 +1151,7 @@ STR_1764    :Baumstammstöße
 STR_1765    :Fahrtfoto-Bereich
 STR_1766    :Drehscheibe
 STR_1767    :Drehtunnel
-STR_1768    :Schwunganzahl kann nicht geändert werden…
+STR_1768    :Schwunganzahl kann nicht geändert werden …
 STR_1769    :{WINDOW_COLOUR_2}Schwunganzahl:
 STR_1770    :Anzahl kompletter Schwünge
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1190,7 +1190,7 @@ STR_1807    :Kontrolle defekt
 STR_1808    :{WINDOW_COLOUR_2}Letzte Störung: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Aktuelle Störung: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Trägt:
-STR_1811    :Dies kann hier nicht gebaut werden…
+STR_1811    :Dies kann hier nicht gebaut werden …
 STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Verschiedene Objekte
 STR_1814    :Aktionen
@@ -1247,7 +1247,7 @@ STR_1864    :Mechaniker
 STR_1865    :Aufseher
 STR_1866    :Animateur
 STR_1867    :{BLACK}{COMMA32} {STRINGID}
-STR_1868    :Anzahl der Drehungen kann nicht geändert werden…
+STR_1868    :Anzahl der Drehungen kann nicht geändert werden …
 STR_1869    :{WINDOW_COLOUR_2}Anzahl der Drehungen:
 STR_1870    :Anzahl kompletter Drehungen
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1300,7 +1300,7 @@ STR_1920    :Darlehen kann nicht zurückgezahlt werden!
 STR_1921    :Neues Spiel beginnen
 STR_1922    :Gespeichertes Spiel fortsetzen
 STR_1924    :Beenden
-STR_1925    :Person kann hier nicht platziert werden…
+STR_1925    :Person kann hier nicht platziert werden …
 STR_1927    :{YELLOW}{STRINGID} ist ausgefallen
 STR_1928    :{RED}{STRINGID} hatte einen Unfall!
 STR_1929    :{RED}{STRINGID} wurde immer noch nicht repariert{NEWLINE}Schauen Sie nach, wo Ihre Mechaniker sind, und organisieren Sie sie besser
@@ -1333,7 +1333,7 @@ STR_1955    :{WINDOW_COLOUR_2}Rundenanzahl:
 STR_1956    :Rundenanzahl der Strecke pro Fahrt
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :Rundenanzahl kann nicht geändert werden…
+STR_1959    :Rundenanzahl kann nicht geändert werden …
 STR_1960    :{WINDOW_COLOUR_2}Ballonpreis:
 STR_1961    :{WINDOW_COLOUR_2}Plüschtierpreis:
 STR_1962    :{WINDOW_COLOUR_2}Parkkartenpreis:
@@ -1607,7 +1607,7 @@ STR_2244    :September
 STR_2245    :Oktober
 STR_2246    :November
 STR_2247    :Dezember
-STR_2248    :Attraktion kann nicht abgerissen werden…
+STR_2248    :Attraktion kann nicht abgerissen werden …
 STR_2249    :{BABYBLUE}Neue Attraktion jetzt verfügbar:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}Neue Szenerie jetzt verfügbar:{NEWLINE}{STRINGID}
 STR_2251    :Kann nur auf Wegen gebaut werden!
@@ -1829,7 +1829,7 @@ STR_2483    :{WINDOW_COLOUR_2}Wöchentlicher Gewinn: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Wöchentlicher Gewinn: {RED}{CURRENCY2DP}
 STR_2487    :„Echte“ Besuchernamen anzeigen
 STR_2488    :Zwischen „echten“ Besuchernamen und Besucherzahlen umschalten
-STR_2489    :Tastenkürzel…
+STR_2489    :Tastenkürzel …
 STR_2490    :Tastenkürzel
 #new
 STR_2491    :Tasten zurücksetzen
@@ -1869,7 +1869,7 @@ STR_2524    :Screenshot
 STR_2533    :Rücktaste
 STR_2534    :Tab
 STR_2537    :Clear
-STR_2538    :Eingabetaste
+STR_2538    :Eingabe
 STR_2543    :Alt/Menü
 STR_2544    :Pause
 STR_2545    :Feststelltaste
@@ -2056,7 +2056,7 @@ STR_2852    :Streckenentwurf bereits installiert
 STR_2853    :Von der örtlichen Behörde verboten!
 STR_2854    :{RED}Besucher gelangen nicht zum Eingang von {STRINGID}!{NEWLINE}Bauen Sie einen Fußweg zum Eingang
 STR_2855    :{RED}{STRINGID} hat keinen Fußweg, der vom Ausgang wegführt!{NEWLINE}Legen Sie einen Fußweg an, der vom Bahnausgang wegführt
-STR_2858    :Marketingkampage kann nicht gestartet werden…
+STR_2858    :Marketingkampage kann nicht gestartet werden …
 STR_2861    :{WINDOW_COLOUR_2}Lizenziert für Infogrames Interactive Inc.
 STR_2971    :Hauptfarbschema
 STR_2972    :Alternatives Farbschema 1
@@ -2066,12 +2066,12 @@ STR_2975    :Wählen Sie das Farbschema aus, das geändert oder mit dem eine Bah
 STR_2976    :Streichen Sie einen bestimmten Bereich{NEWLINE}dieser Bahn mit dem ausgewählten Farbschema
 STR_2977    :Mitarbeitername
 STR_2978    :Neuen Namen für diesen Mitarbeiter eingeben:
-STR_2979    :Dieser Mitarbeiter kann nicht benannt werden…
+STR_2979    :Dieser Mitarbeiter kann nicht benannt werden …
 STR_2980    :Zu viele Banner im Spiel
 STR_2981    :{RED}Kein Zutritt
 STR_2982    :Bannertext
 STR_2983    :Neuen Text für dieses Banner eingeben:
-STR_2984    :Neuer Text für das Banner kann nicht erstellt werden…
+STR_2984    :Neuer Text für das Banner kann nicht erstellt werden …
 STR_2985    :Banner
 STR_2986    :Text auf Banner ändern
 STR_2987    :Legen Sie dieses Banner als{NEWLINE}„Kein Zutritt“-Schild für{NEWLINE}Besucher fest
@@ -2097,7 +2097,7 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :Datei kann nicht geladen werden…
+STR_3010    :Datei kann nicht geladen werden …
 STR_3011    :Datei enthält ungültige Daten
 STR_3012    :Autoscooter-Beat-Stil
 STR_3013    :Jahrmarktsorgelstil
@@ -2140,7 +2140,7 @@ STR_3050    :Golfloch B
 STR_3051    :Golfloch C
 STR_3052    :Golfloch D
 STR_3053    :Golfloch E
-STR_3054    :Lädt…
+STR_3054    :Lädt …
 STR_3058    :Ziegelmauern
 STR_3059    :Hecken
 STR_3060    :Eisblöcke
@@ -2173,7 +2173,7 @@ STR_3099    :Farbe auswählen
 STR_3100    :Zweite Farbe auswählen
 STR_3101    :Dritte Farbe auswählen
 STR_3102    :Farbige Szenerie auf Gelände neu streichen
-STR_3103    :Dies kann nicht neu gestrichen werden…
+STR_3103    :Dies kann nicht neu gestrichen werden …
 STR_3104    :Bahnen auflisten
 STR_3105    :Läden und Stände auflisten
 STR_3106    :Informationsstände und andere Besuchereinrichtungen{NEWLINE}auflisten
@@ -2187,7 +2187,7 @@ STR_3113    :Anderen Entwurf auswählen
 STR_3114    :Zum Entwurfsauswahlfenster zurückkehren
 STR_3115    :Streckenentwurf speichern
 STR_3116    :Streckenentwurf speichern (erst möglich, wenn die Bahn getestet und eine Statistik erstellt wurde)
-STR_3117    :{BLACK}Mechaniker rufen…
+STR_3117    :{BLACK}Mechaniker rufen …
 STR_3118    :{BLACK}{STRINGID} geht zur Bahn
 STR_3119    :{BLACK}{STRINGID} repariert die Bahn
 STR_3120    :Nächsten verfügbaren Mechaniker{NEWLINE}oder Mechaniker bei einer{NEWLINE}Bahnreparatur suchen
@@ -2202,7 +2202,7 @@ STR_3128    :Streckenentwurf speichern
 STR_3129    :Streckenentwurf mit Szenerie speichern
 STR_3130    :Speichern
 STR_3131    :Abbrechen
-STR_3132    :{BLACK}Klicken Sie auf die Szenerie-Objekte, die mit dem Streckenentwurf gespeichert werden sollen…
+STR_3132    :{BLACK}Klicken Sie auf die Szenerie-Objekte, die mit dem Streckenentwurf gespeichert werden sollen …
 STR_3133    :Dies kann nicht auf schrägem Untergrund gebaut werden
 STR_3134    :{RED}(Der Entwurf enthält Szenerie, die nicht verfügbar ist)
 STR_3135    :{RED}(Fahrzeugentwurf nicht verfügbar - Dies kann sich auf die Bahn-Performance auswirken)
@@ -2223,7 +2223,7 @@ STR_3167    :{WINDOW_COLOUR_2}Enthält: {BLACK}{COMMA16} Objekte
 STR_3169    :Daten für das folgende Objekt wurden nicht gefunden:
 STR_3170    :Nicht genügend Speicherplatz für Grafiken
 STR_3171    :Zu viele Objekte dieser Art ausgewählt
-STR_3172    :Das folgende Objekt muss zuerst ausgewählt werden:
+STR_3172    :Das folgende Objekt muss zuerst ausgewählt werden: {STRING}
 STR_3173    :Dieses Objekt wird gerade verwendet
 STR_3174    :Dieses Objekt wird von einem anderen Objekt benötigt
 STR_3175    :Dieses Objekt wird immer benötigt
@@ -2343,7 +2343,7 @@ STR_3290    :Kühl und feucht
 STR_3291    :Warm
 STR_3292    :Heiß und trocken
 STR_3293    :Kalt
-STR_3294    :Ändern…
+STR_3294    :Ändern …
 STR_3295    :Namen des Parks ändern
 STR_3296    :Namen des Szenarios ändern
 STR_3297    :Detailhinweise zu Park/Szenario ändern
@@ -2369,12 +2369,12 @@ STR_3316    :Beschreibung für dieses Szenario eingeben:
 STR_3317    :Noch keine Details
 STR_3318    :Wählen Sie aus, in welcher Gruppe{NEWLINE}dieses Szenario vorkommt
 STR_3319    :{WINDOW_COLOUR_2}Szenariogruppe:
-STR_3320    :Szenariodatei kann nicht gespeichert werden…
+STR_3320    :Szenariodatei kann nicht gespeichert werden …
 STR_3321    :Neue Objekte erfolgreich installiert
 STR_3322    :{WINDOW_COLOUR_2}Ziel: {BLACK}{STRINGID}
 STR_3326    :{WINDOW_COLOUR_2}(kein Bild)
 STR_3327    :Startpositionen für Personen nicht eingestellt
-STR_3328    :Es kann nicht zur nächsten Editorstufe fortgeschritten werden…
+STR_3328    :Es kann nicht zur nächsten Editorstufe fortgeschritten werden …
 STR_3329    :Parkeingang noch nicht gebaut
 STR_3330    :Park muss Gelände besitzen
 STR_3331    :Fußweg vom Parkeingang zum Kartenrand entweder nicht vollständig oder zu komplex - Fußweg darf nicht zu breit sein und sollte so wenige Kreuzungen und Biegungen wie möglich aufweisen
@@ -2391,19 +2391,19 @@ STR_3342    :Szenario-Editor
 STR_3343    :Gespeichertes Spiel in Szenario umwandeln
 STR_3344    :Streckenentwurf-Designer
 STR_3345    :Streckenentwurf-Manager
-STR_3346    :Streckenentwurf kann nicht gespeichert werden…
+STR_3346    :Streckenentwurf kann nicht gespeichert werden …
 STR_3347    :Bahn ist zu lang, enthält zu viele Elemente oder Szenerie ist zu zerstreut
 STR_3348    :Umbenennen
 STR_3349    :Löschen
 STR_3350    :Streckenentwurfsname
 STR_3351    :Neuen Namen für Streckenentwurf eingeben:
-STR_3352    :Streckenentwurf kann nicht umbenannt werden…
+STR_3352    :Streckenentwurf kann nicht umbenannt werden …
 STR_3353    :Neuer Name enthält ungültige Zeichen
 STR_3354    :Entweder besteht bereits eine Datei mit diesem Namen oder die Datei ist schreibgeschützt
 STR_3355    :Datei ist schreibgeschützt oder gesperrt
 STR_3356    :Datei löschen
 STR_3357    :{WINDOW_COLOUR_2}Soll {STRING} wirklich dauerhaft gelöscht werden?
-STR_3358    :Streckenentwurf kann nicht gelöscht werden…
+STR_3358    :Streckenentwurf kann nicht gelöscht werden …
 STR_3359    :{BLACK}Keine Streckenentwürfe dieser Art
 STR_3360    :Warnung!
 STR_3361    :Zu viele Streckenentwürfe dieser Art - einige werden nicht aufgeführt.
@@ -2419,19 +2419,19 @@ STR_3372    :{BLACK}= Geldautomat
 STR_3373    :{BLACK}= Toilette
 STR_3374    :Warnung: Zu viele Objekte ausgewählt!
 STR_3375    :Es konnten nicht alle Objekte dieser Szeneriegruppe ausgewählt werden
-STR_3376    :Installieren…
+STR_3376    :Installieren …
 STR_3377    :Installieren Sie eine neue Streckenentwurfsdatei
 STR_3378    :Installieren
 STR_3379    :Abbrechen
-STR_3380    :Dieser Streckenentwurf kann nicht installiert werden…
+STR_3380    :Dieser Streckenentwurf kann nicht installiert werden …
 STR_3381    :Datei ist nicht kompatibel oder enthält ungültige Daten
 STR_3382    :Dateikopie fehlgeschlagen
 STR_3383    :Neuen Namen für Streckenentwurf auswählen
 STR_3384    :Ein bestehender Streckenentwurf hat bereits diesen Namen - Wählen Sie einen neuen Namen für diesen Entwurf:
-STR_3389    :Zusätzliches Szenerieobjekt kann nicht ausgewählt werden…
+STR_3389    :Zusätzliches Szenerieobjekt kann nicht ausgewählt werden …
 STR_3390    :Zu viele Objekte ausgewählt
 STR_3437    :Bäume, Mauern und kleinere Szenerieobjekte aus der Landschaft entfernen
-STR_3438    :Es konnten nicht alle Szenerieobjekte entfernt werden…
+STR_3438    :Es konnten nicht alle Szenerieobjekte entfernt werden …
 STR_3439    :Szenerie entf.
 STR_3445    :Patrouillenbereich festlegen
 STR_3446    :Patrouillenbereich verwerfen
@@ -2468,8 +2468,8 @@ STR_5149    :Cheats anzeigen
 STR_5150    :Aktiviere Debugging-Tools
 STR_5151    :.
 STR_5152    :,
-STR_5153    :Themen bearbeiten…
-STR_5154    :Anzeige durch Hardware
+STR_5153    :Themen bearbeiten …
+STR_5154    :Hardwareanzeige
 STR_5155    :Testen unfertiger Bahnen erlauben
 STR_5156    :Erlaubt das Testen der meisten Bahnarten, selbst wenn die Strecke nicht fertiggestellt ist, das gilt nicht für den Streckenmodus mit Blockbereichen
 STR_5158    :Spiel beenden
@@ -2775,7 +2775,7 @@ STR_5573    :Aus Favoriten entfernen
 STR_5574    :Servername:
 STR_5575    :Max. Spieler:
 STR_5576    :Port:
-STR_5577    :Südkoreanischer Won (W)
+STR_5577    :Südkorean. Won (W)
 STR_5578    :Russischer Rubel (₽)
 STR_5579    :Skalierungsfaktor:
 STR_5580    :Tschechische Krone (Kč)
@@ -2829,12 +2829,12 @@ STR_5628    :Spielherkunft
 STR_5629    :Schwierigkeitsgrad
 STR_5630    :Fortschreitendes Freispielen aktivieren
 STR_5631    :Originale DLC Parks
-STR_5632    :Bauen Sie Ihren eigenen…
+STR_5632    :Bauen Sie Ihren eigenen …
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
 STR_5635    :{WINDOW_COLOUR_2}Geld ausgegeben: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Befehle ausgeführt: {BLACK}{COMMA16}
-STR_5637    :Nicht möglich…
+STR_5637    :Nicht möglich …
 STR_5638    :Keine Berechtigung
 STR_5639    :Spielerliste anzeigen
 STR_5640    :Gruppen verwalten
@@ -2911,14 +2911,14 @@ STR_5751    :Keine Daten
 STR_5752    :{OUTLINE}{RED}{STRING} hat das Spiel verlassen
 STR_5753    :{OUTLINE}{RED}{STRING} hat das Spiel verlassen ({STRING})
 STR_5754    :Unzulässiger Spielername
-STR_5755    :Inkompatible Softwareversion
+STR_5755    :Inkompatible Softwareversion (Server benutzt {STRING})
 STR_5756    :Falsches Passwort
 STR_5757    :Server voll
 STR_5758    :{OUTLINE}{GREEN}{STRING} hat das Spiel betreten
 STR_5759    :Karte herunterladen … ({INT32} / {INT32}) KiB
 STR_5760    :Hongkong-Dollar (HK$)
-STR_5761    :Neuer Taiwan-Dollar (NT$)
-STR_5762    :Chinesischer Yuan (CN¥)
+STR_5761    :Taiwan-Dollar (NT$)
+STR_5762    :Chines. Yuan (CN¥)
 STR_5763    :Alle Dateien
 STR_5764    :Ungültiger Bahntyp
 STR_5765    :Kann Bahnen eines ungültigen Typs nicht bearbeiten
@@ -2941,17 +2941,17 @@ STR_5781    :Betriebskosten: Unbekannt
 STR_5782    :Sie sind jetzt verbunden. Drücken Sie „{STRING}“ um zu chatten.
 STR_5783    :{WINDOW_COLOUR_2}Szenario gesperrt
 STR_5784    :{BLACK}Vorhergehende Szenarios abschließen, um dieses Szenario freizuschalten.
-STR_5785    :Gruppe kann nicht umbenannt werden…
+STR_5785    :Gruppe kann nicht umbenannt werden …
 STR_5786    :Ungültiger Gruppenname
 STR_5787    :{COMMA32} Spieler online
 STR_5788    :Standardinspektionszeit:
 STR_5789    :Blitzeffekt deaktivieren
 STR_5790    :(De-)Aktiviert die RCT1-Preisgestaltung{NEWLINE}(z.B. Fahrtpreis und Parkeintrittspreis festlegen)
-STR_5791    :Setzt die Zuverlässigkeit aller Attraktionen auf 100% und setzt ihr Baujahr auf „Dieses Jahr“ zurück
+STR_5791    :Setzt die Zuverlässigkeit aller Attraktionen auf 100%{NEWLINE}und setzt ihr Baujahr auf „Dieses Jahr“ zurück
 STR_5792    :Repariert alle defekten Attraktionen
-STR_5793    :Setzt die Unfallhistorie zurück, sodass sich Besucher nicht länger über unsichere Attraktionen beschweren
+STR_5793    :Setzt die Unfallhistorie zurück, sodass sich{NEWLINE}Besucher nicht länger über unsichere Attraktionen beschweren
 STR_5794    :Einige Szenarien verbieten das Bearbeiten einiger bereits gebauten Attraktionen. Dieser Cheat hebt diese{NEWLINE}Beschränkung auf
-STR_5795    :Besucher fahren mit jeder Attraktion, auch wenn die Intensität extrem hoch ist
+STR_5795    :Besucher fahren mit jeder Attraktion,{NEWLINE}auch wenn die Intensität extrem hoch ist
 STR_5796    :Zwingt den Park zu schließen/öffnen
 STR_5797    :Deaktiviert Wetterveränderungen und{NEWLINE}friert das ausgewählte Wetter ein
 STR_5798    :Erlaubt das Bauen im Pausenmodus
@@ -2961,7 +2961,7 @@ STR_5801    :Verschmutzung deaktivieren
 STR_5802    :Hält Besucher davon ab Müll wegzuwerfen oder sich zu erbrechen
 STR_5803    :Ausgewähltes Kartenelement drehen
 STR_5804    :Ton ein-/ausschalten
-STR_5805    :Server wird zur öffentlichen Serverliste hinzugefügt und für jeden sichtbar
+STR_5805    :Server wird zur öffentlichen Serverliste{NEWLINE}hinzugefügt und für jeden sichtbar
 STR_5806    :Fenstermodus ein-/ausschalten
 STR_5807    :{WINDOW_COLOUR_2}Anzahl der Bahnen: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Anzahl der Läden und Stände: {BLACK}{COMMA16}
@@ -2973,7 +2973,7 @@ STR_5813    :„{STRING}“
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}“
 STR_5815    :FPS-Zähler im Spiel anzeigen
 STR_5816    :Stellt den Faktor für die Skalierung des{NEWLINE}Spiels ein. Besonders für hohe{NEWLINE}Auflösungen sinnvoll
-STR_5819    :[Benötigt Anzeige durch Hardware]{NEWLINE}Pausiert das Spiel, wenn das Steam-Overlay geöffnet wird
+STR_5819    :[Benötigt Hardwareanzeige]{NEWLINE}Pausiert das Spiel, wenn das Steam-Overlay geöffnet wird
 STR_5820    :Minimiert das Spiel, wenn das Spiel{NEWLINE}im Vollbildmodus nicht im{NEWLINE}Vordergrund ist
 STR_5822    :Wechselt zwischen Tag und Nacht.{NEWLINE}Ein kompletter Zyklus dauert einen Monat im Spiel
 STR_5823    :Zeigt Text auf Bannern in Großbuchstaben an (RCT1-Verhalten)
@@ -3000,7 +3000,7 @@ STR_5843    :Aktiviert das Freispielen der Szenarios (RCT1-Verhalten)
 STR_5844    :Mit einem Mehrspielerserver verbunden bleiben, selbst dann, wenn eine Desynchronisation oder ein{NEWLINE}Fehler auftritt
 STR_5845    :Zeigt für die Debugging-Tools in{NEWLINE}der Symbolleiste eine gesonderte Schaltfläche an.{NEWLINE}Aktiviert das Tastenkürzel für die Entwicklerkonsole
 STR_5846    :Auswählen, wie oft OpenRCT2{NEWLINE}automatisch speichert
-STR_5847    :Die auf dem Titelbildschirm angezeigte Parksequenz auswählen. Titelsequenzen von RCT1/2 benötigen importierte Szenarien, um zu funktionieren
+STR_5847    :Die auf dem Titelbildschirm angezeigte Parksequenz auswählen.{NEWLINE}Titelsequenzen von RCT1/2 benötigen importierte Szenarien, um zu funktionieren
 STR_5849    :Personal wird nach dem Einstellen automatisch platziert
 STR_5851    :Stellt die für neu gebaute Attraktionen standardmäßige Inspektionszeit ein
 STR_5853    :Soundeffekte aktivieren/deaktivieren
@@ -3028,11 +3028,11 @@ STR_5874    :Erlaubt es jedes Streckenstück{NEWLINE}als Kettenlift zu verwenden
 STR_5875    :Grafikschnittstelle:
 STR_5876    :Die Grafikschnittstelle, die zur Darstellung{NEWLINE}des Spiels verwendet wird
 STR_5877    :Software
-STR_5878    :Software (Anzeige durch Hardware)
+STR_5878    :Software (Hardwareanzeige)
 STR_5879    :OpenGL (experimentell)
 STR_5880    :Ausgewählte
 STR_5881    :Nicht ausgewählte
-STR_5882    :Benutzerdefinierte Währung
+STR_5882    :Benutzerdef. Währung
 STR_5883    :Währungskonfigurator
 STR_5884    :{WINDOW_COLOUR_2}Wechselkurs:
 STR_5885    :{WINDOW_COLOUR_2}entsprechen {COMMA32} GBP (£)
@@ -3140,7 +3140,7 @@ STR_5987    :Ordner konnte nicht erstellt werden
 STR_5988    :Keine verbleibenden Landrechte zum Verkauf
 STR_5989    :Keine verbleibenden Baurechte zum Verkauf
 STR_5990    :Keine verbleibenden Land- oder{NEWLINE}Baurechte zum Verkauf
-STR_5991    :Kann Element nicht einfügen…
+STR_5991    :Kann Element nicht einfügen …
 STR_5992    :Das Limit der Kartenelemente wurde erreicht
 STR_5993    :Ausgewähltes Element kopieren
 STR_5994    :Kopiertes Element einfügen
@@ -3151,7 +3151,7 @@ STR_5998    :Geld hinzufügen
 STR_5999    :Geld festlegen
 STR_6000    :Neuen Wert eingeben:
 STR_6001    :Beleuchtungseffekte aktivieren (experimentell)
-STR_6002    :Lampen und Bahnen werden nachts beleuchtet.{NEWLINE}Die Grafikschnittstelle muss hierfür auf „Anzeige durch Hardware“ eingestellt sein.
+STR_6002    :Lampen und Bahnen werden nachts beleuchtet.{NEWLINE}Die Grafikschnittstelle muss hierfür auf „Hardwareanzeige“ eingestellt sein.
 STR_6003    :Schnittansicht
 STR_6004    :Schnittansicht
 STR_6005    :Schnittansicht aktivieren
@@ -3280,7 +3280,7 @@ STR_6136    :Ungültige Anfrage durch den Server
 STR_6137    :OpenRCT2, eine freie und quelloffene Neuerschaffung von und Erweiterung zu RollerCoaster Tycoon 2.
 STR_6138    :OpenRCT2 ist das Werk vieler Autoren, eine vollständige Liste kann mit dem „Mitwirkende“-Knopf gefunden werden. Für weitere Informationen besuchen Sie http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alle Produkt- und Firmennamen sind Eigentum ihrer jeweiligen Inhaber.{NEWLINE}Die Nutzung dieser stellt keine Zugehörigkeit oder Unterstützung dar.
-STR_6140    :Changelog…
+STR_6140    :Changelog …
 STR_6141    :Untere Symbolleiste im RCT1-Stil
 STR_6142    :{WINDOW_COLOUR_2}Entwurfsname: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Bahntyp: {BLACK}{STRINGID}
@@ -3288,7 +3288,7 @@ STR_6144    :Neu gezeichnete Kacheln markieren
 STR_6145    :Geschwindigkeitsgrenze{NEWLINE}für Booster einstellen
 STR_6146    :Alle Streckenabschnitte ermöglichen
 STR_6147    :Ermöglicht die Auswahl sämtlicher zum Bahntyp passenden Streckenabschnitte im Konstruktionsfenster unabhängig davon, ob das eingesetzte Fahrzeug diese unterstützt.
-STR_6148    :Verbinden zum Hauptserver…
+STR_6148    :Verbinden zum Hauptserver …
 STR_6149    :Verbindung zum Hauptserver nicht möglich.
 STR_6150    :Ungültige Antwort vom Hauptserver (keine JSON-Nummer)
 STR_6151    :Hauptserver antwortete nicht mit gültigen Servern
@@ -3334,7 +3334,7 @@ STR_6218    :OpenRCT2 (offiziell)
 STR_6219    :Probleme auf Fußwegen hervorheben
 STR_6220    :Nutzbar machen
 STR_6221    :Dadurch wird der von der Attraktion bekannte Eingang oder Ausgang auf die ausgewählte Kachel festgelegt. Es kann pro Station nur ein Eingang und Ausgang nutzbar gemacht werden.
-STR_6222    :Kann Eingangspunkt für Besucher hier nicht platzieren…
+STR_6222    :Kann Eingangspunkt für Besucher hier nicht platzieren …
 STR_6223    :Muss außerhalb der Parkgrenzen liegen!
 STR_6224    :{STRING} hat einen Eingangspunkt für Besucher platziert.
 STR_6225    :Wird von OpenGL nicht unterstützt
@@ -3356,7 +3356,7 @@ STR_6240    :Horizontaler Schnitt
 STR_6241    :Bereich auswählen
 STR_6242    :Auswahl aufheben
 STR_6243    :Saniert die Attraktion und macht sie wie neu
-STR_6244    :Kann Attraktion nicht sanieren…
+STR_6244    :Kann Attraktion nicht sanieren …
 STR_6245    :Attraktion benötigt keine Sanierung
 STR_6246    :Sanieren
 STR_6247    :Attraktion sanieren
@@ -3373,9 +3373,9 @@ STR_6260    :Blockierte Kacheln anzeigen
 STR_6261    :Breite Wege anzeigen
 STR_6262    :Hauptlautstärke
 STR_6263    :Ton insgesamt ein-/ausschalten
-STR_6264    :Verwenden Sie immer den Systemdateibrowser
-STR_6265    :Wenn Optionsfeld aktiviert wird, dann wird der Dateibrowser Ihres Systems verwendet im Gegensatz zu dem von OpenRCT2.
-STR_6266    :Benutzerdefinierten Inhaltsordner öffnen
+STR_6264    :Immer den Systemdateibrowser verwenden
+STR_6265    :Wenn Optionsfeld aktiviert wird, dann wird der Dateibrowser Ihres Systems verwendet, und nicht der von OpenRCT2.
+STR_6266    :Benutzerinhaltsordner öffnen
 STR_6267    :Kachelinspektor öffnen
 STR_6268    :Weiterschalten zum nächsten Tick
 STR_6269    :Ungültige Klima-ID
@@ -3383,7 +3383,7 @@ STR_6270    :Geländeflächen
 STR_6271    :Geländekanten
 STR_6272    :Stationen
 STR_6273    :Musik
-STR_6274    :Farbschema kann nicht gesetzt werden…
+STR_6274    :Farbschema kann nicht gesetzt werden …
 STR_6275    :{WINDOW_COLOUR_2}Stil der Station:
 STR_6276    :{RED}{STRINGID} hat steckengebliebene Gäste, möglicherweise aufgrund eines ungültigen Streckentyps oder Betriebsmodus.
 STR_6277    :Stationsindex: {BLACK}{STRINGID}
@@ -3511,7 +3511,7 @@ STR_6408    :Bitte installieren Sie „innoextract“, um den GOG-Installer zu e
 STR_6409    :Die gewählte Datei ist nicht der Offline-GOG-Installer für RollerCoaster Tycoon 2. Sie haben vielleicht den GOG-Galaxy-Downloader-Stub heruntergeladen oder die falsche Datei ausgewählt.
 STR_6410    :Herein-/hinauszoomen
 STR_6411    :Knöpfe für das Herein- und Hinauszoomen in der Symbolleiste anzeigen
-STR_6412    :NumPad Enter
+STR_6412    :Ziffernblock Enter
 STR_6413    :Umschalt
 STR_6414    :Umschalt L
 STR_6415    :Umschalt R
@@ -4337,7 +4337,7 @@ STR_DTLS    :Um die Reichen finanziell zu erleichtern und das Geld den Bedürfti
 <Future - First Encounters>
 STR_SCNR    :Zukunft - Neulinge
 STR_PARK    :Außerirdische Extravaganz
-STR_DTLS    :Auf einem fernen Planeten ist Leben entdeckt worden Bauen Sie einen außerirdischen Freizeitpark, um die unerwartet heftige Hysterie in bare Münze umzuwandeln.
+STR_DTLS    :Auf einem fernen Planeten ist Leben entdeckt worden. Bauen Sie einen außerirdischen Freizeitpark, um die unerwartet heftige Hysterie in bare Münze umzuwandeln.
 
 <Future - Future World>
 STR_SCNR    :Zukunft - Welt der Zukunft

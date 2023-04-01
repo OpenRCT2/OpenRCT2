@@ -37,16 +37,16 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v33/openrct2-libs-v33-x86-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">35f0cb2eae5c17e81a13518961816ffa1cfbafa9</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v33/openrct2-libs-v33-x64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">3e9e819db4448c580a9937d0168415811c49cfff</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v33/openrct2-libs-v33-arm64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='ARM64'">f3a03c2e7b610fefa28d6962da10144f6324078d</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v34/openrct2-libs-v34-x86-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">5173c04611c94da44af0db9e099edca2d6a7b829</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v34/openrct2-libs-v34-x64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">930df83ef49d91b1ef886f5dbf0a9cb61d704a50</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v34/openrct2-libs-v34-arm64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='ARM64'">bd338aa3da9a357fb996dcaa6cea02c4f906718c</LibsSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.0/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha1>4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.3.8/objects.zip</ObjectsUrl>
-    <ObjectsSha1>2888092aab93df15bb78c4c910b13c33b1e318ef</ObjectsSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.3.9/objects.zip</ObjectsUrl>
+    <ObjectsSha1>5e73e90ee2c43a93e855fa3cc27448e719bb1089</ObjectsSha1>
     <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.2/opensound.zip</OpenSFXUrl>
     <OpenSFXSha1>64EF7E0B7785602C91AEC66F005C035B05A2133B</OpenSFXSha1>
     <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.1.0/openmusic.zip</OpenMSXUrl>
