@@ -703,7 +703,7 @@ bool MapCoordIsConnected(const TileCoordsXYZ& loc, uint8_t faceDirection)
         }
         else
         {
-            if (loc.z == tileElement->BaseHeight)
+            if (loc.z == tileElement->BaseHeight && (tileElement->AsPath()->GetEdges() & (1 << faceDirection)))
                 return true;
         }
     } while (!(tileElement++)->IsLastForTile());
