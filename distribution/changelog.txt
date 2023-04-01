@@ -2,7 +2,7 @@
 ------------------------------------------------------------------------
 - Fix: [#19296] Crash due to a race condition for parallel object loading.
 - Fix: [#19756] Crash with title sequences containing no commands.
-- Fix: [#19767] No alert/message when fence is blocking ride exit and is therefore unreachable for mechanics
+- Fix: [#19767] No message when path is not connected to ride exit and is therefore unreachable for mechanics.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
