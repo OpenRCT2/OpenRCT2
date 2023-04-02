@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
 - Improved: [#19764] Miscellaneous scenery tab now grouped next to the all-scenery tab.
+- Fix: [#18895] Responding mechanic blocked at level crossing.
 - Fix: [#19296] Crash due to a race condition for parallel object loading.
 - Fix: [#19756] Crash with title sequences containing no commands.
 - Fix: [#19767] No message when path is not connected to ride exit and is therefore unreachable for mechanics.
