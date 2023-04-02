@@ -31,6 +31,8 @@
 constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
 constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;
 
+using OpenRCT2::Date;
+
 // clang-format off
 enum
 {
@@ -724,37 +726,41 @@ private:
             case WIDX_MONTH_UP:
                 _monthSpinnerValue++;
                 _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_MONTH_BOX);
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_MONTH_DOWN:
                 _monthSpinnerValue--;
                 _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_MONTH_BOX);
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_DAY_UP:
                 _daySpinnerValue++;
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_DAY_DOWN:
                 _daySpinnerValue--;
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_DATE_SET:
             {
-                auto setDateAction = ParkSetDateAction(_yearSpinnerValue, _monthSpinnerValue, _daySpinnerValue);
+                auto setDateAction = ParkSetDateAction(_yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                 GameActions::Execute(&setDateAction);
                 WindowInvalidateByClass(WindowClass::BottomToolbar);
                 break;
             }
             case WIDX_DATE_RESET:
             {
-                auto setDateAction = ParkSetDateAction(1, 1, 1);
+                auto setDateAction = ParkSetDateAction(0, 0, 0);
                 GameActions::Execute(&setDateAction);
                 WindowInvalidateByClass(WindowClass::BottomToolbar);
                 InvalidateWidget(WIDX_YEAR_BOX);

@@ -9,6 +9,7 @@
 
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Context.h>
+#include <openrct2/Date.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -17,8 +18,9 @@ namespace Graph
 {
     static void DrawMonths(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
-        int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
-        int32_t currentDay = gDateMonthTicks;
+        auto& date = GetDate();
+        int32_t currentMonth = date.GetMonth();
+        int32_t currentDay = date.GetMonthTicks();
         int32_t yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
         auto screenCoords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
@@ -152,13 +154,12 @@ namespace Graph
 {
     static void DrawMonths(DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
-        int32_t i, yearOver32, currentMonth, currentDay;
-
-        currentMonth = DateGetMonth(gDateMonthsElapsed);
-        currentDay = gDateMonthTicks;
-        yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
+        auto& date = GetDate();
+        int32_t currentMonth = date.GetMonth();
+        int32_t currentDay = date.GetMonthTicks();
+        int32_t yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
         auto screenCoords = origCoords;
-        for (i = count - 1; i >= 0; i--)
+        for (int32_t i = count - 1; i >= 0; i--)
         {
             if (history[i] != MONEY64_UNDEFINED && yearOver32 % 4 == 0)
             {

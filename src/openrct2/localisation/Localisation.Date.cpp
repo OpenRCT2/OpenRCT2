@@ -7,21 +7,26 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../Game.h"
-#include "../profiling/Profiling.h"
-#include "../util/Math.hpp"
+#include "../common.h"
 #include "Date.h"
 #include "StringIds.h"
 
-#include <algorithm>
-#include <time.h>
+const StringId DateDayNames[] = {
+    STR_DATE_DAY_1,  STR_DATE_DAY_2,  STR_DATE_DAY_3,  STR_DATE_DAY_4,  STR_DATE_DAY_5,  STR_DATE_DAY_6,  STR_DATE_DAY_7,
+    STR_DATE_DAY_8,  STR_DATE_DAY_9,  STR_DATE_DAY_10, STR_DATE_DAY_11, STR_DATE_DAY_12, STR_DATE_DAY_13, STR_DATE_DAY_14,
+    STR_DATE_DAY_15, STR_DATE_DAY_16, STR_DATE_DAY_17, STR_DATE_DAY_18, STR_DATE_DAY_19, STR_DATE_DAY_20, STR_DATE_DAY_21,
+    STR_DATE_DAY_22, STR_DATE_DAY_23, STR_DATE_DAY_24, STR_DATE_DAY_25, STR_DATE_DAY_26, STR_DATE_DAY_27, STR_DATE_DAY_28,
+    STR_DATE_DAY_29, STR_DATE_DAY_30, STR_DATE_DAY_31,
+};
 
-uint16_t gDateMonthTicks;
-int32_t gDateMonthsElapsed;
+const StringId DateGameMonthNames[MONTH_COUNT] = {
+    STR_MONTH_MARCH, STR_MONTH_APRIL,  STR_MONTH_MAY,       STR_MONTH_JUNE,
+    STR_MONTH_JULY,  STR_MONTH_AUGUST, STR_MONTH_SEPTEMBER, STR_MONTH_OCTOBER,
+};
 
-// rct2: 0x00993988
-const int16_t days_in_month[MONTH_COUNT] = {
-    31, 30, 31, 30, 31, 31, 30, 31,
+const StringId DateGameShortMonthNames[MONTH_COUNT] = {
+    STR_MONTH_SHORT_MAR, STR_MONTH_SHORT_APR, STR_MONTH_SHORT_MAY, STR_MONTH_SHORT_JUN,
+    STR_MONTH_SHORT_JUL, STR_MONTH_SHORT_AUG, STR_MONTH_SHORT_SEP, STR_MONTH_SHORT_OCT,
 };
 
 const StringId DateFormatStringIDs[] = {
@@ -37,93 +42,3 @@ const StringId DateFormatStringFormatIds[] = {
     STR_DATE_FORMAT_YMD,
     STR_DATE_FORMAT_YDM,
 };
-
-RealWorldTime gRealTimeOfDay;
-
-int32_t DateGetMonth(int32_t months)
-{
-    return months % MONTH_COUNT;
-}
-
-int32_t DateGetYear(int32_t months)
-{
-    return months / MONTH_COUNT;
-}
-
-int32_t DateGetTotalMonths(int32_t month, int32_t year)
-{
-    return (year - 1) * MONTH_COUNT + month;
-}
-
-/**
- *
- *  rct2: 0x006C4494
- */
-void DateReset()
-{
-    gDateMonthsElapsed = 0;
-    gDateMonthTicks = 0;
-    gCurrentRealTimeTicks = 0;
-}
-
-void DateSet(int32_t year, int32_t month, int32_t day)
-{
-    year = std::clamp(year, 1, MAX_YEAR);
-    month = std::clamp(month, 1, static_cast<int>(MONTH_COUNT));
-    day = std::clamp(day, 1, static_cast<int>(days_in_month[month - 1]));
-    gDateMonthsElapsed = (year - 1) * MONTH_COUNT + month - 1;
-    gDateMonthTicks = TICKS_PER_MONTH / days_in_month[month - 1] * (day - 1) + 4;
-}
-
-void DateUpdate()
-{
-    PROFILED_FUNCTION();
-
-    int32_t monthTicks = gDateMonthTicks + 4;
-    if (monthTicks >= TICKS_PER_MONTH)
-    {
-        gDateMonthTicks = 0;
-        gDateMonthsElapsed++;
-    }
-    else
-    {
-        gDateMonthTicks = Floor2(static_cast<uint16_t>(monthTicks), 4);
-    }
-}
-
-void DateUpdateRealTimeOfDay()
-{
-    time_t timestamp = time(nullptr);
-    struct tm* now = localtime(&timestamp);
-
-    gRealTimeOfDay.second = now->tm_sec;
-    gRealTimeOfDay.minute = now->tm_min;
-    gRealTimeOfDay.hour = now->tm_hour;
-}
-
-bool DateIsDayStart(int32_t monthTicks)
-{
-    if (monthTicks < 4)
-    {
-        return false;
-    }
-    int32_t prevMonthTick = monthTicks - 4;
-    int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
-    int32_t currentDaysInMonth = days_in_month[currentMonth];
-    return ((currentDaysInMonth * monthTicks) >> 16 != (currentDaysInMonth * prevMonthTick) >> 16);
-}
-
-bool DateIsWeekStart(int32_t monthTicks)
-{
-    return (monthTicks & 0x3FFF) == 0;
-}
-
-bool DateIsFortnightStart(int32_t monthTicks)
-{
-    return (monthTicks & 0x7FFF) == 0;
-}
-
-bool DateIsMonthStart(int32_t monthTicks)
-{
-    return (monthTicks == 0);
-}

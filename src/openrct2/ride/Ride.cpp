@@ -307,7 +307,7 @@ size_t Ride::GetNumPrices() const
 
 int32_t Ride::GetAge() const
 {
-    return gDateMonthsElapsed - build_date;
+    return GetDate().GetMonthsElapsed() - build_date;
 }
 
 int32_t Ride::GetTotalQueueLength() const
@@ -953,7 +953,7 @@ void ResetAllRideBuildDates()
 {
     for (auto& ride : GetRideManager())
     {
-        ride.build_date -= gDateMonthsElapsed;
+        ride.build_date -= GetDate().GetMonthsElapsed();
     }
 }
 
@@ -5162,7 +5162,7 @@ void Ride::Delete()
 void Ride::Renew()
 {
     // Set build date to current date (so the ride is brand new)
-    build_date = gDateMonthsElapsed;
+    build_date = GetDate().GetMonthsElapsed();
     reliability = RIDE_INITIAL_RELIABILITY;
 }
 

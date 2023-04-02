@@ -286,7 +286,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->num_riders = 0;
     ride->slide_in_use = 0;
     ride->maze_tiles = 0;
-    ride->build_date = gDateMonthsElapsed;
+    ride->build_date = GetDate().GetMonthsElapsed();
     ride->music_tune_id = TUNE_ID_NULL;
 
     ride->breakdown_reason = 255;

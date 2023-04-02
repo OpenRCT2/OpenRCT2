@@ -63,6 +63,3 @@ extern const StringId ResearchFundingLevelNames[4];
 extern const StringId MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
 extern const StringId RideInspectionIntervalNames[];
 extern const StringId PeepThoughts[174];
-extern const StringId DateDayNames[31];
-extern const StringId DateGameMonthNames[MONTH_COUNT];
-extern const StringId DateGameShortMonthNames[MONTH_COUNT];

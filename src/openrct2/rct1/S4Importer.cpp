@@ -2121,8 +2121,7 @@ namespace RCT1
             // Date and srand
             gCurrentTicks = _s4.Ticks;
             ScenarioRandSeed(_s4.RandomA, _s4.RandomB);
-            gDateMonthsElapsed = static_cast<int32_t>(_s4.Month);
-            gDateMonthTicks = _s4.Day;
+            GetContext()->GetGameState()->SetDate(Date(_s4.Month, _s4.Day));
 
             // Park rating
             gParkRating = _s4.ParkRating;

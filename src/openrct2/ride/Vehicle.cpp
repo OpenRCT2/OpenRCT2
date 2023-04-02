@@ -9238,7 +9238,9 @@ void Vehicle::UpdateCrossings() const
                 xyElement.element = output.begin_element;
             }
 
-            if (xyElement.element->AsTrack()->IsStation())
+            // Ensure trains near a station don't block possible crossings after the stop,
+            // except when they are departing
+            if (xyElement.element->AsTrack()->IsStation() && status != Vehicle::Status::Departing)
             {
                 break;
             }
@@ -9252,7 +9254,8 @@ void Vehicle::UpdateCrossings() const
         return;
     }
 
-    uint8_t freeCount = travellingForwards ? 3 : 1;
+    // Ensure departing trains don't clear blocked crossings behind them that might already be blocked by another incoming train
+    uint8_t freeCount = travellingForwards && status != Vehicle::Status::Departing ? 3 : 1;
     while (freeCount-- > 0)
     {
         auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
