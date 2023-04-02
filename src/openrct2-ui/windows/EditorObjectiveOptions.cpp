@@ -270,7 +270,7 @@ public:
     {
         if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
         {
-            return OnScrollGetSize(scrollIndex);
+            return OnScrollGetSizeRides(scrollIndex);
         }
 
         return {};
@@ -1026,7 +1026,6 @@ private:
     {
         ScreenSize newSize;
         newSize.height = no_list_items * 12;
-        newSize.width = width;
 
         return newSize;
     }
