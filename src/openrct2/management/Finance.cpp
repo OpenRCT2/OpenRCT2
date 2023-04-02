@@ -320,7 +320,7 @@ money64 FinanceGetCurrentCash()
 void FinanceShiftExpenditureTable()
 {
     // If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
-    if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT)
+    if (GetDate().GetMonthsElapsed() >= EXPENDITURE_TABLE_MONTH_COUNT)
     {
         money64 sum = 0;
         for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
@@ -363,7 +363,7 @@ void FinanceResetCashToInitial()
 money64 FinanceGetLastMonthShopProfit()
 {
     money64 profit = 0;
-    if (gDateMonthsElapsed != 0)
+    if (GetDate().GetMonthsElapsed() != 0)
     {
         const auto* lastMonthExpenditure = gExpenditureTable[1];
 
