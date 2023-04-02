@@ -153,11 +153,11 @@ public:
         {
             case WIDX_CLOSE:
                 Close();
-                break;
+                return;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
                 SetPage(widgetIndex - WIDX_TAB_1);
-                break;
+                return;
         }
 
         if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
@@ -264,6 +264,16 @@ public:
         {
             OnScrollDraw(scrollIndex, dpi);
         }
+    }
+
+    ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+    {
+        if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
+        {
+            return OnScrollGetSize(scrollIndex);
+        }
+
+        return {};
     }
 
 private:
@@ -1006,6 +1016,19 @@ private:
             no_list_items = numItems;
             Invalidate();
         }
+    }
+
+    /**
+     *
+     *  rct2: 0x006724BF
+     */
+    ScreenSize OnScrollGetSizeRides(int32_t scrollIndex)
+    {
+        ScreenSize newSize;
+        newSize.height = no_list_items * 12;
+        newSize.width = width;
+
+        return newSize;
     }
 
     /**
