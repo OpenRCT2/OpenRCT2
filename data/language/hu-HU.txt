@@ -3634,6 +3634,7 @@ STR_6544    :A kölcsön nem lehet negatív!
 STR_6545    :RCT1 kamatszámítás használata
 STR_6546    :A RollerCoaster Tycoon 1 kamatszámítási algoritmusának használata, amely egy rögzített százalékot használ, ami körülbelül 1,33%.
 STR_6547    :Minden díszlet
+STR_6548    :Korlátok megjelenítése csomópontoknál
 
 #############
 # Scenarios #
