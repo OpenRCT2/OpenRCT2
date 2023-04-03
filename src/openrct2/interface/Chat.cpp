@@ -42,7 +42,7 @@ static TextInputSession* _chatTextInputSession;
 static const u8string& ChatGetHistory(size_t index);
 static uint32_t ChatHistoryGetTime(size_t index);
 static void ChatClearInput();
-static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
+static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
 
 bool ChatAvailable()
 {
@@ -86,7 +86,7 @@ void ChatUpdate()
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
 }
 
-void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
+void ChatDraw(DrawPixelInfo& dpi, uint8_t chatBackgroundColor)
 {
     thread_local std::string lineBuffer;
 
@@ -140,16 +140,16 @@ void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
         GfxSetDirtyBlocks(
             { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }); // Background area + Textbox
         GfxFilterRect(
-            dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
+            &dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
             FilterPaletteID::Palette51); // Opaque grey background
         GfxFillRectInset(
-            dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
+            &dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
             INSET_RECT_FLAG_FILL_NONE);
         GfxFillRectInset(
-            dpi, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
+            &dpi, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
             chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET);
         GfxFillRectInset(
-            dpi, { bottomLeft + ScreenCoordsXY{ 1, -inputLineHeight - 5 }, bottomRight + ScreenCoordsXY{ -1, 4 } },
+            &dpi, { bottomLeft + ScreenCoordsXY{ 1, -inputLineHeight - 5 }, bottomRight + ScreenCoordsXY{ -1, 4 } },
             chatBackgroundColor,
             INSET_RECT_FLAG_BORDER_INSET); // Textbox
     }
@@ -193,7 +193,7 @@ void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
         auto ft = Formatter();
         ft.Add<const char*>(lineCh);
         inputLineHeight = DrawTextWrapped(
-            *dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { TEXT_COLOUR_255 });
+            dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { TEXT_COLOUR_255 });
         GfxSetDirtyBlocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
@@ -203,7 +203,7 @@ void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
             int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::Medium);
             int32_t caretY = screenCoords.y + 14;
 
-            GfxFillRect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
+            GfxFillRect(&dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
         }
     }
 }
@@ -272,7 +272,7 @@ static void ChatClearInput()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
+static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
     int32_t numLines;
     u8string wrappedString;
@@ -289,7 +289,7 @@ static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const
     int32_t lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        GfxDrawString(*dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { TEXT_COLOUR_254 });
+        GfxDrawString(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { TEXT_COLOUR_254 });
         bufferPtr = GetStringEnd(bufferPtr) + 1;
         lineY += lineHeight;
     }

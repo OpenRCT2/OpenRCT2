@@ -1278,7 +1278,7 @@ static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, in
  */
 void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w)
 {
-    ViewportRender(&dpi, w.viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
+    ViewportRender(dpi, w.viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
 }
 
 void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords)

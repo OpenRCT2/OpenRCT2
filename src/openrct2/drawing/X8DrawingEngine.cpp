@@ -259,7 +259,7 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
 
 std::string X8DrawingEngine::Screenshot()
 {
-    return ScreenshotDumpPNG(&_bitsDPI);
+    return ScreenshotDumpPNG(_bitsDPI);
 }
 
 IDrawingContext* X8DrawingEngine::GetDrawingContext()

@@ -340,7 +340,7 @@ public:
         const OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
         framebuffer.Bind();
         framebuffer.GetPixels(_bitsDPI);
-        std::string result = ScreenshotDumpPNG(&_bitsDPI);
+        std::string result = ScreenshotDumpPNG(_bitsDPI);
         return result;
     }
 

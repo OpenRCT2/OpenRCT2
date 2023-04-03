@@ -145,7 +145,7 @@ public:
     void Draw(DrawPixelInfo* dpi) override
     {
         auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
-        ChatDraw(dpi, bgColour);
+        ChatDraw(*dpi, bgColour);
         _inGameConsole.Draw(*dpi);
     }
 
