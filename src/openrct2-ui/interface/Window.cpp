@@ -651,7 +651,7 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
                 if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
                 {
                     if (w.IsLegacy())
-                        WidgetDraw(&dpi, w, widgetIndex);
+                        WidgetDraw(dpi, w, widgetIndex);
                     else
                         w.OnDrawWidget(widgetIndex, dpi);
                 }
@@ -715,7 +715,7 @@ void Window::OnDraw(DrawPixelInfo& dpi)
 
 void Window::OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
 {
-    WidgetDraw(&dpi, *this, widgetIndex);
+    WidgetDraw(dpi, *this, widgetIndex);
 }
 
 void Window::InitScrollWidgets()
