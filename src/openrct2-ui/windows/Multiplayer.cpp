@@ -401,7 +401,7 @@ static void WindowMultiplayerInformationPaint(WindowBase* w, DrawPixelInfo& dpi)
     WindowMultiplayerDrawTabImages(w, dpi);
 
     DrawPixelInfo clippedDPI;
-    if (ClipDrawPixelInfo(&clippedDPI, &dpi, w->windowPos, w->width, w->height))
+    if (ClipDrawPixelInfo(clippedDPI, dpi, w->windowPos, w->width, w->height))
     {
         auto screenCoords = ScreenCoordsXY{ 3, 50 };
         int32_t width = w->width - 6;

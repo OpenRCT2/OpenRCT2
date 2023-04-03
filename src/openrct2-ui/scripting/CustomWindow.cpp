@@ -554,7 +554,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     DrawPixelInfo widgetDpi;
                     if (ClipDrawPixelInfo(
-                            &widgetDpi, &dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
+                            widgetDpi, dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
                             widget.height()))
                     {
                         auto ctx = onDraw.context();

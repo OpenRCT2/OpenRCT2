@@ -733,9 +733,9 @@ void MaskInit()
     }
 }
 
-void GfxFilterPixel(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
+void GfxFilterPixel(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
-    GfxFilterRect(*dpi, { coords, coords }, palette);
+    GfxFilterRect(dpi, { coords, coords }, palette);
 }
 
 /**
@@ -825,49 +825,49 @@ void GfxInvalidateScreen()
  * height (dx)
  * drawpixelinfo (edi)
  */
-bool ClipDrawPixelInfo(DrawPixelInfo* dst, DrawPixelInfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
+bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
     int32_t right = coords.x + width;
     int32_t bottom = coords.y + height;
 
-    *dst = *src;
-    dst->zoom_level = ZoomLevel{ 0 };
+    dst = src;
+    dst.zoom_level = ZoomLevel{ 0 };
 
-    if (coords.x > dst->x)
+    if (coords.x > dst.x)
     {
-        uint16_t clippedFromLeft = coords.x - dst->x;
-        dst->width -= clippedFromLeft;
-        dst->x = coords.x;
-        dst->pitch += clippedFromLeft;
-        dst->bits += clippedFromLeft;
+        uint16_t clippedFromLeft = coords.x - dst.x;
+        dst.width -= clippedFromLeft;
+        dst.x = coords.x;
+        dst.pitch += clippedFromLeft;
+        dst.bits += clippedFromLeft;
     }
 
-    int32_t stickOutWidth = dst->x + dst->width - right;
+    int32_t stickOutWidth = dst.x + dst.width - right;
     if (stickOutWidth > 0)
     {
-        dst->width -= stickOutWidth;
-        dst->pitch += stickOutWidth;
+        dst.width -= stickOutWidth;
+        dst.pitch += stickOutWidth;
     }
 
-    if (coords.y > dst->y)
+    if (coords.y > dst.y)
     {
-        uint16_t clippedFromTop = coords.y - dst->y;
-        dst->height -= clippedFromTop;
-        dst->y = coords.y;
-        uint32_t bitsPlus = (dst->pitch + dst->width) * clippedFromTop;
-        dst->bits += bitsPlus;
+        uint16_t clippedFromTop = coords.y - dst.y;
+        dst.height -= clippedFromTop;
+        dst.y = coords.y;
+        uint32_t bitsPlus = (dst.pitch + dst.width) * clippedFromTop;
+        dst.bits += bitsPlus;
     }
 
-    int32_t bp = dst->y + dst->height - bottom;
+    int32_t bp = dst.y + dst.height - bottom;
     if (bp > 0)
     {
-        dst->height -= bp;
+        dst.height -= bp;
     }
 
-    if (dst->width > 0 && dst->height > 0)
+    if (dst.width > 0 && dst.height > 0)
     {
-        dst->x -= coords.x;
-        dst->y -= coords.y;
+        dst.x -= coords.x;
+        dst.y -= coords.y;
         return true;
     }
 
@@ -891,11 +891,11 @@ void GfxInvalidatePickedUpPeep()
     }
 }
 
-void GfxDrawPickedUpPeep(DrawPixelInfo* dpi)
+void GfxDrawPickedUpPeep(DrawPixelInfo& dpi)
 {
     if (gPickupPeepImage.HasValue())
     {
-        GfxDrawSprite(*dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
+        GfxDrawSprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
     }
 }
 

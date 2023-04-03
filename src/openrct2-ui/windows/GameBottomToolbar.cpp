@@ -580,7 +580,7 @@ static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo& dpi, WindowBase* 
                 break;
 
             DrawPixelInfo cliped_dpi;
-            if (!ClipDrawPixelInfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+            if (!ClipDrawPixelInfo(cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
             {
                 break;
             }

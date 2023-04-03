@@ -92,10 +92,10 @@ public:
         GfxFilterRect(dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
 
         // Corners
-        GfxFilterPixel(&dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-        GfxFilterPixel(&dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-        GfxFilterPixel(&dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
-        GfxFilterPixel(&dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
 
         // Text
         left = windowPos.x + ((width + 1) / 2) - 1;

@@ -57,7 +57,7 @@ void Painter::Paint(IDrawingEngine& de)
             DrawOpenRCT2(*dpi, { 0, _uiContext->GetHeight() - 20 });
         }
 
-        GfxDrawPickedUpPeep(dpi);
+        GfxDrawPickedUpPeep(*dpi);
         GfxInvalidatePickedUpPeep();
 
         de.PaintWeather();

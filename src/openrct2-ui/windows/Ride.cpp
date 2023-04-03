@@ -937,7 +937,7 @@ static void WindowRideDrawTabVehicle(DrawPixelInfo& dpi, WindowBase* w)
         screenCoords += w->windowPos;
 
         DrawPixelInfo clipDPI;
-        if (!ClipDrawPixelInfo(&clipDPI, &dpi, screenCoords, width, height))
+        if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, width, height))
         {
             return;
         }
@@ -4962,7 +4962,7 @@ static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo& dpi)
     if (entrancePreviewWidget.type != WindowWidgetType::Empty)
     {
         if (ClipDrawPixelInfo(
-                &clippedDpi, &dpi,
+                clippedDpi, dpi,
                 w->windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
                 entrancePreviewWidget.width(), entrancePreviewWidget.height()))
         {

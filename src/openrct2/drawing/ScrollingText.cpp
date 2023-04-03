@@ -1440,9 +1440,7 @@ ImageId ScrollingTextSetup(
 
     assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
-    DrawPixelInfo* dpi = &session.DPI;
-
-    if (dpi->zoom_level > ZoomLevel{ 0 })
+    if (session.DPI.zoom_level > ZoomLevel{ 0 })
         return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
 
     _drawSCrollNextIndex++;

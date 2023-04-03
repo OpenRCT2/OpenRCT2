@@ -527,7 +527,7 @@ private:
             widgHeight++;
 
         DrawPixelInfo clipDpi;
-        if (!ClipDrawPixelInfo(&clipDpi, &dpi, screenCoords, widgWidth, widgHeight))
+        if (!ClipDrawPixelInfo(clipDpi, dpi, screenCoords, widgWidth, widgHeight))
         {
             return;
         }
@@ -783,7 +783,7 @@ private:
         int32_t top = marqueeWidget.top + windowPos.y;
         int32_t marqHeight = marqueeWidget.height();
         DrawPixelInfo dpiMarquee;
-        if (!ClipDrawPixelInfo(&dpiMarquee, &dpi, { left, top }, marqWidth, marqHeight))
+        if (!ClipDrawPixelInfo(dpiMarquee, dpi, { left, top }, marqWidth, marqHeight))
         {
             return;
         }

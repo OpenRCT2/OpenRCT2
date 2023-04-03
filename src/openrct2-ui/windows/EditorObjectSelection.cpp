@@ -1057,7 +1057,7 @@ public:
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
             _width = previewWidget.width() - 1;
             int32_t _height = previewWidget.height() - 1;
-            if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, _width, _height))
+            if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _width, _height))
             {
                 _loadedObject->DrawPreview(clipDPI, _width, _height);
             }

@@ -396,7 +396,7 @@ public:
             screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
             const auto clipWidth = bkWidget.width() - 1;
             const auto clipHeight = bkWidget.height() - 1;
-            if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
+            if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, clipWidth, clipHeight))
             {
                 object->DrawPreview(clipDPI, clipWidth, clipHeight);
             }

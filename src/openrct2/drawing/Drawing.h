@@ -502,7 +502,7 @@ extern int32_t gPickupPeepY;
 
 extern bool gTinyFontAntiAliased;
 
-bool ClipDrawPixelInfo(DrawPixelInfo* dst, DrawPixelInfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
+bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
 void GfxSetDirtyBlocks(const ScreenRect& rect);
 void GfxInvalidateScreen();
 
@@ -512,9 +512,9 @@ void LoadPalette();
 
 // other
 void GfxClear(DrawPixelInfo* dpi, uint8_t paletteIndex);
-void GfxFilterPixel(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
+void GfxFilterPixel(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
 void GfxInvalidatePickedUpPeep();
-void GfxDrawPickedUpPeep(DrawPixelInfo* dpi);
+void GfxDrawPickedUpPeep(DrawPixelInfo& dpi);
 
 // line
 void GfxDrawLine(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour);

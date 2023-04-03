@@ -292,7 +292,7 @@ public:
 
         // Draw mini tile preview
         DrawPixelInfo clippedDpi;
-        if (ClipDrawPixelInfo(&clippedDpi, &dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
+        if (ClipDrawPixelInfo(clippedDpi, dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
         {
             G1Element g1temp = {};
             g1temp.offset = _miniPreview.data();

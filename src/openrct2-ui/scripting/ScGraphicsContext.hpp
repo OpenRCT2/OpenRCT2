@@ -181,7 +181,7 @@ namespace OpenRCT2::Scripting
         void clip(int32_t x, int32_t y, int32_t width, int32_t height)
         {
             DrawPixelInfo newDpi;
-            ClipDrawPixelInfo(&newDpi, &_dpi, { x, y }, width, height);
+            ClipDrawPixelInfo(newDpi, _dpi, { x, y }, width, height);
             _dpi = newDpi;
         }
 

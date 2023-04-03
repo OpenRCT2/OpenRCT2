@@ -1517,7 +1517,7 @@ public:
         auto screenCoords = ScreenCoordsXY{ windowPos.x + widget->left + 1, windowPos.y + widget->top + 1 };
         widgetWidth = widget->width() - 1;
         widgetHeight = widget->height() - 1;
-        if (ClipDrawPixelInfo(&clipdpi, &dpi, screenCoords, widgetWidth, widgetHeight))
+        if (ClipDrawPixelInfo(clipdpi, dpi, screenCoords, widgetWidth, widgetHeight))
         {
             DrawTrackPiece(clipdpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
         }

@@ -553,7 +553,7 @@ private:
             widgetHeight++;
 
         DrawPixelInfo clip_dpi;
-        if (!ClipDrawPixelInfo(&clip_dpi, &dpi, screenCoords, widgetWidth, widgetHeight))
+        if (!ClipDrawPixelInfo(clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
         {
             return;
         }
