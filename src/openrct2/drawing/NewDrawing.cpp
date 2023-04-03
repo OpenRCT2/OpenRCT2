@@ -115,11 +115,11 @@ void DrawingEngineDispose()
     }
 }
 
-DrawPixelInfo* DrawingEngineGetDpi()
+DrawPixelInfo& DrawingEngineGetDpi()
 {
     auto context = GetContext();
     auto drawingEngine = context->GetDrawingEngine();
-    return drawingEngine->GetDrawingPixelInfo();
+    return *(drawingEngine->GetDrawingPixelInfo());
 }
 
 bool DrawingEngineHasDirtyOptimisations()

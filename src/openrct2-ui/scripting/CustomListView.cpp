@@ -549,21 +549,21 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
     }
 }
 
-void CustomListView::Paint(WindowBase* w, DrawPixelInfo* dpi, const ScrollBar* scroll) const
+void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
-    GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, paletteIndex);
+    GfxFillRect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
     for (size_t i = 0; i < Items.size(); i++)
     {
-        if (y > dpi->y + dpi->height)
+        if (y > dpi.y + dpi.height)
         {
             // Past the scroll view area
             break;
         }
 
-        if (y + LIST_ROW_HEIGHT >= dpi->y)
+        if (y + LIST_ROW_HEIGHT >= dpi.y)
         {
             const auto& itemIndex = static_cast<int32_t>(SortedItems[i]);
             const auto& item = Items[itemIndex];
@@ -583,19 +583,19 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo* dpi, const ScrollBar* s
                 if (isSelected)
                 {
                     GfxFilterRect(
-                        dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
+                        &dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (LIST_ROW_HEIGHT - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isHighlighted)
                 {
                     GfxFilterRect(
-                        dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
+                        &dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (LIST_ROW_HEIGHT - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isStriped)
                 {
                     GfxFillRect(
-                        dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
+                        &dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (LIST_ROW_HEIGHT - 1) } },
                         ColourMapA[w->colours[1]].lighter | 0x1000000);
                 }
 
@@ -641,7 +641,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo* dpi, const ScrollBar* s
         y = scroll->v_top;
 
         auto bgColour = ColourMapA[w->colours[1]].mid_light;
-        GfxFillRect(dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + 12 } }, bgColour);
+        GfxFillRect(&dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + 12 } }, bgColour);
 
         int32_t x = 0;
         for (int32_t j = 0; j < static_cast<int32_t>(Columns.size()); j++)
@@ -665,7 +665,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo* dpi, const ScrollBar* s
 }
 
 void CustomListView::PaintHeading(
-    WindowBase* w, DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
+    WindowBase* w, DrawPixelInfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
     ColumnSortOrder sortOrder, bool isPressed) const
 {
     auto boxFlags = 0;
@@ -673,7 +673,7 @@ void CustomListView::PaintHeading(
     {
         boxFlags = INSET_RECT_FLAG_BORDER_INSET;
     }
-    GfxFillRectInset(dpi, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
+    GfxFillRectInset(&dpi, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
     if (!text.empty())
     {
         PaintCell(dpi, pos, size, text.c_str(), false);
@@ -683,18 +683,18 @@ void CustomListView::PaintHeading(
     {
         auto ft = Formatter();
         ft.Add<StringId>(STR_UP);
-        DrawTextBasic(*dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter();
         ft.Add<StringId>(STR_DOWN);
-        DrawTextBasic(*dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
 }
 
 void CustomListView::PaintSeperator(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
+    DrawPixelInfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
 {
     auto hasText = text != nullptr && text[0] != '\0';
     auto left = pos.x + 4;
@@ -712,7 +712,7 @@ void CustomListView::PaintSeperator(
         // Draw string
         Formatter ft;
         ft.Add<const char*>(text);
-        DrawTextBasic(*dpi, { centreX, pos.y }, STR_STRING, ft, { baseColour, TextAlignment::CENTRE });
+        DrawTextBasic(dpi, { centreX, pos.y }, STR_STRING, ft, { baseColour, TextAlignment::CENTRE });
 
         // Get string dimensions
         FormatStringLegacy(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
@@ -723,44 +723,44 @@ void CustomListView::PaintSeperator(
         // Draw light horizontal rule
         auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
         auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY0 };
-        GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+        GfxDrawLine(&dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
         auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY0 };
         auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY0 };
-        GfxDrawLine(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+        GfxDrawLine(&dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
 
         // Draw dark horizontal rule
         auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
         auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY1 };
-        GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+        GfxDrawLine(&dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
 
         auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY1 };
         auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY1 };
-        GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+        GfxDrawLine(&dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
     }
     else
     {
         // Draw light horizontal rule
         auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
         auto lightLineRightBottom1 = ScreenCoordsXY{ right, lineY0 };
-        GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+        GfxDrawLine(&dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
         // Draw dark horizontal rule
         auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
         auto darkLineRightBottom1 = ScreenCoordsXY{ right, lineY1 };
-        GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+        GfxDrawLine(&dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
     }
 }
 
 void CustomListView::PaintCell(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
+    DrawPixelInfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
 {
     StringId stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
 
     auto ft = Formatter();
     ft.Add<StringId>(STR_STRING);
     ft.Add<const char*>(text);
-    DrawTextEllipsised(*dpi, pos, size.width, stringId, ft, {});
+    DrawTextEllipsised(dpi, pos, size.width, stringId, ft, {});
 }
 
 std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& pos)

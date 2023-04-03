@@ -751,7 +751,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& info = GetInfo(this);
             if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
             {
-                info.ListViews[scrollIndex].Paint(this, &dpi, &scrolls[scrollIndex]);
+                info.ListViews[scrollIndex].Paint(this, dpi, &scrolls[scrollIndex]);
             }
         }
 

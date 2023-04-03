@@ -479,8 +479,8 @@ static void ViewportMove(const ScreenCoordsXY& coords, WindowBase* w, Viewport* 
 
         if (DrawingEngineHasDirtyOptimisations())
         {
-            DrawPixelInfo* dpi = DrawingEngineGetDpi();
-            WindowDrawAll(*dpi, left, top, right, bottom);
+            DrawPixelInfo& dpi = DrawingEngineGetDpi();
+            WindowDrawAll(dpi, left, top, right, bottom);
             return;
         }
     }
@@ -531,8 +531,8 @@ static void ViewportMove(const ScreenCoordsXY& coords, WindowBase* w, Viewport* 
 
     if (DrawingEngineHasDirtyOptimisations())
     {
-        DrawPixelInfo* dpi = DrawingEngineGetDpi();
-        ViewportShiftPixels(*dpi, w, viewport, x_diff, y_diff);
+        DrawPixelInfo& dpi = DrawingEngineGetDpi();
+        ViewportShiftPixels(dpi, w, viewport, x_diff, y_diff);
     }
 
     *viewport = view_copy;

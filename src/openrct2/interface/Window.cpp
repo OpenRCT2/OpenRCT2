@@ -85,7 +85,7 @@ namespace WindowCloseFlags
 } // namespace WindowCloseFlags
 
 static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
 {
@@ -1203,56 +1203,55 @@ static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int3
         auto* v = (*it).get();
         if ((&w == v || (v->flags & WF_TRANSPARENT)) && WindowIsVisible(*v))
         {
-            WindowDrawSingle(&dpi, *v, left, top, right, bottom);
+            WindowDrawSingle(dpi, *v, left, top, right, bottom);
         }
     }
 }
 
-static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Copy dpi so we can crop it
-    DrawPixelInfo copy = *dpi;
-    dpi = &copy;
+    DrawPixelInfo copy = dpi;
 
     // Clamp left to 0
-    int32_t overflow = left - dpi->x;
+    int32_t overflow = left - copy.x;
     if (overflow > 0)
     {
-        dpi->x += overflow;
-        dpi->width -= overflow;
-        if (dpi->width <= 0)
+        copy.x += overflow;
+        copy.width -= overflow;
+        if (copy.width <= 0)
             return;
-        dpi->pitch += overflow;
-        dpi->bits += overflow;
+        copy.pitch += overflow;
+        copy.bits += overflow;
     }
 
     // Clamp width to right
-    overflow = dpi->x + dpi->width - right;
+    overflow = copy.x + copy.width - right;
     if (overflow > 0)
     {
-        dpi->width -= overflow;
-        if (dpi->width <= 0)
+        copy.width -= overflow;
+        if (copy.width <= 0)
             return;
-        dpi->pitch += overflow;
+        copy.pitch += overflow;
     }
 
     // Clamp top to 0
-    overflow = top - dpi->y;
+    overflow = top - copy.y;
     if (overflow > 0)
     {
-        dpi->y += overflow;
-        dpi->height -= overflow;
-        if (dpi->height <= 0)
+        copy.y += overflow;
+        copy.height -= overflow;
+        if (copy.height <= 0)
             return;
-        dpi->bits += (dpi->width + dpi->pitch) * overflow;
+        copy.bits += (copy.width + copy.pitch) * overflow;
     }
 
     // Clamp height to bottom
-    overflow = dpi->y + dpi->height - bottom;
+    overflow = copy.y + copy.height - bottom;
     if (overflow > 0)
     {
-        dpi->height -= overflow;
-        if (dpi->height <= 0)
+        copy.height -= overflow;
+        if (copy.height <= 0)
             return;
     }
 
@@ -1266,7 +1265,7 @@ static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, in
     gCurrentWindowColours[2] = NOT_TRANSLUCENT(w.colours[2]);
     gCurrentWindowColours[3] = NOT_TRANSLUCENT(w.colours[3]);
 
-    WindowEventPaintCall(&w, *dpi);
+    WindowEventPaintCall(&w, copy);
 }
 
 /**
