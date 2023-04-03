@@ -264,7 +264,7 @@ void InGameConsole::Update()
     _consoleCaretTicks = (_consoleCaretTicks + 1) % 30;
 }
 
-void InGameConsole::Draw(DrawPixelInfo* dpi) const
+void InGameConsole::Draw(DrawPixelInfo& dpi) const
 {
     if (!_isOpen)
         return;
@@ -292,18 +292,18 @@ void InGameConsole::Draw(DrawPixelInfo* dpi) const
     Invalidate();
 
     // Give console area a translucent effect.
-    GfxFilterRect(dpi, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::Palette51);
+    GfxFilterRect(&dpi, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::Palette51);
 
     // Make input area more opaque.
     GfxFilterRect(
-        dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
+        &dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
         FilterPaletteID::Palette51);
 
     // Paint background colour.
     uint8_t backgroundColour = ThemeGetColour(WindowClass::Console, 0);
-    GfxFillRectInset(dpi, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
+    GfxFillRectInset(&dpi, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     GfxFillRectInset(
-        dpi, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
+        &dpi, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
         INSET_RECT_FLAG_BORDER_INSET);
 
     std::string lineBuffer;
@@ -314,7 +314,7 @@ void InGameConsole::Draw(DrawPixelInfo* dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = _colourFormatStr + _consoleLines[index];
-        GfxDrawString(*dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
+        GfxDrawString(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
         screenCoords.y += lineHeight;
     }
 
@@ -322,14 +322,14 @@ void InGameConsole::Draw(DrawPixelInfo* dpi) const
 
     // Draw current line
     lineBuffer = _colourFormatStr + _consoleCurrentLine;
-    DrawText(*dpi, screenCoords, { TEXT_COLOUR_255, InGameConsoleGetFontStyle() }, lineBuffer.c_str(), true);
+    DrawText(dpi, screenCoords, { TEXT_COLOUR_255, InGameConsoleGetFontStyle() }, lineBuffer.c_str(), true);
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
         uint8_t caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
-        GfxFillRect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
+        GfxFillRect(&dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
     }
 
     // What about border colours?
@@ -338,21 +338,21 @@ void InGameConsole::Draw(DrawPixelInfo* dpi) const
 
     // Input area top border
     GfxFillRect(
-        dpi,
+        &dpi,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 11 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 11 } },
         borderColour1);
     GfxFillRect(
-        dpi,
+        &dpi,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 10 } },
         borderColour2);
 
     // Input area bottom border
     GfxFillRect(
-        dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - 1 }, { _consoleBottomRight.x, _consoleBottomRight.y - 1 } },
+        &dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - 1 }, { _consoleBottomRight.x, _consoleBottomRight.y - 1 } },
         borderColour1);
-    GfxFillRect(dpi, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
+    GfxFillRect(&dpi, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.

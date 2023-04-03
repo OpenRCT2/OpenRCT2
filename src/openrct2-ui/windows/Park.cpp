@@ -723,7 +723,7 @@ private:
         // Graph
         screenPos = windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-        Graph::Draw(&dpi, gParkRatingHistory, 32, screenPos);
+        Graph::Draw(dpi, gParkRatingHistory, 32, screenPos);
     }
 
 #pragma endregion
@@ -808,7 +808,7 @@ private:
                 cappedHistory[i] = std::numeric_limits<uint8_t>::max();
             }
         }
-        Graph::Draw(&dpi, cappedHistory, static_cast<int32_t>(std::size(cappedHistory)), screenPos);
+        Graph::Draw(dpi, cappedHistory, static_cast<int32_t>(std::size(cappedHistory)), screenPos);
     }
 
 #pragma endregion

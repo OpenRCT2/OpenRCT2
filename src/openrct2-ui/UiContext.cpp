@@ -146,7 +146,7 @@ public:
     {
         auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
         ChatDraw(dpi, bgColour);
-        _inGameConsole.Draw(dpi);
+        _inGameConsole.Draw(*dpi);
     }
 
     // Window

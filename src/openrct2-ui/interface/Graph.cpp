@@ -16,7 +16,7 @@
 
 namespace Graph
 {
-    static void DrawMonths(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawMonths(DrawPixelInfo& dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         auto& date = GetDate();
         int32_t currentMonth = date.GetMonth();
@@ -31,11 +31,11 @@ namespace Graph
                 auto ft = Formatter();
                 ft.Add<uint32_t>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
-                    *dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });
 
                 // Draw month mark
-                GfxFillRect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
+                GfxFillRect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
             }
 
             yearOver32 = (yearOver32 + 1) % 32;
@@ -43,7 +43,7 @@ namespace Graph
         }
     }
 
-    static void DrawLineA(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawLineA(DrawPixelInfo& dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
         auto coords = origCoords;
@@ -59,11 +59,11 @@ namespace Graph
                     auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
                     auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
                     auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
-                    GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
-                    GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
+                    GfxDrawLine(&dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
+                    GfxDrawLine(&dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
                 }
                 if (i == 0)
-                    GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+                    GfxFillRect(&dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
 
                 lastCoords = coords;
             }
@@ -71,7 +71,7 @@ namespace Graph
         }
     }
 
-    static void DrawLineB(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawLineB(DrawPixelInfo& dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
         auto coords = origCoords;
@@ -85,10 +85,10 @@ namespace Graph
                 {
                     auto leftTop = lastCoords;
                     auto rightBottom = coords;
-                    GfxDrawLine(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
+                    GfxDrawLine(&dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
                 }
                 if (i == 0)
-                    GfxFillRect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
+                    GfxFillRect(&dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
 
                 lastCoords = coords;
             }
@@ -96,7 +96,7 @@ namespace Graph
         }
     }
 
-    void Draw(DrawPixelInfo* dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos)
+    void Draw(DrawPixelInfo& dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos)
     {
         DrawMonths(dpi, history, count, screenPos);
         DrawLineA(dpi, history, count, screenPos);
@@ -152,7 +152,7 @@ static const FinancialTooltipInfo FinanceTooltipInfoFromMoney(
 
 namespace Graph
 {
-    static void DrawMonths(DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawMonths(DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         auto& date = GetDate();
         int32_t currentMonth = date.GetMonth();
@@ -167,11 +167,11 @@ namespace Graph
                 auto ft = Formatter();
                 ft.Add<StringId>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
-                    *dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });
 
                 // Draw month mark
-                GfxFillRect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
+                GfxFillRect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
             }
 
             yearOver32 = (yearOver32 + 1) % 32;
@@ -180,7 +180,7 @@ namespace Graph
     }
 
     static void DrawLineA(
-        DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
+        DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
@@ -197,11 +197,11 @@ namespace Graph
                     auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
                     auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
                     auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
-                    GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
-                    GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
+                    GfxDrawLine(&dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
+                    GfxDrawLine(&dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
                 }
                 if (i == 0)
-                    GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+                    GfxFillRect(&dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
 
                 lastCoords = coords;
             }
@@ -210,7 +210,7 @@ namespace Graph
     }
 
     static void DrawLineB(
-        DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
+        DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
@@ -225,10 +225,10 @@ namespace Graph
                 {
                     auto leftTop = lastCoords;
                     auto rightBottom = coords;
-                    GfxDrawLine(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
+                    GfxDrawLine(&dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
                 }
                 if (i == 0)
-                    GfxFillRect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
+                    GfxFillRect(&dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
 
                 lastCoords = coords;
             }
@@ -237,7 +237,7 @@ namespace Graph
     }
 
     static void DrawHoveredValue(
-        DrawPixelInfo* dpi, const money64* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
+        DrawPixelInfo& dpi, const money64* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
         const auto cursorPosition = ContextGetCursorPositionScaled();
@@ -254,26 +254,26 @@ namespace Graph
         {
             return;
         }
-        GfxDrawDashedLine(dpi, { { info.coords.x, chartFrame.GetTop() }, info.coords }, DefaultDashedLength, 0);
-        GfxDrawDashedLine(dpi, { { chartFrame.GetLeft() - 10, info.coords.y }, info.coords }, DefaultDashedLength, 0);
+        GfxDrawDashedLine(&dpi, { { info.coords.x, chartFrame.GetTop() }, info.coords }, DefaultDashedLength, 0);
+        GfxDrawDashedLine(&dpi, { { chartFrame.GetLeft() - 10, info.coords.y }, info.coords }, DefaultDashedLength, 0);
 
         if (cursorPosition.y > info.coords.y)
         {
-            GfxDrawDashedLine(dpi, { info.coords, { info.coords.x, cursorPosition.y } }, DefaultDashedLength, 0);
+            GfxDrawDashedLine(&dpi, { info.coords, { info.coords.x, cursorPosition.y } }, DefaultDashedLength, 0);
         }
 
         auto ft = Formatter();
         ft.Add<money64>(info.money);
         DrawTextBasic(
-            *dpi, info.coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, ft, { TextAlignment::CENTRE });
+            dpi, info.coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, ft, { TextAlignment::CENTRE });
 
-        GfxFillRect(dpi, { { info.coords - ScreenCoordsXY{ 2, 2 } }, info.coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+        GfxFillRect(&dpi, { { info.coords - ScreenCoordsXY{ 2, 2 } }, info.coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
         GfxFillRect(
-            dpi, { { info.coords - ScreenCoordsXY{ 1, 1 } }, { info.coords + ScreenCoordsXY{ 1, 1 } } }, PALETTE_INDEX_21);
+            &dpi, { { info.coords - ScreenCoordsXY{ 1, 1 } }, { info.coords + ScreenCoordsXY{ 1, 1 } } }, PALETTE_INDEX_21);
     }
 
     void Draw(
-        DrawPixelInfo* dpi, const money64* history, const int32_t count, const ScreenCoordsXY& screenCoords,
+        DrawPixelInfo& dpi, const money64* history, const int32_t count, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
         DrawMonths(dpi, history, count, screenCoords);
