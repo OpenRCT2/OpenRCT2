@@ -337,14 +337,15 @@ public:
                     ContextQuit();
                     break;
                 case SDL_WINDOWEVENT:
-                    if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                    if (e.window.event == SDL_WINDOWEVENT_RESIZED)
                     {
+                        LOG_VERBOSE("New Window size: %ux%u\n", e.window.data1, e.window.data2);
                         OnResize(e.window.data1, e.window.data2);
                     }
 
                     switch (e.window.event)
                     {
-                        case SDL_WINDOWEVENT_SIZE_CHANGED:
+                        case SDL_WINDOWEVENT_RESIZED:
                         case SDL_WINDOWEVENT_MOVED:
                         case SDL_WINDOWEVENT_MAXIMIZED:
                         case SDL_WINDOWEVENT_RESTORED:
