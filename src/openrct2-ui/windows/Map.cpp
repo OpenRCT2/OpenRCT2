@@ -719,13 +719,13 @@ public:
 
         if (selected_tab == PAGE_PEEPS)
         {
-            PaintPeepOverlay(&dpi);
+            PaintPeepOverlay(dpi);
         }
         else
         {
-            PaintTrainOverlay(&dpi);
+            PaintTrainOverlay(dpi);
         }
-        PaintHudRectangle(&dpi);
+        PaintHudRectangle(dpi);
     }
 
     void OnPrepareDraw() override
@@ -855,7 +855,7 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
-        DrawTabImages(&dpi);
+        DrawTabImages(dpi);
 
         auto screenCoords = windowPos
             + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
@@ -1161,7 +1161,7 @@ private:
         return colourB;
     }
 
-    void PaintPeepOverlay(DrawPixelInfo* dpi)
+    void PaintPeepOverlay(DrawPixelInfo& dpi)
     {
         auto flashColour = GetGuestFlashColour();
         for (auto guest : EntityList<Guest>())
@@ -1175,7 +1175,7 @@ private:
         }
     }
 
-    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo* dpi)
+    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo& dpi)
     {
         if (peep->x == LOCATION_NULL)
             return;
@@ -1194,7 +1194,7 @@ private:
             }
         }
 
-        GfxFillRect(dpi, { leftTop, rightBottom }, colour);
+        GfxFillRect(&dpi, { leftTop, rightBottom }, colour);
     }
 
     static uint8_t GetGuestFlashColour()
@@ -1221,7 +1221,7 @@ private:
         return colour;
     }
 
-    void PaintTrainOverlay(DrawPixelInfo* dpi)
+    void PaintTrainOverlay(DrawPixelInfo& dpi)
     {
         for (auto train : TrainManager::View())
         {
@@ -1232,7 +1232,7 @@ private:
 
                 MapCoordsXY c = TransformToMapCoords({ vehicle->x, vehicle->y });
 
-                GfxFillRect(dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
+                GfxFillRect(&dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
             }
         }
     }
@@ -1241,7 +1241,7 @@ private:
      * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
      * but it doesn't look like it's ever necessary here so the call was removed.
      */
-    void PaintHudRectangle(DrawPixelInfo* dpi)
+    void PaintHudRectangle(DrawPixelInfo& dpi)
     {
         WindowBase* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
@@ -1259,23 +1259,23 @@ private:
         auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
         // top horizontal lines
-        GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
-        GfxFillRect(dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PALETTE_INDEX_56);
+        GfxFillRect(&dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
+        GfxFillRect(&dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PALETTE_INDEX_56);
 
         // left vertical lines
-        GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
-        GfxFillRect(dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PALETTE_INDEX_56);
+        GfxFillRect(&dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
+        GfxFillRect(&dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PALETTE_INDEX_56);
 
         // bottom horizontal lines
-        GfxFillRect(dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
-        GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PALETTE_INDEX_56);
+        GfxFillRect(&dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
+        GfxFillRect(&dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PALETTE_INDEX_56);
 
         // right vertical lines
-        GfxFillRect(dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
-        GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
+        GfxFillRect(&dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
+        GfxFillRect(&dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
     }
 
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Guest tab image (animated)
         uint32_t guestTabImage = SPR_TAB_GUESTS_0;
@@ -1283,7 +1283,7 @@ private:
             guestTabImage += list_information_type / 4;
 
         GfxDrawSprite(
-            *dpi, ImageId(guestTabImage),
+            dpi, ImageId(guestTabImage),
             windowPos + ScreenCoordsXY{ widgets[WIDX_PEOPLE_TAB].left, widgets[WIDX_PEOPLE_TAB].top });
 
         // Ride/stall tab image (animated)
@@ -1292,7 +1292,7 @@ private:
             rideTabImage += list_information_type / 4;
 
         GfxDrawSprite(
-            *dpi, ImageId(rideTabImage),
+            dpi, ImageId(rideTabImage),
             windowPos + ScreenCoordsXY{ widgets[WIDX_RIDES_TAB].left, widgets[WIDX_RIDES_TAB].top });
     }
 

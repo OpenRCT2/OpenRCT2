@@ -722,7 +722,7 @@ static void WidgetScrollDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widg
 
     // Draw the scroll contents
     if (scroll_dpi.width > 0 && scroll_dpi.height > 0)
-        WindowEventScrollPaintCall(&w, &scroll_dpi, scrollIndex);
+        WindowEventScrollPaintCall(&w, scroll_dpi, scrollIndex);
 }
 
 static void WidgetHScrollbarDraw(

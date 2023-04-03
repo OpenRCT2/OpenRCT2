@@ -325,7 +325,7 @@ public:
         _drawingContext->CalculcateClipping(&_bitsDPI);
 
         WindowUpdateAllViewports();
-        WindowDrawAll(&_bitsDPI, 0, 0, _width, _height);
+        WindowDrawAll(_bitsDPI, 0, 0, _width, _height);
     }
 
     void PaintWeather() override

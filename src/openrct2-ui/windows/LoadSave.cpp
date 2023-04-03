@@ -1112,7 +1112,7 @@ static Widget window_overwrite_prompt_widgets[] = {
 };
 
 static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex);
-static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo& dpi);
 
 static WindowEventList window_overwrite_prompt_events([](auto& events) {
     events.mouse_up = &WindowOverwritePromptMouseup;
@@ -1164,7 +1164,7 @@ static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
 
@@ -1173,7 +1173,7 @@ static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi)
     ft.Add<char*>(_window_overwrite_prompt_name);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
-    DrawTextWrapped(*dpi, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
+    DrawTextWrapped(dpi, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
 }
 
 #pragma endregion

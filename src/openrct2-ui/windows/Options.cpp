@@ -555,15 +555,15 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
-        DrawTabImages(&dpi);
+        DrawTabImages(dpi);
 
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_DISPLAY:
-                DisplayDraw(&dpi);
+                DisplayDraw(dpi);
                 break;
             case WINDOW_OPTIONS_PAGE_ADVANCED:
-                AdvancedDraw(&dpi);
+                AdvancedDraw(dpi);
                 break;
             default:
                 break;
@@ -909,12 +909,12 @@ private:
         widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.DrawingEngine)];
     }
 
-    void DisplayDraw(DrawPixelInfo* dpi)
+    void DisplayDraw(DrawPixelInfo& dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.WindowScale * 100));
         DrawTextBasic(
-            *dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
+            dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
             STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { colours[1] });
     }
 #pragma endregion
@@ -1997,12 +1997,12 @@ private:
         widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[gConfigGeneral.AutosaveFrequency];
     }
 
-    void AdvancedDraw(DrawPixelInfo* dpi)
+    void AdvancedDraw(DrawPixelInfo& dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.AutosaveAmount));
         DrawTextBasic(
-            *dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
+            dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
             STR_WINDOW_COLOUR_2_COMMA16, ft, { colours[1] });
 
         const auto normalisedPath = Platform::StrDecompToPrecomp(gConfigGeneral.RCT1Path);
@@ -2017,7 +2017,7 @@ private:
         uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
         ScreenCoordsXY screenCoords = { windowPos.x + pathWidget.left + 1,
                                         windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
-        DrawTextEllipsised(*dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
+        DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
     }
 
     OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
@@ -2068,7 +2068,7 @@ private:
             Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
     }
 
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_TAB_PAINT_0);
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
@@ -2079,7 +2079,7 @@ private:
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
     }
 
-    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
         Widget* widget = &widgets[widgetIndex];
@@ -2095,7 +2095,7 @@ private:
             }
 
             // Draw normal, enabled sprite.
-            GfxDrawSprite(*dpi, ImageId(spriteIndex), screenCoords);
+            GfxDrawSprite(dpi, ImageId(spriteIndex), screenCoords);
         }
         else
         {
@@ -2104,10 +2104,10 @@ private:
 
             // Draw greyed out (light border bottom right shadow)
             GfxDrawSpriteSolid(
-                dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
+                &dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
 
             // Draw greyed out (dark)
-            GfxDrawSpriteSolid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
+            GfxDrawSpriteSolid(&dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
         }
     }
 

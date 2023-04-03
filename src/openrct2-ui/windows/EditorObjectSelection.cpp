@@ -1073,8 +1073,8 @@ public:
             DrawTextEllipsised(dpi, screenPos, _width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
         }
 
-        DrawDescriptions(&dpi);
-        DrawDebugData(&dpi);
+        DrawDescriptions(dpi);
+        DrawDebugData(dpi);
     }
 
 private:
@@ -1185,7 +1185,7 @@ private:
         _listItems.shrink_to_fit();
     }
 
-    void DrawDescriptions(DrawPixelInfo* dpi)
+    void DrawDescriptions(DrawPixelInfo& dpi)
     {
         const auto& widget = widgets[WIDX_PREVIEW];
         auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_LIST].right + 4, widget.bottom + 23 };
@@ -1194,7 +1194,7 @@ private:
         if (_loadedObject->IsCompatibilityObject())
         {
             screenPos.y += DrawTextWrapped(
-                               *dpi, screenPos, _width2, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
+                               dpi, screenPos, _width2, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
                                { COLOUR_BRIGHT_RED })
                 + LIST_ROW_HEIGHT;
         }
@@ -1206,7 +1206,7 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(description.c_str());
 
-            screenPos.y += DrawTextWrapped(*dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
+            screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
         }
         if (GetSelectedObjectType() == ObjectType::Ride)
         {
@@ -1227,7 +1227,7 @@ private:
                 }
                 auto ft = Formatter();
                 ft.Add<const char*>(sells.c_str());
-                screenPos.y += DrawTextWrapped(*dpi, screenPos, _width2, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
+                screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
             }
         }
         else if (GetSelectedObjectType() == ObjectType::SceneryGroup)
@@ -1235,11 +1235,11 @@ private:
             const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
             auto ft = Formatter();
             ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
-            screenPos.y += DrawTextWrapped(*dpi, screenPos, _width2, STR_INCLUDES_X_OBJECTS, ft) + 2;
+            screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_INCLUDES_X_OBJECTS, ft) + 2;
         }
         else if (GetSelectedObjectType() == ObjectType::Music)
         {
-            screenPos.y += DrawTextWrapped(*dpi, screenPos, _width2, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
+            screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
             const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
             for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
             {
@@ -1252,12 +1252,12 @@ private:
                 auto ft = Formatter();
                 ft.Add<const char*>(track->Name.c_str());
                 ft.Add<const char*>(track->Composer.c_str());
-                screenPos.y += DrawTextWrapped(*dpi, screenPos + ScreenCoordsXY{ 10, 0 }, _width2, stringId, ft);
+                screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, _width2, stringId, ft);
             }
         }
     }
 
-    void DrawDebugData(DrawPixelInfo* dpi)
+    void DrawDebugData(DrawPixelInfo& dpi)
     {
         ObjectListItem* listItem = &_listItems[selected_list_item];
         auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 6) };
@@ -1265,7 +1265,7 @@ private:
         // Draw fallback image warning
         if (_loadedObject && _loadedObject->UsesFallbackImages())
         {
-            DrawTextBasic(*dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            DrawTextBasic(dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         }
         screenPos.y += LIST_ROW_HEIGHT;
 
@@ -1273,14 +1273,14 @@ private:
         if (GetSelectedObjectType() == ObjectType::Ride)
         {
             auto stringId = GetRideTypeStringId(listItem->repositoryItem);
-            DrawTextBasic(*dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         }
 
         screenPos.y += LIST_ROW_HEIGHT;
 
         // Draw object source
         auto stringId = ObjectManagerGetSourceGameString(listItem->repositoryItem->GetFirstSourceGame());
-        DrawTextBasic(*dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+        DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         screenPos.y += LIST_ROW_HEIGHT;
 
         // Draw object filename
@@ -1290,7 +1290,7 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const utf8*>(path.c_str());
             DrawTextBasic(
-                *dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
                 { COLOUR_BLACK, TextAlignment::RIGHT });
             screenPos.y += LIST_ROW_HEIGHT;
         }
@@ -1310,7 +1310,7 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(authorsString.c_str());
             DrawTextEllipsised(
-                *dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
+                dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
                 STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
         }
     }

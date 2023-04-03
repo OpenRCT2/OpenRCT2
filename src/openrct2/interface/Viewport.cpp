@@ -370,14 +370,14 @@ static void ViewportRedrawAfterShift(DrawPixelInfo* dpi, WindowBase* window, Vie
             {
                 // draw left
                 auto _right = viewport->pos.x + coords.x;
-                WindowDrawAll(dpi, left, top, _right, bottom);
+                WindowDrawAll(*dpi, left, top, _right, bottom);
                 left += coords.x;
             }
             else if (coords.x < 0)
             {
                 // draw right
                 auto _left = viewport->pos.x + viewport->width + coords.x;
-                WindowDrawAll(dpi, _left, top, right, bottom);
+                WindowDrawAll(*dpi, _left, top, right, bottom);
                 right += coords.x;
             }
 
@@ -385,19 +385,19 @@ static void ViewportRedrawAfterShift(DrawPixelInfo* dpi, WindowBase* window, Vie
             {
                 // draw top
                 bottom = viewport->pos.y + coords.y;
-                WindowDrawAll(dpi, left, top, right, bottom);
+                WindowDrawAll(*dpi, left, top, right, bottom);
             }
             else if (coords.y < 0)
             {
                 // draw bottom
                 top = viewport->pos.y + viewport->height + coords.y;
-                WindowDrawAll(dpi, left, top, right, bottom);
+                WindowDrawAll(*dpi, left, top, right, bottom);
             }
         }
         else
         {
             // redraw whole viewport
-            WindowDrawAll(dpi, left, top, right, bottom);
+            WindowDrawAll(*dpi, left, top, right, bottom);
         }
     }
 }
@@ -443,7 +443,7 @@ static void ViewportShiftPixels(DrawPixelInfo* dpi, WindowBase* window, Viewport
         if (top >= bottom)
             continue;
 
-        WindowDrawAll(dpi, left, top, right, bottom);
+        WindowDrawAll(*dpi, left, top, right, bottom);
     }
 
     ViewportRedrawAfterShift(dpi, window, viewport, { x_diff, y_diff });
@@ -480,7 +480,7 @@ static void ViewportMove(const ScreenCoordsXY& coords, WindowBase* w, Viewport* 
         if (DrawingEngineHasDirtyOptimisations())
         {
             DrawPixelInfo* dpi = DrawingEngineGetDpi();
-            WindowDrawAll(dpi, left, top, right, bottom);
+            WindowDrawAll(*dpi, left, top, right, bottom);
             return;
         }
     }

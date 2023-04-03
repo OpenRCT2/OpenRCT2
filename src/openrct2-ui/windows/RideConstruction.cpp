@@ -1519,7 +1519,7 @@ public:
         widgetHeight = widget->height() - 1;
         if (ClipDrawPixelInfo(&clipdpi, &dpi, screenCoords, widgetWidth, widgetHeight))
         {
-            DrawTrackPiece(&clipdpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
+            DrawTrackPiece(clipdpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
         }
 
         // Draw cost
@@ -2624,7 +2624,7 @@ private:
     }
 
     void DrawTrackPiece(
-        DrawPixelInfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+        DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
         int32_t widgetWidth, int32_t widgetHeight)
     {
         auto currentRide = GetRide(rideIndex);
@@ -2656,20 +2656,20 @@ private:
 
         const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
 
-        dpi->x += rotatedScreenCoords.x - widgetWidth / 2;
-        dpi->y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
+        dpi.x += rotatedScreenCoords.x - widgetWidth / 2;
+        dpi.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
 
         DrawTrackPieceHelper(dpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
     }
 
     void DrawTrackPieceHelper(
-        DrawPixelInfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+        DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
         const CoordsXY& originCoords, int32_t originZ)
     {
         TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         TileElement tempTrackTileElement{};
         TileElement* backupTileElementArrays[5]{};
-        PaintSession* session = PaintSessionAlloc(dpi, 0);
+        PaintSession* session = PaintSessionAlloc(&dpi, 0);
         trackDirection &= 3;
 
         auto currentRide = GetRide(rideIndex);

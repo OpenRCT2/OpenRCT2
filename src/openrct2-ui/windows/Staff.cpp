@@ -206,15 +206,15 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
-        DrawTabImages(&dpi);
+        DrawTabImages(dpi);
 
         switch (page)
         {
             case WINDOW_STAFF_OVERVIEW:
-                OverviewDraw(&dpi);
+                OverviewDraw(dpi);
                 break;
             case WINDOW_STAFF_STATISTICS:
-                StatsDraw(&dpi);
+                StatsDraw(dpi);
                 break;
         }
     }
@@ -513,7 +513,7 @@ private:
         widgets[WIDX_FIRE].right = width - 2;
     }
 
-    void OverviewDraw(DrawPixelInfo* dpi)
+    void OverviewDraw(DrawPixelInfo& dpi)
     {
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
@@ -522,7 +522,7 @@ private:
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                GfxDrawSprite(*dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
             }
         }
 
@@ -537,10 +537,10 @@ private:
         const auto& widget = widgets[WIDX_BTM_LABEL];
         auto screenPos = windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
         int32_t widgetWidth = widget.width();
-        DrawTextEllipsised(*dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+        DrawTextEllipsised(dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
     }
 
-    void DrawOverviewTabImage(DrawPixelInfo* dpi)
+    void DrawOverviewTabImage(DrawPixelInfo& dpi)
     {
         if (IsWidgetDisabled(WIDX_TAB_1))
             return;
@@ -553,7 +553,7 @@ private:
             widgetHeight++;
 
         DrawPixelInfo clip_dpi;
-        if (!ClipDrawPixelInfo(&clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
+        if (!ClipDrawPixelInfo(&clip_dpi, &dpi, screenCoords, widgetWidth, widgetHeight))
         {
             return;
         }
@@ -914,7 +914,7 @@ private:
 #pragma endregion
 
 #pragma region Statistics tab events
-    void StatsDraw(DrawPixelInfo* dpi)
+    void StatsDraw(DrawPixelInfo& dpi)
     {
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -928,13 +928,13 @@ private:
         {
             auto ft = Formatter();
             ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
-            DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
         auto ft = Formatter();
         ft.Add<int32_t>(staff->GetHireDate());
-        DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
+        DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         switch (staff->AssignedStaffType)
@@ -942,37 +942,37 @@ private:
             case StaffType::Handyman:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffLawnsMown);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffGardensWatered);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffLitterSwept);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffBinsEmptied);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
                 break;
             case StaffType::Mechanic:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffRidesInspected);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffRidesFixed);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
                 break;
             case StaffType::Security:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffVandalsStopped);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                 break;
             case StaffType::Entertainer:
             case StaffType::Count:
@@ -1192,14 +1192,14 @@ private:
         WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         DrawOverviewTabImage(dpi);
         DrawTabImage(dpi, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
         DrawTabImage(dpi, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
     }
 
-    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t baseImageId)
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t baseImageId)
     {
         WidgetIndex widgetIndex = WIDX_TAB_1 + p;
         Widget* widget = &widgets[widgetIndex];
@@ -1215,7 +1215,7 @@ private:
             }
 
             // Draw normal, enabled sprite.
-            GfxDrawSprite(*dpi, ImageId(baseImageId), screenCoords);
+            GfxDrawSprite(dpi, ImageId(baseImageId), screenCoords);
         }
     }
 

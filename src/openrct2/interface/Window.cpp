@@ -84,7 +84,7 @@ namespace WindowCloseFlags
     static constexpr uint32_t CloseSingle = (1 << 1);
 } // namespace WindowCloseFlags
 
-static void WindowDrawCore(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
@@ -1130,7 +1130,7 @@ void MainWindowZoom(bool zoomIn, bool atCursor)
  * Splits a drawing of a window into regions that can be seen and are not hidden
  * by other opaque overlapping windows.
  */
-void WindowDraw(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (!WindowIsVisible(w))
         return;
@@ -1185,7 +1185,7 @@ void WindowDraw(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, in
 /**
  * Draws the given window and any other overlapping transparent windows.
  */
-static void WindowDrawCore(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Clamp region
     left = std::max<int32_t>(left, w.windowPos.x);
@@ -1203,7 +1203,7 @@ static void WindowDrawCore(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int3
         auto* v = (*it).get();
         if ((&w == v || (v->flags & WF_TRANSPARENT)) && WindowIsVisible(*v))
         {
-            WindowDrawSingle(dpi, *v, left, top, right, bottom);
+            WindowDrawSingle(&dpi, *v, left, top, right, bottom);
         }
     }
 }
@@ -1266,7 +1266,7 @@ static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, in
     gCurrentWindowColours[2] = NOT_TRANSLUCENT(w.colours[2]);
     gCurrentWindowColours[3] = NOT_TRANSLUCENT(w.colours[3]);
 
-    WindowEventPaintCall(&w, dpi);
+    WindowEventPaintCall(&w, *dpi);
 }
 
 /**
@@ -1276,9 +1276,9 @@ static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, in
  * @param dpi (edi)
  * @param w (esi)
  */
-void WindowDrawViewport(DrawPixelInfo* dpi, WindowBase& w)
+void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w)
 {
-    ViewportRender(dpi, w.viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
+    ViewportRender(&dpi, w.viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
 }
 
 void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords)
@@ -1647,18 +1647,18 @@ void WindowEventInvalidateCall(WindowBase* w)
         w->event_handlers->invalidate(w);
 }
 
-void WindowEventPaintCall(WindowBase* w, DrawPixelInfo* dpi)
+void WindowEventPaintCall(WindowBase* w, DrawPixelInfo& dpi)
 {
     if (w->event_handlers == nullptr)
-        w->OnDraw(*dpi);
+        w->OnDraw(dpi);
     else if (w->event_handlers->paint != nullptr)
         w->event_handlers->paint(w, dpi);
 }
 
-void WindowEventScrollPaintCall(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+void WindowEventScrollPaintCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex)
 {
     if (w->event_handlers == nullptr)
-        w->OnScrollDraw(scrollIndex, *dpi);
+        w->OnScrollDraw(scrollIndex, dpi);
     else if (w->event_handlers->scroll_paint != nullptr)
         w->event_handlers->scroll_paint(w, dpi, scrollIndex);
 }
@@ -2089,9 +2089,9 @@ bool WindowIsVisible(WindowBase& w)
  * right (dx)
  * bottom (bp)
  */
-void WindowDrawAll(DrawPixelInfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
-    auto windowDPI = dpi->Crop({ left, top }, { right - left, bottom - top });
+    auto windowDPI = dpi.Crop({ left, top }, { right - left, bottom - top });
     WindowVisitEach([&windowDPI, left, top, right, bottom](WindowBase* w) {
         if (w->flags & WF_TRANSPARENT)
             return;
@@ -2099,7 +2099,7 @@ void WindowDrawAll(DrawPixelInfo* dpi, int32_t left, int32_t top, int32_t right,
             return;
         if (left >= w->windowPos.x + w->width || top >= w->windowPos.y + w->height)
             return;
-        WindowDraw(&windowDPI, *w, left, top, right, bottom);
+        WindowDraw(windowDPI, *w, left, top, right, bottom);
     });
 }
 

@@ -447,8 +447,8 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         // Widgets
-        WindowDrawWidgets(*this, &dpi);
-        WindowThemesDrawTabImages(&dpi);
+        WindowDrawWidgets(*this, dpi);
+        WindowThemesDrawTabImages(dpi);
 
         if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
         {
@@ -868,7 +868,7 @@ public:
         return 0;
     }
 
-    void WindowThemesDrawTabImages(DrawPixelInfo* dpi)
+    void WindowThemesDrawTabImages(DrawPixelInfo& dpi)
     {
         for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
         {
@@ -876,7 +876,7 @@ public:
             if (_selected_tab == i)
                 sprite_idx += frame_no / window_themes_tab_animation_divisor[_selected_tab];
             GfxDrawSprite(
-                *dpi, ImageId(sprite_idx),
+                dpi, ImageId(sprite_idx),
                 windowPos
                     + ScreenCoordsXY{ widgets[WIDX_THEMES_SETTINGS_TAB + i].left, widgets[WIDX_THEMES_SETTINGS_TAB + i].top });
         }

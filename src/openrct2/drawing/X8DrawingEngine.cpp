@@ -437,7 +437,7 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, 
 
     // Draw region
     OnDrawDirtyBlock(x, y, columns, rows);
-    WindowDrawAll(&_bitsDPI, left, top, right, bottom);
+    WindowDrawAll(_bitsDPI, left, top, right, bottom);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

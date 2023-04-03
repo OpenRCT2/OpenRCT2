@@ -530,14 +530,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            WindowDrawWidgets(*this, &dpi);
+            WindowDrawWidgets(*this, dpi);
             DrawTabImages(dpi);
             if (viewport != nullptr)
             {
                 auto widgetIndex = GetViewportWidgetIndex();
                 if (WidgetIsVisible(*this, widgetIndex.value_or(false)))
                 {
-                    WindowDrawViewport(&dpi, *this);
+                    WindowDrawViewport(dpi, *this);
                 }
             }
         }

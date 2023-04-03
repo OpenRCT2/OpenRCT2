@@ -752,7 +752,7 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            WindowDrawViewport(&dpi, *this);
+            WindowDrawViewport(dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
                 GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });

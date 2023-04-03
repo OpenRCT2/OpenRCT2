@@ -427,7 +427,7 @@ public:
         }
         else
         {
-            WindowResearchDevelopmentPagePaint(this, &dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
+            WindowResearchDevelopmentPagePaint(this, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
         }
     }
 

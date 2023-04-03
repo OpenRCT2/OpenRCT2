@@ -293,7 +293,7 @@ public:
 
         if (viewport != nullptr)
         {
-            WindowDrawViewport(&dpi, *this);
+            WindowDrawViewport(dpi, *this);
         }
     }
 

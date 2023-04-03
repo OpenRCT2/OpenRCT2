@@ -509,8 +509,8 @@ public:
      */
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
-        DrawTabImages(&dpi);
+        WindowDrawWidgets(*this, dpi);
+        DrawTabImages(dpi);
 
         // Draw number of attractions on bottom
         auto ft = Formatter();
@@ -739,7 +739,7 @@ private:
      *
      *  rct2: 0x006B38EA
      */
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         int32_t sprite_idx;
 
@@ -748,21 +748,21 @@ private:
         if (page == PAGE_RIDES)
             sprite_idx += frame_no / 4;
         GfxDrawSprite(
-            *dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
+            dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
 
         // Shops and stalls tab
         sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
         if (page == PAGE_SHOPS_AND_STALLS)
             sprite_idx += frame_no / 4;
         GfxDrawSprite(
-            *dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+            dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
 
         // Information kiosks and facilities tab
         sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
         if (page == PAGE_KIOSKS_AND_FACILITIES)
             sprite_idx += (frame_no / 4) % 8;
         GfxDrawSprite(
-            *dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+            dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
     }
 
     /**

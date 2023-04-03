@@ -3180,7 +3180,7 @@ public:
     {
         int32_t imgId;
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         ScreenCoordsXY screenPos{};
         // Draw staff button image (setting masks to the staff colours)

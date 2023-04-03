@@ -288,7 +288,7 @@ public:
     {
         auto ft = Formatter::Common();
         ft.Add<char*>(_trackDesign->name.c_str());
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         // Draw mini tile preview
         DrawPixelInfo clippedDpi;

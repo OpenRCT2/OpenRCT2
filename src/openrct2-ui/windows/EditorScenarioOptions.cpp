@@ -613,7 +613,7 @@ private:
     {
         ScreenCoordsXY screenCoords{};
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
         const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
@@ -861,7 +861,7 @@ private:
     {
         ScreenCoordsXY screenCoords{};
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
         const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
@@ -1180,7 +1180,7 @@ private:
     {
         ScreenCoordsXY screenCoords{};
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
         const auto& landCostWidget = widgets[WIDX_LAND_COST];

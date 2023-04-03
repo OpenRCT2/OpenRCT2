@@ -629,14 +629,14 @@ void WindowInitScrollWidgets(WindowBase& w)
  *
  *  rct2: 0x006EB15C
  */
-void WindowDrawWidgets(WindowBase& w, DrawPixelInfo* dpi)
+void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
 {
     Widget* widget;
     WidgetIndex widgetIndex;
 
     if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
         GfxFilterRect(
-            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
+            &dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
 
     // todo: some code missing here? Between 006EB18C and 006EB260
 
@@ -646,14 +646,14 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo* dpi)
         if (widget->IsVisible())
         {
             // Check if widget is outside the draw region
-            if (w.windowPos.x + widget->left < dpi->x + dpi->width && w.windowPos.x + widget->right >= dpi->x)
+            if (w.windowPos.x + widget->left < dpi.x + dpi.width && w.windowPos.x + widget->right >= dpi.x)
             {
-                if (w.windowPos.y + widget->top < dpi->y + dpi->height && w.windowPos.y + widget->bottom >= dpi->y)
+                if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
                 {
                     if (w.IsLegacy())
-                        WidgetDraw(dpi, w, widgetIndex);
+                        WidgetDraw(&dpi, w, widgetIndex);
                     else
-                        w.OnDrawWidget(widgetIndex, *dpi);
+                        w.OnDrawWidget(widgetIndex, dpi);
                 }
             }
         }
@@ -665,7 +665,7 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo* dpi)
     if (w.flags & WF_WHITE_BORDER_MASK)
     {
         GfxFillRectInset(
-            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, COLOUR_WHITE,
+            &dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, COLOUR_WHITE,
             INSET_RECT_FLAG_FILL_NONE);
     }
 }
@@ -710,7 +710,7 @@ bool Window::IsLegacy()
 
 void Window::OnDraw(DrawPixelInfo& dpi)
 {
-    WindowDrawWidgets(*this, &dpi);
+    WindowDrawWidgets(*this, dpi);
 }
 
 void Window::OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
@@ -760,7 +760,7 @@ void Window::SetCheckboxValue(WidgetIndex widgetIndex, bool value)
 
 void Window::DrawWidgets(DrawPixelInfo& dpi)
 {
-    WindowDrawWidgets(*this, &dpi);
+    WindowDrawWidgets(*this, dpi);
 }
 
 void Window::Close()

@@ -988,7 +988,7 @@ public:
 
     void OnDrawResearch(DrawPixelInfo& dpi)
     {
-        WindowResearchFundingPagePaint(this, &dpi, WIDX_RESEARCH_FUNDING);
+        WindowResearchFundingPagePaint(this, dpi, WIDX_RESEARCH_FUNDING);
     }
 
 #pragma endregion
