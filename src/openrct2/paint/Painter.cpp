@@ -43,7 +43,7 @@ void Painter::Paint(IDrawingEngine& de)
     auto dpi = de.GetDrawingPixelInfo();
     if (gIntroState != IntroState::None)
     {
-        IntroDraw(dpi);
+        IntroDraw(*dpi);
     }
     else
     {
