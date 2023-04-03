@@ -608,8 +608,8 @@ private:
         const auto& widget = widgets[widgetIndex];
         DrawPixelInfo clippedDpi;
         if (ClipDrawPixelInfo(
-                clippedDpi, dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
-                widget.right - widget.left - 1, widget.bottom - widget.top - 1))
+                clippedDpi, dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.right - widget.left - 1,
+                widget.bottom - widget.top - 1))
         {
             auto imageId = (_selectedTab == 3 ? (_tabAnimationIndex & ~3) : 0);
             imageId += GetPeepAnimation(type).base_image + 1;

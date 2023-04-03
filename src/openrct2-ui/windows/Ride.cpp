@@ -4962,8 +4962,7 @@ static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo& dpi)
     if (entrancePreviewWidget.type != WindowWidgetType::Empty)
     {
         if (ClipDrawPixelInfo(
-                clippedDpi, dpi,
-                w->windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
+                clippedDpi, dpi, w->windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
                 entrancePreviewWidget.width(), entrancePreviewWidget.height()))
         {
             GfxClear(&clippedDpi, PALETTE_INDEX_12);
