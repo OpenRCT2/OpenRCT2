@@ -3447,7 +3447,6 @@ static void VehiclePitchDown8BankedLeft45(
     }
 }
 
-// 6D4E15
 static void VehiclePitchDown8BankedRight45(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
