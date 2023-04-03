@@ -466,8 +466,8 @@ static void WindowGameBottomToolbarDrawParkRating(
     }
 
     // Draw thumbs on the sides
-    GfxDrawSprite(dpi, ImageId(SPR_RATING_LOW), coords - ScreenCoordsXY{ 14, 0 });
-    GfxDrawSprite(dpi, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
+    GfxDrawSprite(*dpi, ImageId(SPR_RATING_LOW), coords - ScreenCoordsXY{ 14, 0 });
+    GfxDrawSprite(*dpi, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
 }
 
 static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo* dpi, WindowBase* w)
@@ -525,7 +525,7 @@ static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo* dpi, WindowBase
 
     // Current weather
     auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateCurrent);
-    GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
+    GfxDrawSprite(*dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
     // Next weather
     auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateNext);
@@ -533,8 +533,8 @@ static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo* dpi, WindowBase
     {
         if (gClimateUpdateTimer < 960)
         {
-            GfxDrawSprite(dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
-            GfxDrawSprite(dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
+            GfxDrawSprite(*dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
+            GfxDrawSprite(*dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
         }
     }
 }
@@ -571,7 +571,7 @@ static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo* dpi, WindowBase* 
     switch (newsItem->Type)
     {
         case News::ItemType::Ride:
-            GfxDrawSprite(dpi, ImageId(SPR_RIDE), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(SPR_RIDE), screenCoords);
             break;
         case News::ItemType::PeepOnRide:
         case News::ItemType::Peep:
@@ -601,41 +601,41 @@ static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo* dpi, WindowBase* 
             image_id_base++;
 
             auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
-            GfxDrawSprite(&cliped_dpi, image_id, clipCoords);
+            GfxDrawSprite(cliped_dpi, image_id, clipCoords);
 
             auto* guest = peep->As<Guest>();
             if (guest != nullptr)
             {
                 if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
                 {
-                    GfxDrawSprite(&cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
+                    GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
                 }
                 else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
                 {
-                    GfxDrawSprite(&cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
+                    GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
                 }
                 else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
                 {
-                    GfxDrawSprite(&cliped_dpi, ImageId(image_id_base + 32, guest->HatColour), clipCoords);
+                    GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->HatColour), clipCoords);
                 }
             }
             break;
         }
         case News::ItemType::Money:
         case News::ItemType::Campaign:
-            GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(SPR_FINANCE), screenCoords);
             break;
         case News::ItemType::Research:
-            GfxDrawSprite(dpi, ImageId(newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
             break;
         case News::ItemType::Peeps:
-            GfxDrawSprite(dpi, ImageId(SPR_GUESTS), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(SPR_GUESTS), screenCoords);
             break;
         case News::ItemType::Award:
-            GfxDrawSprite(dpi, ImageId(SPR_AWARD), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(SPR_AWARD), screenCoords);
             break;
         case News::ItemType::Graph:
-            GfxDrawSprite(dpi, ImageId(SPR_GRAPH), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(SPR_GRAPH), screenCoords);
             break;
         case News::ItemType::Null:
         case News::ItemType::Blank:

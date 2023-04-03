@@ -895,7 +895,7 @@ void GfxDrawPickedUpPeep(DrawPixelInfo* dpi)
 {
     if (gPickupPeepImage.HasValue())
     {
-        GfxDrawSprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
+        GfxDrawSprite(*dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
     }
 }
 

@@ -226,7 +226,7 @@ public:
                 switch (newsItem.Type)
                 {
                     case News::ItemType::Ride:
-                        GfxDrawSprite(&dpi, ImageId(SPR_RIDE), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_RIDE), screenCoords);
                         break;
                     case News::ItemType::Peep:
                     case News::ItemType::PeepOnRide:
@@ -260,24 +260,24 @@ public:
 
                         ImageIndex imageId = GetPeepAnimation(spriteType).base_image + 1;
                         auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
-                        GfxDrawSprite(&cliped_dpi, image, clipCoords);
+                        GfxDrawSprite(cliped_dpi, image, clipCoords);
                         break;
                     }
                     case News::ItemType::Money:
                     case News::ItemType::Campaign:
-                        GfxDrawSprite(&dpi, ImageId(SPR_FINANCE), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenCoords);
                         break;
                     case News::ItemType::Research:
-                        GfxDrawSprite(&dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                         break;
                     case News::ItemType::Peeps:
-                        GfxDrawSprite(&dpi, ImageId(SPR_GUESTS), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_GUESTS), screenCoords);
                         break;
                     case News::ItemType::Award:
-                        GfxDrawSprite(&dpi, ImageId(SPR_AWARD), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_AWARD), screenCoords);
                         break;
                     case News::ItemType::Graph:
-                        GfxDrawSprite(&dpi, ImageId(SPR_GRAPH), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_GRAPH), screenCoords);
                         break;
                     case News::ItemType::Null:
                     case News::ItemType::Blank:
@@ -299,7 +299,7 @@ public:
                         press = 0x20;
                 }
                 GfxFillRectInset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
-                GfxDrawSprite(&dpi, ImageId(SPR_LOCATE), screenCoords);
+                GfxDrawSprite(dpi, ImageId(SPR_LOCATE), screenCoords);
             }
 
             y += itemHeight;

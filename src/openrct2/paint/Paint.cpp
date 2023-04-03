@@ -509,7 +509,7 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
     else
     {
-        GfxDrawSprite(dpi, imageId, { x, y });
+        GfxDrawSprite(*dpi, imageId, { x, y });
     }
 
     if (ps->children != nullptr)
@@ -559,7 +559,7 @@ static void PaintAttachedPS(DrawPixelInfo* dpi, PaintStruct* ps, uint32_t viewFl
         }
         else
         {
-            GfxDrawSprite(dpi, imageId, screenCoords);
+            GfxDrawSprite(*dpi, imageId, screenCoords);
         }
     }
 }
@@ -640,7 +640,7 @@ static void PaintPSImageWithBoundingBoxes(DrawPixelInfo* dpi, PaintStruct* ps, I
     GfxDrawLine(dpi, { screenCoordBackTop, screenCoordLeftTop }, colour);
     GfxDrawLine(dpi, { screenCoordBackTop, screenCoordRightTop }, colour);
 
-    GfxDrawSprite(dpi, imageId, { x, y });
+    GfxDrawSprite(*dpi, imageId, { x, y });
 
     // vertical front
     GfxDrawLine(dpi, { screenCoordFrontTop, screenCoordFrontBottom }, colour);

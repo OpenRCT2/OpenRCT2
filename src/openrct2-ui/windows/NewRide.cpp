@@ -986,7 +986,7 @@ private:
             spriteIndex += tab == THRILL_TAB ? ThrillRidesTabAnimationSequence[frame] : frame;
 
             GfxDrawSprite(
-                &dpi, ImageId(spriteIndex, colours[1]),
+                dpi, ImageId(spriteIndex, colours[1]),
                 windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
     }

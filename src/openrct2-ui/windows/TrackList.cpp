@@ -502,7 +502,7 @@ public:
         g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
         GfxSetG1Element(SPR_TEMP, &g1temp);
         DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), trackPreview);
+        GfxDrawSprite(dpi, ImageId(SPR_TEMP), trackPreview);
 
         screenPos.y = windowPos.y + tdWidget.bottom - 12;
 

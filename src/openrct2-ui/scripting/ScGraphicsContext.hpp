@@ -205,7 +205,7 @@ namespace OpenRCT2::Scripting
                 }
             }
 
-            GfxDrawSprite(&_dpi, img.WithTertiary(_tertiaryColour.value_or(0)), { x, y });
+            GfxDrawSprite(_dpi, img.WithTertiary(_tertiaryColour.value_or(0)), { x, y });
         }
 
         void line(int32_t x1, int32_t y1, int32_t x2, int32_t y2)

@@ -187,7 +187,7 @@ public:
                                            : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
                     if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                         image = image.WithIndexOffset(1);
-                    GfxDrawSprite(&dpi, image, screenCoords);
+                    GfxDrawSprite(dpi, image, screenCoords);
                 }
                 else
                 {

@@ -295,7 +295,7 @@ private:
         GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         GfxDrawSprite(
-            &dpi, ImageId(SPR_PREVIOUS),
+            dpi, ImageId(SPR_PREVIOUS),
             windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
         colour_t textColour = NOT_TRANSLUCENT(colours[1]);
@@ -332,7 +332,7 @@ private:
         GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         GfxDrawSprite(
-            &dpi, ImageId(SPR_NEXT),
+            dpi, ImageId(SPR_NEXT),
             windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 29, widgets[WIDX_NEXT_IMAGE].top + 6 });
 
         colour_t textColour = NOT_TRANSLUCENT(colours[1]);

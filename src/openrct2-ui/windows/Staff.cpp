@@ -522,7 +522,7 @@ private:
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(*dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
             }
         }
 
@@ -580,7 +580,7 @@ private:
         }
         imageIndex += offset;
 
-        GfxDrawSprite(&clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
+        GfxDrawSprite(clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
     }
 
     void OverviewResize()
@@ -1215,7 +1215,7 @@ private:
             }
 
             // Draw normal, enabled sprite.
-            GfxDrawSprite(dpi, ImageId(baseImageId), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(baseImageId), screenCoords);
         }
     }
 

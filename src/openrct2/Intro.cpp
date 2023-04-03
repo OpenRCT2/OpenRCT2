@@ -191,10 +191,10 @@ void IntroDraw(DrawPixelInfo* dpi)
                 BORDER_COLOUR_PUBLISHER);
 
             // Draw Infogrames logo
-            GfxDrawSprite(dpi, ImageId(SPR_INTRO_INFOGRAMES_00), { (screenWidth / 2) - 320 + 69, _introStateCounter + 69 });
-            GfxDrawSprite(dpi, ImageId(SPR_INTRO_INFOGRAMES_10), { (screenWidth / 2) - 320 + 319, _introStateCounter + 69 });
-            GfxDrawSprite(dpi, ImageId(SPR_INTRO_INFOGRAMES_01), { (screenWidth / 2) - 320 + 69, _introStateCounter + 319 });
-            GfxDrawSprite(dpi, ImageId(SPR_INTRO_INFOGRAMES_11), { (screenWidth / 2) - 320 + 319, _introStateCounter + 319 });
+            GfxDrawSprite(*dpi, ImageId(SPR_INTRO_INFOGRAMES_00), { (screenWidth / 2) - 320 + 69, _introStateCounter + 69 });
+            GfxDrawSprite(*dpi, ImageId(SPR_INTRO_INFOGRAMES_10), { (screenWidth / 2) - 320 + 319, _introStateCounter + 69 });
+            GfxDrawSprite(*dpi, ImageId(SPR_INTRO_INFOGRAMES_01), { (screenWidth / 2) - 320 + 69, _introStateCounter + 319 });
+            GfxDrawSprite(*dpi, ImageId(SPR_INTRO_INFOGRAMES_11), { (screenWidth / 2) - 320 + 319, _introStateCounter + 319 });
             break;
         case IntroState::DeveloperBegin:
             GfxClear(dpi, BACKROUND_COLOUR_DARK);
@@ -204,8 +204,8 @@ void IntroDraw(DrawPixelInfo* dpi)
             GfxClear(dpi, BACKROUND_COLOUR_DARK);
 
             // Draw Chris Sawyer logo
-            GfxDrawSprite(dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_00), { (screenWidth / 2) - 320 + 70, _introStateCounter });
-            GfxDrawSprite(dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_10), { (screenWidth / 2) - 320 + 320, _introStateCounter });
+            GfxDrawSprite(*dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_00), { (screenWidth / 2) - 320 + 70, _introStateCounter });
+            GfxDrawSprite(*dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_10), { (screenWidth / 2) - 320 + 320, _introStateCounter });
             break;
         case IntroState::LogoFadeIn:
             if (_introStateCounter <= 0xFF00)
@@ -294,10 +294,10 @@ static void ScreenIntroDrawLogo(DrawPixelInfo* dpi)
     DrawingEngineInvalidateImage(SPR_INTRO_LOGO_21);
 
     GfxClear(dpi, BACKROUND_COLOUR_LOGO);
-    GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_00), { imageX + 0, 0 });
-    GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_10), { imageX + 220, 0 });
-    GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_20), { imageX + 440, 0 });
-    GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_01), { imageX + 0, 240 });
-    GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_11), { imageX + 220, 240 });
-    GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_21), { imageX + 440, 240 });
+    GfxDrawSprite(*dpi, ImageId(SPR_INTRO_LOGO_00), { imageX + 0, 0 });
+    GfxDrawSprite(*dpi, ImageId(SPR_INTRO_LOGO_10), { imageX + 220, 0 });
+    GfxDrawSprite(*dpi, ImageId(SPR_INTRO_LOGO_20), { imageX + 440, 0 });
+    GfxDrawSprite(*dpi, ImageId(SPR_INTRO_LOGO_01), { imageX + 0, 240 });
+    GfxDrawSprite(*dpi, ImageId(SPR_INTRO_LOGO_11), { imageX + 220, 240 });
+    GfxDrawSprite(*dpi, ImageId(SPR_INTRO_LOGO_21), { imageX + 440, 240 });
 }

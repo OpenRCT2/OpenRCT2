@@ -968,7 +968,7 @@ public:
             {
                 auto image = ImageId(ObjectSelectionPages[i].Image);
                 auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                GfxDrawSprite(&dpi, image, screenPos);
+                GfxDrawSprite(dpi, image, screenPos);
             }
         }
 
@@ -998,7 +998,7 @@ public:
                 spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
                 auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                GfxDrawSprite(&dpi, ImageId(spriteIndex, colours[1]), screenPos);
+                GfxDrawSprite(dpi, ImageId(spriteIndex, colours[1]), screenPos);
             }
         }
 

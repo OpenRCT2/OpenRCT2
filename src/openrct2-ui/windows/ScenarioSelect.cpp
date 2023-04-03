@@ -474,7 +474,7 @@ public:
                     if (isCompleted)
                     {
                         // Draw completion tick
-                        GfxDrawSprite(&dpi, ImageId(SPR_MENU_CHECKMARK), { widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
+                        GfxDrawSprite(dpi, ImageId(SPR_MENU_CHECKMARK), { widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
 
                         // Draw completion score
                         u8string completedByName = "???";

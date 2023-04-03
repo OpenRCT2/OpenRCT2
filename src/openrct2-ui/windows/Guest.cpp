@@ -552,7 +552,7 @@ private:
         animationFrame += animationFrameOffset;
 
         auto spriteId = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
-        GfxDrawSprite(&clipDpi, spriteId, screenCoords);
+        GfxDrawSprite(clipDpi, spriteId, screenCoords);
 
         auto* guest = peep->As<Guest>();
         if (guest != nullptr)
@@ -560,19 +560,19 @@ private:
             // If holding a balloon
             if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
             {
-                GfxDrawSprite(&clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
+                GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
             }
 
             // If holding umbrella
             if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
             {
-                GfxDrawSprite(&clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
+                GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
             }
 
             // If wearing hat
             if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
             {
-                GfxDrawSprite(&clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
+                GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
             }
         }
     }
@@ -755,7 +755,7 @@ private:
             WindowDrawViewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                GfxDrawSprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
             }
         }
 
@@ -1016,7 +1016,7 @@ private:
                     break;
             }
         }
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateStats()
@@ -1219,7 +1219,7 @@ private:
             imageId += (frame_no / 4) & 0xF;
         }
 
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateRides()
@@ -1394,7 +1394,7 @@ private:
             imageId += (frame_no / 2) & 0x7;
         }
 
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateFinance()
@@ -1532,7 +1532,7 @@ private:
             imageId += (frame_no / 2) & 0x7;
         }
 
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateThoughts()
@@ -1607,7 +1607,7 @@ private:
         const auto& widget = widgets[WIDX_TAB_6];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
-        GfxDrawSprite(&dpi, ImageId(SPR_TAB_GUEST_INVENTORY), screenCoords);
+        GfxDrawSprite(dpi, ImageId(SPR_TAB_GUEST_INVENTORY), screenCoords);
     }
 
     void OnUpdateInventory()
@@ -1802,7 +1802,7 @@ private:
             imageId += (frame_no / 2) & 0x3;
         }
 
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateDebug()

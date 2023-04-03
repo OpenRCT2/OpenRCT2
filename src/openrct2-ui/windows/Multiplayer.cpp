@@ -1016,7 +1016,7 @@ static void WindowMultiplayerDrawTabImage(WindowBase* w, DrawPixelInfo* dpi, int
         }
 
         GfxDrawSprite(
-            dpi, ImageId(spriteIndex),
+            *dpi, ImageId(spriteIndex),
             w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
 }

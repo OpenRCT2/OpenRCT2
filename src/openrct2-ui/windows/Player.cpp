@@ -267,7 +267,7 @@ private:
         {
             widget = &this->widgets[WIDX_TAB_1];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
-            GfxDrawSprite(dpi, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
         }
 
         // Tab 2
@@ -282,7 +282,7 @@ private:
                 imageId += (frame_no / 2) & 7;
             }
 
-            GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(imageId), screenCoords);
         }
     }
 

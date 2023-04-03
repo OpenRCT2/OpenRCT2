@@ -144,7 +144,7 @@ static void WidgetFrameDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widge
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
+    GfxDrawSprite(*dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
 }
 
 /**
@@ -175,7 +175,7 @@ static void WidgetResizeDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widg
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-    GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
+    GfxDrawSprite(*dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
 }
 
 /**
@@ -256,7 +256,7 @@ static void WidgetTabDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetI
     auto image = widget.image.WithIndex(newIndex).WithPrimary(colour);
 
     // Draw disabled image
-    GfxDrawSprite(dpi, image, leftTop);
+    GfxDrawSprite(*dpi, image, leftTop);
 }
 
 /**
@@ -844,7 +844,7 @@ static void WidgetDrawImage(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widge
         else
             image = image.WithPrimary(colour);
 
-        GfxDrawSprite(dpi, image, screenCoords);
+        GfxDrawSprite(*dpi, image, screenCoords);
     }
 }
 

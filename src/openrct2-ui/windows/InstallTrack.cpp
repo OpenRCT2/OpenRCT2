@@ -163,7 +163,7 @@ public:
         g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
         GfxSetG1Element(SPR_TEMP, &g1temp);
         DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_TEMP), screenPos);
 
         screenPos = windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };
 

@@ -233,13 +233,13 @@ void GfxDrawDashedLine(
     }
 }
 
-void FASTCALL GfxDrawSprite(DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords)
+void FASTCALL GfxDrawSprite(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords)
 {
-    auto drawingEngine = dpi->DrawingEngine;
+    auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawSprite(dpi, imageId, coords.x, coords.y);
+        dc->DrawSprite(&dpi, imageId, coords.x, coords.y);
     }
 }
 

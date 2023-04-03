@@ -768,7 +768,7 @@ static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& tok
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
                 {
-                    GfxDrawSprite(&dpi, imageId, { info->x, info->y });
+                    GfxDrawSprite(dpi, imageId, { info->x, info->y });
                 }
                 info->x += g1->width;
             }

@@ -2095,7 +2095,7 @@ private:
             }
 
             // Draw normal, enabled sprite.
-            GfxDrawSprite(dpi, ImageId(spriteIndex), screenCoords);
+            GfxDrawSprite(*dpi, ImageId(spriteIndex), screenCoords);
         }
         else
         {

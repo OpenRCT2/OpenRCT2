@@ -70,7 +70,7 @@ void TerrainSurfaceObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_
         }
         for (int32_t j = 0; j < 4; j++)
         {
-            GfxDrawSprite(&dpi, imageId, screenCoords);
+            GfxDrawSprite(dpi, imageId, screenCoords);
             screenCoords.x += 64;
         }
         screenCoords.y += 16;

@@ -715,7 +715,7 @@ public:
         g1temp.y_offset = -8;
         GfxSetG1Element(SPR_TEMP, &g1temp);
         DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), { 0, 0 });
+        GfxDrawSprite(dpi, ImageId(SPR_TEMP), { 0, 0 });
 
         if (selected_tab == PAGE_PEEPS)
         {
@@ -875,7 +875,7 @@ public:
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
                                   widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-            GfxDrawSprite(&dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
+            GfxDrawSprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -1283,7 +1283,7 @@ private:
             guestTabImage += list_information_type / 4;
 
         GfxDrawSprite(
-            dpi, ImageId(guestTabImage),
+            *dpi, ImageId(guestTabImage),
             windowPos + ScreenCoordsXY{ widgets[WIDX_PEOPLE_TAB].left, widgets[WIDX_PEOPLE_TAB].top });
 
         // Ride/stall tab image (animated)
@@ -1292,7 +1292,7 @@ private:
             rideTabImage += list_information_type / 4;
 
         GfxDrawSprite(
-            dpi, ImageId(rideTabImage),
+            *dpi, ImageId(rideTabImage),
             windowPos + ScreenCoordsXY{ widgets[WIDX_RIDES_TAB].left, widgets[WIDX_RIDES_TAB].top });
     }
 

@@ -46,9 +46,9 @@ void FootpathSurfaceObject::Unload()
 void FootpathSurfaceObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2 - 16, height / 2 };
-    GfxDrawSprite(&dpi, ImageId(BaseImageId + 3), screenCoords);
-    GfxDrawSprite(&dpi, ImageId(BaseImageId + 16), { screenCoords.x + 32, screenCoords.y - 16 });
-    GfxDrawSprite(&dpi, ImageId(BaseImageId + 8), { screenCoords.x + 32, screenCoords.y + 16 });
+    GfxDrawSprite(dpi, ImageId(BaseImageId + 3), screenCoords);
+    GfxDrawSprite(dpi, ImageId(BaseImageId + 16), { screenCoords.x + 32, screenCoords.y - 16 });
+    GfxDrawSprite(dpi, ImageId(BaseImageId + 8), { screenCoords.x + 32, screenCoords.y + 16 });
 }
 
 void FootpathSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)

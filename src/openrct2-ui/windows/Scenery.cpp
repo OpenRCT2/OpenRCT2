@@ -1466,7 +1466,7 @@ private:
             if (_tabEntries[tabIndex].IsAll())
             {
                 auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::PaletteNull);
-                GfxDrawSprite(&dpi, imageId, offset + widgetCoordsXY + ScreenCoordsXY(2, 6));
+                GfxDrawSprite(dpi, imageId, offset + widgetCoordsXY + ScreenCoordsXY(2, 6));
             }
         }
     }
@@ -1477,8 +1477,8 @@ private:
         {
             auto bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(scenerySelection.EntryIndex);
             auto imageId = ImageId(bannerEntry->image + gWindowSceneryRotation * 2, gWindowSceneryPrimaryColour);
-            GfxDrawSprite(&dpi, imageId, { 33, 40 });
-            GfxDrawSprite(&dpi, imageId.WithIndexOffset(1), { 33, 40 });
+            GfxDrawSprite(dpi, imageId, { 33, 40 });
+            GfxDrawSprite(dpi, imageId.WithIndexOffset(1), { 33, 40 });
         }
         else if (scenerySelection.SceneryType == SCENERY_TYPE_LARGE)
         {
@@ -1490,7 +1490,7 @@ private:
                 imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
             if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
                 imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
-            GfxDrawSprite(&dpi, imageId, { 33, 0 });
+            GfxDrawSprite(dpi, imageId, { 33, 0 });
         }
         else if (scenerySelection.SceneryType == SCENERY_TYPE_WALL)
         {
@@ -1504,10 +1504,10 @@ private:
                 {
                     imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
                 }
-                GfxDrawSprite(&dpi, imageId, { 47, spriteTop });
+                GfxDrawSprite(dpi, imageId, { 47, spriteTop });
 
                 auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(gWindowSceneryPrimaryColour);
-                GfxDrawSprite(&dpi, glassImageId, { 47, spriteTop });
+                GfxDrawSprite(dpi, glassImageId, { 47, spriteTop });
             }
             else
             {
@@ -1520,11 +1520,11 @@ private:
                         imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
                     }
                 }
-                GfxDrawSprite(&dpi, imageId, { 47, spriteTop });
+                GfxDrawSprite(dpi, imageId, { 47, spriteTop });
 
                 if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
                 {
-                    GfxDrawSprite(&dpi, imageId.WithIndexOffset(1), { 47, spriteTop });
+                    GfxDrawSprite(dpi, imageId.WithIndexOffset(1), { 47, spriteTop });
                 }
             }
         }
@@ -1532,7 +1532,7 @@ private:
         {
             auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(scenerySelection.EntryIndex);
             auto imageId = ImageId(pathBitEntry->image);
-            GfxDrawSprite(&dpi, imageId, { 11, 16 });
+            GfxDrawSprite(dpi, imageId, { 11, 16 });
         }
         else
         {
@@ -1557,19 +1557,19 @@ private:
                 spriteTop -= 12;
             }
 
-            GfxDrawSprite(&dpi, imageId, { 32, spriteTop });
+            GfxDrawSprite(dpi, imageId, { 32, spriteTop });
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
             {
                 imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation)
                               .WithTransparency(gWindowSceneryPrimaryColour);
-                GfxDrawSprite(&dpi, imageId, { 32, spriteTop });
+                GfxDrawSprite(dpi, imageId, { 32, spriteTop });
             }
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
             {
                 imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation);
-                GfxDrawSprite(&dpi, imageId, { 32, spriteTop });
+                GfxDrawSprite(dpi, imageId, { 32, spriteTop });
             }
         }
     }

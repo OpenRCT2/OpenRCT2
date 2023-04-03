@@ -344,7 +344,7 @@ private:
         if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
             spriteIndex += (frame_no / 4) % 16;
 
-        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(*dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
         // Tab 2
         if (!IsWidgetDisabled(WIDX_TAB_2))
@@ -354,7 +354,7 @@ private:
             if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
                 spriteIndex += (frame_no / 4) % 16;
 
-            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+            GfxDrawSprite(*dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
         }
     }
 
