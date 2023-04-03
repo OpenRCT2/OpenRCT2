@@ -406,7 +406,7 @@ endif ()
 # Include tests
 if (WITH_TESTS)
     enable_testing()
-    include("${ROOT_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
+    add_subdirectory("test/tests")
 endif ()
 
 # macOS bundle "install" is handled in src/openrct2-ui/CMakeLists.txt

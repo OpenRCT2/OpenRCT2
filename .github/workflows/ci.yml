@@ -263,7 +263,7 @@ jobs:
           - platform: x86_64
             distro: focal
             image: openrct2/openrct2-build:8-focal
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz"
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz" -DWITH_TESTS=off
           - platform: x86_64
             distro: jammy
             image: openrct2/openrct2-build:8-jammy
@@ -271,7 +271,7 @@ jobs:
           - platform: x86_64
             distro: bullseye
             image: openrct2/openrct2-build:8-bullseye
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
           - platform: i686
             distro: focal
             image: openrct2/openrct2-build:8-focal32

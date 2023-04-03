@@ -126,6 +126,8 @@ public:
             item.Name = object->GetName();
             item.Authors = object->GetAuthors();
             item.Sources = object->GetSourceGames();
+            if (object->IsCompatibilityObject())
+                item.Flags |= ObjectItemFlags::IsCompatibilityObject;
             object->SetRepositoryItem(&item);
             return item;
         }
@@ -144,6 +146,7 @@ protected:
 
         ds << item.Sources;
         ds << item.Authors;
+        ds << item.Flags;
 
         switch (item.Type)
         {

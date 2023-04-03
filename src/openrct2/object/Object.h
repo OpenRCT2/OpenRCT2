@@ -195,6 +195,7 @@ private:
     std::vector<std::string> _authors;
     ObjectGeneration _generation{};
     bool _usesFallbackImages{};
+    bool _isCompatibilityObject{};
 
 protected:
     StringTable& GetStringTable()
@@ -309,6 +310,9 @@ public:
     {
         _version = version;
     }
+
+    bool IsCompatibilityObject() const;
+    void SetIsCompatibilityObject(const bool on);
 
     const ImageTable& GetImageTable() const
     {

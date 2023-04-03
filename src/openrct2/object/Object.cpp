@@ -198,6 +198,15 @@ void Object::SetAuthors(std::vector<std::string>&& authors)
     _authors = std::move(authors);
 }
 
+bool Object::IsCompatibilityObject() const
+{
+    return _isCompatibilityObject;
+}
+void Object::SetIsCompatibilityObject(const bool on)
+{
+    _isCompatibilityObject = on;
+}
+
 bool RCTObjectEntry::IsEmpty() const
 {
     uint64_t a, b;

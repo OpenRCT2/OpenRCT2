@@ -3947,6 +3947,9 @@ enum : uint16_t
 
     STR_TILE_INSPECTOR_PATH_JUNCTION_RAILINGS = 6548,
 
+    STR_OBJECT_SELECTION_ERR_COMPAT_OBJECT = 6549,
+    STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION = 6550,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
