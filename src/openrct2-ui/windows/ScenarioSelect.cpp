@@ -6,7 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-
+// clang-format on
 #include "../interface/Theme.h"
 
 #include <openrct2-ui/interface/Widget.h>
@@ -39,7 +39,6 @@ static constexpr const int32_t TabsStart = WidgetsStart;
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 constexpr const uint8_t NumTabs = 10;
 
-// clang-format on
 enum class ListItemType : uint8_t
 {
     Heading,
@@ -270,7 +269,7 @@ public:
                 ft.Add<StringId>(ScenarioCategoryStringIds[i]);
             }
 
-            auto stringCoords = windowPos + ScreenCoordsXY{ widget->midX() , widget->midY() - 3 };
+            auto stringCoords = windowPos + ScreenCoordsXY{ widget->midX(), widget->midY() - 3 };
             DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
         }
 
@@ -816,5 +815,4 @@ WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
 
     return window;
 }
-
 // clang-format off
