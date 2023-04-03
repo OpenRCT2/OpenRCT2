@@ -44,7 +44,7 @@ X8WeatherDrawer::~X8WeatherDrawer()
 }
 
 void X8WeatherDrawer::Draw(
-    DrawPixelInfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+    DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
     const uint8_t* weatherpattern)
 {
     const uint8_t* pattern = weatherpattern;
@@ -54,10 +54,10 @@ void X8WeatherDrawer::Draw(
     uint8_t patternStartXOffset = xStart % patternXSpace;
     uint8_t patternStartYOffset = yStart % patternYSpace;
 
-    uint32_t pixelOffset = (dpi->pitch + dpi->width) * y + x;
+    uint32_t pixelOffset = (dpi.pitch + dpi.width) * y + x;
     uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
-    uint8_t* screenBits = dpi->bits;
+    uint8_t* screenBits = dpi.bits;
 
     // Stores the colours of changed pixels
     WeatherPixel* newPixels = &_weatherPixels[_weatherPixelsCount];
@@ -86,7 +86,7 @@ void X8WeatherDrawer::Draw(
             }
         }
 
-        pixelOffset += dpi->pitch + dpi->width;
+        pixelOffset += dpi.pitch + dpi.width;
         patternYPos++;
         patternYPos %= patternYSpace;
     }
@@ -214,7 +214,7 @@ void X8DrawingEngine::PaintWindows()
 
 void X8DrawingEngine::PaintWeather()
 {
-    DrawWeather(&_bitsDPI, &_weatherDrawer);
+    DrawWeather(_bitsDPI, &_weatherDrawer);
 }
 
 void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)

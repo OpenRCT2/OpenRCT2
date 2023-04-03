@@ -31,7 +31,7 @@ namespace OpenRCT2::Ui
         void Tick() override
         {
         }
-        void Draw(DrawPixelInfo* /*dpi*/) override
+        void Draw(DrawPixelInfo& /*dpi*/) override
         {
         }
 
@@ -173,7 +173,7 @@ namespace OpenRCT2::Ui
         {
             return std::make_shared<X8DrawingEngineFactory>();
         }
-        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo* dpi, DrawWeatherFunc drawFunc) override
+        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo& dpi, DrawWeatherFunc drawFunc) override
         {
         }
 

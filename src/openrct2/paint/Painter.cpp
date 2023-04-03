@@ -50,11 +50,11 @@ void Painter::Paint(IDrawingEngine& de)
         de.PaintWindows();
 
         UpdatePaletteEffects();
-        _uiContext->Draw(dpi);
+        _uiContext->Draw(*dpi);
 
         if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !TitleShouldHideVersionInfo())
         {
-            DrawOpenRCT2(dpi, { 0, _uiContext->GetHeight() - 20 });
+            DrawOpenRCT2(*dpi, { 0, _uiContext->GetHeight() - 20 });
         }
 
         GfxDrawPickedUpPeep(dpi);
