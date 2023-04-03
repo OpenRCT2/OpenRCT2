@@ -180,11 +180,11 @@ void LightFXInit()
     CalcRescaleLightHalf(_bakedLightTexture_spot_0, _bakedLightTexture_spot_1, 32, 32);
 }
 
-void LightFXUpdateBuffers(DrawPixelInfo* info)
+void LightFXUpdateBuffers(DrawPixelInfo& info)
 {
-    _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info->width * info->height);
-    _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info->width * info->height);
-    _pixelInfo = *info;
+    _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info.width * info.height);
+    _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info.width * info.height);
+    _pixelInfo = info;
 }
 
 void LightFXPrepareLightList()
