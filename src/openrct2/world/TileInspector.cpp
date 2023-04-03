@@ -329,10 +329,15 @@ namespace OpenRCT2::TileInspector
 
         auto tileLoc = TileCoordsXY(loc);
 
+        auto bannerIndex = element.GetBannerIndex();
+        if (bannerIndex != BannerIndex::GetNull() && GetBanner(bannerIndex) == nullptr)
+        {
+            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        }
+
         if (isExecuting)
         {
             // Check if the element to be pasted refers to a banner index
-            auto bannerIndex = element.GetBannerIndex();
             if (bannerIndex != BannerIndex::GetNull())
             {
                 // The element to be pasted refers to a banner index - make a copy of it
