@@ -843,14 +843,14 @@ static void TTFProcessStringLiteral(DrawPixelInfo& dpi, std::string_view text, T
                     // Draw the TTF run
                     // This error suppression abomination is here to suppress https://github.com/OpenRCT2/OpenRCT2/issues/17371.
                     // Additionally, we have to suppress the error for the error suppression... :'-(
-                    // TODO: Re-evaluate somewhere in 2023.
-#    ifdef __MINGW32__
+                    // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937 is fixed in GCC13
+#    if defined(__GNUC__) && !defined(__clang__)
 #        pragma GCC diagnostic push
 #        pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #    endif
                     auto len = it.GetIndex() - ttfRunIndex.value();
                     TTFDrawStringRawTTF(dpi, text.substr(ttfRunIndex.value(), len), info);
-#    ifdef __MINGW32__
+#    if defined(__GNUC__) && !defined(__clang__)
 #        pragma GCC diagnostic pop
 #    endif
                     ttfRunIndex = std::nullopt;
