@@ -191,7 +191,7 @@ public:
 
             // Background
             GfxFillRectInset(
-                &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
+                dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
                 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
             // Date text
@@ -221,7 +221,7 @@ public:
                         press = INSET_RECT_FLAG_BORDER_INSET;
                     }
                 }
-                GfxFillRectInset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxFillRectInset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
 
                 switch (newsItem.Type)
                 {
@@ -298,7 +298,7 @@ public:
                     if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
                         press = 0x20;
                 }
-                GfxFillRectInset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxFillRectInset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
                 GfxDrawSprite(dpi, ImageId(SPR_LOCATE), screenCoords);
             }
 

@@ -185,7 +185,7 @@ void IntroDraw(DrawPixelInfo& dpi)
 
             // Draw a white rectangle for the logo background (gives a bit of white margin)
             GfxFillRect(
-                &dpi,
+                dpi,
                 { { (screenWidth / 2) - 320 + 50, _introStateCounter + 50 },
                   { (screenWidth / 2) - 320 + 50 + 540, _introStateCounter + 50 + 425 } },
                 BORDER_COLOUR_PUBLISHER);

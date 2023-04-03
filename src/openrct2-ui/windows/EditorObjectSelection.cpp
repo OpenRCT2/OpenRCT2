@@ -707,7 +707,7 @@ public:
             {
                 // Draw checkbox
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                    GfxFillRectInset(&dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                 // Highlight background
                 auto highlighted = i == static_cast<size_t>(selected_list_item)
@@ -715,7 +715,7 @@ public:
                 if (highlighted)
                 {
                     auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
-                    GfxFilterRect(&dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
                 }
 
                 // Draw checkmark
@@ -1005,7 +1005,7 @@ public:
         // Preview background
         const auto& previewWidget = widgets[WIDX_PREVIEW];
         GfxFillRect(
-            &dpi,
+            dpi,
             { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
               windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
             ColourMapA[colours[1]].darkest);

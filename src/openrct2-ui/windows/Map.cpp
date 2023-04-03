@@ -894,7 +894,7 @@ public:
                 for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                 {
                     GfxFillRect(
-                        &dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
+                        dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                         RideKeyColours[i]);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
                     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1194,7 +1194,7 @@ private:
             }
         }
 
-        GfxFillRect(&dpi, { leftTop, rightBottom }, colour);
+        GfxFillRect(dpi, { leftTop, rightBottom }, colour);
     }
 
     static uint8_t GetGuestFlashColour()
@@ -1232,7 +1232,7 @@ private:
 
                 MapCoordsXY c = TransformToMapCoords({ vehicle->x, vehicle->y });
 
-                GfxFillRect(&dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
+                GfxFillRect(dpi, { { c.x, c.y }, { c.x, c.y } }, PALETTE_INDEX_171);
             }
         }
     }
@@ -1259,20 +1259,20 @@ private:
         auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
         // top horizontal lines
-        GfxFillRect(&dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
-        GfxFillRect(&dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PALETTE_INDEX_56);
 
         // left vertical lines
-        GfxFillRect(&dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
-        GfxFillRect(&dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PALETTE_INDEX_56);
 
         // bottom horizontal lines
-        GfxFillRect(&dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
-        GfxFillRect(&dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PALETTE_INDEX_56);
 
         // right vertical lines
-        GfxFillRect(&dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
-        GfxFillRect(&dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_56);
+        GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
     }
 
     void DrawTabImages(DrawPixelInfo& dpi)

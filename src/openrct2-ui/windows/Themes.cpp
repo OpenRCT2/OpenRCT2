@@ -792,16 +792,16 @@ public:
                     {
                         TranslucentWindowPalette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
-                        GfxFilterRect(&dpi, { leftTop, rightBottom }, windowPalette.highlight);
-                        GfxFilterRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
+                        GfxFilterRect(dpi, { leftTop, rightBottom }, windowPalette.highlight);
+                        GfxFilterRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                     }
                     else
                     {
                         colour = ColourMapA[colours[1]].mid_dark;
-                        GfxFillRect(&dpi, { leftTop, rightBottom }, colour);
+                        GfxFillRect(dpi, { leftTop, rightBottom }, colour);
 
                         colour = ColourMapA[colours[1]].lightest;
-                        GfxFillRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
+                        GfxFillRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
                     }
                 }
 
@@ -819,7 +819,7 @@ public:
 
                     ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
                     ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
-                    GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
                         GfxDrawString(

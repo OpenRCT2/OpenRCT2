@@ -299,7 +299,7 @@ public:
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
-            &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // TODO: the line below is a workaround for what is presumably a bug with dpi->width
         //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
@@ -498,8 +498,8 @@ private:
     void DrawSeparator(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth)
     {
         const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
-        GfxFillRect(&dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
-        GfxFillRect(&dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
+        GfxFillRect(dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
+        GfxFillRect(dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
     }
 
     void DrawItem(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
@@ -508,7 +508,7 @@ private:
         if (isHighlighted)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            GfxFilterRect(&dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
         }
 
         auto bindingOffset = (scrollWidth * 2) / 3;

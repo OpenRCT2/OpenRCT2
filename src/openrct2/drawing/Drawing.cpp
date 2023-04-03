@@ -735,7 +735,7 @@ void MaskInit()
 
 void GfxFilterPixel(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
-    GfxFilterRect(dpi, { coords, coords }, palette);
+    GfxFilterRect(*dpi, { coords, coords }, palette);
 }
 
 /**

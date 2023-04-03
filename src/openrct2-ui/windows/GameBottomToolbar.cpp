@@ -347,18 +347,18 @@ static void WindowGameBottomToolbarPaint(WindowBase* w, DrawPixelInfo& dpi)
     // Draw panel grey backgrounds
     auto leftTop = w->windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
     auto rightBottom = w->windowPos + ScreenCoordsXY{ leftWidget.right, leftWidget.bottom };
-    GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+    GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
 
     leftTop = w->windowPos + ScreenCoordsXY{ rightWidget.left, rightWidget.top };
     rightBottom = w->windowPos + ScreenCoordsXY{ rightWidget.right, rightWidget.bottom };
-    GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+    GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
 
     if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
         leftTop = w->windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
         rightBottom = w->windowPos + ScreenCoordsXY{ middleWidget.right, middleWidget.bottom };
-        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
     WindowDrawWidgets(*w, dpi);
@@ -385,7 +385,7 @@ static void WindowGameBottomToolbarDrawLeftPanel(DrawPixelInfo& dpi, WindowBase*
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
                           window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1 };
     // Draw green inset rectangle on panel
-    GfxFillRectInset(&dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -456,12 +456,12 @@ static void WindowGameBottomToolbarDrawParkRating(
 
     bar_width = (factor * 114) / 255;
     GfxFillRectInset(
-        &dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, w->colours[1], INSET_RECT_F_30);
+        dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, w->colours[1], INSET_RECT_F_30);
     if (!(colour & BAR_BLINK) || GameIsPaused() || (gCurrentRealTimeTicks & 8))
     {
         if (bar_width > 2)
         {
-            GfxFillRectInset(&dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
+            GfxFillRectInset(dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
         }
     }
 
@@ -479,7 +479,7 @@ static void WindowGameBottomToolbarDrawRightPanel(DrawPixelInfo& dpi, WindowBase
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
                           window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1 };
     // Draw green inset rectangle on panel
-    GfxFillRectInset(&dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
+    GfxFillRectInset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
 
     auto screenCoords = ScreenCoordsXY{ (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left
                                          + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
@@ -554,7 +554,7 @@ static void WindowGameBottomToolbarDrawNewsItem(DrawPixelInfo& dpi, WindowBase* 
 
     // Current news item
     GfxFillRectInset(
-        &dpi,
+        dpi,
         { w->windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
           w->windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
         w->colours[2], INSET_RECT_F_30);
@@ -649,7 +649,7 @@ static void WindowGameBottomToolbarDrawMiddlePanel(DrawPixelInfo& dpi, WindowBas
     Widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 
     GfxFillRectInset(
-        &dpi,
+        dpi,
         { w->windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
           w->windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
         w->colours[1], INSET_RECT_F_30);

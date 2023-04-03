@@ -1110,7 +1110,7 @@ private:
     void OnScrollDrawRides(DrawPixelInfo& dpi, int32_t scrollIndex)
     {
         int32_t colour = ColourMapA[colours[1]].mid_light;
-        GfxFillRect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
+        GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
         for (int32_t i = 0; i < no_list_items; i++)
         {
@@ -1120,14 +1120,14 @@ private:
                 continue;
 
             // Checkbox
-            GfxFillRectInset(&dpi, { { 2, y }, { 11, y + 10 } }, colours[1], INSET_RECT_F_E0);
+            GfxFillRectInset(dpi, { { 2, y }, { 11, y + 10 } }, colours[1], INSET_RECT_F_E0);
 
             // Highlighted
             auto stringId = STR_BLACK_STRING;
             if (i == selected_list_item)
             {
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                GfxFilterRect(&dpi, { 0, y, width, y + 11 }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(dpi, { 0, y, width, y + 11 }, FilterPaletteID::PaletteDarken1);
             }
 
             // Checkbox mark

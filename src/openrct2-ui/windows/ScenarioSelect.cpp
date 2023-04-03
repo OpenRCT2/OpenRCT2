@@ -448,7 +448,7 @@ public:
                     bool isHighlighted = highlighted_scenario == scenario;
                     if (isHighlighted)
                     {
-                        GfxFilterRect(&dpi, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                        GfxFilterRect(dpi, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
                     }
 
                     bool isCompleted = scenario->Highscore != nullptr;
@@ -521,21 +521,21 @@ private:
         int32_t lineY = y + 4;
         auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY };
         auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-        GfxDrawLine(&dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+        GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
         auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
         auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-        GfxDrawLine(&dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+        GfxDrawLine(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
 
         // Draw dark horizontal rule
         lineY++;
         auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY };
         auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-        GfxDrawLine(&dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+        GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
 
         auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
         auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-        GfxDrawLine(&dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+        GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
     }
 
     void InitialiseListItems()

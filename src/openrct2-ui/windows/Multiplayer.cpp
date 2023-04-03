@@ -596,7 +596,7 @@ static void WindowMultiplayerPlayersScrollpaint(WindowBase* w, DrawPixelInfo& dp
             if (listPosition == w->selected_list_item)
             {
                 GfxFilterRect(
-                    &dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
+                    dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
                     FilterPaletteID::PaletteDarken1);
                 _buffer += NetworkGetPlayerName(player);
                 colour = w->colours[2];
@@ -869,7 +869,7 @@ static void WindowMultiplayerGroupsPaint(WindowBase* w, DrawPixelInfo& dpi)
     screenPos.y += 20;
 
     GfxFillRectInset(
-        &dpi, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, w->colours[1],
+        dpi, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
@@ -892,14 +892,14 @@ static void WindowMultiplayerGroupsScrollpaint(WindowBase* w, DrawPixelInfo& dpi
 
     auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
     GfxFillRect(
-        &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[w->colours[1]].mid_light);
+        dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[w->colours[1]].mid_light);
 
     for (int32_t i = 0; i < NetworkGetNumActions(); i++)
     {
         if (i == w->selected_list_item)
         {
             GfxFilterRect(
-                &dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
         }
         if (screenCoords.y > dpi.y + dpi.height)
         {

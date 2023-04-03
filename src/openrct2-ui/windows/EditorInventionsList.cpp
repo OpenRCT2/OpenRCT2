@@ -296,7 +296,7 @@ public:
                     bottom = itemY;
                 }
 
-                GfxFilterRect(&dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
             }
 
             if (dragItem != nullptr && researchItem == *dragItem)
@@ -367,7 +367,7 @@ public:
         // Preview background
         auto& bkWidget = widgets[WIDX_PREVIEW];
         GfxFillRect(
-            &dpi,
+            dpi,
             { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
               windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },
             ColourMapA[colours[1]].darkest);

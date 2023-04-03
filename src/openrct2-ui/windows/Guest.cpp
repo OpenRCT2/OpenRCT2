@@ -1041,7 +1041,7 @@ private:
         }
 
         GfxFillRectInset(
-            &dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, colours[1], INSET_RECT_F_30);
+            dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, colours[1], INSET_RECT_F_30);
 
         if (!blinkFlag || GameIsPaused() || (gCurrentRealTimeTicks & 8) == 0)
         {
@@ -1052,7 +1052,7 @@ private:
                 return;
 
             GfxFillRectInset(
-                &dpi, { coords + ScreenCoordsXY{ 63, 2 }, coords + ScreenCoordsXY{ 63 + value - 1, 8 } }, colour, 0);
+                dpi, { coords + ScreenCoordsXY{ 63, 2 }, coords + ScreenCoordsXY{ 63 + value - 1, 8 } }, colour, 0);
         }
     }
 
@@ -1157,7 +1157,7 @@ private:
 
         screenCoords.y += LIST_ROW_HEIGHT + 9;
         GfxFillRectInset(
-            &dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
+            dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
         // Preferred Ride
@@ -1354,7 +1354,7 @@ private:
     void OnScrollDrawRides(int32_t scrollIndex, DrawPixelInfo& dpi)
     {
         auto colour = ColourMapA[colours[1]].mid_light;
-        GfxFillRect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
+        GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
         for (int32_t listIndex = 0; listIndex < no_list_items; listIndex++)
         {
@@ -1362,7 +1362,7 @@ private:
             StringId stringId = STR_BLACK_STRING;
             if (listIndex == selected_list_item)
             {
-                GfxFilterRect(&dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
 
@@ -1443,7 +1443,7 @@ private:
         }
 
         GfxFillRectInset(
-            &dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
+            dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
         // Paid to enter

@@ -517,15 +517,15 @@ void GfxInvalidatePickedUpPeep();
 void GfxDrawPickedUpPeep(DrawPixelInfo* dpi);
 
 // line
-void GfxDrawLine(DrawPixelInfo* dpi, const ScreenLine& line, int32_t colour);
+void GfxDrawLine(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour);
 void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour);
 void GfxDrawDashedLine(
-    DrawPixelInfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
+    DrawPixelInfo& dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
 
 // rect
-void GfxFillRect(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour);
-void GfxFillRectInset(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
-void GfxFilterRect(DrawPixelInfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
+void GfxFillRect(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour);
+void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
+void GfxFilterRect(DrawPixelInfo& dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
 bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);

@@ -350,8 +350,7 @@ public:
             if (highlighted)
             {
                 GfxFilterRect(
-                    &dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + ITEM_HEIGHT },
-                    FilterPaletteID::PaletteDarken1);
+                    dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + ITEM_HEIGHT }, FilterPaletteID::PaletteDarken1);
                 _version = serverDetails.Version;
             }
 

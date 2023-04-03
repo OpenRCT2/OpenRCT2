@@ -636,7 +636,7 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
 
     if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
         GfxFilterRect(
-            &dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
+            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
 
     // todo: some code missing here? Between 006EB18C and 006EB260
 
@@ -665,7 +665,7 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
     if (w.flags & WF_WHITE_BORDER_MASK)
     {
         GfxFillRectInset(
-            &dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, COLOUR_WHITE,
+            dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, COLOUR_WHITE,
             INSET_RECT_FLAG_FILL_NONE);
     }
 }

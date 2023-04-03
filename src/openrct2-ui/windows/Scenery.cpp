@@ -1596,7 +1596,7 @@ private:
                 if (_selectedScenery == currentSceneryGlobal)
                 {
                     GfxFillRectInset(
-                        &dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                        dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                         colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                 }
             }
@@ -1605,13 +1605,13 @@ private:
                 if (tabSelectedScenery == currentSceneryGlobal)
                 {
                     GfxFillRectInset(
-                        &dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                        dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                         colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
                 }
                 else if (_selectedScenery == currentSceneryGlobal)
                 {
                     GfxFillRectInset(
-                        &dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                        dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                         colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                 }
             }

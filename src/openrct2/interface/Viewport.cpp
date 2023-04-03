@@ -1104,7 +1104,7 @@ static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
         auto y = dpi.y;
         auto w = zoomLevel.ApplyInversedTo(dpi.width) - 1;
         auto h = zoomLevel.ApplyInversedTo(dpi.height) - 1;
-        GfxFilterRect(&dpi, ScreenRect(x, y, x + w, y + h), paletteId);
+        GfxFilterRect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
     }
 }
 
