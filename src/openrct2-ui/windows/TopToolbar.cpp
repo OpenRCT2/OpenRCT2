@@ -3030,7 +3030,7 @@ public:
         if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
             widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
 
-        if (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+        if ((gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) && !gCheatsSandboxMode)
         {
             widgets[WIDX_LAND].type = WindowWidgetType::Empty;
             widgets[WIDX_WATER].type = WindowWidgetType::Empty;
