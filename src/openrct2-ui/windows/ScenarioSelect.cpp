@@ -222,7 +222,7 @@ public:
     {
         if (widgetIndex == WIDX_CLOSE)
         {
-            WindowClose(*this);
+            Close();
         }
     }
 
@@ -235,11 +235,11 @@ public:
             gConfigInterface.ScenarioselectLastTab = selected_tab;
             ConfigSaveDefault();
             InitialiseListItems(this);
-            OnPrepareDraw();
+            Invalidate();
             WindowEventResizeCall(this);
             WindowEventInvalidateCall(this);
             WindowInitScrollWidgets(*this);
-            OnPrepareDraw();
+            Invalidate();
         }
     }
 
@@ -248,7 +248,7 @@ public:
         int32_t format;
         const ScenarioIndexEntry* scenario;
 
-        WindowDrawWidgets(*this, &dpi);
+        DrawWidgets(dpi);
 
         format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
         FontStyle fontStyle = ScenarioSelectUseSmallFont() ? FontStyle::Small : FontStyle::Medium;
@@ -270,7 +270,7 @@ public:
                 ft.Add<StringId>(ScenarioCategoryStringIds[i]);
             }
 
-            ScreenCoordsXY stringCoords(widget->midX() + windowPos.x, widget->midY() + windowPos.y - 3);
+            auto stringCoords = windowPos + ScreenCoordsXY{ widget->midX() , widget->midY() - 3 };
             DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
         }
 
@@ -481,7 +481,7 @@ public:
                         _callback(listItem.scenario.scenario->Path);
                         if (_titleEditor)
                         {
-                            WindowClose(*this);
+                            Close();
                         }
                     }
                     break;
@@ -495,7 +495,6 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
-        DrawPixelInfo* drawPix = &dpi;
         uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
         GfxClear(&dpi, paletteIndex);
 
@@ -513,7 +512,7 @@ public:
         int32_t y = 0;
         for (const auto& listItem : _listItems)
         {
-            if (y > drawPix->y + drawPix->height)
+            if (y > dpi.y + dpi.height)
             {
                 continue;
             }
