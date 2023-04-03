@@ -47,8 +47,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         return;
     }
 
-    DrawPixelInfo* dpi = &session.DPI;
-    if (dpi->zoom_level > ZoomLevel{ 2 })
+    if (session.DPI.zoom_level > ZoomLevel{ 2 })
     {
         return;
     }
@@ -95,10 +94,8 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             }
         }
 
-        dpi = &session.DPI;
-
-        if (dpi->y + dpi->height <= spr->SpriteData.SpriteRect.GetTop() || spr->SpriteData.SpriteRect.GetBottom() <= dpi->y
-            || dpi->x + dpi->width <= spr->SpriteData.SpriteRect.GetLeft() || spr->SpriteData.SpriteRect.GetRight() <= dpi->x)
+        if (session.DPI.y + session.DPI.height <= spr->SpriteData.SpriteRect.GetTop() || spr->SpriteData.SpriteRect.GetBottom() <= session.DPI.y
+            || session.DPI.x + session.DPI.width <= spr->SpriteData.SpriteRect.GetLeft() || spr->SpriteData.SpriteRect.GetRight() <= session.DPI.x)
         {
             continue;
         }

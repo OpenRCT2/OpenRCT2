@@ -945,7 +945,7 @@ static void ViewportPaintColumn(PaintSession& session)
 
     if (session.PSStringHead != nullptr)
     {
-        PaintDrawMoneyStructs(&session.DPI, session.PSStringHead);
+        PaintDrawMoneyStructs(session.DPI, session.PSStringHead);
     }
 }
 
@@ -1031,7 +1031,7 @@ void ViewportPaint(
     // Generate and sort columns.
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
-        PaintSession* session = PaintSessionAlloc(&dpi1, viewFlags);
+        PaintSession* session = PaintSessionAlloc(dpi1, viewFlags);
         _paintColumns.push_back(session);
 
         DrawPixelInfo& dpi2 = session->DPI;
@@ -1921,7 +1921,7 @@ InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenC
         dpi.zoom_level = myviewport->zoom;
         dpi.width = 1;
 
-        PaintSession* session = PaintSessionAlloc(&dpi, myviewport->flags);
+        PaintSession* session = PaintSessionAlloc(dpi, myviewport->flags);
         PaintSessionGenerate(*session);
         PaintSessionArrange(*session);
         info = SetInteractionInfoFromPaintSession(session, myviewport->flags, flags & 0xFFFF);

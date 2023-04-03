@@ -305,7 +305,7 @@ void LightFXPrepareLightList()
                     dpi.zoom_level = _current_view_zoom_front;
                     dpi.width = 1;
 
-                    PaintSession* session = PaintSessionAlloc(&dpi, w->viewport->flags);
+                    PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags);
                     PaintSessionGenerate(*session);
                     PaintSessionArrange(*session);
                     auto info = SetInteractionInfoFromPaintSession(session, w->viewport->flags, ViewportInteractionItemAll);

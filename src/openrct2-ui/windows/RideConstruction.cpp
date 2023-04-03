@@ -2669,7 +2669,7 @@ private:
         TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         TileElement tempTrackTileElement{};
         TileElement* backupTileElementArrays[5]{};
-        PaintSession* session = PaintSessionAlloc(&dpi, 0);
+        PaintSession* session = PaintSessionAlloc(dpi, 0);
         trackDirection &= 3;
 
         auto currentRide = GetRide(rideIndex);
