@@ -250,7 +250,10 @@ public:
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
-
+            if (wallEntry == nullptr)
+            {
+                return;
+            }
             if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
             {
                 main_colour_btn->type = WindowWidgetType::ColourBtn;
@@ -266,7 +269,10 @@ public:
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
-
+            if (sceneryEntry == nullptr)
+            {
+                return;
+            }
             if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
             {
                 main_colour_btn->type = WindowWidgetType::ColourBtn;
