@@ -1,5 +1,6 @@
 0.4.5 (in development)
 ------------------------------------------------------------------------
+- Feature: [#19446] Add new color options to color dropdown.
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
 - Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
 - Improved: [#19764] Miscellaneous scenery tab now grouped next to the all-scenery tab.
@@ -19,7 +20,6 @@
 - Feature: [#19023] Add Canadian French translation.
 - Feature: [#19341] Add “All Scenery” tab to scenery window.
 - Feature: [#19378] Add command to combine CSG1i.DAT and CSG1.DAT.
-- Feature: [#19446] Add new colors to color dropdown.
 - Feature: [objects#226] Port RCT1 Corkscrew Coaster train.
 - Feature: [objects#229] Port RCT1 go karts with helmets.
 - Feature: [OpenMusic#20, OpenMusic#21] Added Blizzard and Extraterresterial ride music styles.
