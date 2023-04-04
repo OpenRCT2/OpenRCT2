@@ -10264,6 +10264,530 @@ const TrackElement& trackElement)
 GigaRCTrackHalfLoopUp(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
+
+static void GigaRCTrackLeftVerticalLoop(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 0), { 0, 6, height },
+                        { 32, 20, 3 });
+                    MetalASupportsPaintSetup(
+                        session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 4), { 0, 6, height },
+                        { 32, 20, 3 });
+                    MetalASupportsPaintSetup(
+                        session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 8), { 0, 6, height },
+                        { 32, 20, 3 });
+                    MetalASupportsPaintSetup(
+                        session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 12), { 0, 6, height },
+                        { 32, 20, 7 });
+                    MetalASupportsPaintSetup(
+                        session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    break;
+            }
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 1), { 0, 0, height },
+                        { 32, 26, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 5), { 0, 14, height },
+                        { 32, 2, 63 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 9), { 0, 6, height },
+                        { 32, 26, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 13), { 0, 6, height },
+                        { 32, 26, 3 });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 2), { 16, 0, height },
+                        { { 16, 0, height }, { 3, 16, 119 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 6), { 12, 0, height },
+                        { { 12, 0, height }, { 3, 16, 119 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 10), { 10, 16, height },
+                        { { 10, 16, height }, { 4, 16, 119 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 14), { 16, 16, height },
+                        { { 16, 16, height }, { 2, 16, 119 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 3), { 0, 0, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 7), { 0, 0, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 11), { 0, 16, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 15), { 0, 16, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            break;
+        case 4:
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            break;
+        case 5:
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            break;
+        case 6:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 11), { 0, 16, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 15), { 0, 16, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 3), { 0, 0, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 7), { 0, 0, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            break;
+        case 7:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 10), { 10, 16, height },
+                        { { 10, 16, height }, { 4, 16, 119 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 14), { 16, 16, height },
+                        { { 16, 16, height }, { 2, 16, 119 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 2), { 16, 0, height },
+                        { { 16, 0, height }, { 3, 16, 119 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 6), { 12, 0, height },
+                        { { 12, 0, height }, { 3, 16, 119 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            break;
+        case 8:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 9), { 0, 6, height },
+                        { 32, 26, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 13), { 0, 6, height },
+                        { 32, 26, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 1), { 0, 0, height },
+                        { 32, 26, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 5), { 0, 14, height },
+                        { 32, 2, 63 });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            break;
+        case 9:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 8), { 0, 6, height },
+                        { 32, 20, 3 });
+                    MetalASupportsPaintSetup(
+                        session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 12), { 0, 6, height },
+                        { 32, 20, 7 });
+                    MetalASupportsPaintSetup(
+                        session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 0), { 0, 6, height },
+                        { 32, 20, 3 });
+                    MetalASupportsPaintSetup(
+                        session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 4), { 0, 6, height },
+                        { 32, 20, 3 });
+                    MetalASupportsPaintSetup(
+                        session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    break;
+            }
+            switch (direction)
+            {
+                case 1:
+                    PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+                    break;
+                case 2:
+                    PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            break;
+    }
+}
+
+static void GigaRCTrackRightVerticalLoop(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 16), { 0, 6, height },
+                        { 32, 20, 7 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 20), { 0, 6, height },
+                        { 32, 20, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 24), { 0, 6, height },
+                        { 32, 20, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 28), { 0, 6, height },
+                        { 32, 20, 3 });
+                    break;
+            }
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 17), { 0, 6, height },
+                        { 32, 26, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 21), { 0, 6, height },
+                        { 32, 26, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 25), { 0, 14, height },
+                        { 32, 2, 63 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 29), { 0, 0, height },
+                        { 32, 26, 3 });
+                    break;
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 18), { 16, 16, height },
+                        { { 16, 16, height }, { 2, 16, 119 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 22), { 10, 16, height },
+                        { { 10, 16, height }, { 4, 16, 119 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 26), { 12, 0, height },
+                        { { 12, 0, height }, { 3, 16, 119 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 30), { 16, 0, height },
+                        { { 16, 0, height }, { 2, 16, 119 } });
+                    break;
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 19), { 0, 16, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 23), { 0, 16, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 27), { 0, 0, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 31), { 0, 0, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            break;
+        case 4:
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            break;
+        case 5:
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            break;
+        case 6:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 27), { 0, 0, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 31), { 0, 0, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 19), { 0, 16, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 23), { 0, 16, height + 32 },
+                        { 32, 16, 3 });
+                    break;
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+            break;
+        case 7:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 26), { 12, 0, height },
+                        { { 12, 0, height }, { 3, 16, 119 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 30), { 16, 0, height },
+                        { { 16, 0, height }, { 2, 16, 119 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 18), { 16, 16, height },
+                        { { 16, 16, height }, { 2, 16, 119 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 22), { 10, 16, height },
+                        { { 10, 16, height }, { 4, 16, 119 } });
+                    break;
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 168, 0x20);
+            break;
+        case 8:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 25), { 0, 14, height },
+                        { 32, 2, 63 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 29), { 0, 0, height },
+                        { 32, 26, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 17), { 0, 6, height },
+                        { 32, 26, 3 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 21), { 0, 6, height },
+                        { 32, 26, 3 });
+                    break;
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
+            break;
+        case 9:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 24), { 0, 6, height },
+                        { 32, 20, 3 });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 28), { 0, 6, height },
+                        { 32, 20, 3 });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 16), { 0, 6, height },
+                        { 32, 20, 7 });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 20), { 0, 6, height },
+                        { 32, 20, 3 });
+                    break;
+            }
+            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            switch (direction)
+            {
+                case 1:
+                    PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
+                    break;
+                case 2:
+                    PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_1);
+                    break;
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+            break;
+    }
+
+    TrackPaintUtilRightVerticalLoopSegments(session, direction, trackSequence);
+}
+
+
+
+
 static void GigaRCTrackLeftCorkscrewUp(
 PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
 const TrackElement& trackElement)
@@ -17049,6 +17573,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGigaRC(int32_t trackType)
             return GigaRCTrackHalfLoopUp;
         case TrackElemType::HalfLoopDown:
             return GigaRCTrackHalfLoopDown;
+        case TrackElemType::LeftVerticalLoop:
+            return GigaRCTrackLeftVerticalLoop;
+        case TrackElemType::RightVerticalLoop:
+            return GigaRCTrackRightVerticalLoop;
         case TrackElemType::LeftCorkscrewUp:
             return GigaRCTrackLeftCorkscrewUp;
         case TrackElemType::RightCorkscrewUp:
