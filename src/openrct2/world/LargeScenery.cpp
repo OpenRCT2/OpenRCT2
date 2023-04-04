@@ -34,19 +34,19 @@ colour_t LargeSceneryElement::GetTertiaryColour() const
 
 void LargeSceneryElement::SetPrimaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
+    assert(newColour < COLOUR_COUNT);
     Colour[0] = newColour;
 }
 
 void LargeSceneryElement::SetSecondaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
+    assert(newColour < COLOUR_COUNT);
     Colour[1] = newColour;
 }
 
 void LargeSceneryElement::SetTertiaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
+    assert(newColour < COLOUR_COUNT);
     Colour[2] = newColour;
 }
 
