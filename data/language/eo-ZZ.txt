@@ -3649,6 +3649,9 @@ STR_6544    :Prunto ne povas esti negativa!
 STR_6545    :Uzi interezan kalkulon de RCT1
 STR_6546    :Uzi la interezan kalkulan algoritmon de RollerCoaster Tycoon 1, kiu uzis fiksitan procenton de proksimume 1.33%.
 STR_6547    :Ĉiuj Pejzaĝoj
+STR_6548    :Montri balustradojn ĉe kuniĝo
+STR_6549    :Kongruaj objektoj ne povas esti elektitaj!
+STR_6550    :Ĉi tiu elemento estas inkluzivita por retrokongruo kun malnovaj aŭ difektitaj objektoj. Ĝi ne povas esti elektita, nur malelektita.
 
 #############
 # Scenarios #
