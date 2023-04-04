@@ -408,6 +408,7 @@ jobs:
           llvm-cov report ./OpenRCT2Tests -instr-profile=openrct2.profdata
           xz -1v openrct2.profdata
           xz -1v coverage.json
+          xz -1v OpenRCT2Tests
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v3
         with:
@@ -415,6 +416,7 @@ jobs:
           path: |
             bin/*profdata*
             bin/coverage.json*
+            bin/OpenRCT2Tests.xz
           if-no-files-found: error
   android:
     name: Android
