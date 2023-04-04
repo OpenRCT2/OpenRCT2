@@ -48,7 +48,7 @@ constexpr int32_t TabWidth = 31;
 constexpr int32_t TabHeight = 28;
 constexpr int32_t ReservedTabCount = 2;
 constexpr int32_t MaxTabs = 257; // 255 selected tabs + misc + all
-constexpr int32_t MaxTabsPerRow = 19;
+constexpr int32_t MaxTabsPerRow = 20;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
@@ -720,6 +720,15 @@ public:
             const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
             windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
+            if (GetSceneryTabInfoForMisc() != nullptr)
+            {
+                auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
+                miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
+                miscTabWidget->right = windowWidth - TabWidth - 7;
+                miscTabWidget->top = InitTabPosY;
+                miscTabWidget->bottom = InitTabPosY + TabHeight;
+            }
+
             if (_tabEntries.back().IsAll())
             {
                 auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
@@ -1223,8 +1232,7 @@ private:
 
     int32_t GetTabRowCount()
     {
-        int32_t tabEntries = static_cast<int32_t>(_tabEntries.size() - 1);
-        return std::max<int32_t>((tabEntries + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
+        return std::max<int32_t>((static_cast<int32_t>(_tabEntries.size()) + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
     }
 
     int32_t GetMaxTabCountInARow()
@@ -1250,6 +1258,9 @@ private:
         _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
         int32_t xInit = InitTabPosX;
         int32_t tabsInThisRow = 0;
+
+        auto hasMisc = GetSceneryTabInfoForMisc() != nullptr;
+        auto maxTabsInThisRow = MaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
 
         ScreenCoordsXY pos = { xInit, InitTabPosY };
         for (const auto& tabInfo : _tabEntries)
@@ -1281,12 +1292,13 @@ private:
             _widgets.push_back(widget);
 
             tabsInThisRow++;
-            if (tabsInThisRow >= MaxTabsPerRow)
+            if (tabsInThisRow >= maxTabsInThisRow)
             {
                 pos.x = xInit;
                 pos.y += TabHeight;
                 tabsInThisRow = 0;
                 _actualMinHeight += TabHeight;
+                maxTabsInThisRow = MaxTabsPerRow;
             }
         }
 

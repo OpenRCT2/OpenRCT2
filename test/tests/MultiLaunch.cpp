@@ -48,8 +48,11 @@ TEST(MultiLaunchTest, all)
         ASSERT_EQ(RideGetCount(), 134);
         auto gs = context->GetGameState();
         ASSERT_NE(gs, nullptr);
+
         auto& date = gs->GetDate();
-        ASSERT_EQ(date.GetMonthTicks(), 0);
+        // NOTE: This value is saved in the SV6 file, after the import this will be the current state.
+        // In case the save file gets replaced this needs to be adjusted.
+        ASSERT_EQ(date.GetMonthTicks(), 0x1e98);
 
         for (int j = 0; j < updatesToTest; j++)
         {

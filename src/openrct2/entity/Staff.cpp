@@ -265,7 +265,7 @@ void Staff::ResetStats()
 {
     for (auto peep : EntityList<Staff>())
     {
-        peep->SetHireDate(gDateMonthsElapsed);
+        peep->SetHireDate(GetDate().GetMonthsElapsed());
         peep->StaffLawnsMown = 0;
         peep->StaffRidesFixed = 0;
         peep->StaffGardensWatered = 0;
@@ -880,7 +880,7 @@ bool Staff::IsMechanicHeadingToFixRideBlockingPath()
     if (ride == nullptr)
         return false;
 
-    return ride->id == CurrentRide && ride->breakdown_reason == BREAKDOWN_SAFETY_CUT_OUT;
+    return ride->id == CurrentRide;
 }
 
 /**

@@ -3658,6 +3658,9 @@ STR_6544    :Un emprunt ne peut pas être négatif !
 STR_6545    :Calcul des intérêts de RCT1
 STR_6546    :Utilise l’algorithme de calcul des intérêts de RollerCoaster Tycoon 1, qui comporte un pourcentage fixe d’environ 1,33%
 STR_6547    :Tous les décors
+STR_6548    :Afficher les rambardes aux intersections
+STR_6549    :Les objets de compatibilité ne peuvent pas être sélectionnés !
+STR_6550    :Cette entrée n’est présente que pour assurer la rétro-compatibilité avec les objets anciens ou corrompus. Elle ne peut pas être sélectionnée, seulement déselectionnée.
 
 #############
 # Scenarios #

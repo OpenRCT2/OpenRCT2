@@ -1132,7 +1132,8 @@ private:
             uint8_t selectionFlags = _objectSelectionFlags[i];
             const ObjectRepositoryItem* item = &items[i];
             if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6) && FilterSource(item)
-                && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags))
+                && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags)
+                && FilterCompatibilityObject(*item, selectionFlags))
             {
                 auto filter = std::make_unique<RideFilters>();
                 filter->category[0] = 0;
@@ -1189,6 +1190,14 @@ private:
         const auto& widget = widgets[WIDX_PREVIEW];
         auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_LIST].right + 4, widget.bottom + 23 };
         auto _width2 = windowPos.x + this->width - screenPos.x - 4;
+
+        if (_loadedObject->IsCompatibilityObject())
+        {
+            screenPos.y += DrawTextWrapped(
+                               *dpi, screenPos, _width2, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
+                               { COLOUR_BRIGHT_RED })
+                + LIST_ROW_HEIGHT;
+        }
 
         auto description = ObjectGetDescription(_loadedObject.get());
         if (!description.empty())
@@ -1329,6 +1338,12 @@ private:
         return false;
     }
 
+    bool FilterCompatibilityObject(const ObjectRepositoryItem& item, uint8_t objectFlag)
+    {
+        // Only show compat objects if they are not selected already.
+        return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || (objectFlag & ObjectSelectionFlags::Selected);
+    }
+
     static bool IsFilterInName(const ObjectRepositoryItem& item, std::string_view filter)
     {
         return String::Contains(item.Name, filter, true);
@@ -1438,7 +1453,8 @@ private:
             for (size_t i = 0; i < numObjects; i++)
             {
                 const ObjectRepositoryItem* item = &items[i];
-                if (FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags[i]))
+                if (FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags[i])
+                    && FilterCompatibilityObject(*item, selectionFlags[i]))
                 {
                     _filter_object_counts[EnumValue(item->Type)]++;
                 }

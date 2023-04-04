@@ -479,8 +479,20 @@ namespace OpenRCT2
                     cs.Write(isPaused);
                 }
                 cs.ReadWrite(gCurrentTicks);
-                cs.ReadWrite(gDateMonthTicks);
-                cs.ReadWrite(gDateMonthsElapsed);
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    uint16_t monthTicks;
+                    uint32_t monthsElapsed;
+                    cs.ReadWrite(monthTicks);
+                    cs.ReadWrite(monthsElapsed);
+                    GetContext()->GetGameState()->SetDate(Date(monthsElapsed, monthTicks));
+                }
+                else
+                {
+                    auto& date = GetDate();
+                    cs.Write(date.GetMonthTicks());
+                    cs.Write(date.GetMonthsElapsed());
+                }
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -1085,6 +1097,22 @@ namespace OpenRCT2
                                             os.GetHeader().TargetVersion))
                                     {
                                         it.element->SetInvisible(true);
+                                    }
+                                }
+                                else if (
+                                    it.element->GetType() == TileElementType::SmallScenery && os.GetHeader().TargetVersion < 22)
+                                {
+                                    auto* sceneryElement = it.element->AsSmallScenery();
+                                    // Previous formats stored the needs supports flag in the primary colour
+                                    // We have moved it into a flags field to support extended colour sets
+                                    bool needsSupports = sceneryElement->GetPrimaryColour()
+                                        & RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG;
+                                    if (needsSupports)
+                                    {
+                                        sceneryElement->SetPrimaryColour(
+                                            sceneryElement->GetPrimaryColour()
+                                            & ~RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG);
+                                        sceneryElement->SetNeedsSupports();
                                     }
                                 }
                             }

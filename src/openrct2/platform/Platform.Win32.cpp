@@ -21,6 +21,7 @@
 #    include <shlobj.h>
 #    undef GetEnvironmentVariable
 
+#    include "../Date.h"
 #    include "../OpenRCT2.h"
 #    include "../common.h"
 #    include "../core/Path.hpp"

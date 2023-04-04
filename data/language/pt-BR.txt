@@ -3649,6 +3649,9 @@ STR_6544    :Empréstimo não pode ser negativo!
 STR_6545    :Usar cálculo de juros do RCT1
 STR_6546    :Usar algoritmo de cálculo de juros do RollerCoaster Tycoon 1, que utilizava uma porcentagem fixa de aproximadamente 1,33%.
 STR_6547    :Todos os Cenários
+STR_6548    :Mostrar corrimões no cruzamento
+STR_6549    :Objetos de compatibilidade não podem ser selecionados!
+STR_6550    :Esse item está incluído para compatibilidade com objetos antigos ou danificados de versões anteriores. Ele não pode ser selecionado, apenas desselecionado.
 
 #############
 # Scenarios #

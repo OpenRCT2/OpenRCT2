@@ -566,6 +566,11 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         return { true };
     }
 
+    if (item->Flags & ObjectItemFlags::IsCompatibilityObject)
+    {
+        return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_COMPAT_OBJECT);
+    }
+
     ObjectType objectType = item->Type;
     uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
 

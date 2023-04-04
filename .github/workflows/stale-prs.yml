@@ -6,13 +6,14 @@ on:
 jobs:
   stale:
     runs-on: ubuntu-latest
+    if: github.repository == 'OpenRCT2/OpenRCT2'
     steps:
       - uses: actions/stale@v7
         with:
           days-before-issue-stale: -1
           days-before-issue-close: -1
-          days-before-pr-stale: 14
+          days-before-pr-stale: 31
           days-before-pr-close: 14
           stale-pr-label: 'stale-pr'
-          stale-pr-message: 'This pull request is stale and will be closed in 14 days if no action is taken. To keep it open, leave a comment or remove the `stale-pr` label. If you''re awaiting feedback from a developer, please send us a reminder (either here or on [Discord](https://discord.gg/ZXZd8D8)).'
-          close-pr-message: 'This pull request was closed due to inactivity.'
+          stale-pr-message: 'This pull request has been marked as stale and will be closed in 14 days if no action is taken. To keep it open, leave a comment or remove the `stale-pr` label. If you''re awaiting feedback from a developer, please send us a reminder (either here or on [Discord](https://discord.gg/ZXZd8D8)).'
+          close-pr-message: 'This pull request has been closed due to inactivity. If you want to continue with this, or are awaiting a review, don''t hesitate to reach out to a developer. We''ll gladly re-open this PR! You can tag us here, or send us a message on [Discord](https://discord.gg/ZXZd8D8).'

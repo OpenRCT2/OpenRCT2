@@ -86,6 +86,8 @@ namespace OpenRCT2
         void InitAll(const TileCoordsXY& mapSize);
         void Tick();
         void UpdateLogic(LogicTimings* timings = nullptr);
+        void SetDate(Date newDate);
+        void ResetDate();
 
     private:
         void CreateStateSnapshot();
