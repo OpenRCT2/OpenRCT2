@@ -382,6 +382,39 @@ jobs:
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON -DDISABLE_OPENGL=ON
+  linux-clang-tests:
+    name: Linux (Debug) using clang, coverage enabled
+    runs-on: ubuntu-latest
+    needs: check-code-formatting
+    container: openrct2/openrct2-build:11-jammy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: linux-clang
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
+      - name: Build OpenRCT2
+        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping" -DWITH_TESTS=on
+      - name: Run Tests
+        run: . scripts/setenv -q && LLVM_PROFILE_FILE="openrct2-coverage-%p.profraw" run-tests
+      - name: Process coverage information
+        run: |
+          cd bin
+          llvm-profdata merge -sparse openrct2-coverage*profraw -o openrct2.profdata
+          llvm-cov export -instr-profile=openrct2.profdata ./OpenRCT2Tests > coverage.json
+          xz -1v openrct2.profdata
+          xz -1v coverage.json
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenRCT2-${{ runner.os }}-coverage
+          path: |
+            bin/*profdata*
+            bin/coverage.json*
+          if-no-files-found: error
   android:
     name: Android
     runs-on: ubuntu-latest
