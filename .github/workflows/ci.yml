@@ -405,6 +405,7 @@ jobs:
           cd bin
           llvm-profdata merge -sparse openrct2-coverage*profraw -o openrct2.profdata
           llvm-cov export -instr-profile=openrct2.profdata ./OpenRCT2Tests > coverage.json
+          llvm-cov report ./OpenRCT2Tests -instr-profile=openrct2.profdata
           xz -1v openrct2.profdata
           xz -1v coverage.json
       - name: Upload artifacts (CI)
