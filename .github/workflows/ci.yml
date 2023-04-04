@@ -118,7 +118,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:8-mingw
+    container: openrct2/openrct2-build:11-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -262,19 +262,19 @@ jobs:
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON
           - platform: x86_64
             distro: focal
-            image: openrct2/openrct2-build:8-focal
+            image: openrct2/openrct2-build:11-focal
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz" -DWITH_TESTS=off
           - platform: x86_64
             distro: jammy
-            image: openrct2/openrct2-build:8-jammy
+            image: openrct2/openrct2-build:11-jammy
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: bullseye
-            image: openrct2/openrct2-build:8-bullseye
+            image: openrct2/openrct2-build:11-bullseye
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
           - platform: i686
             distro: focal
-            image: openrct2/openrct2-build:8-focal32
+            image: openrct2/openrct2-build:11-focal32
             build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g1 -gz" -DWITH_TESTS=off
     steps:
       - name: Checkout
@@ -312,7 +312,7 @@ jobs:
     name: Linux (x86_64, AppImage)
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:8-focal
+    container: openrct2/openrct2-build:11-focal
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -370,7 +370,7 @@ jobs:
     name: Linux (Debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:8-jammy
+    container: openrct2/openrct2-build:11-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -386,7 +386,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:8-android
+    container: openrct2/openrct2-build:11-android
     steps:
       - name: Checkout
         uses: actions/checkout@v3
