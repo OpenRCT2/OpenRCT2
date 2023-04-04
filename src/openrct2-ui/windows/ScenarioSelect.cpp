@@ -151,7 +151,7 @@ WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback, bool titl
         [callback](std::string_view scenario) { callback(std::string(scenario).c_str()); }, titleEditor, titleEditor);
 }
 
-void WindowScenarioselectInitTabs(WindowBase* w)
+static void WindowScenarioselectInitTabs(WindowBase* w)
 {
     int32_t showPages = 0;
     size_t numScenarios = ScenarioRepositoryGetCount();
@@ -213,8 +213,12 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_scenarioselect_widgets;
+        // Load scenario list
+        ScenarioRepositoryScan();
 
+        widgets = window_scenarioselect_widgets;
+        WindowScenarioselectInitTabs(this);
+        InitialiseListItems(this);
         WindowInitScrollWidgets(*this);
     }
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -586,7 +590,7 @@ public:
     }
 };
 
-bool IsScenarioVisible(WindowBase* w, const ScenarioIndexEntry* scenario)
+static bool IsScenarioVisible(WindowBase* w, const ScenarioIndexEntry* scenario)
 {
     if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
     {
@@ -610,7 +614,7 @@ bool IsScenarioVisible(WindowBase* w, const ScenarioIndexEntry* scenario)
     return true;
 }
 
-void InitialiseListItems(WindowBase* w)
+static void InitialiseListItems(WindowBase* w)
 {
     size_t numScenarios = ScenarioRepositoryGetCount();
     _listItems.clear();
@@ -736,7 +740,7 @@ void InitialiseListItems(WindowBase* w)
     }
 }
 
-void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
+static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
 {
     colour_t baseColour = w->colours[1];
     colour_t lightColour = ColourMapA[baseColour].lighter;
@@ -775,7 +779,7 @@ void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_
     GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
 }
 
-bool IsLockingEnabled(WindowBase* w)
+static bool IsLockingEnabled(WindowBase* w)
 {
     if (gConfigGeneral.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
         return false;
@@ -796,21 +800,11 @@ WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
     _callback = callback;
     _disableLocking = disableLocking;
 
-    // Load scenario list
-    ScenarioRepositoryScan();
-
     int32_t screenWidth = ContextGetWidth();
     int32_t screenHeight = ContextGetHeight();
     ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - WH) / 2) };
-
     window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0);
-
     window->widgets = window_scenarioselect_widgets;
-
-    WindowScenarioselectInitTabs(window);
-    InitialiseListItems(window);
-
-    WindowInitScrollWidgets(*window);
     window->highlighted_scenario = nullptr;
 
     return window;
