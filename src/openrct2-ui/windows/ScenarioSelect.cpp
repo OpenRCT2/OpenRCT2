@@ -485,6 +485,7 @@ public:
                         if (_titleEditor)
                         {
                             Close();
+                            return;
                         }
                     }
                     break;
