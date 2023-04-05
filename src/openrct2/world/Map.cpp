@@ -397,11 +397,16 @@ void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements)
     _tileIndex.SetTile(tilePos, elements);
 }
 
-SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords)
+SurfaceElement* MapGetSurfaceElementAt(const TileCoordsXY& coords)
 {
     auto view = TileElementsView<SurfaceElement>(coords);
 
     return *view.begin();
+}
+
+SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords)
+{
+    return MapGetSurfaceElementAt(TileCoordsXY{ coords });
 }
 
 PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc)
@@ -465,7 +470,7 @@ void MapCountRemainingLandRights()
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             // Surface elements are sometimes hacked out to save some space for other map elements
             if (surfaceElement == nullptr)
             {
@@ -1475,8 +1480,8 @@ void MapExtendBoundarySurfaceY()
     auto y = gMapSize.y - 2;
     for (auto x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
     {
-        auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y - 1 }.ToCoordsXY());
-        auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+        auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y - 1 });
+        auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
 
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
@@ -1495,8 +1500,8 @@ void MapExtendBoundarySurfaceX()
     auto x = gMapSize.x - 2;
     for (auto y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y }.ToCoordsXY());
-        auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+        auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y });
+        auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
             MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement);
@@ -2285,7 +2290,7 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
 {
     for (const TileCoordsXY* tile = tiles.begin(); tile != tiles.end(); ++tile)
     {
-        auto surfaceElement = MapGetSurfaceElementAt(tile->ToCoordsXY());
+        auto surfaceElement = MapGetSurfaceElementAt(*tile);
         if (surfaceElement != nullptr)
         {
             if (doNotDowngrade && surfaceElement->GetOwnership() == OWNERSHIP_OWNED)
