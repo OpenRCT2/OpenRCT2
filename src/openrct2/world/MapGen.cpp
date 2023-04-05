@@ -136,7 +136,7 @@ void MapGenGenerateBlank(MapGenSettings* settings)
             }
         }
     }
-    
+
     MapGenSetWaterLevel(settings->water_level);
 }
 

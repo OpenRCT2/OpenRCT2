@@ -108,7 +108,7 @@ namespace OpenRCT2
             : _loc(loc)
         {
         }
-        
+
         TileElementsView(const CoordsXY& loc)
             : _loc(loc)
         {
