@@ -5,6 +5,7 @@
 - Feature: [OpenMusic#25] Added Prehistoric ride music style.
 - Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
 - Improved: [#19764] Miscellaneous scenery tab now grouped next to the all-scenery tab.
+- Improved: [#19830] “Highlight path issues” will now hide wall elements.
 - Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#18895] Responding mechanic blocked at level crossing.
 - Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality
