@@ -2907,6 +2907,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     uint16_t nearby_music = 0;
     uint16_t num_rubbish = 0;
 
+    // TODO: Refactor this to step as tiles, 160 units is 5 tiles.
     int16_t initial_x = std::max(centre_x - 160, 0);
     int16_t initial_y = std::max(centre_y - 160, 0);
     int16_t final_x = std::min(centre_x + 160, MAXIMUM_MAP_SIZE_BIG);
@@ -2916,7 +2917,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     {
         for (int16_t y = initial_y; y < final_y; y += COORDS_XY_STEP)
         {
-            for (auto* tileElement : TileElementsView({ x, y }))
+            for (auto* tileElement : TileElementsView(CoordsXY{ x, y }))
             {
                 if (tileElement->IsGhost())
                 {
