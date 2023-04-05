@@ -72,9 +72,9 @@ set(OPENSFX_VERSION "1.0.2")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
 set(OPENSFX_SHA1 "64EF7E0B7785602C91AEC66F005C035B05A2133B")
 
-set(OPENMSX_VERSION "1.1.0")
+set(OPENMSX_VERSION "1.2.0")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
-set(OPENMSX_SHA1 "8f0cf6b2fd4727e91b0d4062e7f199a43d15e777")
+set(OPENMSX_SHA1 "c1c9b030c83c12ff628e8ec72fcfe748291a5344")
 
 set(REPLAYS_VERSION "0.0.77")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
