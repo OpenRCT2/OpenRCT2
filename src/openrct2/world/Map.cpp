@@ -174,7 +174,7 @@ std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
             auto oldSize = newElements.size();
 
             // Add all non-ghost elements
-            const auto* element = MapGetFirstElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            const auto* element = MapGetFirstElementAt(TileCoordsXY{ x, y });
             if (element != nullptr)
             {
                 do
@@ -373,7 +373,7 @@ TileElement* MapGetNthElementAt(const CoordsXY& coords, int32_t n)
 
 TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type)
 {
-    TileElement* tileElement = MapGetFirstElementAt(loc.ToCoordsXY());
+    TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
         return nullptr;
     do
