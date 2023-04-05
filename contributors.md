@@ -270,6 +270,7 @@ The following people are not part of the development team, but have been contrib
 
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
+* (Flyxxpy)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer
