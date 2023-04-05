@@ -6381,7 +6381,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
 
     uint16_t x = peep->NextLoc.x + CoordsDirectionDelta[edge].x;
     uint16_t y = peep->NextLoc.y + CoordsDirectionDelta[edge].y;
-    if (!MapIsLocationValid({ x, y }))
+    if (!MapIsLocationValid(CoordsXY{ x, y }))
     {
         return false;
     }
@@ -6498,7 +6498,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (!MapIsLocationValid({ x, y }))
+    if (!MapIsLocationValid(CoordsXY{ x, y }))
     {
         return false;
     }
@@ -6615,7 +6615,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (!MapIsLocationValid({ x, y }))
+    if (!MapIsLocationValid(CoordsXY{ x, y }))
     {
         return false;
     }
