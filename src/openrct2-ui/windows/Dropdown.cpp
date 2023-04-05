@@ -458,8 +458,6 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
         if (selectedColour == orderedColour)
             defaultIndex = i;
 
-        // Get palette offset for G2 colours
-
         // Use special graphic for Invisible colour
         auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
                                                            : ImageId(SPR_PALETTE_BTN, orderedColour);
