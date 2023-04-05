@@ -1099,6 +1099,22 @@ namespace OpenRCT2
                                         it.element->SetInvisible(true);
                                     }
                                 }
+                                else if (
+                                    it.element->GetType() == TileElementType::SmallScenery && os.GetHeader().TargetVersion < 23)
+                                {
+                                    auto* sceneryElement = it.element->AsSmallScenery();
+                                    // Previous formats stored the needs supports flag in the primary colour
+                                    // We have moved it into a flags field to support extended colour sets
+                                    bool needsSupports = sceneryElement->GetPrimaryColour()
+                                        & RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG;
+                                    if (needsSupports)
+                                    {
+                                        sceneryElement->SetPrimaryColour(
+                                            sceneryElement->GetPrimaryColour()
+                                            & ~RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG);
+                                        sceneryElement->SetNeedsSupports();
+                                    }
+                                }
                             }
                         }
                         ParkEntranceUpdateLocations();

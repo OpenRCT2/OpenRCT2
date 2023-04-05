@@ -47,6 +47,9 @@ constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // 
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // in RCT12TileElement.properties.surface.terrain
 
+constexpr const uint8_t RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG = 0x20;
+constexpr const uint8_t RCT12_TILE_ELEMENT_COLOUR_MASK = 0b0001'1111;
+
 constexpr const uint16_t RCT12_TILE_ELEMENT_LARGE_TYPE_MASK = 0x3FF;
 
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;

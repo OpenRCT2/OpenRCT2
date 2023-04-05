@@ -129,6 +129,9 @@ enum class SpriteGroupType : uint8_t
     Slopes12Banked22,
     Slopes8Banked22,
     Slopes25Banked22,
+    Slopes8Banked45,
+    Slopes16Banked22,
+    Slopes16Banked45,
     Slopes25Banked45,
     Slopes12Banked45,
     Slopes25Banked67,
@@ -146,13 +149,15 @@ enum class SpriteGroupType : uint8_t
 };
 
 static const std::string SpriteGroupNames[] = {
-    "slopeFlat",        "slopes12",           "slopes25",         "slopes42",         "slopes60",
-    "slopes75",         "slopes90",           "slopesLoop",       "slopeInverted",    "slopes8",
-    "slopes16",         "slopes50",           "flatBanked22",     "flatBanked45",     "flatBanked67",
-    "flatBanked90",     "inlineTwists",       "slopes12Banked22", "slopes8Banked22",  "slopes25Banked22",
-    "slopes25Banked45", "slopes12Banked45",   "slopes25Banked67", "slopes25Banked90", "slopes25InlineTwists",
-    "slopes42Banked22", "slopes42Banked45",   "slopes42Banked67", "slopes42Banked90", "slopes60Banked22",
-    "corkscrews",       "restraintAnimation", "curvedLiftHill",
+    "slopeFlat",        "slopes12",         "slopes25",           "slopes42",
+    "slopes60",         "slopes75",         "slopes90",           "slopesLoop",
+    "slopeInverted",    "slopes8",          "slopes16",           "slopes50",
+    "flatBanked22",     "flatBanked45",     "flatBanked67",       "flatBanked90",
+    "inlineTwists",     "slopes12Banked22", "slopes8Banked22",    "slopes25Banked22",
+    "slopes8Banked45",  "slopes16Banked22", "slopes16Banked45",   "slopes25Banked45",
+    "slopes12Banked45", "slopes25Banked67", "slopes25Banked90",   "slopes25InlineTwists",
+    "slopes42Banked22", "slopes42Banked45", "slopes42Banked67",   "slopes42Banked90",
+    "slopes60Banked22", "corkscrews",       "restraintAnimation", "curvedLiftHill",
 };
 static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::Count));
 

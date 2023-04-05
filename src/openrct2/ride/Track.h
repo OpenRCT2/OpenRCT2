@@ -197,6 +197,9 @@ enum
     TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN,
     TRACK_FLYING_HALF_LOOP_INVERTED_UP,
 
+    TRACK_SLOPE_CURVE_LARGE,
+    TRACK_SLOPE_CURVE_LARGE_BANKED,
+
     TRACK_GROUP_COUNT,
 };
 
@@ -575,7 +578,54 @@ namespace TrackElemType
     constexpr track_type_t FlyerHalfLoopInvertedUp = 291;
     constexpr track_type_t FlyerHalfLoopUninvertedDown = 292;
 
-    constexpr track_type_t Count = 293;
+    constexpr track_type_t LeftEighthToDiagUp25 = 293;
+    constexpr track_type_t RightEighthToDiagUp25 = 294;
+    constexpr track_type_t LeftEighthToDiagDown25 = 295;
+    constexpr track_type_t RightEighthToDiagDown25 = 296;
+    constexpr track_type_t LeftEighthToOrthogonalUp25 = 297;
+    constexpr track_type_t RightEighthToOrthogonalUp25 = 298;
+    constexpr track_type_t LeftEighthToOrthogonalDown25 = 299;
+    constexpr track_type_t RightEighthToOrthogonalDown25 = 300;
+
+    constexpr track_type_t DiagUp25ToLeftBankedUp25 = 301;
+    constexpr track_type_t DiagUp25ToRightBankedUp25 = 302;
+    constexpr track_type_t DiagLeftBankedUp25ToUp25 = 303;
+    constexpr track_type_t DiagRightBankedUp25ToUp25 = 304;
+    constexpr track_type_t DiagDown25ToLeftBankedDown25 = 305;
+    constexpr track_type_t DiagDown25ToRightBankedDown25 = 306;
+    constexpr track_type_t DiagLeftBankedDown25ToDown25 = 307;
+    constexpr track_type_t DiagRightBankedDown25ToDown25 = 308;
+    constexpr track_type_t DiagLeftBankedFlatToLeftBankedUp25 = 309;
+    constexpr track_type_t DiagRightBankedFlatToRightBankedUp25 = 310;
+    constexpr track_type_t DiagLeftBankedUp25ToLeftBankedFlat = 311;
+    constexpr track_type_t DiagRightBankedUp25ToRightBankedFlat = 312;
+    constexpr track_type_t DiagLeftBankedFlatToLeftBankedDown25 = 313;
+    constexpr track_type_t DiagRightBankedFlatToRightBankedDown25 = 314;
+    constexpr track_type_t DiagLeftBankedDown25ToLeftBankedFlat = 315;
+    constexpr track_type_t DiagRightBankedDown25ToRightBankedFlat = 316;
+    constexpr track_type_t DiagFlatToLeftBankedUp25 = 317;
+    constexpr track_type_t DiagFlatToRightBankedUp25 = 318;
+    constexpr track_type_t DiagLeftBankedUp25ToFlat = 319;
+    constexpr track_type_t DiagRightBankedUp25ToFlat = 320;
+    constexpr track_type_t DiagFlatToLeftBankedDown25 = 321;
+    constexpr track_type_t DiagFlatToRightBankedDown25 = 322;
+    constexpr track_type_t DiagLeftBankedDown25ToFlat = 323;
+    constexpr track_type_t DiagRightBankedDown25ToFlat = 324;
+    constexpr track_type_t DiagUp25LeftBanked = 325;
+    constexpr track_type_t DiagUp25RightBanked = 326;
+    constexpr track_type_t DiagDown25LeftBanked = 327;
+    constexpr track_type_t DiagDown25RightBanked = 328;
+
+    constexpr track_type_t LeftEighthBankToDiagUp25 = 329;
+    constexpr track_type_t RightEighthBankToDiagUp25 = 330;
+    constexpr track_type_t LeftEighthBankToDiagDown25 = 331;
+    constexpr track_type_t RightEighthBankToDiagDown25 = 332;
+    constexpr track_type_t LeftEighthBankToOrthogonalUp25 = 333;
+    constexpr track_type_t RightEighthBankToOrthogonalUp25 = 334;
+    constexpr track_type_t LeftEighthBankToOrthogonalDown25 = 335;
+    constexpr track_type_t RightEighthBankToOrthogonalDown25 = 336;
+
+    constexpr track_type_t Count = 337;
     constexpr track_type_t None = 65535;
 
 }; // namespace TrackElemType
