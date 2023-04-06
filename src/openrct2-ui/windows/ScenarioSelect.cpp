@@ -6,7 +6,6 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-// clang-format on
 #include "../interface/Theme.h"
 
 #include <openrct2-ui/interface/Widget.h>
@@ -34,6 +33,7 @@ static constexpr const int32_t WH = 384;
 static constexpr const int32_t SidebarWidth = 180;
 static constexpr const int32_t TabWidth = 92;
 static constexpr const int32_t TabHeight = 34;
+static constexpr const int32_t TrueFontSize = 24;
 static constexpr const int32_t WidgetsStart = 17;
 static constexpr const int32_t TabsStart = WidgetsStart;
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
@@ -87,6 +87,7 @@ static constexpr const StringId ScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_UCES,        STR_SCENARIO_CATEGORY_REAL_PARKS, STR_SCENARIO_CATEGORY_EXTRAS_PARKS,
     STR_SCENARIO_CATEGORY_OTHER_PARKS,
 };
+
 // clang-format off
 static Widget window_scenarioselect_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
@@ -105,6 +106,7 @@ static Widget window_scenarioselect_widgets[] = {
     WIDGETS_END,
 };
 // clang-format on
+
 static void WindowScenarioselectInitTabs(WindowBase* w);
 static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
 static void InitialiseListItems(WindowBase* w);
@@ -124,7 +126,7 @@ static bool ScenarioSelectUseSmallFont()
 static int32_t GetScenarioListItemSize()
 {
     if (!LocalisationService_UseTrueTypeFont())
-        return 24;
+        return TrueFontSize;
 
     // Scenario title
     int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
