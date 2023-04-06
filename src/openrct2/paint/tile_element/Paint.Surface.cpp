@@ -1221,7 +1221,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // Walls
                 // Loc661089:
                 const auto fpId = static_cast<FilterPaletteID>(
-                    (((mapSelectionType - 9) + rotation) & 3) + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker));
+                    (((mapSelectionType - MAP_SELECT_TYPE_EDGE_0 + 1) + rotation) & 3)
+                    + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
