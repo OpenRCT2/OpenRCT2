@@ -2,7 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
 - Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
-- Improved: [#18995] When land changes are disallowed, disable the Land and Water windows
+- Improved: [#18995] When land changes are disallowed, the Land and Water tools can no longer be opened.
 - Improved: [#19764] Miscellaneous scenery tab now grouped next to the all-scenery tab.
 - Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#18895] Responding mechanic blocked at level crossing.
