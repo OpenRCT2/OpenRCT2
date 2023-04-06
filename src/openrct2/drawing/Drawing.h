@@ -199,7 +199,7 @@ enum class FilterPaletteID : int32_t
     PaletteQuarterMarker,
 
     Palette44 = PaletteQuarterMarker + 5, // Construction marker
-    Palette45, // Decolourise + lighten
+    Palette45,                            // Decolourise + lighten
     Palette46,
 
     PaletteDarken3,
