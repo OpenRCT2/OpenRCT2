@@ -4436,7 +4436,7 @@ static void LoopingRCTrackLeftQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15346), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 2, 2, height + 75 }, { 28, 28, 1 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -4497,7 +4497,7 @@ static void LoopingRCTrackRightQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15339), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 2, 2, height + 75 }, { 28, 28, 1 } });
             break;
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
