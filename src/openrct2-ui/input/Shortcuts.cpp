@@ -192,7 +192,8 @@ static void ShortcutAdjustLand()
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gEditorStep == EditorStep::LandscapeEditor)
     {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+            && (!(gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) || gCheatsSandboxMode))
         {
             WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
             if (window != nullptr)
@@ -211,7 +212,8 @@ static void ShortcutAdjustWater()
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gEditorStep == EditorStep::LandscapeEditor)
     {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+            && (!(gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) || gCheatsSandboxMode))
         {
             WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
             if (window != nullptr)
