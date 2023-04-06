@@ -115,6 +115,7 @@ public:
         , _shortcutManager(env)
     {
         LogSDLVersion();
+        SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
