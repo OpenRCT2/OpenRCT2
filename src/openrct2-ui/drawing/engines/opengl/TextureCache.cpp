@@ -219,8 +219,11 @@ void TextureCache::GeneratePaletteTexture()
         auto g1Index = GetPaletteG1Index(i);
         if (g1Index.has_value())
         {
-            auto element = GfxGetG1Element(g1Index.value());
-            GfxDrawSpriteSoftware(&dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+            const auto* element = GfxGetG1Element(g1Index.value());
+            if (element != nullptr)
+            {
+                GfxDrawSpriteSoftware(&dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+            }
         }
     }
 
