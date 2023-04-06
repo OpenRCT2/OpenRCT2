@@ -101,42 +101,25 @@ static Widget *window_research_page_widgets[] = {
 
 #pragma region Events
 
-static void WindowResearchDevelopmentMouseup(WindowBase *w, WidgetIndex widgetIndex);
-static void WindowResearchDevelopmentUpdate(WindowBase *w);
-static void WindowResearchDevelopmentInvalidate(WindowBase *w);
-static void WindowResearchDevelopmentPaint(WindowBase *w, DrawPixelInfo *dpi);
-
-static void WindowResearchFundingMouseup(WindowBase *w, WidgetIndex widgetIndex);
-static void WindowResearchFundingMousedown(WindowBase *w, WidgetIndex widgetIndex, Widget* widget);
-static void WindowResearchFundingDropdown(WindowBase *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
-static void WindowResearchFundingUpdate(WindowBase *w);
-static void WindowResearchFundingInvalidate(WindowBase *w);
-static void WindowResearchFundingPaint(WindowBase *w, DrawPixelInfo *dpi);
-
 //
-static WindowEventList window_research_development_events([](auto& events)
-{
-    events.mouse_up = &WindowResearchDevelopmentMouseup;
-    events.update = &WindowResearchDevelopmentUpdate;
-    events.invalidate = &WindowResearchDevelopmentInvalidate;
-    events.paint = &WindowResearchDevelopmentPaint;
-});
+//static WindowEventList window_research_development_events([](auto& events)
+//{
+//    events.mouse_up = &WindowResearchDevelopmentMouseup;
+//    events.update = &WindowResearchDevelopmentUpdate;
+//    events.invalidate = &WindowResearchDevelopmentInvalidate;
+//    events.paint = &WindowResearchDevelopmentPaint;
+//});
 
 // 0x009890E8
-static WindowEventList window_research_funding_events([](auto& events)
-{
-    events.mouse_up = &WindowResearchFundingMouseup;
-    events.mouse_down = &WindowResearchFundingMousedown;
-    events.dropdown = &WindowResearchFundingDropdown;
-    events.update = &WindowResearchFundingUpdate;
-    events.invalidate = &WindowResearchFundingInvalidate;
-    events.paint = &WindowResearchFundingPaint;
-});
-
-static WindowEventList *window_research_page_events[] = {
-    &window_research_development_events,
-    &window_research_funding_events,
-};
+//static WindowEventList window_research_funding_events([](auto& events)
+//{
+//    events.mouse_up = &WindowResearchFundingMouseup;
+//    events.mouse_down = &WindowResearchFundingMousedown;
+//    events.dropdown = &WindowResearchFundingDropdown;
+//    events.update = &WindowResearchFundingUpdate;
+//    events.invalidate = &WindowResearchFundingInvalidate;
+//    events.paint = &WindowResearchFundingPaint;
+//});
 
 #pragma endregion
 
@@ -154,469 +137,638 @@ static constexpr const StringId ResearchStageNames[] = {
     STR_RESEARCH_STAGE_UNKNOWN,
 };
 
-static void WindowResearchSetPage(WindowBase* w, int32_t page);
-static void WindowResearchSetPressedTab(WindowBase* w);
-static void WindowResearchDrawTabImages(DrawPixelInfo* dpi, WindowBase* w);
-
-WindowBase* WindowResearchOpen()
+class ResearchWindow final : public Window
 {
-    WindowBase* w;
-
-    w = WindowBringToFrontByClass(WindowClass::Research);
-    if (w == nullptr)
+public:
+    void OnOpen() override
     {
-        w = WindowCreateAutoPos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WindowClass::Research, WF_10);
-        w->widgets = window_research_page_widgets[0];
-        w->number = 0;
-        w->page = 0;
-        w->frame_no = 0;
-        w->disabled_widgets = 0;
-        ResearchUpdateUncompletedTypes();
+        SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
+
+        // TCTODO: Is any of this required? Where does it need to go?
+        /*w = WindowBringToFrontByClass(WindowClass::Research);
+        if (w == nullptr)
+        {
+            w = WindowCreateAutoPos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WindowClass::Research, WF_10);
+            w->number = 0;
+            ResearchUpdateUncompletedTypes();
+        }*/
     }
 
-    w->page = 0;
-    w->Invalidate();
-    w->width = WW_DEVELOPMENT;
-    w->height = WH_DEVELOPMENT;
-    w->Invalidate();
+    /**
+     *
+     *  rct2: 0x0069CAC5
+     */
+    void SetPage(int32_t p)
+    {
+        page = p;
+        frame_no = 0;
+        RemoveViewport();
 
-    w->widgets = window_research_page_widgets[0];
-    w->hold_down_widgets = 0;
-    w->event_handlers = window_research_page_events[0];
-    w->pressed_widgets = 0;
-    w->disabled_widgets = 0;
-    WindowInitScrollWidgets(*w);
+        hold_down_widgets = 0;
+        widgets = window_research_page_widgets[p];
+        disabled_widgets = 0;
+        pressed_widgets = 0;
 
-    return w;
-}
+        Invalidate();
+        if (p == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
+        {
+            width = WW_DEVELOPMENT;
+            height = WH_DEVELOPMENT;
+        }
+        else
+        {
+            width = WW_FUNDING;
+            height = WH_FUNDING;
+        }
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
+
+        WindowInitScrollWidgets(*this);
+        Invalidate();
+    }
+
+    /**
+     *
+     *  rct2: 0x0069CBA6
+     *  rct2: 0x0069DC23
+     */
+    void OnUpdate() override
+    {
+        // Tab animation
+        if (++frame_no >= window_research_tab_animation_loops[page])
+            frame_no = 0;
+        InvalidateWidget(WIDX_TAB_1 + page);
+    }
+
+    void OnMouseDown(WidgetIndex widgetIndex)
+    {
+        OnMouseDownFunding(widgetIndex);
+    }
+
+    void OnMouseUp(WidgetIndex widgetIndex)
+    {
+        // Switch tab or close
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+            {
+                Close();
+                break;
+            }
+            case WIDX_TAB_1:
+            case WIDX_TAB_2:
+            {
+                SetPage(widgetIndex - WIDX_TAB_1);
+                break;
+            }
+        }
+
+        // Process mouse up for specific tab
+        switch (page)
+        {
+            case WINDOW_RESEARCH_PAGE_DEVELOPMENT:
+            {
+                OnMouseUpDevelopment(widgetIndex);
+                break;
+            }
+            case WINDOW_RESEARCH_PAGE_FUNDING:
+            {
+                OnMouseUpFunding(widgetIndex);
+                break;
+            }
+        }
+    }
+
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+    {
+        if (page == WINDOW_RESEARCH_PAGE_FUNDING)
+        {
+            OnDropdownFunding(widgetIndex, selectedIndex);
+        }
+    }
+
+    void OnPrepareDraw() override
+    {
+        auto* targetWidgets = window_research_page_widgets[page];
+
+        if (widgets != targetWidgets)
+        {
+            widgets = targetWidgets;
+            WindowInitScrollWidgets(*this);
+        }
+
+        disabled_widgets = 0;
+
+        for (auto i = 0; i < WINDOW_RESEARCH_PAGE_COUNT; i++)
+        {
+            SetWidgetPressed(WIDX_TAB_1 + i, false);
+        }
+
+        SetWidgetPressed(WIDX_TAB_1 + page, true);
+
+        switch (page)
+        {
+            case WINDOW_RESEARCH_PAGE_DEVELOPMENT:
+            {
+                OnPrepareDrawDevelopment();
+                break;
+            }
+            case WINDOW_RESEARCH_PAGE_FUNDING:
+            {
+                OnPrepareDrawFunding();
+                break;
+            }
+        }
+    }
+
+    void OnDraw(DrawPixelInfo& dpi) override
+    {
+        DrawWidgets(dpi);
+        DrawTabImages(dpi);
+
+        switch (page)
+        {
+            case WINDOW_RESEARCH_PAGE_DEVELOPMENT:
+            {
+                OnDrawDevelopment(dpi);
+                break;
+            }
+            case WINDOW_RESEARCH_PAGE_FUNDING:
+            {
+                OnDrawFunding(dpi);
+                break;
+            }
+        }
+    }
 
 #pragma region Development page
 
-/**
- *
- *  rct2: 0x006B6B38
- */
-static void WindowResearchDevelopmentMouseup(WindowBase* w, WidgetIndex widgetIndex)
-{
-    switch (widgetIndex)
+    /**
+     *
+     *  rct2: 0x006B6B38
+     */
+    void OnMouseUpDevelopment(WidgetIndex widgetIndex)
     {
-        case WIDX_CLOSE:
-            WindowClose(*w);
-            break;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-            WindowResearchSetPage(w, widgetIndex - WIDX_TAB_1);
-            break;
-        case WIDX_LAST_DEVELOPMENT_BUTTON:
+        if (widgetIndex == WIDX_LAST_DEVELOPMENT_BUTTON)
+        {
             News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x0069CBA6
- */
-static void WindowResearchDevelopmentUpdate(WindowBase* w)
-{
-    // Tab animation
-    if (++w->frame_no >= window_research_tab_animation_loops[w->page])
-        w->frame_no = 0;
-    WidgetInvalidate(*w, WIDX_TAB_1);
-}
-
-/**
- *
- *  rct2: 0x006B6819
- */
-static void WindowResearchDevelopmentInvalidate(WindowBase* w)
-{
-    if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT])
-    {
-        w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
-        WindowInitScrollWidgets(*w);
+        }
     }
 
-    WindowResearchSetPressedTab(w);
-
-    window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
-    if (gResearchLastItem.has_value())
+    /**
+     *
+     *  rct2: 0x006B6819
+     */
+    void OnPrepareDrawDevelopment()
     {
-        auto type = gResearchLastItem->type;
-        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-        const auto image = type == Research::EntryType::Ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
-        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = ImageId(image);
-    }
-}
-
-/**
- *
- *  rct2: 0x006B689B
- */
-static void WindowResearchDevelopmentPaint(WindowBase* w, DrawPixelInfo* dpi)
-{
-    WindowDrawWidgets(*w, dpi);
-    WindowResearchDrawTabImages(dpi, w);
-
-    WindowResearchDevelopmentPagePaint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
-}
-
-void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex)
-{
-    baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
-
-    auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
-
-    if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
-    {
-        // Research type
-        auto ft = Formatter();
-        ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
-        DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
-        screenCoords.y += 25;
-
-        // Progress
-        ft = Formatter();
-        ft.Add<StringId>(STR_RESEARCH_COMPLETED_AL);
-        DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
-        screenCoords.y += 15;
-
-        // Expected
-        ft = Formatter();
-        ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
-        DrawTextBasic(*dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
-    }
-    else
-    {
-        // Research type
-        auto ft = Formatter();
-        StringId label = STR_RESEARCH_TYPE_LABEL;
-        if (gResearchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH)
+        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
+        if (gResearchLastItem.has_value())
         {
+            auto type = gResearchLastItem->type;
+            window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
+            const auto image = type == Research::EntryType::Ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+            window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = ImageId(image);
+        }
+    }
+
+    // TCTODO: Delete this
+    static void WindowResearchDevelopmentInvalidate(WindowBase* w)
+    {
+        if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT])
+        {
+            w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
+            WindowInitScrollWidgets(*w);
+        }
+
+        WindowResearchSetPressedTab(w);
+
+        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
+        if (gResearchLastItem.has_value())
+        {
+            auto type = gResearchLastItem->type;
+            window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
+            const auto image = type == Research::EntryType::Ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+            window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = ImageId(image);
+        }
+    }
+
+    /**
+     *
+     *  rct2: 0x006B689B
+     */
+    void OnDrawDevelopment(DrawPixelInfo& dpi)
+    {
+        auto screenCoords = windowPos
+            + ScreenCoordsXY{ 10, widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].top + 12 };
+
+        if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+        {
+            // Research type
+            auto ft = Formatter();
             ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
-        }
-        else if (gResearchProgressStage == RESEARCH_STAGE_DESIGNING)
-        {
-            ft.Add<StringId>(gResearchNextItem->GetCategoryName());
-        }
-        else if (gResearchNextItem->type == Research::EntryType::Ride)
-        {
-            const auto& rtd = GetRideTypeDescriptor(gResearchNextItem->baseRideType);
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
-            {
-                ft.Add<StringId>(gResearchNextItem->GetName());
-            }
-            else if (gResearchNextItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
-            {
-                ft.Add<StringId>(rtd.Naming.Name);
-            }
-            else
-            {
-                ft.Add<StringId>(gResearchNextItem->GetName());
-                ft.Add<StringId>(rtd.Naming.Name);
-                label = STR_RESEARCH_TYPE_LABEL_VEHICLE;
-            }
-        }
-        else
-        {
-            ft.Add<StringId>(gResearchNextItem->GetName());
-        }
-        DrawTextWrapped(*dpi, screenCoords, 296, label, ft);
-        screenCoords.y += 25;
+            DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
+            screenCoords.y += 25;
 
-        // Progress
-        ft = Formatter();
-        ft.Add<StringId>(ResearchStageNames[gResearchProgressStage]);
-        DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
-        screenCoords.y += 15;
+            // Progress
+            ft = Formatter();
+            ft.Add<StringId>(STR_RESEARCH_COMPLETED_AL);
+            DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+            screenCoords.y += 15;
 
-        // Expected
-        ft = Formatter();
-        if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH && gResearchExpectedDay != 255)
-        {
-            // TODO: Should probably use game date format setting
-            ft.Add<StringId>(STR_RESEARCH_EXPECTED_FORMAT);
-            ft.Add<StringId>(DateDayNames[gResearchExpectedDay]);
-            ft.Add<StringId>(DateGameMonthNames[gResearchExpectedMonth]);
-        }
-        else
-        {
+            // Expected
+            ft = Formatter();
             ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
-        }
-        DrawTextBasic(*dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
-    }
-
-    // Last development
-    screenCoords = w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
-
-    if (gResearchLastItem.has_value())
-    {
-        StringId lastDevelopmentFormat = STR_EMPTY;
-        auto ft = Formatter();
-        if (gResearchLastItem->type == Research::EntryType::Scenery)
-        {
-            lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
-            ft.Add<StringId>(gResearchLastItem->GetName());
+            DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
         }
         else
         {
-            lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
-            const auto& rtd = GetRideTypeDescriptor(gResearchLastItem->baseRideType);
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            // Research type
+            auto ft = Formatter();
+            StringId label = STR_RESEARCH_TYPE_LABEL;
+            if (gResearchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH)
             {
-                ft.Add<StringId>(gResearchLastItem->GetName());
+                ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
             }
-            else if (gResearchLastItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+            else if (gResearchProgressStage == RESEARCH_STAGE_DESIGNING)
             {
-                ft.Add<StringId>(rtd.Naming.Name);
+                ft.Add<StringId>(gResearchNextItem->GetCategoryName());
+            }
+            else if (gResearchNextItem->type == Research::EntryType::Ride)
+            {
+                const auto& rtd = GetRideTypeDescriptor(gResearchNextItem->baseRideType);
+                if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                {
+                    ft.Add<StringId>(gResearchNextItem->GetName());
+                }
+                else if (gResearchNextItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                {
+                    ft.Add<StringId>(rtd.Naming.Name);
+                }
+                else
+                {
+                    ft.Add<StringId>(gResearchNextItem->GetName());
+                    ft.Add<StringId>(rtd.Naming.Name);
+                    label = STR_RESEARCH_TYPE_LABEL_VEHICLE;
+                }
             }
             else
             {
-                ft.Add<StringId>(gResearchLastItem->GetName());
-                ft.Add<StringId>(rtd.Naming.Name);
-                lastDevelopmentFormat = STR_RESEARCH_VEHICLE_LABEL;
+                ft.Add<StringId>(gResearchNextItem->GetName());
             }
+            DrawTextWrapped(dpi, screenCoords, 296, label, ft);
+            screenCoords.y += 25;
+
+            // Progress
+            ft = Formatter();
+            ft.Add<StringId>(ResearchStageNames[gResearchProgressStage]);
+            DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+            screenCoords.y += 15;
+
+            // Expected
+            ft = Formatter();
+            if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH && gResearchExpectedDay != 255)
+            {
+                // TODO: Should probably use game date format setting
+                ft.Add<StringId>(STR_RESEARCH_EXPECTED_FORMAT);
+                ft.Add<StringId>(DateDayNames[gResearchExpectedDay]);
+                ft.Add<StringId>(DateGameMonthNames[gResearchExpectedMonth]);
+            }
+            else
+            {
+                ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
+            }
+            DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
         }
 
-        DrawTextWrapped(*dpi, screenCoords, 266, lastDevelopmentFormat, ft);
+        // Last development
+        screenCoords = windowPos + ScreenCoordsXY{ 10, widgets[WIDX_LAST_DEVELOPMENT_GROUP].top + 12 };
+
+        if (gResearchLastItem.has_value())
+        {
+            StringId lastDevelopmentFormat = STR_EMPTY;
+            auto ft = Formatter();
+            if (gResearchLastItem->type == Research::EntryType::Scenery)
+            {
+                lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
+                ft.Add<StringId>(gResearchLastItem->GetName());
+            }
+            else
+            {
+                lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
+                const auto& rtd = GetRideTypeDescriptor(gResearchLastItem->baseRideType);
+                if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                {
+                    ft.Add<StringId>(gResearchLastItem->GetName());
+                }
+                else if (gResearchLastItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                {
+                    ft.Add<StringId>(rtd.Naming.Name);
+                }
+                else
+                {
+                    ft.Add<StringId>(gResearchLastItem->GetName());
+                    ft.Add<StringId>(rtd.Naming.Name);
+                    lastDevelopmentFormat = STR_RESEARCH_VEHICLE_LABEL;
+                }
+            }
+
+            DrawTextWrapped(dpi, screenCoords, 266, lastDevelopmentFormat, ft);
+        }
     }
-}
+
+    // TCTODO: Delete this
+    static void WindowResearchDevelopmentPaint(WindowBase* w, DrawPixelInfo* dpi)
+    {
+        //WindowDrawWidgets(*w, dpi);
+        //WindowResearchDrawTabImages(dpi, w);
+
+        //WindowResearchDevelopmentPagePaint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
+    }
+
+    // TCTODO: Delete this
+    void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex)
+    {
+        baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
+
+        auto screenCoords = w->windowPos
+            + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
+
+        if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+        {
+            // Research type
+            auto ft = Formatter();
+            ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
+            DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
+            screenCoords.y += 25;
+
+            // Progress
+            ft = Formatter();
+            ft.Add<StringId>(STR_RESEARCH_COMPLETED_AL);
+            DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+            screenCoords.y += 15;
+
+            // Expected
+            ft = Formatter();
+            ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
+            DrawTextBasic(*dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+        }
+        else
+        {
+            // Research type
+            auto ft = Formatter();
+            StringId label = STR_RESEARCH_TYPE_LABEL;
+            if (gResearchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH)
+            {
+                ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
+            }
+            else if (gResearchProgressStage == RESEARCH_STAGE_DESIGNING)
+            {
+                ft.Add<StringId>(gResearchNextItem->GetCategoryName());
+            }
+            else if (gResearchNextItem->type == Research::EntryType::Ride)
+            {
+                const auto& rtd = GetRideTypeDescriptor(gResearchNextItem->baseRideType);
+                if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                {
+                    ft.Add<StringId>(gResearchNextItem->GetName());
+                }
+                else if (gResearchNextItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                {
+                    ft.Add<StringId>(rtd.Naming.Name);
+                }
+                else
+                {
+                    ft.Add<StringId>(gResearchNextItem->GetName());
+                    ft.Add<StringId>(rtd.Naming.Name);
+                    label = STR_RESEARCH_TYPE_LABEL_VEHICLE;
+                }
+            }
+            else
+            {
+                ft.Add<StringId>(gResearchNextItem->GetName());
+            }
+            DrawTextWrapped(*dpi, screenCoords, 296, label, ft);
+            screenCoords.y += 25;
+
+            // Progress
+            ft = Formatter();
+            ft.Add<StringId>(ResearchStageNames[gResearchProgressStage]);
+            DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+            screenCoords.y += 15;
+
+            // Expected
+            ft = Formatter();
+            if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH && gResearchExpectedDay != 255)
+            {
+                // TODO: Should probably use game date format setting
+                ft.Add<StringId>(STR_RESEARCH_EXPECTED_FORMAT);
+                ft.Add<StringId>(DateDayNames[gResearchExpectedDay]);
+                ft.Add<StringId>(DateGameMonthNames[gResearchExpectedMonth]);
+            }
+            else
+            {
+                ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
+            }
+            DrawTextBasic(*dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+        }
+
+        // Last development
+        screenCoords = w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
+
+        if (gResearchLastItem.has_value())
+        {
+            StringId lastDevelopmentFormat = STR_EMPTY;
+            auto ft = Formatter();
+            if (gResearchLastItem->type == Research::EntryType::Scenery)
+            {
+                lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
+                ft.Add<StringId>(gResearchLastItem->GetName());
+            }
+            else
+            {
+                lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
+                const auto& rtd = GetRideTypeDescriptor(gResearchLastItem->baseRideType);
+                if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                {
+                    ft.Add<StringId>(gResearchLastItem->GetName());
+                }
+                else if (gResearchLastItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                {
+                    ft.Add<StringId>(rtd.Naming.Name);
+                }
+                else
+                {
+                    ft.Add<StringId>(gResearchLastItem->GetName());
+                    ft.Add<StringId>(rtd.Naming.Name);
+                    lastDevelopmentFormat = STR_RESEARCH_VEHICLE_LABEL;
+                }
+            }
+
+            DrawTextWrapped(*dpi, screenCoords, 266, lastDevelopmentFormat, ft);
+        }
+    }
 
 #pragma endregion
 
 #pragma region Funding page
 
-/**
- *
- *  rct2: 0x0069DB3F
- */
-static void WindowResearchFundingMouseup(WindowBase* w, WidgetIndex widgetIndex)
-{
-    switch (widgetIndex)
+    /**
+     *
+     *  rct2: 0x0069DB3F
+     */
+    void OnMouseUpFunding(WidgetIndex widgetIndex)
     {
-        case WIDX_CLOSE:
-            WindowClose(*w);
-            break;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-            WindowResearchSetPage(w, widgetIndex - WIDX_TAB_1);
-            break;
-        case WIDX_TRANSPORT_RIDES:
-        case WIDX_GENTLE_RIDES:
-        case WIDX_ROLLER_COASTERS:
-        case WIDX_THRILL_RIDES:
-        case WIDX_WATER_RIDES:
-        case WIDX_SHOPS_AND_STALLS:
-        case WIDX_SCENERY_AND_THEMING:
+        if (widgetIndex >= WIDX_TRANSPORT_RIDES && widgetIndex <= WIDX_SCENERY_AND_THEMING)
         {
             auto activeResearchTypes = gResearchPriorities;
-            activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
+            activeResearchTypes ^= 1uLL << (widgetIndex - WIDX_TRANSPORT_RIDES);
             auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
             GameActions::Execute(&gameAction);
-            break;
         }
     }
-}
 
-/**
- *
- *  rct2: 0x0069DB66
- */
-static void WindowResearchFundingMousedown(WindowBase* w, WidgetIndex widgetIndex, Widget* widget)
-{
-    if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
-        return;
-
-    Widget* dropdownWidget = widget - 1;
-
-    for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
+    /**
+     *
+     *  rct2: 0x0069DB66
+     */
+    void OnMouseDownFunding(WidgetIndex widgetIndex)
     {
-        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItems[i].Args = ResearchFundingLevelNames[i];
-    }
-    WindowDropdownShowTextCustomWidth(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
+        if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
+            return;
 
-    int32_t currentResearchLevel = gResearchFundingLevel;
-    Dropdown::SetChecked(currentResearchLevel, true);
-}
+        Widget* dropdownWidget = &widgets[widgetIndex - 1];
 
-/**
- *
- *  rct2: 0x0069DB6D
- */
-static void WindowResearchFundingDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
-{
-    if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
-        return;
-
-    auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, dropdownIndex);
-    GameActions::Execute(&gameAction);
-}
-
-/**
- *
- *  rct2: 0x0069DC23
- */
-static void WindowResearchFundingUpdate(WindowBase* w)
-{
-    // Tab animation
-    if (++w->frame_no >= window_research_tab_animation_loops[w->page])
-        w->frame_no = 0;
-    WidgetInvalidate(*w, WIDX_TAB_2);
-}
-
-/**
- *
- *  rct2: 0x0069DA64
- */
-static void WindowResearchFundingInvalidate(WindowBase* w)
-{
-    if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING])
-    {
-        w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING];
-        WindowInitScrollWidgets(*w);
-    }
-
-    WindowResearchSetPressedTab(w);
-
-    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL))
-    {
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::Empty;
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
-    }
-    else
-    {
-        window_research_funding_widgets[WIDX_FUNDING_GROUP].type = WindowWidgetType::Groupbox;
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::DropdownMenu;
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
-
-        // Current funding
-        int32_t currentResearchLevel = gResearchFundingLevel;
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
-    }
-
-    // Checkboxes
-    uint8_t activeResearchTypes = gResearchPriorities;
-    for (int32_t i = 0; i < 7; i++)
-    {
-        int32_t mask = 1 << i;
-        int32_t widgetMask = 1 << (i + WIDX_TRANSPORT_RIDES);
-
-        // Set checkbox disabled if research type is complete
-        if (gResearchUncompletedCategories & mask)
+        for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
         {
-            w->disabled_widgets &= ~widgetMask;
+            gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[i].Args = ResearchFundingLevelNames[i];
+        }
+        WindowDropdownShowTextCustomWidth(
+            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+            colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
 
-            // Set checkbox ticked if research type is active
-            if (activeResearchTypes & mask)
-                w->pressed_widgets |= widgetMask;
-            else
-                w->pressed_widgets &= ~widgetMask;
+        int32_t currentResearchLevel = gResearchFundingLevel;
+        Dropdown::SetChecked(currentResearchLevel, true);
+    }
+
+    /**
+     *
+     *  rct2: 0x0069DB6D
+     */
+    void OnDropdownFunding(WidgetIndex widgetIndex, int32_t selectedIndex)
+    {
+        if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || selectedIndex == -1)
+            return;
+
+        auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, selectedIndex);
+        GameActions::Execute(&gameAction);
+    }
+
+    /**
+     *
+     *  rct2: 0x0069DA64
+     */
+    void OnPrepareDrawFunding()
+    {
+        if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+        {
+            window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::Empty;
+            window_research_funding_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
         }
         else
         {
-            w->disabled_widgets |= widgetMask;
-            w->pressed_widgets &= ~widgetMask;
+            window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::DropdownMenu;
+            window_research_funding_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
+        }
+        int32_t currentResearchLevel = gResearchFundingLevel;
+
+        // Current funding
+        window_research_funding_widgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
+
+        // Checkboxes
+        uint8_t activeResearchTypes = gResearchPriorities;
+        int32_t uncompletedResearchTypes = gResearchUncompletedCategories;
+        for (int32_t i = 0; i < 7; i++)
+        {
+            int32_t mask = 1 << i;
+            int32_t widgetMask = 1uLL << (i + WIDX_TRANSPORT_RIDES);
+
+            // Set checkbox disabled if research type is complete
+            if (uncompletedResearchTypes & mask)
+            {
+                disabled_widgets &= ~widgetMask;
+
+                // Set checkbox ticked if research type is active
+                if (activeResearchTypes & mask)
+                    pressed_widgets |= widgetMask;
+                else
+                    pressed_widgets &= ~widgetMask;
+            }
+            else
+            {
+                disabled_widgets |= widgetMask;
+                pressed_widgets &= ~widgetMask;
+            }
         }
     }
-}
 
-/**
- *
- *  rct2: 0x0069DAF0
- */
-static void WindowResearchFundingPaint(WindowBase* w, DrawPixelInfo* dpi)
-{
-    WindowDrawWidgets(*w, dpi);
-    WindowResearchDrawTabImages(dpi, w);
+    /**
+     *
+     *  rct2: 0x0069DAF0
+     */
+    void OnDrawFunding(DrawPixelInfo& dpi)
+    {
+        if (gParkFlags & PARK_FLAGS_NO_MONEY)
+            return;
 
-    WindowResearchFundingPagePaint(w, dpi, WIDX_RESEARCH_FUNDING);
-}
-
-void WindowResearchFundingPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex)
-{
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        return;
-
-    int32_t currentResearchLevel = gResearchFundingLevel;
-    auto ft = Formatter();
-    ft.Add<money64>(research_cost_table[currentResearchLevel]);
-    DrawTextBasic(*dpi, w->windowPos + ScreenCoordsXY{ 10, 77 }, STR_RESEARCH_COST_PER_MONTH, ft);
-}
+        int32_t currentResearchLevel = gResearchFundingLevel;
+        auto ft = Formatter();
+        ft.Add<money64>(research_cost_table[currentResearchLevel]);
+        DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 10, 77 }, STR_RESEARCH_COST_PER_MONTH, ft);
+    }
 
 #pragma endregion
 
 #pragma region Common
 
-/**
- *
- *  rct2: 0x0069CAC5
- */
-static void WindowResearchSetPage(WindowBase* w, int32_t page)
-{
-    w->page = page;
-    w->frame_no = 0;
-    w->RemoveViewport();
-
-    w->hold_down_widgets = 0;
-    w->event_handlers = window_research_page_events[page];
-    w->widgets = window_research_page_widgets[page];
-    w->disabled_widgets = 0;
-    w->pressed_widgets = 0;
-
-    w->Invalidate();
-    if (w->page == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
+    static void WindowResearchSetPressedTab(WindowBase* w)
     {
-        w->width = WW_DEVELOPMENT;
-        w->height = WH_DEVELOPMENT;
+        int32_t i;
+        for (i = 0; i < WINDOW_RESEARCH_PAGE_COUNT; i++)
+            w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+        w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
     }
-    else
+
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)
     {
-        w->width = WW_FUNDING;
-        w->height = WH_FUNDING;
-    }
-    WindowEventResizeCall(w);
-    WindowEventInvalidateCall(w);
+        WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
-    WindowInitScrollWidgets(*w);
-    w->Invalidate();
-}
-
-static void WindowResearchSetPressedTab(WindowBase* w)
-{
-    int32_t i;
-    for (i = 0; i < WINDOW_RESEARCH_PAGE_COUNT; i++)
-        w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-    w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
-}
-
-static void WindowResearchDrawTabImage(DrawPixelInfo* dpi, WindowBase* w, int32_t page, int32_t spriteIndex)
-{
-    WidgetIndex widgetIndex = WIDX_TAB_1 + page;
-
-    if (!WidgetIsDisabled(*w, widgetIndex))
-    {
-        if (w->page == page)
+        if (!IsWidgetDisabled(widgetIndex))
         {
-            int32_t frame = w->frame_no / 2;
-            if (page == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
-                frame %= 8;
-            spriteIndex += frame;
+            if (page == tabPage)
+            {
+                int32_t frame = frame_no / 2;
+                if (tabPage == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
+                    frame %= 8;
+                spriteIndex += frame;
+            }
+
+            GfxDrawSprite(
+                &dpi, ImageId(spriteIndex),
+                windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
-
-        GfxDrawSprite(
-            dpi, ImageId(spriteIndex),
-            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
-}
 
-static void WindowResearchDrawTabImages(DrawPixelInfo* dpi, WindowBase* w)
-{
-    WindowResearchDrawTabImage(dpi, w, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
-    WindowResearchDrawTabImage(dpi, w, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);
-}
-
+    void DrawTabImages(DrawPixelInfo& dpi)
+    {
+        DrawTabImage(dpi, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
+        DrawTabImage(dpi, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);
+    }
+};
 #pragma endregion
+
+
+WindowBase* WindowResearchOpen()
+{
+    return WindowFocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
+}

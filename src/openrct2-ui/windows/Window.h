@@ -120,8 +120,10 @@ WindowBase* WindowMapOpen();
 void WindowMapReset();
 
 WindowBase* WindowResearchOpen();
-void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex);
-void WindowResearchFundingPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex);
+
+// TCTODO: refactor these somehow
+//void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex);
+//void WindowResearchFundingPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex);
 
 WindowBase* WindowNewRideOpen();
 WindowBase* WindowNewRideOpenResearch();

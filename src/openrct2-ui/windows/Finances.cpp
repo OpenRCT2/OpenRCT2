@@ -933,7 +933,7 @@ public:
         Dropdown::SetChecked(currentResearchLevel, true);
     }
 
-    void OnDropdownResearch(WidgetIndex widgetIndex, int32_t selectedIndex)
+    void OnDropdownResearch(WidgetIndex widgetIndex, int32_t selectedIndex) // TCTODO: Research refactor funding 
     {
         if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || selectedIndex == -1)
             return;
@@ -988,7 +988,7 @@ public:
 
     void OnDrawResearch(DrawPixelInfo& dpi)
     {
-        WindowResearchFundingPagePaint(this, &dpi, WIDX_RESEARCH_FUNDING);
+        //WindowResearchFundingPagePaint(this, &dpi, WIDX_RESEARCH_FUNDING);
     }
 
 #pragma endregion
