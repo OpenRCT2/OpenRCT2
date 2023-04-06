@@ -615,9 +615,10 @@ public:
             case WIDX_THEMES_LIST:
                 if (selectedIndex != -1)
                 {
+                    const auto newColour = ThemeOverrideExtendedColour(selectedIndex);
                     WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                     uint8_t colour = ThemeGetColour(wc, _colour_index_2);
-                    colour = (colour & COLOUR_FLAG_TRANSLUCENT) | selectedIndex;
+                    colour = (colour & COLOUR_FLAG_TRANSLUCENT) | newColour;
                     ThemeSetColour(wc, _colour_index_2, colour);
                     ColourSchemeUpdateAll();
                     WindowInvalidateAll();

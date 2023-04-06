@@ -32,7 +32,7 @@ static constexpr const uint8_t _appropriateImageDropdownItemsPerRow[34] = {
     1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
     5, 4, 4, 5, 5, 5, 4, 5, 6, 5, // 20
     5, 7, 4, 5, 6, 5, 6, 6, 6, 6, // 30
-    6, 8, 8, 8,                   // 34
+    6, 8, 9, 8,                   // 34
 };
 
 enum
@@ -449,20 +449,27 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
 void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
+
+    auto numColours = (gCheatsAllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_COUNT) : COLOUR_NUM_NORMAL;
     // Set items
-    for (uint64_t i = 0; i < COLOUR_COUNT; i++)
+    for (uint64_t i = 0; i < numColours; i++)
     {
-        if (selectedColour == i)
+        auto orderedColour = ColourToPaletteIndex(i);
+        if (selectedColour == orderedColour)
             defaultIndex = i;
 
+        // Use special graphic for Invisible colour
+        auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
+                                                           : ImageId(SPR_PALETTE_BTN, orderedColour);
+
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
-        gDropdownItems[i].Args = (i << 32) | ImageId(SPR_PALETTE_BTN, i).ToUInt32();
+        gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();
     }
 
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
+        Dropdown::Flag::StayOpen, numColours, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_NUM_ORIGINAL]);
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;
