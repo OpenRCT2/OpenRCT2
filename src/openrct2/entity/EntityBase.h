@@ -43,7 +43,8 @@ struct EntityBase
     int32_t y;
     int32_t z;
     EntitySpriteData SpriteData;
-    uint8_t Direction;
+    // Used as direction or rotation depending on the entity.
+    uint8_t Orientation;
 
     /**
      * Moves a sprite to a new location, invalidates the current position if valid

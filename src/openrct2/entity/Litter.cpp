@@ -80,7 +80,7 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
     if (litter == nullptr)
         return;
 
-    litter->SpriteData.Direction = offsetLitterPos.direction;
+    litter->Orientation = offsetLitterPos.direction;
     litter->SpriteData.Width = 6;
     litter->SpriteData.HeightMin = 6;
     litter->SpriteData.HeightMax = 3;

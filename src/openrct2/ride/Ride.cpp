@@ -3216,7 +3216,7 @@ static Vehicle* VehicleCreateCar(
             if (numAttempts > 10000)
                 return nullptr;
 
-            vehicle->SpriteData.Direction = ScenarioRand() & 0x1E;
+            vehicle->Orientation = ScenarioRand() & 0x1E;
             chosenLoc.y = dodgemPos.y + (ScenarioRand() & 0xFF);
             chosenLoc.x = dodgemPos.x + (ScenarioRand() & 0xFF);
         } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc).has_value());
@@ -3264,7 +3264,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->TrackLocation = chosenLoc;
 
         int32_t direction = trackElement->GetDirection();
-        vehicle->SpriteData.Direction = direction << 3;
+        vehicle->Orientation = direction << 3;
 
         if (ride.type == RIDE_TYPE_SPACE_RINGS)
         {
@@ -3297,7 +3297,7 @@ static Vehicle* VehicleCreateCar(
 
         vehicle->MoveTo(chosenLoc);
         vehicle->SetTrackType(trackElement->GetTrackType());
-        vehicle->SetTrackDirection(vehicle->SpriteData.Direction >> 3);
+        vehicle->SetTrackDirection(vehicle->Orientation >> 3);
         vehicle->track_progress = 31;
         if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)
         {

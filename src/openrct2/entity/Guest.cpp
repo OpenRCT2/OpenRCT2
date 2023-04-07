@@ -500,8 +500,8 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 
     passingPeep->GiveItem(ShopItem::Pizza);
 
-    int32_t peepDirection = (SpriteData.Direction >> 3) ^ 2;
-    int32_t otherPeepOppositeDirection = passingPeep->SpriteData.Direction >> 3;
+    int32_t peepDirection = (Orientation >> 3) ^ 2;
+    int32_t otherPeepOppositeDirection = passingPeep->Orientation >> 3;
     if (peepDirection == otherPeepOppositeDirection)
     {
         if (passingPeep->IsActionInterruptable())
@@ -1258,7 +1258,7 @@ void Guest::UpdateSitting()
 
         MoveTo(loc);
 
-        SpriteData.Direction = ((Var37 + 2) & 3) * 8;
+        Orientation = ((Var37 + 2) & 3) * 8;
         Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::SittingIdle;
         SwitchNextActionSpriteType();
@@ -3345,7 +3345,7 @@ void Guest::UpdateBuying()
             }
             WindowInvalidateByNumber(WindowClass::Peep, Id);
         }
-        SpriteData.Direction ^= 0x10;
+        Orientation ^= 0x10;
 
         auto destination = CoordsXY{ 16, 16 } + NextLoc;
         SetDestination(destination);
@@ -3456,7 +3456,7 @@ void Guest::UpdateRideAtEntrance()
         else
         {
             DestinationTolerance = 0;
-            SpriteData.Direction ^= (1 << 4);
+            Orientation ^= (1 << 4);
             Invalidate();
         }
     }
@@ -3748,7 +3748,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     auto destination = GetDestination();
-    switch (vehicle->SpriteData.Direction / 8)
+    switch (vehicle->Orientation / 8)
     {
         case 0:
             destination.x = vehicle->x - load_position;
@@ -3818,7 +3818,7 @@ static void PeepGoToRideExit(Peep* peep, const Ride& ride, int16_t x, int16_t y,
 
     peep->SetDestination({ x, y }, 2);
 
-    peep->SpriteData.Direction = exit_direction * 8;
+    peep->Orientation = exit_direction * 8;
     peep->RideSubState = PeepRideSubState::ApproachExit;
 }
 
@@ -4200,7 +4200,7 @@ void Guest::UpdateRideLeaveVehicle()
 
                 if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
                 {
-                    specialDirection = ((vehicle->SpriteData.Direction + 3) / 8) + 1;
+                    specialDirection = ((vehicle->Orientation + 3) / 8) + 1;
                     specialDirection &= 3;
 
                     if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
@@ -4235,7 +4235,7 @@ void Guest::UpdateRideLeaveVehicle()
         {
             int8_t loadPosition = carEntry->peep_loading_positions[CurrentSeat];
 
-            switch (vehicle->SpriteData.Direction / 8)
+            switch (vehicle->Orientation / 8)
             {
                 case 0:
                     platformLocation.x -= loadPosition;
@@ -4758,7 +4758,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
                 MoveTo({ newLocation, z });
 
-                SpriteData.Direction = (Var37 & 0xC) * 2;
+                Orientation = (Var37 & 0xC) * 2;
 
                 Var37++;
                 return;
@@ -5665,7 +5665,7 @@ void Guest::UpdateQueuing()
     if (Happiness <= 65 && (0xFFFF & ScenarioRand()) < 2184)
     {
         // Give up queueing for the ride
-        SpriteData.Direction ^= (1 << 4);
+        Orientation ^= (1 << 4);
         Invalidate();
         RemoveFromQueue();
         SetState(PeepState::One);
@@ -5757,7 +5757,7 @@ void Guest::UpdateWatching()
 
         SetDestination(GetLocation());
 
-        SpriteData.Direction = (Var37 & 3) * 8;
+        Orientation = (Var37 & 3) * 8;
 
         Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::WatchRide;
@@ -7079,7 +7079,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->SpriteData.Width = spriteBounds->sprite_width;
     peep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
     peep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
-    peep->SpriteData.Direction = 0;
+    peep->Orientation = 0;
 
     peep->MoveTo(coords);
     peep->Mass = (ScenarioRand() & 0x1F) + 45;

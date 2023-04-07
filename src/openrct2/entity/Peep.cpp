@@ -478,7 +478,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
                 nextDirection = 0;
             }
         }
-        SpriteData.Direction = nextDirection;
+        Orientation = nextDirection;
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
@@ -524,7 +524,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     const auto curLoc = GetLocation();
-    Litter::Create({ curLoc, SpriteData.Direction }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
         OpenRCT2::Audio::SoundId::Cough1,
@@ -872,7 +872,7 @@ void Peep::Update1()
     }
 
     SetDestination(GetLocation(), 10);
-    PeepDirection = SpriteData.Direction >> 3;
+    PeepDirection = Orientation >> 3;
 }
 
 void Peep::SetState(PeepState new_state)
@@ -2779,7 +2779,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         if (Is<Staff>())
         {
             auto loc = GetLocation();
-            switch (SpriteData.Direction)
+            switch (Orientation)
             {
                 case 0:
                     loc.x -= 10;

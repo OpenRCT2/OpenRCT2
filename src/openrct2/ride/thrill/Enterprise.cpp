@@ -66,7 +66,7 @@ static void PaintEnterpriseStructure(
     uint32_t imageOffset = trackElement.GetDirectionWithOffset(session.CurrentRotation);
     if (vehicle != nullptr)
     {
-        imageOffset = (vehicle->Pitch << 2) + (((vehicle->SpriteData.Direction >> 3) + session.CurrentRotation) % 4);
+        imageOffset = (vehicle->Pitch << 2) + (((vehicle->Orientation >> 3) + session.CurrentRotation) % 4);
     }
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);

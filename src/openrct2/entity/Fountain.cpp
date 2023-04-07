@@ -142,7 +142,7 @@ void JumpingFountain::Create(
     {
         jumpingFountain->Iteration = iteration;
         jumpingFountain->FountainFlags = newFlags;
-        jumpingFountain->SpriteData.Direction = direction << 3;
+        jumpingFountain->Orientation = direction << 3;
         jumpingFountain->SpriteData.Width = 33;
         jumpingFountain->SpriteData.HeightMin = 36;
         jumpingFountain->SpriteData.HeightMax = 12;
@@ -204,7 +204,7 @@ JumpingFountainType JumpingFountain::GetType() const
 void JumpingFountain::AdvanceAnimation()
 {
     const JumpingFountainType newType = GetType();
-    const int32_t direction = (SpriteData.Direction >> 3) & 7;
+    const int32_t direction = (Orientation >> 3) & 7;
     const CoordsXY newLoc = CoordsXY{ x, y } + CoordsDirectionDelta[direction];
 
     int32_t availableDirections = 0;
@@ -278,7 +278,7 @@ bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const
 
 void JumpingFountain::GoToEdge(const CoordsXYZ& newLoc, const int32_t availableDirections) const
 {
-    int32_t direction = (SpriteData.Direction >> 3) << 1;
+    int32_t direction = (Orientation >> 3) << 1;
     if (availableDirections & (1 << direction))
     {
         CreateNext(newLoc, direction);
@@ -318,7 +318,7 @@ void JumpingFountain::Bounce(const CoordsXYZ& newLoc, const int32_t availableDir
     Iteration++;
     if (Iteration < 8)
     {
-        int32_t direction = ((SpriteData.Direction >> 3) ^ 2) << 1;
+        int32_t direction = ((Orientation >> 3) ^ 2) << 1;
         if (availableDirections & (1 << direction))
         {
             CreateNext(newLoc, direction);
@@ -339,7 +339,7 @@ void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections
     if (Iteration < 3)
     {
         const auto newType = GetType();
-        int32_t direction = ((SpriteData.Direction >> 3) ^ 2) << 1;
+        int32_t direction = ((Orientation >> 3) ^ 2) << 1;
         availableDirections &= ~(1 << direction);
         availableDirections &= ~(1 << (direction + 1));
 
@@ -417,7 +417,7 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
     // Fountain is firing anti clockwise
     bool reversed = (FountainFlags & FOUNTAIN_FLAG::DIRECTION);
     // Fountain rotation
-    bool rotated = (SpriteData.Direction / 16) & 1;
+    bool rotated = (Orientation / 16) & 1;
     bool isAntiClockwise = (imageDirection / 2) & 1; // Clockwise or Anti-clockwise
 
     // These cancel each other out

@@ -99,7 +99,7 @@ void Duck::UpdateFlyToWater()
 
     Invalidate();
     int32_t manhattanDistance = abs(target_x - x) + abs(target_y - y);
-    int32_t direction = SpriteData.Direction >> 3;
+    int32_t direction = Orientation >> 3;
     auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
     int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
 
@@ -195,10 +195,10 @@ void Duck::UpdateSwim()
                 if ((randomNumber & 0xFFFF) <= 0xAAA)
                 {
                     randomNumber >>= 16;
-                    SpriteData.Direction = randomNumber & 0x18;
+                    Orientation = randomNumber & 0x18;
                 }
 
-                int32_t direction = SpriteData.Direction >> 3;
+                int32_t direction = Orientation >> 3;
                 auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
                 landZ = TileElementHeight(destination);
                 waterZ = TileElementWaterHeight(destination);
@@ -256,7 +256,7 @@ void Duck::UpdateFlyAway()
 
         Invalidate();
 
-        int32_t direction = SpriteData.Direction >> 3;
+        int32_t direction = Orientation >> 3;
         auto destination = CoordsXYZ{ x + (DuckMoveOffset[direction].x * 2), y + (DuckMoveOffset[direction].y * 2),
                                       std::min<int32_t>(z + 2, 496) };
         if (MapIsLocationValid(destination))
@@ -315,7 +315,7 @@ void Duck::Create(const CoordsXY& pos)
             targetPos.y = GetMapSizeMaxXY().y - (ScenarioRand() & 0x3F);
             break;
     }
-    duck->SpriteData.Direction = direction << 3;
+    duck->Orientation = direction << 3;
     duck->MoveTo({ targetPos.x, targetPos.y, 496 });
     duck->state = Duck::DuckState::FlyToWater;
     duck->frame = 0;

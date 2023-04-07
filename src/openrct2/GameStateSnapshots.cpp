@@ -253,7 +253,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(SpriteBase, sprite_right);
         COMPARE_FIELD(SpriteBase, sprite_bottom);
         */
-        COMPARE_FIELD(EntityBase, SpriteData.Direction);
+        COMPARE_FIELD(EntityBase, Orientation);
     }
 
     void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange& changeData) const

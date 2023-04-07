@@ -1850,7 +1850,7 @@ namespace RCT2
             dst->SpriteData.Width = src->SpriteWidth;
             dst->SpriteData.HeightMax = src->SpriteHeightPositive;
             dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
-            dst->SpriteData.Direction = src->EntityDirection;
+            dst->Orientation = src->EntityDirection;
         }
 
         void ImportEntity(const RCT12EntityBase& src);
