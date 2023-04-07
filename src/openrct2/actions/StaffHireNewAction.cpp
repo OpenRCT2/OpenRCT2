@@ -172,9 +172,9 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->SpriteType = spriteType;
 
         const SpriteBounds* spriteBounds = &GetSpriteBounds(spriteType);
-        newPeep->sprite_width = spriteBounds->sprite_width;
-        newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
-        newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
+        newPeep->SpriteData.sprite_width = spriteBounds->sprite_width;
+        newPeep->SpriteData.sprite_height_negative = spriteBounds->sprite_height_negative;
+        newPeep->SpriteData.sprite_height_positive = spriteBounds->sprite_height_positive;
 
         if (_autoPosition)
         {

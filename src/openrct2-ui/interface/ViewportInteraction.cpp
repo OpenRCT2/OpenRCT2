@@ -725,8 +725,9 @@ PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t 
         if (peep->x == LOCATION_NULL)
             continue;
 
-        auto distance = abs(((peep->SpriteRect.GetLeft() + peep->SpriteRect.GetRight()) / 2) - viewportCoords.x)
-            + abs(((peep->SpriteRect.GetTop() + peep->SpriteRect.GetBottom()) / 2) - viewportCoords.y);
+        auto distance = abs(((peep->SpriteData.SpriteRect.GetLeft() + peep->SpriteData.SpriteRect.GetRight()) / 2)
+                            - viewportCoords.x)
+            + abs(((peep->SpriteData.SpriteRect.GetTop() + peep->SpriteData.SpriteRect.GetBottom()) / 2) - viewportCoords.y);
         if (distance > maxDistance)
             continue;
 

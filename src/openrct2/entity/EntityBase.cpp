@@ -64,7 +64,7 @@ void EntityBase::Invalidate()
             break;
     }
 
-    ViewportsInvalidate(SpriteRect, maxZoom);
+    ViewportsInvalidate(SpriteData.SpriteRect, maxZoom);
 }
 
 void EntityBase::Serialise(DataSerialiser& stream)
@@ -74,7 +74,7 @@ void EntityBase::Serialise(DataSerialiser& stream)
     stream << x;
     stream << y;
     stream << z;
-    stream << sprite_direction;
+    stream << SpriteData.sprite_direction;
 }
 
 // Exists only for signature

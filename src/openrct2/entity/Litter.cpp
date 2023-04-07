@@ -80,10 +80,10 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
     if (litter == nullptr)
         return;
 
-    litter->sprite_direction = offsetLitterPos.direction;
-    litter->sprite_width = 6;
-    litter->sprite_height_negative = 6;
-    litter->sprite_height_positive = 3;
+    litter->SpriteData.sprite_direction = offsetLitterPos.direction;
+    litter->SpriteData.sprite_width = 6;
+    litter->SpriteData.sprite_height_negative = 6;
+    litter->SpriteData.sprite_height_positive = 3;
     litter->SubType = type;
     litter->MoveTo(offsetLitterPos);
     litter->creationTick = gCurrentTicks;
