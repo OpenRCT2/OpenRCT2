@@ -11,6 +11,7 @@
 
 #include "AudioFormat.h"
 
+#include <atomic>
 #include <SDL.h>
 #include <memory>
 #include <openrct2/audio/AudioSource.h>
@@ -28,7 +29,7 @@ namespace OpenRCT2::Audio
     class SDLAudioSource : public IAudioSource
     {
     private:
-        bool _released{};
+        std::atomic<bool> _released{};
 
     public:
         void Release() override;
