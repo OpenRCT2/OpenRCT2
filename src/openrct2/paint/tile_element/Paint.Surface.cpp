@@ -1275,10 +1275,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 continue;
             }
 
-            FilterPaletteID fpId = static_cast<FilterPaletteID>(37);
+            FilterPaletteID fpId = FilterPaletteID::Palette37;
             if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN)
             {
-                fpId = static_cast<FilterPaletteID>(43);
+                fpId = FilterPaletteID::PaletteRideGroundMarker;
             }
 
             const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
