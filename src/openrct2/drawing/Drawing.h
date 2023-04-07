@@ -195,7 +195,7 @@ enum class FilterPaletteID : int32_t
     PaletteLandMarker,
     Palette34,
 
-    Palette37,
+    Palette37 = Palette34 + 3,
     PaletteWaterMarker,
     PaletteQuarterMarker,
 
