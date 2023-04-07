@@ -227,7 +227,7 @@ public:
     [[nodiscard]] constexpr ImageId WithPrimary(colour_t colour) const
     {
         ImageId result = *this;
-        result._primary = colour & 31;
+        result._primary = colour;
         result._flags |= NEW_FLAG_PRIMARY;
         return result;
     }
@@ -235,7 +235,7 @@ public:
     [[nodiscard]] constexpr ImageId WithSecondary(colour_t colour) const
     {
         ImageId result = *this;
-        result._secondary = colour & 31;
+        result._secondary = colour;
         result._flags |= NEW_FLAG_SECONDARY;
         return result;
     }
@@ -251,7 +251,7 @@ public:
     [[nodiscard]] constexpr ImageId WithTertiary(colour_t tertiary) const
     {
         ImageId result = *this;
-        result._tertiary = tertiary & 31;
+        result._tertiary = tertiary;
         result._flags &= ~NEW_FLAG_PRIMARY;
         result._flags |= NEW_FLAG_SECONDARY;
         if (!(_flags & NEW_FLAG_SECONDARY))
@@ -265,7 +265,7 @@ public:
 
     [[nodiscard]] ImageId WithTransparency(colour_t colour) const
     {
-        return WithTransparency(GetGlassPaletteId(colour & 31));
+        return WithTransparency(GetGlassPaletteId(colour));
     }
 
     [[nodiscard]] ImageId WithTransparency(FilterPaletteID palette) const

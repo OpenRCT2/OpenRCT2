@@ -3650,6 +3650,35 @@ STR_6545    :Use RCT1 interest calculation
 STR_6546    :Use the interest calculation algorithm of RollerCoaster Tycoon 1, which used a fixed percentage of approximately 1.33%.
 STR_6547    :All Scenery
 STR_6548    :Show railings at junction
+STR_6549    :Compatibility objects cannot be selected!
+STR_6550    :This entry is included for backwards compatibility with old or damaged objects. It cannot be selected, only deselected.  
+
+STR_6551    :Army green
+STR_6552    :Honeydew
+STR_6553    :Tan
+STR_6554    :Maroon
+STR_6555    :Coral pink
+STR_6556    :Forest green
+STR_6557    :Chartreuse
+STR_6558    :Hunter green
+STR_6559    :Celadon
+STR_6560    :Lime green
+STR_6561    :Sepia
+STR_6562    :Peach
+STR_6563    :Periwinkle
+STR_6564    :Viridian
+STR_6565    :Seafoam green
+STR_6566    :Violet
+STR_6567    :Lavender
+STR_6568    :Pastel orange
+STR_6569    :Deep water
+STR_6570    :Pastel pink
+STR_6571    :Umber
+STR_6572    :Beige
+STR_6573    :Invisible
+STR_6574    :Void
+STR_6575    :Allow special colour schemes
+STR_6576    :Adds special colours to colour dropdown
 
 #############
 # Scenarios #

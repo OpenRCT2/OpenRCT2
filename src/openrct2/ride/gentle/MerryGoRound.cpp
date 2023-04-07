@@ -92,7 +92,10 @@ static void PaintCarousel(
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
     PaintAddImageAsParent(session, imageId, offset, bb);
 
-    PaintRiders(session, ride, *rideEntry, *vehicle, rotationOffset, offset, bb);
+    if (vehicle != nullptr && vehicle->num_peeps > 0)
+    {
+        PaintRiders(session, ride, *rideEntry, *vehicle, rotationOffset, offset, bb);
+    }
 
     session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;

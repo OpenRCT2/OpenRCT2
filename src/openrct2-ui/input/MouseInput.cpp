@@ -1341,7 +1341,9 @@ void InputStateWidgetPressed(
                                 dropdown_index = gDropdownDefaultIndex;
                             }
                         }
-                        WindowEventDropdownCall(cursor_w, cursor_widgetIndex, dropdown_index);
+                        WindowEventDropdownCall(
+                            cursor_w, cursor_widgetIndex,
+                            (gDropdownIsColour) ? ColourToPaletteIndex(dropdown_index) : dropdown_index);
                     }
                 }
             }
@@ -1445,8 +1447,32 @@ void InputStateWidgetPressed(
                 STR_COLOUR_DARK_PINK_TIP,
                 STR_COLOUR_BRIGHT_PINK_TIP,
                 STR_COLOUR_LIGHT_PINK_TIP,
+                STR_COLOUR_DARK_OLIVE_DARK_TIP,
+                STR_COLOUR_DARK_OLIVE_LIGHT_TIP,
+                STR_COLOUR_SATURATED_BROWN_LIGHT_TIP,
+                STR_COLOUR_BORDEAUX_RED_DARK_TIP,
+                STR_COLOUR_BORDEAUX_RED_LIGHT_TIP,
+                STR_COLOUR_GRASS_GREEN_DARK_TIP,
+                STR_COLOUR_GRASS_GREEN_LIGHT_TIP,
+                STR_COLOUR_OLIVE_DARK_TIP,
+                STR_COLOUR_OLIVE_LIGHT_TIP,
+                STR_COLOUR_SATURATED_GREEN_LIGHT_TIP,
+                STR_COLOUR_TAN_DARK_TIP,
+                STR_COLOUR_TAN_LIGHT_TIP,
+                STR_COLOUR_DULL_PURPLE_LIGHT_TIP,
+                STR_COLOUR_DULL_GREEN_DARK_TIP,
+                STR_COLOUR_DULL_GREEN_LIGHT_TIP,
+                STR_COLOUR_SATURATED_PURPLE_DARK_TIP,
+                STR_COLOUR_SATURATED_PURPLE_LIGHT_TIP,
+                STR_COLOUR_ORANGE_LIGHT_TIP,
+                STR_COLOUR_AQUA_DARK_TIP,
+                STR_COLOUR_MAGENTA_LIGHT_TIP,
+                STR_COLOUR_DULL_BROWN_DARK_TIP,
+                STR_COLOUR_DULL_BROWN_LIGHT_TIP,
+                STR_COLOUR_INVISIBLE_TIP,
+                STR_COLOUR_VOID_TIP,
             };
-            WindowTooltipShow(OpenRCT2String{ _colourTooltips[dropdown_index], {} }, screenCoords);
+            WindowTooltipShow(OpenRCT2String{ _colourTooltips[ColourToPaletteIndex(dropdown_index)], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))

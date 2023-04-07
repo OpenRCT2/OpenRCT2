@@ -254,7 +254,7 @@ public:
     {
         if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
         {
-            OnScrollMouseOver(scrollIndex, screenCoords);
+            OnScrollMouseOverRides(scrollIndex, screenCoords);
         }
     }
 
@@ -262,7 +262,7 @@ public:
     {
         if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
         {
-            OnScrollDraw(scrollIndex, dpi);
+            OnScrollDrawRides(&dpi, scrollIndex);
         }
     }
 

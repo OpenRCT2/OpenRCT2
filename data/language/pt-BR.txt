@@ -3650,6 +3650,34 @@ STR_6545    :Usar cálculo de juros do RCT1
 STR_6546    :Usar algoritmo de cálculo de juros do RollerCoaster Tycoon 1, que utilizava uma porcentagem fixa de aproximadamente 1,33%.
 STR_6547    :Todos os Cenários
 STR_6548    :Mostrar corrimões no cruzamento
+STR_6549    :Objetos de compatibilidade não podem ser selecionados!
+STR_6550    :Esse item está incluído para compatibilidade com objetos antigos ou danificados de versões anteriores. Ele não pode ser selecionado, apenas desselecionado.
+STR_6551    :Verde militar
+STR_6552    :Maná
+STR_6553    :Castanho claro
+STR_6554    :Bordô
+STR_6555    :Coral
+STR_6556    :Verde floresta
+STR_6557    :Chartreuse
+STR_6558    :Verde caçador
+STR_6559    :Verde claro
+STR_6560    :Verde lima
+STR_6561    :Sépia
+STR_6562    :Pêssego
+STR_6563    :Pervinca
+STR_6564    :Viridiano
+STR_6565    :Verde mar
+STR_6566    :Violeta
+STR_6567    :Lavanda
+STR_6568    :Laranja pastel
+STR_6569    :Azul marinho
+STR_6570    :Rosa pastel
+STR_6571    :Café
+STR_6572    :Bege
+STR_6573    :Invisível
+STR_6574    :Vazia
+STR_6575    :Permitir esquema de cores especial
+STR_6576    :Adiciona cores especiais à lista de cores
 
 #############
 # Scenarios #

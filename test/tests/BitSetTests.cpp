@@ -15,11 +15,7 @@ using namespace OpenRCT2;
 TEST(BitTest, test_index_construction)
 {
     BitSet<64u> bits({ 0u, 2u, 4u, 6u, 8u, 10u });
-#if defined(_M_X64) || defined(_M_ARM64)
-    static_assert(std::is_same_v<decltype(bits)::BlockType, uint64_t>);
-#else
-    static_assert(std::is_same_v<decltype(bits)::BlockType, uint32_t>);
-#endif
+    static_assert(sizeof(decltype(bits)::BlockType) == sizeof(uintptr_t));
     constexpr auto size = sizeof(bits);
     static_assert(size == 8u);
 
@@ -94,7 +90,7 @@ TEST(BitTest, test_big)
     static_assert(size == 32u);
 
     bits.flip();
-#if defined(_M_X64) || defined(_M_ARM64)
+#if defined(_M_X64) || defined(_M_ARM64) || defined(__x86_64__)
     static_assert(std::is_same_v<decltype(bits)::BlockType, uint64_t>);
     static_assert(bits.data().size() == 4);
     ASSERT_EQ(bits.data()[0], ~0uLL);

@@ -141,7 +141,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     max_positive_vertical_g = ride.max_positive_vertical_g / 32;
     max_negative_vertical_g = ride.max_negative_vertical_g / 32;
     max_lateral_g = ride.max_lateral_g / 32;
-    inversions = ride.holes & 0x1F;
+    holes = ride.holes & 0x1F;
     inversions = ride.inversions & 0x1F;
     inversions |= (ride.sheltered_eighths << 5);
     drops = ride.drops;
