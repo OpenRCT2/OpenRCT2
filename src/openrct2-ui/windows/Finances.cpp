@@ -248,7 +248,7 @@ public:
                 OnMouseDownSummary(widgetIndex);
                 break;
             case WINDOW_FINANCES_PAGE_RESEARCH:
-                OnMouseDownResearch(widgetIndex);
+                WindowResearchFundingMouseDown(this, widgetIndex, WIDX_RESEARCH_FUNDING);
                 break;
         }
     }
@@ -275,7 +275,7 @@ public:
                         OnMouseUpMarketing(widgetIndex);
                         break;
                     case WINDOW_FINANCES_PAGE_RESEARCH:
-                        OnMouseUpResearch(widgetIndex);
+                        WindowResearchFundingMouseUp(widgetIndex, WIDX_RESEARCH_FUNDING);
                 }
                 break;
         }
@@ -285,7 +285,7 @@ public:
     {
         if (page == WINDOW_FINANCES_PAGE_RESEARCH)
         {
-            OnDropdownResearch(widgetIndex, selectedIndex);
+            WindowResearchFundingDropdown(widgetIndex, selectedIndex, WIDX_RESEARCH_FUNDING);
         }
     }
 
@@ -313,7 +313,7 @@ public:
                 OnPrepareDrawMarketing();
                 break;
             case WINDOW_FINANCES_PAGE_RESEARCH:
-                OnPrepareDrawResearch();
+                WindowResearchFundingPrepareDraw(this, WIDX_RESEARCH_FUNDING);
                 break;
         }
     }
@@ -341,7 +341,7 @@ public:
                 OnDrawMarketing(dpi);
                 break;
             case WINDOW_FINANCES_PAGE_RESEARCH:
-                OnDrawResearch(dpi);
+                WindowResearchFundingDraw(this, dpi);
                 break;
         }
     }
@@ -894,101 +894,6 @@ public:
                 screenCoords.y += BUTTON_FACE_HEIGHT + 2;
             }
         }
-    }
-
-#pragma endregion
-
-#pragma region Research Events
-
-    void OnMouseUpResearch(WidgetIndex widgetIndex)
-    {
-        if (widgetIndex >= WIDX_TRANSPORT_RIDES && widgetIndex <= WIDX_SCENERY_AND_THEMING)
-        {
-            auto activeResearchTypes = gResearchPriorities;
-            activeResearchTypes ^= 1uLL << (widgetIndex - WIDX_TRANSPORT_RIDES);
-
-            auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
-            GameActions::Execute(&gameAction);
-        }
-    }
-
-    void OnMouseDownResearch(WidgetIndex widgetIndex)
-    {
-        if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
-            return;
-
-        Widget* dropdownWidget = &widgets[widgetIndex - 1];
-
-        for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
-        {
-            gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItems[i].Args = ResearchFundingLevelNames[i];
-        }
-
-        WindowDropdownShowTextCustomWidth(
-            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
-            0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
-
-        int32_t currentResearchLevel = gResearchFundingLevel;
-        Dropdown::SetChecked(currentResearchLevel, true);
-    }
-
-    void OnDropdownResearch(WidgetIndex widgetIndex, int32_t selectedIndex) // TCTODO: Research refactor funding 
-    {
-        if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || selectedIndex == -1)
-            return;
-
-        auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, selectedIndex);
-        GameActions::Execute(&gameAction);
-    }
-
-    void OnPrepareDrawResearch()
-    {
-        if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
-        {
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::Empty;
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
-        }
-        else
-        {
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::DropdownMenu;
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
-        }
-        int32_t currentResearchLevel = gResearchFundingLevel;
-
-        // Current funding
-        _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
-
-        // Checkboxes
-        uint8_t activeResearchTypes = gResearchPriorities;
-        int32_t uncompletedResearchTypes = gResearchUncompletedCategories;
-        for (int32_t i = 0; i < 7; i++)
-        {
-            int32_t mask = 1 << i;
-            int32_t widgetMask = 1uLL << (i + WIDX_TRANSPORT_RIDES);
-
-            // Set checkbox disabled if research type is complete
-            if (uncompletedResearchTypes & mask)
-            {
-                disabled_widgets &= ~widgetMask;
-
-                // Set checkbox ticked if research type is active
-                if (activeResearchTypes & mask)
-                    pressed_widgets |= widgetMask;
-                else
-                    pressed_widgets &= ~widgetMask;
-            }
-            else
-            {
-                disabled_widgets |= widgetMask;
-                pressed_widgets &= ~widgetMask;
-            }
-        }
-    }
-
-    void OnDrawResearch(DrawPixelInfo& dpi)
-    {
-        //WindowResearchFundingPagePaint(this, &dpi, WIDX_RESEARCH_FUNDING);
     }
 
 #pragma endregion
