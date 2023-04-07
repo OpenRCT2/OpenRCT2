@@ -3156,9 +3156,9 @@ static Vehicle* VehicleCreateCar(
     }
 
     // Loc6DD9A5:
-    vehicle->SpriteData.sprite_width = carEntry.sprite_width;
-    vehicle->SpriteData.sprite_height_negative = carEntry.sprite_height_negative;
-    vehicle->SpriteData.sprite_height_positive = carEntry.sprite_height_positive;
+    vehicle->SpriteData.Width = carEntry.sprite_width;
+    vehicle->SpriteData.HeightMin = carEntry.sprite_height_negative;
+    vehicle->SpriteData.HeightMax = carEntry.sprite_height_positive;
     vehicle->mass = carEntry.car_mass;
     vehicle->num_seats = carEntry.num_seats;
     vehicle->speed = carEntry.powered_max_speed;
@@ -3216,7 +3216,7 @@ static Vehicle* VehicleCreateCar(
             if (numAttempts > 10000)
                 return nullptr;
 
-            vehicle->SpriteData.sprite_direction = ScenarioRand() & 0x1E;
+            vehicle->SpriteData.Direction = ScenarioRand() & 0x1E;
             chosenLoc.y = dodgemPos.y + (ScenarioRand() & 0xFF);
             chosenLoc.x = dodgemPos.x + (ScenarioRand() & 0xFF);
         } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc).has_value());
@@ -3264,7 +3264,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->TrackLocation = chosenLoc;
 
         int32_t direction = trackElement->GetDirection();
-        vehicle->SpriteData.sprite_direction = direction << 3;
+        vehicle->SpriteData.Direction = direction << 3;
 
         if (ride.type == RIDE_TYPE_SPACE_RINGS)
         {
@@ -3297,7 +3297,7 @@ static Vehicle* VehicleCreateCar(
 
         vehicle->MoveTo(chosenLoc);
         vehicle->SetTrackType(trackElement->GetTrackType());
-        vehicle->SetTrackDirection(vehicle->SpriteData.sprite_direction >> 3);
+        vehicle->SetTrackDirection(vehicle->SpriteData.Direction >> 3);
         vehicle->track_progress = 31;
         if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)
         {
@@ -5333,17 +5333,17 @@ void FixInvalidVehicleSpriteSizes()
                     break;
                 }
 
-                if (vehicle->SpriteData.sprite_width == 0)
+                if (vehicle->SpriteData.Width == 0)
                 {
-                    vehicle->SpriteData.sprite_width = carEntry->sprite_width;
+                    vehicle->SpriteData.Width = carEntry->sprite_width;
                 }
-                if (vehicle->SpriteData.sprite_height_negative == 0)
+                if (vehicle->SpriteData.HeightMin == 0)
                 {
-                    vehicle->SpriteData.sprite_height_negative = carEntry->sprite_height_negative;
+                    vehicle->SpriteData.HeightMin = carEntry->sprite_height_negative;
                 }
-                if (vehicle->SpriteData.sprite_height_positive == 0)
+                if (vehicle->SpriteData.HeightMax == 0)
                 {
-                    vehicle->SpriteData.sprite_height_positive = carEntry->sprite_height_positive;
+                    vehicle->SpriteData.HeightMax = carEntry->sprite_height_positive;
                 }
             }
         }

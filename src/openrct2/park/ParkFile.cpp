@@ -1581,13 +1581,13 @@ namespace OpenRCT2
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, EntityBase& entity)
         {
             cs.ReadWrite(entity.Id);
-            cs.ReadWrite(entity.SpriteData.sprite_height_negative);
+            cs.ReadWrite(entity.SpriteData.HeightMin);
             cs.ReadWrite(entity.x);
             cs.ReadWrite(entity.y);
             cs.ReadWrite(entity.z);
-            cs.ReadWrite(entity.SpriteData.sprite_width);
-            cs.ReadWrite(entity.SpriteData.sprite_height_positive);
-            cs.ReadWrite(entity.SpriteData.sprite_direction);
+            cs.ReadWrite(entity.SpriteData.Width);
+            cs.ReadWrite(entity.SpriteData.HeightMax);
+            cs.ReadWrite(entity.SpriteData.Direction);
         }
 
         static std::vector<ObjectEntryIndex> LegacyGetRideTypesBeenOn(const std::array<uint8_t, 16>& srcArray)

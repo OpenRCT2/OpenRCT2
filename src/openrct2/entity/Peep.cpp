@@ -387,9 +387,9 @@ void Peep::UpdateCurrentActionSpriteType()
     ActionSpriteType = newActionSpriteType;
 
     const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
-    SpriteData.sprite_width = spriteBounds->sprite_width;
-    SpriteData.sprite_height_negative = spriteBounds->sprite_height_negative;
-    SpriteData.sprite_height_positive = spriteBounds->sprite_height_positive;
+    SpriteData.Width = spriteBounds->sprite_width;
+    SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+    SpriteData.HeightMax = spriteBounds->sprite_height_positive;
 
     Invalidate();
 }
@@ -478,7 +478,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
                 nextDirection = 0;
             }
         }
-        SpriteData.sprite_direction = nextDirection;
+        SpriteData.Direction = nextDirection;
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
@@ -524,8 +524,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     const auto curLoc = GetLocation();
-    Litter::Create(
-        { curLoc, SpriteData.sprite_direction }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    Litter::Create({ curLoc, SpriteData.Direction }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
         OpenRCT2::Audio::SoundId::Cough1,
@@ -873,7 +872,7 @@ void Peep::Update1()
     }
 
     SetDestination(GetLocation(), 10);
-    PeepDirection = SpriteData.sprite_direction >> 3;
+    PeepDirection = SpriteData.Direction >> 3;
 }
 
 void Peep::SetState(PeepState new_state)
@@ -1668,9 +1667,9 @@ void Peep::SwitchNextActionSpriteType()
         Invalidate();
         ActionSpriteType = NextActionSpriteType;
         const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
-        SpriteData.sprite_width = spriteBounds->sprite_width;
-        SpriteData.sprite_height_negative = spriteBounds->sprite_height_negative;
-        SpriteData.sprite_height_positive = spriteBounds->sprite_height_positive;
+        SpriteData.Width = spriteBounds->sprite_width;
+        SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+        SpriteData.HeightMax = spriteBounds->sprite_height_positive;
         Invalidate();
     }
 }
@@ -2780,7 +2779,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         if (Is<Staff>())
         {
             auto loc = GetLocation();
-            switch (SpriteData.sprite_direction)
+            switch (SpriteData.Direction)
             {
                 case 0:
                     loc.x -= 10;

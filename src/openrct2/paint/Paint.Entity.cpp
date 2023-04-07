@@ -105,7 +105,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
 
         int32_t image_direction = session.CurrentRotation;
         image_direction <<= 3;
-        image_direction += spr->SpriteData.sprite_direction;
+        image_direction += spr->SpriteData.Direction;
         image_direction &= 0x1F;
 
         session.CurrentlyDrawnEntity = spr;

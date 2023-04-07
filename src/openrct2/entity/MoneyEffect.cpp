@@ -49,9 +49,9 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guest
 
     moneyEffect->Value = value;
     moneyEffect->GuestPurchase = (guestPurchase ? 1 : 0);
-    moneyEffect->SpriteData.sprite_width = 64;
-    moneyEffect->SpriteData.sprite_height_negative = 20;
-    moneyEffect->SpriteData.sprite_height_positive = 30;
+    moneyEffect->SpriteData.Width = 64;
+    moneyEffect->SpriteData.HeightMin = 20;
+    moneyEffect->SpriteData.HeightMax = 30;
     moneyEffect->MoveTo(effectPos);
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;

@@ -1274,13 +1274,13 @@ namespace RCT1
             dst->ActionFrame = src->ActionFrame;
 
             const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
-            dst->SpriteData.sprite_width = spriteBounds->sprite_width;
-            dst->SpriteData.sprite_height_negative = spriteBounds->sprite_height_negative;
-            dst->SpriteData.sprite_height_positive = spriteBounds->sprite_height_positive;
+            dst->SpriteData.Width = spriteBounds->sprite_width;
+            dst->SpriteData.HeightMax = spriteBounds->sprite_height_negative;
+            dst->SpriteData.HeightMin = spriteBounds->sprite_height_positive;
 
             dst->MoveTo({ src->x, src->y, src->z });
 
-            dst->SpriteData.sprite_direction = src->EntityDirection;
+            dst->SpriteData.Direction = src->EntityDirection;
 
             // Peep name
             if (IsUserStringID(src->NameStringID))
@@ -1366,10 +1366,10 @@ namespace RCT1
 
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
-            dst->SpriteData.sprite_direction = src->EntityDirection;
-            dst->SpriteData.sprite_width = src->SpriteWidth;
-            dst->SpriteData.sprite_height_negative = src->SpriteHeightNegative;
-            dst->SpriteData.sprite_height_positive = src->SpriteHeightPositive;
+            dst->SpriteData.Direction = src->EntityDirection;
+            dst->SpriteData.Width = src->SpriteWidth;
+            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
+            dst->SpriteData.HeightMax = src->SpriteHeightPositive;
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
@@ -2723,10 +2723,10 @@ namespace RCT1
         dst->remaining_distance = src->RemainingDistance;
 
         // Properties from vehicle entry
-        dst->SpriteData.sprite_width = src->SpriteWidth;
-        dst->SpriteData.sprite_height_negative = src->SpriteHeightNegative;
-        dst->SpriteData.sprite_height_positive = src->SpriteHeightPositive;
-        dst->SpriteData.sprite_direction = src->EntityDirection;
+        dst->SpriteData.Width = src->SpriteWidth;
+        dst->SpriteData.HeightMin = src->SpriteHeightNegative;
+        dst->SpriteData.HeightMax = src->SpriteHeightPositive;
+        dst->SpriteData.Direction = src->EntityDirection;
 
         dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
 

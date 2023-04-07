@@ -74,7 +74,7 @@ void EntityBase::Serialise(DataSerialiser& stream)
     stream << x;
     stream << y;
     stream << z;
-    stream << SpriteData.sprite_direction;
+    stream << SpriteData.Direction;
 }
 
 // Exists only for signature

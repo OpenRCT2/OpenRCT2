@@ -26,15 +26,13 @@ enum class EntityType : uint8_t
 struct EntitySpriteData
 {
     // Width from centre of sprite to edge
-    uint8_t sprite_width;
+    uint8_t Width;
     // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative;
+    uint8_t HeightMin;
     // Height from centre of sprite to top
-    uint8_t sprite_height_positive;
+    uint8_t HeightMax;
     // Screen Coordinates of sprite
     ScreenRect SpriteRect;
-
-    uint8_t sprite_direction;
 };
 
 struct EntityBase
@@ -45,6 +43,7 @@ struct EntityBase
     int32_t y;
     int32_t z;
     EntitySpriteData SpriteData;
+    uint8_t Direction;
 
     /**
      * Moves a sprite to a new location, invalidates the current position if valid
