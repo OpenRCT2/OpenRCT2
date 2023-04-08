@@ -134,7 +134,8 @@ namespace Platform
 
         jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
         jclass activityClass = env->GetObjectClass(activity);
-        jmethodID getIsImperialLocaleMeasurementFormat = env->GetMethodID(activityClass, "isImperialLocaleMeasurementFormat", "()Z");
+        jmethodID getIsImperialLocaleMeasurementFormat = env->GetMethodID(
+            activityClass, "isImperialLocaleMeasurementFormat", "()Z");
 
         jboolean isImperial = env->CallBooleanMethod(activity, isImperialLocaleMeasurementFormat);
 
