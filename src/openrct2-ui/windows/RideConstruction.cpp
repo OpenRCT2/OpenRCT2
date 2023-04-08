@@ -2415,7 +2415,8 @@ private:
         }
 
         auto trackRemoveAction = TrackRemoveAction(
-            _currentTrackPieceType, 0, { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, currentDirection }, false);
+            _currentTrackPieceType, 0, { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, currentDirection },
+            false);
 
         trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
