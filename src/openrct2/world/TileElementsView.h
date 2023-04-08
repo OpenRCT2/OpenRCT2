@@ -41,7 +41,7 @@ namespace OpenRCT2
 
     template<typename T = TileElement> class TileElementsView
     {
-        const CoordsXY _loc;
+        const TileCoordsXY _loc;
 
     public:
         struct Iterator
@@ -103,6 +103,11 @@ namespace OpenRCT2
             using reference = const T&;
             using iterator_category = std::forward_iterator_tag;
         };
+
+        TileElementsView(const TileCoordsXY& loc)
+            : _loc(loc)
+        {
+        }
 
         TileElementsView(const CoordsXY& loc)
             : _loc(loc)
