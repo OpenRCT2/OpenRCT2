@@ -1026,7 +1026,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     DrawPixelInfo* dpi = &session.DPI;
     session.InteractionType = ViewportInteractionItem::Terrain;
     session.Flags |= PaintSessionFlags::PassedSurface;
-    session.SurfaceElement = reinterpret_cast<const TileElement*>(&tileElement);
+    session.Surface = &tileElement;
 
     const auto zoomLevel = dpi->zoom_level;
     const uint8_t rotation = session.CurrentRotation;
