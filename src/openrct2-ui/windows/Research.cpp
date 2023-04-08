@@ -488,13 +488,8 @@ void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, Widg
         gDropdownItems[i].Args = ResearchFundingLevelNames[i];
     }
     WindowDropdownShowTextCustomWidth(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-        dropdownWidget->height() + 1,
-         w->colours[1],
-         0,
-         Dropdown::Flag::StayOpen,
-         4,
-         dropdownWidget->width() - 3);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
 
     int32_t currentResearchLevel = gResearchFundingLevel;
     Dropdown::SetChecked(currentResearchLevel, true);
