@@ -97,19 +97,19 @@ colour_t SmallSceneryElement::GetTertiaryColour() const
 void SmallSceneryElement::SetPrimaryColour(colour_t newColour)
 {
     assert(newColour < COLOUR_COUNT);
-    Colour[0] |= newColour;
+    Colour[0] = newColour;
 }
 
 void SmallSceneryElement::SetSecondaryColour(colour_t newColour)
 {
     assert(newColour < COLOUR_COUNT);
-    Colour[1] |= newColour;
+    Colour[1] = newColour;
 }
 
 void SmallSceneryElement::SetTertiaryColour(colour_t newColour)
 {
     assert(newColour < COLOUR_COUNT);
-    Colour[2] |= newColour;
+    Colour[2] = newColour;
 }
 
 bool SmallSceneryElement::NeedsSupports() const

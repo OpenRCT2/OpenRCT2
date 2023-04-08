@@ -452,13 +452,13 @@ static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackE
         return false;
     }
 
-    const TileElement* surfaceElement = session.SurfaceElement;
+    const SurfaceElement* surfaceElement = session.Surface;
     if (surfaceElement->BaseHeight != trackElement.BaseHeight)
     {
         return true;
     }
 
-    if (surfaceElement->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+    if (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
     {
         return true;
     }

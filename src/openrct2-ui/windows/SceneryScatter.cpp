@@ -198,7 +198,7 @@ WindowBase* WindowSceneryScatterOpen()
     auto* window = WindowFindByClass(WindowClass::SceneryScatter);
     if (window == nullptr)
     {
-        window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100);
+        window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100, 0);
     }
 
     return window;

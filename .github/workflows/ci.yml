@@ -103,6 +103,11 @@ jobs:
       - name: Run Tests
         if: matrix.platform != 'arm64'
         run: . scripts/setenv -q && run-tests
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "artifacts/test-**.xml"
+        if: matrix.platform != 'arm64'
       - name: Upload artifacts (openrct2.org)
         run: |
           . scripts/setenv
@@ -185,6 +190,11 @@ jobs:
       - name: Run Tests
         if: ${{matrix.run_tests}}
         run: . scripts/setenv -q && run-tests
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "artifacts/test-**.xml"
+        if: ${{matrix.run_tests}}
       - name: Build artifacts
         run: |
           . scripts/setenv
@@ -299,6 +309,7 @@ jobs:
           if-no-files-found: error
       - name: Run Tests
         run: . scripts/setenv -q && run-tests
+        
       - name: Upload artifacts (openrct2.org)
         run: |
           # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
@@ -400,6 +411,11 @@ jobs:
         run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping" -DWITH_TESTS=on
       - name: Run Tests
         run: . scripts/setenv -q && LLVM_PROFILE_FILE="openrct2-coverage-%p.profraw" run-tests
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "artifacts/test-**.xml"
+        if: always()
       - name: Process coverage information
         run: |
           cd bin

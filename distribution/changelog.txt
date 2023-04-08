@@ -1,13 +1,19 @@
 0.4.5 (in development)
 ------------------------------------------------------------------------
 - Feature: [#19276] Add Powered Lifthill to Giga Coaster.
+- Feature: [#19446] Add new color options to color dropdown.
+- Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
+- Feature: [OpenMusic#25] Added Prehistoric ride music style.
 - Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
 - Improved: [#19764] Miscellaneous scenery tab now grouped next to the all-scenery tab.
+- Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#18895] Responding mechanic blocked at level crossing.
 - Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality
 - Fix: [#19296] Crash due to a race condition for parallel object loading.
 - Fix: [#19756] Crash with title sequences containing no commands.
 - Fix: [#19767] No message when path is not connected to ride exit and is therefore unreachable for mechanics.
+- Fix: [#19801] The in-game load/save window cannot be resized anymore.
+- Fix: [#19854] Looping Coaster trains clipping through steep quarter turns down.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------

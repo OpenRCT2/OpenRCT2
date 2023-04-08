@@ -244,6 +244,9 @@ GameActions::Result CheatSetAction::Execute() const
         case CheatType::AllowRegularPathAsQueue:
             gCheatsAllowRegularPathAsQueue = _param1 != 0;
             break;
+        case CheatType::AllowSpecialColourSchemes:
+            gCheatsAllowSpecialColourSchemes = static_cast<bool>(_param1);
+            break;
         default:
         {
             LOG_ERROR("Unabled cheat: %d", _cheatType.id);
@@ -367,7 +370,7 @@ void CheatSetAction::SetGrassLength(int32_t length) const
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 
@@ -617,12 +620,12 @@ void CheatSetAction::GiveObjectToGuests(int32_t object) const
                 break;
             case OBJECT_BALLOON:
                 peep->GiveItem(ShopItem::Balloon);
-                peep->BalloonColour = ScenarioRandMax(COLOUR_COUNT - 1);
+                peep->BalloonColour = ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL));
                 peep->UpdateSpriteType();
                 break;
             case OBJECT_UMBRELLA:
                 peep->GiveItem(ShopItem::Umbrella);
-                peep->UmbrellaColour = ScenarioRandMax(COLOUR_COUNT - 1);
+                peep->UmbrellaColour = ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL));
                 peep->UpdateSpriteType();
                 break;
         }

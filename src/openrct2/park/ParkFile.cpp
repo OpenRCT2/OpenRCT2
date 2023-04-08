@@ -1100,7 +1100,7 @@ namespace OpenRCT2
                                     }
                                 }
                                 else if (
-                                    it.element->GetType() == TileElementType::SmallScenery && os.GetHeader().TargetVersion < 22)
+                                    it.element->GetType() == TileElementType::SmallScenery && os.GetHeader().TargetVersion < 23)
                                 {
                                     auto* sceneryElement = it.element->AsSmallScenery();
                                     // Previous formats stored the needs supports flag in the primary colour
