@@ -21,10 +21,11 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-TrackRemoveAction::TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin)
+TrackRemoveAction::TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin, bool fromTrackDesign)
     : _trackType(trackType)
     , _sequence(sequence)
     , _origin(origin)
+    , _fromTrackDesign(fromTrackDesign)
 {
     _origin.direction &= 3;
 }
@@ -34,6 +35,7 @@ void TrackRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit(_origin);
     visitor.Visit("trackType", _trackType);
     visitor.Visit("sequence", _sequence);
+    visitor.Visit("fromTrackDesign", _fromTrackDesign);
 }
 
 uint16_t TrackRemoveAction::GetActionFlags() const
@@ -420,8 +422,7 @@ GameActions::Result TrackRemoveAction::Execute() const
 
         // If the removed tile is a station modify station properties.
         // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
-            && !(ride->status == RideStatus::Simulating && tileElement->Flags & TILE_ELEMENT_FLAG_GHOST)
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) || _fromTrackDesign)
             && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             const auto removeElementResult = TrackRemoveStationElement(

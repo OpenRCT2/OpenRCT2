@@ -17,10 +17,11 @@ private:
     track_type_t _trackType{};
     int32_t _sequence{};
     CoordsXYZD _origin;
+    bool _fromTrackDesign{};
 
 public:
     TrackRemoveAction() = default;
-    TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin);
+    TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin, bool fromTrackDesign);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

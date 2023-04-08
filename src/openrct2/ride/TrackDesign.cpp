@@ -1611,7 +1611,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                 const PreviewTrack* trackBlock = ted.Block;
                 int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(
-                    trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
+                    trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) }, true);
                 trackRemoveAction.SetFlags(
                     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                 GameActions::ExecuteNested(&trackRemoveAction);
