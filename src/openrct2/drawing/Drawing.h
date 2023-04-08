@@ -195,11 +195,13 @@ enum class FilterPaletteID : int32_t
     PaletteLandMarker,
     Palette34,
 
-    PaletteWaterMarker = Palette34 + 4,
+    Palette37 = Palette34 + 3,
+    PaletteWaterMarker,
     PaletteQuarterMarker,
 
-    Palette44 = PaletteQuarterMarker + 5, // Construction marker
-    Palette45,                            // Decolourise + lighten
+    PaletteRideGroundMarker = PaletteQuarterMarker + 4,
+    Palette44, // Construction marker
+    Palette45, // Decolourise + lighten
     Palette46,
 
     PaletteDarken3,
