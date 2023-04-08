@@ -628,7 +628,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
     if (pathElement == nullptr)
     {
-        tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(location.ToCoordsXYZ()));
+        tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(location));
     }
     if (tileElement == nullptr)
     {

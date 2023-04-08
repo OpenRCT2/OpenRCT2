@@ -650,7 +650,7 @@ namespace RCT2
             if (String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6", true)
                 || String::Equals(_s6.ScenarioFilename, "infernal views.sea", true))
             {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 }.ToCoordsXY());
+                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 });
 
                 surfaceElement->SetWaterHeight(96);
             }
@@ -659,7 +659,7 @@ namespace RCT2
                 || String::Equals(_s6.ScenarioFilename, "six flags holland.sea", true))
 
             {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 126, 73 }.ToCoordsXY());
+                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 126, 73 });
 
                 surfaceElement->SetWaterHeight(96);
             }

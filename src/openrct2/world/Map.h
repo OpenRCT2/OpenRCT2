@@ -168,6 +168,7 @@ TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRange
 void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements);
 int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
 BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t direction);
+SurfaceElement* MapGetSurfaceElementAt(const TileCoordsXY& coords);
 SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
 PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc);
 WallElement* MapGetWallElementAt(const CoordsXYZD& wallCoords);

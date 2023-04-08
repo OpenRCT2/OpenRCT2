@@ -192,10 +192,16 @@ enum class FilterPaletteID : int32_t
 
     PaletteWater = COLOUR_COUNT,
 
-    Palette34 = PaletteWater + 2,
+    PaletteLandMarker,
+    Palette34,
 
-    Palette44 = Palette34 + 10, // Construction marker
-    Palette45,                  // Decolourise + lighten
+    Palette37 = Palette34 + 3,
+    PaletteWaterMarker,
+    PaletteQuarterMarker,
+
+    PaletteRideGroundMarker = PaletteQuarterMarker + 4,
+    Palette44, // Construction marker
+    Palette45, // Decolourise + lighten
     Palette46,
 
     PaletteDarken3,
