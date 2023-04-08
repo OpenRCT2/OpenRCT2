@@ -22,6 +22,7 @@
 
 struct EntityBase;
 struct TileElement;
+struct SurfaceElement;
 enum class RailingEntrySupportType : uint8_t;
 enum class ViewportInteractionItem : uint8_t;
 
@@ -187,7 +188,7 @@ struct PaintSessionCore
     PaintStringStruct* PSStringHead;
     PaintStringStruct* LastPSString;
     AttachedPaintStruct* LastAttachedPS;
-    const TileElement* SurfaceElement;
+    const SurfaceElement* Surface;
     EntityBase* CurrentlyDrawnEntity;
     TileElement* CurrentlyDrawnTileElement;
     const TileElement* PathElementOnSameHeight;
