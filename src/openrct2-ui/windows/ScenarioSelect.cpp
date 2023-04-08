@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
 #include "../interface/Theme.h"
 
 #include <openrct2-ui/interface/Widget.h>
@@ -223,6 +224,7 @@ public:
         InitialiseListItems(this);
         WindowInitScrollWidgets(*this);
     }
+
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
         if (widgetIndex == WIDX_CLOSE)
@@ -418,6 +420,7 @@ public:
 
         return { WW, y };
     }
+
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
         const int32_t scenarioItemHeight = GetScenarioListItemSize();
@@ -812,4 +815,3 @@ WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
 
     return window;
 }
-// clang-format off
