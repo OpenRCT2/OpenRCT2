@@ -167,7 +167,7 @@ class ResearchWindow final : public Window
         InvalidateWidget(WIDX_TAB_1 + page);
     }
 
-    void OnMouseDown(WidgetIndex widgetIndex)
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         if (page == WINDOW_RESEARCH_PAGE_FUNDING)
         {
@@ -175,7 +175,7 @@ class ResearchWindow final : public Window
         }
     }
 
-    void OnMouseUp(WidgetIndex widgetIndex)
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         // Switch tab or close
         switch (widgetIndex)
