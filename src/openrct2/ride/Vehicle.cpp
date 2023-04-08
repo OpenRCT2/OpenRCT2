@@ -6660,8 +6660,7 @@ static void AnimateSteamLocomotive(Vehicle& vehicle, const CarEntry& carEntry)
                     || (vehicle.status != Vehicle::Status::MovingToEndOfStation && vehicle.status != Vehicle::Status::Arriving))
                 {
                     CoordsXYZ steamOffset = ComputeSteamOffset(
-                        carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.Pitch,
-                        vehicle.Orientation);
+                        carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.Pitch, vehicle.Orientation);
                     SteamParticle::Create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
                 }
             }
