@@ -225,32 +225,15 @@ class FinancesWindow final : public Window
 {
 private:
     uint32_t _lastPaintedMonth;
-    bool _marketingTabDisabled = false;
-    void _hideMarketingTabIfDisabled()
+
+    void SetDisabledTabs()
     {
-        _marketingTabDisabled = (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
-        if (_marketingTabDisabled)
-        {
-            for (auto w : _windowFinancesPageWidgets)
-            {
-                w[WIDX_TAB_5].type = WindowWidgetType::Empty;
-                w[WIDX_TAB_6] = MakeTab({ 127, 17 }, STR_FINANCES_RESEARCH_TIP);
-            }
-        }
-        else
-        {
-            for (auto w : _windowFinancesPageWidgets)
-            {
-                w[WIDX_TAB_5] = MakeTab({ 127, 17 }, STR_FINANCES_SHOW_MARKETING_TAB_TIP);
-                w[WIDX_TAB_6] = MakeTab({ 158, 17 }, STR_FINANCES_RESEARCH_TIP);
-            }
-        }
+        disabled_widgets = (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
     }
 
 public:
     void OnOpen() override
     {
-        _hideMarketingTabIfDisabled();
         SetPage(WINDOW_FINANCES_PAGE_SUMMARY);
         _lastPaintedMonth = std::numeric_limits<uint32_t>::max();
         ResearchUpdateUncompletedTypes();
@@ -321,7 +304,7 @@ public:
             WindowInitScrollWidgets(*this);
         }
 
-        disabled_widgets = 0;
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_6);
 
         for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
             SetWidgetPressed(WIDX_TAB_1 + i, false);
@@ -460,17 +443,15 @@ public:
 
     void SetPage(int32_t p)
     {
-        if ((p == WIDX_TAB_5) && _marketingTabDisabled)
-            return;
-
         page = p;
         frame_no = 0;
 
         hold_down_widgets = _windowFinancesPageHoldDownWidgets[p];
         pressed_widgets = 0;
         widgets = _windowFinancesPageWidgets[p];
-
+        SetDisabledTabs();
         Invalidate();
+
         if (p == WINDOW_FINANCES_PAGE_RESEARCH)
         {
             width = WW_RESEARCH;
@@ -1049,8 +1030,7 @@ public:
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH, SPR_TAB_FINANCES_FINANCIAL_GRAPH_0);
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_VALUE_GRAPH, SPR_TAB_FINANCES_VALUE_GRAPH_0);
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_PROFIT_GRAPH, SPR_TAB_FINANCES_PROFIT_GRAPH_0);
-        if (!_marketingTabDisabled)
-            DrawTabImage(dpi, WINDOW_FINANCES_PAGE_MARKETING, SPR_TAB_FINANCES_MARKETING_0);
+        DrawTabImage(dpi, WINDOW_FINANCES_PAGE_MARKETING, SPR_TAB_FINANCES_MARKETING_0);
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_RESEARCH, SPR_TAB_FINANCES_RESEARCH_0);
     }
 };
