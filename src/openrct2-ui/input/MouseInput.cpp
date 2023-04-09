@@ -1346,8 +1346,7 @@ void InputStateWidgetPressed(
                         {
                             dropdown_index = GetColourFromDropdown(dropdown_index);
                         }
-                        WindowEventDropdownCall(
-                            cursor_w, cursor_widgetIndex, dropdown_index);
+                        WindowEventDropdownCall(cursor_w, cursor_widgetIndex, dropdown_index);
                     }
                 }
             }
