@@ -94,8 +94,10 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             }
         }
 
-        if (session.DPI.y + session.DPI.height <= spr->SpriteData.SpriteRect.GetTop() || spr->SpriteData.SpriteRect.GetBottom() <= session.DPI.y
-            || session.DPI.x + session.DPI.width <= spr->SpriteData.SpriteRect.GetLeft() || spr->SpriteData.SpriteRect.GetRight() <= session.DPI.x)
+        if (session.DPI.y + session.DPI.height <= spr->SpriteData.SpriteRect.GetTop()
+            || spr->SpriteData.SpriteRect.GetBottom() <= session.DPI.y
+            || session.DPI.x + session.DPI.width <= spr->SpriteData.SpriteRect.GetLeft()
+            || spr->SpriteData.SpriteRect.GetRight() <= session.DPI.x)
         {
             continue;
         }
