@@ -686,7 +686,7 @@ bool Vehicle::SoundCanPlay() const
         bottom -= quarter_h;
     }
 
-    if (left >= SpriteRect.GetRight() || bottom >= SpriteRect.GetBottom())
+    if (left >= SpriteData.SpriteRect.GetRight() || bottom >= SpriteData.SpriteRect.GetBottom())
         return false;
 
     auto right = g_music_tracking_viewport->view_width + left;
@@ -698,7 +698,7 @@ bool Vehicle::SoundCanPlay() const
         top += quarter_h + quarter_h;
     }
 
-    if (right < SpriteRect.GetRight() || top < SpriteRect.GetTop())
+    if (right < SpriteData.SpriteRect.GetRight() || top < SpriteData.SpriteRect.GetTop())
         return false;
 
     return true;
@@ -728,7 +728,8 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
 {
     OpenRCT2::Audio::VehicleSoundParams param;
     param.priority = priority;
-    int32_t panX = (SpriteRect.GetLeft() / 2) + (SpriteRect.GetRight() / 2) - g_music_tracking_viewport->viewPos.x;
+    int32_t panX = (SpriteData.SpriteRect.GetLeft() / 2) + (SpriteData.SpriteRect.GetRight() / 2)
+        - g_music_tracking_viewport->viewPos.x;
     panX = g_music_tracking_viewport->zoom.ApplyInversedTo(panX);
     panX += g_music_tracking_viewport->pos.x;
 
@@ -739,7 +740,8 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     }
     param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
-    int32_t panY = (SpriteRect.GetTop() / 2) + (SpriteRect.GetBottom() / 2) - g_music_tracking_viewport->viewPos.y;
+    int32_t panY = (SpriteData.SpriteRect.GetTop() / 2) + (SpriteData.SpriteRect.GetBottom() / 2)
+        - g_music_tracking_viewport->viewPos.y;
     panY = g_music_tracking_viewport->zoom.ApplyInversedTo(panY);
     panY += g_music_tracking_viewport->pos.y;
 
@@ -2993,12 +2995,12 @@ bool Vehicle::CurrentTowerElementIsTop()
  */
 void Vehicle::UpdateTravellingBoatHireSetup()
 {
-    var_34 = sprite_direction;
+    var_34 = Orientation;
     TrackLocation.x = x;
     TrackLocation.y = y;
     TrackLocation = TrackLocation.ToTileStart();
 
-    CoordsXY location = CoordsXY(TrackLocation) + CoordsDirectionDelta[sprite_direction >> 3];
+    CoordsXY location = CoordsXY(TrackLocation) + CoordsDirectionDelta[Orientation >> 3];
 
     BoatLocation = location;
     var_35 = 0;
@@ -3439,9 +3441,9 @@ void Vehicle::UpdateCollisionSetup()
         train->animationState = ScenarioRand() & 0xFFFF;
 
         train->animation_frame = ScenarioRand() & 0x7;
-        train->sprite_width = 13;
-        train->sprite_height_negative = 45;
-        train->sprite_height_positive = 5;
+        train->SpriteData.Width = 13;
+        train->SpriteData.HeightMin = 45;
+        train->SpriteData.HeightMax = 5;
 
         train->MoveTo(trainLoc);
 
@@ -3503,8 +3505,8 @@ void Vehicle::UpdateCrashSetup()
         lastVehicle = trainVehicle;
 
         trainVehicle->sub_state = 0;
-        int32_t trainX = stru_9A3AC4[trainVehicle->sprite_direction / 2].x;
-        int32_t trainY = stru_9A3AC4[trainVehicle->sprite_direction / 2].y;
+        int32_t trainX = stru_9A3AC4[trainVehicle->Orientation / 2].x;
+        int32_t trainY = stru_9A3AC4[trainVehicle->Orientation / 2].y;
         auto trainZ = Unk9A38D4[trainVehicle->Pitch] >> 23;
 
         int32_t ecx = Unk9A37E4[trainVehicle->Pitch] >> 15;
@@ -4301,7 +4303,7 @@ void Vehicle::UpdateMotionBoatHire()
 
             if (!(var_35 & (1 << 0)))
             {
-                uint8_t spriteDirection = sprite_direction;
+                uint8_t spriteDirection = Orientation;
                 if (spriteDirection != var_34)
                 {
                     uint8_t dl = (var_34 + 16 - spriteDirection) & 0x1E;
@@ -4322,20 +4324,20 @@ void Vehicle::UpdateMotionBoatHire()
                         }
                     }
 
-                    sprite_direction = spriteDirection & 0x1E;
+                    Orientation = spriteDirection & 0x1E;
                 }
             }
 
-            int32_t edi = (sprite_direction | (var_35 & 1)) & 0x1F;
+            int32_t edi = (Orientation | (var_35 & 1)) & 0x1F;
             loc2 = { x + Unk9A36C4[edi].x, y + Unk9A36C4[edi].y };
             if (UpdateMotionCollisionDetection({ loc2, z }, nullptr))
             {
                 remaining_distance = 0;
-                if (sprite_direction == var_34)
+                if (Orientation == var_34)
                 {
-                    sprite_direction ^= (1 << 4);
+                    Orientation ^= (1 << 4);
                     UpdateBoatLocation();
-                    sprite_direction ^= (1 << 4);
+                    Orientation ^= (1 << 4);
                 }
                 break;
             }
@@ -4368,7 +4370,7 @@ void Vehicle::UpdateMotionBoatHire()
                     if (do_Loc6DAA97)
                     {
                         remaining_distance = 0;
-                        if (sprite_direction == var_34)
+                        if (Orientation == var_34)
                         {
                             UpdateBoatLocation();
                         }
@@ -4494,7 +4496,7 @@ void Vehicle::UpdateBoatLocation()
     }
 
     sub_state = 0;
-    uint8_t curDirection = ((sprite_direction + 19) >> 3) & 3;
+    uint8_t curDirection = ((Orientation + 19) >> 3) & 3;
     uint8_t randDirection = ScenarioRand() & 3;
 
     if (lost_time_out > 1920)
@@ -5212,7 +5214,7 @@ void Vehicle::CrashOnLand()
     ExplosionCloud::Create(curLoc);
     ExplosionFlare::Create(curLoc);
 
-    uint8_t numParticles = std::min(sprite_width, static_cast<uint8_t>(7));
+    uint8_t numParticles = std::min(SpriteData.Width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
         VehicleCrashParticle::Create(colours, curLoc);
@@ -5220,9 +5222,9 @@ void Vehicle::CrashOnLand()
     SetFlag(VehicleFlags::Crashed);
     animation_frame = 0;
     animationState = 0;
-    sprite_width = 13;
-    sprite_height_negative = 45;
-    sprite_height_positive = 5;
+    SpriteData.Width = 13;
+    SpriteData.HeightMin = 45;
+    SpriteData.HeightMax = 5;
 
     MoveTo(curLoc);
 
@@ -5289,9 +5291,9 @@ void Vehicle::CrashOnWater()
     SetFlag(VehicleFlags::Crashed);
     animation_frame = 0;
     animationState = 0;
-    sprite_width = 13;
-    sprite_height_negative = 45;
-    sprite_height_positive = 5;
+    SpriteData.Width = 13;
+    SpriteData.HeightMin = 45;
+    SpriteData.HeightMax = 5;
 
     MoveTo(curLoc);
 
@@ -5492,7 +5494,7 @@ void Vehicle::UpdateSound()
     sound2_volume = soundIdVolume.volume;
 
     // Calculate Sound Vector (used for sound frequency calcs)
-    int32_t soundDirection = SpriteDirectionToSoundDirection[sprite_direction];
+    int32_t soundDirection = SpriteDirectionToSoundDirection[Orientation];
     int32_t soundVector = ((velocity >> 14) * soundDirection) >> 14;
     soundVector = std::clamp(soundVector, -127, 127);
 
@@ -5717,23 +5719,23 @@ int32_t Vehicle::UpdateMotionDodgems()
             if (var_34 > 0)
             {
                 var_34--;
-                sprite_direction += 2;
+                Orientation += 2;
             }
             else
             {
                 var_34++;
-                sprite_direction -= 2;
+                Orientation -= 2;
             }
-            sprite_direction &= 0x1E;
+            Orientation &= 0x1E;
             Invalidate();
         }
         else if ((ScenarioRand() & 0xFFFF) <= 2849)
         {
             if (var_35 & (1 << 6))
-                sprite_direction -= 2;
+                Orientation -= 2;
             else
-                sprite_direction += 2;
-            sprite_direction &= 0x1E;
+                Orientation += 2;
+            Orientation &= 0x1E;
             Invalidate();
         }
     }
@@ -5769,7 +5771,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         while (true)
         {
             var_35++;
-            uint8_t direction = sprite_direction;
+            uint8_t direction = Orientation;
             direction |= var_35 & 1;
 
             CoordsXY location = _vehicleCurPosition;
@@ -5796,7 +5798,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             int32_t oldVelocity = velocity;
             remaining_distance = 0;
             velocity = 0;
-            uint8_t direction = sprite_direction | 1;
+            uint8_t direction = Orientation | 1;
 
             Vehicle* collideVehicle = GetEntity<Vehicle>(collideSprite.value());
             if (collideVehicle != nullptr)
@@ -6658,8 +6660,7 @@ static void AnimateSteamLocomotive(Vehicle& vehicle, const CarEntry& carEntry)
                     || (vehicle.status != Vehicle::Status::MovingToEndOfStation && vehicle.status != Vehicle::Status::Arriving))
                 {
                     CoordsXYZ steamOffset = ComputeSteamOffset(
-                        carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.Pitch,
-                        vehicle.sprite_direction);
+                        carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.Pitch, vehicle.Orientation);
                     SteamParticle::Create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
                 }
             }
@@ -7114,7 +7115,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         if (x_diff + y_diff + z_diff >= ecx)
             return false;
 
-        uint8_t direction = (sprite_direction - collideVehicle->sprite_direction + 7) & 0x1F;
+        uint8_t direction = (Orientation - collideVehicle->Orientation + 7) & 0x1F;
         return direction < 0xF;
     }
 
@@ -7175,12 +7176,12 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
                 break;
             }
 
-            uint8_t direction = (sprite_direction - vehicle2->sprite_direction - 6) & 0x1F;
+            uint8_t direction = (Orientation - vehicle2->Orientation - 6) & 0x1F;
 
             if (direction < 0x14)
                 continue;
 
-            uint32_t offsetSpriteDirection = (sprite_direction + 4) & 31;
+            uint32_t offsetSpriteDirection = (Orientation + 4) & 31;
             uint32_t offsetDirection = offsetSpriteDirection >> 3;
             uint32_t next_x_diff = abs(loc.x + AvoidCollisionMoveOffset[offsetDirection].x - vehicle2->x);
             uint32_t next_y_diff = abs(loc.y + AvoidCollisionMoveOffset[offsetDirection].y - vehicle2->y);
@@ -7217,28 +7218,28 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
 
     if (status == Vehicle::Status::MovingToEndOfStation)
     {
-        if (sprite_direction == 0)
+        if (Orientation == 0)
         {
             if (x <= collideVehicle->x)
             {
                 return false;
             }
         }
-        else if (sprite_direction == 8)
+        else if (Orientation == 8)
         {
             if (y >= collideVehicle->y)
             {
                 return false;
             }
         }
-        else if (sprite_direction == 16)
+        else if (Orientation == 16)
         {
             if (x >= collideVehicle->x)
             {
                 return false;
             }
         }
-        else if (sprite_direction == 24)
+        else if (Orientation == 24)
         {
             if (y <= collideVehicle->y)
             {
@@ -7719,7 +7720,7 @@ Loc6DAEB9:
         // Loc6DB8A5
         remaining_distance -= SubpositionTranslationDistances[remainingDistanceFlags];
         _vehicleCurPosition = nextVehiclePosition;
-        sprite_direction = moveInfo->direction;
+        Orientation = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
         Pitch = moveInfo->Pitch;
 
@@ -8031,7 +8032,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             remaining_distance += SubpositionTranslationDistances[remainingDistanceFlags];
 
             _vehicleCurPosition = nextVehiclePosition;
-            sprite_direction = moveInfo->direction;
+            Orientation = moveInfo->direction;
             bank_rotation = moveInfo->bank_rotation;
             Pitch = moveInfo->Pitch;
             moveInfoVehicleSpriteType = moveInfo->Pitch;
@@ -8389,7 +8390,7 @@ Loc6DC743:
     }
 
     _vehicleCurPosition = trackPos;
-    sprite_direction = moveInfo->direction;
+    Orientation = moveInfo->direction;
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
 
@@ -8504,7 +8505,7 @@ Loc6DCC2C:
     }
 
     _vehicleCurPosition = trackPos;
-    sprite_direction = moveInfo->direction;
+    Orientation = moveInfo->direction;
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
 

@@ -90,9 +90,9 @@ void Balloon::Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
     if (balloon == nullptr)
         return;
 
-    balloon->sprite_width = 13;
-    balloon->sprite_height_negative = 22;
-    balloon->sprite_height_positive = 11;
+    balloon->SpriteData.Width = 13;
+    balloon->SpriteData.HeightMin = 22;
+    balloon->SpriteData.HeightMax = 11;
     balloon->MoveTo(balloonPos);
     balloon->time_to_move = 0;
     balloon->frame = 0;

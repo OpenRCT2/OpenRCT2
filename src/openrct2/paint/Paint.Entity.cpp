@@ -97,15 +97,15 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
 
         dpi = &session.DPI;
 
-        if (dpi->y + dpi->height <= spr->SpriteRect.GetTop() || spr->SpriteRect.GetBottom() <= dpi->y
-            || dpi->x + dpi->width <= spr->SpriteRect.GetLeft() || spr->SpriteRect.GetRight() <= dpi->x)
+        if (dpi->y + dpi->height <= spr->SpriteData.SpriteRect.GetTop() || spr->SpriteData.SpriteRect.GetBottom() <= dpi->y
+            || dpi->x + dpi->width <= spr->SpriteData.SpriteRect.GetLeft() || spr->SpriteData.SpriteRect.GetRight() <= dpi->x)
         {
             continue;
         }
 
         int32_t image_direction = session.CurrentRotation;
         image_direction <<= 3;
-        image_direction += spr->sprite_direction;
+        image_direction += spr->Orientation;
         image_direction &= 0x1F;
 
         session.CurrentlyDrawnEntity = spr;
