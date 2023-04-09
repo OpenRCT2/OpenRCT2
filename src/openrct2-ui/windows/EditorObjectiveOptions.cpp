@@ -262,7 +262,7 @@ public:
     {
         if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
         {
-            OnScrollDrawRides(&dpi, scrollIndex);
+            OnScrollDrawRides(dpi, scrollIndex);
         }
     }
 
