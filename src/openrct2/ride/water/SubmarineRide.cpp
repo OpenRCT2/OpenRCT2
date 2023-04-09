@@ -50,8 +50,8 @@ void VehicleVisualSubmarine(
     auto imageId1 = ImageId(baseImageId + 1, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
     if (vehicle->IsGhost())
     {
-        imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::Palette44);
-        imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::Palette44);
+        imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::PaletteGhost);
+        imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     const auto& bb = VehicleBoundboxes[carEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];
