@@ -1049,18 +1049,18 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 
     if (tileElement.AdditionIsGhost())
     {
-        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     if (tileElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else if (TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&tileElement)))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
-        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     // For debugging purpose, show blocked tiles with a colour
@@ -1072,7 +1072,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
     if (gPaintWidePathsAsGhost && tileElement.IsWide())
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     PaintPatrolAreas(session, tileElement);
