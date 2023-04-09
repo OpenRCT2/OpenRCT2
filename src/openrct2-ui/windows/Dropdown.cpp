@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -450,26 +451,44 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
 {
     int32_t defaultIndex = -1;
 
-    auto numColours = (gCheatsAllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_COUNT) : COLOUR_NUM_NORMAL;
-    // Set items
+    int32_t columns = (gConfigGeneral.ShowOnlyBaseGameColours) ? 8 : 9;
+    int32_t numColours = (gConfigGeneral.ShowOnlyBaseGameColours) ? COLOUR_NUM_ORIGINAL : COLOUR_NUM_NORMAL;
+
     for (uint64_t i = 0; i < numColours; i++)
     {
-        auto orderedColour = ColourToPaletteIndex(i);
-        if (selectedColour == orderedColour)
+        // Use reordered list if not using only base game colours
+        auto colourToAdd = (gConfigGeneral.ShowOnlyBaseGameColours) ? i : ColourToPaletteIndex(i);
+        if (selectedColour == colourToAdd)
             defaultIndex = i;
 
-        // Use special graphic for Invisible colour
-        auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
-                                                           : ImageId(SPR_PALETTE_BTN, orderedColour);
+        auto imageId = ImageId(SPR_PALETTE_BTN, colourToAdd);
 
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
         gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();
     }
 
+    if (gCheatsAllowSpecialColourSchemes)
+    {
+        for (uint64_t i = COLOUR_NUM_NORMAL; i < COLOUR_COUNT; i++)
+        {
+            auto orderedColour = ColourToPaletteIndex(i);
+            if (selectedColour == orderedColour)
+                defaultIndex = i;
+
+            // Use special graphic for Invisible colour
+            auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
+                                                               : ImageId(SPR_PALETTE_BTN, orderedColour);
+
+            gDropdownItems[numColours].Format = Dropdown::FormatColourPicker;
+            gDropdownItems[numColours].Args = (i << 32) | imageId.ToUInt32();
+            ++numColours;
+        }
+    }
+
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, numColours, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_NUM_ORIGINAL]);
+        Dropdown::Flag::StayOpen, numColours, 12, 12, columns);
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;

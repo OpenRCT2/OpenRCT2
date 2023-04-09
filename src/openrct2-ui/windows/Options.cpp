@@ -190,6 +190,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_REAL_NAME_CHECKBOX,
     WIDX_AUTO_STAFF_PLACEMENT,
     WIDX_AUTO_OPEN_SHOPS,
+    WIDX_SHOW_ONLY_BASE_GAME_COLOURS,
     WIDX_DEFAULT_INSPECTION_INTERVAL_LABEL,
     WIDX_DEFAULT_INSPECTION_INTERVAL,
     WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
@@ -365,13 +366,14 @@ static Widget window_options_misc_widgets[] = {
     MakeWidget({ 5,  SCENARIO_OPTIONS_START + 0}, {300, 35}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_SCENARIO_OPTIONS                                ),
     MakeWidget({10, SCENARIO_OPTIONS_START + 15}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
 
-    MakeWidget({  5,  TWEAKS_START + 0}, {300, 81}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TWEAKS                                                  ),
+    MakeWidget({  5,  TWEAKS_START + 0}, {300, 96}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TWEAKS                                                  ),
     MakeWidget({ 10, TWEAKS_START + 15}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_REAL_NAME,            STR_REAL_NAME_TIP                         ), // Show 'real' names of guests
     MakeWidget({ 10, TWEAKS_START + 30}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
     MakeWidget({ 10, TWEAKS_START + 45}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
-    MakeWidget({ 10, TWEAKS_START + 62}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
-    MakeWidget({175, TWEAKS_START + 61}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
-    MakeWidget({288, TWEAKS_START + 62}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
+    MakeWidget({ 10, TWEAKS_START + 60}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_SHOW_ONLY_BASE_GAME_COLOURS, STR_SHOW_ONLY_BASE_GAME_COLOURS_TIP), // Only use base RCT2 colors in dropdown
+    MakeWidget({ 10, TWEAKS_START + 77}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
+    MakeWidget({175, TWEAKS_START + 76}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
+    MakeWidget({288, TWEAKS_START + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
     WIDGETS_END,
 };
 
@@ -1689,6 +1691,11 @@ private:
                 ConfigSaveDefault();
                 Invalidate();
                 break;
+            case WIDX_SHOW_ONLY_BASE_GAME_COLOURS:
+                gConfigGeneral.ShowOnlyBaseGameColours ^= 1;
+                ConfigSaveDefault();
+                Invalidate();
+                break;
             case WIDX_ALLOW_EARLY_COMPLETION:
                 gConfigGeneral.AllowEarlyCompletion ^= 1;
                 // Only the server can control this setting and needs to send the
@@ -1840,6 +1847,7 @@ private:
         SetCheckboxValue(WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.ShowRealNamesOfGuests);
         SetCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.AutoStaffPlacement);
         SetCheckboxValue(WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.AutoOpenShops);
+        SetCheckboxValue(WIDX_SHOW_ONLY_BASE_GAME_COLOURS, gConfigGeneral.ShowOnlyBaseGameColours);
         SetCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.AllowEarlyCompletion);
 
         if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_DIFFICULTY)

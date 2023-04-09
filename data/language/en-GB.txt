@@ -3679,6 +3679,8 @@ STR_6573    :Invisible
 STR_6574    :Void
 STR_6575    :Allow special colour schemes
 STR_6576    :Adds special colours to colour dropdown
+STR_6577    :Only show base game colours
+STR_6578    :Only show base RCT2 colours in colour dropdown
 
 #############
 # Scenarios #

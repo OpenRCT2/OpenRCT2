@@ -3976,6 +3976,8 @@ enum : uint16_t
     STR_COLOUR_VOID_TIP = 6574,
     STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES = 6575,
     STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP = 6576,
+    STR_SHOW_ONLY_BASE_GAME_COLOURS = 6577,
+    STR_SHOW_ONLY_BASE_GAME_COLOURS_TIP = 6577,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

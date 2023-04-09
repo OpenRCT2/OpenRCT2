@@ -96,6 +96,7 @@ struct GeneralConfiguration
     bool AutoStaffPlacement;
     bool HandymenMowByDefault;
     bool AutoOpenShops;
+    bool ShowOnlyBaseGameColours;
     int32_t DefaultInspectionInterval;
     int32_t WindowLimit;
     int32_t ScenarioSelectMode;

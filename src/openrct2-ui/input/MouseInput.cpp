@@ -94,6 +94,7 @@ static void InputScrollPartUpdateVThumb(WindowBase& w, WidgetIndex widgetIndex, 
 static void InputScrollPartUpdateVTop(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id);
 static void InputScrollPartUpdateVBottom(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id);
 static void InputUpdateTooltip(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+uint8_t GetColourFromDropdown(uint8_t dropdownIndex);
 
 #pragma region Mouse input
 
@@ -1341,9 +1342,12 @@ void InputStateWidgetPressed(
                                 dropdown_index = gDropdownDefaultIndex;
                             }
                         }
+                        if (gDropdownIsColour)
+                        {
+                            dropdown_index = GetColourFromDropdown(dropdown_index);
+                        }
                         WindowEventDropdownCall(
-                            cursor_w, cursor_widgetIndex,
-                            (gDropdownIsColour) ? ColourToPaletteIndex(dropdown_index) : dropdown_index);
+                            cursor_w, cursor_widgetIndex, dropdown_index);
                     }
                 }
             }
@@ -1472,7 +1476,7 @@ void InputStateWidgetPressed(
                 STR_COLOUR_INVISIBLE_TIP,
                 STR_COLOUR_VOID_TIP,
             };
-            WindowTooltipShow(OpenRCT2String{ _colourTooltips[ColourToPaletteIndex(dropdown_index)], {} }, screenCoords);
+            WindowTooltipShow(OpenRCT2String{ _colourTooltips[GetColourFromDropdown(dropdown_index)], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
@@ -1492,6 +1496,26 @@ void InputStateWidgetPressed(
     {
         gDropdownLastColourHover = -1;
         WindowTooltipClose();
+    }
+}
+
+uint8_t GetColourFromDropdown(uint8_t dropdownIndex)
+{
+    if (gConfigGeneral.ShowOnlyBaseGameColours)
+    {
+        if (dropdownIndex < COLOUR_NUM_ORIGINAL)
+        {
+            // Non cheat colour
+            return dropdownIndex;
+        }
+        else
+        {
+            return ColourToPaletteIndex(dropdownIndex + (COLOUR_NUM_NORMAL - COLOUR_NUM_ORIGINAL));
+        }
+    }
+    else
+    {
+        return ColourToPaletteIndex(dropdownIndex);
     }
 }
 

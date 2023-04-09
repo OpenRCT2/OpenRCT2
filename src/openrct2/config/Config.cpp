@@ -198,6 +198,7 @@ namespace Config
             model->MultiThreading = reader->GetBoolean("multi_threading", false);
             model->TrapCursor = reader->GetBoolean("trap_cursor", false);
             model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
+            model->ShowOnlyBaseGameColours = reader->GetBoolean("show_only_base_game_colours", false);
             model->ScenarioSelectMode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
             model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
@@ -283,6 +284,7 @@ namespace Config
         writer->WriteBoolean("multi_threading", model->MultiThreading);
         writer->WriteBoolean("trap_cursor", model->TrapCursor);
         writer->WriteBoolean("auto_open_shops", model->AutoOpenShops);
+        writer->WriteBoolean("show_only_base_game_colours", model->ShowOnlyBaseGameColours);
         writer->WriteInt32("scenario_select_mode", model->ScenarioSelectMode);
         writer->WriteBoolean("scenario_unlocking_enabled", model->ScenarioUnlockingEnabled);
         writer->WriteBoolean("scenario_hide_mega_park", model->ScenarioHideMegaPark);
