@@ -688,7 +688,7 @@ public:
                     formatSecondary = 0;
                     if (ridePtr->IsRide())
                     {
-                        ft.Add<uint16_t>(ridePtr->guests_favourite);
+                        ft.Add<uint32_t>(ridePtr->guests_favourite);
                         formatSecondary = ridePtr->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
                                                                          : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
                     }

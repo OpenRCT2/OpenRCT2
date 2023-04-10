@@ -10,6 +10,7 @@
 - Fix: [#18895] Responding mechanic blocked at level crossing.
 - Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality
 - Fix: [#19296] Crash due to a race condition for parallel object loading.
+- Fix: [#19733] Favorite ride of X guests integer overflow
 - Fix: [#19756] Crash with title sequences containing no commands.
 - Fix: [#19767] No message when path is not connected to ride exit and is therefore unreachable for mechanics.
 - Fix: [#19801] The in-game load/save window cannot be resized anymore.

@@ -265,7 +265,7 @@ struct Ride
     uint16_t vehicle_change_timeout;
     uint8_t num_block_brakes;
     uint8_t lift_hill_speed;
-    uint16_t guests_favourite;
+    uint32_t guests_favourite;
     uint32_t lifecycle_flags;
     uint16_t total_air_time;
     StationIndex current_test_station;

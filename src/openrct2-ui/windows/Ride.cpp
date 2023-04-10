@@ -7077,7 +7077,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
     if (ride->IsRide())
     {
         ft = Formatter();
-        ft.Add<uint16_t>(ride->guests_favourite);
+        ft.Add<uint32_t>(ride->guests_favourite);
         stringId = ride->guests_favourite == 1 ? STR_FAVOURITE_RIDE_OF_GUEST : STR_FAVOURITE_RIDE_OF_GUESTS;
         DrawTextBasic(*dpi, screenCoords, stringId, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
