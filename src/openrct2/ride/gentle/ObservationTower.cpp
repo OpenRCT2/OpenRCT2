@@ -69,8 +69,8 @@ void VehicleVisualObservationTower(
     auto imageId1 = ImageId(baseImageId + 1, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
     if (vehicle->IsGhost())
     {
-        imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::Palette44);
-        imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::Palette44);
+        imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::PaletteGhost);
+        imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     PaintAddImageAsParent(session, imageId0, { 0, 0, z }, { { -11, -11, z + 1 }, { 2, 2, 41 } });

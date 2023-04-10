@@ -3652,6 +3652,32 @@ STR_6547    :Ĉiuj Pejzaĝoj
 STR_6548    :Montri balustradojn ĉe kuniĝo
 STR_6549    :Kongruaj objektoj ne povas esti elektitaj!
 STR_6550    :Ĉi tiu elemento estas inkluzivita por retrokongruo kun malnovaj aŭ difektitaj objektoj. Ĝi ne povas esti elektita, nur malelektita.
+STR_6551    :Armea verdo
+STR_6552    :Mielroso-koloro
+STR_6553    :Flavecbruno
+STR_6554    :Grenata koloro
+STR_6555    :Korala rozkoloro
+STR_6556    :Arbara verdo
+STR_6557    :Kartuzio
+STR_6558    :Ĉasista verdo
+STR_6559    :Celadono
+STR_6560    :Limea verdo
+STR_6561    :Sepio
+STR_6562    :Persiko-koloro
+STR_6563    :Vinko
+STR_6564    :Viridiano
+STR_6565    :Marŝaŭma verdo
+STR_6566    :Violo
+STR_6567    :Lavendo
+STR_6568    :Paŝtela oranĝkoloro
+STR_6569    :Profunda akvo
+STR_6570    :Paŝtela rozkoloro
+STR_6571    :Umbro
+STR_6572    :Flavgrizo
+STR_6573    :Nevidebla
+STR_6574    :Vaka
+STR_6575    :Permesi specialajn kolorskemojn
+STR_6576    :Aldonas specialajn kolorojn al koloro-fallisto
 
 #############
 # Scenarios #

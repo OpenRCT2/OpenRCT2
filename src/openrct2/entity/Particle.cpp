@@ -58,9 +58,9 @@ void VehicleCrashParticle::Create(VehicleColour& colours, const CoordsXYZ& vehic
     {
         sprite->colour[0] = colours.Body;
         sprite->colour[1] = colours.Trim;
-        sprite->sprite_width = 8;
-        sprite->sprite_height_negative = 8;
-        sprite->sprite_height_positive = 8;
+        sprite->SpriteData.Width = 8;
+        sprite->SpriteData.HeightMin = 8;
+        sprite->SpriteData.HeightMax = 8;
         sprite->MoveTo(vehiclePos);
 
         sprite->frame = (ScenarioRand() & 0xFF) * 12;
@@ -175,9 +175,9 @@ void CrashSplashParticle::Create(const CoordsXYZ& splashPos)
     auto* sprite = CreateEntity<CrashSplashParticle>();
     if (sprite != nullptr)
     {
-        sprite->sprite_width = 33;
-        sprite->sprite_height_negative = 51;
-        sprite->sprite_height_positive = 16;
+        sprite->SpriteData.Width = 33;
+        sprite->SpriteData.HeightMin = 51;
+        sprite->SpriteData.HeightMax = 16;
         sprite->MoveTo(splashPos + CoordsXYZ{ 0, 0, 3 });
         sprite->frame = 0;
     }
@@ -225,9 +225,9 @@ void SteamParticle::Create(const CoordsXYZ& coords)
         if (steam == nullptr)
             return;
 
-        steam->sprite_width = 20;
-        steam->sprite_height_negative = 18;
-        steam->sprite_height_positive = 16;
+        steam->SpriteData.Width = 20;
+        steam->SpriteData.HeightMin = 18;
+        steam->SpriteData.HeightMax = 16;
         steam->frame = 256;
         steam->time_to_move = 0;
         steam->MoveTo(coords);
@@ -280,9 +280,9 @@ void ExplosionCloud::Create(const CoordsXYZ& cloudPos)
     auto* entity = CreateEntity<ExplosionCloud>();
     if (entity != nullptr)
     {
-        entity->sprite_width = 44;
-        entity->sprite_height_negative = 32;
-        entity->sprite_height_positive = 34;
+        entity->SpriteData.Width = 44;
+        entity->SpriteData.HeightMin = 32;
+        entity->SpriteData.HeightMax = 34;
         entity->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
         entity->frame = 0;
     }
@@ -325,9 +325,9 @@ void ExplosionFlare::Create(const CoordsXYZ& flarePos)
     auto* entity = CreateEntity<ExplosionFlare>();
     if (entity != nullptr)
     {
-        entity->sprite_width = 25;
-        entity->sprite_height_negative = 85;
-        entity->sprite_height_positive = 8;
+        entity->SpriteData.Width = 25;
+        entity->SpriteData.HeightMin = 85;
+        entity->SpriteData.HeightMax = 8;
         entity->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
         entity->frame = 0;
     }

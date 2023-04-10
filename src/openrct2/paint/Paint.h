@@ -287,8 +287,8 @@ extern CoordsXY gClipSelectionA;
 extern CoordsXY gClipSelectionB;
 
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
-constexpr const ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
-constexpr const ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
+constexpr const ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::PaletteGhost);
+constexpr const ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::PaletteGhost);
 constexpr const ImageId TrackGhost = ImageId(0, FilterPaletteID::PaletteNull);
 
 extern bool gShowDirtyVisuals;
