@@ -37,7 +37,7 @@ static constexpr const int32_t TabHeight = 34;
 static constexpr const int32_t TrueFontSize = 24;
 static constexpr const int32_t WidgetsStart = 17;
 static constexpr const int32_t TabsStart = WidgetsStart;
-#define INITIAL_NUM_UNLOCKED_SCENARIOS 5
+static constexpr const int32_t InitialNumUnlockedScenarios = 5;
 constexpr const uint8_t NumTabs = 10;
 
 enum class ListItemType : uint8_t
@@ -82,7 +82,7 @@ enum
     WIDX_SCENARIOLIST
 };
 
-static constexpr const StringId ScenarioOriginStringIds[] = {
+static constexpr const StringId kScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_RCT1,        STR_SCENARIO_CATEGORY_RCT1_AA,    STR_SCENARIO_CATEGORY_RCT1_LL,
     STR_SCENARIO_CATEGORY_RCT2,        STR_SCENARIO_CATEGORY_RCT2_WW,    STR_SCENARIO_CATEGORY_RCT2_TT,
     STR_SCENARIO_CATEGORY_UCES,        STR_SCENARIO_CATEGORY_REAL_PARKS, STR_SCENARIO_CATEGORY_EXTRAS_PARKS,
@@ -90,7 +90,7 @@ static constexpr const StringId ScenarioOriginStringIds[] = {
 };
 
 // clang-format off
-static Widget window_scenarioselect_widgets[] = {
+static Widget _scenarioSelectWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ TabWidth + 1, WidgetsStart }, { WW, 284 }, WindowWidgetType::Resize, WindowColour::Secondary), // tab content panel
     MakeRemapWidget({ 3, TabsStart + (TabHeight * 0) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
@@ -122,7 +122,7 @@ public:
         // Load scenario list
         ScenarioRepositoryScan();
 
-        widgets = window_scenarioselect_widgets;
+        widgets = _scenarioSelectWidgets;
         highlighted_scenario = nullptr;
     }
 
@@ -176,23 +176,23 @@ public:
         FontStyle fontStyle = ScenarioSelectUseSmallFont() ? FontStyle::Small : FontStyle::Medium;
 
         // Text for each tab
-        for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
+        for (uint32_t i = 0; i < std::size(kScenarioOriginStringIds); i++)
         {
-            Widget* widget = &widgets[WIDX_TAB1 + i];
-            if (widget->type == WindowWidgetType::Empty)
+            const Widget& widget = widgets[WIDX_TAB1 + i];
+            if (widget.type == WindowWidgetType::Empty)
                 continue;
 
             auto ft = Formatter();
             if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
             {
-                ft.Add<StringId>(ScenarioOriginStringIds[i]);
+                ft.Add<StringId>(kScenarioOriginStringIds[i]);
             }
             else
             { // old-style
                 ft.Add<StringId>(ScenarioCategoryStringIds[i]);
             }
 
-            auto stringCoords = windowPos + ScreenCoordsXY{ widget->midX(), widget->midY() - 3 };
+            auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
             DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
         }
 
@@ -546,9 +546,9 @@ private:
         // Mega park unlock
         const uint32_t rct1RequiredCompletedScenarios = (1 << SC_MEGA_PARK) - 1;
         uint32_t rct1CompletedScenarios = 0;
-        size_t megaParkListItemIndex = SIZE_MAX;
+        std::optional<size_t> megaParkListItemIndex = std::nullopt;
 
-        int32_t numUnlocks = INITIAL_NUM_UNLOCKED_SCENARIOS;
+        int32_t numUnlocks = InitialNumUnlockedScenarios;
         uint8_t currentHeading = UINT8_MAX;
         for (size_t i = 0; i < numScenarios; i++)
         {
@@ -576,7 +576,7 @@ private:
                     if (currentHeading != static_cast<uint8_t>(scenario->SourceGame))
                     {
                         currentHeading = static_cast<uint8_t>(scenario->SourceGame);
-                        headingStringId = ScenarioOriginStringIds[currentHeading];
+                        headingStringId = kScenarioOriginStringIds[currentHeading];
                     }
                 }
                 else if (selected_tab == SCENARIO_CATEGORY_OTHER)
@@ -636,10 +636,10 @@ private:
         }
 
         // Mega park handling
-        if (megaParkListItemIndex != SIZE_MAX)
+        if (megaParkListItemIndex.has_value())
         {
             bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
-            _listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
+            _listItems[megaParkListItemIndex.value()].scenario.is_locked = megaParkLocked;
             if (megaParkLocked && gConfigGeneral.ScenarioHideMegaPark)
             {
                 // Remove mega park
