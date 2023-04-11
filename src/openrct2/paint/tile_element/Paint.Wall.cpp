@@ -302,6 +302,11 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
 {
     PROFILED_FUNCTION();
 
+    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    {
+        return;
+    }
+
     auto* wallEntry = wallElement.GetEntry();
     if (wallEntry == nullptr)
     {
@@ -327,7 +332,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.ClearanceHeight, 0x20);
 
     auto isGhost = false;
-    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (gTrackDesignSaveMode)
     {
         if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&wallElement)))
         {
@@ -339,12 +344,12 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     if (wallElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;
     }
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&wallElement)))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;
     }
 
