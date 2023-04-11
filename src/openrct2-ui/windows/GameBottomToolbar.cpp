@@ -395,6 +395,18 @@ private:
 
 
 public:
+    GameBottomToolbar()
+    {
+        widgets = window_game_bottom_toolbar_widgets;
+
+        frame_no = 0;
+        WindowInitScrollWidgets(*this);
+
+        // Reset the middle widget to not show by default.
+        // If it is required to be shown news_update will reshow it.
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
+    }
+
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
 
@@ -666,15 +678,6 @@ WindowBase* WindowGameBottomToolbarOpen()
         screenWidth,
         toolbar_height,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
-
-    window->widgets = window_game_bottom_toolbar_widgets;
-
-    window->frame_no = 0;
-    WindowInitScrollWidgets(*window);
-
-    // Reset the middle widget to not show by default.
-    // If it is required to be shown news_update will reshow it.
-    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
 
     return window;
 }
