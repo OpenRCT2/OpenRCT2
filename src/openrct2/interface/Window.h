@@ -581,10 +581,11 @@ WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number)
 
 WindowBase* WindowCreate(
     std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
-template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowCreate(WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0)
+template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
+T* WindowCreate(
+    WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0, TArgs&&... args)
 {
-    return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
+    return static_cast<T*>(WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, pos, width, height, flags));
 }
 template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
 T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags, TArgs&&... args)

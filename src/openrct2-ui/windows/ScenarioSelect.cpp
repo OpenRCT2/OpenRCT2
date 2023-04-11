@@ -117,6 +117,12 @@ private:
     std::vector<ScenarioListItem> _listItems;
 
 public:
+    ScenarioSelectWindow(std::function<void(std::string_view)> callback, bool isTitleEditor)
+        : _titleEditor(isTitleEditor)
+        , _callback(callback)
+    {
+    }
+
     void OnOpen() override
     {
         // Load scenario list
@@ -124,12 +130,6 @@ public:
 
         widgets = _scenarioSelectWidgets;
         highlighted_scenario = nullptr;
-    }
-
-    void Init(std::function<void(std::string_view)> callback, bool isTitleEditor)
-    {
-        _titleEditor = isTitleEditor;
-        _callback = callback;
         InitTabs();
         InitialiseListItems();
         InitScrollWidgets();
@@ -800,7 +800,6 @@ WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
     int32_t screenWidth = ContextGetWidth();
     int32_t screenHeight = ContextGetHeight();
     ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - WH) / 2) };
-    window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0);
-    window->Init(callback, titleEditor);
+    window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback, titleEditor);
     return window;
 }
