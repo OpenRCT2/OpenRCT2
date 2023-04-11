@@ -1343,7 +1343,7 @@ void InputStateWidgetPressed(
                         }
                         WindowEventDropdownCall(
                             cursor_w, cursor_widgetIndex,
-                            (gDropdownIsColour) ? ColourToPaletteIndex(dropdown_index) : dropdown_index);
+                            (gDropdownIsColour) ? ColourDropDownIndexToColour(dropdown_index) : dropdown_index);
                     }
                 }
             }
@@ -1472,7 +1472,7 @@ void InputStateWidgetPressed(
                 STR_COLOUR_INVISIBLE_TIP,
                 STR_COLOUR_VOID_TIP,
             };
-            WindowTooltipShow(OpenRCT2String{ _colourTooltips[ColourToPaletteIndex(dropdown_index)], {} }, screenCoords);
+            WindowTooltipShow(OpenRCT2String{ _colourTooltips[ColourDropDownIndexToColour(dropdown_index)], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))

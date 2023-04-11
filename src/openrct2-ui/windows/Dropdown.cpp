@@ -443,6 +443,79 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
     return -1;
 }
 
+// clang-format off
+// colour_t ordered for use in color dropdown
+static constexpr colour_t kColoursDropdownOrder[] = {
+    COLOUR_BLACK,
+    COLOUR_SATURATED_RED,
+    COLOUR_DARK_ORANGE,
+    COLOUR_DARK_YELLOW,
+    COLOUR_GRASS_GREEN_DARK,
+    COLOUR_SATURATED_GREEN,
+    COLOUR_AQUA_DARK,
+    COLOUR_DARK_BLUE,
+    COLOUR_SATURATED_PURPLE_DARK,
+
+    COLOUR_GREY,
+    COLOUR_BRIGHT_RED,
+    COLOUR_LIGHT_ORANGE,
+    COLOUR_YELLOW,
+    COLOUR_MOSS_GREEN,
+    COLOUR_BRIGHT_GREEN,
+    COLOUR_TEAL,
+    COLOUR_LIGHT_BLUE,
+    COLOUR_BRIGHT_PURPLE,
+
+    COLOUR_WHITE,
+    COLOUR_LIGHT_PINK,
+    COLOUR_ORANGE_LIGHT,
+    COLOUR_BRIGHT_YELLOW,
+    COLOUR_GRASS_GREEN_LIGHT,
+    COLOUR_SATURATED_GREEN_LIGHT,
+    COLOUR_AQUAMARINE,
+    COLOUR_ICY_BLUE,
+    COLOUR_SATURATED_PURPLE_LIGHT,
+
+    COLOUR_DULL_BROWN_DARK,
+    COLOUR_BORDEAUX_RED_DARK,
+    COLOUR_TAN_DARK,
+    COLOUR_SATURATED_BROWN,
+    COLOUR_DARK_OLIVE_DARK,
+    COLOUR_OLIVE_DARK,
+    COLOUR_DULL_GREEN_DARK,
+    COLOUR_DARK_PURPLE,
+    COLOUR_DARK_PINK,
+
+    COLOUR_DARK_BROWN,
+    COLOUR_BORDEAUX_RED,
+    COLOUR_SALMON_PINK,
+    COLOUR_LIGHT_BROWN,
+    COLOUR_DARK_OLIVE_GREEN,
+    COLOUR_OLIVE_GREEN,
+    COLOUR_DARK_GREEN,
+    COLOUR_LIGHT_PURPLE,
+    COLOUR_BRIGHT_PINK,
+
+    COLOUR_DULL_BROWN_LIGHT,
+    COLOUR_BORDEAUX_RED_LIGHT,
+    COLOUR_TAN_LIGHT,
+    COLOUR_SATURATED_BROWN_LIGHT,
+    COLOUR_DARK_OLIVE_LIGHT,
+    COLOUR_OLIVE_LIGHT,
+    COLOUR_DULL_GREEN_LIGHT,
+    COLOUR_DULL_PURPLE_LIGHT,
+    COLOUR_MAGENTA_LIGHT,
+
+    COLOUR_INVISIBLE,
+    COLOUR_VOID
+};
+// clang-format on
+
+colour_t ColourDropDownIndexToColour(uint8_t ddidx)
+{
+    return kColoursDropdownOrder[ddidx];
+}
+
 /**
  *  rct2: 0x006ED43D
  */
@@ -454,7 +527,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
     // Set items
     for (uint64_t i = 0; i < numColours; i++)
     {
-        auto orderedColour = ColourToPaletteIndex(i);
+        auto orderedColour = ColourDropDownIndexToColour(i);
         if (selectedColour == orderedColour)
             defaultIndex = i;
 
