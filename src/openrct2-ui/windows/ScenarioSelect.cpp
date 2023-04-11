@@ -37,7 +37,7 @@ static constexpr const int32_t TabHeight = 34;
 static constexpr const int32_t TrueFontSize = 24;
 static constexpr const int32_t WidgetsStart = 17;
 static constexpr const int32_t TabsStart = WidgetsStart;
-#define INITIAL_NUM_UNLOCKED_SCENARIOS 5
+static constexpr const int32_t InitialNumUnlockedScenarios = 5;
 constexpr const uint8_t NumTabs = 10;
 
 enum class ListItemType : uint8_t
@@ -82,7 +82,7 @@ enum
     WIDX_SCENARIOLIST
 };
 
-static constexpr const StringId ScenarioOriginStringIds[] = {
+static constexpr const StringId kScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_RCT1,        STR_SCENARIO_CATEGORY_RCT1_AA,    STR_SCENARIO_CATEGORY_RCT1_LL,
     STR_SCENARIO_CATEGORY_RCT2,        STR_SCENARIO_CATEGORY_RCT2_WW,    STR_SCENARIO_CATEGORY_RCT2_TT,
     STR_SCENARIO_CATEGORY_UCES,        STR_SCENARIO_CATEGORY_REAL_PARKS, STR_SCENARIO_CATEGORY_EXTRAS_PARKS,
@@ -90,7 +90,7 @@ static constexpr const StringId ScenarioOriginStringIds[] = {
 };
 
 // clang-format off
-static Widget window_scenarioselect_widgets[] = {
+static Widget _scenarioSelectWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ TabWidth + 1, WidgetsStart }, { WW, 284 }, WindowWidgetType::Resize, WindowColour::Secondary), // tab content panel
     MakeRemapWidget({ 3, TabsStart + (TabHeight * 0) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
@@ -108,121 +108,36 @@ static Widget window_scenarioselect_widgets[] = {
 };
 // clang-format on
 
-static void WindowScenarioselectInitTabs(WindowBase* w);
-static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId);
-static void InitialiseListItems(WindowBase* w);
-static bool IsScenarioVisible(WindowBase* w, const ScenarioIndexEntry* scenario);
-static bool IsLockingEnabled(WindowBase* w);
-
-static bool _titleEditor = false;
-static bool _disableLocking{};
-static std::function<void(std::string_view)> _callback;
-static std::vector<ScenarioListItem> _listItems;
-
-static bool ScenarioSelectUseSmallFont()
-{
-    return ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT;
-}
-
-static int32_t GetScenarioListItemSize()
-{
-    if (!LocalisationService_UseTrueTypeFont())
-        return TrueFontSize;
-
-    // Scenario title
-    int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
-
-    // 'Completed by' line
-    lineHeight += FontGetLineHeight(FontStyle::Small);
-
-    return lineHeight;
-}
-
-WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor)
-{
-    if (_titleEditor != titleEditor)
-    {
-        _titleEditor = titleEditor;
-        WindowCloseByClass(WindowClass::ScenarioSelect);
-    }
-
-    auto window = WindowBringToFrontByClass(WindowClass::ScenarioSelect);
-    if (window != nullptr)
-        return window;
-
-    return WindowScenarioselectOpen(
-        [callback](std::string_view scenario) { callback(std::string(scenario).c_str()); }, titleEditor, titleEditor);
-}
-
-static void WindowScenarioselectInitTabs(WindowBase* w)
-{
-    int32_t showPages = 0;
-    size_t numScenarios = ScenarioRepositoryGetCount();
-    for (size_t i = 0; i < numScenarios; i++)
-    {
-        const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
-        {
-            if (_titleEditor && scenario->SourceGame == ScenarioSource::Other)
-                continue;
-            showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
-        }
-        else
-        {
-            int32_t category = scenario->Category;
-            if (category > SCENARIO_CATEGORY_OTHER)
-            {
-                category = SCENARIO_CATEGORY_OTHER;
-            }
-            showPages |= 1 << category;
-        }
-    }
-
-    if (showPages & (1 << gConfigInterface.ScenarioselectLastTab))
-    {
-        w->selected_tab = gConfigInterface.ScenarioselectLastTab;
-    }
-    else
-    {
-        int32_t firstPage = UtilBitScanForward(showPages);
-        if (firstPage != -1)
-        {
-            w->selected_tab = firstPage;
-        }
-    }
-
-    int32_t y = TabsStart;
-    for (int32_t i = 0; i < NumTabs; i++)
-    {
-        auto& widget = w->widgets[i + WIDX_TAB1];
-        if (!(showPages & (1 << i)))
-        {
-            widget.type = WindowWidgetType::Empty;
-            continue;
-        }
-
-        widget.type = WindowWidgetType::Tab;
-        widget.top = y;
-        widget.bottom = y + (TabHeight - 1);
-        y += TabHeight;
-    }
-}
-
 class ScenarioSelectWindow final : public Window
 {
 private:
     bool _showLockedInformation = false;
+    bool _titleEditor = false;
+    std::function<void(std::string_view)> _callback;
+    std::vector<ScenarioListItem> _listItems;
 
 public:
+    ScenarioSelectWindow(std::function<void(std::string_view)> callback, bool isTitleEditor)
+        : _titleEditor(isTitleEditor)
+        , _callback(callback)
+    {
+    }
+
     void OnOpen() override
     {
         // Load scenario list
         ScenarioRepositoryScan();
 
-        widgets = window_scenarioselect_widgets;
-        WindowScenarioselectInitTabs(this);
-        InitialiseListItems(this);
-        WindowInitScrollWidgets(*this);
+        widgets = _scenarioSelectWidgets;
+        highlighted_scenario = nullptr;
+        InitTabs();
+        InitialiseListItems();
+        InitScrollWidgets();
+    }
+
+    bool IsTitleEditor() const
+    {
+        return _titleEditor;
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -241,11 +156,11 @@ public:
             highlighted_scenario = nullptr;
             gConfigInterface.ScenarioselectLastTab = selected_tab;
             ConfigSaveDefault();
-            InitialiseListItems(this);
+            InitialiseListItems();
             Invalidate();
-            WindowEventResizeCall(this);
-            WindowEventInvalidateCall(this);
-            WindowInitScrollWidgets(*this);
+            OnResize();
+            OnPrepareDraw();
+            InitScrollWidgets();
             Invalidate();
         }
     }
@@ -261,23 +176,23 @@ public:
         FontStyle fontStyle = ScenarioSelectUseSmallFont() ? FontStyle::Small : FontStyle::Medium;
 
         // Text for each tab
-        for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
+        for (uint32_t i = 0; i < std::size(kScenarioOriginStringIds); i++)
         {
-            Widget* widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
-            if (widget->type == WindowWidgetType::Empty)
+            const Widget& widget = widgets[WIDX_TAB1 + i];
+            if (widget.type == WindowWidgetType::Empty)
                 continue;
 
             auto ft = Formatter();
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
             {
-                ft.Add<StringId>(ScenarioOriginStringIds[i]);
+                ft.Add<StringId>(kScenarioOriginStringIds[i]);
             }
             else
             { // old-style
                 ft.Add<StringId>(ScenarioCategoryStringIds[i]);
             }
 
-            auto stringCoords = windowPos + ScreenCoordsXY{ widget->midX(), widget->midY() - 3 };
+            auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
             DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
         }
 
@@ -289,8 +204,7 @@ public:
             {
                 // Show locked information
                 auto screenPos = windowPos
-                    + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
-                                      window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
+                    + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
                 DrawTextEllipsised(
                     dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, { TextAlignment::CENTRE });
 
@@ -300,8 +214,7 @@ public:
             {
                 // Show general information about how to start.
                 auto screenPos = windowPos
-                    + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
-                                      window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
+                    + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
 
                 DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_HOVER_HINT);
             }
@@ -322,9 +235,7 @@ public:
         }
 
         // Scenario name
-        auto screenPos = windowPos
-            + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
-                              window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
+        auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
         auto ft = Formatter();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(scenario->Name);
@@ -379,12 +290,6 @@ public:
         }
     }
 
-    void OnClose() override
-    {
-        _listItems.clear();
-        _listItems.shrink_to_fit();
-    }
-
     void OnPrepareDraw() override
     {
         pressed_widgets &= ~(
@@ -396,8 +301,8 @@ public:
 
         ResizeFrameWithPage();
         const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? 17 : 5;
-        window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = width - 179;
-        window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
+        widgets[WIDX_SCENARIOLIST].right = width - 179;
+        widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
     }
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
@@ -487,7 +392,7 @@ public:
                         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
                         gFirstTimeSaving = true;
                         _callback(listItem.scenario.scenario->Path);
-                        if (_titleEditor)
+                        if (IsTitleEditor())
                         {
                             Close();
                             return;
@@ -532,7 +437,7 @@ public:
                 {
                     const int32_t horizontalRuleMargin = 4;
                     DrawCategoryHeading(
-                        this, &dpi, horizontalRuleMargin, listWidth - horizontalRuleMargin, y + 2, listItem.heading.string_id);
+                        dpi, horizontalRuleMargin, listWidth - horizontalRuleMargin, y + 2, listItem.heading.string_id);
                     y += 18;
                     break;
                 }
@@ -559,7 +464,7 @@ public:
                     ft.Add<char*>(buffer);
                     colour_t colour = isDisabled ? colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
                     auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;
-                    const auto scrollCentre = window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() / 2;
+                    const auto scrollCentre = widgets[WIDX_SCENARIOLIST].width() / 2;
 
                     DrawTextBasic(
                         dpi, { scrollCentre, y + 1 }, format, ft,
@@ -569,9 +474,7 @@ public:
                     if (isCompleted)
                     {
                         // Draw completion tick
-                        GfxDrawSprite(
-                            &dpi, ImageId(SPR_MENU_CHECKMARK),
-                            { window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
+                        GfxDrawSprite(&dpi, ImageId(SPR_MENU_CHECKMARK), { widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
 
                         // Draw completion score
                         u8string completedByName = "???";
@@ -594,224 +497,309 @@ public:
             }
         }
     }
-};
 
-static bool IsScenarioVisible(WindowBase* w, const ScenarioIndexEntry* scenario)
-{
-    if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+private:
+    void DrawCategoryHeading(DrawPixelInfo& dpi, int32_t left, int32_t right, int32_t y, StringId stringId) const
     {
-        if (static_cast<uint8_t>(scenario->SourceGame) != w->selected_tab)
-        {
-            return false;
-        }
+        colour_t baseColour = colours[1];
+        colour_t lightColour = ColourMapA[baseColour].lighter;
+        colour_t darkColour = ColourMapA[baseColour].mid_dark;
+
+        // Draw string
+        int32_t centreX = (left + right) / 2;
+        DrawTextBasic(dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
+
+        // Get string dimensions
+        utf8 buffer[CommonTextBufferSize];
+        auto bufferPtr = buffer;
+        OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
+        int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;
+        int32_t strLeft = centreX - categoryStringHalfWidth;
+        int32_t strRight = centreX + categoryStringHalfWidth;
+
+        // Draw light horizontal rule
+        int32_t lineY = y + 4;
+        auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY };
+        auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
+        GfxDrawLine(&dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+
+        auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
+        auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY };
+        GfxDrawLine(&dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+
+        // Draw dark horizontal rule
+        lineY++;
+        auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY };
+        auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
+        GfxDrawLine(&dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+
+        auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
+        auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY };
+        GfxDrawLine(&dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
     }
-    else
+
+    void InitialiseListItems()
     {
-        int32_t category = scenario->Category;
-        if (category > SCENARIO_CATEGORY_OTHER)
+        size_t numScenarios = ScenarioRepositoryGetCount();
+        _listItems.clear();
+
+        // Mega park unlock
+        const uint32_t rct1RequiredCompletedScenarios = (1 << SC_MEGA_PARK) - 1;
+        uint32_t rct1CompletedScenarios = 0;
+        std::optional<size_t> megaParkListItemIndex = std::nullopt;
+
+        int32_t numUnlocks = InitialNumUnlockedScenarios;
+        uint8_t currentHeading = UINT8_MAX;
+        for (size_t i = 0; i < numScenarios; i++)
         {
-            category = SCENARIO_CATEGORY_OTHER;
-        }
-        if (category != w->selected_tab)
-        {
-            return false;
-        }
-    }
-    return true;
-}
+            const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
 
-static void InitialiseListItems(WindowBase* w)
-{
-    size_t numScenarios = ScenarioRepositoryGetCount();
-    _listItems.clear();
+            if (!IsScenarioVisible(*scenario))
+                continue;
+            if (IsTitleEditor() && scenario->SourceGame == ScenarioSource::Other)
+                continue;
 
-    // Mega park unlock
-    const uint32_t rct1RequiredCompletedScenarios = (1 << SC_MEGA_PARK) - 1;
-    uint32_t rct1CompletedScenarios = 0;
-    size_t megaParkListItemIndex = SIZE_MAX;
-
-    int32_t numUnlocks = INITIAL_NUM_UNLOCKED_SCENARIOS;
-    uint8_t currentHeading = UINT8_MAX;
-    for (size_t i = 0; i < numScenarios; i++)
-    {
-        const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-
-        if (!IsScenarioVisible(w, scenario))
-            continue;
-        if (_titleEditor && scenario->SourceGame == ScenarioSource::Other)
-            continue;
-
-        // Category heading
-        StringId headingStringId = STR_NONE;
-        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
-        {
-            if (w->selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
+            // Category heading
+            StringId headingStringId = STR_NONE;
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
             {
-                currentHeading = scenario->Category;
-                headingStringId = ScenarioCategoryStringIds[currentHeading];
-            }
-        }
-        else
-        {
-            if (w->selected_tab <= SCENARIO_CATEGORY_EXPERT)
-            {
-                if (currentHeading != static_cast<uint8_t>(scenario->SourceGame))
+                if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
                 {
-                    currentHeading = static_cast<uint8_t>(scenario->SourceGame);
-                    headingStringId = ScenarioOriginStringIds[currentHeading];
+                    currentHeading = scenario->Category;
+                    headingStringId = ScenarioCategoryStringIds[currentHeading];
                 }
-            }
-            else if (w->selected_tab == SCENARIO_CATEGORY_OTHER)
-            {
-                int32_t category = scenario->Category;
-                if (category <= SCENARIO_CATEGORY_REAL)
-                {
-                    category = SCENARIO_CATEGORY_OTHER;
-                }
-                if (currentHeading != category)
-                {
-                    currentHeading = category;
-                    headingStringId = ScenarioCategoryStringIds[category];
-                }
-            }
-        }
-
-        if (headingStringId != STR_NONE)
-        {
-            ScenarioListItem headerItem;
-            headerItem.type = ListItemType::Heading;
-            headerItem.heading.string_id = headingStringId;
-            _listItems.push_back(std::move(headerItem));
-        }
-
-        // Scenario
-        ScenarioListItem scenarioItem;
-        scenarioItem.type = ListItemType::Scenario;
-        scenarioItem.scenario.scenario = scenario;
-        if (IsLockingEnabled(w))
-        {
-            scenarioItem.scenario.is_locked = numUnlocks <= 0;
-            if (scenario->Highscore == nullptr)
-            {
-                numUnlocks--;
             }
             else
             {
-                // Mark RCT1 scenario as completed
-                if (scenario->ScenarioId < SC_MEGA_PARK)
+                if (selected_tab <= SCENARIO_CATEGORY_EXPERT)
                 {
-                    rct1CompletedScenarios |= 1 << scenario->ScenarioId;
+                    if (currentHeading != static_cast<uint8_t>(scenario->SourceGame))
+                    {
+                        currentHeading = static_cast<uint8_t>(scenario->SourceGame);
+                        headingStringId = kScenarioOriginStringIds[currentHeading];
+                    }
+                }
+                else if (selected_tab == SCENARIO_CATEGORY_OTHER)
+                {
+                    int32_t category = scenario->Category;
+                    if (category <= SCENARIO_CATEGORY_REAL)
+                    {
+                        category = SCENARIO_CATEGORY_OTHER;
+                    }
+                    if (currentHeading != category)
+                    {
+                        currentHeading = category;
+                        headingStringId = ScenarioCategoryStringIds[category];
+                    }
                 }
             }
 
-            // If scenario is Mega Park, keep a reference to it
-            if (scenario->ScenarioId == SC_MEGA_PARK)
+            if (headingStringId != STR_NONE)
             {
-                megaParkListItemIndex = _listItems.size() - 1;
+                ScenarioListItem headerItem;
+                headerItem.type = ListItemType::Heading;
+                headerItem.heading.string_id = headingStringId;
+                _listItems.push_back(std::move(headerItem));
+            }
+
+            // Scenario
+            ScenarioListItem scenarioItem;
+            scenarioItem.type = ListItemType::Scenario;
+            scenarioItem.scenario.scenario = scenario;
+            if (IsLockingEnabled())
+            {
+                scenarioItem.scenario.is_locked = numUnlocks <= 0;
+                if (scenario->Highscore == nullptr)
+                {
+                    numUnlocks--;
+                }
+                else
+                {
+                    // Mark RCT1 scenario as completed
+                    if (scenario->ScenarioId < SC_MEGA_PARK)
+                    {
+                        rct1CompletedScenarios |= 1 << scenario->ScenarioId;
+                    }
+                }
+
+                // If scenario is Mega Park, keep a reference to it
+                if (scenario->ScenarioId == SC_MEGA_PARK)
+                {
+                    megaParkListItemIndex = _listItems.size() - 1;
+                }
+            }
+            else
+            {
+                scenarioItem.scenario.is_locked = false;
+            }
+            _listItems.push_back(std::move(scenarioItem));
+        }
+
+        // Mega park handling
+        if (megaParkListItemIndex.has_value())
+        {
+            bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
+            _listItems[megaParkListItemIndex.value()].scenario.is_locked = megaParkLocked;
+            if (megaParkLocked && gConfigGeneral.ScenarioHideMegaPark)
+            {
+                // Remove mega park
+                _listItems.pop_back();
+
+                // Remove empty headings
+                for (auto it = _listItems.begin(); it != _listItems.end();)
+                {
+                    const auto& listItem = *it;
+                    if (listItem.type == ListItemType::Heading)
+                    {
+                        auto nextIt = std::next(it);
+                        if (nextIt == _listItems.end() || nextIt->type == ListItemType::Heading)
+                        {
+                            it = _listItems.erase(it);
+                            continue;
+                        }
+                    }
+                    ++it;
+                }
+            }
+        }
+    }
+
+    bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
+    {
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+        {
+            if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
+            {
+                return false;
             }
         }
         else
         {
-            scenarioItem.scenario.is_locked = false;
-        }
-        _listItems.push_back(std::move(scenarioItem));
-    }
-
-    // Mega park handling
-    if (megaParkListItemIndex != SIZE_MAX)
-    {
-        bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
-        _listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
-        if (megaParkLocked && gConfigGeneral.ScenarioHideMegaPark)
-        {
-            // Remove mega park
-            _listItems.pop_back();
-
-            // Remove empty headings
-            for (auto it = _listItems.begin(); it != _listItems.end();)
+            int32_t category = scenario.Category;
+            if (category > SCENARIO_CATEGORY_OTHER)
             {
-                const auto& listItem = *it;
-                if (listItem.type == ListItemType::Heading)
-                {
-                    auto nextIt = std::next(it);
-                    if (nextIt == _listItems.end() || nextIt->type == ListItemType::Heading)
-                    {
-                        it = _listItems.erase(it);
-                        continue;
-                    }
-                }
-                ++it;
+                category = SCENARIO_CATEGORY_OTHER;
+            }
+            if (category != selected_tab)
+            {
+                return false;
             }
         }
+        return true;
     }
+
+    bool IsLockingEnabled() const
+    {
+        if (gConfigGeneral.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
+            return false;
+        if (!gConfigGeneral.ScenarioUnlockingEnabled)
+            return false;
+        if (selected_tab >= 6)
+            return false;
+        if (IsTitleEditor())
+            return false;
+
+        return true;
+    }
+
+    void InitTabs()
+    {
+        int32_t showPages = 0;
+        size_t numScenarios = ScenarioRepositoryGetCount();
+        for (size_t i = 0; i < numScenarios; i++)
+        {
+            const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+            {
+                if (IsTitleEditor() && scenario->SourceGame == ScenarioSource::Other)
+                    continue;
+                showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
+            }
+            else
+            {
+                int32_t category = scenario->Category;
+                if (category > SCENARIO_CATEGORY_OTHER)
+                {
+                    category = SCENARIO_CATEGORY_OTHER;
+                }
+                showPages |= 1 << category;
+            }
+        }
+
+        if (showPages & (1 << gConfigInterface.ScenarioselectLastTab))
+        {
+            selected_tab = gConfigInterface.ScenarioselectLastTab;
+        }
+        else
+        {
+            int32_t firstPage = UtilBitScanForward(showPages);
+            if (firstPage != -1)
+            {
+                selected_tab = firstPage;
+            }
+        }
+
+        int32_t y = TabsStart;
+        for (int32_t i = 0; i < NumTabs; i++)
+        {
+            auto& widget = widgets[i + WIDX_TAB1];
+            if (!(showPages & (1 << i)))
+            {
+                widget.type = WindowWidgetType::Empty;
+                continue;
+            }
+
+            widget.type = WindowWidgetType::Tab;
+            widget.top = y;
+            widget.bottom = y + (TabHeight - 1);
+            y += TabHeight;
+        }
+    }
+
+    static bool ScenarioSelectUseSmallFont()
+    {
+        return ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT;
+    }
+
+    static int32_t GetScenarioListItemSize()
+    {
+        if (!LocalisationService_UseTrueTypeFont())
+            return TrueFontSize;
+
+        // Scenario title
+        int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+
+        // 'Completed by' line
+        lineHeight += FontGetLineHeight(FontStyle::Small);
+
+        return lineHeight;
+    }
+};
+
+WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor)
+{
+    return WindowScenarioselectOpen(
+        [callback](std::string_view scenario) { callback(std::string(scenario).c_str()); }, titleEditor);
 }
 
-static void DrawCategoryHeading(WindowBase* w, DrawPixelInfo* dpi, int32_t left, int32_t right, int32_t y, StringId stringId)
+WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor)
 {
-    colour_t baseColour = w->colours[1];
-    colour_t lightColour = ColourMapA[baseColour].lighter;
-    colour_t darkColour = ColourMapA[baseColour].mid_dark;
-
-    // Draw string
-    int32_t centreX = (left + right) / 2;
-    DrawTextBasic(*dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
-
-    // Get string dimensions
-    utf8 buffer[CommonTextBufferSize];
-    auto bufferPtr = buffer;
-    OpenRCT2::FormatStringLegacy(bufferPtr, sizeof(buffer), stringId, nullptr);
-    int32_t categoryStringHalfWidth = (GfxGetStringWidth(bufferPtr, FontStyle::Medium) / 2) + 4;
-    int32_t strLeft = centreX - categoryStringHalfWidth;
-    int32_t strRight = centreX + categoryStringHalfWidth;
-
-    // Draw light horizontal rule
-    int32_t lineY = y + 4;
-    auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY };
-    auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-    GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
-
-    auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
-    auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-    GfxDrawLine(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
-
-    // Draw dark horizontal rule
-    lineY++;
-    auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY };
-    auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-    GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
-
-    auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
-    auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-    GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
-}
-
-static bool IsLockingEnabled(WindowBase* w)
-{
-    if (gConfigGeneral.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
-        return false;
-    if (!gConfigGeneral.ScenarioUnlockingEnabled)
-        return false;
-    if (w->selected_tab >= 6)
-        return false;
-    if (_titleEditor)
-        return false;
-
-    return true;
-}
-
-WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking)
-{
-    WindowBase* window;
-
-    _callback = callback;
-    _disableLocking = disableLocking;
+    auto* window = static_cast<ScenarioSelectWindow*>(WindowBringToFrontByClass(WindowClass::ScenarioSelect));
+    if (window != nullptr)
+    {
+        if (window->IsTitleEditor() != titleEditor)
+        {
+            WindowCloseByClass(WindowClass::ScenarioSelect);
+        }
+        else
+        {
+            return window;
+        }
+    }
 
     int32_t screenWidth = ContextGetWidth();
     int32_t screenHeight = ContextGetHeight();
     ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - WH) / 2) };
-    window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0);
-    window->widgets = window_scenarioselect_widgets;
-    window->highlighted_scenario = nullptr;
-
+    window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback, titleEditor);
     return window;
 }

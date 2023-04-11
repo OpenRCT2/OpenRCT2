@@ -309,7 +309,7 @@ namespace OpenRCT2::Scripting
                     auto dukValue = GetScenarioFile(path);
                     _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
                 },
-                false, true);
+                false);
         }
 
         void activateTool(const DukValue& desc)
