@@ -638,7 +638,7 @@ public:
             GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
 
-        WindowDrawWidgets(*this, &dpi);
+        DrawWidgets(dpi);
 
         DrawLeftPanel(dpi);
         DrawRightPanel(dpi);
