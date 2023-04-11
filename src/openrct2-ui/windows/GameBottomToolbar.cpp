@@ -480,7 +480,7 @@ public:
         return { fallback, ft };
     }
 
-    void Invalidate()
+    void OnPrepareDraw() override
     {
         // Figure out how much line height we have to work with.
         uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
