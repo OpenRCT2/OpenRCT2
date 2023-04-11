@@ -183,7 +183,7 @@ public:
                 continue;
 
             auto ft = Formatter();
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
             {
                 ft.Add<StringId>(kScenarioOriginStringIds[i]);
             }
@@ -392,7 +392,7 @@ public:
                         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
                         gFirstTimeSaving = true;
                         _callback(listItem.scenario.scenario->Path);
-                        if (_titleEditor)
+                        if (IsTitleEditor())
                         {
                             Close();
                             return;
@@ -556,12 +556,12 @@ private:
 
             if (!IsScenarioVisible(*scenario))
                 continue;
-            if (_titleEditor && scenario->SourceGame == ScenarioSource::Other)
+            if (IsTitleEditor() && scenario->SourceGame == ScenarioSource::Other)
                 continue;
 
             // Category heading
             StringId headingStringId = STR_NONE;
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
             {
                 if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
                 {
@@ -666,7 +666,7 @@ private:
 
     bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
     {
-        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
         {
             if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
             {
@@ -696,7 +696,7 @@ private:
             return false;
         if (selected_tab >= 6)
             return false;
-        if (_titleEditor)
+        if (IsTitleEditor())
             return false;
 
         return true;
@@ -709,9 +709,9 @@ private:
         for (size_t i = 0; i < numScenarios; i++)
         {
             const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
             {
-                if (_titleEditor && scenario->SourceGame == ScenarioSource::Other)
+                if (IsTitleEditor() && scenario->SourceGame == ScenarioSource::Other)
                     continue;
                 showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
             }
