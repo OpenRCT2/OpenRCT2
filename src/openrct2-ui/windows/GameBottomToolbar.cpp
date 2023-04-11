@@ -142,10 +142,6 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x0066C76C
-     */
     void DrawParkRating(DrawPixelInfo &dpi, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
     {
         int16_t bar_width;
@@ -235,10 +231,6 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x0066BFA5
-     */
     void DrawNewsItem(DrawPixelInfo &dpi)
     {
         int32_t itemWidth;
@@ -374,10 +366,6 @@ private:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x0066C6F2
-     */
     void InvalidateDirtyWidgets()
     {
         if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
@@ -413,10 +401,6 @@ private:
 
 
 public:
-    /**
-     *
-     *  rct2: 0x0066C588
-     */
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
 
@@ -490,10 +474,6 @@ public:
         return { fallback, ft };
     }
 
-    /**
-     *
-     *  rct2: 0x0066BBA0
-     */
     void Invalidate()
     {
         // Figure out how much line height we have to work with.
@@ -607,10 +587,6 @@ public:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x0066BC87
-     */
     void OnDraw(DrawPixelInfo &dpi) override
     {
         auto leftWidget = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
@@ -649,10 +625,6 @@ public:
         }
     }
 
-    /**
-     *
-     *  rct2: 0x0066C6D8
-     */
     void OnUpdate() override
     {
         frame_no++;
@@ -662,10 +634,6 @@ public:
         InvalidateDirtyWidgets();
     }
 
-    /**
-     *
-     *  rct2: 0x0066C644
-     */
     CursorID OnCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
     {
         switch (widgetIndex)
@@ -680,10 +648,6 @@ public:
         return cursorId;
     }
 
-    /**
-     *
-     *  rct2: 0x0066C6F2
-     */
     void OnUnknown5() override
     {
         InvalidateDirtyWidgets();
@@ -692,7 +656,6 @@ public:
 
 /**
  * Creates the main game bottom toolbar window.
- *  rct2: 0x0066B52F (part of 0x0066B3E8)
  */
 WindowBase* WindowGameBottomToolbarOpen()
 {
