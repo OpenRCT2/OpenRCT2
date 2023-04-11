@@ -224,7 +224,7 @@ money64 RideDemolishAction::DemolishTracks() const
 
                 if (type != TrackElemType::Maze)
                 {
-                    auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location, false);
+                    auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
                     trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
 
                     auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
