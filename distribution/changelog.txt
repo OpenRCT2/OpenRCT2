@@ -1,5 +1,6 @@
 0.4.5 (in development)
 ------------------------------------------------------------------------
+- Feature: [#19276] Add Powered Lifthill to Giga Coaster.
 - Feature: [#19446] Add new color options to color dropdown.
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
 - Feature: [OpenMusic#25] Added Prehistoric ride music style.
