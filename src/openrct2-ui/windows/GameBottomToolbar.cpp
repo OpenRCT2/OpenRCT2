@@ -389,7 +389,7 @@ private:
         if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
         {
             gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
-            WidgetInvalidate(*this, WIDX_RIGHT_INSET);
+            InvalidateWidget(WIDX_RIGHT_INSET);
         }
 
         if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
