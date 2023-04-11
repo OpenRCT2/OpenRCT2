@@ -470,8 +470,6 @@ public:
             case WIDX_DATE:
                 ContextOpenWindow(WindowClass::RecentNews);
                 break;
-            default:
-            break;
         }
     }
 
@@ -488,8 +486,6 @@ public:
                 case WIDX_PARK_RATING:
                     ft.Add<int16_t>(gParkRating);
                     break;
-                default:
-                break;
             }
         return { fallback, ft };
     }
@@ -726,10 +722,6 @@ WindowBase* WindowGameBottomToolbarOpen()
     return window;
 }
 
-/**
- *
- *  rct2: 0x0066BB79
- */
 void WindowGameBottomToolbarInvalidateNewsItem()
 {
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
