@@ -400,7 +400,7 @@ public:
         widgets = window_game_bottom_toolbar_widgets;
 
         frame_no = 0;
-        WindowInitScrollWidgets(*this);
+        InitScrollWidgets();
 
         // Reset the middle widget to not show by default.
         // If it is required to be shown news_update will reshow it.
