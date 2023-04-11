@@ -3683,6 +3683,9 @@ STR_6577    :Block brake speed
 STR_6578    :Set speed limit for block brakes. In block section mode, adjacent brakes with a slower speed are linked to the block brake.
 STR_6579    :Block brakes will be set to default speed when saved as track design
 
+STR_6580    :Reset
+STR_6581    :Are you sure you want to reset all shortcut keys on this tab?
+
 #############
 # Scenarios #
 ################
