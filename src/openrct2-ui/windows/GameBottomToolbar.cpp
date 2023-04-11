@@ -383,7 +383,7 @@ private:
         if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
         {
             gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
-            WidgetInvalidate(*this, WIDX_LEFT_INSET);
+            InvalidateWidget(WIDX_LEFT_INSET);
         }
 
         if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
@@ -395,19 +395,19 @@ private:
         if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
         {
             gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-            WidgetInvalidate(*this, WIDX_LEFT_INSET);
+            InvalidateWidget(WIDX_LEFT_INSET);
         }
 
         if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE)
         {
             gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
-            WidgetInvalidate(*this, WIDX_RIGHT_INSET);
+            InvalidateWidget(WIDX_RIGHT_INSET);
         }
 
         if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING)
         {
             gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
-            WidgetInvalidate(*this, WIDX_LEFT_INSET);
+            InvalidateWidget(WIDX_LEFT_INSET);
         }
     }
 
