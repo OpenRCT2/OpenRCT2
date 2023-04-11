@@ -15,6 +15,7 @@
 - Fix: [#19767] No message when path is not connected to ride exit and is therefore unreachable for mechanics.
 - Fix: [#19801] The in-game load/save window cannot be resized anymore.
 - Fix: [#19854] Looping Coaster trains clipping through steep quarter turns down.
+- Fix: [#19901] Random shop colours never assigning last colour.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
