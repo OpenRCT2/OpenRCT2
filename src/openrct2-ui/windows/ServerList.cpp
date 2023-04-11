@@ -350,8 +350,7 @@ public:
             if (highlighted)
             {
                 GfxFilterRect(
-                    &dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + ITEM_HEIGHT },
-                    FilterPaletteID::PaletteDarken1);
+                    dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + ITEM_HEIGHT }, FilterPaletteID::PaletteDarken1);
                 _version = serverDetails.Version;
             }
 
@@ -406,14 +405,14 @@ public:
                 bool correctVersion = serverDetails.Version == NetworkGetVersion();
                 compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
             }
-            GfxDrawSprite(&dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
+            GfxDrawSprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
             right -= 4;
 
             // Draw lock icon
             right -= 8;
             if (serverDetails.RequiresPassword)
             {
-                GfxDrawSprite(&dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
+                GfxDrawSprite(dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
             }
             right -= 6;
 

@@ -427,7 +427,7 @@ public:
         }
         else
         {
-            WindowResearchDevelopmentPagePaint(this, &dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
+            WindowResearchDevelopmentPagePaint(this, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
         }
     }
 
@@ -490,7 +490,7 @@ public:
                 buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
             if (new_ride.HighlightedRide == *listItem || buttonFlags != 0)
                 GfxFillRectInset(
-                    &dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
+                    dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
                     INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
 
             // Draw ride image with feathered border
@@ -986,7 +986,7 @@ private:
             spriteIndex += tab == THRILL_TAB ? ThrillRidesTabAnimationSequence[frame] : frame;
 
             GfxDrawSprite(
-                &dpi, ImageId(spriteIndex, colours[1]),
+                dpi, ImageId(spriteIndex, colours[1]),
                 windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
     }

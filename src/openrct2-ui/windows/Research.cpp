@@ -104,14 +104,14 @@ static Widget *window_research_page_widgets[] = {
 static void WindowResearchDevelopmentMouseup(WindowBase *w, WidgetIndex widgetIndex);
 static void WindowResearchDevelopmentUpdate(WindowBase *w);
 static void WindowResearchDevelopmentInvalidate(WindowBase *w);
-static void WindowResearchDevelopmentPaint(WindowBase *w, DrawPixelInfo *dpi);
+static void WindowResearchDevelopmentPaint(WindowBase *w, DrawPixelInfo& dpi);
 
 static void WindowResearchFundingMouseup(WindowBase *w, WidgetIndex widgetIndex);
 static void WindowResearchFundingMousedown(WindowBase *w, WidgetIndex widgetIndex, Widget* widget);
 static void WindowResearchFundingDropdown(WindowBase *w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowResearchFundingUpdate(WindowBase *w);
 static void WindowResearchFundingInvalidate(WindowBase *w);
-static void WindowResearchFundingPaint(WindowBase *w, DrawPixelInfo *dpi);
+static void WindowResearchFundingPaint(WindowBase *w, DrawPixelInfo& dpi);
 
 //
 static WindowEventList window_research_development_events([](auto& events)
@@ -156,7 +156,7 @@ static constexpr const StringId ResearchStageNames[] = {
 
 static void WindowResearchSetPage(WindowBase* w, int32_t page);
 static void WindowResearchSetPressedTab(WindowBase* w);
-static void WindowResearchDrawTabImages(DrawPixelInfo* dpi, WindowBase* w);
+static void WindowResearchDrawTabImages(DrawPixelInfo& dpi, WindowBase* w);
 
 WindowBase* WindowResearchOpen()
 {
@@ -253,7 +253,7 @@ static void WindowResearchDevelopmentInvalidate(WindowBase* w)
  *
  *  rct2: 0x006B689B
  */
-static void WindowResearchDevelopmentPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowResearchDevelopmentPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowResearchDrawTabImages(dpi, w);
@@ -261,7 +261,7 @@ static void WindowResearchDevelopmentPaint(WindowBase* w, DrawPixelInfo* dpi)
     WindowResearchDevelopmentPagePaint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
 }
 
-void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex)
+void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex)
 {
     baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
 
@@ -273,19 +273,19 @@ void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, Widge
         // Research type
         auto ft = Formatter();
         ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
-        DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
+        DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
         screenCoords.y += 25;
 
         // Progress
         ft = Formatter();
         ft.Add<StringId>(STR_RESEARCH_COMPLETED_AL);
-        DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+        DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
         screenCoords.y += 15;
 
         // Expected
         ft = Formatter();
         ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
-        DrawTextBasic(*dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+        DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
     }
     else
     {
@@ -322,13 +322,13 @@ void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, Widge
         {
             ft.Add<StringId>(gResearchNextItem->GetName());
         }
-        DrawTextWrapped(*dpi, screenCoords, 296, label, ft);
+        DrawTextWrapped(dpi, screenCoords, 296, label, ft);
         screenCoords.y += 25;
 
         // Progress
         ft = Formatter();
         ft.Add<StringId>(ResearchStageNames[gResearchProgressStage]);
-        DrawTextWrapped(*dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+        DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
         screenCoords.y += 15;
 
         // Expected
@@ -344,7 +344,7 @@ void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, Widge
         {
             ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
         }
-        DrawTextBasic(*dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+        DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
     }
 
     // Last development
@@ -379,7 +379,7 @@ void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, Widge
             }
         }
 
-        DrawTextWrapped(*dpi, screenCoords, 266, lastDevelopmentFormat, ft);
+        DrawTextWrapped(dpi, screenCoords, 266, lastDevelopmentFormat, ft);
     }
 }
 
@@ -528,7 +528,7 @@ static void WindowResearchFundingInvalidate(WindowBase* w)
  *
  *  rct2: 0x0069DAF0
  */
-static void WindowResearchFundingPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowResearchFundingPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowResearchDrawTabImages(dpi, w);
@@ -536,7 +536,7 @@ static void WindowResearchFundingPaint(WindowBase* w, DrawPixelInfo* dpi)
     WindowResearchFundingPagePaint(w, dpi, WIDX_RESEARCH_FUNDING);
 }
 
-void WindowResearchFundingPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex)
+void WindowResearchFundingPagePaint(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
@@ -544,7 +544,7 @@ void WindowResearchFundingPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetInd
     int32_t currentResearchLevel = gResearchFundingLevel;
     auto ft = Formatter();
     ft.Add<money64>(research_cost_table[currentResearchLevel]);
-    DrawTextBasic(*dpi, w->windowPos + ScreenCoordsXY{ 10, 77 }, STR_RESEARCH_COST_PER_MONTH, ft);
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 10, 77 }, STR_RESEARCH_COST_PER_MONTH, ft);
 }
 
 #pragma endregion
@@ -593,7 +593,7 @@ static void WindowResearchSetPressedTab(WindowBase* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void WindowResearchDrawTabImage(DrawPixelInfo* dpi, WindowBase* w, int32_t page, int32_t spriteIndex)
+static void WindowResearchDrawTabImage(DrawPixelInfo& dpi, WindowBase* w, int32_t page, int32_t spriteIndex)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + page;
 
@@ -613,7 +613,7 @@ static void WindowResearchDrawTabImage(DrawPixelInfo* dpi, WindowBase* w, int32_
     }
 }
 
-static void WindowResearchDrawTabImages(DrawPixelInfo* dpi, WindowBase* w)
+static void WindowResearchDrawTabImages(DrawPixelInfo& dpi, WindowBase* w)
 {
     WindowResearchDrawTabImage(dpi, w, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
     WindowResearchDrawTabImage(dpi, w, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);

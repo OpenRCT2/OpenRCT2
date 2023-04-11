@@ -970,7 +970,7 @@ public:
     void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         GfxFillRect(
-            &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+            dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
         const int32_t listWidth = widgets[WIDX_SCROLL].width();
         const int32_t dateAnchor = widgets[WIDX_SORT_DATE].left + maxDateWidth + DATE_TIME_GAP;
 
@@ -989,7 +989,7 @@ public:
             if (i == selected_list_item)
             {
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                GfxFilterRect(&dpi, { 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(dpi, { 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
             }
             // display a marker next to the currently loaded game file
             if (_listItems[i].loaded)
@@ -1112,7 +1112,7 @@ static Widget window_overwrite_prompt_widgets[] = {
 };
 
 static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex);
-static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo& dpi);
 
 static WindowEventList window_overwrite_prompt_events([](auto& events) {
     events.mouse_up = &WindowOverwritePromptMouseup;
@@ -1164,7 +1164,7 @@ static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex)
     }
 }
 
-static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
 
@@ -1173,7 +1173,7 @@ static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo* dpi)
     ft.Add<char*>(_window_overwrite_prompt_name);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
-    DrawTextWrapped(*dpi, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
+    DrawTextWrapped(dpi, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
 }
 
 #pragma endregion

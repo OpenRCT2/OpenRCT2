@@ -55,8 +55,8 @@ bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
-static void PaintAttachedPS(DrawPixelInfo* dpi, PaintStruct* ps, uint32_t viewFlags);
-static void PaintPSImageWithBoundingBoxes(DrawPixelInfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
+static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags);
+static void PaintPSImageWithBoundingBoxes(DrawPixelInfo& dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const PaintStruct& ps, uint8_t rotation)
@@ -483,18 +483,16 @@ void PaintSessionArrange(PaintSessionCore& session)
 
 static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
 {
-    DrawPixelInfo* dpi = &session.DPI;
-
     auto x = ps->x;
     auto y = ps->y;
 
     if (ps->sprite_type == ViewportInteractionItem::Entity)
     {
-        if (dpi->zoom_level >= ZoomLevel{ 1 })
+        if (session.DPI.zoom_level >= ZoomLevel{ 1 })
         {
             x = Floor2(x, 2);
             y = Floor2(y, 2);
-            if (dpi->zoom_level >= ZoomLevel{ 2 })
+            if (session.DPI.zoom_level >= ZoomLevel{ 2 })
             {
                 x = Floor2(x, 4);
                 y = Floor2(y, 4);
@@ -503,13 +501,13 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
 
     auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
-    if (gPaintBoundingBoxes && dpi->zoom_level == ZoomLevel{ 0 })
+    if (gPaintBoundingBoxes && session.DPI.zoom_level == ZoomLevel{ 0 })
     {
-        PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
+        PaintPSImageWithBoundingBoxes(session.DPI, ps, imageId, x, y);
     }
     else
     {
-        GfxDrawSprite(dpi, imageId, { x, y });
+        GfxDrawSprite(session.DPI, imageId, { x, y });
     }
 
     if (ps->children != nullptr)
@@ -518,7 +516,7 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     }
     else
     {
-        PaintAttachedPS(dpi, ps, session.ViewFlags);
+        PaintAttachedPS(session.DPI, ps, session.ViewFlags);
     }
 }
 
@@ -545,7 +543,7 @@ void PaintDrawStructs(PaintSession& session)
  *  rct2: 0x00688596
  *  Part of 0x688485
  */
-static void PaintAttachedPS(DrawPixelInfo* dpi, PaintStruct* ps, uint32_t viewFlags)
+static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags)
 {
     AttachedPaintStruct* attached_ps = ps->attached_ps;
     for (; attached_ps != nullptr; attached_ps = attached_ps->next)
@@ -555,7 +553,7 @@ static void PaintAttachedPS(DrawPixelInfo* dpi, PaintStruct* ps, uint32_t viewFl
         auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->IsMasked)
         {
-            GfxDrawSpriteRawMasked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
+            GfxDrawSpriteRawMasked(&dpi, screenCoords, imageId, attached_ps->ColourImageId);
         }
         else
         {
@@ -564,7 +562,7 @@ static void PaintAttachedPS(DrawPixelInfo* dpi, PaintStruct* ps, uint32_t viewFl
     }
 }
 
-static void PaintPSImageWithBoundingBoxes(DrawPixelInfo* dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
+static void PaintPSImageWithBoundingBoxes(DrawPixelInfo& dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->sprite_type)];
     const uint8_t rotation = GetCurrentRotation();
@@ -664,7 +662,7 @@ static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uin
     }
 }
 
-PaintSession* PaintSessionAlloc(DrawPixelInfo* dpi, uint32_t viewFlags)
+PaintSession* PaintSessionAlloc(DrawPixelInfo& dpi, uint32_t viewFlags)
 {
     return GetContext()->GetPainter()->CreateSession(dpi, viewFlags);
 }
@@ -877,7 +875,7 @@ void PaintFloatingMoneyEffect(
  *
  *  rct2: 0x006860C3
  */
-void PaintDrawMoneyStructs(DrawPixelInfo* dpi, PaintStringStruct* ps)
+void PaintDrawMoneyStructs(DrawPixelInfo& dpi, PaintStringStruct* ps)
 {
     do
     {
@@ -893,7 +891,7 @@ void PaintDrawMoneyStructs(DrawPixelInfo* dpi, PaintStringStruct* ps)
         }
 
         GfxDrawStringWithYOffsets(
-            *dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
+            dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::Medium);
     } while ((ps = ps->next) != nullptr);
 }

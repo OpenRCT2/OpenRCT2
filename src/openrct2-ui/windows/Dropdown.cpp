@@ -161,13 +161,13 @@ public:
                 if (colours[0] & COLOUR_FLAG_TRANSLUCENT)
                 {
                     TranslucentWindowPalette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
-                    GfxFilterRect(&dpi, { leftTop, rightBottom }, palette.highlight);
-                    GfxFilterRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
+                    GfxFilterRect(dpi, { leftTop, rightBottom }, palette.highlight);
+                    GfxFilterRect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                 }
                 else
                 {
-                    GfxFillRect(&dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
-                    GfxFillRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
+                    GfxFillRect(dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
+                    GfxFillRect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
                 }
             }
             else
@@ -176,7 +176,7 @@ public:
                 {
                     // Darken the cell's background slightly when highlighted
                     const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                    GfxFilterRect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
+                    GfxFilterRect(dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                 }
 
                 StringId item = gDropdownItems[i].Format;
@@ -187,7 +187,7 @@ public:
                                            : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
                     if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                         image = image.WithIndexOffset(1);
-                    GfxDrawSprite(&dpi, image, screenCoords);
+                    GfxDrawSprite(dpi, image, screenCoords);
                 }
                 else
                 {

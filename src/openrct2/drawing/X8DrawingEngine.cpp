@@ -44,7 +44,7 @@ X8WeatherDrawer::~X8WeatherDrawer()
 }
 
 void X8WeatherDrawer::Draw(
-    DrawPixelInfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+    DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
     const uint8_t* weatherpattern)
 {
     const uint8_t* pattern = weatherpattern;
@@ -54,10 +54,10 @@ void X8WeatherDrawer::Draw(
     uint8_t patternStartXOffset = xStart % patternXSpace;
     uint8_t patternStartYOffset = yStart % patternYSpace;
 
-    uint32_t pixelOffset = (dpi->pitch + dpi->width) * y + x;
+    uint32_t pixelOffset = (dpi.pitch + dpi.width) * y + x;
     uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
-    uint8_t* screenBits = dpi->bits;
+    uint8_t* screenBits = dpi.bits;
 
     // Stores the colours of changed pixels
     WeatherPixel* newPixels = &_weatherPixels[_weatherPixelsCount];
@@ -86,7 +86,7 @@ void X8WeatherDrawer::Draw(
             }
         }
 
-        pixelOffset += dpi->pitch + dpi->width;
+        pixelOffset += dpi.pitch + dpi.width;
         patternYPos++;
         patternYPos %= patternYSpace;
     }
@@ -214,7 +214,7 @@ void X8DrawingEngine::PaintWindows()
 
 void X8DrawingEngine::PaintWeather()
 {
-    DrawWeather(&_bitsDPI, &_weatherDrawer);
+    DrawWeather(_bitsDPI, &_weatherDrawer);
 }
 
 void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
@@ -259,7 +259,7 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
 
 std::string X8DrawingEngine::Screenshot()
 {
-    return ScreenshotDumpPNG(&_bitsDPI);
+    return ScreenshotDumpPNG(_bitsDPI);
 }
 
 IDrawingContext* X8DrawingEngine::GetDrawingContext()
@@ -340,7 +340,7 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
 
     if (LightFXIsAvailable())
     {
-        LightFXUpdateBuffers(dpi);
+        LightFXUpdateBuffers(*dpi);
     }
 }
 
@@ -437,7 +437,7 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, 
 
     // Draw region
     OnDrawDirtyBlock(x, y, columns, rows);
-    WindowDrawAll(&_bitsDPI, left, top, right, bottom);
+    WindowDrawAll(_bitsDPI, left, top, right, bottom);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
@@ -704,18 +704,18 @@ void X8DrawingContext::FilterRect(
 
 void X8DrawingContext::DrawLine(DrawPixelInfo* dpi, uint32_t colour, const ScreenLine& line)
 {
-    GfxDrawLineSoftware(dpi, line, colour);
+    GfxDrawLineSoftware(*dpi, line, colour);
 }
 
 void X8DrawingContext::DrawSprite(DrawPixelInfo* dpi, const ImageId imageId, int32_t x, int32_t y)
 {
-    GfxDrawSpriteSoftware(dpi, imageId, { x, y });
+    GfxDrawSpriteSoftware(*dpi, imageId, { x, y });
 }
 
 void X8DrawingContext::DrawSpriteRawMasked(
     DrawPixelInfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
-    GfxDrawSpriteRawMaskedSoftware(dpi, { x, y }, maskImage, colourImage);
+    GfxDrawSpriteRawMaskedSoftware(*dpi, { x, y }, maskImage, colourImage);
 }
 
 void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
@@ -725,10 +725,10 @@ void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, 
     palette[0] = 0;
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
-    GfxDrawSpritePaletteSetSoftware(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
+    GfxDrawSpritePaletteSetSoftware(*dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
 }
 
 void X8DrawingContext::DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
-    GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
+    GfxDrawSpritePaletteSetSoftware(*dpi, image, { x, y }, paletteMap);
 }

@@ -94,12 +94,11 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
     dx -= 16;
     int32_t bx = dx + 32;
 
-    DrawPixelInfo* dpi = &session.DPI;
-    if (bx <= dpi->y)
+    if (bx <= session.DPI.y)
         return;
     dx -= 20;
-    dx -= dpi->height;
-    if (dx >= dpi->y)
+    dx -= session.DPI.height;
+    if (dx >= session.DPI.y)
         return;
 
     session.SpritePosition.x = x;
@@ -119,7 +118,6 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     PROFILED_FUNCTION();
 
     CoordsXY coords = origCoords;
-    DrawPixelInfo* dpi = &session.DPI;
 
     if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
@@ -184,7 +182,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
     }
 
-    if (screenMinY + 52 <= dpi->y)
+    if (screenMinY + 52 <= session.DPI.y)
         return;
 
     const TileElement* element = tile_element; // push tile_element
@@ -208,7 +206,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         max_height = std::max(max_height, VirtualFloorGetHeight());
     }
 
-    if (screenMinY - (max_height + 32) >= dpi->y + dpi->height)
+    if (screenMinY - (max_height + 32) >= session.DPI.y + session.DPI.height)
         return;
 
     session.SpritePosition.x = coords.x;

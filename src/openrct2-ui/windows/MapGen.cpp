@@ -386,7 +386,7 @@ private:
             }
 
             GfxDrawSprite(
-                &dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
+                dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
     }
 
@@ -659,7 +659,7 @@ private:
         }
         else
         {
-            GfxDrawSprite(&dpi, image, pos);
+            GfxDrawSprite(dpi, image, pos);
         }
     }
 

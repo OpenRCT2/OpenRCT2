@@ -372,7 +372,7 @@ public:
             // Darken every even row
             if (i % 2 == 0)
                 GfxFillRect(
-                    &dpi,
+                    dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 },
                       screenCoords + ScreenCoordsXY{ row_width, (TABLE_CELL_HEIGHT - 2) } },
                     ColourMapA[colours[1]].lighter | 0x1000000);
@@ -426,8 +426,7 @@ public:
                 dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
 
             GfxFillRect(
-                &dpi,
-                { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
+                dpi, { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
                 PALETTE_INDEX_10);
 
             screenCoords.x += EXPENDITURE_COLUMN_WIDTH;
@@ -542,7 +541,7 @@ public:
             // Darken every even row
             if (i % 2 == 0)
                 GfxFillRect(
-                    &dpi,
+                    dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
                     ColourMapA[colours[1]].lighter | 0x1000000);
 
@@ -552,7 +551,7 @@ public:
 
         // Horizontal rule below expenditure / income table
         GfxFillRectInset(
-            &dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
+            dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
         // Loan and interest rate
@@ -618,7 +617,7 @@ public:
             ft);
 
         // Graph
-        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -649,14 +648,14 @@ public:
                 dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
-                &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
+                dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
         }
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(&dpi, gCashHistory, 64, coords, yAxisScale, 128);
+        Graph::Draw(dpi, gCashHistory, 64, coords, yAxisScale, 128);
     }
 
 #pragma endregion
@@ -675,7 +674,7 @@ public:
         DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
         // Graph
-        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -706,14 +705,14 @@ public:
                 dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
-                &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
+                dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
         }
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(&dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
+        Graph::Draw(dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
     }
 
 #pragma endregion
@@ -734,7 +733,7 @@ public:
             gCurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
 
         // Graph
-        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -765,14 +764,14 @@ public:
                 dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
-                &dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
+                dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 39;
         }
 
         // X axis labels and values
         screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(&dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
+        Graph::Draw(dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
     }
 
 #pragma endregion
@@ -988,7 +987,7 @@ public:
 
     void OnDrawResearch(DrawPixelInfo& dpi)
     {
-        WindowResearchFundingPagePaint(this, &dpi, WIDX_RESEARCH_FUNDING);
+        WindowResearchFundingPagePaint(this, dpi, WIDX_RESEARCH_FUNDING);
     }
 
 #pragma endregion
@@ -1014,7 +1013,7 @@ public:
             }
 
             GfxDrawSprite(
-                &dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
+                dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
     }
 
