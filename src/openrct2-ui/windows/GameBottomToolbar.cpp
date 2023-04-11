@@ -245,7 +245,7 @@ private:
         News::Item* newsItem;
         Widget* middleOutsetWidget;
 
-        middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+        auto* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
         newsItem = News::GetItem(0);
 
         // Current news item
