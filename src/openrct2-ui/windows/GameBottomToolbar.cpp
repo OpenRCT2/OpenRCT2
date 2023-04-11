@@ -144,9 +144,7 @@ private:
 
     void DrawParkRating(DrawPixelInfo &dpi, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
     {
-        int16_t bar_width;
-
-        bar_width = (factor * 114) / 255;
+        int16_t bar_width = (factor * 114) / 255;
         GfxFillRectInset(
             &dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[1], INSET_RECT_F_30);
         if (!(colour & BAR_BLINK) || GameIsPaused() || (gCurrentRealTimeTicks & 8))
@@ -233,12 +231,8 @@ private:
 
     void DrawNewsItem(DrawPixelInfo &dpi)
     {
-        int32_t itemWidth;
-        News::Item* newsItem;
-        Widget* middleOutsetWidget;
-
         auto* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
-        newsItem = News::GetItem(0);
+        auto* newsItem = News::GetItem(0);
 
         // Current news item
         GfxFillRectInset(
@@ -250,7 +244,7 @@ private:
 
         // Text
         auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
-        itemWidth = middleOutsetWidget->width() - 62;
+        int32_t itemWidth = middleOutsetWidget->width() - 62;
         DrawNewsTicker(
         dpi, screenCoords, itemWidth, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->Text, newsItem->Ticks);
 
