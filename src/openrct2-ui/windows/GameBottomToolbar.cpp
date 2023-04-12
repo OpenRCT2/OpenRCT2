@@ -82,7 +82,7 @@ private:
             + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
                               window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1 };
         // Draw green inset rectangle on panel
-        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         // Figure out how much line height we have to work with.
         uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
@@ -146,18 +146,18 @@ private:
     {
         int16_t bar_width = (factor * 114) / 255;
         GfxFillRectInset(
-            &dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[1], INSET_RECT_F_30);
+            dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[1], INSET_RECT_F_30);
         if (!(colour & BAR_BLINK) || GameIsPaused() || (gCurrentRealTimeTicks & 8))
         {
             if (bar_width > 2)
             {
-                GfxFillRectInset(&dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
+                GfxFillRectInset(dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour, 0);
             }
         }
 
         // Draw thumbs on the sides
-        GfxDrawSprite(&dpi, ImageId(SPR_RATING_LOW), coords - ScreenCoordsXY{ 14, 0 });
-        GfxDrawSprite(&dpi, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
+        GfxDrawSprite(dpi, ImageId(SPR_RATING_LOW), coords - ScreenCoordsXY{ 14, 0 });
+        GfxDrawSprite(dpi, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
     }
 
     void DrawRightPanel(DrawPixelInfo &dpi)
@@ -169,7 +169,7 @@ private:
             + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
                               window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1 };
         // Draw green inset rectangle on panel
-        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         auto screenCoords = ScreenCoordsXY{ (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left
                                              + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
@@ -215,7 +215,7 @@ private:
 
         // Current weather
         auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateCurrent);
-        GfxDrawSprite(&dpi, ImageId(currentWeatherSpriteId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
         // Next weather
         auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateNext);
@@ -223,8 +223,8 @@ private:
         {
             if (gClimateUpdateTimer < 960)
             {
-                GfxDrawSprite(&dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
-                GfxDrawSprite(&dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
+                GfxDrawSprite(dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
+                GfxDrawSprite(dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
             }
         }
     }
@@ -236,7 +236,7 @@ private:
 
         // Current news item
         GfxFillRectInset(
-        &dpi,
+        dpi,
 
         { windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
         windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
@@ -254,7 +254,7 @@ private:
         switch (newsItem->Type)
         {
             case News::ItemType::Ride:
-                GfxDrawSprite(&dpi, ImageId(SPR_RIDE), screenCoords);
+                GfxDrawSprite(dpi, ImageId(SPR_RIDE), screenCoords);
                 break;
             case News::ItemType::PeepOnRide:
             case News::ItemType::Peep:
@@ -263,7 +263,7 @@ private:
                     break;
 
                 DrawPixelInfo cliped_dpi;
-                if (!ClipDrawPixelInfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                if (!ClipDrawPixelInfo(cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                 {
                     break;
                 }
@@ -284,41 +284,41 @@ private:
                 image_id_base++;
 
                 auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
-                GfxDrawSprite(&cliped_dpi, image_id, clipCoords);
+                GfxDrawSprite(cliped_dpi, image_id, clipCoords);
 
                 auto* guest = peep->As<Guest>();
                 if (guest != nullptr)
                 {
                     if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
                     {
-                        GfxDrawSprite(&cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
+                        GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
                     }
                     else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
                     {
-                        GfxDrawSprite(&cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
+                        GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
                     }
                     else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
                     {
-                        GfxDrawSprite(&cliped_dpi, ImageId(image_id_base + 32, guest->HatColour), clipCoords);
+                        GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->HatColour), clipCoords);
                     }
                 }
                 break;
             }
             case News::ItemType::Money:
             case News::ItemType::Campaign:
-                GfxDrawSprite(&dpi, ImageId(SPR_FINANCE), screenCoords);
+                GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenCoords);
                 break;
             case News::ItemType::Research:
-                GfxDrawSprite(&dpi, ImageId(newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                GfxDrawSprite(dpi, ImageId(newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                 break;
             case News::ItemType::Peeps:
-                GfxDrawSprite(&dpi, ImageId(SPR_GUESTS), screenCoords);
+                GfxDrawSprite(dpi, ImageId(SPR_GUESTS), screenCoords);
                 break;
             case News::ItemType::Award:
-                GfxDrawSprite(&dpi, ImageId(SPR_AWARD), screenCoords);
+                GfxDrawSprite(dpi, ImageId(SPR_AWARD), screenCoords);
                 break;
             case News::ItemType::Graph:
-                GfxDrawSprite(&dpi, ImageId(SPR_GRAPH), screenCoords);
+                GfxDrawSprite(dpi, ImageId(SPR_GRAPH), screenCoords);
                 break;
             case News::ItemType::Null:
             case News::ItemType::Blank:
@@ -332,7 +332,7 @@ private:
         Widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 
         GfxFillRectInset(
-            &dpi,
+            dpi,
             { windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
               windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
             colours[1], INSET_RECT_F_30);
@@ -602,18 +602,18 @@ public:
         // Draw panel grey backgrounds
         auto leftTop = windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
         auto rightBottom = windowPos + ScreenCoordsXY{ leftWidget.right, leftWidget.bottom };
-        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
 
         leftTop = windowPos + ScreenCoordsXY{ rightWidget.left, rightWidget.top };
         rightBottom = windowPos + ScreenCoordsXY{ rightWidget.right, rightWidget.bottom };
-        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
 
         if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
         {
             // Draw grey background
             leftTop = windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
             rightBottom = windowPos + ScreenCoordsXY{ middleWidget.right, middleWidget.bottom };
-            GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
 
         DrawWidgets(dpi);
