@@ -519,7 +519,9 @@ void RideRemoveProvisionalTrackPiece()
             auto trackType = next_track.element->AsTrack()->GetTrackType();
             int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
             auto trackRemoveAction = TrackRemoveAction{
-                trackType, trackSequence, { next_track.x, next_track.y, z, static_cast<Direction>(direction) }
+                trackType,
+                trackSequence,
+                { next_track.x, next_track.y, z, static_cast<Direction>(direction) }
             };
             trackRemoveAction.SetFlags(
                 GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
