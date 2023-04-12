@@ -1613,7 +1613,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                 auto trackRemoveAction = TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
-                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_TRACK_DESIGN);
                 GameActions::ExecuteNested(&trackRemoveAction);
                 break;
             }
