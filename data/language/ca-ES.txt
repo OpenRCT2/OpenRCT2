@@ -1221,8 +1221,8 @@ STR_1838    :Satisfacció: {COMMA16} %
 STR_1839    :Fiabilitat: {COMMA16} %
 STR_1840    :Temps avariada: {COMMA16} %
 STR_1841    :Benefici: {CURRENCY2DP} per hora
-STR_1842    :Preferida de: {COMMA16} visitant
-STR_1843    :Preferida de: {COMMA16} visitants
+STR_1842    :Preferida de: {COMMA32} visitant
+STR_1843    :Preferida de: {COMMA32} visitants
 STR_1844    :Seleccioneu el tipus d’informació que voleu veure a la llista d’atraccions
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} visitants
@@ -2193,8 +2193,8 @@ STR_3118    :{BLACK}{STRINGID} va cap a l’atracció
 STR_3119    :{BLACK}{STRINGID} arregla l’atracció
 STR_3120    :Localitza el mecànic disponible més proper o el mecànic assignat per a reparar-ho.
 STR_3121    :No es pot trobar cap mecànic lliure.
-STR_3122    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA16} visitant
-STR_3123    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA16} visitants
+STR_3122    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA32} visitant
+STR_3123    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA32} visitants
 STR_3124    :{STRINGID} avariada
 STR_3125    :{WINDOW_COLOUR_2}Factor d’emoció: {BLACK}+{COMMA16} %
 STR_3126    :{WINDOW_COLOUR_2}Factor d’intensitat: {BLACK}+{COMMA16} %

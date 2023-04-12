@@ -1222,8 +1222,8 @@ STR_1838    :滿意度: {COMMA16}%
 STR_1839    :可靠度: {COMMA16}%
 STR_1840    :故障度: {COMMA16}%
 STR_1841    :利潤: 每小時{CURRENCY2DP}
-STR_1842    :{COMMA16}遊客最愛的遊樂設施
-STR_1843    :{COMMA16}遊客最愛的遊樂設施
+STR_1842    :{COMMA32}遊客最愛的遊樂設施
+STR_1843    :{COMMA32}遊客最愛的遊樂設施
 STR_1844    :選擇要在遊樂設施/店面列表中顯示的資訊類別
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32}遊客
@@ -2194,8 +2194,8 @@ STR_3118    :{BLACK}{STRINGID}正在前往到這個遊樂設施
 STR_3119    :{BLACK}{STRINGID}正在修復這個遊樂設施
 STR_3120    :將最鄰近, 或在維修此遊樂設施的維修人員定位
 STR_3121    :無法將維修人員定位, 或者附近的維修人員都在工作中
-STR_3122    :{WINDOW_COLOUR_2}遊客的最愛: {BLACK}{COMMA16}位遊客
-STR_3123    :{WINDOW_COLOUR_2}遊客的最愛: {BLACK}{COMMA16}位遊客
+STR_3122    :{WINDOW_COLOUR_2}遊客的最愛: {BLACK}{COMMA32}位遊客
+STR_3123    :{WINDOW_COLOUR_2}遊客的最愛: {BLACK}{COMMA32}位遊客
 STR_3124    :故障的{STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}興奮度加成: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}刺激度加成: {BLACK}+{COMMA16}%

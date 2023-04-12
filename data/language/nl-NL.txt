@@ -1219,8 +1219,8 @@ STR_1838    :Voldoening: {COMMA16}%
 STR_1839    :Betrouwbaarheid: {COMMA16}%
 STR_1840    :Stilstandtijd: {COMMA16}%
 STR_1841    :Winst: {CURRENCY2DP} per uur
-STR_1842    :Favoriete attractie van: {COMMA16} bezoeker
-STR_1843    :Favoriete attractie van: {COMMA16} bezoekers
+STR_1842    :Favoriete attractie van: {COMMA32} bezoeker
+STR_1843    :Favoriete attractie van: {COMMA32} bezoekers
 STR_1844    :Selecteer het type informatie dat je in de attractielijst wilt zien
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} bezoekers
@@ -2189,8 +2189,8 @@ STR_3118    :{BLACK}{STRINGID} gaat naar deze attractie
 STR_3119    :{BLACK}{STRINGID} is bezig deze attractie te repareren
 STR_3120    :Vind de dichtstbijzijnde monteur of de monteur die de attractie aan het repareren is
 STR_3121    :Kan geen monteur vinden of alle monteurs in de buurt zijn bezig
-STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoeker
-STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoekers
+STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA32} bezoeker
+STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA32} bezoekers
 STR_3124    :{STRINGID} (vernield)
 STR_3125    :{WINDOW_COLOUR_2}Plezierfactor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}+{COMMA16}%

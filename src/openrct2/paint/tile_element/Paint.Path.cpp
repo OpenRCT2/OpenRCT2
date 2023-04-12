@@ -274,9 +274,9 @@ static void PathBitBenchesPaint(
 
 /* rct2: 0x006A6008 */
 static void PathBitJumpingFountainsPaint(
-    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, DrawPixelInfo* dpi)
+    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, DrawPixelInfo& dpi)
 {
-    if (dpi->zoom_level > ZoomLevel{ 0 })
+    if (dpi.zoom_level > ZoomLevel{ 0 })
         return;
 
     auto imageId = imageTemplate.WithIndex(pathBitEntry.image);
@@ -781,9 +781,7 @@ static void Sub6A3F61(
     // Probably drawing benches etc.
     PROFILED_FUNCTION();
 
-    DrawPixelInfo* dpi = &session.DPI;
-
-    if (dpi->zoom_level <= ZoomLevel{ 1 })
+    if (session.DPI.zoom_level <= ZoomLevel{ 1 })
     {
         if (!gTrackDesignSaveMode)
         {
@@ -826,7 +824,7 @@ static void Sub6A3F61(
                                 sceneryImageTemplate);
                             break;
                         case PathBitDrawType::JumpingFountain:
-                            PathBitJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, dpi);
+                            PathBitJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.DPI);
                             break;
                     }
 

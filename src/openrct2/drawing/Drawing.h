@@ -502,7 +502,7 @@ extern int32_t gPickupPeepY;
 
 extern bool gTinyFontAntiAliased;
 
-bool ClipDrawPixelInfo(DrawPixelInfo* dst, DrawPixelInfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
+bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
 void GfxSetDirtyBlocks(const ScreenRect& rect);
 void GfxInvalidateScreen();
 
@@ -512,20 +512,20 @@ void LoadPalette();
 
 // other
 void GfxClear(DrawPixelInfo* dpi, uint8_t paletteIndex);
-void GfxFilterPixel(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
+void GfxFilterPixel(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
 void GfxInvalidatePickedUpPeep();
-void GfxDrawPickedUpPeep(DrawPixelInfo* dpi);
+void GfxDrawPickedUpPeep(DrawPixelInfo& dpi);
 
 // line
-void GfxDrawLine(DrawPixelInfo* dpi, const ScreenLine& line, int32_t colour);
-void GfxDrawLineSoftware(DrawPixelInfo* dpi, const ScreenLine& line, int32_t colour);
+void GfxDrawLine(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour);
+void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour);
 void GfxDrawDashedLine(
-    DrawPixelInfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
+    DrawPixelInfo& dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
 
 // rect
-void GfxFillRect(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour);
-void GfxFillRectInset(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
-void GfxFilterRect(DrawPixelInfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
+void GfxFillRect(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour);
+void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
+void GfxFilterRect(DrawPixelInfo& dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
 bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);
@@ -542,16 +542,16 @@ bool IsCsgLoaded();
 void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL GfxBmpSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL GfxRleSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args);
-void FASTCALL GfxDrawSprite(DrawPixelInfo* dpi, const ImageId image_id, const ScreenCoordsXY& coords);
+void FASTCALL GfxDrawSprite(DrawPixelInfo& dpi, const ImageId image_id, const ScreenCoordsXY& coords);
 void FASTCALL GfxDrawGlyph(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL GfxDrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
 void FASTCALL GfxDrawSpriteRawMasked(
     DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage);
-void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
+void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
 void FASTCALL GfxDrawSpritePaletteSetSoftware(
-    DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+    DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL GfxDrawSpriteRawMaskedSoftware(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
+    DrawPixelInfo& dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
 
 // string
 void GfxDrawString(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});

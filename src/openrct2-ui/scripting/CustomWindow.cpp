@@ -530,14 +530,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            WindowDrawWidgets(*this, &dpi);
+            WindowDrawWidgets(*this, dpi);
             DrawTabImages(dpi);
             if (viewport != nullptr)
             {
                 auto widgetIndex = GetViewportWidgetIndex();
                 if (WidgetIsVisible(*this, widgetIndex.value_or(false)))
                 {
-                    WindowDrawViewport(&dpi, *this);
+                    WindowDrawViewport(dpi, *this);
                 }
             }
         }
@@ -554,7 +554,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     DrawPixelInfo widgetDpi;
                     if (ClipDrawPixelInfo(
-                            &widgetDpi, &dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
+                            widgetDpi, dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
                             widget.height()))
                     {
                         auto ctx = onDraw.context();
@@ -751,7 +751,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& info = GetInfo(this);
             if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
             {
-                info.ListViews[scrollIndex].Paint(this, &dpi, &scrolls[scrollIndex]);
+                info.ListViews[scrollIndex].Paint(this, dpi, &scrolls[scrollIndex]);
             }
         }
 
@@ -866,7 +866,7 @@ namespace OpenRCT2::Ui::Windows
                         auto imageOffset = frame % tab.imageFrameCount;
                         image = image.WithIndex(image.GetIndex() + imageOffset);
                     }
-                    GfxDrawSprite(&dpi, image, leftTop);
+                    GfxDrawSprite(dpi, image, leftTop);
                 }
                 tabIndex++;
             }

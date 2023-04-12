@@ -1190,8 +1190,7 @@ void VehicleVisualMiniGolfPlayer(
         return;
     }
 
-    DrawPixelInfo* edi = &session.DPI;
-    if (edi->zoom_level >= ZoomLevel{ 2 })
+    if (session.DPI.zoom_level >= ZoomLevel{ 2 })
     {
         return;
     }
@@ -1227,8 +1226,7 @@ void VehicleVisualMiniGolfBall(
         return;
     }
 
-    DrawPixelInfo* edi = &session.DPI;
-    if (edi->zoom_level >= ZoomLevel{ 1 })
+    if (session.DPI.zoom_level >= ZoomLevel{ 1 })
     {
         return;
     }

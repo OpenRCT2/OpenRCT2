@@ -1225,8 +1225,8 @@ STR_1838    :Satisfaction : {COMMA16}%
 STR_1839    :Fiabilité : {COMMA16}%
 STR_1840    :Immobilisation : {COMMA16}%
 STR_1841    :Bénéfice : {CURRENCY} par heure
-STR_1842    :Préférée de : {COMMA16} visiteur
-STR_1843    :Préférée de : {COMMA16} visiteurs
+STR_1842    :Préférée de : {COMMA32} visiteur
+STR_1843    :Préférée de : {COMMA32} visiteurs
 STR_1844    :Sélectionnez le type d’information à afficher dans la liste des attractions
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} visiteurs
@@ -2197,8 +2197,8 @@ STR_3118    :{BLACK}{STRINGID} se dirige vers l’attraction
 STR_3119    :{BLACK}{STRINGID} répare l’attraction
 STR_3120    :Localiser le mécanicien le plus proche (disponible ou réparant l’attraction)
 STR_3121    :Impossible de localiser un mécanicien ou les mécaniciens les plus proches sont tous occupés
-STR_3122    :{WINDOW_COLOUR_2}Attraction préférée de {BLACK}{COMMA16} visiteur
-STR_3123    :{WINDOW_COLOUR_2}Attraction préférée de {BLACK}{COMMA16} visiteurs
+STR_3122    :{WINDOW_COLOUR_2}Attraction préférée de {BLACK}{COMMA32} visiteur
+STR_3123    :{WINDOW_COLOUR_2}Attraction préférée de {BLACK}{COMMA32} visiteurs
 STR_3124    :En panne {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Indice d’engouement : {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Indice d’intensité : {BLACK}+{COMMA16}%

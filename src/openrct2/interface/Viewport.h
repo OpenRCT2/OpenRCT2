@@ -131,10 +131,10 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep);
 void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff* peep);
 void ViewportUpdateSmartFollowVehicle(WindowBase* window);
 void ViewportRender(
-    DrawPixelInfo* dpi, const Viewport* viewport, const ScreenRect& screenRect,
+    DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 void ViewportPaint(
-    const Viewport* viewport, DrawPixelInfo* dpi, const ScreenRect& screenRect,
+    const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 
 CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords);

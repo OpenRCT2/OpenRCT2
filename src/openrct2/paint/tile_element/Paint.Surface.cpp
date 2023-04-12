@@ -1023,12 +1023,11 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 {
     PROFILED_FUNCTION();
 
-    DrawPixelInfo* dpi = &session.DPI;
     session.InteractionType = ViewportInteractionItem::Terrain;
     session.Flags |= PaintSessionFlags::PassedSurface;
     session.Surface = &tileElement;
 
-    const auto zoomLevel = dpi->zoom_level;
+    const auto zoomLevel = session.DPI.zoom_level;
     const uint8_t rotation = session.CurrentRotation;
     const auto terrain_type = tileElement.GetSurfaceStyle();
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);

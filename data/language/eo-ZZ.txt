@@ -1220,8 +1220,8 @@ STR_1838    :Kontento: {COMMA16}%
 STR_1839    :Fidindo: {COMMA16}%
 STR_1840    :Periodo de nefunkciado: {COMMA16}%
 STR_1841    :Profito: po {CURRENCY2DP} por horo
-STR_1842    :Plej ŝatata de: {COMMA16} gasto
-STR_1843    :Plej ŝatata de: {COMMA16} gastoj
+STR_1842    :Plej ŝatata de: {COMMA32} gasto
+STR_1843    :Plej ŝatata de: {COMMA32} gastoj
 STR_1844    :Elekti tipon de informoj por montri en listo de atrakcioj
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} gastoj
@@ -2190,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID} iras al la atrakcio
 STR_3119    :{BLACK}{STRINGID} riparas la atrakcion
 STR_3120    :Trovi plej proksiman disponeblan mekanikiston, aŭ mekanikiston, kiu riparas la atrakcion
 STR_3121    :Ne eblas trovi mekanikiston, aŭ ĉiuj proksimaj mekanikistoj okupiĝas
-STR_3122    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA16} gasto
-STR_3123    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA16} gastoj
+STR_3122    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA32} gasto
+STR_3123    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA32} gastoj
 STR_3124    :Rompita {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Faktoro de Eksciteco: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Faktoro de Intenseco: {BLACK}+{COMMA16}%

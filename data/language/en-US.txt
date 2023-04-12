@@ -111,8 +111,8 @@ STR_1819    :{WINDOW_COLOUR_2}All guests (summarized)
 
 STR_1834    :Guests favorite
 
-STR_1842    :Favorite of: {COMMA16} guest
-STR_1843    :Favorite of: {COMMA16} guests
+STR_1842    :Favorite of: {COMMA32} guest
+STR_1843    :Favorite of: {COMMA32} guests
 
 STR_1929    :{RED}{STRINGID} still hasn’t been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
 
@@ -200,8 +200,8 @@ STR_3100    :Select second color
 STR_3101    :Select third color
 STR_3102    :Re-paint colored scenery on landscape
 
-STR_3122    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guest
-STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guests
+STR_3122    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA32} guest
+STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA32} guests
 
 STR_3372    :{BLACK}= A.T.M.
 STR_3373    :{BLACK}= Restroom
