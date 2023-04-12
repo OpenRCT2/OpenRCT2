@@ -210,6 +210,7 @@ struct Vehicle : EntityBase
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
     CoordsXY BoatLocation;
+    uint8_t BlockBrakeSpeed;
 
     constexpr bool IsHead() const
     {
@@ -377,6 +378,8 @@ private:
     void UpdateLandscapeDoor() const;
     void UpdateLandscapeDoorBackwards() const;
     int32_t CalculateRiderBraking() const;
+    uint8_t ChooseBrakeSpeed() const;
+    void PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake);
 
     void Loc6DCE02(const Ride& curRide);
 };

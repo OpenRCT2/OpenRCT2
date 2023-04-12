@@ -1674,6 +1674,8 @@ namespace RCT1
                     // Skipping IsHighlighted()
 
                     auto trackType = dst2->GetTrackType();
+                    // Brakes import as closed to preserve legacy behaviour
+                    dst2->SetBrakeClosed(trackType == TrackElemType::Brakes);
                     if (TrackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
@@ -2817,6 +2819,7 @@ namespace RCT1
         {
             dst->SetFlag(VehicleFlags::Crashed);
         }
+        dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }
 
     template<> void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)
