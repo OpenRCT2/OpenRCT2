@@ -1222,8 +1222,8 @@ STR_1838    :Tyytyväisyys: {COMMA16}%
 STR_1839    :Luotettavuus: {COMMA16}%
 STR_1840    :Seisokit: {COMMA16}%
 STR_1841    :Tuotto: {CURRENCY2DP} per tunti
-STR_1842    :{COMMA16} kävijän lempilaite
-STR_1843    :{COMMA16} kävijän lempilaite
+STR_1842    :{COMMA32} kävijän lempilaite
+STR_1843    :{COMMA32} kävijän lempilaite
 STR_1844    :valitse tietotyyppi laite-/kohdelistalle
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} kävijää
@@ -2194,8 +2194,8 @@ STR_3118    :{BLACK}{STRINGID} matkalla laitteelle
 STR_3119    :{BLACK}{STRINGID} korjaa laitetta
 STR_3120    :Paikanna lähin vapaana oleva mekaanikko, tai mekaanikko, joka korjaa tätä laitetta
 STR_3121    :Mekaanikkoa ei löydy, tai kaikki mekaanikot ovat kiireisiä
-STR_3122    :{WINDOW_COLOUR_2}Suosikkilaite: {BLACK}{COMMA16} kävijälle
-STR_3123    :{WINDOW_COLOUR_2}Suosikkilaite: {BLACK}{COMMA16} kävijälle
+STR_3122    :{WINDOW_COLOUR_2}Suosikkilaite: {BLACK}{COMMA32} kävijälle
+STR_3123    :{WINDOW_COLOUR_2}Suosikkilaite: {BLACK}{COMMA32} kävijälle
 STR_3124    :Hajonnut {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Huvituskerroin: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Jännityskerroin: {BLACK}+{COMMA16}%

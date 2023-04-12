@@ -1222,8 +1222,8 @@ STR_1838    :만족도: {COMMA16}%
 STR_1839    :신뢰도: {COMMA16}%
 STR_1840    :고장률: {COMMA16}%
 STR_1841    :순익: 시간당 {CURRENCY2DP}
-STR_1842    :좋아하는 손님 수: {COMMA16}명
-STR_1843    :좋아하는 손님 수: {COMMA16}명
+STR_1842    :좋아하는 손님 수: {COMMA32}명
+STR_1843    :좋아하는 손님 수: {COMMA32}명
 STR_1844    :놀이기구/시설 목록에서 보여줄 정보를 선택하세요
 STR_1845    :{MONTHYEAR}
 STR_1846    :손님 {COMMA32}명
@@ -2194,8 +2194,8 @@ STR_3118    :{BLACK}{STRINGID}(이)가 놀이기구로 향하고 있음
 STR_3119    :{BLACK}{STRINGID}(이)가 놀이기구를 수리하고 있음
 STR_3120    :가까운 정비기술자를 찾아서 놀이기구를 수리하게 합니다
 STR_3121    :정비기술자가 근처에 없거나 모두 바쁩니다
-STR_3122    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA16}명
-STR_3123    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA16}명
+STR_3122    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA32}명
+STR_3123    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA32}명
 STR_3124    :고장난 {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}흥미도 인수: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}격렬도 인수: {BLACK}+{COMMA16}%
