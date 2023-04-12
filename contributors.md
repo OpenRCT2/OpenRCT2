@@ -105,6 +105,7 @@ The following people are not part of the development team, but have been contrib
 * Andrew Arnold (fidwell) - Added window support for more scenery groups.
 * Josh Trzebiatowski (trzejos) - Ride and scenery filtering
 * (kyphii) - Extended color selection
+* Phumdol Lookthipnapha (beam41) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)

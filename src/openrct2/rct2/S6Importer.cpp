@@ -650,7 +650,7 @@ namespace RCT2
             if (String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6", true)
                 || String::Equals(_s6.ScenarioFilename, "infernal views.sea", true))
             {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 }.ToCoordsXY());
+                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 });
 
                 surfaceElement->SetWaterHeight(96);
             }
@@ -659,7 +659,7 @@ namespace RCT2
                 || String::Equals(_s6.ScenarioFilename, "six flags holland.sea", true))
 
             {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 126, 73 }.ToCoordsXY());
+                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 126, 73 });
 
                 surfaceElement->SetWaterHeight(96);
             }
@@ -1842,15 +1842,15 @@ namespace RCT2
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
             dst->Type = GetEntityTypeFromRCT2Sprite(src);
-            dst->sprite_height_negative = src->SpriteHeightNegative;
+            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
             dst->Id = EntityId::FromUnderlying(src->EntityIndex);
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
-            dst->sprite_width = src->SpriteWidth;
-            dst->sprite_height_positive = src->SpriteHeightPositive;
-            dst->SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
-            dst->sprite_direction = src->EntityDirection;
+            dst->SpriteData.Width = src->SpriteWidth;
+            dst->SpriteData.HeightMax = src->SpriteHeightPositive;
+            dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
+            dst->Orientation = src->EntityDirection;
         }
 
         void ImportEntity(const RCT12EntityBase& src);

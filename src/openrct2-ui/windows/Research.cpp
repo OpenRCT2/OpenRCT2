@@ -158,7 +158,7 @@ class ResearchWindow final : public Window
         InvalidateWidget(WIDX_TAB_1 + page);
     }
 
-    void OnMouseDown(WidgetIndex widgetIndex)
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         if (page == WINDOW_RESEARCH_PAGE_FUNDING)
         {
@@ -166,7 +166,7 @@ class ResearchWindow final : public Window
         }
     }
 
-    void OnMouseUp(WidgetIndex widgetIndex)
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         // Switch tab or close
         switch (widgetIndex)
@@ -286,7 +286,6 @@ class ResearchWindow final : public Window
         DrawTabImage(dpi, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
         DrawTabImage(dpi, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);
     }
-
 };
 
 WindowBase* WindowResearchOpen()
@@ -326,7 +325,8 @@ void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetInde
 {
     // Offset the widget index to allow reuse from other windows
     baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
+    auto screenCoords = w->windowPos
+        + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
@@ -463,8 +463,8 @@ void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, Widg
         gDropdownItems[i].Args = ResearchFundingLevelNames[i];
     }
     WindowDropdownShowTextCustomWidth(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, w->colours[1], 0,
-        Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
 
     int32_t currentResearchLevel = gResearchFundingLevel;
     Dropdown::SetChecked(currentResearchLevel, true);

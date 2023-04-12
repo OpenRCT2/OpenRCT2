@@ -587,7 +587,7 @@ T* WindowCreate(WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width =
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
 }
 template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0, TArgs&&... args)
+T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags, TArgs&&... args)
 {
     return static_cast<T*>(
         WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, width, height, flags | WF_AUTO_POSITION));

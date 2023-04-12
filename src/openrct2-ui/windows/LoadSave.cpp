@@ -496,11 +496,6 @@ public:
     {
         widgets = window_loadsave_widgets;
 
-        min_width = WW;
-        min_height = WH / 2;
-        max_width = WW * 2;
-        max_height = WH * 2;
-
         const auto uiContext = OpenRCT2::GetContext()->GetUiContext();
         if (!uiContext->HasFilePicker())
         {
@@ -697,6 +692,10 @@ public:
 public:
     void OnOpen() override
     {
+        min_width = WW;
+        min_height = WH / 2;
+        max_width = WW * 2;
+        max_height = WH * 2;
     }
 
     void OnClose() override
@@ -730,7 +729,7 @@ public:
         window_loadsave_widgets[WIDX_SORT_NAME].left = 4;
         window_loadsave_widgets[WIDX_SORT_NAME].right = window_loadsave_widgets[WIDX_SORT_DATE].left - 1;
 
-        window_loadsave_widgets[WIDX_SCROLL].right = width - 4;
+        window_loadsave_widgets[WIDX_SCROLL].right = width - 5;
         window_loadsave_widgets[WIDX_SCROLL].bottom = height - 30;
 
         window_loadsave_widgets[WIDX_BROWSE].top = height - 24;
@@ -787,11 +786,6 @@ public:
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 }, STR_DATE, ft,
             { COLOUR_GREY });
-    }
-
-    OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
-    {
-        return { fallback, {} };
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override

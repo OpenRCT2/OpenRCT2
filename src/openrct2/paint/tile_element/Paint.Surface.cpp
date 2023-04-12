@@ -1026,7 +1026,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     DrawPixelInfo* dpi = &session.DPI;
     session.InteractionType = ViewportInteractionItem::Terrain;
     session.Flags |= PaintSessionFlags::PassedSurface;
-    session.SurfaceElement = reinterpret_cast<const TileElement*>(&tileElement);
+    session.Surface = &tileElement;
 
     const auto zoomLevel = dpi->zoom_level;
     const uint8_t rotation = session.CurrentRotation;
@@ -1141,7 +1141,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         if (OpenRCT2::TileInspector::IsElementSelected(elementPtr))
         {
-            imageId = imageId.WithRemap(FilterPaletteID::Palette44);
+            imageId = imageId.WithRemap(FilterPaletteID::PaletteGhost);
         }
 
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
@@ -1220,7 +1220,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             {
                 // Walls
                 // Loc661089:
-                const auto fpId = static_cast<FilterPaletteID>((((mapSelectionType - 9) + rotation) & 3) + 0x21);
+                const auto fpId = static_cast<FilterPaletteID>(
+                    (((mapSelectionType - MAP_SELECT_TYPE_EDGE_0 + 1) + rotation) & 3)
+                    + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
@@ -1229,7 +1231,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // Loc661051:(no jump)
                 // Selection split into four quarter segments
                 const auto fpId = static_cast<FilterPaletteID>(
-                    (((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27);
+                    (((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3)
+                    + static_cast<uint32_t>(FilterPaletteID::PaletteQuarterMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_QUARTER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
@@ -1242,7 +1245,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                     eax = (mapSelectionType + rotation) & 3;
                 }
 
-                const auto fpId = static_cast<FilterPaletteID>(eax + 0x21);
+                const auto fpId = static_cast<FilterPaletteID>(
+                    eax + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
@@ -1251,7 +1255,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // The water tool should draw its grid _on_ the water, rather than on the surface under water.
                 auto [local_height, local_surfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = static_cast<FilterPaletteID>(38);
+                const auto fpId = FilterPaletteID::PaletteWaterMarker;
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[local_surfaceShape], fpId);
 
                 PaintStruct* backup = session.LastPS;
@@ -1272,10 +1276,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 continue;
             }
 
-            FilterPaletteID fpId = static_cast<FilterPaletteID>(37);
+            FilterPaletteID fpId = FilterPaletteID::PaletteSceneryGroundMarker;
             if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN)
             {
-                fpId = static_cast<FilterPaletteID>(43);
+                fpId = FilterPaletteID::PaletteRideGroundMarker;
             }
 
             const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
