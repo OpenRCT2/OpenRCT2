@@ -4541,21 +4541,22 @@ static void WindowRideColourDropdown(WindowBase* w, WidgetIndex widgetIndex, int
         case WIDX_TRACK_MAIN_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::TrackColourMain, dropdownIndex, w->ride_colour);
+                rideId, RideSetAppearanceType::TrackColourMain, ColourDropDownIndexToColour(dropdownIndex), w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_TRACK_ADDITIONAL_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::TrackColourAdditional, dropdownIndex, w->ride_colour);
+                rideId, RideSetAppearanceType::TrackColourAdditional, ColourDropDownIndexToColour(dropdownIndex),
+                w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_TRACK_SUPPORT_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::TrackColourSupports, dropdownIndex, w->ride_colour);
+                rideId, RideSetAppearanceType::TrackColourSupports, ColourDropDownIndexToColour(dropdownIndex), w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
@@ -4607,21 +4608,22 @@ static void WindowRideColourDropdown(WindowBase* w, WidgetIndex widgetIndex, int
         case WIDX_VEHICLE_BODY_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::VehicleColourBody, dropdownIndex, w->vehicleIndex);
+                rideId, RideSetAppearanceType::VehicleColourBody, ColourDropDownIndexToColour(dropdownIndex), w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_VEHICLE_TRIM_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::VehicleColourTrim, dropdownIndex, w->vehicleIndex);
+                rideId, RideSetAppearanceType::VehicleColourTrim, ColourDropDownIndexToColour(dropdownIndex), w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_VEHICLE_TERNARY_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::VehicleColourTernary, dropdownIndex, w->vehicleIndex);
+                rideId, RideSetAppearanceType::VehicleColourTernary, ColourDropDownIndexToColour(dropdownIndex),
+                w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;

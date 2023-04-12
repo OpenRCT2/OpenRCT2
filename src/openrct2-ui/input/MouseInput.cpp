@@ -1400,9 +1400,7 @@ void InputStateWidgetPressed(
                                 dropdown_index = gDropdownDefaultIndex;
                             }
                         }
-                        WindowEventDropdownCall(
-                            cursor_w, cursor_widgetIndex,
-                            (gDropdownIsColour) ? ColourDropDownIndexToColour(dropdown_index) : dropdown_index);
+                        WindowEventDropdownCall(cursor_w, cursor_widgetIndex, dropdown_index);
                     }
                 }
             }

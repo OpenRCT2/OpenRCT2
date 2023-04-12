@@ -185,7 +185,6 @@ enum : PaletteIndex
     PALETTE_INDEX_254 = 254, // Primary remap 11
 };
 
-
 constexpr size_t PALETTE_COUNT = 256;
 
 constexpr uint8_t PALETTE_OFFSET_DYNAMIC = PALETTE_INDEX_10;
