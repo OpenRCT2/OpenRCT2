@@ -121,10 +121,6 @@ class ResearchWindow final : public Window
         ResearchUpdateUncompletedTypes();
     }
 
-    /**
-     *
-     *  rct2: 0x0069CAC5
-     */
     void SetPage(int32_t p)
     {
         page = p;
@@ -154,11 +150,6 @@ class ResearchWindow final : public Window
         Invalidate();
     }
 
-    /**
-     *
-     *  rct2: 0x0069CBA6
-     *  rct2: 0x0069DC23
-     */
     void OnUpdate() override
     {
         // Tab animation
@@ -305,10 +296,6 @@ WindowBase* WindowResearchOpen()
 
 #pragma region Development page
 
-/**
- *
- *  rct2: 0x006B6B38
- */
 void WindowResearchDevelopmentMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
 {
     baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
@@ -319,10 +306,6 @@ void WindowResearchDevelopmentMouseUp(WidgetIndex widgetIndex, WidgetIndex baseW
     }
 }
 
-/**
- *
- *  rct2: 0x006B6819
- */
 void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex)
 {
     // Offset the widget index to allow reuse from other windows
@@ -339,10 +322,6 @@ void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetI
     }
 }
 
-/**
- *
- *  rct2: 0x006B689B
- */
 void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex)
 {
     // Offset the widget index to allow reuse from other windows
@@ -468,10 +447,6 @@ void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetInde
 
 #pragma region Funding page
 
-/**
- *
- *  rct2: 0x0069DB66
- */
 void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
 {
     // Offset the widget index to allow reuse from other windows
@@ -495,10 +470,6 @@ void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, Widg
     Dropdown::SetChecked(currentResearchLevel, true);
 }
 
-/**
- *
- *  rct2: 0x0069DB3F
- */
 void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
 {
     // Offset the widget index to allow reuse from other windows
@@ -513,10 +484,6 @@ void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidge
     }
 }
 
-/**
- *
- *  rct2: 0x0069DB6D
- */
 void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedIndex, WidgetIndex baseWidgetIndex)
 {
     // Offset the widget index to allow reuse from other windows
@@ -529,10 +496,6 @@ void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedInde
     GameActions::Execute(&gameAction);
 }
 
-/**
- *
- *  rct2: 0x0069DA64
- */
 void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex)
 {
     // Offset the widget index to allow reuse from other windows
@@ -580,10 +543,6 @@ void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex
     }
 }
 
-/**
-*
-*  rct2: 0x0069DAF0
-*/
 void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
