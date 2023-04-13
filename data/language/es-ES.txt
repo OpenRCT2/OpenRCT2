@@ -3656,6 +3656,32 @@ STR_6547    :Todos los escenarios
 STR_6548    :Mostrar pasamanos en los cruces
 STR_6549    :¡Los objetos de compatibilidad no se pueden seleccionar!
 STR_6550    :Esta entrada se incluye para asegurar la compatibilidad con objetos antiguos o dañados. No puede ser seleccionada, sólo deseleccionada.
+STR_6551    :Verde militar
+STR_6552    :Melón
+STR_6553    :Bronceado
+STR_6554    :Granate
+STR_6555    :Rosa coral
+STR_6556    :Verde bosque
+STR_6557    :Verde Chartreuse
+STR_6558    :Verde cazador
+STR_6559    :Verde claro
+STR_6560    :Verde lima
+STR_6561    :Sepia
+STR_6562    :Melocotón
+STR_6563    :Azul lavanda
+STR_6564    :Verde esmeralda
+STR_6565    :Aguamarina
+STR_6566    :Violeta
+STR_6567    :Lavanda
+STR_6568    :Naranja pastel
+STR_6569    :Azul oscuro
+STR_6570    :Rosa pastel
+STR_6571    :Café
+STR_6572    :Beige
+STR_6573    :Invisible
+STR_6574    :Vacío
+STR_6575    :Permitir esquemas de colores especiales
+STR_6576    :Agrega colores especiales al menú desplegable de colores
 
 ##############
 # Escenarios #
