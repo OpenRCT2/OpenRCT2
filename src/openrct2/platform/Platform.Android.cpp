@@ -137,7 +137,7 @@ namespace Platform
         jmethodID getIsImperialLocaleMeasurementFormat = env->GetMethodID(
             activityClass, "isImperialLocaleMeasurementFormat", "()Z");
 
-        jboolean isImperial = env->CallBooleanMethod(activity, isImperialLocaleMeasurementFormat);
+        jboolean isImperial = env->CallBooleanMethod(activity, getIsImperialLocaleMeasurementFormat);
 
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(activityClass);
