@@ -19,7 +19,6 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../entity/Yaw.hpp"
 #include "../localisation/Language.h"
 #include "../rct2/DATLimits.h"
@@ -257,7 +256,7 @@ void RideObject::Load()
     _legacyType.naming.Name = LanguageAllocateObjectString(GetName());
     _legacyType.naming.Description = LanguageAllocateObjectString(GetDescription());
     _legacyType.capacity = LanguageAllocateObjectString(GetCapacity());
-    _legacyType.images_offset = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.images_offset = LoadImages();
     _legacyType.vehicle_preset_list = &_presetColours;
 
     int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
@@ -326,7 +325,7 @@ void RideObject::Unload()
     LanguageFreeObjectString(_legacyType.naming.Name);
     LanguageFreeObjectString(_legacyType.naming.Description);
     LanguageFreeObjectString(_legacyType.capacity);
-    GfxObjectFreeImages(_legacyType.images_offset, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.naming.Name = 0;
     _legacyType.naming.Description = 0;

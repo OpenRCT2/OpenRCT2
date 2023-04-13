@@ -106,6 +106,7 @@ The following people are not part of the development team, but have been contrib
 * Josh Trzebiatowski (trzejos) - Ride and scenery filtering
 * (kyphii) - Extended color selection
 * Phumdol Lookthipnapha (beam41) - Misc.
+* Nikolas Parshook (nparshook) - Misc.
 * Wenzhao Qiu (qwzhaox) - Misc.
 
 ## Bug fixes
