@@ -28,11 +28,13 @@ constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
 
 constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
 
-static constexpr const uint8_t _appropriateImageDropdownItemsPerRow[34] = {
+static constexpr const std::array<uint8_t, 57> _appropriateImageDropdownItemsPerRow = {
     1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
     5, 4, 4, 5, 5, 5, 4, 5, 6, 5, // 20
     5, 7, 4, 5, 6, 5, 6, 6, 6, 6, // 30
-    6, 8, 9, 8,                   // 34
+    6, 8, 8, 8, 9, 9, 9, 9, 9, 9, // 40
+    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, // 50
+    9, 9, 9, 9, 9, 9, 9,          // 56
 };
 
 enum
@@ -542,7 +544,8 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, numColours, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_NUM_ORIGINAL]);
+        Dropdown::Flag::StayOpen, numColours, 12, 12,
+        DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;
@@ -551,7 +554,7 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
 
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
 {
-    return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 8;
+    return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 9;
 }
 
 bool WindowDropDownHasMultipleColumns(size_t numItems)
