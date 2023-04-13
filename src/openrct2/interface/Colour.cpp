@@ -11,6 +11,7 @@
 
 #include "../core/EnumMap.hpp"
 #include "../drawing/Drawing.h"
+#include "../scenario/Scenario.h"
 #include "../sprites.h"
 
 #include <algorithm>

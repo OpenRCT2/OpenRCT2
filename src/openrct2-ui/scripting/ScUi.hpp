@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../interface/Dropdown.h"
 #    include "../windows/Window.h"
 #    include "CustomMenu.h"
 #    include "ScImageManager.hpp"
@@ -366,6 +367,23 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        void setDropdownColours(const std::vector<DukValue>& colours)
+        {
+            std::vector<colour_t> newColours;
+            for (auto& c : colours)
+            {
+                if (c.type() == DukValue::NUMBER)
+                {
+                    const auto colour = static_cast<colour_t>(c.as_uint());
+                    if (colour < COLOUR_COUNT)
+                    {
+                        newColours.push_back(c.as_uint());
+                    }
+                }
+            }
+            Dropdown::SetDropdownNormalColours(newColours);
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -388,6 +406,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
             dukglue_register_method(ctx, &ScUi::registerToolboxMenuItem, "registerToolboxMenuItem");
             dukglue_register_method(ctx, &ScUi::registerShortcut, "registerShortcut");
+            dukglue_register_method(ctx, &ScUi::setDropdownColours, "setDropdownColours");
         }
 
     private:

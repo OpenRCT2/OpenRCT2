@@ -22,6 +22,7 @@
 #include <openrct2/sprites.h>
 
 using namespace OpenRCT2;
+using namespace Dropdown;
 
 // The maximum number of rows to list before items overflow into new columns
 constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
@@ -445,77 +446,99 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
     return -1;
 }
 
-// clang-format off
-// colour_t ordered for use in color dropdown
-static constexpr colour_t kColoursDropdownOrder[] = {
-    COLOUR_BLACK,
-    COLOUR_SATURATED_RED,
-    COLOUR_DARK_ORANGE,
-    COLOUR_DARK_YELLOW,
-    COLOUR_GRASS_GREEN_DARK,
-    COLOUR_SATURATED_GREEN,
-    COLOUR_AQUA_DARK,
-    COLOUR_DARK_BLUE,
-    COLOUR_SATURATED_PURPLE_DARK,
+namespace Dropdown
+{
+    static const std::vector<colour_t> kOrderedNormalColoursDefault = {
+        COLOUR_BLACK,
+        COLOUR_SATURATED_RED,
+        COLOUR_DARK_ORANGE,
+        COLOUR_DARK_YELLOW,
+        COLOUR_GRASS_GREEN_DARK,
+        COLOUR_SATURATED_GREEN,
+        COLOUR_AQUA_DARK,
+        COLOUR_DARK_BLUE,
+        COLOUR_SATURATED_PURPLE_DARK,
 
-    COLOUR_GREY,
-    COLOUR_BRIGHT_RED,
-    COLOUR_LIGHT_ORANGE,
-    COLOUR_YELLOW,
-    COLOUR_MOSS_GREEN,
-    COLOUR_BRIGHT_GREEN,
-    COLOUR_TEAL,
-    COLOUR_LIGHT_BLUE,
-    COLOUR_BRIGHT_PURPLE,
+        COLOUR_GREY,
+        COLOUR_BRIGHT_RED,
+        COLOUR_LIGHT_ORANGE,
+        COLOUR_YELLOW,
+        COLOUR_MOSS_GREEN,
+        COLOUR_BRIGHT_GREEN,
+        COLOUR_TEAL,
+        COLOUR_LIGHT_BLUE,
+        COLOUR_BRIGHT_PURPLE,
 
-    COLOUR_WHITE,
-    COLOUR_LIGHT_PINK,
-    COLOUR_ORANGE_LIGHT,
-    COLOUR_BRIGHT_YELLOW,
-    COLOUR_GRASS_GREEN_LIGHT,
-    COLOUR_SATURATED_GREEN_LIGHT,
-    COLOUR_AQUAMARINE,
-    COLOUR_ICY_BLUE,
-    COLOUR_SATURATED_PURPLE_LIGHT,
+        COLOUR_WHITE,
+        COLOUR_LIGHT_PINK,
+        COLOUR_ORANGE_LIGHT,
+        COLOUR_BRIGHT_YELLOW,
+        COLOUR_GRASS_GREEN_LIGHT,
+        COLOUR_SATURATED_GREEN_LIGHT,
+        COLOUR_AQUAMARINE,
+        COLOUR_ICY_BLUE,
+        COLOUR_SATURATED_PURPLE_LIGHT,
 
-    COLOUR_DULL_BROWN_DARK,
-    COLOUR_BORDEAUX_RED_DARK,
-    COLOUR_TAN_DARK,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_OLIVE_DARK,
-    COLOUR_OLIVE_DARK,
-    COLOUR_DULL_GREEN_DARK,
-    COLOUR_DARK_PURPLE,
-    COLOUR_DARK_PINK,
+        COLOUR_DULL_BROWN_DARK,
+        COLOUR_BORDEAUX_RED_DARK,
+        COLOUR_TAN_DARK,
+        COLOUR_SATURATED_BROWN,
+        COLOUR_DARK_OLIVE_DARK,
+        COLOUR_OLIVE_DARK,
+        COLOUR_DULL_GREEN_DARK,
+        COLOUR_DARK_PURPLE,
+        COLOUR_DARK_PINK,
 
-    COLOUR_DARK_BROWN,
-    COLOUR_BORDEAUX_RED,
-    COLOUR_SALMON_PINK,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_DARK_OLIVE_GREEN,
-    COLOUR_OLIVE_GREEN,
-    COLOUR_DARK_GREEN,
-    COLOUR_LIGHT_PURPLE,
-    COLOUR_BRIGHT_PINK,
+        COLOUR_DARK_BROWN,
+        COLOUR_BORDEAUX_RED,
+        COLOUR_SALMON_PINK,
+        COLOUR_LIGHT_BROWN,
+        COLOUR_DARK_OLIVE_GREEN,
+        COLOUR_OLIVE_GREEN,
+        COLOUR_DARK_GREEN,
+        COLOUR_LIGHT_PURPLE,
+        COLOUR_BRIGHT_PINK,
 
-    COLOUR_DULL_BROWN_LIGHT,
-    COLOUR_BORDEAUX_RED_LIGHT,
-    COLOUR_TAN_LIGHT,
-    COLOUR_SATURATED_BROWN_LIGHT,
-    COLOUR_DARK_OLIVE_LIGHT,
-    COLOUR_OLIVE_LIGHT,
-    COLOUR_DULL_GREEN_LIGHT,
-    COLOUR_DULL_PURPLE_LIGHT,
-    COLOUR_MAGENTA_LIGHT,
+        COLOUR_DULL_BROWN_LIGHT,
+        COLOUR_BORDEAUX_RED_LIGHT,
+        COLOUR_TAN_LIGHT,
+        COLOUR_SATURATED_BROWN_LIGHT,
+        COLOUR_DARK_OLIVE_LIGHT,
+        COLOUR_OLIVE_LIGHT,
+        COLOUR_DULL_GREEN_LIGHT,
+        COLOUR_DULL_PURPLE_LIGHT,
+        COLOUR_MAGENTA_LIGHT,
+    };
 
-    COLOUR_INVISIBLE,
-    COLOUR_VOID
-};
-// clang-format on
+    static std::vector<colour_t> _orderedNormalColours = kOrderedNormalColoursDefault;
+
+    void SetDropdownNormalColours(const std::vector<colour_t>& newColours)
+    {
+        if (newColours.empty())
+        {
+            _orderedNormalColours = kOrderedNormalColoursDefault;
+        }
+        else
+        {
+            _orderedNormalColours = newColours;
+        }
+    }
+
+    constexpr std::array<colour_t, 2> kSpecialColours = {
+        COLOUR_INVISIBLE,
+        COLOUR_VOID,
+    };
+} // namespace Dropdown
 
 colour_t ColourDropDownIndexToColour(uint8_t ddidx)
 {
-    return kColoursDropdownOrder[ddidx];
+    const auto& normalColours = _orderedNormalColours;
+    assert(ddidx < normalColours.size() + kSpecialColours.size());
+    if (ddidx < normalColours.size())
+    {
+        return normalColours[ddidx];
+    }
+    return kSpecialColours[ddidx - normalColours.size()];
 }
 
 /**
@@ -525,27 +548,37 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
 {
     int32_t defaultIndex = -1;
 
-    auto numColours = (gCheatsAllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_COUNT) : COLOUR_NUM_NORMAL;
-    // Set items
-    for (uint64_t i = 0; i < numColours; i++)
+    // Running index of the colour
+    uint64_t i = 0;
+    auto addColoursToDropDown = [&i, &selectedColour, &defaultIndex](const auto& colours) {
+        for (size_t j = 0; j < colours.size(); j++, i++)
+        {
+            auto orderedColour = colours[j];
+            if (selectedColour == orderedColour)
+                defaultIndex = static_cast<int32_t>(i);
+
+            // Use special graphic for Invisible colour
+            auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
+                                                               : ImageId(SPR_PALETTE_BTN, orderedColour);
+
+            gDropdownItems[i].Format = Dropdown::FormatColourPicker;
+            gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();
+        }
+        return colours.size();
+    };
+
+    const auto& normalColours = _orderedNormalColours;
+    auto numColours = addColoursToDropDown(normalColours);
+
+    if (gCheatsAllowSpecialColourSchemes)
     {
-        auto orderedColour = ColourDropDownIndexToColour(i);
-        if (selectedColour == orderedColour)
-            defaultIndex = i;
-
-        // Use special graphic for Invisible colour
-        auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
-                                                           : ImageId(SPR_PALETTE_BTN, orderedColour);
-
-        gDropdownItems[i].Format = Dropdown::FormatColourPicker;
-        gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();
+        numColours += addColoursToDropDown(kSpecialColours);
     }
-
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, numColours, 12, 12,
-        DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
+        Dropdown::Flag::StayOpen, static_cast<int32_t>(numColours), 12, 12,
+        DropdownGetAppropriateImageDropdownItemsPerRow(numColours));
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;

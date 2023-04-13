@@ -35,6 +35,8 @@ namespace Dropdown
     void SetChecked(int32_t index, bool value);
     void SetDisabled(int32_t index, bool value);
     void SetImage(int32_t index, ImageId image);
+
+    void SetDropdownNormalColours(const std::vector<colour_t>& newColours);
 } // namespace Dropdown
 
 extern int32_t gDropdownNumItems;
