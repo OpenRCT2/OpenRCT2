@@ -178,7 +178,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         // Draw area as a number for tool sizes bigger than 7
         if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)

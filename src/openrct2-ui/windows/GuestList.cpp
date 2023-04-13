@@ -589,7 +589,7 @@ public:
     void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         GfxFillRect(
-            &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+            dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
         switch (_selectedTab)
         {
             case TabId::Individual:
@@ -645,13 +645,13 @@ private:
         auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
         i += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
         GfxDrawSprite(
-            &dpi, ImageId(i, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN),
+            dpi, ImageId(i, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN),
             windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });
 
         // Tab 2 image
         i = (_selectedTab == TabId::Summarised ? _tabAnimationIndex / 4 : 0);
         GfxDrawSprite(
-            &dpi, ImageId(SPR_TAB_GUESTS_0 + i),
+            dpi, ImageId(SPR_TAB_GUESTS_0 + i),
             windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
     }
 
@@ -669,7 +669,7 @@ private:
                 StringId format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    GfxFilterRect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -687,11 +687,11 @@ private:
                 {
                     case GuestViewType::Actions:
                         // Guest face
-                        GfxDrawSprite(&dpi, ImageId(GetPeepFaceSpriteSmall(peep)), { 118, y + 1 });
+                        GfxDrawSprite(dpi, ImageId(GetPeepFaceSpriteSmall(peep)), { 118, y + 1 });
 
                         // Tracking icon
                         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
-                            GfxDrawSprite(&dpi, ImageId(STR_ENTER_SELECTION_SIZE), { 112, y + 1 });
+                            GfxDrawSprite(dpi, ImageId(STR_ENTER_SELECTION_SIZE), { 112, y + 1 });
 
                         // Action
                         ft = Formatter();
@@ -739,7 +739,7 @@ private:
                 StringId format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    GfxFilterRect(&dpi, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -747,7 +747,7 @@ private:
                 for (uint32_t j = 0; j < std::size(group.Faces) && j < group.NumGuests; j++)
                 {
                     GfxDrawSprite(
-                        &dpi, ImageId(group.Faces[j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY),
+                        dpi, ImageId(group.Faces[j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY),
                         { static_cast<int32_t>(j) * 8, y + 12 });
                 }
 

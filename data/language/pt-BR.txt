@@ -1220,8 +1220,8 @@ STR_1838    :Satisfação: {COMMA16}%
 STR_1839    :Confiança: {COMMA16}%
 STR_1840    :Tempo ocioso: {COMMA16}%
 STR_1841    :Lucro: {CURRENCY2DP} por hora
-STR_1842    :Favorito de: {COMMA16} visitante
-STR_1843    :Favorito de: {COMMA16} visitantes
+STR_1842    :Favorito de: {COMMA32} visitante
+STR_1843    :Favorito de: {COMMA32} visitantes
 STR_1844    :Selecione o tipo de informação para ser exibida na lista de atrações
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} Visitantes
@@ -2190,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID} indo até a atração
 STR_3119    :{BLACK}{STRINGID} consertando atração
 STR_3120    :Localizar o mecânico mais perto disponível, ou mecânico consertando atração
 STR_3121    :Não foi possível localizar mecânicos, ou todos os mecânicos próximos estão ocupados
-STR_3122    :{WINDOW_COLOUR_2}Atração favorita de: {BLACK}{COMMA16} visitante
-STR_3123    :{WINDOW_COLOUR_2}Atração favorita de: {BLACK}{COMMA16} visitantes
+STR_3122    :{WINDOW_COLOUR_2}Atração favorita de: {BLACK}{COMMA32} visitante
+STR_3123    :{WINDOW_COLOUR_2}Atração favorita de: {BLACK}{COMMA32} visitantes
 STR_3124    :{STRINGID} Quebrado
 STR_3125    :{WINDOW_COLOUR_2}Fator de emoção: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Fator de intensidade: {BLACK}+{COMMA16}%

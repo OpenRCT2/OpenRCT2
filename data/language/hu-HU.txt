@@ -1215,8 +1215,8 @@ STR_1838    :Elégedettség: {COMMA16}%
 STR_1839    :Megbízhatóság: {COMMA16}%
 STR_1840    :Üzemszünet: {COMMA16}%
 STR_1841    :Nyereség: {CURRENCY2DP} óránként
-STR_1842    :Kedvence: {COMMA16} vendégnek
-STR_1843    :Kedvence: {COMMA16} vendégnek
+STR_1842    :Kedvence: {COMMA32} vendégnek
+STR_1843    :Kedvence: {COMMA32} vendégnek
 STR_1844    :A játékok/épületek listájában megjelenített információtípus kiválasztása
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} vendég
@@ -2185,8 +2185,8 @@ STR_3118    :{BLACK}{STRINGID} a játék felé tart
 STR_3119    :{BLACK}{STRINGID} javítja a játékot
 STR_3120    :A legközelebbi elérhető vagy a játékot javító gépész megkeresése
 STR_3121    :Nem található gépész, vagy az összes közeli gépész elfoglalt
-STR_3122    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA16} vendégnek
-STR_3123    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA16} vendégnek
+STR_3122    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA32} vendégnek
+STR_3123    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA32} vendégnek
 STR_3124    :Hibás {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Izgalmi faktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intenzitási faktor: {BLACK}+{COMMA16}%

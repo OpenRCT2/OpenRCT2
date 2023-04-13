@@ -118,12 +118,12 @@ void SmallSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
         screenCoords.y -= 12;
     }
 
-    GfxDrawSprite(&dpi, imageId, screenCoords);
+    GfxDrawSprite(dpi, imageId, screenCoords);
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
     {
         imageId = ImageId(_legacyType.image + 4).WithTransparency(COLOUR_BORDEAUX_RED);
-        GfxDrawSprite(&dpi, imageId, screenCoords);
+        GfxDrawSprite(dpi, imageId, screenCoords);
     }
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
@@ -133,7 +133,7 @@ void SmallSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
         {
             imageId = imageId.WithSecondary(COLOUR_YELLOW);
         }
-        GfxDrawSprite(&dpi, imageId, screenCoords);
+        GfxDrawSprite(dpi, imageId, screenCoords);
     }
 }
 

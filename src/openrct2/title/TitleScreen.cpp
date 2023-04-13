@@ -440,7 +440,7 @@ bool TitleIsPreviewingSequence()
     return false;
 }
 
-void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords)
+void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords)
 {
     thread_local std::string buffer;
     buffer.clear();
@@ -448,7 +448,7 @@ void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords)
 
     // Write name and version information
     buffer += gVersionInfoFull;
-    GfxDrawString(*dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
+    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
 
     // Invalidate screen area
     int16_t width = static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium));
@@ -461,5 +461,5 @@ void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords)
     buffer.append(" (");
     buffer.append(OPENRCT2_ARCHITECTURE);
     buffer.append(")");
-    GfxDrawString(*dpi, screenCoords + ScreenCoordsXY(5, 5), buffer.c_str(), { COLOUR_BLACK });
+    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5), buffer.c_str(), { COLOUR_BLACK });
 }

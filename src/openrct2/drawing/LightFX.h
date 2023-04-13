@@ -48,7 +48,7 @@ bool LightFXForVehiclesIsAvailable();
 
 void LightFXInit();
 
-void LightFXUpdateBuffers(DrawPixelInfo*);
+void LightFXUpdateBuffers(DrawPixelInfo&);
 
 void LightFXPrepareLightList();
 void LightFXSwapBuffers();

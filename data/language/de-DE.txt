@@ -1221,8 +1221,8 @@ STR_1838    :Zufriedenheit: {COMMA16}%
 STR_1839    :Zuverlässigkeit: {COMMA16}%
 STR_1840    :Ausfallzeit: {COMMA16}%
 STR_1841    :Gewinn: {CURRENCY2DP} pro Stunde
-STR_1842    :Favorit von: {COMMA16} Besucher
-STR_1843    :Favorit von: {COMMA16} Besuchern
+STR_1842    :Favorit von: {COMMA32} Besucher
+STR_1843    :Favorit von: {COMMA32} Besuchern
 STR_1844    :Informationsart auswählen, die{NEWLINE}in Attraktionsliste angezeigt{NEWLINE}werden soll
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} Besucher
@@ -2192,8 +2192,8 @@ STR_3118    :{BLACK}{STRINGID} geht zur Bahn
 STR_3119    :{BLACK}{STRINGID} repariert die Bahn
 STR_3120    :Nächsten verfügbaren Mechaniker{NEWLINE}oder Mechaniker bei einer{NEWLINE}Bahnreparatur suchen
 STR_3121    :Es befindet sich kein Mechaniker in der Nähe, oder alle Mechaniker sind gerade beschäftigt
-STR_3122    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA16} Besucher
-STR_3123    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA16} Besuchern
+STR_3122    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA32} Besucher
+STR_3123    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA32} Besuchern
 STR_3124    :{STRINGID} (kaputt)
 STR_3125    :{WINDOW_COLOUR_2}Nervenkitzelfaktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensitätsfaktor: {BLACK}+{COMMA16}%

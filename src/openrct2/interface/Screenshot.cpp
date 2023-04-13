@@ -51,17 +51,17 @@ extern uint8_t gClipHeight;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo* dpi, const GamePalette& palette)
+static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo& dpi, const GamePalette& palette)
 {
-    auto const pixels8 = dpi->bits;
-    auto const pixelsLen = (dpi->width + dpi->pitch) * dpi->height;
+    auto const pixels8 = dpi.bits;
+    auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
     try
     {
         Image image;
-        image.Width = dpi->width;
-        image.Height = dpi->height;
+        image.Width = dpi.width;
+        image.Height = dpi.height;
         image.Depth = 8;
-        image.Stride = dpi->width + dpi->pitch;
+        image.Stride = dpi.width + dpi.pitch;
         image.Palette = std::make_unique<GamePalette>(palette);
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
@@ -164,7 +164,7 @@ static std::optional<std::string> ScreenshotGetNextPath()
     return std::nullopt;
 };
 
-std::string ScreenshotDumpPNG(DrawPixelInfo* dpi)
+std::string ScreenshotDumpPNG(DrawPixelInfo& dpi)
 {
     // Get a free screenshot path
     auto path = ScreenshotGetNextPath();
@@ -336,7 +336,7 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const Viewport& viewpo
         drawingEngine = tempDrawingEngine.get();
     }
     dpi.DrawingEngine = drawingEngine;
-    ViewportRender(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } });
+    ViewportRender(dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } });
 }
 
 void ScreenshotGiant()
@@ -372,7 +372,7 @@ void ScreenshotGiant()
         dpi = CreateDPI(viewport);
 
         RenderViewport(nullptr, viewport, dpi);
-        WriteDpiToFile(path.value(), &dpi, gPalette);
+        WriteDpiToFile(path.value(), dpi, gPalette);
 
         // Show user that screenshot saved successfully
         const auto filename = Path::GetFileName(path.value());
@@ -690,7 +690,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
         dpi = CreateDPI(viewport);
 
         RenderViewport(nullptr, viewport, dpi);
-        WriteDpiToFile(outputPath, &dpi, gPalette);
+        WriteDpiToFile(outputPath, dpi, gPalette);
     }
     catch (const std::exception& e)
     {
@@ -786,7 +786,7 @@ void CaptureImage(const CaptureOptions& options)
     auto outputPath = ResolveFilenameForCapture(options.Filename);
     auto dpi = CreateDPI(viewport);
     RenderViewport(nullptr, viewport, dpi);
-    WriteDpiToFile(outputPath, &dpi, gPalette);
+    WriteDpiToFile(outputPath, dpi, gPalette);
     ReleaseDPI(dpi);
 
     gCurrentRotation = backupRotation;

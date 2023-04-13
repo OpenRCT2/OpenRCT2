@@ -3050,18 +3050,76 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
         auto trackType = currentElement.element->AsTrack()->GetTrackType();
         switch (trackType)
         {
+            case TrackElemType::BlockBrakes:
+                BlockBrakeSetLinkedBrakesClosed(
+                    CoordsXYZ(currentElement.x, currentElement.y, currentElement.element->GetBaseZ()),
+                    *currentElement.element->AsTrack(), false);
+                [[fallthrough]];
             case TrackElemType::EndStation:
             case TrackElemType::CableLiftHill:
             case TrackElemType::Up25ToFlat:
             case TrackElemType::Up60ToFlat:
             case TrackElemType::DiagUp25ToFlat:
             case TrackElemType::DiagUp60ToFlat:
-            case TrackElemType::BlockBrakes:
                 currentElement.element->AsTrack()->SetBrakeClosed(false);
                 break;
         }
     } while (TrackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
              && currentElement.element != startElement.element);
+}
+
+/**
+ * Set the open status of brakes adjacent to the block brake
+ */
+void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, TrackElement& trackElement, bool isClosed)
+{
+    uint8_t brakeSpeed = trackElement.GetBrakeBoosterSpeed();
+
+    auto tileElement = reinterpret_cast<TileElement*>(&trackElement);
+    auto location = vehicleTrackLocation;
+    TrackBeginEnd trackBeginEnd, slowTrackBeginEnd;
+    TileElement slowTileElement = *tileElement;
+    bool counter = true;
+    CoordsXY slowLocation = location;
+    do
+    {
+        if (!TrackBlockGetPrevious({ location, tileElement }, &trackBeginEnd))
+        {
+            return;
+        }
+        if (trackBeginEnd.begin_x == vehicleTrackLocation.x && trackBeginEnd.begin_y == vehicleTrackLocation.y
+            && tileElement == trackBeginEnd.begin_element)
+        {
+            return;
+        }
+
+        location.x = trackBeginEnd.end_x;
+        location.y = trackBeginEnd.end_y;
+        location.z = trackBeginEnd.begin_z;
+        tileElement = trackBeginEnd.begin_element;
+
+        if (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes)
+        {
+            trackBeginEnd.begin_element->AsTrack()->SetBrakeClosed(
+                (trackBeginEnd.begin_element->AsTrack()->GetBrakeBoosterSpeed() >= brakeSpeed) || isClosed);
+        }
+
+        // prevent infinite loop
+        counter = !counter;
+        if (counter)
+        {
+            TrackBlockGetPrevious({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
+            slowLocation.x = slowTrackBeginEnd.end_x;
+            slowLocation.y = slowTrackBeginEnd.end_y;
+            slowTileElement = *(slowTrackBeginEnd.begin_element);
+            if (slowLocation == location && slowTileElement.GetBaseZ() == tileElement->GetBaseZ()
+                && slowTileElement.GetType() == tileElement->GetType()
+                && slowTileElement.GetDirection() == tileElement->GetDirection())
+            {
+                return;
+            }
+        }
+    } while (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes);
 }
 
 /**
@@ -3534,7 +3592,8 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
         {
             CoordsXYE firstBlock{};
             RideCreateVehiclesFindFirstBlock(*this, &firstBlock);
-            MoveTrainsToBlockBrakes(firstBlock.element->AsTrack());
+            MoveTrainsToBlockBrakes(
+                { firstBlock.x, firstBlock.y, firstBlock.element->GetBaseZ() }, *firstBlock.element->AsTrack());
         }
         else
         {
@@ -3567,7 +3626,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
  * preceding that block.
  *  rct2: 0x006DDF9C
  */
-void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
+void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackElement& firstBlock)
 {
     for (int32_t i = 0; i < NumTrains; i++)
     {
@@ -3578,7 +3637,8 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
         // At this point, all vehicles have state of MovingToEndOfStation, which slowly moves forward at a constant speed
         // regardless of incline. The first vehicle stops at the station immediately, while all other vehicles seek forward
         // until they reach a closed block brake. The block brake directly before the station is set to closed every frame
-        // because the trains will open the block brake when the tail leaves the station.
+        // because the trains will open the block brake when the tail leaves the station. Brakes have no effect at this time, so
+        // do not set linked brakes when closing the first block.
         train->UpdateTrackMotion(nullptr);
 
         if (i == 0)
@@ -3597,7 +3657,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
                 break;
             }
 
-            firstBlock->SetBrakeClosed(true);
+            firstBlock.SetBrakeClosed(true);
             for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
             {
                 car->velocity = 0;
@@ -3607,8 +3667,13 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
             }
         } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE));
 
-        // All vehicles are in position, set the block brake directly before the station one last time
-        firstBlock->SetBrakeClosed(true);
+        // All vehicles are in position, set the block brake directly before the station one last time and make sure the brakes
+        // are set appropriately
+        firstBlock.SetBrakeClosed(true);
+        if (firstBlock.GetTrackType() == TrackElemType::BlockBrakes)
+        {
+            BlockBrakeSetLinkedBrakesClosed(firstBlockPosition, firstBlock, true);
+        }
         for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
             car->ClearFlag(VehicleFlags::CollisionDisabled);

@@ -63,16 +63,16 @@ void StationObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t heigh
         imageId = imageId.WithSecondary(colour1);
     }
 
-    GfxDrawSprite(&dpi, imageId, screenCoords);
+    GfxDrawSprite(dpi, imageId, screenCoords);
     if (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
     {
-        GfxDrawSprite(&dpi, tImageId, screenCoords);
+        GfxDrawSprite(dpi, tImageId, screenCoords);
     }
 
-    GfxDrawSprite(&dpi, imageId.WithIndexOffset(4), screenCoords);
+    GfxDrawSprite(dpi, imageId.WithIndexOffset(4), screenCoords);
     if (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
     {
-        GfxDrawSprite(&dpi, tImageId.WithIndexOffset(4), screenCoords);
+        GfxDrawSprite(dpi, tImageId.WithIndexOffset(4), screenCoords);
     }
 }
 

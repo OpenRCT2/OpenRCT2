@@ -455,6 +455,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, target_seat_rotation);
         COMPARE_FIELD(Vehicle, BoatLocation.x);
         COMPARE_FIELD(Vehicle, BoatLocation.y);
+        COMPARE_FIELD(Vehicle, BlockBrakeSpeed);
     }
 
     void CompareSpriteDataLitter(const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange& changeData) const
