@@ -114,7 +114,7 @@ GameActions::Result TrackRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    if (tileElement->AsTrack()->IsIndestructible())
+    if (tileElement->AsTrack()->IsIndestructible() && !gCheatsMakeAllDestructible)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS,
