@@ -189,8 +189,7 @@ static PaintStruct* CreateNormalPaintStruct(
     ps->Attached = nullptr;
     ps->Children = nullptr;
     ps->InteractionItem = session.InteractionType;
-    ps->map_x = session.MapPosition.x;
-    ps->map_y = session.MapPosition.y;
+    ps->MapPos = session.MapPosition;
     ps->Element = session.CurrentlyDrawnTileElement;
     ps->Entity = session.CurrentlyDrawnEntity;
 

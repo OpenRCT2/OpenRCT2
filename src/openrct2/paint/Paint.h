@@ -57,8 +57,7 @@ struct PaintStruct
     ImageId image_id;
     int32_t x;
     int32_t y;
-    int32_t map_x;
-    int32_t map_y;
+    CoordsXY MapPos;
     uint16_t QuadrantIndex;
     uint8_t SortFlags;
     ViewportInteractionItem InteractionItem;

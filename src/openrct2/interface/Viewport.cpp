@@ -72,7 +72,7 @@ uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;
 InteractionInfo::InteractionInfo(const PaintStruct* ps)
-    : Loc(ps->map_x, ps->map_y)
+    : Loc(ps->MapPos)
     , Element(ps->Element)
     , Entity(ps->Entity)
     , SpriteType(ps->InteractionItem)
