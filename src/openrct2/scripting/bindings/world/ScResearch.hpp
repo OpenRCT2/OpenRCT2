@@ -30,16 +30,6 @@ namespace OpenRCT2::Scripting
         { "finished_all", RESEARCH_STAGE_FINISHED_ALL },
     });
 
-    static const DukEnumMap<ResearchCategory> ResearchCategoryMap({
-        { "transport", ResearchCategory::Transport },
-        { "gentle", ResearchCategory::Gentle },
-        { "rollercoaster", ResearchCategory::Rollercoaster },
-        { "thrill", ResearchCategory::Thrill },
-        { "water", ResearchCategory::Water },
-        { "shop", ResearchCategory::Shop },
-        { "scenery_group", ResearchCategory::SceneryGroup },
-    });
-
     static const DukEnumMap<Research::EntryType> ResearchEntryTypeMap({
         { "ride", Research::EntryType::Ride },
         { "scenery", Research::EntryType::Scenery },
@@ -48,7 +38,7 @@ namespace OpenRCT2::Scripting
     template<> inline DukValue ToDuk(duk_context* ctx, const ResearchItem& value)
     {
         DukObject obj(ctx);
-        obj.Set("category", ResearchCategoryMap[value.category]);
+        obj.Set("category", EnumValue(value.category));
         obj.Set("type", ResearchEntryTypeMap[value.type]);
         if (value.type == Research::EntryType::Ride)
         {
