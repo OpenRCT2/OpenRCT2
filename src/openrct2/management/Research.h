@@ -138,6 +138,8 @@ bool ResearchInsertRideEntry(ride_type_t rideType, ObjectEntryIndex entryIndex, 
 void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched);
 bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researched);
 
+bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index);
+bool ResearchSetInvented(ObjectType objectType, ObjectEntryIndex index, bool value);
 void RideTypeSetInvented(uint32_t rideType);
 void RideEntrySetInvented(ObjectEntryIndex rideEntryIndex);
 void ScenerySetInvented(const ScenerySelection& sceneryItem);

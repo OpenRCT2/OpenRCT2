@@ -2123,7 +2123,7 @@ declare global {
          * The track segment adds to inversion counter. Usually applied to the first half of inversions.
          */
         readonly countsAsInversion: boolean;
-        
+
         /**
          * Gets a length of the subpositions list for this track segment.
          */
@@ -3149,6 +3149,103 @@ declare global {
         postMessage(message: string): void;
         postMessage(message: ParkMessageDesc): void;
     }
+
+    interface Research {
+        /**
+         * The list of rides and scenery sets that have already been researched.
+         */
+        inventedItems: ResearchItemType[];
+
+        /**
+         * The order of rides and scenery sets to be researched.
+         */
+        uninventedItems: ResearchItemType[];
+
+        /**
+         * The amount of funding currently spent on research.
+         */
+        funding: ResearchFundingLevel;
+
+        /**
+         * Flags representing which research categories are enabled.
+         */
+        priorities: number;
+
+        /**
+         * The current stage for the ride or scenery set being researched.
+         */
+        stage: ResearchFundingStage;
+
+        /**
+         * The progress for the current stage between 0 and 65535.
+         * This will increment more quickly the higher the research funding.
+         */
+        progress: number;
+
+        /**
+         * The expected month the current item being researched will complete.
+         * Value is between 0 and 7, 0 being March and 7 being October.
+         * Value is null if there is not yet an expected month.
+         */
+        readonly expectedMonth: number | null;
+
+        /**
+         * The expected day of the month the current item being researched will complete.
+         * Value is between 0 and 30, add 1 to it for the human readable date.
+         * Value is null if there is not yet an expected month.
+         */
+        readonly expectedDay: number | null;
+
+        /**
+         * Gets whether a particular object has been researched and is available to construct.
+         * @param type The type of object, e.g. ride, scenery group, or small scenery.
+         * @param index The object index.
+         */
+        isObjectResearched(type: ObjectType, index: number): boolean;
+    }
+
+    interface ResearchItem {
+        /**
+         * The research category this item belongs in.
+         * E.g. gentle rides, thrill rides, shops etc.
+         */
+        category: ResearchCategory;
+
+        /**
+         * Weather the research item is a ride or scenery set.
+         */
+        type: ResearchItemType;
+
+        /**
+         * The ride or scenery set object index.
+         */
+        object: number;
+    }
+
+    type ResearchItemType = "scenery" | "ride";
+
+    enum ResearchCategory {
+        Transport,
+        Gentle,
+        Rollercoaster,
+        Thrill,
+        Water,
+        Shop
+    }
+
+    enum ResearchFundingLevel {
+        None,
+        Minimum,
+        Normal,
+        Maximum
+    }
+
+    type ResearchFundingStage =
+        "initial_research" |
+        "designing" |
+        "completing_design" |
+        "unknown" |
+        "finished_all";
 
     type ScenarioObjectiveType =
         "none" |

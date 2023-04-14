@@ -519,6 +519,25 @@ bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researche
     return false;
 }
 
+bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index)
+{
+    switch (objectType)
+    {
+        case ObjectType::Ride:
+            return RideEntryIsInvented(index);
+        case ObjectType::SceneryGroup:
+            return SceneryGroupIsInvented(index);
+        case ObjectType::SmallScenery:
+        case ObjectType::LargeScenery:
+        case ObjectType::Walls:
+        case ObjectType::Banners:
+        case ObjectType::PathBits:
+            return SceneryIsInvented({ static_cast<uint8_t>(objectType), index });
+        default:
+            return true;
+    }
+}
+
 bool RideTypeIsInvented(uint32_t rideType)
 {
     return RideTypeIsValid(rideType) ? _researchedRideTypes[rideType] : false;
