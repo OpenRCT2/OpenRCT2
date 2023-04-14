@@ -3678,6 +3678,9 @@ STR_6573    :Invisível
 STR_6574    :Vazia
 STR_6575    :Permitir esquema de cores especial
 STR_6576    :Adiciona cores especiais à lista de cores
+STR_6577    :Velocidade dos freios bloqueadores
+STR_6578    :Configure o limite de velocidade dos freios bloqueadores. No modo de seções de bloco, freios adjacentes com uma velocidade mais baixa são conectados ao freio bloqueador.
+STR_6579    :Freios bloqueadores serão configurados para a velocidade padrão quando salvos como um projeto de pista
 
 #############
 # Scenarios #
