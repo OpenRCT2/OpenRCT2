@@ -55,8 +55,7 @@ struct PaintStruct
     TileElement* Element;
     EntityBase* Entity;
     ImageId image_id;
-    int32_t x;
-    int32_t y;
+    ScreenCoordsXY ScreenPos;
     CoordsXY MapPos;
     uint16_t QuadrantIndex;
     uint8_t SortFlags;

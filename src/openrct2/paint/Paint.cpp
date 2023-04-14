@@ -178,8 +178,7 @@ static PaintStruct* CreateNormalPaintStruct(
     }
 
     ps->image_id = image_id;
-    ps->x = imagePos.x;
-    ps->y = imagePos.y;
+    ps->ScreenPos = imagePos;
     ps->Bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session.SpritePosition.x;
     ps->Bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session.SpritePosition.y;
     ps->Bounds.z_end = rotBoundBoxSize.z + rotBoundBoxOffset.z;
@@ -502,19 +501,17 @@ void PaintSessionArrange(PaintSessionCore& session)
 
 static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
 {
-    auto x = ps->x;
-    auto y = ps->y;
-
+    auto screenPos = ps->ScreenPos;
     if (ps->InteractionItem == ViewportInteractionItem::Entity)
     {
         if (session.DPI.zoom_level >= ZoomLevel{ 1 })
         {
-            x = Floor2(x, 2);
-            y = Floor2(y, 2);
+            screenPos.x = Floor2(screenPos.x, 2);
+            screenPos.y = Floor2(screenPos.y, 2);
             if (session.DPI.zoom_level >= ZoomLevel{ 2 })
             {
-                x = Floor2(x, 4);
-                y = Floor2(y, 4);
+                screenPos.x = Floor2(screenPos.x, 4);
+                screenPos.y = Floor2(screenPos.y, 4);
             }
         }
     }
@@ -522,11 +519,11 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
     if (gPaintBoundingBoxes && session.DPI.zoom_level == ZoomLevel{ 0 })
     {
-        PaintPSImageWithBoundingBoxes(session.DPI, ps, imageId, x, y);
+        PaintPSImageWithBoundingBoxes(session.DPI, ps, imageId, screenPos.x, screenPos.y);
     }
     else
     {
-        GfxDrawSprite(session.DPI, imageId, { x, y });
+        GfxDrawSprite(session.DPI, imageId, screenPos);
     }
 
     if (ps->Children != nullptr)
@@ -567,7 +564,7 @@ static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFl
     AttachedPaintStruct* attached_ps = ps->Attached;
     for (; attached_ps != nullptr; attached_ps = attached_ps->next)
     {
-        auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
+        auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->ScreenPos.x, attached_ps->y + ps->ScreenPos.y };
 
         auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->IsMasked)

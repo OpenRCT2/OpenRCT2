@@ -1844,7 +1844,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
         while (next_ps != nullptr)
         {
             ps = next_ps;
-            if (IsSpriteInteractedWith(session->DPI, ps->image_id, { ps->x, ps->y }))
+            if (IsSpriteInteractedWith(session->DPI, ps->image_id, ps->ScreenPos))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
@@ -1859,7 +1859,8 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
         for (AttachedPaintStruct* attached_ps = ps->Attached; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
             if (IsSpriteInteractedWith(
-                    session->DPI, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
+                    session->DPI, attached_ps->image_id,
+                    { (attached_ps->x + ps->ScreenPos.x), (attached_ps->y + ps->ScreenPos.y) }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
