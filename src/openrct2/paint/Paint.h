@@ -48,20 +48,20 @@ struct PaintStructBoundBox
 
 struct PaintStruct
 {
-    PaintStructBoundBox bounds;
-    AttachedPaintStruct* attached_ps;
-    PaintStruct* children;
-    PaintStruct* next_quadrant_ps;
-    TileElement* tileElement;
-    EntityBase* entity;
+    PaintStructBoundBox Bounds;
+    AttachedPaintStruct* Attached;
+    PaintStruct* Children;
+    PaintStruct* NextQuadrantEntry;
+    TileElement* Element;
+    EntityBase* Entity;
     ImageId image_id;
     int32_t x;
     int32_t y;
     int32_t map_x;
     int32_t map_y;
-    uint16_t quadrant_index;
+    uint16_t QuadrantIndex;
     uint8_t SortFlags;
-    ViewportInteractionItem sprite_type;
+    ViewportInteractionItem InteractionItem;
 };
 
 struct PaintStringStruct

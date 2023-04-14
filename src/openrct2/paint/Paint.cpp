@@ -64,8 +64,8 @@ static int32_t RemapPositionToQuadrant(const PaintStruct& ps, uint8_t rotation)
     constexpr auto MapRangeMax = MaxPaintQuadrants * COORDS_XY_STEP;
     constexpr auto MapRangeCenter = MapRangeMax / 2;
 
-    const auto x = ps.bounds.x;
-    const auto y = ps.bounds.y;
+    const auto x = ps.Bounds.x;
+    const auto y = ps.Bounds.y;
     // NOTE: We are not calling CoordsXY::Rotate on purpose to mix in the additional
     // value without a secondary switch.
     switch (rotation & 3)
@@ -92,8 +92,8 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     // Values below zero or above MaxPaintQuadrants are void, corners also share the same quadrant as void.
     const uint32_t paintQuadrantIndex = std::clamp(positionHash / COORDS_XY_STEP, 0, MaxPaintQuadrants - 1);
 
-    ps->quadrant_index = paintQuadrantIndex;
-    ps->next_quadrant_ps = session.Quadrants[paintQuadrantIndex];
+    ps->QuadrantIndex = paintQuadrantIndex;
+    ps->NextQuadrantEntry = session.Quadrants[paintQuadrantIndex];
     session.Quadrants[paintQuadrantIndex] = ps;
 
     session.QuadrantBackIndex = std::min(session.QuadrantBackIndex, paintQuadrantIndex);
@@ -180,19 +180,19 @@ static PaintStruct* CreateNormalPaintStruct(
     ps->image_id = image_id;
     ps->x = imagePos.x;
     ps->y = imagePos.y;
-    ps->bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session.SpritePosition.x;
-    ps->bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session.SpritePosition.y;
-    ps->bounds.z_end = rotBoundBoxSize.z + rotBoundBoxOffset.z;
-    ps->bounds.x = rotBoundBoxOffset.x + session.SpritePosition.x;
-    ps->bounds.y = rotBoundBoxOffset.y + session.SpritePosition.y;
-    ps->bounds.z = rotBoundBoxOffset.z;
-    ps->attached_ps = nullptr;
-    ps->children = nullptr;
-    ps->sprite_type = session.InteractionType;
+    ps->Bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session.SpritePosition.x;
+    ps->Bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session.SpritePosition.y;
+    ps->Bounds.z_end = rotBoundBoxSize.z + rotBoundBoxOffset.z;
+    ps->Bounds.x = rotBoundBoxOffset.x + session.SpritePosition.x;
+    ps->Bounds.y = rotBoundBoxOffset.y + session.SpritePosition.y;
+    ps->Bounds.z = rotBoundBoxOffset.z;
+    ps->Attached = nullptr;
+    ps->Children = nullptr;
+    ps->InteractionItem = session.InteractionType;
     ps->map_x = session.MapPosition.x;
     ps->map_y = session.MapPosition.y;
-    ps->tileElement = session.CurrentlyDrawnTileElement;
-    ps->entity = session.CurrentlyDrawnEntity;
+    ps->Element = session.CurrentlyDrawnTileElement;
+    ps->Entity = session.CurrentlyDrawnEntity;
 
     return ps;
 }
@@ -315,10 +315,10 @@ static PaintStruct* PaintStructsFirstInQuadrant(PaintStruct* psNext, uint16_t qu
     do
     {
         ps = psNext;
-        psNext = psNext->next_quadrant_ps;
+        psNext = psNext->NextQuadrantEntry;
         if (psNext == nullptr)
             return ps;
-    } while (quadrantIndex > psNext->quadrant_index);
+    } while (quadrantIndex > psNext->QuadrantIndex);
     return ps;
 }
 
@@ -326,26 +326,26 @@ static void PaintStructsInitializeSort(PaintStruct* ps, uint16_t quadrantIndex, 
 {
     do
     {
-        ps = ps->next_quadrant_ps;
+        ps = ps->NextQuadrantEntry;
         if (ps == nullptr)
             break;
 
-        if (ps->quadrant_index > quadrantIndex + 1)
+        if (ps->QuadrantIndex > quadrantIndex + 1)
         {
             // Outside of the range.
             ps->SortFlags = PaintSortFlags::OutsideQuadrant;
         }
-        else if (ps->quadrant_index == quadrantIndex + 1)
+        else if (ps->QuadrantIndex == quadrantIndex + 1)
         {
             // Is neighbour and requires a visit.
             ps->SortFlags = PaintSortFlags::Neighbour | PaintSortFlags::PendingVisit;
         }
-        else if (ps->quadrant_index == quadrantIndex)
+        else if (ps->QuadrantIndex == quadrantIndex)
         {
             // In specified quadrant, requires visit.
             ps->SortFlags = flag | PaintSortFlags::PendingVisit;
         }
-    } while (ps->quadrant_index <= quadrantIndex + 1);
+    } while (ps->QuadrantIndex <= quadrantIndex + 1);
 }
 
 static std::pair<PaintStruct*, PaintStruct*> PaintStructsGetNextPending(PaintStruct* ps)
@@ -353,7 +353,7 @@ static std::pair<PaintStruct*, PaintStruct*> PaintStructsGetNextPending(PaintStr
     PaintStruct* ps_next;
     while (true)
     {
-        ps_next = ps->next_quadrant_ps;
+        ps_next = ps->NextQuadrantEntry;
         if (ps_next == nullptr)
         {
             // End of the current list.
@@ -380,11 +380,11 @@ template<uint8_t TRotation> static void PaintStructsSortQuadrant(PaintStruct* pa
     child->SortFlags &= ~PaintSortFlags::PendingVisit;
 
     // Compare all the children below the first child and move them up in the list if they intersect.
-    const PaintStructBoundBox& initialBBox = child->bounds;
+    const PaintStructBoundBox& initialBBox = child->Bounds;
     for (;;)
     {
         auto* ps = child;
-        child = child->next_quadrant_ps;
+        child = child->NextQuadrantEntry;
 
         if (child == nullptr || child->SortFlags & PaintSortFlags::OutsideQuadrant)
         {
@@ -396,15 +396,15 @@ template<uint8_t TRotation> static void PaintStructsSortQuadrant(PaintStruct* pa
             continue;
         }
 
-        if (CheckBoundingBox<TRotation>(initialBBox, child->bounds))
+        if (CheckBoundingBox<TRotation>(initialBBox, child->Bounds))
         {
             // Child node intersects with current node, move behind.
-            ps->next_quadrant_ps = child->next_quadrant_ps;
+            ps->NextQuadrantEntry = child->NextQuadrantEntry;
 
-            auto* psTemp = parent->next_quadrant_ps;
-            parent->next_quadrant_ps = child;
+            auto* psTemp = parent->NextQuadrantEntry;
+            parent->NextQuadrantEntry = child;
 
-            child->next_quadrant_ps = psTemp;
+            child->NextQuadrantEntry = psTemp;
             child = ps;
         }
     }
@@ -444,7 +444,7 @@ static PaintStruct* PaintArrangeStructsHelperRotation(PaintStruct* psQuadrantEnt
 static void PaintStructsLinkQuadrants(PaintSessionCore& session)
 {
     PaintStruct* ps = &session.PaintHead;
-    ps->next_quadrant_ps = nullptr;
+    ps->NextQuadrantEntry = nullptr;
 
     uint32_t quadrantIndex = session.QuadrantBackIndex;
     do
@@ -452,11 +452,11 @@ static void PaintStructsLinkQuadrants(PaintSessionCore& session)
         PaintStruct* psNext = session.Quadrants[quadrantIndex];
         if (psNext != nullptr)
         {
-            ps->next_quadrant_ps = psNext;
+            ps->NextQuadrantEntry = psNext;
             do
             {
                 ps = psNext;
-                psNext = psNext->next_quadrant_ps;
+                psNext = psNext->NextQuadrantEntry;
 
             } while (psNext != nullptr);
         }
@@ -506,7 +506,7 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     auto x = ps->x;
     auto y = ps->y;
 
-    if (ps->sprite_type == ViewportInteractionItem::Entity)
+    if (ps->InteractionItem == ViewportInteractionItem::Entity)
     {
         if (session.DPI.zoom_level >= ZoomLevel{ 1 })
         {
@@ -530,9 +530,9 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
         GfxDrawSprite(session.DPI, imageId, { x, y });
     }
 
-    if (ps->children != nullptr)
+    if (ps->Children != nullptr)
     {
-        PaintDrawStruct(session, ps->children);
+        PaintDrawStruct(session, ps->Children);
     }
     else
     {
@@ -550,11 +550,11 @@ void PaintDrawStructs(PaintSession& session)
 
     PaintStruct* ps = &session.PaintHead;
 
-    for (ps = ps->next_quadrant_ps; ps != nullptr;)
+    for (ps = ps->NextQuadrantEntry; ps != nullptr;)
     {
         PaintDrawStruct(session, ps);
 
-        ps = ps->next_quadrant_ps;
+        ps = ps->NextQuadrantEntry;
     }
 }
 
@@ -565,7 +565,7 @@ void PaintDrawStructs(PaintSession& session)
  */
 static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags)
 {
-    AttachedPaintStruct* attached_ps = ps->attached_ps;
+    AttachedPaintStruct* attached_ps = ps->Attached;
     for (; attached_ps != nullptr; attached_ps = attached_ps->next)
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
@@ -584,62 +584,62 @@ static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFl
 
 static void PaintPSImageWithBoundingBoxes(DrawPixelInfo& dpi, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
-    const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->sprite_type)];
+    const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->InteractionItem)];
     const uint8_t rotation = GetCurrentRotation();
 
     const CoordsXYZ frontTop = {
-        ps->bounds.x_end,
-        ps->bounds.y_end,
-        ps->bounds.z_end,
+        ps->Bounds.x_end,
+        ps->Bounds.y_end,
+        ps->Bounds.z_end,
     };
     const auto screenCoordFrontTop = Translate3DTo2DWithZ(rotation, frontTop);
 
     const CoordsXYZ frontBottom = {
-        ps->bounds.x_end,
-        ps->bounds.y_end,
-        ps->bounds.z,
+        ps->Bounds.x_end,
+        ps->Bounds.y_end,
+        ps->Bounds.z,
     };
     const auto screenCoordFrontBottom = Translate3DTo2DWithZ(rotation, frontBottom);
 
     const CoordsXYZ leftTop = {
-        ps->bounds.x,
-        ps->bounds.y_end,
-        ps->bounds.z_end,
+        ps->Bounds.x,
+        ps->Bounds.y_end,
+        ps->Bounds.z_end,
     };
     const auto screenCoordLeftTop = Translate3DTo2DWithZ(rotation, leftTop);
 
     const CoordsXYZ leftBottom = {
-        ps->bounds.x,
-        ps->bounds.y_end,
-        ps->bounds.z,
+        ps->Bounds.x,
+        ps->Bounds.y_end,
+        ps->Bounds.z,
     };
     const auto screenCoordLeftBottom = Translate3DTo2DWithZ(rotation, leftBottom);
 
     const CoordsXYZ rightTop = {
-        ps->bounds.x_end,
-        ps->bounds.y,
-        ps->bounds.z_end,
+        ps->Bounds.x_end,
+        ps->Bounds.y,
+        ps->Bounds.z_end,
     };
     const auto screenCoordRightTop = Translate3DTo2DWithZ(rotation, rightTop);
 
     const CoordsXYZ rightBottom = {
-        ps->bounds.x_end,
-        ps->bounds.y,
-        ps->bounds.z,
+        ps->Bounds.x_end,
+        ps->Bounds.y,
+        ps->Bounds.z,
     };
     const auto screenCoordRightBottom = Translate3DTo2DWithZ(rotation, rightBottom);
 
     const CoordsXYZ backTop = {
-        ps->bounds.x,
-        ps->bounds.y,
-        ps->bounds.z_end,
+        ps->Bounds.x,
+        ps->Bounds.y,
+        ps->Bounds.z_end,
     };
     const auto screenCoordBackTop = Translate3DTo2DWithZ(rotation, backTop);
 
     const CoordsXYZ backBottom = {
-        ps->bounds.x,
-        ps->bounds.y,
-        ps->bounds.z,
+        ps->Bounds.x,
+        ps->Bounds.y,
+        ps->Bounds.z,
     };
     const auto screenCoordBackBottom = Translate3DTo2DWithZ(rotation, backBottom);
 
@@ -782,7 +782,7 @@ PaintStruct* PaintAddImageAsChild(
         return nullptr;
     }
 
-    parentPS->children = ps;
+    parentPS->Children = ps;
 
     return ps;
 }
@@ -847,8 +847,8 @@ bool PaintAttachToPreviousPS(PaintSession& session, const ImageId image_id, int3
     ps->y = y;
     ps->IsMasked = false;
 
-    AttachedPaintStruct* oldFirstAttached = masterPs->attached_ps;
-    masterPs->attached_ps = ps;
+    AttachedPaintStruct* oldFirstAttached = masterPs->Attached;
+    masterPs->Attached = ps;
     ps->next = oldFirstAttached;
 
     return true;
