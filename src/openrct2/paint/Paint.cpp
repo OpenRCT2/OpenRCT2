@@ -881,8 +881,7 @@ void PaintFloatingMoneyEffect(
     ps->args[2] = 0;
     ps->args[3] = 0;
     ps->y_offsets = reinterpret_cast<uint8_t*>(y_offsets);
-    ps->x = coord.x + offset_x;
-    ps->y = coord.y;
+    ps->ScreenPos = ScreenCoordsXY{ coord.x + offset_x, coord.y };
 }
 
 /**
@@ -905,7 +904,7 @@ void PaintDrawMoneyStructs(DrawPixelInfo& dpi, PaintStringStruct* ps)
         }
 
         GfxDrawStringWithYOffsets(
-            dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
+            dpi, buffer, COLOUR_BLACK, ps->ScreenPos, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::Medium);
     } while ((ps = ps->next) != nullptr);
 }

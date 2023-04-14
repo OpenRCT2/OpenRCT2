@@ -66,8 +66,7 @@ struct PaintStringStruct
 {
     StringId string_id;
     PaintStringStruct* next;
-    int32_t x;
-    int32_t y;
+    ScreenCoordsXY ScreenPos;
     uint32_t args[4];
     uint8_t* y_offsets;
 };
