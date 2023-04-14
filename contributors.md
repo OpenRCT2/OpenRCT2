@@ -218,6 +218,7 @@ The following people are not part of the development team, but have been contrib
 * Ernest Wong (ErnWong)
 * Joel H. (HtotheTML)
 * John Mulcahy (jayjay300)
+* Chase Percy (Chase-Percy)
 
 ## Toolchain
 * (Balletie) - macOS
