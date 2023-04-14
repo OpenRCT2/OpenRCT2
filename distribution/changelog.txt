@@ -4,6 +4,7 @@
 - Feature: [#19276] Add Powered Lifthill to Giga Coaster.
 - Feature: [#19446] Add new color options to color dropdown.
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
+- Feature: [#19930] Add plugin APIs for research.
 - Feature: [OpenMusic#25] Added Prehistoric ride music style.
 - Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
 - Improved: [#18996] When marketing campaigns are disabled, disable the Marketing tab in the Finances window.
