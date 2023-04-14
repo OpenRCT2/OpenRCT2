@@ -226,6 +226,11 @@ class FinancesWindow final : public Window
 private:
     uint32_t _lastPaintedMonth;
 
+    void SetDisabledTabs()
+    {
+        disabled_widgets = (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+    }
+
 public:
     void OnOpen() override
     {
@@ -299,7 +304,7 @@ public:
             WindowInitScrollWidgets(*this);
         }
 
-        disabled_widgets = 0;
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_6);
 
         for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
             SetWidgetPressed(WIDX_TAB_1 + i, false);
@@ -443,8 +448,9 @@ public:
         hold_down_widgets = _windowFinancesPageHoldDownWidgets[p];
         pressed_widgets = 0;
         widgets = _windowFinancesPageWidgets[p];
-
+        SetDisabledTabs();
         Invalidate();
+
         if (p == WINDOW_FINANCES_PAGE_RESEARCH)
         {
             width = WW_RESEARCH;
