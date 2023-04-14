@@ -183,7 +183,7 @@ GameActions::Result CheatSetAction::Execute() const
             RenewRides();
             break;
         case CheatType::MakeDestructible:
-            gCheatsMakeAllDestructible = !gCheatsMakeAllDestructible;
+            gCheatsMakeAllDestructible = _param1 != 0;
             WindowInvalidateByClass(WindowClass::Ride);
             break;
         case CheatType::FixRides:
