@@ -564,7 +564,7 @@ static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFl
     AttachedPaintStruct* attached_ps = ps->Attached;
     for (; attached_ps != nullptr; attached_ps = attached_ps->next)
     {
-        auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->ScreenPos.x, attached_ps->y + ps->ScreenPos.y };
+        const auto screenCoords = ps->ScreenPos + attached_ps->RelativePos;
 
         auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->IsMasked)
@@ -806,8 +806,7 @@ bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId imageId, i
     }
 
     ps->image_id = imageId;
-    ps->x = x;
-    ps->y = y;
+    ps->RelativePos = { x, y };
     ps->IsMasked = false;
     ps->next = nullptr;
 
@@ -839,8 +838,7 @@ bool PaintAttachToPreviousPS(PaintSession& session, const ImageId image_id, int3
     }
 
     ps->image_id = image_id;
-    ps->x = x;
-    ps->y = y;
+    ps->RelativePos = { x, y };
     ps->IsMasked = false;
 
     AttachedPaintStruct* oldFirstAttached = masterPs->Attached;

@@ -31,8 +31,8 @@ struct AttachedPaintStruct
     AttachedPaintStruct* next;
     ImageId image_id;
     ImageId ColourImageId;
-    int32_t x;
-    int32_t y;
+    // This is relative to the parent where we are attached to.
+    ScreenCoordsXY RelativePos;
     bool IsMasked;
 };
 

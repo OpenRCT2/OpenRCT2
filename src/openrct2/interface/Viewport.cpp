@@ -1858,9 +1858,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
 #pragma GCC diagnostic ignored "-Wnull-dereference"
         for (AttachedPaintStruct* attached_ps = ps->Attached; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
-            if (IsSpriteInteractedWith(
-                    session->DPI, attached_ps->image_id,
-                    { (attached_ps->x + ps->ScreenPos.x), (attached_ps->y + ps->ScreenPos.y) }))
+            if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
