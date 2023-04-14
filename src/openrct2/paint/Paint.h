@@ -28,7 +28,7 @@ enum class ViewportInteractionItem : uint8_t;
 
 struct AttachedPaintStruct
 {
-    AttachedPaintStruct* next;
+    AttachedPaintStruct* NextEntry;
     ImageId image_id;
     ImageId ColourImageId;
     // This is relative to the parent where we are attached to.
@@ -65,7 +65,7 @@ struct PaintStruct
 struct PaintStringStruct
 {
     StringId string_id;
-    PaintStringStruct* next;
+    PaintStringStruct* NextEntry;
     ScreenCoordsXY ScreenPos;
     uint32_t args[4];
     uint8_t* y_offsets;
@@ -249,7 +249,7 @@ struct PaintSession : public PaintSessionCore
             }
             else
             {
-                LastPSString->next = string;
+                LastPSString->NextEntry = string;
             }
             LastPSString = string;
             return LastPSString;

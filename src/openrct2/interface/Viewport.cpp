@@ -1856,7 +1856,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnull-dereference"
-        for (AttachedPaintStruct* attached_ps = ps->Attached; attached_ps != nullptr; attached_ps = attached_ps->next)
+        for (AttachedPaintStruct* attached_ps = ps->Attached; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
         {
             if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
             {

@@ -562,7 +562,7 @@ void PaintDrawStructs(PaintSession& session)
 static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags)
 {
     AttachedPaintStruct* attached_ps = ps->Attached;
-    for (; attached_ps != nullptr; attached_ps = attached_ps->next)
+    for (; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
     {
         const auto screenCoords = ps->ScreenPos + attached_ps->RelativePos;
 
@@ -808,9 +808,9 @@ bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId imageId, i
     ps->image_id = imageId;
     ps->RelativePos = { x, y };
     ps->IsMasked = false;
-    ps->next = nullptr;
+    ps->NextEntry = nullptr;
 
-    previousAttachedPS->next = ps;
+    previousAttachedPS->NextEntry = ps;
 
     return true;
 }
@@ -843,7 +843,7 @@ bool PaintAttachToPreviousPS(PaintSession& session, const ImageId image_id, int3
 
     AttachedPaintStruct* oldFirstAttached = masterPs->Attached;
     masterPs->Attached = ps;
-    ps->next = oldFirstAttached;
+    ps->NextEntry = oldFirstAttached;
 
     return true;
 }
@@ -876,7 +876,7 @@ void PaintFloatingMoneyEffect(
     const auto coord = Translate3DTo2DWithZ(rotation, position);
 
     ps->string_id = string_id;
-    ps->next = nullptr;
+    ps->NextEntry = nullptr;
     std::memcpy(ps->args, &amount, sizeof(amount));
     ps->args[2] = 0;
     ps->args[3] = 0;
@@ -906,7 +906,7 @@ void PaintDrawMoneyStructs(DrawPixelInfo& dpi, PaintStringStruct* ps)
         GfxDrawStringWithYOffsets(
             dpi, buffer, COLOUR_BLACK, ps->ScreenPos, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::Medium);
-    } while ((ps = ps->next) != nullptr);
+    } while ((ps = ps->NextEntry) != nullptr);
 }
 
 PaintEntryPool::Chain::Chain(PaintEntryPool* pool)
