@@ -4878,6 +4878,8 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
           SpritePrecision::Sprites4 }, // TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN
         {},                            // TRACK_SLOPE_CURVE_LARGE
         {},                            // TRACK_SLOPE_CURVE_LARGE_BANKED
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TRACK_DIAG_BRAKES
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TRACK_DIAG_BLOCK_BRAKES
     };
     static_assert(std::size(trackPieceRequiredSprites) == TRACK_GROUP_COUNT);
 
