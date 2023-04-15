@@ -51,6 +51,8 @@ void WaterObject::Unload()
 
     _legacyType.string_idx = 0;
     _legacyType.image_id = 0;
+    _legacyType.palette_index_1 = 0;
+    _legacyType.palette_index_2 = 0;
 }
 
 void WaterObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
