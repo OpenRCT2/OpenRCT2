@@ -197,6 +197,7 @@ void Object::UnloadImages()
     if (_baseImageId != ImageIndexUndefined)
     {
         GfxObjectFreeImages(_baseImageId, GetImageTable().GetCount());
+        _baseImageId = ImageIndexUndefined;
     }
 }
 
