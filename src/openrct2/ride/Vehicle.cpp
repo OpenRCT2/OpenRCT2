@@ -9213,7 +9213,22 @@ void Vehicle::InvalidateWindow()
 
 void Vehicle::UpdateCrossings() const
 {
-    if (TrainHead() != this)
+    auto curRide = GetRide();
+    if (curRide == nullptr)
+    {
+        return;
+    }
+
+    // Parks may have rides hacked into the path.
+    // Limit path blocking to rides actually supporting level crossings to prevent peeps getting stuck everywhere.
+    if (!GetRideTypeDescriptor(curRide->type).HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
+    {
+        return;
+    }
+
+    // In shuttle mode, only the train head is considered to be travelling backwards
+    // To prevent path getting blocked incorrectly, only update crossings when this is the train head
+    if (curRide->mode == RideMode::Shuttle && TrainHead() != this)
     {
         return;
     }
@@ -9257,12 +9272,7 @@ void Vehicle::UpdateCrossings() const
         while (true)
         {
             auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
-            auto curRide = GetRide();
-
-            // Many New Element parks have invisible rides hacked into the path.
-            // Limit path blocking to rides actually supporting level crossings to prevent peeps getting stuck everywhere.
-            if (pathElement != nullptr && curRide != nullptr
-                && GetRideTypeDescriptor(curRide->type).HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
+            if (pathElement != nullptr)
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
                 {
@@ -9321,17 +9331,20 @@ void Vehicle::UpdateCrossings() const
     uint8_t freeCount = travellingForwards && status != Vehicle::Status::Departing ? 3 : 1;
     while (freeCount-- > 0)
     {
+        if (travellingForwards)
+        {
+            if (TrackBlockGetPrevious(xyElement, &output))
+            {
+                xyElement.x = output.begin_x;
+                xyElement.y = output.begin_y;
+                xyElement.element = output.begin_element;
+            }
+        }
+
         auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
         if (pathElement != nullptr)
         {
             pathElement->SetIsBlockedByVehicle(false);
-        }
-
-        if (travellingForwards && freeCount > 0 && TrackBlockGetPrevious(xyElement, &output))
-        {
-            xyElement.x = output.begin_x;
-            xyElement.y = output.begin_y;
-            xyElement.element = output.begin_element;
         }
     }
 }
