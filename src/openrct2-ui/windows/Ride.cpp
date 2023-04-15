@@ -2318,7 +2318,8 @@ static void WindowRideMainInvalidate(WindowBase* w)
         return;
 
     w->disabled_widgets &= ~((1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_CONSTRUCTION));
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
+    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+        && !gCheatsMakeAllDestructible)
         w->disabled_widgets |= (1uLL << WIDX_DEMOLISH);
 
     auto ft = Formatter::Common();
