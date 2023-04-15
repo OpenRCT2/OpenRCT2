@@ -3131,6 +3131,7 @@ declare global {
         readonly parkSize: number;
 
         name: string;
+        research: Research;
         messages: ParkMessage[];
 
         /**
@@ -3154,12 +3155,12 @@ declare global {
         /**
          * The list of rides and scenery sets that have already been researched.
          */
-        inventedItems: ResearchItemType[];
+        inventedItems: ResearchItem[];
 
         /**
          * The order of rides and scenery sets to be researched.
          */
-        uninventedItems: ResearchItemType[];
+        uninventedItems: ResearchItem[];
 
         /**
          * The amount of funding currently spent on research.
@@ -3204,20 +3205,34 @@ declare global {
         isObjectResearched(type: ObjectType, index: number): boolean;
     }
 
-    interface ResearchItem {
+    type ResearchItem = RideResearchItem | SceneryResearchItem;
+
+    interface RideResearchItem {
+        type: "ride";
+
         /**
          * The research category this item belongs in.
          * E.g. gentle rides, thrill rides, shops etc.
          */
-        category: ResearchCategory;
+        category?: ResearchCategory;
 
         /**
-         * Weather the research item is a ride or scenery set.
+         * The ride type. Each vehicle can have a seperate invention for each ride type.
          */
-        type: ResearchItemType;
+        rideType: number;
 
         /**
-         * The ride or scenery set object index.
+         * The ride (vehicle) object index.
+         */
+        object: number;
+    }
+
+    interface SceneryResearchItem {
+        category?: ResearchCategory.SceneryGroup;
+        type: "scenery";
+
+        /**
+         * The scenery set object index.
          */
         object: number;
     }
@@ -3230,7 +3245,8 @@ declare global {
         Rollercoaster,
         Thrill,
         Water,
-        Shop
+        Shop,
+        SceneryGroup
     }
 
     enum ResearchFundingLevel {
