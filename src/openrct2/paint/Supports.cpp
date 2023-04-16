@@ -596,7 +596,7 @@ bool WoodenASupportsPaintSetup(
                 auto* ps = PaintAddImageAsOrphan(session, imageId, { 0, 0, z }, bBox);
                 if (ps != nullptr)
                 {
-                    session.WoodenSupportsPrependTo->children = ps;
+                    session.WoodenSupportsPrependTo->Children = ps;
                 }
             }
         }
@@ -768,7 +768,7 @@ bool WoodenBSupportsPaintSetup(
                 _9E32B1 = true;
                 if (paintStruct != nullptr)
                 {
-                    session.WoodenSupportsPrependTo->children = paintStruct;
+                    session.WoodenSupportsPrependTo->Children = paintStruct;
                 }
             }
         }
@@ -1296,7 +1296,7 @@ bool PathASupportsPaintSetup(
             hasSupports = true;
             if (paintStruct != nullptr)
             {
-                session.WoodenSupportsPrependTo->children = paintStruct;
+                session.WoodenSupportsPrependTo->Children = paintStruct;
             }
         }
     }

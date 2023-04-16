@@ -72,10 +72,10 @@ uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;
 InteractionInfo::InteractionInfo(const PaintStruct* ps)
-    : Loc(ps->map_x, ps->map_y)
-    , Element(ps->tileElement)
-    , Entity(ps->entity)
-    , SpriteType(ps->sprite_type)
+    : Loc(ps->MapPos)
+    , Element(ps->Element)
+    , Entity(ps->Entity)
+    , SpriteType(ps->InteractionItem)
 {
 }
 static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi);
@@ -879,7 +879,7 @@ static void RecordSession(
     // Remap all entries
     for (auto& ps : recordedSession.Entries)
     {
-        auto& ptr = ps.AsBasic()->next_quadrant_ps;
+        auto& ptr = ps.AsBasic()->NextQuadrantEntry;
         auto it = entryRemap.find(ptr);
         if (it == entryRemap.end())
         {
@@ -1416,12 +1416,12 @@ static bool IsTileElementVegetation(const TileElement* tileElement)
 
 VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
 {
-    switch (ps->sprite_type)
+    switch (ps->InteractionItem)
     {
         case ViewportInteractionItem::Entity:
-            if (ps->entity != nullptr)
+            if (ps->Entity != nullptr)
             {
-                switch (ps->entity->Type)
+                switch (ps->Entity->Type)
                 {
                     case EntityType::Vehicle:
                     {
@@ -1434,7 +1434,7 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
                         // these should be hidden if 'hide rides' is enabled
                         if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES)
                         {
-                            auto vehicle = ps->entity->As<Vehicle>();
+                            auto vehicle = ps->Entity->As<Vehicle>();
                             if (vehicle == nullptr)
                                 break;
 
@@ -1481,9 +1481,9 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
         case ViewportInteractionItem::Scenery:
         case ViewportInteractionItem::LargeScenery:
         case ViewportInteractionItem::Wall:
-            if (ps->tileElement != nullptr)
+            if (ps->Element != nullptr)
             {
-                if (IsTileElementVegetation(ps->tileElement))
+                if (IsTileElementVegetation(ps->Element))
                 {
                     if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION)
                     {
@@ -1499,7 +1499,7 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
                     }
                 }
             }
-            if (ps->sprite_type == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+            if (ps->InteractionItem == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
             {
                 return VisibilityKind::Partial;
             }
@@ -1515,10 +1515,10 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
  */
 static bool PSSpriteTypeIsInFilter(PaintStruct* ps, uint16_t filter)
 {
-    if (ps->sprite_type != ViewportInteractionItem::None && ps->sprite_type != ViewportInteractionItem::Label
-        && ps->sprite_type <= ViewportInteractionItem::Banner)
+    if (ps->InteractionItem != ViewportInteractionItem::None && ps->InteractionItem != ViewportInteractionItem::Label
+        && ps->InteractionItem <= ViewportInteractionItem::Banner)
     {
-        auto mask = EnumToFlag(ps->sprite_type);
+        auto mask = EnumToFlag(ps->InteractionItem);
         if (filter & mask)
         {
             return true;
@@ -1837,29 +1837,28 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
     PaintStruct* ps = &session->PaintHead;
     InteractionInfo info{};
 
-    while ((ps = ps->next_quadrant_ps) != nullptr)
+    while ((ps = ps->NextQuadrantEntry) != nullptr)
     {
         PaintStruct* old_ps = ps;
         PaintStruct* next_ps = ps;
         while (next_ps != nullptr)
         {
             ps = next_ps;
-            if (IsSpriteInteractedWith(session->DPI, ps->image_id, { ps->x, ps->y }))
+            if (IsSpriteInteractedWith(session->DPI, ps->image_id, ps->ScreenPos))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
                     info = { ps };
                 }
             }
-            next_ps = ps->children;
+            next_ps = ps->Children;
         }
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnull-dereference"
-        for (AttachedPaintStruct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
+        for (AttachedPaintStruct* attached_ps = ps->Attached; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
         {
-            if (IsSpriteInteractedWith(
-                    session->DPI, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
+            if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
