@@ -1579,7 +1579,7 @@ public:
             widgets[WIDX_STRAIGHT].type = WindowWidgetType::Empty;
         }
 
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_LARGE_CURVES))
+        if (IsTrackEnabled(TRACK_CURVE_LARGE))
         {
             widgets[WIDX_LEFT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_RIGHT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
@@ -2110,7 +2110,7 @@ public:
             const auto& ted = GetTrackElementDescriptor(trackType);
             int32_t trackTypeCategory = ted.Definition.type;
 
-            if (trackTypeCategory == TRACK_NONE)
+            if (ted.Description == STR_EMPTY)
                 continue;
 
             if (!IsTrackEnabled(trackTypeCategory))

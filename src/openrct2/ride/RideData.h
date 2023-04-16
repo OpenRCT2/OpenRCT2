@@ -316,7 +316,6 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_CHECK_FOR_STALLING = (1uLL << 27),
     RIDE_TYPE_FLAG_HAS_TRACK = (1uLL << 28),
     RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES = (1uLL << 29), // Only set by lift
-    RIDE_TYPE_FLAG_HAS_LARGE_CURVES = (1uLL << 30),        // whether the ride supports large (45 degree turn) curves
     RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = (1uLL << 31),
 
     RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK = (1uLL << 32),
