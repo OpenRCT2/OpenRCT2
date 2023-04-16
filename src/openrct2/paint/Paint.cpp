@@ -320,6 +320,9 @@ static PaintStruct* PaintStructsFirstInQuadrant(PaintStruct* psNext, uint16_t qu
     return ps;
 }
 
+// Initializes sorting flags for all entries in the specified quadrant by quadrantIndex.
+// Sorting flags specify whether a node needs to be traversed, is a neighbour, or is outside the
+// quadrant range.
 static void PaintStructsInitializeSort(PaintStruct* ps, uint16_t quadrantIndex, uint8_t flag)
 {
     do
@@ -346,6 +349,9 @@ static void PaintStructsInitializeSort(PaintStruct* ps, uint16_t quadrantIndex, 
     } while (ps->QuadrantIndex <= quadrantIndex + 1);
 }
 
+// Returns a pair of parent and child where child is the next node that requires traversal.
+// Because this structure uses a singly linked list we need to keep track of the parent in order
+// to be able to re-order the list.
 static std::pair<PaintStruct*, PaintStruct*> PaintStructsGetNextPending(PaintStruct* ps)
 {
     PaintStruct* ps_next;
@@ -372,6 +378,8 @@ static std::pair<PaintStruct*, PaintStruct*> PaintStructsGetNextPending(PaintStr
     return { ps, ps_next };
 }
 
+// Re-orders all nodes after the specified child node and marks the child node as traversed. The resulting
+// order of the children is the depth based on rotation and dimensions of the bounding box.
 template<uint8_t TRotation> static void PaintStructsSortQuadrant(PaintStruct* parent, PaintStruct* child)
 {
     // Mark visited.
