@@ -748,34 +748,38 @@ public:
                     | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
             }
         }
-        if (IsTrackEnabled(TRACK_HELIX_LARGE_UNBANKED))
+        // If the previous track is flat and the next track is flat, attempt to show buttons for helixes
+        if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackSlopeEnd == _previousTrackSlopeEnd)
         {
-            if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd == TRACK_SLOPE_NONE)
+            // If the bank is none, attempt to show unbanked quarter helixes
+            if (_currentTrackBankEnd == TRACK_BANK_NONE
+                && (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT))
             {
-                if (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT)
-                {
-                    if (_currentTrackSlopeEnd == _previousTrackSlopeEnd)
-                    {
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
-                    }
-                }
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_UNBANKED_QUARTER))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                if (IsTrackEnabled(TRACK_HELIX_UP_UNBANKED_QUARTER))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
             }
-        }
-        else if (
-            (IsTrackEnabled(TRACK_HELIX_SMALL)
-             || (IsTrackEnabled(TRACK_HELIX_LARGE) && _currentTrackCurve != TRACK_CURVE_LEFT_SMALL
-                 && _currentTrackCurve != TRACK_CURVE_RIGHT_SMALL))
-            && (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT
-                || _currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL)
-            && (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd != TRACK_BANK_NONE))
-        {
-            if (_previousTrackSlopeEnd == _currentTrackSlopeEnd)
+            // If the track is banked left or right and curvature is standard size (2.5 tile radius), attempt to show buttons
+            // for half or quarter helixes
+            else if (
+                (_currentTrackBankEnd == TRACK_BANK_LEFT || _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                && (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT))
             {
-                // Enable helix
-                disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
-                if (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
-                    || gCheatsEnableAllDrawableTrackPieces)
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                if (IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
+            }
+            // If the track is banked left or right and curvature is small size (1.5 tile radius), attempt to show buttons for
+            // half helixes
+            else if (
+                (_currentTrackBankEnd == TRACK_BANK_LEFT || _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                && (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL))
+            {
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                if (IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
                     disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
             }
         }
@@ -1047,7 +1051,7 @@ public:
                 break;
             case WIDX_SLOPE_DOWN_STEEP:
                 RideConstructionInvalidateCurrentTrack();
-                if (IsTrackEnabled(TRACK_HELIX_SMALL))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
                 {
                     if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT)
                     {
@@ -1080,7 +1084,7 @@ public:
                         break;
                     }
                 }
-                if (IsTrackEnabled(TRACK_HELIX_LARGE))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER))
                 {
                     if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT)
                     {
@@ -1099,7 +1103,7 @@ public:
                         break;
                     }
                 }
-                if (IsTrackEnabled(TRACK_HELIX_LARGE_UNBANKED))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_UNBANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_UNBANKED_QUARTER))
                 {
                     if (_currentTrackBankEnd == TRACK_BANK_NONE)
                     {
@@ -1185,7 +1189,7 @@ public:
                 break;
             case WIDX_SLOPE_UP_STEEP:
                 RideConstructionInvalidateCurrentTrack();
-                if (IsTrackEnabled(TRACK_HELIX_SMALL))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
                 {
                     if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT)
                     {
@@ -1216,7 +1220,7 @@ public:
                         break;
                     }
                 }
-                if (IsTrackEnabled(TRACK_HELIX_LARGE))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER))
                 {
                     if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT)
                     {
@@ -1235,7 +1239,7 @@ public:
                         break;
                     }
                 }
-                if (IsTrackEnabled(TRACK_HELIX_LARGE_UNBANKED))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_UNBANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_UNBANKED_QUARTER))
                 {
                     if (_currentTrackBankEnd == TRACK_BANK_NONE)
                     {
@@ -1657,8 +1661,8 @@ public:
             widgets[WIDX_SLOPE_DOWN].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
         }
-        if (IsTrackEnabled(TRACK_HELIX_SMALL) && _currentTrackBankEnd != TRACK_BANK_NONE
-            && _currentTrackSlopeEnd == TRACK_SLOPE_NONE)
+        if ((IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
+            && _currentTrackBankEnd != TRACK_BANK_NONE && _currentTrackSlopeEnd == TRACK_SLOPE_NONE)
         {
             if (_currentTrackCurve >= TRACK_CURVE_LEFT && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
             {
@@ -1741,8 +1745,8 @@ public:
             }
         }
 
-        if (IsTrackEnabled(TRACK_HELIX_LARGE_UNBANKED) && _currentTrackSlopeEnd == TRACK_SLOPE_NONE
-            && _currentTrackBankEnd == TRACK_BANK_NONE
+        if ((IsTrackEnabled(TRACK_HELIX_DOWN_UNBANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_UNBANKED_QUARTER))
+            && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd == TRACK_BANK_NONE
             && (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT))
         {
             widgets[WIDX_SLOPE_DOWN_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_HELIX_DOWN);
@@ -1767,7 +1771,8 @@ public:
             widgets[WIDX_SLOPE_UP].right = tmp;
         }
 
-        if ((IsTrackEnabled(TRACK_HELIX_LARGE) || IsTrackEnabled(TRACK_HELIX_SMALL))
+        if ((IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER)
+             || IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
             && (_currentTrackCurve >= TRACK_CURVE_LEFT && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
             && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd != TRACK_BANK_NONE)
         {
