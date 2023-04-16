@@ -473,19 +473,21 @@ bool WoodenASupportsPaintSetup(
         imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    int32_t z = Floor2(session.Support.height + 15, 16);
-    height -= z;
-    if (height < 0)
+    auto baseHeight = Floor2(session.Support.height + 15, 16);
+    int16_t supportLength = height - baseHeight;
+
+    if (supportLength < 0)
     {
         return false;
     }
-    height /= 16;
+
+    int16_t heightSteps = supportLength / 16;
 
     bool hasSupports = false;
     bool drawFlatPiece = false;
 
     // Draw base support (usually shaped to the slope)
-    int32_t slope = session.Support.slope;
+    auto slope = session.Support.slope;
     if (slope & SUPPORTS_SLOPE_5)
     {
         // Above scenery (just put a base piece above it)
@@ -494,8 +496,8 @@ bool WoodenASupportsPaintSetup(
     else if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
     {
         // Steep diagonal (place the correct shaped support for the slope)
-        height -= 2;
-        if (height < 0)
+        heightSteps -= 2;
+        if (heightSteps < 0)
         {
             return false;
         }
@@ -508,24 +510,27 @@ bool WoodenASupportsPaintSetup(
         else
         {
             auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, z }, { { 0, 0, z + 2 }, { 32, 32, 11 } });
+
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
             PaintAddImageAsParent(
-                session, imageId.WithIndexOffset(4), { 0, 0, z + 16 }, { { 0, 0, z + 16 + 2 }, { 32, 32, 11 } });
+                session, imageId.WithIndexOffset(4), { 0, 0, baseHeight + 16 },
+                { { 0, 0, baseHeight + 16 + 2 }, { 32, 32, 11 } });
 
             hasSupports = true;
         }
-        z += 32;
+
+        baseHeight += 32;
     }
     else if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
     {
         // 1 to 3 quarters up
-        height--;
-        if (height < 0)
+        heightSteps--;
+        if (heightSteps < 0)
         {
             return false;
         }
 
-        int32_t imageIndex = WoodenSupportImageIds[supportType].slope;
+        auto imageIndex = WoodenSupportImageIds[supportType].slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -533,70 +538,75 @@ bool WoodenASupportsPaintSetup(
         else
         {
             auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, z }, { { 0, 0, z + 2 }, { 32, 32, 11 } });
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
             hasSupports = true;
         }
-        z += 16;
+
+        baseHeight += 16;
     }
 
     // Draw flat base support
     if (drawFlatPiece)
     {
         auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].flat);
-        PaintAddImageAsParent(session, imageId, { 0, 0, z - 2 }, { 32, 32, 0 });
+        PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
         hasSupports = true;
     }
 
     // Draw repeated supports for left over space
-    while (height != 0)
+    while (heightSteps > 0)
     {
-        if ((z & 16) == 0 && height >= 2 && z + WATER_HEIGHT_STEP != session.WaterHeight)
-        {
-            // Full support
-            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].full);
-            uint8_t ah = height == 2 ? 23 : 28;
-            PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 32, 32, ah });
-            hasSupports = true;
-            z += 32;
-            height -= 2;
-        }
-        else
+        const bool isHalf = baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight;
+        if (isHalf)
         {
             // Half support
             auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].half);
-            uint8_t ah = height == 1 ? 7 : 12;
-            PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 32, 32, ah });
+            uint8_t boundBoxHeight = (heightSteps == 1) ? 7 : 12;
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            baseHeight += 16;
+            heightSteps -= 1;
             hasSupports = true;
-            z += 16;
-            height -= 1;
+        }
+        else
+        {
+            // Full support
+            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].full);
+            uint8_t boundBoxHeight = (heightSteps == 2) ? 23 : 28;
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            baseHeight += 32;
+            heightSteps -= 2;
+            hasSupports = true;
         }
     }
 
     // Draw special pieces, e.g. curved supports
     if (special != 0)
     {
-        special = (special - 1) & 0xFFFF;
+        uint16_t specialIndex = (special - 1) & 0xFFFF;
 
-        if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][special] != 0
-            && Byte97B23C[special].var_7 != 0)
+        const UnkSupportsDescriptor& supportsDesc = Byte97B23C[specialIndex];
+
+        // TODO: Byte97B23C[specialIndex].var_7 is never 0
+        if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][specialIndex] != 0
+            && supportsDesc.var_7 != 0)
         {
-            auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][special]);
+            auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][specialIndex]);
 
-            auto bBox = Byte97B23C[special].bounding_box;
-            bBox.offset.z += z;
+            auto boundBox = supportsDesc.bounding_box;
+            boundBox.offset.z += baseHeight;
 
-            if (Byte97B23C[special].var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
+            if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
             {
-                PaintAddImageAsParent(session, imageId, { 0, 0, z }, bBox);
+                PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
                 hasSupports = true;
             }
             else
             {
                 hasSupports = true;
-                auto* ps = PaintAddImageAsOrphan(session, imageId, { 0, 0, z }, bBox);
-                if (ps != nullptr)
+                auto* paintStruct = PaintAddImageAsOrphan(session, imageId, { 0, 0, baseHeight }, boundBox);
+                if (paintStruct != nullptr)
                 {
-                    session.WoodenSupportsPrependTo->Children = ps;
+                    session.WoodenSupportsPrependTo->Children = paintStruct;
                 }
             }
         }
@@ -634,7 +644,7 @@ bool WoodenBSupportsPaintSetup(
         imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    uint16_t baseHeight = Ceil2(session.Support.height, 16);
+    auto baseHeight = Floor2(session.Support.height + 15, 16);
     int16_t supportLength = height - baseHeight;
 
     if (supportLength < 0)
@@ -644,44 +654,20 @@ bool WoodenBSupportsPaintSetup(
 
     int16_t heightSteps = supportLength / 16;
 
-    bool _9E32B1 = false;
-    bool goTo662E8B = false;
-    if (session.Support.slope & 0x20)
+    bool hasSupports = false;
+    bool drawFlatPiece = false;
+
+    // Draw base support (usually shaped to the slope)
+    auto slope = session.Support.slope;
+    if (slope & SUPPORTS_SLOPE_5)
     {
-        goTo662E8B = true;
+        // Above scenery (just put a base piece above it)
+        drawFlatPiece = true;
     }
-    else if (session.Support.slope & 0x10)
+    else if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
     {
+        // Steep diagonal (place the correct shaped support for the slope)
         heightSteps -= 2;
-        if (heightSteps < 0)
-        {
-            return false;
-        }
-
-        uint32_t imageIndex = WoodenSupportImageIds[supportType].slope;
-        if (imageIndex == 0)
-        {
-            baseHeight += 32;
-            goTo662E8B = true;
-        }
-        else
-        {
-            auto imageid = imageTemplate.WithIndex(
-                imageIndex + word_97B3C4[session.Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
-
-            PaintAddImageAsParent(session, imageid, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
-            baseHeight += 16;
-
-            PaintAddImageAsParent(
-                session, imageid.WithIndexOffset(4), { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 3 } });
-            baseHeight += 16;
-
-            _9E32B1 = true;
-        }
-    }
-    else if ((session.Support.slope & 0x0F) != 0)
-    {
-        heightSteps -= 1;
         if (heightSteps < 0)
         {
             return false;
@@ -690,68 +676,94 @@ bool WoodenBSupportsPaintSetup(
         auto imageIndex = WoodenSupportImageIds[supportType].slope;
         if (imageIndex == 0)
         {
-            baseHeight += 16;
-            goTo662E8B = true;
+            drawFlatPiece = true;
         }
         else
         {
-            auto imageId = imageTemplate.WithIndex(
-                imageIndex + word_97B3C4[session.Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
 
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 3 } });
-            baseHeight += 16;
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
+            PaintAddImageAsParent(
+                session, imageId.WithIndexOffset(4), { 0, 0, baseHeight + 16 },
+                { { 0, 0, baseHeight + 16 + 2 }, { 32, 32, 3 } });
 
-            _9E32B1 = true;
+            hasSupports = true;
         }
+
+        baseHeight += 32;
+    }
+    else if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+    {
+        // 1 to 3 quarters up
+        heightSteps--;
+        if (heightSteps < 0)
+        {
+            return false;
+        }
+
+        auto imageIndex = WoodenSupportImageIds[supportType].slope;
+        if (imageIndex == 0)
+        {
+            drawFlatPiece = true;
+        }
+        else
+        {
+            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]);
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 3 } });
+            hasSupports = true;
+        }
+
+        baseHeight += 16;
     }
 
-    bool skipTo663004 = false;
-    if (goTo662E8B)
+    // Draw flat base support
+    if (drawFlatPiece)
     {
-        if (heightSteps == 0)
-        {
-            skipTo663004 = true;
-        }
-        else
+        if (heightSteps > 0)
         {
             auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].flat);
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
-            _9E32B1 = true;
+            hasSupports = true;
         }
     }
 
-    if (!skipTo663004)
+    // Draw repeated supports for left over space
+    while (heightSteps > 0)
     {
-        while (heightSteps > 0)
+        const bool isHalf = baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight;
+        if (isHalf)
         {
-            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight)
-            {
-                auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].half);
-                PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 1) ? 7 : 12) });
-                heightSteps -= 1;
-                baseHeight += 16;
-                _9E32B1 = true;
-            }
-            else
-            {
-                auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].full);
-                PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 2) ? 23 : 28) });
-                heightSteps -= 2;
-                baseHeight += 32;
-                _9E32B1 = true;
-            }
+            // Half support
+            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].half);
+            uint8_t boundBoxHeight = (heightSteps == 1) ? 7 : 12;
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            baseHeight += 16;
+            heightSteps -= 1;
+            hasSupports = true;
+        }
+        else
+        {
+            // Full support
+            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].full);
+            uint8_t boundBoxHeight = (heightSteps == 2) ? 23 : 28;
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            baseHeight += 32;
+            heightSteps -= 2;
+            hasSupports = true;
         }
     }
 
+    // Draw special pieces, e.g. curved supports
     if (special != 0)
     {
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
         const UnkSupportsDescriptor& supportsDesc = Byte97B23C[specialIndex];
 
+        // TODO: Byte97B23C[specialIndex].var_7 is never 0
         if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][specialIndex] != 0
             && supportsDesc.var_7 != 0)
-        { // Byte97B23C[special].var_7 is never 0
+        {
             auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][specialIndex]);
 
             auto boundBox = supportsDesc.bounding_box;
@@ -760,12 +772,12 @@ bool WoodenBSupportsPaintSetup(
             if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
             {
                 PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
-                _9E32B1 = true;
+                hasSupports = true;
             }
             else
             {
+                hasSupports = true;
                 auto* paintStruct = PaintAddImageAsOrphan(session, imageId, { 0, 0, baseHeight }, boundBox);
-                _9E32B1 = true;
                 if (paintStruct != nullptr)
                 {
                     session.WoodenSupportsPrependTo->Children = paintStruct;
@@ -774,7 +786,7 @@ bool WoodenBSupportsPaintSetup(
         }
     }
 
-    return _9E32B1;
+    return hasSupports;
 }
 
 /**
