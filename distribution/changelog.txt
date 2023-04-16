@@ -26,6 +26,7 @@
 - Fix: [#19901] Random shop colours never assigning last colour.
 - Fix: [#19924] Destructible cheat does not allow partial ride modification.
 - Fix: [#19950] Mine train block brake supports drawn incorrectly.
+- Fix: [#19955] Mine Train Roller Coaster has incorrect supports on the sloped left small turn (original bug).
 - Fix: [#19987] [Plugin] ‘SetCheatAction’ has wrong ID in plugin API.
 
 0.4.4 (2023-03-28)

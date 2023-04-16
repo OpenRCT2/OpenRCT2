@@ -2453,7 +2453,7 @@ static void MineTrainRCTrackLeftQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20229), { 0, 6, height },
                         { 32, 20, 1 });
-                    WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenASupportsPaintSetup(session, 9, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
