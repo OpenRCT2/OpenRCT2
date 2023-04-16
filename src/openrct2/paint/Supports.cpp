@@ -447,6 +447,84 @@ static constexpr const uint16_t word_97B3C4[] = {
 // clang-format on
 
 /**
+ * Draw repeated supports for left over space
+ *
+ * @param supportType
+ * @param imageTemplate
+ * @param heightSteps
+ * @param session
+ * @param baseHeight
+ * @param hasSupports
+ */
+static void WoodenABPaintRepeatedSupports(
+    int32_t supportType, const ImageId& imageTemplate, int16_t heightSteps, PaintSession& session, uint16_t& baseHeight,
+    bool& hasSupports)
+{
+    while (heightSteps > 0)
+    {
+        const bool isHalf = baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight;
+        if (isHalf)
+        {
+            // Half support
+            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].half);
+            uint8_t boundBoxHeight = (heightSteps == 1) ? 7 : 12;
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            baseHeight += 16;
+            heightSteps -= 1;
+        }
+        else
+        {
+            // Full support
+            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].full);
+            uint8_t boundBoxHeight = (heightSteps == 2) ? 23 : 28;
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            baseHeight += 32;
+            heightSteps -= 2;
+        }
+
+        hasSupports = true;
+    }
+}
+
+/**
+ * Draw special pieces, e.g. curved supports.
+ */
+static bool WoodenABSupportPaintSetupPaintSpecial(
+    PaintSession& session, int32_t supportType, int32_t special, const ImageId& imageTemplate, uint16_t baseHeight,
+    bool hasSupports)
+{
+    uint16_t specialIndex = (special - 1) & 0xFFFF;
+
+    const UnkSupportsDescriptor& supportsDesc = Byte97B23C[specialIndex];
+
+    // TODO: Byte97B23C[specialIndex].var_7 is never 0
+    if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][specialIndex] != 0
+        && supportsDesc.var_7 != 0)
+    {
+        hasSupports = true;
+        auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][specialIndex]);
+
+        auto boundBox = supportsDesc.bounding_box;
+        boundBox.offset.z += baseHeight;
+
+        if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
+        {
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
+        }
+        else
+        {
+            auto* paintStruct = PaintAddImageAsOrphan(session, imageId, { 0, 0, baseHeight }, boundBox);
+            if (paintStruct != nullptr)
+            {
+                session.WoodenSupportsPrependTo->Children = paintStruct;
+            }
+        }
+    }
+
+    return hasSupports;
+}
+
+/**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC
  * @param supportType (edi) Type and direction of supports.
@@ -473,7 +551,7 @@ bool WoodenASupportsPaintSetup(
         imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    auto baseHeight = Floor2(session.Support.height + 15, 16);
+    uint16_t baseHeight = Floor2(session.Support.height + 15, 16);
     int16_t supportLength = height - baseHeight;
 
     if (supportLength < 0)
@@ -553,63 +631,11 @@ bool WoodenASupportsPaintSetup(
         hasSupports = true;
     }
 
-    // Draw repeated supports for left over space
-    while (heightSteps > 0)
-    {
-        const bool isHalf = baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight;
-        if (isHalf)
-        {
-            // Half support
-            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].half);
-            uint8_t boundBoxHeight = (heightSteps == 1) ? 7 : 12;
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
-            baseHeight += 16;
-            heightSteps -= 1;
-            hasSupports = true;
-        }
-        else
-        {
-            // Full support
-            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].full);
-            uint8_t boundBoxHeight = (heightSteps == 2) ? 23 : 28;
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
-            baseHeight += 32;
-            heightSteps -= 2;
-            hasSupports = true;
-        }
-    }
+    WoodenABPaintRepeatedSupports(supportType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
 
-    // Draw special pieces, e.g. curved supports
     if (special != 0)
     {
-        uint16_t specialIndex = (special - 1) & 0xFFFF;
-
-        const UnkSupportsDescriptor& supportsDesc = Byte97B23C[specialIndex];
-
-        // TODO: Byte97B23C[specialIndex].var_7 is never 0
-        if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][specialIndex] != 0
-            && supportsDesc.var_7 != 0)
-        {
-            auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][specialIndex]);
-
-            auto boundBox = supportsDesc.bounding_box;
-            boundBox.offset.z += baseHeight;
-
-            if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
-            {
-                PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
-                hasSupports = true;
-            }
-            else
-            {
-                hasSupports = true;
-                auto* paintStruct = PaintAddImageAsOrphan(session, imageId, { 0, 0, baseHeight }, boundBox);
-                if (paintStruct != nullptr)
-                {
-                    session.WoodenSupportsPrependTo->Children = paintStruct;
-                }
-            }
-        }
+        hasSupports = WoodenABSupportPaintSetupPaintSpecial(session, supportType, special, imageTemplate, baseHeight, false);
     }
 
     return hasSupports;
@@ -644,7 +670,7 @@ bool WoodenBSupportsPaintSetup(
         imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    auto baseHeight = Floor2(session.Support.height + 15, 16);
+    uint16_t baseHeight = Floor2(session.Support.height + 15, 16);
     int16_t supportLength = height - baseHeight;
 
     if (supportLength < 0)
@@ -727,63 +753,11 @@ bool WoodenBSupportsPaintSetup(
         }
     }
 
-    // Draw repeated supports for left over space
-    while (heightSteps > 0)
-    {
-        const bool isHalf = baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight;
-        if (isHalf)
-        {
-            // Half support
-            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].half);
-            uint8_t boundBoxHeight = (heightSteps == 1) ? 7 : 12;
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
-            baseHeight += 16;
-            heightSteps -= 1;
-            hasSupports = true;
-        }
-        else
-        {
-            // Full support
-            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].full);
-            uint8_t boundBoxHeight = (heightSteps == 2) ? 23 : 28;
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
-            baseHeight += 32;
-            heightSteps -= 2;
-            hasSupports = true;
-        }
-    }
+    WoodenABPaintRepeatedSupports(supportType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
 
-    // Draw special pieces, e.g. curved supports
     if (special != 0)
     {
-        uint16_t specialIndex = (special - 1) & 0xFFFF;
-
-        const UnkSupportsDescriptor& supportsDesc = Byte97B23C[specialIndex];
-
-        // TODO: Byte97B23C[specialIndex].var_7 is never 0
-        if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][specialIndex] != 0
-            && supportsDesc.var_7 != 0)
-        {
-            auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][specialIndex]);
-
-            auto boundBox = supportsDesc.bounding_box;
-            boundBox.offset.z += baseHeight;
-
-            if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
-            {
-                PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
-                hasSupports = true;
-            }
-            else
-            {
-                hasSupports = true;
-                auto* paintStruct = PaintAddImageAsOrphan(session, imageId, { 0, 0, baseHeight }, boundBox);
-                if (paintStruct != nullptr)
-                {
-                    session.WoodenSupportsPrependTo->Children = paintStruct;
-                }
-            }
-        }
+        hasSupports = WoodenABSupportPaintSetupPaintSpecial(session, supportType, special, imageTemplate, baseHeight, false);
     }
 
     return hasSupports;
