@@ -22,6 +22,7 @@
 - Fix: [#19854] Looping Coaster trains clipping through steep quarter turns down.
 - Fix: [#19901] Random shop colours never assigning last colour.
 - Fix: [#19924] Destructible cheat does not allow partial ride modification.
+- Fix: [#19950] Mine train block brake supports drawn incorrectly.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
