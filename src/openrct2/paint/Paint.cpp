@@ -26,7 +26,6 @@
 
 #include <algorithm>
 #include <array>
-#include <atomic>
 
 using namespace OpenRCT2;
 
@@ -490,7 +489,7 @@ template<int TRotation> static void PaintSessionArrangeImpl(PaintSessionCore& se
 
 using PaintArrangeWithRotation = void (*)(PaintSessionCore& session);
 
-constexpr PaintArrangeWithRotation _paintArrangeFuncs[4] = {
+constexpr std::array _paintArrangeFuncs = {
     PaintSessionArrangeImpl<0>,
     PaintSessionArrangeImpl<1>,
     PaintSessionArrangeImpl<2>,
