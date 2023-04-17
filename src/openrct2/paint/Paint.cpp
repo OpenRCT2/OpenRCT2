@@ -186,6 +186,7 @@ static PaintStruct* CreateNormalPaintStruct(
     ps->Bounds.z = rotBoundBoxOffset.z;
     ps->Attached = nullptr;
     ps->Children = nullptr;
+    ps->NextQuadrantEntry = nullptr;
     ps->InteractionItem = session.InteractionType;
     ps->MapPos = session.MapPosition;
     ps->Element = session.CurrentlyDrawnTileElement;
