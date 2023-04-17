@@ -3130,8 +3130,21 @@ declare global {
          */
         readonly parkSize: number;
 
+        /**
+         * The name of the park, shown on the park entrance.
+         * Not the name of the scenario.
+         */
         name: string;
-        research: Research;
+
+        /**
+         * The current research status, and what
+         * has and hasn't yet been researched.
+         */
+        readonly research: Research;
+
+        /**
+         * The park message / notification queue, and historical messages.
+         */
         messages: ParkMessage[];
 
         /**
@@ -3163,6 +3176,18 @@ declare global {
         uninventedItems: ResearchItem[];
 
         /**
+         * The last item that was researched, or null if no
+         * item has been researched yet.
+         */
+        readonly lastResearchedItem: ResearchItem | null;
+
+        /**
+         * The item currently being researched, or null if
+         * research is complete.
+         */
+        readonly expectedItem: ResearchItem | null;
+
+        /**
          * The amount of funding currently spent on research.
          */
         funding: ResearchFundingLevel;
@@ -3192,7 +3217,7 @@ declare global {
 
         /**
          * The expected day of the month the current item being researched will complete.
-         * Value is between 0 and 30, add 1 to it for the human readable date.
+         * Value is between 1 and 31.
          * Value is null if there is not yet an expected month.
          */
         readonly expectedDay: number | null;
@@ -3213,6 +3238,7 @@ declare global {
         /**
          * The research category this item belongs in.
          * E.g. gentle rides, thrill rides, shops etc.
+         * Note: This field is ignored by OpenRCT2, the category will be determined by the ride type.
          */
         category?: ResearchCategory;
 

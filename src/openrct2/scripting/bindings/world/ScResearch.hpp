@@ -65,7 +65,7 @@ namespace OpenRCT2::Scripting
     {
         ResearchItem result;
         result.baseRideType = 0;
-        result.category = ResearchCategory::Transport;
+        result.category = {}; // We ignore category because it will be derived from ride type
         result.flags = 0;
         result.type = FromDuk<Research::EntryType>(d["type"]);
         auto baseRideType = d["rideType"];
@@ -94,7 +94,7 @@ namespace OpenRCT2::Scripting
         void funding_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            gResearchFundingLevel = value;
+            gResearchFundingLevel = std::clamp<uint8_t>(value, RESEARCH_FUNDING_NONE, RESEARCH_FUNDING_MAXIMUM);
         }
 
         uint8_t priorities_get() const
