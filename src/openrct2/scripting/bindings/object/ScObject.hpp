@@ -15,6 +15,7 @@
 #    include "../../../common.h"
 #    include "../../../object/ObjectManager.h"
 #    include "../../../object/RideObject.h"
+#    include "../../../object/SceneryGroupObject.h"
 #    include "../../../object/SmallSceneryObject.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
@@ -58,7 +59,7 @@ namespace OpenRCT2::Scripting
                     return static_cast<ObjectType>(i);
                 }
             }
-            return ObjectType::None;
+            return std::nullopt;
         }
 
         static std::string_view ObjectTypeToString(uint8_t type)
@@ -863,6 +864,98 @@ namespace OpenRCT2::Scripting
         SmallSceneryObject* GetObject() const
         {
             return static_cast<SmallSceneryObject*>(ScObject::GetObject());
+        }
+    };
+
+    class ScSceneryGroupObject : public ScObject
+    {
+    public:
+        ScSceneryGroupObject(ObjectType type, int32_t index)
+            : ScObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScObject, ScSceneryGroupObject>(ctx);
+            dukglue_register_property(ctx, &ScSceneryGroupObject::items_get, nullptr, "items");
+        }
+
+    private:
+        DukValue items_get() const
+        {
+            auto* gameContext = GetContext();
+            auto* ctx = gameContext->GetScriptEngine().GetContext();
+
+            duk_push_array(ctx);
+
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                auto& objManager = gameContext->GetObjectManager();
+
+                duk_uarridx_t index = 0;
+                auto& items = obj->GetItems();
+                for (const auto& item : items)
+                {
+                    auto objectIndex = objManager.GetLoadedObjectEntryIndex(item);
+                    auto object = objManager.GetLoadedObject(item);
+
+                    DukObject dukObj(ctx);
+                    if (item.Generation == ObjectGeneration::JSON)
+                    {
+                        dukObj.Set("identifier", item.Identifier);
+                        if (object != nullptr)
+                        {
+                            auto legacyIdentifier = object->GetLegacyIdentifier();
+                            if (!legacyIdentifier.empty())
+                            {
+                                dukObj.Set("legacyIdentifier", legacyIdentifier);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        dukObj.Set("legacyIdentifier", item.Entry.GetName());
+                        if (object != nullptr)
+                        {
+                            auto identifier = object->GetIdentifier();
+                            if (!identifier.empty())
+                            {
+                                dukObj.Set("identifier", identifier);
+                            }
+                        }
+                    }
+                    if (object != nullptr)
+                    {
+                        dukObj.Set("type", ObjectTypeToString(EnumValue(object->GetObjectType())));
+                    }
+                    else
+                    {
+                        dukObj.Set("type", ObjectTypeToString(EnumValue(item.Type)));
+                    }
+                    if (objectIndex == OBJECT_ENTRY_INDEX_NULL)
+                    {
+                        dukObj.Set("object", nullptr);
+                    }
+                    else
+                    {
+                        dukObj.Set("object", objectIndex);
+                    }
+
+                    dukObj.Take().push();
+                    duk_put_prop_index(ctx, -2, index);
+                    index++;
+                }
+            }
+
+            return DukValue::take_from_stack(ctx, -1);
+        }
+
+    protected:
+        SceneryGroupObject* GetObject() const
+        {
+            return static_cast<SceneryGroupObject*>(ScObject::GetObject());
         }
     };
 } // namespace OpenRCT2::Scripting

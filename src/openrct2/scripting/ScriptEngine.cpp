@@ -405,6 +405,7 @@ void ScriptEngine::Initialise()
     ScNetwork::Register(ctx);
     ScObject::Register(ctx);
     ScSmallSceneryObject::Register(ctx);
+    ScSceneryGroupObject::Register(ctx);
     ScPark::Register(ctx);
     ScParkMessage::Register(ctx);
     ScPlayer::Register(ctx);

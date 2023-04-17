@@ -243,3 +243,8 @@ uint16_t SceneryGroupObject::GetNumIncludedObjects() const
 {
     return static_cast<uint16_t>(_items.size());
 }
+
+const std::vector<ObjectEntryDescriptor>& SceneryGroupObject::GetItems() const
+{
+    return _items;
+}

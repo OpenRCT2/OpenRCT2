@@ -168,6 +168,8 @@ namespace OpenRCT2::Scripting
                     return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(type, index));
                 case ObjectType::SmallScenery:
                     return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(type, index));
+                case ObjectType::SceneryGroup:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScSceneryGroupObject>(type, index));
                 default:
                     return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));
             }
