@@ -186,6 +186,12 @@ static void PaintRotoDropTowerSection(
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
+
+    while (nextTileElement->GetType() != TileElementType::Track && !nextTileElement->IsLastForTile())
+    {
+        nextTileElement++;
+    }
+
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_ROTO_DROP_TOWER_SEGMENT_TOP);
