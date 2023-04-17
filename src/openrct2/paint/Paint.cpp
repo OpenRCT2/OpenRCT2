@@ -447,9 +447,9 @@ static PaintStruct* PaintArrangeStructsHelperRotation(PaintStruct* psQuadrantEnt
 // Iterates over all the quadrant lists and links them together as a
 // singly linked list.
 // The paint session has a head member which is the first entry.
-static void PaintStructsLinkQuadrants(PaintSessionCore& session)
+static void PaintStructsLinkQuadrants(PaintSessionCore& session, PaintStruct& psHead)
 {
-    PaintStruct* ps = &session.PaintHead;
+    PaintStruct* ps = &psHead;
     ps->NextQuadrantEntry = nullptr;
 
     uint32_t quadrantIndex = session.QuadrantBackIndex;
@@ -477,15 +477,18 @@ template<int TRotation> static void PaintSessionArrangeImpl(PaintSessionCore& se
         return;
     }
 
-    PaintStructsLinkQuadrants(session);
+    PaintStruct psHead{};
+    PaintStructsLinkQuadrants(session, psHead);
 
     PaintStruct* psNextQuadrant = PaintArrangeStructsHelperRotation<TRotation>(
-        &session.PaintHead, session.QuadrantBackIndex, PaintSortFlags::Neighbour);
+        &psHead, session.QuadrantBackIndex, PaintSortFlags::Neighbour);
 
     while (++quadrantIndex < session.QuadrantFrontIndex)
     {
         psNextQuadrant = PaintArrangeStructsHelperRotation<TRotation>(psNextQuadrant, quadrantIndex, PaintSortFlags::None);
     }
+
+    session.PaintHead = psHead.NextQuadrantEntry;
 }
 
 using PaintArrangeWithRotation = void (*)(PaintSessionCore& session);
@@ -552,13 +555,9 @@ void PaintDrawStructs(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
-    PaintStruct* ps = &session.PaintHead;
-
-    for (ps = ps->NextQuadrantEntry; ps != nullptr;)
+    for (PaintStruct* ps = session.PaintHead; ps != nullptr; ps = ps->NextQuadrantEntry)
     {
         PaintDrawStruct(session, ps);
-
-        ps = ps->NextQuadrantEntry;
     }
 }
 
@@ -691,7 +690,7 @@ PaintSession* PaintSessionAlloc(DrawPixelInfo& dpi, uint32_t viewFlags)
     return GetContext()->GetPainter()->CreateSession(dpi, viewFlags);
 }
 
-void PaintSessionFree([[maybe_unused]] PaintSession* session)
+void PaintSessionFree(PaintSession* session)
 {
     GetContext()->GetPainter()->ReleaseSession(session);
 }

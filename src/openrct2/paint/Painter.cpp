@@ -160,6 +160,7 @@ PaintSession* Painter::CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags)
     session->Flags = 0;
 
     std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);
+    session->PaintHead = nullptr;
     session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
     session->PSStringHead = nullptr;
