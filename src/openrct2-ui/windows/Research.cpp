@@ -116,6 +116,13 @@ static constexpr const StringId ResearchStageNames[] = {
 class ResearchWindow final : public Window
 {
 public:
+    ResearchWindow()
+    {
+        widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
+        width = WW_DEVELOPMENT;
+        height = WH_DEVELOPMENT;
+    }
+
     void SetPage(int32_t p)
     {
         page = p;
@@ -148,7 +155,6 @@ public:
 private:
     void OnOpen() override
     {
-        SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
         ResearchUpdateUncompletedTypes();
     }
 
