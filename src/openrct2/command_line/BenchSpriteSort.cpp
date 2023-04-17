@@ -43,14 +43,14 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
         auto& quadrants = s[i].Session.Quadrants;
         for (size_t j = 0; j < entries.size(); j++)
         {
-            if (entries[j].AsBasic()->next_quadrant_ps == reinterpret_cast<PaintStruct*>(-1))
+            if (entries[j].AsBasic()->NextQuadrantEntry == reinterpret_cast<PaintStruct*>(-1))
             {
-                entries[j].AsBasic()->next_quadrant_ps = nullptr;
+                entries[j].AsBasic()->NextQuadrantEntry = nullptr;
             }
             else
             {
-                auto nextQuadrantPs = reinterpret_cast<size_t>(entries[j].AsBasic()->next_quadrant_ps) / sizeof(PaintEntry);
-                entries[j].AsBasic()->next_quadrant_ps = s[i].Entries[nextQuadrantPs].AsBasic();
+                auto nextQuadrantPs = reinterpret_cast<size_t>(entries[j].AsBasic()->NextQuadrantEntry) / sizeof(PaintEntry);
+                entries[j].AsBasic()->NextQuadrantEntry = s[i].Entries[nextQuadrantPs].AsBasic();
             }
         }
         for (size_t j = 0; j < std::size(quadrants); j++)
@@ -160,7 +160,7 @@ static int command_line_for_bench_sprite_sort(int argc, const char** argv)
         std::vector<RecordedPaintSession> sessions(1);
         for (auto& ps : sessions[0].Entries)
         {
-            ps.AsBasic()->next_quadrant_ps = reinterpret_cast<PaintStruct*>(-1);
+            ps.AsBasic()->NextQuadrantEntry = reinterpret_cast<PaintStruct*>(-1);
         }
         for (auto& quad : sessions[0].Session.Quadrants)
         {

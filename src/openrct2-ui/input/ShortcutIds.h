@@ -52,6 +52,7 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view InterfaceOpenMessages = "interface.open.messages";
     constexpr std::string_view InterfaceOpenMap = "interface.open.map";
     constexpr std::string_view InterfaceShowOptions = "interface.open.options";
+    constexpr std::string_view InterfaceOpenKeyboardShortcuts = "interface.open.keyboard_shortcuts";
     constexpr std::string_view InterfaceOpenTransparencyOptions = "interface.open.transparency_options";
     constexpr std::string_view InterfaceOpenCheats = "interface.open.cheats";
     constexpr std::string_view InterfaceOpenTileInspector = "interface.open.tileinspector";

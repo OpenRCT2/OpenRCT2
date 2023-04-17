@@ -3977,6 +3977,15 @@ enum : uint16_t
     STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES = 6575,
     STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP = 6576,
 
+    STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED = 6577,
+    STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED_LIMIT_TIP = 6578,
+    STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET = 6579,
+
+    STR_RESET = 6580,
+    STR_RESET_SHORTCUT_KEYS_PROMPT = 6581,
+
+    STR_SHORTCUT_OPEN_KEYBOARD_SHORTCUTS_WINDOW = 6582,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

@@ -12,7 +12,6 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"
 #include "../object/Object.h"
@@ -66,7 +65,7 @@ void FootpathItemObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = LoadImages();
 
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
 }
@@ -74,7 +73,7 @@ void FootpathItemObject::Load()
 void FootpathItemObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.name = 0;
     _legacyType.image = 0;

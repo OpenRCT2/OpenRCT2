@@ -655,7 +655,7 @@ bool TrackElementIsCovered(track_type_t trackElementType)
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
-    return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster;
+    return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster || trackType == TrackElemType::BlockBrakes;
 }
 
 bool TrackTypeIsHelix(track_type_t trackType)
@@ -882,7 +882,7 @@ void TrackElement::SetBrakeClosed(bool isClosed)
 
 bool TrackElement::IsIndestructible() const
 {
-    return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0 && !gCheatsMakeAllDestructible;
 }
 
 void TrackElement::SetIsIndestructible(bool isIndestructible)

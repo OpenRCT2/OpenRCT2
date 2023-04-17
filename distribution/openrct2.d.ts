@@ -221,11 +221,13 @@ declare global {
          * @param type The object type.
          * @param index The index.
          */
-        getObject(type: ObjectType, index: number): LoadedObject;
+        getObject(type: ObjectType, index: number): LoadedImageObject;
+        getObject(type: "music", index: number): LoadedObject;
         getObject(type: "ride", index: number): RideObject;
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
 
-        getAllObjects(type: ObjectType): LoadedObject[];
+        getAllObjects(type: ObjectType): LoadedImageObject[];
+        getAllObjects(type: "music"): LoadedObject[];
         getAllObjects(type: "ride"): RideObject[];
 
         /**
@@ -1585,7 +1587,7 @@ declare global {
     }
 
     /**
-     * Represents the definition of a loaded object (.DAT or .json) such a ride type or scenery item.
+     * Represents the definition of a loaded object (.DAT or .json) such as ride type or scenery item.
      */
     interface LoadedObject {
         /**
@@ -1618,9 +1620,25 @@ declare global {
     }
 
     /**
+    * Represents the definition of a loaded object that has one or more associated images.
+    */
+    interface LoadedImageObject extends LoadedObject {
+        /**
+         * Id of the objects base image. This is also known as the preview image.
+         */
+        readonly baseImageId: number;
+
+        /**
+         * The number of images for this object.
+         * Use this in conjunction with the baseImageId to iterate over an objects images.
+         */
+        readonly numImages: number;
+    }
+
+    /**
      * Represents the object definition of a ride or stall.
      */
-    interface RideObject extends LoadedObject {
+    interface RideObject extends LoadedImageObject {
         /**
          * The description of the ride / stall in the player's current language.
          */
@@ -1727,7 +1745,7 @@ declare global {
     /**
      * Represents the object definition of a small scenery item such a tree.
      */
-    interface SmallSceneryObject extends LoadedObject {
+    interface SmallSceneryObject extends LoadedImageObject {
         /**
          * Raw bit flags that describe characteristics of the scenery item.
          */

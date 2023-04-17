@@ -3648,6 +3648,40 @@ STR_6544    :Lening kan niet negatief zijn!
 STR_6545    :Renteberekening van RCT1 gebruiken
 STR_6546    :Gebruik de renteberekening van RollerCoaster Tycoon 1, dat een vast rentepercentage van ongeveer 1,33% hanteerde.
 STR_6547    :Alle decorobjecten
+STR_6548    :Leuningen tonen op splitsingen/kruisingen
+STR_6549    :Compatibility-objecten kunnen niet worden geselecteerd!
+STR_6550    :Dit onderdeel is aanwezig voor backwards compatibility met verouderde of beschadigde objecten. Het kan enkel worden gedeselecteerd. 
+STR_6551    :Legergroen
+STR_6552    :Meloengroen
+STR_6553    :Eiken
+STR_6554    :Roodbruin
+STR_6555    :Koraalroze
+STR_6556    :Bosgroen
+STR_6557    :Chartreuse
+STR_6558    :Jachtgroen
+STR_6559    :Celadon
+STR_6560    :Limoengroen
+STR_6561    :Sepia
+STR_6562    :Perzik
+STR_6563    :Pastelpaars
+STR_6564    :Vert émeraude
+STR_6565    :Zeegroen
+STR_6566    :Violet
+STR_6567    :Lavendel
+STR_6568    :Pasteloranje
+STR_6569    :Diep water
+STR_6570    :Pastelroze
+STR_6571    :Omber
+STR_6572    :Beige
+STR_6573    :Doorzichtig
+STR_6574    :Leegte
+STR_6575    :Speciale kleuren tonen
+STR_6576    :Toont speciale kleuren (zoals doorzichtig en leegte) in de kleurenkiezer.
+STR_6577    :Snelh. blokremmen
+STR_6578    :Stelt de doorlaatsnelheid van de blokrem in. Deze snelheid geldt ook voor de remmen die voor deze blokrem geplaatst zijn (als de blokrem open staat).
+STR_6579    :De snelheden van de blokremmen zullen niet worden opgeslagen in het baanontwerp.
+STR_6580    :Toetsen herstellen
+STR_6581    :Weet je zeker dat je alle sneltoetsen op dit tabblad weer wilt terugzetten op de standaardwaarden?
 
 #############
 # Scenarios #

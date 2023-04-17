@@ -87,6 +87,7 @@ enum class WindowClass : uint8_t
     PatrolArea = 133,
     Transparency = 134,
     AssetPacks = 135,
+    ResetShortcutKeysPrompt = 136,
 
     // Only used for colour schemes
     Staff = 220,

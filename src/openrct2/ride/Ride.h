@@ -304,7 +304,7 @@ private:
     void Update();
     void UpdateQueueLength(StationIndex stationIndex);
     ResultWithMessage CreateVehicles(const CoordsXYE& element, bool isApplying);
-    void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
+    void MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackElement& firstBlock);
     money64 CalculateIncomePerHour() const;
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;
@@ -1066,6 +1066,8 @@ money64 RideEntranceExitPlaceGhost(
 
 ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride);
 void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor);
+
+void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, TrackElement& tileElement, bool isOpen);
 
 uint8_t RideEntryGetVehicleAtPosition(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void RideUpdateVehicleColours(const Ride& ride);

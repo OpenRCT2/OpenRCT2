@@ -573,12 +573,16 @@ GameActions::Result TrackPlaceAction::Execute() const
             case TrackElemType::SpinningTunnel:
                 MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
+            case TrackElemType::Brakes:
+                trackElement->SetBrakeClosed(true);
+                break;
         }
         if (TrackTypeHasSpeedSetting(_trackType))
         {
             trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
         }
-        else if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         {
             trackElement->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
             trackElement->SetDoorBState(LANDSCAPE_DOOR_CLOSED);

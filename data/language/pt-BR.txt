@@ -3326,7 +3326,7 @@ STR_6196    :{BLACK}Ano:
 STR_6197    :{BLACK}Mês:
 STR_6198    :{BLACK}Dia:
 STR_6199    :Definir data
-STR_6200    :Resetar data
+STR_6200    :Redefinir data
 STR_6201    :{MONTH}
 STR_6202    :Estilo de chão virtual:
 STR_6203    :Quando habilitado, um chão virtual será renderizado quando segurar a tecla Ctrl ou Shift para facilitar o posicionamento vertical dos elementos.
@@ -3678,6 +3678,11 @@ STR_6573    :Invisível
 STR_6574    :Vazia
 STR_6575    :Permitir esquema de cores especial
 STR_6576    :Adiciona cores especiais à lista de cores
+STR_6577    :Velocidade dos freios bloqueadores
+STR_6578    :Configure o limite de velocidade dos freios bloqueadores. No modo de seções de bloco, freios adjacentes com uma velocidade mais baixa são conectados ao freio bloqueador.
+STR_6579    :Freios bloqueadores serão configurados para a velocidade padrão quando salvos como um projeto de pista
+STR_6580    :Redefinir
+STR_6581    :Tem certeza que quer redefinir todas as teclas de atalho nessa aba?
 
 #############
 # Scenarios #

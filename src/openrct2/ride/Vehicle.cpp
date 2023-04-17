@@ -6004,15 +6004,14 @@ void Vehicle::ApplyNonStopBlockBrake()
     if (velocity >= 0)
     {
         // If the vehicle is below the speed limit
-        if (velocity <= BLOCK_BRAKE_BASE_SPEED)
+        if (velocity <= kBlockBrakeBaseSpeed)
         {
             // Boost it to the fixed block brake speed
-            velocity = BLOCK_BRAKE_BASE_SPEED;
+            velocity = kBlockBrakeBaseSpeed;
             acceleration = 0;
         }
-        else
+        else if (velocity > (brake_speed << 16) + kBlockBrakeSpeedOffset)
         {
-            // Slow it down till the fixed block brake speed
             velocity -= velocity >> 4;
             acceleration = 0;
         }
@@ -6185,12 +6184,14 @@ static void block_brakes_open_previous_section(
     MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
     auto trackType = trackElement->GetTrackType();
-    if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::EndStation)
+    if (trackType == TrackElemType::EndStation)
     {
-        if (ride.IsBlockSectioned())
-        {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
-        }
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+    }
+    else if (trackType == TrackElemType::BlockBrakes)
+    {
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
+        BlockBrakeSetLinkedBrakesClosed(location, *trackElement, false);
     }
 }
 
@@ -6981,7 +6982,7 @@ void Vehicle::UpdateLandscapeDoorBackwards() const
 
 static void vehicle_update_play_water_splash_sound()
 {
-    if (_vehicleVelocityF64E08 <= BLOCK_BRAKE_BASE_SPEED)
+    if (_vehicleVelocityF64E08 <= kBlockBrakeBaseSpeed)
     {
         return;
     }
@@ -7378,6 +7379,60 @@ void Vehicle::Sub6DBF3E()
 }
 
 /**
+ * Determine whether to use block brake speed or brake speed. If block brake is closed or no block brake present, use the
+ * brake's speed; if block brake is open, use maximum of brake speed or block brake speed.
+ */
+uint8_t Vehicle::ChooseBrakeSpeed() const
+{
+    if (GetTrackType() != TrackElemType::Brakes)
+        return brake_speed;
+    auto trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
+    if (trackElement != nullptr)
+    {
+        if (trackElement->AsTrack()->IsBrakeClosed())
+            return brake_speed;
+        else
+            return std::max<uint8_t>(brake_speed, BlockBrakeSpeed);
+    }
+    return brake_speed;
+}
+
+/**
+ * Populate the vehicle's brake_speed and BlockBrakeSpeed values.
+ */
+void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake)
+{
+    auto trackSpeed = brake.GetBrakeBoosterSpeed();
+    brake_speed = trackSpeed;
+    if (brake.GetTrackType() != TrackElemType::Brakes)
+    {
+        BlockBrakeSpeed = trackSpeed;
+        return;
+    }
+    // As soon as feasible, encode block brake speed into track element so the lookforward can be skipped here.
+
+    CoordsXYE output = CoordsXYE(vehicleTrackLocation.x, vehicleTrackLocation.y, reinterpret_cast<TileElement*>(&brake));
+    int32_t outputZ = vehicleTrackLocation.z;
+    uint16_t timeoutCount = 256;
+    do
+    {
+        if (output.element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
+        {
+            BlockBrakeSpeed = output.element->AsTrack()->GetBrakeBoosterSpeed();
+            return;
+        }
+        if (output.element->AsTrack()->GetTrackType() != TrackElemType::Brakes)
+        {
+            break;
+        }
+        timeoutCount--;
+    } while (TrackBlockGetNext(&output, &output, &outputZ, nullptr) && timeoutCount);
+
+    // If block brake is not found, use the track's speed
+    BlockBrakeSpeed = trackSpeed;
+}
+
+/**
  *
  *  rct2: 0x006DB08C
  */
@@ -7413,6 +7468,10 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
             }
             MapInvalidateElement(TrackLocation, tileElement);
             block_brakes_open_previous_section(curRide, TrackLocation, tileElement);
+            if (trackType == TrackElemType::BlockBrakes)
+            {
+                BlockBrakeSetLinkedBrakesClosed(TrackLocation, *tileElement->AsTrack(), true);
+            }
         }
     }
 
@@ -7542,7 +7601,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     }
     SetTrackDirection(location.direction);
     SetTrackType(trackType);
-    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+    PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
     if (trackType == TrackElemType::OnRidePhoto)
     {
         trigger_on_ride_photo(TrackLocation, tileElement);
@@ -7589,8 +7648,9 @@ Loc6DAEB9:
             && curRide.breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE;
         if (!hasBrakesFailure || curRide.mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            auto brakeSpeed = brake_speed << 16;
-            if (brakeSpeed < _vehicleVelocityF64E08)
+            auto brakeSpeed = ChooseBrakeSpeed();
+
+            if ((brakeSpeed << 16) < _vehicleVelocityF64E08)
             {
                 acceleration = -_vehicleVelocityF64E08 * 16;
             }
@@ -7947,7 +8007,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ri
     direction &= 3;
     SetTrackType(trackType);
     SetTrackDirection(direction);
-    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+    PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
 
     // There are two bytes before the move info list
     uint16_t trackTotalProgress = GetTrackProgress();
@@ -7978,7 +8038,9 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         if (trackType == TrackElemType::Brakes)
         {
-            if (-(brake_speed << 16) > _vehicleVelocityF64E08)
+            auto brakeSpeed = ChooseBrakeSpeed();
+
+            if (-(brakeSpeed << 16) > _vehicleVelocityF64E08)
             {
                 acceleration = _vehicleVelocityF64E08 * -16;
             }
@@ -9400,4 +9462,5 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << seat_rotation;
     stream << target_seat_rotation;
     stream << BoatLocation;
+    stream << BlockBrakeSpeed;
 }
