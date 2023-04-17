@@ -3685,6 +3685,7 @@ STR_6579    :Block brakes will be set to default speed when saved as track desig
 
 STR_6580    :Reset
 STR_6581    :Are you sure you want to reset all shortcut keys on this tab?
+STR_6582    :Open keyboard shortcuts window
 
 #############
 # Scenarios #
