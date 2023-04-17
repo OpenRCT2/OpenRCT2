@@ -404,7 +404,12 @@ void ScriptEngine::Initialise()
     ScMap::Register(ctx);
     ScNetwork::Register(ctx);
     ScObject::Register(ctx);
+    ScSceneryObject::Register(ctx);
     ScSmallSceneryObject::Register(ctx);
+    ScLargeSceneryObject::Register(ctx);
+    ScWallSceneryObject::Register(ctx);
+    ScFootpathAdditionSceneryObject::Register(ctx);
+    ScBannerSceneryObject::Register(ctx);
     ScSceneryGroupObject::Register(ctx);
     ScPark::Register(ctx);
     ScParkMessage::Register(ctx);

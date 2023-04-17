@@ -792,17 +792,114 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class ScSmallSceneryObject : public ScObject
+    class ScSceneryObject : public ScObject
     {
     public:
-        ScSmallSceneryObject(ObjectType type, int32_t index)
+        ScSceneryObject(ObjectType type, int32_t index)
             : ScObject(type, index)
         {
         }
 
         static void Register(duk_context* ctx)
         {
-            dukglue_set_base_class<ScObject, ScSmallSceneryObject>(ctx);
+            dukglue_set_base_class<ScObject, ScSceneryObject>(ctx);
+            dukglue_register_property(ctx, &ScSceneryObject::sceneryGroups_get, nullptr, "sceneryGroups");
+        }
+
+    private:
+        DukValue sceneryGroups_get() const
+        {
+            auto* gameContext = GetContext();
+            auto* ctx = gameContext->GetScriptEngine().GetContext();
+
+            duk_push_array(ctx);
+
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                auto& scgDescriptor = obj->GetPrimarySceneryGroup();
+                if (scgDescriptor.HasValue())
+                {
+                    auto dukScg = CreateObjectMetaReference(scgDescriptor);
+                    dukScg.push();
+                    duk_put_prop_index(ctx, -2, 0);
+                }
+            }
+
+            return DukValue::take_from_stack(ctx, -1);
+        }
+
+        SceneryObject* GetObject() const
+        {
+            return static_cast<SceneryObject*>(ScObject::GetObject());
+        }
+
+    public:
+        static DukValue CreateObjectMetaReference(const ObjectEntryDescriptor& descriptor)
+        {
+            auto* gameContext = GetContext();
+            auto* ctx = gameContext->GetScriptEngine().GetContext();
+            auto& objManager = gameContext->GetObjectManager();
+
+            auto objectIndex = objManager.GetLoadedObjectEntryIndex(descriptor);
+            auto object = objManager.GetLoadedObject(descriptor);
+
+            DukObject dukObj(ctx);
+            if (descriptor.Generation == ObjectGeneration::JSON)
+            {
+                dukObj.Set("identifier", descriptor.Identifier);
+                if (object != nullptr)
+                {
+                    auto legacyIdentifier = object->GetLegacyIdentifier();
+                    if (!legacyIdentifier.empty())
+                    {
+                        dukObj.Set("legacyIdentifier", legacyIdentifier);
+                    }
+                }
+            }
+            else
+            {
+                dukObj.Set("legacyIdentifier", descriptor.Entry.GetName());
+                if (object != nullptr)
+                {
+                    auto identifier = object->GetIdentifier();
+                    if (!identifier.empty())
+                    {
+                        dukObj.Set("identifier", identifier);
+                    }
+                }
+            }
+            if (object != nullptr)
+            {
+                dukObj.Set("type", ObjectTypeToString(EnumValue(object->GetObjectType())));
+            }
+            else
+            {
+                dukObj.Set("type", ObjectTypeToString(EnumValue(descriptor.Type)));
+            }
+            if (objectIndex == OBJECT_ENTRY_INDEX_NULL)
+            {
+                dukObj.Set("object", nullptr);
+            }
+            else
+            {
+                dukObj.Set("object", objectIndex);
+            }
+            return dukObj.Take();
+        }
+    };
+
+    class ScSmallSceneryObject : public ScSceneryObject
+    {
+    public:
+        ScSmallSceneryObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScSmallSceneryObject>(ctx);
             dukglue_register_property(ctx, &ScSmallSceneryObject::flags_get, nullptr, "flags");
             dukglue_register_property(ctx, &ScSmallSceneryObject::height_get, nullptr, "height");
             dukglue_register_property(ctx, &ScSmallSceneryObject::price_get, nullptr, "price");
@@ -820,22 +917,22 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        uint8_t height_get() const
-        {
-            auto sceneryEntry = GetLegacyData();
-            if (sceneryEntry != nullptr)
-            {
-                return sceneryEntry->height;
-            }
-            return 0;
-        }
-
         uint8_t price_get() const
         {
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
                 return sceneryEntry->price;
+            }
+            return 0;
+        }
+
+        uint8_t height_get() const
+        {
+            auto sceneryEntry = GetLegacyData();
+            if (sceneryEntry != nullptr)
+            {
+                return sceneryEntry->height;
             }
             return 0;
         }
@@ -867,6 +964,62 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScLargeSceneryObject : public ScSceneryObject
+    {
+    public:
+        ScLargeSceneryObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScLargeSceneryObject>(ctx);
+        }
+    };
+
+    class ScWallSceneryObject : public ScSceneryObject
+    {
+    public:
+        ScWallSceneryObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScWallSceneryObject>(ctx);
+        }
+    };
+
+    class ScFootpathAdditionSceneryObject : public ScSceneryObject
+    {
+    public:
+        ScFootpathAdditionSceneryObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScFootpathAdditionSceneryObject>(ctx);
+        }
+    };
+
+    class ScBannerSceneryObject : public ScSceneryObject
+    {
+    public:
+        ScBannerSceneryObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScBannerSceneryObject>(ctx);
+        }
+    };
+
     class ScSceneryGroupObject : public ScObject
     {
     public:
@@ -884,66 +1037,19 @@ namespace OpenRCT2::Scripting
     private:
         DukValue items_get() const
         {
-            auto* gameContext = GetContext();
-            auto* ctx = gameContext->GetScriptEngine().GetContext();
+            auto* ctx = GetContext()->GetScriptEngine().GetContext();
 
             duk_push_array(ctx);
 
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                auto& objManager = gameContext->GetObjectManager();
-
                 duk_uarridx_t index = 0;
                 auto& items = obj->GetItems();
                 for (const auto& item : items)
                 {
-                    auto objectIndex = objManager.GetLoadedObjectEntryIndex(item);
-                    auto object = objManager.GetLoadedObject(item);
-
-                    DukObject dukObj(ctx);
-                    if (item.Generation == ObjectGeneration::JSON)
-                    {
-                        dukObj.Set("identifier", item.Identifier);
-                        if (object != nullptr)
-                        {
-                            auto legacyIdentifier = object->GetLegacyIdentifier();
-                            if (!legacyIdentifier.empty())
-                            {
-                                dukObj.Set("legacyIdentifier", legacyIdentifier);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        dukObj.Set("legacyIdentifier", item.Entry.GetName());
-                        if (object != nullptr)
-                        {
-                            auto identifier = object->GetIdentifier();
-                            if (!identifier.empty())
-                            {
-                                dukObj.Set("identifier", identifier);
-                            }
-                        }
-                    }
-                    if (object != nullptr)
-                    {
-                        dukObj.Set("type", ObjectTypeToString(EnumValue(object->GetObjectType())));
-                    }
-                    else
-                    {
-                        dukObj.Set("type", ObjectTypeToString(EnumValue(item.Type)));
-                    }
-                    if (objectIndex == OBJECT_ENTRY_INDEX_NULL)
-                    {
-                        dukObj.Set("object", nullptr);
-                    }
-                    else
-                    {
-                        dukObj.Set("object", objectIndex);
-                    }
-
-                    dukObj.Take().push();
+                    auto dukItem = ScSceneryObject::CreateObjectMetaReference(item);
+                    dukItem.push();
                     duk_put_prop_index(ctx, -2, index);
                     index++;
                 }
