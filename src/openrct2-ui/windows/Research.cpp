@@ -115,12 +115,7 @@ static constexpr const StringId ResearchStageNames[] = {
 
 class ResearchWindow final : public Window
 {
-    void OnOpen() override
-    {
-        SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
-        ResearchUpdateUncompletedTypes();
-    }
-
+public:
     void SetPage(int32_t p)
     {
         page = p;
@@ -146,8 +141,15 @@ class ResearchWindow final : public Window
         WindowEventResizeCall(this);
         WindowEventInvalidateCall(this);
 
-        WindowInitScrollWidgets(*this);
+        InitScrollWidgets();
         Invalidate();
+    }
+
+private:
+    void OnOpen() override
+    {
+        SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
+        ResearchUpdateUncompletedTypes();
     }
 
     void OnUpdate() override
@@ -155,7 +157,20 @@ class ResearchWindow final : public Window
         // Tab animation
         if (++frame_no >= window_research_tab_animation_loops[page])
             frame_no = 0;
-        InvalidateWidget(WIDX_TAB_1 + page);
+
+        switch (page)
+        {
+            case WINDOW_RESEARCH_PAGE_DEVELOPMENT:
+            {
+                InvalidateWidget(WIDX_TAB_1);
+                break;
+            }
+            case WINDOW_RESEARCH_PAGE_FUNDING:
+            {
+                InvalidateWidget(WIDX_TAB_2);
+                break;
+            }
+        }
     }
 
     void OnMouseDown(WidgetIndex widgetIndex) override
@@ -215,10 +230,8 @@ class ResearchWindow final : public Window
         if (widgets != targetWidgets)
         {
             widgets = targetWidgets;
-            WindowInitScrollWidgets(*this);
+            InitScrollWidgets();
         }
-
-        disabled_widgets = 0;
 
         for (auto i = 0; i < WINDOW_RESEARCH_PAGE_COUNT; i++)
         {
@@ -290,16 +303,26 @@ class ResearchWindow final : public Window
 
 WindowBase* WindowResearchOpen()
 {
-    return WindowFocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
+    ResearchWindow* window = WindowFocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
+    window->SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
+    return window;
+}
+
+static WidgetIndex GetWidgetIndexOffset(WidgetIndex baseWidgetIndex, WidgetIndex currentPageWidgetIndex)
+{
+    // Other windows that reuse the logic here will have different values for the widget enums, but they otherwise align to
+    // those in this class. Therefore, they can be referenced relative to the widget index for the page in this class, using
+    // the difference between them as an offset.
+    return baseWidgetIndex - currentPageWidgetIndex;
 }
 
 #pragma region Development page
 
 void WindowResearchDevelopmentMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
 {
-    baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
+    auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
 
-    if (widgetIndex == (WIDX_LAST_DEVELOPMENT_BUTTON + baseWidgetIndex))
+    if (widgetIndex == (WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset))
     {
         News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);
     }
@@ -308,25 +331,24 @@ void WindowResearchDevelopmentMouseUp(WidgetIndex widgetIndex, WidgetIndex baseW
 void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex)
 {
     // Offset the widget index to allow reuse from other windows
-    baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
-    w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + baseWidgetIndex].type = WindowWidgetType::Empty;
+    auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
+    w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].type = WindowWidgetType::Empty;
 
     // Display button to link to the last development, if there is one
     if (gResearchLastItem.has_value())
     {
         auto type = gResearchLastItem->type;
-        w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + baseWidgetIndex].type = WindowWidgetType::FlatBtn;
+        w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].type = WindowWidgetType::FlatBtn;
         const auto image = type == Research::EntryType::Ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
-        w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + baseWidgetIndex].image = ImageId(image);
+        w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].image = ImageId(image);
     }
 }
 
 void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex)
 {
-    // Offset the widget index to allow reuse from other windows
-    baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
+    auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
+        + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + widgetOffset].top + 12 };
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
@@ -408,7 +430,7 @@ void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetInde
     }
 
     // Last development
-    screenCoords = w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
+    screenCoords = w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + widgetOffset].top + 12 };
 
     if (gResearchLastItem.has_value())
     {
@@ -449,10 +471,9 @@ void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetInde
 
 void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
 {
-    // Offset the widget index to allow reuse from other windows
-    baseWidgetIndex = baseWidgetIndex - WIDX_RESEARCH_FUNDING;
+    auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-    if (widgetIndex != (WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + baseWidgetIndex))
+    if (widgetIndex != (WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset))
         return;
 
     Widget* dropdownWidget = &w->widgets[widgetIndex - 1];
@@ -472,24 +493,32 @@ void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, Widg
 
 void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
 {
-    // Offset the widget index to allow reuse from other windows
-    baseWidgetIndex = baseWidgetIndex - WIDX_RESEARCH_FUNDING;
+    auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-    if (widgetIndex >= (WIDX_TRANSPORT_RIDES + baseWidgetIndex) && widgetIndex <= (WIDX_SCENERY_AND_THEMING + baseWidgetIndex))
+    switch (widgetIndex - widgetOffset)
     {
-        auto activeResearchTypes = gResearchPriorities;
-        activeResearchTypes ^= 1uLL << (widgetIndex - (WIDX_TRANSPORT_RIDES + baseWidgetIndex));
-        auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
-        GameActions::Execute(&gameAction);
+        case WIDX_TRANSPORT_RIDES:
+        case WIDX_GENTLE_RIDES:
+        case WIDX_ROLLER_COASTERS:
+        case WIDX_THRILL_RIDES:
+        case WIDX_WATER_RIDES:
+        case WIDX_SHOPS_AND_STALLS:
+        case WIDX_SCENERY_AND_THEMING:
+        {
+            auto activeResearchTypes = gResearchPriorities;
+            activeResearchTypes ^= 1uLL << (widgetIndex - (WIDX_TRANSPORT_RIDES + widgetOffset));
+            auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
+            GameActions::Execute(&gameAction);
+            break;
+        }
     }
 }
 
 void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedIndex, WidgetIndex baseWidgetIndex)
 {
-    // Offset the widget index to allow reuse from other windows
-    baseWidgetIndex = baseWidgetIndex - WIDX_RESEARCH_FUNDING;
+    auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-    if (widgetIndex != (WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + baseWidgetIndex) || selectedIndex == -1)
+    if (widgetIndex != (WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset) || selectedIndex == -1)
         return;
 
     auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, selectedIndex);
@@ -498,23 +527,22 @@ void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedInde
 
 void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex)
 {
-    // Offset the widget index to allow reuse from other windows
-    baseWidgetIndex = baseWidgetIndex - WIDX_RESEARCH_FUNDING;
+    auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
-        w->widgets[WIDX_RESEARCH_FUNDING + baseWidgetIndex].type = WindowWidgetType::Empty;
-        w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + baseWidgetIndex].type = WindowWidgetType::Empty;
+        w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WindowWidgetType::Empty;
+        w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WindowWidgetType::Empty;
     }
     else
     {
-        w->widgets[WIDX_RESEARCH_FUNDING + baseWidgetIndex].type = WindowWidgetType::DropdownMenu;
-        w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + baseWidgetIndex].type = WindowWidgetType::Button;
+        w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WindowWidgetType::DropdownMenu;
+        w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WindowWidgetType::Button;
     }
     int32_t currentResearchLevel = gResearchFundingLevel;
 
     // Current funding
-    w->widgets[WIDX_RESEARCH_FUNDING + baseWidgetIndex].text = ResearchFundingLevelNames[currentResearchLevel];
+    w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].text = ResearchFundingLevelNames[currentResearchLevel];
 
     // Checkboxes
     uint8_t activeResearchTypes = gResearchPriorities;
@@ -522,7 +550,7 @@ void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex
     for (int32_t i = 0; i < 7; i++)
     {
         int32_t mask = 1 << i;
-        int32_t widgetMask = 1uLL << (i + WIDX_TRANSPORT_RIDES + baseWidgetIndex);
+        int32_t widgetMask = 1uLL << (i + WIDX_TRANSPORT_RIDES + widgetOffset);
 
         // Set checkbox disabled if research type is complete
         if (uncompletedResearchTypes & mask)
