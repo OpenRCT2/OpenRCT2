@@ -2722,10 +2722,11 @@ public:
                         break;
                     case DDIDX_FILE_BUG_ON_GITHUB:
                     {
-                        std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/"
-                                          "new?assignees=&labels=bug&template=bug_report.yaml";
+                        std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/new?"
+                                          "assignees=&labels=bug&template=bug_report.yaml";
+                        // Automatically fill the "OpenRCT2 build" input
                         auto versionStr = String::URLEncode(gVersionInfoFull);
-                        url.append("&openrct2_build=" + versionStr);
+                        url.append("&f299dd2a20432827d99b648f73eb4649b23f8ec98d158d6f82b81e43196ee36b=" + versionStr);
                         OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
                     }
                     break;
