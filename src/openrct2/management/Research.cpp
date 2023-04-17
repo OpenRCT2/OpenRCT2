@@ -164,15 +164,23 @@ static void ResearchNextDesign()
         it = gResearchItemsUninvented.begin();
     }
 
-    const ResearchItem researchItem = *it;
-    gResearchNextItem = researchItem;
+    gResearchNextItem = *it;
     gResearchProgress = 0;
     gResearchProgressStage = RESEARCH_STAGE_DESIGNING;
 
-    gResearchItemsUninvented.erase(it);
-    gResearchItemsInvented.push_back(researchItem);
-
     ResearchInvalidateRelatedWindows();
+}
+
+static void MarkResearchItemInvented(const ResearchItem& researchItem)
+{
+    gResearchItemsUninvented.erase(
+        std::remove(gResearchItemsUninvented.begin(), gResearchItemsUninvented.end(), researchItem),
+        gResearchItemsUninvented.end());
+
+    if (std::find(gResearchItemsInvented.begin(), gResearchItemsInvented.end(), researchItem) == gResearchItemsInvented.end())
+    {
+        gResearchItemsInvented.push_back(researchItem);
+    }
 }
 
 /**
@@ -346,6 +354,7 @@ void ResearchUpdate()
                 ResearchInvalidateRelatedWindows();
                 break;
             case RESEARCH_STAGE_COMPLETING_DESIGN:
+                MarkResearchItemInvented(*gResearchNextItem);
                 ResearchFinishItem(*gResearchNextItem);
                 gResearchProgress = 0;
                 gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
