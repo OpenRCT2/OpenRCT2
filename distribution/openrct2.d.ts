@@ -225,6 +225,10 @@ declare global {
         getObject(type: "music", index: number): LoadedObject;
         getObject(type: "ride", index: number): RideObject;
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
+        getObject(type: "large_scenery", index: number): LargeSceneryObject;
+        getObject(type: "wall", index: number): WallSceneryObject;
+        getObject(type: "footpath_addition", index: number): FootpathAdditionSceneryObject;
+        getObject(type: "banner", index: number): BannerSceneryObject;
 
         getAllObjects(type: ObjectType): LoadedImageObject[];
         getAllObjects(type: "music"): LoadedObject[];
@@ -1752,10 +1756,46 @@ declare global {
         readonly numVerticalFramesOverride: number;
     }
 
+    interface SceneryObject extends LoadedImageObject {
+        /**
+         * A list of scenery groups this object belongs to. This may not contain any
+         * scenery groups that contain this object by default. This is typically
+         * used for custom objects to be part of existing scenery groups.
+         */
+        readonly sceneryGroups: ObjectReference[];
+    }
+
+    /**
+     * Represents a reference to an object which may or may not be loaded.
+     */
+    interface ObjectReference {
+        /**
+         * The JSON identifier of the object.
+         * Undefined if object only has a legacy identifier.
+         */
+        identifier?: string;
+
+        /**
+         * The DAT identifier of the object.
+         * Undefined if object only has a JSON identifier.
+         */
+        legacyIdentifier?: string;
+
+        /**
+         * The type of object
+         */
+        type?: ObjectType;
+
+        /**
+         * The object index
+         */
+        object: number | null;
+    }
+
     /**
      * Represents the object definition of a small scenery item such a tree.
      */
-    interface SmallSceneryObject extends LoadedImageObject {
+    interface SmallSceneryObject extends SceneryObject {
         /**
          * Raw bit flags that describe characteristics of the scenery item.
          */
@@ -1777,6 +1817,22 @@ declare global {
         readonly removalPrice: number;
     }
 
+    interface LargeSceneryObject extends SceneryObject {
+
+    }
+
+    interface WallSceneryObject extends SceneryObject {
+
+    }
+
+    interface FootpathAdditionSceneryObject extends SceneryObject {
+
+    }
+
+    interface BannerSceneryObject extends SceneryObject {
+
+    }
+
     /**
      * Represents the object definition of a scenery group.
      */
@@ -1784,31 +1840,7 @@ declare global {
         /**
          * The scenery items that belong to this scenery group.
          */
-        readonly items: SceneryGroupObjectItem[];
-    }
-
-    interface SceneryGroupObjectItem {
-        /**
-         * The JSON identifier of the object.
-         * Undefined if object only has a legacy identifier.
-         */
-        identifier?: string;
-
-        /**
-         * The DAT identifier of the object.
-         * Undefined if object only has a JSON identifier.
-         */
-        legacyIdentifier?: string;
-
-        /**
-         * The type of object
-         */
-        type: ObjectType;
-
-        /**
-         * The object index
-         */
-        object: number | null;
+        readonly items: ObjectReference[];
     }
 
     /**
