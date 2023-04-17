@@ -145,7 +145,7 @@ namespace OpenRCT2::Scripting
         {
             if (gResearchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || gResearchExpectedDay == 255)
                 return ToDuk(_context, nullptr);
-            return ToDuk(_context, gResearchExpectedDay);
+            return ToDuk(_context, gResearchExpectedDay + 1);
         }
 
         DukValue lastResearchedItem_get() const
