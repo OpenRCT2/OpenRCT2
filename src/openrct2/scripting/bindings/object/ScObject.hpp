@@ -917,22 +917,22 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        uint8_t price_get() const
-        {
-            auto sceneryEntry = GetLegacyData();
-            if (sceneryEntry != nullptr)
-            {
-                return sceneryEntry->price;
-            }
-            return 0;
-        }
-
         uint8_t height_get() const
         {
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
                 return sceneryEntry->height;
+            }
+            return 0;
+        }
+
+        uint8_t price_get() const
+        {
+            auto sceneryEntry = GetLegacyData();
+            if (sceneryEntry != nullptr)
+            {
+                return sceneryEntry->price;
             }
             return 0;
         }
