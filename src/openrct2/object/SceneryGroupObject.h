@@ -41,6 +41,7 @@ public:
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
     uint16_t GetNumIncludedObjects() const;
+    const std::vector<ObjectEntryDescriptor>& GetItems() const;
 
 private:
     static std::vector<ObjectEntryDescriptor> ReadItems(OpenRCT2::IStream* stream);

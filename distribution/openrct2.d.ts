@@ -1768,6 +1768,40 @@ declare global {
     }
 
     /**
+     * Represents the object definition of a scenery group.
+     */
+    interface SceneryGroupObject extends LoadedImageObject {
+        /**
+         * The scenery items that belong to this scenery group.
+         */
+        readonly items: SceneryGroupObjectItem[];
+    }
+
+    interface SceneryGroupObjectItem {
+        /**
+         * The JSON identifier of the object.
+         * Undefined if object only has a legacy identifier.
+         */
+        identifier?: string;
+
+        /**
+         * The DAT identifier of the object.
+         * Undefined if object only has a JSON identifier.
+         */
+        legacyIdentifier?: string;
+
+        /**
+         * The type of object
+         */
+        type: ObjectType;
+
+        /**
+         * The object index
+         */
+        object: number | null;
+    }
+
+    /**
      * Represents a ride or stall within the park.
      */
     interface Ride {
