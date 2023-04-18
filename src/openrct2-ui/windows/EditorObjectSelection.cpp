@@ -1621,11 +1621,6 @@ void EditorLoadSelectedObjects()
             }
         }
     }
-    if (_numSelectedObjectsForType[EnumValue(ObjectType::Water)] == 0)
-    {
-        // Reloads the default cyan water palette if no palette was selected.
-        LoadPalette();
-    }
     if (showFallbackWarning)
         ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
 }

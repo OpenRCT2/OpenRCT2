@@ -47,7 +47,7 @@ static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
 
 /**
  * Master objects are objects that are not
- * optional / required dependants of an
+ * optional / required dependents of an
  * object.
  */
 static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, StringId message)
@@ -574,11 +574,16 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
     ObjectType objectType = item->Type;
     uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
 
-    if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
+    if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)] && objectType != ObjectType::Water)
     {
         return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
     }
 
+    if (objectType == ObjectType::Water)
+    {
+        // Replace old palette with newly selected palette immediately.
+        ReplaceSelectedWaterPalette(item);
+    }
     if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
     {
         for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
@@ -590,11 +595,6 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
                 LOG_ERROR("Could not find object: %s", std::string(sgEntry.GetName()).c_str());
             }
         }
-    }
-    else if (objectType == ObjectType::Water)
-    {
-        // Replace old palette with newly selected palette immediately.
-        ReplaceSelectedWaterPalette(item);
     }
 
     if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
