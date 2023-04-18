@@ -171,11 +171,11 @@ namespace OpenRCT2::Scripting
                 case ObjectType::LargeScenery:
                     return GetObjectAsDukValue(ctx, std::make_shared<ScLargeSceneryObject>(type, index));
                 case ObjectType::Walls:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScWallSceneryObject>(type, index));
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScWallObject>(type, index));
                 case ObjectType::PathBits:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScFootpathAdditionSceneryObject>(type, index));
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScFootpathAdditionObject>(type, index));
                 case ObjectType::Banners:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScBannerSceneryObject>(type, index));
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScBannerObject>(type, index));
                 case ObjectType::SceneryGroup:
                     return GetObjectAsDukValue(ctx, std::make_shared<ScSceneryGroupObject>(type, index));
                 default:
