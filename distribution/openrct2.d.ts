@@ -226,9 +226,10 @@ declare global {
         getObject(type: "ride", index: number): RideObject;
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
         getObject(type: "large_scenery", index: number): LargeSceneryObject;
-        getObject(type: "wall", index: number): WallSceneryObject;
-        getObject(type: "footpath_addition", index: number): FootpathAdditionSceneryObject;
-        getObject(type: "banner", index: number): BannerSceneryObject;
+        getObject(type: "wall", index: number): WallObject;
+        getObject(type: "footpath_addition", index: number): FootpathAdditionObject;
+        getObject(type: "banner", index: number): BannerObject;
+        getObject(type: "scenery_group", index: number): SceneryGroupObject;
 
         getAllObjects(type: ObjectType): LoadedImageObject[];
         getAllObjects(type: "music"): LoadedObject[];
@@ -1773,23 +1774,23 @@ declare global {
          * The JSON identifier of the object.
          * Undefined if object only has a legacy identifier.
          */
-        identifier?: string;
+        readonly identifier?: string;
 
         /**
          * The DAT identifier of the object.
          * Undefined if object only has a JSON identifier.
          */
-        legacyIdentifier?: string;
+        readonly legacyIdentifier?: string;
 
         /**
          * The type of object
          */
-        type?: ObjectType;
+        readonly type?: ObjectType;
 
         /**
          * The object index
          */
-        object: number | null;
+        readonly object: number | null;
     }
 
     /**
@@ -1821,15 +1822,15 @@ declare global {
 
     }
 
-    interface WallSceneryObject extends SceneryObject {
+    interface WallObject extends SceneryObject {
 
     }
 
-    interface FootpathAdditionSceneryObject extends SceneryObject {
+    interface FootpathAdditionObject extends SceneryObject {
 
     }
 
-    interface BannerSceneryObject extends SceneryObject {
+    interface BannerObject extends SceneryObject {
 
     }
 

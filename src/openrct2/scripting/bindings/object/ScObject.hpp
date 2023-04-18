@@ -978,45 +978,45 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class ScWallSceneryObject : public ScSceneryObject
+    class ScWallObject : public ScSceneryObject
     {
     public:
-        ScWallSceneryObject(ObjectType type, int32_t index)
+        ScWallObject(ObjectType type, int32_t index)
             : ScSceneryObject(type, index)
         {
         }
 
         static void Register(duk_context* ctx)
         {
-            dukglue_set_base_class<ScSceneryObject, ScWallSceneryObject>(ctx);
+            dukglue_set_base_class<ScSceneryObject, ScWallObject>(ctx);
         }
     };
 
-    class ScFootpathAdditionSceneryObject : public ScSceneryObject
+    class ScFootpathAdditionObject : public ScSceneryObject
     {
     public:
-        ScFootpathAdditionSceneryObject(ObjectType type, int32_t index)
+        ScFootpathAdditionObject(ObjectType type, int32_t index)
             : ScSceneryObject(type, index)
         {
         }
 
         static void Register(duk_context* ctx)
         {
-            dukglue_set_base_class<ScSceneryObject, ScFootpathAdditionSceneryObject>(ctx);
+            dukglue_set_base_class<ScSceneryObject, ScFootpathAdditionObject>(ctx);
         }
     };
 
-    class ScBannerSceneryObject : public ScSceneryObject
+    class ScBannerObject : public ScSceneryObject
     {
     public:
-        ScBannerSceneryObject(ObjectType type, int32_t index)
+        ScBannerObject(ObjectType type, int32_t index)
             : ScSceneryObject(type, index)
         {
         }
 
         static void Register(duk_context* ctx)
         {
-            dukglue_set_base_class<ScSceneryObject, ScBannerSceneryObject>(ctx);
+            dukglue_set_base_class<ScSceneryObject, ScBannerObject>(ctx);
         }
     };
 
