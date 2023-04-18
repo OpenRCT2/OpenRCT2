@@ -30,6 +30,16 @@ namespace OpenRCT2::Scripting
         { "finished_all", RESEARCH_STAGE_FINISHED_ALL },
     });
 
+    static const DukEnumMap<ResearchCategory> ResearchCategoryMap({
+        { "transport", ResearchCategory::Transport },
+        { "gentle", ResearchCategory::Gentle },
+        { "rollercoaster", ResearchCategory::Rollercoaster },
+        { "thrill", ResearchCategory::Thrill },
+        { "water", ResearchCategory::Water },
+        { "shop", ResearchCategory::Shop },
+        { "scenery", ResearchCategory::SceneryGroup },
+    });
+
     static const DukEnumMap<Research::EntryType> ResearchEntryTypeMap({
         { "ride", Research::EntryType::Ride },
         { "scenery", Research::EntryType::Scenery },
@@ -38,7 +48,7 @@ namespace OpenRCT2::Scripting
     template<> inline DukValue ToDuk(duk_context* ctx, const ResearchItem& value)
     {
         DukObject obj(ctx);
-        obj.Set("category", EnumValue(value.category));
+        obj.Set("category", ResearchCategoryMap[value.category]);
         obj.Set("type", ResearchEntryTypeMap[value.type]);
         if (value.type == Research::EntryType::Ride)
         {
@@ -97,15 +107,34 @@ namespace OpenRCT2::Scripting
             gResearchFundingLevel = std::clamp<uint8_t>(value, RESEARCH_FUNDING_NONE, RESEARCH_FUNDING_MAXIMUM);
         }
 
-        uint8_t priorities_get() const
+        std::vector<std::string> priorities_get() const
         {
-            return gResearchPriorities;
+            std::vector<std::string> result;
+            for (auto i = EnumValue(ResearchCategory::Transport); i <= EnumValue(ResearchCategory::SceneryGroup); i++)
+            {
+                auto category = static_cast<ResearchCategory>(i);
+                if (gResearchPriorities & EnumToFlag(category))
+                {
+                    result.emplace_back(ResearchCategoryMap[category]);
+                }
+            }
+            return result;
         }
 
-        void priorities_set(uint8_t value)
+        void priorities_set(const std::vector<std::string>& values)
         {
             ThrowIfGameStateNotMutable();
-            gResearchPriorities = value;
+
+            auto priorities = 0;
+            for (const auto& value : values)
+            {
+                auto category = ResearchCategoryMap.TryGet(value);
+                if (category)
+                {
+                    priorities |= EnumToFlag(*category);
+                }
+            }
+            gResearchPriorities = priorities;
         }
 
         std::string stage_get() const

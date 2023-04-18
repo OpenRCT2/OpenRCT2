@@ -3193,9 +3193,9 @@ declare global {
         funding: ResearchFundingLevel;
 
         /**
-         * Flags representing which research categories are enabled.
+         * The categories of research which should be prioritised.
          */
-        priorities: number;
+        priorities: ResearchCategory[];
 
         /**
          * The current stage for the ride or scenery set being researched.
@@ -3233,47 +3233,46 @@ declare global {
     type ResearchItem = RideResearchItem | SceneryResearchItem;
 
     interface RideResearchItem {
-        type: "ride";
+        readonly type: "ride";
 
         /**
          * The research category this item belongs in.
          * E.g. gentle rides, thrill rides, shops etc.
-         * Note: This field is ignored by OpenRCT2, the category will be determined by the ride type.
+         * Note: Any updates to this field are ignored by OpenRCT2, the category will be derived from the ride type.
          */
-        category?: ResearchCategory;
+        readonly category?: ResearchCategory;
 
         /**
          * The ride type. Each vehicle can have a seperate invention for each ride type.
          */
-        rideType: number;
+        readonly rideType: number;
 
         /**
          * The ride (vehicle) object index.
          */
-        object: number;
+        readonly object: number;
     }
 
     interface SceneryResearchItem {
-        category?: ResearchCategory.SceneryGroup;
-        type: "scenery";
+        readonly category?: "scenery_group";
+        readonly type: "scenery";
 
         /**
          * The scenery set object index.
          */
-        object: number;
+        readonly object: number;
     }
 
     type ResearchItemType = "scenery" | "ride";
 
-    enum ResearchCategory {
-        Transport,
-        Gentle,
-        Rollercoaster,
-        Thrill,
-        Water,
-        Shop,
-        SceneryGroup
-    }
+    type ResearchCategory =
+        "transport" |
+        "gentle" |
+        "rollercoaster" |
+        "thrill" |
+        "water" |
+        "shop" |
+        "scenery";
 
     enum ResearchFundingLevel {
         None,
