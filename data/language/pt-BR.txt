@@ -3683,6 +3683,7 @@ STR_6578    :Configure o limite de velocidade dos freios bloqueadores. No modo d
 STR_6579    :Freios bloqueadores serão configurados para a velocidade padrão quando salvos como um projeto de pista
 STR_6580    :Redefinir
 STR_6581    :Tem certeza que quer redefinir todas as teclas de atalho nessa aba?
+STR_6582    :Abrir janela de atalhos do teclado
 
 #############
 # Scenarios #
