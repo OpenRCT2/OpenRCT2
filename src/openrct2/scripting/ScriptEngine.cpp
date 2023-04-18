@@ -1347,7 +1347,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "ridesetstatus", GameCommand::SetRideStatus },
     { "ridesetvehicle", GameCommand::SetRideVehicles },
     { "scenariosetsetting", GameCommand::EditScenarioOptions },
-    { "setcheat", GameCommand::Cheat },
+    { "cheatset", GameCommand::Cheat },
     { "signsetname", GameCommand::SetSignName },
     { "signsetstyle", GameCommand::SetSignStyle },
     { "smallsceneryplace", GameCommand::PlaceScenery },
