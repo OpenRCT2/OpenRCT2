@@ -277,7 +277,7 @@ static void PaintSmallSceneryBody(
                 frame = (frame >> delay) & sceneryEntry->animation_mask;
 
                 auto imageIndex = 0;
-                if (frame < sceneryEntry->num_frames)
+                if (frame < sceneryEntry->FrameOffsetCount)
                 {
                     imageIndex = sceneryEntry->frame_offsets[frame];
                 }
