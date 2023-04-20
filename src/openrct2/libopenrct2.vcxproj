@@ -993,6 +993,7 @@
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />
     <ClCompile Include="scripting\bindings\world\ScParkMessage.cpp" />
+    <ClCompile Include="scripting\bindings\world\ScResearch.cpp" />
     <ClCompile Include="scripting\bindings\world\ScTile.cpp" />
     <ClCompile Include="scripting\bindings\world\ScTileElement.cpp" />
     <ClCompile Include="scripting\HookEngine.cpp" />
