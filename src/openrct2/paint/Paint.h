@@ -179,7 +179,7 @@ public:
 
 struct PaintSessionCore
 {
-    PaintStruct PaintHead;
+    PaintStruct* PaintHead;
     PaintStruct* Quadrants[MaxPaintQuadrants];
     PaintStruct* LastPS;
     PaintStringStruct* PSStringHead;

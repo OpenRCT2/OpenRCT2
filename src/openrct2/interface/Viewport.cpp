@@ -1834,10 +1834,10 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
 {
     PROFILED_FUNCTION();
 
-    PaintStruct* ps = &session->PaintHead;
     InteractionInfo info{};
 
-    while ((ps = ps->NextQuadrantEntry) != nullptr)
+    PaintStruct* ps = session->PaintHead;
+    while (ps != nullptr)
     {
         PaintStruct* old_ps = ps;
         PaintStruct* next_ps = ps;
@@ -1868,7 +1868,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
         }
 #pragma GCC diagnostic pop
 
-        ps = old_ps;
+        ps = old_ps->NextQuadrantEntry;
     }
     return info;
 }

@@ -27,6 +27,7 @@
 - Fix: [#19924] Destructible cheat does not allow partial ride modification.
 - Fix: [#19950] Mine train block brake supports drawn incorrectly.
 - Fix: [#19987] [Plugin] ‘SetCheatAction’ has wrong ID in plugin API.
+- Fix: [#19991] Crash using cut-away view.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
