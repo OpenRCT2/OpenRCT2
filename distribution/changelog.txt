@@ -27,6 +27,7 @@
 - Fix: [#19911] Guests stuck at certain railway crossings.
 - Fix: [#19924] Destructible cheat does not allow partial ride modification.
 - Fix: [#19950] Mine train block brake supports drawn incorrectly.
+- Fix: [#19955] Mine Train Roller Coaster has incorrect supports on the sloped left small turn (original bug).
 - Fix: [#19987] [Plugin] ‘SetCheatAction’ has wrong ID in plugin API.
 - Fix: [#19991] Crash using cut-away view.
 

@@ -17,8 +17,41 @@ struct FootpathPaintInfo;
 
 constexpr const uint8_t NumVanillaWoodenSupportTypes = 49;
 
+enum class WoodenSupportType : uint8_t
+{
+    Truss = 0,
+    Mine = 1,
+};
+
+enum class WoodenSupportSubType : uint8_t
+{
+    NeSw = 0,
+    NwSe = 1,
+    Corner0 = 2,
+    Corner1 = 3,
+    Corner2 = 4,
+    Corner3 = 5,
+};
+
+enum class WoodenSupportTransitionType : uint8_t
+{
+    None = 255,
+    FlatToUp25Deg = 0,
+    Up25DegToFlat = 1,
+    Up25Deg = 2,
+    Up25DegToUp60Deg = 3,
+    Up60DegToUp25Deg = 4,
+    Up60Deg = 5,
+};
+
 bool WoodenASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
+bool WoodenASupportsPaintSetup(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
+    WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0);
+bool WoodenASupportsPaintSetupRotated(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
+    ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None);
 bool WoodenBSupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool MetalASupportsPaintSetup(

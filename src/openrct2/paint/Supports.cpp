@@ -446,6 +446,45 @@ static constexpr const uint16_t word_97B3C4[] = {
 
 // clang-format on
 
+static WoodenSupportSubType rotatedWoodenSupportSubTypes[6][NumOrthogonalDirections] = {
+    {
+        WoodenSupportSubType::NeSw,
+        WoodenSupportSubType::NwSe,
+        WoodenSupportSubType::NeSw,
+        WoodenSupportSubType::NwSe,
+    },
+    {
+        WoodenSupportSubType::NwSe,
+        WoodenSupportSubType::NeSw,
+        WoodenSupportSubType::NwSe,
+        WoodenSupportSubType::NeSw,
+    },
+    {
+        WoodenSupportSubType::Corner0,
+        WoodenSupportSubType::Corner1,
+        WoodenSupportSubType::Corner2,
+        WoodenSupportSubType::Corner3,
+    },
+    {
+        WoodenSupportSubType::Corner1,
+        WoodenSupportSubType::Corner2,
+        WoodenSupportSubType::Corner3,
+        WoodenSupportSubType::Corner0,
+    },
+    {
+        WoodenSupportSubType::Corner2,
+        WoodenSupportSubType::Corner3,
+        WoodenSupportSubType::Corner0,
+        WoodenSupportSubType::Corner1,
+    },
+    {
+        WoodenSupportSubType::Corner3,
+        WoodenSupportSubType::Corner0,
+        WoodenSupportSubType::Corner1,
+        WoodenSupportSubType::Corner2,
+    },
+};
+
 /**
  * Draw repeated supports for left over space
  *
@@ -639,6 +678,28 @@ bool WoodenASupportsPaintSetup(
     }
 
     return hasSupports;
+}
+
+bool WoodenASupportsPaintSetup(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
+    WoodenSupportTransitionType transitionType, Direction direction)
+{
+    int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
+    int32_t special = 0;
+    if (transitionType != WoodenSupportTransitionType::None)
+    {
+        special = (EnumValue(transitionType) * NumOrthogonalDirections) + direction + 1;
+    }
+
+    return WoodenASupportsPaintSetup(session, oldSupportType, special, height, imageTemplate);
+}
+
+bool WoodenASupportsPaintSetupRotated(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
+    ImageId imageTemplate, WoodenSupportTransitionType transitionType)
+{
+    subType = rotatedWoodenSupportSubTypes[EnumValue(subType)][direction];
+    return WoodenASupportsPaintSetup(session, supportType, subType, height, imageTemplate, transitionType, direction);
 }
 
 /**
