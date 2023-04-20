@@ -14,6 +14,7 @@
 - Improved: [#19953] Add keyboard shortcut to Keyboard Shortcuts window.
 - Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#13130] Android always defaulting to UK locale for language, currency and temperature.
+- Fix: [#16791] Rotodrop top piece replicates when walls are placed around it and clearance checks are disabled (original bug).
 - Fix: [#18895] Responding mechanic blocked at level crossing.
 - Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality
 - Fix: [#19296] Crash due to a race condition for parallel object loading.
@@ -28,7 +29,6 @@
 - Fix: [#19950] Mine train block brake supports drawn incorrectly.
 - Fix: [#19987] [Plugin] ‘SetCheatAction’ has wrong ID in plugin API.
 - Fix: [#19991] Crash using cut-away view.
-- Fix: [#16791] Rotodrop top piece replicates when walls are placed around it and clearance checks are disabled.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
