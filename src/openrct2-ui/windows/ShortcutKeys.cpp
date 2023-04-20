@@ -19,6 +19,8 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
+WindowBase* ResetShortcutKeysPromptOpen();
+
 static constexpr const StringId WINDOW_TITLE = STR_SHORTCUTS_TITLE;
 static constexpr const int32_t WW = 420;
 static constexpr const int32_t WH = 280;
@@ -193,6 +195,11 @@ public:
         max_height = WH_SC_MAX;
     }
 
+    void OnClose() override
+    {
+        WindowCloseByClass(WindowClass::ResetShortcutKeysPrompt);
+    }
+
     void OnResize() override
     {
         WindowSetResize(*this, min_width, min_height, max_width, max_height);
@@ -219,7 +226,7 @@ public:
                 Close();
                 break;
             case WIDX_RESET:
-                ResetAll();
+                ResetShortcutKeysPromptOpen();
                 break;
             default:
             {
@@ -334,6 +341,21 @@ public:
     void RefreshBindings()
     {
         InitialiseList();
+    }
+
+    void ResetAllOnActiveTab()
+    {
+        auto& shortcutManager = GetShortcutManager();
+        for (const auto& item : _list)
+        {
+            auto shortcut = shortcutManager.GetShortcut(item.ShortcutId);
+            if (shortcut != nullptr)
+            {
+                shortcut->Current = shortcut->Default;
+            }
+        }
+        shortcutManager.SaveUserBindings();
+        RefreshBindings();
     }
 
 private:
@@ -451,21 +473,6 @@ private:
         }
     }
 
-    void ResetAll()
-    {
-        auto& shortcutManager = GetShortcutManager();
-        for (const auto& item : _list)
-        {
-            auto shortcut = shortcutManager.GetShortcut(item.ShortcutId);
-            if (shortcut != nullptr)
-            {
-                shortcut->Current = shortcut->Default;
-            }
-        }
-        shortcutManager.SaveUserBindings();
-        RefreshBindings();
-    }
-
     void DrawTabImages(DrawPixelInfo& dpi) const
     {
         for (size_t i = 0; i < _tabs.size(); i++)
@@ -553,3 +560,65 @@ WindowBase* WindowShortcutKeysOpen()
     }
     return w;
 }
+
+#pragma region Reset prompt
+static constexpr const int32_t RESET_PROMPT_WW = 200;
+static constexpr const int32_t RESET_PROMPT_WH = 80;
+
+enum
+{
+    WIDX_RESET_PROMPT_BACKGROUND,
+    WIDX_RESET_PROMPT_TITLE,
+    WIDX_RESET_PROMPT_CLOSE,
+    WIDX_RESET_PROMPT_LABEL,
+    WIDX_RESET_PROMPT_RESET,
+    WIDX_RESET_PROMPT_CANCEL
+};
+
+static Widget WindowResetShortcutKeysPromptWidgets[] = {
+    WINDOW_SHIM_WHITE(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
+    MakeWidget(
+        { 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary,
+        STR_RESET_SHORTCUT_KEYS_PROMPT),
+    MakeWidget({ 8, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_RESET),
+    MakeWidget(
+        { RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary,
+        STR_SAVE_PROMPT_CANCEL),
+    WIDGETS_END,
+};
+
+class ResetShortcutKeysPrompt final : public Window
+{
+    void OnOpen() override
+    {
+        widgets = WindowResetShortcutKeysPromptWidgets;
+    }
+
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_RESET_PROMPT_RESET:
+            {
+                auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
+                if (w != nullptr)
+                {
+                    static_cast<ShortcutKeysWindow*>(w)->ResetAllOnActiveTab();
+                }
+                Close();
+                break;
+            }
+            case WIDX_RESET_PROMPT_CANCEL:
+            case WIDX_RESET_PROMPT_CLOSE:
+                Close();
+                break;
+        }
+    }
+};
+
+WindowBase* ResetShortcutKeysPromptOpen()
+{
+    return WindowFocusOrCreate<ResetShortcutKeysPrompt>(
+        WindowClass::ResetShortcutKeysPrompt, RESET_PROMPT_WW, RESET_PROMPT_WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+}
+#pragma endregion

@@ -1830,7 +1830,7 @@ STR_2487    :Montri ‘faktajn’ nomojn de gastoj
 STR_2488    :Baskuligi inter montrado de ‘faktaj’ nomoj de gastoj, kaj gastnumeroj
 STR_2489    :Klavarokomandojn…
 STR_2490    :Klavarokomandojn
-STR_2491    :Restartigi klavojn
+STR_2491    :Restarigi klavojn
 STR_2492    :Remeti ĉiujn klavarokomandojn al iliaj defaŭltaj agordoj
 STR_2493    :Fermi plej supran fenestron
 STR_2494    :Fermi ĉiujn glitajn fenestrojn
@@ -3678,6 +3678,12 @@ STR_6573    :Nevidebla
 STR_6574    :Vaka
 STR_6575    :Permesi specialajn kolorskemojn
 STR_6576    :Aldonas specialajn kolorojn al koloro-fallisto
+STR_6577    :Rapideco de blokparto-bremso
+STR_6578    :Agordi rapidlimon de blokparto-bremsoj. En blokpartoj-reĝimo, apudaj bremsoj kun pli malrapida rapideco estas ligitaj al la blokparto-bremso.
+STR_6579    :Blokparto-bremsoj estos agorditaj al defaŭlta rapideco, kiam konservite kiel trakdesegnaĵo
+STR_6580    :Restarigi
+STR_6581    :Ĉu vi certas, ke vi volas restarigi ĉiujn klavarokomandojn sur ĉi tiu langeto?
+STR_6582    :Malfermi klavarokomandoj-fenestron
 
 #############
 # Scenarios #

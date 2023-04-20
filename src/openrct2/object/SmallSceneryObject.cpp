@@ -76,10 +76,12 @@ void SmallSceneryObject::Load()
     _legacyType.image = LoadImages();
 
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.FrameOffsetCount = 0;
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {
         _legacyType.frame_offsets = _frameOffsets.data();
+        _legacyType.FrameOffsetCount = static_cast<uint16_t>(_frameOffsets.size());
     }
 
     PerformFixes();

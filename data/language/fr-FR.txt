@@ -3661,6 +3661,37 @@ STR_6547    :Tous les décors
 STR_6548    :Afficher les rambardes aux intersections
 STR_6549    :Les objets de compatibilité ne peuvent pas être sélectionnés !
 STR_6550    :Cette entrée n’est présente que pour assurer la rétro-compatibilité avec les objets anciens ou corrompus. Elle ne peut pas être sélectionnée, seulement déselectionnée.
+STR_6551    :Vert militaire
+STR_6552    :Miel
+STR_6553    :Brun hâlé
+STR_6554    :Bordeaux
+STR_6555    :Corail
+STR_6556    :Vert feuillage
+STR_6557    :Vert pomme
+STR_6558    :Vert camouflage
+STR_6559    :Céladon
+STR_6560    :Vert citron
+STR_6561    :Sépia
+STR_6562    :Pêche
+STR_6563    :Bleu pervenche
+STR_6564    :Viride
+STR_6565    :Vert écume
+STR_6566    :Violette
+STR_6567    :Lavende
+STR_6568    :Orange pastel
+STR_6569    :Grands fonds
+STR_6570    :Rose pastel
+STR_6571    :Terre d’ombre
+STR_6572    :Beige
+STR_6573    :Invisible
+STR_6574    :Vide
+STR_6575    :Autoriser les palettes de couleurs spéciales
+STR_6576    :Ajoute des couleurs spéciales au menu déroulant des couleurs
+STR_6577    :Vitesse des freins de bloc
+STR_6578    :Définit la vitesse maximale aux freins de bloc. En mode blocs de voie, les freins adjacents avec une vitesse plus faible sont liés aux freins de bloc.
+STR_6579    :La vitesse des freins de bloc sera changée à la valeur par défaut quand la conception de voie sera sauvegardée
+STR_6580    :Réinitialiser
+STR_6581    :Voulez-vous vraiment réinitialiser tous les raccourcis claviers de cet onglet?
 
 #############
 # Scenarios #

@@ -3195,7 +3195,6 @@ STR_6033    :Cartella di RCT1:
 STR_6034    :{BLACK}{STRING}
 STR_6035    :Selezionare la cartella di installazione di RCT1
 STR_6036    :Pulisci
-STR_6037    :Selezionare una cartella di installazione di RCT1 valida
 STR_6037    :La cartella selezionata non contiene un’installazione valida di RollerCoaster Tycoon 1.
 STR_6038    :Se RCT1 è installato, selezionarne la cartella per caricarne gli scenari, la musica, ecc.
 STR_6039    :Demolizione veloce percorso

@@ -3580,8 +3580,8 @@ STR_6470    :Ajusta una àrea de treball més gran.
 STR_6471    :Veu a través de la vegetació
 STR_6472    :Veu a través dels vehicles
 STR_6473    :Veu a través dels suports
-STR_6474    :Veu a través dels visitants
-STR_6475    :Veu a través dels treballadors
+STR_6474    :Visitants invisibles
+STR_6475    :Empleats invisibles
 STR_6476    :Vegetació invisible
 STR_6477    :Paisatge invisible
 STR_6478    :Camins invisibles
@@ -3592,8 +3592,8 @@ STR_6482    :Opcions de transparència
 STR_6483    :Obre les opcions de transparència
 STR_6484    :Alterna veure a través de la vegetació
 STR_6485    :Alterna veure a través dels vehicles
-STR_6486    :Alterna veure a través dels visitants
-STR_6487    :Alterna veure a través dels treballadors
+STR_6486    :Mostra o amaga els visitants
+STR_6487    :Mostra o amaga els empleats
 STR_6488    :{RED}Els visitants es queixen de les llargues cues del parc.{NEWLINE}Considereu escurçar les més problemàtiques o augmentar el rendiment de les atraccions.
 STR_6489    :Error: Versió de parc no compatible
 STR_6490    :Avís: Versió de parc parcialment compatible
@@ -3605,10 +3605,6 @@ STR_6495    :Agrupa les atraccions per tipus en lloc de mostrar els vehicles per
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Feu clic en una casella per a mostrar els seus elements.{NEWLINE}Amb Ctrl + clic en una casella, seleccioneu l’element directament.
 STR_6498    :Si s’activa, el mapa tindrà forma quadrada.
-STR_6474    :Visitants invisibles
-STR_6475    :Empleats invisibles
-STR_6486    :Mostra o amaga els visitants
-STR_6487    :Mostra o amaga els empleats
 STR_6499    :Tipus de vehicle no suportat pel format de disseny de vies
 STR_6500    :Elements de via no suportats pel format de disseny de vies
 STR_6501    :Color aleatori

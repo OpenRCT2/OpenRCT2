@@ -206,8 +206,6 @@ STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA32} guests
 STR_3372    :{BLACK}= A.T.M.
 STR_3373    :{BLACK}= Restroom
 
-STR_6274    :Can’t set color scheme…
-
 # Strings added by OpenRCT2. Only add strings that differ from UK English!
 STR_5440    :Minimize fullscreen on focus loss
 STR_5459    :Rotate counterclockwise

@@ -183,7 +183,8 @@ GameActions::Result CheatSetAction::Execute() const
             RenewRides();
             break;
         case CheatType::MakeDestructible:
-            MakeDestructible();
+            gCheatsMakeAllDestructible = _param1 != 0;
+            WindowInvalidateByClass(WindowClass::Ride);
             break;
         case CheatType::FixRides:
             FixBrokenRides();
@@ -471,16 +472,6 @@ void CheatSetAction::RenewRides() const
     for (auto& ride : GetRideManager())
     {
         ride.Renew();
-    }
-    WindowInvalidateByClass(WindowClass::Ride);
-}
-
-void CheatSetAction::MakeDestructible() const
-{
-    for (auto& ride : GetRideManager())
-    {
-        ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
-        ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
     }
     WindowInvalidateByClass(WindowClass::Ride);
 }
