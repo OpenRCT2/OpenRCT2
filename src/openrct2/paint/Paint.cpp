@@ -477,6 +477,9 @@ template<int TRotation> static void PaintSessionArrangeImpl(PaintSessionCore& se
         return;
     }
 
+    // psHead is an intermediate node that is used to link all the quadrant lists together,
+    // this was previously stored in PaintSession but only the NextQuadrantEntry is relevant here.
+    // The head node is not part of the linked list and just serves as an entry point.
     PaintStruct psHead{};
     PaintStructsLinkQuadrants(session, psHead);
 
