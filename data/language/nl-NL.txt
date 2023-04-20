@@ -3682,6 +3682,7 @@ STR_6578    :Stelt de doorlaatsnelheid van de blokrem in. Deze snelheid geldt oo
 STR_6579    :De snelheden van de blokremmen zullen niet worden opgeslagen in het baanontwerp.
 STR_6580    :Toetsen herstellen
 STR_6581    :Weet je zeker dat je alle sneltoetsen op dit tabblad weer wilt terugzetten op de standaardwaarden?
+STR_6582    :Sneltoetsen openen
 
 #############
 # Scenarios #
