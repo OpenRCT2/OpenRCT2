@@ -104,7 +104,14 @@ namespace OpenRCT2::Scripting
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                return std::string(obj->GetIdentifier());
+                if (obj->GetGeneration() == ObjectGeneration::DAT)
+                {
+                    return obj->GetDescriptor().ToString();
+                }
+                else
+                {
+                    return std::string(obj->GetIdentifier());
+                }
             }
             return {};
         }
@@ -807,85 +814,24 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        DukValue sceneryGroups_get() const
+        std::vector<std::string> sceneryGroups_get() const
         {
-            auto* gameContext = GetContext();
-            auto* ctx = gameContext->GetScriptEngine().GetContext();
-
-            duk_push_array(ctx);
-
+            std::vector<std::string> result;
             auto obj = GetObject();
             if (obj != nullptr)
             {
                 auto& scgDescriptor = obj->GetPrimarySceneryGroup();
                 if (scgDescriptor.HasValue())
                 {
-                    auto dukScg = CreateObjectMetaReference(scgDescriptor);
-                    dukScg.push();
-                    duk_put_prop_index(ctx, -2, 0);
+                    result.push_back(scgDescriptor.ToString());
                 }
             }
-
-            return DukValue::take_from_stack(ctx, -1);
+            return result;
         }
 
         SceneryObject* GetObject() const
         {
             return static_cast<SceneryObject*>(ScObject::GetObject());
-        }
-
-    public:
-        static DukValue CreateObjectMetaReference(const ObjectEntryDescriptor& descriptor)
-        {
-            auto* gameContext = GetContext();
-            auto* ctx = gameContext->GetScriptEngine().GetContext();
-            auto& objManager = gameContext->GetObjectManager();
-
-            auto objectIndex = objManager.GetLoadedObjectEntryIndex(descriptor);
-            auto object = objManager.GetLoadedObject(descriptor);
-
-            DukObject dukObj(ctx);
-            if (descriptor.Generation == ObjectGeneration::JSON)
-            {
-                dukObj.Set("identifier", descriptor.Identifier);
-                if (object != nullptr)
-                {
-                    auto legacyIdentifier = object->GetLegacyIdentifier();
-                    if (!legacyIdentifier.empty())
-                    {
-                        dukObj.Set("legacyIdentifier", legacyIdentifier);
-                    }
-                }
-            }
-            else
-            {
-                dukObj.Set("legacyIdentifier", descriptor.Entry.GetName());
-                if (object != nullptr)
-                {
-                    auto identifier = object->GetIdentifier();
-                    if (!identifier.empty())
-                    {
-                        dukObj.Set("identifier", identifier);
-                    }
-                }
-            }
-            if (object != nullptr)
-            {
-                dukObj.Set("type", ObjectTypeToString(EnumValue(object->GetObjectType())));
-            }
-            else
-            {
-                dukObj.Set("type", ObjectTypeToString(EnumValue(descriptor.Type)));
-            }
-            if (objectIndex == OBJECT_ENTRY_INDEX_NULL)
-            {
-                dukObj.Set("object", nullptr);
-            }
-            else
-            {
-                dukObj.Set("object", objectIndex);
-            }
-            return dukObj.Take();
         }
     };
 
@@ -1035,27 +981,19 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        DukValue items_get() const
+        std::vector<std::string> items_get() const
         {
-            auto* ctx = GetContext()->GetScriptEngine().GetContext();
-
-            duk_push_array(ctx);
-
+            std::vector<std::string> result;
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                duk_uarridx_t index = 0;
                 auto& items = obj->GetItems();
                 for (const auto& item : items)
                 {
-                    auto dukItem = ScSceneryObject::CreateObjectMetaReference(item);
-                    dukItem.push();
-                    duk_put_prop_index(ctx, -2, index);
-                    index++;
+                    result.push_back(std::move(item.ToString()));
                 }
             }
-
-            return DukValue::take_from_stack(ctx, -1);
+            return result;
         }
 
     protected:

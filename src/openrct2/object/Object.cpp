@@ -80,6 +80,24 @@ std::string_view ObjectEntryDescriptor::GetName() const
     return Generation == ObjectGeneration::JSON ? Identifier : Entry.GetName();
 }
 
+std::string ObjectEntryDescriptor::ToString() const
+{
+    if (Generation == ObjectGeneration::DAT)
+    {
+        char buffer[32];
+        std::snprintf(&buffer[0], 9, "%08X", Entry.flags);
+        buffer[8] = '|';
+        std::memcpy(&buffer[9], Entry.name, 8);
+        buffer[17] = '|';
+        std::snprintf(&buffer[18], 9, "%8X", Entry.checksum);
+        return std::string(buffer);
+    }
+    else
+    {
+        return std::string(GetName());
+    }
+}
+
 bool ObjectEntryDescriptor::operator==(const ObjectEntryDescriptor& rhs) const
 {
     if (Generation != rhs.Generation)

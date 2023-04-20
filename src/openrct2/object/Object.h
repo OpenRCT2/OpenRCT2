@@ -139,6 +139,7 @@ struct ObjectEntryDescriptor
     bool HasValue() const;
     ObjectType GetType() const;
     std::string_view GetName() const;
+    std::string ToString() const;
 
     bool operator==(const ObjectEntryDescriptor& rhs) const;
     bool operator!=(const ObjectEntryDescriptor& rhs) const;
