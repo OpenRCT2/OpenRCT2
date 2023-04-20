@@ -28,6 +28,7 @@
 - Fix: [#19950] Mine train block brake supports drawn incorrectly.
 - Fix: [#19987] [Plugin] ‘SetCheatAction’ has wrong ID in plugin API.
 - Fix: [#19991] Crash using cut-away view.
+- Fix: [#16791] Rotodrop top piece replicates when walls are placed around it and clearance checks are disabled.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
