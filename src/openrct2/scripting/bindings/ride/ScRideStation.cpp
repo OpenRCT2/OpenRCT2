@@ -32,6 +32,10 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRideStation::length_get, &ScRideStation::length_set, "length");
         dukglue_register_property(ctx, &ScRideStation::entrance_get, &ScRideStation::entrance_set, "entrance");
         dukglue_register_property(ctx, &ScRideStation::exit_get, &ScRideStation::exit_set, "exit");
+        dukglue_register_property(ctx, &ScRideStation::segmentLength_get, &ScRideStation::segmentLength_set, "segmentLength");
+        dukglue_register_property(ctx, &ScRideStation::segmentTime_get, &ScRideStation::segmentTime_set, "segmentTime");
+        dukglue_register_property(ctx, &ScRideStation::queueLength_get, &ScRideStation::queueLength_set, "queueLength");
+        dukglue_register_property(ctx, &ScRideStation::queueTime_get, &ScRideStation::queueTime_set, "queueTime");
     }
 
     DukValue ScRideStation::start_get() const
@@ -113,6 +117,82 @@ namespace OpenRCT2::Scripting
         if (station != nullptr)
         {
             station->Exit = FromDuk<CoordsXYZD>(value);
+        }
+    }
+
+    int32_t ScRideStation::segmentLength_get() const
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            return station->SegmentLength;
+        }
+        return 0;
+    }
+
+    void ScRideStation::segmentLength_set(int32_t value)
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            station->SegmentLength = value;
+        }
+    }
+
+    int32_t ScRideStation::segmentTime_get() const
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            return station->SegmentTime;
+        }
+        return 0;
+    }
+
+    void ScRideStation::segmentTime_set(int32_t value)
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            station->SegmentTime = value;
+        }
+    }
+
+    int32_t ScRideStation::queueLength_get() const
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            return station->QueueLength;
+        }
+        return 0;
+    }
+
+    void ScRideStation::queueLength_set(int32_t value)
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            station->QueueLength = value;
+        }
+    }
+
+    int32_t ScRideStation::queueTime_get() const
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            return station->QueueTime;
+        }
+        return 0;
+    }
+
+    void ScRideStation::queueTime_set(int32_t value)
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            station->QueueTime = value;
         }
     }
 

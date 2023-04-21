@@ -1955,10 +1955,47 @@ declare global {
     }
 
     interface RideStation {
+        /**
+         * The back of the station.
+         */
         start: CoordsXYZ;
+
+        /**
+         * The length of the station in tiles.
+         */
         length: number;
+
+        /**
+         * The location of the entrance. This may not be the actual location,
+         * for hacked rides.
+         */
         entrance: CoordsXYZD;
+
+        /**
+         * The location of the exit. This may not be the actual location,
+         * for hacked rides.
+         */
         exit: CoordsXYZD;
+
+        /**
+         * The length of track before the next or same station is reached.
+         */
+        segmentLength: number;
+
+        /**
+         * The time it takes for a train to reach the next or same station.
+         */
+        segmentTime: number;
+
+        /**
+         * The number of guests queuing for the ride at this station.
+         */
+        queueLength: number;
+
+        /**
+         * The approximated queuing time of the ride at this station.
+         */
+        queueTime: number;
     }
 
     interface TrackSegment {

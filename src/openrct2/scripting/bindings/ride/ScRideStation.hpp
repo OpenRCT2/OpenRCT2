@@ -31,20 +31,28 @@ namespace OpenRCT2::Scripting
 
     private:
         DukValue start_get() const;
-
         void start_set(const DukValue& value);
 
         int32_t length_get() const;
-
         void length_set(int32_t value);
 
         DukValue entrance_get() const;
-
         void entrance_set(const DukValue& value);
 
         DukValue exit_get() const;
-
         void exit_set(const DukValue& value);
+
+        int32_t segmentLength_get() const;
+        void segmentLength_set(int32_t value);
+
+        int32_t segmentTime_get() const;
+        void segmentTime_set(int32_t value);
+
+        int32_t queueLength_get() const;
+        void queueLength_set(int32_t value);
+
+        int32_t queueTime_get() const;
+        void queueTime_set(int32_t value);
 
         RideStation* GetRideStation() const;
     };
