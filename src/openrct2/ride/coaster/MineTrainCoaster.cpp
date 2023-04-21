@@ -5478,8 +5478,8 @@ static void MineTrainRCTrackDiag60DegUp(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20382), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20382), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5606,8 +5606,8 @@ static void MineTrainRCTrackDiag25DegUpTo60DegUp(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20374), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20374), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5621,8 +5621,8 @@ static void MineTrainRCTrackDiag25DegUpTo60DegUp(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20376), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20376), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5684,8 +5684,8 @@ static void MineTrainRCTrackDiag60DegUpTo25DegUp(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20380), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20380), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5863,8 +5863,8 @@ static void MineTrainRCTrackDiag60DegDown(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20384), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20384), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5878,8 +5878,8 @@ static void MineTrainRCTrackDiag60DegDown(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20382), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20382), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -5989,8 +5989,8 @@ static void MineTrainRCTrackDiag25DegDownTo60DegDown(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20380), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20380), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6179,11 +6179,11 @@ static void MineTrainRCTrackDiagFlatToLeftBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20406), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20406), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20410), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20410), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
@@ -6197,8 +6197,8 @@ static void MineTrainRCTrackDiagFlatToLeftBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20408), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20408), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6244,8 +6244,8 @@ static void MineTrainRCTrackDiagFlatToRightBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20411), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20411), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6259,11 +6259,11 @@ static void MineTrainRCTrackDiagFlatToRightBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20413), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20413), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20415), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20415), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
@@ -6309,11 +6309,11 @@ static void MineTrainRCTrackDiagLeftBankToFlat(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20413), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20413), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20415), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20415), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
@@ -6327,8 +6327,8 @@ static void MineTrainRCTrackDiagLeftBankToFlat(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20411), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20411), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6635,8 +6635,8 @@ static void MineTrainRCTrackDiag25DegUpToRightBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20421), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20421), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6699,11 +6699,11 @@ static void MineTrainRCTrackDiagLeftBankTo25DegDown(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20423), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20423), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20425), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20425), { -16, -16, height },
                     { { -16, -16, height + 35 }, { 32, 32, 0 } });
             }
 
@@ -6715,8 +6715,8 @@ static void MineTrainRCTrackDiagLeftBankTo25DegDown(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20421), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20421), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -6886,8 +6886,8 @@ static void MineTrainRCTrackDiag25DegDownToRightBank(
         case 1:
             if (direction == 0)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20428), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20428), { -16, -16, height },
                     { { -16, -16, height }, { 32, 32, 1 } });
             }
 
@@ -7034,8 +7034,8 @@ static void MineTrainRCTrackDiagRightBank(
         case 2:
             if (direction == 2)
             {
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(20402), { -16, -16, height },
+                PaintAddImageAsParent(
+                    session, session.TrackColours[SCHEME_TRACK].WithIndex(20402), { -16, -16, height },
                     { { -16, -16, height + 27 }, { 32, 32, 0 } });
             }
 
