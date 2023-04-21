@@ -3748,19 +3748,20 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     auto destination = GetDestination();
+    auto loadPositionWithReversal = (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? -load_position : load_position;
     switch (vehicle->Orientation / 8)
     {
         case 0:
-            destination.x = vehicle->x - load_position;
+            destination.x = vehicle->x - loadPositionWithReversal;
             break;
         case 1:
-            destination.y = vehicle->y + load_position;
+            destination.y = vehicle->y + loadPositionWithReversal;
             break;
         case 2:
-            destination.x = vehicle->x + load_position;
+            destination.x = vehicle->x + loadPositionWithReversal;
             break;
         case 3:
-            destination.y = vehicle->y - load_position;
+            destination.y = vehicle->y - loadPositionWithReversal;
             break;
     }
     SetDestination(destination);

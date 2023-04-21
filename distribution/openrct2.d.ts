@@ -2327,6 +2327,11 @@ declare global {
          * The current tilt of the car in the X/Y axis.
          */
         bankRotation: number;
+		
+		/**
+		 * Whether the car sprite is reversed or not.
+		 */ 
+		isReversed: boolean;
 
         /**
          * The colour of the car.
