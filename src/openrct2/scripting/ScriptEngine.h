@@ -47,7 +47,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 75;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 76;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
