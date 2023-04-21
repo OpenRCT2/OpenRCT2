@@ -554,7 +554,9 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
 
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
 {
-    return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 9;
+    // If above the table size return the last element
+    return _appropriateImageDropdownItemsPerRow[std::min<uint32_t>(
+        numItems, static_cast<uint32_t>(std::size(_appropriateImageDropdownItemsPerRow) - 1))];
 }
 
 bool WindowDropDownHasMultipleColumns(size_t numItems)
