@@ -275,6 +275,7 @@ public:
                 if (_playerName == text)
                     return;
 
+                memset(_playerName, '\0', sizeof(_playerName));
                 text.copy(_playerName, sizeof(_playerName));
 
                 // Don't allow empty player names
