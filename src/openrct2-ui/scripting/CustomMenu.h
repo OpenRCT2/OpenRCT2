@@ -106,7 +106,7 @@ namespace OpenRCT2::Scripting
     extern std::vector<std::unique_ptr<CustomShortcut>> CustomShortcuts;
 
     void InitialiseCustomMenuItems(ScriptEngine& scriptEngine);
-    void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue);
+    bool InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue);
 
     template<> DukValue ToDuk(duk_context* ctx, const CursorID& value);
     template<> CursorID FromDuk(const DukValue& s);

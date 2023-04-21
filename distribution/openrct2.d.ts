@@ -2327,11 +2327,11 @@ declare global {
          * The current tilt of the car in the X/Y axis.
          */
         bankRotation: number;
-		
-		/**
-		 * Whether the car sprite is reversed or not.
-		 */ 
-		isReversed: boolean;
+
+        /**
+         * Whether the car sprite is reversed or not.
+         */
+        isReversed: boolean;
 
         /**
          * The colour of the car.
@@ -3511,8 +3511,9 @@ declare global {
          * Begins a new tool session. The cursor will change to the style specified by the
          * given tool descriptor and cursor events will be provided.
          * @param tool The properties and event handlers for the tool.
+         * @returns The tool that was activated.
          */
-        activateTool(tool: ToolDesc): void;
+        activateTool(tool: ToolDesc): Tool;
 
         registerMenuItem(text: string, callback: () => void): void;
 

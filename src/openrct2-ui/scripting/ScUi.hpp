@@ -312,9 +312,12 @@ namespace OpenRCT2::Scripting
                 false);
         }
 
-        void activateTool(const DukValue& desc)
+        std::shared_ptr<ScTool> activateTool(const DukValue& desc)
         {
-            InitialiseCustomTool(_scriptEngine, desc);
+            if (InitialiseCustomTool(_scriptEngine, desc))
+                return tool_get();
+            else
+                return nullptr;
         }
 
         void registerMenuItem(std::string text, DukValue callback)

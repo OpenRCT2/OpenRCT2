@@ -221,7 +221,7 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue)
+    bool InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue)
     {
         try
         {
@@ -271,6 +271,7 @@ namespace OpenRCT2::Scripting
                     ToolSet(*toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
                     ActiveCustomTool = std::move(customTool);
                     ActiveCustomTool->Start();
+                    return true;
                 }
             }
         }
@@ -278,6 +279,7 @@ namespace OpenRCT2::Scripting
         {
             duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid parameters.");
         }
+        return false;
     }
 } // namespace OpenRCT2::Scripting
 
