@@ -19,6 +19,7 @@
 - Change: [OpenSFX#17] Update Hybrid RC lifthill loop.
 - Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#13130] Android always defaulting to UK locale for language, currency and temperature.
+- Fix: [#13397] Ride simulation causes strange station behaviour and makes the ride unusable in some cases
 - Fix: [#16791] Rotodrop top piece replicates when walls are placed around it and clearance checks are disabled (original bug).
 - Fix: [#18895] Responding mechanic blocked at level crossing.
 - Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality
