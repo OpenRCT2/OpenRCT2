@@ -938,17 +938,8 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
             case RatingsModifierType::RequirementLength:
                 RideRatingsApplyRequirementLength(&ratings, ride, modifier);
                 break;
-            case RatingsModifierType::RequirementDropHeight:
-                RideRatingsApplyRequirementDropHeight(&ratings, ride, modifier);
-                break;
-            case RatingsModifierType::RequirementNumDrops:
-                RideRatingsApplyRequirementNumDrops(&ratings, ride, modifier);
-                break;
             case RatingsModifierType::RequirementMaxSpeed:
                 RideRatingsApplyRequirementMaxSpeed(&ratings, ride, modifier);
-                break;
-            case RatingsModifierType::RequirementNegativeGs:
-                RideRatingsApplyRequirementNegativeGs(&ratings, ride, modifier);
                 break;
             case RatingsModifierType::RequirementLateralGs:
                 RideRatingsApplyRequirementLateralGs(&ratings, ride, modifier);
@@ -974,6 +965,24 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
             case RatingsModifierType::PenaltyLateralGs:
                 RideRatingsApplyPenaltyLateralGs(&ratings, ride, modifier);
                 break;
+        }
+
+        // Requirements that may be ignored if the ride has inversions
+        if (ride.inversions == 0 || !rrd.RelaxRequirementsIfInversions)
+        {
+            switch (modifier.Type)
+            {
+                case RatingsModifierType::RequirementDropHeight:
+                    RideRatingsApplyRequirementDropHeight(&ratings, ride, modifier);
+                    break;
+                case RatingsModifierType::RequirementNumDrops:
+                    RideRatingsApplyRequirementNumDrops(&ratings, ride, modifier);
+                    break;
+                case RatingsModifierType::RequirementNegativeGs:
+                    RideRatingsApplyRequirementNegativeGs(&ratings, ride, modifier);
+                    break;
+
+            }
         }
     }
     // Universl ratings adjustments
