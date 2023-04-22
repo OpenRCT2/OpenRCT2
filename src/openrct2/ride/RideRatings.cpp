@@ -1027,7 +1027,6 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
                 case RatingsModifierType::RequirementNegativeGs:
                     RideRatingsApplyRequirementNegativeGs(&ratings, ride, modifier);
                     break;
-
             }
         }
     }
@@ -1354,7 +1353,7 @@ static void SetUnreliabilityFactor(Ride& ride)
     else if (ride.type == RIDE_TYPE_CHAIRLIFT)
     {
         ride.unreliability_factor += (ride.speed * 2);
-    } 
+    }
     // The bigger the difference in lift speed and minimum the higher the unreliability
     uint8_t minLiftSpeed = ride.GetRideTypeDescriptor().LiftData.minimum_speed;
     ride.unreliability_factor += (ride.lift_hill_speed - minLiftSpeed) * 2;
@@ -1906,7 +1905,7 @@ static void RideRatingsApplyBonusRotations(RatingTuple* ratings, const Ride& rid
 static void RideRatingsApplyBonusOperationOption(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t intensity = (modifier.Intensity >= 0) ? (ride.operation_option * modifier.Intensity)
-                                                 : (ride.operation_option / std::abs(modifier.Intensity));
+                                                  : (ride.operation_option / std::abs(modifier.Intensity));
     RideRatingsAdd(ratings, ride.operation_option * modifier.Excitement, intensity, ride.operation_option * modifier.Nausea);
 }
 
@@ -2005,7 +2004,8 @@ static void RideRatingsApplyBonusReversals(
     RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
 {
     int32_t numReversers = std::min<uint16_t>(state.AmountOfReversers, modifier.Threshold);
-    RideRatingsAdd(ratings, numReversers * modifier.Excitement, numReversers * modifier.Intensity, numReversers * modifier.Nausea);
+    RideRatingsAdd(
+        ratings, numReversers * modifier.Excitement, numReversers * modifier.Intensity, numReversers * modifier.Nausea);
 }
 
 static void RideRatingsApplyBonusHoles(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
@@ -2156,7 +2156,8 @@ static void RideRatingsApplyRequirementUnsheltered(
     }
 }
 
-static void RideRatingsApplyRequirementReversals(RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
+static void RideRatingsApplyRequirementReversals(
+    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
 {
     if (state.AmountOfReversers < modifier.Threshold)
     {

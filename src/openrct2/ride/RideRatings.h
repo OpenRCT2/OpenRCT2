@@ -54,7 +54,8 @@ struct RideRatingUpdateState
     uint16_t StationFlags;
 };
 
-enum class RatingsCalculationType : uint8_t {
+enum class RatingsCalculationType : uint8_t
+{
     Normal,
     FlatRide,
     Stall,
@@ -90,7 +91,7 @@ enum class RatingsModifierType : uint8_t
     BonusReversals,
     // Number of hole BONUS for mini golf
     BonusHoles,
-    // Number of cars bonus for dodgems/flying saucers 
+    // Number of cars bonus for dodgems/flying saucers
     BonusNumTrains,
     // Bonus for launched freefall in downward launch mode
     BonusDownwardLaunch,
