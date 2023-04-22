@@ -35,7 +35,6 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
     SET_FIELD(Heights, { 255, 32, 4, 7, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateReverseFreefallCoaster),
     SET_FIELD(RatingsMultipliers, { 44, 66, 10 }),
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 0, 0, 10 }),
     SET_FIELD(BuildCosts, { 100.00_GBP, 0.00_GBP, 45, }),
@@ -51,5 +50,23 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_REVERSE_FREEFALL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_REVERSE_FREEFALL_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "reverse_freefall_rc"),
+    SET_FIELD(RatingsData,
+    {
+        SET_FIELD(Type, RatingsCalculationType::Normal),
+        SET_FIELD(BaseRatings, { RIDE_RATING(2, 00), RIDE_RATING(3, 20), RIDE_RATING(2, 80) }),
+        SET_FIELD(Unreliability, 25),
+        SET_FIELD(RelaxRequirementsIfInversions, false),
+        SET_FIELD(Modifiers, {
+            { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
+            { RatingsModifierType::BonusSynchronization,  0,                RIDE_RATING(0, 60), RIDE_RATING(0, 15), 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                436906, 436906, 320398 },
+            { RatingsModifierType::BonusGForces,          0,                24576, 41704, 59578 },
+            { RatingsModifierType::BonusSheltered,        0,                12850, 28398, 11702 },
+            { RatingsModifierType::BonusProximity,        0,                17893, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
+            { RatingsModifierType::RequirementDropHeight, 34,               2, 2, 2 },
+            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
+        }),
+    }),
 };
 // clang-format on

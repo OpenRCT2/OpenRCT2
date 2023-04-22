@@ -37,7 +37,6 @@ constexpr const RideTypeDescriptor TwistRTD =
     SET_FIELD(Heights, { 12, 64, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateTwist),
     SET_FIELD(RatingsMultipliers, { 40, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 45.00_GBP, 1.00_GBP, 1, }),
@@ -49,5 +48,17 @@ constexpr const RideTypeDescriptor TwistRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "twist"),
+    SET_FIELD(RatingsData,
+    {
+        SET_FIELD(Type, RatingsCalculationType::FlatRide),
+        SET_FIELD(BaseRatings, { RIDE_RATING(1, 13), RIDE_RATING(0, 97), RIDE_RATING(1, 90) }),
+        SET_FIELD(Unreliability, 16),
+        SET_FIELD(RelaxRequirementsIfInversions, false),
+        SET_FIELD(Modifiers, {
+            { RatingsModifierType::BonusRotations,        0,                20, 20, 20 },
+            { RatingsModifierType::BonusScenery,          0,                13943, 0, 0 },
+            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
+        }),
+    }),
 };
 // clang-format on

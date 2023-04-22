@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(Heights, { 16, 96, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateCrookedHouse),
     SET_FIELD(RatingsMultipliers, { 15, 8, 0 }),
     SET_FIELD(UpkeepCosts, { 30, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 32.50_GBP, 1.00_GBP, 1, }),
@@ -52,5 +51,15 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "crooked_house"),
+    SET_FIELD(RatingsData,
+    {
+        SET_FIELD(Type, RatingsCalculationType::FlatRide),
+        SET_FIELD(BaseRatings, { RIDE_RATING(2, 15), RIDE_RATING(0, 62), RIDE_RATING(0, 34) }),
+        SET_FIELD(Unreliability, 5),
+        SET_FIELD(RelaxRequirementsIfInversions, false),
+        SET_FIELD(Modifiers, {
+            { RatingsModifierType::PenaltyIntensity, 0, 0, 0, 0 },
+        }),
+    }),
 };
 // clang-format on

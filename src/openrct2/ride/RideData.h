@@ -38,8 +38,6 @@
 
 enum class ResearchCategory : uint8_t;
 
-using ride_ratings_calculation = void (*)(Ride& ride, RideRatingUpdateState& state);
-
 constexpr const uint8_t DefaultFoodStallHeight = 8 * COORDS_Z_STEP;
 constexpr const uint8_t DefaultDrinksStallHeight = 8 * COORDS_Z_STEP;
 constexpr const uint8_t DefaultShopHeight = 8 * COORDS_Z_STEP;
@@ -211,8 +209,6 @@ struct RideTypeDescriptor
     uint8_t MaxMass;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
     RideLiftData LiftData;
-    // rct2: 0x0097E050
-    ride_ratings_calculation RatingsCalculationFunction;
     // rct2: 0x0097CD1E
     RatingTuple RatingsMultipliers;
     UpkeepCostsDescriptor UpkeepCosts;
@@ -230,6 +226,8 @@ struct RideTypeDescriptor
 
     // json name lookup
     std::string_view Name;
+
+    RideRatingsDescriptor RatingsData;
 
     UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
 
@@ -440,7 +438,6 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(Heights, { 12, 64, 0, 0, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, nullptr),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 0.00_GBP, 0.00_GBP, 1 }),
@@ -452,6 +449,17 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "invalid"),
+	SET_FIELD(RatingsData,
+        {
+            SET_FIELD(Type, RatingsCalculationType::Normal),
+            SET_FIELD(BaseRatings, { 1, 1, 1 }),
+            SET_FIELD(Unreliability, 1),
+            SET_FIELD(RelaxRequirementsIfInversions, false),
+            SET_FIELD(Modifiers, {
+                { RatingsModifierType::PenaltyIntensity, 0, 0, 0, 0 },
+            }),
+        }
+    ),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
