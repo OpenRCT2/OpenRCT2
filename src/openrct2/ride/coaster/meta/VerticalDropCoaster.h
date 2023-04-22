@@ -62,7 +62,7 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           4000,             1146, 0, 0 },
-            { RatingsModifierType::BonusSynchronization,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                97418, 141699, 70849 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
             { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },

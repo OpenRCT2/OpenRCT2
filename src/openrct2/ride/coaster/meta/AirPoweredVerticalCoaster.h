@@ -59,7 +59,7 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
-            { RatingsModifierType::BonusSynchronization,  0,                RIDE_RATING(0, 60), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 60), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                509724, 364088, 320398 },
             { RatingsModifierType::BonusGForces,          0,                24576, 35746, 59578 },
             { RatingsModifierType::BonusSheltered,        0,                15420, 21845, 11702 },

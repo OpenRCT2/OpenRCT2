@@ -61,7 +61,7 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusDownwardLaunch,          0, RIDE_RATING(0, 30), RIDE_RATING(0, 65), RIDE_RATING(0, 45) },
-            { RatingsModifierType::BonusLaunchedFreefallSpecial, 0, 0, 0, 0 },
+            { RatingsModifierType::BonusLaunchedFreefallSpecial, 0, 0, 20, 6 },
             { RatingsModifierType::BonusProximity,               0, 20130, 0, 0 },
             { RatingsModifierType::BonusScenery,                 0, 25098, 0, 0 },
         }),

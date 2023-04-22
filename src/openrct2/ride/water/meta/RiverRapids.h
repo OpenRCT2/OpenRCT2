@@ -63,7 +63,7 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           2000,             6225, 0, 0 },
-            { RatingsModifierType::BonusSynchronization,  0,                RIDE_RATING(0, 30), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 30), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                115130, 159411, 106274 },
             { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
             { RatingsModifierType::BonusTurns,            0,                29721, 22598, 5718 },

@@ -64,7 +64,7 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
-            { RatingsModifierType::BonusSynchronization,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                797059, 655360, 301111 },
             { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
             { RatingsModifierType::BonusTurns,            0,                22291, 20860, 4574 },

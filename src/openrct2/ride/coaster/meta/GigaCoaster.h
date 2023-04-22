@@ -63,7 +63,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             819, 0, 0 },
-            { RatingsModifierType::BonusSynchronization,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                140434, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                51366, 85019, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                364088, 400497, 0 },

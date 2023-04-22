@@ -69,9 +69,9 @@ struct RatingsModifier
 {
     RatingsModifierType Type;
     int32_t Threshold;
-    int32_t ExcitementModifier;
-    int32_t IntensityModifier;
-    int32_t NauseaModifier;
+    int32_t Excitement;
+    int32_t Intensity;
+    int32_t Nausea;
 };
 
 enum class RatingsCalculationType : uint8_t {
@@ -84,7 +84,7 @@ enum RatingsModifierType : uint8_t
 {
     // General Rating Bonuses
     BonusLength,
-    BonusSynchronization,
+    BonusSynchronisation,
     BonusTrainLength,
     BonusMaxSpeed,
     BonusAverageSpeed,
