@@ -59,6 +59,7 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 20), RIDE_RATING(0, 70), RIDE_RATING(0, 50) }),
         SET_FIELD(Unreliability, 16),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           2000,             6225, 0, 0 },

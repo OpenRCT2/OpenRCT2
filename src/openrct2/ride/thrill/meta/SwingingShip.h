@@ -57,6 +57,7 @@ constexpr const RideTypeDescriptor SwingingShipRTD =
         SET_FIELD(Type, RatingsCalculationType::FlatRide),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 50), RIDE_RATING(1, 90), RIDE_RATING(1, 41) }),
         SET_FIELD(Unreliability, 10),
+        SET_FIELD(RideShelter, 0),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusOperationOption, 0, 5, 5, 10 }, 

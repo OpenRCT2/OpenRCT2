@@ -63,6 +63,7 @@ constexpr const RideTypeDescriptor MiniHelicoptersRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 60), RIDE_RATING(0, 40), RIDE_RATING(0, 00) }),
         SET_FIELD(Unreliability, 12),
+        SET_FIELD(RideShelter, 6),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

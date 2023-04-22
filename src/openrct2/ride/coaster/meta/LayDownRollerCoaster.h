@@ -57,6 +57,7 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(3, 85), RIDE_RATING(1, 15), RIDE_RATING(2, 75) }),
         SET_FIELD(Unreliability, 18),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, true),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
@@ -121,6 +122,7 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterAltRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(3, 85), RIDE_RATING(1, 15), RIDE_RATING(2, 75) }),
         SET_FIELD(Unreliability, 18),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, true),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

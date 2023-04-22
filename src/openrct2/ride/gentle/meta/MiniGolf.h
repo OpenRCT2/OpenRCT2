@@ -54,6 +54,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
             SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 50), RIDE_RATING(0, 90), RIDE_RATING(0, 00) }),
         SET_FIELD(Unreliability, 0),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,      6000, 873, 0, 0 },

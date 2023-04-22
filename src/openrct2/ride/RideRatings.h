@@ -58,7 +58,9 @@ struct RideRatingsDescriptor
 {
     RatingsCalculationType Type;
     RatingTuple BaseRatings;
-    int Unreliability;
+    uint8_t Unreliability;
+    // Used for rides with a set sheltered 8ths value (-1 = normal calculation)
+    int8_t RideShelter;
     bool RelaxRequirementsIfInversions;
     RatingsModifier Modifiers[32];
 };

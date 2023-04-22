@@ -58,6 +58,7 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(4, 00), RIDE_RATING(3, 00), RIDE_RATING(3, 20) }),
         SET_FIELD(Unreliability, 20),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

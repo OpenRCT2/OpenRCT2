@@ -63,6 +63,7 @@ constexpr const RideTypeDescriptor BoatHireRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 90), RIDE_RATING(0, 80), RIDE_RATING(0, 90) }),
         SET_FIELD(Unreliability, 7),
+        SET_FIELD(RideShelter, 0),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusBoatHireNoCircuit, 0, RIDE_RATING(0, 20), 0, 0 },

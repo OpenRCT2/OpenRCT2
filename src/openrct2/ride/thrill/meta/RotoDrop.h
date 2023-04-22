@@ -39,7 +39,6 @@ constexpr const RideTypeDescriptor RotoDropRTD =
     SET_FIELD(Heights, { 255, 32, 3, 2, }),
     SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateRotoDrop),
     SET_FIELD(RatingsMultipliers, { 50, 50, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
     SET_FIELD(BuildCosts, { 22.50_GBP, 0.00_GBP, 4, }),
@@ -59,6 +58,7 @@ constexpr const RideTypeDescriptor RotoDropRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 80), RIDE_RATING(3, 50), RIDE_RATING(3, 50) }),
         SET_FIELD(Unreliability, 24),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusProximity,   0, 11183, 0, 0 },

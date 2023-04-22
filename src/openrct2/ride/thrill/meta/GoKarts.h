@@ -59,6 +59,7 @@ constexpr const RideTypeDescriptor GoKartsRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40) }),
         SET_FIELD(Unreliability, 16),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,            700, 32768, 0, 0 },

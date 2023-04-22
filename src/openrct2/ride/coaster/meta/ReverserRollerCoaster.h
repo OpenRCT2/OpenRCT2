@@ -55,6 +55,7 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 40), RIDE_RATING(1, 80), RIDE_RATING(1, 70) }),
         SET_FIELD(Unreliability, 19),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,     873, 0, 0 },

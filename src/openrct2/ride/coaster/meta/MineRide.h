@@ -57,6 +57,7 @@ constexpr const RideTypeDescriptor MineRideRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 75), RIDE_RATING(1, 00), RIDE_RATING(1, 80) }),
         SET_FIELD(Unreliability, 16),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

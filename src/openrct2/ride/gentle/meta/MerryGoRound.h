@@ -54,6 +54,7 @@ constexpr const RideTypeDescriptor MerryGoRoundRTD =
         SET_FIELD(Type, RatingsCalculationType::FlatRide),
         SET_FIELD(BaseRatings, { RIDE_RATING(0, 60), RIDE_RATING(0, 15), RIDE_RATING(0, 30) }),
         SET_FIELD(Unreliability, 16),
+        SET_FIELD(RideShelter, 7),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusRotations,        0,                5, 5, 5 },

@@ -58,6 +58,7 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 20), RIDE_RATING(1, 80), RIDE_RATING(1, 40) }),
         SET_FIELD(Unreliability, 7),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

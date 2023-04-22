@@ -59,6 +59,7 @@ constexpr const RideTypeDescriptor ClassicMiniRollerCoasterRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 40), RIDE_RATING(2, 80), RIDE_RATING(1, 90) }),
         SET_FIELD(Unreliability, 13),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

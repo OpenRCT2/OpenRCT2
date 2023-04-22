@@ -58,6 +58,7 @@ constexpr const RideTypeDescriptor LiftRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30) }),
         SET_FIELD(Unreliability, 15),
+        SET_FIELD(RideShelter, 7),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },

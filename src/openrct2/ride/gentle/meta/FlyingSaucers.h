@@ -60,6 +60,7 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
         SET_FIELD(Type, RatingsCalculationType::FlatRide),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 40), RIDE_RATING(0, 55), RIDE_RATING(0, 39) }),
         SET_FIELD(Unreliability, 32),
+        SET_FIELD(RideShelter, 0),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             // Special case, passing -2 to represent division by 2

@@ -59,6 +59,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(3, 85), RIDE_RATING(0, 40), RIDE_RATING(0, 35) }),
         SET_FIELD(Unreliability, 14),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             819, 0, 0 },

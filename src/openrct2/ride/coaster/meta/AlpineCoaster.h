@@ -56,6 +56,7 @@ constexpr const RideTypeDescriptor AlpineCoasterRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 30), RIDE_RATING(2, 10), RIDE_RATING(1, 4) }),
         SET_FIELD(Unreliability, 7),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },

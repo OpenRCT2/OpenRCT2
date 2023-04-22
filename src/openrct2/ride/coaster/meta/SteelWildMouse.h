@@ -58,6 +58,7 @@ constexpr const RideTypeDescriptor SteelWildMouseRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 80), RIDE_RATING(2, 50), RIDE_RATING(2, 10) }),
         SET_FIELD(Unreliability, 14),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },

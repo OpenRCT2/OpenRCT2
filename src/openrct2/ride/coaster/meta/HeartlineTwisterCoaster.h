@@ -61,6 +61,7 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
         SET_FIELD(BaseRatings, { RIDE_RATING(3, 00), RIDE_RATING(1, 70), RIDE_RATING(1, 65) }),
 #endif
         SET_FIELD(Unreliability, 18),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000, 764, 0, 0 },

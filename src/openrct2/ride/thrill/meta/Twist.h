@@ -53,6 +53,7 @@ constexpr const RideTypeDescriptor TwistRTD =
         SET_FIELD(Type, RatingsCalculationType::FlatRide),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 13), RIDE_RATING(0, 97), RIDE_RATING(1, 90) }),
         SET_FIELD(Unreliability, 16),
+        SET_FIELD(RideShelter, 0),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusRotations,        0,                20, 20, 20 },

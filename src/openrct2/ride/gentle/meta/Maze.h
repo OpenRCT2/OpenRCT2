@@ -56,6 +56,7 @@ constexpr const RideTypeDescriptor MazeRTD =
         SET_FIELD(Type, RatingsCalculationType::FlatRide),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 00) }),
         SET_FIELD(Unreliability, 8),
+        SET_FIELD(RideShelter, 0),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusMazeSize, 100, 1, 2, 0 },

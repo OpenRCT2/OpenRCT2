@@ -60,6 +60,7 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 46), RIDE_RATING(0, 35), RIDE_RATING(0, 30) }),
         SET_FIELD(Unreliability, 15),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },

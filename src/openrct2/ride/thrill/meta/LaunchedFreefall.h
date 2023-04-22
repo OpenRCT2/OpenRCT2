@@ -57,6 +57,7 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 70), RIDE_RATING(3, 00), RIDE_RATING(3, 50) }),
         SET_FIELD(Unreliability, 16),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusDownwardLaunch,          0, RIDE_RATING(0, 30), RIDE_RATING(0, 65), RIDE_RATING(0, 45) },

@@ -61,6 +61,7 @@ constexpr const RideTypeDescriptor DodgemsRTD =
         SET_FIELD(Type, RatingsCalculationType::FlatRide),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35) }),
         SET_FIELD(Unreliability, 16),
+        SET_FIELD(RideShelter, 7),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             // Special case, passing -2 to represent division by 2

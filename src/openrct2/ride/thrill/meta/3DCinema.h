@@ -54,6 +54,7 @@ constexpr const RideTypeDescriptor CinemaRTD =
         SET_FIELD(Type, RatingsCalculationType::FlatRide),
         SET_FIELD(BaseRatings, { 1, 1, 1 }),
         SET_FIELD(Unreliability, 21),
+        SET_FIELD(RideShelter, 7),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::Bonus3DCinemaMode, 0, 0, 0, 0 },

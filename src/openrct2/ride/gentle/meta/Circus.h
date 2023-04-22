@@ -54,6 +54,7 @@ constexpr const RideTypeDescriptor CircusRTD =
         SET_FIELD(Type, RatingsCalculationType::FlatRide),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 10), RIDE_RATING(0, 30), RIDE_RATING(0, 0) }),
         SET_FIELD(Unreliability, 9),
+        SET_FIELD(RideShelter, 7),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, { }),
     }),

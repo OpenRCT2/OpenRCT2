@@ -59,6 +59,7 @@ constexpr const RideTypeDescriptor MonorailCyclesRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(1, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 00) }),
         SET_FIELD(Unreliability, 4),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

@@ -55,6 +55,7 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(4, 13), RIDE_RATING(2, 50), RIDE_RATING(2, 80) }),
         SET_FIELD(Unreliability, 28),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },

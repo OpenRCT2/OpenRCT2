@@ -58,6 +58,7 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
         SET_FIELD(Type, RatingsCalculationType::Normal),
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 90), RIDE_RATING(1, 50), RIDE_RATING(2, 20) }),
         SET_FIELD(Unreliability, 25),
+        SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, true),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
