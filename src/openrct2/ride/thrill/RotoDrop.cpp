@@ -185,14 +185,16 @@ static void PaintRotoDropTowerSection(
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_ROTO_DROP_TOWER_SEGMENT);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
-    const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
-
-    while (nextTileElement->GetType() != TileElementType::Track && !nextTileElement->IsLastForTile())
+    // The top segment of the Roto drop is only drawn when there is no tile element right above it
+    bool paintTopSegment = true;
+    const auto* tileElement = trackElement.as<TileElement>();
+    while (paintTopSegment && !tileElement->IsLastForTile())
     {
-        nextTileElement++;
+        tileElement++;
+        paintTopSegment = trackElement.GetClearanceZ() != tileElement->GetBaseZ();
     }
 
-    if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
+    if (paintTopSegment)
     {
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_ROTO_DROP_TOWER_SEGMENT_TOP);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
