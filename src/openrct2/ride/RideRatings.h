@@ -54,33 +54,13 @@ struct RideRatingUpdateState
     uint16_t StationFlags;
 };
 
-struct RideRatingsDescriptor
-{
-    RatingsCalculationType Type;
-    RatingTuple BaseRatings;
-    uint8_t Unreliability;
-    // Used for rides with a set sheltered 8ths value (-1 = normal calculation)
-    int8_t RideShelter;
-    bool RelaxRequirementsIfInversions;
-    RatingsModifier Modifiers[32];
-};
-
-struct RatingsModifier
-{
-    RatingsModifierType Type;
-    int32_t Threshold;
-    int32_t Excitement;
-    int32_t Intensity;
-    int32_t Nausea;
-};
-
 enum class RatingsCalculationType : uint8_t {
     Normal,
     FlatRide,
     Stall,
 };
 
-enum RatingsModifierType : uint8_t
+enum class RatingsModifierType : uint8_t
 {
     // General Rating Bonuses
     BonusLength,
@@ -134,6 +114,26 @@ enum RatingsModifierType : uint8_t
     // Water section requirement for Water Coaster
     RequirementSplashdown,
     PenaltyLateralGs,
+};
+
+struct RatingsModifier
+{
+    RatingsModifierType Type;
+    int32_t Threshold;
+    int32_t Excitement;
+    int32_t Intensity;
+    int32_t Nausea;
+};
+
+struct RideRatingsDescriptor
+{
+    RatingsCalculationType Type;
+    RatingTuple BaseRatings;
+    uint8_t Unreliability;
+    // Used for rides with a set sheltered 8ths value (-1 = normal calculation)
+    int8_t RideShelter;
+    bool RelaxRequirementsIfInversions;
+    RatingsModifier Modifiers[32];
 };
 
 static constexpr size_t RideRatingMaxUpdateStates = 4;

@@ -55,11 +55,7 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
     SET_FIELD(RatingsData,
     {
         SET_FIELD(Type, RatingsCalculationType::Normal),
-#ifdef ORIGINAL_RATINGS
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 40), RIDE_RATING(1, 70), RIDE_RATING(1, 65) }),
-#else
         SET_FIELD(BaseRatings, { RIDE_RATING(3, 00), RIDE_RATING(1, 70), RIDE_RATING(1, 65) }),
-#endif
         SET_FIELD(Unreliability, 18),
         SET_FIELD(RideShelter, -1),
         SET_FIELD(RelaxRequirementsIfInversions, false),

@@ -62,7 +62,7 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
         SET_FIELD(RideShelter, 2),
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
-            { RatingsModifierType::BonusSlideUnlimitedRides, 0, RIDE_RATING(0, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 25), 0 },
+            { RatingsModifierType::BonusSlideUnlimitedRides, 0, RIDE_RATING(0, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 25) },
             { RatingsModifierType::BonusScenery,             0, 25098, 0, 0 },
         }),
     }),

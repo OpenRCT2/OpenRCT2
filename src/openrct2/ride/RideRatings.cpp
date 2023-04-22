@@ -97,6 +97,59 @@ static void RideRatingsCalculateValue(Ride& ride);
 static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, TileElement* inputTileElement);
 static void RideRatingsAdd(RatingTuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
 
+static ShelteredEights get_num_of_sheltered_eighths(const Ride& ride);
+static money64 ride_compute_upkeep(RideRatingUpdateState& state, const Ride& ride);
+static void set_unreliability_factor(Ride& ride);
+
+static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple* ratings);
+static void RideRatingsApplyIntensityPenalty(RatingTuple* ratings);
+
+static void RideRatingsApplyBonusLength(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusSynchronisation(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTrainLength(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusMaxSpeed(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusAverageSpeed(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusDuration(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusGForces(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTurns(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusDrops(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusSheltered(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusRotations(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusOperationOption(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusGoKartRace(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusMazeSize(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusBoatHireNoCircuit(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusSlideUnlimitedRides(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusMotionSimulatorMode(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonus3DCinemaMode(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTopSpinMode(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusReversals(
+    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyBonusHoles(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusNumTrains(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusDownwardLaunch(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusLaunchedFreefallSpecial(
+    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyBonusProximity(
+    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyBonusScenery(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementLength(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementDropHeight(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementMaxSpeed(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementNumDrops(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementNegativeGs(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementLateralGs(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementInversions(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementUnsheltered(
+    RatingTuple* ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier);
+static void RideRatingsApplyRequirementReversals(
+    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyRequirementHoles(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementStations(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementSplashdown(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyPenaltyLateralGs(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+
 RideRatingUpdateStates& RideRatingGetUpdateStates()
 {
     return gRideRatingUpdateStates;
@@ -861,7 +914,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
                 RideRatingsApplyBonusSynchronisation(&ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusTrainLength:
-                RideRatingsApplyBonusLength(&ratings, ride, modifier);
+                RideRatingsApplyBonusTrainLength(&ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusMaxSpeed:
                 RideRatingsApplyBonusMaxSpeed(&ratings, ride, modifier);
