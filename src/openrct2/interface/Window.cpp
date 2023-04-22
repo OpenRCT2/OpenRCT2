@@ -1973,7 +1973,7 @@ void TextinputCancel()
 }
 
 void WindowStartTextbox(
-    WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, char* existing_args, int32_t maxLength)
+    WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, const char* existing_args, int32_t maxLength)
 {
     if (gUsingWidgetTextBox)
         WindowCancelTextbox();

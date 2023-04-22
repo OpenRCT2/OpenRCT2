@@ -33,6 +33,8 @@
 #    define WHEIGHT_MAX 800
 #    define ITEM_HEIGHT (3 + 9 + 3)
 
+constexpr size_t PLAYER_NAME_LENGTH = 32;
+
 enum
 {
     WIDX_BACKGROUND,
@@ -76,7 +78,7 @@ void JoinServer(std::string address);
 class ServerListWindow final : public Window
 {
 private:
-    char _playerName[32 + 1] = {};
+    u8string _playerName = u8string(PLAYER_NAME_LENGTH, '\0');
     ServerList _serverList;
     std::future<std::tuple<std::vector<ServerListEntry>, StringId>> _fetchFuture;
     uint32_t _numPlayersOnline = 0;
@@ -90,7 +92,8 @@ public:
 
     void OnOpen() override
     {
-        window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
+        _playerName = gConfigNetwork.PlayerName;
+        window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8 *>(_playerName.c_str());
         widgets = window_server_list_widgets;
         InitScrollWidgets();
         no_list_items = 0;
@@ -105,8 +108,6 @@ public:
         list_information_type = 0;
 
         WindowSetResize(*this, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
-
-        SafeStrCpy(_playerName, gConfigNetwork.PlayerName.c_str(), sizeof(_playerName));
 
         no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
@@ -127,7 +128,7 @@ public:
                 Close();
                 break;
             case WIDX_PLAYER_NAME_INPUT:
-                WindowStartTextbox(*this, widgetIndex, STR_STRING, _playerName, 63);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _playerName.c_str(), PLAYER_NAME_LENGTH);
                 break;
             case WIDX_LIST:
             {
@@ -267,7 +268,7 @@ public:
         if (text.empty())
             return;
 
-        std::string temp = static_cast<std::string>(text);
+        u8string temp = static_cast<u8string>(text);
 
         switch (widgetIndex)
         {
@@ -275,15 +276,9 @@ public:
                 if (_playerName == text)
                     return;
 
-                memset(_playerName, '\0', sizeof(_playerName));
-                text.copy(_playerName, sizeof(_playerName));
-
-                // Don't allow empty player names
-                if (_playerName[0] != '\0')
-                {
-                    gConfigNetwork.PlayerName = _playerName;
-                    ConfigSaveDefault();
-                }
+                _playerName = temp;
+                gConfigNetwork.PlayerName = _playerName;
+                ConfigSaveDefault();
 
                 InvalidateWidget(WIDX_PLAYER_NAME_INPUT);
                 break;
