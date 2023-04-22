@@ -990,7 +990,7 @@ namespace OpenRCT2::Scripting
                 auto& items = obj->GetItems();
                 for (const auto& item : items)
                 {
-                    result.push_back(std::move(item.ToString()));
+                    result.push_back(item.ToString());
                 }
             }
             return result;

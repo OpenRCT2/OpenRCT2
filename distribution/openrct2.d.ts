@@ -222,7 +222,6 @@ declare global {
          * @param index The index.
          */
         getObject(type: ObjectType, index: number): LoadedImageObject;
-        getObject(type: "music", index: number): LoadedObject;
         getObject(type: "ride", index: number): RideObject;
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
         getObject(type: "large_scenery", index: number): LargeSceneryObject;
@@ -230,10 +229,17 @@ declare global {
         getObject(type: "footpath_addition", index: number): FootpathAdditionObject;
         getObject(type: "banner", index: number): BannerObject;
         getObject(type: "scenery_group", index: number): SceneryGroupObject;
+        getObject(type: "music", index: number): LoadedObject;
 
         getAllObjects(type: ObjectType): LoadedImageObject[];
-        getAllObjects(type: "music"): LoadedObject[];
         getAllObjects(type: "ride"): RideObject[];
+        getAllObjects(type: "small_scenery"): SmallSceneryObject[];
+        getAllObjects(type: "large_scenery"): LargeSceneryObject[];
+        getAllObjects(type: "wall"): WallObject[];
+        getAllObjects(type: "footpath_addition"): FootpathAdditionObject[];
+        getAllObjects(type: "banner"): BannerObject[];
+        getAllObjects(type: "scenery_group"): SceneryGroupObject[];
+        getAllObjects(type: "music"): LoadedObject[];
 
         /**
          * Gets the {@link TrackSegment} for the given type.
@@ -1753,34 +1759,7 @@ declare global {
          * scenery groups that contain this object by default. This is typically
          * used for custom objects to be part of existing scenery groups.
          */
-        readonly sceneryGroups: ObjectReference[];
-    }
-
-    /**
-     * Represents a reference to an object which may or may not be loaded.
-     */
-    interface ObjectReference {
-        /**
-         * The JSON identifier of the object.
-         * Undefined if object only has a legacy identifier.
-         */
-        readonly identifier?: string;
-
-        /**
-         * The DAT identifier of the object.
-         * Undefined if object only has a JSON identifier.
-         */
-        readonly legacyIdentifier?: string;
-
-        /**
-         * The type of object
-         */
-        readonly type?: ObjectType;
-
-        /**
-         * The object index
-         */
-        readonly object: number | null;
+        readonly sceneryGroups: string[];
     }
 
     /**
@@ -1831,7 +1810,7 @@ declare global {
         /**
          * The scenery items that belong to this scenery group.
          */
-        readonly items: ObjectReference[];
+        readonly items: string[];
     }
 
     /**
@@ -2394,11 +2373,11 @@ declare global {
          * The current tilt of the car in the X/Y axis.
          */
         bankRotation: number;
-		
-		/**
-		 * Whether the car sprite is reversed or not.
-		 */ 
-		isReversed: boolean;
+
+        /**
+         * Whether the car sprite is reversed or not.
+         */
+        isReversed: boolean;
 
         /**
          * The colour of the car.
