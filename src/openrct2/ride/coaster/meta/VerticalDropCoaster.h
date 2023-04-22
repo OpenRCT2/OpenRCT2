@@ -76,7 +76,6 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 10), 2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   1,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 35746, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

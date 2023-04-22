@@ -68,7 +68,6 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
             { RatingsModifierType::BonusDrops,            0,                78643, 93622, 62259 },
             { RatingsModifierType::BonusProximity,        0,                13420, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

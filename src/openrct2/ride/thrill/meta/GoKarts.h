@@ -69,7 +69,6 @@ constexpr const RideTypeDescriptor GoKartsRTD =
             { RatingsModifierType::BonusProximity,         0,   11183, 0, 0 },
             { RatingsModifierType::BonusScenery,           0,   16732, 0, 0 },
             { RatingsModifierType::RequirementUnsheltered, 6,   2, 1, 1 },
-            { RatingsModifierType::PenaltyIntensity,       0,   0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

@@ -76,7 +76,6 @@ constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
             { RatingsModifierType::RequirementLateralGs,  FIXED_2DP(1, 30), 2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0xC80000,         2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

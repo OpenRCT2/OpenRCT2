@@ -79,7 +79,6 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
             { RatingsModifierType::RequirementMaxSpeed,   0x70000,          2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0x8C0000,         2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                65536, 29789, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

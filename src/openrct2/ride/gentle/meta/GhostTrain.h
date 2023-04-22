@@ -76,7 +76,6 @@ constexpr const RideTypeDescriptor GhostTrainRTD =
             { RatingsModifierType::BonusProximity,        0,                11183, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                8366, 0, 0 },
             { RatingsModifierType::RequirementLength,     0xB40000,         2, 2, 2 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

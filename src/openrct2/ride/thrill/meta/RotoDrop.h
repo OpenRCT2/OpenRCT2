@@ -54,5 +54,17 @@ constexpr const RideTypeDescriptor RotoDropRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "roto_drop"),
+    SET_FIELD(RatingsData,
+    {
+        SET_FIELD(Type, RatingsCalculationType::Normal),
+        SET_FIELD(BaseRatings, { RIDE_RATING(2, 80), RIDE_RATING(3, 50), RIDE_RATING(3, 50) }),
+        SET_FIELD(Unreliability, 24),
+        SET_FIELD(RelaxRequirementsIfInversions, false),
+        SET_FIELD(Modifiers, {
+            { RatingsModifierType::BonusProximity,   0, 11183, 0, 0 },
+            { RatingsModifierType::BonusScenery,     0, 25098, 0, 0 },
+            { RatingsModifierType::BonusTowerRide, 0, 209715, 419430, 419430 },
+        }),
+    }),
 };
 // clang-format on

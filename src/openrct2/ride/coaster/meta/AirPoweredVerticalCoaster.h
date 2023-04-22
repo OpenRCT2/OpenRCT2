@@ -66,7 +66,6 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 34,               4, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 59578 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

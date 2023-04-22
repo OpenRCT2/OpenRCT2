@@ -76,7 +76,6 @@ constexpr const RideTypeDescriptor CompactInvertedCoasterRTD =
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 30), 2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 30980, 55606 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

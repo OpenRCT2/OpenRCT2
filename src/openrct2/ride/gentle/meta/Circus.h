@@ -55,9 +55,7 @@ constexpr const RideTypeDescriptor CircusRTD =
         SET_FIELD(BaseRatings, { RIDE_RATING(2, 10), RIDE_RATING(0, 30), RIDE_RATING(0, 0) }),
         SET_FIELD(Unreliability, 9),
         SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
-            { RatingsModifierType::PenaltyIntensity, 0, 0, 0, 0 },
-        }),
+        SET_FIELD(Modifiers, { }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),

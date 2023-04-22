@@ -77,7 +77,6 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
             { RatingsModifierType::RequirementNegativeGs, 10,               2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

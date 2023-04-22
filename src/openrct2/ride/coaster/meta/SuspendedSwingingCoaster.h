@@ -78,7 +78,6 @@ constexpr const RideTypeDescriptor SuspendedSwingingCoasterRTD =
             { RatingsModifierType::RequirementLateralGs,  FIXED_2DP(1, 50), 2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                32768, 23831, 79437 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

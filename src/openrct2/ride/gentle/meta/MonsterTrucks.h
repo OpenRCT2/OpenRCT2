@@ -75,7 +75,6 @@ constexpr const RideTypeDescriptor MonsterTrucksRTD =
             { RatingsModifierType::BonusProximity,        0,                11183, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                8366, 0, 0 },
             { RatingsModifierType::RequirementLength,     0xC80000,         8, 2, 2 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

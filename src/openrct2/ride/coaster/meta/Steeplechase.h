@@ -81,7 +81,6 @@ constexpr const RideTypeDescriptor SteeplechaseRTD =
             { RatingsModifierType::RequirementLength,     0xF00000,         2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                20480, 20852, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

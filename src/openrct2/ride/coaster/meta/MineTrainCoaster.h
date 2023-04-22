@@ -78,7 +78,6 @@ constexpr const RideTypeDescriptor MineTrainCoasterRTD =
             { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 35746, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

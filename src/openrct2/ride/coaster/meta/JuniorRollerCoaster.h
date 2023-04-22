@@ -78,7 +78,6 @@ constexpr const RideTypeDescriptor JuniorRollerCoasterRTD =
             { RatingsModifierType::RequirementMaxSpeed,   0x70000,          2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   1,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                20480, 23831, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

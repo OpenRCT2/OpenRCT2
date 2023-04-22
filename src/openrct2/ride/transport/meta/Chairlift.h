@@ -74,7 +74,6 @@ constexpr const RideTypeDescriptor ChairliftRTD =
             { RatingsModifierType::RequirementLength,      0x960000, 2, 2, 2 },
             { RatingsModifierType::RequirementStations,    1,        0, 2, 1 },
             { RatingsModifierType::RequirementUnsheltered, 4,        4, 1, 1 },
-            { RatingsModifierType::PenaltyIntensity,       0,        0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

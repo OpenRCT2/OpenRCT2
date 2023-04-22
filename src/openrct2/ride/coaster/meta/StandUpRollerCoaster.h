@@ -79,7 +79,6 @@ constexpr const RideTypeDescriptor StandUpRollerCoasterRTD =
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 50), 2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 59578 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

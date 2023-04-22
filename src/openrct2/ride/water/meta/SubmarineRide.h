@@ -63,7 +63,6 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusProximity,        0,                11183, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                22310, 0, 0 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

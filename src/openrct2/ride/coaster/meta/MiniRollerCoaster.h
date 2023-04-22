@@ -77,7 +77,6 @@ constexpr const RideTypeDescriptor MiniRollerCoasterRTD =
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 50), 2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                20480, 23831, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

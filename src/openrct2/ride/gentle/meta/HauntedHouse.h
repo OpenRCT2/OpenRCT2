@@ -55,9 +55,7 @@ constexpr const RideTypeDescriptor HauntedHouseRTD =
         SET_FIELD(BaseRatings, { RIDE_RATING(3, 41), RIDE_RATING(1, 53), RIDE_RATING(0, 10) }),
         SET_FIELD(Unreliability, 8),
         SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
-            { RatingsModifierType::PenaltyIntensity, 0, 0, 0, 0 },
-        }),
+        SET_FIELD(Modifiers, { }),
     }),
 };
 // clang-format on

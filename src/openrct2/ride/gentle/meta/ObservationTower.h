@@ -39,7 +39,6 @@ constexpr const RideTypeDescriptor ObservationTowerRTD =
     SET_FIELD(Heights, { 255, 32, 3, 2, }),
     SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateObservationTower),
     SET_FIELD(RatingsMultipliers, { 80, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
     SET_FIELD(BuildCosts, { 18.50_GBP, 0.00_GBP, 4, }),
@@ -54,6 +53,19 @@ constexpr const RideTypeDescriptor ObservationTowerRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_TRACK, SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "observation_tower"),
+    SET_FIELD(RatingsData,
+    {
+        SET_FIELD(Type, RatingsCalculationType::Normal),
+        SET_FIELD(BaseRatings, { RIDE_RATING(1, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 10) }),
+        SET_FIELD(Unreliability, 15),
+        SET_FIELD(RelaxRequirementsIfInversions, false),
+        SET_FIELD(Modifiers, {
+            { RatingsModifierType::BonusProximity,         0, 20130, 0, 0 },
+            { RatingsModifierType::BonusScenery,           0, 83662, 0, 0 },
+            { RatingsModifierType::BonusTowerRide,       0, 45875, 0, 26214 },
+            { RatingsModifierType::RequirementUnsheltered, 5, 4, 1, 1 },
+        }),
+    }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_ObservationTower),
 };

@@ -73,7 +73,6 @@ constexpr const RideTypeDescriptor VirginiaReelRTD =
             { RatingsModifierType::RequirementLength,     0xD20000,         2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                110592, 29789, 59578 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

@@ -72,7 +72,6 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
             { RatingsModifierType::BonusScenery,          0,                13943, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 2,                2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0xC80000,         2, 2, 2 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

@@ -58,7 +58,6 @@ constexpr const RideTypeDescriptor MerryGoRoundRTD =
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusRotations,        0,                5, 5, 5 },
             { RatingsModifierType::BonusScenery,          0,                19521, 0, 0 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

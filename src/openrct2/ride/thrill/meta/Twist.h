@@ -57,7 +57,6 @@ constexpr const RideTypeDescriptor TwistRTD =
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusRotations,        0,                20, 20, 20 },
             { RatingsModifierType::BonusScenery,          0,                13943, 0, 0 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

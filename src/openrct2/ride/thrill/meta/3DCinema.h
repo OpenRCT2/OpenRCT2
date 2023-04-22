@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor CinemaRTD =
     SET_FIELD(Heights, { 12, 128, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculate3dCinema),
     SET_FIELD(RatingsMultipliers, { 20, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 70.00_GBP, 1.00_GBP, 1, }),
@@ -50,5 +49,15 @@ constexpr const RideTypeDescriptor CinemaRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "3d_cinema"),
+    SET_FIELD(RatingsData,
+    {
+        SET_FIELD(Type, RatingsCalculationType::FlatRide),
+        SET_FIELD(BaseRatings, { 1, 1, 1 }),
+        SET_FIELD(Unreliability, 21),
+        SET_FIELD(RelaxRequirementsIfInversions, false),
+        SET_FIELD(Modifiers, {
+            { RatingsModifierType::Bonus3DCinemaMode, 0, 0, 0, 0 },
+        }),
+    }),
 };
 // clang-format on

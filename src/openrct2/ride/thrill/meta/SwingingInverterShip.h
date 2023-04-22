@@ -53,5 +53,16 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "swinging_inverter_ship"),
+    SET_FIELD(RatingsData,
+    {
+        SET_FIELD(Type, RatingsCalculationType::FlatRide),
+        SET_FIELD(BaseRatings, { RIDE_RATING(2, 50), RIDE_RATING(2, 70), RIDE_RATING(2, 74) }),
+        SET_FIELD(Unreliability, 16),
+        SET_FIELD(RelaxRequirementsIfInversions, false),
+        SET_FIELD(Modifiers, {
+            { RatingsModifierType::BonusOperationOption, 0, 11, 22, 22 }, 
+            { RatingsModifierType::BonusScenery,         0, 11155, 0, 0 },
+        }),
+    }),
 };
 // clang-format on

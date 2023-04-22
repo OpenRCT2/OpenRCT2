@@ -61,7 +61,6 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusRotations,        0,                25, 25, 25 },
             { RatingsModifierType::BonusScenery,          0,                41831, 0, 0 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

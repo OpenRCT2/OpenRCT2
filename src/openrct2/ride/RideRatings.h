@@ -80,6 +80,7 @@ enum class RatingsCalculationType : uint8_t {
 
 enum RatingsModifierType : uint8_t
 {
+    // General Rating Bonuses
     BonusLength,
     BonusSynchronization,
     BonusTrainLength,
@@ -93,12 +94,27 @@ enum RatingsModifierType : uint8_t
     BonusProximity,
     BonusScenery,
     BonusRotations,
-    BonusNumTrains,
     BonusOperationOption,
+    // Ride-specific Rating Bonuses
     BonusGoKartRace,
-    BonusRotoDrop,
-    BonusLaunchedFreefall,
-    BonusObservation,
+    BonusTowerRide,
+    BonusMazeSize,
+    BonusBoatHireNoCircuit,
+    BonusSlideUnlimitedRides,
+    BonusMotionSimulatorMode,
+    Bonus3DCinemaMode,
+    BonusTopSpinMode,
+    // Number of reversals BONUS for reverser coaster
+    BonusReversals,
+    // Number of hole BONUS for mini golf
+    BonusHoles,
+    // Number of cars bonus for dodgems/flying saucers 
+    BonusNumTrains,
+    // Bonus for launched freefall in downward launch mode
+    BonusDownwardLaunch,
+    // Bonus with further mode-dependent logic for LF
+    BonusLaunchedFreefallSpecial,
+    // General Rating Requirements
     RequirementLength,
     RequirementDropHeight,
     RequirementNumDrops,
@@ -107,9 +123,15 @@ enum RatingsModifierType : uint8_t
     RequirementLateralGs,
     RequirementInversions,
     RequirementUnsheltered,
+    // Number of reversals REQUIREMENT for reverser coaster
+    RequirementReversals,
+    // Number of hole REQUIREMENT for mini golf
+    RequirementHoles,
+    // 2 Station requirement for Chairlift
     RequirementStations,
+    // Water section requirement for Water Coaster
+    RequirementSplashdown,
     PenaltyLateralGs,
-    PenaltyIntensity,
 };
 
 static constexpr size_t RideRatingMaxUpdateStates = 4;

@@ -73,7 +73,6 @@ constexpr const RideTypeDescriptor MonorailCyclesRTD =
             { RatingsModifierType::BonusProximity,        0,                8946, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementLength,     0x8C0000,         2, 2, 2 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

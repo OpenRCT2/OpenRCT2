@@ -76,7 +76,6 @@ constexpr const RideTypeDescriptor SpinningWildMouseRTD =
             { RatingsModifierType::RequirementLength,     0xAA0000,         2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                102400, 35746, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

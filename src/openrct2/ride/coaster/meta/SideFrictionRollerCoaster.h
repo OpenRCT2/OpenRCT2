@@ -77,7 +77,6 @@ constexpr const RideTypeDescriptor SideFrictionRollerCoasterRTD =
             { RatingsModifierType::RequirementLength,     0xFA0000,         2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                28672, 35746, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

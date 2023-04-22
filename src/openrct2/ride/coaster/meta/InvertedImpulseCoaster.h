@@ -75,7 +75,6 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
             { RatingsModifierType::RequirementDropHeight, 20,               2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 29789, 55606 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

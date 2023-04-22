@@ -65,7 +65,6 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
             { RatingsModifierType::BonusProximity,        0,                17893, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 34,               2, 2, 2 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

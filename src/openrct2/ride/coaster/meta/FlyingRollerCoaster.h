@@ -81,7 +81,6 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 1, 1 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };
@@ -147,7 +146,6 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterAltRTD =
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 1, 1 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

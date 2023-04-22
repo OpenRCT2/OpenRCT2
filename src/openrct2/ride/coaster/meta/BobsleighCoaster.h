@@ -75,7 +75,6 @@ constexpr const RideTypeDescriptor BobsleighCoasterRTD =
             { RatingsModifierType::RequirementLateralGs,  FIXED_2DP(1, 20), 2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                65536, 23831, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

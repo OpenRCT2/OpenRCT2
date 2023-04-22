@@ -77,7 +77,6 @@ constexpr const RideTypeDescriptor MiniHelicoptersRTD =
             { RatingsModifierType::BonusProximity,        0,                8946, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                8366, 0, 0 },
             { RatingsModifierType::RequirementLength,     0xA00000,         2, 2, 2 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

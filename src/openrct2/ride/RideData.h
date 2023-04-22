@@ -456,7 +456,6 @@ constexpr const RideTypeDescriptor DummyRTD =
             SET_FIELD(Unreliability, 1),
             SET_FIELD(RelaxRequirementsIfInversions, false),
             SET_FIELD(Modifiers, {
-                { RatingsModifierType::PenaltyIntensity, 0, 0, 0, 0 },
             }),
         }
     ),

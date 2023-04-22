@@ -71,7 +71,6 @@ constexpr const RideTypeDescriptor LogFlumeRTD =
             { RatingsModifierType::BonusProximity,        0,                22367, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 6,                2, 2, 2 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

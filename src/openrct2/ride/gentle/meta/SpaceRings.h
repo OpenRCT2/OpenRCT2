@@ -57,7 +57,6 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
         SET_FIELD(RelaxRequirementsIfInversions, false),
         SET_FIELD(Modifiers, {
             { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

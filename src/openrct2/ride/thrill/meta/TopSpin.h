@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor TopSpinRTD =
     SET_FIELD(Heights, { 16, 112, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateTopSpin),
     SET_FIELD(RatingsMultipliers, { 24, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 72.50_GBP, 1.00_GBP, 1, }),
@@ -54,5 +53,16 @@ constexpr const RideTypeDescriptor TopSpinRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_TOP_SPIN_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "top_spin"),
+    SET_FIELD(RatingsData,
+    {
+        SET_FIELD(Type, RatingsCalculationType::FlatRide),
+        SET_FIELD(BaseRatings, { 1, 1, 1 }),
+        SET_FIELD(Unreliability, 19),
+        SET_FIELD(RelaxRequirementsIfInversions, false),
+        SET_FIELD(Modifiers, {
+            { RatingsModifierType::BonusTopSpinMode, 0, 0, 0, 0 },
+            { RatingsModifierType::BonusScenery,     0, 11155, 0, 0 },
+        }),
+    }),
 };
 // clang-format on

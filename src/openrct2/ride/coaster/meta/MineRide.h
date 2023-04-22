@@ -73,7 +73,6 @@ constexpr const RideTypeDescriptor MineRideRTD =
             { RatingsModifierType::BonusScenery,          0,                16732, 0, 0 },
             { RatingsModifierType::RequirementLength,     0x10E0000,        2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 29789, 49648 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };

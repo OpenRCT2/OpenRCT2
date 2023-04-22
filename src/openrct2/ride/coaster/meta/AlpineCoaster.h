@@ -71,7 +71,6 @@ constexpr const RideTypeDescriptor AlpineCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementMaxSpeed,   0x50000,          2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
-            { RatingsModifierType::PenaltyIntensity,      0,                0, 0, 0 },
         }),
     }),
 };
