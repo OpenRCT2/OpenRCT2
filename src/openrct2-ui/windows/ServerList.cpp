@@ -93,7 +93,7 @@ public:
     void OnOpen() override
     {
         _playerName = gConfigNetwork.PlayerName;
-        window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8 *>(_playerName.c_str());
+        window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
         widgets = window_server_list_widgets;
         InitScrollWidgets();
         no_list_items = 0;
