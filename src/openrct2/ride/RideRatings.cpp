@@ -892,18 +892,11 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     set_unreliability_factor(ride);
 
     auto shelteredEighths = get_num_of_sheltered_eighths(ride);
-    if (rrd.RideShelter == -1)
-    {
-        ride.sheltered_eighths = shelteredEighths.TotalShelteredEighths;
-    }
-    else
-    {
-        ride.sheltered_eighths = rrd.RideShelter;
-    }
+    ride.sheltered_eighths = (rrd.RideShelter == -1) ? shelteredEighths.TotalShelteredEighths : rrd.RideShelter;
 
     RatingTuple ratings = rrd.BaseRatings;
     // Apply Modifiers
-    for (auto modifier : rrd.Modifiers)
+    for (const auto& modifier : rrd.Modifiers)
     {
         switch (modifier.Type)
         {
@@ -1899,13 +1892,9 @@ static void RideRatingsApplyBonusRotations(RatingTuple* ratings, const Ride& rid
 
 static void RideRatingsApplyBonusOperationOption(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
 {
-    int32_t excitement = (modifier.Excitement >= 0) ? (ride.operation_option * modifier.Excitement)
-                                                   : (ride.operation_option / modifier.Excitement);
     int32_t intensity = (modifier.Intensity >= 0) ? (ride.operation_option * modifier.Intensity)
-                                                 : (ride.operation_option / modifier.Intensity);
-    int32_t nausea = (modifier.Nausea >= 0) ? (ride.operation_option * modifier.Nausea)
-                                           : (ride.operation_option / modifier.Nausea);
-    RideRatingsAdd(ratings, excitement, intensity, nausea);
+                                                 : (ride.operation_option / std::abs(modifier.Intensity));
+    RideRatingsAdd(ratings, ride.operation_option * modifier.Excitement, intensity, ride.operation_option * modifier.Nausea);
 }
 
 static void RideRatingsApplyBonusGoKartRace(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
@@ -1921,9 +1910,10 @@ static void RideRatingsApplyBonusGoKartRace(RatingTuple* ratings, const Ride& ri
 
 static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
 {
+    int32_t lengthFactor = (ride.GetTotalLength() >> 16);
     RideRatingsAdd(
-        ratings, ((ride.GetTotalLength() >> 16) * modifier.Excitement) >> 16, modifier.Intensity,
-        ((ride.GetTotalLength() >> 16) * modifier.Nausea) >> 16);
+        ratings, (lengthFactor * modifier.Excitement) >> 16, (lengthFactor * modifier.Intensity) >> 16,
+        (lengthFactor * modifier.Nausea) >> 16);
 }
 
 static void RideRatingsApplyBonusMazeSize(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
@@ -2029,6 +2019,13 @@ static void RideRatingsApplyBonusDownwardLaunch(RatingTuple* ratings, const Ride
     }
 }
 
+static void RideRatingsApplyBonusOperationOptionFreefall(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+{
+    RideRatingsAdd(
+        ratings, (ride.operation_option * modifier.Excitement) >> 16, (ride.operation_option * modifier.Intensity) >> 16,
+        (ride.operation_option * modifier.Nausea) >> 16);
+}
+
 static void RideRatingsApplyBonusLaunchedFreefallSpecial(
     RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
 {
@@ -2036,12 +2033,12 @@ static void RideRatingsApplyBonusLaunchedFreefallSpecial(
     RideRatingsAdd(ratings, excitement, 0, 0);
 
 #ifdef ORIGINAL_RATINGS
-    RideRatingsApplyBonusOperationOption(&ratings, ride, modifier);
+    RideRatingsApplyBonusOperationOptionFreefall(&ratings, ride, modifier);
 #else
     // Only apply "launch speed" effects when the setting can be modified
     if (ride.mode == RideMode::UpwardLaunch)
     {
-        RideRatingsApplyBonusOperationOption(ratings, ride, modifier);
+        RideRatingsApplyBonusOperationOptionFreefall(ratings, ride, modifier);
     }
     else
     {
