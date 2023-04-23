@@ -5410,7 +5410,7 @@ void Vehicle::UpdateSound()
     if (rideEntry == nullptr)
         return;
 
-    const auto& carEntry = rideEntry->Cars[vehicle_type];
+    const auto& carEntry = rideEntry->Cars[0];
 
     int32_t ecx = abs(velocity) - 1.0_mph;
     if (ecx >= 0)
