@@ -39,6 +39,7 @@
 - Fix: [#19991] Crash using cut-away view.
 - Fix: [#20016] The group box for small scenery details in the Tile Inspector window has unused empty space.
 - Fix: [#20018] Shops not calculating up-keep cost.
+- Fix: [#20033] Asset packs cannot reference game data.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------

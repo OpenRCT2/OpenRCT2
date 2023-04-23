@@ -141,6 +141,8 @@ public:
 
     ObjectAsset GetAsset(std::string_view path) override
     {
+        if (Path::IsAbsolute(path))
+            return ObjectAsset(path);
         return ObjectAsset(_zipPath, path);
     }
 
