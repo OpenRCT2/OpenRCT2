@@ -33,7 +33,7 @@
 #    define WHEIGHT_MAX 800
 #    define ITEM_HEIGHT (3 + 9 + 3)
 
-constexpr size_t PLAYER_NAME_LENGTH = 32;
+constexpr size_t MaxPlayerNameLength = 32;
 
 enum
 {
@@ -128,7 +128,7 @@ public:
                 Close();
                 break;
             case WIDX_PLAYER_NAME_INPUT:
-                WindowStartTextbox(*this, widgetIndex, STR_STRING, _playerName.c_str(), PLAYER_NAME_LENGTH);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _playerName.c_str(), MaxPlayerNameLength);
                 break;
             case WIDX_LIST:
             {
