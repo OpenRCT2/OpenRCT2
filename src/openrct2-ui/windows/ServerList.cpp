@@ -269,7 +269,7 @@ public:
         if (text.empty())
             return;
 
-        auto temp = static_cast<u8string>(text);
+        auto temp = u8string{ text };
 
         switch (widgetIndex)
         {
