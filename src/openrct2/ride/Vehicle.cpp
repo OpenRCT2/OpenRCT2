@@ -5410,7 +5410,9 @@ void Vehicle::UpdateSound()
     if (rideEntry == nullptr)
         return;
 
-    const auto& carEntry = rideEntry->Cars[0];
+    // Always use the head car's sound data (Some of the other vehicle subtypes have improperly set data)
+    auto soundCarIndex = (rideEntry->FrontCar == 0xff) ? rideEntry->DefaultCar : rideEntry->FrontCar;
+    const auto& carEntry = rideEntry->Cars[soundCarIndex];
 
     int32_t ecx = abs(velocity) - 1.0_mph;
     if (ecx >= 0)
