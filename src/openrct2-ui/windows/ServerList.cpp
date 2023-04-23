@@ -78,7 +78,7 @@ void JoinServer(std::string address);
 class ServerListWindow final : public Window
 {
 private:
-    u8string _playerName = u8string(PLAYER_NAME_LENGTH, '\0');
+    u8string _playerName = {};
     ServerList _serverList;
     std::future<std::tuple<std::vector<ServerListEntry>, StringId>> _fetchFuture;
     uint32_t _numPlayersOnline = 0;
@@ -278,6 +278,7 @@ public:
 
                 _playerName = temp;
                 gConfigNetwork.PlayerName = _playerName;
+                window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
                 ConfigSaveDefault();
 
                 InvalidateWidget(WIDX_PLAYER_NAME_INPUT);
