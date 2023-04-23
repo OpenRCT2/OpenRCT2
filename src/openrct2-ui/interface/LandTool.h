@@ -30,5 +30,7 @@ namespace LandTool
 {
     uint32_t SizeToSpriteIndex(uint16_t size);
     void ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentSurfaceType);
+    ObjectEntryIndex GetSurfaceStyleFromDropdownIndex(size_t index);
     void ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType);
+    ObjectEntryIndex GetEdgeStyleFromDropdownIndex(size_t index);
 } // namespace LandTool
