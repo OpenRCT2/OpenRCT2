@@ -78,7 +78,7 @@ void JoinServer(std::string address);
 class ServerListWindow final : public Window
 {
 private:
-    u8string _playerName = {};
+    u8string _playerName;
     ServerList _serverList;
     std::future<std::tuple<std::vector<ServerListEntry>, StringId>> _fetchFuture;
     uint32_t _numPlayersOnline = 0;
