@@ -57,12 +57,12 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
     SET_FIELD(Name, "splash_boats"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 46), RIDE_RATING(0, 35), RIDE_RATING(0, 30) }),
-        SET_FIELD(Unreliability, 15),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 46), RIDE_RATING(0, 35), RIDE_RATING(0, 30) },
+        15,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                797059, 655360, 301111 },
@@ -73,7 +73,7 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
             { RatingsModifierType::BonusProximity,        0,                22367, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 6,                2, 2, 2 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),

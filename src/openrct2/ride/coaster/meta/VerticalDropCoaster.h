@@ -55,12 +55,12 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(Name, "vertical_drop_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(3, 20), RIDE_RATING(0, 80), RIDE_RATING(0, 30) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(3, 20), RIDE_RATING(0, 80), RIDE_RATING(0, 30) },
+        16,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           4000,             1146, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                97418, 141699, 70849 },
@@ -77,7 +77,7 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 10), 2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   1,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 35746, 49648 },
-        }),
+        },
     }),
 };
 // clang-format on

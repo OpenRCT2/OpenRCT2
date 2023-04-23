@@ -56,12 +56,12 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
     SET_FIELD(Name, "river_rapids"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 20), RIDE_RATING(0, 70), RIDE_RATING(0, 50) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 20), RIDE_RATING(0, 70), RIDE_RATING(0, 50) },
+        16,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           2000,             6225, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 30), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                115130, 159411, 106274 },
@@ -73,7 +73,7 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
             { RatingsModifierType::BonusScenery,          0,                13943, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 2,                2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0xC80000,         2, 2, 2 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),

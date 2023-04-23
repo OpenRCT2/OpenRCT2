@@ -54,12 +54,12 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
     SET_FIELD(Name, "heartline_twister_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(3, 00), RIDE_RATING(1, 70), RIDE_RATING(1, 65) }),
-        SET_FIELD(Unreliability, 18),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(3, 00), RIDE_RATING(1, 70), RIDE_RATING(1, 65) },
+        18,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000, 764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,    RIDE_RATING(0, 20), RIDE_RATING(0, 04), 0 },
             { RatingsModifierType::BonusTrainLength,      0,    187245, 0, 0 },
@@ -75,7 +75,7 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
             { RatingsModifierType::RequirementInversions, 1,    4, 1, 1 },
             { RatingsModifierType::RequirementNumDrops,   1,    4, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,    24576, 44683, 89367 },
-        }),
+        },
     }),
 };
 // clang-format on

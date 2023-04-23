@@ -56,15 +56,15 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(Name, "magic_carpet"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 45), RIDE_RATING(1, 60), RIDE_RATING(2, 60) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, 0),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(2, 45), RIDE_RATING(1, 60), RIDE_RATING(2, 60) },
+        16,
+        0,
+        false,
+        {
             { RatingsModifierType::BonusOperationOption, 0, 10, 20, 20 }, 
             { RatingsModifierType::BonusScenery,         0, 11155, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

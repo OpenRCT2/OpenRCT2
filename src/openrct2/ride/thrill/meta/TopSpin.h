@@ -55,15 +55,15 @@ constexpr const RideTypeDescriptor TopSpinRTD =
     SET_FIELD(Name, "top_spin"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { 1, 1, 1 }),
-        SET_FIELD(Unreliability, 19),
-        SET_FIELD(RideShelter, 0),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { 1, 1, 1 },
+        19,
+        0,
+        false,
+        {
             { RatingsModifierType::BonusTopSpinMode, 0, 0, 0, 0 },
             { RatingsModifierType::BonusScenery,     0, 11155, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

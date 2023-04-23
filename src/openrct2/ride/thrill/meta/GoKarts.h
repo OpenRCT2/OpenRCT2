@@ -56,12 +56,12 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     SET_FIELD(Name, "go_karts"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40) },
+        16,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,            700, 32768, 0, 0 },
             { RatingsModifierType::BonusGoKartRace,        4,   RIDE_RATING(1, 40), RIDE_RATING(0, 50), 0 },
             { RatingsModifierType::BonusTurns,             0,   4458, 3476, 5718 },
@@ -70,7 +70,7 @@ constexpr const RideTypeDescriptor GoKartsRTD =
             { RatingsModifierType::BonusProximity,         0,   11183, 0, 0 },
             { RatingsModifierType::BonusScenery,           0,   16732, 0, 0 },
             { RatingsModifierType::RequirementUnsheltered, 6,   2, 1, 1 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),

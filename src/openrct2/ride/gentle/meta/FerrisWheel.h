@@ -54,15 +54,15 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
     SET_FIELD(Name, "ferris_wheel"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(0, 60), RIDE_RATING(0, 25), RIDE_RATING(0, 30) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, 0),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(0, 60), RIDE_RATING(0, 25), RIDE_RATING(0, 30) },
+        16,
+        0,
+        false,
+        {
             { RatingsModifierType::BonusRotations,        0,                25, 25, 25 },
             { RatingsModifierType::BonusScenery,          0,                41831, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

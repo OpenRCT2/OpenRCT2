@@ -58,17 +58,17 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(Name, "dodgems"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, 7),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35) },
+        16,
+        7,
+        false,
+        {
             // Special case, passing -2 to represent division by 2
             { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
             { RatingsModifierType::BonusNumTrains,       4, RIDE_RATING(0, 80), 0, 0 },
             { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),

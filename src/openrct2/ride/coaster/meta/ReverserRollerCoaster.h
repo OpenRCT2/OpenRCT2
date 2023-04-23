@@ -52,12 +52,12 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
     SET_FIELD(Name, "reverser_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 40), RIDE_RATING(1, 80), RIDE_RATING(1, 70) }),
-        SET_FIELD(Unreliability, 19),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 40), RIDE_RATING(1, 80), RIDE_RATING(1, 70) },
+        19,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,     873, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,        RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,        187245, 0, 0 },
@@ -75,7 +75,7 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
             { RatingsModifierType::RequirementLength,     0xC80000, 2, 1, 1 },
             { RatingsModifierType::RequirementNumDrops,   2,        2, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,        28672, 23831, 49648 },
-        }),
+        },
     }),
 };
 // clang-format on

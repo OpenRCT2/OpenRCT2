@@ -55,12 +55,12 @@ constexpr const RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
    SET_FIELD(Name, "classic_wooden_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 80), RIDE_RATING(2, 60), RIDE_RATING(2, 00) }),
-        SET_FIELD(Unreliability, 19),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 80), RIDE_RATING(2, 60), RIDE_RATING(2, 00) },
+        19,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
@@ -79,7 +79,7 @@ constexpr const RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
             { RatingsModifierType::RequirementLength,     0x1720000,        2, 1, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 34555, 49648 },
-        }),
+        },
     }),
 };
 // clang-format on

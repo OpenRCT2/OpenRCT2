@@ -51,12 +51,12 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "mini_golf"),
-            SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 50), RIDE_RATING(0, 90), RIDE_RATING(0, 00) }),
-        SET_FIELD(Unreliability, 0),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+            RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 50), RIDE_RATING(0, 90), RIDE_RATING(0, 00) },
+        0,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,      6000, 873, 0, 0 },
             { RatingsModifierType::BonusTurns,       0,    14860, 0, 0 },
             { RatingsModifierType::BonusSheltered,   0,    5140, 6553, 4681 },
@@ -64,7 +64,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
             { RatingsModifierType::BonusScenery,     0,    27887, 0, 0 },
             { RatingsModifierType::BonusHoles,       0,    5, 0, 0 },
             { RatingsModifierType::RequirementHoles, 1,    8, 2, 2 },
-        }),
+        },
 
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),

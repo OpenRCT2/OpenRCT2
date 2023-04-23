@@ -51,14 +51,14 @@ constexpr const RideTypeDescriptor CinemaRTD =
     SET_FIELD(Name, "3d_cinema"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { 1, 1, 1 }),
-        SET_FIELD(Unreliability, 21),
-        SET_FIELD(RideShelter, 7),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { 1, 1, 1 },
+        21,
+        7,
+        false,
+        {
             { RatingsModifierType::Bonus3DCinemaMode, 0, 0, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

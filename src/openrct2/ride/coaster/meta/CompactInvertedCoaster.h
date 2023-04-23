@@ -55,12 +55,12 @@ constexpr const RideTypeDescriptor CompactInvertedCoasterRTD =
     SET_FIELD(Name, "compact_inverted_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(3, 15), RIDE_RATING(2, 80), RIDE_RATING(3, 20) }),
-        SET_FIELD(Unreliability, 21),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(3, 15), RIDE_RATING(2, 80), RIDE_RATING(3, 20) },
+        21,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 42), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
@@ -77,7 +77,7 @@ constexpr const RideTypeDescriptor CompactInvertedCoasterRTD =
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 30), 2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 30980, 55606 },
-        }),
+        },
     }),
 };
 // clang-format on

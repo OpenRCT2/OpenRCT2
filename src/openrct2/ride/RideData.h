@@ -449,16 +449,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "invalid"),
-	SET_FIELD(RatingsData,
-        {
-            SET_FIELD(Type, RatingsCalculationType::Normal),
-            SET_FIELD(BaseRatings, { 1, 1, 1 }),
-            SET_FIELD(Unreliability, 1),
-            SET_FIELD(RelaxRequirementsIfInversions, false),
-            SET_FIELD(Modifiers, {
-            }),
-        }
-    ),
+	SET_FIELD(RatingsData, { RatingsCalculationType::Normal, { 1, 1, 1 }, 1, false, { } }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),

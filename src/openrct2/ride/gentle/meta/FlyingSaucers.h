@@ -57,17 +57,17 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
     SET_FIELD(Name, "flying_saucers"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 40), RIDE_RATING(0, 55), RIDE_RATING(0, 39) }),
-        SET_FIELD(Unreliability, 32),
-        SET_FIELD(RideShelter, 0),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(2, 40), RIDE_RATING(0, 55), RIDE_RATING(0, 39) },
+        32,
+        0,
+        false,
+        {
             // Special case, passing -2 to represent division by 2
             { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
             { RatingsModifierType::BonusNumTrains,       4, RIDE_RATING(0, 80), 0, 0 },
             { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

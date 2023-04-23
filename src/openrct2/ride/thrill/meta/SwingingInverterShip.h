@@ -54,15 +54,15 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(Name, "swinging_inverter_ship"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 50), RIDE_RATING(2, 70), RIDE_RATING(2, 74) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, 0),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(2, 50), RIDE_RATING(2, 70), RIDE_RATING(2, 74) },
+        16,
+        0,
+        false,
+        {
             { RatingsModifierType::BonusOperationOption, 0, 11, 22, 22 }, 
             { RatingsModifierType::BonusScenery,         0, 11155, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

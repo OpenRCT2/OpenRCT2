@@ -55,12 +55,12 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(Name, "inverted_impulse_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(4, 00), RIDE_RATING(3, 00), RIDE_RATING(3, 20) }),
-        SET_FIELD(Unreliability, 20),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(4, 00), RIDE_RATING(3, 00), RIDE_RATING(3, 20) },
+        20,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 42), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
@@ -76,7 +76,7 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
             { RatingsModifierType::RequirementDropHeight, 20,               2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 29789, 55606 },
-        }),
+        },
     }),
 };
 // clang-format on

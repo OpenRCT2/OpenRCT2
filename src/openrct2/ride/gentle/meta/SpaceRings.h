@@ -51,14 +51,14 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(Name, "space_rings"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 50), RIDE_RATING(2, 10), RIDE_RATING(6, 50) }),
-        SET_FIELD(Unreliability, 7),
-        SET_FIELD(RideShelter, 0),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 50), RIDE_RATING(2, 10), RIDE_RATING(6, 50) },
+        7,
+        0,
+        false,
+        {
             { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

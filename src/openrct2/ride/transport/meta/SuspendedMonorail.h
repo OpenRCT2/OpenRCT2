@@ -58,12 +58,12 @@ constexpr const RideTypeDescriptor SuspendedMonorailRTD =
     SET_FIELD(Name, "suspended_monorail"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 15), RIDE_RATING(0, 23), RIDE_RATING(0, 8) }),
-        SET_FIELD(Unreliability, 14),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 15), RIDE_RATING(0, 23), RIDE_RATING(0, 8) },
+        14,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,            6000,             764, 0, 0 },
             { RatingsModifierType::BonusTrainLength,       0,                93622, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,          0,                44281, 70849, 35424 },
@@ -74,7 +74,7 @@ constexpr const RideTypeDescriptor SuspendedMonorailRTD =
             { RatingsModifierType::BonusScenery,           0,                25098, 0, 0 },
             { RatingsModifierType::RequirementLength,      0xAA0000,         2, 2, 2 },
             { RatingsModifierType::RequirementUnsheltered, 4,                4, 1, 1 },
-        }),
+        },
     }),
 };
 // clang-format on

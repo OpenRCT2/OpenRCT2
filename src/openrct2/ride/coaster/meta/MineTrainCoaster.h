@@ -55,12 +55,12 @@ constexpr const RideTypeDescriptor MineTrainCoasterRTD =
     SET_FIELD(Name, "mine_train_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 90), RIDE_RATING(2, 30), RIDE_RATING(2, 10) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 90), RIDE_RATING(2, 30), RIDE_RATING(2, 10) },
+        16,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
@@ -79,7 +79,7 @@ constexpr const RideTypeDescriptor MineTrainCoasterRTD =
             { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 35746, 49648 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_MineTrainCoaster),

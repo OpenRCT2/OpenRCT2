@@ -60,16 +60,16 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(Name, "boat_hire"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 90), RIDE_RATING(0, 80), RIDE_RATING(0, 90) }),
-        SET_FIELD(Unreliability, 7),
-        SET_FIELD(RideShelter, 0),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 90), RIDE_RATING(0, 80), RIDE_RATING(0, 90) },
+        7,
+        0,
+        false,
+        {
             { RatingsModifierType::BonusBoatHireNoCircuit, 0, RIDE_RATING(0, 20), 0, 0 },
             { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
             { RatingsModifierType::BonusScenery,           0, 22310, 0, 0 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),

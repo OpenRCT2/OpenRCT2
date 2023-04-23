@@ -53,12 +53,12 @@ constexpr const RideTypeDescriptor AlpineCoasterRTD =
     SET_FIELD(Name, "alpine_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 30), RIDE_RATING(2, 10), RIDE_RATING(1, 4) }),
-        SET_FIELD(Unreliability, 7),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 30), RIDE_RATING(2, 10), RIDE_RATING(1, 4) },
+        7,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 75), RIDE_RATING(0, 5), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
@@ -72,7 +72,7 @@ constexpr const RideTypeDescriptor AlpineCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementMaxSpeed,   0x50000,          2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
-        }),
+        },
     }),
 };
 // clang-format on

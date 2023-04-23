@@ -56,15 +56,15 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
     SET_FIELD(Name, "spiral_slide"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 50), RIDE_RATING(1, 40), RIDE_RATING(0, 90) }),
-        SET_FIELD(Unreliability, 8),
-        SET_FIELD(RideShelter, 2),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 50), RIDE_RATING(1, 40), RIDE_RATING(0, 90) },
+        8,
+        2,
+        false,
+        {
             { RatingsModifierType::BonusSlideUnlimitedRides, 0, RIDE_RATING(0, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 25) },
             { RatingsModifierType::BonusScenery,             0, 25098, 0, 0 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),

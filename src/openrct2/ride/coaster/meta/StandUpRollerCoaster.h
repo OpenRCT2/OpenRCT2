@@ -58,12 +58,12 @@ constexpr const RideTypeDescriptor StandUpRollerCoasterRTD =
     SET_FIELD(Name, "stand_up_rc"),
 	SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 50), RIDE_RATING(3, 00), RIDE_RATING(3, 00) }),
-        SET_FIELD(Unreliability, 17),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 50), RIDE_RATING(3, 00), RIDE_RATING(3, 00) },
+        17,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 10), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
@@ -80,7 +80,7 @@ constexpr const RideTypeDescriptor StandUpRollerCoasterRTD =
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 50), 2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 59578 },
-        }),
+        },
     }),
 };
 // clang-format on

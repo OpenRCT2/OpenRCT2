@@ -1011,6 +1011,8 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
             case RatingsModifierType::PenaltyLateralGs:
                 RideRatingsApplyPenaltyLateralGs(&ratings, ride, modifier);
                 break;
+            default:
+                break;
         }
 
         // Requirements that may be ignored if the ride has inversions
@@ -1026,6 +1028,8 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
                     break;
                 case RatingsModifierType::RequirementNegativeGs:
                     RideRatingsApplyRequirementNegativeGs(&ratings, ride, modifier);
+                    break;
+                default:
                     break;
             }
         }

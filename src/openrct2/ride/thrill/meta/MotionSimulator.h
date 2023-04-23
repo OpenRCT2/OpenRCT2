@@ -51,14 +51,14 @@ constexpr const RideTypeDescriptor MotionSimulatorRTD =
     SET_FIELD(Name, "motion_simulator"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { 1, 1, 1 }),
-        SET_FIELD(Unreliability, 21),
-        SET_FIELD(RideShelter, 7),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { 1, 1, 1 },
+        21,
+        7,
+        false,
+        {
             { RatingsModifierType::BonusMotionSimulatorMode, 0, 0, 0, 0 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),

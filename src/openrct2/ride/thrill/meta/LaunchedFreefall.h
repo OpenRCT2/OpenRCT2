@@ -54,17 +54,17 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
     SET_FIELD(Name, "launched_freefall"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 70), RIDE_RATING(3, 00), RIDE_RATING(3, 50) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 70), RIDE_RATING(3, 00), RIDE_RATING(3, 50) },
+        16,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusDownwardLaunch,          0, RIDE_RATING(0, 30), RIDE_RATING(0, 65), RIDE_RATING(0, 45) },
             { RatingsModifierType::BonusLaunchedFreefallSpecial, 0, 0, 1355917, 451972 },
             { RatingsModifierType::BonusProximity,               0, 20130, 0, 0 },
             { RatingsModifierType::BonusScenery,                 0, 25098, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

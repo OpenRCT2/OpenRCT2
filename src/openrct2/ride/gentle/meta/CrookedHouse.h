@@ -53,12 +53,12 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(Name, "crooked_house"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 15), RIDE_RATING(0, 62), RIDE_RATING(0, 34) }),
-        SET_FIELD(Unreliability, 5),
-        SET_FIELD(RideShelter, 7),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, { }),
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(2, 15), RIDE_RATING(0, 62), RIDE_RATING(0, 34) },
+        5,
+        7,
+        false,
+        { },
     }),
 };
 // clang-format on

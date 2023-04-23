@@ -55,17 +55,17 @@ constexpr const RideTypeDescriptor LiftRTD =
     SET_FIELD(Name, "lift"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30) }),
-        SET_FIELD(Unreliability, 15),
-        SET_FIELD(RideShelter, 7),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30) },
+        15,
+        7,
+        false,
+        {
             { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
             { RatingsModifierType::BonusScenery,           0, 83662, 0, 0 },
             { RatingsModifierType::BonusTowerRide,       0, 45875, 0, 26214 },
             { RatingsModifierType::RequirementUnsheltered, 5, 4, 1, 1 },
-        }),
+        },
     }),
 };
 // clang-format on

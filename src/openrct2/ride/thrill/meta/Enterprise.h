@@ -51,15 +51,15 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(Name, "enterprise"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(3, 60), RIDE_RATING(4, 55), RIDE_RATING(5, 72) }),
-        SET_FIELD(Unreliability, 22),
-        SET_FIELD(RideShelter, 3),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(3, 60), RIDE_RATING(4, 55), RIDE_RATING(5, 72) },
+        22,
+        3,
+        false,
+        {
             { RatingsModifierType::BonusOperationOption, 0, 1, 16, 16 }, 
             { RatingsModifierType::BonusScenery,         0, 19521, 0, 0 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingEnterprise),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),

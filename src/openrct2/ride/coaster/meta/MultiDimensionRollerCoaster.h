@@ -56,12 +56,12 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     SET_FIELD(Name, "multi_dimension_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(3, 75), RIDE_RATING(1, 95), RIDE_RATING(4, 79) }),
-        SET_FIELD(Unreliability, 18),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, true),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(3, 75), RIDE_RATING(1, 95), RIDE_RATING(4, 79) },
+        18,
+        -1,
+        true,
+        {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
@@ -79,7 +79,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 1, 1 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
-        }),
+        },
     }),
 };
 
@@ -121,12 +121,12 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     SET_FIELD(Name, "multi_dimension_rc_alt"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(3, 75), RIDE_RATING(1, 95), RIDE_RATING(4, 79) }),
-        SET_FIELD(Unreliability, 18),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, true),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(3, 75), RIDE_RATING(1, 95), RIDE_RATING(4, 79) },
+        18,
+        -1,
+        true,
+        {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
@@ -144,7 +144,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
             { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 1, 1 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
-        }),
+        },
     }),
 };
 // clang-format on

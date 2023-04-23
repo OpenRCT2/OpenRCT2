@@ -52,12 +52,12 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
     SET_FIELD(Name, "reverse_freefall_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 00), RIDE_RATING(3, 20), RIDE_RATING(2, 80) }),
-        SET_FIELD(Unreliability, 25),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 00), RIDE_RATING(3, 20), RIDE_RATING(2, 80) },
+        25,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 60), RIDE_RATING(0, 15), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                436906, 436906, 320398 },
@@ -66,7 +66,7 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
             { RatingsModifierType::BonusProximity,        0,                17893, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 34,               2, 2, 2 },
-        }),
+        },
     }),
 };
 // clang-format on

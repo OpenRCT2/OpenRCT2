@@ -55,12 +55,12 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
     SET_FIELD(Name, "water_coaster"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 70), RIDE_RATING(2, 80), RIDE_RATING(2, 10) }),
-        SET_FIELD(Unreliability, 14),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 70), RIDE_RATING(2, 80), RIDE_RATING(2, 10) },
+        14,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
@@ -78,7 +78,7 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
             { RatingsModifierType::RequirementNumDrops,   1,                2, 2, 2 },
             { RatingsModifierType::RequirementSplashdown, 0,                8, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,                20480, 23831, 49648 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),

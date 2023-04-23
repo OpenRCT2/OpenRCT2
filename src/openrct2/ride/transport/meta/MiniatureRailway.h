@@ -57,12 +57,12 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
     SET_FIELD(Name, "miniature_railway"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(2, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 00) }),
-        SET_FIELD(Unreliability, 11),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 00) },
+        11,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,            6000,     764, 0, 0 },
             { RatingsModifierType::BonusTrainLength,       0,        140434, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,          0,        44281, 88562, 35424 },
@@ -73,7 +73,7 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
             { RatingsModifierType::BonusScenery,           0,        20915 , 0, 0},
             { RatingsModifierType::RequirementLength,      0xC80000, 2, 2, 2 },
             { RatingsModifierType::RequirementUnsheltered, 4,        4, 1, 1 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_MiniatureRailway),

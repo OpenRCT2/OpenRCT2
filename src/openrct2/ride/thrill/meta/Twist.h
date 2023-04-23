@@ -50,15 +50,15 @@ constexpr const RideTypeDescriptor TwistRTD =
     SET_FIELD(Name, "twist"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 13), RIDE_RATING(0, 97), RIDE_RATING(1, 90) }),
-        SET_FIELD(Unreliability, 16),
-        SET_FIELD(RideShelter, 0),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 13), RIDE_RATING(0, 97), RIDE_RATING(1, 90) },
+        16,
+        0,
+        false,
+        {
             { RatingsModifierType::BonusRotations,        0,                20, 20, 20 },
             { RatingsModifierType::BonusScenery,          0,                13943, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

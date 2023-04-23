@@ -53,15 +53,15 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(Name, "maze"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::FlatRide),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 00) }),
-        SET_FIELD(Unreliability, 8),
-        SET_FIELD(RideShelter, 0),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 00) },
+        8,
+        0,
+        false,
+        {
             { RatingsModifierType::BonusMazeSize, 100, 1, 2, 0 },
             { RatingsModifierType::BonusScenery,  0,   22310, 0, 0 },
-        }),
+        },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),

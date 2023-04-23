@@ -55,12 +55,12 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
     SET_FIELD(Name, "river_rafts"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(1, 45), RIDE_RATING(0, 25), RIDE_RATING(0, 34) }),
-        SET_FIELD(Unreliability, 12),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 45), RIDE_RATING(0, 25), RIDE_RATING(0, 34) },
+        12,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                531372, 655360, 301111 },
@@ -69,7 +69,7 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
             { RatingsModifierType::BonusDrops,            0,                78643, 93622, 62259 },
             { RatingsModifierType::BonusProximity,        0,                13420, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
-        }),
+        },
     }),
 };
 // clang-format on

@@ -52,12 +52,12 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     SET_FIELD(Name, "air_powered_vertical_rc"),
     SET_FIELD(RatingsData,
     {
-        SET_FIELD(Type, RatingsCalculationType::Normal),
-        SET_FIELD(BaseRatings, { RIDE_RATING(4, 13), RIDE_RATING(2, 50), RIDE_RATING(2, 80) }),
-        SET_FIELD(Unreliability, 28),
-        SET_FIELD(RideShelter, -1),
-        SET_FIELD(RelaxRequirementsIfInversions, false),
-        SET_FIELD(Modifiers, {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(4, 13), RIDE_RATING(2, 50), RIDE_RATING(2, 80) },
+        28,
+        -1,
+        false,
+        {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 60), RIDE_RATING(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                509724, 364088, 320398 },
@@ -67,7 +67,7 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 34,               4, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 59578 },
-        }),
+        },
     }),
 };
 // clang-format on
