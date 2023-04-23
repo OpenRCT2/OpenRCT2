@@ -3647,6 +3647,32 @@ STR_6545    :RCT1-Zinsberechnung benutzen
 STR_6546    :Den Zinsberechnungsalgorithmus von RollerCoaster Tycoon 1 verwenden, welcher einen festen Prozentsatz von ca. 1,33% benutzt.
 STR_6547    :Jede Szenerie
 
+STR_6551    :Armeegrün
+STR_6552    :Honigtau
+STR_6553    :Loh
+STR_6554    :Kastanienbraun
+STR_6555    :Koralle
+STR_6556    :Waldgrün
+STR_6557    :Chartreuse
+STR_6558    :Jägergrün
+STR_6559    :Seladon
+STR_6560    :Limettengrün
+STR_6561    :Sepia
+STR_6562    :Pfirsich
+STR_6563    :Immergrün
+STR_6564    :Blaugrün
+STR_6565    :Meerschaumgrün
+STR_6566    :Violett
+STR_6567    :Lavendel
+STR_6568    :Pastellorange
+STR_6569    :Tiefes Wasser
+STR_6570    :Pastellpink
+STR_6571    :Umbra
+STR_6572    :Beige
+STR_6573    :Unsichtbar
+STR_6574    :Leere
+STR_6575    :Erlaube spezielle Farbschemas
+STR_6576    :Fügt Sonderfarben zur Farbpalette hinzu
 
 #############
 # Scenarios #

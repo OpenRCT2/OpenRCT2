@@ -209,8 +209,8 @@ public:
             {
                 if (dropdownIndex == -1)
                     return;
-                _mainColour = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), dropdownIndex, _textColour, !_isSmall);
+                _mainColour = ColourDropDownIndexToColour(dropdownIndex);
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, _textColour, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -218,8 +218,8 @@ public:
             {
                 if (dropdownIndex == -1)
                     return;
-                _textColour = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, dropdownIndex, !_isSmall);
+                _textColour = ColourDropDownIndexToColour(dropdownIndex);
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, _textColour, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }

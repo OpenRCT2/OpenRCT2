@@ -3370,6 +3370,12 @@ static Vehicle* VehicleCreateCar(
             }
         }
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
+
+        if (ride.HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
+        {
+            vehicle->SubType = carIndex == (ride.num_cars_per_train - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
+            vehicle->SetFlag(VehicleFlags::CarIsReversed);
+        }
     }
 
     // Loc6DDD5E:
@@ -3387,11 +3393,14 @@ static TrainReference VehicleCreateTrain(
     Ride& ride, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
     TrainReference train = { nullptr, nullptr };
+    bool isReversed = ride.HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS);
 
     for (int32_t carIndex = 0; carIndex < ride.num_cars_per_train; carIndex++)
     {
-        auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carIndex);
-        auto car = VehicleCreateCar(ride, vehicle, carIndex, vehicleIndex, trainPos, remainingDistance, trackElement);
+        auto carSpawnIndex = (isReversed) ? (ride.num_cars_per_train - 1) - carIndex : carIndex;
+
+        auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carSpawnIndex);
+        auto car = VehicleCreateCar(ride, vehicle, carSpawnIndex, vehicleIndex, trainPos, remainingDistance, trackElement);
         if (car == nullptr)
             break;
 
@@ -4661,7 +4670,15 @@ void RideUpdateVehicleColours(const Ride& ride)
                     colours = ride.vehicle_colours[i];
                     break;
                 case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR:
-                    colours = ride.vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
+                    {
+                        colours = ride.vehicle_colours[std::min(
+                            (ride.num_cars_per_train - 1) - carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    }
+                    else
+                    {
+                        colours = ride.vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    }
                     break;
             }
 
@@ -5143,6 +5160,12 @@ void Ride::SetNumTrains(int32_t numTrains)
 void Ride::SetNumCarsPerVehicle(int32_t numCarsPerVehicle)
 {
     auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
+    GameActions::Execute(&rideSetVehicleAction);
+}
+
+void Ride::SetReversedTrains(bool reverseTrains)
+{
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::TrainsReversed, reverseTrains);
     GameActions::Execute(&rideSetVehicleAction);
 }
 

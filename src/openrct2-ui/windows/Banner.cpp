@@ -226,7 +226,8 @@ public:
                 if (dropdownIndex == -1)
                     break;
 
-                auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::PrimaryColour, GetBannerIndex(), dropdownIndex);
+                auto bannerSetStyle = BannerSetStyleAction(
+                    BannerSetStyleType::PrimaryColour, GetBannerIndex(), ColourDropDownIndexToColour(dropdownIndex));
                 GameActions::Execute(&bannerSetStyle);
                 break;
             }
