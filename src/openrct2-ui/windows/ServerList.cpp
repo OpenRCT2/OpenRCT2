@@ -83,19 +83,9 @@ private:
     std::future<std::tuple<std::vector<ServerListEntry>, StringId>> _fetchFuture;
     uint32_t _numPlayersOnline = 0;
     StringId _statusText = STR_SERVER_LIST_CONNECTING;
-    bool _nameTextBoxInFocus = false;
 
     bool _showNetworkVersionTooltip = false;
     std::string _version;
-
-    void CheckTextBoxFocus()
-    {
-        if (_nameTextBoxInFocus)
-        {
-            _nameTextBoxInFocus = false;
-            ConfigSaveDefault();
-        }
-    }
 
 public:
 #    pragma region Window Override Events
@@ -128,12 +118,11 @@ public:
     {
         _serverList = {};
         _fetchFuture = {};
-        CheckTextBoxFocus();
+        ConfigSaveDefault();
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
-        CheckTextBoxFocus();
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
@@ -141,7 +130,6 @@ public:
                 break;
             case WIDX_PLAYER_NAME_INPUT:
                 WindowStartTextbox(*this, widgetIndex, STR_STRING, _playerName.c_str(), MaxPlayerNameLength);
-                _nameTextBoxInFocus = true;
                 break;
             case WIDX_LIST:
             {
