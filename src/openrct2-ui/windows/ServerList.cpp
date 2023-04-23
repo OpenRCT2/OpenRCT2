@@ -268,7 +268,7 @@ public:
         if (text.empty())
             return;
 
-        u8string temp = static_cast<u8string>(text);
+        auto temp = static_cast<u8string>(text);
 
         switch (widgetIndex)
         {
