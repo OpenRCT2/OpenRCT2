@@ -44,6 +44,56 @@ enum class WoodenSupportTransitionType : uint8_t
     Up60Deg = 5,
 };
 
+// There are 13 types of metal supports. A graphic showing all of them is available here:
+// https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png
+enum class MetalSupportType : uint8_t
+{
+    /**
+     * Used by the Steel Twister, Looping RC, and other rides.
+     */
+    Tubes = 0,
+    /**
+     * Used by the Junior RC and other rides.
+     */
+    Fork = 1,
+    /**
+     * Rotated version of `Fork`.
+     */
+    ForkAlt = 2,
+    /**
+     * Used by the vertical roller coasters, the Log Flume and other rides.
+     */
+    Boxed = 3,
+    /**
+     * Used by the Steeplechase.
+     */
+    Stick = 4,
+    /**
+     * No visible difference from `Stick`, also used by the Steeplechase
+     */
+    StickAlt = 5,
+    /**
+     * Every “Thick” type seems to be used for the Looping Roller Coaster’s loop, and only for that specific part.
+     */
+    ThickCentred = 6,
+    Thick = 7,
+    ThickAlt = 8,
+    ThickAltCentred = 9,
+    /**
+     * Used by the chairlift.
+     */
+    Truss = 10,
+    /**
+     * Used by inverted rcs like the flying, lay-down, compact inverted.
+     * Mostly the same as `Tubes`, but with a thinner crossbeam.
+     */
+    TubesInverted = 11,
+    /**
+     * Does not seem to be used in RCT2, but it was used in RCT1 for one of the path support types.
+     */
+    BoxedCoated,
+};
+
 bool WoodenASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool WoodenASupportsPaintSetup(
@@ -61,35 +111,17 @@ bool WoodenBSupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None);
 bool MetalASupportsPaintSetup(
-    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
+    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    ImageId imageTemplate);
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate);
+    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    ImageId imageTemplate);
 bool PathASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo, bool* underground);
 bool PathBSupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);
-
-// There are 13 types of metal supports. A graphic showing all of them is available here:
-// https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png
-enum : uint8_t
-{
-    METAL_SUPPORTS_TUBES,         // Used by the steel twister, looping rc, and other rides
-    METAL_SUPPORTS_FORK,          // Used by the junior RC and other rides
-    METAL_SUPPORTS_FORK_ALT,      // Rotated version of METAL_SUPPORTS_FORK
-    METAL_SUPPORTS_BOXED,         // Used by the vertical roller coasters, the log flume and other rides
-    METAL_SUPPORTS_STICK,         // Used by the Steeplechase
-    METAL_SUPPORTS_STICK_ALT,     // No visible difference from METAL_SUPPORTS_STICK, also used by the Steeplechase
-    METAL_SUPPORTS_THICK_CENTRED, // Every THICK type seems to be used for the Looping Roller Coaster's
-    METAL_SUPPORTS_THICK,         // loop, and only for that specific part.
-    METAL_SUPPORTS_THICK_ALT,
-    METAL_SUPPORTS_THICK_ALT_CENTRED,
-    METAL_SUPPORTS_TRUSS,          // Used by the chairlift
-    METAL_SUPPORTS_TUBES_INVERTED, // Used by inverted rcs like the flying, lay-down, compact inverted. Mostly the same as
-                                   // METAL_SUPPORTS_TUBES, but with a thinner crossbeam.
-    METAL_SUPPORTS_BOXED_COATED // Does not seem to be used in RCT2, but it was used in RCT1 for one of the path support types.
-};
 
 enum
 {
