@@ -51,7 +51,9 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "mini_golf"),
-            RatingsCalculationType::Normal,
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Normal,
         { RIDE_RATING(1, 50), RIDE_RATING(0, 90), RIDE_RATING(0, 00) },
         0,
         -1,
@@ -65,7 +67,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
             { RatingsModifierType::BonusHoles,       0,    5, 0, 0 },
             { RatingsModifierType::RequirementHoles, 1,    8, 2, 2 },
         },
-
+    }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),

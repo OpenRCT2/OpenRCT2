@@ -94,6 +94,70 @@ enum class TrackDesignCreateMode : uint_fast8_t
     Maze
 };
 
+enum class RatingsCalculationType : uint8_t
+{
+    Normal,
+    FlatRide,
+    Stall,
+};
+
+enum class RatingsModifierType : uint8_t
+{
+    NoModifier,
+    // General Rating Bonuses
+    BonusLength,
+    BonusSynchronisation,
+    BonusTrainLength,
+    BonusMaxSpeed,
+    BonusAverageSpeed,
+    BonusDuration,
+    BonusGForces,
+    BonusTurns,
+    BonusDrops,
+    BonusSheltered,
+    BonusProximity,
+    BonusScenery,
+    BonusRotations,
+    BonusOperationOption,
+    // Ride-specific Rating Bonuses
+    BonusGoKartRace,
+    BonusTowerRide,
+    BonusMazeSize,
+    BonusBoatHireNoCircuit,
+    BonusSlideUnlimitedRides,
+    BonusMotionSimulatorMode,
+    Bonus3DCinemaMode,
+    BonusTopSpinMode,
+    // Number of reversals BONUS for reverser coaster
+    BonusReversals,
+    // Number of hole BONUS for mini golf
+    BonusHoles,
+    // Number of cars bonus for dodgems/flying saucers
+    BonusNumTrains,
+    // Bonus for launched freefall in downward launch mode
+    BonusDownwardLaunch,
+    // Bonus with further mode-dependent logic for LF
+    BonusLaunchedFreefallSpecial,
+    // General Rating Requirements
+    RequirementLength,
+    RequirementDropHeight,
+    RequirementNumDrops,
+    RequirementMaxSpeed,
+    RequirementNegativeGs,
+    RequirementLateralGs,
+    RequirementInversions,
+    RequirementUnsheltered,
+    // Number of reversals REQUIREMENT for reverser coaster
+    RequirementReversals,
+    // Number of hole REQUIREMENT for mini golf
+    RequirementHoles,
+    // 2 Station requirement for Chairlift
+    RequirementStations,
+    // Water section requirement for Water Coaster
+    RequirementSplashdown,
+    PenaltyLateralGs,
+};
+
 struct RideNameConvention
 {
     RideComponentType vehicle;
@@ -139,6 +203,26 @@ struct RideOperatingSettings
     int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
     uint16_t AccelerationFactor = 12;
     uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
+};
+
+struct RatingsModifier
+{
+    RatingsModifierType Type;
+    int32_t Threshold;
+    int32_t Excitement;
+    int32_t Intensity;
+    int32_t Nausea;
+};
+
+struct RideRatingsDescriptor
+{
+    RatingsCalculationType Type;
+    RatingTuple BaseRatings;
+    uint8_t Unreliability;
+    // Used for rides with a set sheltered 8ths value (-1 = normal calculation)
+    int8_t RideShelter;
+    bool RelaxRequirementsIfInversions;
+    RatingsModifier Modifiers[32];
 };
 
 struct UpkeepCostsDescriptor
@@ -457,7 +541,7 @@ constexpr const RideTypeDescriptor DummyRTD =
         -1,
         false,
         {
-            { RatingsModifierType::BonusScenery, 0, 1, 0, 0 },
+            { RatingsModifierType::NoModifier, 0, 0, 0, 0 },
         },
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),

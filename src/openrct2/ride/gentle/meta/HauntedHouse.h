@@ -56,7 +56,7 @@ constexpr const RideTypeDescriptor HauntedHouseRTD =
         8,
         7,
         false,
-        { },
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     }),
 };
 // clang-format on

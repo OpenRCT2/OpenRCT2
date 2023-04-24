@@ -51,8 +51,9 @@ constexpr const RideTypeDescriptor CashMachineRTD =
         RatingsCalculationType::Stall,
         { 1, 1, 1 },
         1,
+        -1,
         false,
-        { },
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),

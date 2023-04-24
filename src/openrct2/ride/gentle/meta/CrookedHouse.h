@@ -58,7 +58,7 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
         5,
         7,
         false,
-        { },
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     }),
 };
 // clang-format on
