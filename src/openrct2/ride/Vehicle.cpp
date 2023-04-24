@@ -5410,7 +5410,9 @@ void Vehicle::UpdateSound()
     if (rideEntry == nullptr)
         return;
 
-    const auto& carEntry = rideEntry->Cars[vehicle_type];
+    // Always use the head car's sound data (Some of the other vehicle subtypes have improperly set data)
+    auto soundCarIndex = (rideEntry->FrontCar == 0xff) ? rideEntry->DefaultCar : rideEntry->FrontCar;
+    const auto& carEntry = rideEntry->Cars[soundCarIndex];
 
     int32_t ecx = abs(velocity) - 1.0_mph;
     if (ecx >= 0)
@@ -6351,6 +6353,10 @@ static uint8_t GetSwingSprite(int16_t swingPosition)
 void Vehicle::UpdateSwingingCar()
 {
     int32_t dword_F64E08 = abs(_vehicleVelocityF64E08);
+    if (HasFlag(VehicleFlags::CarIsReversed))
+    {
+        dword_F64E08 *= -1;
+    }
     SwingSpeed += (-SwingPosition) >> 6;
     int32_t swingAmount = GetSwingAmount();
     if (swingAmount < 0)
