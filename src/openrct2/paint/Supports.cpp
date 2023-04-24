@@ -824,6 +824,28 @@ bool WoodenBSupportsPaintSetup(
     return hasSupports;
 }
 
+bool WoodenBSupportsPaintSetup(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
+    WoodenSupportTransitionType transitionType, Direction direction)
+{
+    int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
+    int32_t special = 0;
+    if (transitionType != WoodenSupportTransitionType::None)
+    {
+        special = (EnumValue(transitionType) * NumOrthogonalDirections) + direction + 1;
+    }
+
+    return WoodenBSupportsPaintSetup(session, oldSupportType, special, height, imageTemplate);
+}
+
+bool WoodenBSupportsPaintSetupRotated(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
+    ImageId imageTemplate, WoodenSupportTransitionType transitionType)
+{
+    subType = rotatedWoodenSupportSubTypes[EnumValue(subType)][direction];
+    return WoodenBSupportsPaintSetup(session, supportType, subType, height, imageTemplate, transitionType, direction);
+}
+
 /**
  * Metal pole supports
  * @param supportType (edi)
