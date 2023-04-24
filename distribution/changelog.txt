@@ -21,6 +21,7 @@
 - Fix: [#13130] Android always defaulting to UK locale for language, currency and temperature.
 - Fix: [#13397] Ride simulation causes strange station behaviour and makes the ride unusable in some cases.
 - Fix: [#16791] Rotodrop top piece replicates when walls are placed around it and clearance checks are disabled (original bug).
+- Fix: [#18583] Land dropdown is incorrect if there are surface entry index holes.
 - Fix: [#18895] Responding mechanic blocked at level crossing.
 - Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality.
 - Fix: [#19296] Crash due to a race condition for parallel object loading.
