@@ -19,12 +19,12 @@
 - Change: [OpenSFX#17] Update Hybrid RC lifthill loop.
 - Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#13130] Android always defaulting to UK locale for language, currency and temperature.
-- Fix: [#13397] Ride simulation causes strange station behaviour and makes the ride unusable in some cases
+- Fix: [#13397] Ride simulation causes strange station behaviour and makes the ride unusable in some cases.
 - Fix: [#16791] Rotodrop top piece replicates when walls are placed around it and clearance checks are disabled (original bug).
 - Fix: [#18895] Responding mechanic blocked at level crossing.
-- Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality
+- Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality.
 - Fix: [#19296] Crash due to a race condition for parallel object loading.
-- Fix: [#19733] Favorite ride of X guests integer overflow
+- Fix: [#19733] Favorite ride of X guests integer overflow.
 - Fix: [#19756] Crash with title sequences containing no commands.
 - Fix: [#19767] No message when path is not connected to ride exit and is therefore unreachable for mechanics.
 - Fix: [#19801] The in-game load/save window cannot be resized anymore.
@@ -36,9 +36,7 @@
 - Fix: [#19950] Mine train block brake supports drawn incorrectly.
 - Fix: [#19955] Mine Train Roller Coaster has incorrect supports on the sloped left small turn (original bug).
 - Fix: [#19987] [Plugin] ‘SetCheatAction’ has wrong ID in plugin API.
-- Fix: [#19991] Crash using cut-away view.
 - Fix: [#20016] The group box for small scenery details in the Tile Inspector window has unused empty space.
-- Fix: [#20018] Shops not calculating up-keep cost.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
