@@ -37,6 +37,7 @@
 - Fix: [#19955] Mine Train Roller Coaster has incorrect supports on the sloped left small turn (original bug).
 - Fix: [#19987] [Plugin] ‘SetCheatAction’ has wrong ID in plugin API.
 - Fix: [#20016] The group box for small scenery details in the Tile Inspector window has unused empty space.
+- Fix: [#20018] Shops not calculating up-keep cost.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
