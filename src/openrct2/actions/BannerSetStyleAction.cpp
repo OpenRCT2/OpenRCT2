@@ -68,7 +68,7 @@ GameActions::Result BannerSetStyleAction::Query() const
     switch (_type)
     {
         case BannerSetStyleType::PrimaryColour:
-            if (_parameter > COLOUR_COUNT)
+            if (_parameter > 31)
             {
                 LOG_ERROR("Invalid primary colour: colour = %u", _parameter);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);

@@ -126,7 +126,6 @@ enum {
 
     WIDX_VEHICLE_TYPE = 14,
     WIDX_VEHICLE_TYPE_DROPDOWN,
-    WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX,
     WIDX_VEHICLE_TRAINS_PREVIEW,
     WIDX_VEHICLE_TRAINS,
     WIDX_VEHICLE_TRAINS_INCREASE,
@@ -265,10 +264,9 @@ static Widget window_ride_vehicle_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget        ({  7,  50}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                    ),
     MakeWidget        ({297,  51}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                ),
-    MakeWidget        ({  7, 137}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP  ),
-    MakeWidget        ({  7, 154}, {302, 43}, WindowWidgetType::Scroll,   WindowColour::Secondary, STR_EMPTY                                         ),
-    MakeSpinnerWidgets({  7, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
-    MakeSpinnerWidgets({164, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
+    MakeWidget        ({  7, 147}, {302, 43}, WindowWidgetType::Scroll,   WindowColour::Secondary, STR_EMPTY                                         ),
+    MakeSpinnerWidgets({  7, 196}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
+    MakeSpinnerWidgets({164, 196}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
     WIDGETS_END,
 };
 
@@ -2672,7 +2670,7 @@ static void WindowRideVehicleMouseup(WindowBase* w, WidgetIndex widgetIndex)
  */
 static void WindowRideVehicleResize(WindowBase* w)
 {
-    WindowSetResize(*w, 316, 221, 316, 221);
+    WindowSetResize(*w, 316, 214, 316, 214);
 }
 
 /**
@@ -2689,9 +2687,6 @@ static void WindowRideVehicleMousedown(WindowBase* w, WidgetIndex widgetIndex, W
     {
         case WIDX_VEHICLE_TYPE_DROPDOWN:
             WindowRideShowVehicleTypeDropdown(w, &w->widgets[widgetIndex]);
-            break;
-        case WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX:
-            ride->SetReversedTrains(!ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS));
             break;
         case WIDX_VEHICLE_TRAINS_INCREASE:
             if (ride->NumTrains < OpenRCT2::Limits::MaxTrainsPerRide)
@@ -2858,24 +2853,6 @@ static void WindowRideVehicleInvalidate(WindowBase* w)
         window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE].type = WindowWidgetType::Empty;
     }
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS)
-        || (gCheatsDisableTrainLengthLimit && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE)))
-    {
-        window_ride_vehicle_widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Checkbox;
-        if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
-        {
-            w->pressed_widgets |= (1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
-        }
-        else
-        {
-            w->pressed_widgets &= ~(1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
-        }
-    }
-    else
-    {
-        window_ride_vehicle_widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Empty;
-    }
-
     auto ft = Formatter::Common();
     ft.Increment(6);
     ft.Add<uint16_t>(carsPerTrain);
@@ -3002,11 +2979,7 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int3
     int32_t startX = std::max(2, (widget->width() - ((ride->NumTrains - 1) * 36)) / 2 - 25);
     int32_t startY = widget->height() - 4;
 
-    bool isReversed = ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS);
-    int32_t carIndex = (isReversed) ? ride->num_cars_per_train - 1 : 0;
-
-    const auto& firstCarEntry = rideEntry
-                                    ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
+    const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, 0)];
     startY += firstCarEntry.tab_height;
 
     // For each train
@@ -3021,10 +2994,7 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int3
         static_assert(std::numeric_limits<decltype(ride->num_cars_per_train)>::max() <= std::size(trainCarImages));
         for (int32_t j = 0; j < ride->num_cars_per_train; j++)
         {
-            carIndex = (isReversed) ? (ride->num_cars_per_train - 1) - j : j;
-
-            const auto& carEntry = rideEntry
-                                       ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
+            const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, j)];
             x += carEntry.spacing / 17432;
             y -= (carEntry.spacing / 2) / 17432;
 
@@ -3039,19 +3009,12 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int3
                     vehicleColourIndex = i;
                     break;
                 case VEHICLE_COLOUR_SCHEME_PER_VEHICLE:
-                    vehicleColourIndex = carIndex;
+                    vehicleColourIndex = j;
                     break;
             }
             VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleColourIndex);
 
             ImageIndex imageIndex = carEntry.SpriteByYaw(OpenRCT2::Entity::Yaw::BaseRotation / 2, SpriteGroupType::SlopeFlat);
-            if (isReversed)
-            {
-                auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::SlopeFlat);
-                imageIndex = carEntry.SpriteByYaw(
-                    (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::SlopeFlat);
-            }
-
             imageIndex &= carEntry.TabRotationMask;
             imageIndex *= carEntry.base_num_frames;
             imageIndex += carEntry.base_image_id;
@@ -4541,22 +4504,21 @@ static void WindowRideColourDropdown(WindowBase* w, WidgetIndex widgetIndex, int
         case WIDX_TRACK_MAIN_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::TrackColourMain, ColourDropDownIndexToColour(dropdownIndex), w->ride_colour);
+                rideId, RideSetAppearanceType::TrackColourMain, dropdownIndex, w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_TRACK_ADDITIONAL_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::TrackColourAdditional, ColourDropDownIndexToColour(dropdownIndex),
-                w->ride_colour);
+                rideId, RideSetAppearanceType::TrackColourAdditional, dropdownIndex, w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_TRACK_SUPPORT_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::TrackColourSupports, ColourDropDownIndexToColour(dropdownIndex), w->ride_colour);
+                rideId, RideSetAppearanceType::TrackColourSupports, dropdownIndex, w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
@@ -4608,22 +4570,21 @@ static void WindowRideColourDropdown(WindowBase* w, WidgetIndex widgetIndex, int
         case WIDX_VEHICLE_BODY_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::VehicleColourBody, ColourDropDownIndexToColour(dropdownIndex), w->vehicleIndex);
+                rideId, RideSetAppearanceType::VehicleColourBody, dropdownIndex, w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_VEHICLE_TRIM_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::VehicleColourTrim, ColourDropDownIndexToColour(dropdownIndex), w->vehicleIndex);
+                rideId, RideSetAppearanceType::VehicleColourTrim, dropdownIndex, w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_VEHICLE_TERNARY_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::VehicleColourTernary, ColourDropDownIndexToColour(dropdownIndex),
-                w->vehicleIndex);
+                rideId, RideSetAppearanceType::VehicleColourTernary, dropdownIndex, w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;

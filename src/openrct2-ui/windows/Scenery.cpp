@@ -351,15 +351,15 @@ public:
 
         if (widgetIndex == WIDX_SCENERY_PRIMARY_COLOUR_BUTTON)
         {
-            gWindowSceneryPrimaryColour = ColourDropDownIndexToColour(dropdownIndex);
+            gWindowSceneryPrimaryColour = static_cast<colour_t>(dropdownIndex);
         }
         else if (widgetIndex == WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
         {
-            gWindowScenerySecondaryColour = ColourDropDownIndexToColour(dropdownIndex);
+            gWindowScenerySecondaryColour = static_cast<colour_t>(dropdownIndex);
         }
         else if (widgetIndex == WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
         {
-            gWindowSceneryTertiaryColour = ColourDropDownIndexToColour(dropdownIndex);
+            gWindowSceneryTertiaryColour = static_cast<colour_t>(dropdownIndex);
         }
 
         Invalidate();

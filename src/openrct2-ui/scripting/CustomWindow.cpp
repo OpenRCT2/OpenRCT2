@@ -680,7 +680,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (widgetDesc->Type == "colourpicker")
                 {
-                    UpdateWidgetColour(this, widgetIndex, ColourDropDownIndexToColour(dropdownIndex));
+                    UpdateWidgetColour(this, widgetIndex, dropdownIndex);
                 }
                 else if (widgetDesc->Type == "dropdown")
                 {

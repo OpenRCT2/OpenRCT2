@@ -15,7 +15,6 @@
 #    include "../../../common.h"
 #    include "../../Duktape.hpp"
 #    include "ScParkMessage.hpp"
-#    include "ScResearch.hpp"
 
 #    include <algorithm>
 #    include <vector>
@@ -24,12 +23,7 @@ namespace OpenRCT2::Scripting
 {
     class ScPark
     {
-    private:
-        duk_context* _context;
-
     public:
-        ScPark(duk_context* ctx);
-
         money64 cash_get() const;
         void cash_set(money64 value);
 
@@ -90,8 +84,6 @@ namespace OpenRCT2::Scripting
         bool getFlag(const std::string& key) const;
 
         void setFlag(const std::string& key, bool value);
-
-        std::shared_ptr<ScResearch> research_get() const;
 
         std::vector<std::shared_ptr<ScParkMessage>> messages_get() const;
 

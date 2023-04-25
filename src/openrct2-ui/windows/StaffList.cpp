@@ -239,7 +239,7 @@ public:
     {
         if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER)
         {
-            auto action = StaffSetColourAction(GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));
+            auto action = StaffSetColourAction(GetSelectedStaffType(), dropdownIndex);
             GameActions::Execute(&action);
         }
     }

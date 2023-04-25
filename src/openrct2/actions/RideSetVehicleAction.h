@@ -16,7 +16,6 @@ enum class RideSetVehicleType : uint8_t
     NumTrains,
     NumCarsPerTrain,
     RideEntry,
-    TrainsReversed,
     Count,
 };
 

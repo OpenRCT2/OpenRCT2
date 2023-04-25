@@ -129,6 +129,11 @@ namespace Colour
 
 } // namespace Colour
 
+uint8_t ColourToPaletteIndex(colour_t colour)
+{
+    return COLOUR_USABLE_ORDER[colour];
+}
+
 #ifndef NO_TTF
 static uint8_t BlendColourMap[PALETTE_COUNT][PALETTE_COUNT] = { 0 };
 

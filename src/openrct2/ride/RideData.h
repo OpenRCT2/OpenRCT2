@@ -347,7 +347,6 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_IS_FIRST_AID = (1uLL << 57),
     RIDE_TYPE_FLAG_IS_MAZE = (1uLL << 58),
     RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE = (1uLL << 59),
-    RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS = (1uLL << 60),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
