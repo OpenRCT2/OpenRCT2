@@ -931,11 +931,11 @@ void TrackPaintUtilDrawPier(
 
 void TrackPaintUtilDrawStationMetalSupports(PaintSession& session, Direction direction, uint16_t height, ImageId colour)
 {
-    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, colour, 3);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, colour, MetalSupportType::Boxed);
 }
 
 void TrackPaintUtilDrawStationMetalSupports2(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, uint8_t type)
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type)
 {
     if (direction & 1)
     {
@@ -2159,7 +2159,7 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
             session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
             0);
     }
-    MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     if (direction != 2)
     {
         PaintUtilSetSegmentSupportHeight(

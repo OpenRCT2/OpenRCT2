@@ -32,7 +32,7 @@ static constexpr const uint32_t _BolligerMabillardBlockBrakeImages[NumOrthogonal
     { BM_BLOCK_BRAKE_NW_SE_OPEN, BM_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -78,7 +78,7 @@ static void BolligerMabillardTrackFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -116,7 +116,7 @@ static void BolligerMabillardTrackStation(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -194,7 +194,7 @@ static void BolligerMabillardTrack25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -272,7 +272,7 @@ static void BolligerMabillardTrack60DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -350,7 +350,7 @@ static void BolligerMabillardTrackFlatTo25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -440,7 +440,7 @@ static void BolligerMabillardTrack25DegUpTo60DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -530,7 +530,7 @@ static void BolligerMabillardTrack60DegUpTo25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -608,7 +608,7 @@ static void BolligerMabillardTrack25DegUpToFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -616,7 +616,7 @@ static void BolligerMabillardTrack25DegDown(
     BolligerMabillardTrack25DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -624,7 +624,7 @@ static void BolligerMabillardTrack60DegDown(
     BolligerMabillardTrack60DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -632,7 +632,7 @@ static void BolligerMabillardTrackFlatTo25DegDown(
     BolligerMabillardTrack25DegUpToFlat<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -641,7 +641,7 @@ static void BolligerMabillardTrack25DegDownTo60DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -650,7 +650,7 @@ static void BolligerMabillardTrack60DegDownTo25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -658,7 +658,7 @@ static void BolligerMabillardTrack25DegDownToFlat(
     BolligerMabillardTrackFlatTo25DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -833,7 +833,7 @@ static void BolligerMabillardTrackLeftQuarterTurn5(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -843,7 +843,7 @@ static void BolligerMabillardTrackRightQuarterTurn5(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -887,7 +887,7 @@ static void BolligerMabillardTrackFlatToLeftBank(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -931,7 +931,7 @@ static void BolligerMabillardTrackFlatToRightBank(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -975,7 +975,7 @@ static void BolligerMabillardTrackLeftBankToFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1019,7 +1019,7 @@ static void BolligerMabillardTrackRightBankToFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1203,7 +1203,7 @@ static void BolligerMabillardTrackBankedLeftQuarterTurn5(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1213,7 +1213,7 @@ static void BolligerMabillardTrackBankedRightQuarterTurn5(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1264,7 +1264,7 @@ static void BolligerMabillardTrackLeftBankTo25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1315,7 +1315,7 @@ static void BolligerMabillardTrackRightBankTo25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1366,7 +1366,7 @@ static void BolligerMabillardTrack25DegUpToLeftBank(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1417,7 +1417,7 @@ static void BolligerMabillardTrack25DegUpToRightBank(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1426,7 +1426,7 @@ static void BolligerMabillardTrackLeftBankTo25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1435,7 +1435,7 @@ static void BolligerMabillardTrackRightBankTo25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1444,7 +1444,7 @@ static void BolligerMabillardTrack25DegDownToLeftBank(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1453,7 +1453,7 @@ static void BolligerMabillardTrack25DegDownToRightBank(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1491,7 +1491,7 @@ static void BolligerMabillardTrackLeftBank(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1499,7 +1499,7 @@ static void BolligerMabillardTrackRightBank(
     BolligerMabillardTrackLeftBank<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1674,7 +1674,7 @@ static void BolligerMabillardTrackLeftQuarterTurn525DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1849,7 +1849,7 @@ static void BolligerMabillardTrackRightQuarterTurn525DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1859,7 +1859,7 @@ static void BolligerMabillardTrackLeftQuarterTurn525DegDown(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1869,7 +1869,7 @@ static void BolligerMabillardTrackRightQuarterTurn525DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -2014,7 +2014,7 @@ static void BolligerMabillardTrackSBendLeft(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -2159,7 +2159,7 @@ static void BolligerMabillardTrackSBendRight(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -2440,7 +2440,7 @@ static void BolligerMabillardTrackLeftVerticalLoop(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -2689,7 +2689,7 @@ static void BolligerMabillardTrackRightVerticalLoop(
     TrackPaintUtilRightVerticalLoopSegments(session, direction, trackSequence);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -2801,7 +2801,7 @@ static void BolligerMabillardTrackLeftQuarterTurn3(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -2811,7 +2811,7 @@ static void BolligerMabillardTrackRightQuarterTurn3(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -2929,7 +2929,7 @@ static void BolligerMabillardTrackLeftQuarterTurn3Bank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -2939,7 +2939,7 @@ static void BolligerMabillardTrackRightQuarterTurn3Bank(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -3026,7 +3026,7 @@ static void BolligerMabillardTrackLeftQuarterTurn325DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -3116,7 +3116,7 @@ static void BolligerMabillardTrackRightQuarterTurn325DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -3126,7 +3126,7 @@ static void BolligerMabillardTrackLeftQuarterTurn325DegDown(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -3136,7 +3136,7 @@ static void BolligerMabillardTrackRightQuarterTurn325DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -3366,7 +3366,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpSmall(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -3596,7 +3596,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpSmall(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -3611,7 +3611,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixDownSmall(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -3626,7 +3626,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixDownSmall(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -3982,7 +3982,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixUpLarge(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4344,7 +4344,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixUpLarge(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4359,7 +4359,7 @@ static void BolligerMabillardTrackLeftHalfBankedHelixDownLarge(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4374,7 +4374,7 @@ static void BolligerMabillardTrackRightHalfBankedHelixDownLarge(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4419,7 +4419,7 @@ static void BolligerMabillardTrackLeftQuarterTurn160DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4464,7 +4464,7 @@ static void BolligerMabillardTrackRightQuarterTurn160DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4473,7 +4473,7 @@ static void BolligerMabillardTrackLeftQuarterTurn160DegDown(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4482,7 +4482,7 @@ static void BolligerMabillardTrackRightQuarterTurn160DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4512,7 +4512,7 @@ static void BolligerMabillardTrackBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4557,7 +4557,7 @@ static void BolligerMabillardTrack25DegUpLeftBanked(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegUpRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4602,7 +4602,7 @@ static void BolligerMabillardTrack25DegUpRightBanked(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4652,7 +4652,7 @@ static void BolligerMabillardTrackOnRidePhoto(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegDownLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4661,7 +4661,7 @@ static void BolligerMabillardTrack25DegDownLeftBanked(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegDownRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4670,7 +4670,7 @@ static void BolligerMabillardTrack25DegDownRightBanked(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4711,7 +4711,7 @@ static void BolligerMabillardTrack90DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4719,7 +4719,7 @@ static void BolligerMabillardTrack90DegDown(
     BolligerMabillardTrack90DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4764,7 +4764,7 @@ static void BolligerMabillardTrack60DegUpTo90DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack90DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4773,7 +4773,7 @@ static void BolligerMabillardTrack90DegDownTo60DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack90DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4815,7 +4815,7 @@ static void BolligerMabillardTrack90DegUpTo60DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegDownTo90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4859,7 +4859,7 @@ static void BolligerMabillardTrack60DegDownTo90DegDown(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5000,7 +5000,7 @@ static void BolligerMabillardTrackLeftEighthToDiag(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5141,7 +5141,7 @@ static void BolligerMabillardTrackRightEighthToDiag(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5151,7 +5151,7 @@ static void BolligerMabillardTrackLeftEighthToOrthogonal(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5161,7 +5161,7 @@ static void BolligerMabillardTrackRightEighthToOrthogonal(
         session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5302,7 +5302,7 @@ static void BolligerMabillardTrackLeftEighthBankToDiag(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5443,7 +5443,7 @@ static void BolligerMabillardTrackRightEighthBankToDiag(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5453,7 +5453,7 @@ static void BolligerMabillardTrackLeftEighthBankToOrthogonal(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5463,7 +5463,7 @@ static void BolligerMabillardTrackRightEighthBankToOrthogonal(
         session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5601,7 +5601,7 @@ static void BolligerMabillardTrackDiagFlat(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5739,7 +5739,7 @@ static void BolligerMabillardTrackDiag25DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5877,7 +5877,7 @@ static void BolligerMabillardTrackDiag60DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -6015,7 +6015,7 @@ static void BolligerMabillardTrackDiagFlatTo25DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -6153,7 +6153,7 @@ static void BolligerMabillardTrackDiag25DegUpTo60DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -6291,7 +6291,7 @@ static void BolligerMabillardTrackDiag60DegUpTo25DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -6429,7 +6429,7 @@ static void BolligerMabillardTrackDiag25DegUpToFlat(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -6567,7 +6567,7 @@ static void BolligerMabillardTrackDiag25DegDown(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -6705,7 +6705,7 @@ static void BolligerMabillardTrackDiag60DegDown(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -6841,7 +6841,7 @@ static void BolligerMabillardTrackDiagFlatTo25DegDown(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -6979,7 +6979,7 @@ static void BolligerMabillardTrackDiag25DegDownTo60DegDown(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -7117,7 +7117,7 @@ static void BolligerMabillardTrackDiag60DegDownTo25DegDown(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -7255,7 +7255,7 @@ static void BolligerMabillardTrackDiag25DegDownToFlat(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -7393,7 +7393,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -7531,7 +7531,7 @@ static void BolligerMabillardTrackDiag60DegUpToFlat(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -7669,7 +7669,7 @@ static void BolligerMabillardTrackDiagFlatTo60DegDown(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -7807,7 +7807,7 @@ static void BolligerMabillardTrackDiag60DegDownToFlat(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -7882,7 +7882,7 @@ static void BolligerMabillardTrackDiagFlatToLeftBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -7957,7 +7957,7 @@ static void BolligerMabillardTrackDiagFlatToRightBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8032,7 +8032,7 @@ static void BolligerMabillardTrackDiagLeftBankToFlat(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8107,7 +8107,7 @@ static void BolligerMabillardTrackDiagRightBankToFlat(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8182,7 +8182,7 @@ static void BolligerMabillardTrackDiagLeftBankTo25DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8257,7 +8257,7 @@ static void BolligerMabillardTrackDiagRightBankTo25DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8332,7 +8332,7 @@ static void BolligerMabillardTrackDiag25DegUpToLeftBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8407,7 +8407,7 @@ static void BolligerMabillardTrackDiag25DegUpToRightBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8480,7 +8480,7 @@ static void BolligerMabillardTrackDiagLeftBankTo25DegDown(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8553,7 +8553,7 @@ static void BolligerMabillardTrackDiagRightBankTo25DegDown(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8628,7 +8628,7 @@ static void BolligerMabillardTrackDiag25DegDownToLeftBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8703,7 +8703,7 @@ static void BolligerMabillardTrackDiag25DegDownToRightBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8775,7 +8775,7 @@ static void BolligerMabillardTrackDiagLeftBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8847,7 +8847,7 @@ static void BolligerMabillardTrackDiagRightBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankToLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -8937,7 +8937,7 @@ static void BolligerMabillardTrackLeftBankToLeftQuarterTurn325DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankToRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9030,7 +9030,7 @@ static void BolligerMabillardTrackRightBankToRightQuarterTurn325DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn325DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9123,7 +9123,7 @@ static void BolligerMabillardTrackLeftQuarterTurn325DegDownToLeftBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn325DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9213,7 +9213,7 @@ static void BolligerMabillardTrackRightQuarterTurn325DegDownToRightBank(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9246,7 +9246,7 @@ static void BolligerMabillardTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9333,7 +9333,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn325DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9423,7 +9423,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn325DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9433,7 +9433,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn325DegDown(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9443,7 +9443,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn325DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9618,7 +9618,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn525DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9793,7 +9793,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn525DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9803,7 +9803,7 @@ static void BolligerMabillardTrackLeftBankedQuarterTurn525DegDown(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9813,7 +9813,7 @@ static void BolligerMabillardTrackRightBankedQuarterTurn525DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegUpToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9861,7 +9861,7 @@ static void BolligerMabillardTrack25DegUpToLeftBanked25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegUpToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9909,7 +9909,7 @@ static void BolligerMabillardTrack25DegUpToRightBanked25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9957,7 +9957,7 @@ static void BolligerMabillardTrackLeftBanked25DegUpTo25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10005,7 +10005,7 @@ static void BolligerMabillardTrackRightBanked25DegUpTo25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegDownToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10014,7 +10014,7 @@ static void BolligerMabillardTrack25DegDownToLeftBanked25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack25DegDownToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10023,7 +10023,7 @@ static void BolligerMabillardTrack25DegDownToRightBanked25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10032,7 +10032,7 @@ static void BolligerMabillardTrackLeftBanked25DegDownTo25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10041,7 +10041,7 @@ static void BolligerMabillardTrackRightBanked25DegDownTo25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10086,7 +10086,7 @@ static void BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankedFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10131,7 +10131,7 @@ static void BolligerMabillardTrackRightBankedFlatToRightBanked25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10176,7 +10176,7 @@ static void BolligerMabillardTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBanked25DegUpToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10221,7 +10221,7 @@ static void BolligerMabillardTrackRightBanked25DegUpToRightBankedFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10230,7 +10230,7 @@ static void BolligerMabillardTrackLeftBankedFlatToLeftBanked25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBankedFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10239,7 +10239,7 @@ static void BolligerMabillardTrackRightBankedFlatToRightBanked25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBanked25DegDownToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10248,7 +10248,7 @@ static void BolligerMabillardTrackLeftBanked25DegDownToLeftBankedFlat(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBanked25DegDownToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10257,7 +10257,7 @@ static void BolligerMabillardTrackRightBanked25DegDownToRightBankedFlat(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10305,7 +10305,7 @@ static void BolligerMabillardTrackFlatToLeftBanked25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10353,7 +10353,7 @@ static void BolligerMabillardTrackFlatToRightBanked25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10401,7 +10401,7 @@ static void BolligerMabillardTrackLeftBanked25DegUpToFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10449,7 +10449,7 @@ static void BolligerMabillardTrackRightBanked25DegUpToFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10458,7 +10458,7 @@ static void BolligerMabillardTrackFlatToLeftBanked25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10467,7 +10467,7 @@ static void BolligerMabillardTrackFlatToRightBanked25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10476,7 +10476,7 @@ static void BolligerMabillardTrackLeftBanked25DegDownToFlat(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10485,7 +10485,7 @@ static void BolligerMabillardTrackRightBanked25DegDownToFlat(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10532,7 +10532,7 @@ static void BolligerMabillardTrackLeftQuarterTurn190DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10579,7 +10579,7 @@ static void BolligerMabillardTrackRightQuarterTurn190DegUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10588,7 +10588,7 @@ static void BolligerMabillardTrackLeftQuarterTurn190DegDown(
         session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10598,7 +10598,7 @@ static void BolligerMabillardTrackRightQuarterTurn190DegDown(
 }
 
 /* The following track elements used to be specific to the Vertical Roller Coaster */
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10682,7 +10682,7 @@ static void BolligerMabillardTrackFlatTo60DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10766,7 +10766,7 @@ static void BolligerMabillardTrack60DegUpToFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10774,7 +10774,7 @@ static void BolligerMabillardTrackFlatTo60DegDown(
     BolligerMabillardTrack60DegUpToFlat<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10782,7 +10782,7 @@ static void BolligerMabillardTrack60DegDownToFlat(
     BolligerMabillardTrackFlatTo60DegUp<supportType>(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackBrakeForDrop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10831,7 +10831,7 @@ static void BolligerMabillardTrackBrakeForDrop(
 }
 
 /* The following track elements used to be specific to the Steel Twister */
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10967,7 +10967,7 @@ static void BolligerMabillardTrackHalfLoopUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -10975,7 +10975,7 @@ static void BolligerMabillardTrackHalfLoopDown(
     BolligerMabillardTrackHalfLoopUp<supportType>(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11086,7 +11086,7 @@ static void BolligerMabillardTrackLeftCorkscrewUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11198,7 +11198,7 @@ static void BolligerMabillardTrackRightCorkscrewUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11207,7 +11207,7 @@ static void BolligerMabillardTrackLeftCorkscrewDown(
         session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11216,7 +11216,7 @@ static void BolligerMabillardTrackRightCorkscrewDown(
         session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11368,7 +11368,7 @@ static void BolligerMabillardTrackFlatTo60DegUpLongBase(
 }
 
 /** rct2: 0x008AC104 */
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11519,7 +11519,7 @@ static void BolligerMabillardTrack60DegUpToFlatLongBase(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack60DegDownToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11528,7 +11528,7 @@ static void BolligerMabillardTrack60DegDownToFlatLongBase(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlatTo60DegDownLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11537,7 +11537,7 @@ static void BolligerMabillardTrackFlatTo60DegDownLongBase(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11688,7 +11688,7 @@ static void BolligerMabillardTrackLeftBarrelRollUpToDown(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11839,7 +11839,7 @@ static void BolligerMabillardTrackRightBarrelRollUpToDown(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11848,7 +11848,7 @@ static void BolligerMabillardTrackLeftBarrelRollDownToUp(
         session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11857,7 +11857,7 @@ static void BolligerMabillardTrackRightBarrelRollDownToUp(
         session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackPoweredLift(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -11899,7 +11899,7 @@ static void BolligerMabillardTrackPoweredLift(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12127,7 +12127,7 @@ static void BolligerMabillardTrackLeftLargeHalfLoopUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12355,7 +12355,7 @@ static void BolligerMabillardTrackRightLargeHalfLoopUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12363,7 +12363,7 @@ static void BolligerMabillardTrackRightLargeHalfLoopDown(
     BolligerMabillardTrackRightLargeHalfLoopUp<supportType>(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12371,7 +12371,7 @@ static void BolligerMabillardTrackLeftLargeHalfLoopDown(
     BolligerMabillardTrackLeftLargeHalfLoopUp<supportType>(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12469,7 +12469,7 @@ static void BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackInvertedFlatTo90DegQuarterLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12478,7 +12478,7 @@ static void BolligerMabillardTrackInvertedFlatTo90DegQuarterLoopDown(
         session, ride, 2 - trackSequence, direction, height, trackElement);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 void BolligerMabillardTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12514,7 +12514,7 @@ void BolligerMabillardTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12630,7 +12630,7 @@ static void BolligerMabillardTrackLeftTwistDownToUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightTwistDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12746,7 +12746,7 @@ static void BolligerMabillardTrackRightTwistDownToUp(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackLeftTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12862,7 +12862,7 @@ static void BolligerMabillardTrackLeftTwistUpToDown(
     }
 }
 
-template<uint8_t supportType>
+template<MetalSupportType supportType>
 static void BolligerMabillardTrackRightTwistUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -12978,7 +12978,7 @@ static void BolligerMabillardTrackRightTwistUpToDown(
     }
 }
 
-template<uint8_t supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionBolligerMabillard(int32_t trackType)
+template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionBolligerMabillard(int32_t trackType)
 {
     switch (trackType)
     {
