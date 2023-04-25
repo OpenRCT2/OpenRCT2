@@ -1936,7 +1936,7 @@ static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& rid
         (lengthFactor * modifier.Nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& ride)
+static void RideRatingsApplyBonusRotoDrop(RatingTuple* ratings, const Ride& ride)
 {
     int32_t lengthFactor = ((ride.GetTotalLength() >> 16) * 209715) >> 16;
     RideRatingsAdd(ratings, lengthFactor, lengthFactor * 2, lengthFactor * 2);
