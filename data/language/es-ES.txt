@@ -3685,9 +3685,6 @@ STR_6576    :Agrega colores especiales al menú desplegable de colores
 STR_6577    :Velocidad del freno bloqueante
 STR_6578    :Establece el límite de velocidad para los frenos bloqueantes. En el modo de sección de bloque, los frenos adyacentes con una velocidad más lenta se vinculan al freno bloqueante.
 STR_6579    :Los frenos bloqueantes se establecerán a la velocidad predeterminada al guardarlos como diseño de vía.
-STR_6580    :Restablecer
-STR_6581    :¿Estás seguro de que quieres restablecer todos los atajos de teclado en esta pestaña?
-STR_6582    :Abrir ventana de atajos de teclado
 
 ##############
 # Escenarios #

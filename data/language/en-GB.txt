@@ -3687,10 +3687,6 @@ STR_6580    :Reset
 STR_6581    :Are you sure you want to reset all shortcut keys on this tab?
 STR_6582    :Open keyboard shortcuts window
 
-STR_6583    :{WINDOW_COLOUR_2}Reversed Trains
-STR_6584    :Select to run trains backwards
-STR_6585    :Can’t make changes…
-
 #############
 # Scenarios #
 ################
