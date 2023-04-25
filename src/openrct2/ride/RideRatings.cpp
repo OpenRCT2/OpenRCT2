@@ -118,6 +118,7 @@ static void RideRatingsApplyBonusRotations(RatingTuple* ratings, const Ride& rid
 static void RideRatingsApplyBonusOperationOption(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusGoKartRace(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusRotoDrop(RatingTuple* ratings, const Ride& ride);
 static void RideRatingsApplyBonusMazeSize(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusBoatHireNoCircuit(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusSlideUnlimitedRides(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
@@ -947,6 +948,9 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
                 break;
             case RatingsModifierType::BonusTowerRide:
                 RideRatingsApplyBonusTowerRide(&ratings, ride, modifier);
+                break;
+            case RatingsModifierType::BonusRotoDrop:
+                RideRatingsApplyBonusRotoDrop(&ratings, ride);
                 break;
             case RatingsModifierType::BonusMazeSize:
                 RideRatingsApplyBonusMazeSize(&ratings, ride, modifier);
@@ -1930,6 +1934,12 @@ static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& rid
     RideRatingsAdd(
         ratings, (lengthFactor * modifier.Excitement) >> 16, (lengthFactor * modifier.Intensity) >> 16,
         (lengthFactor * modifier.Nausea) >> 16);
+}
+
+static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& ride)
+{
+    int32_t lengthFactor = ((ride.GetTotalLength() >> 16) * 209715) >> 16;
+    RideRatingsAdd(ratings, lengthFactor, lengthFactor * 2, lengthFactor * 2);
 }
 
 static void RideRatingsApplyBonusMazeSize(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)

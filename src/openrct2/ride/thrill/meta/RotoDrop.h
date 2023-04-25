@@ -63,7 +63,7 @@ constexpr const RideTypeDescriptor RotoDropRTD =
         {
             { RatingsModifierType::BonusProximity,   0, 11183, 0, 0 },
             { RatingsModifierType::BonusScenery,     0, 25098, 0, 0 },
-            { RatingsModifierType::BonusTowerRide, 0, 209715, 419430, 419430 },
+            { RatingsModifierType::BonusRotoDrop,    0, 0, 0, 0 },
         },
     }),
 };
